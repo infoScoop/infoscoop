@@ -1,0 +1,28 @@
+
+.infoScoop .MiniBrowser .adjustMiniBrowserBarOver,
+.infoScoop .MiniBrowser .adjustMiniBrowserBarOut {
+	position: relative;
+	display: block;
+	width:  100%;
+	cursor: row-resize;
+	text-align: center;
+	background-color: white;
+	border-top: 1px solid darkgray;
+	_font-size: 0px;
+}
+.infoScoop .MiniBrowser .adjustMiniBrowserBarOver {
+	height: 4px;
+}
+.infoScoop .MiniBrowser .adjustMiniBrowserBarOut {
+	height: 2px;
+}
+
+.infoScoop .MiniBrowser .adjustMiniBrowserBarOver .adjustMiniBrowserBarHandle,
+.infoScoop .MiniBrowser .adjustMiniBrowserBarOut .adjustMiniBrowserBarHandle {
+	position: absolute;
+	top: -6px;
+	height: 6px;
+	width: 64px;
+	background: url(./imgs/adjust-bar-handle.gif) top center no-repeat;
+	_overflow: hidden;
+}

@@ -1,0 +1,498 @@
+@charset "UTF-8";
+a:link {color:#0000cc; }
+a:visited { color:#551a8b; }
+a:active { color:#ff0000; }
+
+body{
+ margin:0;
+ padding:0;
+ overflow-y: scroll; 
+ font-size:100%;
+ font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','ＭＳ Ｐゴシック',sans-serif;
+}
+
+th{
+ font-size:100%;
+}
+
+td{
+ font-size:100%;
+}
+
+a
+{
+	text-decoration: none;
+}
+
+a:hover
+{
+	text-decoration: underline;
+}
+
+/** message bar */
+#error-msg-bar {
+	background-color:lightyellow;
+	color: olive;
+	font-size:80%;
+	padding:2px;
+}
+#message-bar {
+	background-color:lightyellow;
+	color: olive;
+	font-size:80%;
+	padding:2px;
+}
+#message-bar-controles{
+	text-align:center;
+	padding:2px;
+}
+#tabLoadProgressBar {
+	background-color: cyan;
+}
+#tabLoadProgressCount {
+	text-align: right;
+}
+/** message bar */
+
+#portal-iframe {
+	width : 100%;
+	vertical-align:top;
+}
+#panels {
+	clear:both;
+	vertical-align:top;
+	width:100%;
+}
+
+#portal-header{
+	width: 100%;
+	margin-top:0px;
+	padding-top:0px;
+
+}
+
+.column {
+	float:left;
+	margin-top: 5px;
+	
+}
+
+.adjustBarOver {
+	float:  left;
+	width:  1%;
+	height: 150px;
+	background: url(./imgs/line.gif) top center repeat-y;
+	cursor: e-resize;
+}
+
+.adjustBarOut {
+	float:  left;
+	width:  1%;
+	height: 150px;
+	cursor: e-resize;
+}
+
+
+.dropToParent {
+	width: auto;
+	overflow:hidden;
+	position: static;
+	clear:both;
+	background-color: #FFF5EE;
+	border: 2px dashed #F00;
+}
+#widgetGhost {
+	border: 2px dashed #F00;
+	position: static;
+	width: auto;
+/*	margin-left : 10px;*/
+	margin-bottom: 5px;
+
+}
+#widgetGhost.noMergeMode {
+	border: 2px dashed #00F;
+}
+
+#subWidgetGhost {
+	border: 1px dashed #F00;
+	position: static;
+	width: 100%;
+	margin-left : 0px;
+	margin-bottom: 5px;
+
+}
+
+.search{
+	margin-top:5px;
+	margin-right:5px;
+	float:right;
+	background-color:transparent;
+	text-align:right;
+	color:white;
+}
+
+.iframeURLError {
+	border : 1px solid #999;
+	width : 100%;
+	color : #f00;
+}
+
+* html .widgetMenuCloser {
+	background-color: white;
+	filter: alpha( opacity=1 );
+}
+
+.overlayIndicator {
+	float:left;
+	border:0;
+	width:15px;
+	height:15px;
+	vertical-align:bottom;
+	cursor:pointer;
+	background: url(./imgs/indicator.gif) top left no-repeat;
+}
+
+#modal_container {
+	padding:5px;
+	background-color:#fff;
+	border:1px solid #666;
+	font-family:"Lucida Grande",Verdana;
+	font-size:12px;
+	color:#333;
+	text-align:left;
+}
+
+#modal_overlay {
+	background-color:#000;
+}
+
+.windowOverlay {
+	position:absolute;
+	left:0px;
+	top:0px;
+	z-index:90000;
+	-moz-opacity:0;
+	opacity:0;
+	filter:alpha(opacity=0);
+	background-color:#FFF;
+}
+
+.tabLoading {
+	width : 128px;
+	height : 128px;
+	position : absolute;
+	z-index : 50000;
+}
+
+/* message bar */
+#portal_msgbar{
+	position:absolute;
+	width:98.8%;
+	//width:100%;
+	z-index:50000;
+	filter:alpha(opacity=70);
+	-moz-opacity:0.7;
+	opacity:0.7;
+	background:#ccc;
+	padding-top:3px;
+	padding-bottom:3px;
+}
+#portal_msgbar div{
+	font-size: 12px;
+}
+
+.alphacube_title {
+	white-space: nowrap;
+	word-break: break-all;
+	line-height: 16px;
+	overflow: hidden;
+}
+
+#portal-tree-menucontainer {
+	vertical-align:top;
+	clear:both;
+	display:none;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	overflow-x: hidden;
+	position: absolute;
+	margin-right: 5px;
+}
+
+#siteMenuOpenTd {
+	vertical-align:top;
+	height:100%;
+	width:20px;
+}
+#siteMenuOpen {
+	border-left:1px solid #999999;
+	position: absolute;
+/*	cursor:col-resize;*/
+}
+#siteMenuGhost{
+	border-left:1px solid #999999;
+	position: absolute;
+	cursor = "col-resize";
+}
+
+.siteMapOpen {
+	position:relative;
+	top:3px;
+	left:-1px;
+	width:18px;
+	/*height:90px;*/
+	cursor:pointer;
+	border-left: 1px solid gray;
+	padding: 2px 0px;
+	/*background: url(./imgs/siteopen.png) top left no-repeat;*/
+}
+
+.siteMapClose {
+	position:relative;
+	top:3px;
+	left:-1px;
+	width:18px;
+	/*height:90px;*/
+	cursor:pointer;
+	padding: 2px 0px;
+	/*background: url(./imgs/siteclose.png) top left no-repeat;*/
+}
+
+.rssSearchOpen {
+	position:relative;
+	top:3px;
+	left:-1px;
+	width:18px;
+	/*height:100px;*/
+	cursor:pointer;
+	border-left: 1px solid gray;
+	/*background: url(./imgs/rssopen.png) top left no-repeat;*/
+}
+.rssSearchClose {
+	position:relative;
+	top:3px;
+	left:-1px;
+	width:18px;
+	/*height:100px;*/
+	cursor:pointer;
+	/*background: url(./imgs/rssclose.png) top left no-repeat;*/
+}
+
+.SidePanel_AddContents {
+	margin:		0px;
+	padding:	2px;
+	padding-top:	5px;
+	padding-bottom:	5px;
+	padding-right:	2%;
+	font-size:0.8em;
+	color:#7777cc;
+	/*border-bottom:	1px dashed	#AAA;*/
+}
+.addContentsEx {
+	width:100%;
+	border:0;
+	padding-left:5px;
+	background-color:ghostwhite;
+}
+
+
+div#search-iframe{
+	padding-top: 2px;
+}
+div#search-iframe div.search_tabs{
+	clear: left;
+	border: 1px solid gray;
+}
+
+/* Search Engine */
+
+.infoScoop .SearchEngine ul.search_tabs.tabs a.tab {
+	text-align: right;
+}
+.infoScoop .SearchEngine ul.search_tabs.tabs a.tab.multi {
+	padding-right: 18px;
+}
+.infoScoop .SearchEngine ul.search_tabs.tabs a.tab font.nohit {
+	font-size: 9pt;
+	color: #000;
+}
+.infoScoop .SearchEngine ul.search_tabs.tabs a.tab font.hit {
+	font-size: 9pt;
+	color: #F00;
+}
+.infoScoop .SearchEngine ul.search_tabs.tabs a.tab .indicator {
+	float:left;
+	border:0;
+	vertical-align: text-bottom;
+	margin-top: 2px;
+	margin-left: 5px;
+}
+.infoScoop .SearchEngine ul.search_tabs a.tab div.titleMore {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	width: 13px;
+	height: 13px;
+	background: url(./imgs/bullet_arrow_down.gif) no-repeat;
+}
+.infoScoop div.search_titles {
+	border : 1px solid #000;
+	background-color : #fff;
+	position : absolute;
+	padding : 3px;
+/*	font-size : 65%;*/
+	font-size: 10px;
+}
+.infoScoop .SearchEngine ul.search_tabs.tabs div.shield {
+	position: absolute;
+	width: 100%;
+	_width: expression( eval( this.parentNode.offsetWidth ));
+	height: 100%;
+	_height: expression( eval( this.parentNode.offsetHeight ));
+	left: 0;
+	top: 0;
+	
+	background-color: black;
+	filter : alpha(opacity=0);
+	opacity: 0;
+}
+
+/* Control.Tab */
+
+.tabs {
+	width:100%;
+	margin:0;
+	padding:0;
+}
+.tabs ul {
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+.tabs li {
+	display:inline;
+	position: relative;
+    float: left;
+    
+/*
+   	top: 1;
+	padding-bottom: 1px;
+	border-bottom: 1px solid gray;
+*/
+}
+.tabs .tab {
+	position: relative;
+	float: left;
+	
+	margin: 0;
+	margin-right:  0.4em;
+	
+	border: 1px solid gray;
+	border-bottom: none;
+	line-height: 1.2em;
+	
+    font-weight:bold;
+	text-decoration: none !important;
+	outline: none;
+	
+	top: 0;
+	margin-top: 1px;
+	
+	background-color: #DEDEDE;
+}
+.tabs .tab.selected {
+	top: 1;
+	margin-top: 0px;
+	padding-bottom: 1px;
+	
+	background-color: white;
+}
+.tabs .tab .title {
+	position: static !important;
+	float: left;
+	color: gray;
+	
+	padding: 0.1em 1em 0;
+	
+	white-space: nowrap;
+	word-break: keep-all;
+	
+	font-size: 11px;
+	cursor: pointer;
+}
+.tabs .tab.selected .title {
+	color: #627EB7;
+}
+
+/* IFrameToolbar */
+
+.infoScoop #articleShare {
+	font-size: 10.5pt;
+	width: 100%;
+}
+
+.infoScoop #articleShare.comment .userSearchPanel,
+.infoScoop #articleShare.comment .searchEndButton {
+	display: none;
+}
+
+.infoScoop #articleShare.userSearch .userSearchPanel {
+	display: table-row;
+}
+.infoScoop #articleShare.userSearch .userSearchButton,
+.infoScoop #articleShare.userSearch .searchEndButton {
+	display: inline;
+}
+
+.infoScoop #articleShare.userSearch .userSearchButton,
+.infoScoop #articleShare.userSearch .commentPanel,
+.infoScoop #articleShare.userSearch .transmissionButton,
+.infoScoop #articleShare.userSearch .cancelButton {
+	display: none;
+}
+
+.iframeToolBar {
+	background-color:#DDDBD5;
+}
+
+.infoScoop #iframe-tool-bar .toolBarTable {
+	width: 100% !important;
+}
+
+.infoScoop .iframetoolbar .toolbar-item {
+	margin-right: 4px;
+	padding-left: 5px;
+	padding-right: 2px;
+	padding-bottom: 2px;
+	white-space: nowrap;
+	word-break: keep-all;
+	background-color: white;
+	cursor: pointer;
+	border: 1px solid darkgray;
+	font-size: 11px;
+}
+.infoScoop .iframetoolbar .toolbar-item.pressed {
+	margin-top: 2px;
+	padding-bottom: 0px;
+}
+.infoScoop .iframetoolbar .toolbar-item .icon {
+	position: relative;
+	top: 4px;
+	margin-right: 5px;
+}
+
+.infoScoop .iframetoolbar #iframeUrl {
+	width: 100%;
+}
+
+.infoScoop .iframetoolbar.no-url .toolbar-item.mail,
+.infoScoop .iframetoolbar.no-url .toolbar-item.message {
+	opacity : 0.5;
+	_background-color: #DDD;
+	color: darkgray;
+}
+.infoScoop .iframetoolbar.no-url .toolbar-item.pressed {
+	margin-top: 0px;
+	padding-bottom: 2px;
+}

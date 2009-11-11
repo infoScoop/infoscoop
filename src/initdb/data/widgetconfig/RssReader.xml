@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgetConfiguration type="RssReader" autoRefresh="true" title="!{lb_RssReader}" backgroundColor="#FFFFFF" singleton="true" icon="feed.gif">
+	<WidgetPref datatype="bool" display_name="!{lb_titleEdit}" name="titleEdit" value="true"/>
+	<WidgetPref datatype="string" display_name="!{lb_dateTimeFormat}" name="dateTimeFormat" value="yyyy/MM/dd HH:mm:ssZ"/>
+	<WidgetPref datatype="bool" display_name="!{lb_useAccessStat}" name="useAccessStat" value="true"/>
+	<!--RSSアイテムの横に表示するカスタムアイコンを生成する関数を記述
+	<WidgetPref name="rssItemCustomIcons" datatype="json">
+	<![CDATA[
+		function(rssItem){
+			function openAclWindow(bookId){
+				var aclUrl = "http://localhost:8080/editgrid/acl.do?bookId=${bookId}";
+				var url = aclUrl.replace(/\$\{bookId\}/g, bookId);
+				return function(){window.open(url)};
+			}
+			var aclIcon = document.createElement("div");
+			aclIcon.className = "aclIcon";
+			IS_Event.observe(aclIcon, "click", openAclWindow(rssItem.editgrid_bookId), false, widget.id);
+			return [aclIcon];
+		}
+	]]>
+	</WidgetPref>
+	-->
+	<UserPref default_value="" datatype="hidden" name="url" display_name="RSS URL" required="true" admin_datatype="url"/>
+	<UserPref default_value="false" display_name="!{lb_doLineFeed}" datatype="bool" name="doLineFeed"/>
+	<UserPref default_value="true" display_name="!{lb_doShowDatetime}" datatype="bool" name="showDatetime"/>
+	<UserPref default_value="3" display_name="!{lb_itemsnumDisplay}" datatype="enum" name="itemsnum" staticDisabled="true">
+		<EnumValue display_value="!{lb_itemsnum}" value="notChange"/>
+		<EnumValue display_value="!{lb_items0}" value="0"/>
+		<EnumValue display_value="!{lb_items1}" value="1"/>
+		<EnumValue display_value="!{lb_items2}" value="2"/>
+		<EnumValue display_value="!{lb_items3}" value="3"/>
+		<EnumValue display_value="!{lb_items4}" value="4"/>
+		<EnumValue display_value="!{lb_items5}" value="5"/>
+		<EnumValue display_value="!{lb_items6}" value="6"/>
+		<EnumValue display_value="!{lb_items7}" value="7"/>
+		<EnumValue display_value="!{lb_items8}" value="8"/>
+		<EnumValue display_value="!{lb_items9}" value="9"/>
+		<EnumValue display_value="!{lb_items10}" value="10"/>
+	</UserPref>
+	<UserPref default_value="false" display_name="!{lb_iframeview}" datatype="hidden" name="showLatestNews"/>
+	<UserPref default_value="true" display_name="!{lb_openWidget}" datatype="hidden" name="openWidget"/>
+	<UserPref default_value="scroll" display_name="!{lb_scrollMode}" datatype="enum" name="scrollMode" staticDisabled="true">
+		<EnumValue display_value="!{lb_noneScroll}" value="none"/>
+		<EnumValue display_value="!{lb_scroll}" value="scroll"/>
+	</UserPref>
+	<UserPref default_value="inline" display_name="!{lb_detailDisplayMode}" datatype="enum" name="detailDisplayMode">
+		<EnumValue display_value="!{lb_inline}" value="inline"/>
+		<EnumValue display_value="!{lb_popup}" value="popup"/>
+	</UserPref>
+	<UserPref default_value="auto" display_name="!{lb_itemDisplayMode}" datatype="enum" name="itemDisplay">
+		<EnumValue display_value="!{lb_portalframe}" value="inline"/>
+		<EnumValue display_value="!{lb_newWindow}" value="newwindow"/>
+		<EnumValue display_value="!{lb_targetAutoSelect}" value="auto"/>
+	</UserPref>
+	<UserPref default_value="false" display_name="!{lb_maximizeDescDisplayMode}" datatype="hidden" name="iframeview">
+	    <EnumValue display_value="!{lb_summaryView}" value="false"/>
+		<EnumValue display_value="!{lb_iframeview}" value="true"/>
+	</UserPref>
+	<UserPref default_value="" display_name="!{lb_authType}" datatype="hidden" name="authType" admin_datatype="authType">
+		<EnumValue display_value="!{lb_none}" value=""/>
+		<EnumValue display_value="basic" value="basic"/>
+		<EnumValue display_value="ntlm" value="ntlm"/>
+		<EnumValue display_value="postCredential" value="postCredential"/>
+		<EnumValue display_value="postPortalCredential" value="postPortalCredential"/>
+		<EnumValue display_value="sendPortalCredentialHeader" value="sendPortalCredentialHeader"/>
+	</UserPref>
+	<UserPref default_value="" datatype="string" name="titleFilter" display_name="!{lb_filterByTitle}"
+		description="!{lb_filterByTitleDescription}"/>
+	<UserPref default_value="" datatype="string" name="creatorFilter" display_name="!{lb_filterByCreator}"
+		description="!{lb_filterByCreatorDescription}"/>
+	<UserPref default_value="" datatype="string" name="categoryFilter" display_name="!{lb_filterByCategory}"
+		description="!{lb_filterByCategoryDescription}"/>
+	<Header>
+		<menu alt="!{lb_decreaseitem}" imgUrl="arrow_up.gif" staticDisabled="true" type="widgetRssUp"/>
+		<menu alt="!{lb_increaseitem}" imgUrl="arrow_down.gif" staticDisabled="true" type="widgetRssDown"/>
+		<menu alt="!{lb_accessStats}" imgUrl="group.gif" type="accessStats"/>
+		<menu alt="!{lb_search}" imgUrl="zoom.gif" type="search"/>
+		<menu alt="!{lb_dateDisplay}" imgUrl="display_time.gif" type="date"/>
+		<menu alt="!{lb_lineFeed}" imgUrl="display_break.gif" type="lineFeed"/>
+	</Header>
+	<Content className="RssReader" type="javascript"/>
+	<Maximize>
+		<Header>
+			<icon alt="!{lb_iframeviewkey}" imgUrl="html_gray.gif" type="iframeview_on"/>
+			<icon alt="!{lb_summaryViewKey}" imgUrl="html_valid.gif" type="iframeview_off"/>
+			<icon alt="!{lb_dateDisplayKey}" imgUrl="display_time.gif" type="date"/>
+			<icon alt="!{lb_helpKey}" imgUrl="help.gif" type="showShortcuts"/>
+		</Header>
+		<Content className="MaximizeRssReader" type="javascript"/>
+	</Maximize>
+</widgetConfiguration>

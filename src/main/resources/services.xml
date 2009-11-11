@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="hibernateTransactionManger"
+			class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+	</bean>
+	<bean id="CommandExecutionService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.CommandExecutionService">
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="execute*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="WidgetConfService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.WidgetConfService">
+				<property name="widgetConfDAO">
+					<ref bean="widgetConfDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<!--
+				トランザクション属性があるとSpingは空のTransactionオブジェクトを生成する。
+				この場合、ネストされたトランザクションが終了するときにThredLocalのセッションの削除する。
+				再度セッションの削除したときにExceptionが発生してしまうので、コメントアウト。Spingのバグでないか？
+				<prop key="get*">PROPAGATION_NOT_SUPPORTED</prop>
+				-->
+			</props>
+		</property>
+	</bean>
+	<bean id="searchEngineService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.SearchEngineService">
+				<property name="searchEngineDAO">
+					<ref bean="searchEngineDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="commit*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="add*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="replace*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="getSearchEngineJson">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="siteAggregationMenuService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.SiteAggregationMenuService">
+				<property name="siteAggregationMenuDAO">
+					<ref bean="siteAggregationMenuDAO" />
+				</property>
+				<property name="siteAggregationMenuTempDAO">
+					<ref bean="siteAggregationMenuTempDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="commit*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="add*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="replace*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="getMenuTreeForEdit">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*Lock">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="isTimeoutTemp">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="PropertiesService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.PropertiesService">
+				<property name="propertiesDAO">
+					<ref bean="propertiesDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="PreferenceService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.PreferenceService">
+				<property name="preferenceDAO">
+					<ref bean="preferenceDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="ProxyConfService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.ProxyConfService">
+				<property name="proxyConfDAO">
+					<ref bean="proxyConfDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="add*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="replace*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="commit*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<!--prop key="*">PROPAGATION_SUPPORTS,readOnly</prop-->
+			</props>
+		</property>
+	</bean>
+	<bean id="PortalLayoutService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.PortalLayoutService">
+				<property name="portalLayoutDAO">
+					<ref bean="portalLayoutDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="TabLayoutService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.TabLayoutService">
+				<property name="tabLayoutDAO">
+					<ref bean="tabLayoutDAO" />
+				</property>
+				<property name="widgetDAO">
+					<ref bean="widgetDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="replace*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="commit*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="TabService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean class="org.infoscoop.service.TabService">
+				<property name="tabDAO">
+					<ref bean="tabDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="getWidgetsNode">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="syncPanels">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="clearConfigurations">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="I18NService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.I18NService">
+				<property name="i18NDAO">
+					<ref bean="i18NDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="replace*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="getJson">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="*">PROPAGATION_NOT_SUPPORTED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="LogService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.LogService">
+				<property name="logDAO">
+					<ref bean="logDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="CacheService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.CacheService">
+				<property name="cacheDAO">
+					<ref bean="cacheDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="PortalAdminsService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.PortalAdminsService">
+				<property name="portalAdminsDAO">
+					<ref bean="portalAdminsDAO" />
+				</property>
+				<property name="adminRoleDAO">
+					<ref bean="adminRoleDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="ForbiddenURLService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.ForbiddenURLService">
+				<property name="forbiddenURLDAO">
+					<ref bean="forbiddenURLDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="GadgetService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.GadgetService">
+				<property name="gadgetDAO">
+					<ref bean="gadgetDAO" />
+				</property>
+				<property name="gadgetIconDAO">
+					<ref bean="gadgetIconDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="select*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="GadgetResourceService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.GadgetResourceService">
+				<property name="gadgetDAO">
+					<ref bean="gadgetDAO" />
+				</property>
+				<property name="gadgetIconDAO">
+					<ref bean="gadgetIconDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="select*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="AuthCredentialService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.AuthCredentialService">
+				<property name="authCredentialDAO">
+					<ref bean="authCredentialDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="add*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="detect*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="HolidaysService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.HolidaysService">
+				<property name="holidaysDAO">
+					<ref bean="holidaysDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="add*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="InformationService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.InformationService">
+				<property name="sessionDAO">
+					<ref bean="sessionDAO" />
+				</property>
+				<property name="preferenceDAO">
+					<ref bean="preferenceDAO" />
+				</property>
+				<property name="accessLogDAO">
+					<ref bean="accessLogDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="MessageService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.MessageService">
+				<property name="messageDAO">
+					<ref bean="messageDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="add*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="SystemMessageService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.SystemMessageService">
+				<property name="systemMessageDAO">
+					<ref bean="systemMessageDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="getNonReadMessagesJson">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="SessionService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.SessionService">
+				<property name="sessionDAO">
+					<ref bean="sessionDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="newSessionId">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,1456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<display-name>@APP.MAIN.NAME@</display-name>
+
+	<context-param>
+		<param-name>buildVersion</param-name>
+		<param-value>@BUILD.VERSION@</param-value>
+	</context-param>
+	<context-param>
+		<param-name>buildTimestamp</param-name>
+		<param-value>@BUILD.TIMESTAMP@</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>guice-modules</param-name>
+		<param-value>org.apache.shindig.common.PropertiesModule:</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<filter-class>org.infoscoop.web.SetCharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+	<!--CustomizeSSOFilter-->
+	<!--CustomizeSetRoleHeaderFilter-->
+	
+	<!-- If you use OpenID for authentication, remove comment of the following setting and enable filter setting.  -->
+	<!--
+	<filter>
+		<filter-name>OpenIDFilter</filter-name>
+		<filter-class>org.infoscoop.web.OpenIDFilter</filter-class>
+		<init-param>
+			<param-name>excludePath</param-name>
+			<param-value>/xmlrpc,/openid_login.jsp,/openid_consumer_redirect.jsp,/openid_consumer_returnurl.jsp,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html</param-value>
+		</init-param>
+	</filter>
+	-->
+	
+	<filter>
+		<filter-name>SessionManagerFilter</filter-name>
+		<filter-class>org.infoscoop.web.SessionManagerFilter</filter-class>
+        <!-- 未認証でもアクセスできるパスを記述 -->
+		<init-param>
+			<param-name>excludePath</param-name>
+			<param-value>/xmlrpc,/login.jsp,/changePassword.jsp,/authsrv,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html</param-value>
+		</init-param>
+        <!-- 認証後遷移させる必要のあるパスを記述 -->
+		<init-param>
+			<param-name>redirectPath</param-name>
+			<param-value>/index.jsp,/messageConsole.html</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>CheckAdminFilter</filter-name>
+		<filter-class>org.infoscoop.admin.web.CheckAdminFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>SetAdminFilter</filter-name>
+		<filter-class>org.infoscoop.admin.web.CheckAdminFilter</filter-class>
+		<init-param>
+			<param-name>mode</param-name>
+			<param-value>SET_ADMIN</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>PreviewImpersonationFilter</filter-name>
+		<filter-class>org.infoscoop.admin.web.PreviewImpersonationFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>PreviewNullUidFilter</filter-name>
+		<filter-class>org.infoscoop.admin.web.PreviewNullUidFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>I18NFilter_JS</filter-name>
+		<filter-class>org.infoscoop.web.I18NFilter</filter-class>
+		<init-param>
+			<param-name>type</param-name>
+			<param-value>TYPE_JS</param-value>
+		</init-param>
+	</filter>
+
+		<filter>
+		<filter-name>I18NFilter_ADMINJS</filter-name>
+		<filter-class>org.infoscoop.web.I18NFilter</filter-class>
+		<init-param>
+			<param-name>type</param-name>
+			<param-value>TYPE_ADMINJS</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>I18NFilter_LAYOUT</filter-name>
+		<filter-class>org.infoscoop.web.I18NFilter</filter-class>
+		<init-param>
+			<param-name>type</param-name>
+			<param-value>TYPE_LAYOUT</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>UIDLoggingFilter</filter-name>
+		<filter-class>org.infoscoop.web.UIDLoggingFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>DetectLogTypeFilter</filter-name>
+		<filter-class>org.infoscoop.web.DetectLogTypeFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>CheckSessionIdFilter</filter-name>
+		<filter-class>org.infoscoop.web.CheckSessionIdFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>CheckDuplicateUidFilter</filter-name>
+		<filter-class>org.infoscoop.web.CheckDuplicateUidFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>TabDispatchFilter</filter-name>
+		<filter-class>org.infoscoop.web.TabDispatchFilter</filter-class>
+	</filter>
+
+	<!--filter>
+		<filter-name>MSDRoleFilter</filter-name>
+		<filter-class>org.infoscoop.web.MSDRoleFilter</filter-class>
+		<init-param>
+			<param-name>orgPrefix</param-name>
+			<param-value> </param-value>
+		</init-param>
+		<init-param>
+			<param-name>orgDelimitter</param-name>
+			<param-value>/</param-value>
+		</init-param>
+	</filter-->
+
+	<!--CustomizeSSOFilterMapping-->
+	
+	<!-- If you use OpenID for authentication, remove comment of the following setting and enable filter setting.  -->
+	<!--
+	<filter-mapping>
+		<filter-name>OpenIDFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	-->
+	
+	<!--CustomizeSetRoleHeaderFilterMapping-->
+
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/proxy</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/gadgetsrv</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>DetectLogTypeFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/comsrv</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/logsrv</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/encsrv</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/grpsrv</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/usersearch</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/admin/adminserv/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/adminpreview/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/adminpreview</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/authsrv/login</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>PreviewImpersonationFilter</filter-name>
+		<url-pattern>/adminpreview/*</url-pattern>
+	</filter-mapping>
+
+	<!--filter-mapping>
+		<filter-name>MSDRoleFilter</filter-name>
+		<url-pattern>/index.jsp</url-pattern>
+	</filter-mapping-->
+
+	<filter-mapping>
+		<filter-name>SessionManagerFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!--CheckDuplicateUidFilterMapping-->
+
+	<filter-mapping>
+		<filter-name>CheckAdminFilter</filter-name>
+		<url-pattern>/admin/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>CheckAdminFilter</filter-name>
+		<url-pattern>/adminpreview/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>PreviewNullUidFilter</filter-name>
+		<url-pattern>/adminpreview/*</url-pattern>
+	</filter-mapping>
+
+	<!-- filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/js/resources/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/admin/js/resources/*</url-pattern>
+	</filter-mapping-->
+
+	<filter-mapping>
+		<filter-name>I18NFilter_LAYOUT</filter-name>
+		<url-pattern>/jssrv</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/login.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/logoff.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/changePassword.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/selectProfile.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/js/widgets/maximize/maximizeForbiddenURL.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/js/widgets/maximize/maximizeShortcuts.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/admin/index.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/admin/</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>I18NFilter_ADMINJS</filter-name>
+		<url-pattern>/admin/index.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_ADMINJS</filter-name>
+		<url-pattern>/admin/</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_ADMINJS</filter-name>
+		<url-pattern>/admin/role.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_ADMINJS</filter-name>
+		<url-pattern>/admin/staticPanel/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>SetAdminFilter</filter-name>
+		<url-pattern>/index.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetAdminFilter</filter-name>
+		<url-pattern>/</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>UIDLoggingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>CheckSessionIdFilter</filter-name>
+		<url-pattern>/comsrv</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>TabDispatchFilter</filter-name>
+		<url-pattern>/tab/*</url-pattern>
+	</filter-mapping>
+
+	<listener>
+		<listener-class>org.apache.shindig.common.servlet.GuiceServletContextListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>InitializeServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.InitializeServlet
+		</servlet-class>
+
+		<init-param>
+			<param-name>log4j-init-file</param-name>
+			<param-value>/WEB-INF/conf/log4j.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>bean-definitions</param-name>
+			<param-value>datasource.xml,dataaccess.xml,commands.xml,services.xml,proxyrequest.xml,accountservices.xml,org/infoscoop/admin/command/serviceCommands.xml<!--add bean definitions--></param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>HttpProxy</servlet-name>
+		<display-name>Http Proxy</display-name>
+		<description>A proxy for Http requests</description>
+		<servlet-class>
+			org.infoscoop.web.ProxyServlet
+		</servlet-class>
+		<init-param>
+			<param-name>timeout</param-name>
+			<param-value>60000</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet>
+		<servlet-name>MultiRssServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.MultiRssServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>WidgetConfServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.WidgetConfServlet
+		</servlet-class>
+		<init-param>
+			<param-name>cacheLifeTime</param-name>
+			<param-value>360</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet>
+		<servlet-name>StringServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.StringServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>ValidationServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.ValidationServlet
+		</servlet-class>
+	</servlet>
+
+    <servlet>
+		<servlet-name>CacheServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.CacheServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>URLEncodeServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.URLEncodeServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>CommandServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.CommandServlet
+		</servlet-class>
+
+		<init-param>
+			<param-name>commandPath</param-name>
+			<param-value>
+				org.infoscoop.command
+			</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet>
+		<servlet-name>WidgetServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.WidgetServlet
+		</servlet-class>
+		<init-param>
+			<param-name>defaultUid</param-name>
+			<param-value>default</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>MenuConfServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.MenuConfServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>MenuLatestCheckServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.MenuLatestCheckServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>SearchConfServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.SearchConfServlet
+		</servlet-class>
+	</servlet>
+
+  	<servlet>
+		<servlet-name>AuthenticationServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.AuthenticationServlet
+		</servlet-class>
+        <!-- ユーザの詳細情報を取得するかどうか(未実装) -->
+		<init-param>
+			<param-name>keepUserInfo</param-name>
+			<param-value>false</param-value>
+		</init-param>
+        <!-- パスワードが空の場合に認証を拒否するかどうか -->
+        <init-param>
+            <param-name>denyEmptyPassword</param-name>
+            <param-value>true</param-value>
+        </init-param>
+	</servlet>
+
+	<servlet>
+		<servlet-name>PropertiesServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.PropertiesServlet
+		</servlet-class>
+	</servlet>
+
+  <servlet>
+    <servlet-name>UserSearchServlet</servlet-name>
+    <servlet-class>org.infoscoop.web.UserSearchServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>CustomizationServlet</servlet-name>
+    <servlet-class>org.infoscoop.web.CustomizationServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>PortalLayoutServlet</servlet-name>
+    <servlet-class>org.infoscoop.web.PortalLayoutServlet</servlet-class>
+  </servlet>
+
+	<servlet>
+		<servlet-name>TrashWidgetServlet</servlet-name>
+		<servlet-class>org.infoscoop.web.TrashWidgetServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>AccessStatsServlet</servlet-name>
+		<servlet-class>org.infoscoop.web.AccessStatsServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>AccessStatsListServlet</servlet-name>
+		<servlet-class>org.infoscoop.web.AccessStatsListServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>PreviewServlet</servlet-name>
+		<servlet-class>org.infoscoop.admin.web.PreviewServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>AdminAuthenticationServlet</servlet-name>
+		<servlet-class>org.infoscoop.admin.web.AuthenticationServlet</servlet-class>
+		<init-param>
+			<param-name>userid</param-name>
+			<param-value>admin,administrator</param-value>
+		</init-param>
+		<init-param>
+			<param-name>password</param-name>
+			<param-value>admin,administrator</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet>
+		<servlet-name>UploadGadgetServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.admin.web.UploadGadgetServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>I18NServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.I18NServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>ProxyCredentialManageServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.ProxyCredentialManageServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>I18NExportServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.admin.web.I18NExportServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>I18NImportServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.admin.web.I18NImportServlet
+		</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>HolidayServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.HolidayServlet
+		</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ServiceCommandServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.admin.web.ServiceCommandServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>KeywordRankingServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.KeywordRankingServlet
+		</servlet-class>
+		<!-- ランキング集計期間の最大値 -->
+		<init-param>
+			<param-name>rankingPeriod_max</param-name>
+			<param-value>60</param-value>
+		</init-param>
+		<!-- ランキング表示件数の最大値 -->
+		<init-param>
+			<param-name>rankingNum_max</param-name>
+			<param-value>30</param-value>
+		</init-param>
+	</servlet>
+	<servlet>
+		<servlet-name>MergeProfileServlet</servlet-name>
+		<servlet-class>org.infoscoop.web.MergeProfileServlet</servlet-class>
+	</servlet>
+
+  <servlet>
+    <servlet-name>js</servlet-name>
+    <servlet-class>org.apache.shindig.gadgets.servlet.JsServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>jsonproxy</servlet-name>
+    <servlet-class>org.infoscoop.web.JsonProxyServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+  	<servlet-name>upsrv</servlet-name>
+    <servlet-class>org.infoscoop.web.UserPrefServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+  	<servlet-name>WidgetRankingServlet</servlet-name>
+    <servlet-class>org.infoscoop.web.WidgetRankingServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>GadgetResourceServlet</servlet-name>
+  	<servlet-class>org.infoscoop.web.GadgetResourceServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>MessageServlet</servlet-name>
+  	<servlet-class>org.infoscoop.web.MessageServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>SystemMessageServlet</servlet-name>
+  	<servlet-class>org.infoscoop.web.SystemMessageServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>GadgetIconServlet</servlet-name>
+  	<servlet-class>org.infoscoop.web.GadgetIconServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+  	<servlet-name>AddonServlet</servlet-name>
+  	<servlet-class>org.infoscoop.web.AddonServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+  	<servlet-name>AddonServlet</servlet-name>
+  	<url-pattern>/addon/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+  	<servlet-name>GadgetResourceServlet</servlet-name>
+  	<url-pattern>/admin/gadget/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+  	<servlet-name>GadgetResourceServlet</servlet-name>
+  	<url-pattern>/gadget/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+	<servlet-name>HttpProxy</servlet-name>
+	<url-pattern>/gadgetsrv</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+	<servlet-name>upsrv</servlet-name>
+	<url-pattern>/upsrv</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>js</servlet-name>
+    <url-pattern>/js/gadget/features/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>jsonproxy</servlet-name>
+    <url-pattern>/jsonproxy</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+	<servlet-name>KeywordRankingServlet</servlet-name>
+	<url-pattern>/kwdsrv</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+	<servlet-name>I18NExportServlet</servlet-name>
+	<url-pattern>/admin/i18nexport</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+	<servlet-name>I18NImportServlet</servlet-name>
+	<url-pattern>/admin/i18nimport</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+	<servlet-name>PortalLayoutServlet</servlet-name>
+	<url-pattern>/portallayout</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+	<servlet-name>CustomizationServlet</servlet-name>
+	<url-pattern>/customization</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+	<servlet-name>CustomizationServlet</servlet-name>
+	<url-pattern>/adminpreview/customization</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+	<servlet-name>UserSearchServlet</servlet-name>
+	<url-pattern>/grpsrv</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+	<servlet-name>UserSearchServlet</servlet-name>
+	<url-pattern>/usersearch</url-pattern>
+  </servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AuthenticationServlet</servlet-name>
+		<url-pattern>/authsrv/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AuthenticationServlet</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>HttpProxy</servlet-name>
+		<url-pattern>/proxy</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>MultiRssServlet</servlet-name>
+		<url-pattern>/mltproxy</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>WidgetServlet</servlet-name>
+		<url-pattern>/widsrv</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>WidgetServlet</servlet-name>
+		<url-pattern>/adminpreview/widsrv</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>WidgetConfServlet</servlet-name>
+		<url-pattern>/widconf</url-pattern>
+	</servlet-mapping>
+
+    <servlet-mapping>
+    	<servlet-name>StringServlet</servlet-name>
+    	<url-pattern>/strsrv</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+    	<servlet-name>ValidationServlet</servlet-name>
+    	<url-pattern>/validation</url-pattern>
+    </servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>ValidationServlet</servlet-name>
+		<url-pattern>/admin/validation</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>MenuConfServlet</servlet-name>
+		<url-pattern>/mnusrv/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>MenuLatestCheckServlet</servlet-name>
+		<url-pattern>/mnuchksrv</url-pattern>
+	</servlet-mapping>
+
+  <servlet-mapping>
+	<servlet-name>MenuConfServlet</servlet-name>
+	<url-pattern>/adminpreview/mnusrv/*</url-pattern>
+  </servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>SearchConfServlet</servlet-name>
+		<url-pattern>/schsrv</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>PropertiesServlet</servlet-name>
+		<url-pattern>/prpsrv</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>CacheServlet</servlet-name>
+		<url-pattern>/cacsrv</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>URLEncodeServlet</servlet-name>
+		<url-pattern>/encsrv</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>CommandServlet</servlet-name>
+		<url-pattern>/comsrv</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>CommandServlet</servlet-name>
+		<url-pattern>/logsrv</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>TrashWidgetServlet</servlet-name>
+		<url-pattern>/trashwidget</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AccessStatsServlet</servlet-name>
+		<url-pattern>/accessstats</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AccessStatsListServlet</servlet-name>
+		<url-pattern>/accessstatslist</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>PreviewServlet</servlet-name>
+		<url-pattern>/adminpreview</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AdminAuthenticationServlet</servlet-name>
+		<url-pattern>/admin/authsrv/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>UploadGadgetServlet</servlet-name>
+		<url-pattern>/admin/uploadgadget</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>I18NServlet</servlet-name>
+		<url-pattern>/admin/i18n</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>ProxyCredentialManageServlet</servlet-name>
+		<url-pattern>/credsrv</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>HolidayServlet</servlet-name>
+		<url-pattern>/holidaysrv</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServiceCommandServlet</servlet-name>
+		<url-pattern>/admin/services/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>WidgetRankingServlet</servlet-name>
+		<url-pattern>/widrank</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>MessageServlet</servlet-name>
+		<url-pattern>/msg</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SystemMessageServlet</servlet-name>
+		<url-pattern>/sysmsg</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GadgetIconServlet</servlet-name>
+		<url-pattern>/gadgeticon</url-pattern>
+	</servlet-mapping>
+
+	<!--MergeProfileServletMapping-->
+	<!-- ===================== Default MIME Type Mappings =================== -->
+	<!-- When serving static resources, Tomcat will automatically generate    -->
+	<!-- a "Content-Type" header based on the resource's filename extension,  -->
+	<!-- based on these mappings.  Additional mappings can be added here (to  -->
+	<!-- apply to all web applications), or in your own application's web.xml -->
+	<!-- deployment descriptor.                                               -->
+
+	<mime-mapping>
+		<extension>abs</extension>
+		<mime-type>audio/x-mpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ai</extension>
+		<mime-type>application/postscript</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>aif</extension>
+		<mime-type>audio/x-aiff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>aifc</extension>
+		<mime-type>audio/x-aiff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>aiff</extension>
+		<mime-type>audio/x-aiff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>aim</extension>
+		<mime-type>application/x-aim</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>art</extension>
+		<mime-type>image/x-jg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>asf</extension>
+		<mime-type>video/x-ms-asf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>asx</extension>
+		<mime-type>video/x-ms-asf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>au</extension>
+		<mime-type>audio/basic</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>avi</extension>
+		<mime-type>video/x-msvideo</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>avx</extension>
+		<mime-type>video/x-rad-screenplay</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>bcpio</extension>
+		<mime-type>application/x-bcpio</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>bin</extension>
+		<mime-type>application/octet-stream</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>bmp</extension>
+		<mime-type>image/bmp</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>body</extension>
+		<mime-type>text/html</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>cdf</extension>
+		<mime-type>application/x-cdf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>cer</extension>
+		<mime-type>application/x-x509-ca-cert</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>class</extension>
+		<mime-type>application/java</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>cpio</extension>
+		<mime-type>application/x-cpio</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>csh</extension>
+		<mime-type>application/x-csh</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>css</extension>
+		<mime-type>text/css</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>dib</extension>
+		<mime-type>image/bmp</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>doc</extension>
+		<mime-type>application/msword</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>dtd</extension>
+		<mime-type>text/plain</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>dv</extension>
+		<mime-type>video/x-dv</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>dvi</extension>
+		<mime-type>application/x-dvi</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>eps</extension>
+		<mime-type>application/postscript</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>etx</extension>
+		<mime-type>text/x-setext</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>exe</extension>
+		<mime-type>application/octet-stream</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>gif</extension>
+		<mime-type>image/gif</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>gtar</extension>
+		<mime-type>application/x-gtar</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>gz</extension>
+		<mime-type>application/x-gzip</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>hdf</extension>
+		<mime-type>application/x-hdf</mime-type>
+	</mime-mapping>
+	<!--mime-mapping>
+		<extension>hqx</extension>
+		<mime-type>application/mac-binhex40</mime-type>
+	</mime-mapping-->
+	<mime-mapping>
+		<extension>htc</extension>
+		<mime-type>text/x-component</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>htm</extension>
+		<mime-type>text/html</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>html</extension>
+		<mime-type>text/html</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>hqx</extension>
+		<mime-type>application/mac-binhex40</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ief</extension>
+		<mime-type>image/ief</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jad</extension>
+		<mime-type>text/vnd.sun.j2me.app-descriptor</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jar</extension>
+		<mime-type>application/java-archive</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>java</extension>
+		<mime-type>text/plain</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jnlp</extension>
+		<mime-type>application/x-java-jnlp-file</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jpe</extension>
+		<mime-type>image/jpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jpeg</extension>
+		<mime-type>image/jpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jpg</extension>
+		<mime-type>image/jpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>js</extension>
+		<mime-type>text/javascript</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jsf</extension>
+		<mime-type>text/plain</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jspf</extension>
+		<mime-type>text/plain</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>kar</extension>
+		<mime-type>audio/x-midi</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>latex</extension>
+		<mime-type>application/x-latex</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>m3u</extension>
+		<mime-type>audio/x-mpegurl</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mac</extension>
+		<mime-type>image/x-macpaint</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>man</extension>
+		<mime-type>application/x-troff-man</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>me</extension>
+		<mime-type>application/x-troff-me</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mid</extension>
+		<mime-type>audio/x-midi</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>midi</extension>
+		<mime-type>audio/x-midi</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mif</extension>
+		<mime-type>application/x-mif</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mov</extension>
+		<mime-type>video/quicktime</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>movie</extension>
+		<mime-type>video/x-sgi-movie</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mp1</extension>
+		<mime-type>audio/x-mpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mp2</extension>
+		<mime-type>audio/x-mpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mp3</extension>
+		<mime-type>audio/x-mpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mpa</extension>
+		<mime-type>audio/x-mpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mpe</extension>
+		<mime-type>video/mpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mpeg</extension>
+		<mime-type>video/mpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mpega</extension>
+		<mime-type>audio/x-mpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mpg</extension>
+		<mime-type>video/mpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>mpv2</extension>
+		<mime-type>video/mpeg2</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ms</extension>
+		<mime-type>application/x-wais-source</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>nc</extension>
+		<mime-type>application/x-netcdf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>oda</extension>
+		<mime-type>application/oda</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pbm</extension>
+		<mime-type>image/x-portable-bitmap</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pct</extension>
+		<mime-type>image/pict</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pdf</extension>
+		<mime-type>application/pdf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pgm</extension>
+		<mime-type>image/x-portable-graymap</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pic</extension>
+		<mime-type>image/pict</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pict</extension>
+		<mime-type>image/pict</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pls</extension>
+		<mime-type>audio/x-scpls</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>png</extension>
+		<mime-type>image/png</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pnm</extension>
+		<mime-type>image/x-portable-anymap</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pnt</extension>
+		<mime-type>image/x-macpaint</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ppm</extension>
+		<mime-type>image/x-portable-pixmap</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ppt</extension>
+		<mime-type>application/powerpoint</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ps</extension>
+		<mime-type>application/postscript</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>psd</extension>
+		<mime-type>image/x-photoshop</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>qt</extension>
+		<mime-type>video/quicktime</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>qti</extension>
+		<mime-type>image/x-quicktime</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>qtif</extension>
+		<mime-type>image/x-quicktime</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ras</extension>
+		<mime-type>image/x-cmu-raster</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>rgb</extension>
+		<mime-type>image/x-rgb</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>rm</extension>
+		<mime-type>application/vnd.rn-realmedia</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>roff</extension>
+		<mime-type>application/x-troff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>rtf</extension>
+		<mime-type>application/rtf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>rtx</extension>
+		<mime-type>text/richtext</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>sh</extension>
+		<mime-type>application/x-sh</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>shar</extension>
+		<mime-type>application/x-shar</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>smf</extension>
+		<mime-type>audio/x-midi</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>sit</extension>
+		<mime-type>application/x-stuffit</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>snd</extension>
+		<mime-type>audio/basic</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>src</extension>
+		<mime-type>application/x-wais-source</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>sv4cpio</extension>
+		<mime-type>application/x-sv4cpio</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>sv4crc</extension>
+		<mime-type>application/x-sv4crc</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>swf</extension>
+		<mime-type>application/x-shockwave-flash</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>t</extension>
+		<mime-type>application/x-troff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>tar</extension>
+		<mime-type>application/x-tar</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>tcl</extension>
+		<mime-type>application/x-tcl</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>tex</extension>
+		<mime-type>application/x-tex</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>texi</extension>
+		<mime-type>application/x-texinfo</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>texinfo</extension>
+		<mime-type>application/x-texinfo</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>tif</extension>
+		<mime-type>image/tiff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>tiff</extension>
+		<mime-type>image/tiff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>tr</extension>
+		<mime-type>application/x-troff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>tsv</extension>
+		<mime-type>text/tab-separated-values</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>txt</extension>
+		<mime-type>text/plain</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ulw</extension>
+		<mime-type>audio/basic</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ustar</extension>
+		<mime-type>application/x-ustar</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xbm</extension>
+		<mime-type>image/x-xbitmap</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xht</extension>
+		<mime-type>application/xhtml+xml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xhtml</extension>
+		<mime-type>application/xhtml+xml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xml</extension>
+		<mime-type>text/xml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xpm</extension>
+		<mime-type>image/x-xpixmap</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xsl</extension>
+		<mime-type>text/xml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xwd</extension>
+		<mime-type>image/x-xwindowdump</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>wav</extension>
+		<mime-type>audio/x-wav</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>svg</extension>
+		<mime-type>image/svg+xml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>svgz</extension>
+		<mime-type>image/svg+xml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>vsd</extension>
+		<mime-type>application/x-visio</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<!-- Wireless Bitmap -->
+		<extension>wbmp</extension>
+		<mime-type>image/vnd.wap.wbmp</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<!-- WML Source -->
+		<extension>wml</extension>
+		<mime-type>text/vnd.wap.wml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<!-- Compiled WML -->
+		<extension>wmlc</extension>
+		<mime-type>application/vnd.wap.wmlc</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<!-- WML Script Source -->
+		<extension>wmls</extension>
+		<mime-type>text/vnd.wap.wmlscript</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<!-- Compiled WML Script -->
+		<extension>wmlscriptc</extension>
+		<mime-type>application/vnd.wap.wmlscriptc</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>wrl</extension>
+		<mime-type>x-world/x-vrml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>Z</extension>
+		<mime-type>application/x-compress</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>z</extension>
+		<mime-type>application/x-compress</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>zip</extension>
+		<mime-type>application/zip</mime-type>
+	</mime-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+  <resource-ref>
+    <res-ref-name><!--start dataSource.jndiName-->
+		jdbc/infoscoop
+	<!--end dataSource.jndiName--></res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+  <!--msd.dataSource-->
+
+</web-app>

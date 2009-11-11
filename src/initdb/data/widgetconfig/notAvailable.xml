@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgetConfiguration systemWidget="true" title="!{lb_notAvailable}" type="notAvailable" icon="not_available.gif">
+	<Header refresh="off" minimize="off" maximize="off"/>
+</widgetConfiguration>

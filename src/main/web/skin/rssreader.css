@@ -1,0 +1,133 @@
+
+.infoScoop .RssReader .rssItem {
+	word-break: break-all;
+	font-size:85%;
+}
+
+.infoScoop .RssReader .rssPubDate {
+	color:gray;
+	font-size:80%;
+	word-break:break-all;
+}
+.infoScoop .RssReader .rssCategoryList{
+	background:url(./imgs/tag_blue.gif) center left no-repeat;
+	padding-left:16px;
+}
+.infoScoop .RssReader .rssMore{
+/*	color:gray;*/
+	color:#7777cc;
+	font-size:70%;
+	text-decoration:none;
+	cursor:auto;
+	vertical-align:bottom;
+}
+.infoScoop .RssReader .rssMoreOver {
+	color:red;
+	font-size:70%;
+	text-decoration:underline;
+	cursor:pointer;
+	vertical-align:bottom;
+}
+.infoScoop .RssReader .rssDesc,
+.infoScoop .rssDescFloat .rssDesc{
+	background-color:#eeeeee;
+	overflow: hidden;
+	width:auto;
+	font-size:80%;
+	word-break:break-all;
+	/*margin:0px 4px 4px 4px;*/
+}
+.infoScoop .rssDescFloat{
+	position: absolute;
+	z-index: 920;
+	width: 300px;
+	/*max-height: 250px;*/
+	background-color: #fff;
+	padding: 5px 3px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	border: 1px solid #888;
+	border-right: 2px solid #777;
+	border-bottom: 2px solid #666;
+}
+.infoScoop .rssDescFloatMark{
+	position: absolute;
+	z-index: 920;
+	height: 16px;
+	width: 16px;
+	background:url(./imgs/resultset_previous.gif) center center no-repeat;
+}
+.infoScoop .imageController {
+	position: absolute;
+	z-index : 999;
+	width : 20px;
+	height : 20px;
+	background: url(./imgs/arrow_out.gif) center center no-repeat;
+	background-color : #fff;
+	border: 1px solid #888;
+	cursor: pointer;
+}
+
+.infoScoop .widgetHeader .latestMark {
+	border:0;
+	vertical-align: text-bottom;
+}
+.infoScoop .widgetHeader .latestMark {
+	cursor:pointer;
+	vertical-align: text-bottom;
+	white-space:nowrap;
+	overflow:hidden;
+}
+.infoScoop .RssReader .RssReader_itemsCountPanel {
+	position:relative;
+	font-size: 9pt;
+	color: #7777CC;
+	background-color: #E2E2E2;
+	height:10pt;
+	overflow:hidden;
+	//padding-top: 1;
+}
+.infoScoop .RssReader .RssReader_itemsCount{
+	position:absolute;
+	background-color: #EAEAEA;
+	right:0;
+}
+
+.infoScoop .RssReader .RssReader_filter{
+	position:absolute;
+	color:gray;
+	background:url(./imgs/funnel_small.png) center left no-repeat;
+	padding-left:12px;
+}
+
+.infoScoop .rssSearchBox{
+	position:absolute;
+	padding:3px;
+	margin:3px;
+	border:1px solid #000;
+	background-color:#fff;
+	width:160px;
+	white-space:nowrap;
+}
+.infoScoop .rssSearchMsg{
+	color:#f00;
+	font-size:70%;
+}
+
+
+
+/* Access Stat */
+
+.infoScoop .accessStat_tabs.tabs {
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+.infoScoop .accessStat_tabs_content {
+	border-top: 1px solid #999999;
+	clear: both;
+	width: 600;
+	height: 350;
+	margin: 0;
+	padding-top: 3px;
+}

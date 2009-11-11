@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="make customize infoscoop war file" default="all" basedir=".">
+	<property name="basedir" value="." />
+	<property name="app.name" value="infoscoop" />
+	<property name="custom.home" location="${basedir}/Customization"/>
+	<property name="collect.home" location="${basedir}/collect"/>
+	<property name="dist.home" value="${basedir}/dist" />
+
+	<delete file="${basedir}/build.properties.tmp"/>
+	<copy tofile="${basedir}/build.properties.tmp" file="${basedir}/build.properties" encoding="UTF-8">
+		<filterchain>
+			<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks">
+                <!-- remove BOM code -->
+				<param name="linebreaks" value="&#65279;"/>
+			</filterreader>
+		</filterchain>
+	</copy>
+	<property file="${basedir}/build.properties.tmp"/>
+	<delete file="${basedir}/build.properties.tmp"/>
+	
+	<target name="all" depends="clean, prepare, copy, collect, dist, sweep" description="Remake WAR file" />
+	
+	<!-- remove distribution directory -->
+	<target name="clean" description="Delete old build directory">
+		<delete dir="${dist.home}" />
+		<delete dir="${collect.home}" />
+	</target>
+	
+	<!-- make distoribution directory -->
+	<target name="prepare" depends="clean">
+		<mkdir dir="${basedir}/dist" />
+		<mkdir dir="${basedir}/collect" />
+	</target>
+	
+	<!-- unzip infoscoop war file to temporary directory -->
+	<target name="copy" depends="prepare" description="Unwar template WAR to work directory">
+		<unwar src="${basedir}/${app.name}.war" dest="${collect.home}"/>
+	</target>
+	
+	<!-- copy customize file to temporary directory -->
+	<target name="collect" depends="copy" description="Collect customized configuration file">
+		<copy todir="${collect.home}" failonerror="false" overwrite="true">
+			<fileset dir="${custom.home}"/>
+		</copy>
+	</target>
+	
+	<target name="replaceWebXml" depends="replace-loginAuthenthication,replace-uidHeader,replace-usernameHeader,replace-customizeSSOFilter,replace-customizeSetRoleHeaderFilter,replace-uidIgnoreCase,replace-msd.dataSource"
+		description="Replace web.xml configurations">
+		<loadfile property="principalHeaderList" srcFile="principalHeaderList.json" encoding="UTF-8">
+			<filterchain>
+				<!-- remove BOM code -->
+				<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks">
+					<param name="linebreaks" value="&#65279;"/>
+				</filterreader>
+			</filterchain>
+		</loadfile>
+		<replaceregexp file="${collect.home}/WEB-INF/classes/accountservices.xml"
+			match="&lt;!--start of headerPrincipalConfig.*end of headerPrincipalConfig--&gt;"
+			replace="${principalHeaderList}"
+			flags="s"
+			encoding="UTF-8"/>
+		<replaceregexp file="${collect.home}/WEB-INF/web.xml"
+			match="&lt;!--start dataSource.jndiName--&gt;.*&lt;!--end dataSource.jndiName--&gt;"
+			replace="${dataSource.jndiName}"
+			flags="s"
+			encoding="UTF-8"/>
+	</target>
+	<target name="replace-loginAuthenthication" if="sessionCreateConfig.loginAuthentication">
+		<replaceregexp file="${collect.home}/WEB-INF/classes/accountservices.xml"
+			match="&lt;!--start loginAuthentication--&gt;.*&lt;!--end loginAuthentication--&gt;"
+			replace="${sessionCreateConfig.loginAuthentication}"
+			flags="s"
+			encoding="UTF-8"/>
+	</target>
+	<target name="replace-uidHeader" if="sessionCreateConfig.uidHeader">
+		<replaceregexp file="${collect.home}/WEB-INF/classes/accountservices.xml"
+			match="&lt;!--uidHeader--&gt;"
+			replace="${sessionCreateConfig.uidHeader}"
+			flags="s"
+			encoding="UTF-8"/>
+	</target>
+	<target name="replace-usernameHeader" if="sessionCreateConfig.usernameHeader">
+		<replaceregexp file="${collect.home}/WEB-INF/classes/accountservices.xml"
+			match="&lt;!--usernameHeader--&gt;"
+			replace="${sessionCreateConfig.usernameHeader}"
+			flags="s"
+			encoding="UTF-8"/>
+	</target>
+	<target name="replace-customizeSSOFilter" if="customizeSSOFilterClass">
+		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
+			<replacetoken><![CDATA[<!--CustomizeSSOFilter-->]]></replacetoken>
+			<replacevalue><![CDATA[
+	<filter>
+		<filter-name>CustomizeSSOFilter</filter-name>
+		<filter-class>%{customizeSSOFilterClass}</filter-class>
+	</filter>
+			]]></replacevalue>
+		</replace>
+		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
+			token="%{customizeSSOFilterClass}" value="${customizeSSOFilterClass}"/>
+		
+		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
+			<replacetoken><![CDATA[<!--CustomizeSSOFilterMapping-->]]></replacetoken>
+			<replacevalue><![CDATA[
+	<filter-mapping>
+		<filter-name>CustomizeSSOFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+			]]></replacevalue>
+		</replace>
+	</target>
+	<target name="replace-customizeSetRoleHeaderFilter" if="customizeSetRoleHeaderFilterClass">
+		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
+			<replacetoken><![CDATA[<!--CustomizeSetRoleHeaderFilter-->]]></replacetoken>
+			<replacevalue><![CDATA[
+	<filter>
+		<filter-name>CustomizeSetRoleHeaderFilter</filter-name>
+		<filter-class>%{customizeSetRoleHeaderFilterClass}</filter-class>
+	</filter>
+			]]></replacevalue>
+		</replace>
+		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
+			token="%{customizeSetRoleHeaderFilterClass}" value="${customizeSetRoleHeaderFilterClass}"/>
+		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
+			<replacetoken><![CDATA[<!--CustomizeSetRoleHeaderFilterMapping-->]]></replacetoken>
+			<replacevalue><![CDATA[
+	<filter-mapping>
+		<filter-name>CustomizeSetRoleHeaderFilter</filter-name>
+		<url-pattern>/index.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>CustomizeSetRoleHeaderFilter</filter-name>
+		<url-pattern>/</url-pattern>
+	</filter-mapping>
+			]]></replacevalue>
+		</replace>
+	</target>
+	
+	<target name="replace-uidIgnoreCase" if="sessionCreateConfig.uidIgnoreCase">
+		<replaceregexp file="${collect.home}/WEB-INF/classes/accountservices.xml"
+			match="&lt;!--start sessionCreateConfig.uidIgnoreCase--&gt;.*&lt;!--end sessionCreateConfig.uidIgnoreCase--&gt;"
+			replace="${sessionCreateConfig.uidIgnoreCase}"
+			flags="s"
+			encoding="UTF-8"/>
+		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
+			<replacetoken><![CDATA[<!--CheckDuplicateUidFilterMapping-->]]></replacetoken>
+			<replacevalue><![CDATA[
+	<filter-mapping>
+		<filter-name>CheckDuplicateUidFilter</filter-name>
+		<url-pattern>/index.jsp</url-pattern>
+	</filter-mapping>
+			]]></replacevalue>
+		</replace>
+		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
+			<replacetoken><![CDATA[<!--MergeProfileServletMapping-->]]></replacetoken>
+			<replacevalue><![CDATA[
+	<servlet-mapping>
+		<servlet-name>MergeProfileServlet</servlet-name>
+		<url-pattern>/mergeprofile</url-pattern>
+	</servlet-mapping>
+			]]></replacevalue>
+		</replace>
+	</target>
+	
+	<target name="replace-msd.dataSource" if="msd.dataSource.jndiName">
+		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
+			<replacetoken><![CDATA[<!--msd.dataSource-->]]></replacetoken>
+			<replacevalue><![CDATA[
+  <resource-ref>
+    <res-ref-name>@MSD.DATA_SOURCE@</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+			]]></replacevalue>
+			<replacefilter token="@MSD.DATA_SOURCE@" value="${msd.dataSource.jndiName}"/>
+		</replace>
+	</target>
+	
+	<target name="replaceDataSourceXml">
+		<replaceregexp file="${collect.home}/WEB-INF/classes/datasource.xml"
+			match="&lt;!--start dataSource.jndiName--&gt;.*&lt;!--end dataSource.jndiName--&gt;"
+			replace="java:comp/env/${dataSource.jndiName}"
+			flags="s"
+			encoding="UTF-8"/>
+		<replaceregexp file="${collect.home}/WEB-INF/classes/datasource.xml"
+			match="&lt;!--start dataSource.schema--&gt;.*&lt;!--end dataSource.schema--&gt;"
+			replace="${dataSource.schema}"
+			flags="s"
+			encoding="UTF-8"/>
+		<replaceregexp file="${collect.home}/WEB-INF/classes/datasource.xml"
+			match="&lt;!--start dataSource.dialect--&gt;.*&lt;!--end dataSource.dialect--&gt;"
+			replace="${dataSource.dialect}"
+			flags="s"
+			encoding="UTF-8"/>
+	</target>
+	
+	<target name="replaceServicesXml">
+		<antcall target="mergeServicesXml"/>
+		<antcall target="replace-msdServiceUrl"/>
+	</target>
+	
+	<target name="mergeServicesXml" if="searchUserServiceConfig">
+		<filter token="DATA_SOURCE" value="${msd.dataSource.jndiName}"/>
+		<filter token="SCHEMA" value="${msd.dataSource.schema}"/>
+		<filter token="DIALECT" value="${msd.dataSource.dialect}"/>
+		<copy tofile="temp.xml" file="${searchUserServiceConfig}"
+			filtering="true"/>
+		<xslt style="remove-root.xslt" in="temp.xml" out="temp.txt"/>
+		<loadfile property="searchUserService" srcfile="temp.txt" encoding="UTF-8">
+			<filterchain>
+				<!-- remove BOM code -->
+				<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks">
+					<param name="linebreaks" value="&#65279;"/>
+				</filterreader>
+			</filterchain>
+		</loadfile>
+		<delete file="temp.xml"/>
+		<delete file="temp.txt"/>
+		<replaceregexp file="${collect.home}/WEB-INF/classes/accountservices.xml"
+			match="&lt;!--start of searchUserService--&gt;.*&lt;!--end of searchUserService--&gt;"
+			replace="${searchUserService}"
+			flags="s"
+			encoding="UTF-8"/>
+	</target>
+	
+	<target name="replace-msdServiceUrl" if="authenticationServlet.msdServiceUrl">
+		<replaceregexp file="${collect.home}/WEB-INF/classes/accountservices.xml"
+			match="&lt;!--start authenticationServlet.msdServiceUrl--&gt;.*&lt;!--end authenticationServlet.msdServiceUrl--&gt;"
+			replace="${authenticationServlet.msdServiceUrl}"
+			flags="s"
+			encoding="UTF-8"/>
+	</target>
+
+	<!-- recreate war file -->
+	<target name="dist" depends="collect,replaceWebXml,replaceDataSourceXml,replaceServicesXml" description="Build WAR file">
+		<war destfile="${dist.home}/${app.name}.war" basedir="${collect.home}" webxml="${collect.home}/WEB-INF/web.xml"/>
+	</target>
+	
+	<!-- cleen temporary files -->
+	<target name="sweep" depends="dist">
+		<delete dir="${collect.home}" />
+	</target>
+</project>

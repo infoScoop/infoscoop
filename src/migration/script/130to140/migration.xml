@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="migrate" default="all" basedir=".">
+    <delete file="${basedir}/migration.properties.tmp"/>
+	<copy tofile="${basedir}/migration.properties.tmp" file="${basedir}/migration.properties" encoding="UTF-8">
+		<filterchain>
+			<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks">
+				<param name="linebreaks" value="&#65279;"/>
+			</filterreader>
+		</filterchain>
+	</copy>
+	<property file="${basedir}/migration.properties.tmp"/>
+	<delete file="${basedir}/migration.properties.tmp"/>
+	
+	<copy tofile="${basedir}/migration.properties.tmp" file="${basedir}/migration.properties" encoding="UTF-8">
+		<filterchain>
+			<tokenfilter>
+  				  <replacestring from="&amp;" to="&amp;amp;"/>
+  				  <replacestring from="&lt;" to="&amp;lt;"/>
+  				  <replacestring from="&gt;" to="&amp;gt;"/>
+			</tokenfilter>
+		</filterchain>
+	</copy>
+	<property file="${basedir}/migration.properties.tmp" prefix="datasource.xml"/>
+	<delete file="${basedir}/migration.properties.tmp"/>
+	
+    <target name="default-schema" unless="SCHEMA_NAME">
+    	<property name="SCHEMA_NAME" value="${USER}"/>
+    	<property name="datasource.xml.SCHEMA_NAME" value="${USER}"/>
+    </target>
+    
+	<property name="basedir" value="." />
+	<property name="BACKUP_TABLE_SUFFIX" value="@BACKUP_TABLE_SUFFIX@"/>
+
+	<path id="task.classpath">
+		<pathelement location="classes"/>
+		<pathelement location="classes/migration.jar"/>
+		<fileset dir="lib" includes="*.jar" />
+	</path>
+	
+	<presetdef name="current.sql">
+		<sql driver="@DATABASE_DRIVER@" url="${DATABASE_URL}" userid="${USER}" password="${PASSWORD}"
+			encoding="UTF-8" delimiter=";" autocommit="true"/>
+	</presetdef>
+	
+	<taskdef name="exec-sql" classname="org.infoscoop.batch.migration.SQLTask" classpathref="task.classpath"/>
+	<taskdef name="migration" classname="org.infoscoop.batch.migration.MigrationTask" classpathref="task.classpath"/>
+	<taskdef name="importDel" classname="org.infoscoop.batch.migration.v_1_2_0_4_to_1_2_1_0.ImportTask" classpathref="task.classpath"/>
+	<taskdef name="importDel2" classname="org.infoscoop.batch.migration.v1300to1400.ImportTask" classpathref="task.classpath"/>
+	<taskdef name="hibernate-beans" classname="org.infoscoop.batch.migration.HibernateBeansTask" classpathref="task.classpath"/>
+	
+    <typedef name="property-xslt" classname="org.infoscoop.batch.migration.BeanPropertyXSLTTask" classpathref="task.classpath"/>
+	<typedef name="property-regx" classname="org.infoscoop.batch.migration.BeanPropertyRegxTask" classpathref="task.classpath"/>
+	
+	<target name="set-compress" depends="set-compress2" unless="TABLESPACE">
+    	<property name="COMPRESS" value="compress yes"/>
+	</target>
+	<target name="set-compress2" if="TABLESPACE">
+    	<property name="COMPRESS" value="in ${TABLESPACE} compress yes"/>
+	</target>
+	
+	<target name="prepare" depends="default-schema,set-compress">
+		<delete file="classes/datasource.xml"/>
+		<filter token="DATABASE_URL" value="${datasource.xml.DATABASE_URL}"/>
+		<filter token="USER" value="${datasource.xml.USER}"/>
+		<filter token="PASSWORD" value="${datasource.xml.PASSWORD}"/>
+		<filter token="SCHEMA_NAME" value="${datasource.xml.SCHEMA_NAME}"/>
+		<filter token="LOG_LEVEL" value="${datasource.xml.LOG_LEVEL}"/>
+		<copy tofile="classes/datasource.xml" file="classes/datasource.xml.bak"
+			filtering="true"/>
+	</target>
+	
+	<target name="all" depends="
+		renames,
+		accesslog,
+		accounts,
+		gadget,
+		gadgeticons,
+		i18n,
+		i18nlocale,
+		messages,
+		portalAdmins,
+		portallayout,
+		properties,
+		session,
+		tablayout,
+		siteAggregationMenu,
+		widget,
+		userprefs
+	"/>
+	
+	<target name="clean-all" depends="
+		clean-renames,
+		clean-accesslog,
+		clean-accounts,
+		clean-gadget,
+		clean-gadgeticons,
+		clean-i18n,
+		clean-i18nlocale,
+		clean-messages,
+		clean-portalAdmins,
+		clean-portallayout,
+		clean-properties,
+		clean-session,
+		clean-tablayout,
+		clean-siteAggregationMenu,
+		clean-userprefs,
+		clean-widget
+	"/>
+		
+	<target name="clean-all-backup" depends="prepare">
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.gadget@BACKUP_TABLE_SUFFIX</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.i18n@BACKUP_TABLE_SUFFIX</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.i18nlocale@BACKUP_TABLE_SUFFIX</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.portaladmins@BACKUP_TABLE_SUFFIX</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.portallayout@BACKUP_TABLE_SUFFIX</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.properties@BACKUP_TABLE_SUFFIX</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.session@BACKUP_TABLE_SUFFIX</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.siteaggregationmenu@BACKUP_TABLE_SUFFIX</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.tablayout@BACKUP_TABLE_SUFFIX</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.widget@BACKUP_TABLE_SUFFIX</sql></exec-sql>
+	</target>
+	
+	<target name="accesslog" depends="clean-accesslog">
+		<current.sql src="sql/accesslog.sql"/>
+	</target>
+	<target name="clean-accesslog" depends="prepare">
+		<exec-sql quiet="true"><sql>drop sequence ${SCHEMA_NAME}.is_accesslogs_id_seq</sql></exec-sql>
+		<exec-sql quiet="true">
+			<sql>drop table ${SCHEMA_NAME}.is_accesslogs</sql>
+		</exec-sql>
+	</target>
+	
+	<target name="accounts" depends="clean-accounts">
+		<current.sql src="sql/accounts.sql"/>
+	</target>
+	<target name="clean-accounts" depends="prepare">
+		<exec-sql quiet="true">
+			<sql>drop table ${SCHEMA_NAME}.is_accounts</sql>
+		</exec-sql>
+	</target>
+	
+	<target name="gadget" depends="clean-gadget">
+		<current.sql src="sql/gadget.sql"/>
+		<exec-sql><property name="from">gadget</property><property name="to">is_gadgets</property><sql file="sql/rename.sql"/></exec-sql>
+		<importDel2 source="data/gadget/import.del" beanFactory="org.infoscoop.batch.migration.v1300to1400.GadgetFactory"/>
+		<hibernate-beans type="Gadget">
+			<task class="org.infoscoop.batch.migration.v1300to1400.GadgetConvertTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-gadget" depends="prepare">
+		<exec-sql quiet="true"><property name="to">gadget</property><property name="from">is_gadgets</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><sql>drop sequence ${SCHEMA_NAME}.is_gadgets_id_seq</sql></exec-sql>
+		<exec-sql quiet="true"><property name="table">gadget</property>
+			<sql file="sql/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<target name="gadgeticons" depends="clean-gadgeticons,gadget">
+		<current.sql src="sql/gadgeticons.sql"/>
+		<importDel2 source="data/gadgeticon/import.del" beanFactory="org.infoscoop.batch.migration.v1300to1400.GadgetIconFactory"/>
+		<hibernate-beans type="Gadget">
+			<task class="org.infoscoop.batch.migration.v1300to1400.GadgetIconTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-gadgeticons" depends="prepare">
+		<exec-sql quiet="true">
+			<sql>drop table ${SCHEMA_NAME}.is_gadget_icons</sql>
+		</exec-sql>
+	</target>
+	
+	<target name="i18n" depends="clean-i18n">
+		<current.sql src="sql/i18n.sql"/>
+		<exec-sql><property name="from">i18n</property><property name="to">is_i18n</property><sql file="sql/rename.sql"/></exec-sql>
+		<importDel source="data/i18n/import.del" beanFactory="org.infoscoop.batch.migration.v_1_2_0_4_to_1_2_1_0.I18nFactory"/>
+	</target>
+	<target name="clean-i18n" depends="prepare">
+		<exec-sql quiet="true"><property name="to">i18n</property><property name="from">is_i18n</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="table">i18n</property>
+			<sql file="sql/restore.sql"/>
+		</exec-sql>
+	</target>
+
+	<target name="i18nlocale" depends="clean-i18nlocale">
+		<current.sql src="sql/i18nlocale.sql"/>
+		<exec-sql><property name="from">i18nLocale</property><property name="to">is_i18nLocales</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-i18nlocale" depends="prepare">
+		<exec-sql quiet="true"><property name="to">i18nlocale</property><property name="from">is_i18nLocales</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="table">i18nlocale</property>
+			<sql file="sql/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<target name="messages" depends="clean-messages">
+		<current.sql src="sql/messages.sql"/>
+		<current.sql src="sql/systemmessages.sql"/>
+	</target>
+	<target name="clean-messages" depends="prepare">
+		<exec-sql quiet="true">
+			<sql>drop table ${SCHEMA_NAME}.is_messages</sql>
+			<sql>drop table ${SCHEMA_NAME}.is_systemmessages</sql>
+		</exec-sql>
+	</target>
+
+	<target name="portalAdmins" depends="clean-portalAdmins">
+		<current.sql src="sql/adminRole.sql"/>
+		<importDel2 source="data/adminRole/import.del" beanFactory="org.infoscoop.batch.migration.v1300to1400.AdminRoleFactory"/>
+		<current.sql src="sql/portalAdmins.sql"/>
+	</target>
+	<target name="clean-portalAdmins" depends="prepare">
+		<exec-sql quiet="true">
+			<sql file="sql/restore-portaladmins.sql"/>
+		</exec-sql>
+	</target>
+
+	<target name="portallayout" depends="clean-portallayout">
+		<current.sql src="sql/portallayout.sql"/>
+		<exec-sql><property name="from">portalLayout</property><property name="to">is_portalLayouts</property><sql file="sql/rename.sql"/></exec-sql>
+		<importDel source="data/portallayout/import.del" beanFactory="org.infoscoop.batch.migration.v_1_2_0_4_to_1_2_1_0.PortalLayoutFactory"/>
+		<hibernate-beans type="Portallayout">
+			<task class="org.infoscoop.batch.migration.v1300to1400.PortalLayoutTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-portallayout" depends="prepare">
+		<exec-sql quiet="true"><property name="to">portalLayout</property><property name="from">is_portalLayouts</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="table">portallayout</property>
+			<sql file="sql/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<target name="properties" depends="clean-properties">
+		<current.sql src="sql/properties.sql"/>
+		<exec-sql><property name="from">properties</property><property name="to">is_properties</property><sql file="sql/rename.sql"/></exec-sql>
+		<importDel source="data/properties/import.del" beanFactory="org.infoscoop.batch.migration.v1300to1400.PropertiesFactory"/>
+		<hibernate-beans type="Properties">
+			<task class="org.infoscoop.batch.migration.v1300to1400.PropertiesConvertTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-properties" depends="prepare">
+		<exec-sql quiet="true"><property name="to">properties</property><property name="from">is_properties</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="table">properties</property>
+			<sql file="sql/restore.sql"/>
+			<sql>drop index ${SCHEMA_NAME}.is_properties_advanced</sql>
+		</exec-sql>
+	</target>
+
+	<target name="session" depends="clean-session">
+		<current.sql src="sql/session.sql"/>
+		<exec-sql><property name="from">"SESSION"</property><property name="to">is_sessions</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-session" depends="prepare">
+		<exec-sql quiet="true"><property name="to">"SESSION"</property><property name="from">is_sessions</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="table">"SESSION"</property>
+			<sql file="sql/restore-session.sql"/>
+			<sql>create index ${SCHEMA_NAME}.session_sessionId on ${SCHEMA_NAME}."SESSION"(sessionId)</sql>
+		</exec-sql>
+	</target>
+	
+	<target name="siteAggregationMenu" depends="clean-siteAggregationMenu">
+		<current.sql src="sql/siteAggregationMenu.sql"/>
+		<exec-sql><property name="from">siteaggregationmenu</property><property name="to">is_menus</property><sql file="sql/rename.sql"/></exec-sql>
+		<current.sql src="sql/siteAggregationMenu_temp.sql"/>
+		<hibernate-beans type="Siteaggregationmenu">
+			<task class="org.infoscoop.batch.migration.v1300to1400.EtcWidgetMenuToGadgetMenuTask"/>
+			<task class="org.infoscoop.batch.migration.v1300to1400.MultiPropertyToAttrTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-siteAggregationMenu" depends="prepare">
+		<exec-sql quiet="true"><property name="to">siteaggregationmenu</property><property name="from">is_menus</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="table">siteAggregationMenu</property>
+			<sql file="sql/restore.sql"/>
+			<sql>drop table ${SCHEMA_NAME}.is_menus_temp</sql>
+		</exec-sql>
+	</target>
+	
+	<!--開発中の移行用。後で削除する-->
+	<target name="widgetAddMenuId" depends="prepare">
+		<exec-sql quiet="true"><property name="table">widget</property>
+			<sql file="sql/restore.sql"/>
+			<sql>create index ${SCHEMA_NAME}.widget_tabId on ${SCHEMA_NAME}.widget(tabId)</sql>
+			<sql>create index ${SCHEMA_NAME}.widget_parentId on ${SCHEMA_NAME}.widget(parentId)</sql>
+			<sql>create index ${SCHEMA_NAME}.widget_deleteDate on ${SCHEMA_NAME}.widget(deleteDate)</sql>
+			<sql>create index ${SCHEMA_NAME}.widget_type on ${SCHEMA_NAME}.widget(type)</sql>
+		</exec-sql>
+		<current.sql src="sql/widget.sql"/>
+		<hibernate-beans type="Widget">
+			<task class="org.infoscoop.batch.migration.v1300to1400.WidgetAddMenuIdTask"/>
+		</hibernate-beans>
+	</target>
+
+	<target name="tablayout" depends="clean-tablayout">
+		<current.sql src="sql/tablayout.sql"/>
+		<exec-sql><property name="from">tablayout</property><property name="to">is_tablayouts</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-tablayout" depends="prepare">
+		<exec-sql quiet="true"><property name="to">tablayout</property><property name="from">is_tablayouts</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="table">tablayout</property>
+			<sql file="sql/restore.sql"/>
+		</exec-sql>
+	</target>
+
+	<target name="userprefs" depends="clean-userprefs,widget">
+		<current.sql src="sql/userprefs.sql"/>
+		<hibernate-beans type="Widget">
+			<task class="org.infoscoop.batch.migration.v1300to1400.WidgetDataRegularizeTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-userprefs" depends="prepare">
+		<exec-sql quiet="true">
+			<sql>drop table ${SCHEMA_NAME}.is_userprefs</sql>
+		</exec-sql>
+	</target>
+	
+	<target name="widget" depends="clean-widget,siteAggregationMenu">
+		<current.sql src="sql/widget.sql"/>
+		<exec-sql><property name="from">widget</property><property name="to">is_widgets</property><sql file="sql/rename.sql"/></exec-sql>
+		<hibernate-beans type="Widget">
+			<task class="org.infoscoop.batch.migration.v1300to1400.WidgetAddMenuIdTask"/>
+			<task class="org.infoscoop.batch.migration.v1300to1400.EtcWidgetToGadgetTask2"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-widget" depends="prepare,clean-userprefs">
+		<exec-sql quiet="true"><property name="to">widget</property><property name="from">is_widgets</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="table">widget</property>
+			<sql file="sql/restore.sql"/>
+			<sql>create index ${SCHEMA_NAME}.widget_tabId on ${SCHEMA_NAME}.widget(tabId)</sql>
+			<sql>create index ${SCHEMA_NAME}.widget_parentId on ${SCHEMA_NAME}.widget(parentId)</sql>
+			<sql>create index ${SCHEMA_NAME}.widget_deleteDate on ${SCHEMA_NAME}.widget(deleteDate)</sql>
+			<sql>create index ${SCHEMA_NAME}.widget_type on ${SCHEMA_NAME}.widget(type)</sql>
+		</exec-sql>
+	</target>
+	
+	<target name="widgetconf" depends="clean-widgetconf">
+		<current.sql src="sql/widgetconf.sql"/>
+		<exec-sql><property name="from">widgetconf</property><property name="to">is_widgetconfs</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-widgetconf" depends="prepare">
+		<exec-sql quiet="true"><property name="to">widgetconf</property><property name="from">is_widgetconfs</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="table">widgetconf</property>
+			<sql file="sql/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<!-- begin rename only -->
+	
+	<target name="renames" depends="
+			clean-renames,
+			tab,
+			cache,
+			rsscache,
+			menucache,
+			log,
+			widgetconf,
+			keyword,
+			searchEngine,
+			preference,
+			proxyConf,
+			i18nLastmodified,
+			forbiddenURLs,
+			authCredential,
+			holidays">
+		<exec-sql><sql file="sql/rename-sequences.sql"/></exec-sql>
+	</target>
+	<target name="clean-renames" depends="
+		prepare,
+		clean-tab,
+		clean-cache,
+		clean-rsscache,
+		clean-menucache,
+		clean-log,
+		clean-widgetconf,
+		clean-keyword,
+		clean-searchEngine,
+		clean-preference,
+		clean-proxyConf,
+		clean-i18nLastmodified,
+		clean-forbiddenURLs,
+		clean-authCredential,
+		clean-holidays">
+		<exec-sql quiet="true"><sql file="sql/restore-sequences.sql"/></exec-sql>
+	</target>
+	
+	<target name="tab" depends="clean-tab">
+		<exec-sql><property name="from">tab</property><property name="to">is_tabs</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-tab" depends="prepare">
+		<exec-sql quiet="true"><property name="to">tab</property><property name="from">is_tabs</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	
+	<target name="cache" depends="clean-cache">
+		<exec-sql><property name="from">cache</property><property name="to">is_caches</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">cache_uid</property><property name="to">is_caches_uid</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">cache_url</property><property name="to">is_caches_url</property><sql file="sql/rename-index.sql"/></exec-sql>
+	</target>
+	<target name="clean-cache" depends="prepare">
+		<exec-sql quiet="true"><property name="to">cache</property><property name="from">is_caches</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">cache_uid</property><property name="from">is_caches_uid</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">cache_url</property><property name="from">is_caches_url</property><sql file="sql/rename-index.sql"/></exec-sql>
+	</target>
+	
+	<target name="rsscache" depends="clean-rsscache">
+		<exec-sql><property name="from">rsscache</property><property name="to">is_rsscaches</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-rsscache" depends="prepare">
+		<exec-sql quiet="true"><property name="to">rsscache</property><property name="from">is_rsscaches</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	
+	<target name="menucache" depends="clean-menucache">
+		<exec-sql><property name="from">menucache</property><property name="to">is_menucaches</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-menucache" depends="prepare">
+		<exec-sql quiet="true"><property name="to">menucache</property><property name="from">is_menucaches</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+
+	<target name="log" depends="clean-log">
+		<exec-sql><property name="from">logs</property><property name="to">is_logs</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">log_uid</property><property name="to">is_logs_uid</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">log_type</property><property name="to">is_logs_type</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">log_url</property><property name="to">is_logs_url</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">log_rssurl</property><property name="to">is_logs_rssurl</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">log_date</property><property name="to">is_logs_date</property><sql file="sql/rename-index.sql"/></exec-sql>
+	</target>
+	<target name="clean-log" depends="prepare">
+		<exec-sql quiet="true"><property name="to">logs</property><property name="from">is_logs</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">log_uid</property><property name="from">is_logs_uid</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">log_type</property><property name="from">is_logs_type</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">log_url</property><property name="from">is_logs_url</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">log_rssurl</property><property name="from">is_logs_rssurl</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">log_date</property><property name="from">is_logs_date</property><sql file="sql/rename-index.sql"/></exec-sql>
+	</target>
+	
+	<target name="keyword" depends="clean-keyword">
+		<exec-sql><property name="from">keyword</property><property name="to">is_keywords</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">keyword_uid</property><property name="to">is_keywords_uid</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">keyword_type</property><property name="to">is_keywords_type</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">keyword_keyword</property><property name="to">is_keywords_keyword</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">keyword_date</property><property name="to">is_keywords_date</property><sql file="sql/rename-index.sql"/></exec-sql>
+	</target>
+	<target name="clean-keyword" depends="prepare">
+		<exec-sql quiet="true"><property name="to">keyword</property><property name="from">is_keywords</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">keyword_uid</property><property name="from">is_keywords_uid</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">keyword_type</property><property name="from">is_keywords_type</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">keyword_keyword</property><property name="from">is_keywords_keyword</property><sql file="sql/rename-index.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">keyword_date</property><property name="from">is_keywords_date</property><sql file="sql/rename-index.sql"/></exec-sql>
+	</target>
+	
+	<target name="searchEngine" depends="clean-searchEngine">
+		<exec-sql><property name="from">searchEngine</property><property name="to">is_searchEngines</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-searchEngine" depends="prepare">
+		<exec-sql quiet="true"><property name="to">searchEngine</property><property name="from">is_searchEngines</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	
+	<target name="preference" depends="clean-preference">
+		<exec-sql><property name="from">preference</property><property name="to">is_preferences</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-preference" depends="prepare">
+		<exec-sql quiet="true"><property name="to">preference</property><property name="from">is_preferences</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	
+	<target name="proxyConf" depends="clean-proxyConf">
+		<exec-sql><property name="from">proxyConf</property><property name="to">is_proxyConfs</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-proxyConf" depends="prepare">
+		<exec-sql quiet="true"><property name="to">proxyConf</property><property name="from">is_proxyConfs</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	
+	<target name="i18nLastmodified" depends="clean-i18nLastmodified">
+		<exec-sql><property name="from">i18nLastmodified</property><property name="to">is_i18nLastmodified</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-i18nLastmodified" depends="prepare">
+		<exec-sql quiet="true"><property name="to">i18nLastmodified</property><property name="from">is_i18nLastmodified</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	
+	<target name="forbiddenURLs" depends="clean-forbiddenURLs">
+		<exec-sql><property name="from">forbiddenURLs</property><property name="to">is_forbiddenURLs</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-forbiddenURLs" depends="prepare">
+		<exec-sql quiet="true"><property name="to">forbiddenURLs</property><property name="from">is_forbiddenURLs</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	
+	<target name="authCredential" depends="clean-authCredential">
+		<exec-sql><property name="from">authCredential</property><property name="to">is_authCredentials</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="from">authCredential_uid</property><property name="to">is_authCredentials_uid</property><sql file="sql/rename-index.sql"/></exec-sql>
+	</target>
+	<target name="clean-authCredential" depends="prepare">
+		<exec-sql quiet="true"><property name="to">authCredential</property><property name="from">is_authCredentials</property><sql file="sql/rename.sql"/></exec-sql>
+		<exec-sql quiet="true"><property name="to">authCredential_uid</property><property name="from">is_authCredentials_uid</property><sql file="sql/rename-index.sql"/></exec-sql>
+	</target>
+	
+	<target name="holidays" depends="clean-holidays">
+		<exec-sql><property name="from">holidays</property><property name="to">is_holidays</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+	<target name="clean-holidays" depends="prepare">
+		<exec-sql quiet="true"><property name="to">holidays</property><property name="from">is_holidays</property><sql file="sql/rename.sql"/></exec-sql>
+	</target>
+</project>

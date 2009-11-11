@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="Searchengine"
+		table="IS_SEARCHENGINES"
+	>
+		
+		<id name="Temp" column="TEMP" type="integer">
+			<generator class="assigned"/>
+		</id>
+		
+		<property
+			name="Data"
+			column="DATA"
+			type="text"
+			not-null="true"
+		/>
+
+
+	</class>	
+</hibernate-mapping>

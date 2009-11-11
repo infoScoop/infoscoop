@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="Cache"
+		table="IS_CACHES"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="Id"
+			type="string"
+			column="ID"
+		>
+		</id>
+
+		<property
+			name="Uid"
+			column="`UID`"
+			type="string"
+			not-null="true"
+			length="150"
+		/>
+		<property
+			name="Url"
+			column="URL"
+			type="string"
+			not-null="true"
+			length="1024"
+		/>
+		<property
+			name="UrlKey"
+			column="URL_KEY"
+			type="string"
+			not-null="true"
+			length="256"
+		/>
+		<property
+			name="Timestamp"
+			column="TIMESTAMP"
+			type="timestamp"
+			not-null="true"
+			length="26"
+		/>
+		<!-- please tell Joe Hudson that the type 'XML' could not be resolved.. defaulting to java.lang.String -->
+		<property
+			name="Headers"
+			column="HEADERS"
+			type="java.lang.String"
+			not-null="true"
+		/>
+		<property
+			name="Body"
+			column="BODY"
+			type="string"
+			not-null="true"
+		/>
+
+
+	</class>	
+</hibernate-mapping>

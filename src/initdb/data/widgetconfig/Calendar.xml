@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgetConfiguration autoRefresh="true" displayFlag="false" type="Calendar" title="!{lb_Calendar}" icon="calendar-day.png">
+	<!-- 
+		設定例
+		{
+		 iCals : [
+		  {
+		   url : "http://localhost/infoscoop/forecast/ical/13/63.ics",
+		   displayType : "block",
+		   color : "#F99"
+		  }
+		 ],
+		 monthlyiCals : [
+		  {
+		   url : "http://localhost/infoscoop/js/widgets/calendar/ics/monthlyCalendar.jsp?year=${year}&month=${month}",
+		   displayType : "block",
+		   color : "#9F9"
+		  }
+		 ]
+		}
+	-->
+	<WidgetPref datatype="json" display_name="!{lb_iCalSetting}" name="calendarConfig">
+		<![CDATA[
+		{
+		 iCals : [],
+		 monthlyiCals : []
+		}
+		]]>
+	</WidgetPref>
+	<Header maximize="off" />
+	<Content className="Calendar" type="javascript"/>
+</widgetConfiguration>
