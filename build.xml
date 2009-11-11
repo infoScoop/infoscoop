@@ -500,16 +500,6 @@
 				<include name="skin/**"/>
 			</fileset>
 		</copy>
-		<copy todir="${build.home}/staticContent/onlineManual" overwrite="true">
-	    	<fileset dir="${basedir}/doc/OnlineManual">
-				<exclude name="**/*.xls"/>
-			</fileset>
-		</copy>
-		<copy todir="${build.home}/staticContent/onlineManual_en" overwrite="true">
-	    	<fileset dir="${basedir}/doc/OnlineManualEN">
-				<exclude name="**/*.xls"/>
-			</fileset>
-		</copy>
 	</target>
 	
 	<target name="build-war">
@@ -689,17 +679,11 @@
 		<delete dir="${dist.home}" />
 		<mkdir dir="${dist.home}" />
 		<mkdir dir="${dist.home}/doc" />
-		<mkdir dir="${dist.home}/3rdParty" />
 		<mkdir dir="${dist.home}/${app.main.name}" />
 		<mkdir dir="${dist.home}/tools" />
         <copy todir="${dist.home}/doc" >
             <fileset dir="${basedir}/doc">
                 <include name="*.pdf"/>
-            </fileset>
-        </copy>
-        <copy todir="${dist.home}/3rdParty" >
-            <fileset dir="${basedir}/3rdParty">
-                <include name="*.*"/>
             </fileset>
         </copy>
 		
