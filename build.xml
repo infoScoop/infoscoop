@@ -680,7 +680,7 @@
         </copy>
     </target> 
     <target name="initdb">
-    	<ant antfile="${basedir}/build_initdb.xml" inheritall="false"/>
+    	<ant antfile="${basedir}/build_initdb.xml"/>
     	
         <mkdir dir="${dist.home}/tools/initdb" />
         <copy todir="${dist.home}/tools/initdb">

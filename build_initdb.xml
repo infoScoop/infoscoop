@@ -69,10 +69,16 @@
 			<fileset dir="${initdb.home}/data"/>
 		</copy>
 		
-		<copy todir="${build.home}/initdb/data/gadget">
-			<fileset dir="${gadgets.dir}"/>
-		</copy>
-		
 		<fixcrlf srcdir="${build.home}/initdb" eol="lf" eof="remove" includes="**/*.sh" />
+		
+		<antcall target="download-gadgets"/>
+	</target>
+	
+	<target name="download-gadgets">
+		<get src="${gadgets.url}"
+			dest="gadgets.zip" verbose="true" usetimestamp="true" />
+		
+		<unzip src="gadgets.zip" dest="${build.home}/initdb/data/gadget" overwrite="true"/>
+		<delete file="gadgets.zip"/>
 	</target>
 </project>
