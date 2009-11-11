@@ -106,7 +106,6 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 	list-style-type:none;
 	/*border-top:1px dotted #999;*/
 	display:block;
-	clear:both;/*[x]用*/
 	height:20px;
 	//height:16px;
 	font-size:11px;

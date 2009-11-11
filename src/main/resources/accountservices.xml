@@ -153,14 +153,9 @@
 		<value><!--start of headerPrincipalConfig
 		[
 		 {
-		  type:"MSDPositionPrincipal",
-		  displayName:"MSD肩書",
-		  headerName:"MSD_POSITION"
-		 },
-		 {
-		  type:"MSDGroupPrincipal",
-		  displayName:"MSDグループ",
-		  headerName:"MSD_GROUP"
+		  type:"RolePrincipal",
+		  displayName:"Role",
+		  headerName:"ROLE"
 		 }
 		]
 		end of headerPrincipalConfig--></value>

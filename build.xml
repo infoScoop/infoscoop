@@ -1,39 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- MSD-Pluto ビルドファイル -->
-<!--
-	ターゲット(依存するターゲット)：
-		all					: デフォルトターゲット(clean-all,main,admin)
-		clean-all			: 全ての作業用フォルダ削除
-		main				: mainのターゲット(clean-main,compile-main,dist-main)
-		clean-main			: mainの作業用フォルダ削除
-		prepare-main(clean-main)	: mainの作業用フォルダ作成および各種XML・JSファイルコピー
-		compile-main(prepare-main)	: mainのJavaソースコンパイル 
-		admin				: adminのターゲット(clean-admin, prepare-admin, replaceTag-admin)
-		clean-admin			: adminの作業用フォルダ削除
-		prepare-admin(clean-admin)	: adminの作業用フォルダ作成および各種XML・JSファイルコピー
-		
-		dist-main(compile-main,prepare-db-lib,replaceTag-main,
-			customize,customize2)
-							: mainのWARファイル作成
-							: 
-		replaceTag-main		: index.jsp内のスクリプトタグをPortal.jsを参照するように置き換える
-		replaceTag-admin	: index.jsp内のスクリプトタグをPortalAdmin.jsを参照するように置き換える
-		customize			: ビルド用フォルダにcustomize.dirパラメータで指定されたフォルダ内のファイルを上書きコピーする。
-		customize2			: ビルド用フォルダにcustomize.dir2パラメータで指定されたフォルダ内のファイルを上書きコピーする。
-		
-		copy-custom-folder	: カスタマイズ用ファイルを\{$dist.home}\Customization\ 以下にコピーする
-    
-        initdb     : カスタマイズ済みのDBInitToolを生成する
-	
-	オプションパラメータ：
-		build.db2		: DB2用JDBCドライバをWARに含める際に指定。値はtrue。
-		build.exist		: eXist用ライブラリおよびデモデータをWARに含める際に指定。値はtrue。
-		build.tamino	: Tamino用ライブラリをWARに含める際に指定。値はtrue。
-		build.release	: リリース用ライブラリをWARに含める際に指定。値はtrue。
-		
-		customize.dir	: カスタマイズ用ファイルのフォルダを指定。
-		customize.dir2	: カスタマイズ用ファイルのフォルダを指定。
--->
 
 <project name="infoScoop" default="all" basedir=".">
     <property file="build.properties"/>
@@ -159,7 +124,7 @@
 		<copy todir="${build.main}/js/utils" file="${src.main.web}/js/utils/ajax304.js"/>
 		<copy todir="${build.main}/js/utils" file="${src.main.web}/js/utils/utils.js"/>
 		
-		<!-- TODO:以下は要整理 -->
+		<!-- TODO: require arrangement -->
 		<copy todir="${build.main}/WEB-INF" encoding="UTF-8">
 			<fileset dir="${src.main.web}/WEB-INF" 
 				excludes="**/db2jcc_javax-9.1.jar, **/db2jcc_license_cu-9.1.jar, **/db2jcc-9.1.jar,
@@ -754,7 +719,6 @@
 			<fileset dir="${build.main.features}" includes="**/*test.js"/>
 		</delete>
 		
-		<!-- タスクを作るべき -->
 		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
 			<param name="file" value="analytics/analytics"/>
 		</antcall>

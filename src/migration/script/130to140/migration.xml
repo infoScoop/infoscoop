@@ -274,21 +274,6 @@
 		</exec-sql>
 	</target>
 	
-	<!--開発中の移行用。後で削除する-->
-	<target name="widgetAddMenuId" depends="prepare">
-		<exec-sql quiet="true"><property name="table">widget</property>
-			<sql file="sql/restore.sql"/>
-			<sql>create index ${SCHEMA_NAME}.widget_tabId on ${SCHEMA_NAME}.widget(tabId)</sql>
-			<sql>create index ${SCHEMA_NAME}.widget_parentId on ${SCHEMA_NAME}.widget(parentId)</sql>
-			<sql>create index ${SCHEMA_NAME}.widget_deleteDate on ${SCHEMA_NAME}.widget(deleteDate)</sql>
-			<sql>create index ${SCHEMA_NAME}.widget_type on ${SCHEMA_NAME}.widget(type)</sql>
-		</exec-sql>
-		<current.sql src="sql/widget.sql"/>
-		<hibernate-beans type="Widget">
-			<task class="org.infoscoop.batch.migration.v1300to1400.WidgetAddMenuIdTask"/>
-		</hibernate-beans>
-	</target>
-
 	<target name="tablayout" depends="clean-tablayout">
 		<current.sql src="sql/tablayout.sql"/>
 		<exec-sql><property name="from">tablayout</property><property name="to">is_tablayouts</property><sql file="sql/rename.sql"/></exec-sql>

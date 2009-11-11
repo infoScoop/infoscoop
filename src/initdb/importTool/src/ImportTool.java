@@ -296,10 +296,6 @@ class CSVField {
 	}
 }
 
-/*
- * 問題が出たときに対処しやすいのでこの形で書きましたが、
- * このシリーズはリフレクションベースにしたほうがよさそう
- */
 interface CSVBeanFactory<T> {
 	public T newBean( CSVField[] values );
 }
@@ -315,7 +311,7 @@ class I18nFactory implements CSVBeanFactory<I18n>{
 
 		I18n i18n = new I18n( pk );
 		if( "".equals( values[4].toString() ) )
-			values[4] = new CSVField("-"); // Oracle では空白文字は NULL 扱い ?
+			values[4] = new CSVField("-");
 		i18n.setMessage( values[4].toString() );
 
 		return i18n;
@@ -465,7 +461,7 @@ class TabLayoutFactory implements CSVBeanFactory<TabLayout> {
 		tabLayout.setWidgets( values[6].toString() );
 		tabLayout.setLayout( values[7].toString() );
 		if( "".equals( values[8].toString() ) )
-			values[8] = new CSVField("-"); // Oracle では空白文字は NULL 扱い ?
+			values[8] = new CSVField("-");
 
 		tabLayout.setWidgetslastmodified( values[8].toString() );
 		tabLayout.setTabnumber( values[9].toInt() );

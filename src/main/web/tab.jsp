@@ -19,7 +19,6 @@
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/calendarinput.css">
     <link id="customCss" rel="stylesheet" type="text/css">
 	<!-- prototype-window -->
-    <!-- staticContentURL/imageURL 側に移すべきな気がする -->
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/prototype-window-1.3/themes/default.css"> 
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/prototype-window-1.3/themes/alphacube.css">
     

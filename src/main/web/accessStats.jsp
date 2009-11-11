@@ -127,12 +127,7 @@ function init(){
 }
 function loadStats(_start, isInitialize){
 	if(!isInitialize && (_start < 0 || _start >= (totalPage*limit))) return;
-/*
-	if(isLoading){
-		console.log("ロード中。");
-		return;
-	}
-*/
+
 	isLoading = true;
 	
 	start = _start;
