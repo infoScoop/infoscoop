@@ -94,7 +94,9 @@ public class ImportTool {
 				}
 			}
 			System.out.println("import tables "+accepts );
-		} else {
+		}
+		
+		if( accepts.size() == 0 ) {
 			System.out.println("import ALL tables.");
 			accepts.addAll( Arrays.asList( TABLES.values() ));
 		}
