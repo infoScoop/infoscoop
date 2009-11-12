@@ -92,8 +92,7 @@
 				<filter token="BUILD.VERSION" value="${build.version}"/>
 			</filterset>
 		</copy>
-		<copy todir="${build.main}" file="${src.main.web}/noSupportBrowser.html"/>
-        
+		
 		<copy todir="${build.main}" file="${src.main.web}/login.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/changePassword.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/selectProfile.jsp"/>
