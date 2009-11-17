@@ -15,6 +15,7 @@ This Software includes the following open source software released by third
 accordance with the respective licenses accompanying the Third Party OSS.
 
 List of Third Party OSS and licenses
+http://www.infoscoop.org/index.php/en/component/content/article/39.html
 
 Modification
 
