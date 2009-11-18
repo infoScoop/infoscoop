@@ -76,22 +76,28 @@ public class AuthenticationServlet extends HttpServlet {
 			log.debug("uid=" + uid + ",password=" + password);
 		}
 		String errorPath = "/login.jsp";
+		if("/changePassword".equals(action))
+			errorPath = "/changePassword.jsp";
+		
 		HttpSession session = request.getSession();
 		try{
-			if("/changePassword".equals(action)){
-				errorPath = "/changePassword.jsp";
-				//MSDAuthUtil.getInstance().changePassword(uid, password, new_password);
-			}else{
-				if(isDenyEmptyPassword){
-					if("".equals(password)){
-					//	throw new AccessControlException( "%{ms_noInputPassword}" );
-						session.setAttribute("errorMsg", "ms_noInputPassword");
-						((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
-						return;
-					}
-				}
-				AuthenticationService service= (AuthenticationService)SpringUtil.getBean("authenticationService");
+			AuthenticationService service= (AuthenticationService)SpringUtil.getBean("authenticationService");
 
+			if(isDenyEmptyPassword&&"".equals(password)){
+				session.setAttribute("errorMsg", "ms_noInputPassword");
+				((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
+				return;
+			}
+			
+			if("/changePassword".equals(action)){
+				if(isDenyEmptyPassword && "".equals( new_password )){
+					session.setAttribute("errorMsg", "ms_noInputPassword");
+					((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
+					return;
+				}
+				
+				service.changePassword(uid, new_password, password);
+			}else{
 				service.login( uid, password);
 				
 				request.getSession().setAttribute("Uid",uid );
