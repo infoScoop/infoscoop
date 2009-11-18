@@ -50,7 +50,7 @@ IS_Widget.Calendar.prototype.classDef = function() {
 		today.setSeconds(0);
 		today.setMilliseconds(0);
 		this.changeDate(today);
-		var conf = eval("(" + widget.widgetPref.calendarConfig.content + ")");
+		var conf = eval("(" + widget.widgetPref.calendarConfig.value + ")");
 		if(!conf) conf = {};
 		this.iCalConf = conf.iCals ? conf.iCals : [];
 		

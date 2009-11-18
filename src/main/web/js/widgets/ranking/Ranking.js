@@ -16,8 +16,7 @@ IS_Widget.Ranking.prototype.classDef = function() {
 		if(!widget.widgetPref.dateTimeFormat.value) widget.widgetPref.dateTimeFormat.value = "";
 		var urls = [];
 		if(widget.widgetPref.urls){
-			//var urlsDom = dojo.dom.createDocumentFromText(widget.widgetPref.urls.content);
-			var urlsDom = is_createDocumentFromText(widget.widgetPref.urls.content);
+			var urlsDom = is_createDocumentFromText(widget.widgetPref.urls.value);
 			var urlElms = urlsDom.getElementsByTagName("url");
 			for(var i = 0; i < urlElms.length; i++){
 				urls.push(urlElms[i]);

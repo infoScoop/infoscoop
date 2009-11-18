@@ -30,7 +30,7 @@ IS_Widget.Message.prototype.classDef = function() {
 		this.widgetId = widget.id;
 		
 		this.groupSettingModal = new IS_Portal.groupSettingModal({
-			moduleConfs: eval("("+widget.widgetPref.formConfig.content + ")"),
+			moduleConfs: eval("("+widget.widgetPref.formConfig.value + ")"),
 			afterClose : function(){
 				widget.setUserPref("userList",self.groupSettingModal.getGroupConf() );
 				widget.loadContents();

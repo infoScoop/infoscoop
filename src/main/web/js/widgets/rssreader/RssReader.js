@@ -41,13 +41,13 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		this.categoryFilter = widget.getUserPref('categoryFilter');
 		
 		//Load custom icons for every item
-		if(widget.widgetPref.rssItemCustomIcons && widget.widgetPref.rssItemCustomIcons.content){
+		if(widget.widgetPref.rssItemCustomIcons && widget.widgetPref.rssItemCustomIcons.value){
 			try{
 				if(Browser.isIE){
-					var rssItemCustomIconsFunc = eval("[" + widget.widgetPref.rssItemCustomIcons.content + "]");
+					var rssItemCustomIconsFunc = eval("[" + widget.widgetPref.rssItemCustomIcons.value + "]");
 					this.rssItemCustomIcons = rssItemCustomIconsFunc[0];
 				} else {
-					var rssItemCustomIconsFunc = eval("("+widget.widgetPref.rssItemCustomIcons.content+")");
+					var rssItemCustomIconsFunc = eval("("+widget.widgetPref.rssItemCustomIcons.value+")");
 					this.rssItemCustomIcons = rssItemCustomIconsFunc;
 				}
 			}catch(e){
