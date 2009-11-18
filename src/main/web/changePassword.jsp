@@ -53,7 +53,7 @@ if(errorMsg != null){
 %>
                     <tr>
                        <td style="color:red;">
-                          <%= errorMsg %>
+                          %{<%= errorMsg %>}
                        </td>
                     </tr>
 <%
