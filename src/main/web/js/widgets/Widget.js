@@ -1773,13 +1773,6 @@ IS_Widget.getConfiguration = function( widgetType ){
 						  typeConf[i] = typeConf.ModulePrefs[i];
 						typeConf.type = widgetType;
 					}
-					for(var i in typeConf.WidgetPref){
-						if(typeof typeConf.WidgetPref[i] == "function") continue;
-						var datatype = typeConf.WidgetPref[i].datatype;
-						if(datatype && datatype == "json"){
-							typeConf.WidgetPref[i].value = eval("(" + typeConf.WidgetPref[i].content + ")");
-						}
-					}
 					IS_WidgetConfiguration[widgetType] = typeConf;
 				}
 			},
