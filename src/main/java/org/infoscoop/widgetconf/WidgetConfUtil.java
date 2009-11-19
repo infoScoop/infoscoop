@@ -139,6 +139,22 @@ public class WidgetConfUtil {
 		
 		JSONObject json = xml2json.xml2jsonObj( widgetConf );
 		
+		if( json.has("WidgetPref")) {
+			JSONObject widgetPrefs = json.getJSONObject("WidgetPref");
+			for( Iterator keys=widgetPrefs.keys();keys.hasNext();) {
+				String key = ( String )keys.next();
+				JSONObject widgetPref = ( JSONObject )widgetPrefs.getJSONObject( key );
+				if( !widgetPref.has("datatype") )
+					continue;
+				
+				String datatype = widgetPref.getString("datatype");
+				if(("xml".equals( datatype ) || "json".equals( datatype ))&& widgetPref.has("content")) {
+					widgetPref.put("value",widgetPref.get("content"));
+					widgetPref.remove("content");
+				}
+			}
+		}
+		
 		if (useClient) {
 			removeServerOnlyPref(json);
 		}
