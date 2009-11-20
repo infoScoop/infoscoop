@@ -215,6 +215,12 @@ public class WidgetConfService {
 			
 			String name = prefJson.getString("name");
 
+			String datatype = "";
+			if( prefJson.has("datatype"))
+				datatype = prefJson.getString("datatype");
+
+			String value = prefJson.getString("value");
+			
 			int prefLength = prefList.getLength();
 			boolean update = false;
 			for (int i = 0; i < prefLength; i++) {
@@ -222,28 +228,28 @@ public class WidgetConfService {
 				if ( !name.equals(pref.getAttribute("name")))
 					continue;
 				
-				String value = prefJson.getString("value");
-				pref.setAttribute("value", value);
-
-				String datatype = "";
-				if( prefJson.has("datatype"))
-					datatype = prefJson.getString("datatype");
-				
 				if("xml".equals( datatype )||"json".equals( datatype )) {
 					while( pref.getFirstChild() != null )
 						pref.removeChild( pref.getFirstChild());
+					
+					pref.appendChild( doc.createTextNode( value ));
+				} else {
+					pref.setAttribute("value", value);
 				}
 				
 				update = true;
 			}
-
+			
+			// is this code require ?
 			if (!update) {
 				Element newPref = doc.createElement("WidgetPref");
 				newPref.setAttribute("name", name);
 				
-				String value = prefJson.getString("value");
-				newPref.setAttribute("value", value);
-				
+				if ("xml".equals(datatype) || "json".equals(datatype)) {
+					newPref.appendChild(doc.createTextNode( value ));
+				} else {
+					newPref.setAttribute("value", value);
+				}
 				int lastPrefIndex = prefList.getLength() - 1;
 				Element lastPref = (Element) prefList.item(lastPrefIndex);
 				Element nextPrefNode = (Element) lastPref.getNextSibling();
@@ -277,41 +283,49 @@ public class WidgetConfService {
 			
 			String name = prefJson.getString("name");
 
+			if(!prefJson.has("default_value"))continue;
+			String value = prefJson.getString("default_value");
+			
+			String datatype = null;
+			if( prefJson.has("datatype"))
+				datatype = prefJson.getString("datatype");
+			
 			int prefLength = prefList.getLength();
 			boolean update = false;
 			for (int i = 0; i < prefLength; i++) {
 				Element pref = (Element) prefList.item(i);
 				if(!name.equals(pref.getAttribute("name"))) continue;
-				if(!prefJson.has("default_value"))continue;
-				String value = prefJson.getString("default_value");
-				pref.setAttribute("default_value", value);
-				
-				String datatype = "";
-				if( prefJson.has("datatype"))
-					datatype = prefJson.getString("datatype");
 				
 				if("xml".equals( datatype )||"json".equals( datatype )) {
 					while( pref.getFirstChild() != null )
 						pref.removeChild( pref.getFirstChild());
+					
+					pref.appendChild( doc.createTextNode( value ));
+				} else {
+					pref.setAttribute("default_value",value );
 				}
 				
 				update = true;
 			}
 
+			// is this code require ?
+			// and this code is obsolete.  what is "inputType" attribute ?
 			if (!update) {
 				Element newPref = doc.createElement("UserPref");
 				newPref.setAttribute("name", name);
-				if(!prefJson.has("default_value"))continue;
-				String value = prefJson.getString("defaultValue");
-				if (value != null)
+				
+				if(("xml".equals( datatype ) || "json".equals( datatype )) ) {
+					newPref.appendChild( doc.createTextNode( value ));
+				} else {
 					newPref.setAttribute("default_value", value);
+				}
 				
 				String inputType = prefJson.getString("inputType");
 				if (inputType != null) {
 					newPref.setAttribute("inputType", inputType);
 				}
 				String displayName = prefJson.getString("display_name");
-				if (displayName != null) {
+				if ( prefJson.has("display_name")) {
 					newPref.setAttribute("display_name", displayName);
 				}
 				if (prefJson.has("EnumValue")) {

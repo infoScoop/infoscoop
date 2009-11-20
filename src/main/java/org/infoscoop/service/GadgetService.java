@@ -236,11 +236,14 @@ public class GadgetService {
 				datatype = pref.getString("datatype");
 			
 			if("xml".equals( datatype )||"json".equals( datatype )) {
+				prefNode.removeAttribute("default_value");
 				while( prefNode.getFirstChild() != null )
 					prefNode.removeChild( prefNode.getFirstChild());
+				
+				prefNode.appendChild( doc.createTextNode( value ));
+			} else {
+				prefNode.setAttribute("default_value", value);
 			}
-			
-			prefNode.setAttribute("default_value", value);
 		}
 	}
 }

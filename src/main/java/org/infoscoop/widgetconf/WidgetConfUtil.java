@@ -89,37 +89,11 @@ public class WidgetConfUtil {
 			removeServerOnlyPref(json);
 		}
 		
-		if( json.has("WidgetPref")) {
-			JSONObject widgetPrefs = json.getJSONObject("WidgetPref");
-			for( Iterator keys=widgetPrefs.keys();keys.hasNext();) {
-				String key = ( String )keys.next();
-				JSONObject widgetPref = widgetPrefs.getJSONObject( key );
-				if( !widgetPref.has("datatype"))
-					continue;
-				
-				String datatype = widgetPref.getString("datatype");
-				if(("xml".equals( datatype ) || "json".equals( datatype ))&& widgetPref.has("content")) {
-					widgetPref.put("value",widgetPref.get("content"));
-					widgetPref.remove("content");
-				}
-			}
-		}
+		if( json.has("WidgetPref"))
+			widgetPrefContentToValue( json.getJSONObject("WidgetPref"));
 
-		if( json.has("UserPref")) {
-			JSONObject userPrefs = json.getJSONObject("UserPref");
-			for( Iterator keys=userPrefs.keys();keys.hasNext();) {
-				String key = ( String )keys.next();
-				JSONObject userPref = userPrefs.getJSONObject( key );
-				if( !userPref.has("datatype"))
-					continue;
-				
-				String datatype = userPref.getString("datatype");
-				if(("xml".equals( datatype ) || "json".equals( datatype ))&& userPref.has("content")) {
-					userPref.put("default_value",userPref.get("content"));
-					userPref.remove("content");
-				}
-			}
-		}
+		if( json.has("UserPref"))
+			userPrefContentToValue( json.getJSONObject("UserPref"));
 		
 		return json;
 	}
@@ -139,21 +113,11 @@ public class WidgetConfUtil {
 		
 		JSONObject json = xml2json.xml2jsonObj( widgetConf );
 		
-		if( json.has("WidgetPref")) {
-			JSONObject widgetPrefs = json.getJSONObject("WidgetPref");
-			for( Iterator keys=widgetPrefs.keys();keys.hasNext();) {
-				String key = ( String )keys.next();
-				JSONObject widgetPref = ( JSONObject )widgetPrefs.getJSONObject( key );
-				if( !widgetPref.has("datatype") )
-					continue;
-				
-				String datatype = widgetPref.getString("datatype");
-				if(("xml".equals( datatype ) || "json".equals( datatype ))&& widgetPref.has("content")) {
-					widgetPref.put("value",widgetPref.get("content"));
-					widgetPref.remove("content");
-				}
-			}
-		}
+		if( json.has("WidgetPref"))
+			widgetPrefContentToValue( json.getJSONObject("WidgetPref"));
+
+		if( json.has("UserPref"))
+			userPrefContentToValue( json.getJSONObject("UserPref"));
 		
 		if (useClient) {
 			removeServerOnlyPref(json);
@@ -288,7 +252,7 @@ public class WidgetConfUtil {
 				}
 				
 				String value = null;
-				if(("xml".equals( datatype ) || "json".equals("datatype "))&& widgetPref.has("content")) {
+				if(("xml".equals( datatype ) || "json".equals( datatype ))&& widgetPref.has("content")) {
 					value = widgetPref.getString("content");
 				} else if( widgetPref.has("value")) {
 					value = widgetPref.getString("value");
@@ -303,27 +267,36 @@ public class WidgetConfUtil {
 			jsonObj.remove("WidgetPref");
 		}
 		
-		if( jsonObj.has("UserPref")) {
-			JSONObject userPrefs = jsonObj.getJSONObject("UserPref");
-			
-			for( Iterator keys=userPrefs.keys();keys.hasNext();) {
-				String key = ( String )keys.next();
-				JSONObject userPref = userPrefs.getJSONObject( key );
-				if( !userPref.has("name"))
-					continue;
-				
-				if( !userPref.has("datatype"))
-					continue;
-				
-				String datatype = userPref.getString("datatype");
-				if(("xml".equals( datatype ) || "json".equals("datatype "))&& userPref.has("content")) {
-					userPref.put("default_value",userPref.getString("content"));
-					userPref.remove("content");
-				}
-			}
-		}
+		if (jsonObj.has("WidgetPref") && isJavascript)
+			widgetPrefContentToValue( jsonObj.getJSONObject("WidgetPref"));
+		
+		if( jsonObj.has("UserPref"))
+			userPrefContentToValue( jsonObj.getJSONObject("UserPref"));
 		
 		return jsonObj;
+	}
+	public static void widgetPrefContentToValue( JSONObject prefs ) throws JSONException {
+		prefContentToValue( prefs,"value");
+	}
+	public static void userPrefContentToValue( JSONObject prefs ) throws JSONException {
+		prefContentToValue( prefs,"default_value");
+	}
+	public static void prefContentToValue( JSONObject prefs,String valueAttrName ) throws JSONException {
+		for( Iterator keys=prefs.keys();keys.hasNext();) {
+			String key = ( String )keys.next();
+			JSONObject pref = prefs.getJSONObject( key );
+			if( !pref.has("name"))
+				continue;
+			
+			if( !pref.has("datatype"))
+				continue;
+			
+			String datatype = pref.getString("datatype");
+			if(("xml".equals( datatype ) || "json".equals( datatype ))&& pref.has("content")) {
+				pref.put( valueAttrName,pref.getString("content"));
+				pref.remove("content");
+			}
+		}
 	}
 
 	public static class GadgetContext {
