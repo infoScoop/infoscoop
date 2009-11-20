@@ -1,8 +1,3 @@
-drop database if exists iscoop;
-create database iscoop character set utf8;
-
-use iscoop;
-
 --
 -- PREFERENCE
 --
