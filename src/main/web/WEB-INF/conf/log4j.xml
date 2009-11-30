@@ -11,7 +11,7 @@
 
     <!-- direct messages to file infoscoop_log -->
     <appender name="main" class="biz.minaret.log4j.DatedFileAppender">
-        <param name="directory" value="/var/infoscoop"/>
+        <param name="directory" value="/var/log/infoscoop"/>
         <param name="prefix" value="infoscoop_log_"/>
         <param name="suffix" value=".log"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -26,7 +26,7 @@
     
     <!-- direct messages to file infoscoop_admin_log -->
     <appender name="admin" class="biz.minaret.log4j.DatedFileAppender">
-        <param name="directory" value="/var/infoscoop"/>
+        <param name="directory" value="/var/log/infoscoop"/>
         <param name="prefix" value="infoscoop_admin_log_"/>
         <param name="suffix" value=".log"/>
         <layout class="org.apache.log4j.PatternLayout">
