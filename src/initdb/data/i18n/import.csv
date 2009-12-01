@@ -2184,7 +2184,7 @@
 "widget","lb_itemsnum","ALL","ALL","Number under displays"
 "widget","lb_searchUser","ALL","ja","カレンダーの検索と表示"
 "widget","lb_searchUser","ALL","ALL","Retrieval and display of calendar"
-"widget","lb_filterByTitleDescription","ALL","ja","RSSアイテムのタイトルによる絞り込み条件を指定します。<br/>タイトルが指定した条件に合致するRSSアイテムのみが表示されます。<br/>以下の記述が使用できます。<br/>・AND検索： 「A B」 （AおよびBを含む））<br/>・OR検索： 「A OR B」 （AまたはBを含む））<br/>・NOT検索： 「-A」 （Aを含まない）<br/>・括弧による優先条件： 「(A OR B) C」 （AまたはBを含み、かつCを含む）<br/>使用例： (東京 OR 大阪) ニュース -社会"
+"widget","lb_filterByTitleDescription","ALL","ja","RSSアイテムのタイトルによる絞り込み条件を指定します。<br/>タイトルが指定した条件に合致するRSSアイテムのみが表示されます。<br/>以下の記述が使用できます。<br/>・AND検索： 「A B」 （AおよびBを含む）<br/>・OR検索： 「A OR B」 （AまたはBを含む）<br/>・NOT検索： 「-A」 （Aを含まない）<br/>・括弧による優先条件： 「(A OR B) C」 （AまたはBを含み、かつCを含む）<br/>使用例： (東京 OR 大阪) ニュース -社会"
 "widget","lb_filterByTitleDescription","ALL","ALL","The filtering condition by the title of the RSS item is specified. <br/>Only the RSS item that agrees with the condition that the title specified is displayed. <br/>The following descriptions can be used. <br/> - AND retrieval: \""A B\"" (A and B are included)<br/> - OR retrieval: \""A OR B\"" (A or B is included)<br/> - NOT retrieval: \""-A\"" (A is not included )<br/> - Priority condition by parentheses: \""(A OR B) C\"" (A or B is included and C is included )<br/>Usage example: ( Tokyo OR Osaka ) News -Society"
 "widget","lb_filterByCreatorDescription","ALL","ja","RSSアイテムの作者名による絞り込み条件を指定します。<br/>作者名が指定した文字列で始まるRSSアイテムのみが表示されます。"
 "widget","lb_filterByCreatorDescription","ALL","ALL","The filtering condition by the name of the author of the RSS item is specified. <br/>Only the RSS item that starts by the character string that the name of the author specified is displayed. "
