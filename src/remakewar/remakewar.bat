@@ -2,19 +2,16 @@
 
 echo **************************************************************************
 echo *
-echo * Remake msd-portal war
+echo * Remake infoscoop.war
 echo *
 echo **************************************************************************
-
-rem ***************************************************************************
-rem  環境変数のチェック
-rem ***************************************************************************
 
 rem ----------------------------------------------------------------------------
 rem check JAVA_HOME
 rem ----------------------------------------------------------------------------
 if not "%JAVA_HOME%" == "" goto okJavaHome
-echo 環境変数にJAVA_HOMEが設定されていません．
+echo The JAVA_HOME environment variable is not defined correctly
+echo this environment variable is needed to run this program
 goto end
 :okJavaHome
 
@@ -22,7 +19,8 @@ rem ----------------------------------------------------------------------------
 rem check ANT_HOME
 rem ----------------------------------------------------------------------------
 if not "%ANT_HOME%" == "" goto okAntHome
-echo 環境変数にANT_HOMEが設定されていません．
+echo The ANT_HOME environment variable is not defined correctly
+echo this environment variable is needed to run this program
 goto end
 :okAntHome
 
