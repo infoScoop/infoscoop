@@ -276,6 +276,9 @@
 				<property name="logDAO">
 					<ref bean="logDAO" />
 				</property>
+				<property name="accessLogDAO">
+					<ref bean="accessLogDAO" />
+				</property>
 			</bean>
 		</property>
 		<property name="transactionManager">

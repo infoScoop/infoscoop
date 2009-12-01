@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Preference;
 import org.infoscoop.dao.model.Tab;

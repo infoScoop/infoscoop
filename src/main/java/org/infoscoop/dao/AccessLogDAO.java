@@ -41,16 +41,7 @@ public class AccessLogDAO extends HibernateDaoSupport {
 		return (Integer)super.getHibernateTemplate().execute(new DateAccessCountCallback(uid, date));
 	}
 	
-	public void insertDailyAccessLog(String uid) {
-		Date today = new Date();
-		deleteOldLog();
-
-		if (selectCountByDate(uid, today) == 0) {
-			insert(uid, new Date());
-		}
-	}
-
-	private void deleteOldLog() {
+	public void deleteOldLog() {
 		Calendar currentDay = Calendar.getInstance();
 		if (currentDay.get(Calendar.DAY_OF_YEAR) != logDeleteDay.get(Calendar.DAY_OF_YEAR)) {
 			PropertiesDAO pdao = PropertiesDAO.newInstance();
