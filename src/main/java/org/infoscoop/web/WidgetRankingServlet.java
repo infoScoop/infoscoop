@@ -275,6 +275,8 @@ public class WidgetRankingServlet extends HttpServlet {
 
 		private TitleInfo getTitleAndHrefByRequest(String type, String url,
 				HttpServletRequest request) throws Exception {
+			if (type.startsWith("g_") && type.length() > 2)
+				url = type.substring(2);
 			if (url == null || url.trim().length() == 0)
 				return null;
 			ProxyRequest proxyRequest = new ProxyRequest(url, "Detect");
@@ -292,7 +294,10 @@ public class WidgetRankingServlet extends HttpServlet {
 			JSONArray types = new JSONArray(res);
 			for (int i = 0; i < types.length(); i++) {
 				JSONObject typeObj = types.getJSONObject(i);
-				if (type.equals(typeObj.optString("type"))) {
+				String detectType = typeObj.optString("type");
+				if (type.equals(detectType)
+						|| (type.startsWith("g_") && detectType
+								.equals("Gadget"))) {
 					String title = typeObj.optString("title");
 					String href = typeObj.optString("href");
 					boolean excepted = typeObj.optBoolean("excepted");
