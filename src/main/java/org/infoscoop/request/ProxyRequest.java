@@ -403,7 +403,6 @@ public class ProxyRequest{
 			method = new GetMethod(this.getTargetURL());
 			method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
 					new DefaultHttpMethodRetryHandler(1, false));
-			AuthenticatorUtil.doAuthentication(client, method, this);
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
@@ -422,7 +421,6 @@ public class ProxyRequest{
 					new DefaultHttpMethodRetryHandler(1, false));
 			if(this.getRequestBody() != null)
 				method.setRequestEntity(new InputStreamRequestEntity(this.getRequestBody()));
-			AuthenticatorUtil.doAuthentication(client, method, this);
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
@@ -441,7 +439,6 @@ public class ProxyRequest{
 					new DefaultHttpMethodRetryHandler(1, false));
 			if(this.getRequestBody() != null)
 				method.setRequestEntity(new InputStreamRequestEntity(this.getRequestBody()));
-			AuthenticatorUtil.doAuthentication(client, method, this);
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
@@ -477,7 +474,6 @@ public class ProxyRequest{
 					new DefaultHttpMethodRetryHandler(1, false));
 			if(this.getRequestBody() != null)
 				method.setRequestEntity(new InputStreamRequestEntity(this.getRequestBody()));
-			AuthenticatorUtil.doAuthentication(client, method, this);
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
@@ -494,7 +490,6 @@ public class ProxyRequest{
 			method = new DeleteMethod(this.getTargetURL());
 			method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
 					new DefaultHttpMethodRetryHandler(1, false));
-			AuthenticatorUtil.doAuthentication(client, method, this);
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
@@ -513,7 +508,6 @@ public class ProxyRequest{
 					new DefaultHttpMethodRetryHandler(1, false));
 			if(this.getRequestBody() != null)
 				method.setRequestEntity(new InputStreamRequestEntity(this.getRequestBody()));
-			AuthenticatorUtil.doAuthentication(client, method, this);
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
@@ -530,7 +524,6 @@ public class ProxyRequest{
 			method = new OptionsMethod(this.getTargetURL());
 			method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
 					new DefaultHttpMethodRetryHandler(1, false));
-			AuthenticatorUtil.doAuthentication(client, method, this);
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {

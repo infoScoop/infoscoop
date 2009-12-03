@@ -16,6 +16,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.Cache;
+import org.infoscoop.request.AuthenticatorUtil;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.request.proxy.Proxy;
 import org.infoscoop.service.CacheService;
@@ -35,7 +36,7 @@ public class ProxyFilterContainer {
 		this.filterChain = filters;
 	}
 
-	public final int invoke(HttpClient client, HttpMethod method, ProxyRequest request)throws Exception {
+	public final int prepareInvoke(HttpClient client, HttpMethod method, ProxyRequest request)throws Exception {
 
 		// filer pre processing
 		for(int i = 0; i < filterChain.size(); i++){
@@ -92,7 +93,10 @@ public class ProxyFilterContainer {
 				}
 			}
 		}
-
+		
+		return 0;
+	}
+	public final int invoke(HttpClient client, HttpMethod method, ProxyRequest request)throws Exception {
 		// copy headers sent target server
 		List ignoreHeaderNames = request.getIgnoreHeaders();
 		List allowedHeaderNames = request.getAllowedHeaders();
@@ -130,6 +134,13 @@ public class ProxyFilterContainer {
 			method.addRequestHeader(new Header(name, value));
 			headersSb.append(name + "=" + value + ",  ");
 		}
+		
+		AuthenticatorUtil.doAuthentication( client,method,request );
+		
+		int preStatus = prepareInvoke( client,method,request );
+		if( preStatus != 0 )
+			return preStatus;
+		
 		if (log.isInfoEnabled())
 			log.info("RequestHeader: " + headersSb);
 

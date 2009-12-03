@@ -25,7 +25,7 @@ public class AuthenticatorUtil {
 		rssMimeSet.add("text/plain");
 	}
 	
-	static void doAuthentication(HttpClient client, HttpMethod method, ProxyRequest request) throws ProxyAuthenticationException {
+	public static void doAuthentication(HttpClient client, HttpMethod method, ProxyRequest request) throws ProxyAuthenticationException {
 		String authCredentialId = request.getRequestHeader("authCredentialId");
 		String authType = request.getRequestHeader("authType");
 		if(authCredentialId != null || authType != null){
