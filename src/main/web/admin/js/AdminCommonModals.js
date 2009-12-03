@@ -1273,7 +1273,7 @@ ISA_CommonModals.EditorForm.makeMenuItemEditFieldSet = function(disabled, menuIt
 			}else{
 				Element.hide(inputSpan);
 			}
-		}, false, "_widgetEditForm");
+		}.bind(elementSelect), false, "_widgetEditForm");
 		
 		elementTd.appendChild(elementSelect);
 		elementTd.appendChild(formServiceAuthParamNameSpan);
