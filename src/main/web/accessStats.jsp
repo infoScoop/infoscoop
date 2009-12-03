@@ -159,7 +159,7 @@ function loadStats(_start, isInitialize){
 				tr.appendChild(countTd);
 				tbody.appendChild(tr);
 				
-				if( window.top.Browser.isSafari1 ) { //fix スクロールすると見えなくなる
+				if( window.top.Browser.isSafari1 ) {
 					dateTd.style.overflow = "hidden";
 					countTd.style.overflow = "hidden";
 				}
@@ -209,9 +209,9 @@ function loadStats(_start, isInitialize){
 	<table style="width:400px;" id="statsheader">
 		<thead>
 			<tr class="head">
-				<th scope="col" width="40%" id="headerName">名前</th>
-				<th scope="col" width="30%" id="headerDate">日付</th>
-				<th scope="col" width="30%" id="headerCount">閲覧回数</th>
+				<th scope="col" width="40%" id="headerName"></th>
+				<th scope="col" width="30%" id="headerDate"></th>
+				<th scope="col" width="30%" id="headerCount"></th>
 			</tr>
 		</thead>
 	</table>
@@ -229,15 +229,15 @@ function loadStats(_start, isInitialize){
 				<th>
 					<table style="width:370px;" class="paging" cellpadding="0" cellspacing="0" align="center">
 						<th style="text-align:right;width:150px;">
-							<div id="prevlink" title="前へ"></div>
-							<div id="firstlink" title="最初のページ"></div>
+							<div id="prevlink" title=""></div>
+							<div id="firstlink" title=""></div>
 						</th>
 						<th style="width:70px">
 							<span id="pageno"></span>/<span id="totalpage"></span>
 						</th>
 						<th style="text-align:left;width:150px;">
-							<div id="nextlink" title="次へ"></div>
-							<div id="lastlink" title="最後のページ"></div>
+							<div id="nextlink" title=""></div>
+							<div id="lastlink" title=""></div>
 						</th>
 					</table>
 				</th>
@@ -248,29 +248,29 @@ function loadStats(_start, isInitialize){
 	<table style="position:absolute;top:0;left:410px;width:180px;">
 		<thead>
 			<tr class="head">
-				<th scope="col" id="countHeaderSpan">期間</th>
-				<th scope="col" id="countHeaderCount">閲覧回数</th>
+				<th scope="col" id="countHeaderSpan"></th>
+				<th scope="col" id="countHeaderCount"></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td id="countOneDay">1日前</td>
+				<td id="countOneDay"></td>
 				<td><%= request.getAttribute("onedaycnt") %></td>
 			</tr>
 			<tr class="odd">
-				<td id="countOneWeek">最近1週間</td>
+				<td id="countOneWeek"></td>
 				<td><%= request.getAttribute("oneweekcnt") %></td>
 			</tr>
 			<tr>
-				<td id="countOneMonth">最近1ヶ月</td>
+				<td id="countOneMonth"></td>
 				<td><%= request.getAttribute("onemonthcnt") %></td>
 			</tr>
 			<tr class="odd">
-				<td id="countSixMonth">最近6ヶ月</td>
+				<td id="countSixMonth"></td>
 				<td><%= request.getAttribute("sixmonthcnt") %></td>
 			</tr>
 			<tr>
-				<td id="countAll">全て</td>
+				<td id="countAll"></td>
 				<td><%= request.getAttribute("allcnt") %></td>
 			</tr>
 		</tbody>

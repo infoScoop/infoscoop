@@ -12,9 +12,6 @@ public class RemoveCacheByUrlfCommand implements ICommand {
 
 	private static Log log = LogFactory.getLog(RemoveCacheByUrlfCommand.class);
 
-	/* (非 Javadoc)
-	 * @see jp.co.beacon_it.msd.admin.command.ICommand#execute(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
 	public CommandResponse execute(HttpServletRequest request, HttpServletResponse response) {
 		
 		String url = request.getParameter("url");

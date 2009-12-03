@@ -147,7 +147,6 @@ public class ServiceCommand extends CommandSupport {
 		while(( line = reader.readLine() ) != null )
 			buf.append( line ).append("\r\n");
 		
-		// 必要ないかも
 		String content = buf.toString();
 		if( content.length() > 0 && content.charAt(0) == '%')
 			content = URLDecoder.decode( content.substring(1),"UTF-8");

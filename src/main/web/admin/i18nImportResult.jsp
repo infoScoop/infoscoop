@@ -36,30 +36,28 @@
 <body>
 	<div>
 		<%
-			if(errorList.size() > 0){	// 失敗時
+			if(errorList.size() > 0){
 		%>
-				<div style="width:100%;">エラーが検出されたためインポート処理は実行されませんでした。</div>
+				<div style="width:100%;">%{ams_i18nImportFailed}</div>
 				<br>
 				
-				<!-- エラー一覧のヘッダ -->
 				<div style="width:100%;">
-					<div class="errorHeader" style="width:7%;">行</div>
-					<div class="errorHeader" style="width:30%;">ID</div>
-					<div class="errorHeader" style="width:60%;">メッセージ</div>
+					<div class="errorHeader" style="width:7%;">%{alb_row}</div>
+					<div class="errorHeader" style="width:30%;">%{alb_id}</div>
+					<div class="errorHeader" style="width:60%;">%{alb_message}</div>
 				</div>
 		<%
-			}else{	// 成功時
+			}else{
 		%>
-				</br>
-				<div style="width:100%;"><%= countMap.get("insertCount") %>件のデータが登録されました。</div>
-				<div style="width:100%;"><%= countMap.get("updateCount") %>件のデータが更新されました。</div>
-				</br>
+				<br>
+				<div style="width:100%;"><%= countMap.get("insertCount") %>%{alb_i18nImportDataRegistered}</div>
+				<div style="width:100%;"><%= countMap.get("updateCount") %>%{alb_i18nImportDataUpdated}</div>
+				<br>
 		<%
 			}
 		%>
 		
 		<%
-			// エラー一覧の出力
 			I18NImport importObj;
 			for(Iterator ite=errorList.iterator();ite.hasNext();){
 				importObj = (I18NImport)ite.next();
@@ -69,23 +67,26 @@
 				String messageId = importObj.getStatusMessageId();
 				String resultMessage = "";
 				if(I18NImport.I18N_IMPORT_MESSAGE_EMPTY.equals(messageId)){
-					resultMessage = "メッセージが空のため登録されませんでした。";
+					resultMessage = "alb_i18nImportMessageEmpty";
 				}
 				else if(I18NImport.I18N_IMPORT_ID_EMPTY.equals(messageId)){
-					resultMessage = "メッセージIDが空のため登録されませんでした。";
+					resultMessage = "alb_i18nImportIdEmpty";
 				}
 				else if(I18NImport.I18N_IMPORT_ID_INVALID.equals(messageId)){
-					resultMessage = "メッセージIDに使用できる文字は半角英数とアンダースコア「_」のみです。";
+					resultMessage = "alb_i18nImportIdInvalid";
 				}
 				else if(I18NImport.I18N_IMPORT_DEFAULT_NOTFOUND.equals(messageId)){
-					resultMessage = "メッセージIDがデフォルトロケール(ALL_ALL)に登録されていないため、登録されませんでした。";
+					resultMessage = "alb_i18nImportDefaultLocaleNotFound";
 				}
 				else if(I18NImport.I18N_IMPORT_ID_INVALID_LENGTH.equals(messageId)){
-					resultMessage = "メッセージIDの長さが制限を越えています。最大512バイトまでです。";
+					resultMessage = "alb_i18nImportIdInvalidLength";
 				}
 				else if(I18NImport.I18N_IMPORT_MESSAGE_INVALID_LENGTH.equals(messageId)){
-					resultMessage = "メッセージの長さが制限を越えています。最大2048バイトまでです。";
+					resultMessage = "alb_i18nImportMessageInvalidLength";
 				}
+				
+				if(!"".equals( resultMessage ))
+					resultMessage = "%{"+resultMessage+"}";
 		%>
 		
 		<div style="width:100%;">

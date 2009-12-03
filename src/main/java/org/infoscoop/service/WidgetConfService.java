@@ -123,35 +123,8 @@ public class WidgetConfService {
 	}
 
 	/**
-	 * @param request
-	 * @return String
-	 * @throws Exception
-	 */
-	/*public String getWidgetConfJsonByTypes( String[] types,String url,Locale locale,int timeout )
-			throws Exception {
-		try {
-			Element[] widgetConf = widgetConfDAO.getElements( types );
-			if( widgetConf == null )
-				return null;
-
-			List widgetConfs = Arrays.asList( widgetConf );
-			for( int i=0; i<widgetConf.length;i++ )
-				widgetConfs.add( widgetConf[i] );
-
-			Xml2Json x2j = WidgetConfUtil.createWidgetConf2Json();
-
-			//FIXME 呼ばれていないだけで多分 ClassCastException
-			return WidgetConfUtil.widgetConf2JSON(x2j, widgetConfs, url,
-					locale,timeout, false);
-		} catch (Exception e) {
-			log.error("予期しない例外が発生しました.", e);
-			throw e;
-		}
-	}*/
-
-	/**
 	 * @param type
-	 * @param widgetConfJSON JSON形式のwidgetConf
+	 * @param widgetConfJSON JSON format widgetConf
 	 * @throws Exception
 	 */
 	public void updateWidgetConf(String type, String widgetConfJSON) throws Exception {

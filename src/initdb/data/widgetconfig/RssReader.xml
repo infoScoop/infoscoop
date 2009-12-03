@@ -3,12 +3,12 @@
 	<WidgetPref datatype="bool" display_name="!{lb_titleEdit}" name="titleEdit" value="true"/>
 	<WidgetPref datatype="string" display_name="!{lb_dateTimeFormat}" name="dateTimeFormat" value="yyyy/MM/dd HH:mm:ssZ"/>
 	<WidgetPref datatype="bool" display_name="!{lb_useAccessStat}" name="useAccessStat" value="true"/>
-	<!--RSSアイテムの横に表示するカスタムアイコンを生成する関数を記述
+	<!--here write to the function that generates the custom icon display on the side of the article of RSS. 
 	<WidgetPref name="rssItemCustomIcons" datatype="json">
 	<![CDATA[
 		function(rssItem){
 			function openAclWindow(bookId){
-				var aclUrl = "http://localhost:8080/editgrid/acl.do?bookId=${bookId}";
+				var aclUrl = "http://localhost:8080/service/acl.do?bookId=${bookId}";
 				var url = aclUrl.replace(/\$\{bookId\}/g, bookId);
 				return function(){window.open(url)};
 			}

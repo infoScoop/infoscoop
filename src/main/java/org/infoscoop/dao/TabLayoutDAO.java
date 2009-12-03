@@ -260,7 +260,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	/**
 	 * Overwrite and copy.
 	 * @param uid
-	 * @param toTemp If "toTemp" is true, copy the public performance data for temporary data. If it's false, temporary data 一時データを本番データにコピー。
+	 * @param toTemp If "toTemp" is true, copy the public performance data for temporary data. If it's false, temporary data
 	 */
 	public void copy(String uid, boolean toTemp) {
 		this.deleteByTemp(toTemp ? TabLayout.TEMP_TRUE : TabLayout.TEMP_FALSE);
@@ -318,7 +318,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	 * @return MultiHashMap
 	 *         <UL>
 	 *         <LI>key: tabId</LI>
-	 *         <LI>value: XmlObjectのList</LI>
+	 *         <LI>value: XmlObject List</LI>
 	 *         </UL>
 	 */
 	public MultiHashMap getTabLayout(final String tabId) {

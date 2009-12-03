@@ -123,8 +123,6 @@ public class RssCacheDAO  extends HibernateDaoSupport {
 	}
     
     public static void main(String args[]){
-    	//RssCacheDAO.newInstance().insertCache("hoge", "http://lkdkd.com/hoge/hoge.xml", 1, "<?xml version.=1.0><hoge>ほげ1</hoge>");
-    	//RssCacheDAO.newInstance().insertCache("hoge", "http://lkdkd.com/hoge/hoge.xml", 2, "<?xml version.=1.0><hoge>ほげ2</hoge>");
     	InputStream is = RssCacheDAO.newInstance().getCache("admin", "http://rss.rssad.jp/rss/itm/rss.xml", 4);
     	ByteArrayOutputStream baos = new ByteArrayOutputStream();
 

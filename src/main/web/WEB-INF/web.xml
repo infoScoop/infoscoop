@@ -47,12 +47,10 @@
 	<filter>
 		<filter-name>SessionManagerFilter</filter-name>
 		<filter-class>org.infoscoop.web.SessionManagerFilter</filter-class>
-        <!-- 未認証でもアクセスできるパスを記述 -->
 		<init-param>
 			<param-name>excludePath</param-name>
 			<param-value>/xmlrpc,/login.jsp,/changePassword.jsp,/authsrv,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html</param-value>
 		</init-param>
-        <!-- 認証後遷移させる必要のあるパスを記述 -->
 		<init-param>
 			<param-name>redirectPath</param-name>
 			<param-value>/index.jsp,/messageConsole.html</param-value>
@@ -306,6 +304,10 @@
 		<filter-name>I18NFilter_ADMINJS</filter-name>
 		<url-pattern>/admin/staticPanel/*</url-pattern>
 	</filter-mapping>
+	<filter-mapping>
+		<filter-name>I18NFilter_ADMINJS</filter-name>
+		<url-pattern>/admin/i18nimport</url-pattern>
+	</filter-mapping>
 
 	<filter-mapping>
 		<filter-name>SetAdminFilter</filter-name>
@@ -463,12 +465,11 @@
 		<servlet-class>
 			org.infoscoop.web.AuthenticationServlet
 		</servlet-class>
-        <!-- ユーザの詳細情報を取得するかどうか(未実装) -->
 		<init-param>
 			<param-name>keepUserInfo</param-name>
 			<param-value>false</param-value>
 		</init-param>
-        <!-- パスワードが空の場合に認証を拒否するかどうか -->
+        <!-- An empty password is refused at log in.  -->
         <init-param>
             <param-name>denyEmptyPassword</param-name>
             <param-value>true</param-value>
@@ -582,12 +583,12 @@
 		<servlet-class>
 			org.infoscoop.web.KeywordRankingServlet
 		</servlet-class>
-		<!-- ランキング集計期間の最大値 -->
+		<!-- The maximum value at ranking total period. -->
 		<init-param>
 			<param-name>rankingPeriod_max</param-name>
 			<param-value>60</param-value>
 		</init-param>
-		<!-- ランキング表示件数の最大値 -->
+		<!-- The maximum values of ranking display number. -->
 		<init-param>
 			<param-name>rankingNum_max</param-name>
 			<param-value>30</param-value>

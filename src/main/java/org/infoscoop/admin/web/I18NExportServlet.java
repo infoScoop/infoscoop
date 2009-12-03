@@ -26,17 +26,11 @@ public class I18NExportServlet extends HttpServlet
 
 	private static Log log = LogFactory.getLog( I18NExportServlet.class );
 
-	/* (非 Javadoc)
-	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
 		doPost(request, response);
 	}
 
-	/* (非 Javadoc)
-	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
 		String country = request.getParameter("country");

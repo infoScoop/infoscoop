@@ -5,7 +5,7 @@
 [
 	{
 		module: "LDAP",
-		name: "ユーザ"
+		name: "User"
 	}
 ]
 	]]>

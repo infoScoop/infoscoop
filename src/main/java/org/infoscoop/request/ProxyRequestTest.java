@@ -132,7 +132,7 @@ public class ProxyRequestTest {
 		
 		ProxyRequest info = new ProxyRequest("http://www.google.co.jp/search?q=hage", "SearchResult");
 		info.putRequestHeader("Accept-Charset","utf-8;q=0.7,*;q=0.7");
-		info.putRequestHeader("msdportal-select","regexp="+URLEncoder.encode( ".*検索結果 約 <b>([0-9,]+)</b> 件中.*","UTF-8"));
+		info.putRequestHeader("msdportal-select","regexp="+URLEncoder.encode( ".*results <b>([0-9,]+)</b> total.*","UTF-8"));
 		String encoding = "Shift_JIS";
 		
 		

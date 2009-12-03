@@ -191,7 +191,7 @@ public class SiteAggregationMenuService {
 	}
 	
 	/**
-	 * Check if edit of existing editor is already time out 既編集者の編集がタイムアウトしているかをチェックします。
+	 * Check if edit of existing editor is already time out.
 	 * All temporary records of existing editor is deleted if the editor is time out.
 	 * 
 	 * @param tempEntity
@@ -771,8 +771,8 @@ public class SiteAggregationMenuService {
 		Element menuEl = entity.getElement();
 		
 		JSONObject json = new JSONObject();			// menuItem
-		JSONArray siteTopArray = new JSONArray();	// siteTopIDのArray
-		JSONObject mapJson = new JSONObject();		// parentId:[menuId]のMap
+		JSONArray siteTopArray = new JSONArray();	// siteTopID Array
+		JSONObject mapJson = new JSONObject();		// parentId:[menuId] Map
 		
 		NodeList siteTopList = menuEl.getElementsByTagName("site-top");
 		Element siteTop;

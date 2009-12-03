@@ -43,12 +43,6 @@
 				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-				<!--
-				トランザクション属性があるとSpingは空のTransactionオブジェクトを生成する。
-				この場合、ネストされたトランザクションが終了するときにThredLocalのセッションの削除する。
-				再度セッションの削除したときにExceptionが発生してしまうので、コメントアウト。Spingのバグでないか？
-				<prop key="get*">PROPAGATION_NOT_SUPPORTED</prop>
-				-->
 			</props>
 		</property>
 	</bean>

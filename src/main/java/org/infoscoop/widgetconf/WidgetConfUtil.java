@@ -219,7 +219,6 @@ public class WidgetConfUtil {
 				&& jsonObj.getJSONObject("Content").getString("type").equals(
 						"javascript");
 		
-		// WidgetPref を @datatype="hidden" の default_value として扱う
 		if (jsonObj.has("WidgetPref") && !isJavascript) {
 			JSONObject widgetPrefs = jsonObj.getJSONObject("WidgetPref");
 			

@@ -23,7 +23,7 @@ public class DetectLogTypeFilter implements javax.servlet.Filter {
 		String referer = httpreq.getHeader("Referer");
 
 		if ((adminContext != null && reqUri.indexOf(adminContext) != -1)
-				|| (referer != null && referer.indexOf(adminContext) != -1)) {//リファラを判定しているのは、プレビューなどの/adminを含まないリクエストに対応するため
+				|| (referer != null && referer.indexOf(adminContext) != -1)) {
 			MDC.put("logType", PortalLogFilter.LOGTYPE_ADMIN);
 		} else {
 			MDC.put("logType", PortalLogFilter.LOGTYPE_MAIN);
