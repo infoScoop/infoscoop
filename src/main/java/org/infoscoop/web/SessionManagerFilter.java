@@ -264,8 +264,8 @@ public class SessionManagerFilter implements Filter {
 						}
 					}
 					
-					session.setAttribute(LOGINUSER_SUBJECT_ATTR_NAME, loginUser);
 				}
+				session.setAttribute(LOGINUSER_SUBJECT_ATTR_NAME, loginUser);
 			}
 			SecurityController.registerContextSubject(loginUser);
 
