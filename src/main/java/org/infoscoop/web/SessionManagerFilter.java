@@ -88,13 +88,7 @@ public class SessionManagerFilter implements Filter {
 
 		if(uidHeader != null){
 			uid = req.getHeader(uidHeader);
-		}else{
-			if(log.isInfoEnabled())
-				log.info("uidHeader is null");
-			return null;
-		}
-		
-		if (uid != null) {
+
 			if(log.isDebugEnabled()){
 				log.debug("Got UID from Header : [" + uid + "]");
 			}
@@ -103,6 +97,11 @@ public class SessionManagerFilter implements Filter {
 			if(log.isDebugEnabled()){
 				log.debug("Got UID from RemoteUser : [" + uid + "]");
 			}
+		}
+		if(uid == null){
+			if(log.isInfoEnabled())
+				log.info("uidHeader is null");
+			return null;
 		}
 
 		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
