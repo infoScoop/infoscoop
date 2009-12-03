@@ -6,6 +6,7 @@
 	<!-- main and common properties -->
 	<property name="product.name" value="infoScoop" />
 	<property name="app.main.name" value="infoscoop" />
+	<property name="archive.filename" value="infoscoop-opensource-${build.version}" />
 	<property name="app.main.path" value="/${app.main.name}" />
 	<property name="src.main" value="${basedir}/src/main/java" />
 	<property name="src.main.resources" value="${basedir}/src/main/resources" />
@@ -14,6 +15,7 @@
 	<property name="src.remakewar" value="${basedir}/src/remakewar" />
 	<property name="build.home" value="${basedir}/build" />
 	<property name="dist.home" value="${basedir}/dist" />
+	<property name="release.home" value="${dist.home}/${archive.filename}" />
 	<property name="build.main" value="${build.home}/main" />
 	<property name="build.initdb" value="${build.home}/initdb" />
 	<property name="build.migration" value="${build.home}/migration" />
@@ -642,54 +644,56 @@
     <target name="dist" depends="dist-main,admin,build-war">
 		<delete dir="${dist.home}" />
 		<mkdir dir="${dist.home}" />
-		<mkdir dir="${dist.home}/doc" />
-		<mkdir dir="${dist.home}/${app.main.name}" />
-		<mkdir dir="${dist.home}/tools" />
-        <copy todir="${dist.home}/doc" >
+		<mkdir dir="${release.home}" />
+		<!--mkdir dir="${dist.home}/doc" /-->
+		<mkdir dir="${release.home}/${app.main.name}" />
+		<mkdir dir="${release.home}/tools" />
+        <!--copy todir="${release.home}/doc" >
             <fileset dir="${basedir}/doc">
                 <include name="*.pdf"/>
             </fileset>
-        </copy>
+        </copy-->
 		
 		<antcall target="initdb"/>
 		<antcall target="migration"/>
     	
-		<copy todir="${dist.home}/${app.main.name}" file="${build.home}/${app.main.name}.war"/>
+		<copy todir="${release.home}/${app.main.name}" file="${build.home}/${app.main.name}.war"/>
 		<fixcrlf srcdir="${src.remakewar}/" eol="lf" eof="remove" includes="**/*.sh" />
-        <copy todir="${dist.home}/${app.main.name}" encoding="UTF-8">
+        <copy todir="${release.home}/${app.main.name}" encoding="UTF-8">
             <fileset dir="${src.remakewar}"/>
 		    <filterset>
 				<filter token="APP.MAIN.NAME" value="${app.main.name}"/>
 		    </filterset>
         </copy>
 		
-		<mkdir dir="${dist.home}/${app.main.name}/Customization/WEB-INF/classes" />
-        <mkdir dir="${dist.home}/${app.main.name}/Customization/WEB-INF/lib" />
-		<copy todir="${dist.home}/${app.main.name}/Customization" file="${src.main.web}/login.jsp"/>
-		<copy todir="${dist.home}/${app.main.name}/Customization" file="${src.main.web}/changePassword.jsp"/>
-		<copy todir="${dist.home}/${app.main.name}/Customization/WEB-INF/conf" file="${src.main.web}/WEB-INF/conf/log4j.xml" />
-		<copy todir="${dist.home}/${app.main.name}/Customization/WEB-INF/conf" overwrite="true" failonerror="false" file="${customize.dir}/web/WEB-INF/conf/log4j.xml"/>
-		<copy todir="${dist.home}/${app.main.name}/Customization/WEB-INF/conf" overwrite="true" failonerror="false" file="${customize.dir2}/web/WEB-INF/conf/log4j.xml"/>
+		<mkdir dir="${release.home}/${app.main.name}/Customization/WEB-INF/classes" />
+        <mkdir dir="${release.home}/${app.main.name}/Customization/WEB-INF/lib" />
+		<copy todir="${release.home}/${app.main.name}/Customization" file="${src.main.web}/login.jsp"/>
+		<copy todir="${release.home}/${app.main.name}/Customization" file="${src.main.web}/changePassword.jsp"/>
+		<copy todir="${release.home}/${app.main.name}/Customization/WEB-INF/conf" file="${src.main.web}/WEB-INF/conf/log4j.xml" />
+		<copy todir="${release.home}/${app.main.name}/Customization/WEB-INF/conf" overwrite="true" failonerror="false" file="${customize.dir}/web/WEB-INF/conf/log4j.xml"/>
+		<copy todir="${release.home}/${app.main.name}/Customization/WEB-INF/conf" overwrite="true" failonerror="false" file="${customize.dir2}/web/WEB-INF/conf/log4j.xml"/>
 		
-		<fixcrlf srcdir="${dist.home}/${app.main.name}" eol="lf" eof="remove" includes="**/*.sh" />
+		<fixcrlf srcdir="${release.home}/${app.main.name}" eol="lf" eof="remove" includes="**/*.sh" />
 
-        <mkdir dir="${dist.home}/${app.main.name}/staticContent"/>
-    	<copy todir="${dist.home}/${app.main.name}/staticContent">
+        <mkdir dir="${release.home}/${app.main.name}/staticContent"/>
+    	<copy todir="${release.home}/${app.main.name}/staticContent">
             <fileset dir="${build.home}/staticContent"/>
         </copy>
+    	<zip destfile="${dist.home}/infoscoop-opensource-${build.version}.zip" basedir="${dist.home}"/>
     </target> 
     <target name="initdb">
     	<ant antfile="${basedir}/build_initdb.xml"/>
     	
-        <mkdir dir="${dist.home}/tools/initdb" />
-        <copy todir="${dist.home}/tools/initdb">
+        <mkdir dir="${release.home}/tools/initdb" />
+        <copy todir="${release.home}/tools/initdb">
             <fileset dir="${build.home}/initdb"/>
         </copy>
-    	<tar destfile="${dist.home}/tools/initdb.tar.gz" compression="gzip">
-    		<tarfileset dir="${dist.home}/tools/" mode="755">
+    	<tar destfile="${release.home}/tools/initdb.tar.gz" compression="gzip">
+    		<tarfileset dir="${release.home}/tools/" mode="755">
 				<include name="initdb/*.sh"/>
 			</tarfileset>
-    		<tarfileset dir="${dist.home}/tools/">
+    		<tarfileset dir="${release.home}/tools/">
 				<include name="initdb/**"/>
 				<exclude name="initdb/*.sh"/>
 			</tarfileset>
@@ -698,15 +702,15 @@
     <target name="migration">
     	<ant antfile="${basedir}/build_migration.xml" inheritall="false"/>
     	
-    	<mkdir dir="${dist.home}/tools/migration"/>
-    	<copy todir="${dist.home}/tools/migration">
+    	<mkdir dir="${release.home}/tools/migration"/>
+    	<copy todir="${release.home}/tools/migration">
     		<fileset dir="${build.migration}"/>
     	</copy>
-    	<tar destfile="${dist.home}/tools/migration.tar.gz" compression="gzip">
-    		<tarfileset dir="${dist.home}/tools/" mode="755">
+    	<tar destfile="${release.home}/tools/migration.tar.gz" compression="gzip">
+    		<tarfileset dir="${release.home}/tools/" mode="755">
 				<include name="migration/*.sh"/>
 			</tarfileset>
-    		<tarfileset dir="${dist.home}/tools/">
+    		<tarfileset dir="${release.home}/tools/">
 				<include name="migration/**"/>
 				<exclude name="migration/*.sh"/>
 			</tarfileset>
