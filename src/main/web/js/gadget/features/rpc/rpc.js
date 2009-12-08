@@ -369,7 +369,7 @@ gadgets.rpc = function() {
       // hitting this code path repeatedly.
       sameDomain[target] = false;
       var targetRelay = gadgets.rpc.getRelayUrl(target);
-      if (getOrigin(targetRelay) !== getOrigin(window.location.href)) {alert(getOrigin(targetRelay))
+      if (getOrigin(targetRelay) !== getOrigin(window.location.href)) {
         // Not worth trying -- avoid the error and just return.
         return false;
       }
