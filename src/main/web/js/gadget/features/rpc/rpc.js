@@ -259,6 +259,10 @@ gadgets.rpc = function() {
     if (!url) {
       return "";
     }
+    
+    if(/^.?\//.test( url ) || url.indexOf("://") < 0 )
+    	url = window.location.href;
+    
     url = url.toLowerCase();
     if (url.indexOf("//") == 0) {
       url = window.location.protocol + ":" + url;
@@ -360,12 +364,12 @@ gadgets.rpc = function() {
    * @return
    */
   function callSameDomain(target, rpc) {
-    if (typeof sameDomain[target] === 'undefined') {
+//  if (typeof sameDomain[target] === 'undefined') {
       // Seed with a negative, typed value to avoid
       // hitting this code path repeatedly.
       sameDomain[target] = false;
       var targetRelay = gadgets.rpc.getRelayUrl(target);
-      if (getOrigin(targetRelay) !== getOrigin(window.location.href)) {
+      if (getOrigin(targetRelay) !== getOrigin(window.location.href)) {alert(getOrigin(targetRelay))
         // Not worth trying -- avoid the error and just return.
         return false;
       }
@@ -384,7 +388,7 @@ gadgets.rpc = function() {
         // more meaningful error to the caller.
         gadgets.error("Same domain call failed: parent= incorrectly set.");
       }
-    }
+//  }
 
     if (typeof sameDomain[target] === 'function') {
       // Call target's receive method
