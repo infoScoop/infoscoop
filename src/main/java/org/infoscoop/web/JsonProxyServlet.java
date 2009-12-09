@@ -216,8 +216,12 @@ public class JsonProxyServlet extends HttpServlet {
 			if( headers.containsKey( name ) )
 				continue;
 			
-			for( String value : header.getValue() )
+			for( String value : header.getValue() ) {
+				if( HttpMethods.GET.equals( httpMethod ) && "content-length".equalsIgnoreCase( name ))
+					continue;
+				
 				proxy.putRequestHeader( name,value );
+			}
 		}
 		
 		for( Map.Entry<String,String> filterParam : filterParams.entrySet() )
