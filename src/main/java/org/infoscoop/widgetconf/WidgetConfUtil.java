@@ -202,11 +202,13 @@ public class WidgetConfUtil {
 			}
 			
 			if(canvasContent != null){
-				jsonObj.put("Maximize", canvasContent);
+				JSONObject maximize = new JSONObject();
+				jsonObj.put("Maximize", maximize);
 				
 				if( canvasContent.has("type") && canvasContent.getString("type").equalsIgnoreCase("url") && canvasContent.has("href")){
 					canvasContent.put("href",ProxyRequest.escapeURL( canvasContent.getString("href") ));
 				}
+				maximize.put("Content",canvasContent );
 			}
 		} else {
 			JSONObject content = new JSONObject();
