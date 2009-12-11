@@ -17,6 +17,20 @@
  * under the License.
  */
 
+function getContextPath() {
+	var host = location.protocol + "//" + location.hostname;
+	if(location.port && location.port != '')
+		host += ":" + location.port;
+	var path = location.pathname;
+	if ( path.charAt(0) == '/' ) {
+		path = path.substr(1);
+	}
+	if((p = path.lastIndexOf('/')) != -1){
+		return host + "/" + path.substring(0,p);
+	}
+	return host + '/' + path;
+}
+
 ( function(){
 var params = gadgets.util.getUrlParameters();
 
