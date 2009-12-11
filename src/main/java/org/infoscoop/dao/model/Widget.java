@@ -106,18 +106,17 @@ public class Widget extends BaseWidget {
 	
 	public void setUserPref( String name,String value ) {
 		Map<String,UserPref> userPrefs = getUserPrefs();
-		if( "".equals( value ) || value == null ) {
-			userPrefs.remove( name );
+		if( value == null )
+			value = "";
+		
+		UserPref userPref;
+		if( userPrefs.containsKey( name )) {
+			userPref = userPrefs.get( name );
 		} else {
-			UserPref userPref;
-			if( userPrefs.containsKey( name )) {
-				userPref = userPrefs.get( name );
-			} else {
-				userPref = new UserPref( new USERPREFPK( getId(),name ));
-				userPrefs.put( name,userPref );
-			}
-			userPref.setValue( value );
+			userPref = new UserPref( new USERPREFPK( getId(),name ));
+			userPrefs.put( name,userPref );
 		}
+		userPref.setValue( value );
 	}
 	
 	public void removeUserPref( String name ) {
@@ -127,26 +126,20 @@ public class Widget extends BaseWidget {
 	
 	public void setUserPrefsJSON( JSONObject userPrefsJson ) {
 		Map<String,UserPref> userPrefs = getUserPrefs();
-		for( Object key : userPrefs.keySet().toArray()) {
-			if( !userPrefsJson.has( ( String )key ))
-				userPrefs.remove( key );
-		}
-		
 		for( Iterator<String> keys=userPrefsJson.keys();keys.hasNext(); ) {
 			String key = keys.next();
 			try {
 				String value = userPrefsJson.getString( key );
-				if("".equals( value ) || value == null ) {
-					userPrefs.remove( key );
-				} else {
-					UserPref userPref = userPrefs.get( key );
-					if( userPref == null ) {
-						userPref = new UserPref( new USERPREFPK( getId(),key ));
-						userPrefs.put( key,userPref );
-					}
-					
-					userPref.setValue( value );
+				if( value == null )
+					value = "";
+				
+				UserPref userPref = userPrefs.get( key );
+				if( userPref == null ) {
+					userPref = new UserPref( new USERPREFPK( getId(),key ));
+					userPrefs.put( key,userPref );
 				}
+				
+				userPref.setValue( value );
 			} catch( JSONException ex ) {
 				throw new RuntimeException( ex );
 			}
