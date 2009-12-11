@@ -88,7 +88,7 @@ public class AuthenticationServlet extends HttpServlet {
 				((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
 				return;
 			}
-			
+
 			if("/changePassword".equals(action)){
 				if(isDenyEmptyPassword && "".equals( new_password )){
 					session.setAttribute("errorMsg", "ms_noInputPassword");
@@ -97,6 +97,9 @@ public class AuthenticationServlet extends HttpServlet {
 				}
 				
 				service.changePassword(uid, new_password, password);
+
+				((HttpServletResponse)response).sendRedirect(request.getContextPath() +"/login.jsp");
+				return;
 			}else{
 				service.login( uid, password);
 				
