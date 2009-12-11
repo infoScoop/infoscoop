@@ -1915,6 +1915,8 @@
 "js","ms_authServiceAccessFailed","ALL","ALL","It was not able to access the authentication service normally. Please inquire of the system administrator. "
 "js","ms_invalidOldPassword","ALL","ja","古いパスワードが間違っています。"
 "js","ms_invalidOldPassword","ALL","ALL","An old password is wrong. "
+"js","ms_passwordChanged","ALL","ALL","The password was changed. "
+"js","ms_passwordChanged","ALL","ja","パスワードを変更しました。"
 "js","ms_needLoginForUseWidget","ALL","ja","このウィジェットの利用にはログインが必要です。"
 "js","ms_needLoginForUseWidget","ALL","ALL","Log in is necessary for the use of this widget."
 "js","lb_widgetEditHelp","ALL","ja","ヘルプ"

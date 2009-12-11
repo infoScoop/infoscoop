@@ -98,6 +98,7 @@ public class AuthenticationServlet extends HttpServlet {
 				
 				service.changePassword(uid, new_password, password);
 
+				session.setAttribute("errorMsg", "ms_passwordChanged");
 				((HttpServletResponse)response).sendRedirect(request.getContextPath() +"/login.jsp");
 				return;
 			}else{
