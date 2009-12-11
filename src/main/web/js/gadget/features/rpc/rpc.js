@@ -555,7 +555,7 @@ gadgets.rpc = function() {
         s: serviceName,
         f: from,
         c: callback ? callId : 0,
-        a: $A( Array.prototype.slice.call(arguments, 3)),
+        a: [].concat( Array.prototype.slice.call(arguments, 3)),
         t: authToken[targetId],
         l: useLegacyProtocol[targetId]
       };
