@@ -36,22 +36,42 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 	}
 	
 	//TODO:To edit the scrolling property that is bool type in ModulePrefs
-	var editableModulePrefNames = [
-		"autoRefresh",
-		"title",
-		"directory_title",
-		"title_url",
-		"height",
+	var editableModulePref = {
+		autoRefresh: {
+			datatype: "bool",
+			display_name: ISA_R.alb_autoRefresh
+		},
+		title: {
+			display_name: ISA_R.alb_title
+		},
+		directory_title: {
+			display_name: ISA_R.alb_directoryTitle
+		},
+		title_url: {
+			display_name: ISA_R.alb_titleUrl
+		},
+		height: {
+			display_name: ISA_R.alb_height
+		},
 		//"scrolling"
-		"singleton",
-		"resource_url"
-	];
+		singleton: {
+			datatype: "bool",
+			display_name: ISA_R.alb_singleton
+		},
+		resource_url: {
+			display_name: ISA_R.alb_resourceUrl
+		}
+	};
 	
 	var widgetPrefList = {};
 	if(conf.ModulePrefs ) {
 		for( var i in conf.ModulePrefs ) if( conf.ModulePrefs.hasOwnProperty( i )) {
-			if( editableModulePrefNames.contains( i ))
-				widgetPrefList[i] = conf.ModulePrefs[i];
+			if( editableModulePref[i] ) {
+				widgetPrefList[i] = Object.extend({
+					name: i,
+					value: conf.ModulePrefs[i]
+				},editableModulePref[i]);
+			}
 		}
 	}
 	widgetPrefList = Object.extend( widgetPrefList,conf.WidgetPref );
@@ -836,9 +856,15 @@ ISA_WidgetConf.EditWidgetConf.save = function(type, conf, onSuccess, onError){
 	for( id in modulePrefList ){
 		if( !( modulePrefList[id] instanceof Function ) ){
 			var widgetPref = modulePrefList[id];
-			var value = ISA_WidgetConf.getFormValue( 'MP', {
-				name: id
-			} );
+			if( !widgetPref.name ) {
+				widgetPref = {
+					name: id
+				};
+			}
+			if( id == "autoRefresh" || id == "singleton")
+				widgetPref.datatype = "bool";
+			
+			var value = ISA_WidgetConf.getFormValue( 'MP',widgetPref );
 			if(value != null){
 				if( id == "title" &&( !value.replace || value.replace(/ |　/g, "") == 0 )) {
 					errorMsgs.push(ISA_R.ams_typeTitle);
