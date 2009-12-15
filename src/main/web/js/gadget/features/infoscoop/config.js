@@ -170,8 +170,15 @@ gadgets.io.AuthorizationType.IS_SEND_PORTAL_UID_HEADER = "SEND_PORTAL_UID_HEADER
 gadgets.io.AuthorizationType.IS_POST_PORTAL_UID = "POST_PORTAL_UID";
 gadgets.io.RequestParameters.IS_AUTH_UID_PARAM_NAME = "IS_AUTH_UID_PARAM_NAME";
 
-//After Dragging in Firefox, frames may go away
-parent.frames[ window.name ] = window;
+gadgets.rpc.register("tabChanged",function( tid ) {
+	tabId = tid;
+});
+
+try {
+	//After Dragging in Firefox, frames may go away
+	parent.frames[ window.name ] = window;
+} catch( ex ) {
+}
 
 var readyContent = false;
 var readyLoginUid = false;
@@ -206,7 +213,9 @@ function handleContentOnLoad() {
 	} catch( ex ) { }
 	
 	if( !window.is_userId ) {
-		gadgets.rpc.call( null,"is_get_login_uid",handleGetLoginUid );
+		setTimeout( function() {
+			gadgets.rpc.call( null,"is_get_login_uid",handleGetLoginUid );
+		},100 );
 	} else {
 		handleGetLoginUid( window.is_userId );
 	}

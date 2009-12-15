@@ -688,8 +688,11 @@ IS_Portal.getWidget2TabDroppableOpt = function(tab){
 					parent.content.checkAllClose(true);
 				}
 				
-				if( widget.isGadget() )
+				if( widget.isGadget() ) {
+					widget.tabId = tab.id;
+					gadgets.rpc.call( widget.iframe.name,"tabChanged",false,widget.tabId );
 					widget.onTabChangeReload = true;
+				}
 				
 				IS_EventDispatcher.newEvent("moveWidget", widget.id);
 			}
