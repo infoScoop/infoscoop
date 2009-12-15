@@ -155,3 +155,10 @@ gadgets.rpc.register("is_refresh",function() {
 	
 	widget.refresh();
 });
+
+gadgets.rpc.register("is_set_relay_url",function( relayUrl ) {
+	var widget = IS_Portal.getWidget( this.mid,this.tid );
+	if( widget.authToken != this.t ) return;
+	
+	gadgets.rpc.setRelayUrl( widget.iframe.name,relayUrl );
+});
