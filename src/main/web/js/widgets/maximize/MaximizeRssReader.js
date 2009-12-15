@@ -1233,6 +1233,12 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		
 		if(this.viewTimer) clearTimeout(this.viewTimer);
 		
+		if( isIframeView && rssItem.link.length == 0 &&( rssItem.description && rssItem.description != ""))
+			isIframeView = false;
+		
+		if( !isIframeView && rssItem.link.length != 0 &&!( rssItem.description && rssItem.description != "") )
+			isIframeView = true;
+		
 		/* Ignore parameter of userPref if viewType is specified in iframe viewing mode */
 		if( isIframeView ){
 			if(rssItem.link.length == 0){
