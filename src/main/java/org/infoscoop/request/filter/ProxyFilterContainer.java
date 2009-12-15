@@ -37,7 +37,6 @@ public class ProxyFilterContainer {
 	}
 
 	public final int prepareInvoke(HttpClient client, HttpMethod method, ProxyRequest request)throws Exception {
-
 		// filer pre processing
 		for(int i = 0; i < filterChain.size(); i++){
 			ProxyFilter filter = (ProxyFilter)filterChain.get(i);
@@ -55,7 +54,9 @@ public class ProxyFilterContainer {
 				return 500;
 			}
 		}
-
+		return 0;
+	}
+	public final int getCache(HttpClient client, HttpMethod method, ProxyRequest request)throws Exception {
 		// check public cache
 		if(method instanceof GetMethod){
 
@@ -97,6 +98,10 @@ public class ProxyFilterContainer {
 		return 0;
 	}
 	public final int invoke(HttpClient client, HttpMethod method, ProxyRequest request)throws Exception {
+		int preStatus = prepareInvoke( client,method,request );
+		if( preStatus != 0 )
+			return preStatus;
+		
 		// copy headers sent target server
 		List ignoreHeaderNames = request.getIgnoreHeaders();
 		List allowedHeaderNames = request.getAllowedHeaders();
@@ -137,9 +142,9 @@ public class ProxyFilterContainer {
 		
 		AuthenticatorUtil.doAuthentication( client,method,request );
 		
-		int preStatus = prepareInvoke( client,method,request );
-		if( preStatus != 0 )
-			return preStatus;
+		int cacheStatus = getCache( client,method,request );
+		if( cacheStatus != 0 )
+			return cacheStatus;
 		
 		if (log.isInfoEnabled())
 			log.info("RequestHeader: " + headersSb);
