@@ -238,7 +238,7 @@ public class SessionManagerFilter implements Filter {
 					}
 				}
 				
-				if( loginUser == null ) {
+				if( loginUser == null || isChangeLoginUser( uid, loginUser )) {
 					loginUser = new Subject();
 					loginUser.getPrincipals().add(new ISPrincipal(ISPrincipal.UID_PRINCIPAL, uid));
 				}
