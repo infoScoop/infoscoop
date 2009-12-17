@@ -2,12 +2,10 @@ package org.infoscoop.web;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.SocketTimeoutException;
 import java.util.Date;
 import java.util.Enumeration;
@@ -213,18 +211,19 @@ public class ProxyServlet extends HttpServlet{
 	
 			String cacheHeader = request.getHeader("MSDPortal-Cache");
 			
-			InputStream bytes = proxyRequest.getResponseBody();
+			InputStream responseBody = proxyRequest.getResponseBody();
 			
 			bos = new BufferedOutputStream(response
 					.getOutputStream());
 
-			if(bytes != null){
+			if(responseBody != null){
 
 				//bis = new BufferedInputStream(
 				//		new ByteArrayInputStream(bytes));
-				bis = new BufferedInputStream(bytes);
+				bis = new BufferedInputStream(responseBody);
 				
 				if(log.isDebugEnabled()){
+					/*
 					bis.mark(10240000);
 					BufferedReader br =  new BufferedReader(new InputStreamReader(bis,"UTF-8"));
 					
@@ -236,6 +235,8 @@ public class ProxyServlet extends HttpServlet{
 					
 					log.debug(logStr);
 					bis.reset();
+					*/
+					bis = printDebug(bis);
 				}
 				
 				String cacheID = null;
@@ -253,7 +254,7 @@ public class ProxyServlet extends HttpServlet{
 						cacheID = CacheService.getHandle().insertCache(
 								uid,url /*proxyRequest.getTargetURL() + "?"
 								+ request.getQueryString()*/,
-								bytes,
+								bis,
 								headerMap);
 						if(log.isInfoEnabled())
 							log.info("save cache : id = " + cacheID);
@@ -359,6 +360,23 @@ public class ProxyServlet extends HttpServlet{
 		} catch (Throwable t) {
 			// just ignore.
 		}
+	}
+
+	private BufferedInputStream printDebug(BufferedInputStream inputStream) {
+		ByteArrayOutputStream returnStream = new ByteArrayOutputStream();
+		int temp;
+		try {
+			while( (temp = inputStream.read() ) != -1 ){
+				returnStream.write(temp);
+			}
+		} catch (IOException e) {
+			log.error("", e);
+		}
+		log.debug("------< Start of response stream >-------");
+		log.debug(new String(returnStream.toByteArray()));
+		log.debug("------< End of response Stream >-------");
+		
+		return new BufferedInputStream(new ByteArrayInputStream(returnStream.toByteArray()));
 	}
 
 }
