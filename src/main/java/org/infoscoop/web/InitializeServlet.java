@@ -47,7 +47,6 @@ public class InitializeServlet extends HttpServlet {
 
 		SpringUtil.initContext(beanDefinitions);
 		initSearchUserService();
-		initSessionCreateConfig();
 		Security.setProperty("networkaddress.cache.ttl", "60");
 	}
 
@@ -115,17 +114,6 @@ public class InitializeServlet extends HttpServlet {
 			log.warn("searchUserService not found.", e);
 		} catch (Exception e) {
 			log.warn("unexpected error occured in searchUserService.", e);
-		}
-	}
-
-	protected void initSessionCreateConfig() {
-		try {
-			SpringUtil.getBean("sessionCreateConfig");
-		} catch (NoSuchBeanDefinitionException e) {
-			SearchUserService.setNotAvailable();
-			log.warn("sessionCreateConfig not found.", e);
-		} catch (Exception e) {
-			log.warn("unexpected error occured in sessionCreateConfig.", e);
 		}
 	}
 
