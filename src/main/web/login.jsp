@@ -4,7 +4,7 @@
 <%
 	String pageTitle = PortalLayoutService.getHandle().getPortalLayout("title");
 	pageTitle = I18NUtil.resolve(I18NUtil.TYPE_LAYOUT, pageTitle, request.getLocale());
-	AuthenticationService authService = (AuthenticationService)SpringUtil.getBean("authenticationService");
+	AuthenticationService authService = AuthenticationService.getInstance();
 %>
 
 <%@page import="org.infoscoop.dao.PropertiesDAO"%><html>
@@ -77,7 +77,7 @@ if(errorMsg != null){
 							<input type="reset" value="%{lb_reset}"/>
 						</td>
 					</tr>
-<%if(authService.enableChangePassword()){%>
+<%if(authService != null && authService.enableChangePassword()){%>
 					<tr>
 						<td align="center">
 							<br/>

@@ -230,9 +230,10 @@ public class SessionManagerFilter implements Filter {
 
 			if(loginUser == null || ( isChangeLoginUser(uid, loginUser) && !(session instanceof PreviewImpersonationFilter.PreviewHttpSession) )){
 				if( !SessionCreateConfig.getInstance().hasUidHeader() && uid != null ) {
-					AuthenticationService service= (AuthenticationService)SpringUtil.getBean("authenticationService");
+					AuthenticationService service= AuthenticationService.getInstance();
 					try {
-						loginUser = service.getSubject(uid);
+						if (service != null)
+							loginUser = service.getSubject(uid);
 					} catch (Exception e) {
 						log.error("",e);
 					}
@@ -381,7 +382,13 @@ public class SessionManagerFilter implements Filter {
 					Base64.decodeBase64( credentialPair[0].getBytes("UTF-8")),"UTF-8");
 			String portalPassword = RSAKeyManager.getInstance().decrypt( credentialPair[1] );
 			
-			AuthenticationService service= (AuthenticationService)SpringUtil.getBean("authenticationService");
+			AuthenticationService service = AuthenticationService.getInstance();
+			if (service == null)
+				throw new Exception(
+						"No bean named \"authenticationService\" is defined."
+								+ " When loginAuthentication property is true,"
+								+ " authenticationService must be defined.");
+			
 			service.login( portalUid,portalPassword );
 			
 			return portalUid;

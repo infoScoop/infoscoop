@@ -4,9 +4,21 @@ import java.util.Collection;
 
 import javax.security.auth.Subject;
 
+import org.infoscoop.util.SpringUtil;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+
 public class AuthenticationService {
 
 	private IAccountManager manager;
+	
+	public static AuthenticationService getInstance() {
+		try {
+			return (AuthenticationService) SpringUtil
+					.getBean("authenticationService");
+		} catch (NoSuchBeanDefinitionException e) {
+			return null;
+		}
+	}
 
 	public void setAccountManager(IAccountManager manager){
 		this.manager = manager;

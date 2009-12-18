@@ -68,8 +68,10 @@ public class PreviewImpersonationFilter implements Filter {
 		}
 
 		// Principal retrieved from AccountManager set AuthenticationService
-		AuthenticationService service= (AuthenticationService)SpringUtil.getBean("authenticationService");
-		IAccountManager manager = service.getAccountManager();
+		AuthenticationService service= AuthenticationService.getInstance();
+		IAccountManager manager = null;
+		if (service != null)
+			manager = service.getAccountManager();
 		if(manager != null){
 			for(PrincipalDef def : manager.getPrincipalDefs()){
 				String roleType = def.getType();

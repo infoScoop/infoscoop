@@ -81,7 +81,15 @@ public class AuthenticationServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		try{
-			AuthenticationService service= (AuthenticationService)SpringUtil.getBean("authenticationService");
+			AuthenticationService service = AuthenticationService.getInstance();
+			if(service == null){
+				log.error("No bean named \"authenticationService\" is defined."
+						+ " When loginAuthentication property is true,"
+						+ " authenticationService must be defined.");
+				session.setAttribute("errorMsg", "ms_authServiceAccessFailed");
+				((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
+				return;
+			}
 
 			if(isDenyEmptyPassword&&"".equals(password)){
 				session.setAttribute("errorMsg", "ms_noInputPassword");

@@ -16,16 +16,18 @@
 		out.print("displayName:'" + def.getLabel() + "'");
 		out.print("}");
 	}
-	AuthenticationService service= (AuthenticationService)SpringUtil.getBean("authenticationService");
+	AuthenticationService service= AuthenticationService.getInstance();
 
-	for( Iterator ite=service.getPrincipalDefs().iterator();ite.hasNext();){
-		PrincipalDef def = ( PrincipalDef )ite.next();
-		out.println(",");
-		out.print("{");
-		out.print("type:'" + def.getType() + "'");
-		out.print(",");
-		out.print("displayName:'" + def.getLabel() + "'");
-		out.print("}");
+	if(service != null) {
+		for( Iterator ite=service.getPrincipalDefs().iterator();ite.hasNext();){
+			PrincipalDef def = ( PrincipalDef )ite.next();
+			out.println(",");
+			out.print("{");
+			out.print("type:'" + def.getType() + "'");
+			out.print(",");
+			out.print("displayName:'" + def.getLabel() + "'");
+			out.print("}");
+		}
 	}
 //	out.print("]");
 %>
