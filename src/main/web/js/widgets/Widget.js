@@ -863,7 +863,7 @@ IS_Widget.prototype.classDef = function() {
 				this.headerContent.turnBack();
 			
 			this.elm_widgetContent.style.display = "block";
-			if( this.isGadget())
+			if( this.isGadget() && !isStatic)
 				this.elm_widgetContent.style.height = "auto";
 			
 			IS_EventDispatcher.newEvent('loadComplete', self.id, null);
@@ -931,7 +931,7 @@ IS_Widget.prototype.classDef = function() {
 			this.elm_widgetContent.innerHTML = IS_R.lb_setupUnfinished;
 			this.elm_widgetContent.style.fontSize = "14px";
 			this.elm_widgetContent.style.display = "block";
-			if( this.isGadget())
+			if( this.isGadget() && !isStatic)
 				this.elm_widgetContent.style.height = "auto";
 			
 			return;
