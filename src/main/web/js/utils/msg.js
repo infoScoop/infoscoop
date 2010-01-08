@@ -122,7 +122,7 @@ msg.Message.prototype.render=function(){
 }
 
 msg.Message.prototype.buildMessage=function(){
-	return "<div id='div_message_" + this.id + "' style='border-bottom:dashed 1px gray'><img src='" + this.icon +  "'/> " +  formatDate(this.date, "hh:mm:ss") + " : " + this.message + "</div>";
+	return "<div id='div_message_" + this.id + "' style='border-bottom:dashed 1px gray'><img src='" + this.icon +  "'/> " +  formatDate(this.date, "HH:mm:ss") + " : " + this.message + "</div>";
 }
 
 msg.showPopupDialog= function(e){
