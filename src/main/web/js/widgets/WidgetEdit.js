@@ -328,9 +328,15 @@ IS_Widget.WidgetEdit = function (widget) {
 				}else if( inputType == 'list' ){
 					
 					var textboxTr = document.createElement("tr");
+					var textboxLabelTd = document.createElement("td");
+					textboxLabelTd.className = "widget_edit_pref_col_label";
+					textboxLabelTd.appendChild(document.createTextNode(displayName + ':'));
+					if( isRequiredPref( pref )) {
+						textboxLabelTd.appendChild( createRequiredMark() );
+					}
+					textboxTr.appendChild(textboxLabelTd);
 					var textboxTd = document.createElement("td");
 					textboxTd.id = 'eb_' + widget.id + "_" + pref.name;
-						textboxTd.colSpan = '2';
 					
 					//Create menu to edit array
 					if( typeof( userPref ) == "string" ) {
@@ -343,18 +349,12 @@ IS_Widget.WidgetEdit = function (widget) {
 						arrayData = [];
 					}
 					
-					var editTitle = document.createElement("div");
-					var titleTextNode = document.createTextNode( displayName + ':');
-					editTitle.appendChild( titleTextNode );
-					if( isRequiredPref( pref )) {
-						editTitle.appendChild( createRequiredMark() );
-					}
-					
 					var arrayDiv = document.createElement("div");
-					arrayDiv.style.textAlign = 'center';
 					var listTable = document.createElement("table");
 					listTable.className = 'widgetEditHeader';
 					listTable.style.fontSize = '100%';
+					listTable.cellPadding = 0;
+					listTable.cellSpacing = 0;
 					var tableBody = document.createElement("tbody");
 					tableBody.id = textboxTd.id + "_arrayTbody";
 					listTable.appendChild( tableBody );
@@ -367,6 +367,7 @@ IS_Widget.WidgetEdit = function (widget) {
 					
 					for(j=0; j<arrayData.length; j++){
 						var item = document.createElement("tr");
+						item.style.height = "1.5em";
 						var textTd = document.createElement("td");
 						textTd.appendChild( document.createTextNode( arrayData[j] ) );
 						
@@ -378,6 +379,7 @@ IS_Widget.WidgetEdit = function (widget) {
 						//deleteButton.style.fontSize = '100%';
 						deleteButton.style.color = '#7777cc';
 						deleteButton.style.cursor = 'pointer';
+						deleteButton.style.whiteSpace = 'nowrap';
 						Event.observe(deleteButton, 'click', deleteFunc.bind(this, deleteButton), false);
 						buttonTd.appendChild( deleteButton );
 						
@@ -397,10 +399,12 @@ IS_Widget.WidgetEdit = function (widget) {
 					//addButton.style.fontSize = '100%';
 					addButton.style.color = '#7777cc';
 					addButton.style.cursor = 'pointer';
+					addButton.style.whiteSpace = 'nowrap';
 					var addFunc = function(addButtonObj){
 						var addText = addButtonObj.parentNode.previousSibling.firstChild.value || "";
 //						if(addText != ''){
 							var addItem = document.createElement("tr");
+							addItem.style.height = "1.5em";
 							var textTd = document.createElement("td");
 							textTd.appendChild( document.createTextNode( addText ) );
 							
@@ -412,6 +416,7 @@ IS_Widget.WidgetEdit = function (widget) {
 							//deleteButton.style.fontSize = '100%';
 							deleteButton.style.color = '#7777cc';
 							deleteButton.style.cursor = 'pointer';
+							deleteButton.style.whiteSpace = 'nowrap';
 							Event.observe(deleteButton, 'click', deleteFunc.bind(this, deleteButton), false);
 							buttonTd.appendChild( deleteButton );
 							
@@ -430,14 +435,13 @@ IS_Widget.WidgetEdit = function (widget) {
 					addItem.appendChild( addButtonTd );
 					tableBody.appendChild( addItem );
 					
-					textboxTd.appendChild(editTitle);
 					textboxTd.appendChild(arrayDiv);
 					
 					textboxTr.appendChild(textboxTd);
 					
 					editBody.appendChild(textboxTr);
 					
-					IS_Widget.WidgetEdit.makeHelpIcon( editTitle,userPrefConf );
+					IS_Widget.WidgetEdit.makeHelpIcon( addBoxTd,userPrefConf );
 				}else if( inputType == 'hidden'){
 					// do nothing
 				} else if( inputType == 'calendar') {
@@ -481,8 +485,6 @@ IS_Widget.WidgetEdit = function (widget) {
 							this.calendar = null;
 						}
 					}.bind( pref ) );
-					
-					IS_Widget.WidgetEdit.makeHelpIcon( textboxTd,userPrefConf );
 				}
 			}	
 		}
