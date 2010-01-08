@@ -370,7 +370,9 @@ gadgets.io = function() {
 //      container : urlParams.container || urlParams.synd || "default",
         // should we bypass gadget spec cache (e.g. to read OAuth provider URLs)
 //      bypassSpecCache : gadgets.util.getUrlParameters().nocache || ""
-		IS_AUTH_UID_PARAM_NAME : params.IS_AUTH_UID_PARAM_NAME || ""
+		IS_AUTH_UID_PARAM_NAME : params.IS_AUTH_UID_PARAM_NAME || "",
+		IS_AUTH_BASIC_USERNAME : params.IS_AUTH_BASIC_USERNAME || "",
+		IS_AUTH_BASIC_PASSWORD : params.IS_AUTH_BASIC_PASSWORD || ""
       };
 
       // OAuth goodies

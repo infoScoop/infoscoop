@@ -9,6 +9,14 @@ import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 
 public class BasicAuthenticator implements Authenticator{
+	private int credentialType = -1;
+	public BasicAuthenticator() {
+		this( Authenticator.WIDGET_PREFS_CREDENTIAL );
+	}
+	public BasicAuthenticator( int credentialType ) {
+		this.credentialType = credentialType;
+	}
+	
 	public void doAuthentication(HttpClient client, ProxyRequest request, HttpMethod method, String uid, String pwd) throws ProxyAuthenticationException {
 		try{
 			client.getParams().setAuthenticationPreemptive(true);
@@ -26,6 +34,6 @@ public class BasicAuthenticator implements Authenticator{
 
 	
 	public int getCredentialType() {
-		return Authenticator.WIDGET_PREFS_CREDENTIAL;
+		return credentialType;
 	}
 }

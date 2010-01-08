@@ -92,7 +92,8 @@ public class JsonProxyServlet extends HttpServlet {
 		SIGNED,
 		OAUTH,
 		SEND_PORTAL_UID_HEADER,
-		POST_PORTAL_UID;
+		POST_PORTAL_UID,
+		BASIC;
 		
 		public static AuthType as( String authType ) {
 			for( AuthType value : AuthType.values()) {
@@ -200,6 +201,13 @@ public class JsonProxyServlet extends HttpServlet {
 			headers.put("authType","g_sendPortalCredentialHeader");
 			
 			break;
+		case BASIC:
+			String username = params.get("IS_AUTH_BASIC_USERNAME");
+			String password = params.get("IS_AUTH_BASIC_PASSWORD");
+			
+			headers.put("authType","g_basic");
+			headers.put("authuserid",username );
+			headers.put("authpassword",password );
 		}
 		
 		ProxyRequest proxy = new ProxyRequest(url,contentType.filterType );

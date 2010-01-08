@@ -15,7 +15,9 @@
 <bean id="sendPortalCredentialHeaderAuthenticator" class="org.infoscoop.request.SendPortalCredentialHeaderAuthenticator" >
 	<property name="uidHeaderName"><value>is-user</value></property>
 </bean>
-
+<bean id="g_basicAuthenticator" class="org.infoscoop.request.BasicAuthenticator">
+	<constructor-arg index="0"><value type="int">-1</value></constructor-arg>
+</bean>
 <bean id="g_postPortalCredentialAuthenticator" class="org.infoscoop.request.PostPortalCredentialAuthenticator">
 	<property name="uidParamName"><value>is-user</value></property>
 </bean>

@@ -170,6 +170,10 @@ gadgets.io.AuthorizationType.IS_SEND_PORTAL_UID_HEADER = "SEND_PORTAL_UID_HEADER
 gadgets.io.AuthorizationType.IS_POST_PORTAL_UID = "POST_PORTAL_UID";
 gadgets.io.RequestParameters.IS_AUTH_UID_PARAM_NAME = "IS_AUTH_UID_PARAM_NAME";
 
+gadgets.io.AuthorizationType.IS_BASIC = "BASIC";
+gadgets.io.RequestParameters.IS_AUTH_BASIC_USERNAME = "IS_AUTH_BASIC_USERNAME";
+gadgets.io.RequestParameters.IS_AUTH_BASIC_PASSWORD = "IS_AUTH_BASIC_PASSWORD";
+
 gadgets.rpc.register("tabChanged",function( tid ) {
 	tabId = tid;
 });
