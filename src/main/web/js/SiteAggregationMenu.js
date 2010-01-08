@@ -287,8 +287,9 @@ IS_TreeMenu.prototype = {
 			  
 			  var msgListDiv = $('message-list');
 			  
+			  var newMenuCnt = 0;
 			  for(var i = 0; i < newIds.length; i++){
-				  if(i == 5){
+				  if(newMenuCnt == 5){
 					  msgListDiv = $('message-list-more');
 					  $('message-list-more-btn').show();
 				  }
@@ -298,6 +299,7 @@ IS_TreeMenu.prototype = {
 				  var messageText = IS_R.getResource(IS_R.ms_menuadded,[menuItem.getPaths().join("/")]);
 				  msg.info(messageText);
 				  if(alertSetting && !menuItem.serviceURL){
+					  newMenuCnt++;
 					  var newMenuItemMsgSpan = document.createElement('div');
 					  
 					  var infoImg = document.createElement('img');
