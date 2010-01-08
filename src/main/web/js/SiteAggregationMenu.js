@@ -684,6 +684,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			refreshIcon.className = "menuRefresh";
 			refreshIcon.title = IS_R.lb_refreshMenu;
 			refreshIcon.id = "portal-site-aggregation-menu-refresh";
+			refreshIcon.style.display = 'none';
 			Event.observe(refreshIcon, 'mousedown', IS_SiteAggregationMenu.refreshMenu, false);
 			return refreshIcon;
 		}
