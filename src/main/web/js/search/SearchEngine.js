@@ -250,11 +250,22 @@ IS_SearchEngine.prototype.classDef = function() {
 		
 		try{
 			var iframeDoc = Browser.isIE ? this.iframe.contentWindow.document : this.iframe.contentDocument;
-			var linkList = iframeDoc.documentElement.getElementsByTagName('a');
-			for(var i = 0; i < linkList.length; i++){
-				if(linkList[i].href.indexOf('#') > 0 ){
-					linkList[i].href = this.iframe.src + '#' + linkList[i].href.split('#')[1];
+			var current = this.iframe.contentWindow.location.href;
+			var base = iframeDoc.getElementById("baseUrl");
+			if( base ) {
+				var baseUrl = base.href;
+				function absolute( url ) {
+					var i = url.indexOf( baseUrl );
+					var q = url.substring( baseUrl.length );
+					if( i == 0 && /^\s*\#/.test( q ))
+						url = current +q;
+					
+					return url;
 				}
+				
+				$A( iframeDoc.body.getElementsByTagName("a") ).each( function( anchor ) {
+					anchor.href = absolute( anchor.href );
+				});
 			}
 		}catch(e){
 			msg.warn(getText(e));

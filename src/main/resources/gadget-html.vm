@@ -39,6 +39,23 @@ gadgets.Prefs.setInternal_( ${userPrefs.toString()} );
 <script src="${staticContentURL}/js/lib/scriptaculous-js-1.8.2/effects.js"></script>
 <script src="${staticContentURL}/js/lib/scriptaculous-js-1.8.2/dragdrop.js"></script>
 #end
+<script type="text/javascript">
+Event.observe( window,"load",function() {
+	var baseUrl = "${baseUrl}";
+	function absolute( url ) {
+		var i = url.indexOf( baseUrl );
+		var q = url.substring( baseUrl.length );
+		if( i == 0 && /^\s*\#/.test( q ))
+			url = window.location.href +q;
+		
+		return url;
+	}
+	
+	$A( document.body.getElementsByTagName("a") ).each( function( anchor ) {
+		anchor.href = absolute( anchor.href );
+	});
+});
+</script>
 <base href="${baseUrl}"></base>
 </head>
 <body dir="${dir}">

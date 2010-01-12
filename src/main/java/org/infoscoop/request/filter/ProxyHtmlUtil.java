@@ -193,6 +193,7 @@ public class ProxyHtmlUtil {
 			
 			XMLAttributes attrs = new XMLAttributesImpl();
 			attrs.addAttribute( new QName("","href","href",""),"CDATA",baseUrl );
+			attrs.addAttribute( new QName("","id","id",""),"CDATA","baseUrl");
 
 			super.emptyElement( new QName("","base","base",""),
 					attrs,new AugmentationsImpl());
