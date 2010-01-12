@@ -211,12 +211,16 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 		this.title = "";
 		setDefaultHilight(this, value);
 
+		checkFUP();
+	};
+	
+	function checkFUP(){
 		if(prefConf.datatype == 'hidden'){
 			var fupHref = $('FUP_' + prefConf.name);
 			if(fupHref)
 			  fupHref.checked = true;
 		}
-	};
+	}
 
 	function setDefaultHilight(element, value){
 		if(!isDefaultHilight)return;
@@ -384,6 +388,7 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 			deleteNode.parentNode.removeChild( deleteNode );
 			var value = '' + ISA_WidgetConf.getFormValue(prefType, prefConf);
 			setDefaultHilight(arrayDiv, value);
+			checkFUP();
 		};
 		
 		for(j=0; j<arrayData.length; j++){
@@ -440,6 +445,7 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 				
 				var value = '' + ISA_WidgetConf.getFormValue(prefType, prefConf);
 				setDefaultHilight(arrayDiv, value);
+				checkFUP();
 //			}
 		};
 		IS_Event.observe(addButton, 'click', addFunc.bind(addButton, prefConf), false, '_editorForm');
