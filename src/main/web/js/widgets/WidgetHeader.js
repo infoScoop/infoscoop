@@ -54,7 +54,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		headerDiv.style.width = "100%";
 		headerDiv.style.position = "relative";
 		headerDiv.style.height = "19px";
-		headerDiv.style.overflowX = "hidden";
+		headerDiv.style.overflow = "hidden";
 		widget.elm_widgetHeader.appendChild(headerDiv);
 		
 		IS_Event.observe( headerDiv, "mouseover", observeEventsFunc, false, widget.closeId);
