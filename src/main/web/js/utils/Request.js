@@ -172,11 +172,12 @@ IS_Request.Queue = function (servName, time, disabled, checkDuplicate){
 /*
  * Form where you enter userID and password for Authentication Widget
  */
-IS_Request.createAuthForm = function(elmId, authFormSubmitFunc){
+IS_Request.createAuthForm = function(elmId, authFormSubmitFunc, isFirstAuth){
 
 	var authDiv = document.createElement('div');
 	
-	authDiv.innerHTML = "<div style='color:red;font-size:90%;padding:2px;'>" + IS_R.ms_noPermission + "</div>";
+	if(!isFirstAuth)
+		authDiv.innerHTML = "<div style='color:red;font-size:90%;padding:2px;'>" + IS_R.ms_noPermission + "</div>";
 	authDiv.innerHTML += "<div style='font-size:90%;padding:2px;'>" + IS_R.ms_inputCredential + "</div>";
 	
 	var authFormDiv = document.createElement('div');
