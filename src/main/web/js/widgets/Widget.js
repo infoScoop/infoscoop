@@ -979,6 +979,8 @@ IS_Widget.prototype.classDef = function() {
 		}
 	}
 	
+	var isFirstAuth = true;
+	
 	this.processLoadContentsOption = function (contentOpt) {
 		if(contentOpt.request) {
 			if(contentOpt.preLoad && !contentOpt.preLoad()) {
@@ -986,11 +988,12 @@ IS_Widget.prototype.classDef = function() {
 				self.postLoaded();
 				return;
 			}
-			function showAuthenticationForm(authType){
+			function showAuthenticationForm(authType,_isFirstAuth){
 				var _overflow;
 				var authForm = IS_Request.createAuthForm(
 					self.id,
 					function(){
+						isFirstAuth = false;
 						var authUid = $(self.id + "_authUid").value;
 						var authPassword = $(self.id + "_authPasswd").value;
 						if(authPassword){
@@ -1043,8 +1046,8 @@ IS_Widget.prototype.classDef = function() {
 						AjaxRequest.invoke(hostPrefix + "/credsrv", opt, self.id);
 						self.elm_widgetContent.style.overflow = _overflow;
 						self.elm_widgetContent.innerHTML = "Loading...";
-					}.bind(self)
-					  );
+					}.bind(self),
+					  _isFirstAuth);
 				self.elm_widgetContent.replaceChild(authForm, self.elm_widgetContent.firstChild);
 				
 				_overflow = self.elm_widgetContent.style.overflow;
@@ -1094,7 +1097,7 @@ IS_Widget.prototype.classDef = function() {
 								self.loadContents();
 							}
 						}else{
-							showAuthenticationForm((authType) ? authType : _authType);
+							showAuthenticationForm((authType) ? authType : _authType, isFirstAuth);
 						}
 					  }.bind(self),
 					  onException:function(req, obj){
