@@ -743,7 +743,7 @@ function PullDown(opt){
 		table.border = 0;
 		table.cellSpacing = 0;
 		table.cellPading = 0;
-		table.style.tableLayout = "fixed";
+		//table.style.tableLayout = "fixed";
 		table.style.width = "100%";
 		
 		var tbody = document.createElement("tbody");
