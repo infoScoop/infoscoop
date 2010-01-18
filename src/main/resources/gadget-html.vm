@@ -24,6 +24,8 @@ window.onerror = function( message,fileName,lineNumber ) {
 
 var features = ${requires.toString()};
 var i18nMsgs = ${i18nMsgs.toString()};
+
+__IS_GADGET_BASE_URL__="${baseUrl}";
 --></script>
 <script src="./js/gadget/features/#foreach( $require in $requires.keys())#if($velocityCount > 1):#end${require}#end.js"></script>
 <script type="text/javascript">
@@ -39,24 +41,6 @@ gadgets.Prefs.setInternal_( ${userPrefs.toString()} );
 <script src="${staticContentURL}/js/lib/scriptaculous-js-1.8.2/effects.js"></script>
 <script src="${staticContentURL}/js/lib/scriptaculous-js-1.8.2/dragdrop.js"></script>
 #end
-<script type="text/javascript">
-Event.observe( window,"load",function() {
-	var baseUrl = "${baseUrl}";
-	function absolute( url ) {
-		var i = url.indexOf( baseUrl );
-		var q = url.substring( baseUrl.length );
-		if( i == 0 && /^\s*\#/.test( q ))
-			url = window.location.href +q;
-		
-		return url;
-	}
-	
-	$A( document.body.getElementsByTagName("a") ).each( function( anchor ) {
-		anchor.href = absolute( anchor.href );
-	});
-});
-</script>
-<base href="${baseUrl}"></base>
 </head>
 <body dir="${dir}">
 ${content}
