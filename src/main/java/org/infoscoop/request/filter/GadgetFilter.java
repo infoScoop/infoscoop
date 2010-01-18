@@ -180,18 +180,24 @@ public class GadgetFilter extends ProxyFilter {
 			uploadType = url.substring( 8,url.lastIndexOf("/"));
 		
 		if( uploadType != null && !"".equals( uploadType )) {
-			byte[] data = GadgetService.getHandle().selectGadget( uploadType );
-			if( data == null )
-				return 404;
-			
-			request.setResponseBody( new ByteArrayInputStream( data ));
-			
+			Map<String,String> urlParameters = getUrlParameters( request.getFilterParameters() );
+			WidgetConfUtil.GadgetContext context = new WidgetConfUtil.GadgetContext().setUrl(url);
 			try {
+				InputStream data = context.getUploadGadget(urlParameters.get( PARAM_HOST_PREFIX ));
+				if( data == null )
+					return 404;
+
+
+				request.setResponseBody(data);
+
 				request.setResponseBody( postProcess( request, request.getResponseBody() ));
-				
+
 				return 200;
 			} catch( IOException ex ) {
 				throw new RuntimeException( ex );
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				return 500;
 			}
 		}
 		

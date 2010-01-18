@@ -10,6 +10,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
@@ -348,8 +350,7 @@ public class WidgetConfUtil {
 
 		public String getBaseUrl() {
 			if (uploadType != null)
-				return hostPrefix + "/gadget/" + uploadType + "/" + uploadType
-						+ ".xml";
+				return hostPrefix + "/gadget/" + uploadType ;
 
 			return url;
 		}
@@ -369,7 +370,12 @@ public class WidgetConfUtil {
 		public Document getDocument(HttpServletRequest request) throws Exception {
 			InputStream in;
 			if (isUploadGadget()) {
-				in = getUploadGadget();
+				String hostPrefix = request.getParameter("hostPrefix");
+				in = getUploadGadget(hostPrefix);
+				if(in == null){
+					log.error("Gadget[" + uploadType + "]does not exist.");
+					throw new Exception("Gadget[" + uploadType + "]does not exist.");
+				}
 			} else {
 				in = getGadget(request);
 			}
@@ -424,15 +430,21 @@ public class WidgetConfUtil {
 			return is;
 		}
 
-		private InputStream getUploadGadget() throws Exception {
+		public InputStream getUploadGadget(String hostPrefix) throws Exception {
 			byte[] gadget = GadgetService.getHandle().selectGadget(uploadType);
 			if (log.isDebugEnabled())
 				log.debug("gadget : " + gadget);
 
-			if (gadget == null) {
-				gadget = new byte[0];
-				log.error("Gadget[" + uploadType + "]does not exist.");
-			}
+			if (gadget == null)
+				return null;
+					
+			String gadgetStr = new String(gadget,"UTF-8");
+			Pattern pattern = Pattern.compile( "__IS_GADGET_BASE_URL__" );
+
+			Matcher matcher = pattern.matcher(gadgetStr);
+			if(matcher.find())
+				gadgetStr = matcher.replaceAll(hostPrefix + "/gadget/" + uploadType);
+			gadget = gadgetStr.getBytes("UTF-8");
 
 			return new ByteArrayInputStream(gadget);
 		}

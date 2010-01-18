@@ -1764,7 +1764,7 @@ IS_Widget.getConfiguration = function( widgetType ){
 			method: 'get',
 //			parameters: 'type=' + encodeURIComponent(widgetType) + "&reload",
 //			parameters: 'type=' + widgetType,
-			parameters: 'type=' + encodeURIComponent(widgetType),
+			parameters: 'type=' + encodeURIComponent(widgetType) + "&hostPrefix=" + encodeURIComponent(hostPrefix),
 			asynchronous: false,
 			timeout: ajaxRequestTimeout,
 			onSuccess: function(response){
@@ -2267,18 +2267,28 @@ IS_Widget.getIcon = function(widgetType, opt){
 		var gadgetType = RegExp.$1;
 		var icon = IS_WidgetIcons[gadgetType];
 		if(icon) {
+			/*
 			if(!/^http[s]?:\/\//.test(icon)){
 				return hostPrefix + '/gadget/' + gadgetType + '/' + icon;
 			}
 			return icon;
+			*/
+			return icon.replace("__IS_GADGET_BASE_URL__", hostPrefix + '/gadget/' + gadgetType);
 		} else if(widConf && widConf.ModulePrefs && widConf.ModulePrefs.Icon){
 			icon = widConf.ModulePrefs.Icon.content;
+			/*
 			if(/http[s]?:\/\//.test()){
 				return icon;
 			} else if(widConf.ModulePrefs.resource_url){
 				return widConf.ModulePrefs.resource_url + icon;
 			} else {
 				return hostPrefix + '/gadget/' + gadgetType + '/' + icon;
+			}
+			*/
+			if(widConf.ModulePrefs.resource_url){
+				return widConf.ModulePrefs.resource_url + icon;
+			} else {
+				return icon;
 			}
 		}
 	}
