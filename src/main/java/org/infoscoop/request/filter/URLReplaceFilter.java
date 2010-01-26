@@ -52,7 +52,7 @@ public class URLReplaceFilter extends ProxyFilter {
 		request.putResponseHeader("Cache-Control", "no-cache");
 		
 		String contentType = request.getResponseHeader("Content-Type");
-		if(contentType != null && !(contentType.indexOf("text/html") == 0 || contentType.indexOf("application/xhtml+xml") == 0) ){
+		if(contentType != null && !(contentType.toLowerCase().indexOf("text/html") == 0 || contentType.toLowerCase().indexOf("application/xhtml+xml") == 0) ){
 			request.putResponseHeader("Content-Type", "text/html; charset=\"UTF-8\"");
 			byte[] errorMsg = createErrorMessage("Error: Part select function can be only used for HTML.", "UTF-8");
 			request.putResponseHeader("Content-Length", String.valueOf( errorMsg.length ) );
