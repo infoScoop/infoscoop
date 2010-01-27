@@ -654,8 +654,13 @@
             </fileset>
         </copy-->
 		
+		<copy todir="${release.home}" file="${basedir}/gpl-3.0.txt"/>
+		<copy todir="${release.home}" file="${basedir}/lgpl-3.0.txt"/>
+		<copy todir="${release.home}" file="${basedir}/licenses.txt"/>
+		<copy todir="${release.home}" file="${basedir}/release_note.txt"/>
+		
 		<antcall target="initdb"/>
-		<antcall target="migration"/>
+		<!--antcall target="migration"/-->
     	
 		<copy todir="${release.home}/${app.main.name}" file="${build.home}/${app.main.name}.war"/>
 		<fixcrlf srcdir="${src.remakewar}/" eol="lf" eof="remove" includes="**/*.sh" />
@@ -681,7 +686,7 @@
     	<copy todir="${release.home}/${app.main.name}/staticContent">
             <fileset dir="${build.home}/staticContent"/>
         </copy>
-    	<zip destfile="${dist.home}/infoscoop-opensource-${build.version}.zip" basedir="${dist.home}"/>
+    	<zip compress="true" destfile="${dist.home}/infoscoop-opensource-${build.version}.zip" basedir="${dist.home}"/>
     </target> 
     <target name="initdb">
     	<ant antfile="${basedir}/build_initdb.xml"/>
