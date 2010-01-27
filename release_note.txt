@@ -1,0 +1,21 @@
+infoScoop OpenSource 2.0.0 RC1 relesase note
+
+Follow issues are fixed on 2.0.0.RC1 release.
+
+Issue 1: Must remove multi bytes characters in JSP Files.
+Issue 2: Must remove multi bytes characters in XML Files.
+Issue 3: "When selecting English, Japan holidays.ics is incorrectly imported.
+Issue 5: the header/parameter setting field is not displayed in the add menu panel.
+Issue 6: The password change function is not implemented. 
+Issue 7: The user retrieval screen is not displayed. 
+Issue 8: An illegal character is included in remakewar.bat.
+Issue 9: The clauses of "create/drop/use database"  are not necessary in mysqlinit.sql.
+Issue 11: Application are logged into non-standard position, "/var/infoscoop".
+Issue 12: There is an mistake for the explanation of accessLogEntry and keywordEntry properties.
+Issue 13: The explanation of the filter of RSS Widget is wrong, a close parenthesis is double.
+Issue 14: "Hello infoScoop!" gadget is not displayed in PopularWidgets Widget.
+Issue 15: "Number of users accessed today" is always 0.
+Issue 16: sendPortalCredentialHeader and postPortalCredential are not secure.
+Issue 17: SessionManagerFilter call getSubject method  in every request.
+Issue 19: Add "release" target to build.xml; the target creates zip archive of the release image.  
+Issue 21: The function of getting uid from getRemoteUser does not work when uidHeader paramter in accountservices.xml is not set.
