@@ -1,1 +1,0 @@
-alter index ${SCHEMA_NAME}.${from} rename to ${to};

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<widgetConfiguration autoRefresh="true" backgroundColor="#fff" displayFlag="false" type="Ranking" title="!{lb_ranking}">
-	<WidgetPref datatype="string" display_name="!{lb_dateTimeFormat}" name="dateTimeFormat" value="yyyy/MM/dd"/>
-	<Header maximize="off"/>
-	<Content className="Ranking" type="javascript"/>
-</widgetConfiguration>

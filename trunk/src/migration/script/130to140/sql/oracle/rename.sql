@@ -1,1 +1,0 @@
-alter table ${SCHEMA_NAME}.${from} rename to ${to};
