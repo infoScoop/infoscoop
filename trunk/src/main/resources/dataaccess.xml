@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	<bean id="widgetDAO" class="org.infoscoop.dao.WidgetDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="select">select * from ${schema}.widget where uid = ? and deleteDate = 0</prop>
+				<prop key="selectWidget">select * from ${schema}.widget where uid=? and widgetId = ? and tabId = ? and deleteDate = 0</prop>
+				<prop key="selectWidgetBySiblingId">select * from ${schema}.widget where uid=? and tabId = ? and siblingId = ? and deleteDate = 0 and isStatic = 0</prop>
+				<prop key="selectFirstWidgetInColumn">select * from ${schema}.widget where uid=? and tabId = ? and column = ? and siblingId = '' and deleteDate = 0 and widgetId != ? and parentId = '' and isStatic = 0</prop>
+				<prop key="selectFirstWidgetInMulti">select * from ${schema}.widget where uid=? and tabId = ? and parentId = ? and siblingId = '' and deleteDate = 0 and widgetId != ? and isStatic = 0</prop>
+				<prop key="selectTab">select * from ${schema}.tab where uid = ?</prop>
+				<prop key="selectByTabId">select * from ${schema}.tab where uid = ? and id = ?</prop>
+				<prop key="insertTab">insert into ${schema}.tab values(?,?,?,?,?,?,?,?)</prop>
+				<prop key="insertWidget">insert into ${schema}.widget(uid,defaultUid,tabId,widgetId,column,siblingId,parentId,href,title,type,data,isStatic,ignoreHeader) values(?,?,?,?,?,?,?,?,?,?,?,?,?)</prop>
+				<prop key="update">update ${schema}.widget set data = ? where uid = ? and tabId = ? and deleteDate = 0</prop>
+				<prop key="updateTab">update ${schema}.tab set name = ?, order = ?, type = ?, data = ?, widgetLastModified = ? where uid = ? and id = ?</prop>
+				<prop key="updateWidget">update ${schema}.widget set tabId = ?, type = ?, column = ?, siblingId = ?, parentId = ?, href = ?, title = ?, data = ? where uid =? and widgetId = ? and tabId = ? and deleteDate = 0</prop>
+				<prop key="updateSubWidgets">update ${schema}.widget set tabId = ? where uid =? and parentId = ? and tabId = ? and deleteDate = 0</prop>
+				<prop key="deleteWidgetByTabId">delete from ${schema}.widget where uid = ? and tabId = ? </prop>
+				<prop key="deleteTab">delete from ${schema}.tab where uid = ? and id = ? </prop>
+				<prop key="emptyWidget">delete from ${schema}.widget where uid = ? and (widgetId = ? or parentId = ?) and deleteDate = ?</prop>
+				<prop key="emptyWidgetByTabId">delete from ${schema}.widget where uid = ? and (widgetId = ? or parentId = ?) and tabId = ? and deleteDate = ?</prop>
+				<prop key="wipeWidget">delete from ${schema}.widget where uid = ? and (widgetId = ? or parentId = ?) and tabId = ?</prop>
+				<prop key="deleteWidget">update ${schema}.widget set deleteDate = ? where uid = ? and tabId = ? and (widgetId = ? or parentId = ?) and deleteDate = 0</prop>
+				<prop key="emptyDeletedWidgetByUid">delete from ${schema}.widget where uid = ? and deleteDate > 0</prop>
+				<prop key="selectDeletedWidget">select * from ${schema}.widget where uid=? and deleteDate > 0 order by deleteDate desc</prop>
+				<prop key="selectWidgetsByWidgetId">select * from ${schema}.widget where widgetId = ?</prop>
+				<prop key="updateWidgetProperties">update ${schema}.widget set data = ? where uid =? and widgetId = ? and tabId = ? and deleteDate = ?</prop>
+				<prop key="updateGadgets">update ${schema}.widget set type = ?, data = ? where type = ? and isStatic = 0</prop>
+				<prop key="replaceWidgets">update ${schema}.widget set type = ?, data = ? where widgetId = ?</prop>
+			</props>
+		</property-->
+	</bean>
+	<bean id="tabDAO" class="org.infoscoop.dao.TabDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="widgetConfDAO" class="org.infoscoop.dao.WidgetConfDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--property name="query">
+			<props>
+				<prop key="select">select data from ${schema}.widgetconf where type = ?</prop>
+				<prop key="selectByTypes">select data from ${schema}.widgetconf where type in </prop>
+				<prop key="selectAll">select data from ${schema}.widgetconf</prop>
+				<prop key="insert">insert into ${schema}.widgetconf(type, data) values (?, ?)</prop>
+				<prop key="update">update ${schema}.widgetconf set data = ? where type = ?</prop>
+				<prop key="delete">delete from ${schema}.widgetconf where type = ?</prop>
+			</props>
+		</property-->
+	</bean>
+	<bean id="tabLayoutDAO"	class="org.infoscoop.dao.TabLayoutDAO">
+
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+
+		<!--property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="checkTabLayout">SELECT COUNT(*) from ${schema}.TABLAYOUT</prop>
+				<prop key="insert">INSERT INTO ${schema}.TABLAYOUT(tabId, roleOrder, role, principalType, roleName, defaultUid, widgets, layout, widgetsLastmodified, tabNumber, deleteFlag) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</prop>
+				<prop key="update">update ${schema}.TABLAYOUT set roleName = ?, defaultUid = ?, widgets = ?, layout = ?, widgetsLastmodified = ?, tabNumber = ?, deleteFlag = ? where tabId = ? and roleOrder = ?</prop>
+				<prop key="updateLastmodifiedByTabId">UPDATE ${schema}.TABLAYOUT SET widgetsLastmodified = ? WHERE tabId = ?</prop>
+				<prop key="updateDeleteFlag">UPDATE ${schema}.TABLAYOUT SET deleteFlag = ? WHERE tabId = ?</prop>
+				<prop key="deleteByTabId">DELETE FROM ${schema}.TABLAYOUT WHERE tabId = ?</prop>
+				<prop key="select">SELECT * FROM ${schema}.TABLAYOUT ORDER BY roleOrder</prop>
+				<prop key="selectMax">select max(tabId) as "tabId", max(tabNumber) as "tabNumber" from ${schema}.TABLAYOUT where tabId != 'commandbar'</prop>
+				<prop key="selectByTabId">SELECT * FROM ${schema}.TABLAYOUT where tabId = ? ORDER BY roleOrder</prop>
+				<prop key="selectTabId">SELECT tabId, tabNumber FROM ${schema}.TABLAYOUT where deleteFlag = 0 GROUP BY tabId, tabNumber ORDER BY tabNumber asc, tabId asc</prop>
+				<prop key="selectTabLayout0">SELECT defaultUid, tabId, role, principalType, widgets, widgetsLastmodified, layout, tabNumber FROM ${schema}.TABLAYOUT where deleteFlag = 0 and (tabId = ? or tabId='commandbar') ORDER BY roleOrder</prop>
+				<prop key="selectTabLayout">SELECT defaultUid, tabId, role, principalType, widgets, widgetsLastmodified, layout, tabNumber FROM ${schema}.TABLAYOUT where deleteFlag = 0 and tabId = ? ORDER BY roleOrder</prop>
+				<prop key="selectTabLayoutAll">SELECT defaultUid, tabId, role, principalType, widgets, widgetsLastmodified, layout, tabNumber FROM ${schema}.TABLAYOUT where deleteFlag = 0 ORDER BY roleOrder</prop>
+			</props>
+		</property-->
+	</bean>
+	<bean id="preferenceDAO" class="org.infoscoop.dao.PreferenceDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="select">select data from ${schema}.preference where uid = ?</prop>
+				<prop key="update">update ${schema}.preference set data = ? where uid = ?</prop>
+				<prop key="insert">insert into ${schema}.preference values(?, ?)</prop>
+			</props>
+		</property-->
+	</bean>
+	<bean id="portalLayoutDAO" class="org.infoscoop.dao.PortalLayoutDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="select">select * from ${schema}.portallayout</prop>
+				<prop key="selectByName">select layout from ${schema}.portallayout where name = ?</prop>
+				<prop key="update">update ${schema}.portallayout set layout = ? where name = ?</prop>
+			</props>
+		</property-->
+	</bean>
+	<bean id="searchEngineDAO" class="org.infoscoop.dao.SearchEngineDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="select">select data from ${schema}.searchengine where temp =?</prop>
+				<prop key="update">update ${schema}.searchengine set data = ? where temp = ?</prop>
+				<prop key="insert">insert into ${schema}.searchengine values(?, ?)</prop>
+			</props>
+		</property-->
+	</bean>
+	<bean id="siteAggregationMenuDAO" class="org.infoscoop.dao.SiteAggregationMenuDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--
+		<property name="query">
+			<props>
+				<prop key="select">select data from ${schema}.siteaggregationmenu where type=? and temp =?</prop>
+				<prop key="update">update ${schema}.siteaggregationmenu set data = ? where type=? and temp = ?</prop>
+				<prop key="insert">insert into ${schema}.siteaggregationmenu values(?, ?, ?)</prop>
+			</props>
+		</property>
+		-->
+	</bean>
+	<bean id="siteAggregationMenuTempDAO" class="org.infoscoop.dao.SiteAggregationMenuTempDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="propertiesDAO" class="org.infoscoop.dao.PropertiesDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="selectForAdmin">select * from ${schema}.properties</prop>
+				<prop key="select">select id, value from ${schema}.properties</prop>
+				<prop key="selectProperty">select value from ${schema}.properties where id=?</prop>
+				<prop key="update">update ${schema}.properties set value = ? where id = ?</prop>
+			</props>
+		</property>
+		-->
+	</bean>
+	<bean id="proxyConfDAO" class="org.infoscoop.dao.ProxyConfDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+
+		<!--
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="checkProxyConf">select count(*) from ${schema}.proxyconf where temp = ?</prop>
+				<prop key="select">select * from ${schema}.proxyconf where temp = ?</prop>
+				<prop key="insert">insert into ${schema}.proxyconf(temp, data, lastmodified) values (?, ?, ?)</prop>
+				<prop key="update">update ${schema}.proxyconf set temp = ?, data = ?, lastmodified = ? where temp = ?</prop>
+				<prop key="selectLastModified">select temp, lastmodified from ${schema}.proxyconf where temp = ?</prop>
+			</props>
+		</property>
+		-->
+	</bean>
+	<bean id="i18NDAO" class="org.infoscoop.dao.I18NDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="insert">insert into ${schema}.i18n(number, type, id, country, lang, message) values (?, ?, ?, ?, ?, ?)</prop>
+				<prop key="insertLocale">insert into ${schema}.i18nLocale(type, country, lang) values (?, ?, ?)</prop>
+				<prop key="deleteByType">delete from ${schema}.i18n where type = ?</prop>
+				<prop key="deleteLocaleByType">delete from ${schema}.i18nLocale where type = ?</prop>
+				<prop key="selectAll">select * from ${schema}.i18n order by type, number, id, country, lang</prop>
+				<prop key="selectByType">select * from ${schema}.i18n where type = ? order by number, id, country, lang</prop>
+				<prop key="selectLocales">select * from ${schema}.i18nLocale where type = ? order by country, lang</prop>
+				<prop key="updateLastmodified">update ${schema}.i18nlastmodified set lastmodified = ? where type = ?</prop>
+				<prop key="insertLastmodified">insert into ${schema}.i18nlastmodified(lastmodified, type) values (?, ?)</prop>
+				<prop key="getLastmodified">select * from ${schema}.i18nlastmodified where type = ?</prop>
+				<prop key="fillResourceMap">select * from ${schema}.i18n where type = ? and country = ? and lang = ? order by number</prop>
+			</props>
+		</property>
+		-->
+	</bean>
+	<bean id="gadgetDAO" class="org.infoscoop.dao.GadgetDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="select">select data from ${schema}.gadget where type = ? and fileType = ?</prop>
+				<prop key="insert">insert into ${schema}.gadget values(?, ?, ?)</prop>
+				<prop key="update">update ${schema}.gadget set data = ? where type = ? and fileType = ?</prop>
+				<prop key="delete">delete from ${schema}.gadget where type = ?</prop>
+			</props>
+		</property>
+		-->
+	</bean>
+	<bean id="logDAO" class="org.infoscoop.dao.LogDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="insertLog">insert into ${schema}.logs(uid, type, url, url_key, rssurl, rssurl_key, date) values (?, ?, ?, ?, ?, ?, ?)</prop>
+				<prop key="checkLog">select count(*) from ${schema}.logs where uid=? and type=? and url_key=? and rssurl_key=? and date=?</prop>
+				<prop key="rssAccessCount">select count(*) from ${schema}.logs where rssurl_key=? and date>?</prop>
+				<prop key="rssAccessCountAll">select count(*) from ${schema}.logs where rssurl_key=?</prop>
+				<prop key="rssAccessStats">select uid,substr(date, 1, 8) as date,count(*) as count from ${schema}.logs where rssurl_key=? group by uid, substr(date, 1, 8) order by date desc, uid </prop>
+			</props>
+		</property>
+		-->
+	</bean>
+	<bean id="cacheDAO" class="org.infoscoop.dao.CacheDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="insertCache">insert into ${schema}.cache(id, uid, url, url_key, timestamp, headers, body) values (?, ?, ?, ?, ?, ?, ?)</prop>
+				<prop key="updateCache">update ${schema}.cache set id = ?, uid = ?, url = ?, url_key = ?, timestamp = ?, headers = ?, body = ?  where id = ?</prop>
+				<prop key="deleteCacheByUid">delete from ${schema}.cache where uid = ?</prop>
+				<prop key="deleteCacheById">delete from ${schema}.cache where id = ?</prop>
+				<prop key="deleteCacheByUrl">delete from ${schema}.cache where url_key = ?</prop>
+				<prop key="cache-id">select * from ${schema}.cache where id=?</prop>
+				<prop key="cache-url">select * from ${schema}.cache where url_key=?</prop>
+			</props>
+		</property>
+		-->
+	</bean>
+	<bean id="rssCacheDAO" class="org.infoscoop.dao.RssCacheDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="insert">insert into ${schema}.rsscache(uid, url_key, pageNum, rss) values (?, ?, ?, ?)</prop>
+				<prop key="delete">delete from ${schema}.rsscache where uid = ?</prop>
+				<prop key="deleteByUrl">delete from ${schema}.rsscache where uid = ? and url_key = ?</prop>
+				<prop key="update">update ${schema}.rsscache set rss = ? where uid = ? and url_key = ? and pageNum = ?</prop>
+				<prop key="select">select rss from ${schema}.rsscache where uid = ? and url_key = ? and pageNum = ?</prop>
+			</props>
+		</property>
+		-->
+	</bean>
+	<bean id="keywordLogDAO" class="org.infoscoop.dao.KeywordLogDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="getKeyword">select count(*) from ${schema}.keyword where uid = ? and type = ? and keyword = ? and date = ?</prop>
+				<prop key="insert">insert into ${schema}.keyword(uid, type, keyword, date) values (?, ?, ?, ?)</prop>
+			</props>
+		</property>
+		-->
+	</bean>
+	<bean id="portalAdminsDAO" class="org.infoscoop.dao.PortalAdminsDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="select">select * from ${schema}.portaladmins</prop>
+				<prop key="delete">delete from ${schema}.portaladmins</prop>
+				<prop key="insert">insert into ${schema}.portaladmins(uid) values (?)</prop>
+			</props>
+		</property>
+		-->
+	</bean>
+	<bean id="sessionDAO" class="org.infoscoop.dao.SessionDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+		<!--
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="query">
+			<props>
+				<prop key="select">select sessionId from ${schema}.session where uid=? and sessionId=?</prop>
+				<prop key="selectByUid">select sessionId from ${schema}.session where uid=?</prop>
+				<prop key="update">update ${schema}.session set sessionId=? where uid=?</prop>
+				<prop key="insert">insert into ${schema}.session(uid,sessionId) values (?,?)</prop>
+			</props>
+		</property>
+		-->
+	</bean>
+	<bean id="forbiddenURLDAO" class="org.infoscoop.dao.ForbiddenURLDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="authCredentialDAO" class="org.infoscoop.dao.AuthCredentialDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="holidaysDAO" class="org.infoscoop.dao.HolidaysDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="menuCacheDAO" class="org.infoscoop.dao.MenuCacheDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="accessLogDAO" class="org.infoscoop.dao.AccessLogDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="adminRoleDAO" class="org.infoscoop.dao.AdminRoleDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="messageDAO" class="org.infoscoop.dao.MessageDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="systemMessageDAO" class="org.infoscoop.dao.SystemMessageDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="accountDAO" class="org.infoscoop.dao.AccountDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="gadgetIconDAO" class="org.infoscoop.dao.GadgetIconDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+</beans>

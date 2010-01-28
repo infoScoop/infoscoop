@@ -1,0 +1,285 @@
+
+/* tabs */
+.infoScoop #tab-container {
+	padding-top:3px;
+	padding-bottom:2px;
+	height:26px;
+}
+
+.infoScoop #tabs{
+      float:left;
+      width:100%;
+      font-size:93%;
+      line-height:normal;
+	  border-bottom:1px solid gray;
+}
+
+.infoScoop #tabs .tablink,
+.infoScoop.admin .tabs .tablink {
+	padding:2px 2px 2px 7px;
+	font-size:83%;
+}
+.infoScoop #tabs .tabsRefresh{
+	background: url( ./imgs/refresh.gif ) no-repeat center left;
+	width:16px;
+	height:16px;
+	float:left;
+	position:relative;
+	bottom:-3px;
+	cursor:pointer;
+}
+
+.infoScoop #tabs ul {
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+.infoScoop #tabs li {
+	display: inline-block;
+	_display: inline;
+	vertical-align: bottom;
+    margin:0;
+    padding:0;
+    font-weight:bold;
+}
+.infoScoop #tabs span.outer {
+	position:relative;
+	float:left;
+    background:url("imgs/tableft.gif") no-repeat left top;
+    margin:0 1px;
+    padding:0 0 0 4px;
+    text-decoration:none;
+}
+.infoScoop #tabs span.inner {
+    float:left;
+    display:block;
+    background:url("imgs/tabright.gif") no-repeat right top;
+    padding:2px 7px 2px 7px;
+	white-space:nowrap;
+    font-size:11px;
+	height:18px;
+	//height:22px;/* for IE */
+}
+
+.infoScoop #tabs li .tabLoadingIcon {
+	display: none;
+}
+.infoScoop #tabs li.loading .tabLoadingIcon {
+	display: inline;
+}
+
+.infoScoop #tabs .tabInsertMark {
+	position:relative;
+	float:left;
+	font-size: 10px;
+	vertical-align:bottom;
+	border:1px dashed #FF5533;
+	background-color:#FFF;
+	height: 1.85em;
+	border-width:1px 1px 0 1px;
+}
+
+.infoScoop #tabs .tab span.outer {
+	top:0;
+	_top:1;
+	background-position:0% -24px;
+	cursor:pointer;
+}
+.infoScoop #tabs .tab.selected span.outer {
+	top :1px;
+    background-position:0% 0px;
+	cursor:move;
+}
+
+.infoScoop #tabs .tab span.inner {
+    background-position:100% -24px;
+}
+
+.infoScoop #tabs .tab.selected span.inner {
+    background-position:100% 0px;
+    _padding-right: 0px;
+}
+.infoScoop #tabs .tab.loading span.inner {
+	padding-left: 0px;
+}
+.infoScoop #tabs .tab .tabTitle{
+	position:relative;
+	top:4px;
+	_top: 5px;
+    color:gray;
+}
+.infoScoop #tabs .tab.selected .tabTitle {
+    color:#627EB7;
+	top: -6px;
+	_top: -3px;
+}
+.infoScoop #tabs .tab.selected.loading .tabTitle {
+	top: -5px;
+}
+.infoScoop #tabs .tab.loading .tabTitle {
+	top: -3px;
+}
+
+.infoScoop #tabs .Tab_onHover {
+	border: 2px dashed #FF5533 !important;
+	border-bottom: 2px solid #E6E6E6 !important;
+}
+.infoScoop #tabs .tab span.outer.Tab_onHover .inner {
+	_height: 18px;
+    padding: 0px 5px 0px 5px;
+}
+
+.infoScoop #tabs .addatab,
+.infoScoop.admin .tabs .addatab {
+	margin-top:5px;
+	font-size: 10px;
+	float:left;
+	text-align:left;
+	cursor:pointer;
+}
+html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
+	display: inline-block;
+	float: none;
+	position: relative;
+	vertical-align: bottom;
+}
+
+.infoScoop #tabs .addatab a,
+.infoScoop.admin .tabs .addatab a {
+	color:#6677dd;
+}
+
+.infoScoop #tabs #tabsRefreshStop {
+	background: url( ./imgs/stopq.gif ) no-repeat center left;
+	width:16px;
+	height:16px;
+	float:left;
+	position:relative;
+	bottom:-3px;
+	cursor:pointer;
+}
+/*
+.selectedtab .tabIndicator {
+	width: 13px;
+}
+*/
+.infoScoop #tabs .tabLoadingIcon {
+	position:relative;
+	margin-right: 4px;
+}
+.infoScoop #tabs #tabLoadStopIcon{
+	background: url( ./imgs/stopq.gif ) no-repeat center left;
+	width:16px;
+	height:16px;
+	cursor:pointer;
+}
+.infoScoop #tabs #tabLoadProgress{
+	background-color:white;
+	border:2px groove black;
+	height:1.2em;
+	position:relative;
+}
+.infoScoop #tabs #tabLoadProgressBar{
+	background-color:cyan;
+	height:1.2em;
+	position:relative;
+	margin-left:0 !important;
+}
+.infoScoop #tabs #tabLoadProgressCount{
+	position:absolute;
+	top:0;
+	right:0;
+}
+
+
+.infoScoop #tabs .tab .selectMenu {
+	position:relative;
+	width: 13px;
+	height: 13px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-left: 4px;
+	margin-right: 1px;
+	cursor:pointer;
+	
+	display: none;
+}
+.infoScoop #tabs .tab.selected .selectMenu{
+	display: inline;
+}
+
+
+.infoScoop .tabMenu {
+	position: absolute;
+	border-left: 1px solid gray;
+	border-right: 1px solid gray;
+	border-bottom: 1px solid gray;
+	background-color: white;
+	z-index:50;
+	overflow: hidden;
+	
+	list-style-image: none;
+	list-style-position: outside;
+	list-style-type: none;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-left: 0px;
+}
+
+.infoScoop .tabMenu .item,
+.infoScoop .widgetMenu .item {
+	font-size: 9pt;
+	white-space: nowrap;
+	line-height: 17px;
+	padding: 2px 1px 1px 1px;
+	text-decoration : none;
+	border-bottom: 1px solid #EEE;
+}
+.infoScoop .tabMenu div.item,
+.infoScoop .widgetMenu div.item {
+	cursor: normal;
+}
+.infoScoop .tabMenu a.item,
+.infoScoop .widgetMenu a.item {
+	display: block;
+	color: #6677DD;
+	cursor: pointer;
+}
+.infoScoop .tabMenu a.item:hover,
+.infoScoop .widgetMenu a.item:hover {
+	color: white;
+	background-color: #5286BB;
+}
+.infoScoop .tabMenu .item .content {
+	padding-left: 18px;
+}
+
+.infoScoop .tabMenu .refresh {
+	background: url( ./imgs/refresh.gif ) no-repeat center left;
+}
+.infoScoop .tabMenu .close {
+	background: url( ./imgs/trash.gif ) no-repeat center left;
+}
+.infoScoop .tabMenu .rename {
+	background: url( ./imgs/edit.gif ) no-repeat center left;
+}
+.infoScoop .tabMenu .rename .nameInput {
+	margin-left: 10px;
+}
+.infoScoop .tabMenu .changeColumnNum {
+	background: url(./imgs/changeColumn.gif ) no-repeat center left;
+}
+.infoScoop .tabMenu .changeColumnNum .columnNumSelect {
+	margin-left: 10px;
+}
+.infoScoop .tabMenu .resetColumnWidth {
+	background: url(./imgs/changeColumn2.gif ) no-repeat center left;
+}
+.infoScoop .tabMenuOverlay,
+.infoScoop .widgetMenuOverlay {
+	position:absolute;
+	z-index:40;
+	-moz-opacity:0;
+	opacity:0;
+	filter:alpha(opacity=0);
+}

@@ -1,0 +1,40 @@
+Open Source License
+
+This Software is licensed under GNU Lesser General Public License Version3 
+("LGPLv.3").  You may download the source code of this Software, and copy,
+distribute (convey) and modify it free of charge under the terms provided in
+LGPLv.3.
+
+Please see the following license.
+
+LGPLv.3 (http://www.gnu.org/licenses/lgpl-3.0.html) 
+GPLv.3 (http://www.gnu.org/licenses/gpl.html) 
+
+This Software includes the following open source software released by third
+ parties ("Third Party OSS").  The Third Party OSS is to be used in 
+accordance with the respective licenses accompanying the Third Party OSS.
+
+List of Third Party OSS and licenses
+http://www.infoscoop.org/index.php/en/component/content/article/39.html
+
+Modification
+
+If you modify this Software, you may be required to release your source code,
+in accordance with the respective licenses of LGPLv.3 and/or the Third Party
+OSS.  Please see their respective licenses.
+
+Copyright
+
+Beacon Information Technology, Inc. holds the copyright on this Software. 
+However, the copyright of the Third Party OSS belongs to its respective
+copyright holders.
+
+Disclaimer
+
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THIS SOFTWARE OR THE USE OR OTHER DEALINGS IN THIS
+SOFTWARE.

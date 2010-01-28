@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgetConfiguration autoRefresh="true" displayFlag="false" type="FragmentMiniBrowser" title="!{lb_FragmentMiniBrowser}" singleton="true" icon="minibrowser.gif"> 
+	<WidgetPref datatype="bool" display_name="!{lb_titleEdit}" name="titleEdit" value="true"/>
+	<UserPref default_value="true" display_name="!{lb_openWidget}" datatype="hidden" name="openWidget"/>
+	<UserPref default_value="" datatype="hidden" name="url" display_name="!{lb_webSiteURL}" required="true" admin_datatype="url"/>
+	<UserPref default_value="" name="xPath" datatype="hidden" display_name="XPath" required="true" admin_datatype="xPath"/>
+		<UserPref default_value="auto" display_name="!{lb_heightPixel}" datatype="string" name="height"/>
+	<UserPref default_value="UTF-8" datatype="hidden" name="charset" display_name="!{lb_charset}" admin_datatype="charset"/>
+    <UserPref default_value="" datatype="hidden" name="cacheID" display_name="!{lb_cacheSelectElement}" admin_datatype="cacheID"/>
+	<UserPref default_value="360" datatype="hidden" name="cacheLifeTime" display_name="!{lb_cacheLifeTimeMinute}" admin_datatype="cacheLifeTime"/>
+	<UserPref default_value="auto" display_name="!{lb_itemDisplayMode}" datatype="enum" name="itemDisplay">
+		<EnumValue display_value="!{lb_portalframe}" value="inline"/>
+		<EnumValue display_value="!{lb_newWindow}" value="newwindow"/>
+		<EnumValue display_value="!{lb_targetAutoSelect}" value="auto"/>
+	</UserPref>
+	<UserPref default_value="" display_name="!{lb_authType}" datatype="hidden" name="authType" admin_datatype="authType">
+		<EnumValue display_value="!{lb_none}" value=""/>
+		<EnumValue display_value="basic" value="basic"/>
+		<EnumValue display_value="ntlm" value="ntlm"/>
+		<EnumValue display_value="postCredential" value="postCredential"/>
+		<EnumValue display_value="postPortalCredential" value="postPortalCredential"/>
+		<EnumValue display_value="sendPortalCredentialHeader" value="sendPortalCredentialHeader"/>
+	</UserPref>
+	<Header/>
+	<Content className="FragmentMiniBrowser" type="javascript"/>
+</widgetConfiguration>

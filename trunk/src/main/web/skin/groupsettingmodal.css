@@ -1,0 +1,266 @@
+
+
+/* User Search Panel */
+
+.infoScoop .user-search {
+	word-break: keep-all;
+	white-space: nowrap;
+	
+	font-family:'ƒqƒ‰ƒMƒmŠpƒS Pro W3','Hiragino Kaku Gothic Pro','‚l‚r ‚oƒSƒVƒbƒN',sans-serif;
+	font-size: 10.5pt;
+}
+
+.infoScoop .user-search .form {
+	padding-top: 2px;
+	_padding-top: 0px;
+	padding-bottom: 2px;
+	
+	min-width: 600px;
+}
+.infoScoop .user-search .form .conditions {
+	margin: 0 5px;
+}
+.infoScoop .user-search .form .conditions .condition {
+	margin-left: 5px;
+}
+.infoScoop .user-search .results table {
+	border: 1px solid gray;
+	border-collapse: collapse;
+}
+.infoScoop .user-search .results table th {
+	background-color: white;
+}
+.infoScoop .user-search .results table th,
+.infoScoop .user-search .results table td {
+	border: 1px dotted gray;
+}
+.infoScoop .user-search .add-user {
+	padding: 5px 0;
+}
+.infoScoop .user-search .add-user .description {
+	margin: 0 5px;
+	font-size: 9pt;
+	_position: relative;
+	_top: -4;
+}
+
+.infoScoop .user-search .results {
+	margin-top: 10px;
+}
+.infoScoop .user-search .results .groupItemOdd {
+	font-family: Helvetica, Arial, sans-serif;
+	background-color: #F8F8FF;
+}
+
+.infoScoop .user-search .results .groupItemEven {
+	/*cursor: move;*/
+	font-family: Helvetica, Arial, sans-serif;
+	background-color: #ffffff;
+}
+.infoScoop .user-search .results .check {
+	width: 16px;
+}
+.infoScoop .user-search .results .property {
+	width: 10em;
+	font-size: 10.5pt;
+}
+
+/* Group Setting Modal */
+
+#modal_container.GroupSchedule {
+	height:auto;
+	overflow:visible;
+	width: 80%;
+}
+#modal_container.GroupSchedule .modal-layout {
+	width: 100%;
+}
+#modal_container.GroupSchedule .user-search {
+	margin-top: 10px;
+}
+/* Group Setting Panel */
+
+.infoScoop .group-setting {
+	font-family:'ƒqƒ‰ƒMƒmŠpƒS Pro W3','Hiragino Kaku Gothic Pro','‚l‚r ‚oƒSƒVƒbƒN',sans-serif;
+	font-size: 10.5pt;
+}
+.infoScoop .group-setting,
+.infoScoop .group-setting .tabs,
+.infoScoop .group-setting .contents {
+	width: 100%;
+}
+.infoScoop .group-setting .tabs .tab .title {
+	font-size: 9pt;
+}
+.infoScoop .group-setting .contents {
+	border: 1px solid gray;
+	background-color: white;
+	clear: both;
+}
+.infoScoop .group-setting .contents .layout {
+	position: relative;
+}
+.infoScoop .group-setting .contents .drag-block {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	
+	width: 100%;
+	height: 100%;
+	
+	_width: 0px;
+	_height: 0px;
+	
+	background-color: white;
+	opacity: 0;
+	filter: alpha( opacity=0 );
+}
+.infoScoop .group-setting .contents .layout.editing .drag-block {
+	display: inline-block;
+}
+.infoScoop .group-setting .contents .content {
+	padding: 5px;
+}
+
+.infoScoop .group-setting .contents .content .no-user {
+	margin: 5px 0;
+}
+
+.infoScoop .group-setting .contents .content .user {
+	word-break: keep-all;
+	white-space: nowrap;
+	border-bottom: 1px dotted gray;
+	cursor: move;
+	padding: 2px 0;
+	margin: 2px 0;
+}
+.infoScoop .group-setting .contents .content .user.odd {
+	background-color: #F8F8FF;
+}
+.infoScoop .group-setting .contents .content .user.mouseover {
+	background-color: #E0E0F7;
+}
+.infoScoop .group-setting .contents .content .user span {
+	padding-right: 5px;
+}
+
+.infoScoop .group-setting .user-search {
+	clear: both;
+	margin-top: 10px;
+}
+
+.infoScoop .group-setting .tabs .add-group {
+	position: relative;
+	float: left;
+	
+	margin: 0 0.2em;
+	
+	top: 0;
+	margin-top: 7px;
+	
+	font-size: 10px;
+	color: #6677DD;
+	cursor: pointer;
+	
+	white-space: nowrap;
+	word-break: keep-all;
+}
+.infoScoop .group-setting .tabs .tab {
+}
+.infoScoop .group-setting .tabs .tab.selected {
+}
+.infoScoop .group-setting .tabs .tab span {
+	white-space: nowrap;
+	word-break: keep-all;
+}
+.infoScoop .group-setting .tabs .tab .title {
+	padding-top: 4;
+	margin-bottom: -3;
+	_padding-top: 0;
+	_margin-bottom: 0;
+	height: 21px;
+}
+.infoScoop .group-setting .tabs .tab.selected .title {
+	padding-top: 0;
+	margin-bottom: 1;
+	_margin-bottom: 0;
+	padding-right: 2px;
+}
+.infoScoop .group-setting .tabs .tab input {
+	display: none;
+	
+	font-size: 9pt;
+	_height: 20px;
+}
+.infoScoop .group-setting .tabs .tab .icon {
+	display: none;
+	
+	position: relative;
+	top: 4px;
+	_top: 1px;
+	left: 1px;
+	width: 16px;
+	height: 16px;
+	
+	cursor: pointer;
+}
+.infoScoop .group-setting .tabs .tab.selected .icon {
+	display: inline-block;
+	_display: inline;
+}
+.infoScoop .group-setting .tabs .tab .icon.edit {
+	background: url( ./imgs/edit.gif ) top left no-repeat;
+}
+.infoScoop .group-setting .tabs .tab .icon.edit-commit {
+	background: url( ./imgs/database_save.gif ) top left no-repeat;
+}
+.infoScoop .group-setting .tabs .tab .icon.delete {
+	background: url( ./imgs/x.gif ) top left no-repeat;
+}
+.infoScoop  .group-setting .tabs .tab input,
+.infoScoop .group-setting .tabs .tab .icon.edit-commit {
+	display: none;
+}
+.infoScoop .group-setting .tabs .tab.editing .icon {
+	_top: -2px;
+}
+.infoScoop .group-setting .tabs .tab.editing input {
+	display: inline;
+}
+.infoScoop .group-setting .tabs .tab.editing .icon.edit-commit {
+	display: inline-block;
+	_display: inline;
+}
+.infoScoop .group-setting .tabs .tab.editing .icon.edit {
+	display: none;
+}
+
+/* Temp Calendar Search Modal */
+
+.infoScoop .user-search-modal {
+	background-color: white;
+}
+.infoScoop .user-search-modal .header {
+	border: 1px solid darkgray;
+	background-color: white;
+	padding: 5px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	background: url(./imgs/widget_header.png) center bottom;
+}
+.infoScoop .user-search-modal .content {
+	position: relative;
+	_position: static;
+}
+.infoScoop .user-search-modal .content .modal-layout {
+	width: 100%;
+	table-layout: fixed;
+	_table-layout: auto;
+}
+.infoScoop .user-search-modal .footer {
+	border-top: 1px solid darkgray;
+	text-align: right;
+	padding-top: 5px;
+}

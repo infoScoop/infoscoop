@@ -1,0 +1,133 @@
+package org.infoscoop.command;
+
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.dao.TabDAO;
+import org.infoscoop.dao.WidgetDAO;
+import org.infoscoop.dao.model.Widget;
+import org.json.JSONObject;
+
+/**
+ * The command class executed when a Widget is added.
+ * 
+ * @author nakata
+ * @author hr-endoh
+ */
+public class AddWidget extends XMLCommandProcessor{
+
+    private Log log = LogFactory.getLog(this.getClass());
+
+    /**
+     * create a new object of AddWidget.
+     * 
+     */
+    public AddWidget(){
+    }
+    
+	public void execute() throws Exception {
+	 	
+        String commandId = super.commandXml.getAttribute("id").trim();
+        String widgetId = super.commandXml.getAttribute("widgetId").trim();
+        String tabId = super.commandXml.getAttribute("tabId").trim();
+        String targetColumn = super.commandXml.getAttribute("targetColumn").trim();
+        String parent = super.commandXml.getAttribute("parent").trim();
+        String sibling = super.commandXml.getAttribute("sibling").trim();
+        String menuid = super.commandXml.getAttribute("menuId").trim();
+
+        if(log.isInfoEnabled()){
+        	log.info("uid:[" + uid + "]: processXML: widgetId:[" + widgetId
+                	+ "], tabId:[" + tabId + "], targetColumn:[" + targetColumn + 
+                	"], parent:[" + parent + "], sibling:[" + sibling + "]");
+        }
+
+        if (widgetId == null || widgetId == "") {
+            String reason = "It's an unjust widgetId．widgetId:[" + widgetId + "]";
+            log.error("Failed to execute the command of AddWidget： " + reason);
+            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+                    log, commandId, false, reason);
+            return;
+        }
+
+        if (targetColumn != null && !"".equals(targetColumn) && !XMLCommandUtil.isNumberValue(targetColumn)) {
+        	String reason = "It's an unjust value of column．targetColumn:[" + targetColumn + "]";
+            log.error("Failed to execute the command of AddWidget： " + reason);
+            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+                    log, commandId, false, reason);
+            return;
+        }
+        
+        
+        // convert the JSON to XML.
+        String confJSONStr = super.commandXml.getAttribute("widgetConf");
+        JSONObject confJson = null;
+        try {
+    		confJson = new JSONObject(confJSONStr);
+    	} catch (Exception e) {
+    		log.error("", e);
+            String reason = "The information of widget is unjust.";
+            log.error("Failed to execute the command of AddWidget： " + reason);
+            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+                    log, commandId, false, reason);
+            throw e;
+		}
+    	
+    	try{
+    		TabDAO tabDAO = TabDAO.newInstance();
+    		
+        	Widget newNextSibling;
+        	if( parent != null && !"".equals( parent )) {
+        		//newNextSibling = tabDAO.getSubWidgetBySibling( uid,tabId,sibling,parent,widgetId );
+        		newNextSibling = null;
+        	} else {
+        		log.info("Find sibling: "+sibling+" of "+targetColumn );
+        		newNextSibling = tabDAO.getColumnWidgetBySibling( uid,tabId,sibling,Integer.valueOf( targetColumn ),widgetId );
+        	}
+        	
+        	if(newNextSibling != null){
+        		newNextSibling.setSiblingid( widgetId );
+        		log.info("Replace siblingId of [" + newNextSibling.getWidgetid() + "] to " + widgetId );
+ //       		WidgetDAO.newInstance().updateWidget(uid, tabId, newNextSibling);
+        	}
+        	
+    		Widget widget = new Widget( tabId, new Long(0), widgetId, uid);
+    		
+    		if(targetColumn != null && !"".equals(targetColumn)){
+    			widget.setColumn(new Integer(targetColumn));
+    		}
+    		widget.setSiblingid(sibling);
+    		widget.setParentid(parent);
+    		widget.setMenuid(menuid);
+    		if(confJson.has("title"))
+    			widget.setTitle(confJson.getString("title"));
+    		if(confJson.has("href"))
+    			widget.setHref(confJson.getString("href"));
+    		if(confJson.has("type"))
+    			widget.setType(confJson.getString("type"));
+    		if(confJson.has("property"))
+    			widget.setUserPrefsJSON(confJson.getJSONObject("property"));
+    		if (confJson.has("ignoreHeader"))
+    			widget.setIgnoreHeader(confJson.getBoolean("ignoreHeader"));
+
+    		widget.setIsstatic(new Integer(0));
+    		
+    		WidgetDAO.newInstance().addWidget( widget );
+    		
+//    		dao.updateTab( tab );
+        	
+    	} catch (Exception e) {
+    		log.error("", e);
+            String reason = "Failed to save the widget.";
+            log.error("Failed to execute the command of AddWidget： " + reason);
+            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+                    log, commandId, false, reason);
+            throw e;
+		}
+    	 
+
+
+        this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+                log, commandId, true, null);
+	}
+}

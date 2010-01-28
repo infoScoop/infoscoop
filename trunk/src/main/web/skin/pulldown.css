@@ -1,0 +1,89 @@
+.pulldown, 
+.pulldown ul,
+.pulldown li,
+.pulldown table{
+	padding: 0px;
+	margin: 0px;
+}
+.pulldown li{
+	list-style-type: none;
+	border: 1px solid gray;
+	color: black;
+	background-color: #FFF;
+	padding: 0px;
+	white-space: nowrap;
+	word-break: break-all;
+	font-size:0.9em;
+	text-align:left;
+}
+.pulldown td{
+	font-size:0.9em;
+	padding:0;
+	margin:0;
+	cursor: pointer;
+}
+.pulldown div {
+	padding-left: 2;
+	padding-right: 2;
+}
+.pulldown a{
+	display: block;
+}
+
+.pulldown_list,.pulldown_list * {
+	padding: 0px;
+	margin: 0px;
+}
+.pulldown_list {
+	display: none;
+	
+	border: 1px solid black;
+	overflow: hidden;
+	position: absolute;
+	color: black;
+	background-color: white;
+	padding: 1px;
+	cursor: pointer;
+	font-size: 0.8em;
+}
+.pulldown_list_popup {
+	display: block;
+}
+.pulldown_list_item {
+	width: 100%;
+	padding-left: 2px;
+	word-break: break-all;
+	font-size: 0.8em;
+}
+.pulldown_list_popup .hover {
+	color: #FFF;
+	background-color: #45C;
+}
+
+.pulldown{
+	color: black;
+	background-color: #FFF;
+}
+.pulldown_icon{
+	font-size:0.7em;
+	color:#559;
+	background-color: #CCF;
+}
+span.pulldown_icon{
+	padding:0.3em 0.2em 0.4em 0.2em;
+	margin-left:3px;
+	vertical-align:10%;
+}
+td.pulldown_icon{
+	margin-right: 2px;
+	width: 1.2em;
+	height: 1.2em;
+	background: #fff url(./imgs/schedule_arrow.gif) right center no-repeat;
+}
+/*if IE*/
+* html .pulldown li
+{
+	float:left;
+	width: 1em;
+}
+/*endif*/

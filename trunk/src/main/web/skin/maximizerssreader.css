@@ -1,0 +1,160 @@
+
+.infoScoop .maximize.RssReader .rssItem {
+	word-break: break-all;
+	font-size:85%;
+}
+
+.infoScoop .maximize.RssReader .maximizeRssItemList {
+	/*
+	height: 100%;
+	border: 1px solid #cccccc;
+	overflow-y: scroll;
+	*/
+	padding:'1px';
+	margin:0;
+}
+.infoScoop .maximize.RssReader .maximizeRssDetail {
+	height: 100%;
+/*	overflow: auto;*/
+}
+.infoScoop .maximize.RssReader .maximizeRssTitle {
+/*	font-size: 18px;*/
+	font-size: 1.2em;
+	font-weight: bold;
+	display:inline;
+}
+.infoScoop .maximize.RssReader .maximizeLinkIcon {
+	border:0;
+	width:16px;
+	height:16px;
+	vertical-align:top;
+	cursor:pointer;
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+.infoScoop .maximize.RssReader .maximizeRssPubDate {
+	color:gray;
+	/*font-size:80%;*/
+	font-size: 100%;
+}
+.infoScoop .maximize.RssReader .maximizeRssAtomPubButtons{
+	margin-left:10px;
+	display:inline;
+}
+.infoScoop .maximize.RssReader .maximizeRssDesc{
+	background-color:#eeeeee;
+	height: 100%;
+	font-size: 100%;
+	margin:4px 4px 4px 4px;
+	padding: 4px 4px 4px 4px;
+/*	overflow: auto;*/
+}
+.infoScoop .maximize.RssReader .maximizeRssDescText{
+	border: 0;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	/*
+	width: 100%;
+	height: 100%;
+	*/
+	overflow: auto;
+}
+.infoScoop .maximize.RssReader .maximizeToggleEditElement {
+	float: right;
+	border: 1px solid gray;
+	color: #7777CC;
+	padding: 2px;
+	font-size: 9pt;
+	-moz-border-radius: 2px;
+}
+.infoScoop .maximize.RssReader .maximizeRssTools {
+	width: 100%;
+	padding: 0;
+	_font-size: 0pt;
+	_height: 0px;
+}
+
+.infoScoop .maximize.RssReader .maximizeFilterStatePanel{
+	border-bottom : 1px solid gray;
+	word-break : break-all;
+	height:20px;
+}
+.infoScoop .maximize.RssReader .maximizeFilter{
+	position:relative;
+	float:left;
+	cursor: pointer;
+	top:5px;
+	color: #86A2C0;
+	width: 124px;
+	font-size: 9pt;
+	text-align: left;
+	padding-left: 12px;
+	background:url(./imgs/search.gif) no-repeat;
+}
+
+.infoScoop .maximize.RssReader .maximizeFilterCloseButton{
+	position:relative;
+	top:5px;
+	float:left;
+	cursor: pointer;
+	color: #86A2C0;
+	font-size:9pt;
+	text-align:left;
+	width: 124px;
+}
+
+.infoScoop .maximize.RssReader .maximizeRssReaderFilterState{
+	position:relative;
+	top:5px;
+	float:left;
+	font-size:9pt;
+	text-align:left;
+}
+
+.infoScoop .maximize.RssReader .maximizeToggleEditElement:hover {
+	background: #DDD;
+}
+.infoScoop .maximize.RssReader .maximizeToggleEditElement:visited {
+	color: #7777CC;
+}
+
+.infoScoop .maximize.RssReader .MaximizeRssReader_CreatorFilter_Autocomplete {
+	margin: 0;
+	padding: 0;
+}
+.infoScoop .maximize.RssReader .MaximizeRssReader_CreatorFilter_Autocomplete ul {
+	margin: 0;
+	padding: 0;
+}
+.infoScoop .maximize.RssReader .MaximizeRssReader_CreatorFilter_Autocomplete li {
+	margin: 0;
+	padding-top: 2;
+	padding-bottom: 2;
+	font-size: 13px;
+	list-style-type: none;
+}
+
+.infoScoop .maximize.RssReader .MaximizeRssReader_CreatorFilter_Autocomplete li.selected {
+	border: 1px solid #EEE;
+	background-color: #EFEFEF;
+}
+
+.infoScoop .maximize.RssReader .maximizeCategoryCombobox{
+	border: 1px solid white;
+	width: 240px;
+	float: left;
+}
+.infoScoop .maximize.RssReader .maximizeCategoryCombobox .latestMarkHtml,
+.infoScoop .latestMarkHtml {
+	position: absolute;
+	top: -1px;
+	right: 2;
+	padding: 0;
+	padding-right: 2;
+	
+	white-space: nowrap;
+	word-break: keep-all;
+	
+	_font-size: 10pt;
+	_overflow-y: hidden;
+}

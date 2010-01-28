@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="build-migrate" default="compile" basedir=".">
+	<property name="version" value="130to140" />
+	<property name="backup.table.sufix" value="_bak14"/>
+	<property name="target.db" value="db2"/>
+	<property name="target.db.dialect" value="org.hibernate.dialect.DB2Dialect"/>
+	<property name="target.db.jdbc.driver" value="com.ibm.db2.jcc.DB2Driver"/>
+	<property name="build.migration" value="${basedir}/build/migration" />
+	<!--property name="dist.home" value="${basedir}/dist" /-->
+	<property name="src.initdb.home" value="${basedir}/src/initdb" />
+	<property name="src.migration.java" value="${basedir}/src/migration/java" />
+	<property name="src.migration.script" value="${basedir}/src/migration/script" />
+	<property name="src.main.java" value="${basedir}/src/main/java" />
+	<property name="src.main.resources" value="${basedir}/src/main/resources" />
+	<property name="src.main.web" value="${basedir}/src/main/web" />
+	
+    <delete file="${src.migration.script}/migration.properties.tmp"/>
+	<copy tofile="${build.migration}/migration.properties.tmp" file="${src.migration.script}/migration.properties" encoding="UTF-8">
+		<filterchain>
+			<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks">
+                <!-- remove BOM code -->
+				<param name="linebreaks" value="&#65279;"/>
+			</filterreader>
+		</filterchain>
+	</copy>
+	<property file="${build.migration}/migration.properties.tmp"/>
+	<delete file="${build.migration}/migration.properties.tmp"/>
+	
+	<target name="clean">
+		<delete dir="${build.migration}"/>
+		<!--delete dir="${dist.home}"/-->
+	</target>
+	
+	<target name="prepare" depends="clean">
+		<filter token="BACKUP_TABLE_SUFFIX" value="${backup.table.sufix}"/>
+		<filter token="DATABASE_DRIVER" value="${target.db.jdbc.driver}"/>
+		<mkdir dir="${build.migration}"/>
+		<mkdir dir="${build.migration}/classes"/>
+		<copy todir="${build.migration}/classes">
+			<fileset dir="${src.migration.java}" includes="**/*.hbm.xml" />
+		</copy>
+		<copy todir="${build.migration}" file="${src.migration.script}/${version}/migration.xml" filtering="true"/>
+		<copy todir="${build.migration}" file="${src.migration.script}/migration.properties"/>
+		<copy todir="${build.migration}" file="${src.migration.script}/migration.bat"/>
+		<copy todir="${build.migration}" file="${src.migration.script}/cleanup_temp_table.bat"/>
+		<copy todir="${build.migration}" file="${src.migration.script}/migration.sh"/>
+		<copy todir="${build.migration}" file="${src.migration.script}/cleanup_temp_table.sh"/>
+		
+        <!-- copy data of new schema on this version -->
+		<copy todir="${build.migration}/data">
+			<fileset dir="${src.migration.script}/${version}/data"/>
+		</copy>
+        
+		<!-- copy data of common update data -->
+		<copy todir="${build.migration}/data/properties">
+			<fileset dir="${src.initdb.home}/data/properties"/>
+		</copy>
+		<copy todir="${build.migration}/data/i18n">
+			<fileset dir="${src.initdb.home}/data/i18n"/>
+		</copy>
+		<copy todir="${build.migration}/data/gadget">
+			<fileset dir="${src.initdb.home}/data/gadget"/>
+		</copy>
+		<copy todir="${build.migration}/data/gadgeticon">
+			<fileset dir="${src.initdb.home}/data/gadgeticon"/>
+		</copy>
+		<copy todir="${build.migration}/data/adminrole">
+			<fileset dir="${src.initdb.home}/data/adminrole"/>
+		</copy>
+		<copy todir="${build.migration}/data/portallayout">
+			<fileset dir="${src.initdb.home}/data/portallayout"/>
+		</copy>
+		
+		<copy todir="${build.migration}/sql" filtering="true">
+			<fileset dir="${src.migration.script}/${version}/sql/${target.db}"/>
+		</copy>
+		
+		<replaceregexp flags="sg" encoding="UTF-8"
+				match="\)\s*compress yes"
+				replace=") ${COMPRESS}">
+			<fileset dir="${build.migration}/sql"/>
+		</replaceregexp>
+		
+		<copy todir="${build.migration}/lib">
+			<fileset dir="${src.main.web}/WEB-INF/lib" includes="*.jar" />
+			<fileset dir="${basedir}/lib/migration" includes="*.jar" />
+		</copy>
+		
+		<fixcrlf srcdir="${build.migration}" eol="lf" eof="remove" includes="**/*.sh" />
+		<fixcrlf srcdir="${build.migration}" eol="lf" eof="remove" includes="**/*.sql" />
+		<fixcrlf srcdir="${build.migration}" eol="lf" eof="remove" includes="**/*.properties" />
+	</target>
+	
+	<target name="compile" depends="prepare,compile-infoscoop">
+		<mkdir dir="${build.migration}/tmpsrc"/>
+		<filter token="BACKUP_TABLE_SUFFIX" value="${backup.table.sufix}"/>
+		<filter token="DATABASE_DRIVER" value="${target.db.jdbc.driver}"/>
+		<filter token="HIBERNATE_DIALECT" value="${target.db.dialect}"/>
+		<copy todir="${build.migration}/tmpsrc" filtering="true">
+			<fileset dir="${src.migration.java}" />
+		</copy>
+		<javac srcdir="${build.migration}/tmpsrc" destdir="${build.migration}/classes" debug="true">
+			<classpath>
+				<fileset dir="${build.migration}/lib" includes="*.jar" />
+			</classpath>
+		</javac>
+		<jar basedir="${build.migration}/classes" jarfile="${build.migration}/classes/migration.jar" />
+		<delete dir="${build.migration}/classes/org"/>
+		
+		<copy tofile="${build.migration}/classes/datasource.xml.bak" file="${src.migration.java}/datasource.xml" filtering="true"/>
+		<copy todir="${build.migration}/classes" file="${src.migration.java}/log4j.xml"/>
+		
+		<delete dir="${build.migration}/tmpsrc"/>
+	</target>
+	<target name="compile-infoscoop">
+		<mkdir dir="${build.migration}/infoscoop"/>
+		<javac srcdir="${src.main.java}" encoding="utf-8" destdir="${build.migration}/infoscoop">
+			<classpath>
+				<fileset dir="${basedir}/lib" includes="*.jar" />
+				<fileset dir="${src.main.web}/WEB-INF/lib" includes="*.jar" />
+			</classpath>
+		</javac>
+		<copy todir="${build.migration}/infoscoop/org/infoscoop/dao/model" includeemptydirs="yes">
+			<fileset dir="${src.main.resources}/org/infoscoop/dao/model">
+				<include name="*.hbm.xml"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.migration}/infoscoop/org/infoscoop/admin/command" includeemptydirs="yes">
+			<fileset dir="${src.main.resources}/org/infoscoop/admin/command">
+				<include name="*.xml"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.migration}/infoscoop" includeemptydirs="yes">
+			<fileset dir="${src.main.resources}">
+				<include name="*.xml"/>
+				<exclude name="datasource.xml"/>
+			</fileset>
+		</copy>
+		<jar basedir="${build.migration}/infoscoop" jarfile="${build.migration}/lib/infoscoop.jar" />
+		
+		<delete dir="${build.migration}/infoscoop"/>
+	</target>
+	
+	<target name="all" depends="compile"/>
+</project>
