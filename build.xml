@@ -656,8 +656,8 @@
 		
 		<copy todir="${release.home}" file="${basedir}/gpl-3.0.txt"/>
 		<copy todir="${release.home}" file="${basedir}/lgpl-3.0.txt"/>
-		<copy todir="${release.home}" file="${basedir}/licenses.txt"/>
-		<copy todir="${release.home}" file="${basedir}/release_note.txt"/>
+		<copy todir="${release.home}" file="${basedir}/LICENSE.txt"/>
+		<copy todir="${release.home}" file="${basedir}/README.txt"/>
 		
 		<antcall target="initdb"/>
 		<!--antcall target="migration"/-->
