@@ -38,7 +38,7 @@ public class ProxyHtmlUtil {
 	
 	public static boolean isHtml(String contentType ) {
 			
-		if(contentType == null || contentType.indexOf("text/html") < 0)
+		if(contentType == null || contentType.toLowerCase().indexOf("text/html") < 0)
 			return false;
 		
 		return true;
