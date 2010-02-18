@@ -200,11 +200,13 @@
 	</target>
 	
 	<target name="mergeServicesXml" if="searchUserServiceConfig">
+		<delete file="temp.xml"/>
+		<delete file="temp.txt"/>
 		<filter token="DATA_SOURCE" value="${msd.dataSource.jndiName}"/>
 		<filter token="SCHEMA" value="${msd.dataSource.schema}"/>
 		<filter token="DIALECT" value="${msd.dataSource.dialect}"/>
 		<copy tofile="temp.xml" file="${searchUserServiceConfig}"
-			filtering="true"/>
+			filtering="true" encoding="utf-8"/>
 		<xslt style="remove-root.xslt" in="temp.xml" out="temp.txt"/>
 		<loadfile property="searchUserService" srcfile="temp.txt" encoding="UTF-8">
 			<filterchain>
