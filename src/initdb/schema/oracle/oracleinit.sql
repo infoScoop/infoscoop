@@ -432,5 +432,3 @@ create table IS_ACCOUNTS (
   name varchar(255 BYTE ),
   password varchar(255 BYTE )
 );
-
-quit;

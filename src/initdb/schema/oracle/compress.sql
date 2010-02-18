@@ -30,5 +30,3 @@ alter table is_accesslogs compress;
 alter table is_messages compress;
 alter table is_systemmessages compress;
 alter table is_accounts compress;
-
-quit;
