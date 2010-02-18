@@ -480,7 +480,7 @@ public class LDAPAccountManager implements IAccountManager{
 		}
 
 		String mail = null;
-		if( propAttrMap.containsKey("user_mail"))
+		if( propAttrMap.containsKey("user_email"))
 			mail = getAttribute( attrs,propAttrMap.get("user_email"));
 
 		Attribute displayNameAttr = attrs.get(this.userNameAttr);
