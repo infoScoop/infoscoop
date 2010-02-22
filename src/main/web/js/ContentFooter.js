@@ -233,7 +233,7 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 				}
 			});
 			var messageWidgetConf = IS_Widget.getConfiguration("Message");
-			var moduleConfs = eval("("+messageWidgetConf.WidgetPref.formConfig.content + ")");
+			var moduleConfs = eval("("+messageWidgetConf.WidgetPref.formConfig.value + ")");
 			if( !moduleConfs || moduleConfs.length == 0 )
 				self.userSearch.style.display = "none";
 			
