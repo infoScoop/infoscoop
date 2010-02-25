@@ -35,6 +35,7 @@
 	list-style:none;
 }
 .infoScoop #tabs li {
+	position:relative;
 	display: inline-block;
 	_display: inline;
 	vertical-align: bottom;
@@ -59,6 +60,7 @@
     font-size:11px;
 	height:18px;
 	//height:22px;/* for IE */
+	overflow: hidden;
 }
 
 .infoScoop #tabs li .tabLoadingIcon {
@@ -81,12 +83,13 @@
 
 .infoScoop #tabs .tab span.outer {
 	top:0;
-	_top:1;
 	background-position:0% -24px;
 	cursor:pointer;
 }
-.infoScoop #tabs .tab.selected span.outer {
+.infoScoop #tabs .tab.selected {
 	top :1px;
+}
+.infoScoop #tabs .tab.selected span.outer {
     background-position:0% 0px;
 	cursor:move;
 }
