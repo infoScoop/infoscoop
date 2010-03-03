@@ -277,7 +277,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 			return [ defaultSearchItem.id, {
 				title: value
 			}]
-		}, 128);	// Enable input by clicking
+		}, 128,{ required: true,label: ISA_R.alb_title });	// Enable input by clicking
 
 		// Address for search
 		engineTd = document.createElement("td");
@@ -294,7 +294,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 			return [ defaultSearchItem.id, {
 				retrieveUrl: value
 			}]
-		}, 512);	// Enable input by clicking
+		}, 512,{ required: true,label: ISA_R.alb_searchAdress});	// Enable input by clicking
 
 		// Encoding
 		engineTd = document.createElement("td");
@@ -366,6 +366,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 			var jsonObj = {
 				id : String( new Date().getTime() ),
 				title : ISA_R.alb_newRssPattern,
+				rssPattern: "^http://",
 				retrieveUrl : "http://",
 				encoding : "",
 				parentTagName : "rssSearch"
@@ -472,7 +473,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 			return [ rssSearchItem.id, {
 				retrieveUrl: value
 			}]
-		}, 512);	// Enable input by clicking
+		}, 512,{ required: true,label: ISA_R.alb_searchAdress });	// Enable input by clicking
 
 		// Encoding
 		engineTd = document.createElement("td");
