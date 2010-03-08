@@ -117,22 +117,13 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 		if(!adjustBar ){
 			adjustBar = document.createElement("div");
 			adjustBar.id = barId;
-			widget.elm_widgetContent.appendChild(adjustBar);
+			widget.elm_widgetShade.appendChild(adjustBar);
 			adjustBar.className = "adjustMiniBrowserBarOut";
 			
 			if( !/^previewWidget/.test( widget.id ) ) {
 				var handle = document.createElement("div");
 				handle.className = "adjustMiniBrowserBarHandle";
 				adjustBar.appendChild( handle );
-				handle.style.left = ( adjustBar.offsetWidth /2 -32 )+"px";
-				var resizeTarget = ( Browser.isIE? adjustBar : widget.iframe.contentWindow );
-				IS_Event.observe( resizeTarget,"resize",function() {
-					var leftOffset = ( adjustBar.offsetWidth /2 -32 );
-					if( leftOffset < 0 ) handle.style.display = "none";
-					else handle.style.display = "";
-					
-					handle.style.left = leftOffset+"px";
-				},false,widget.id );
 			}
 		}
 		

@@ -74,7 +74,7 @@ a:hover
 .column {
 	float:left;
 	margin-top: 5px;
-	
+	overflow-x: hidden;
 }
 
 .adjustBarOver {
