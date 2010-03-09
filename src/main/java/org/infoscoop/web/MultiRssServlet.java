@@ -245,8 +245,7 @@ public class MultiRssServlet extends HttpServlet{
 				int timeout = request.getIntHeader("MSDPortal-Timeout") - 1000;
 				proxyRequest.setTimeout((timeout > 0)? timeout : DEFAULT_TIMEOUT);
 				//proxyRequest.setTimeout(timeout);
-	
-				proxyRequest.addIgnoreHeader("content-length");
+
 				proxyRequest.addIgnoreHeader("user-agent");
 				proxyRequest.addIgnoreHeader("X-IS-DATETIMEFORMAT");
 				proxyRequest.addIgnoreHeader("X-IS-FRESHTIME");

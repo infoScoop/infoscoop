@@ -32,7 +32,6 @@ public class PostCredentialAuthenticator implements Authenticator{
 		String passwdParamName = (passwdParamNameHeader != null) ? passwdParamNameHeader : this.pwdParamName;
 		try{
 			request.addIgnoreHeader("Content-Type");
-			request.addIgnoreHeader("content-length");
 			
 			method.addRequestHeader("Content-Type", "application/x-www-form-urlencoded;");
 			NameValuePair[] params = new NameValuePair[2];

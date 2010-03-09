@@ -42,7 +42,6 @@ public class RssFilter extends ProxyFilter {
 	}
 
 	protected int preProcess(HttpClient client, HttpMethod method,	ProxyRequest request) {
-		request.addIgnoreHeader("content-length");
 		request.addIgnoreHeader("user-agent");
 		request.addIgnoreHeader("X-IS-DATETIMEFORMAT");
 		request.addIgnoreHeader("X-IS-FRESHTIME");
