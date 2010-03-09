@@ -483,20 +483,11 @@ public class LDAPAccountManager implements IAccountManager{
 		if( propAttrMap.containsKey("user_email"))
 			mail = getAttribute( attrs,propAttrMap.get("user_email"));
 
-		Attribute displayNameAttr = attrs.get(this.userNameAttr);
 		String displayName = null;
-		if(displayNameAttr != null){
-			try{
-				displayName = (String)displayNameAttr.get(0);
-			}catch(ArrayIndexOutOfBoundsException e){
-			}
-		}
-
-		String name = null;
 		if( userNameAttr != null ) {
-			name = getAttribute( attrs,userNameAttr );
+			displayName = getAttribute( attrs,this.userNameAttr );
 		} else if( propAttrMap.containsKey("user_name")) {
-			name = getAttribute( attrs,propAttrMap.get("user_name"));
+			displayName = getAttribute( attrs,propAttrMap.get("user_name"));
 		}
 
 		String groupName = null;
