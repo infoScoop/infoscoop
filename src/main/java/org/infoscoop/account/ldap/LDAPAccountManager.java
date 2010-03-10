@@ -67,7 +67,7 @@ public class LDAPAccountManager implements IAccountManager{
 	/**
 	 * Display name atrribute in User entry.
 	 */
-	private String userNameAttr = "displayName";
+	private String userNameAttr = null;
 
 	/**
 	 * Group Name in User entry.
