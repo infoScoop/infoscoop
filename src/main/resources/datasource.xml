@@ -94,9 +94,7 @@
 						org.hibernate.dialect.MySQLDialect
 					<!--end dataSource.dialect-->
 					</prop>
-					<prop key="hibernate.default_schema"><!--start dataSource.schema-->
-						iscoop
-					<!--end dataSource.schema--></prop>
+					<prop key="hibernate.default_schema"><!--start dataSource.schema--><!--end dataSource.schema--></prop>
 					<prop key="hibernate.show_sql">false</prop>
 					<prop key="hibernate.jdbc.use_get_generated_keys">false</prop>
 				</props>
