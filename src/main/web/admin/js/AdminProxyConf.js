@@ -279,7 +279,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 				replacement : "",
 				host : null,
 				port : null,
-				headers : $A(ISA_ProxyConf.HeaderConfigPane.presets.headers).select(function(value){ return !ISA_ProxyConf.defaultSendHedaers.include(value); });
+				headers : $A(ISA_ProxyConf.HeaderConfigPane.presets.headers).select(function(value){ return !ISA_ProxyConf.defaultSendHedaers.include(value); })
 			};
 			addProxyConfig(jsonObj);
 			$('caseProxyConfigList').appendChild(self.buildCaseProxyConfigList(jsonObj));
