@@ -35,7 +35,6 @@
 	list-style:none;
 }
 .infoScoop #tabs li {
-	position:relative;
 	display: inline-block;
 	_display: inline;
 	vertical-align: bottom;
