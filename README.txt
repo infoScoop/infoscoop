@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.0.0
+infoScoop OpenSource 2.0.1
 ==========================
 
 What is it?
@@ -13,6 +13,30 @@ Installation
 Please refer to the following URL.
 http://www.infoscoop.org/index.php/manual/quick-start.html
 
+
+How to update to 2.0.1 from an old version.
+-----------------------------------------
+1. Re deploy infoscoop.war to WebApplication Server according to Quick Start.
+
+2. Replace gadget files in the repository database.
+
+  (1). Open SQL executable tool.
+  (2). Execute following SQL command.
+     > delete from IS_GADGETS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
+     > delete from IS_GADGET_ICONS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
+  (3). Open command pronpt, change directory to tools/initdb
+  (4). Copy the suitable JDBC Driver to lib dir.
+  (5). Execute following command:
+     >import.sh(bat) GADGET,GADGETICON
+
+[Warning]Executing steps above, following gadgets settings is initialized:
+  * calc
+  * todoList
+  * alarm
+  * blogparts
+  * sticky
+  * worldclock
+
 Licensing and Copyright
 -----------------------
 
@@ -20,7 +44,7 @@ This code is licensed under the **GNU Lesser General Public License (LGPL) v3**.
 LICENSE.txt for licensing and copyright information.
 
 
-Changes from 2.0.0-RC2 to current 2.0.0 version.
+Changes from 2.0.0 to current 2.0.1 version.
 --------------------------------------------
 Please refer to the following URL.
-http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3DMilestone-2.0
+http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3DMilestone-2.0.1
