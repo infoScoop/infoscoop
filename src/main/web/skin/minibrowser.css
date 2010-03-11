@@ -7,11 +7,14 @@
 	cursor: row-resize;
 	text-align: center;
 	background-color: #EEE;
-	border-top: 1px solid black;
 	_font-size: 0px;
-	top: 1px;
-	height: 2px;
+	padding-top: 1px;
+	height: 7px;
 	text-align: center;
+	overflow:hidden;
+}
+.infoScoop .handleSideBar {
+    border-top: 1px solid black;
 }
 .infoScoop .adjustMiniBrowserBarOver {
 }

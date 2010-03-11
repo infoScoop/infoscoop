@@ -121,6 +121,9 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 			adjustBar.className = "adjustMiniBrowserBarOut";
 			
 			if( !/^previewWidget/.test( widget.id ) ) {
+				var handle_side_bar = document.createElement("div");
+				handle_side_bar.className = "handleSideBar";
+				adjustBar.appendChild( handle_side_bar );
 				var handle = document.createElement("div");
 				handle.className = "adjustMiniBrowserBarHandle";
 				adjustBar.appendChild( handle );
