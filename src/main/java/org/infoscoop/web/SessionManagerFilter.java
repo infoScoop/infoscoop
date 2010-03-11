@@ -103,7 +103,6 @@ public class SessionManagerFilter implements Filter {
 				log.info("uidHeader is null");
 			return null;
 		}
-		uid = uid.trim();
 
 		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
 			HttpSession session = req.getSession(true);
@@ -116,7 +115,7 @@ public class SessionManagerFilter implements Filter {
 		}else if( uidIgnoreCase && uid != null )
 			uid = uid.toLowerCase();
 
-		return uid;
+		return uid.trim();
 	}
 
 	private String getUidFromSession(HttpServletRequest req){
