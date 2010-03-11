@@ -3,7 +3,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-    <!--start of searchUserService-->
+    <!--start of accountAccessService-->
 	<!-- for LDAP -->
 	<!--bean id="LDAPAccountManager" singleton="true"
 		class="org.infoscoop.account.ldap.LDAPAccountManager">
@@ -146,7 +146,7 @@
          <ref bean="SimpleAccountManager"/>
       </property>
    </bean>
-   <!--end of searchUserService-->
+   <!--end of accountAccessService-->
 
    <bean id="sessionCreateConfig" singleton="true" class="org.infoscoop.account.SessionCreateConfig">
 		<property name="headerPrincipalConfig">
