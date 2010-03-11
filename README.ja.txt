@@ -37,6 +37,7 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
   * sticky
   * worldclock
 
+
 ライセンス・著作権
 ------------------
 

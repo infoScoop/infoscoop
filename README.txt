@@ -37,6 +37,7 @@ How to update to 2.0.1 from an old version.
   * sticky
   * worldclock
 
+
 Licensing and Copyright
 -----------------------
 
