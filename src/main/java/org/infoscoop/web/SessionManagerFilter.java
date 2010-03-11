@@ -103,6 +103,7 @@ public class SessionManagerFilter implements Filter {
 				log.info("uidHeader is null");
 			return null;
 		}
+		uid = uid.trim();
 
 		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
 			HttpSession session = req.getSession(true);
@@ -142,7 +143,7 @@ public class SessionManagerFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		if(log.isDebugEnabled()){
-			log.debug("Enter SessionManagerFilter　form " + httpReq.getRequestURI());
+			log.debug("Enter SessionManagerFilter form " + httpReq.getRequestURI());
 		}
 
 		if (request instanceof javax.servlet.http.HttpServletRequest) {
@@ -391,6 +392,7 @@ public class SessionManagerFilter implements Filter {
 			
 			service.login( portalUid,portalPassword );
 			
+			portalUid = portalUid.trim();
 			return portalUid;
 		} catch( Exception ex ) {
 //			log.info("Auto Login Failed by ["+credentialStr+"]");
