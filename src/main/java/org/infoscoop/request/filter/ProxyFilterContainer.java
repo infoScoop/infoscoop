@@ -61,7 +61,6 @@ public class ProxyFilterContainer {
 		if(method instanceof GetMethod){
 
 			request.addIgnoreHeader("content-type");
-			request.addIgnoreHeader("content-length");
 
 			if(request.allowUserPublicCache()){
 				// TODO: Is the improvement of the performance necessary?

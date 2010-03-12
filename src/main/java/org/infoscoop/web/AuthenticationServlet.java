@@ -63,6 +63,9 @@ public class AuthenticationServlet extends HttpServlet {
 
 		String action = ((HttpServletRequest)request).getPathInfo();
 		String uid = request.getParameter("uid");
+		if (uid != null) {
+			uid = uid.trim();
+		}
 		String password = request.getParameter("password");
 		if(password != null){
 			password = password.trim();

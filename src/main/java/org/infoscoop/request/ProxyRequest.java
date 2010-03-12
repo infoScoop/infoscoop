@@ -135,6 +135,7 @@ public class ProxyRequest{
 					+ this.filterType);
     	
     	ignoreHeaderNames.add("accept-encoding");
+    	ignoreHeaderNames.add("content-length");
     	ignoreHeaderNames.add("authtype");
     	ignoreHeaderNames.add("authcredentialid");
     	ignoreHeaderNames.add(Authenticator.UID_PARAM_NAME.toLowerCase());

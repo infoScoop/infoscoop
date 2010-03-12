@@ -36,8 +36,7 @@
 }
 .infoScoop #tabs li {
 	position:relative;
-	display: inline-block;
-	_display: inline;
+	float:left;
 	vertical-align: bottom;
     margin:0;
     padding:0;

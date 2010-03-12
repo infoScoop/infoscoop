@@ -56,8 +56,9 @@
 			<property name="hibernateProperties">
 				<props>
 					<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-					<prop key="hibernate.default_schema">iscoop</prop>
+					<prop key="hibernate.default_schema"></prop>
 					<prop key="hibernate.show_sql">false</prop>
+					<prop key="hibernate.jdbc.use_get_generated_keys">false</prop>
 				</props>
 			</property>
 	</bean>

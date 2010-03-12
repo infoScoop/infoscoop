@@ -115,7 +115,7 @@ public class SessionManagerFilter implements Filter {
 		}else if( uidIgnoreCase && uid != null )
 			uid = uid.toLowerCase();
 
-		return uid;
+		return uid.trim();
 	}
 
 	private String getUidFromSession(HttpServletRequest req){
@@ -142,7 +142,7 @@ public class SessionManagerFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		if(log.isDebugEnabled()){
-			log.debug("Enter SessionManagerFilter　form " + httpReq.getRequestURI());
+			log.debug("Enter SessionManagerFilter form " + httpReq.getRequestURI());
 		}
 
 		if (request instanceof javax.servlet.http.HttpServletRequest) {
@@ -391,6 +391,7 @@ public class SessionManagerFilter implements Filter {
 			
 			service.login( portalUid,portalPassword );
 			
+			portalUid = portalUid.trim();
 			return portalUid;
 		} catch( Exception ex ) {
 //			log.info("Auto Login Failed by ["+credentialStr+"]");
