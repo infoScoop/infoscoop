@@ -658,6 +658,7 @@
 		<copy todir="${release.home}" file="${basedir}/lgpl-3.0.txt"/>
 		<copy todir="${release.home}" file="${basedir}/LICENSE.txt"/>
 		<copy todir="${release.home}" file="${basedir}/README.txt"/>
+    	<copy todir="${release.home}" file="${basedir}/README.ja.txt"/>
 		
 		<antcall target="initdb"/>
 		<!--antcall target="migration"/-->
