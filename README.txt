@@ -16,9 +16,9 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 
 How to update to 2.0.1 from an old version.
 -----------------------------------------
-1. Re deploy infoscoop.war to WebApplication Server according to Quick Start.
+1. Redeploy infoscoop.war to WebApplication Server according to Quick Start.
 
-2. Replace gadget files in the repository database.
+2. Replace gadget files in the repository database and update i18n resources.
 
   (1). Open SQL executable tool.
   (2). Execute following SQL command.
@@ -27,15 +27,18 @@ How to update to 2.0.1 from an old version.
   (3). Open command pronpt, change directory to tools/initdb
   (4). Copy the suitable JDBC Driver to lib dir.
   (5). Execute following command:
-     >import.sh(bat) GADGET,GADGETICON
+     >import.sh(bat) GADGET,GADGETICON,I18N
 
-[Warning]Executing steps above, following gadgets settings is initialized:
-  * calc
-  * todoList
-  * alarm
-  * blogparts
-  * sticky
-  * worldclock
+  [Warning]Executing steps above, following gadgets settings is initialized:
+    * calc
+    * todoList
+    * alarm
+    * blogparts
+    * sticky
+    * worldclock
+
+3. if the static content URL is set, replacement of  the static content files is necessary.
+  Replace the directory where static contents are stored currently to 'infoscoop/staticContent' directory.
 
 
 Licensing and Copyright

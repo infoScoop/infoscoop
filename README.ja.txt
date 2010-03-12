@@ -18,7 +18,7 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 -----------------------------
 1. クイックスタートを参考にWebアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
-2. データベース内のガジェットを全て置き換えます。
+2. データベース内のガジェットを置き換え、国際化リソースを追加します。
 
   (1). SQL実行ツールを開きます。
   (2). 以下のSQLコマンドを実行します。
@@ -27,16 +27,18 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
   (3). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
   (4). 適切なJDBCドライバーをlibディレクトリにコピーします。
   (5). 以下のコマンドを実行します。
-     >import.sh(bat) GADGET,GADGETICON
+     >import.sh(bat) GADGET,GADGETICON,I18N
 
-※上記手順を実行すると、以下のガジェットの設定が初期化されます。
-  * calc
-  * todoList
-  * alarm
-  * blogparts
-  * sticky
-  * worldclock
+  ※上記手順を実行すると、以下のガジェットの設定が初期化されます。
+    * calc
+    * todoList
+    * alarm
+    * blogparts
+    * sticky
+    * worldclock
 
+3. 静的コンテンツを設定している場合は、静的コンテンツを入れ替えます。
+  静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
 
 ライセンス・著作権
 ------------------
