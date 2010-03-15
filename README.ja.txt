@@ -11,7 +11,7 @@ For more information, please see the infoScoop OpenSource website at http://www.
 インストール方法
 ----------------
 以下のURLを参照してください。
-http://www.infoscoop.org/index.php/manual/install-guide.html
+http://www.infoscoop.org/index.php/manual/quick-start.html
 
 
 2.0.1へのバージョンアップ方法

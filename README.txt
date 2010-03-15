@@ -11,7 +11,7 @@ For more information, please see the infoScoop OpenSource website at http://www.
 Installation
 ------------
 Please refer to the following URL.
-http://www.infoscoop.org/index.php/manual/install-guide.html
+http://www.infoscoop.org/index.php/manual/quick-start.html
 
 
 How to update to 2.0.1 from an old version.
