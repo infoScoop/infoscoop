@@ -2215,6 +2215,7 @@ IS_Widget.RssReader.buildMultiAccessStatContent = function( widget,root ) {
 		var iframe = document.createElement("iframe");
 		iframe.frameBorder = 0;
 		iframe.style.width = iframe.style.height = "100%";
+		iframe.src = "./blank.html";
 		content.appendChild( iframe );
 	});
 	

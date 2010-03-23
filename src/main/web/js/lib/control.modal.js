@@ -42,6 +42,7 @@ Object.extend(Control.Modal,{
 			Control.Modal.behindIframe.border = "0";
 			Control.Modal.behindIframe.frameborder = "0"
 			Control.Modal.behindIframe.style.zIndex = 1000;
+			Control.Modal.behindIframe.src = "./blank.html";
 			Control.Modal.behindIframe.style.position = "absolute";
 			
 			if(Browser.isIE){

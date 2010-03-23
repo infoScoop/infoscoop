@@ -788,6 +788,7 @@ IS_Widget.prototype.classDef = function() {
 		self.iframe.id = "ifrm_" + self.id;
 		self.iframe.name = "ifrm_" + self.id;
 		self.iframe.frameBorder = 0;
+		self.iframe.src = "./blank.html";
 		
 		var scrolling = self.scrolling;
 		if(/FragmentMiniBrowser/.test(self.widgetType ) )

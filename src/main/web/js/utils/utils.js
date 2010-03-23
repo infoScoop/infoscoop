@@ -599,6 +599,7 @@ function MenuPullDown(element, widgetId, eventKey){
 		iframe.className = "widgetMenuOverlay";
 		iframe.border = "0";
 		iframe.frameBorder = "0";
+		iframe.src = "./blank.html";
 		document.body.appendChild(iframe);
 		
 		var closer = document.createElement("div");
@@ -1021,6 +1022,7 @@ function is_getURLByIFrame(inputUrl, _callback, _eventId, parameters){
 		getTitleIFrame = document.createElement('iframe');
 		getTitleIFrame.name = 'getTitleInnerFrame';
 		getTitleIFrame.id = 'getTitleInnerFrame';
+		getTitleIFrame.src = "./blank.html";
 		if( Browser.isSafari1 ) {
 			getTitleIFrame.style.width = getTitleIFrame.style.height = 0;
 			getTitleIFrame.style.visibility = "hidden";
