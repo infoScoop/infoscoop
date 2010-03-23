@@ -887,6 +887,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		iframe.border = "0";
 		iframe.frameborder = "0";
 		iframe.style.display = "none";
+		iframe.src = "./blank.html";
 		document.body.appendChild(iframe);
 		Event.observe(iframe, "mouseover", function(){this.style.display = "none";}.bind(iframe), false);
 		this.overlay = iframe;

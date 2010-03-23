@@ -217,6 +217,7 @@ IS_Widget.MaximizeRssReader.RssItemRender.getDetailIframe = function() {
 	maxIframe.style.display = "none";
 	maxIframe.style.width = "100%";
 	maxIframe.style.height = "100%";
+	maxIframe.src = "./blank.html";
 	var maxIframeOnload = function(){
 		if(Browser.isIE){
 			if( IS_Widget.MaximizeRssReader.RssItemRender.forceFocusControl )

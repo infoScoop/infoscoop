@@ -459,6 +459,7 @@ IS_Portal.showTabMenu = function(tabElement, e){
 		iframe.frameBorder = "0";
 		iframe.style.width = menuDiv.offsetWidth;
 		iframe.style.height = menuDiv.offsetHeight;
+		iframe.src = "./blank.html";
 		document.body.appendChild(iframe);
 		
 		var handleHideTabMenu = hideTabMenu.bind( tabObj );

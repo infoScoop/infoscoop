@@ -21,7 +21,7 @@ if( url == null ) {
 	<script>
 		window.onload = function(){
 			var iframe = document.getElementById("ifrm");
-			iframe.src = "about:blank";
+			//iframe.src = "about:blank";
 			iframe.src = "<%= ProxyRequest.escapeURL(url) %>";
 			iframe.style.display = "";
 		};
@@ -30,7 +30,7 @@ if( url == null ) {
 <body style="margin:0;padding:0;">
 
 <iframe id="ifrm" frameBorder="0" style="display:none;margin:0;padding:0;width:100%;height:100%;"
-src=""
+src="./blank.html"
 scrolling="<%=scrolling%>"></iframe>
 
 <%
