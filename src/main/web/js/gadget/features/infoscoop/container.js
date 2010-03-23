@@ -149,6 +149,10 @@ gadgets.rpc.register("is_add_widget_to_panel",function(type, url, title, href) {
 	return widgetId;
 });
 
+gadgets.rpc.register("is_open_portal_iframe",function(url) {
+	IS_Portal.openIframe(url);
+});
+
 gadgets.rpc.register("is_refresh",function() {
 	var widget = IS_Portal.getWidget( this.mid,this.tid );
 	if( widget.authToken != this.t ) return;

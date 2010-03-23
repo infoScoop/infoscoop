@@ -1005,6 +1005,40 @@ IS_Portal.isInlineUrl = function(url){
 	return false;
 }
 
+IS_Portal.showIframe = function(url){
+	var iframeToolBar = $("iframe-tool-bar");
+	if(iframeToolBar.innerHTML == "")
+		IS_Portal.buildIframeToolBar();
+	
+	IS_Portal.CommandBar.changeIframeView();
+	
+	var divIFrame = $("search-iframe");
+	if ( divIFrame ) {
+		divIFrame.style.display = "none";
+	}
+	
+	var divIFrame = $("portal-iframe");
+
+	var divIS_PortalWidgets = document.getElementById("panels");
+	divIS_PortalWidgets.style.display="none";
+	IS_Portal.widgetDisplayUpdated();
+
+	divIFrame.style.display="";
+	var iframe = $("ifrm");
+	iframe.src = url? url : "";
+	setTimeout(IS_Portal.adjustIframeHeight.bind(iframe, null, iframe), 1);
+
+	IS_Portal.refresh.cancel();
+}
+
+IS_Portal.openIframe = function(url){
+	if(IS_Widget.MiniBrowser.isForbiddenURL(url)){
+		window.open("", url);
+		return;
+	}
+	IS_Portal.showIframe(url);
+}
+
 IS_Portal.buildIFrame = function (aTag) {
 	if(aTag) {
 		if(/^notes:\/\//i.test( aTag.href )){
@@ -1039,31 +1073,7 @@ IS_Portal.buildIFrame = function (aTag) {
 		}
 	}
 			
-	var iframeToolBar = $("iframe-tool-bar");
-	if(iframeToolBar.innerHTML == "")
-		IS_Portal.buildIframeToolBar();
-	
-//	iframeToolBar.style.display = "block";
-	IS_Portal.CommandBar.changeIframeView();
-	
-	var divIFrame = $("search-iframe");
-	if ( divIFrame ) {
-		divIFrame.style.display = "none";
-	}
-	
-						
-	var divIFrame = $("portal-iframe");
-
-	var divIS_PortalWidgets = document.getElementById("panels");
-	divIS_PortalWidgets.style.display="none";
-	IS_Portal.widgetDisplayUpdated();
-
-	divIFrame.style.display="";
-	var iframe = $("ifrm");
-	iframe.src = "";
-	setTimeout(IS_Portal.adjustIframeHeight.bind(iframe, null, iframe), 1);
-
-	IS_Portal.refresh.cancel();
+	IS_Portal.showIframe();
 };
 
 if( Browser.isSafari1 ){

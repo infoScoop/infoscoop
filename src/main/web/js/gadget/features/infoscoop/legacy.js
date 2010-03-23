@@ -93,3 +93,10 @@ function _IS_DropMiniBrowser(url, title, href) {
 function _IS_DropGadget(url, title, href) {
 	gadgets.rpc.call( null,"is_add_widget_to_panel",null, 'Gadget', url, title, href );
 }
+/*
+ * Open link in inline frame of infoScoop.
+ * @param url target url
+ */
+function _IS_OpenPortalIframe(url){
+	gadgets.rpc.call(null,"is_open_portal_iframe",null, url);
+}
