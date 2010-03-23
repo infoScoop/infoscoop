@@ -244,7 +244,7 @@ if( isPreview == null )
 						  <div id="maximize-panel" style="display:none;"></div>
 						</div>
 						<div id="portal-iframe" style="display:none;">
-							<iframe id="ifrm" name="ifrm" src="about:blank" FrameBorder="0" style="width:100%;height768px;border:none;scrolling:auto;"></iframe>
+							<iframe id="ifrm" name="ifrm" src="./blank.html" FrameBorder="0" style="width:100%;height768px;border:none;scrolling:auto;"></iframe>
 						</div>
 						<div id="iframe-tool-bar"></div>
 						<div id="search-iframe" style="display:none;"></div>

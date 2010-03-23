@@ -1748,6 +1748,7 @@ IS_Portal.windowOverlay = function(id, tag){
 	var overlay = document.createElement(tag);
 	overlay.className = "windowOverlay";
 	overlay.id = id;
+	if(tag == 'iframe')overlay.src = './blank.html';
 	document.body.appendChild(overlay);
 	
 	this.show = function(cursorType){
@@ -2447,6 +2448,7 @@ IS_Portal.behindIframe = {
 		this.behindIframe.id = "is_portal_behind_iframe";
 		this.behindIframe.frameborder = 0;
 		this.behindIframe.style.position = "absolute";
+		this.behindIframe.src = "./blank.html";
 		document.getElementsByTagName('body')[0].appendChild(this.behindIframe);
 		this.behindIframe.hide();
 	},
