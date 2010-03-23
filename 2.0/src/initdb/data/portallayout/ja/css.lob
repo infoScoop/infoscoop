@@ -1,0 +1,4 @@
+/* ここにカスタム CSS コードを記述します */
+body{
+	background: url(skin/imgs/stripe.png);
+}

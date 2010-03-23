@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<proxy-config>
+	<case id="_1" pattern="^http://localhost(:[0-9]*)?/.*" type="direct" />
+	<default id="_2" type="direct" cacheLifeTime="10">
+		<headers>
+			<header>Connection</header>
+			<header>Date</header>
+			<header>Pragma</header>
+			<header>Upgrade</header>
+			<header>Via</header>
+			<header>Accept</header>
+			<header>Accept-Charset</header>
+			<header>Accept-Language</header>
+			<header>Authorization</header>
+			<header>Expect</header>
+			<header>From</header>
+			<header>Max-Forwards</header>
+			<header>Proxy-Authorization</header>
+			<header>Range</header>
+			<header>Referer</header>
+			<header>Te</header>
+			<header>User-Agent</header>
+			<header>Cookie</header>
+			<header>Content-Type</header>
+			<header>Content-Encoding</header>
+			<header>Transfer-Encoding</header>
+			<header>Content-Disposition</header>
+			<header>Cache-Control</header>
+			<header>If-Match</header>
+			<header>If-Modified-Since</header>
+			<header>If-None-Match</header>
+			<header>If-Range</header>
+			<header>If-Unmodified-Since</header>
+		</headers>
+	</default>
+</proxy-config>

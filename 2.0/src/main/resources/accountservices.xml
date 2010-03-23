@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <!--start of accountAccessService-->
+	<!-- for LDAP -->
+	<!--bean id="LDAPAccountManager" singleton="true"
+		class="org.infoscoop.account.ldap.LDAPAccountManager">
+		<constructor-arg>
+			<value>ldap://localhost:10389</value>
+		</constructor-arg><constructor-arg>
+			<value>uid=admin,ou=system</value>
+		</constructor-arg><constructor-arg>
+			<value>secret</value>
+		</constructor-arg><constructor-arg>
+			<value>ou=Users,dc=example,dc=com</value>
+		</constructor-arg><constructor-arg>
+			<value>ou=Groups,dc=example,dc=com</value>
+		</constructor-arg>
+		<property name="userSearchAttr">
+			<map>
+				<entry key="user_id"><value>uid</value></entry>
+				<entry key="user_name"><value>cn</value></entry>
+      			<entry key="user_email"><value>mail</value></entry>
+			</map>
+		</property>
+		<property name="groupSearchAttr">
+			<map>
+				<entry key="org_name"><value>cn</value></entry>
+				<entry key="org_member"><value>uniqueMember</value></entry>
+			</map>
+		</property>
+		<property name="userNameAttr">
+			<value>cn</value>
+		</property>
+		<property name="groupNameAttr">
+			<value>cn</value>
+		</property>
+	</bean-->
+	<!-- for ActiveDirecotry -->
+	<!-- bean id="LDAPSearchModule" singleton="true"
+		class="org.infoscoop.account.ldap.LDAPAccountManager">
+		<constructor-arg>
+			<value>hostname</value>
+		</constructor-arg><constructor-arg type="int">
+			<value>389</value>
+		</constructor-arg><constructor-arg>
+			<value>CN=Administrator,CN=Users,DC=infoscoop,DC=domain</value>
+		</constructor-arg><constructor-arg>
+			<value>admin</value>
+		</constructor-arg><constructor-arg>
+			<value>CN=Users,DC=infoscoop,DC=domain</value>
+		</constructor-arg><constructor-arg>
+			<value>OU=MyOffice,DC=infoscoop,DC=domain</value>
+		</constructor-arg>
+		<property name="userSearchAttr">
+			<map>
+				<entry key="user_id"><value>sAMAccountName</value></entry>
+				<entry key="user_name"><value>displayName</value></entry>
+      			<entry key="user_email"><value>mail</value></entry>
+			</map>
+		</property>
+		<property name="groupSearchAttr">
+			<map>
+				<entry key="org_name"><value>cn</value></entry>
+				<entry key="org_member"><value>uniqueMember</value></entry>
+			</map>
+		</property>
+		<property name="displayNameUserAttr">
+			<value>displayName</value>
+		</property>
+		<property name="displayMailUserAttr">
+			<value>mail</value>
+		</property>
+		<property name="displayNameGroupAttr">
+			<value>cn</value>
+		</property>
+	</bean-->
+	<!--bean id="searchUserService" singleton="false"
+		class="org.infoscoop.account.SearchUserService">
+		<property name="accountManager">
+			<ref bean="LDAPAccountManager" />
+		</property>
+	</bean-->
+   <!-- bean id="_dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp/env/jdbc/msd</value>
+		</property>
+   </bean-->
+	<!--bean id="_dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName">
+			<value>com.ibm.db2.jcc.DB2Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:db2://localhost:50000/msd</value>
+		</property>
+		<property name="username">
+			<value>db2admin</value>
+		</property>
+		<property name="password">
+			<value>db2admin</value>
+		</property>
+	</bean-->
+	<!-- bean id="_sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+			<property name="dataSource"><ref local="_dataSource"/></property>
+			<property name="mappingResources">
+				<list>
+					<value>jp/co/beacon_it/msd/portal/searchuid/msd_ids/Employee.hbm.xml</value>
+					<value>jp/co/beacon_it/msd/portal/searchuid/msd_ids/Organization.hbm.xml</value>
+					<value>jp/co/beacon_it/msd/portal/searchuid/msd_ids/Title.hbm.xml</value>
+					<value>jp/co/beacon_it/msd/portal/searchuid/msd_ids/UserGroup.hbm.xml</value>
+				</list>
+			</property>
+			<property name="hibernateProperties">
+				<props>
+					<prop key="hibernate.dialect">org.hibernate.dialect.DB2Dialect</prop>
+					<prop key="hibernate.default_schema">db2admin</prop>
+					<prop key="hibernate.show_sql">true</prop>
+				</props>
+			</property>
+	</bean>
+   <bean id="MSD_IDSSearchModule" singleton="true" class="org.infoscoop.account.msd_ids.MSD_IDSSearchModule" >
+   		<property name="sessionFactory">
+   	   		<ref local="_sessionFactory"/>
+   	 	</property>
+   </bean>
+   <bean id="searchUserService" singleton="false" class="org.infoscoop.account.SearchUserService" >
+      <property name="accountManager" >
+         <ref bean="MSD_IDSSearchModule"/>
+      </property>
+   </bean-->
+   <bean id="SimpleAccountManager" singleton="true" class="org.infoscoop.account.simple.SimpleAccountManager" >
+   		<property name="accountDAO">
+   			<ref bean="accountDAO"/>
+   		</property>
+   </bean>
+   <bean id="searchUserService" singleton="false" class="org.infoscoop.account.SearchUserService" >
+      <property name="accountManager" >
+         <ref bean="SimpleAccountManager"/>
+      </property>
+   </bean>
+   <bean id="authenticationService" singleton="false" class="org.infoscoop.account.AuthenticationService" >
+      <property name="accountManager" >
+         <ref bean="SimpleAccountManager"/>
+      </property>
+   </bean>
+   <!--end of accountAccessService-->
+
+   <bean id="sessionCreateConfig" singleton="true" class="org.infoscoop.account.SessionCreateConfig">
+		<property name="headerPrincipalConfig">
+		<value><!--start of headerPrincipalConfig
+		[
+		 {
+		  type:"RolePrincipal",
+		  displayName:"Role",
+		  headerName:"ROLE"
+		 }
+		]
+		end of headerPrincipalConfig--></value>
+		</property>
+		<property name="uidHeader">
+			<value><!--uidHeader--></value>
+		</property>
+		<property name="usernameHeader">
+			<value><!--usernameHeader--></value>
+		</property>
+		<property name="loginAuthentication">
+			<value><!--start loginAuthentication-->
+				true
+			<!--end loginAuthentication--></value>
+		</property>
+		<property name="uidIgnoreCase">
+			<value><!--start sessionCreateConfig.uidIgnoreCase-->
+				false
+			<!--end sessionCreateConfig.uidIgnoreCase--></value>
+		</property>
+   </bean>
+</beans>

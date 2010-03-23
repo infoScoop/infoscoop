@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<searchEngines>
+	<defaultSearch>
+		<searchEngine id="google" title="Google" retrieveUrl="http://www.google.co.jp/search?q=">
+			<countRule method="regexp" value=".*検索結果(?: 約)? &lt;b&gt;([0-9,]+)&lt;/b&gt; 件中.*"/>
+		</searchEngine>
+		<searchEngine id="atmarkit" title="@IT" retrieveUrl="http://www.atmarkit.co.jp/misc/search/search.php?cs=EJ&amp;query=" encoding="EUC-JP">
+			<countRule method="regexp" value="([0-9]+)件中.*"/>
+		</searchEngine>
+		<searchEngine id="yahoo" title="Yahoo" retrieveUrl="http://search.yahoo.co.jp/search?ei=UTF-8&amp;p=">
+			<countRule method="regexp" value=".*約&lt;strong&gt;([0-9,]+)&lt;/strong&gt;件.*"/>
+		</searchEngine>
+	</defaultSearch>
+	<rssSearch>
+		<!--上記に該当しないRSSをgoogleサイト内検索で検索する設定例-->
+		<searchEngine id="googlesite" retrieveUrl="http://www.google.com/search?&amp;q=site%3A$1%20">
+			<rssPattern>^http://([^/]+)/.*</rssPattern>
+			<countRule method="regexp" value=".*検索結果(?: 約)? &lt;b&gt;([0-9,]+)&lt;/b&gt; 件中.*"/>
+		</searchEngine>
+	</rssSearch>
+</searchEngines>
