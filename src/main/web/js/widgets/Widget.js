@@ -385,6 +385,7 @@ IS_Widget.prototype.classDef = function() {
 	}
 	
 	var isStatic;
+	this.isStaticHeight = false;
 	var isMaximize;
 
 	this.build = function() {
@@ -553,10 +554,11 @@ IS_Widget.prototype.classDef = function() {
 		var end = new Date();
 		msg.debug(this.id + " build time: " + (end - start));
 		
+		var container = $("s_" + this.id);
+		self.isStaticHeight = !!(isStatic && container && container.style.height)
 		
 		var widgetHeight = typeConf.height;
-		if(isStatic && (!this.content || !this.content.disableSetSaticWidgetHeight)){
-			var container = $("s_" + this.id);
+		if(isStatic && self.isStaticHeight && (!this.content || !this.content.disableSetSaticWidgetHeight)){
 			if(container){
 				self._setStaticWidgetHeight();
 			}
@@ -797,7 +799,7 @@ IS_Widget.prototype.classDef = function() {
 		self.iframe.style.padding = 0;
 		self.iframe.style.width = "100%";
 		
-		if( this.panelType == "StaticPanel" ) {
+		if(isStatic && self.isStaticHeight) {
 			if( !isOuter )
 				self.iframe.scrolling = "auto";
 			
@@ -863,7 +865,7 @@ IS_Widget.prototype.classDef = function() {
 				this.headerContent.turnBack();
 			
 			this.elm_widgetContent.style.display = "block";
-			if( this.isGadget() && !isStatic)
+			if( this.isGadget() && !self.isStaticHeight)
 				this.elm_widgetContent.style.height = "auto";
 			
 			IS_EventDispatcher.newEvent('loadComplete', self.id, null);
@@ -931,7 +933,7 @@ IS_Widget.prototype.classDef = function() {
 			this.elm_widgetContent.innerHTML = IS_R.lb_setupUnfinished;
 			this.elm_widgetContent.style.fontSize = "14px";
 			this.elm_widgetContent.style.display = "block";
-			if( this.isGadget() && !isStatic)
+			if( this.isGadget() && !self.isStaticHeight)
 				this.elm_widgetContent.style.height = "auto";
 			
 			return;
