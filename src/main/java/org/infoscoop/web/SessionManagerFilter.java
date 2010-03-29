@@ -33,7 +33,6 @@ import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.web.PreviewImpersonationFilter;
 import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.util.RSAKeyManager;
-import org.infoscoop.util.SpringUtil;
 
 /**
  * The filter which manages the login state.

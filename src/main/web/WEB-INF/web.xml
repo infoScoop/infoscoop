@@ -19,7 +19,17 @@
 		<param-name>guice-modules</param-name>
 		<param-value>org.apache.shindig.common.PropertiesModule:</param-value>
 	</context-param>
-
+	
+	<context-param>
+   		<param-name>contextConfigLocation</param-name>
+    	<param-value>/WEB-INF/classes/datasource.xml
+   		   ,/WEB-INF/classes/dataaccess.xml
+   		   ,/WEB-INF/classes/commands.xml
+      	   ,/WEB-INF/classes/services.xml
+      	   ,/WEB-INF/classes/proxyrequest.xml
+   		   ,/WEB-INF/classes/accountservices.xml
+   		   ,/WEB-INF/classes/org/infoscoop/admin/command/serviceCommands.xml</param-value>
+  	</context-param>
 	<filter>
 		<filter-name>SetCharacterEncodingFilter</filter-name>
 		<filter-class>org.infoscoop.web.SetCharacterEncodingFilter</filter-class>
@@ -336,6 +346,9 @@
 	<listener>
 		<listener-class>org.apache.shindig.common.servlet.GuiceServletContextListener</listener-class>
 	</listener>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
 	<servlet>
 		<servlet-name>InitializeServlet</servlet-name>
@@ -346,10 +359,6 @@
 		<init-param>
 			<param-name>log4j-init-file</param-name>
 			<param-value>/WEB-INF/conf/log4j.xml</param-value>
-		</init-param>
-		<init-param>
-			<param-name>bean-definitions</param-name>
-			<param-value>datasource.xml,dataaccess.xml,commands.xml,services.xml,proxyrequest.xml,accountservices.xml,org/infoscoop/admin/command/serviceCommands.xml<!--add bean definitions--></param-value>
 		</init-param>
 		<load-on-startup>0</load-on-startup>
 	</servlet>

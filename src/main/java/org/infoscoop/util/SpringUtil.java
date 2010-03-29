@@ -5,17 +5,17 @@ import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringUtil {
-	private static AbstractXmlApplicationContext context;
+	private static ApplicationContext context;
 
-	public synchronized static void initContext(String[] definitions){
-		context = new ClassPathXmlApplicationContext(definitions);
-	}
-	
 	public static ApplicationContext getContext() {
 		return context;
 	}
 
 	public static Object getBean(String name) {
 		return context.getBean(name);
+	}
+
+	public static void setContext(ApplicationContext ctx) {
+		context = ctx;
 	}
 }

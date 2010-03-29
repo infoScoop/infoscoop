@@ -20,6 +20,8 @@ import org.apache.velocity.app.Velocity;
 import org.infoscoop.account.SearchUserService;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -36,16 +38,13 @@ public class InitializeServlet extends HttpServlet {
 	 * It is a precondition to operate a servlet that a file of DAO setting (/WEB-INF/conf/dao-config.xml) is set definitely.
 	 */
 	public void init(ServletConfig config) throws ServletException {
-		String beanDefinitionsParam = config.getInitParameter("bean-definitions");
-		String[] beanDefinitions = beanDefinitionsParam.split(",");
-		for(int i = 0; i < beanDefinitions.length; i++){
-			beanDefinitions[i] = beanDefinitions[i].trim();
-		}
+		
 		initLog4jProperties(config);
 		//loadDAOConfig(config);
 		initVelocity(config);
 
-		SpringUtil.initContext(beanDefinitions);
+		ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
+		SpringUtil.setContext(ctx);
 		initSearchUserService();
 		Security.setProperty("networkaddress.cache.ttl", "60");
 	}
