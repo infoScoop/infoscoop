@@ -102,6 +102,7 @@
 		<copy todir="${build.main}" file="${src.main.web}/accessStats.jsp"/>
 		
 		<copy todir="${build.main}" file="${src.main.web}/rpc_relay.html"/>
+		<copy todir="${build.main}" file="${src.main.web}/blank.html"/>
 
 		<copy todir="${build.main}" file="${src.main.web}/session.js.jsp"/>
 
@@ -109,6 +110,7 @@
 		
 		<copy todir="${build.main}" file="${src.main.web}/iframe.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/admin/role.jsp"/>
+		<copy todir="${build.main}" file="${src.main.web}/admin/blank.html"/>
 		
 		<!-- copy javascript without compress -->
 		<copy todir="${build.main}/js/lib">
