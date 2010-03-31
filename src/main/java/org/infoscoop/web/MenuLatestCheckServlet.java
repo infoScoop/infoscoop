@@ -13,11 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.MenuCacheDAO;
-import org.infoscoop.dao.model.MENUCACHEPK;
 import org.infoscoop.dao.model.MenuCache;
 import org.infoscoop.util.Crypt;
 import org.json.JSONArray;
@@ -57,7 +55,7 @@ public class MenuLatestCheckServlet extends HttpServlet {
 				}
 				w.write(array.toString());
 			}else{
-				cache = new MenuCache(new MENUCACHEPK(Crypt.getHash(url),uid ));
+				cache = new MenuCache(uid, Crypt.getHash(url));
 				w.write("[]");
 			}
 			cache.setMenuIds( buf.toString().getBytes());

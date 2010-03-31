@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,10 +16,9 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
-import org.infoscoop.dao.model.TABLAYOUTPK;
+import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.TabLayout;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -41,7 +39,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	 * @throws Exception
 	 */
 	public List selectByTabId(String tabId) throws Exception {
-		return selectByTabId(tabId, TabLayout.TEMP_TRUE);
+		return selectByTabId(tabId, true);
 	}
 
 	/**
@@ -51,11 +49,11 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	 * @return
 	 * @throws Exception
 	 */
-	public List selectByTabId(String tabId, Integer temp) throws Exception {
+	public List selectByTabId(String tabId, boolean temp) throws Exception {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(TabLayout.class).add(
-						Expression.eq("id.Tabid", tabId)).add(
-						Expression.eq("id.Temp", temp)).addOrder(
+						Restrictions.eq("tabId", tabId)).add(
+						Restrictions.eq("temp", temp)).addOrder(
 						Order.asc("id.Roleorder")));
 	}
 
@@ -65,11 +63,11 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	 * @param temp
 	 * @return List<TabLayout>
 	 */
-	public List selectByTemp(Integer temp) {
+	public List selectByTemp(boolean temp) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(TabLayout.class).add(
-						Expression.eq("id.Temp", temp)).addOrder(
-						Order.asc("id.Roleorder")));
+						Restrictions.eq("temp", temp)).addOrder(
+						Order.asc("roleOrder")));
 	}
 
 	/**
@@ -79,14 +77,10 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	 * @throws DataResourceException
 	 */
 	public List selectTabId() {
-		String queryString = "SELECT distinct id.Tabid, Tabnumber FROM TabLayout WHERE "
-				+ TabLayout.PROP_DELETEFLAG
-				+ " = ? AND id.Temp = ? ORDER BY id.Tabid ASC";
-		List tabIdNumberList = super.getHibernateTemplate()
-				.find(
-						queryString,
-						new Object[] { TabLayout.DELETEFLAG_FALSE,
-								TabLayout.TEMP_TRUE });
+		String queryString = "SELECT distinct tabId, Tabnumber FROM Tablayout"
+				+ " WHERE deleteFlag = ? AND temp = ? ORDER BY tabId ASC";
+		List tabIdNumberList = super.getHibernateTemplate().find(queryString,
+				new Object[] { "deleteFlag", true });
 
 		List result = new ArrayList();
 		Object[] commandberArray = null;
@@ -113,10 +107,9 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	}
 	
 	public String selectLockingUid() {
-		String queryString = "SELECT distinct Workinguid FROM TabLayout WHERE id.Temp = ?";
+		String queryString = "SELECT distinct Workinguid FROM Tablayout WHERE temp = ?";
 		HibernateTemplate template = super.getHibernateTemplate();
-		List result = template.find(queryString,
-				new Object[] { TabLayout.TEMP_TRUE });
+		List result = template.find(queryString, new Object[] { true });
 		if (result.size() == 0)
 			return null;
 		return (String) result.get(0);
@@ -156,19 +149,23 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 				.format(new Date());
 
 		TabLayout tablayout = new TabLayout();
-		tablayout.setId(new TABLAYOUTPK(tabId, roleOrder, new Integer(temp)));
+		tablayout.setTabId(tabId);
+		
+		tablayout.setTabId(tabId);
+		tablayout.setRoleOrder(roleOrder);
+		tablayout.setTemp(Integer.parseInt(temp) > 0);
 		tablayout.setWidgets(widgets);
 		if (tabNumber != null)
-			tablayout.setTabnumber(new Integer(tabNumber));
+			tablayout.setTabNumber(new Integer(tabNumber));
 
-		tablayout.setDeleteflag(new Integer(deleteFlag));
+		tablayout.setDeleteFlag(new Integer(deleteFlag));
 		tablayout.setLayout(layout);
-		tablayout.setDefaultuid(defaultUid);
+		tablayout.setDefaultUid(defaultUid);
 		tablayout.setRolename(roleName);
 		tablayout.setRole(role);
-		tablayout.setPrincipaltype(principalType);
-		tablayout.setWidgetslastmodified(widgetsLastmodified);
-		tablayout.setWorkinguid(workinguid);
+		tablayout.setPrincipalType(principalType);
+		tablayout.setWidgetsLastmodified(widgetsLastmodified);
+		tablayout.setWorkingUid(workinguid);
 
 		super.getHibernateTemplate().save(tablayout);
 
@@ -189,12 +186,12 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 		String widgetsLastmodified = new SimpleDateFormat("yyyyMMddHHmmssSSS")
 				.format(new Date());
 		List tabLayouts = templete.findByCriteria(DetachedCriteria.forClass(
-				TabLayout.class).add(Expression.eq("id.Tabid", tabId)));
+				TabLayout.class).add(Restrictions.eq("id.Tabid", tabId)));
 
 		TabLayout tablayout;
 		for (Iterator ite = tabLayouts.iterator(); ite.hasNext();) {
 			tablayout = (TabLayout) ite.next();
-			tablayout.setWidgetslastmodified(widgetsLastmodified);
+			tablayout.setWidgetsLastmodified(widgetsLastmodified);
 
 			templete.update(tablayout);
 		}
@@ -217,13 +214,13 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 		HibernateTemplate templete = super.getHibernateTemplate();
 
 		List tabLayouts = templete.findByCriteria(DetachedCriteria.forClass(
-				TabLayout.class).add(Expression.eq("id.Tabid", tabId)).add(
-				Expression.eq("id.Temp", TabLayout.TEMP_TRUE)));
+				TabLayout.class).add(Restrictions.eq("tabId", tabId)).add(
+						Restrictions.eq("temp", true)));
 
 		TabLayout tablayout;
 		for (Iterator ite = tabLayouts.iterator(); ite.hasNext();) {
 			tablayout = (TabLayout) ite.next();
-			tablayout.setDeleteflag(new Integer(deleteFlag));
+			tablayout.setDeleteFlag(new Integer(deleteFlag));
 
 			templete.update(tablayout);
 		}
@@ -240,8 +237,8 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	public void deleteByTabId(String tabId) {
 		HibernateTemplate templete = super.getHibernateTemplate();
 		List tabLayouts = templete.findByCriteria(DetachedCriteria.forClass(
-				TabLayout.class).add(Expression.eq("id.Tabid", tabId)).add(
-				Expression.eq("id.Temp", TabLayout.TEMP_TRUE)));
+				TabLayout.class).add(Restrictions.eq("tabId", tabId)).add(
+						Restrictions.eq("temp", true)));
 
 		super.getHibernateTemplate().deleteAll(tabLayouts);
 	}
@@ -251,8 +248,8 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	 * 
 	 * @param temp
 	 */
-	public void deleteByTemp(Integer temp) {
-		String queryString = "delete from TabLayout where id.Temp = ?";
+	public void deleteByTemp(boolean temp) {
+		String queryString = "delete from Tablayout where temp = ?";
 		super.getHibernateTemplate().bulkUpdate(queryString,
 				new Object[] { temp });
 	}
@@ -263,27 +260,25 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	 * @param toTemp If "toTemp" is true, copy the public performance data for temporary data. If it's false, temporary data
 	 */
 	public void copy(String uid, boolean toTemp) {
-		this.deleteByTemp(toTemp ? TabLayout.TEMP_TRUE : TabLayout.TEMP_FALSE);
-		/*String queryString = "insert into TabLayout(id.Tabid,id.Roleorder,Role,Rolename,Principaltype,Defaultuid,Widgets,Layout,Widgetslastmodified,Tabnumber,Deleteflag,id.Temp) "
-				+ "select id.Tabid,id.Roleorder,Role,Rolename,Principaltype,Defaultuid,Widgets,Layout,Widgetslastmodified,Tabnumber,Deleteflag,1 from TabLayout where id.Temp = ?";
-		super.getHibernateTemplate().bulkUpdate(queryString,
-				new Object[] { TabLayout.TEMP_FALSE });*/
-		List<TabLayout> tabLayouts = selectByTemp(toTemp ? TabLayout.TEMP_FALSE
-				: TabLayout.TEMP_TRUE);
+		this.deleteByTemp(toTemp);
+		List<TabLayout> tabLayouts = selectByTemp(toTemp);
 		for (TabLayout tabLayout : tabLayouts) {
-			TABLAYOUTPK id = tabLayout.getId();
-			TABLAYOUTPK newid = new TABLAYOUTPK(id.getTabid(), id
-					.getRoleorder(), toTemp ? TabLayout.TEMP_TRUE
-					: TabLayout.TEMP_FALSE);
-			TabLayout newTabLayout = new TabLayout(newid, tabLayout.getRole(),
-					tabLayout.getRolename(), tabLayout.getPrincipaltype(),
-					tabLayout.getWidgets(), tabLayout.getLayout(), tabLayout
-							.getDeleteflag(), uid);
-			newTabLayout.setDefaultuid(tabLayout.getDefaultuid());
-			newTabLayout.setTabnumber(tabLayout.getTabnumber());
-			newTabLayout.setWidgetslastmodified(tabLayout
-					.getWidgetslastmodified());
-			insert(newTabLayout);
+			TabLayout newTablayout = new TabLayout();
+			newTablayout.setTabId(tabLayout.getTabId());
+			newTablayout.setRoleOrder(tabLayout.getRoleOrder());
+			newTablayout.setTemp(tabLayout.isTemp());
+			newTablayout.setRole(tabLayout.getRole());
+			newTablayout.setRolename(tabLayout.getRolename());
+			newTablayout.setPrincipalType(tabLayout.getPrincipalType());
+			newTablayout.setWidgets(tabLayout.getWidgets());
+			newTablayout.setLayout(tabLayout.getLayout());
+			newTablayout.setDeleteFlag(tabLayout.getDeleteFlag());
+			newTablayout.setWorkingUid(uid);
+			newTablayout.setDefaultUid(tabLayout.getDefaultUid());
+			newTablayout.setTabNumber(tabLayout.getTabNumber());
+			newTablayout.setWidgetsLastmodified(tabLayout
+					.getWidgetsLastmodified());
+			insert(newTablayout);
 		}
 	}
 
@@ -295,11 +290,11 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 		HibernateTemplate templete = super.getHibernateTemplate();
 		List tabLayouts = templete.findByCriteria(DetachedCriteria.forClass(
 				TabLayout.class).add(
-				Expression.not(Expression.eq("id.Tabid", "commandbar")))
+				Restrictions.not(Restrictions.eq("tabId", "commandbar")))
 				.setProjection(
 						Projections.projectionList().add(
-								Projections.max("id.Tabid")).add(
-								Projections.max(TabLayout.PROP_TABNUMBER))));
+								Projections.max("tabId")).add(
+								Projections.max("tabNumber"))));
 
 		Map resultMap = new HashMap();
 		for (int i = 0; i < tabLayouts.size(); i++) {
@@ -321,7 +316,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	 *         <LI>value: XmlObject List</LI>
 	 *         </UL>
 	 */
-	public MultiHashMap getTabLayout(final String tabId) {
+	public MultiHashMap getTablayout(final String tabId) {
 		HibernateTemplate templete = super.getHibernateTemplate();
 
 		MultiHashMap map = (MultiHashMap) templete
@@ -332,30 +327,30 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 						Criteria cri = session.createCriteria(TabLayout.class)
 								.add(
-										Expression.eq(
-												TabLayout.PROP_DELETEFLAG,
-												TabLayout.DELETEFLAG_FALSE))
+										Restrictions.eq(
+												"deleteFlag",
+												false))
 								.add(
-										Expression.eq("id.Temp",
-												TabLayout.TEMP_FALSE));
+										Restrictions.eq("temp",
+												false));
 
 						if (tabId != null) {
 							if (tabId.equals("0")) {
-								cri.add(Expression.or(Expression.eq("id.Tabid",
-										tabId), Expression.eq("id.Tabid",
+								cri.add(Restrictions.or(Restrictions.eq("tabId",
+										tabId), Restrictions.eq("tabId",
 										"commandbar")));
 							} else {
-								cri.add(Expression.eq("id.Tabid", tabId));
+								cri.add(Restrictions.eq("tabId", tabId));
 							}
 						}
-						cri.addOrder(Order.asc("id.Roleorder"));
+						cri.addOrder(Order.asc("roleOrder"));
 
 						Map map = new MultiHashMap();
 						TabLayout tablayout;
 						for (Iterator ite = cri.list().iterator(); ite
 								.hasNext();) {
 							tablayout = (TabLayout) ite.next();
-							map.put(tablayout.getId().getTabid(), tablayout);
+							map.put(tablayout.getTabId(), tablayout);
 						}
 
 						return map;

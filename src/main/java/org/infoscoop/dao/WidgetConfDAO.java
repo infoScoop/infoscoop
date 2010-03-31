@@ -3,11 +3,10 @@ package org.infoscoop.dao;
 import java.util.Iterator;
 import java.util.List;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.WidgetConf;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.w3c.dom.Element;
@@ -47,7 +46,7 @@ public class WidgetConfDAO extends HibernateDaoSupport {
 	public Element[] getElements(String[] types){
 		
 		List confs = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(WidgetConf.class).add(Expression.in("type", types))
+				DetachedCriteria.forClass(WidgetConf.class).add(Restrictions.in("type", types))
 				);
 		Element[] typeConfs = new Element[confs.size()];
 		try {

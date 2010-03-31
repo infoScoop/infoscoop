@@ -2,10 +2,9 @@ package org.infoscoop.dao;
 
 import java.util.List;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.dao.model.Properties;
+import org.infoscoop.dao.model.Property;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -17,16 +16,15 @@ public class PropertiesDAO extends HibernateDaoSupport {
         return (PropertiesDAO)SpringUtil.getContext().getBean("propertiesDAO");
 	}
 	
-	public Properties findProperty( String name ) {
-		//select value from ${schema}.properties where id=?
-		String queryString = "from Properties where Id=?";
+	public Property findProperty( String name ) {
+		String queryString = "from Property where name=?";
 		
 		List properties = super.getHibernateTemplate().find( queryString,
 				new Object[]{ name });
 		if( properties.isEmpty() )
 			return null;
 		
-		return ( Properties )properties.get(0);
+		return ( Property )properties.get(0);
 	}
     
 	/**
@@ -36,7 +34,7 @@ public class PropertiesDAO extends HibernateDaoSupport {
 	 */
 	public List findAllProperties(){
 		//select * from ${schema}.properties
-		String queryString = "from Properties order by Advanced";
+		String queryString = "from Property order by Advanced";
 		
 		return super.getHibernateTemplate().find( queryString );
 	}
@@ -50,7 +48,7 @@ public class PropertiesDAO extends HibernateDaoSupport {
 	 * @throws DataResourceException
 	 */
 	public void update(String id, String value) {
-		Properties property = findProperty( id );
+		Property property = findProperty( id );
 		if( property == null )
 			return;
 		

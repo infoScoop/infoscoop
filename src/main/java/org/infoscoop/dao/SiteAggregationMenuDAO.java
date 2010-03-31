@@ -1,7 +1,7 @@
 package org.infoscoop.dao;
 
 
-import org.infoscoop.dao.model.Siteaggregationmenu;
+import org.infoscoop.dao.model.Menu;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -18,14 +18,14 @@ public class SiteAggregationMenuDAO extends HibernateDaoSupport {
 	 * @return
 	 * @throws DataResourceException
 	 */
-	public Siteaggregationmenu select(String menuType) {
-		return (Siteaggregationmenu) super.getHibernateTemplate().get(
-				Siteaggregationmenu.class,
+	public Menu select(String menuType) {
+		return (Menu) super.getHibernateTemplate().get(
+				Menu.class,
 				menuType);
 	}
 
 	/*
-	public void delete(Siteaggregationmenu entity){
+	public void delete(Menu entity){
 		super.getHibernateTemplate().delete(entity);
 	}
 	*/
@@ -37,7 +37,7 @@ public class SiteAggregationMenuDAO extends HibernateDaoSupport {
 	 * @param tempFlag
 	 * @throws DataResourceException
 	 */
-	public void update(Siteaggregationmenu entity) {
+	public void update(Menu entity) {
 		super.getHibernateTemplate().saveOrUpdate(entity);
 		
 	}

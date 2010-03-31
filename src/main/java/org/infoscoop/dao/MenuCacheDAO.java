@@ -3,7 +3,8 @@ package org.infoscoop.dao;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.dao.model.MENUCACHEPK;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.MenuCache;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
@@ -31,8 +32,11 @@ public class MenuCacheDAO  extends HibernateDaoSupport {
     	
     	String url_key = Crypt.getHash(url);
     	
-    	MenuCache cache = ( MenuCache )super.getHibernateTemplate().get(
-    			MenuCache.class,new MENUCACHEPK( url_key,uid ) );
+		MenuCache cache = (MenuCache) super.getHibernateTemplate()
+				.findByCriteria(
+						DetachedCriteria.forClass(MenuCache.class).add(
+								Restrictions.eq("url_key", url_key)).add(
+								Restrictions.eq("UID", uid)));
     	
     	return cache;
     }

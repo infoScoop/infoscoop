@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.PropertiesDAO;
-import org.infoscoop.dao.model.Properties;
+import org.infoscoop.dao.model.Property;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONObject;
@@ -54,11 +53,11 @@ public class PropertiesService{
 		JSONObject propertiesJson = new JSONObject();
 		List propList = propertiesDAO.findAllProperties();
 		for(Iterator propIt = propList.iterator(); propIt.hasNext();){
-			Properties prop = (Properties)propIt.next();//Key become capital if Map is passed to constructor of JSONObject without change.
+			Property prop = (Property)propIt.next();//Key become capital if Map is passed to constructor of JSONObject without change.
 			JSONObject propJson = new JSONObject();
-			propJson.put("id", prop.getId());
+			propJson.put("id", prop.getName());
 			propJson.put("category", prop.getCategory());
-			if (prop.getAdvanced() != null && prop.getAdvanced() == 1)
+			if (prop.getAdvanced() == 1)
 				propJson.put("advanced", true);
 			
 			if("hidden".equals( prop.getDatatype().toLowerCase()))
@@ -66,23 +65,22 @@ public class PropertiesService{
 			
 			propJson.put("datatype", prop.getDatatype());
 			propJson.put("value", prop.getValue());
-			propJson.put("description", prop.getDescription());
-			if (prop.getEnumvalue() != null && prop.getEnumvalue().length() > 0)
-				propJson.put("enumValue", prop.getEnumvalue());
-			if (prop.getRequired() != null && prop.getRequired() == 1)
+			if (prop.getEnumValue() != null && prop.getEnumValue().length() > 0)
+				propJson.put("enumValue", prop.getEnumValue());
+			if (prop.getRequired() == 1)
 				propJson.put("required", true);
 			if (prop.getRegex() != null && prop.getRegex().length() > 0)
 				propJson.put("regex", prop.getRegex());
-			if (prop.getRegexmsg() != null && prop.getRegexmsg().length() > 0)
-				propJson.put("regexMsg", prop.getRegexmsg() );
-			propertiesJson.put( prop.getId(), propJson);
+			if (prop.getRegexMsg() != null && prop.getRegexMsg().length() > 0)
+				propJson.put("regexMsg", prop.getRegexMsg() );
+			propertiesJson.put( prop.getName(), propJson);
 		}
 		String json = propertiesJson.toString();
 		return I18NUtil.resolve(I18NUtil.TYPE_PROPERTY, json, locale, true);
 	}
 	
 	public String getProperty( String name ) throws Exception {
-		Properties property = propertiesDAO.findProperty( name );
+		Property property = propertiesDAO.findProperty( name );
 		if( property == null )
 			return null;
 		
@@ -94,11 +92,11 @@ public class PropertiesService{
 		
 		Map result = new HashMap();
 		for( int i=0;i<properties.size();i++ ) {
-			Properties property = ( Properties )properties.get(i);
+			Property property = ( Property )properties.get(i);
 			if("hidden".equals( property.getDatatype().toLowerCase()))
 				continue;
 			
-			result.put( property.getId(),property.getValue() );
+			result.put( property.getName(),property.getValue() );
 		}
 		
 		return result;

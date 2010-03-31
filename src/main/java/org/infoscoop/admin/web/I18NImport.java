@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.infoscoop.dao.I18NDAO;
-import org.infoscoop.dao.model.I18NPK;
 import org.infoscoop.dao.model.I18n;
 
 
@@ -74,7 +73,10 @@ public class I18NImport {
 			
 			message = csvRecord[1];
 			this.i18n = new I18n();
-			this.i18n.setId(new I18NPK(country, this.id, lang, type));
+			this.i18n.setCountry(country);
+			this.i18n.setName(this.id);
+			this.i18n.setLang(lang);
+			this.i18n.setType(type);
 			this.i18n.setMessage(message);
 		}
 		
@@ -83,7 +85,7 @@ public class I18NImport {
 	public boolean execInsertUpdate(I18NDAO dao){
 		boolean isUpdated = false;
 		
-		I18n exists = dao.selectByPK(this.i18n.getId());
+		I18n exists = dao.selectById(this.i18n.getId());
 		if(exists != null){
 			exists.setId(this.i18n.getId());
 			exists.setMessage(this.i18n.getMessage());

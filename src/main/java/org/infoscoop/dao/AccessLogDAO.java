@@ -13,7 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.Accesslog;
-import org.infoscoop.dao.model.Properties;
+import org.infoscoop.dao.model.Property;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -32,7 +32,7 @@ public class AccessLogDAO extends HibernateDaoSupport {
 			throw new RuntimeException("uid must be set.");
 		
 		String dateStr = new SimpleDateFormat( ACCESSLOG_DATE_FORMAT ).format(date);
-		Accesslog entity = new Accesslog(null, uid, dateStr);
+		Accesslog entity = new Accesslog(uid, dateStr);
 		
 		super.getHibernateTemplate().save(entity);
 	}
@@ -45,7 +45,7 @@ public class AccessLogDAO extends HibernateDaoSupport {
 		Calendar currentDay = Calendar.getInstance();
 		if (currentDay.get(Calendar.DAY_OF_YEAR) != logDeleteDay.get(Calendar.DAY_OF_YEAR)) {
 			PropertiesDAO pdao = PropertiesDAO.newInstance();
-			Properties property = pdao.findProperty("logStoragePeriod");
+			Property property = pdao.findProperty("logStoragePeriod");
 			int storagePeriod = 365;
 			try {
 				storagePeriod = Integer.parseInt(property.getValue());

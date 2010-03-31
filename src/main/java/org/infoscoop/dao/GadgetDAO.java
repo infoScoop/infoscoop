@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -34,9 +33,9 @@ public class GadgetDAO extends HibernateDaoSupport {
 		//select data from ${schema}.gadget where type = ? and fileType = ?
 		List result = ( List )super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass( Gadget.class )
-					.add( Expression.eq( Gadget.PROP_TYPE,type ))
-					.add( Expression.eq( Gadget.PROP_PATH,path ))
-					.add( Expression.eq( Gadget.PROP_NAME,name )));
+					.add( Restrictions.eq( "type",type ))
+					.add( Restrictions.eq( "path",path ))
+					.add( Restrictions.eq( "name",name )));
 		if( result == null || result.size() == 0 )
 			return null;
 		
@@ -90,14 +89,14 @@ public class GadgetDAO extends HibernateDaoSupport {
 	
 	public List<Gadget> list( String type ) {
 		return super.getHibernateTemplate().findByCriteria( DetachedCriteria.forClass( Gadget.class )
-				.add( Expression.eq( Gadget.PROP_TYPE,type ))
-				.addOrder( Order.asc( Gadget.PROP_NAME )));
+				.add( Restrictions.eq( "type",type ))
+				.addOrder( Order.asc( "name" )));
 	}
 	
 	public List<Gadget> list( String type,String path ) {
 		return super.getHibernateTemplate().findByCriteria( DetachedCriteria.forClass( Gadget.class )
-				.add( Expression.eq( Gadget.PROP_TYPE,type ))
-				.add( Expression.eq( Gadget.PROP_PATH,path ))
-				.addOrder( Order.asc( Gadget.PROP_NAME )));
+				.add( Restrictions.eq( "type",type ))
+				.add( Restrictions.eq( "path",path ))
+				.addOrder( Order.asc( "name" )));
 	}
 }

@@ -11,11 +11,11 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
 import org.infoscoop.dao.model.Keyword;
 import org.infoscoop.util.SpringUtil;
@@ -50,7 +50,8 @@ public class KeywordLogDAO extends HibernateDaoSupport {
 	 */
 	public void insertLog(String uid, String date, String keyword,
 			String keywordLogType) {
-		Keyword bean = new Keyword( null,uid,new Integer( keywordLogType ),keyword,date );
+		Keyword bean = new Keyword(uid, new Integer(keywordLogType), keyword,
+				date);
 		super.getHibernateTemplate().save( bean );
 		
         if(logger.isInfoEnabled()){
@@ -99,9 +100,9 @@ public class KeywordLogDAO extends HibernateDaoSupport {
 				
 				Criteria cri = session.createCriteria(Keyword.class);
 				
-				SimpleExpression se = Expression.eq("Type", keywordLogType);
-				LogicalExpression le = Expression.and(Expression.ge("Date", startDate), Expression.le("Date", endDate));
-				LogicalExpression le2 = Expression.and(se, le);
+				SimpleExpression se = Restrictions.eq("Type", keywordLogType);
+				LogicalExpression le = Restrictions.and(Restrictions.ge("Date", startDate), Restrictions.le("Date", endDate));
+				LogicalExpression le2 = Restrictions.and(se, le);
 				cri.add(le2);
 				
 				Projection projection = Projections.projectionList()  

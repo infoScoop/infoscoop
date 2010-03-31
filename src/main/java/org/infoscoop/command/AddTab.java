@@ -2,12 +2,10 @@ package org.infoscoop.command;
 
 import javax.xml.parsers.FactoryConfigurationError;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.TabDAO;
-import org.infoscoop.dao.model.TABPK;
 import org.infoscoop.dao.model.Tab;
 
 public class AddTab extends XMLCommandProcessor {
@@ -29,7 +27,7 @@ public class AddTab extends XMLCommandProcessor {
         }
         
         try {
-			Tab tab = new Tab( new TABPK( uid,tabId));
+			Tab tab = new Tab(uid, tabId);
 			tab.setName(tabName);
 			tab.setType(tabType);
 			tab.setProperty("numCol", numCol);

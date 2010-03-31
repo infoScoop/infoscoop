@@ -36,8 +36,11 @@ public class PortalLayoutDAO extends HibernateDaoSupport{
 	 * @return 
 	 */
 	public Portallayout selectByName(String name){
-		return (Portallayout) super.getHibernateTemplate().get(Portallayout.class, name);
-
+		List portalLayouts = super.getHibernateTemplate().find(
+				"from Portallayout where name=?", name);
+		if (portalLayouts.isEmpty())
+			return null;
+		return (Portallayout) portalLayouts.get(0);
 	}
 	
 	/**

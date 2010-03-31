@@ -31,7 +31,7 @@ public class UserPrefServlet extends HttpServlet {
 		
 		Widget widget = WidgetDAO.newInstance().getWidget( uid,tabId,widgetId );
 		if( widget != null ) {
-			Map<String,UserPref> prefs = widget.getUserPrefs();
+			Map<String,UserPref> prefs = widget.getUserPrefsMap();
 			for( String prefName : prefNames ) {
 				if( !prefs.containsKey( prefName ))
 					continue;

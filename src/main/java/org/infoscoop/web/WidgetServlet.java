@@ -168,11 +168,11 @@ public class WidgetServlet extends HttpServlet {
 				List removeWidgetList = new ArrayList();
 				for(Iterator widgets = dynamicWidgets.iterator(); widgets.hasNext();){
 					Widget wid = (Widget)widgets.next();
-					if(dynamicPanelWidgetIds.contains(wid.getWidgetid())){
+					if(dynamicPanelWidgetIds.contains(wid.getWidgetId())){
 						removeWidgetList.add(wid);
 					}
 					if(!"MultiRssReader".equals(wid.getType())){
-						dynamicPanelWidgetIds.add(wid.getWidgetid());
+						dynamicPanelWidgetIds.add(wid.getWidgetId());
 					}
 				}
 				

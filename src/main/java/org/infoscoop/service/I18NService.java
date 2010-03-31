@@ -129,7 +129,7 @@ public class I18NService {
 		for (int i = 0; i < resourceMapI18n.size(); i++) {
 			I18n i18n = (I18n) resourceMapI18n.get(i);
 
-			resourceMap.put(i18n.getId().getId(), i18n.getMessage());
+			resourceMap.put(i18n.getName(), i18n.getMessage());
 		}
 
 		return resourceMap;

@@ -20,7 +20,6 @@ import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Preference;
-import org.infoscoop.dao.model.TABPK;
 import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.dao.model.UserPref;
@@ -144,7 +143,7 @@ public class TabService {
 						(( TabLayout)tabLayoutMap.get("commandbar")).getStaticPanelXmlWidgets( uid );
 				for( Iterator ite=commandbarWidgets.iterator();ite.hasNext();) {
 					Widget widget = ( Widget )ite.next();
-					widget.setTabid( tab.getTabId() );
+					widget.setTabId( tab.getTabId() );
 					
 					staticWidgets.add( widget );
 				}
@@ -153,12 +152,12 @@ public class TabService {
 			Map widgetMap = new HashMap();
 			for( Iterator widgets=tabLayout.getDynamicPanelXmlWidgets( uid ).iterator();widgets.hasNext();) {
 				Widget widget = ( Widget )widgets.next();
-				widgetMap.put( widget.getWidgetid(),widget );
+				widgetMap.put( widget.getWidgetId(),widget );
 			}
 			
 			List exists = WidgetDAO.newInstance().getExistsWidgets( uid,new ArrayList( widgetMap.keySet()) );
 			for( Iterator widgets=exists.iterator();widgets.hasNext();)
-				widgetMap.remove( (( Widget )widgets.next()).getWidgetid());
+				widgetMap.remove( (( Widget )widgets.next()).getWidgetId());
 			
 			tabDAO.getHibernateTemplate().saveOrUpdateAll( widgetMap.values() );
 			WidgetDAO.newInstance().updateUserPrefs( widgetMap.values() );
@@ -173,14 +172,14 @@ public class TabService {
 		for(Iterator ite = tabLayoutMap.keySet().iterator();ite.hasNext();){
 			String tempTabId = (String)ite.next();
 			TabLayout layout = (TabLayout)tabLayoutMap.get(tempTabId);
-			String tempDefaultUid = layout.getDefaultuid();
-			String tempLastModified = layout.getWidgetslastmodified();
-			int tempTabNumber = layout.getTabnumber() != null ? layout.getTabnumber().intValue() : 0;
+			String tempDefaultUid = layout.getDefaultUid();
+			String tempLastModified = layout.getWidgetsLastmodified();
+			int tempTabNumber = layout.getTabNumber() != null ? layout.getTabNumber().intValue() : 0;
 			for(Iterator it = currentTabList.iterator(); it.hasNext();){
 				Tab tab = (Tab)it.next();
 				String widgetTabId = tab.getTabId();
-				String widgetDefaultUid = tab.getDefaultuid();
-				String widgetLastModified = tab.getWidgetlastmodified();
+				String widgetDefaultUid = tab.getDefaultUid();
+				String widgetLastModified = tab.getWidgetLastModified();
 				String tabType = tab.getType();
 				
 				if("static".equals(tabType.toLowerCase()) && widgetTabId.equals(tempTabId)){
@@ -188,8 +187,8 @@ public class TabService {
 					
 					if(!tempDefaultUid.equals(widgetDefaultUid) || !tempLastModified.equals(widgetLastModified)){
 						// Replace StaticPanel if tabLayout and defaultUid are different.
-						tab.setWidgetlastmodified(tempLastModified);
-						tab.setDefaultuid(tempDefaultUid);
+						tab.setWidgetLastModified(tempLastModified);
+						tab.setDefaultUid(tempDefaultUid);
 //						el.setAttribute("tabNumber", tempTabNumber);
 						Collection staticPanelWidgets = layout.getStaticPanelXmlWidgets( uid );
 						if (widgetTabId.equals(TABID_HOME)) {
@@ -309,18 +308,18 @@ public class TabService {
 		for( int i=0;i<differenceTabs.size();i++ ) {
 			TabLayout tabLayout = ( TabLayout )differenceTabs.get( i );
 			
-			tabId = tabLayout.getId().getTabid();
+			tabId = tabLayout.getTabId();
 			
 			tabObj = new TabObject();
 
 			Collection dynamicWidgets = new ArrayList();
 			for( Iterator widgets=tabLayout.getDynamicPanelXmlWidgets( null ).iterator();widgets.hasNext();) {
 				Widget widget = ( Widget )widgets.next();
-				if( dynamicWidgetIdSet.contains( widget.getWidgetid() ))
+				if( dynamicWidgetIdSet.contains( widget.getWidgetId() ))
 					continue;
 				
 				dynamicWidgets.add( widget );
-				dynamicWidgetIdSet.add( widget.getWidgetid() );
+				dynamicWidgetIdSet.add( widget.getWidgetId() );
 			}
 			
 			Collection staticWidgets = tabLayout.getStaticPanelXmlWidgets( null );
@@ -330,7 +329,7 @@ public class TabService {
 						(( TabLayout)tabLayoutMap.get("commandbar")).getStaticPanelXmlWidgets( null );
 				for( Iterator ite=commandbarWidgets.iterator();ite.hasNext();) {
 					Widget widget = ( Widget )ite.next();
-					widget.setTabid( tabId );
+					widget.setTabId( tabId );
 					
 					staticWidgets.add( widget );
 				}
@@ -349,13 +348,13 @@ public class TabService {
 		// Processing of allocating tab ID again.
 		int newTabId = getNextNumber(dynamicTabIdList);
 		
-		Tab newTab = new Tab(new TABPK(staticTab.getUid(), String.valueOf(newTabId)));
+		Tab newTab = new Tab(staticTab.getUid(), String.valueOf(newTabId));
 		
 		//Delete StaticPanel, tabType=dynamic
 		newTab.setType("dynamic");
 		newTab.setName(staticTab.getName());
 		newTab.setData(staticTab.getData());
-		newTab.setDefaultuid(staticTab.getDefaultuid());
+		newTab.setDefaultUid(staticTab.getDefaultUid());
 		//Delete tab number
 		//TODO: Is it placed at last if order is null?
 		newTab.setOrder(null);
@@ -364,8 +363,8 @@ public class TabService {
 		
 		Collection<Widget> dynamicWidgets = tabDAO.getDynamicWidgetList(staticTab.getUid(),staticTab.getTabId() );
 		for( Widget widget : dynamicWidgets) {
-			widget.setTabid( String.valueOf( newTabId ) );
-			widget.setIsstatic( new Integer( 0 ) );
+			widget.setTabId( String.valueOf( newTabId ) );
+			widget.setIsStatic( new Integer( 0 ) );
 		}
 		
 		WidgetDAO widgetDAO = WidgetDAO.newInstance();
@@ -441,18 +440,18 @@ public class TabService {
 		for( Iterator ite=tabDAO.getStaticWidgetList( tab ).iterator();ite.hasNext();) {
 			Widget widget = ( Widget )ite.next();
 			
-			oldWidgets.put( widget.getWidgetid(),widget );
+			oldWidgets.put( widget.getWidgetId(),widget );
 		}
 		
 		for( Iterator ite=widgets.iterator();ite.hasNext();) {
 			Widget widget = ( Widget )ite.next();
-			if( oldWidgets.containsKey( widget.getWidgetid() )) {
-				Widget oldWidget = ( Widget )oldWidgets.get( widget.getWidgetid());
-				for( Map.Entry<String,UserPref> entry : oldWidget.getUserPrefs().entrySet() )
-					widget.setUserPref( entry.getKey(),entry.getValue().getValue() );
+			if( oldWidgets.containsKey( widget.getWidgetId() )) {
+				Widget oldWidget = ( Widget )oldWidgets.get( widget.getWidgetId());
+				for( Map.Entry<String,UserPref> entry : oldWidget.getUserPrefsMap().entrySet() )
+					widget.setUserPref(entry.getKey(), entry.getValue().getValue());
 			}
 			
-			widget.setTabid( tab.getTabId());
+			widget.setTabId( tab.getTabId());
 		}
 
 		widgetDAO.emptyWidgets( uid,tab.getTabId(),1 );

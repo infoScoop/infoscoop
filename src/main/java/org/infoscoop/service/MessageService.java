@@ -3,10 +3,10 @@ package org.infoscoop.service;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.dao.MessageDAO;
-import org.infoscoop.dao.model.Message;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.SearchUserService;
+import org.infoscoop.dao.MessageDAO;
+import org.infoscoop.dao.model.Message;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,7 +28,7 @@ public class MessageService {
 	public void addBroadCastMessage(String from, String body) {
 		Message msg = new Message();
 		msg.setFrom(from);
-		msg.setDisplayfrom(getUserName(from));
+		msg.setDisplayFrom(getUserName(from));
 		msg.setBody(body);
 		msg.setType(Message.MESSAGE_BROADCAST);
 		this.messageDAO.insert(msg);
@@ -37,7 +37,7 @@ public class MessageService {
 	public void addPublicMessage(String from, String body) {
 		Message msg = new Message();
 		msg.setFrom(from);
-		msg.setDisplayfrom(getUserName(from));
+		msg.setDisplayFrom(getUserName(from));
 		msg.setBody(body);
 		msg.setType(Message.MESSAGE_PUBLIC);
 		this.messageDAO.insert(msg);
@@ -47,7 +47,7 @@ public class MessageService {
 			String linkUrl) throws Exception {
 		Message msg = new Message();
 		msg.setFrom(from);
-		msg.setDisplayfrom(getUserName(from));
+		msg.setDisplayFrom(getUserName(from));
 		msg.setBody(body);
 		msg.setType(Message.FYI_PUBLIC);
 		JSONObject link = new JSONObject();
@@ -63,11 +63,11 @@ public class MessageService {
 
 		Message msgTo = new Message();
 		msgTo.setFrom(from);
-		msgTo.setDisplayfrom(getUserName(from));
+		msgTo.setDisplayFrom(getUserName(from));
 		msgTo.setBody(body);
 		msgTo.setType(Message.SYSTEM);
 		msgTo.setTo(to);
-		msgTo.setTojson("[" + to +"]");
+		msgTo.setToJson("[" + to +"]");
 		this.messageDAO.insert(msgTo);
 	}
 
@@ -77,20 +77,20 @@ public class MessageService {
 
 		Message msgFrom = new Message();
 		msgFrom.setFrom(from);
-		msgFrom.setDisplayfrom(getUserName(from));
+		msgFrom.setDisplayFrom(getUserName(from));
 		msgFrom.setBody(body);
 		msgFrom.setType(Message.MESSAGE_FROM);
-		msgFrom.setTojson(toJson);
+		msgFrom.setToJson(toJson);
 		this.messageDAO.insert(msgFrom);
 
 		for (String to : toArray) {
 			Message msgTo = new Message();
 			msgTo.setFrom(from);
-			msgTo.setDisplayfrom(getUserName(from));
+			msgTo.setDisplayFrom(getUserName(from));
 			msgTo.setBody(body);
 			msgTo.setType(Message.MESSAGE_TO);
 			msgTo.setTo(to);
-			msgTo.setTojson(toJson);
+			msgTo.setToJson(toJson);
 			this.messageDAO.insert(msgTo);
 		}
 	}
@@ -104,21 +104,21 @@ public class MessageService {
 
 		Message msgFrom = new Message();
 		msgFrom.setFrom(from);
-		msgFrom.setDisplayfrom(getUserName(from));
+		msgFrom.setDisplayFrom(getUserName(from));
 		msgFrom.setBody(body);
 		msgFrom.setType(Message.FYI_FROM);
-		msgFrom.setTojson(toJson);
+		msgFrom.setToJson(toJson);
 		msgFrom.setOption(link.toString());
 		this.messageDAO.insert(msgFrom);
 
 		for (String to : toArray) {
 			Message msgTo = new Message();
 			msgTo.setFrom(from);
-			msgTo.setDisplayfrom(getUserName(from));
+			msgTo.setDisplayFrom(getUserName(from));
 			msgTo.setBody(body);
 			msgTo.setType(Message.FYI_TO);
 			msgTo.setTo(to);
-			msgTo.setTojson(toJson);
+			msgTo.setToJson(toJson);
 			msgTo.setOption(link.toString());
 			this.messageDAO.insert(msgTo);
 		}

@@ -11,8 +11,8 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -49,8 +49,10 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 	}
 
 	public Adminrole selectByRoleId(String roleId) {
-		List<Adminrole> result = (List)super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(Adminrole.class).add(Expression.eq("Roleid", roleId)));
+		List<Adminrole> result = (List) super.getHibernateTemplate()
+				.findByCriteria(
+						DetachedCriteria.forClass(Adminrole.class).add(
+								Restrictions.eq("Roleid", roleId)));
 		return (result.size() > 0)? result.get(0) : null;
 	}
 
@@ -62,7 +64,7 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 					SQLException {
 				
 				Criteria crit = session.createCriteria(Adminrole.class).add(
-						Expression.eq("Allowdelete", new Integer(0)));
+						Restrictions.eq("Allowdelete", new Integer(0)));
 				
 				List roleIdsList = new ArrayList();
 				List<Adminrole> resultList = crit.list();
@@ -101,7 +103,10 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 	 * @param uid
 	 */
 	public void insert(String roleId, String name, String authData, boolean allowDelete) {
-		Adminrole adminrole = new Adminrole(null, roleId, name, authData);
+		Adminrole adminrole = new Adminrole();
+		adminrole.setRoleid(roleId);
+		adminrole.setName(name);
+		adminrole.setPermission(authData);
 		
 		adminrole.setAllowdelete((allowDelete)? 1 : 0);
 		super.getHibernateTemplate().save( adminrole );

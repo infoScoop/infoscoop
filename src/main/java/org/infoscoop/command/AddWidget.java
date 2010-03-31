@@ -86,8 +86,8 @@ public class AddWidget extends XMLCommandProcessor{
         	}
         	
         	if(newNextSibling != null){
-        		newNextSibling.setSiblingid( widgetId );
-        		log.info("Replace siblingId of [" + newNextSibling.getWidgetid() + "] to " + widgetId );
+        		newNextSibling.setSiblingId( widgetId );
+        		log.info("Replace siblingId of [" + newNextSibling.getWidgetId() + "] to " + widgetId );
  //       		WidgetDAO.newInstance().updateWidget(uid, tabId, newNextSibling);
         	}
         	
@@ -96,9 +96,9 @@ public class AddWidget extends XMLCommandProcessor{
     		if(targetColumn != null && !"".equals(targetColumn)){
     			widget.setColumn(new Integer(targetColumn));
     		}
-    		widget.setSiblingid(sibling);
-    		widget.setParentid(parent);
-    		widget.setMenuid(menuid);
+    		widget.setSiblingId(sibling);
+    		widget.setParentId(parent);
+    		widget.setMenuId(menuid);
     		if(confJson.has("title"))
     			widget.setTitle(confJson.getString("title"));
     		if(confJson.has("href"))
@@ -110,7 +110,7 @@ public class AddWidget extends XMLCommandProcessor{
     		if (confJson.has("ignoreHeader"))
     			widget.setIgnoreHeader(confJson.getBoolean("ignoreHeader"));
 
-    		widget.setIsstatic(new Integer(0));
+    		widget.setIsStatic(new Integer(0));
     		
     		WidgetDAO.newInstance().addWidget( widget );
     		

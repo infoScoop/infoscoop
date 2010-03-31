@@ -1,7 +1,6 @@
 package org.infoscoop.web;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -10,17 +9,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.Preference;
-import org.infoscoop.dao.model.TABPK;
 import org.infoscoop.dao.model.Tab;
-import org.infoscoop.dao.model.USERPREFPK;
 import org.infoscoop.dao.model.UserPref;
+import org.infoscoop.dao.model.UserprefId;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.util.SpringUtil;
 
@@ -71,7 +69,7 @@ public class MergeProfileServlet extends HttpServlet {
 				session.delete( preference );
 				
 				for( Iterator ite=session.createCriteria( Tab.class )
-					.add( Expression.eq("id.Uid",uid )).list().iterator();ite.hasNext(); ) {
+					.add( Restrictions.eq("id.Uid",uid )).list().iterator();ite.hasNext(); ) {
 					Tab tab = ( Tab )ite.next();
 					Tab newTab = cloneTab( uid.toLowerCase(),tab );
 					
@@ -80,13 +78,13 @@ public class MergeProfileServlet extends HttpServlet {
 				}
 				
 				for( Iterator ite=session.createCriteria( Widget.class )
-						.add( Expression.eq("Uid",uid )).list().iterator();ite.hasNext();) {
+						.add( Restrictions.eq("Uid",uid )).list().iterator();ite.hasNext();) {
 					Widget widget = ( Widget )ite.next();
 					Widget newWidget = cloneWidget( uid.toLowerCase(),widget );
 					
 					session.save( newWidget );
 					session.flush();
-					for( UserPref userPref : newWidget.getUserPrefs().values() ) {
+					for( UserPref userPref : newWidget.getUserPrefsMap().values() ) {
 						userPref.getId().setWidgetId( newWidget.getId());
 						session.save( userPref );
 					}
@@ -108,13 +106,13 @@ public class MergeProfileServlet extends HttpServlet {
 	}
 	
 	private Tab cloneTab( String uid,Tab tab ) {
-		Tab newTab = new Tab( new TABPK( uid,tab.getId().getId() ) );
+		Tab newTab = new Tab(uid, tab.getTabId());
 		newTab.setData( tab.getData() );
-		newTab.setDefaultuid( tab.getDefaultuid() );
+		newTab.setDefaultUid( tab.getDefaultUid() );
 		newTab.setName( tab.getName() );
 		newTab.setOrder( tab.getOrder() );
 		newTab.setType( tab.getType() );
-		newTab.setWidgetlastmodified( tab.getWidgetlastmodified() );
+		newTab.setWidgetLastModified( tab.getWidgetLastModified() );
 		
 		return newTab;
 	}
@@ -123,24 +121,24 @@ public class MergeProfileServlet extends HttpServlet {
 		newWidget.setUid( uid );
 		newWidget.setColumn( widget.getColumn() );
 		
-		Map<String,UserPref> userPrefs = widget.getUserPrefs();
+		Map<String,UserPref> userPrefs = widget.getUserPrefsMap();
 		for( String key : userPrefs.keySet() ) {
-			UserPref userPref = new UserPref( new USERPREFPK( null,key ));
+			UserPref userPref = new UserPref(new UserprefId(widget.getId(), key), widget);
 			userPref.setValue( (( UserPref )userPrefs.get( key )).getValue() );
-			newWidget.getUserPrefs().put( key, userPref );
+			newWidget.getUserPrefsMap().put( key, userPref );
 		}
 		
-		newWidget.setDefaultuid( widget.getDefaultuid() );
-		newWidget.setDeletedate( widget.getDeletedate() );
+		newWidget.setDefaultUid( widget.getDefaultUid() );
+		newWidget.setDeleteDate( widget.getDeleteDate() );
 		newWidget.setHref( widget.getHref() );
-		newWidget.setIgnoreheader( widget.getIgnoreheader() );
-		newWidget.setIsstatic( widget.getIsstatic() );
-		newWidget.setParentid( widget.getParentid() );
-		newWidget.setSiblingid( widget.getSiblingid() );
-		newWidget.setTabid( widget.getTabid() );
+		newWidget.setIgnoreHeader( widget.isIgnoreHeader() );
+		newWidget.setIsStatic( widget.getIsStatic() );
+		newWidget.setParentId( widget.getParentId() );
+		newWidget.setSiblingId( widget.getSiblingId() );
+		newWidget.setTabId( widget.getTabId() );
 		newWidget.setTitle( widget.getTitle() );
 		newWidget.setType( widget.getType() );
-		newWidget.setWidgetid( widget.getWidgetid() );
+		newWidget.setWidgetId( widget.getWidgetId() );
 		
 		return newWidget;
 	}

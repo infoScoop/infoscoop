@@ -6,11 +6,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.ForbiddenURLDAO;
-import org.infoscoop.dao.model.Forbiddenurls;
+import org.infoscoop.dao.model.Forbiddenurl;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONObject;
 
@@ -37,7 +36,7 @@ public class ForbiddenURLService {
 		Collection oldForbiddenUrls = this.forbiddenUrlDAO.getForbiddenUrls();
 		Set oldIds = new HashSet();
 		for( Iterator it = oldForbiddenUrls.iterator(); it.hasNext();){
-			Forbiddenurls forbiddenurl = (Forbiddenurls)it.next();
+			Forbiddenurl forbiddenurl = (Forbiddenurl)it.next();
 			String id = forbiddenurl.getId().toString();
 			oldIds.add(id);
 
@@ -56,7 +55,7 @@ public class ForbiddenURLService {
 		for(Iterator it = forbiddenUrls.keySet().iterator(); it.hasNext();){
 			String id = (String)it.next();
 			if(!oldIds.contains(id)){
-				Forbiddenurls forbiddenurl = new Forbiddenurls();
+				Forbiddenurl forbiddenurl = new Forbiddenurl();
 				String url = ( String )(( Map )forbiddenUrls.get(id)).get("url");
 				if(log.isInfoEnabled())log.info("Insert forbiddenurl: id=" + id + ", url=" + url);
 
@@ -72,7 +71,7 @@ public class ForbiddenURLService {
 		StringBuffer buf = new StringBuffer();
 		buf.append("{\n");
 		for( java.util.Iterator forbiddenURLs=this.forbiddenUrlDAO.getForbiddenUrls().iterator();forbiddenURLs.hasNext();) {
-			Forbiddenurls forbiddenURL = ( Forbiddenurls )( forbiddenURLs.next());
+			Forbiddenurl forbiddenURL = ( Forbiddenurl )( forbiddenURLs.next());
 			int id = forbiddenURL.getId().intValue();
 			String url = forbiddenURL.getUrl();
 

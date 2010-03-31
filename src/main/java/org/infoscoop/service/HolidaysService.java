@@ -4,9 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
-
 import org.infoscoop.dao.HolidaysDAO;
-import org.infoscoop.dao.model.Holidays;
+import org.infoscoop.dao.model.Holiday;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +29,7 @@ public class HolidaysService {
 		return (HolidaysService) SpringUtil.getBean("HolidaysService");
 	}
 	
-	public Holidays getHoliday( Locale locale ) {
+	public Holiday getHoliday( Locale locale ) {
 		String lang = locale.getLanguage();
 		if( lang == null )
 			lang = "ALL";
@@ -39,7 +38,7 @@ public class HolidaysService {
 		if( country == null )
 			country = "ALL";
 		
-		Holidays holiday = holidaysDAO.getHoliday( lang,country );
+		Holiday holiday = holidaysDAO.getHoliday( lang,country );
 		if( holiday == null && !country.equalsIgnoreCase("ALL"))
 			holiday = holidaysDAO.getHoliday( lang,"ALL");
 		
@@ -51,7 +50,7 @@ public class HolidaysService {
 		
 		return holiday;
 	}
-	public Holidays getHoliday( String lang,String country ) {
+	public Holiday getHoliday( String lang,String country ) {
 		return holidaysDAO.getHoliday( lang,country );
 	}
 	public String getHolidayData( String lang,String country ) {

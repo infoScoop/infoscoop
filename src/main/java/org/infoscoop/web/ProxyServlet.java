@@ -239,7 +239,7 @@ public class ProxyServlet extends HttpServlet{
 					bis = printDebug(bis);
 				}
 				
-				String cacheID = null;
+				Integer cacheID = null;
 				if (cacheHeader != null
 						&& cacheHeader.equals("Cache-NoResponse")) {
 
@@ -266,7 +266,7 @@ public class ProxyServlet extends HttpServlet{
 				
 				if (cacheHeader != null && cacheHeader.equals("Cache-NoResponse") &&
 						cacheID != null) {
-					response.setHeader("MSDPortal-Cache-ID", cacheID);
+					response.setHeader("MSDPortal-Cache-ID", cacheID.toString());
 					response.setHeader("Pragma", "no-cache");
 					response.setHeader("Cache-Control", "no-cache");
 					response.setHeader("Content-Length", "1");

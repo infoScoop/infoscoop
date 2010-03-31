@@ -54,7 +54,7 @@ public class I18NExportServlet extends HttpServlet
 			for(Iterator ite = i18nList.iterator(); ite.hasNext();){
 				i18n = (I18n)ite.next();
 				
-				csvWriter.writeNext(new String[]{i18n.getId().getId(), i18n.getMessage()});
+				csvWriter.writeNext(new String[]{i18n.getName(), i18n.getMessage()});
 			}
 			
 			w.flush();

@@ -7,10 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.dao.model.Holidays;
+import org.infoscoop.dao.model.Holiday;
 import org.infoscoop.service.HolidaysService;
 
 public class HolidayServlet extends HttpServlet {
@@ -23,7 +22,7 @@ public class HolidayServlet extends HttpServlet {
 		String country = request.getParameter("country");
 		String lang = request.getParameter("lang");
 		
-		Holidays holiday;
+		Holiday holiday;
 		if(( country != null && !"".equals( country ))||
 			( lang != null && !"".equals( lang )) ) {
 			if( "".equals( country ))

@@ -171,7 +171,7 @@ public class AuthCredentialService {
 
 		for(Iterator it = credentialList.iterator(); it.hasNext();){
 			AuthCredential c = (AuthCredential)it.next();
-			if(c.getSysNum().equals(AuthCredential.COMMON_AUTH_CREDENTIAL) ||
+			if(new Integer(c.getSysNum()).equals(AuthCredential.COMMON_AUTH_CREDENTIAL) ||
 					authType != null && authType.length() > 0
 					&& !authType.equalsIgnoreCase(c.getAuthType()))
 				continue;
@@ -195,7 +195,7 @@ public class AuthCredentialService {
 
 	public void removeCredential(String uid, String credentialId) throws ProxyAuthenticationException{
 		AuthCredential c = authCredentialDAO.get(new Long(credentialId));
-		if(c != null && c.getSysNum().equals(AuthCredential.COMMON_AUTH_CREDENTIAL)){
+		if(c != null && new Integer(c.getSysNum()).equals(AuthCredential.COMMON_AUTH_CREDENTIAL)){
 			if(!c.getUid().equals(uid)){
 				throw new ProxyAuthenticationException("invalid access from " + uid);
 			}

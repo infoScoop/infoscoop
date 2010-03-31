@@ -13,7 +13,7 @@ import org.infoscoop.acl.SecurityController;
 import org.infoscoop.dao.AdminRoleDAO;
 import org.infoscoop.dao.PortalAdminsDAO;
 import org.infoscoop.dao.model.Adminrole;
-import org.infoscoop.dao.model.Portaladmins;
+import org.infoscoop.dao.model.Portaladmin;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -132,11 +132,11 @@ public class PortalAdminsService {
 		List adminsList = getPortalAdmins();
 		JSONArray adminsJson = new JSONArray();
 		for (Iterator it = adminsList.iterator(); it.hasNext();) {
-			Portaladmins portalAdmin = (Portaladmins) it.next();//Key become capital if Map is passed to constructor of JSONObject without change.
+			Portaladmin portalAdmin = (Portaladmin) it.next();//Key become capital if Map is passed to constructor of JSONObject without change.
 			jobj = new JSONObject();
 			
 			jobj.put("uid", portalAdmin.getUid());
-			jobj.put("roleId", portalAdmin.getRoleid());
+			jobj.put("roleId", portalAdmin.getAdminrole().getRoleid());
 			adminsJson.put( jobj );
 		}
 		
@@ -163,7 +163,7 @@ public class PortalAdminsService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Portaladmins> getPortalAdmins() throws Exception {
+	public List<Portaladmin> getPortalAdmins() throws Exception {
 		return portalAdminsDAO.select();
 	}
 	
@@ -179,7 +179,7 @@ public class PortalAdminsService {
 	public List getMyPermissionList(){
 		List permissionList = new ArrayList();
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
-		Portaladmins pa = portalAdminsDAO.selectById(p.getName());
+		Portaladmin pa = portalAdminsDAO.selectById(p.getName());
 		
 		try {
 			JSONArray jArray = new JSONArray(pa.getAdminrole().getPermission());

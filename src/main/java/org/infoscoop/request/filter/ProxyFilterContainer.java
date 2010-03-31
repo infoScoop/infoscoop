@@ -261,7 +261,7 @@ public class ProxyFilterContainer {
 
 	private void putCache(String url, InputStream responseStream, Map headersMap){
 		try {
-			String cacheID = CacheService.getHandle().insertCache(
+			Integer cacheID = CacheService.getHandle().insertCache(
 					url,
 					responseStream,
 					headersMap);

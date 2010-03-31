@@ -13,22 +13,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.SystemMessage;
-import org.infoscoop.dao.model.USERPREFPK;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
-import org.infoscoop.service.MessageService;
 import org.infoscoop.service.SiteAggregationMenuService.ForceUpdateUserPref;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -52,16 +48,16 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 	public void addWidget( String uid,  String defaultUid,  String tabId, Widget widget,int isStatic ){
 		widget.setUid( uid );
-		widget.setDefaultuid( defaultUid );
-		widget.setTabid( tabId );
-		widget.setIsstatic( new Integer( isStatic ));
+		widget.setDefaultUid( defaultUid );
+		widget.setTabId( tabId );
+		widget.setIsStatic( new Integer( isStatic ));
 
 		addWidget( widget );
 	}
     public void addWidget(Widget widget){
 //    	System.out.println("ID:"+widget.getId() );
 //    	System.out.println( widget.getUid()+","+widget.getTabid()+","+widget.getWidgetid()+","+widget.getDeletedate() );
-		widget.setCreatedate(new Date().getTime());
+		widget.setCreateDate(new Date().getTime());
 		super.getHibernateTemplate().save(widget);
 		super.getHibernateTemplate().flush();
 		updateUserPrefs( widget );
@@ -81,9 +77,9 @@ public class WidgetDAO extends HibernateDaoSupport{
 			return new ArrayList();
 
 		return super.getHibernateTemplate().findByCriteria( DetachedCriteria.forClass( Widget.class )
-				.add( Expression.eq("Uid",uid ))
-				.add( Expression.eq("Deletedate",new Long( 0 )))
-				.add( Expression.in("Widgetid",widgetIds )));
+				.add( Restrictions.eq("Uid",uid ))
+				.add( Restrictions.eq("Deletedate",new Long( 0 )))
+				.add( Restrictions.in("Widgetid",widgetIds )));
 	}
 
     public void updateWidget( Widget widget ) {
@@ -108,26 +104,27 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 		List<Widget> widgetList = super.getHibernateTemplate()
 			.findByCriteria(DetachedCriteria.forClass(Widget.class)
-					.add(Expression.eq("Menuid", widgetId)));
+					.add(Restrictions.eq("Menuid", widgetId)));
 		SystemMessageDAO sysMessageDao = SystemMessageDAO.newInstance();
 		int i = 0;
 		for( Widget widget : widgetList ) {
     		String oldTitle = widget.getTitle();
 			if(title != null){
 				widget.setTitle(title);
-				if(widget.getDeletedate() == 0)
+				if(widget.getDeleteDate() == 0){
 					sysMessageDao.insert(new SystemMessage(
 							widget.getUid(),
 							"ms_title_update_by_admin",
 							oldTitle + "," + title));
+				}
 			}
 			if(href != null)
 				widget.setHref(href);
 
 			for(Map.Entry<String, ForceUpdateUserPref> pref : setProperties.entrySet()){
 				String oldValue = null;
-				UserPref up = widget.getUserPrefs().get(pref.getKey());
-				if(up != null)oldValue = up.getValue();
+				UserPref up = widget.getUserPrefsMap().get(pref.getKey());
+				if(up != null)oldValue = up.getId().getValue();
 
 				ForceUpdateUserPref updatePref = pref.getValue();
 
@@ -136,7 +133,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 				}else{
 
 					widget.setUserPref(pref.getKey(), updatePref.getValue());
-					if(!updatePref.isImplied() && widget.getDeletedate() == 0){
+					if(!updatePref.isImplied() && widget.getDeleteDate() == 0){
 						if(oldValue != null){
 							sysMessageDao.insert(new SystemMessage(
 									widget.getUid(),
@@ -154,7 +151,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 			for(ForceUpdateUserPref removeProp : removePropNames){
 				// The special processing for gadgets is not necessary, Beacouse gadget's URL is require property.
 				widget.removeUserPref(removeProp.getName());
-				if(!removeProp.isImplied() && widget.getDeletedate() == 0){
+				if(!removeProp.isImplied() && widget.getDeleteDate() == 0){
 					sysMessageDao.insert(new SystemMessage(
 							widget.getUid(),
 							"ms_up_revert_by_admin",
@@ -191,7 +188,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 	public void delete(Widget widget) {
 			if(log.isInfoEnabled())
-				log.info("deleteWidget: uid=" + widget.getUid() +",tabId=" + widget.getTabid() + ",widgetId=" + widget.getWidgetid());
+				log.info("deleteWidget: uid=" + widget.getUid() +",tabId=" + widget.getTabId() + ",widgetId=" + widget.getWidgetId());
 
 			super.getHibernateTemplate().delete(widget);
 	}
@@ -393,7 +390,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 		Map<String,UserPref> userPrefs = new HashMap<String,UserPref>();
 		List<UserPref> results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass( UserPref.class )
-				.add( Expression.eq("Id.WidgetId",id )));
+				.add( Restrictions.eq("Id.WidgetId",id )));
 		for( UserPref userPref : results )
 			userPrefs.put( userPref.getId().getName(),userPref );
 
@@ -402,12 +399,12 @@ public class WidgetDAO extends HibernateDaoSupport{
 	public void updateUserPrefs( Widget widget ) {
 		List<UserPref> c1 = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass( UserPref.class )
-				.add( Expression.eq("Id.WidgetId",widget.getId())));
+				.add( Restrictions.eq("Id.WidgetId",widget.getId())));
 		Map<String,UserPref> current = new HashMap<String,UserPref>();
 		for( UserPref userPref : c1 )
 			current.put( userPref.getId().getName(),userPref );
 
-		Map<String,UserPref> userPrefs = widget.getUserPrefs();
+		Map<String,UserPref> userPrefs = widget.getUserPrefsMap();
 		Set<String> keySet = new HashSet<String>( userPrefs.keySet() );
 		keySet.addAll( current.keySet() );
 
@@ -416,8 +413,8 @@ public class WidgetDAO extends HibernateDaoSupport{
 				super.getHibernateTemplate().delete( current.get( key ));
 			} else {
 				UserPref userPref = userPrefs.get( key );
-				if( userPref.getId().getWidgetId() == null )
-					userPref.getId().setWidgetId( widget.getId());
+				if( userPref.getId().getWidgetId() == 0 )
+					userPref.getId().setWidgetId(widget.getId());
 
 				super.getHibernateTemplate().saveOrUpdate( userPref );
 			}
