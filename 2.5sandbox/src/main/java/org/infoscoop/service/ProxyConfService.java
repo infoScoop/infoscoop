@@ -18,6 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.ProxyConfDAO;
 import org.infoscoop.dao.model.Proxyconf;
+import org.infoscoop.dao.model.ProxyconfId;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONObject;
@@ -399,7 +400,7 @@ public class ProxyConfService {
 				log.error("proxyconf not found.");
 				return "";
 			}
-			String result = entity.getData();
+			String result = entity.getId().getData();
 
 
 			return result;
@@ -422,10 +423,11 @@ public class ProxyConfService {
 				log.error("proxyconf not found.");
 				return "";
 			}
-			String result = entity.getData();
+			String result = entity.getId().getData();
 			// Overwrite on temporary
-			Proxyconf temp = new Proxyconf(
-					new Integer( ProxyConfDAO.PROXYCONF_FLAG_TEMP),entity.getData());
+			Proxyconf temp = new Proxyconf(new ProxyconfId());
+			temp.getId().setTemp(ProxyConfDAO.PROXYCONF_FLAG_TEMP);
+			temp.getId().setData(entity.getId().getData());
 			this.proxyConfDAO.update(temp);
 
 			return result;
@@ -451,7 +453,7 @@ public class ProxyConfService {
 			}
 			// Overwrite from temporary
 			Proxyconf entity = proxyConfDAO.select(ProxyConfDAO.PROXYCONF_FLAG_NOT_TEMP);
-			entity.setData(tempEntity.getData());
+			entity.getId().setData(tempEntity.getId().getData());
 			this.proxyConfDAO.update(entity);
 		} catch (Exception e) {
 			log.error("Unexpected error occurred.", e);

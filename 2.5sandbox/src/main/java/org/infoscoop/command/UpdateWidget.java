@@ -82,8 +82,8 @@ public class UpdateWidget extends XMLCommandProcessor{
     		if(targetColumn != null && !"".equals(targetColumn)){
     			widget.setColumn(new Integer(targetColumn));
     		}
-    		widget.setSiblingid(sibling);
-    		widget.setParentid(parent);
+    		widget.setSiblingId(sibling);
+    		widget.setParentId(parent);
     		if(confJson.has("title"))
     			widget.setTitle(confJson.getString("title"));
     		if(confJson.has("href"))
@@ -91,7 +91,7 @@ public class UpdateWidget extends XMLCommandProcessor{
     		if(confJson.has("type"))
     			widget.setType(confJson.getString("type"));
     		if(confJson.has("siblingId"))
-    			widget.setSiblingid(confJson.getString("siblingId"));
+    			widget.setSiblingId(confJson.getString("siblingId"));
     		if(confJson.has("property"))
     			widget.setUserPrefsJSON(confJson.getJSONObject("property") );
     		if (confJson.has("ignoreHeader"))

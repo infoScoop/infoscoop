@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
-import org.infoscoop.dao.model.Portaladmins;
+import org.hibernate.criterion.Restrictions;
+import org.infoscoop.dao.model.Portaladmin;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -28,7 +28,7 @@ public class PortalAdminsDAO extends HibernateDaoSupport {
 	public List select() {
 		//select * from ${schema}.portaladmins
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(Portaladmins.class).addOrder(Order.asc("Id")));
+				DetachedCriteria.forClass(Portaladmin.class).addOrder(Order.asc("id")));
 	}
 
 	/**
@@ -48,8 +48,9 @@ public class PortalAdminsDAO extends HibernateDaoSupport {
 	 * @param uid
 	 */
 	public void insert(String uid, String roleId) {
-		Portaladmins portalAdmin = new Portaladmins( null, uid );
-		portalAdmin.setRoleid(roleId);
+		Portaladmin portalAdmin = new Portaladmin(uid);
+		portalAdmin.setAdminrole(AdminRoleDAO.newInstance().selectByRoleId(
+				roleId));
 		
 		super.getHibernateTemplate().save( portalAdmin );
 		
@@ -64,9 +65,9 @@ public class PortalAdminsDAO extends HibernateDaoSupport {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public Portaladmins selectById(String uid){
-		List<Portaladmins> result = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(Portaladmins.class).add(Expression.eq("Uid", uid)));
+	public Portaladmin selectById(String uid){
+		List<Portaladmin> result = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Portaladmin.class).add(Restrictions.eq("Uid", uid)));
 		
 		return (result.size() > 0)? result.get(0) : null;
 	}

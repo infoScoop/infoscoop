@@ -7,7 +7,6 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +18,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -94,7 +92,7 @@ public class HTMLFragmentFilter extends ProxyFilter {
 							request.putResponseHeader(name, header.getValue());
 					}
 					request.setResponseBody( new ByteArrayInputStream( cache.getBodyBytes()) );
-					request.putResponseHeader("MSDPortal-Cache-ID", cache.getId());
+					request.putResponseHeader("MSDPortal-Cache-ID", cache.getId().toString());
 					//if(log.isInfoEnabled())
 						log.error("use cache " + cacheURL);
 					return 200;
@@ -149,10 +147,10 @@ public class HTMLFragmentFilter extends ProxyFilter {
 			if (cacheURL != null && cacheURL.length() > 0) {
 				Map headerMap = request.getResponseHeaders();
 				try {
-					String cacheId = CacheService.getHandle().insertUpdateCache(cacheURL, new ByteArrayInputStream(fragmentBytes), headerMap);
+					Integer cacheId = CacheService.getHandle().insertUpdateCache(cacheURL, new ByteArrayInputStream(fragmentBytes), headerMap);
 					if(log.isInfoEnabled())
 						log.info("save cache: url=" + cacheURL + ", cacheId=" + cacheId);
-					request.putResponseHeader("MSDPortal-Cache-ID", cacheId);
+					request.putResponseHeader("MSDPortal-Cache-ID", cacheId.toString());
 				} catch (Exception e) {
 					log.error("save cache failed.[id = " + cacheURL+ "]:[url = " + cacheURL + "]", e);
 				}

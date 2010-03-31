@@ -2,7 +2,6 @@ package org.infoscoop.command;
 
 import java.util.Map;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
@@ -11,7 +10,6 @@ import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.service.AuthCredentialService;
-import org.json.JSONObject;
 
 /**
  * The command class executed when a widget is deleted.
@@ -66,18 +64,18 @@ public class RemoveWidget extends XMLCommandProcessor {
         	//TODO:check whether the widget is null or not;
         	Widget nextSibling = tabDAO.getWidgetBySibling( uid,tabId,widgetId );
         	if(nextSibling != null){
-        		nextSibling.setSiblingid(widget.getSiblingid());
+        		nextSibling.setSiblingId(widget.getSiblingId());
 //        		WidgetDAO.newInstance().updateWidget(nextSibling);
         	}
         	
-        	widget.setDeletedate( Long.valueOf( deleteDate ));
-        	widget.setTabid("-1");
+        	widget.setDeleteDate( Long.valueOf( deleteDate ));
+        	widget.setTabId("-1");
         	
         	WidgetDAO.newInstance().updateWidget( widget );
         	
-        	Map<String,UserPref> userPrefs = widget.getUserPrefs();
+        	Map<String,UserPref> userPrefs = widget.getUserPrefsMap();
         	if( userPrefs.containsKey("authCredentialId")){
-        		String authCredentialId = userPrefs.get("authCredentialId").getValue();
+        		String authCredentialId = userPrefs.get("authCredentialId").getId().getValue();
         		AuthCredentialService.getHandle().removeCredential(widget.getUid(), authCredentialId);
         	}
 

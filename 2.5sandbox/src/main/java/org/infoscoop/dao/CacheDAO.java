@@ -4,11 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
@@ -89,7 +87,7 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @return
 	 * @throws DataResourceException
 	 */
-	public String insertCache(String id, String uid,
+	public int insertCache(String uid,
 			String url,InputStream body,Map headers){
 		if (uid == null)
 			throw new RuntimeException("uid must be set.");
@@ -101,14 +99,13 @@ public class CacheDAO extends HibernateDaoSupport {
 			log.error("", e);
 		}
 		
-		Cache cache = new Cache( id,uid,url,url_key,
-				new Timestamp( new Date().getTime()),
-				makeHeaderXml( headers ),
-				new String(Base64.encodeBase64( readBytes( body ))) );
+		Cache cache = new Cache(uid, url, url_key, makeHeaderXml(headers),
+				new String(Base64.encodeBase64(readBytes(body))));
+		cache.setTimestamp(new Date());
 		
 		super.getHibernateTemplate().save( cache );
 		
-		return id;
+		return cache.getId();
 	}
 
 	public Cache insertUpdateCache(String id,
@@ -123,15 +120,9 @@ public class CacheDAO extends HibernateDaoSupport {
 			log.error("", e);
 		}
 		
-		Cache cache = new Cache(
-				id,
-				uid,
-				url,
-				url_key,
-				new Timestamp( new Date().getTime()),
-				makeHeaderXml( headers ).toString(),
-				new String(Base64.encodeBase64( readBytes( body )))
-			);
+		Cache cache = new Cache(uid, url, url_key, makeHeaderXml(headers)
+				.toString(), new String(Base64.encodeBase64(readBytes(body))));
+		cache.setTimestamp(new Date());
 		super.getHibernateTemplate().saveOrUpdate( cache );
 
 		return cache;
@@ -158,7 +149,7 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @param uid
 	 * @throws DBAccessException
 	 */
-	public void deleteCacheById(String id){
+	public void deleteCacheById(int id){
 		Cache cache = ( Cache )super.getHibernateTemplate().get( Cache.class,id );
 		if( cache == null )
 			return;

@@ -12,9 +12,8 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
-import org.infoscoop.dao.model.TABPK;
+import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.util.SpringUtil;
@@ -40,13 +39,17 @@ public class TabDAO extends HibernateDaoSupport{
     
     
 	public Tab getTab(String uid, String tabId) {
-		return (Tab)super.getHibernateTemplate().get(Tab.class, new TABPK(uid, tabId));
+		return (Tab) super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Tab.class).add(
+						Restrictions.eq("UID", uid)).add(
+						Restrictions.eq("tabId", tabId)).addOrder(
+						Order.asc("Order")));
 	}
 	
     public Collection getTabs(String uid) throws Exception{
 		Collection tabs = ( Collection ) super.getHibernateTemplate()
 			.findByCriteria( DetachedCriteria.forClass( Tab.class )
-					.add( Expression.eq("id.Uid", uid ))
+					.add( Restrictions.eq("id.Uid", uid ))
 					.addOrder( Order.asc("Order")));
 		
 		return tabs;
@@ -89,15 +92,15 @@ public class TabDAO extends HibernateDaoSupport{
 
 		Set widgetIdSet = new HashSet();
 		for( Iterator widgets=widgetList.iterator();widgets.hasNext(); )
-			widgetIdSet.add( (( Widget )widgets.next()).getWidgetid());
+			widgetIdSet.add( (( Widget )widgets.next()).getWidgetId());
 		
 		for( Iterator widgets=widgetList.iterator();widgets.hasNext(); ) {
 			Widget widget = ( Widget )widgets.next();
-			String parentId = widget.getParentid();
+			String parentId = widget.getParentId();
 			if( parentId == null ) continue;
 			
-			if( !widgetIdSet.contains( widget.getParentid() ))
-				widget.setParentid( null );
+			if( !widgetIdSet.contains( widget.getParentId() ))
+				widget.setParentId( null );
 		}
 
 		Map siblingMap = new HashMap();
@@ -105,8 +108,8 @@ public class TabDAO extends HibernateDaoSupport{
 		Map lastWidgetMap = new HashMap();
 		for(Iterator it = widgetList.iterator(); it.hasNext();){
 			Widget w = (Widget)it.next();
-			if(w.getSiblingid() != null && !"".equals(w.getSiblingid()) ){
-				siblingMap.put(w.getSiblingid(), w);
+			if(w.getSiblingId() != null && !"".equals(w.getSiblingId()) ){
+				siblingMap.put(w.getSiblingId(), w);
 			}else{
 				firstSet.add(w);
 			}
@@ -117,8 +120,8 @@ public class TabDAO extends HibernateDaoSupport{
 			Widget w = (Widget)it.next();
 			resultList.add(w);
 			lastWidgetMap.put(w.getColumn(), w);
-			while(siblingMap.containsKey(w.getWidgetid())){
-				w = (Widget)siblingMap.get(w.getWidgetid());
+			while(siblingMap.containsKey(w.getWidgetId())){
+				w = (Widget)siblingMap.get(w.getWidgetId());
 				resultList.add(w);
 				lastWidgetMap.put(w.getColumn(), w);
 			}
@@ -128,7 +131,7 @@ public class TabDAO extends HibernateDaoSupport{
 			if (!resultList.contains(w)) {
 				Widget lastW = (Widget) lastWidgetMap.get(w.getColumn());
 				if (lastW != null)
-					w.setSiblingid(lastW.getWidgetid());
+					w.setSiblingId(lastW.getWidgetId());
 				resultList.add(w);
 				lastWidgetMap.put(w.getColumn(), w);
 			}

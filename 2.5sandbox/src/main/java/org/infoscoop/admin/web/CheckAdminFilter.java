@@ -15,7 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.infoscoop.dao.model.Portaladmins;
+import org.infoscoop.dao.model.Portaladmin;
 import org.infoscoop.service.PortalAdminsService;
 import org.infoscoop.util.SpringUtil;
 
@@ -62,7 +62,7 @@ public class CheckAdminFilter implements Filter {
 		List adminsList = service.getPortalAdmins();
 		this.administratorUidList.clear();
 		for (Iterator it = adminsList.iterator(); it.hasNext();) {
-			Portaladmins portalAdmin = (Portaladmins) it.next();
+			Portaladmin portalAdmin = (Portaladmin) it.next();
 			this.administratorUidList.add( portalAdmin.getUid() );
 		}
 	}

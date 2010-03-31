@@ -3,7 +3,6 @@ package org.infoscoop.dao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.Proxyconf;
@@ -42,7 +41,7 @@ public class ProxyConfDAO extends HibernateDaoSupport {
 	 */
 	public void update(Proxyconf entity){
 		
-		entity.setLastmodified(new Date());
+		entity.getId().setLastmodified(new Date());
 		
 		super.getHibernateTemplate().saveOrUpdate(entity);
 	}
@@ -58,7 +57,7 @@ public class ProxyConfDAO extends HibernateDaoSupport {
 	public String selectLastModified(int tempFlag){
 		Proxyconf entity = (Proxyconf)super.getHibernateTemplate().load(Proxyconf.class, new Integer(tempFlag));
 		
-		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(entity.getLastmodified());
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(entity.getId().getLastmodified());
 		
 	}
 

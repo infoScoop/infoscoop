@@ -73,7 +73,7 @@ public class TabLayoutService {
 	
 	public synchronized void deleteTemp() throws IllegalAccessException{
 		checkLoginUid();
-		tabLayoutDAO.deleteByTemp(TabLayout.TEMP_TRUE);
+		tabLayoutDAO.deleteByTemp(true);
 		log.info("Success to delete Tempolary TabLayouts.");
 	}
 	
@@ -133,15 +133,14 @@ public class TabLayoutService {
 				}
 			}
 			
-			List oldTabList = tabLayoutDAO.selectByTabId(tabId,
-					TabLayout.TEMP_TRUE);
+			List oldTabList = tabLayoutDAO.selectByTabId(tabId, true);
 			Map oldDynamicPanelMap = new HashMap();
 			for(Iterator it = oldTabList.iterator(); it.hasNext();){
 				TabLayout tab = (TabLayout)it.next();
 				
 				JSONObject json = tab.getDynamicPanelJson();
 
-				oldDynamicPanelMap.put(tab.getId().getRoleorder(), json);
+				oldDynamicPanelMap.put(tab.getRoleOrder(), json);
 			}
 			// Delete
 			tabLayoutDAO.deleteByTabId(tabId);
@@ -359,18 +358,18 @@ public class TabLayoutService {
 		for(Iterator it = tabLayoutList.iterator(); it.hasNext();){
 			TabLayout tablayout = (TabLayout)it.next();
 			value = new JSONObject();
-//			value.put("id", Tablayout.getId().getTabid() + "_" + Tablayout.getRole());	// tabId+role can not be unique
-			value.put("id", tablayout.getId().getTabid() + "_" + tablayout.getId().getRoleorder() + "_" + tablayout.getRole());	// fix #174
-			value.put("tabId", tablayout.getId().getTabid());
+//			value.put("id", Tablayout.getTabid() + "_" + Tablayout.getRole());	// tabId+role can not be unique
+			value.put("id", tablayout.getTabId() + "_" + tablayout.getRoleOrder() + "_" + tablayout.getRole());	// fix #174
+			value.put("tabId", tablayout.getTabId());
 			value.put("tabName", tablayout.getTabName());
 			value.put("columnsWidth", tablayout.getColumnsWidth());
-			value.put("tabNumber", tablayout.getTabnumber());
+			value.put("tabNumber", tablayout.getTabNumber());
 			value.put("role", tablayout.getRole());
-			value.put("principalType", tablayout.getPrincipaltype());
-			value.put("roleOrder", tablayout.getId().getRoleorder().intValue() );
+			value.put("principalType", tablayout.getPrincipalType());
+			value.put("roleOrder", tablayout.getRoleOrder());
 			value.put("roleName", tablayout.getRolename());
-			value.put("defaultUid", tablayout.getDefaultuid());
-			value.put("widgetsLastmodified", tablayout.getWidgetslastmodified());
+			value.put("defaultUid", tablayout.getDefaultUid());
+			value.put("widgetsLastmodified", tablayout.getWidgetsLastmodified());
 			value.put("staticPanel", (tabId.equalsIgnoreCase("commandbar"))?
 					tablayout.getStaticPanelJsonWithComment() : tablayout.getStaticPanelJson());
 			value.put("layout", tablayout.getLayout());
@@ -378,7 +377,7 @@ public class TabLayoutService {
 			
 			result.put(value.getString("id"), value);
 			
-			if(DEFAULT_ROLE_NAME.equals(tablayout.getRolename()) && tablayout.getDeleteflag().intValue() == 1)
+			if(DEFAULT_ROLE_NAME.equals(tablayout.getRolename()) && tablayout.getDeleteFlag() == 1)
 				value.put("disabledDefault", true);
 		}
 		
@@ -477,7 +476,7 @@ public class TabLayoutService {
 			resultMap = getDefaultTabLayout(null);
 		}else{
 			long start = System.currentTimeMillis();
-			MultiHashMap map = this.tabLayoutDAO.getTabLayout(tabId);
+			MultiHashMap map = this.tabLayoutDAO.getTablayout(tabId);
 			Iterator ite = map.keySet().iterator();
 			
 			while(ite.hasNext()){
@@ -490,7 +489,7 @@ public class TabLayoutService {
 					TabLayout layout = (TabLayout)docIte.next();
 					
 					try {
-						if(RoleUtil.isPermitted(layout.getPrincipaltype(), layout.getRole())){
+						if(RoleUtil.isPermitted(layout.getPrincipalType(), layout.getRole())){
 							isEmpty = false;
 							resultMap.put(key, layout);
 							break;
@@ -529,7 +528,7 @@ public class TabLayoutService {
 	public Map getDefaultTabLayout(MultiHashMap layoutMap) {
 		Map resultMap = new HashMap();
 		if(layoutMap == null){
-			layoutMap = this.tabLayoutDAO.getTabLayout(null);
+			layoutMap = this.tabLayoutDAO.getTablayout(null);
 //			layoutMap = TabLayoutDAO.newInstance().getTabLayout(null);
 		}
 		
@@ -566,12 +565,12 @@ public class TabLayoutService {
 				int i = 0;
 				int j = 0;
 				try{
-					i = x1.getTabnumber() != null? x1.getTabnumber().intValue() : 0;
+					i = x1.getTabNumber() != null? x1.getTabNumber().intValue() : 0;
 				}catch(NumberFormatException e){
 					return 1;
 				}
 				try{
-					j = x2.getTabnumber() != null? x2.getTabnumber().intValue() : 0;
+					j = x2.getTabNumber() != null? x2.getTabNumber().intValue() : 0;
 				}catch(NumberFormatException e){
 					return 0;
 				}

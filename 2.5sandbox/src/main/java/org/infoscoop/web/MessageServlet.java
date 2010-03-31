@@ -200,11 +200,11 @@ public class MessageServlet extends HttpServlet {
 			JSONObject obj = new JSONObject();
 			obj.put("id",msg.getId());
 			obj.put("from", msg.getFrom());
-			obj.put("displayFrom", msg.getDisplayfrom());
+			obj.put("displayFrom", msg.getDisplayFrom());
 			obj.put("body", msg.getHtmlBody());
 			obj.put("postedtime", df.format(msg.getPostedTime()));
-			if (msg.getTojson() != null) {
-				obj.put("to", new JSONArray(msg.getTojson()));
+			if (msg.getToJson() != null) {
+				obj.put("to", new JSONArray(msg.getToJson()));
 			}
 			if (msg.getOption() != null) {
 				obj.put("option", msg.getOption());
@@ -239,7 +239,7 @@ public class MessageServlet extends HttpServlet {
 				.append( DateUtility.getW3CDTFDate( msg.getPostedTime()))
 				.append("</pubDate>");
 			xml.append("<dc:creator>")
-				.append(XmlUtil.escapeXmlEntities( msg.getDisplayfrom()))
+				.append(XmlUtil.escapeXmlEntities( msg.getDisplayFrom()))
 				.append("</dc:creator>");
 			xml.append("<description>");
 			xml.append("<![CDATA[");

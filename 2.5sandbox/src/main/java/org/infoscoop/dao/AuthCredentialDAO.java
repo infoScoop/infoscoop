@@ -2,10 +2,9 @@ package org.infoscoop.dao;
 
 import java.util.List;
 
-
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.AuthCredential;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -22,10 +21,10 @@ public class AuthCredentialDAO extends HibernateDaoSupport{
 	public AuthCredential select(String uid, String authType, String authUid){
 		List results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(AuthCredential.class).add(
-						Expression.conjunction()
-						.add(Expression.eq("Uid", uid))
-						.add(Expression.eq("AuthType", authType))
-						.add(Expression.eq("AuthUid", authUid))
+						Restrictions.conjunction()
+						.add(Restrictions.eq("uid", uid))
+						.add(Restrictions.eq("authType", authType))
+						.add(Restrictions.eq("authUid", authUid))
 						)
 						);	
 		if(results.isEmpty()){
@@ -38,9 +37,9 @@ public class AuthCredentialDAO extends HibernateDaoSupport{
 	public AuthCredential select(String uid, Integer sysNum){
 		List results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(AuthCredential.class).add(
-						Expression.conjunction()
-						.add(Expression.eq("Uid", uid))
-						.add(Expression.eq("SysNum", sysNum))
+						Restrictions.conjunction()
+						.add(Restrictions.eq("uid", uid))
+						.add(Restrictions.eq("sysNum", sysNum))
 						)
 						);	
 		if(results.isEmpty()){
@@ -60,7 +59,7 @@ public class AuthCredentialDAO extends HibernateDaoSupport{
 	
 	public List select(String uid){
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(AuthCredential.class).add(Expression.eq("Uid", uid)).addOrder(Order.asc("SysNum")).addOrder(Order.asc("id"))
+				DetachedCriteria.forClass(AuthCredential.class).add(Restrictions.eq("uid", uid)).addOrder(Order.asc("sysNum")).addOrder(Order.asc("id"))
 		);
 	}
 	

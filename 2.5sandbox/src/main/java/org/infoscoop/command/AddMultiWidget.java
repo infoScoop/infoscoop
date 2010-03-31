@@ -82,8 +82,8 @@ public class AddMultiWidget extends XMLCommandProcessor{
     		
     		Widget newNextSibling = tabDAO.getColumnWidgetBySibling( uid,tabId,sibling,Integer.valueOf( targetColumn ),parentWidgetId );
         	if(newNextSibling != null){
-        		newNextSibling.setSiblingid( parentWidgetId );
-        		log.info("Replace siblingId of [" + newNextSibling.getWidgetid() + "] to " + parentWidgetId );
+        		newNextSibling.setSiblingId( parentWidgetId );
+        		log.info("Replace siblingId of [" + newNextSibling.getWidgetId() + "] to " + parentWidgetId );
  //       		WidgetDAO.newInstance().updateWidget(uid, tabId, newNextSibling);
         	}
     		
@@ -129,9 +129,9 @@ public class AddMultiWidget extends XMLCommandProcessor{
 		if(targetColumn != null && !"".equals(targetColumn)){
 			widget.setColumn(new Integer(targetColumn));
 		}
-		widget.setSiblingid(sibling);
-		widget.setParentid(parentId);
-		widget.setMenuid(menuId);
+		widget.setSiblingId(sibling);
+		widget.setParentId(parentId);
+		widget.setMenuId(menuId);
 		if(confJson.has("title"))
 			widget.setTitle(confJson.getString("title"));
 		if(confJson.has("href"))
@@ -143,7 +143,7 @@ public class AddMultiWidget extends XMLCommandProcessor{
 		if (confJson.has("ignoreHeader"))
 			widget.setIgnoreHeader(confJson.getBoolean("ignoreHeader"));
 
-		widget.setIsstatic(new Integer(0));
+		widget.setIsStatic(new Integer(0));
 		return widget;
 	}
 }

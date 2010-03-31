@@ -4,19 +4,16 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.infoscoop.account.SearchUserService;
 import org.infoscoop.account.IAccount;
-import org.infoscoop.dao.model.Logs;
-import org.infoscoop.dao.model.Properties;
+import org.infoscoop.account.SearchUserService;
+import org.infoscoop.dao.model.Log;
+import org.infoscoop.dao.model.Property;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.JSONScript;
 import org.infoscoop.util.SpringUtil;
@@ -32,7 +29,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  */
 public class LogDAO extends HibernateDaoSupport {
 	
-    private static Log log = LogFactory.getLog(LogDAO.class);
+    private static org.apache.commons.logging.Log log = LogFactory.getLog(LogDAO.class);
 	private Calendar logDeleteDay = Calendar.getInstance();
     private LogDAO(){}
     
@@ -94,7 +91,7 @@ public class LogDAO extends HibernateDaoSupport {
     	String url_key = Crypt.getHash(url);
     	String rssurl_key = Crypt.getHash(rssUrl);
     	
-		Logs logs = new Logs( null,uid,new Integer( logType ),url,url_key,rssUrl,rssurl_key,date );
+    	Log logs = new Log(uid,new Integer( logType ),url,url_key,rssUrl,rssurl_key,date );
 		super.getHibernateTemplate().save( logs );
 		
 		if(log.isInfoEnabled()){
@@ -106,7 +103,7 @@ public class LogDAO extends HibernateDaoSupport {
 		Calendar currentDay = Calendar.getInstance();
 		if (currentDay.get(Calendar.DAY_OF_YEAR) != logDeleteDay.get(Calendar.DAY_OF_YEAR)) {
 			PropertiesDAO pdao = PropertiesDAO.newInstance();
-			Properties property = pdao.findProperty("logStoragePeriod");
+			Property property = pdao.findProperty("logStoragePeriod");
 			int storagePeriod = 365;
 			try {
 				storagePeriod = Integer.parseInt(property.getValue());

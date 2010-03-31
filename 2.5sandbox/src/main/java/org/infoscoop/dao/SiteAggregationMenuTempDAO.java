@@ -8,10 +8,10 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
-import org.infoscoop.dao.model.Siteaggregationmenu_temp;
+import org.hibernate.criterion.Restrictions;
+import org.infoscoop.dao.model.MenuTemp;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -25,40 +25,40 @@ public class SiteAggregationMenuTempDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Siteaggregationmenu_temp> selectByTypeAndUser(String menuType, String workingUid) {
-		DetachedCriteria crit = DetachedCriteria.forClass(Siteaggregationmenu_temp.class);
-		crit.add(Expression.eq("Id.Type", menuType));
-		crit.add(Expression.eq("Workinguid", workingUid));
+	public List<MenuTemp> selectByTypeAndUser(String menuType, String workingUid) {
+		DetachedCriteria crit = DetachedCriteria.forClass(MenuTemp.class);
+		crit.add(Restrictions.eq("Id.Type", menuType));
+		crit.add(Restrictions.eq("Workinguid", workingUid));
 		
 		return super.getHibernateTemplate().findByCriteria(crit);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Siteaggregationmenu_temp selectBySitetopId(String menuType, String sitetopId){
-		DetachedCriteria crit = DetachedCriteria.forClass(Siteaggregationmenu_temp.class);
-		crit.add(Expression.eq("Id.Type", menuType));
-		crit.add(Expression.eq("Id.Sitetopid", sitetopId));
+	public MenuTemp selectBySitetopId(String menuType, String sitetopId){
+		DetachedCriteria crit = DetachedCriteria.forClass(MenuTemp.class);
+		crit.add(Restrictions.eq("Id.Type", menuType));
+		crit.add(Restrictions.eq("Id.Sitetopid", sitetopId));
 		
-		List<Siteaggregationmenu_temp> list = super.getHibernateTemplate().findByCriteria(crit);
+		List<MenuTemp> list = super.getHibernateTemplate().findByCriteria(crit);
 		return (list.size() > 0)? list.get(0) : null;
 	}
 	
-	public void delete(Siteaggregationmenu_temp entity){
+	public void delete(MenuTemp entity){
 		super.getHibernateTemplate().delete(entity);
 		super.getHibernateTemplate().flush();
 	}
 	
 	public void deleteByTypeAndUser(String menuType, String workingUid){
-		String query = "delete Siteaggregationmenu_temp where Id.Type=? and Workinguid=?";
+		String query = "delete MenuTemp where Id.Type=? and Workinguid=?";
 		super.getHibernateTemplate().bulkUpdate(query, new Object[]{menuType, workingUid});
 	}
 	
-	public void evict(Siteaggregationmenu_temp entity){
+	public void evict(MenuTemp entity){
 		super.getHibernateTemplate().evict(entity);
 	}
 	
 	public void deleteByUser(String workingUid){
-		String query = "delete Siteaggregationmenu_temp where Workinguid=?";
+		String query = "delete MenuTemp where Workinguid=?";
 		super.getHibernateTemplate().bulkUpdate(query, new Object[]{workingUid});
 		super.getHibernateTemplate().flush();
 	}
@@ -68,10 +68,10 @@ public class SiteAggregationMenuTempDAO extends HibernateDaoSupport {
 		Date latestLastModifiedTime = (Date)super.getHibernateTemplate().execute(new HibernateCallback(){
 			public Object doInHibernate(Session session)
 					throws HibernateException, SQLException {
-				Criteria cri = session.createCriteria(Siteaggregationmenu_temp.class);
+				Criteria cri = session.createCriteria(MenuTemp.class);
 				
-				cri.add(Expression.eq("Id.Type", menuType));
-				cri.add(Expression.eq("Workinguid", workingUid));
+				cri.add(Restrictions.eq("Id.Type", menuType));
+				cri.add(Restrictions.eq("Workinguid", workingUid));
 				
 				Projection projection = Projections.projectionList()  
 				    .add(Projections.max("Lastmodified"));
@@ -96,7 +96,7 @@ public class SiteAggregationMenuTempDAO extends HibernateDaoSupport {
 	 * @param tempFlag
 	 * @throws DataResourceException
 	 */
-	public void update(Siteaggregationmenu_temp entity) {
+	public void update(MenuTemp entity) {
 		entity.setLastmodified(new Date());
 		super.getHibernateTemplate().saveOrUpdate(entity);
 	}

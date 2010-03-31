@@ -7,12 +7,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-
 import org.apache.commons.codec.binary.Base64;
 import org.infoscoop.dao.CacheDAO;
 import org.infoscoop.dao.model.Cache;
 import org.infoscoop.util.SpringUtil;
-import org.w3c.util.UUID;
 
 public class CacheService {
 	public static String PUBLIC_CACHE_USERID = "Public User";
@@ -39,25 +37,9 @@ public class CacheService {
 		return cacheDAO.getCacheById(id);
 	}
 
-	public String insertCache(String id, String uid,
+	public int insertCache(String uid,
 			String url,InputStream body,Map<String, List<String>> headers){
-		return cacheDAO.insertCache(id, uid, url, body, headers);
-	}
-
-	/**
-	 * insert private cache
-	 *
-	 * @param uid
-	 * @param url
-	 * @param body
-	 * @param responseHeaders
-	 * @return
-	 * @throws DataResourceException
-	 */
-	public String insertCache(String uid, String url,
-			InputStream body, Map<String, List<String>> headers){
-		String id = new UUID().toString();
-		return insertCache(id, uid, url, body, headers);
+		return cacheDAO.insertCache(uid, url, body, headers);
 	}
 
 	/**
@@ -67,12 +49,12 @@ public class CacheService {
 	 * @param headersMap
 	 * @return
 	 */
-	public String insertCache(String url, InputStream responseStream,
+	public int insertCache(String url, InputStream responseStream,
 			Map<String, List<String>> headersMap) {
 		return insertCache(PUBLIC_CACHE_USERID, url, responseStream, headersMap);
 	}
 
-	public void deleteCacheById(String id){
+	public void deleteCacheById(int id){
 		cacheDAO.deleteCacheById(id);
 	}
 
@@ -95,15 +77,14 @@ public class CacheService {
 		}
 	}
 	
-	public String insertUpdateCache(String url, ByteArrayInputStream body, Map<String, List<String>> headers) {
+	public int insertUpdateCache(String url, ByteArrayInputStream body, Map<String, List<String>> headers) {
 		return this.insertCache(PUBLIC_CACHE_USERID, url, body, headers);
 	}
 
-	public String insertUpdateCache(String uid, String url, ByteArrayInputStream body, Map<String, List<String>> headers) {
+	public int insertUpdateCache(String uid, String url, ByteArrayInputStream body, Map<String, List<String>> headers) {
 		Cache cache = getCacheByUrl(url);
 		if(cache == null){
-			String id = new UUID().toString();
-			return insertCache(id, uid, url, body, headers);
+			return insertCache(uid, url, body, headers);
 		}else{
 			cache.setBody(new String(Base64.encodeBase64( readBytes( body ))));
 			cache.setHeaders(CacheDAO.makeHeaderXml(headers));

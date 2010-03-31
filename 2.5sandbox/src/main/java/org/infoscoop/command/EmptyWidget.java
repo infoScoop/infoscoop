@@ -56,7 +56,7 @@ public class EmptyWidget extends XMLCommandProcessor {
 			//TODO:check whether a widget is null or not;
 			Widget nextSibling = tabDAO.getWidgetBySibling( uid,tabId,widgetId);
 			if(nextSibling != null){
-				nextSibling.setSiblingid(widget.getSiblingid());
+				nextSibling.setSiblingId(widget.getSiblingId());
 			}
 			
 			if (tabId != null && tabId.length() > 0) {

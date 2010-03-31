@@ -15,14 +15,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.CacheDAO;
 import org.infoscoop.dao.SiteAggregationMenuDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Cache;
-import org.infoscoop.dao.model.Siteaggregationmenu;
+import org.infoscoop.dao.model.Menu;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.util.I18NUtil;
 import org.json.JSONArray;
@@ -153,8 +152,8 @@ public class WidgetRankingServlet extends HttpServlet {
 							"UTF-8"));
 				SiteAggregationMenuDAO menuDao = SiteAggregationMenuDAO
 						.newInstance();
-				Siteaggregationmenu topmenu = menuDao.select("topmenu");
-				Siteaggregationmenu sidemenu = menuDao.select("sidemenu");
+				Menu topmenu = menuDao.select("topmenu");
+				Menu sidemenu = menuDao.select("sidemenu");
 				Map i18nMap = I18NUtil.getResourceMap(I18NUtil.TYPE_MENU,
 						request.getLocale());
 				JSONObject rankJson = new JSONObject();
@@ -308,7 +307,7 @@ public class WidgetRankingServlet extends HttpServlet {
 		}
 
 		private TitleInfo getTitleAndHrefFromMenu(String menuId,
-				Siteaggregationmenu topmenu, Siteaggregationmenu sidemenu,
+				Menu topmenu, Menu sidemenu,
 				Map i18nMap) throws Exception {
 			TitleInfo title = getMenuTitle(menuId, topmenu);
 			if (title == null)
@@ -320,7 +319,7 @@ public class WidgetRankingServlet extends HttpServlet {
 			return null;
 		}
 
-		private TitleInfo getMenuTitle(String menuId, Siteaggregationmenu menu)
+		private TitleInfo getMenuTitle(String menuId, Menu menu)
 				throws SAXException {
 			NodeList sites = menu.getElement().getElementsByTagName("site");
 			try {

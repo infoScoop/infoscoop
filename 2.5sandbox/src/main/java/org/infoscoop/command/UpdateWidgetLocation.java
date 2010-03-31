@@ -80,9 +80,9 @@ public class UpdateWidgetLocation extends XMLCommandProcessor {
             return;
         }
         
-        Widget oldNextSibling = tabDAO.getWidgetBySibling( uid,tabId,widget.getWidgetid() );            	
+        Widget oldNextSibling = tabDAO.getWidgetBySibling( uid,tabId,widget.getWidgetId() );            	
         if(oldNextSibling != null){
-        	oldNextSibling.setSiblingid(widget.getSiblingid());
+        	oldNextSibling.setSiblingId(widget.getSiblingId());
         	widgetDAO.updateWidget(oldNextSibling);
         }
 
@@ -94,12 +94,12 @@ public class UpdateWidgetLocation extends XMLCommandProcessor {
 		}
         
         if(newNextSibling != null){
-        	newNextSibling.setSiblingid(widget.getWidgetid());
-        	log.info("Replace siblingId of [" + newNextSibling.getWidgetid() + "] to " + widget.getWidgetid());
+        	newNextSibling.setSiblingId(widget.getWidgetId());
+        	log.info("Replace siblingId of [" + newNextSibling.getWidgetId() + "] to " + widget.getWidgetId());
         	widgetDAO.updateWidget(newNextSibling);
         }
         
-        widget.setSiblingid(sibling);
+        widget.setSiblingId(sibling);
       
         try{
         	widget.setColumn(new Integer(targetColumn));
@@ -108,7 +108,7 @@ public class UpdateWidgetLocation extends XMLCommandProcessor {
         }
 
         if(parent != null)
-        	widget.setParentid(parent);
+        	widget.setParentId(parent);
         
 //        WidgetDAO.newInstance().updateWidget(widget);
         

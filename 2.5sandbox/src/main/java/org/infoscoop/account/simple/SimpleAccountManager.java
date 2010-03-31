@@ -18,7 +18,6 @@ import org.infoscoop.account.PrincipalDef;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.dao.AccountDAO;
 import org.infoscoop.dao.model.Account;
-import org.infoscoop.util.SpringUtil;
 
 /**
  * @author hr-endoh

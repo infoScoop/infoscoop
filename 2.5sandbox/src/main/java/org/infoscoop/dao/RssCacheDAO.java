@@ -7,12 +7,10 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
-import org.infoscoop.dao.model.RSSCACHEPK;
+import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.Rsscache;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
@@ -44,7 +42,7 @@ public class RssCacheDAO  extends HibernateDaoSupport {
     	
     	String url_key = Crypt.getHash(url);
     	
-		Rsscache cache = new Rsscache( new RSSCACHEPK( url_key,uid,new Integer(pageNumber) ));
+		Rsscache cache = new Rsscache(url_key, uid, new Integer(pageNumber));
 		cache.setRss( data );
 		
 		super.getHibernateTemplate().saveOrUpdate( cache );
@@ -95,8 +93,12 @@ public class RssCacheDAO  extends HibernateDaoSupport {
     	
     	String url_key = Crypt.getHash(url);
     	
-    	Rsscache cache = ( Rsscache )super.getHibernateTemplate().get(
-    			Rsscache.class,new RSSCACHEPK( url_key,uid,new Integer( pageNumber )) );
+		Rsscache cache = (Rsscache) super.getHibernateTemplate()
+				.findByCriteria(
+						DetachedCriteria.forClass(Rsscache.class).add(
+								Restrictions.eq("url_key", url_key)).add(
+								Restrictions.eq("UID", uid)).add(
+								Restrictions.eq("pageNum", pageNumber)));
     	if( cache == null )
     		return null;
     	
@@ -113,11 +115,10 @@ public class RssCacheDAO  extends HibernateDaoSupport {
     	
     	String url_key = Crypt.getHash(url);
     	
-    	List cacheList = super.getHibernateTemplate().findByCriteria(
-    			DetachedCriteria.forClass(Rsscache.class).add(
-				Expression.conjunction()
-				.add(Expression.eq("Id.Uid", uid))
-				.add(Expression.eq("Id.UrlKey", url_key))));
+		List cacheList = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Rsscache.class).add(
+						Restrictions.eq("UID", uid)).add(
+						Restrictions.eq("url_key", url_key)));
     	
 		return cacheList;
 	}

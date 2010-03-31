@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 
-
-import org.infoscoop.dao.model.HOLIDAYSPK;
-import org.infoscoop.dao.model.Holidays;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.infoscoop.dao.model.Holiday;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -19,21 +19,26 @@ public class HolidaysDAO extends HibernateDaoSupport {
         return (HolidaysDAO)SpringUtil.getContext().getBean("holidaysDAO");
 	}
 	
-	public Holidays getHoliday( String lang,String country ) {
-		return ( Holidays )super.getHibernateTemplate().get( Holidays.class,new HOLIDAYSPK( lang,country ));
+	public Holiday getHoliday(String lang, String country) {
+		return (Holiday) super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Holiday.class).add(
+						Restrictions.eq("lang", lang)).add(
+						Restrictions.eq("country", country)));
 	}
-	public void updateHoliday( String lang,String country,String data ) {
-		Holidays holiday = new Holidays(new HOLIDAYSPK( lang,country ));
-		holiday.setData( data );
-		holiday.setUpdatedat( new Date());
-		
+
+	public void updateHoliday(String lang, String country, String data) {
+		Holiday holiday = new Holiday();
+		holiday.setLang(lang);
+		holiday.setCountry(country);
+		holiday.setData(data);
+		holiday.setUpdatedAt(new Date());
+
 		super.getHibernateTemplate().saveOrUpdate( holiday );
 	}
 	public void deleteHoliday( String lang,String country ) {
-		Holidays holiday = ( Holidays )super.getHibernateTemplate().get(
-				Holidays.class,new HOLIDAYSPK( lang,country ));
-		if( holiday != null )
-			super.getHibernateTemplate().delete( holiday );
+		Holiday holiday = getHoliday(lang, country);
+		if (holiday != null)
+			super.getHibernateTemplate().delete(holiday);
 	}
 	
 	public Collection getHolidayLocales() {

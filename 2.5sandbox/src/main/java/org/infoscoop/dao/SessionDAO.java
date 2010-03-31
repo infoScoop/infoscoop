@@ -35,11 +35,11 @@ public class SessionDAO extends HibernateDaoSupport {
 		
 		Iterator results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Session.class).add(
-						Expression.eq("Uid", uid))
+						Restrictions.eq("Uid", uid))
 						).iterator();
 		if( results.hasNext() ){
 			Session session = ( Session )results.next();
-			return session.getSessionid();
+			return session.getSessionId();
 		}else
 			return null;
 	}
@@ -65,9 +65,11 @@ public class SessionDAO extends HibernateDaoSupport {
 			log.info("newSessionId: uid=" + uid + ", sessionId="+ newSessionId);
 		
 		Session session = findSessionByUid(uid);
-		if (session == null)
-			session = new Session(uid);
-		session.setSessionid( newSessionId );
+		if (session == null) {
+			session = new Session();
+			session.setUid(uid);
+		}
+		session.setSessionId( newSessionId );
 		
 		session.setLogindatetime(new Date());
 
@@ -126,7 +128,7 @@ public class SessionDAO extends HibernateDaoSupport {
 		if( session == null )
 			return;
 		
-		session.setSessionid( HttpStatusCode.MSD_FORCE_RELOAD );
+		session.setSessionId( HttpStatusCode.MSD_FORCE_RELOAD );
 		
 		super.getHibernateTemplate().update( session );
 	}

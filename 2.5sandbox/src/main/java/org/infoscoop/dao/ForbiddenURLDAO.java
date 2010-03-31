@@ -2,8 +2,7 @@ package org.infoscoop.dao;
 
 import java.util.Collection;
 
-
-import org.infoscoop.dao.model.Forbiddenurls;
+import org.infoscoop.dao.model.Forbiddenurl;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -28,15 +27,15 @@ public class ForbiddenURLDAO extends HibernateDaoSupport {
 	}
 	
 	
-	public void delete(Forbiddenurls forbiddenUrl) {
+	public void delete(Forbiddenurl forbiddenUrl) {
 		super.getHibernateTemplate().delete( forbiddenUrl );
 	}
 
-	public void update(Forbiddenurls forbiddenUrl) {
+	public void update(Forbiddenurl forbiddenUrl) {
 		super.getHibernateTemplate().update( forbiddenUrl );
 	}
 
-	public void insert(Forbiddenurls forbiddenUrl) {
+	public void insert(Forbiddenurl forbiddenUrl) {
 		super.getHibernateTemplate().save( forbiddenUrl );
 		
 	}

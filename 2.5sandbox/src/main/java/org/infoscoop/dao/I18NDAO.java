@@ -7,16 +7,14 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.LogicalExpression;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
-import org.infoscoop.dao.model.I18NPK;
 import org.infoscoop.dao.model.I18n;
 import org.infoscoop.dao.model.I18nlastmodified;
 import org.infoscoop.dao.model.I18nlocale;
@@ -62,7 +60,7 @@ public class I18NDAO extends HibernateDaoSupport {
 			String country, String lang) {
 		//insert into ${schema}.i18nLocale(type, country, lang) values (?, ?, ?)
 		
-		super.getHibernateTemplate().save( new I18nlocale( null,type,country,lang ));
+		super.getHibernateTemplate().save(new I18nlocale(type, country, lang));
 		
 		if (log.isInfoEnabled())
 			log.info("update successfully. : country=" + country
@@ -124,8 +122,8 @@ public class I18NDAO extends HibernateDaoSupport {
 		return getHibernateTemplateLimited().find( queryString );
 	}
 	
-	public I18n selectByPK(I18NPK pk) {
-		return (I18n)getHibernateTemplate().get(I18n.class, pk);
+	public I18n selectById(Integer id) {
+		return (I18n)getHibernateTemplate().get(I18n.class, id);
 	}
 	
 	/**
@@ -134,23 +132,23 @@ public class I18NDAO extends HibernateDaoSupport {
 	 * @param lang
 	 * @return
 	 */
-	public List getIdListByLocale(final String type, final String country, final String lang){
+	public List<Integer> getIdListByLocale(final String type, final String country, final String lang){
 		return (List)getHibernateTemplateLimited().execute(new HibernateCallback(){
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				
 				Criteria cri = session.createCriteria(I18n.class);
 				
-				SimpleExpression se = Expression.eq("Id.Type", type);
-				LogicalExpression le = Expression.and(Expression.eq("Id.Country", country), Expression.eq("Id.Lang", lang));
-				LogicalExpression le2 = Expression.and(se, le);
+				SimpleExpression se = Restrictions.eq("Id.Type", type);
+				LogicalExpression le = Restrictions.and(Restrictions.eq("Id.Country", country), Restrictions.eq("Id.Lang", lang));
+				LogicalExpression le2 = Restrictions.and(se, le);
 				
 				cri.add(le2);
 				
-				List idList = new ArrayList();
+				List<Integer> idList = new ArrayList<Integer> ();
 				I18n i18n;
 				for(Iterator ite = cri.list().iterator();ite.hasNext();){
 					i18n = (I18n)ite.next();
-					idList.add(i18n.getId().getId());
+					idList.add(i18n.getId());
 				}
 
 				if (log.isInfoEnabled())
@@ -210,11 +208,11 @@ public class I18NDAO extends HibernateDaoSupport {
 				I18nlastmodified.class,type );
 		boolean isUpdate = true;
 		if( lastmodified == null ) {
-			lastmodified = new I18nlastmodified( type );
+			lastmodified = new I18nlastmodified(type, new Date());
 			isUpdate = false;
+		} else {
+			lastmodified.setLastmodified( new Date());
 		}
-		
-		lastmodified.setLastmodified( new Date());
 		
 		super.getHibernateTemplate().saveOrUpdate( lastmodified );
 		
@@ -250,7 +248,7 @@ public class I18NDAO extends HibernateDaoSupport {
 	}
 	public List findI18n( String type,String country,String lang ) {
 		//select * from ${schema}.i18n where type = ? and country = ? and lang = ? order by number
-		String queryString = "from I18n where Id.Type = ? and Id.Country = ? and Id.Lang = ? order by Id.Id";
+		String queryString = "from I18n where type = ? and country = ? and lang = ? order by name";
 		
 		List result = getHibernateTemplateLimited().find( queryString,
 				new Object[] { type,country,lang } );

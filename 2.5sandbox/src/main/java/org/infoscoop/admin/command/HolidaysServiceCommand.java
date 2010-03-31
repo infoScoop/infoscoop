@@ -12,7 +12,7 @@ import net.fortuna.ical4j.data.UnfoldingReader;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.infoscoop.dao.model.Holidays;
+import org.infoscoop.dao.model.Holiday;
 import org.infoscoop.request.filter.ical.BasicCalendarHandler;
 import org.infoscoop.request.filter.ical.Event;
 import org.infoscoop.service.HolidaysService;
@@ -34,7 +34,7 @@ public class HolidaysServiceCommand extends ServiceCommand {
 		String lang = request.getParameter("lang");
 		String country = request.getParameter("country");
 		
-		Holidays holiday = (( HolidaysService )service ).getHoliday( lang,country );
+		Holiday holiday = (( HolidaysService )service ).getHoliday( lang,country );
 		if( holiday == null )
 			return new CommandResponse( false,"Holiday not Found.");
 		

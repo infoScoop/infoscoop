@@ -71,11 +71,11 @@ public class UpdateWidgetTabLocation extends XMLCommandProcessor {
         }
         Widget oldNextSibling = tabDAO.getWidgetBySibling( uid,tabIdFrom,widgetId );            	
         if(oldNextSibling != null){
-        	oldNextSibling.setSiblingid(widget.getSiblingid());
+        	oldNextSibling.setSiblingId(widget.getSiblingId());
 //        	widgetDAO.updateWidget(oldNextSibling);
         }
         
-        widget.setTabid( tabIdTo );
+        widget.setTabId( tabIdTo );
         
         this.result = XMLCommandUtil.createResultElement(uid, "processXML", log,
                 commandId, true, null);
