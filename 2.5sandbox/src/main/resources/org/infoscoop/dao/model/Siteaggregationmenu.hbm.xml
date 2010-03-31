@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="Siteaggregationmenu"
+		table="IS_MENUS"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="Type"
+			type="string"
+			column="TYPE"
+		>
+		</id>
+
+		<!-- please tell Joe Hudson that the type 'XML' could not be resolved.. defaulting to java.lang.String -->
+		<property
+			name="Data"
+			column="DATA"
+			type="java.lang.String"
+			not-null="true"
+		/>
+	</class>	
+</hibernate-mapping>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgetConfiguration type="Message" title="!{lb_message}" icon="comment.gif">
+	<WidgetPref datatype="json" display_name="!{lb_fromConfig}"  name="formConfig">
+	<![CDATA[
+[
+	{
+		module: "LDAP",
+		name: "User"
+	}
+]
+	]]>
+	</WidgetPref>[
+	<WidgetPref datatype="bool" display_name="!{lb_broadcastAdminOnly}" name="broadcastAdminOnly" default_value="false" />
+	<UserPref default_value=""  datatype="hidden" name="userList"/>
+	<UserPref default_value=""  datatype="hidden" name="groupCloseStatus"/>
+	<Header>
+		<menu alt="!{lb_editGroup}" imgUrl="group_edit.gif" type="editGroup"/>
+	</Header>
+	<Content className="Message" type="javascript"/>
+	<Maximize>
+		<Header>
+			<icon alt="!{lb_editGroup}" imgUrl="group_edit.gif" type="editGroup"/>
+		</Header>
+		<Content className="MaximizeMessage" type="javascript"/>
+	</Maximize>
+</widgetConfiguration>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="Session"
+		table="IS_SESSIONS"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="Uid"
+			type="string"
+			column="`UID`"
+		>
+		</id>
+
+		<property
+			name="Sessionid"
+			column="SESSIONID"
+			type="string"
+			not-null="true"
+			length="256"
+		/>
+
+		<property
+			name="Logindatetime"
+			column="LOGINDATETIME"
+			type="timestamp"
+		/>
+
+	</class>	
+</hibernate-mapping>

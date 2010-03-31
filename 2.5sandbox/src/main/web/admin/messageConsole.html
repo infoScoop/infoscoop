@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title></title>
+	<style>
+		<!--
+		a:link, a:visited{
+			text-decoration:none;
+			border:0;
+			color:black;
+		}
+		img{
+			border:none;
+		}
+		#msgbar {
+			position:absolute;
+			top:0;
+			left:0;
+			width:100%;
+			height:100%;
+			overflow: auto;
+			overflow-x:hidden;
+			overflow-y:auto
+		}
+		#version {
+			border:1px solid #cccccc;
+			background-color: #EDECE2;
+			color:black;
+			text-align:right;
+			font-size: smaller;
+			font-family: monospace
+		}
+		-->
+	</style>
+  </head>
+  <body style="padding:0;margin:0;overflow:hidden;" onload="setTimeout('window.opener.msg_render(null)', 100);">
+  	<table width="100%" height="100%">
+  		<tr><td>
+			<table width="100%" style="border-bottom:1px solid #cccccc;background-color:#EDECE2">
+				<tr>
+					<td><a href="javascript:window.opener.msg_render();"><img id="allImg"/><span id="all"></span></a></td>
+					<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(4);"><img id="errorImg"/><span id="error"></span></a></td>
+					<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(3);"><img id="warnImg"/><span id="warn"></span></a></td>
+					<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(2);"><img id="infoImg"/><span id="info"></span></a></td>
+					<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(1);"><img id="debugImg"/><span id="debug"></span></a></td>
+				</tr>
+			</table>
+		</td></tr><tr><td height="100%"><div style="position:relative;width:100%;height:100%;">
+		    <div id="msgbar"></div>
+		</div></td></tr><tr><td>
+		    <div id="version">@PRODUCT.NAME@ version @BUILD.VERSION@</div>
+	    </td></tr>
+    </table>
+  </body>
+	<script type="text/javascript">
+		<!--
+		var IS_R = window.opener.IS_R;
+		var imageURL = window.opener.imageURL;
+		function $(id){
+			return document.getElementById(id);
+		} 
+		
+		document.title = IS_R.msg_title;
+		$("all").innerHTML = IS_R.lb_all;
+		$("error").innerHTML = IS_R.lb_error;
+		$("warn").innerHTML = IS_R.lb_warn;
+		$("info").innerHTML = IS_R.lb_info;
+		$("debug").innerHTML = IS_R.lb_debug;
+		
+		$("allImg").src = imageURL + "application_osx_terminal.png";
+		$("errorImg").src = imageURL + "exclamation.gif";
+		$("warnImg").src = imageURL + "error.gif";
+		$("infoImg").src = imageURL + "information.gif";
+		$("debugImg").src = imageURL + "debug.gif";
+		-->
+	</script>
+</html>

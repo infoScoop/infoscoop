@@ -1,0 +1,62 @@
+
+.infoScoop .WidgetRanking .widgetRank {
+	padding-left: 0;
+	margin: 0;
+}
+.infoScoop .WidgetRanking .widgetRank li {
+	list-style: none;
+	margin: 0;
+	padding: 0.25em;;
+	height:16px;
+	overflow:hidden;
+	position:static;
+	//height:20px;
+}
+.infoScoop .WidgetRanking .widgetRank li.even{
+	background-color:#F2F2F2;
+}
+.infoScoop .WidgetRanking .widgetRank td{
+	font-size:13px;
+}
+.infoScoop .WidgetRanking .widgetRank .widgetRankRank{
+	width:16px;
+	height:16px;
+	color:#666666;
+}
+.infoScoop .WidgetRanking .widgetRank .rank1{
+	background: url(./imgs/crown_1.gif) top left no-repeat;
+}
+.infoScoop .WidgetRanking .widgetRank .rank2{
+	background: url(./imgs/crown_2.gif) top left no-repeat;
+}
+.infoScoop .WidgetRanking .widgetRank .rank3{
+	background: url(./imgs/crown_3.gif) top left no-repeat;
+}
+.infoScoop .WidgetRanking .widgetRankIcon{
+	width:16px;
+	height:16px;
+	background-repeat:no-repeat;
+}
+.infoScoop .WidgetRanking .widgetRankTitle{
+	height:15px;
+	overflow:hidden;
+	display:block;
+	padding-left:2px;
+	word-break:break-all;
+}
+.infoScoop .WidgetRanking .widgetRankAdd{
+	cursor:pointer;
+	white-space:nowrap;
+	float:right;
+}
+.infoScoop .WidgetRanking .widgetRankTime{
+	font-size:11px;
+	text-align:right;
+}
+.infoScoop .WidgetRanking .widgetRankNone{
+	font-size:85%;
+}
+.infoScoop .WidgetRanking .widgetRankNew{
+	color:red;
+	font-style: italic;
+}

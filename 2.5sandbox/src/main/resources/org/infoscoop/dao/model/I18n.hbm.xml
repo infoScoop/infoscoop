@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="I18n"
+		table="IS_I18N"
+	>
+		<meta attribute="sync-DAO">false</meta>
+
+		<meta attribute="sync-DAO">false</meta>
+
+		<composite-id name="Id" class="I18NPK">
+			<key-property
+				name="Type"
+				column="TYPE"
+				type="string"
+			/>
+			<key-property
+				name="Lang"
+				column="LANG"
+				type="string"
+			/>
+			<key-property
+				name="Country"
+				column="COUNTRY"
+				type="string"
+			/>
+			<key-property
+				name="Id"
+				column="ID"
+				type="string"
+			/>
+		</composite-id>
+
+		<property
+			name="Message"
+			column="MESSAGE"
+			type="string"
+			not-null="true"
+		/>
+
+
+	</class>	
+</hibernate-mapping>
