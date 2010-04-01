@@ -555,7 +555,7 @@ IS_Widget.prototype.classDef = function() {
 		msg.debug(this.id + " build time: " + (end - start));
 		
 		var container = $("s_" + this.id);
-		self.isStaticHeight = !!(isStatic && container && container.style.height)
+		self.isStaticHeight = !!(isStatic && container && container.style.height);
 		
 		var widgetHeight = typeConf.height;
 		if(isStatic && self.isStaticHeight && (!this.content || !this.content.disableSetSaticWidgetHeight)){
