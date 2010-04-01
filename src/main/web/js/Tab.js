@@ -1235,6 +1235,7 @@ IS_Portal.buildPanel = function(panelNumber, type){
 	// Create panel
 	var panel = document.createElement("div");
 	panel.id = "panel"+panelNumber;
+	panel.className = "panel";
 	panel.style.display = "none";
 	panel.style.clear = "both";
 	

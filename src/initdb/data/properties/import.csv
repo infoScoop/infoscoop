@@ -19,7 +19,7 @@
 "keywordEntry","log",0,"true","bool","",1,"",""
 "logCommandQueueWait","log",0,"3600","int","",1,"^[1-9][0-9]*$","!{typePositiveInt}"
 "logStoragePeriod","log",0,"365","int","",1,"^((-?[1-9][0-9]*)|0)$","!{typeInt}"
-"displayInlineHost","iframe",0,"","list","",0,"^[^:]+(\:[0-9]+)?(\|[^:]+(\:[0-9]+)?)*$","!{typeCorrectFormat}"
+"displayInlineHost","layout",0,"","list","",0,"^[^:]+(\:[0-9]+)?(\|[^:]+(\:[0-9]+)?)*$","!{typeCorrectFormat}"
 "loginCredentialAuthType","system",0,"","enum","[{value:''},{value:'basic'},{value:'ntlm'},{value:'postCredential'}]",0,"",""
 "loginStateKeepPeriod","session",0,"7","int","",1,"^((-?[1-9][0-9]*)|0)$","!{typeInt}"
 "staticContentURL","system",0,".","string","",1,"",""
@@ -27,3 +27,4 @@
 "gadgetProxyURL","system",0,"./gadgetsrv","string","",1,"",""
 "keyManagerModulus","system",1,"@keyManagerModulus@","hidden","",1,"",""
 "keyManagerExponent","system",1,"@keyManagerExponent@","hidden","",1,"",""
+"fixedPortalHeader","layout",0,"false","bool","",1,"",""

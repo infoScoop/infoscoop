@@ -71,6 +71,14 @@ a:hover
 
 }
 
+body.fixedPortalHeader {
+  overflow: auto;
+}
+
+body.fixedPortalHeader #panels .panel{
+  overflow: auto;
+}
+
 .column {
 	float:left;
 	margin-top: 5px;

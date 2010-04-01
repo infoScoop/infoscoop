@@ -520,6 +520,8 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			//This line should be here as IS_Portal.msgLastViewTime is needed
 			IS_Widget.Message.checkNewMsgRepeat();
 			
+			if(fixedPortalHeader) 
+				IS_Portal.adjustPanelHeight(null);
 		}finally{
 			//refs#3864 stop indicator anyway when widgets are end of load.
 			IS_Portal.endIndicator();

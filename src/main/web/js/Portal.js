@@ -85,6 +85,8 @@ IS_Portal.start = function() {
 	IS_Portal.refresh = new IS_AutoReload();
 	
 	var divSiteMenu = $("portal-site-aggregation-menu");
+	if(fixedPortalHeader)
+		Event.observe(window, 'resize', IS_Portal.adjustPanelHeight, false);
 	Event.observe(window, 'resize', IS_Portal.adjustSiteMenuHeight, false);
 	Event.observe(window, 'resize', IS_Portal.adjustIframeHeight, false);
 	Event.observe(window, 'resize', IS_Portal.adjustGadgetHeight , false);
@@ -111,6 +113,10 @@ IS_Portal.start = function() {
 	Event.observe( document.body, 'mousedown', IS_Widget.RssReader.RssItemRender.checkHideRssDesc, false );
 	
 	var panelBody = document.body;
+	
+	if(fixedPortalHeader) {
+		Element.addClassName(panelBody, "fixedPortalHeader");
+	}
 	
 	IS_Portal.droppableOption = {};
 	
@@ -571,6 +577,7 @@ IS_Portal.closeIFrame = function () {
 	//TODO Should be removed
 	IS_Widget.Maximize.adjustMaximizeWidth();
 	IS_Widget.WidgetHeader.adjustHeaderWidth();
+	IS_Portal.adjustPanelHeight(null);
 	
 	IS_Portal.SearchEngines.clearTemp();
 	
@@ -681,6 +688,14 @@ IS_Portal.getPropertys = function(properties, feed) {
 		var name = property.getAttribute("name");
 		feed[name] = (property.firstChild) ? property.firstChild.nodeValue : "";
 	}
+}
+
+IS_Portal.adjustPanelHeight = function(e){
+	var panels = $("panels");
+	if(!panels.visible) return;
+	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - $("tab-container").getHeight() - 5;
+	if (Browser.isIE) adjustHeight -= 15;
+	IS_Portal.tabs[ IS_Portal.currentTabId ].panel.style.height = adjustHeight + "px";
 }
 
 IS_Portal.adjustSiteMenuHeight = function(e, siteManuObj) {
