@@ -142,6 +142,8 @@ public class AddMultiWidget extends XMLCommandProcessor{
 			widget.setUserPrefsJSON(confJson.getJSONObject("property"));
 		if (confJson.has("ignoreHeader"))
 			widget.setIgnoreHeader(confJson.getBoolean("ignoreHeader"));
+		if (confJson.has("noBorder"))
+			widget.setIgnoreHeader(confJson.getBoolean("noBorder"));
 
 		widget.setIsstatic(new Integer(0));
 		return widget;

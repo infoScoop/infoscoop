@@ -1883,6 +1883,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 					  widgetJSON.properties = ISA_CommonModals.EditorForm.getProperty(widgetJSON);
 					  widgetJSON.ignoreHeader = ISA_CommonModals.EditorForm.isIgnoreHeader();
 					  if(!widgetJSON.ignoreHeader) delete widgetJSON.ignoreHeader;
+					  widgetJSON.noBorder = ISA_CommonModals.EditorForm.isNoBorder();
+					  if(!widgetJSON.noBorder) delete widgetJSON.noBorder;
 
 					  widgetJSON.title = ISA_Admin.trim($("formTitle").value);
 					  widgetJSON.href =  $("formHref").value;
@@ -1905,6 +1907,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 					setDefaultValue: false,
 					disableMiniBrowserHeight: true,
 					showIgnoreHeaderForm:true,
+					showNoBorderForm:true,
 					displayACLFieldSet:false,
 					disableDisplayRadio:true,
 					omitTypeList:['Ranking','Ticker','MultiRssReader']

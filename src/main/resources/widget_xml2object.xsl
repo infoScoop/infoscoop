@@ -18,6 +18,9 @@
 				<xsl:if test="@ignoreHeader='true'">
 					<xsl:attribute name="ignoreHeader"><xsl:value-of select="@ignoreHeader"/></xsl:attribute>
 				</xsl:if>
+				<xsl:if test="@noBorder='true'">
+					<xsl:attribute name="noBorder"><xsl:value-of select="@noBorder"/></xsl:attribute>
+				</xsl:if>
 				<xsl:element name="data"><xsl:copy-of select="data/property"/></xsl:element>
 			</xsl:element>
 			<xsl:for-each select="data/feed">

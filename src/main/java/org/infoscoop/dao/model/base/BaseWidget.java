@@ -26,6 +26,7 @@ public abstract class BaseWidget  implements Serializable {
 	public static String PROP_DEFAULTUID = "Defaultuid";
 	public static String PROP_TABID = "Tabid";
 	public static String PROP_IGNOREHEADER = "Ignoreheader";
+	public static String PROP_NOBORDER = "Noborder";
 	public static String PROP_HREF = "Href";
 	public static String PROP_ISSTATIC = "Isstatic";
 	public static String PROP_TITLE = "Title";
@@ -72,6 +73,7 @@ public abstract class BaseWidget  implements Serializable {
 	private java.lang.String type;
 	private java.lang.Integer isstatic;
 	private java.lang.Integer ignoreheader;
+	private java.lang.Integer noborder;
 	private java.lang.String menuid;
 	private java.lang.Long createdate = 0L;
 
@@ -316,7 +318,13 @@ public abstract class BaseWidget  implements Serializable {
 		this.ignoreheader = ignoreheader;
 	}
 
+	public java.lang.Integer getNoborder() {
+		return noborder;
+	}
 
+	public void setNoborder(java.lang.Integer noborder) {
+		this.noborder = noborder;
+	}
 
 	/**
 	 * Return the value associated with the column: MENUID

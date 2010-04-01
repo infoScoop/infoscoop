@@ -134,6 +134,7 @@ public class MergeProfileServlet extends HttpServlet {
 		newWidget.setDeletedate( widget.getDeletedate() );
 		newWidget.setHref( widget.getHref() );
 		newWidget.setIgnoreheader( widget.getIgnoreheader() );
+		newWidget.setNoborder( widget.getNoborder() );
 		newWidget.setIsstatic( widget.getIsstatic() );
 		newWidget.setParentid( widget.getParentid() );
 		newWidget.setSiblingid( widget.getSiblingid() );

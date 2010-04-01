@@ -285,6 +285,8 @@ public class TabLayoutService {
 		
 		if ( widget.has("ignoreHeader") && widget.getBoolean("ignoreHeader"))
 			xml.append(" ignoreHeader=\"true\"");
+		if ( widget.has("noBorder") && widget.getBoolean("noBorder"))
+			xml.append(" noBorder=\"true\"");
 		
 		xml.append(">").append("\n");
 		

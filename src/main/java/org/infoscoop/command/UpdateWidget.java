@@ -96,6 +96,8 @@ public class UpdateWidget extends XMLCommandProcessor{
     			widget.setUserPrefsJSON(confJson.getJSONObject("property") );
     		if (confJson.has("ignoreHeader"))
     			widget.setIgnoreHeader(confJson.getBoolean("ignoreHeader"));
+    		if (confJson.has("noBorder"))
+    			widget.setIgnoreHeader(confJson.getBoolean("noBorder"));
     		
     		WidgetDAO.newInstance().updateWidget( widget );
     	} catch (Exception e) {

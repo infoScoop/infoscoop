@@ -544,7 +544,7 @@ IS_Widget.prototype.classDef = function() {
 		}
 		
 		var hasBorder = typeConf.border;
-		if(hasBorder && /false/.test(hasBorder) || /FALSE/.test(hasBorder)) {
+		if((hasBorder && /false/.test(hasBorder) || /FALSE/.test(hasBorder)) || getBooleanValue(this.widgetConf.noBorder)) {
 			divWidgetBox.style.border = "0";
 		}
 		

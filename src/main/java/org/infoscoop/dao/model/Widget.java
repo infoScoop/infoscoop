@@ -79,6 +79,7 @@ public class Widget extends BaseWidget {
 		json.put("createDate", this.getCreatedate());
 		json.put("deleteDate", this.getDeletedate());
 		json.put("ignoreHeader", this.isIgnoreHeader());
+		json.put("noBorder", this.isNoBorder());
 		
 		return json;
 	}
@@ -93,6 +94,18 @@ public class Widget extends BaseWidget {
 	
 	public void setIgnoreHeader(boolean b) {
 		super.setIgnoreheader(new Integer((b ? 1 : 0 )));		
+	}
+
+	public boolean isNoBorder(){
+		if(super.getNoborder() == null){
+			return false;
+		}else{
+			return super.getNoborder().intValue() == 1;
+		}
+	}
+	
+	public void setNoBorder(boolean b) {
+		super.setNoborder(new Integer((b ? 1 : 0 )));		
 	}
 	
 	public Map<String,UserPref> getUserPrefs() {

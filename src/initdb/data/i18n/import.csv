@@ -334,6 +334,8 @@
 "adminjs","alb_noAlert","ALL","ALL","No alert"
 "adminjs","alb_noHeader","ALL","ja","ヘッダを表示しない："
 "adminjs","alb_noHeader","ALL","ALL","Not displaying header："
+"adminjs","alb_noBorder","ALL","ja","枠を表示しない："
+"adminjs","alb_noBorder","ALL","ALL","Not displaying border："
 "adminjs","alb_noLinkMenu","ALL","ja","メニューにリンクを張らない"
 "adminjs","alb_noLinkMenu","ALL","ALL","No links on menu"
 "adminjs","alb_noLinkMenuColon","ALL","ja","メニューにリンクを張らない："

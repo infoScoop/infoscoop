@@ -40,6 +40,7 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 		  showServiceURL:false,
 		  //showMultiEditForm:false,
 		  showIgnoreHeaderForm:false,
+		  showNoBorderForm:false,
 		  showMenuExplorer:false,
 		  disableTypeEdit:false,
 		  disableUploadGadget: false,
@@ -211,6 +212,11 @@ ISA_CommonModals.EditorForm.isIgnoreHeader = function(){
 	var ignoreHeader = $("ignoreHeaderCheckbox");
 	if(ignoreHeader)
 		return ignoreHeader.checked;
+}
+ISA_CommonModals.EditorForm.isNoBorder = function(){
+	var noBorder = $("noBorderCheckbox");
+	if(noBorder)
+		return noBorder.checked;
 }
 
 ISA_CommonModals.EditorForm.checkEditorForm = function(){
@@ -477,6 +483,7 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSetNamedParam = function( opt ) {
 		opt.titleEdit || false,
 		opt.multiEdit || false,
 		opt.ignoreHeader || false,
+		opt.noBorder || false,
 		opt.disabledTypeEdit || false,
 		opt.options || {}
 	);
@@ -518,6 +525,21 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 		subTd.style.width = "70%";
 		var checkbox =ISA_Admin.createBaseCheckBox("ignoreHeader", menuItem.ignoreHeader);
 		checkbox.id = "ignoreHeaderCheckbox";
+		subTd.appendChild(checkbox);
+		subTr.appendChild(subTd);
+		editorFormSubTbody.appendChild(subTr);
+	}
+	if(options.showNoBorderForm){
+		var subTr = document.createElement("tr");
+		var subTd = document.createElement("td");
+		subTd.style.width = "30%";
+		subTd.style.textAlign = "right";
+		subTd.appendChild(document.createTextNode(ISA_R.alb_noBorder));
+		subTr.appendChild(subTd);
+		subTd = document.createElement("td");
+		subTd.style.width = "70%";
+		var checkbox =ISA_Admin.createBaseCheckBox("noBorder", menuItem.noBorder);
+		checkbox.id = "noBorderCheckbox";
 		subTd.appendChild(checkbox);
 		subTr.appendChild(subTd);
 		editorFormSubTbody.appendChild(subTr);

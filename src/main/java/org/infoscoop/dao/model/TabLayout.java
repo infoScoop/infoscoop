@@ -171,6 +171,10 @@ public class TabLayout extends BaseTablayout {
 			if (ignoreHeader != null)
 				widgetJson.put("ignoreHeader", new Boolean(ignoreHeader)
 						.booleanValue());
+			String noBorder = widget.getAttribute("noBorder");
+			if (noBorder != null)
+				widgetJson
+						.put("noBorder", new Boolean(noBorder).booleanValue());
 
 			String disabled = widget.getAttribute("disabled");
 			if (disabled != null)
@@ -340,6 +344,8 @@ public class TabLayout extends BaseTablayout {
 			widget.setHref(widgetEl.getAttribute("href"));
 			widget.setIgnoreHeader(new Boolean(widgetEl
 					.getAttribute("ignoreHeader")).booleanValue());
+			widget.setNoBorder(new Boolean(widgetEl.getAttribute("noBorder"))
+					.booleanValue());
 			Element data = (Element)widgetEl.getElementsByTagName("data").item(0);
 			NodeList propertyNodes = data.getElementsByTagName("property");
 			for(int k = 0; k < propertyNodes.getLength(); k++){

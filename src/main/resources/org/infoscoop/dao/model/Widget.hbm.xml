@@ -124,6 +124,13 @@
 			not-null="false"
 			length="10"
 		/>
+		<property
+			name="Noborder"
+			column="NOBORDER"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
 
 
 	</class>
