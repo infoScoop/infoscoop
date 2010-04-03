@@ -89,14 +89,26 @@ public class Tab extends BaseTab {
 		}
 		json.put("staticPanel", staticPanel);
 		
+		if (this.isDisabledDynamicPanel()) {
+			json.put("disabledDynamicPanel", true);
+		}
 		JSONObject dynamicPanel = new JSONObject();
-		for(Iterator it = dynamicWidgets.iterator(); it.hasNext(); ){
-			Widget widget = (Widget)it.next();
+		for (Iterator it = dynamicWidgets.iterator(); it.hasNext();) {
+			Widget widget = (Widget) it.next();
 			dynamicPanel.put(widget.getWidgetid(), widget.toJSONObject());
 		}
 		json.put("dynamicPanel", dynamicPanel);
 		
 		return json;
+	}
+
+	public boolean isDisabledDynamicPanel() {
+		Integer disableddynamicpanel = super.getDisableddynamicpanel();
+		return disableddynamicpanel != null && disableddynamicpanel == 1;
+	}
+
+	public void setDisabledDynamicPanelBool(boolean disableddynamicpanel) {
+		super.setDisableddynamicpanel(disableddynamicpanel ? 1 : 0);
 	}
 	
 }

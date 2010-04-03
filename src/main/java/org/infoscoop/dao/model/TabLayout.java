@@ -94,6 +94,7 @@ public class TabLayout extends BaseTablayout {
 	private String tabName;
 	private String columnsWidth;
 	private String numCol;
+	private boolean disabledDynamicPanel;
 	
 	public String getLayout() {
 		return StringUtil.getNullSafe( super.getLayout() );
@@ -120,6 +121,8 @@ public class TabLayout extends BaseTablayout {
 			if(panels.getLength() > 1){
 				Element daynamicPanel =(Element)panels.item(1);
 				if("DynamicPanel".equals(daynamicPanel.getAttribute("type"))){
+					this.disabledDynamicPanel = new Boolean(daynamicPanel
+							.getAttribute("disabled"));
 					NodeList list = daynamicPanel.getElementsByTagName("widget");
 					this.dynamicPanel = getNodeListString(list);
 					this.dynamicPanelJson = getPanelJson(list);
@@ -270,7 +273,14 @@ public class TabLayout extends BaseTablayout {
 	public String getNumCol() {
 		return numCol;
 	}
-	
+
+	public boolean isDisabledDynamicPanel() {
+		return disabledDynamicPanel;
+	}
+
+	public void setDisabledDynamicPanel(boolean disabledDynamicPanel) {
+		this.disabledDynamicPanel = disabledDynamicPanel;
+	}
 
 	public Tab toTab(String uid){
 		String tabId = super.getId().getTabid();
@@ -281,6 +291,7 @@ public class TabLayout extends BaseTablayout {
 		tab.setName( this.getTabName());
 		tab.setType("static");
 		tab.setProperty("numCol", this.getNumCol());
+		tab.setDisabledDynamicPanelBool(this.isDisabledDynamicPanel());
 		
 		return tab;
 	}

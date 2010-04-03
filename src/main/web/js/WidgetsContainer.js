@@ -377,7 +377,9 @@ IS_WidgetsContainer.prototype.classDef = function() {
 						IS_Portal.numStatic++;
 					}
 					
-					IS_Portal.addTab( id, tabName, tabType, numCol, columnsWidth, true);
+					var disabledDynamicPanel = widgetConfList[tabId].disabledDynamicPanel;
+					
+					IS_Portal.addTab( id, tabName, tabType, numCol, columnsWidth, disabledDynamicPanel, true);
 					buildTargetTabIds.push(id);
 					
 					if(!useTab){
@@ -434,7 +436,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					var widgets = widgetConfList[num].staticPanel;
 					buildStaticPanel(id, widgets, isBuild);
 				}
-				if(widgetConfList[num].dynamicPanel){
+				if(!widgetConfList[num].disabledDynamicPanel && widgetConfList[num].dynamicPanel){
 					var widgets = widgetConfList[num].dynamicPanel;
 					buildDynamicPanel(id, widgets, isBuild);
 				}
@@ -992,7 +994,8 @@ if( Browser.isSafari1 ) {
 
 IS_Portal.rebuilding = new Object();
 IS_WidgetsContainer.rebuildColumns = function( tabId, numCol, columnsWidth, isReset, isInitialize ) {
-	if(!isReset && (IS_Portal.tabs[tabId].numCol == numCol || IS_Portal.rebuilding[tabId] == true)){
+	if(IS_Portal.tabs[tabId].disabledDynamicPanel
+	   || (!isReset && (IS_Portal.tabs[tabId].numCol == numCol || IS_Portal.rebuilding[tabId] == true))){
 		IS_Portal.rebuilding[tabId] = false;
 		return;
 	}
@@ -1083,6 +1086,7 @@ IS_WidgetsContainer.rebuildColumns = function( tabId, numCol, columnsWidth, isRe
 }
 
 IS_WidgetsContainer.addWidget = function (tabId, widgetConf, isBuild, appendFunc, subWidgetConfList) {
+	if(!IS_Portal.canAddWidget(tabId)) return;
 	if(!widgetConf.column) widgetConf.column = 1; 
 	if( IS_Portal.tabs[tabId].numCol < widgetConf.column ){
 		widgetConf.column = IS_Portal.tabs[tabId].numCol;

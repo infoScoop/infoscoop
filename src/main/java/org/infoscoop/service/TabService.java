@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,10 +34,15 @@ public class TabService {
 	
 	private static final String TABID_HOME = "0";
 	private TabDAO tabDAO;
+	private WidgetDAO widgetDAO;
 
 	
 	public void setTabDAO(TabDAO tabDAO) {
 		this.tabDAO = tabDAO;
+	}
+	
+	public void setWidgetDAO(WidgetDAO widgetDAO) {
+		this.widgetDAO = widgetDAO;
 	}
 	
 	public static TabService getHandle() {
@@ -199,6 +205,11 @@ public class TabService {
 						}
 						
 						tab.setName(layout.getTabName());
+						tab.setDisabledDynamicPanelBool(layout.isDisabledDynamicPanel());
+						if (layout.isDisabledDynamicPanel()
+								&& trashDynamicPanelWidgets(tab)) {
+							// TODO: notify browser of putting all gadgets of the dynamic panel in the trash box.
+						}
 						replaceStaticPanel( uid, tab, staticPanelWidgets );
 //						tab.setStaticPanelXml(layout.getStaticPanel());
 						break;
@@ -208,6 +219,18 @@ public class TabService {
 		}
 		
 		return currentTabList;
+	}
+	
+	private boolean trashDynamicPanelWidgets(Tab tab) {
+		List<Widget> widgets = tabDAO.getDynamicWidgetList(tab);
+		if (widgets.size() == 0)
+			return false;
+		long now = new Date().getTime();
+		for (Widget widget : widgets) {
+			widgetDAO.deleteWidget(widget.getUid(), widget.getTabid(), widget
+					.getWidgetid(), now);
+		}
+		return true;
 	}
 	
 	private List createDynamicTabIdList( Collection tabList ) {

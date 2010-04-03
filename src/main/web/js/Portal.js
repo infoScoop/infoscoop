@@ -130,6 +130,7 @@ IS_Portal.start = function() {
 	};
 	widopt.onHover = IS_DroppableOptions.onHover;
 	widopt.onDrop = function(element, lastActiveElement, widget, event) {
+		if(!IS_Portal.canAddWidget()) return;
 		var widgetGhost = IS_Draggable.ghost;
 		if( !Browser.isSafari ||( widgetGhost && widgetGhost.style.display != "none")){
 			var ghostColumnNum = (widgetGhost.col)? widgetGhost.col.getAttribute("colNum"):1;
@@ -183,6 +184,8 @@ IS_Portal.start = function() {
 	var menuopt = {};
 	menuopt.accept = "menuItem";
 	menuopt.onDrop = function(element, lastActiveElement, menuItem, event) {
+		if(!IS_Portal.canAddWidget()) return;
+		
 		var widgetGhost = IS_Draggable.ghost;
 		var ghostColumnNum = (widgetGhost.col)? widgetGhost.col.getAttribute("colNum"):1;
 		
@@ -386,10 +389,15 @@ IS_Portal.start = function() {
 	
 	// multidrop to panel
 	var multimenuopt = {};
-	multimenuopt.accept = ["menuGroup", "multiDropHandle"];
+	multimenuopt.accept = function(element, widgetType, classNames){
+		return (classNames.detect( 
+          function(v) { return ["menuGroup", "multiDropHandle"].include(v) } ) &&
+ 			(widgetType != "mapWidget") );
+	};
 	multimenuopt.onHover = IS_DroppableOptions.onHover;
 	
 	IS_Portal.droppableOption.onMultiMenuDrop = function(element, lastActiveElement, menuItem, event, originFunc, modalOption){
+		if(!IS_Portal.canAddWidget()) return;
 		var confs = IS_SiteAggregationMenu.createMultiDropConf.call(self, element, lastActiveElement, menuItem, event, IS_Portal.droppableOption.onMultiMenuDrop, modalOption);
 		
 		var widgetGhost = IS_Draggable.ghost;

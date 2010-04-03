@@ -186,7 +186,10 @@ public class TabLayoutService {
 					xml.append("\n");
 					// DynamicPanel tab is not needed if it is commandbar
 					if (!COMMANDBAR_TAB_ID.equals(tabId)) {
-						xml.append("<panel type=\"DynamicPanel\">");
+						xml.append("<panel type=\"DynamicPanel\"");
+						if ((Boolean) map.get("disabledDynamicPanel"))
+							xml.append(" disabled=\"true\"");
+						xml.append(">");
 						JSONObject dynamicJson = new JSONObject((String) map
 								.get("dynamicPanel"));
 						newDynamicPanelMap.put(map.get("roleOrder"), dynamicJson);
@@ -377,6 +380,7 @@ public class TabLayoutService {
 					tablayout.getStaticPanelJsonWithComment() : tablayout.getStaticPanelJson());
 			value.put("layout", tablayout.getLayout());
 			value.put("dynamicPanel", tablayout.getDynamicPanelJson());
+			value.put("disabledDynamicPanel", tablayout.isDisabledDynamicPanel());
 			
 			result.put(value.getString("id"), value);
 			

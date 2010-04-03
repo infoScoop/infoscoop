@@ -224,6 +224,9 @@
 				<property name="tabDAO">
 					<ref bean="tabDAO" />
 				</property>
+				<property name="widgetDAO">
+					<ref bean="widgetDAO" />
+				</property>
 			</bean>
 		</property>
 		<property name="transactionManager">

@@ -54,5 +54,12 @@
 			not-null="false"
 			length="32"
 		/>
+		<property
+			name="Disableddynamicpanel"
+			column="`DISABLEDDYNAMICPANEL`"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
 	</class>	
 </hibernate-mapping>
