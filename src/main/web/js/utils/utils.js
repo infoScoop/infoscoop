@@ -126,6 +126,9 @@ function findHostURL(flag) {
 		if ( path.charAt(0) == '/' ) {
 			path = path.substr(1);
 		}
+		if( path.indexOf('/') == -1 )
+		  return host;
+		  
 		if((p = path.lastIndexOf('/')) != -1){
 			return host + "/" + path.substring(0,p);
 		}
