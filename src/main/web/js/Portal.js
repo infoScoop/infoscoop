@@ -625,7 +625,7 @@ IS_Portal.goHome = function(){
 }
 
 //TODO:This code depend to MultiRssReader.
-IS_Portal.isChecked = function(menuItem){alert("no use thiis function");
+IS_Portal.isChecked = function(menuItem){
 	isChecked = false;
 	
 	for(var tabId in IS_Portal.widgetLists){
