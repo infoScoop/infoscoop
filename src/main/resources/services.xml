@@ -137,8 +137,7 @@
 		</property>
 		<property name="transactionAttributes">
 			<props>
-				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+				<prop key="*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 			</props>
 		</property>
 	</bean>

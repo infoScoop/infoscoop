@@ -153,6 +153,10 @@ gadgets.rpc.register("is_open_portal_iframe",function(url) {
 	IS_Portal.openIframe(url);
 });
 
+gadgets.rpc.register("is_change_background",function(opt) {
+	IS_Portal.changeBackground(opt);
+});
+
 gadgets.rpc.register("is_refresh",function() {
 	var widget = IS_Portal.getWidget( this.mid,this.tid );
 	if( widget.authToken != this.t ) return;

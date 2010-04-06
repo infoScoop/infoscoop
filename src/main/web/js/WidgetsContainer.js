@@ -331,21 +331,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			var tabOrder = -1;
 			var buildTargetTabIds = [];
 			for(var tabId = 0; tabId < widgetConfList.length; tabId++){
-				if(widgetConfList[tabId].preference){
-					var preference = widgetConfList[tabId].preference;
-					if(preference.property){
-						IS_Portal.logoffDateTime = new Date( preference.property.logoffDateTime ? preference.property.logoffDateTime : "").getTime();
-						IS_Portal.fontSize = preference.property.fontSize ? preference.property.fontSize : IS_Portal.defaultFontSize;
-						IS_Portal.setFontSize(null, true);
-						if(preference.property.thema) IS_Portal.setThema(preference.property.thema);
-						if(preference.property.freshDays) IS_Portal.freshDays = preference.property.freshDays;
-						IS_Portal.lastSaveFailed = preference.property.failed ? getBooleanValue(preference.property.failed) : false;
-						IS_Portal.mergeconfirm = preference.property.mergeconfirm ? getBooleanValue(preference.property.mergeconfirm) : true;
-						IS_Portal.msgLastViewTime = preference.property.msgLastViewTime || -1;
-						
-						IS_Portal.preference = preference;
-					}
-				}else if(widgetConfList[tabId].buildVersion){
+				if(widgetConfList[tabId].buildVersion){
 					IS_Portal.buildVersion = widgetConfList[tabId].buildVersion;
 				}else if( useTab || tabId == 0 ){
 					var id = widgetConfList[tabId].tabId;
@@ -419,7 +405,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					}
 				});
 			}
-			
+
 			//Holiday information
 			IS_Holiday = new IS_Widget.Calendar.iCalendar(localhostPrefix + "/holidaysrv");
 			IS_Holiday.load(false);

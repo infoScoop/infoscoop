@@ -3,6 +3,7 @@
 <%@page import="org.infoscoop.admin.web.PreviewImpersonationFilter"%>
 <%@page import="org.infoscoop.service.PropertiesService"%>
 <%@page import="org.infoscoop.service.ForbiddenURLService" %>
+<%@page import="org.infoscoop.service.PreferenceService" %>
 <%@page import="org.infoscoop.util.RSAKeyManager"%>
 <%@page import="org.infoscoop.web.SessionManagerFilter"%>
 <%String staticContentURL = PropertiesService.getHandle().getProperty("staticContentURL"); %>
@@ -81,6 +82,7 @@ if( isPreview == null )
 		var localhostPrefix = "<%=request.getScheme()%>://localhost:<%=request.getServerPort()%><%=request.getContextPath()%>"
 
 		var IS_forbiddenURLs = <%= ForbiddenURLService.getHandle().getForbiddenURLsJSON() %>;
+
 	</script>
 
 	<!--start script-->
@@ -157,6 +159,20 @@ if( isPreview == null )
 
 		IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
 		IS_WidgetIcons = <jsp:include page="/gadgeticon" flush="true" />;
+
+		var preference = <%= PreferenceService.getHandle().getPreferenceJSON(uid) %>
+		if(preference.property){
+			IS_Portal.logoffDateTime = new Date( preference.property.logoffDateTime ? preference.property.logoffDateTime : "").getTime();
+			IS_Portal.fontSize = preference.property.fontSize ? preference.property.fontSize : IS_Portal.defaultFontSize;
+			IS_Portal.setFontSize(null, true);
+			if(preference.property.thema) IS_Portal.setThema(preference.property.thema);
+			if(preference.property.freshDays) IS_Portal.freshDays = preference.property.freshDays;
+			IS_Portal.lastSaveFailed = preference.property.failed ? getBooleanValue(preference.property.failed) : false;
+			IS_Portal.mergeconfirm = preference.property.mergeconfirm ? getBooleanValue(preference.property.mergeconfirm) : true;
+			IS_Portal.msgLastViewTime = preference.property.msgLastViewTime || -1;
+			
+			IS_Portal.preference = preference;
+		}
 	</script>
 
     <%

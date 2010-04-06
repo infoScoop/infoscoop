@@ -40,8 +40,6 @@ public class WidgetServlet extends HttpServlet {
 			.hashCode();
 	
 	private static String defaultUid = "default";
-	private static final String formatFullDate = "yyyy/MM/dd HH:mm:ss 'GMT'Z";
-	private static final String formatW3C = "yyyy-MM-dd'T'HH:mm:ssZ";
 
 	private static Log log = LogFactory.getLog(WidgetServlet.class);
 	
@@ -94,47 +92,6 @@ public class WidgetServlet extends HttpServlet {
 		JSONArray responseAray = new JSONArray();
 		
 		try {
-			
-			// add Preference
-			long start2 = System.currentTimeMillis();
-			Preference entity = PreferenceService.getHandle().getPrefEntity(uid);
-			Node node = entity.getElement();
-
-			if(log.isTraceEnabled())
-				log.trace("--- PereferenceDAO getPreference: " + (System.currentTimeMillis() - start2));
-
-			if(node != null){
-				Xml2Json x2j = new Xml2Json();
-				String rootPath = "/preference";
-				x2j.addSkipRule(rootPath);
-				x2j.addPathRule(rootPath + "/property", "name", true, true);
-				String prefJsonStr = x2j.xml2json((Element)node);
-				JSONObject prefObj = new JSONObject();
-				JSONObject prefJSONObj = new JSONObject(prefJsonStr);
-
-				// convert the logoffDateTime to the format for javascript.
-				if(prefJSONObj.has("property")){
-					JSONObject prefPropObj = prefJSONObj.getJSONObject("property");
-					if(prefPropObj.has("logoffDateTime")){
-						String logoffDateTime = prefPropObj.getString("logoffDateTime");
-						Date logoffDate = new SimpleDateFormat( formatW3C ).parse(logoffDateTime);
-						prefPropObj.put("logoffDateTime",
-								new SimpleDateFormat( formatFullDate ).format(logoffDate));
-						//prefPropObj.put("logoffDateTime",logoffDateTime );
-					}
-				}
-
-				prefObj.put("preference", prefJSONObj);
-				responseAray.put(prefObj);
-				
-	            
-				// remove failed flag
-				boolean isChanged = PreferenceService.updateProperty((Element)node, "failed", "false");
-				if(isChanged && uid !=null){
-					entity.setElement((Element)node);
-					PreferenceService.getHandle().update(entity);
-				}
-			}
 			
 			JSONObject bvObj = new JSONObject();
 			bvObj.append("buildVersion", getServletContext().getAttribute("buildTimestamp"));

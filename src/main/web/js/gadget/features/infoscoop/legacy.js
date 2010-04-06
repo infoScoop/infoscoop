@@ -100,3 +100,7 @@ function _IS_DropGadget(url, title, href) {
 function _IS_OpenPortalIframe(url){
 	gadgets.rpc.call(null,"is_open_portal_iframe",null, url);
 }
+
+function _IS_ChangeBackground(opt){
+	gadgets.rpc.call(null,"is_change_background",null, opt);
+}
