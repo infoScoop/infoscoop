@@ -208,7 +208,8 @@ public class TabService {
 						tab.setDisabledDynamicPanelBool(layout.isDisabledDynamicPanel());
 						if (layout.isDisabledDynamicPanel()
 								&& trashDynamicPanelWidgets(tab)) {
-							// TODO: notify browser of putting all gadgets of the dynamic panel in the trash box.
+							//notify user of putting all gadgets of the dynamic panel in the trash box.
+							tab.setTrashDynamicPanelWidgets(true);
 						}
 						replaceStaticPanel( uid, tab, staticPanelWidgets );
 //						tab.setStaticPanelXml(layout.getStaticPanel());

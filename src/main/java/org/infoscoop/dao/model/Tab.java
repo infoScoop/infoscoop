@@ -19,6 +19,8 @@ public class Tab extends BaseTab {
 	private static Log log = LogFactory.getLog(Tab.class);
 	
 	private static final long serialVersionUID = 1L;
+	
+	private boolean isTrashDynamicPanelWidgets;
 
 /*[CONSTRUCTOR MARKER BEGIN]*/
 	public Tab () {
@@ -91,6 +93,9 @@ public class Tab extends BaseTab {
 		
 		if (this.isDisabledDynamicPanel()) {
 			json.put("disabledDynamicPanel", true);
+			if (this.isTrashDynamicPanelWidgets()) {
+				json.put("isTrashDynamicPanelWidgets", true);
+			}
 		}
 		JSONObject dynamicPanel = new JSONObject();
 		for (Iterator it = dynamicWidgets.iterator(); it.hasNext();) {
@@ -110,5 +115,12 @@ public class Tab extends BaseTab {
 	public void setDisabledDynamicPanelBool(boolean disableddynamicpanel) {
 		super.setDisableddynamicpanel(disableddynamicpanel ? 1 : 0);
 	}
-	
+
+	public boolean isTrashDynamicPanelWidgets() {
+		return isTrashDynamicPanelWidgets;
+	}
+
+	public void setTrashDynamicPanelWidgets(boolean isTrashDynamicPanelWidgets) {
+		this.isTrashDynamicPanelWidgets = isTrashDynamicPanelWidgets;
+	}
 }

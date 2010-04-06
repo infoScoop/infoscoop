@@ -378,6 +378,23 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					}
 					
 					var disabledDynamicPanel = widgetConfList[tabId].disabledDynamicPanel;
+					if(widgetConfList[tabId].isTrashDynamicPanelWidgets){
+						var msgListDiv = $('message-list');
+						msgListDiv.appendChild(
+							$.DIV(
+								{id:'message-newmsg'},
+								$.IMG(
+									{
+										style:'position:relative;top:2px;paddingRight:2px',
+										src:imageURL+"information.gif"
+									}
+								),
+								IS_R.getResource(IS_R.ms_changeToFixedTab, [tabName])
+							)
+						);
+						$('message-bar').style.display = "";
+						IS_EventDispatcher.newEvent("adjustedMessageBar");
+					}
 					
 					IS_Portal.addTab( id, tabName, tabType, numCol, columnsWidth, disabledDynamicPanel, true);
 					buildTargetTabIds.push(id);

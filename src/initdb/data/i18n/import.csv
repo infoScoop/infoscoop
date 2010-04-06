@@ -1520,6 +1520,8 @@
 "js","ms_autoReloadCancel","ALL","ALL","Auto reload is canceled because of being in loading process. Cancled the auto reload because of loading.{0}"
 "js","ms_cacheDeleteFailure","ALL","ja","キャッシュの削除に失敗しました。 {0} -- {1}"
 "js","ms_cacheDeleteFailure","ALL","ALL","Failed to delete cache memory. {0} -- {1}"
+"js","ms_changeToFixedTab","ALL","ja","タブ「{0}」が固定タブに変更されました。カスタマイズ領域のガジェットは全てゴミ箱に入りました。"
+"js","ms_changeToFixedTab","ALL","ALL","The tab '{0}' was changed to fixed tab. All gadgets in the customized area were put into the trash box."
 "js","ms_cannotAddGadgetToThisTab","ALL","ja","このタブにはガジェットを追加することができません。"
 "js","ms_cannotAddGadgetToThisTab","ALL","ALL","You cannot add any gadgets to this tab."
 "js","ms_changeTabFailed","ALL","ja","タブの切替に失敗しました。{0}"
