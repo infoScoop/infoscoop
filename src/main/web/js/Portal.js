@@ -625,7 +625,7 @@ IS_Portal.goHome = function(){
 }
 
 //TODO:This code depend to MultiRssReader.
-IS_Portal.isChecked = function(menuItem){
+IS_Portal.isChecked = function(menuItem){alert("no use thiis function");
 	isChecked = false;
 	
 	for(var tabId in IS_Portal.widgetLists){
@@ -948,80 +948,6 @@ IS_Portal.buildIframeToolBar = function() {
 	$("iframeUrl").parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.width = "100%";
 }
 
-/*
-IS_Portal.buildErrReportTool  function(){
-	var reportDiv = document.createElement("div");
-	reportDiv.style.cssFloat = "right";
-	reportDiv.id = "iframe_reportTool_form";
-	
-	var reportButton = document.createElement("input");
-	reportButton.type = "button";
-	reportButton.id = reportDiv.id + "_button";
-	Event.observe(reportButton, 'click', IS_Portal.errorReport, false);
-
-	var indicator = document.createElement("img");
-	indicator.src = imageURL+"ajax-loader.gif";
-	indicator.style.top = "3px";
-	indicator.id = reportDiv.id + "_indicatorMini";
-	indicator.style.visibility = "hidden";
-	
-	reportDiv.appendChild(reportButton);
-	reportDiv.appendChild(indicator);
-	IS_Portal.setReportLabel(reportButton);
-	
-	return reportDiv;
-}
-
-IS_Portal.setReportLabel = function(reportButton){
-	if(reportButton){
-		reportButton.value = IS_R.lb_obstacleReort;
-		reportButton.disabled = false;
-
-		var reportDiv = document.createElement("div");
-		var indicator =  document.getElementById("iframe_reportTool_form_indicatorMini");
-		//indicator.style.visibility ="hidden";
-	}
-}
-
-IS_Portal.errorReport = function(){
-	var indicator =  document.getElementById("iframe_reportTool_form_indicatorMini");
-	indicator.style.visibility ="visible";
-	
-	var opt = {
-		method: 'post' ,
-		asynchronous:true,
-		onSuccess: reportFinished,
-		onFailure: function(t) {
-			msg.error(IS_R.getResource(IS_R.lb_obstacleReortfailure,[t.status,t.statusText,text,encoding]));
-			reportFinished();
-			var reportButton = $("iframe_reportTool_form_button");
-			reportButton.value = IS_R.lb_reportFailure;
-
-		},
-		onException: function(r, t){
-			msg.error(IS_R.getResource(IS_R.lb_obstacleReortexception,[t]));
-			reportFinished();
-			var reportButton = $("iframe_reportTool_form_button")
-			reportButton.value = IS_R.lb_reportFailure;
-		}
-	};
-	
-	var reportURL = IS_Portal.currentLink.url;
-	var url = hostPrefix + "/erpsrv?url=" + encodeURIComponent(reportURL);
-	AjaxRequest.invoke(url, opt);
-	
-	function reportFinished(){
-		var reportButton = $("iframe_reportTool_form_button");
-		
-		if(reportButton && (reportURL == IS_Portal.currentLink.url)){
-			reportButton.value = IS_R.lb_reportFinished;
-			reportButton.disabled = true;
-			indicator.style.visibility ="hidden";
-			window.ifrm.location.href = IS_Portal.currentLink.url;
-		}
-	}
-}
-*/
 IS_Portal.isInlineUrl = function(url){
 	if(!url || !displayInlineHost) return false;
 	if(!url.match(/\w+:[\/]+([^\/]*)/)) return false;
