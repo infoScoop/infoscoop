@@ -171,7 +171,7 @@ if( isPreview == null )
 			IS_Portal.mergeconfirm = preference.property.mergeconfirm ? getBooleanValue(preference.property.mergeconfirm) : true;
 			IS_Portal.msgLastViewTime = preference.property.msgLastViewTime || -1;
 			
-			IS_Portal.preference = preference;
+			IS_Portal.preference = preference.property;
 		}
 	</script>
 

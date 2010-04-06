@@ -45,10 +45,11 @@ IS_Portal.start = function() {
 	var self = this;
 
 	//Set background
-	var backgroundOpt = eval('(' + IS_Portal.preference.property.background +')' );
-	if(backgroundOpt)
-	  IS_Portal.setBackground( backgroundOpt );
-	
+	if(IS_Portal.preference.background){
+		var backgroundOpt = eval('(' + IS_Portal.preference.background +')' );
+		if(backgroundOpt)
+		  IS_Portal.setBackground( backgroundOpt );
+	}
 	IS_Portal.startIndicator();
 	
 	var fontSize = getActiveStyle( document.body, "font-size");
@@ -2664,11 +2665,12 @@ IS_Portal.endIndicator = function(e){
 
 IS_Portal.setBackground = function(opt){
 	var bodyStyle = document.body.style;
+	
 	if(opt.color)
 	  bodyStyle.backgroundColor = opt.color;
 	
 	if(opt.image)
-	  bodyStyle.backgroundImage = 'url(' + opt.image + ') ';
+	  bodyStyle.backgroundImage = 'url(' + opt.image + ')';
 
 	if(opt.repeat)
 	  bodyStyle.backgroundRepeat = opt.repeat;
@@ -2682,12 +2684,13 @@ IS_Portal.setBackground = function(opt){
 
 IS_Portal.changeBackground = function(opt){
 	var saveOpt = $H({});
-	for( i in opt)
+	for( i in opt){
 	  if( i == 'color' || i == 'image' || i == 'repeat' || i == 'position' || i == 'attachment')
 		saveOpt.set(i, opt.i);
-	
+	}
+	try{
 	IS_Portal.setBackground(opt);
-	
+	}catch(e){alert(e);}
 	//Send to Server
 	if(saveOpt.size == 0)
 	  IS_Widget.setPreferenceCommand("background", "false");
