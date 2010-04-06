@@ -272,13 +272,26 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 	titleSpan.appendChild( document.createTextNode( name ) );
 	innerSpan.appendChild(titleSpan);
 	
-	var selectMenuImg = document.createElement("img");
-	selectMenuImg.id = tab.id+"_selectMenu";
-	selectMenuImg.src = imageURL+"bullet_arrow_down.gif"
-	selectMenuImg.className = "selectMenu";
-	innerSpan.appendChild( selectMenuImg );
-	IS_Event.observe(selectMenuImg, 'click', IS_Portal.showTabMenu.bind(selectMenuImg, tab), false, tab.id);
-	IS_Event.observe(selectMenuImg, 'mousedown', function(e){Event.stop(e);}, false, tab.id);
+	if(disabledDynamicPanel){
+		var refreshImg = document.createElement("img");
+		refreshImg.id = tab.id+"_selectMenu";
+		refreshImg.src = imageURL+"refresh.gif"
+		refreshImg.className = "selectMenu";
+		innerSpan.appendChild( refreshImg );
+		IS_Event.observe(refreshImg, 'click', function(e){
+			console.info(this);
+			var tabObj = IS_Portal.tabs[this.id];
+			tabObj.refresh();
+		}.bindAsEventListener(tab), false, tab.id);
+	} else {
+		var selectMenuImg = document.createElement("img");
+		selectMenuImg.id = tab.id+"_selectMenu";
+		selectMenuImg.src = imageURL+"bullet_arrow_down.gif"
+		selectMenuImg.className = "selectMenu";
+		innerSpan.appendChild( selectMenuImg );
+		IS_Event.observe(selectMenuImg, 'click', IS_Portal.showTabMenu.bind(selectMenuImg, tab), false, tab.id);
+		IS_Event.observe(selectMenuImg, 'mousedown', function(e){Event.stop(e);}, false, tab.id);
+	}
 	
 	var tabOnMousedown = function(e){
 //		if(!IS_Portal.isDisplayTabTitleEditor){
@@ -1161,7 +1174,9 @@ IS_Portal.changeActiveTab = function( changeTab, isInitialize ){
 		$("siteMenu").hide();
 	} else {
 		$("siteMenuOpenTd").show();
-		$("siteMenu").show();
+		var siteMenuElm = $("siteMenu");
+		siteMenuElm.style.width = 0;
+		siteMenuElm.show();
 		IS_SidePanel.adjustPosition();
 	}
 	

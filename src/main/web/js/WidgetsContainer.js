@@ -627,9 +627,10 @@ IS_Portal.getLoadWidgets = function(tabId, isAllReload){
 	return loadWidgets;
 }
 IS_Portal.buildContents = function( tabId , isAllReload){
-	if( !IS_Portal.tabs[tabId].isColumnBuilt ) return;
-	if( IS_Portal.tabs[tabId].isBuilding ) return;
-	IS_Portal.tabs[tabId].isBuilding = true;
+	var tabObj = IS_Portal.tabs[tabId];
+	if( !tabObj.isColumnBuilt && !tabObj.disabledDynamicPanel) return;
+	if( tabObj.isBuilding ) return;
+	tabObj.isBuilding = true;
 	
 	var loadWidgets = IS_Portal.getLoadWidgets(tabId, isAllReload);
 	
@@ -655,9 +656,9 @@ IS_Portal.buildContents = function( tabId , isAllReload){
 		IS_Portal.adjustIS_PortalStyle();
 	} else {
 		IS_EventDispatcher.newEvent("tabLoadCompleted",tabId );
-		IS_Portal.tabs[tabId].isBuilding = false;
+		tabObj.isBuilding = false;
 	}
-	IS_Portal.tabs[tabId].isBuilt = true;
+	tabObj.isBuilt = true;
 }
 IS_Portal.buildAllTabsContents = function(){
 	if(IS_Portal.isBuildingAllTabs) return;
