@@ -60,13 +60,12 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 			widget.setUserPref("url", widget.widgetConf.href);
 		}
 		var url = widget.replaceUserPref(widget.getUserPref("url"));
-		
-		if(widget.iframe.src != "./blank.html"){
+		var iframeSrc = widget.iframe.src;
+		if(iframeSrc != "./blank.html" && iframeSrc != hostPrefix + "/blank.html"){
 			widget.iframe.contentWindow.location.reload( true );
 		}else{
 			widget.iframe.src = "./iframe.jsp?url="+encodeURIComponent( url )+ "&scrolling=auto";
 		}
-		
 	};
 	this.refresh = function() {
 		if(isForbiddenURL || isInvalidURL) return;
