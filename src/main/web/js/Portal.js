@@ -50,6 +50,12 @@ IS_Portal.start = function() {
 		if(backgroundOpt)
 		  IS_Portal.setBackground( backgroundOpt );
 	}
+	if(IS_Portal.preference.widgetTheme){
+		var widgetThemeOpt = eval('(' + IS_Portal.preference.widgetTheme +')' );
+		if(widgetThemeOpt)
+		  IS_Portal.setWidgetTheme(widgetThemeOpt);
+	}
+	
 	IS_Portal.startIndicator();
 	
 	var fontSize = getActiveStyle( document.body, "font-size");
@@ -78,7 +84,7 @@ IS_Portal.start = function() {
 	var command = document.getElementById("portal-command");
 	command.innerHTML = IS_Customization.commandbar;
 	IS_Portal.buildFontSelectDiv();
-	IS_Portal.buildPortalPreference();
+	IS_Portal.buildGlobalSettingModal();
 	IS_Portal.Trash.initialize();
 	IS_Portal.buildAdminLink();
 	IS_Portal.buildCredentialList();
@@ -1840,312 +1846,6 @@ IS_Portal.closeIS_PortalObjects = function(){
 	if(Browser.isIE) IS_SiteAggregationMenu.closeMenu();
 }
 
-IS_Portal.prefsObj = [];
-IS_Portal.prefsEls = [];
-IS_Portal.buildPortalPreference = function() {
-	var currentMenu;
-	var preferenceDiv = $("portal-preference");
-	var prefPage;
-	
-	var allSettingBody;
-	var rssReaderSettingBody;
-	
-	var booleanArray = [{value:"true",display_value:IS_R.lb_makeEffective}, {value:"false",display_value:IS_R.lb_invalidate}];
-	var dateArray = [];
-	for(var dateNum=0;dateNum<10;dateNum++){
-		dateArray.push({value:dateNum + 1,display_value:dateNum + 1 + IS_R.lb_businessDate});
-	}
-	
-	var createPreferenceBody = function(){
-		var preferenceDiv = document.createElement("div");
-		preferenceDiv.className = "preferencePage";
-		
-		var prefTable = document.createElement("table");
-		prefTable.className = "preferenceTable";
-		prefTable.cellPadding = 0;
-		prefTable.cellSpacing = 0;
-		
-		var prefTBody = document.createElement("tbody");
-		var prefTr = document.createElement("tr");
-
-		var prefTd = document.createElement("td");
-
-		prefPage = document.createElement("div");
-		prefPage.style.height = "100%";
-		
-		
-		prefPage.appendChild(buildShowAllSettingBody());
-		prefPage.appendChild(buildRssSettingBody());
-		prefPage.appendChild(buildCustomizeReset());
-
-		
-		prefTable.appendChild(prefTBody);
-		prefTBody.appendChild(prefTr);
-
-		prefTr.appendChild(prefTd);
-		prefTd.appendChild(prefPage);
-		prefPage.appendChild(document.createElement("div"));
-		
-		var preferenceHeader = document.createElement("div");
-		preferenceHeader.className = "preferenceHeader";
-		preferenceDiv.appendChild( preferenceHeader );
-		
-		var closeButton = document.createElement("div");
-		closeButton.className = "preferenceClose command";
-		closeButton.innerHTML = IS_R.lb_close;
-		preferenceHeader.appendChild( closeButton );
-		IS_Event.observe( closeButton,"click",function() { Control.Modal.close()} );
-		
-		var prefTitle = document.createElement("div");
-		prefTitle.className = "pageTitle";
-		prefTitle.innerHTML = IS_R.lb_setupAll;
-
-		preferenceHeader.appendChild(prefTitle);
-		
-		preferenceDiv.appendChild(prefTable);
-		
-		return preferenceDiv;
-		
-	}
-	function createFooterDiv( content ) {
-		var footerDiv = document.createElement("div");
-		footerDiv.style.width = "100%";
-		footerDiv.style.textAlign = "right";
-		
-		footerDiv.appendChild( content );
-		
-		return footerDiv;
-	}
-	function createExecButton() {
-		var execButton = document.createElement("input");
-		execButton.type = "button";
-		execButton.value = IS_R.lb_changeApply;
-		Event.observe(execButton, "click", applyPreference );
-		
-		return createFooterDiv( execButton );
-	}
-	function applyPreference(){
-		for(name in IS_Portal.prefsEls){
-			if(IS_Portal.prefsObj && typeof IS_Portal.prefsEls[name] != "function"){
-				IS_Portal.prefsObj[name] = IS_Portal.prefsEls[name].value;
-			}
-		}
-		
-		//Send command
-		var isAllRefresh = false;
-		if(IS_Portal.prefsObj.freshDays && IS_Portal.prefsObj.freshDays != ""){
-			IS_Portal.freshDays = IS_Portal.prefsObj.freshDays;
-			var tempFreshDays = IS_Portal.getFreshDays(IS_Portal.freshDays);
-			
-			freshDays = tempFreshDays;
-			isAllRefresh = true;
-			
-			//Send to Server
-			IS_Widget.setPreferenceCommand("freshDays", IS_Portal.freshDays);
-		}
-		if(IS_Portal.prefsObj.fontSize){
-	//		IS_Portal.applyFontSize(IS_Portal.prefsObj.fontSize);
-			setTimeout(IS_Portal.applyFontSize.bind(this, IS_Portal.prefsObj.fontSize), 10);
-		}
-		if(IS_Portal.prefsObj.mergeconfirm){
-			IS_Portal.mergeconfirm = getBooleanValue(IS_Portal.prefsObj.mergeconfirm);
-			IS_Widget.setPreferenceCommand("mergeconfirm", IS_Portal.mergeconfirm);
-		}
-		
-		IS_Portal.applyPreference(IS_Portal.currentTabId, true, isAllRefresh);
-		
-		for(var tabId in IS_Portal.widgetLists){
-			if(typeof IS_Portal.widgetLists[tabId] == "function") continue;
-			
-			if(tabId != IS_Portal.currentTabId){
-				// It doesn't apply to non-active tab.
-				IS_Portal.tabs[tabId].applyPreference = true;
-				IS_Portal.applyPreference(tabId, false, isAllRefresh);
-			}
-		}
-	}
-	
-	function buildShowAllSettingBody(){
-		var wfs = createFieldSet(IS_R.lb_generalSetting);
-		
-		var freshDaysOpt = {name: "freshDays", display_name: IS_R.lb_freshdaysTerm};
-		appendOption(wfs, freshDaysOpt, dateArray, IS_Portal.freshDays);
-		
-		var mergeconfirmOpt = {name: "mergeconfirm", display_name: IS_R.lb_mergeConfirmDialog};
-		appendOption(wfs, mergeconfirmOpt, booleanArray, new String(IS_Portal.mergeconfirm));
-		
-		wfs.appendChild( createExecButton());
-		
-		return wfs;
-	}
-	
-	function buildRssSettingBody(){
-		var wfs = createFieldSet(IS_R.lb_rssViewSetting);
-		
-		var rssReaderConf = IS_Widget.getConfiguration("RssReader");
-		if(!rssReaderConf){
-			var msg = IS_R.ms_rssreaderUnreadable;
-			wfs.innerHTML = msg;
-			msg.warn(msg);
-			return;
-		}
-		
-		if(rssReaderConf.UserPref.doLineFeed){
-			appendOption(wfs, rssReaderConf.UserPref.doLineFeed, booleanArray);
-		}
-		if(rssReaderConf.UserPref.showDatetime){
-			appendOption(wfs, rssReaderConf.UserPref.showDatetime, booleanArray);
-		}
-		if(rssReaderConf.UserPref.detailDisplayMode){
-			appendOption(wfs, rssReaderConf.UserPref.detailDisplayMode, rssReaderConf.UserPref.detailDisplayMode.EnumValue);
-		}
-		if(rssReaderConf.UserPref.itemDisplay){
-			appendOption(wfs, rssReaderConf.UserPref.itemDisplay, rssReaderConf.UserPref.itemDisplay.EnumValue);
-		}
-		if(rssReaderConf.UserPref.scrollMode){
-			appendOption(wfs, rssReaderConf.UserPref.scrollMode, rssReaderConf.UserPref.scrollMode.EnumValue);
-		}
-		
-//		if(Browser.isIE){
-//			lastp.style.marginBottom = "10px";
-//		}
-		
-		wfs.appendChild( createExecButton());
-		
-		return wfs;
-	}
-	
-	function buildCustomizeReset() {
-		var fs = createFieldSet( IS_R.lb_initialize );
-		
-		var description = document.createElement("div");
-		description.innerHTML = 
-			IS_R.lb_clearConfigurationDesc1 +"<br/>"
-			+IS_R.lb_clearConfigurationDesc2;
-		fs.appendChild( description );
-		
-		var initButton = document.createElement("input");
-		initButton.type = "button";
-		initButton.value = IS_R.lb_clearConfigurationButton;
-		IS_Event.observe( initButton,"click",function() {
-			Control.Modal.close();
-			
-			if( !confirm( IS_R.ms_clearConfigurationConfirm ))
-				return;
-			
-			IS_Request.asynchronous = false;
-			IS_Request.CommandQueue.fireRequest();
-			
-			var opt = {
-				method: 'get' ,
-				asynchronous:false,
-				onSuccess: function(req){
-					window.location.reload( true );
-				},
-				onFailure: function(t) {
-					var msg = IS_R.ms_clearConfigurationFailed;
-					alert( msg );
-					msg.error( msg );
-				}
-			};
-			AjaxRequest.invoke(hostPrefix +  "/widsrv?reset=true", opt);
-		});
-		var initField = createField("",initButton );
-		fs.appendChild( initField );
-		
-		return fs;
-	}
-	
-	function createFieldSet(title){
-		var fieldSet = document.createElement("fieldSet");
-		var legEnd = document.createElement("legEnd");
-		fieldSet.appendChild(legEnd);
-		legEnd.innerHTML = title;
-		return fieldSet;
-	}
-	
-	function createField( labelContent, valueContent ){
-		if( typeof( labelContent ) == "string")
-			labelContent = document.createTextNode( labelContent );
-		
-		if( typeof( valueContent ) == "string")
-			valueContent = document.createTextNode( valueContent );
-		
-		var itemTable = document.createElement("table");
-		itemTable.cellPadding = "3px";
-		itemTable.cellSpacing = 0;
-		itemTable.style.width = "100%";
-		
-		var itemTBody = document.createElement("tbody");
-		var itemTr = document.createElement("tr");
-		itemTr.className = "option";
-		var itemLeftTd = document.createElement("td");
-		var itemRightTd = document.createElement("td");
-		itemRightTd.className = "rightTd";
-		
-		itemTable.appendChild(itemTBody);
-		itemTBody.appendChild(itemTr);
-		itemTr.appendChild(itemLeftTd);
-		itemTr.appendChild(itemRightTd);
-		
-		var titleLabel = document.createElement("label");
-		titleLabel.style.fontWeight = "bold";
-		titleLabel.appendChild( labelContent );
-		
-		itemLeftTd.appendChild(titleLabel);
-		itemRightTd.appendChild( valueContent );
-		
-		return itemTable;
-	}
-	function appendOption( el, obj, selectOptions, selectValue) {
-		var selectEl = document.createElement("select");
-		selectEl.id = "pref_" + obj.name;
-		selectEl.style.width = "150px";
-		
-		//Head is empty
-		var optEl = document.createElement("option");
-		optEl.setAttribute("value", "");
-		optEl.appendChild(document.createTextNode(IS_R.lb_changeNotApply));
-		selectEl.appendChild(optEl);
-		
-		for(var i=0;i<selectOptions.length;i++){
-			if(typeof selectOptions[i] == "function") continue;
-			optEl = document.createElement("option");
-			optEl.setAttribute("value", selectOptions[i].value);
-			optEl.appendChild(document.createTextNode(selectOptions[i].display_value));
-			selectEl.appendChild(optEl);
-			if(selectValue == selectOptions[i].value){
-				optEl.selected =true;
-			}
-		}
-		
-		IS_Portal.prefsEls[obj.name] = selectEl;
-		
-		var field = createField( " "+obj.display_name,selectEl );
-		el.appendChild( field );
-		
-		return field;
-	}
-
-
-	var showModal = function(){
-		IS_Portal.currentModal.update(createPreferenceBody());
-	}
-	
-	if(preferenceDiv){
-		IS_Portal.currentModal = new Control.Modal(preferenceDiv,{contents: "", containerClassName:"preference"});
-		
-		preferenceDiv.title = IS_R.lb_setting;
-		Event.observe(preferenceDiv, "click", showModal, false);
-		
-
-		if(preferenceDiv.parentNode)//Setting of command bar width.
-			preferenceDiv.parentNode.style.width = preferenceDiv.offsetWidth;
-	}
-
-	
-}
-
 IS_Portal.buildCredentialList = function(){
 	var portalCredentialListDiv = $("portal-credential-list");
 	if(portalCredentialListDiv){
@@ -2622,7 +2322,40 @@ IS_Portal.changeBackground = function(opt){
 	}catch(e){alert(e);}
 	//Send to Server
 	if(saveOpt.size == 0)
-	  IS_Widget.setPreferenceCommand("background", "false");
+	  IS_Widget.setPreferenceCommand('background', 'false');
 	else
-	  IS_Widget.setPreferenceCommand("background", Object.toJSON(opt));
+	  IS_Widget.setPreferenceCommand('background', Object.toJSON(opt));
+}
+
+IS_Portal.setWidgetTheme = function(opt){
+	
+	if(opt.header){
+		if(opt.header.background.image){
+		  is_addCssRule('.infoScoop .widget .widgetHeader', 'background-image:url(' + opt.header.background.image + ')');
+		  is_addCssRule('.infoScoop .subWidget .widgetHeader', 'background-image:none');
+		}
+	}
+	if(opt.subheader){
+		if(opt.subheader.background.color){
+		  is_addCssRule('.infoScoop .subWidget .widgetHeader', 'background-color:' + opt.subheader.background.color);
+		}
+	}
+	if(opt.border){
+		if(opt.border.none){
+			is_addCssRule('.infoScoop .widget .widgetBox', 'border:none');
+			is_addCssRule('.infoScoop .widget .widgetShade', 'border:none');
+		}else{
+			//TODO:
+		}
+	}
+}
+IS_Portal.changeWidgetTheme = function(opt){
+	IS_Portal.setWidgetTheme(opt);
+
+	//Send to Server
+	if($H(opt).size == 0)
+	  IS_Widget.setPreferenceCommand('widgetTheme', 'false');
+	else
+	  IS_Widget.setPreferenceCommand('widgetTheme', Object.toJSON(opt));
+	
 }

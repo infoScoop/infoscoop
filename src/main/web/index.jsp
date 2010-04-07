@@ -128,6 +128,7 @@ if( isPreview == null )
     <script src="<%=staticContentURL%>/js/widgets/WidgetEdit.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/maximize/Maximize.js"></script>
     <script src="<%=staticContentURL%>/js/ContentFooter.js"></script>
+    <script src="<%=staticContentURL%>/js/GlobalSetting.js"></script>
     <!-- prototype-window -->
     <script type="text/javascript" src="<%=staticContentURL%>/js/lib/prototype-window-1.3/window.js"></script>
     <script type="text/javascript" src="<%=staticContentURL%>/js/lib/prototype-window-1.3/window_ext.js"></script>

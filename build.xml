@@ -196,6 +196,8 @@
 			<filelist dir="${src.main.web}/js" files="SiteMap.js"/>
 			<filelist dir="${src.main.web}/js" files="TreeMenu.js"/>
 			<filelist dir="${src.main.web}/js" files="AddContentPane.js"/>
+			<filelist dir="${src.main.web}/js" files="ContentFooter.js"/>
+			<filelist dir="${src.main.web}/js" files="GlobalSetting.js"/>
 			<filelist dir="${src.main.web}/js/search" files="SearchEngine.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="Widget.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="WidgetHeader.js"/>
@@ -208,7 +210,6 @@
 			<filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssCategory.js"/>
 			<filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssItemRender.js"/>
 			<filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssItemSelection.js"/>
-			<filelist dir="${src.main.web}/js" files="ContentFooter.js"/>
 			<filelist dir="${src.main.web}/js/widgets/information" files="Information.js"/>
 			<filelist dir="${src.main.web}/js/widgets/information" files="Information2.js"/>
 			<filelist dir="${src.main.web}/js/widgets/calendar" files="Calendar.js"/>

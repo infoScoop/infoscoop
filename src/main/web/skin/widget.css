@@ -29,7 +29,7 @@
 	border-right: 3px solid #EEE;
 	border-bottom: 4px solid #EEE;
 /*	margin-left : 10px;*/
-	margin-bottom: 5px;
+	margin-bottom: 7px;
 }
 
 .infoScoop .widgetBoxNoHeader {
@@ -90,7 +90,7 @@
 	font-size:100%;
 	background-image:url(./imgs/widget_header.png);
 	background-position:bottom;
-	background-color: lightgray;
+	/*background-color: lightgray;*/
 	height: 22px;
 	cursor:move;
 	overflow:hidden;
@@ -114,7 +114,7 @@
 	_top: 0px;
 	right: 0;
 	height: 19px;
-	background-image:url(./imgs/widget_header.png);
+	/*background-image:url(./imgs/widget_header.png);*/
 }
 .infoScoop .widget .widgetHeader.blink,
 .infoScoop .widget .widgetHeader.blink .rightHeader {
@@ -134,7 +134,7 @@
 	//top: 0;
 	right: 0;
 	height: 19px;
-	background-color:#EEEEFF;
+	/*background-color:#EEEEFF;*/
 	background-image:none;
 }
 
