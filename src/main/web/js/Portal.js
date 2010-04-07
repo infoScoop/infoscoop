@@ -2454,6 +2454,7 @@ IS_Portal.CommandBar = {
 			if(commandBarItems[i].nodeType != 1)continue;
 			
 			var itemDiv = commandBarItems[i].getElementsByTagName('div')[0];
+			if(!/^disabled/.test(itemDiv.id)) this.hasCommandBar = true;
 			var itemId = itemDiv.id.replace(/^s_/, "");
 			
 			var cmdBarWidget = IS_Portal.getWidget(itemId, IS_Portal.currentTabId);
@@ -2462,7 +2463,9 @@ IS_Portal.CommandBar = {
 			}
 			this.commandbarWidgetDivs[itemId] = itemDiv;
 		}
-		
+		if(!this.hasCommandBar){
+			$("command-bar").hide();
+		}
 	},
 	changeDefaultView : function(){
 		this.toggleView(false);

@@ -246,7 +246,7 @@ if( isPreview == null )
 					</td>
 					<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
 					<td colspan="3" valign="top" align="left">
-						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0" id="command-bar">
 							<tbody>
 								<tr>
 									<td><div id="portal-command"></div></td>
