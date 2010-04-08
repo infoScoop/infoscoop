@@ -198,6 +198,7 @@
 			<filelist dir="${src.main.web}/js" files="AddContentPane.js"/>
 			<filelist dir="${src.main.web}/js" files="ContentFooter.js"/>
 			<filelist dir="${src.main.web}/js" files="GlobalSetting.js"/>
+			<filelist dir="${src.main.web}/js" files="Theme.js"/>
 			<filelist dir="${src.main.web}/js/search" files="SearchEngine.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="Widget.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="WidgetHeader.js"/>

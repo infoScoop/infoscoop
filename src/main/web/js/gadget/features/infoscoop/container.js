@@ -154,7 +154,7 @@ gadgets.rpc.register("is_open_portal_iframe",function(url) {
 });
 
 gadgets.rpc.register("is_change_background",function(opt) {
-	IS_Portal.changeBackground(opt);
+	IS_Portal.theme.changeBackground(opt);
 });
 
 gadgets.rpc.register("is_refresh",function() {

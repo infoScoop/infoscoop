@@ -129,6 +129,7 @@ if( isPreview == null )
     <script src="<%=staticContentURL%>/js/widgets/maximize/Maximize.js"></script>
     <script src="<%=staticContentURL%>/js/ContentFooter.js"></script>
     <script src="<%=staticContentURL%>/js/GlobalSetting.js"></script>
+    <script src="<%=staticContentURL%>/js/Theme.js"></script>
     <!-- prototype-window -->
     <script type="text/javascript" src="<%=staticContentURL%>/js/lib/prototype-window-1.3/window.js"></script>
     <script type="text/javascript" src="<%=staticContentURL%>/js/lib/prototype-window-1.3/window_ext.js"></script>
@@ -166,12 +167,11 @@ if( isPreview == null )
 			IS_Portal.logoffDateTime = new Date( preference.property.logoffDateTime ? preference.property.logoffDateTime : "").getTime();
 			IS_Portal.fontSize = preference.property.fontSize ? preference.property.fontSize : IS_Portal.defaultFontSize;
 			IS_Portal.setFontSize(null, true);
-			if(preference.property.thema) IS_Portal.setThema(preference.property.thema);
 			if(preference.property.freshDays) IS_Portal.freshDays = preference.property.freshDays;
 			IS_Portal.lastSaveFailed = preference.property.failed ? getBooleanValue(preference.property.failed) : false;
 			IS_Portal.mergeconfirm = preference.property.mergeconfirm ? getBooleanValue(preference.property.mergeconfirm) : true;
 			IS_Portal.msgLastViewTime = preference.property.msgLastViewTime || -1;
-			
+			IS_Portal.theme.currentTheme = eval( '(' + preference.property.theme + ')' );
 			IS_Portal.preference = preference.property;
 		}
 	</script>

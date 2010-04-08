@@ -215,19 +215,10 @@ IS_Portal.buildGlobalSettingModal = function() {
 		return fs;
 	}
 
-	var backgroundImages = [
-		"./skin/imgs/theme/tartan_01.png",
-		"./skin/imgs/theme/tartan_02.png",
-		"./skin/imgs/theme/tartan_03.png",
-		"./skin/imgs/theme/border_01.png",
-		"./skin/imgs/theme/stripe_01.png",
-		"./skin/imgs/theme/border_02.png",
-		"./skin/imgs/theme/japan_01.jpg",
-		"./skin/imgs/theme/flower.gif"
-		]
 	function buildBackgroundSetting() {
 		var fs = createFieldSet( IS_R.lb_wallPaperSetting );
-		var backgroundSettingDiv = $.DIV({id:'backgroundSettingDiv'}, IS_R.lb_selectWallPaperImage )
+		var backgroundSettingDiv = $.DIV({id:'backgroundSettingDiv'}, $.DIV({}, IS_R.lb_selectWallPaperImage ) );
+		var backgroundImages = IS_Portal.theme.backgroundImages;
 		for(var i = 0; i < backgroundImages.length; i++){
 			var radioBtn = Browser.isIE ? document.createElement('<input type="radio" name="backgroundImageRadio">') : $.INPUT({type:'radio',name:"backgroundImageRadio"});
 			radioBtn.id = 'background_setting_' + backgroundImages[i];
@@ -260,7 +251,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 							  }
 						  }
 						  
-						  IS_Portal.changeBackground({image:imageUrl});
+						  IS_Portal.theme.changeBackground({image:imageUrl});
 					  }
 					}})
 					)
@@ -269,24 +260,11 @@ IS_Portal.buildGlobalSettingModal = function() {
 		return fs;
 	}
 	
-	var widgetHeaderImages = [
-		"./skin/imgs/theme/tartan_01.png",
-		"./skin/imgs/theme/yellow_flower.jpg",
-		"./skin/imgs/theme/blue_bubbles.gif",
-		"http://www.backgroundlabs.com/backgrounds/392.jpg"
-		]
-	var subWidgetHeaderColors = [
-		"#f0fff0",
-		"#fdf5e6",
-		"#f0ffff",
-		"#f5f5dc",
-		"#fff0f5",
-		"#f8f8ff"
-		]
 	function buildWidgetThemeSetting() {
 		var fs = createFieldSet( IS_R.lb_widgetDesignSetting );
 		
 		var widgetHeaderSettingDiv = $.DIV({id:'widgetHeaderSettingDiv'}, $.DIV({}, IS_R.lb_selectWidgetHeaderImage ) );
+		var widgetHeaderImages = IS_Portal.theme.widgetHeaderImages;
 		for(var i = 0; i < widgetHeaderImages.length; i++){
 			var radioBtn = Browser.isIE ? document.createElement('<input type="radio" name="widgetHeaderSettingRadio">') : $.INPUT({type:'radio',name:"widgetHeaderSettingRadio"});
 			radioBtn.id = 'widget_header_setting_' + widgetHeaderImages[i];
@@ -306,7 +284,8 @@ IS_Portal.buildGlobalSettingModal = function() {
 		}
 		fs.appendChild( widgetHeaderSettingDiv );
 
-		var subWidgetHeaderSettingDiv = $.DIV({id:'subWidgetHeaderSettingDiv',style:"clear:both;"}, $.DIV({},IS_R.lb_selectSubWidgetHeaderImage));
+		var subWidgetHeaderSettingDiv = $.DIV({id:'subWidgetHeaderSettingDiv',style:"clear:both;width:400px;"}, $.DIV({},IS_R.lb_selectSubWidgetHeaderImage));
+		var subWidgetHeaderColors = IS_Portal.theme.subWidgetHeaderColors;
 		for(var i = 0; i < subWidgetHeaderColors.length; i++){
 			var radioBtn = Browser.isIE ? document.createElement('<input type="radio" name="subWidgetHeaderColorRadio">') : $.INPUT({type:'radio',name:"subWidgetHeaderColorRadio"});
 			radioBtn.id = 'sub_widget_header_setting_' + subWidgetHeaderColors[i];
@@ -362,7 +341,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 							subheader:{background:{color:subWidgetHeaderColor}},
 							border:{none:$("is_preference_setting_with_border").checked}
 						  }
-						  IS_Portal.changeWidgetTheme(opt);
+						  IS_Portal.theme.changeWidgetTheme(opt);
 					  }
 					}})
 					)

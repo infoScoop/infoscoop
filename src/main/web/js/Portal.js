@@ -27,7 +27,6 @@ IS_Portal.fontSize = "";
 IS_Portal.msgLastViewTime = -1;
 
 IS_Portal.freshDays = freshDays;
-IS_Portal.thema = "default";
 //IS_Portal.sidePanel = new Object();
 IS_Portal.buildVersion = "";
 IS_Portal.lastSaveFailed = false;
@@ -44,17 +43,7 @@ IS_Portal.defaultFontSize = "100%";
 IS_Portal.start = function() {
 	var self = this;
 
-	//Set background
-	if(IS_Portal.preference.background){
-		var backgroundOpt = eval('(' + IS_Portal.preference.background +')' );
-		if(backgroundOpt)
-		  IS_Portal.setBackground( backgroundOpt );
-	}
-	if(IS_Portal.preference.widgetTheme){
-		var widgetThemeOpt = eval('(' + IS_Portal.preference.widgetTheme +')' );
-		if(widgetThemeOpt)
-		  IS_Portal.setWidgetTheme(widgetThemeOpt);
-	}
+	IS_Portal.theme.setTheme(IS_Portal.theme.currentTheme);
 	
 	IS_Portal.startIndicator();
 	
@@ -1693,28 +1682,6 @@ if( Browser.isSafari1 ) {
 	}
 }
 
-IS_Portal.setThema = function(thema){
-	var head = document.getElementsByTagName('head')[0];
-	var customCss = document.getElementById('customCss');
-
-	//Send to Server
-	IS_Widget.setPreferenceCommand("thema", IS_Portal.thema);
-
-	if(thema == "default"){
-		customCss.href = "";
-		IS_Portal.thema = null;
-		return;
-	}
-	var newCustomCss = document.createElement('link');
-	newCustomCss.id = 'customCss';
-	newCustomCss.rel = 'stylesheet';
-	newCustomCss.type = 'text/css';
-	newCustomCss.href = staticContentURL +'/skin/' + thema + '/styles.css';
-	head.replaceChild(newCustomCss, customCss);
-	//head.appendChild(newCustomCss);
-	IS_Portal.thema = thema;
-}
-
 IS_Portal.windowOverlay = function(id, tag){
 	var overlay = document.createElement(tag);
 	overlay.className = "windowOverlay";
@@ -2290,72 +2257,4 @@ IS_Portal.endIndicator = function(e){
 	IS_Portal.widgetDisplayUpdated();
 	
 	IS_Portal.getPortalOverlay().hide();
-}
-
-IS_Portal.setBackground = function(opt){
-	var bodyStyle = document.body.style;
-	
-	if(opt.color)
-	  bodyStyle.backgroundColor = opt.color;
-	
-	if(opt.image)
-	  bodyStyle.backgroundImage = 'url(' + opt.image + ')';
-
-	if(opt.repeat)
-	  bodyStyle.backgroundRepeat = opt.repeat;
-	
-	if(opt.position)
-	  bodyStyle.backgroundPosition = opt.position;
-	
-	if(opt.attachment)
-	  bodyStyle.backgroundAttachment = opt.attachment;
-}
-
-IS_Portal.changeBackground = function(opt){
-	var saveOpt = $H({});
-	for( i in opt){
-	  if( i == 'color' || i == 'image' || i == 'repeat' || i == 'position' || i == 'attachment')
-		saveOpt.set(i, opt.i);
-	}
-	try{
-	IS_Portal.setBackground(opt);
-	}catch(e){alert(e);}
-	//Send to Server
-	if(saveOpt.size == 0)
-	  IS_Widget.setPreferenceCommand('background', 'false');
-	else
-	  IS_Widget.setPreferenceCommand('background', Object.toJSON(opt));
-}
-
-IS_Portal.setWidgetTheme = function(opt){
-	
-	if(opt.header){
-		if(opt.header.background.image){
-		  is_addCssRule('.infoScoop .widget .widgetHeader', 'background-image:url(' + opt.header.background.image + ')');
-		  is_addCssRule('.infoScoop .subWidget .widgetHeader', 'background-image:none');
-		}
-	}
-	if(opt.subheader){
-		if(opt.subheader.background.color){
-		  is_addCssRule('.infoScoop .subWidget .widgetHeader', 'background-color:' + opt.subheader.background.color);
-		}
-	}
-	if(opt.border){
-		if(opt.border.none){
-			is_addCssRule('.infoScoop .widget .widgetBox', 'border:none');
-			is_addCssRule('.infoScoop .widget .widgetShade', 'border:none');
-		}else{
-			//TODO:
-		}
-	}
-}
-IS_Portal.changeWidgetTheme = function(opt){
-	IS_Portal.setWidgetTheme(opt);
-
-	//Send to Server
-	if($H(opt).size == 0)
-	  IS_Widget.setPreferenceCommand('widgetTheme', 'false');
-	else
-	  IS_Widget.setPreferenceCommand('widgetTheme', Object.toJSON(opt));
-	
 }
