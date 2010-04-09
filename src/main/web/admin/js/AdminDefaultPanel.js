@@ -1354,8 +1354,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			editAreaDiv.appendChild(labelSetDynamicDiv);
 
 			var disableCustomizedAreaId = "tab_"+this.displayTabId+"_disableCustomizedArea";
-			var disableCustomizedAreaLable = $.LABEL({}, ISA_R.alb_disableCustomizedArea);
-			disableCustomizedAreaLable.setAttribute("for", disableCustomizedAreaId);
 			labelSetDynamicDiv.appendChild(
 				$.DIV(
 					{},
@@ -1376,7 +1374,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 							}
 						}
 					),
-					disableCustomizedAreaLable
+					$.LABEL({"htmlFor": disableCustomizedAreaId}, ISA_R.alb_disableCustomizedArea)
 				)
 			);
 
