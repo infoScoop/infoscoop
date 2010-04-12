@@ -674,6 +674,7 @@ IS_Widget.prototype.classDef = function() {
 		var form = $("postGadgetSrvForm");
 		if( !form ) {
 			form = document.createElement("form");
+			form.style.margin = 0;
 			form.id = "postGadgetSrvForm";
 			form.method = "POST";
 			document.body.appendChild( form );
