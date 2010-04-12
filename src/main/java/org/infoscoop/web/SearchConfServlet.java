@@ -33,7 +33,7 @@ public class SearchConfServlet extends HttpServlet {
 			res.setHeader("Content-Type", "text/xml; charset=UTF-8");
 			Writer w = res.getWriter();
 			SearchEngineService service = (SearchEngineService) SpringUtil.getBean("searchEngineService");
-			String searchConf = service.getSearchEngine();
+			String searchConf = service.getSearchEngineXmlWithAcl();
 			searchConf = I18NUtil.resolveForXML(I18NUtil.TYPE_SEARCH, searchConf, req
 					.getLocale());
 			w.write(searchConf);

@@ -323,7 +323,7 @@ public class SiteAggregationMenuService {
 			element.setAttribute("alert", alert);
 		
 		if(auths != null){
-			element.appendChild(createAuthsElement(document, auths));
+			element.appendChild(MenuAuthorization.createAuthsElement(document, auths));
 		}
 		
 		if(menuTreeAdmins != null){
@@ -397,7 +397,7 @@ public class SiteAggregationMenuService {
 		element.appendChild(recreatePropertiesNode(document, element, props));
 
 		if(auths != null){
-			element.appendChild(createAuthsElement(document, auths));
+			element.appendChild(MenuAuthorization.createAuthsElement(document, auths));
 		}
 
 		// Added at last
@@ -464,7 +464,7 @@ public class SiteAggregationMenuService {
 			element.removeChild(oldAuths);
 		}
 		if(auths != null){
-			element.insertBefore(createAuthsElement(document, auths), getFirstChildElementByName(element, "site"));
+			element.insertBefore(MenuAuthorization.createAuthsElement(document, auths), getFirstChildElementByName(element, "site"));
 		}
 		
 		NodeList oldAdmins = element.getElementsByTagName("menuTreeAdmins");
@@ -547,61 +547,6 @@ public class SiteAggregationMenuService {
 			adminsEl.appendChild(adminEl);
 		}
 		return adminsEl;
-	}
-	
-	/**
-	 * @param document
-	 * @param auths
-	 * @return
-	 * @throws Exception
-	 */
-	private Element createAuthsElement(Document document,
-			Collection auths) throws Exception {
-		Element authsEl = document.createElement("auths");
-		for( Iterator ite=auths.iterator();ite.hasNext();) {
-			MenuAuthorization auth = newMenuAuthorization( ite.next());
-			
-			Element element = document.createElement("auth");
-			element.setAttribute("type", auth.principalClass);
-			element.setAttribute("regx", auth.regx);
-			if (auth.actions != null && auth.actions.length > 0) {
-				StringBuffer actionsStr = new StringBuffer();
-				actionsStr.append("[");
-				for (int j = 0; j < auth.actions.length; j++) {
-					actionsStr.append("'").append(auth.actions[j]).append(
-							"'");
-				}
-				actionsStr.append("]");
-				element.setAttribute("actions", actionsStr.toString());
-			}
-			authsEl.appendChild(element);
-		}
-		return authsEl;
-	}
-	
-	private static MenuAuthorization newMenuAuthorization( Object obj ) throws ClassNotFoundException {
-		if( obj instanceof MenuAuthorization )
-			return ( MenuAuthorization )obj;
-		
-		Map map = ( Map )obj;
-		String type = ( String )map.get("type");
-		String regx = ( String )map.get("regx");
-		
-		Object[] actions = (( Collection )map.get("actions")).toArray();
-		String[] strActions = new String[ actions.length ];
-		for( int i=0;i<actions.length;i++ )
-			strActions[i] = actions[i].toString();
-		
-		try {
-			return new MenuAuthorization( type,regx,strActions );
-		} catch (ClassNotFoundException ex) {
-			if (log.isErrorEnabled())
-				log.error(
-						"Principal class for Authorization is not found. This is bug case. "
-								+ ex.getMessage(), ex);
-			throw new IllegalArgumentException(
-					"Principal class for Authorization is not found. This is bug case. "/*,ex */);
-		}
 	}
 
 	/* (Not Javadoc)
@@ -921,27 +866,9 @@ public class SiteAggregationMenuService {
 		json.put("properties", propsJson);
 		
 		// auths
-		JSONArray authArray = new JSONArray();
-		JSONObject authJson;
-		Element authsEl = (Element)XPathAPI.selectSingleNode(siteEl, "auths");
-		Element authEl;
-		if(authsEl != null){
-			NodeList authList = authsEl.getElementsByTagName("auth");
-			for(int i=0;i<authList.getLength();i++){
-				authJson = new JSONObject();
-				authEl = (Element)authList.item(i);
-				attMap = authEl.getAttributes();
-				for(int j=0;j<attMap.getLength();j++){
-					attr = attMap.item(j);
-					if("actions".equals(attr.getNodeName())){
-						authJson.put(attr.getNodeName(), new JSONArray(attr.getNodeValue()));
-					}else{
-						authJson.put(attr.getNodeName(), attr.getNodeValue());
-					}
-				}
-				authArray.put(authJson);
-			}
-			json.put("auths", authArray);
+		Element authsEl = (Element) XPathAPI.selectSingleNode(siteEl, "auths");
+		if (authsEl != null) {
+			json.put("auths", MenuAuthorization.createAuthsJson(authsEl));
 		}
 		
 		// admins
