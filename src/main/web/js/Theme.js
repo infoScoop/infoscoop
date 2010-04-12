@@ -1,9 +1,9 @@
 IS_Portal.theme = {
   defaultTheme: {
-	background:{image: "./skin/imgs/stripe.png"},
+	background:{image: "./skin/imgs/theme/stripe.png"},
 	widget:{
 	  header:{
-		background:{image: "./skin/imgs/widget_header.png"}
+		background:{image: "./skin/imgs/theme/widget_header.png"}
 	  },
 	  border:{color:"#BCBCBC"},
 	  shade:{color:"#EEE"},
@@ -12,7 +12,9 @@ IS_Portal.theme = {
 	  }
 	}
   },
- 
+	
+  currentTheme:{},
+	
   backgroundImages: [
 	  "./skin/imgs/theme/tartan_01.png",
 	  "./skin/imgs/theme/tartan_02.png",
@@ -42,7 +44,10 @@ IS_Portal.theme = {
 	  "#f8f8ff"
 	  ],
 	
-  setBackground: function(opt){
+  _setBackground: function(opt){
+	  if(!opt)
+		  opt = this.defaultTheme['background'];
+	  
 	  var bodyStyle = document.body.style;
 	  
 	  if(opt.color)
@@ -62,13 +67,16 @@ IS_Portal.theme = {
   },
 
   changeBackground: function(opt){
+	  if(!opt)
+		  opt = this.defaultTheme['background'];
+	  
 	  var saveOpt = $H({});
 	  for( i in opt){
 		  if( i == 'color' || i == 'image' || i == 'repeat' || i == 'position' || i == 'attachment')
 			saveOpt.set(i, opt.i);
 	  }
 	  try{
-		  this.setBackground(opt);
+		  this._setBackground(opt);
 	  }catch(e){alert(e);}
 	  //Send to Server
 	  if(saveOpt.size == 0)
@@ -78,7 +86,9 @@ IS_Portal.theme = {
 	  this.saveTheme()
   },
 	
-  setWidgetTheme: function(opt){
+  _setWidgetTheme: function(opt){
+	  if(!opt)
+		  opt = this.defaultTheme.widget;
 	
 	  if(opt.header){
 		  if(opt.header.background.image){
@@ -105,7 +115,10 @@ IS_Portal.theme = {
   },
 
   changeWidgetTheme: function(opt){
-	  this.setWidgetTheme(opt);
+	  if(!opt)
+		  opt = this.defaultTheme.widget;
+	  
+	  this._setWidgetTheme(opt);
 
 	  this.currentTheme['widget'] = opt;
 	  this.saveTheme();
@@ -121,14 +134,11 @@ IS_Portal.theme = {
   },
 
   setTheme: function(opt){
-	  if(!opt){
-		  this.currentTheme = this.defaultTheme;
-		  opt = this.currentTheme;
-	  }
+	  if(!opt)
+		opt = this.defaultTheme;
+
+	  this._setBackground(opt.background);
 	  
-	  if(opt.background)
-		this.setBackground(opt.background);
-	  if(opt.widget)
-		this.setWidgetTheme(opt.widget);
+	  this._setWidgetTheme(opt.widget);
   }
 }

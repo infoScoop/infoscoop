@@ -171,7 +171,8 @@ if( isPreview == null )
 			IS_Portal.lastSaveFailed = preference.property.failed ? getBooleanValue(preference.property.failed) : false;
 			IS_Portal.mergeconfirm = preference.property.mergeconfirm ? getBooleanValue(preference.property.mergeconfirm) : true;
 			IS_Portal.msgLastViewTime = preference.property.msgLastViewTime || -1;
-			IS_Portal.theme.currentTheme = eval( '(' + preference.property.theme + ')' );
+			if(preference.property.theme)
+				IS_Portal.theme.currentTheme = eval( '(' + preference.property.theme + ')' );
 			IS_Portal.preference = preference.property;
 		}
 	</script>

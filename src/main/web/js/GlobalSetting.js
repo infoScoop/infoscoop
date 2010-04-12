@@ -218,10 +218,13 @@ IS_Portal.buildGlobalSettingModal = function() {
 	function buildBackgroundSetting() {
 		var fs = createFieldSet( IS_R.lb_wallPaperSetting );
 		var backgroundSettingDiv = $.DIV({id:'backgroundSettingDiv'}, $.DIV({}, IS_R.lb_selectWallPaperImage ) );
-		var backgroundImages = IS_Portal.theme.backgroundImages;
+		
+		var backgroundImages = [IS_Portal.theme.defaultTheme['background']['image']].concat(IS_Portal.theme.backgroundImages);
+		var currentBackgroundImage = IS_Portal.theme.currentTheme['background'] && IS_Portal.theme.currentTheme['background']['image'] ? IS_Portal.theme.currentTheme['background']['image'] : IS_Portal.theme.defaultTheme['background']['image'];
 		for(var i = 0; i < backgroundImages.length; i++){
 			var radioBtn = Browser.isIE ? document.createElement('<input type="radio" name="backgroundImageRadio">') : $.INPUT({type:'radio',name:"backgroundImageRadio"});
 			radioBtn.id = 'background_setting_' + backgroundImages[i];
+			radioBtn.defaultChecked = currentBackgroundImage == backgroundImages[i];
 			radioBtn.value = backgroundImages[i];
 			
 			backgroundSettingDiv.appendChild(
@@ -262,12 +265,18 @@ IS_Portal.buildGlobalSettingModal = function() {
 	
 	function buildWidgetThemeSetting() {
 		var fs = createFieldSet( IS_R.lb_widgetDesignSetting );
-		
+		var currentWidgetTheme = IS_Portal.theme.currentTheme['widget'] ? IS_Portal.theme.currentTheme['widget'] : IS_Portal.theme.defaultTheme['widget'];
+
 		var widgetHeaderSettingDiv = $.DIV({id:'widgetHeaderSettingDiv'}, $.DIV({}, IS_R.lb_selectWidgetHeaderImage ) );
-		var widgetHeaderImages = IS_Portal.theme.widgetHeaderImages;
+		
+		var defaultWidgetHeaderImage = IS_Portal.theme.defaultTheme.widget.header['background']['image'];
+		var widgetHeaderImages = [defaultWidgetHeaderImage].concat(IS_Portal.theme.widgetHeaderImages);
+		var currentWidgetHeaderImage = currentWidgetTheme.header && currentWidgetTheme.header['background'] && currentWidgetTheme.header['background']['image'] ?
+		  currentWidgetTheme.header['background']['image'] : defaultWidgetHeaderImage;
 		for(var i = 0; i < widgetHeaderImages.length; i++){
 			var radioBtn = Browser.isIE ? document.createElement('<input type="radio" name="widgetHeaderSettingRadio">') : $.INPUT({type:'radio',name:"widgetHeaderSettingRadio"});
 			radioBtn.id = 'widget_header_setting_' + widgetHeaderImages[i];
+			radioBtn.defaultChecked = currentWidgetHeaderImage == widgetHeaderImages[i];
 			radioBtn.value = widgetHeaderImages[i];
 			var sampleImgDiv = $.DIV({style:"width:100px;height:30px;cursor:pointer;margin-right:5px"});
 			sampleImgDiv.style.background = "url(" + widgetHeaderImages[i] + ") repeat";
@@ -285,10 +294,14 @@ IS_Portal.buildGlobalSettingModal = function() {
 		fs.appendChild( widgetHeaderSettingDiv );
 
 		var subWidgetHeaderSettingDiv = $.DIV({id:'subWidgetHeaderSettingDiv',style:"clear:both;width:400px;"}, $.DIV({},IS_R.lb_selectSubWidgetHeaderImage));
-		var subWidgetHeaderColors = IS_Portal.theme.subWidgetHeaderColors;
+		var defaultSubWidgetHeaderColor = IS_Portal.theme.defaultTheme.widget.subheader['background']['color'];
+		var subWidgetHeaderColors = [defaultSubWidgetHeaderColor].concat(IS_Portal.theme.subWidgetHeaderColors);
+		var currentSubWidgetHeaderColor = currentWidgetTheme.subheader && currentWidgetTheme.subheader['background'] && currentWidgetTheme.subheader['background']['color'] ?
+		  currentWidgetTheme.subheader['background']['color'] : defaultSubWidgetHeaderColor;
 		for(var i = 0; i < subWidgetHeaderColors.length; i++){
 			var radioBtn = Browser.isIE ? document.createElement('<input type="radio" name="subWidgetHeaderColorRadio">') : $.INPUT({type:'radio',name:"subWidgetHeaderColorRadio"});
 			radioBtn.id = 'sub_widget_header_setting_' + subWidgetHeaderColors[i];
+			radioBtn.defaultChecked = currentSubWidgetHeaderColor == subWidgetHeaderColors[i];
 			radioBtn.value = subWidgetHeaderColors[i];
 			subWidgetHeaderSettingDiv.appendChild(
 				$.DIV(
@@ -303,11 +316,12 @@ IS_Portal.buildGlobalSettingModal = function() {
 		}
 		
 		fs.appendChild(subWidgetHeaderSettingDiv);
-		
+
+		var currentWithBorder = currentWidgetTheme.border && currentWidgetTheme.border.none ? true : false;
 		fs.appendChild(
 			$.DIV({style:"clear:both;"},
 				  IS_R.lb_noDisplayFrameBorder,
-				  $.INPUT({id:"is_preference_setting_with_border", type:"checkbox"})
+				  $.INPUT({id:"is_preference_setting_with_border", type:"checkbox", defaultChecked:currentWithBorder})
 					)
 			);
 		
