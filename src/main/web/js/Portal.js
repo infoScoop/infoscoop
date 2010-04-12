@@ -46,6 +46,9 @@ IS_Portal.start = function() {
 	IS_Portal.theme.setTheme(IS_Portal.theme.currentTheme);
 	
 	IS_Portal.startIndicator();
+
+	IS_Portal.SearchEngines = new IS_SearchEngines();
+
 	
 	var fontSize = getActiveStyle( document.body, "font-size");
 	IS_Portal.defaultFontSize = (fontSize.charAt(fontSize.length-1)=="%" ? fontSize : Math.round(parseInt(fontSize)/16*100) + "%" );

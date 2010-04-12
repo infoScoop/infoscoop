@@ -21,8 +21,6 @@ if( isPreview == null )
     <meta http-equiv="Cache-Control" content="no-cache">
     <meta http-equiv="Expires" content="Thu, 01 Dec 1994 16:00:00 GMT">
 	<title></title>
-    <script type="text/javascript" src="session.js.jsp<%if(isPreview.booleanValue()) { %>?isPreview=<%=isPreview%><%}%>"></script>
-
 	<!--start styles css-->
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/styles.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/siteaggregationmenu.css">
@@ -47,13 +45,11 @@ if( isPreview == null )
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/ticker.css">
 	<!--end styles css-->
 
-    <link id="customCss" rel="stylesheet" type="text/css">
 	<!-- prototype-window -->
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/prototype-window-1.3/themes/default.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/prototype-window-1.3/themes/alphacube.css">
     <link rel="stylesheet" type="text/css" href="portallayout?type=css">
 
-	<!-- script src="js/lib/dojo-2006-03-13/dojo.js"></script-->
     <script src="js/resources/resourceBundle.jsp"></script>
 
     <script src="js/gadget/features/core:rpc:pubsub:infoscoop.js?c=1"></script>
@@ -154,7 +150,6 @@ if( isPreview == null )
     <script src="<%=staticContentURL%>/js/widgets/Message/Message.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/Message/MaximizeMessage.js"></script>
     <!--end script-->
-    <script src="portallayout?type=javascript"></script>
    	<script type="text/javascript">
 		var rsaPK = new RSAKey();
 		rsaPK.setPublic("<%= RSAKeyManager.getInstance().getModulus() %>", "<%= RSAKeyManager.getInstance().getPublicExponent() %>");
@@ -272,4 +267,12 @@ if( isPreview == null )
 		</table>
 		</div>
 	</body>
+	<script>
+		var scriptElm = document.createElement('script');
+		scriptElm.src = 'session.js.jsp<%if(isPreview.booleanValue()) { %>?isPreview=<%=isPreview%><%}%>';
+		document.getElementsByTagName('head')[0].appendChild(scriptElm);
+		var scriptElm = document.createElement('script');
+		scriptElm.src = 'portallayout?type=javascript';
+		document.getElementsByTagName('head')[0].appendChild(scriptElm);
+	</script>
 </html>

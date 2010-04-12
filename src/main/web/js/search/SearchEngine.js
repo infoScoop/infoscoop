@@ -679,8 +679,6 @@ IS_SearchEngines.prototype.classDef = function(){
 	}
 }
 
-IS_Portal.SearchEngines = new IS_SearchEngines();
-
 IS_SearchEngines.switchTab = function( switchTab ) {
 	if( Element.hasClassName( switchTab,"selected")) return false;
 	var tempEngines = IS_Portal.SearchEngines.tempEngines;
