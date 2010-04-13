@@ -575,6 +575,10 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		}
 		
 		Event.observe(window, "resize",  IS_SiteAggregationMenu.resetMenu, false);
+		IS_EventDispatcher.addListener("loadMenuComplete","topmenu",function() {
+			IS_Portal.adjustPanelHeight();
+			IS_Portal.adjustIframeHeight();
+		});
 
 		//TODO: loadMenu(opt) in common should be called. by endoh 20090526
 		var url = hostPrefix + "/mnusrv/topmenu";//is_getProxyUrl(siteAggregationMenuURL, "MakeMenu");
