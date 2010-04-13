@@ -1580,9 +1580,10 @@ IS_Portal.refreshTabNumber = function(){
 	}
 }
 
-IS_Portal.canAddWidget = function(tabId){
+IS_Portal.canAddWidget = function(tabId, alertOff){
 	if(IS_Portal.tabs[tabId || IS_Portal.currentTabId].disabledDynamicPanel){
-		alert(IS_R.ms_cannotAddGadgetToThisTab);
+		if(!alertOff)
+			alert(IS_R.ms_cannotAddGadgetToThisTab);
 		return false;
 	}
 	return true;
