@@ -88,13 +88,15 @@ IS_Portal.start = function() {
 	IS_Portal.sidePanel = new IS_SidePanel();
 	IS_Portal.refresh = new IS_AutoReload();
 	
-	if(fixedPortalHeader)
+	if(fixedPortalHeader) {
 		Event.observe(window, 'resize', IS_Portal.adjustPanelHeight, false);
+		IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustPanelHeight);
+		IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustIframeHeight);
+		IS_EventDispatcher.addListener("changeTab","",IS_Portal.adjustPanelHeight);
+	}
 	Event.observe(window, 'resize', IS_Portal.adjustSiteMenuHeight, false);
 	Event.observe(window, 'resize', IS_Portal.adjustIframeHeight, false);
 	Event.observe(window, 'resize', IS_Portal.adjustGadgetHeight , false);
-	IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustPanelHeight);
-	IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustIframeHeight);
 
 
 	var messageBarDiv = $('message-bar-controles');
@@ -704,6 +706,7 @@ IS_Portal.getPropertys = function(properties, feed) {
 }
 
 IS_Portal.adjustPanelHeight = function(e){
+	if(!fixedPortalHeader) return;
 	var panels = $("panels");
 	if(!panels.visible) return;
 	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - $("tab-container").getHeight() - 5;

@@ -82,7 +82,6 @@ function findPosX(obj) {
         obj = (obj.offsetParent)? obj.offsetParent : null;
     }
     return pos;
-
 }
 
 function findPosY(obj) {
@@ -92,6 +91,17 @@ function findPosY(obj) {
         obj = (obj.offsetParent)? obj.offsetParent : null;
     }
     return pos;
+}
+
+function findScrollOffset(element){
+    if(!element) return [0,0];
+    var valueT = 0, valueL = 0;
+    do {
+      valueT += element.scrollTop || 0;
+      valueL += element.scrollLeft || 0;
+      element = element.parentNode;
+    } while (element && element != document.body);
+    return [valueL, valueT];
 }
 
 function getWindowSize(flag) {
@@ -603,11 +613,13 @@ function MenuPullDown(element, widgetId, eventKey){
 		iframe.border = "0";
 		iframe.frameBorder = "0";
 		iframe.src = "./blank.html";
+		iframe.style.display = "none";
 		document.body.appendChild(iframe);
 		
 		var closer = document.createElement("div");
 		closer.id = (this.eventKey + "_closer");
 		closer.className = "widgetMenuCloser";
+		closer.style.display = "none";
 		document.body.appendChild( closer );
 		
 		var handleHideMenu = this.hide.bind( this );
@@ -622,32 +634,47 @@ function MenuPullDown(element, widgetId, eventKey){
 			return setTimeout( this.show.bind( this,element ),10 );
 		}
 		
+		var winX = Math.max(document.body.scrollWidth, document.body.clientWidth);
+		var winY = Math.max(document.body.scrollHeight, document.body.clientHeight);
+		
 		var closer = $(this.eventKey + "_closer");
 		
-		closer.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth);
-		closer.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight);
+		closer.style.width = winX;
+		closer.style.height = winY;
 		closer.style.display = "";
 		
 		var overlay = $(this.eventKey + "_overlay");
 		if (!isInit && this.elm_menu.style.display != "none") {
 			this.elm_menu.style.display = overlay.style.display = "none";
 		} else {
-			this.elm_menu.style.display = overlay.style.display = "block";
+			this.elm_menu.style.top = this.elm_menu.style.left = 0;
+			this.elm_menu.style.visibility = "hidden";
+			this.elm_menu.style.display = "block";
 			//calculate far left on menu
 			Position.prepare();
 			var showToolsDiv = element;
 			var xy = Position.cumulativeOffset(showToolsDiv);
-			var offset= xy[0];
-			var winX = $(document.body).offsetWidth -( Browser.isIE ? 22 : 0);
-			if( (offset + this.elm_menu.offsetWidth ) > winX ){//if the width of the whole menu is bigger than the distance between the left end of top menu and the right end of window
-				offset = (winX  - this.elm_menu.offsetWidth) - 10;
+			var scrollOffset = findScrollOffset(showToolsDiv);
+			xy[0] -= scrollOffset[0];
+			xy[1] -= scrollOffset[1];
+			
+			var offsetX= xy[0];
+			if( (offsetX + this.elm_menu.offsetWidth ) > winX ){//if the width of the whole menu is bigger than the distance between the left end of top menu and the right end of window
+				offsetX = (winX  - this.elm_menu.offsetWidth) - 10;
+			}
+			var offsetY = xy[1] + showToolsDiv.offsetHeight;
+			if((offsetY + this.elm_menu.offsetHeight) > winY){
+				//offsetY = xy[1] - this.elm_menu.offsetHeight;
+				offsetY = winY - this.elm_menu.offsetHeight;
 			}
 			
-			this.elm_menu.style.left = overlay.style.left = offset;
-			this.elm_menu.style.top = overlay.style.top = (xy[1] + showToolsDiv.offsetHeight);
+			this.elm_menu.style.left = overlay.style.left = offsetX;
+			this.elm_menu.style.top = overlay.style.top = offsetY;
+			this.elm_menu.style.visibility = "visible";
 			
 			overlay.style.width = this.elm_menu.offsetWidth+10;
 			overlay.style.height = this.elm_menu.offsetHeight;
+			overlay.style.display = "block"
 			
 			Position.prepare();
 			var tail = Position.cumulativeOffset( showToolsDiv )[1] + this.elm_menu.offsetHeight;
