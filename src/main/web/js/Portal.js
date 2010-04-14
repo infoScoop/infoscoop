@@ -710,7 +710,8 @@ IS_Portal.adjustPanelHeight = function(e){
 	var panels = $("panels");
 	if(!panels.visible) return;
 	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - $("tab-container").getHeight() - 5;
-	IS_Portal.tabs[ IS_Portal.currentTabId ].panel.style.height = adjustHeight + "px";
+	if(IS_Portal.tabs[IS_Portal.currentTabId])
+		IS_Portal.tabs[IS_Portal.currentTabId].panel.style.height = adjustHeight + "px";
 }
 
 IS_Portal.adjustSiteMenuHeight = function(e, siteManuObj) {
