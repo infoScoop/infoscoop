@@ -773,7 +773,7 @@ IS_Widget.prototype.classDef = function() {
 	this.gadgetProxyUrlRegexp = new RegExp("https?://\*.+");
 	this.getGadgetProxyUrl = function(){
 		if(this.gadgetProxyUrlRegexp.test( gadgetProxyURL )){
-			return gadgetProxyURL.replace(/\*/,this.id);
+			return gadgetProxyURL.replace(/\*/, this.id.substr(2));
 		}else
 		  return gadgetProxyURL;
 	}
