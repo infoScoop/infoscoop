@@ -277,11 +277,3 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 .infoScoop .tabMenu .resetColumnWidth {
 	background: url(./imgs/changeColumn2.gif ) no-repeat center left;
 }
-.infoScoop .tabMenuOverlay,
-.infoScoop .widgetMenuOverlay {
-	position:absolute;
-	z-index:40;
-	-moz-opacity:0;
-	opacity:0;
-	filter:alpha(opacity=0);
-}

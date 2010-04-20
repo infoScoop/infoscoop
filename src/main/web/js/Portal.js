@@ -2079,13 +2079,13 @@ IS_Portal.unDisplayMsgBar = function(id){
 
 IS_Portal.behindIframe = {
 	init:function(){
-		if(!Browser.isIE)return;
+		//if(!Browser.isIE)return;
 		this.behindIframe = $(document.createElement('iframe'));
 		this.behindIframe.border = 0;
 		this.behindIframe.style.margin = 0;
 		this.behindIframe.style.padding = 0;
 		this.behindIframe.id = "is_portal_behind_iframe";
-		this.behindIframe.frameborder = 0;
+		this.behindIframe.frameBorder = 0;
 		this.behindIframe.style.position = "absolute";
 		this.behindIframe.src = "./blank.html";
 		document.getElementsByTagName('body')[0].appendChild(this.behindIframe);
@@ -2093,7 +2093,7 @@ IS_Portal.behindIframe = {
 	},
 	
 	show:function(element){
-		if(!Browser.isIE)return;
+		//if(!Browser.isIE)return;
 		Position.prepare();
 		var pos = Position.cumulativeOffset(element);
 		this.behindIframe.style.top = pos[1] + "px";
@@ -2108,7 +2108,7 @@ IS_Portal.behindIframe = {
 	},
 	
 	hide:function(){
-		if(!Browser.isIE)return;
+		//if(!Browser.isIE)return;
 		this.behindIframe.style.left = 0 + "px";
 		this.behindIframe.style.top = 0 + "px";
 		this.behindIframe.style.width = 0;

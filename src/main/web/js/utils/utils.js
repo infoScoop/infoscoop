@@ -607,15 +607,6 @@ function MenuPullDown(element, widgetId, eventKey){
 			return borderDiv;
 		}
 		
-		var iframe = document.createElement("iframe");
-		iframe.id = (this.eventKey + "_overlay");
-		iframe.className = "widgetMenuOverlay";
-		iframe.border = "0";
-		iframe.frameBorder = "0";
-		iframe.src = "./blank.html";
-		iframe.style.display = "none";
-		document.body.appendChild(iframe);
-		
 		var closer = document.createElement("div");
 		closer.id = (this.eventKey + "_closer");
 		closer.className = "widgetMenuCloser";
@@ -643,9 +634,9 @@ function MenuPullDown(element, widgetId, eventKey){
 		closer.style.height = winY;
 		closer.style.display = "";
 		
-		var overlay = $(this.eventKey + "_overlay");
 		if (!isInit && this.elm_menu.style.display != "none") {
-			this.elm_menu.style.display = overlay.style.display = "none";
+			this.elm_menu.style.display = "none";
+			IS_Portal.behindIframe.hide();
 		} else {
 			this.elm_menu.style.top = this.elm_menu.style.left = 0;
 			this.elm_menu.style.visibility = "hidden";
@@ -668,17 +659,16 @@ function MenuPullDown(element, widgetId, eventKey){
 				offsetY = winY - this.elm_menu.offsetHeight;
 			}
 			
-			this.elm_menu.style.left = overlay.style.left = offsetX;
-			this.elm_menu.style.top = overlay.style.top = offsetY;
+			this.elm_menu.style.left = offsetX;
+			this.elm_menu.style.top = offsetY;
 			this.elm_menu.style.visibility = "visible";
 			
-			overlay.style.width = this.elm_menu.offsetWidth+10;
-			overlay.style.height = this.elm_menu.offsetHeight;
-			overlay.style.display = "block"
-			
+			IS_Portal.behindIframe.show(this.elm_menu);
+						
 			Position.prepare();
 			var tail = Position.cumulativeOffset( showToolsDiv )[1] + this.elm_menu.offsetHeight;
 			var limit = getWindowHeight() +document.body.scrollTop;
+			
 			
 			if( !( tail < limit ))
 				document.body.scrollTop += tail -limit +16;
@@ -689,7 +679,6 @@ function MenuPullDown(element, widgetId, eventKey){
 	this.hide = function(e) {
 		var menu = this.elm_menu;
 		var selectMenu = this.targetElement;
-		var overlay = $(this.eventKey + "_overlay");
 		var changeColumnSelect = $(this.id +"_menu_change_column_select");
 		var closer = $(this.eventKey + "_closer");
 		
@@ -701,8 +690,9 @@ function MenuPullDown(element, widgetId, eventKey){
 		}
 		
 		if( menu ) menu.style.display = "none";
-		if( overlay ) overlay.style.display = "none";
 		if( closer ) closer.style.display = "none";
+		
+		IS_Portal.behindIframe.hide();
 		
 		// Forcus remains when using IE
 		if( Browser.isIE )

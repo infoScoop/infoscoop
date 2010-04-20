@@ -75,26 +75,6 @@ IS_Portal.buildTabs = function(){
 	Get the id number of tab that is added next.
 */
 IS_Portal.getNextTabNumber = function(){
-	/*
-	// The smallest number that has not been used become id number
-	var tabNumber = false;
-	var tabNumberList = new Array();
-	for(var i=0; i < IS_Portal.tabList.length; i++){
-		tabNumberList.push( parseInt( IS_Portal.tabList[i].id.substring(3) ) );
-	}
-	tabNumberList.sort( function(a,b){ return (a-b); } );
-	for(var i=0; i < tabNumberList.length; i++){
-		if( (i==0 && 0<tabNumberList[i]) || (i!=0 && (tabNumberList[i]+1)<tabNumberList[i+1]  ) ){
-			tabNumber = i+1;
-			break;
-		}
-	}
-	
-	if(!tabNumber){
-		tabNumber = IS_Portal.tabList.length;
-	}
-	
-	*/
 	// +1 to the largest tab number in use.
 	if( IS_Portal.tabList.length == 0 ) return 0;
 	
@@ -319,10 +299,12 @@ IS_Portal.showTabMenu = function(tabElement, e){
 		isInit = true;
 	}
 	var tabMenuOverlay = $(tabElement.id + "_overlay");
+	console.log(isInit, tabMenu.style.display)
 	if (!isInit && tabMenu.style.display != "none") {
-		tabMenu.style.display = tabMenuOverlay.style.display = "none";
+		tabMenu.style.display = "none";
+		IS_Portal.behindIframe.hide();
 	} else {
-		tabMenu.style.display = tabMenuOverlay.style.display = "";
+		tabMenu.style.display = "";
 		
 		//Calculate far left side of menu
 		var offset= findPosX(tabElement.firstChild);
@@ -332,7 +314,9 @@ IS_Portal.showTabMenu = function(tabElement, e){
 		}
 		
 		tabMenu.style.left = offset;
-		tabMenu.style.top = tabMenuOverlay.style.top = (findPosY(tabElement) + tabElement.firstChild.offsetHeight);
+		tabMenu.style.top = (findPosY(tabElement) + tabElement.firstChild.offsetHeight);
+
+		IS_Portal.behindIframe.show(tabMenu);
 	}
 	Event.stop(e);
 	
@@ -465,16 +449,6 @@ IS_Portal.showTabMenu = function(tabElement, e){
 		
 		document.body.appendChild(menuDiv);
 		
-		var iframe = document.createElement("iframe");
-		iframe.id = (tabElement.id + "_overlay");
-		iframe.className = "tabMenuOverlay";
-		iframe.border = "0";
-		iframe.frameBorder = "0";
-		iframe.style.width = menuDiv.offsetWidth;
-		iframe.style.height = menuDiv.offsetHeight;
-		iframe.src = "./blank.html";
-		document.body.appendChild(iframe);
-		
 		var handleHideTabMenu = hideTabMenu.bind( tabObj );
 		IS_Event.observe(document.body, 'click',handleHideTabMenu, true, tabObj.id);
 		IS_Event.observe(document.body, 'mousedown',handleHideTabMenu, true, tabObj.id);
@@ -486,17 +460,17 @@ IS_Portal.showTabMenu = function(tabElement, e){
 function hideTabMenu( event ) {
 	var tabMenu = $( this.id+"_menu");
 	var selectMenu = $( this.id+"_selectMenu");
-	var overlay = $(this.id + "_overlay");
 	var changeColumnSelect = $(this.id +"_menu_change_column_select");
 	
 	if( event ) {
 		var element = Event.element( event );
-		if( Element.childOf( element,tabMenu ) || Element.childOf( element,selectMenu ) ||
+		if( Element.childOf( element,tabMenu ) ||
+			element === selectMenu || //for FF
+			Element.childOf( element,selectMenu ) || //for IE
 			tabMenu.style.display == "none") return;
 	}
-	
 	if( tabMenu ) tabMenu.style.display = "none";
-	if( overlay ) overlay.style.display = "none";
+	IS_Portal.behindIframe.hide();
 	
 	// Focus is left in IE.
 	if( Browser.isIE )
