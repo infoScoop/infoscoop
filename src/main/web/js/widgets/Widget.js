@@ -668,7 +668,7 @@ IS_Widget.prototype.classDef = function() {
 	}
 	this.getGadgetUrl = function() {
 		return ( !/^g__Maximize__/.test( this.widgetType )?
-				this.widgetType.substring(2) : this.widgetType.substring( 13 ));
+				 this.widgetType.substring(2) : this.widgetType.substring( 13 ));
 	}
 	this.loadHtmlIfram = function( url, viewType ){
 		var form = $("postGadgetSrvForm");
@@ -684,8 +684,7 @@ IS_Widget.prototype.classDef = function() {
 			form.removeChild( form.firstChild );
 		
 		var gadgetParams = $H( this.getGadgetParameters( url,viewType ));
-		form.action = ( this.isUploadGadget() ? proxyServerURL : gadgetProxyURL )
-			+"?"+gadgetParams.toQueryString();
+		form.action = this.gadgetProxyUrl +"?"+gadgetParams.toQueryString();
 		
 		var url = this.getGadgetUrl();
 		var params = {
@@ -771,6 +770,13 @@ IS_Widget.prototype.classDef = function() {
 		return s;
 	}
 	
+	this.gadgetProxyUrlRegexp = new RegExp("https?://\*.+");
+	this.getGadgetProxyUrl = function(){
+		if(this.gadgetProxyUrlRegexp.test( gadgetProxyURL )){
+			return gadgetProxyURL.replace(/\*/,this.id);
+		}else
+		  return gadgetProxyURL;
+	}
 	this.initIframe = function( isOuter ) {
 		self.elm_widgetContent.innerHTML = "";
 		
@@ -817,8 +823,9 @@ IS_Widget.prototype.classDef = function() {
 		self.elm_widgetContent.appendChild(self.iframe);
 		
 		if( this.isGadget() ) {
+			this.gadgetProxyUrl = this.isUploadGadget() ? proxyServerURL : this.getGadgetProxyUrl();
 			if( !this.isUploadGadget()) {
-				var relayUrl = gadgetProxyURL.substring( 0,gadgetProxyURL.lastIndexOf("/") +1 ) +"rpc_relay.html";
+				var relayUrl = this.gadgetProxyUrl.substring( 0,this.gadgetProxyUrl.lastIndexOf("/") +1 ) +"rpc_relay.html";
 				gadgets.rpc.setRelayUrl( self.iframe.id,relayUrl );
 			} else {
 				gadgets.rpc.setRelayUrl( self.iframe.id,hostPrefix+"/rpc_relay.html");
