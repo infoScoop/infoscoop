@@ -1,13 +1,9 @@
 package org.infoscoop.service;
 
-import java.io.CharArrayWriter;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
-
-import javax.xml.transform.TransformerException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,17 +12,11 @@ import org.infoscoop.dao.SearchEngineDAO;
 import org.infoscoop.dao.model.Searchengine;
 import org.infoscoop.util.RoleUtil;
 import org.infoscoop.util.XmlUtil;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 public class SearchEngineService {
 
@@ -342,11 +332,12 @@ public class SearchEngineService {
 			// countRule
 			Element countRule = (Element) XPathAPI.selectSingleNode(searchEl,
 					"countRule");
-			JSONObject countJson = new JSONObject();
-			countJson.put("method", countRule.getAttribute("method"));
-			countJson.put("value", countRule.getAttribute("value"));
-			searchObj.put("countRule", countJson);
-
+			if(countRule != null){
+				JSONObject countJson = new JSONObject();
+				countJson.put("method", countRule.getAttribute("method"));
+				countJson.put("value", countRule.getAttribute("value"));
+				searchObj.put("countRule", countJson);
+			}
 			// auths
 			Element authsEl = (Element) XPathAPI.selectSingleNode(searchEl,
 					"auths");
@@ -367,31 +358,31 @@ public class SearchEngineService {
 				.getElementsByTagName("searchEngine");
 		for (int i = 0; i < searchEngines.getLength(); i++) {
 			Element searchEl = (Element) searchEngines.item(i);
-
-			Element authsEl = (Element) XPathAPI.selectSingleNode(searchEl,
-					"auths");
-			if (!isPermitted(authsEl)) {
-				AdminServiceUtil.removeSelf(searchEl);
-			} else {
-				AdminServiceUtil.removeSelf(authsEl);
+			
+			String retrieveUrl = searchEl.getAttribute("retrieveUrl");
+			
+			Element authsEl = (Element) XPathAPI.selectSingleNode(searchEl,	"auths");
+			if(authsEl != null){
+				NodeList roles = authsEl.getElementsByTagName("auth");
+				for (int j = 0; j < roles.getLength(); j++) {
+					Element auth = (Element) roles.item(j);
+					String type = auth.getAttribute("type");
+					String regx = auth.getAttribute("regx");
+					List<String> matchStrList = RoleUtil.getPermittedMatchList(type, regx);
+					if(matchStrList != null){
+						AdminServiceUtil.removeSelf(authsEl);
+						for(int k = 0; k < matchStrList.size(); k++){
+							retrieveUrl = retrieveUrl.replaceAll("%\\{" + type + "(\\[" + k + "\\])?\\}", matchStrList.get(k));
+						}
+						if(!matchStrList.isEmpty()){
+							searchEl.setAttribute("retrieveUrl", retrieveUrl);
+						}
+					}else{
+						AdminServiceUtil.removeSelf(searchEl);
+					}
+				}
 			}
 		}
 	}
 	
-	private boolean isPermitted(Element authsEl) throws ClassNotFoundException {
-		if (authsEl == null)
-			return true;
-		boolean accessible = true;
-		accessible = false;
-		NodeList roles = authsEl.getElementsByTagName("auth");
-		for (int j = 0; j < roles.getLength(); j++) {
-			Element auth = (Element) roles.item(j);
-			String type = auth.getAttribute("type");
-			String regx = auth.getAttribute("regx");
-			if (RoleUtil.isPermitted(type, regx)) {
-				accessible = true;
-			}
-		}
-		return accessible;
-	}
 }
