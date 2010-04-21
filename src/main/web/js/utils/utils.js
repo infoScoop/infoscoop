@@ -93,17 +93,6 @@ function findPosY(obj) {
     return pos;
 }
 
-function findScrollOffset(element){
-    if(!element) return [0,0];
-    var valueT = 0, valueL = 0;
-    do {
-      valueT += element.scrollTop || 0;
-      valueL += element.scrollLeft || 0;
-      element = element.parentNode;
-    } while (element && element != document.body);
-    return [valueL, valueT];
-}
-
 function getWindowSize(flag) {
   var offset = 0;
   if( typeof( window.innerWidth ) == 'number' ) {
@@ -645,7 +634,7 @@ function MenuPullDown(element, widgetId, eventKey){
 			Position.prepare();
 			var showToolsDiv = element;
 			var xy = Position.cumulativeOffset(showToolsDiv);
-			var scrollOffset = findScrollOffset(showToolsDiv);
+			var scrollOffset = Element.cumulativeScrollOffset(showToolsDiv);
 			xy[0] -= scrollOffset[0];
 			xy[1] -= scrollOffset[1];
 			
