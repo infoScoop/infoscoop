@@ -18,7 +18,7 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 		IS_EventDispatcher.addListener("moveWidget", widget.id, this.setHeight.bind(this), widget, false);
 		IS_Event.observe( window,"resize", this.setHeight.bind(this), false, widget.closeId);
 		
-		isStatic = widget.panelType == "StaticPanel";
+		isStatic = widget.panelType == "StaticPanel" && widget.isStaticHeight;
 	}
 	
 	this.refresh = function() {

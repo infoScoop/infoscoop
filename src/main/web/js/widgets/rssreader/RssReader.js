@@ -10,7 +10,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 	this.initialize = function(widgetObj){
 		self = this;
 		widget = widgetObj;
-		isStatic = widget.panelType == "StaticPanel";
+		isStatic = widget.panelType == "StaticPanel" && widget.isStaticHeight;
 		isDroppable = (isStatic || !(widget.id.indexOf("previewWidget_") < 0));
 		
 		// Flag for EditGridReader
@@ -1472,7 +1472,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 	this.initialize = function( widget,rssContent,opt ){
 		self = this;
 		this.widget = widget;
-		this.isStatic = widget.panelType == "StaticPanel";
+		this.isStatic = widget.panelType == "StaticPanel" && widget.isStaticHeight;
 		this.isCanvas = opt.isCanvas;
 		this.rssContent = rssContent;
 		
