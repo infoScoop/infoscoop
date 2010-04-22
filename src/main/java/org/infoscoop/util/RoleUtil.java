@@ -74,7 +74,6 @@ public class RoleUtil {
 	
 	private static List<String> matcher2List(Matcher matcher){
 		int groupCount = matcher.groupCount();
-		System.out.println(groupCount);
 		if( groupCount == 0 && matcher.matches()){
 			return  new ArrayList<String>();
 		}else if(matcher.find()){
