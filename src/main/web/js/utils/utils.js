@@ -634,7 +634,7 @@ function MenuPullDown(element, widgetId, eventKey){
 			Position.prepare();
 			var showToolsDiv = element;
 			var xy = Position.cumulativeOffset(showToolsDiv);
-			var scrollOffset = Element.cumulativeScrollOffset(showToolsDiv);
+			var scrollOffset = Position.realOffset(showToolsDiv);
 			xy[0] -= scrollOffset[0];
 			xy[1] -= scrollOffset[1];
 			
