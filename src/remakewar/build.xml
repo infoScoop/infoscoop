@@ -207,7 +207,11 @@
 		<filter token="DIALECT" value="${msd.dataSource.dialect}"/>
 		<copy tofile="temp.xml" file="${accountAccessConfig}"
 			filtering="true" encoding="utf-8"/>
-		<xslt style="remove-root.xslt" in="temp.xml" out="temp.txt"/>
+		<xslt style="remove-root.xslt" in="temp.xml" out="temp.txt">
+		  <xmlcatalog>
+            <dtd publicId="-//SPRING//DTD BEAN//EN" location="spring-beans.dtd"/>
+		  </xmlcatalog>
+        </xslt>
 		<loadfile property="accountAccessService" srcfile="temp.txt" encoding="UTF-8">
 			<filterchain>
 				<!-- remove BOM code -->
