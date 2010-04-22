@@ -1609,7 +1609,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 IS_SiteAggregationMenu.getMultiDropDraggable = function(dragElement, menuItem, handle){
 	return new IS_Draggable(dragElement,{
 			handle:handle,
-			scroll:window,
 			revert:false,
 			ghosting: true,
 			dragMode: "menu",
@@ -2095,7 +2094,6 @@ IS_SiteAggregationMenu.getDraggable = function(menuItem, menuIconDiv, menuItemDi
 	menuItemDiv.className = "menuItem";
 	
 	return new IS_Draggable(menuItemDiv,{
-		scroll:window,
 		viewport: viewport,
 		revert:false,
 		ghosting: true,

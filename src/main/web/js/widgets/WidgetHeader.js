@@ -571,7 +571,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		
 	    if (widget.draggable) {
 			this.draggble = new IS_Draggable(widget.elm_widget, {
-				scroll: window,
 				handle: headerDiv,
 				revert: false,
 				ghosting: true,

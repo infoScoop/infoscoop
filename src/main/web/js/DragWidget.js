@@ -1,11 +1,3 @@
-// script.aculo.us dragdrop.js v1.7.0, Fri Jan 19 19:16:36 CET 2007
-
-// Copyright (c) 2005, 2006 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
-//           (c) 2005, 2006 Sammi Williams (http://www.oriontransfer.co.nz, sammi@oriontransfer.co.nz)
-// 
-// script.aculo.us is freely distributable under the terms of an MIT-style license.
-// For details, see the script.aculo.us web site: http://script.aculo.us/
-
 if(typeof Effect == 'undefined')
   throw("dragdrop.js requires including script.aculo.us' effects.js library");
 
@@ -750,7 +742,8 @@ IS_Draggable.prototype = {
 
       zindex: 1000,
       revert: false,
-      scroll: false,
+      scroll: fixedPortalHeader ? false : window,
+      scrollPanel: fixedPortalHeader,//if true, set scroll property to the current panel.
       scrollSensitivity: 20,
       scrollSpeed: 15,
       snap: false,  // false, or xy or [x,y] or function(x,y){ return [x,y] }
@@ -852,6 +845,10 @@ IS_Draggable.prototype = {
 	IS_Portal.isItemDragging = true;
 	
     IS_Portal.showDragOverlay(this.options.handle ? Element.getStyle(this.options.handle, "cursor") : null);
+    
+    if(this.options.scrollPanel){
+      this.options.scroll = IS_Portal.tabs[IS_Portal.currentTabId].panel;
+    }
 	
     if(this.options.zindex) {
       this.originalZ = parseInt(Element.getStyle(this.element,'z-index') || 0);
@@ -1134,7 +1131,7 @@ IS_Draggable.prototype = {
     if(!(speed[0] || speed[1])) return;
     this.scrollSpeed = [speed[0]*this.options.scrollSpeed,speed[1]*this.options.scrollSpeed];
     this.lastScrolled = new Date();
-    this.scrollInterval = setInterval(this.scroll.bind(this), 10);
+    this.scrollInterval = setInterval(this.scroll.bind(this), 50);
   },
   
   scroll: function() {
@@ -1170,6 +1167,10 @@ IS_Draggable.prototype = {
         IS_Draggables._lastScrollPointer[1] = 0;
       this.draw(IS_Draggables._lastScrollPointer);
     }
+    
+    //if fixedPortalHeader, recompute the position of droppable elements. Because scrollTop of the panel changes when scrolling.
+    if(this.options.scrollPanel)
+      IS_Droppables.findDroppablesPos(this.element);
     
     if(this.options.change) this.options.change(this);
   },
