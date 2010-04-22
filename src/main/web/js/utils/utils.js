@@ -692,11 +692,10 @@ function MenuPullDown(element, widgetId, eventKey){
 	
 	this.destroy = function(){
 		var menu = this.elm_menu;
-		var overlay = $(this.eventKey + "_overlay");
 		var closer = $(this.eventKey + "_closer");
 		if(menu) Element.remove(menu);
-		if(overlay) Element.remove(overlay);
 		if(closer) Element.remove(closer);
+		IS_Portal.behindIframe.hide();
 		
 		if( Browser.isIE )
 			document.body.focus();
