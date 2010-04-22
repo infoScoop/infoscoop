@@ -355,6 +355,7 @@ IS_Portal.start = function() {
 
 		var min = 10000000;
 		var nearGhost = null;
+		var scrollOffset = IS_Portal.tabs[IS_Portal.currentTabId].panel.scrollTop;//IS_Portal.columnsObjs must be in the panel.
 		for ( var i=1; i <= IS_Portal.tabs[IS_Portal.currentTabId].numCol; i++ ) {
 			var col = IS_Portal.columnsObjs[IS_Portal.currentTabId]["col_dp_" + i];
 			for (var j=0; j<col.childNodes.length; j++ ) {
@@ -365,10 +366,10 @@ IS_Portal.start = function() {
 				
 				if(dragMode == "menu"){
 					var left = findPosX(div);
-					var top = findPosY(div);
+					var top = findPosY(div) - scrollOffset;
 				}else{
 					var left = div.posLeft;
-					var top = div.posTop;
+					var top = div.posTop - scrollOffset;
 				}
 				
 				var tmp = Math.sqrt(Math.pow(x-left,2)+ Math.pow(y-top,2));
