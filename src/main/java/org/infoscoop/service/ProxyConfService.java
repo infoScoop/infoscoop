@@ -543,6 +543,10 @@ public class ProxyConfService {
 				if(header != null){
 					stringbuffer.append(",header:").append(JSONObject.quote(header));
 				}
+				String intranet = attributes.getValue("intranet");
+				if(intranet != null){
+					stringbuffer.append(",intranet:").append(JSONObject.quote(intranet));
+				}
 				String cheader = attributes.getValue("cookie");
 				if(cheader != null){
 					stringbuffer.append(",cookie:").append(JSONObject.quote(cheader));

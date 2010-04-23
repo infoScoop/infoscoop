@@ -274,6 +274,8 @@
 "adminjs","alb_paramNameOfPasswd","ALL","ALL","Parameter/Header name of Password:"
 "adminjs","alb_headerTransmission","ALL","ja","ヘッダ送信"
 "adminjs","alb_headerTransmission","ALL","ALL","Header transmission"
+"adminjs","alb_intranet","ALL","ja","社内"
+"adminjs","alb_intranet","ALL","ALL","Intranet"
 "adminjs","alb_holidaySettings","ALL","ja","休日設定"
 "adminjs","alb_holidaySettings","ALL","ALL","Holiday settings"
 "adminjs","alb_home","ALL","ja","ホーム"

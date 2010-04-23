@@ -22,7 +22,7 @@ public class Proxy {
 	private boolean allowAllHeader = false;
 	private Set<String> allowedHeaders;
 	private Set<String> sendingCookies;
-	private boolean isDefault;
+	private boolean isIntranet = false;
 
 	public String getHost() {
 		return host;
@@ -89,12 +89,12 @@ public class Proxy {
 		return this.proxyCredential;
 	}
 
-	public void setDefault(boolean isDefault) {
-		this.isDefault = isDefault;
+	public void setIntranet(boolean intranet) {
+		this.isIntranet = intranet;
 	}
 
-	public boolean isDefault(){
-		return this.isDefault;
+	public boolean isIntranet(){
+		return this.isIntranet;
 	}
 
 	public void setSendingCookies( Set<String> sendingCookies ) {

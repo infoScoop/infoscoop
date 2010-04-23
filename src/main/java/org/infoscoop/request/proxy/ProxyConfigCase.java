@@ -31,6 +31,8 @@ public class ProxyConfigCase {
 	private String replacement;
 
 	private Set<String> allowedHeaders;
+	
+	private boolean isIntranet = false;
 
 	public String getPattern() {
 		return pattern;
@@ -71,6 +73,14 @@ public class ProxyConfigCase {
 
 	public void setCacheLifeTime(int cacheLifeTime) {
 		this.cacheLifeTime = cacheLifeTime;
+	}
+
+	public boolean getIntranet() {
+		return isIntranet;
+	}
+
+	public void setIntranet(boolean isIntranet) {
+		this.isIntranet = isIntranet;
 	}
 
 	public String getReplacement() {

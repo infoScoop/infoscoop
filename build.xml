@@ -173,6 +173,7 @@
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="rng.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="rsa.js"/>
 			<filelist dir="${src.main.web}/js/lib" files="extras-array.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="html-sanitizer-minified.js"/>
 			<!--filelist dir="${src.main.web}/js/utils" files="utils.js"/-->
 			<filelist dir="${src.main.web}/js/utils/ajaxpool" files="ajax.js"/>
 			<!--filelist dir="${src.main.web}/js" files="properties.js"/-->

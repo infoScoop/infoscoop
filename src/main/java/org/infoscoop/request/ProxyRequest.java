@@ -140,6 +140,8 @@ public class ProxyRequest{
     	ignoreHeaderNames.add("authcredentialid");
     	ignoreHeaderNames.add(Authenticator.UID_PARAM_NAME.toLowerCase());
     	ignoreHeaderNames.add(Authenticator.PASSWD_PARAM_NAME.toLowerCase());
+    	
+    	this.putResponseHeader("X-IS-INTRANET", Boolean.toString(this.proxy.isIntranet()));
 	}
     
 	public void setTimeout(int timeout){

@@ -166,7 +166,7 @@ public class AuthCredentialService {
 
 		ProxyConfig proxyConfig = ProxyConfig.getInstance();
 		Proxy proxy =  proxyConfig.resolve( authUrl );
-		if(proxy.isDefault())
+		if(!proxy.isIntranet())
 			return null;
 
 		for(Iterator it = credentialList.iterator(); it.hasNext();){

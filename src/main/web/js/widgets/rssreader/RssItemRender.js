@@ -557,7 +557,8 @@ IS_Widget.RssReader.RssItemRender.prototype.postRender = function( ctx,rssItem,i
 }
 IS_Widget.RssReader.RssItemRender.prototype.buildDesc = function( widget,rssDesc,rssItem ) {
 	var html = IS_Widget.RssReader.RssItemRender.getCategoryHtml(rssItem.category);
-	html += IS_Widget.RssReader.RssItemRender.normalizeDesc(rssItem.description);
+	html += IS_Widget.RssReader.RssItemRender.normalizeDesc(rssItem.description, widget.content.rss.isIntranet);
+	console.log(html);
 	rssDesc.innerHTML = html;
 	var descLinks = rssDesc.getElementsByTagName("a");
 	if(descLinks) {
@@ -1329,7 +1330,7 @@ IS_Widget.RssReader.RssItemRender.getCategoryHtml = function(category) {
 	html += '</div>';
 	return html;
 }
-IS_Widget.RssReader.RssItemRender.normalizeDesc = function( desc ) {
+IS_Widget.RssReader.RssItemRender.normalizeDesc = function( desc, isIntranet ) {
 	if( /<body>/i.test( desc )) {
 		desc = desc.replace(/^[\s\S]*<body>/mi,"");
 	} else if( /<\/head>/i.test( desc )) {
@@ -1343,6 +1344,8 @@ IS_Widget.RssReader.RssItemRender.normalizeDesc = function( desc ) {
 	} else if( /<\/html>/i.test( desc )) {
 		desc = desc.replace(/<\/html>[\s\S]*/mi,"");
 	}
-	
-	return desc;
+	if(isIntranet)
+		return desc;
+	else
+		return html_sanitize(desc, function(url){return url;},function(id){return id;});
 }

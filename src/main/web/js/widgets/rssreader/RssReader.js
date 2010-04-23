@@ -314,8 +314,8 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		}
 		//var start = new Date();
 		//Fix bug: no error occurs in spite of invalid rss format with userProxy=false, and it shows message of "no new information" 
-		
 		var rss = IS_Widget.parseRss( response );
+		rss.isIntranet = /true/.test(response.getResponseHeader('X-IS-INTRANET'));
 		
 		var allError = false;
 		if (rss) {

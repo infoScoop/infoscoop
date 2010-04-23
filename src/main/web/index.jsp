@@ -97,6 +97,7 @@ if( isPreview == null )
 	<script src="<%=staticContentURL%>/js/lib/rsa/rng.js"></script>
 	<script src="<%=staticContentURL%>/js/lib/rsa/rsa.js"></script>
     <script src="<%=staticContentURL%>/js/lib/extras-array.js"></script>
+    <script src="<%=staticContentURL%>/js/lib/html-sanitizer-minified.js"></script>
     <script src="<%=staticContentURL%>/js/utils/utils.js"></script>
     <script src="<%=staticContentURL%>/js/utils/domhelper.js"></script>
     <script src="<%=staticContentURL%>/js/utils/ajaxpool/ajax.js"></script>
