@@ -96,6 +96,7 @@
 }
 .mySiteMap .tabWidgetListItem .widgetName {
 	cursor: pointer;
+	height: 16px;
 }
 
 .mySiteMap .menuItemIcon {
