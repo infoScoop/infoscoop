@@ -299,7 +299,6 @@ IS_Portal.showTabMenu = function(tabElement, e){
 		isInit = true;
 	}
 	var tabMenuOverlay = $(tabElement.id + "_overlay");
-	console.log(isInit, tabMenu.style.display)
 	if (!isInit && tabMenu.style.display != "none") {
 		tabMenu.style.display = "none";
 		IS_Portal.behindIframe.hide();
@@ -344,6 +343,7 @@ IS_Portal.showTabMenu = function(tabElement, e){
 				className:"close",
 				label: IS_R.lb_delete,
 				handler:tabObj.close.bind( tabObj )
+				IS_Portal.behindIframe.hide();
 			});
 			closeDiv.id = tabObj.id +"_menu_close";
 			menuDiv.appendChild( closeDiv );
