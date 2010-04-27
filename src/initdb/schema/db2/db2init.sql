@@ -19,6 +19,7 @@ create table is_tabs (
   type varchar(128),
   data clob,
   widgetLastModified varchar(32),
+  disabledDynamicPanel int,
   primary key (uid, id)
 ) compress yes;
 
@@ -40,6 +41,7 @@ create table is_widgets (
   type varchar(1024),
   isStatic int,
   ignoreHeader int,
+  noBorder int,
   createDate bigint default 0 not null,
   deleteDate bigint default 0 not null,
   constraint is_widgets_unique unique (uid, tabid, widgetId, deleteDate)

@@ -19,6 +19,7 @@ create table IS_TABS (
   type varchar(128),
   data text,
   widgetLastModified varchar(32),
+  disabledDynamicPanel int,
   primary key (`UID`, id)
 ) ENGINE=InnoDB;
 
@@ -41,6 +42,7 @@ create table IS_WIDGETS (
   type varchar(1024),
   isStatic int,
   ignoreHeader int,
+  noBorder int,
   createDate bigint not null default 0,
   deleteDate bigint not null default 0,
   constraint is_widgets_unique unique (`UID`, tabid, widgetId, deleteDate)
