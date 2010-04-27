@@ -819,7 +819,7 @@ if(!isTabView){
 	});
 }
 
-Event.observe(window, 'unload',  windowUnload );
+Event.observe(window, 'beforeunload',  windowUnload );
 
 function windowUnload() {
 	IS_Request.asynchronous = false;
