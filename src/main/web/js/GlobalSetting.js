@@ -278,7 +278,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 			radioBtn.id = 'widget_header_setting_' + widgetHeaderImages[i];
 			radioBtn.defaultChecked = currentWidgetHeaderImage == widgetHeaderImages[i];
 			radioBtn.value = widgetHeaderImages[i];
-			var sampleImgDiv = $.DIV({style:"width:100px;height:30px;cursor:pointer;margin-right:5px"});
+			var sampleImgDiv = $.DIV({style:"width:80px;height:24px;cursor:pointer;margin-right:5px"});
 			sampleImgDiv.style.background = "url(" + widgetHeaderImages[i] + ") repeat";
 			widgetHeaderSettingDiv.appendChild(
 				$.DIV(
@@ -293,7 +293,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 		}
 		fs.appendChild( widgetHeaderSettingDiv );
 
-		var subWidgetHeaderSettingDiv = $.DIV({id:'subWidgetHeaderSettingDiv',style:"clear:both;width:400px;"}, $.DIV({},IS_R.lb_selectSubWidgetHeaderImage));
+		var subWidgetHeaderSettingDiv = $.DIV({id:'subWidgetHeaderSettingDiv',style:"clear:both;"}, $.DIV({},IS_R.lb_selectSubWidgetHeaderImage));
 		var defaultSubWidgetHeaderColor = IS_Portal.theme.defaultTheme.widget.subheader['background']['color'];
 		var subWidgetHeaderColors = [defaultSubWidgetHeaderColor].concat(IS_Portal.theme.subWidgetHeaderColors);
 		var currentSubWidgetHeaderColor = currentWidgetTheme.subheader && currentWidgetTheme.subheader['background'] && currentWidgetTheme.subheader['background']['color'] ?
@@ -308,7 +308,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 					{style:"styleFloat:left;cssFloat:left;textAlign:center"},
 					$.LABEL(
 						{'htmlFor':'sub_widget_header_setting_' + subWidgetHeaderColors[i]},
-						$.DIV({style:"width:100px;height:30px;cursor:pointer;margin-right:5px;backgroundColor:" + subWidgetHeaderColors[i] + ";"})
+						$.DIV({style:"width:40px;height:20px;cursor:pointer;margin-right:5px;backgroundColor:" + subWidgetHeaderColors[i] + ";"})
 						  ),
 					radioBtn
 				  )
@@ -322,6 +322,14 @@ IS_Portal.buildGlobalSettingModal = function() {
 			$.DIV({style:"clear:both;"},
 				  IS_R.lb_noDisplayFrameBorder,
 				  $.INPUT({id:"is_preference_setting_with_border", type:"checkbox", defaultChecked:currentWithBorder})
+					)
+			);
+		
+		var currentBorderRadius = currentWidgetTheme.border && currentWidgetTheme.border.radius;
+		fs.appendChild(
+			$.DIV({style:"clear:both;display:" + (Browser.isIE ? 'none' : '') + ";"},
+				  IS_R.lb_enableRoundCorner,
+				  $.INPUT({id:"is_preference_setting_border_radius", type:"checkbox", defaultChecked:currentBorderRadius})
 					)
 			);
 		
@@ -353,7 +361,10 @@ IS_Portal.buildGlobalSettingModal = function() {
 						  var opt = {
 							header:{background:{image:widgetHeaderImageUrl}},
 							subheader:{background:{color:subWidgetHeaderColor}},
-							border:{none:$("is_preference_setting_with_border").checked}
+							border:{
+							  none:$("is_preference_setting_with_border").checked,
+							  radius:$("is_preference_setting_border_radius").checked ? '7px': '0'
+							}
 						  }
 						  IS_Portal.theme.changeWidgetTheme(opt);
 					  }

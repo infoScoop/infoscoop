@@ -1,7 +1,7 @@
-
 .infoScoop .widget {
 	clear:both;
 	width:100%;
+	margin-bottom: 10px;
 }
 
 .infoScoop .subWidget {
@@ -9,8 +9,7 @@
 	width:100%;
 }
 
-.infoScoop .widget .widgetBox,
-.infoScoop #widgetGhost .widgetBox{
+.infoScoop .widget .widgetBox{
 	clear:both;
 	position: static;
 	/*
@@ -19,18 +18,19 @@
 	*/
 	width: auto;
 	overflow:hidden;
-	border-left: 1px solid #BCBCBC;
-	border-right: 1px solid #BCBCBC;
-	border-bottom: 1px solid #BCBCBC;
+
+	border: 1px solid #BCBCBC;
+	background-color:#FFF;
 }
 
 .infoScoop .widget .widgetShade {
-	border-width: 0 3px 4px 1px;
-	border-style: solid;
-/*	margin-left : 10px;*/
-	margin-bottom: 7px;
-}
+/*
+	padding:0 3px 3px 0;
+	background-color: green;
+*/
 
+}
+/*
 .infoScoop .widgetBoxNoHeader {
 	clear:both;
 	position: static;
@@ -38,15 +38,18 @@
 	overflow:hidden;
 	border: 1px solid gray;
 }
+*/
+#widgetGhost {
+	background-color:#f3f3f3;
+}
 
-.infoScoop .subWidget .widgetBox,
-.infoScoop #widgetGhost .subWidget .widgetBox{
+.infoScoop .subWidget .widgetBox{
 	clear:both;
 	position: static;
 	margin : 1px 0 0;
 	width: auto;
 	overflow:hidden;
-	background-color: white;
+	/*background-color: white;*/
 	border: none;
 }
 
@@ -57,7 +60,7 @@
 .infoScoop .widgetContent {
 	width:100%;
 	overflow:hidden;
-	background-color: #FFF;
+	/*background-color: #FFF;*/
 }
 
 
@@ -78,13 +81,10 @@
 
 /* WidgetHeader */
 
-.infoScoop .widget .widgetHeader,
-.infoScoop #widgetGhost .widgetHeader {
+.infoScoop .widget .widgetHeader {
 	clear:both;
 	padding-top:0px;
 	padding-bottom:0px;
-	border-bottom: 1px solid #BCBCBC;
-	border-top: 1px solid #BCBCBC;
 	margin: 0px;
 	font-size:100%;
 	/*background-image:url(./imgs/widget_header.png);*/
@@ -94,9 +94,7 @@
 	overflow:hidden;
 }
 
-.infoScoop .subWidget .widgetHeader,
-.infoScoop #widgetGhost .subWidget .widgetHeader{
-	border:0;
+.infoScoop .subWidget .widgetHeader{
 	clear: both;
 	width: 100%;
 	height: 22px;
@@ -104,13 +102,16 @@
 	background-image:none;
 	cursor: move;
 	overflow:hidden;
+
+	border: none;
+
 }
 
 .infoScoop .widget .widgetHeader .rightHeader{
 	position: absolute;
 	top: 1px;
 	_top: 0px;
-	right: 0;
+	right: 2px;
 	height: 19px;
 }
 .infoScoop .widget .widgetHeader.blink,
@@ -122,16 +123,6 @@
 .infoScoop .widget .subWidget .widgetHeader.blink .rightHeader {
 	background: url("./imgs/header_blink.gif") !important;
 	background-color: #EEEEFF !important;
-}
-
-
-.infoScoop .subWidget .widgetHeader .rightHeader{
-	position: absolute;
-	top: -1;
-	//top: 0;
-	right: 0;
-	height: 19px;
-	background-image:none;
 }
 
 .infoScoop .widgetHeader .widgetIndicator {

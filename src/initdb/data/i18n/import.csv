@@ -1931,6 +1931,8 @@
 "js","lb_selectSubWidgetHeaderImage","ALL","ALL","Please select the background color of sub widget header."
 "js","lb_noDisplayFrameBorder","ALL","ja","ウィジェット枠を表示しない："
 "js","lb_noDisplayFrameBorder","ALL","ALL","No display frame border:"
+"js","lb_enableRoundCorner","ALL","ja","ウィジェットの角を丸くする："
+"js","lb_enableRoundCorner","ALL","ALL","Round a corner of widgets:"
 "js","lb_logout","ALL","ja","ログアウト"
 "js","lb_logout","ALL","ALL","Logout"
 "adminjs","alb_clearConfigurationChooseUser","ALL","ja","カスタマイズ情報を初期化するユーザを指定してください。"

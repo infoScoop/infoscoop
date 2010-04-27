@@ -5,7 +5,7 @@ IS_Portal.theme = {
 	  header:{
 		background:{image: "./skin/imgs/theme/widget_header.png"}
 	  },
-	  border:{color:"#BCBCBC"},
+	  border:{color:"#BCBCBC",radius: '0px'},
 	  shade:{color:"#EEE"},
 	  subheader:{
 		background:{color:"#EEEEFF"}
@@ -36,12 +36,19 @@ IS_Portal.theme = {
 	  ],
 
   subWidgetHeaderColors: [
-	  "#f0fff0",
-	  "#fdf5e6",
-	  "#f0ffff",
-	  "#f5f5dc",
-	  "#fff0f5",
-	  "#f8f8ff"
+	  "#FFE4E1",
+	  "#FFDAB9",
+	  "#FFF5EE",
+	  "#FFEFD5",
+	  "#FFFFE0",
+	  "#F0FFF0",
+	  "#F5FFFA",
+	  "#E0FFFF",
+	  "#F0F8FF",
+	  "#F8F8FF",
+	  "#FFF0F5",
+	  "#FFFAFA",
+	  "#F5F5F5"
 	  ],
 	
   _setBackground: function(opt){
@@ -89,28 +96,46 @@ IS_Portal.theme = {
   _setWidgetTheme: function(opt){
 	  if(!opt)
 		  opt = this.defaultTheme.widget;
-	
-	  if(opt.header){
-		  if(opt.header.background.image){
-			  is_addCssRule('.infoScoop .widget .widgetHeader', 'background-image:url(' + opt.header.background.image + ')');
-			  is_addCssRule('.infoScoop .subWidget .widgetHeader', 'background-image:none');
-		  }
+
+	  var widgetHeaderStyle = [];
+	  var subWidgetHeaderStyle = [];
+	  var widgetBoxStyle = [];
+	  var widgetShadeStyle = [];
+	  if(opt.header && opt.header.background && opt.header.background.image){
+		  widgetHeaderStyle.push('background-image:url(' + opt.header.background.image + ')');
 	  }
-	  if(opt.subheader){
-		  if(opt.subheader.background.color){
-			  is_addCssRule('.infoScoop .subWidget .widgetHeader', 'background-color:' + opt.subheader.background.color);
-		  }
+	  if(opt.subheader && opt.subheader.background && opt.subheader.background.color){
+		  subWidgetHeaderStyle.push('background-color:' + opt.subheader.background.color);
 	  }
+	  
 	  if(opt.border){
 		  if(opt.border.none){
-			  is_addCssRule('.infoScoop .widget .widgetBox', 'border:none');
-			  is_addCssRule('.infoScoop .widget .widgetShade', 'border:none');
+			  widgetBoxStyle.push('border:none');
 		  }else{
-			  is_addCssRule('.infoScoop .widget .widgetBox', 'border-style:solid;;border-width:0 1px 1px 1px;border-color:' + this.defaultTheme.widget.border.color);
-			  is_addCssRule('.infoScoop .widget .widgetShade', 'border-style:solid;border-width:0 3px 4px 1px;border-color:' + this.defaultTheme.widget.shade.color);
-			  is_addCssRule('.infoScoop .subWidget .widgetBox', 'border:none');
-			  is_addCssRule('.infoScoop .subWidget .widgetShade', 'border:none');
+			  widgetBoxStyle.push('border-style:solid;border-width:1px;border-color:' + this.defaultTheme.widget.border.color);
 		  }
+		  if(opt.border.radius){
+			  widgetBoxStyle.push('border-radius:' + opt.border.radius);
+			  widgetBoxStyle.push('-webkit-border-radius:' + opt.border.radius);
+			  widgetBoxStyle.push('-moz-border-radius:' + opt.border.radius);
+			  
+			  widgetShadeStyle.push('border-radius:' + opt.border.radius);
+			  widgetShadeStyle.push('-webkit-border-radius:' + opt.border.radius);
+			  widgetShadeStyle.push('-moz-border-radius:' + opt.border.radius);
+			  
+			  //widgetHeaderStyle.push('border-radius:' + opt.border.radius);
+			  widgetHeaderStyle.push('-moz-border-radius-topleft:' + opt.border.radius);
+			  widgetHeaderStyle.push('-moz-border-radius-topright:' + opt.border.radius);
+		  }
+	  }
+	  if(widgetHeaderStyle.length || subWidgetHeaderStyle.length || widgetBoxStyle.length){
+		  is_addCssRule('.infoScoop .widget .widgetHeader', widgetHeaderStyle.join(';') + ';');
+		  subWidgetHeaderStyle.push('background-image:none');
+		  subWidgetHeaderStyle.push('-moz-border-radius-topleft: 0px; -moz-border-radius-topright: 0px');
+		  is_addCssRule('.infoScoop .subWidget .widgetHeader', subWidgetHeaderStyle.join(';') + ';');
+		  is_addCssRule('.infoScoop .widget .widgetBox', widgetBoxStyle.join(';') + ';');
+		  is_addCssRule('.infoScoop .widget .widgetShade', widgetShadeStyle.join(';') + ';');
+		  is_addCssRule('.infoScoop .subwidget .widgetBox', 'border:none;-webkit-border-radius:0;-moz-border-radius:0;');
 	  }
   },
 
