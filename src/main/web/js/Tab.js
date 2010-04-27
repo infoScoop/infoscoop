@@ -133,6 +133,8 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
 			if( window.confirm(IS_R.getResource(IS_R.ms_deleteTabConfirm,[this.name]))){
 				IS_Portal.deleteTab(this.tab);
 			}
+			
+			IS_Portal.behindIframe.hide();
 			return false;
 		}
 		this.rename = function(newname){
@@ -343,7 +345,6 @@ IS_Portal.showTabMenu = function(tabElement, e){
 				className:"close",
 				label: IS_R.lb_delete,
 				handler:tabObj.close.bind( tabObj )
-				IS_Portal.behindIframe.hide();
 			});
 			closeDiv.id = tabObj.id +"_menu_close";
 			menuDiv.appendChild( closeDiv );
