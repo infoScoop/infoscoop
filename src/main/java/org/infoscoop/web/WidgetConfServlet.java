@@ -14,6 +14,7 @@ import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.util.I18NUtil;
+import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.service.WidgetConfService;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.widgetconf.WidgetConfUtil;
@@ -86,7 +87,8 @@ public class WidgetConfServlet extends HttpServlet {
 					json = service.getWidgetConfJsonByType(type, locale, true);
 				}
 			} else {
-				json = service.getWidgetConfsJson(locale, true);
+				String uid = (String) request.getSession().getAttribute("Uid");
+				json = service.getWidgetConfsJson(uid, locale);
 			}
 
 			writer.write(json);

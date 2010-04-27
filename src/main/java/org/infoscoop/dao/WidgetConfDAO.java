@@ -1,5 +1,6 @@
 package org.infoscoop.dao;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,9 +47,7 @@ public class WidgetConfDAO extends HibernateDaoSupport {
 	
 	public Element[] getElements(String[] types){
 		
-		List confs = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(WidgetConf.class).add(Expression.in("type", types))
-				);
+		List confs =  selectByTypes(Arrays.asList(types));
 		Element[] typeConfs = new Element[confs.size()];
 		try {
 			int i = 0;
@@ -95,5 +94,13 @@ public class WidgetConfDAO extends HibernateDaoSupport {
 
 	public void insert(WidgetConf conf) {
 		super.getHibernateTemplate().save(conf);
+	}
+
+
+	public List<WidgetConf> selectByTypes(List<String> types) {
+		List confs = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(WidgetConf.class).add(Expression.in("type", types))
+				);
+		return confs;
 	}
 }

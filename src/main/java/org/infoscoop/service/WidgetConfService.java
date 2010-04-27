@@ -1,15 +1,24 @@
 package org.infoscoop.service;
 
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.WidgetConfDAO;
+import org.infoscoop.dao.WidgetDAO;
+import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.WidgetConf;
 import org.infoscoop.util.I18NUtil;
+import org.infoscoop.util.NoOpEntityResolver;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.XmlUtil;
 import org.infoscoop.widgetconf.WidgetConfUtil;
@@ -38,6 +47,46 @@ public class WidgetConfService {
 		this.widgetConfDAO = widgetConfDAO;
 	}
 
+	public String getWidgetConfsJson( String uid, Locale locale) throws Exception{
+		try {
+			List<String> useTypes = WidgetDAO.newInstance().getWidgetTypes(uid);
+			List<String> widgetTypes = new ArrayList<String>();
+			List<String> gadgetTypes = new ArrayList<String>();
+			for(String type : useTypes){
+				if(type.indexOf("g_") == 0){
+					if(type.indexOf("g_upload") == 0)
+						gadgetTypes.add(type.substring(10).split("/")[0] + ".xml");
+				}else{
+					widgetTypes.add(type);
+				}
+			}
+			List<WidgetConf> widgetConfs = widgetConfDAO.selectAll();
+
+			JSONObject json = new JSONObject();
+			for (WidgetConf widgetConf : widgetConfs) {
+				String type = widgetConf.getType();
+
+				json.put(type, WidgetConfUtil.widgetConf2JSONObject(widgetConf
+						.getElement(), null, true));
+			}
+			DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+			builderFactory.setValidating(false);
+			DocumentBuilder builder = builderFactory.newDocumentBuilder();
+			builder.setEntityResolver(NoOpEntityResolver.getInstance());
+			List<Gadget> gadgets = GadgetDAO.newInstance().selectConfsByType(gadgetTypes);
+			for(Gadget gadget: gadgets){
+				Document gadgetDoc = builder.parse(new ByteArrayInputStream(gadget.getData()));
+				Element gadgetEl = gadgetDoc.getDocumentElement();
+				json.put("g_upload__" + gadget.getType() + "/gadget", WidgetConfUtil.gadget2JSONObject( gadgetEl,null ));
+			}
+			return I18NUtil.resolve(I18NUtil.TYPE_WIDGET, json.toString(1),
+					locale, true);
+		} catch (Exception e) {
+			log.error("Unexpected error occurred.", e);
+			throw e;
+		}
+	}
+	
 	public String getWidgetConfsJson( Locale locale, boolean useClient ) throws Exception{
 		try {
 			List<WidgetConf> widgetConfs = widgetConfDAO.selectAll();

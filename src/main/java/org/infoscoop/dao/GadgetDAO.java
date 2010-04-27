@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -99,5 +98,10 @@ public class GadgetDAO extends HibernateDaoSupport {
 				.add( Expression.eq( Gadget.PROP_TYPE,type ))
 				.add( Expression.eq( Gadget.PROP_PATH,path ))
 				.addOrder( Order.asc( Gadget.PROP_NAME )));
+	}
+
+	public List<Gadget> selectConfsByType(List<String> types) {
+		return super.getHibernateTemplate().findByCriteria( DetachedCriteria.forClass( Gadget.class )
+				.add( Expression.in( Gadget.PROP_NAME, types )));
 	}
 }

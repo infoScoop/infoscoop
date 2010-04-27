@@ -66,7 +66,13 @@ public class WidgetDAO extends HibernateDaoSupport{
 		super.getHibernateTemplate().flush();
 		updateUserPrefs( widget );
     }
-
+    
+    public List<String> getWidgetTypes(String uid){
+    	String query = "select distinct w.Type from Widget w where Uid = ? and Deletedate = 0";
+		List result = super.getHibernateTemplate().find(query,
+				new Object[] { uid });
+		return result;
+    }
 	public Widget getWidget(String uid, String tabId, String widgetId ){
 		String query = "from Widget where Uid = ? and Tabid = ? and Widgetid = ? and Deletedate = 0";
 		List result = super.getHibernateTemplate().find(query,
