@@ -417,7 +417,35 @@ IS_Portal.showTabMenu = function(tabElement, e){
 		});
 		resetColumnWidthDiv.id = tabObj.id +"_menu_resetColumnWidthDiv";
 		menuDiv.appendChild( resetColumnWidthDiv );
-		
+
+		var initTab = function(tabId){
+			if( !confirm( IS_R.ms_clearConfigurationConfirm ))
+				return;
+			
+			IS_Request.asynchronous = false;
+			IS_Request.CommandQueue.fireRequest();
+			
+			var opt = {
+				method: 'get' ,
+				asynchronous:false,
+				onSuccess: function(req){
+					window.location.reload( true );
+				},
+				onFailure: function(t) {
+					var msg = IS_R.ms_clearConfigurationFailed;
+					alert( msg );
+					msg.error( msg );
+				}
+			};
+			AjaxRequest.invoke(hostPrefix + "/widsrv?reset=true&tabId=" + tabId, opt);
+		}.bind(this, tabObj.id);
+
+		if(!tabObj.disabledDynamicPanel){
+			var initTabContent = $.DIV({}, IS_R.lb_initTab, $.BUTTON({onclick:{handler:initTab}}, IS_R.lb_execute) );
+			var initTabDiv = createItem({ className:"initialize",content: initTabContent });
+			initTabDiv.id = tabObj.id +"_menu_initTab";
+			menuDiv.appendChild( initTabDiv );
+		}
 		function createItem( opt ) {
 			var className = opt.className || "";
 			

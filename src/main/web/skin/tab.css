@@ -277,3 +277,6 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 .infoScoop .tabMenu .resetColumnWidth {
 	background: url(./imgs/changeColumn2.gif ) no-repeat center left;
 }
+.infoScoop .tabMenu .initialize {
+	background: url( ./imgs/init_tab.gif ) no-repeat center left;
+}

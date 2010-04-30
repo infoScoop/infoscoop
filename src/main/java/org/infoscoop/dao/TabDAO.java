@@ -67,6 +67,12 @@ public class TabDAO extends HibernateDaoSupport{
 		super.getHibernateTemplate().bulkUpdate( queryString,
 				new Object[]{ uid });
 	}
+	public void deleteTab( String uid, Integer tabId ) {
+		String queryString = "delete from Tab where Id.Uid=? and Id.Id = ?";
+		
+		super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[]{ uid, tabId.toString() });
+	}
 	
     public void addDynamicWidget( String uid,String defaultUid,String tabId,Widget widget){
     	WidgetDAO.newInstance().addWidget( uid,defaultUid,tabId, widget, 0);

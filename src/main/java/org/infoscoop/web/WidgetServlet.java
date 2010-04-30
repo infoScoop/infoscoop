@@ -68,11 +68,16 @@ public class WidgetServlet extends HttpServlet {
 		String uid = (String) request.getSession().getAttribute("Uid");
 		
 		String tabOrderStr = request.getParameter("tabOrder");
-		
+
 		String resetStr = request.getParameter("reset");
+		String tabIdParam = request.getParameter("tabId");
 		if("true".equalsIgnoreCase( resetStr )) {
 			try{
-				TabService.getHandle().clearConfigurations( uid );
+				Integer tabId = null;
+				if(tabIdParam != null)
+					tabId = Integer.valueOf(tabIdParam.trim().replace("tab", ""));
+					
+				TabService.getHandle().clearConfigurations( uid, tabId );
 			}catch (Exception e) {
 				log.error("An exception occeurred.", e);
 				response.sendError(500, e.getMessage());

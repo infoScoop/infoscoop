@@ -1388,6 +1388,8 @@
 "js","lb_resizeFontNormal","ALL","ALL","Resize font to medium."
 "js","lb_resizeFontSmaller","ALL","ja","文字サイズを小さくする"
 "js","lb_resizeFontSmaller","ALL","ALL","Resize font to smaller."
+"js","lb_initTab","ALL","ja","タブの構成を初期化する"
+"js","lb_initTab","ALL","ALL","Initialize tab content"
 "js","lb_rssColon","ALL","ja","RSS:"
 "js","lb_rssColon","ALL","ALL","RSS:"
 "js","lb_rssViewSetting","ALL","ja","RSS表示設定"

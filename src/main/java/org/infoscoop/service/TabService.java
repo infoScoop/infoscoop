@@ -521,7 +521,7 @@ public class TabService {
 		
 	}
 	
-	public void clearConfigurations( String uid ) throws Exception{
+	public void clearConfigurations( String uid, Integer tabId ) throws Exception{
 		if( uid == null )
 			return;
 		
@@ -530,9 +530,13 @@ public class TabService {
 		PreferenceService.removeProperty(prefEl, "freshDays");
 		PreferenceService.removeProperty(prefEl, "mergeconfirm");
 		preference.setElement(prefEl);
-		WidgetDAO.newInstance().deleteWidget( uid );
-		TabDAO.newInstance().deleteTab( uid );
-		
+		if(tabId == null){
+			WidgetDAO.newInstance().deleteWidget( uid );
+			TabDAO.newInstance().deleteTab( uid );
+		}else{
+			WidgetDAO.newInstance().deleteWidget( uid, tabId );
+			TabDAO.newInstance().deleteTab( uid, tabId );	
+		}
 		SessionDAO.newInstance().setForceReload( uid );
 		
 		log.info("reset user data ["+uid+"]");
