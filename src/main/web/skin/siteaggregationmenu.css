@@ -127,12 +127,15 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 }
 
 .menuTitle a:link,
-.menuTitle a:visited{
+.menuTitle a:visited,
+.menuTitle .scriptlink{
 	COLOR: #5286BB;
 	text-decoration : none;
+	cursor: pointer;
 }
 
-.menuTitle a:hover{
+.menuTitle a:hover,
+.menuTitle .scriptlinkhover{
 	COLOR: #FFFFFF;
 	text-decoration : none;
 }

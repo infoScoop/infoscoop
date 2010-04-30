@@ -1193,22 +1193,34 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		divMenuTitle.id = "m_" + menuItem.id;
 		if (menuItem.href && !menuItem.linkDisabled) {
 			var aTag = document.createElement('a');
-
-			aTag.href = menuItem.href;
 			aTag.appendChild(document.createTextNode(title));
-			if(menuItem.display == "self") {
-				aTag.target = "_self";
-			} else if(menuItem.display == "newwindow"){
-				aTag.target = "_blank";
-			} else {
-				if(menuItem.display == "inline")
-					aTag.target="ifrm";
+			if(/^javascript:/i.test( menuItem.href )){
+				aTag.removeAttribute('href');
+				aTag.className = 'scriptlink';
 				var aTagOnClick = function(e) {
-					IS_Portal.buildIFrame(aTag);
+					eval( menuItem.href );
 				}
 				IS_Event.observe(aTag, "click", aTagOnClick, false, "_menu");
+				IS_Event.observe(aTag, "mouseover", function(){this.className = 'scriptlinkhover';}.bind(aTag), false, "_menu");
+				IS_Event.observe(aTag, "mouseout", function(){this.className = 'scriptlink';}.bind(aTag), false, "_menu");
+				
+			}else{
+				
+				aTag.href = menuItem.href;
+				if(menuItem.display == "self") {
+					aTag.target = "_self";
+				} else if(menuItem.display == "newwindow"){
+					aTag.target = "_blank";
+				} else {
+				if(menuItem.display == "inline")
+					aTag.target="ifrm";
+					var aTagOnClick = function(e) {
+						IS_Portal.buildIFrame(aTag);
+					}
+					IS_Event.observe(aTag, "click", aTagOnClick, false, "_menu");
+				}
+				IS_Event.observe(aTag, "mousedown", function(e){Event.stop(e);}, false, "_menu");
 			}
-			IS_Event.observe(aTag, "mousedown", function(e){Event.stop(e);}, false, "_menu");
 			divMenuTitle.appendChild(aTag);
 		}else{
 			divMenuTitle.appendChild(document.createTextNode(title));
