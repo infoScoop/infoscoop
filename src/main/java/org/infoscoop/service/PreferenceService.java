@@ -142,12 +142,11 @@ public class PreferenceService{
 		for(int i=0;i<propList.getLength();i++){
 			property = (Element)propList.item(i);
 			if(property.getAttribute("name").equals(field)){
-				break;
+				node.removeChild(property);
+				return true;
 			}
 		}
-		if(property == null) return false;
-		node.removeChild(property);
-		return true;
+		return false;
 	}
 	public void update(Preference preference){
 		this.preferenceDAO.update(preference);
