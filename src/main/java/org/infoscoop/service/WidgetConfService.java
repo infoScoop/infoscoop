@@ -69,18 +69,20 @@ public class WidgetConfService {
 				json.put(type, WidgetConfUtil.widgetConf2JSONObject(widgetConf
 						.getElement(), null, true));
 			}
-			
-			DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-			builderFactory.setValidating(false);
-			DocumentBuilder builder = builderFactory.newDocumentBuilder();
-			builder.setEntityResolver(NoOpEntityResolver.getInstance());
-			List<Gadget> gadgets = GadgetDAO.newInstance().selectConfsByType(gadgetTypes);
-			for(Gadget gadget: gadgets){
-				WidgetConfUtil.GadgetContext context = new WidgetConfUtil.GadgetContext().setUrl("g_update__" + gadget.getType());
-				Document gadgetDoc = builder.parse(new ByteArrayInputStream(gadget.getData()));
-				JSONObject gadgetJson = WidgetConfUtil.gadget2JSONObject( gadgetDoc.getDocumentElement(), context.getI18NConveter(locale, gadgetDoc),
-						true);
-				json.put("g_upload__" + gadget.getType() + "/gadget",WidgetConfUtil.gadgetJSONtoPortalGadgetJSON(gadgetJson) );
+
+			if(!gadgetTypes.isEmpty()){
+				DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+				builderFactory.setValidating(false);
+				DocumentBuilder builder = builderFactory.newDocumentBuilder();
+				builder.setEntityResolver(NoOpEntityResolver.getInstance());
+				List<Gadget> gadgets = GadgetDAO.newInstance().selectConfsByType(gadgetTypes);
+				for(Gadget gadget: gadgets){
+					WidgetConfUtil.GadgetContext context = new WidgetConfUtil.GadgetContext().setUrl("g_update__" + gadget.getType());
+					Document gadgetDoc = builder.parse(new ByteArrayInputStream(gadget.getData()));
+					JSONObject gadgetJson = WidgetConfUtil.gadget2JSONObject( gadgetDoc.getDocumentElement(), context.getI18NConveter(locale, gadgetDoc),
+							true);
+					json.put("g_upload__" + gadget.getType() + "/gadget",WidgetConfUtil.gadgetJSONtoPortalGadgetJSON(gadgetJson) );
+				}
 			}
 			return I18NUtil.resolve(I18NUtil.TYPE_WIDGET, json.toString(1),
 					locale, true);
