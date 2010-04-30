@@ -82,6 +82,7 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 			} else {
 				widget.iframe.src = fragmentCacheURL;
 			}
+			
 			//widget.iframe.style.height = "auto";
 		},
 		onComplete : function(req){
@@ -94,8 +95,7 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 			widget.initIframe();
 			var iframe = widget.iframe;
 			
-//			Event.observe(iframe, "load", this.sendFragmentRequest.bind(this), false);
-			Event.observe(iframe, "load", this.setPrefs.bind(this), false);
+			Event.observe(iframe, "load", this._setPrefs.bind(this), false);
 		}
 		
 		if( !isStatic )
@@ -103,37 +103,8 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 		
 		widget.iframe.style.width = "100%";
 	};
-	
-	this.sendFragmentRequest = function() {
-		// onload is still called after submitting; event cannot be removed because onload must be called again for reload and move
-		
-		var iframeDoc = Browser.isIE ? widget.iframe.contentWindow.document : widget.iframe.contentDocument;
-		var urlNode = iframeDoc.getElementById("fragmentURL");
-		var xPathNode = iframeDoc.getElementById("fragmentXPath");
-		var saveCacheIDNode = iframeDoc.getElementById("fragmentSaveCacheID");
-		var charsetNode = iframeDoc.getElementById("fragmentCharset");
-		var cacheLifeTimeNode = iframeDoc.getElementById("fragmentCacheLifeTime");
-		var formNode = iframeDoc.getElementById("requestForm");
-		
-		if(urlNode && xPathNode && saveCacheIDNode && formNode){
-			formNode.action = fragmentServerURL;
-			//formNode.method = 'POST';
-			var url = widget.getUserPref("url");
-			var xPath = widget.getUserPref("xPath");
-			var cacheID = widget.getUserPref("cacheID");
-			var charset = widget.getUserPref("charset");
-			var cacheLifeTime = widget.getUserPref("cacheLifeTime");
-			
-			urlNode.value = url;
-			xPathNode.value = (xPath)? xPath : '//body';
-			saveCacheIDNode.value = (cacheID)? cacheID : "";
-			charsetNode.value = (charset)?charset : "";
-			cacheLifeTimeNode.value = (cacheLifeTime)?cacheLifeTime : "";
-			formNode.submit();
-		}
-	}
-	
-	this.setPrefs = function(){
+
+	this._setPrefs = function(){
 		var iframeDoc = Browser.isIE ? widget.iframe.contentWindow.document : widget.iframe.contentDocument;
 		
 		// Not run process when loading; judge forcibly
@@ -141,6 +112,12 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 		var xPathNode = iframeDoc.getElementById("fragmentXPath");
 		if(urlNode &&xPathNode) return;
 
+		var iframeDoc = Browser.isIE ? widget.iframe.contentWindow.document : widget.iframe.contentDocument;
+		var styleEl = document.createElement('style');
+		styleEl.innerHTML = widget.getUserPref('additional_css');
+		var head = iframeDoc.getElementsByTagName('head')[0];
+		head.appendChild(styleEl);
+		
 		this.setHeight();
 		
 		function replaceTarget(ifLinks, listener){

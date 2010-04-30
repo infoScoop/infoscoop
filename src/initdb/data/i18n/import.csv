@@ -2105,6 +2105,8 @@
 "widget","lb_filterByTitle","ALL","ALL","Filter by title"
 "widget","lb_FragmentMiniBrowser","ALL","ja","HTML切り取りミニブラウザ"
 "widget","lb_FragmentMiniBrowser","ALL","ALL","FragmentMiniBrowser"
+"widget","lb_additionalCss","ALL","ja","追加CSS"
+"widget","lb_additionalCss","ALL","ALL","Additional CSS"
 "widget","lb_categoryOption","ALL","ja","カテゴリ選択オプション"
 "widget","lb_categoryOption","ALL","ALL","Event categories"
 "widget","lb_headerLinkDisplay","ALL","ja","ヘッダリンク表示先"

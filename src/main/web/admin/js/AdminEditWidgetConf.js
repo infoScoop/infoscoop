@@ -241,7 +241,7 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 	  case 'textarea':
 		textarea = document.createElement("textarea");
 		textarea.id = prefType + '_' + prefConf.name;
-		textarea.rows = "20";
+		textarea.rows = "12";
 		textarea.wrap = "off";
 		textarea.style.width = "100%";
 		//Content may be inserted if prefConf is WidgetPref...
