@@ -463,6 +463,11 @@
             <param-name>denyEmptyPassword</param-name>
             <param-value>true</param-value>
         </init-param>
+        <!-- logoutUrl param is a redirect url after logout from infoScoop.  -->
+        <init-param>
+            <param-name>logoutUrl</param-name>
+            <param-value><!--logoutUrl--></param-value>
+        </init-param>
 	</servlet>
 
 	<servlet>

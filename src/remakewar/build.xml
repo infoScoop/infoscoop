@@ -44,7 +44,7 @@
 		</copy>
 	</target>
 	
-	<target name="replaceWebXml" depends="replace-loginAuthenthication,replace-uidHeader,replace-usernameHeader,replace-customizeSSOFilter,replace-customizeSetRoleHeaderFilter,replace-uidIgnoreCase,replace-msd.dataSource"
+	<target name="replaceWebXml" depends="replace-loginAuthenthication,replace-uidHeader,replace-usernameHeader,replace-customizeSSOFilter,replace-customizeSetRoleHeaderFilter,replace-logoutUrlParam,replace-uidIgnoreCase,replace-msd.dataSource"
 		description="Replace web.xml configurations">
 		<loadfile property="principalHeaderList" srcFile="principalHeaderList.json" encoding="UTF-8">
 			<filterchain>
@@ -133,6 +133,11 @@
 	<target name="remove-loginUrlParam" unless="customizeSSOFilterClass.loginUrl">
         <replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
             token="%{loginUrlInitParam}" value=""/>
+    </target>
+        
+	<target name="replace-logoutUrlParam" if="logoutUrl">
+        <replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
+            token="&lt;!--logoutUrl--&gt;" value="${logoutUrl}"/>
     </target>
     
 	<target name="replace-customizeSetRoleHeaderFilter" if="customizeSetRoleHeaderFilterClass">

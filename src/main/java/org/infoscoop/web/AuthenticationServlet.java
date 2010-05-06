@@ -27,13 +27,18 @@ public class AuthenticationServlet extends HttpServlet {
 	private static Log log = LogFactory.getLog(AuthenticationServlet.class);
 
 	private boolean isDenyEmptyPassword;
+	private String logoutUrl;
 
 	private static final long serialVersionUID = 1646514470595445974L;
 
-		public void init(ServletConfig conf) throws ServletException {
+	public void init(ServletConfig conf) throws ServletException {
 		String denyEmptyPassword = conf.getInitParameter("denyEmptyPassword");
 		if(denyEmptyPassword != null){
 			isDenyEmptyPassword = Boolean.valueOf(denyEmptyPassword).booleanValue();
+		}
+		String logoutUrlParam = conf.getInitParameter("logoutUrl");
+		if(logoutUrlParam != null && !"".equals(logoutUrlParam.trim())){
+			logoutUrl = logoutUrlParam;
 		}
 	}
 
@@ -50,7 +55,7 @@ public class AuthenticationServlet extends HttpServlet {
 			credentialCookie.setPath("/");
 			response.addCookie( credentialCookie );
 
-			response.sendRedirect("index.jsp");
+			response.sendRedirect( logoutUrl != null ? logoutUrl : "index.jsp" );
 			return;
 		}
 
