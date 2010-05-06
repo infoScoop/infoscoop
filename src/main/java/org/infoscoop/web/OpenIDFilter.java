@@ -167,7 +167,7 @@ public class OpenIDFilter implements Filter {
 			this.loginUrl = loginUrlParam;
 		}
 		
-		int socketTimeout = 10 * 1000;
+		int socketTimeout = 30 * 1000;
 		String socketTimeoutParam = config.getInitParameter("socketTimeout");
 		if(socketTimeoutParam != null){
 			if(log.isInfoEnabled())
