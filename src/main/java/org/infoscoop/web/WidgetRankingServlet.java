@@ -142,8 +142,8 @@ public class WidgetRankingServlet extends HttpServlet {
 						&& cache.getTimestamp().before(cacheLastmodified))
 					return ranking;
 
-				log.info("Expiration date of the cash（" + cacheLifetime
-						+ "minutses）passed, I recount the widget-ranking.");
+				log.info("Expiration date of the cash(" + cacheLifetime
+						+ "minutses)passed, I recount the widget-ranking.");
 				WidgetDAO widgetDao = WidgetDAO.newInstance();
 				List<Object[]> ranks = widgetDao.getWidgetRanking(maxCount,
 						freshDay);
