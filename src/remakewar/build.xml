@@ -93,11 +93,18 @@
 	<filter>
 		<filter-name>CustomizeSSOFilter</filter-name>
 		<filter-class>%{customizeSSOFilterClass}</filter-class>
+		<init-param>
+			<param-name>excludePath</param-name>
+			<param-value>/xmlrpc,/login.jsp,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html</param-value>
+		</init-param>
+		%{loginUrlInitParam}
 	</filter>
 			]]></replacevalue>
 		</replace>
 		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
 			token="%{customizeSSOFilterClass}" value="${customizeSSOFilterClass}"/>
+		<antcall target="replace-loginUrlParam"/>
+		<antcall target="remove-loginUrlParam"/>
 		
 		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
 			<replacetoken><![CDATA[<!--CustomizeSSOFilterMapping-->]]></replacetoken>
@@ -109,6 +116,25 @@
 			]]></replacevalue>
 		</replace>
 	</target>
+        
+	<target name="replace-loginUrlParam" if="customizeSSOFilterClass.loginUrl">
+        <replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
+            token="%{loginUrlInitParam}">
+			<replacevalue><![CDATA[
+		<init-param>
+			<param-name>loginUrl</param-name>
+			<param-value>%{loginUrlValue}</param-value>
+		</init-param>
+			]]></replacevalue>
+		</replace>
+        <replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
+            token="%{loginUrlValue}" value="${customizeSSOFilterClass.loginUrl}"/>
+    </target>
+	<target name="remove-loginUrlParam" unless="customizeSSOFilterClass.loginUrl">
+        <replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
+            token="%{loginUrlInitParam}" value=""/>
+    </target>
+    
 	<target name="replace-customizeSetRoleHeaderFilter" if="customizeSetRoleHeaderFilterClass">
 		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
 			<replacetoken><![CDATA[<!--CustomizeSetRoleHeaderFilter-->]]></replacetoken>

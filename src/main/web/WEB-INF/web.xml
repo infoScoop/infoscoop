@@ -42,18 +42,6 @@
 	<!--CustomizeSSOFilter-->
 	<!--CustomizeSetRoleHeaderFilter-->
 	
-	<!-- If you use OpenID for authentication, remove comment of the following setting and enable filter setting.  -->
-	<!--
-	<filter>
-		<filter-name>OpenIDFilter</filter-name>
-		<filter-class>org.infoscoop.web.OpenIDFilter</filter-class>
-		<init-param>
-			<param-name>excludePath</param-name>
-			<param-value>/xmlrpc,/openid_login.jsp,/openid_consumer_redirect.jsp,/openid_consumer_returnurl.jsp,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html</param-value>
-		</init-param>
-	</filter>
-	-->
-	
 	<filter>
 		<filter-name>SessionManagerFilter</filter-name>
 		<filter-class>org.infoscoop.web.SessionManagerFilter</filter-class>
@@ -157,14 +145,6 @@
 	</filter-->
 
 	<!--CustomizeSSOFilterMapping-->
-	
-	<!-- If you use OpenID for authentication, remove comment of the following setting and enable filter setting.  -->
-	<!--
-	<filter-mapping>
-		<filter-name>OpenIDFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	-->
 	
 	<!--CustomizeSetRoleHeaderFilterMapping-->
 

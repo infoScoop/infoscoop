@@ -12,7 +12,7 @@
     }
 	if (session.getAttribute("openid")==null) {
 %>
-<form method="POST" action="openid_consumer_redirect.jsp">
+<form method="POST" action="openid_login">
 <strong>OpenID:</strong>
 <input type="text" name="openid" size="60"/><br>
 <input type="submit"/>

@@ -1,8 +1,12 @@
 package org.infoscoop.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,10 +20,23 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openid4java.OpenIDException;
+import org.openid4java.consumer.ConsumerException;
+import org.openid4java.consumer.ConsumerManager;
+import org.openid4java.consumer.InMemoryConsumerAssociationStore;
+import org.openid4java.consumer.InMemoryNonceVerifier;
+import org.openid4java.consumer.VerificationResult;
+import org.openid4java.discovery.DiscoveryInformation;
+import org.openid4java.discovery.Identifier;
+import org.openid4java.message.AuthRequest;
+import org.openid4java.message.AuthSuccess;
+import org.openid4java.message.ParameterList;
 
 public class OpenIDFilter implements Filter {
 	private static Log log = LogFactory.getLog(OpenIDFilter.class);
 	private Collection<String> excludePaths = new HashSet<String>();
+	private String loginUrl = null;
+	private ConsumerManager consumerMgr;
 	
 	public void destroy() {
 		// TODO Auto-generated method stub
@@ -32,24 +49,98 @@ public class OpenIDFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
+        
+        String actionName = request.getServletPath();
         String uid = (String) session.getAttribute("Uid");
         if (uid == null){
+
         	uid = (String) session.getAttribute("openid");
 			if(log.isInfoEnabled())
 				log.info(uid + " is logged in by openid.");
-        }
-        if (uid == null && !isExcludePath(request.getServletPath())){
-        	try {
-        		String loginUrl = request.getRequestURI().lastIndexOf("/admin/") > 0 ?  "../openid_login.jsp" : "openid_login.jsp";//Handling with management page may be problem
-
-        		response.sendRedirect(loginUrl);
-        		return;
-
-        	} catch(Exception e) {
-        		log.error("", e);
-			}
-		}else{
 			session.setAttribute("Uid", uid);
+        }
+        if (uid == null){
+        	if("/openid_login".equalsIgnoreCase(actionName)){
+        		try{
+        			String returnToUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/openid_consumer_return";
+        			String openid=request.getParameter("openid");
+        			List discoveries = this.consumerMgr.discover(openid);
+        			DiscoveryInformation discovered = this.consumerMgr.associate(discoveries);
+
+        			session.setAttribute("openid-disco", discovered);
+
+        			AuthRequest authReq = this.consumerMgr.authenticate(discovered, returnToUrl);
+
+        			if (! discovered.isVersion2() ){
+        				response.sendRedirect(authReq.getDestinationUrl(true));
+        			} else {
+        				response.setContentType("text/html");
+        				PrintWriter out = response.getWriter();
+        				out.println("<html>");
+        				out.println("<body onload=\"document.forms['openid-form-redirection'].submit();\">");
+        				out.println("<form method=\"POST\" name=\"openid-form-redirection\" action=\"" + authReq.getOPEndpoint()+ "\">");
+        				Map pm=authReq.getParameterMap();
+        				Iterator keyit=pm.keySet().iterator();
+                        Object key;
+                        Object value;
+                        while (keyit.hasNext()){
+                            key=keyit.next();
+                            value=pm.get(key);
+                            out.println("<input type=\"hidden\" name=\"" + key + "\" value=\"" + value + "\"/>");
+                        }
+        				out.println("<button type=\"submit\">Continue...</button>");
+        				out.println("</form>");
+        				out.println("</body>");
+        				out.println("</html>");
+        				out.flush();
+        			}
+        		} catch (OpenIDException e) {
+        			log.error(e.getMessage(), e);
+        		}
+    			return;
+        	}else if("/openid_consumer_return".equalsIgnoreCase(actionName)){
+        		try{
+        			ParameterList responselist =
+        				new ParameterList(request.getParameterMap());
+
+        			DiscoveryInformation discovered =
+        				(DiscoveryInformation) session.getAttribute("openid-disco");
+
+        			StringBuffer receivingURL = request.getRequestURL();
+        			String queryString = request.getQueryString();
+        			if (queryString != null && queryString.length() > 0)
+        				receivingURL.append("?").append(request.getQueryString());
+
+        			VerificationResult verification = this.consumerMgr.verify(
+        					receivingURL.toString(),
+        					responselist, discovered);
+
+        			// examine the verification result and extract the verified identifier
+        			Identifier verified = verification.getVerifiedId();
+        			if (verified != null){
+        				AuthSuccess authSuccess =
+        					(AuthSuccess) verification.getAuthResponse();
+
+        				session.setAttribute("openid", authSuccess.getIdentity());
+        				session.setAttribute("openid-claimed", authSuccess.getClaimed());
+        				response.sendRedirect(".");  // success
+        			}
+        		} catch (OpenIDException e) {
+        			log.error(e.getMessage(), e);
+        			response.sendRedirect(this.loginUrl);
+        		}
+    			return;
+
+        	}else if(!isExcludePath(request.getServletPath())){
+        		try {
+        			if(this.loginUrl == null)
+        				this.loginUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/login.jsp";
+        			response.sendRedirect(loginUrl);
+        		} catch(IOException e) {
+        			log.error(e.getMessage(), e);
+        		}
+    			return;
+        	}
 		}
 		chain.doFilter(servletRequest, servletResponse);
 	}
@@ -67,6 +158,35 @@ public class OpenIDFilter implements Filter {
 					excludePaths.add( path );
 				}
 			}
+		}
+		
+		String loginUrlParam = config.getInitParameter("loginUrl");
+		if(loginUrlParam != null){
+			if(log.isInfoEnabled())
+				log.info("loginUrl is set to " + loginUrlParam);
+			this.loginUrl = loginUrlParam;
+		}
+		
+		int socketTimeout = 10 * 1000;
+		String socketTimeoutParam = config.getInitParameter("socketTimeout");
+		if(socketTimeoutParam != null){
+			if(log.isInfoEnabled())
+				log.info("socketTimeout is set to " + socketTimeoutParam);
+			socketTimeout = Integer.parseInt(socketTimeoutParam);
+		}
+		
+		try {
+			ConsumerManager newmgr = (ConsumerManager) config.getServletContext().getAttribute("openid-consumermanager");
+			if(newmgr == null){
+				newmgr = new ConsumerManager();
+				newmgr.setAssociations(new InMemoryConsumerAssociationStore());
+				newmgr.setNonceVerifier(new InMemoryNonceVerifier(5000));
+				newmgr.setSocketTimeout(socketTimeout);
+				config.getServletContext().setAttribute("openid-consumermanager",newmgr);
+			}
+			this.consumerMgr = newmgr;
+		} catch (ConsumerException e) {
+			log.error(e.getMessage(),e);
 		}
 	}
 
