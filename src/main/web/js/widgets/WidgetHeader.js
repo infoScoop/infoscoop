@@ -490,10 +490,13 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		div.border = "0";
 		div.className = 'headerIcon';
 		div.id = "hi_" + widget.id + "_" + type;
-		div.title = alt;
+		div.title = alt;console.info(imgUrl);
 		if(imgUrl){
 			var url = '';
-			if(/http:\/\//.test(imgUrl)){
+			if(/__IS_GADGET_BASE_URL__/.test(imgUrl) && widget.gadgetType){
+				imgUrl = imgUrl.replace("__IS_GADGET_BASE_URL__", hostPrefix + '/gadget/' + widget.gadgetType)
+			}
+			if(/http[s]?:\/\//.test(imgUrl)){
 				url = imgUrl;
 			}else{
 				url = (!isCommonType(type) && widget.resourceUrl ? widget.resourceUrl : imageURL) + imgUrl;
