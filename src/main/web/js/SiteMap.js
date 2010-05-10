@@ -326,8 +326,9 @@ IS_SidePanel.prototype.classDef = function () {
 
 IS_SidePanel.sideMenuAdjusted = function(e){
 	var treeOpen = document.getElementById("siteMenuOpen");
-	IS_SidePanel.nowWidth = parseInt(findPosX(treeOpen));
-	IS_SidePanel.currentWidth = parseInt(findPosX(treeOpen));
+	var offsetX = parseInt(findPosX(treeOpen));
+	IS_SidePanel.nowWidth = offsetX;
+	IS_SidePanel.currentWidth = offsetX;
 	var container = document.getElementById("portal-tree-menucontainer");
 //	container.style.overflow = "visible";
 	
@@ -429,10 +430,14 @@ IS_SidePanel.Drag.dragEnd = function(e) {
 	
 	IS_SidePanel.currentWidth = nowWidth;
 	
-	var bar = document.getElementById("siteMenuOpen");
+	if(Prototype.Browser.WebKit) {
+		var bar = $("siteMenuOpen");
+		bar.hide();
+		setTimeout(function(){bar.show()}, 0);
+	}
 //	IS_SidePanel.Drag.barGhost.innerHTML = "";
 	IS_SidePanel.Drag.barGhost.parentNode.removeChild(IS_SidePanel.Drag.barGhost);
 
 	IS_Portal.hideDragOverlay();
-	IS_SidePanel.sideMenuAdjusted();
+	//IS_SidePanel.sideMenuAdjusted();
 }
