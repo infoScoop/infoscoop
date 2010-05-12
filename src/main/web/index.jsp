@@ -170,6 +170,7 @@ if( isPreview == null )
 			if(preference.property.theme)
 				IS_Portal.theme.currentTheme = eval( '(' + preference.property.theme + ')' );
 			IS_Portal.preference = preference.property;
+			IS_Portal.SearchEngines.searchOption = preference.property.searchOption ? eval('(' + preference.property.searchOption+ ')') : {};
 		}
 	</script>
 

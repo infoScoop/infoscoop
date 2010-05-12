@@ -46,9 +46,6 @@ IS_Portal.start = function() {
 	IS_Portal.theme.setTheme(IS_Portal.theme.currentTheme);
 	
 	IS_Portal.startIndicator();
-
-	IS_Portal.SearchEngines = new IS_SearchEngines();
-
 	
 	var fontSize = getActiveStyle( document.body, "font-size");
 	IS_Portal.defaultFontSize = (fontSize.charAt(fontSize.length-1)=="%" ? fontSize : Math.round(parseInt(fontSize)/16*100) + "%" );
@@ -72,6 +69,8 @@ IS_Portal.start = function() {
 
 	var header = document.getElementById("portal-header");
 	header.innerHTML = IS_Customization.header;
+	
+	IS_Portal.SearchEngines.init();
 
 	var command = document.getElementById("portal-command");
 	command.innerHTML = IS_Customization.commandbar;
@@ -580,11 +579,7 @@ IS_Portal.closeIFrame = function () {
 	IS_Event.unloadCache("_search");
 	
 	//Clear iframe in IS_Portal.searchEngines
-	var sIframe;
-	for(var i = 0; i < IS_Portal.searchEngines.length; i++){
-		sIframe = IS_Portal.searchEngines[i].iframe;
-		if(sIframe) sIframe.src = "";
-	}
+	IS_Portal.SearchEngines.clearIFrames();
 	
 //	IS_WidgetsContainer.adjustColumnWidth();
 	IS_Widget.adjustDescWidth();

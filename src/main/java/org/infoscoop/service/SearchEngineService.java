@@ -83,6 +83,29 @@ public class SearchEngineService {
 	/**
 	 * @param engineId
 	 * @param itemsMap
+	 * @throws Exception
+	 */
+	public synchronized void updateSearchEngineAttr(String name, String value) throws Exception {
+		if (log.isInfoEnabled()) {
+			log.info("updateSearchEngineAttr: name=" + name + ", value=" + value);
+		}
+
+		// Obtain data and transfer the result to Document.
+		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp();
+		Document document = temp.getDocument();
+
+		// Search for node matches engineId
+		Element element = document.getDocumentElement();
+		element.setAttribute(name, value);
+		temp.setDocument( document );
+		// Update
+		this.searchEngineDAO.update(temp);
+
+	}
+
+	/**
+	 * @param engineId
+	 * @param itemsMap
 	 * @param childTag
 	 * @throws Exception 
 	 */
@@ -264,6 +287,8 @@ public class SearchEngineService {
 		StringBuffer jsonString = new StringBuffer();
 		jsonString.append("ISA_SearchEngine.setSearchEngine(");
 		Document doc = entity.getDocument();
+		String newwindow = doc.getDocumentElement().getAttribute("newwindow");
+		jsonString.append( ("true".equalsIgnoreCase(newwindow) ? "true" : "false" ) ).append(",");
 		Element defaultSearch = (Element) XPathAPI.selectSingleNode(doc,
 				"/searchEngines/defaultSearch");
 		if (defaultSearch != null)
@@ -328,6 +353,8 @@ public class SearchEngineService {
 			searchObj.put("id", id);
 			searchObj.put("title", searchEl.getAttribute("title"));
 			searchObj.put("retrieveUrl", searchEl.getAttribute("retrieveUrl"));
+			String defaultSearchSite = searchEl.getAttribute("defaultSearchSite");
+			searchObj.put("defaultSearchSite", (defaultSearchSite != null ? "TRUE".equalsIgnoreCase(defaultSearchSite) : false) );
 
 			// countRule
 			Element countRule = (Element) XPathAPI.selectSingleNode(searchEl,

@@ -1197,7 +1197,8 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			if( IS_Portal.SearchEngines.matchRssSearch( widget.getUserPref("url")) )
 			  div.style.display = "block";
 		} else {
-			setTimeout(this.searchApplyIconStyle.bind(this, div), 100);
+			IS_Portal.SearchEngines.loadConf();
+			setTimeout(this.searchApplyIconStyle.bind(this, div), 200);
 		}
 	};
 

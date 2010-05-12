@@ -19,6 +19,7 @@
 								<td>
 									<input id="searchTextForm" type="text" style="width:200px;height:23px;float:left;"/>
 									<input type="submit" value="%{lb_search}" style="padding:0 0.4em;"/>
+									<span id="editsearchoption">%{lb_searchOption}</span>
 								</td>
 							</tr>
 						</tbody>

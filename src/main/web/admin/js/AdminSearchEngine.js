@@ -1,11 +1,13 @@
 var ISA_SearchEngine = IS_Class.create();
 
+ISA_SearchEngine.newwindow = false;
 ISA_SearchEngine.searchEngine = false;
 ISA_SearchEngine.defaultSearchList = false;
 ISA_SearchEngine.rssSearchList = false;
 
 // Called by the value returned from server
-ISA_SearchEngine.setSearchEngine = function(_defaultSearchList, _rssSearchList) {
+ISA_SearchEngine.setSearchEngine = function(_newwindow, _defaultSearchList, _rssSearchList) {
+	ISA_SearchEngine.newwindow = _newwindow;
 	ISA_SearchEngine.defaultSearchList = _defaultSearchList;
 	ISA_SearchEngine.rssSearchList = _rssSearchList;
 }
@@ -67,7 +69,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		IS_Event.observe(refreshDiv, 'click', refreshAClick, false, "_adminSearch");
 
 		searchEngineDiv.appendChild(refreshAllDiv);
-		
+
 		var searchEngineFieldSet = document.createElement("fieldset");
 		searchEngineFieldSet.style.padding = "7px";
 		searchEngineFieldSet.style.marginBottom = "10px";
@@ -80,8 +82,8 @@ ISA_SearchEngine.prototype.classDef = function() {
 		//searchEngineFieldSet.appendChild(titleDiv1);
 		searchEngineFieldSet.appendChild(self.buildDefaultSearchEngine());
 		searchEngineFieldSet.appendChild(ISA_Admin.buildTableHeader(
-			[ISA_R.alb_title,ISA_R.alb_searchAdress,ISA_R.alb_encoding,ISA_R.alb_numberOfItems,ISA_R.alb_publicSettings,ISA_R.alb_delete],
-			['220px', '320px', '100px', '40px', '80px', '40px']
+			[ISA_R.alb_title,ISA_R.alb_searchAdress,ISA_R.alb_encoding,ISA_R.alb_numberOfItems,ISA_R.alb_publicSettings,ISA_R.alb_selectSiteExecutingByDefault,ISA_R.alb_delete],
+			['220px', '320px', '100px', '40px', '80px', '40px', '40px'] //Sum = 840px
 			));
 		// DefaultSearch build
 		var defaultSearchDiv = document.createElement("div");
@@ -95,6 +97,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		var searchEngineFieldSet = document.createElement("fieldset");
 		searchEngineFieldSet.style.padding = "7px";
+		searchEngineFieldSet.style.marginBottom = "10px";
 		searchEngineFieldSet.style.width = "920px";
 		var label = document.createElement("legend");
 		label.innerHTML = ISA_R.alb_insiteSearchSettings;
@@ -121,6 +124,21 @@ ISA_SearchEngine.prototype.classDef = function() {
 		// Drag&Drop
 		new ISA_DragDrop.SearchEngineDragDrop("defaultSearchEngineList");
 		new ISA_DragDrop.SearchEngineDragDrop("rssSearchEngineList");
+		
+		
+		searchEngineDiv.appendChild(
+			$.FIELDSET({style:"width:920px;padding:7px;"},
+					   $.LEGEND({},ISA_R.alb_searchOptionDefaultSettings),
+					   $.DIV({},
+							 $.INPUT({type:"checkbox", defaultChecked: ISA_SearchEngine.newwindow,
+							   onclick:{handler:function(){
+								 ISA_SearchEngine.updateSearchConfAttr('newwindow', '' + this.checked);
+							   }
+							 }}),
+							 ISA_R.alb_searchResultsOnNewWindow
+						 )
+					)
+			);
 	}
 
 	function commitSearchEngine(currentModal) {
@@ -351,6 +369,15 @@ ISA_SearchEngine.prototype.classDef = function() {
 		engineTd.appendChild(contentDiv);
 		new ISA_SearchEngine.EditorForm(contentDiv, defaultSearchItem, {acl: true});
 
+		// 
+		engineTr.appendChild(
+			$.TD({style:"width:40px;textAlign:center;"}, $.INPUT({type:'checkbox', defaultChecked:defaultSearchItem.defaultSearchSite,
+			  onclick:{handler:function(){
+				  ISA_SearchEngine.updateSearchEngineItem(defaultSearchItem.id, 'defaultSearchSite', ''+this.checked);
+			  }
+			  }}))
+			);
+		
 		// "Delete" icon
 		engineTd = document.createElement("td");
 		engineTd.style.width = "40px";
@@ -639,6 +666,53 @@ ISA_SearchEngine.prototype.classDef = function() {
 	}
 
 };
+
+ISA_SearchEngine.updateSearchEngineItem = function(id, name, value){
+	console.log(id, name,value);
+	var updateData = {};
+	updateData[name] = value;
+	var url = findHostURL() + "/services/searchEngine/updateSearchEngineItem";
+	var opt = {
+	  method: 'post' ,
+	  contentType: "application/json",
+	  postBody: Object.toJSON([id,updateData]),
+	  asynchronous:true,
+	  onSuccess: function(response){
+		  ISA_Admin.isUpdated = true;
+	  },
+	  onFailure: function(t) {
+		  alert(ISA_R.ams_failedSaveSearchEngine);
+		  msg.error(ISA_R.ams_failedSaveSearchEngine + t.status + " - " + t.statusText);
+	  },
+	  onException: function(r, t){
+		  alert(ISA_R.ams_failedSaveSearchEngine);
+		  msg.error(ISA_R.ams_failedSaveSearchEngine + getErrorMessage(t));
+	  }
+	};
+	AjaxRequest.invoke(url, opt);
+}
+
+ISA_SearchEngine.updateSearchConfAttr = function(name, value){
+	var url = findHostURL() + "/services/searchEngine/updateSearchEngineAttr";
+	var opt = {
+	  method: 'post' ,
+	  contentType: "application/json",
+	  postBody: Object.toJSON([name,value]),
+	  asynchronous:true,
+	  onSuccess: function(response){
+		  ISA_Admin.isUpdated = true;
+	  },
+	  onFailure: function(t) {
+		  alert(ISA_R.ams_failedSaveSearchEngine);
+		  msg.error(ISA_R.ams_failedSaveSearchEngine + t.status + " - " + t.statusText);
+	  },
+	  onException: function(r, t){
+		  alert(ISA_R.ams_failedSaveSearchEngine);
+		  msg.error(ISA_R.ams_failedSaveSearchEngine + getErrorMessage(t));
+	  }
+	};
+	AjaxRequest.invoke(url, opt);
+}
 
 ISA_SearchEngine.EditorForm = IS_Class.create();
 ISA_SearchEngine.EditorForm.prototype.classDef = function() {

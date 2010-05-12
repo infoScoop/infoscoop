@@ -1,12 +1,9 @@
-IS_Portal.searchEngines = new Array();
-IS_Portal.rssSearchEngines = new Array();
-
 var IS_SearchEngine = IS_Class.create();
 IS_SearchEngine.prototype.classDef = function() {
 	var self = this;
 	var pageEncoding, countRule, useProxySearch, useProxyRedirect;
 	
-	this.initialize = function(name, searchUrl, originalUrl, encoding, _pageEncoding, _countRule, _useProxySearch, _useProxyRedirect, _searchId){
+	this.initialize = function(_searchId, name, searchUrl, originalUrl, encoding, _pageEncoding, _countRule, _useProxySearch, _useProxyRedirect){
 		this.name = name;
 		this.searchUrl = searchUrl;
 		this.originalUrl = originalUrl;
@@ -287,33 +284,109 @@ IS_SearchEngine.prototype.classDef = function() {
 		this.tabA.style.width = width + "px";
 	}
 }
-var IS_SearchEngines = IS_Class.create();
-IS_SearchEngines.prototype.classDef = function(){
-	var self = this;
-	var number = 0;
+
+IS_Portal.SearchEngines = {
+	_searchEngines : [],
+	_rssSearchEngines : [],
+	_defaultSearchOption : {
+	  newwindow:false,
+	  defaultSearchSiteList:[]
+	},
+	_selectedList:[],
+	_number: 0,
+	_searchEngineConfs : {},
+	_needRebuildTabs : false,
+	init : function() {
+		this.isNewWindow = $('panels') ? false : true;
+		var editoption = $('editsearchoption');
+		if(editoption){
+			IS_Event.observe(editoption, 'mousedown', this._showEditSearchOption.bind(this));
+		}
+	},
+
+	_showEditSearchOption:function(){
+		if(!this.isLoaded){
+			this.loadConf();
+			setTimeout(this._showEditSearchOption.bind(this), 200);
+			return;
+		}
+		var editoption = $('editsearchoption');
+		IS_Event.stopObserving(editoption, 'mousedown', this._showEditSearchOption.bind(this));
+		
+		searchTd = editoption.parentNode;
+		IS_Event.observe(editoption, 'mousedown', function(e){Element.show('searchoption'); Event.stop(e);});
+		IS_Event.observe(document.body, 'mousedown', function(){Element.hide('searchoption'); }, true);
+		
+		var searchoption = $.DIV({id:"searchoption",style:"fontSize:14px;border:1px solid gray;width:300px;backgroundColor:#FFF;display:none;position:absolute;zIndex:999;padding:5px;"});
+		
+		IS_Event.observe(searchoption, 'mousedown', function(e){Element.show('searchoption'); Event.stop(e);});
+		if(Browser.isIE){
+			var pos = Position.cumulativeOffset(searchTd);
+			searchoption.style.top = pos[1] + searchTd.offsetHeight;
+			searchoption.style.left = pos[0];
+		}
+		searchoption.appendChild( $.DIV({style:"borderBottom:solid 1px #ddd;"}, IS_R.lb_searchOption) );
+		var selectsearchsitediv = $.FIELDSET({id:"selectsearchsitefieldset", style:"margin:5px;"}, $.LEGEND({}, IS_R.lb_selectSearchSite));
+		searchoption.appendChild(selectsearchsitediv);
+		searchoption.appendChild(
+			$.DIV(
+				{style:"margin:5px;"},
+				$.INPUT(
+					{id:"displaySearchResultsOnNewWindow",type:'checkbox', defaultChecked:this.searchOption.displayNewWindow }),
+					IS_R.lb_searchResultsOnNewWindow
+				 )
+			);
+		searchoption.appendChild(
+			$.DIV(
+				{style:"margin:5px;"},
+				$.INPUT({type:'button',value:IS_R.lb_saveSettings,onclick:{handler:this._saveSearchOptions.bind(this)}}),
+				$.INPUT({type:'button',value:IS_R.lb_resetToDefaultSettings,onclick:{handler:this._resetSearchOptions.bind(this)}}),
+				$.INPUT({type:'button',value:IS_R.lb_cancel,onclick:{handler:function(){Element.hide('searchoption');}}})
+				  )
+			);
+
+		var configs = this._searchEngineConfigEls;
+		for(var i = 0; i < configs.length;i++){
+			var searchId = configs[i].getAttribute("id");
+			var title = configs[i].getAttribute("title");
+			selectsearchsitediv.appendChild($.DIV({},$.INPUT({type:'checkbox', value:searchId, defaultChecked:this._selectedList.include(searchId) }),title));
+		}
+		searchTd.appendChild(searchoption);
+		Element.show('searchoption');
+	},
 	
-	this.initialize = function() {
-		this.loadConfig(true);
-	}
+	loadConf:function(){
+		if(this.isLoading)return;
+		this.isLoading = true;
+		this._loadConfig(true);
+	},
 	
-	this.readSearchEngineConfig = function(req){
+	_readSearchEngineConfig : function(req){
 		var xml = req.responseXML;
 		var root = xml.documentElement;
+
+		var newwindowAttr = root.getAttribute('newwindow');
+		this._defaultSearchOption['newwindow'] = newwindowAttr ? /true/i.test(newwindowAttr) : false;
+		if(!this.searchOption.displayNewWindow)
+		  this.searchOption.displayNewWindow = this._defaultSearchOption['newwindow'];
+
+		var prefsSitelist = this.searchOption.sitelist;
+		
 		var defaultSearch = root.getElementsByTagName("defaultSearch")[0];
 		var configs = defaultSearch.getElementsByTagName("searchEngine");
+		this._searchEngineConfigEls = configs;
 		for(var i = 0; i < configs.length;i++){
+			
 			var title = configs[i].getAttribute("title");
 			var retrieveUrl = configs[i].getAttribute("retrieveUrl");
 			var originalUrl = retrieveUrl;
 			var useProxyRedirectAtt = configs[i].getAttribute("useProxyRedirect");
-			var useProxyRedirect = (useProxyRedirectAtt && ( /true/.test(useProxyRedirectAtt) || /TRUE/.test(useProxyRedirectAtt) ) ) ? true: false;
+			var useProxyRedirect = (useProxyRedirectAtt && /true/i.test(useProxyRedirectAtt) ) ? true: false;
 			var encoding = configs[i].getAttribute("encoding");
 			var pageEncoding = configs[i].getAttribute("pageEncoding");
 			var useProxyAtt = configs[i].getAttribute("useProxy");
-			var useProxySearch = (useProxyAtt &&  ( /false/.test(useProxyAtt) || /FALSE/.test(useProxyAtt) ) ) ? false: true;
-//			if (useProxySearch) {
-//				retrieveUrl = is_getProxyUrl(retrieveUrl, "URLReplace");
-//			}
+			var useProxySearch = (useProxyAtt && /false/i.test(useProxyAtt) ) ? false: true;
+			
 			var countEle = configs[i].getElementsByTagName("countRule")[0];
 			var countRule = null;
 			if(countEle){
@@ -321,10 +394,20 @@ IS_SearchEngines.prototype.classDef = function(){
 				var countValue = countEle.getAttribute("value");
 				countRule = {method:countMethod, value:countValue};
 			}
-			var searchId = "portal_search_" + i;
-			IS_Portal.searchEngines[i] = new IS_SearchEngine(title, retrieveUrl, originalUrl, encoding, pageEncoding, countRule, useProxySearch, useProxyRedirect, searchId);
+			var searchId = configs[i].getAttribute("id");
+			
+			var defaultSearchSite = configs[i].getAttribute("defaultSearchSite");
+			if(defaultSearchSite && /true/i.test(defaultSearchSite))
+			  this._defaultSearchOption.defaultSearchSiteList.push(searchId);
+
+			this._searchEngineConfs[searchId] = [searchId, title, retrieveUrl, originalUrl, encoding, pageEncoding, countRule, useProxySearch, useProxyRedirect];
+			var searchEngineEnable = prefsSitelist ? prefsSitelist.include(searchId) : defaultSearchSite ;
+			if( searchEngineEnable ){
+				this._searchEngines.push( new IS_SearchEngine(searchId, title, retrieveUrl, originalUrl, encoding, pageEncoding, countRule, useProxySearch, useProxyRedirect) );
+				this._selectedList.push(searchId);
+			}
 		}
-		
+
 		var rssSearch = root.getElementsByTagName("rssSearch")[0];
 		if(rssSearch) {
 			var rssSearchs = rssSearch.getElementsByTagName("searchEngine");
@@ -351,34 +434,85 @@ IS_SearchEngines.prototype.classDef = function(){
 				var rssPatternEle = rssSearchs[i].getElementsByTagName("rssPattern")[0];
 				if(rssPatternEle && rssPatternEle.firstChild)
 					rssSearchEngine.rssPattern = new RegExp(rssPatternEle.firstChild.nodeValue);
-				IS_Portal.rssSearchEngines.push(rssSearchEngine);
+				this._rssSearchEngines.push(rssSearchEngine);
 			}
 		}
-	}
+	},
+
+	_saveSearchOptions : function(){
+		var searchSiteCheckBoxList = $('selectsearchsitefieldset').getElementsByTagName('input');
+		var selectSiteList = [];
+		var newSearchEngines = [];
+		var enableSearchEngines = this._searchEngines;
+		for(var i = 0; i < searchSiteCheckBoxList.length; i++){
+			var searchId = searchSiteCheckBoxList[i].value;
+
+			var searchEngine = false;
+			for(var j = 0; j < enableSearchEngines.length; j++) {
+				if( searchId == enableSearchEngines[j].searchId)
+				  searchEngine = enableSearchEngines[j]
+			}
+			if(searchSiteCheckBoxList[i].checked){
+				selectSiteList.push(searchId);
+				var args = this._searchEngineConfs[searchId];
+				if(!searchEngine)
+				    searchEngine = new IS_SearchEngine(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8],args[9]) ;
+				newSearchEngines.push(searchEngine);
+			}
+		}
+		
+		this._searchEngines = newSearchEngines;
+		var displayNewWindow = $('displaySearchResultsOnNewWindow').checked;
+		IS_Widget.setPreferenceCommand('searchOption', Object.toJSON({sitelist: selectSiteList, displayNewWindow:displayNewWindow}));
+
+		this._selectedList = selectSiteList;
+		this._needRebuildTabs = true;
+		Element.hide('searchoption');
+	},
+
+	_resetSearchOptions : function(){
+		var searchSiteCheckBoxList = $('selectsearchsitefieldset').getElementsByTagName('input');
+		var defaultSearchSiteList = this._defaultSearchOption.defaultSearchSiteList;
+		for(var i = 0; i < searchSiteCheckBoxList.length; i++){
+			searchSiteCheckBoxList[i].checked = defaultSearchSiteList.include(searchSiteCheckBoxList[i].value);
+		}
+		$('displaySearchResultsOnNewWindow').checked = this._defaultSearchOption.newwindow;
+	},
 	
-	this.matchRssSearch = function(url) {
+	
+	matchRssSearch : function(url) {
 		if(!url) return;
-		for(var j = 0; j < IS_Portal.rssSearchEngines.length; j++) {
-			if(url.match(IS_Portal.rssSearchEngines[j].rssPattern)) {
-				if(!IS_Portal.rssSearchEngines[j].retrieveUrl)
+		var rssSearchEngines = this._rssSearchEngines;
+		for(var j = 0; j < rssSearchEngines.length; j++) {
+			if(url.match(rssSearchEngines[j].rssPattern)) {
+				if(!rssSearchEngines[j].retrieveUrl)
 					return false;
-				return IS_Portal.rssSearchEngines[j];
+				return rssSearchEngines[j];
 			}
 		}
 		return false;
-	}
+	},
 	
-	this.buildSearchTabs = function(keyword, urllist){
-		if(IS_Portal.searchEngines.length == 0){
-
+	buildSearchTabs : function(keyword, urllist){
+		if(!this.isNewWindow && this.searchOption.displayNewWindow){
+			window.open("js/search/searchEngine.jsp?keyword=" + encodeURIComponent(keyword));
+			return;
+		}
+		if(!this.isLoaded){
+			IS_Portal.SearchEngines.loadConf();
+			setTimeout(this.buildSearchTabs.bind(this, keyword,urllist), 200);
+			return;
+		}
+		console.log(this._searchEngines);
+		if(this._searchEngines.length == 0){
 			alert(IS_R.ms_searchNotAvailable);
 			return;
 		}
 		if(Browser.isSafari1 && IS_Portal.isTabLoading()){
 			return;
 		}
-		
-		IS_Portal.CommandBar.changeIframeView();
+		if(!this.isNewWindow)
+			IS_Portal.CommandBar.changeIframeView();
 		
 		if(this.buildTabTimer)
 			clearTimeout(this.buildTabTimer);
@@ -386,7 +520,7 @@ IS_SearchEngines.prototype.classDef = function(){
 		this.buildTabTimer = setTimeout(this._buildSearchTabs.bind(this, keyword, urllist), 100);
 //		this._buildSearchTabs(keyword, urllist);
 
-		var searchEngines = IS_Portal.searchEngines;
+		var searchEngines = this._searchEngines;
 		for(var i=0;i<searchEngines.length;i++){
 			if(searchEngines[i].iframe)
 				searchEngines[i].iframe.src = "about:blank";
@@ -399,55 +533,29 @@ IS_SearchEngines.prototype.classDef = function(){
 			if (searchEngines[i].encodeReqId) 
 				AjaxRequest.cancel(searchEngines[i].encodeReqId);
 		}
-	}
+	}.bind(IS_Portal.SearchEngines),
 	
-	this._buildSearchTabs = function(keyword, urllist){
+	_buildSearchTabs : function(keyword, urllist){
 		if(is_jlength(keyword) > 256){
 
 			alert(IS_R.lb_keywordTooLong);
 			return false;
 		}
 		IS_Event.unloadCache("_search");
-		IS_Portal.widgetDisplayUpdated();
-		/*
-		var divIFrame = $("portal-iframe");
-		if ( divIFrame ) {
-			divIFrame.style.display = "none";
+		if(!this.isNewWindow){
+			IS_Portal.widgetDisplayUpdated();
+			IS_Portal.closeIFrame();
+			Element.hide('panels');
 		}
-		*/
-		IS_Portal.closeIFrame();
 
-		document.getElementById("panels").style.display='none';
-		if(!configExists()){
+		if(!urllist && this._searchEngines.length == 0 || urllist && this._rssSearchEngines.length == 0){
 			// Reload if loading config file for searching fails
-			this.loadConfig(false);
-			if(!configExists()) return;
-		}
-		
-		function configExists(){
-			if(!urllist && IS_Portal.searchEngines.length == 0){
-				return false;
-			}
-			if(urllist && IS_Portal.rssSearchEngines.length == 0) {
-				return false;
-			}
-			return true;
-		}
-		/*
-		if(!urllist && IS_Portal.searchEngines.length == 0){
+			this._loadConfig(false);
 			return;
 		}
-		if(urllist && IS_Portal.rssSearchEngines.length == 0) {
-			return;
-		}
-		*/
 		
-//		if(IS_Portal.refreshObj.isRefreshing) {
-//			IS_Portal.cancelRefresh();
-//			//Not run automatically updating program right after closing search window
-//			//IS_Portal.refreshObj.cancelByIframe = true;
-//		}
-		IS_Portal.refresh.cancel();
+		if(!this.isNewWindow)
+		  IS_Portal.refresh.cancel();
 		
 		this.clearTemp();
 		
@@ -494,21 +602,27 @@ IS_SearchEngines.prototype.classDef = function(){
 				}
 			}
 			tabsID = "temp_search-tabs";
-			this.buildTabsUl( tabsID, searchPanel);
-			this.buildResult("temp_search-result", searchPanel, keyword);
+			searchPanel.appendChild( this._buildTabsUl( tabsID, searchPanel) );
+			this._buildResult("temp_search-result", searchPanel, keyword);
 		} else {
 			if(defaultTabsUl)
 				defaultTabsUl.style.display = "block";
 			if(defaultResult)
 				defaultResult.style.display = "block";
 			
-			tempEngines = IS_Portal.searchEngines;
+			tempEngines = this._searchEngines;
 			this.tempEngines = tempEngines;
 			
 			var tabsUl = defaultTabsUl;
-			if(!tabsUl) {
+			if(this._needRebuildTabs || !tabsUl) {
 				tabsID = "search-tabs";
-				this.buildTabsUl( tabsID, searchPanel);
+				var newTabsUl = this._buildTabsUl( tabsID, searchPanel);
+				if(!tabsUl)
+				  searchPanel.appendChild(newTabsUl);
+				else{
+					searchPanel.replaceChild(newTabsUl, tabsUl);
+					this._needRebuildTabs = false;
+				}
 			} else {
 				tabsID = tabsUl.id;
 				for(var i = 0; i < tempEngines.length; i++){
@@ -527,16 +641,16 @@ IS_SearchEngines.prototype.classDef = function(){
 					tempEngines[i].adjustTabWidth();
 				}
 			}
-			this.buildResult("search-result", searchPanel, keyword);
+			this._buildResult("search-result", searchPanel, keyword);
 		}
 		
 		this.tab = new Control.Tabs( tabsID,{
 			afterChange: function( container ) {
-				IS_SearchEngines.switchTab( $("tab_"+container.id ) );
+				IS_Portal.SearchEngines.switchTab( $("tab_"+container.id ) );
 			}
 		});
 		
-		number = 0;
+		this._number = 0;
 		var parallelCount = Browser.isIE ? 2 : 3;
 		for(var i = 0; i < parallelCount; i++) {
 			this.next(tempEngines);
@@ -553,30 +667,9 @@ IS_SearchEngines.prototype.classDef = function(){
 			var cmd = new IS_Commands.AddKeywordCommand(keyword);
 			IS_Request.LogCommandQueue.addCommand(cmd);
 		}
-	}
+	},
 	
-/**
- * Corresponds to Safari
- * If you search with maximized browser, it may shut down
- */
-	if( Browser.isSafari1 ) {
-		this._buildSearchTabs = ( function() {
-			var _buildSearchTabs = this._buildSearchTabs;
-			
-			return function() {
-				if( IS_Widget.MaximizeWidget )
-					IS_Widget.MaximizeWidget.turnbackMaximize();
-				
-				IS_Portal.disableCommandBar();
-				
-				_buildSearchTabs.apply( this,$A( arguments ));
-				
-				IS_Portal.currentTabId = "_"+IS_Portal.currentTabId;
-			}
-		}).apply( this );
-	}
-	
-	this.buildTabsUl = function(tabsID, searchPanel) {
+	_buildTabsUl : function(tabsID, searchPanel) {
 		var tempEngines = this.tempEngines;
 		var tabsUl = document.createElement("ul");
 		tabsUl.id = tabsID;
@@ -584,13 +677,13 @@ IS_SearchEngines.prototype.classDef = function(){
 		for(var i = 0; i < tempEngines.length; i++){
 			tabsUl.appendChild(tempEngines[i].buildTabHeader( i == 0 ));
 		}
-		searchPanel.appendChild(tabsUl);
 		for(var i = 0; i < tempEngines.length; i++){
 			tempEngines[i].adjustTabWidth();
 		}
-	}
+		return tabsUl;
+	},
 	
-	this.buildResult = function(resultID, searchPanel, keyword) {
+	_buildResult : function(resultID, searchPanel, keyword) {
 		var tempEngines = this.tempEngines;
 		var searchResult = document.getElementById(resultID);
 		if(!searchResult) {
@@ -610,13 +703,13 @@ IS_SearchEngines.prototype.classDef = function(){
 			
 			var encoding = tempEngines[i].encoding;
 			if( !texts[encoding] )
-				texts[encoding] = this.encode( keyword,encoding );
+				texts[encoding] = this._encode( keyword,encoding );
 			
 			tempEngines[i].encodedKeyword = texts[encoding];
 		}
-	}
+	},
 	
-	this.encode = function(text, encoding) {
+	_encode : function(text, encoding) {
 		text = encodeURIComponent(text);
 		if(!encoding || encoding.toLowerCase() == "utf-8")
 			return text;
@@ -635,68 +728,99 @@ IS_SearchEngines.prototype.classDef = function(){
 		
 		AjaxRequest.invoke(hostPrefix + "/encsrv?text=" + text + "&encoding=" + encoding, opt);
 		return text;
-	}
-	this.next = function() {
-		var tempEngines = this.tempEngines;
-		if(number < tempEngines.length) {
-			tempEngines[number++].processSearch();
-		}
-	}
+	},
 	
-	this.clearTemp = function() {
+	next : function() {
+		var tempEngines = this.tempEngines;
+		if(this._number < tempEngines.length) {
+			tempEngines[this._number++].processSearch();
+		}
+	},
+	
+	clearTemp : function() {
 		var tabsUl = document.getElementById("temp_search-tabs");
 		if(tabsUl)
 			tabsUl.parentNode.removeChild(tabsUl);
 		var searchResult = document.getElementById("temp_search-result");
 		if(searchResult)
 			searchResult.parentNode.removeChild(searchResult);
-	}
+	},
 	
-	this.loadConfig = function( isSync ) {
+	_loadConfig : function( isSync ) {
 		var url = is_getProxyUrl( searchEngineURL, "NoOperation");
 		var opt = {
 			method: 'get' ,
 			asynchronous:isSync,
-			onSuccess: this.readSearchEngineConfig,
+			onSuccess: this._readSearchEngineConfig.bind(this),
 			on404: function(t) {
 				alert(IS_R.getResource(IS_R.lb_searchConfigOn404,[searchEngineURL]));
 			},
 			on10408: function(t,e){
-				alert(IS_R.lb_searchConfigOn10408);				
+				alert(IS_R.lb_searchConfigOn10408);
 			},
 			onFailure: function(t) {
-				alert(IS_R.getResource(IS_R.lb_searchConfigOnFailure,[t.status,(t.statusText ? t.statusText : "")]));				
+				alert(IS_R.getResource(IS_R.lb_searchConfigOnFailure,[t.status,(t.statusText ? t.statusText : "")]));
 			},
 			onException: function(r, t) {
 				alert(IS_R.getResource(IS_R.lb_searchConfigException, [getText(t)]));
 			},
 			onComplete: function() {
-				self.isLoaded = true;
-			}
+				this.isLoaded = true;
+			}.bind(this)
 		};
 		
 		AjaxRequest.invoke(url, opt);
+	},
+	
+	switchTab : function( switchTab ) {
+		if( Element.hasClassName( switchTab,"selected")) return false;
+		var tempEngines = IS_Portal.SearchEngines.tempEngines;
+		var tab;
+		var tabContent;
+		for(var i = 0; i < tempEngines.length; i++){
+			tab = tempEngines[i].tabA;
+			if(!tab) return;
+			tabContent = tempEngines[i].tabContent;
+			if(tab.id == switchTab.id){
+				if( !tempEngines[i].isRender )
+				  tempEngines[i].renderResult();
+				Element.addClassName( tab,"selected");
+				tabContent.style.display = "";
+				if($('panel'))
+				  IS_Portal.adjustIframeHeight(null, tempEngines[i].iframe);
+			}else{
+				Element.removeClassName( tab,"selected");
+				tabContent.style.display = "none";
+			}
+		}
+	},
+
+	clearIFrames: function(){
+		var searchEngineList = this._searchEngines;
+		for(var i = 0; i <searchEngineList.length; i++){
+			var sIframe = searchEngineList[i].iframe;
+			if(sIframe) sIframe.src = "./blank.html";
+		}
 	}
 }
 
-IS_SearchEngines.switchTab = function( switchTab ) {
-	if( Element.hasClassName( switchTab,"selected")) return false;
-	var tempEngines = IS_Portal.SearchEngines.tempEngines;
-	var tab;
-	var tabContent;
-	for(var i = 0; i < tempEngines.length; i++){
-		tab = tempEngines[i].tabA;
-		if(!tab) return;
-		tabContent = tempEngines[i].tabContent;
-		if(tab.id == switchTab.id){
-			if( !tempEngines[i].isRender ) 
-				tempEngines[i].renderResult();
-			Element.addClassName( tab,"selected");
-			tabContent.style.display = "";
-			IS_Portal.adjustIframeHeight(null, tempEngines[i].iframe);
-		}else{
-			Element.removeClassName( tab,"selected");
-			tabContent.style.display = "none";
+/**
+ * Corresponds to Safari
+ * If you search with maximized browser, it may shut down
+ */
+if( Browser.isSafari1 ) {
+	IS_SearchEngines._buildSearchTabs = ( function() {
+		var _buildSearchTabs = this._buildSearchTabs;
+		
+		return function() {
+			if( IS_Widget.MaximizeWidget )
+				IS_Widget.MaximizeWidget.turnbackMaximize();
+			
+			IS_Portal.disableCommandBar();
+			
+			_buildSearchTabs.apply( this,$A( arguments ));
+			
+			IS_Portal.currentTabId = "_"+IS_Portal.currentTabId;
 		}
-	}
+	}).apply( this );
 }

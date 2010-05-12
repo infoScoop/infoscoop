@@ -432,6 +432,14 @@ div#search-iframe div.search_tabs{
 	color: #627EB7;
 }
 
+
+#editsearchoption {
+	color : #7777CC;
+	cursor : pointer;
+	font-size : 13px;
+	border-bottom : solid 1px #7777CC;
+}
+
 /* IFrameToolbar */
 
 .infoScoop #articleShare {

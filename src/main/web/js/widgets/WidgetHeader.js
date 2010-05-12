@@ -1014,7 +1014,6 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			this.elm_menu.style.display = "none";
 			IS_Portal.behindIframe.hide();
 		} else {
-			this.elm_menu.style.top = this.elm_menu.style.left = 0;
 			this.elm_menu.style.visibility = "hidden";
 			this.elm_menu.style.display = "block";
 			//calculate far left on menu
@@ -1026,7 +1025,10 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			
 			var offsetX= xy[0];
 			if( (offsetX + this.elm_menu.offsetWidth ) > winX ){//if the width of the whole menu is bigger than the distance between the left end of top menu and the right end of window
-				offsetX = (winX  - this.elm_menu.offsetWidth) - 10;
+				//offsetX = (winX  - this.elm_menu.offsetWidth) - 10;
+				this.elm_menu.style.right = 10;
+			}else{
+				this.elm_menu.style.left = offsetX;
 			}
 			var offsetY = xy[1] + showToolsDiv.offsetHeight;
 			if((offsetY + this.elm_menu.offsetHeight) > winY){
@@ -1034,7 +1036,6 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 				offsetY = winY - this.elm_menu.offsetHeight;
 			}
 			
-			this.elm_menu.style.left = offsetX;
 			this.elm_menu.style.top = offsetY;
 			this.elm_menu.style.visibility = "visible";
 			
