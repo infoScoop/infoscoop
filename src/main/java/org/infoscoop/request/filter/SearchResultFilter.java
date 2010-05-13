@@ -75,8 +75,13 @@ public class SearchResultFilter extends ProxyFilter {
 			Pattern pattern = Pattern.compile( collectValue );
 			
 			Matcher matcher = pattern.matcher( new String( responseBody,outputEncoding ));
-			if( matcher.find() )
-				match = matcher.group(1);
+			if( matcher.find() ){
+				for (int i = 1; i <= matcher.groupCount(); i++) {
+					match = matcher.group(i);
+					if (match != null)
+						break;
+				}
+			}
 		} else {
 			ProxyHtmlUtil.getInstance().nekoProcess(responseStream,
 				encoding,new XMLDocumentFilter[] {
