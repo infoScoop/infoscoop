@@ -324,6 +324,11 @@ IS_Portal.SearchEngines = {
 			var pos = Position.cumulativeOffset(searchTd);
 			searchoption.style.top = pos[1] + searchTd.offsetHeight;
 			searchoption.style.left = pos[0];
+			IS_Event.observe(window, 'resize', function(){
+				var pos = Position.cumulativeOffset(searchTd);
+				searchoption.style.left = pos[0];
+			}, true);
+		
 		}
 		searchoption.appendChild( $.DIV({style:"borderBottom:solid 1px #ddd;"}, IS_R.lb_searchOption) );
 		var selectsearchsitediv = $.FIELDSET({id:"selectsearchsitefieldset", style:"margin:5px;"}, $.LEGEND({}, IS_R.lb_selectSearchSite));
