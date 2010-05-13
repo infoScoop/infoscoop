@@ -300,26 +300,23 @@ IS_Portal.SearchEngines = {
 		this.isNewWindow = $('panels') ? false : true;
 		var editoption = $('editsearchoption');
 		if(editoption){
-			IS_Event.observe(editoption, 'mousedown', this._showEditSearchOption.bind(this));
+			IS_Event.observe(editoption, 'mousedown', this._buildEditSearchOption.bind(this));
 		}
 	},
 
-	_showEditSearchOption:function(){
+	_buildEditSearchOption:function(){
 		if(!this.isLoaded){
 			this.loadConf();
-			setTimeout(this._showEditSearchOption.bind(this), 200);
+			setTimeout(this._buildEditSearchOption.bind(this), 200);
 			return;
 		}
 		var editoption = $('editsearchoption');
-		IS_Event.stopObserving(editoption, 'mousedown', this._showEditSearchOption.bind(this));
+		IS_Event.stopObserving(editoption, 'mousedown', this._buildEditSearchOption.bind(this));
 		
 		searchTd = editoption.parentNode;
-		IS_Event.observe(editoption, 'mousedown', function(e){Element.show('searchoption'); Event.stop(e);});
-		IS_Event.observe(document.body, 'mousedown', function(){Element.hide('searchoption'); }, true);
 		
 		var searchoption = $.DIV({id:"searchoption",style:"fontSize:14px;border:1px solid gray;width:300px;backgroundColor:#FFF;display:none;position:absolute;zIndex:999;padding:5px;"});
 		
-		IS_Event.observe(searchoption, 'mousedown', function(e){Element.show('searchoption'); Event.stop(e);});
 		if(Browser.isIE){
 			var pos = Position.cumulativeOffset(searchTd);
 			searchoption.style.top = pos[1] + searchTd.offsetHeight;
@@ -357,13 +354,41 @@ IS_Portal.SearchEngines = {
 			selectsearchsitediv.appendChild($.DIV({},$.INPUT({type:'checkbox', value:searchId, defaultChecked:this._selectedList.include(searchId) }),title));
 		}
 		searchTd.appendChild(searchoption);
-		Element.show('searchoption');
+
+		IS_Event.observe(editoption, 'mousedown', this._showSearchOption.bind(this));
+
+		var closer = $.DIV({
+			  id:'searchOptionCloser',
+			  className:'widgetMenuCloser'
+			});
+		document.body.appendChild( closer );
+		IS_Event.observe(closer, 'mousedown', function(){
+			Element.hide('searchoption');
+			Element.hide('searchOptionCloser');
+			IS_Portal.behindIframe.hide();
+	  	}, true);
+		
+		this._showSearchOption();
 	},
 	
 	loadConf:function(){
 		if(this.isLoading)return;
 		this.isLoading = true;
 		this._loadConfig(true);
+	},
+
+	_showSearchOption:function(){
+		var winX = Math.max(document.body.scrollWidth, document.body.clientWidth);
+		var winY = Math.max(document.body.scrollHeight, document.body.clientHeight);
+
+		var closer = $('searchOptionCloser');
+		closer.style.width = winX;
+		closer.style.height = winY;
+		closer.style.display = "";
+
+		var searchOptionSpan = $('searchoption');
+		Element.show(searchOptionSpan);
+		IS_Portal.behindIframe.show(searchOptionSpan);
 	},
 	
 	_readSearchEngineConfig : function(req){
