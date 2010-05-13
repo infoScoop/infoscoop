@@ -5,7 +5,7 @@
 <%@page import="org.infoscoop.service.PreferenceService" %>
 <%
 String staticContentURL = PropertiesService.getHandle().getProperty("staticContentURL"); 
-staticContentURL = Pattern.compile("^http(s)://").matcher(staticContentURL.trim()).matches() ? staticContentURL : "../..";
+staticContentURL = Pattern.compile("^http(s)?://.*").matcher(staticContentURL.trim()).matches() ? staticContentURL : "../..";
 String uid = (String) session.getAttribute("Uid");
 %>
 <html>
@@ -18,6 +18,8 @@ String uid = (String) session.getAttribute("Uid");
 		<script>
 		IS_Portal = {};
 		</script>
+		<script src="../resources/resourceBundle.jsp"></script>
+		<!--start script-->
 		<script src="<%= staticContentURL %>/js/lib/prototype-1.6.0.3.js"></script>
 		<script src="<%= staticContentURL %>/js/lib/syntacticx-livepipe-ui/livepipe.js"></script>
 		<script src="<%= staticContentURL %>/js/lib/syntacticx-livepipe-ui/tabs.js"></script>
@@ -25,9 +27,10 @@ String uid = (String) session.getAttribute("Uid");
 		<script src="<%= staticContentURL %>/js/utils/ajax304.js"></script>
 		<script src="<%= staticContentURL %>/js/utils/ajaxpool/ajax.js"></script>
 		<script src="<%= staticContentURL %>/js/utils/domhelper.js"></script>
-		<script src="<%= staticContentURL %>/js/resources/resourceBundle.jsp"></script>
+		<script src="<%=staticContentURL%>/js/utils/msg.js"></script>
 		<script src="<%= staticContentURL %>/js/search/SearchEngine.js"></script>
 		<script src="<%= staticContentURL %>/js/utils/EventDispatcher.js"></script>
+		<!--end script-->
 		<script>
 		var localhostPrefix = "<%=request.getScheme()%>://localhost:<%=request.getServerPort()%><%=request.getContextPath()%>";
 		var hostPrefix = findHostURL(false) + "../../..";
