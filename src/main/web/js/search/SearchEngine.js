@@ -466,6 +466,7 @@ IS_Portal.SearchEngines = {
 		IS_Widget.setPreferenceCommand('searchOption', Object.toJSON({sitelist: selectSiteList, displayNewWindow:displayNewWindow}));
 
 		this._selectedList = selectSiteList;
+		this.searchOption.displayNewWindow = displayNewWindow;
 		this._needRebuildTabs = true;
 		Element.hide('searchoption');
 	},
