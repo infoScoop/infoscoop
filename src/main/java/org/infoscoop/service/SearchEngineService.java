@@ -353,8 +353,8 @@ public class SearchEngineService {
 			searchObj.put("id", id);
 			searchObj.put("title", searchEl.getAttribute("title"));
 			searchObj.put("retrieveUrl", searchEl.getAttribute("retrieveUrl"));
-			String defaultSearchSite = searchEl.getAttribute("defaultSearchSite");
-			searchObj.put("defaultSearchSite", (defaultSearchSite != null ? "TRUE".equalsIgnoreCase(defaultSearchSite) : false) );
+			String defaultSelected = searchEl.getAttribute("defaultSelected");
+			searchObj.put("defaultSelected", (defaultSelected != null ? "TRUE".equalsIgnoreCase(defaultSelected) : false) );
 
 			// countRule
 			Element countRule = (Element) XPathAPI.selectSingleNode(searchEl,

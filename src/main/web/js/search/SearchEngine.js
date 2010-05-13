@@ -290,7 +290,7 @@ IS_Portal.SearchEngines = {
 	_rssSearchEngines : [],
 	_defaultSearchOption : {
 	  newwindow:false,
-	  defaultSearchSiteList:[]
+	  defaultSelectedList:[]
 	},
 	_selectedList:[],
 	_number: 0,
@@ -426,14 +426,14 @@ IS_Portal.SearchEngines = {
 			}
 			var searchId = configs[i].getAttribute("id");
 			
-			var defaultSearchSiteAttr = configs[i].getAttribute("defaultSearchSite");
-			var defaultSearchSite = false;
-			if(defaultSearchSiteAttr && /true/i.test(defaultSearchSiteAttr)){
-				this._defaultSearchOption.defaultSearchSiteList.push(searchId);
-				defaultSearchSite = true;
+			var defaultSelectedAttr = configs[i].getAttribute("defaultSelected");
+			var defaultSelected = false;
+			if(defaultSelectedAttr && /true/i.test(defaultSelectedAttr)){
+				this._defaultSearchOption.defaultSelectedList.push(searchId);
+				defaultSelected = true;
 			}
 			this._searchEngineConfs[searchId] = [searchId, title, retrieveUrl, originalUrl, encoding, pageEncoding, countRule, useProxySearch, useProxyRedirect];
-			var searchEngineEnable = prefsSitelist ? prefsSitelist.include(searchId) : defaultSearchSite ;
+			var searchEngineEnable = prefsSitelist ? prefsSitelist.include(searchId) : defaultSelected ;
 			if( searchEngineEnable ){
 				this._searchEngines.push( new IS_SearchEngine(searchId, title, retrieveUrl, originalUrl, encoding, pageEncoding, countRule, useProxySearch, useProxyRedirect) );
 				this._selectedList.push(searchId);
@@ -476,6 +476,19 @@ IS_Portal.SearchEngines = {
 		var selectSiteList = [];
 		var newSearchEngines = [];
 		var enableSearchEngines = this._searchEngines;
+
+		var emptySearchSite = true;
+		for(var i = 0; i < searchSiteCheckBoxList.length; i++){
+			if(searchSiteCheckBoxList[i].checked){
+				emptySearchSite = false;
+				break;
+			}
+		}
+		if(emptySearchSite){
+			alert(IS_R.ms_selectSearchSite);
+			return;
+		}
+		
 		for(var i = 0; i < searchSiteCheckBoxList.length; i++){
 			var searchId = searchSiteCheckBoxList[i].value;
 
@@ -505,9 +518,9 @@ IS_Portal.SearchEngines = {
 
 	_resetSearchOptions : function(){
 		var searchSiteCheckBoxList = $('selectsearchsitefieldset').getElementsByTagName('input');
-		var defaultSearchSiteList = this._defaultSearchOption.defaultSearchSiteList;
+		var defaultSelectedList = this._defaultSearchOption.defaultSelectedList;
 		for(var i = 0; i < searchSiteCheckBoxList.length; i++){
-			searchSiteCheckBoxList[i].checked = defaultSearchSiteList.include(searchSiteCheckBoxList[i].value);
+			searchSiteCheckBoxList[i].checked = defaultSelectedList.include(searchSiteCheckBoxList[i].value);
 		}
 		$('displaySearchResultsOnNewWindow').checked = this._defaultSearchOption.newwindow;
 	},
@@ -536,11 +549,12 @@ IS_Portal.SearchEngines = {
 			setTimeout(this.buildSearchTabs.bind(this, keyword,urllist), 200);
 			return;
 		}
-		console.log(this._searchEngines);
+
 		if(this._searchEngines.length == 0){
 			alert(IS_R.ms_searchNotAvailable);
 			return;
 		}
+		
 		if(Browser.isSafari1 && IS_Portal.isTabLoading()){
 			return;
 		}

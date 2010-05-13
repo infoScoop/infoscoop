@@ -142,6 +142,21 @@ ISA_SearchEngine.prototype.classDef = function() {
 	}
 
 	function commitSearchEngine(currentModal) {
+		var defaultSelectedCheckboxList = document.getElementsByClassName('defaultSelectedCheckbox');
+		var emptyDefaultSelected = true;
+		for(var i = 0; i < defaultSelectedCheckboxList.length;i++){
+			if(defaultSelectedCheckboxList[i].checked){
+				emptyDefaultSelected = false;
+				break;
+			}
+		}
+		if(emptyDefaultSelected){
+			setTimeout(function(){
+				alert(ISA_R.ams_pleaseDefaultSelectedSearchSite);
+				currentModal.close();
+			},10);
+			return;
+		}
 		var url = findHostURL() + "/services/searchEngine/commitSearch";
 		var opt = {
 			method: 'get' ,
@@ -207,6 +222,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 				title : ISA_R.alb_newTitle,
 				retrieveUrl : "http://",
 				encoding : "",
+				defaultSelected : true,
 				parentTagName : "defaultSearch"
 			};
 			insertSearchEngine(jsonObj);
@@ -371,9 +387,9 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// 
 		engineTr.appendChild(
-			$.TD({style:"width:40px;textAlign:center;"}, $.INPUT({type:'checkbox', defaultChecked:defaultSearchItem.defaultSearchSite,
+			$.TD({style:"width:40px;textAlign:center;"}, $.INPUT({className:'defaultSelectedCheckbox',type:'checkbox', defaultChecked:defaultSearchItem.defaultSelected,
 			  onclick:{handler:function(){
-				  ISA_SearchEngine.updateSearchEngineItem(defaultSearchItem.id, 'defaultSearchSite', ''+this.checked);
+				  ISA_SearchEngine.updateSearchEngineItem(defaultSearchItem.id, 'defaultSelected', ''+this.checked);
 			  }
 			  }}))
 			);
