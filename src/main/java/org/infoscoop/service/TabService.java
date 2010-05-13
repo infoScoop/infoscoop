@@ -403,7 +403,7 @@ public class TabService {
 //		WidgetDAO.newInstance().addTab(newTab);
 		
 		// Delete differences here
-		// Delete existing (can not update key）
+		// Delete existing (can not update key��
 		tabDAO.deleteTab( staticTab );
 //		WidgetDAO.newInstance().updateTab( tab );
 		
@@ -529,6 +529,7 @@ public class TabService {
 		Element prefEl = preference.getElement();
 		PreferenceService.removeProperty(prefEl, "freshDays");
 		PreferenceService.removeProperty(prefEl, "mergeconfirm");
+		PreferenceService.removeProperty(prefEl, "searchOption");
 		preference.setElement(prefEl);
 		if(tabId == null){
 			WidgetDAO.newInstance().deleteWidget( uid );
