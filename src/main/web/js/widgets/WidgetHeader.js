@@ -490,7 +490,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		div.border = "0";
 		div.className = 'headerIcon';
 		div.id = "hi_" + widget.id + "_" + type;
-		div.title = alt;console.info(imgUrl);
+		div.title = alt;
 		if(imgUrl){
 			var url = '';
 			if(/__IS_GADGET_BASE_URL__/.test(imgUrl) && widget.gadgetType){
