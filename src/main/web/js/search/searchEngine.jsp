@@ -7,6 +7,9 @@
 String staticContentURL = PropertiesService.getHandle().getProperty("staticContentURL"); 
 staticContentURL = Pattern.compile("^http(s)?://.*").matcher(staticContentURL.trim()).matches() ? staticContentURL : "../..";
 String uid = (String) session.getAttribute("Uid");
+String keyword = request.getParameter("keyword");
+if(keyword != null)
+	keyword = new String(keyword.getBytes("iso-8859-1"), "UTF-8");
 %>
 <html>
 	<head>
@@ -45,7 +48,7 @@ String uid = (String) session.getAttribute("Uid");
 		}
 		function search(){
 			IS_Portal.SearchEngines.init();
-			IS_Portal.SearchEngines.buildSearchTabs('<%= request.getParameter("keyword") %>');
+			IS_Portal.SearchEngines.buildSearchTabs('<%= keyword %>');
 		}
 		</script>
 	</head>
