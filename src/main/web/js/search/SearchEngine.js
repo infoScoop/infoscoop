@@ -426,10 +426,12 @@ IS_Portal.SearchEngines = {
 			}
 			var searchId = configs[i].getAttribute("id");
 			
-			var defaultSearchSite = configs[i].getAttribute("defaultSearchSite");
-			if(defaultSearchSite && /true/i.test(defaultSearchSite))
-			  this._defaultSearchOption.defaultSearchSiteList.push(searchId);
-
+			var defaultSearchSiteAttr = configs[i].getAttribute("defaultSearchSite");
+			var defaultSearchSite = false;
+			if(defaultSearchSiteAttr && /true/i.test(defaultSearchSiteAttr)){
+				this._defaultSearchOption.defaultSearchSiteList.push(searchId);
+				defaultSearchSite = true;
+			}
 			this._searchEngineConfs[searchId] = [searchId, title, retrieveUrl, originalUrl, encoding, pageEncoding, countRule, useProxySearch, useProxyRedirect];
 			var searchEngineEnable = prefsSitelist ? prefsSitelist.include(searchId) : defaultSearchSite ;
 			if( searchEngineEnable ){
