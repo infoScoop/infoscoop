@@ -153,7 +153,13 @@ ISA_PortalAdmins.prototype.classDef = function() {
 			ISA_Admin.isUpdated = true;
 			var tbodyElement = $("rolesTbody");
 			if(tbodyElement) {
-				tbodyElement.appendChild(self.buildRolesList({name:ISA_R.alb_newRole,permission:"[]",isAllowDelete:true}, true));
+				var newRole = {
+					id: (is_userId + new Date().getTime()),
+					name: ISA_R.alb_newRole,
+					permission:"[]",
+					isAllowDelete:true
+				};
+				tbodyElement.appendChild(self.buildRolesList(newRole, true));
 			}
 		}
 		rolesDiv.appendChild(addroleDiv);
@@ -230,8 +236,8 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		roleTitleInput.className = "portalAdminInput";
 		roleTitleInput.type = "text";
 		roleTitleInput.style.width = "100%";
+		roleTitleInput.id = ISA_Admin.replaceUndefinedValue(role.id);
 		roleTitleInput.value = ISA_Admin.replaceUndefinedValue(role.name);
-		roleTitleInput.role = role;
 		IS_Event.observe(roleTitleInput, 'change', function(){ISA_Admin.isUpdated = true}, false, "_adminAdmins");
 		
 		td.appendChild(roleTitleInput);
@@ -301,7 +307,6 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		}
 		
 		if (isNew) {
-			role.id = (is_userId + new Date().getTime());
 			ISA_PortalAdmins.portalRolesList.push(role);
 		}
 		
@@ -533,7 +538,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		inputs = $$(".adminRoles .portalAdminInput");
 		inputs.each(function(input){
 			var name = input.value;
-			input.role.name = name;
+			this.getRole(input.id).name = name;
 		});
 
 		$$(".roleSelectTd").each(function(selectTd){
@@ -623,6 +628,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		
 		// Check with input of role settings
 		inputs = $$(".adminRoles .portalAdminInput");
+		
 		var roleIndex = 0;
 		var isSuccess = true;
 		inputs.each(function(input){
@@ -642,7 +648,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 					input.select();
 				}
 			}
-			input.role.name = name;
+			this.getRole(input.id).name = name;
 		}.bind(this));
 		if(!isSuccess) return;
 		
@@ -715,4 +721,9 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		AjaxRequest.invoke(url, opt);
 	};
 
+	this.getRole = function(roleId){
+		return ISA_PortalAdmins.portalRolesList.detect(function(role){
+			return role.id == roleId;
+		});
+	}
 };
