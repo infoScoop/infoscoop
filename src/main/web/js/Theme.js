@@ -21,9 +21,13 @@ IS_Portal.theme = {
 	  "./skin/imgs/theme/tartan_03.png",
 	  "./skin/imgs/theme/border_01.png",
 	  "./skin/imgs/theme/stripe_01.png",
-	  "./skin/imgs/theme/border_02.png",
-	  "./skin/imgs/theme/japan_01.jpg",
-	  "./skin/imgs/theme/flower.gif"
+	  "./skin/imgs/theme/bg006_05.gif",
+	  "./skin/imgs/theme/bg055_02.gif",
+	  "./skin/imgs/theme/bg056_02.gif",
+	  "./skin/imgs/theme/bg057_04.gif",
+	  "./skin/imgs/theme/bg058_04.gif",
+	  "./skin/imgs/theme/bg073_09.gif",
+	  "./skin/imgs/theme/bg074_09.gif"
 	  ],
 	
   widgetHeaderImages: [
@@ -166,4 +170,4 @@ IS_Portal.theme = {
 	  
 	  this._setWidgetTheme(opt.widget);
   }
-}
+};
