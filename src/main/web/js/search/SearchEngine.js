@@ -296,12 +296,18 @@ IS_Portal.SearchEngines = {
 	_number: 0,
 	_searchEngineConfs : {},
 	_needRebuildTabs : false,
+	_openWindowList : [],
 	init : function() {
 		this.isNewWindow = $('panels') ? false : true;
 		var editoption = $('editsearchoption');
 		if(editoption){
 			IS_Event.observe(editoption, 'mousedown', this._buildEditSearchOption.bind(this));
 		}
+		
+		Event.observe(window, 'unload',  function(){
+			for(var i = 0; i < this._openWindowList.length; i++)
+			  this._openWindowList[i].close();
+		}.bind(this));
 	},
 
 	_buildEditSearchOption:function(){
@@ -343,7 +349,7 @@ IS_Portal.SearchEngines = {
 				{style:"margin:5px;"},
 				$.INPUT({type:'button',value:IS_R.lb_saveSettings,onclick:{handler:this._saveSearchOptions.bind(this)}}),
 				$.INPUT({type:'button',value:IS_R.lb_resetToDefaultSettings,onclick:{handler:this._resetSearchOptions.bind(this)}}),
-				$.INPUT({type:'button',value:IS_R.lb_cancel,onclick:{handler:function(){Element.hide('searchoption');}}})
+				$.INPUT({type:'button',value:IS_R.lb_cancel,onclick:{handler:this._closeSearchOption.bind(this)}})
 				  )
 			);
 
@@ -362,11 +368,7 @@ IS_Portal.SearchEngines = {
 			  className:'widgetMenuCloser'
 			});
 		document.body.appendChild( closer );
-		IS_Event.observe(closer, 'mousedown', function(){
-			Element.hide('searchoption');
-			Element.hide('searchOptionCloser');
-			IS_Portal.behindIframe.hide();
-	  	}, true);
+		IS_Event.observe(closer, 'mousedown', this._closeSearchOption.bind(this), true);
 		
 		this._showSearchOption();
 	},
@@ -389,6 +391,12 @@ IS_Portal.SearchEngines = {
 		var searchOptionSpan = $('searchoption');
 		Element.show(searchOptionSpan);
 		IS_Portal.behindIframe.show(searchOptionSpan);
+	},
+
+	_closeSearchOption:function(){
+		Element.hide('searchoption');
+		Element.hide('searchOptionCloser');
+		IS_Portal.behindIframe.hide();
 	},
 	
 	_readSearchEngineConfig : function(req){
@@ -509,11 +517,12 @@ IS_Portal.SearchEngines = {
 		this._searchEngines = newSearchEngines;
 		var displayNewWindow = $('displaySearchResultsOnNewWindow').checked;
 		IS_Widget.setPreferenceCommand('searchOption', Object.toJSON({sitelist: selectSiteList, displayNewWindow:displayNewWindow}));
-
+		IS_Request.CommandQueue.fireRequest();
+		
 		this._selectedList = selectSiteList;
 		this.searchOption.displayNewWindow = displayNewWindow;
 		this._needRebuildTabs = true;
-		Element.hide('searchoption');
+		this._closeSearchOption();
 	},
 
 	_resetSearchOptions : function(){
@@ -541,7 +550,8 @@ IS_Portal.SearchEngines = {
 	
 	buildSearchTabs : function(keyword, urllist){
 		if(!this.isNewWindow && this.searchOption.displayNewWindow){
-			window.open("js/search/searchEngine.jsp?keyword=" + encodeURIComponent(keyword));
+			var searchResultWindow = window.open("js/search/searchEngine.jsp?keyword=" + encodeURIComponent(keyword));
+			this._openWindowList.push(searchResultWindow);
 			return;
 		}
 		if(!this.isLoaded){
@@ -705,9 +715,8 @@ IS_Portal.SearchEngines = {
 		/*for(var i = 0; i < tempEngines.length; i++) {
 			tempEngines[i].processSearch();
 		}*/
-		if(tempEngines.length > 0)
+		if(!this.isNewWindow && tempEngines.length > 0)
 			IS_Portal.adjustIframeHeight(null, tempEngines[0].iframe);
-//		IS_Portal.sidePanel.destroyDragEvent();
 		
 		//Register keywords on database when searching
 		if (keywordEntry && getBooleanValue(keywordEntry)) {
@@ -783,7 +792,7 @@ IS_Portal.SearchEngines = {
 			tempEngines[this._number++].processSearch();
 		}
 	},
-	
+
 	clearTemp : function() {
 		var tabsUl = document.getElementById("temp_search-tabs");
 		if(tabsUl)
