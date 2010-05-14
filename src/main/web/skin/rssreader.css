@@ -2,12 +2,14 @@
 .infoScoop .RssReader .rssItem {
 	word-break: break-all;
 	font-size:85%;
+	padding-left: 5px;
 }
 
 .infoScoop .RssReader .rssPubDate {
 	color:gray;
 	font-size:80%;
 	word-break:break-all;
+	padding-left: 7px;
 }
 .infoScoop .RssReader .rssCategoryList{
 	background:url(./imgs/tag_blue.gif) center left no-repeat;

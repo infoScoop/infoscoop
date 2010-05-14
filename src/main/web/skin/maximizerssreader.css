@@ -2,6 +2,11 @@
 .infoScoop .maximize.RssReader .rssItem {
 	word-break: break-all;
 	font-size:85%;
+	padding-left: 2px;
+}
+
+.infoScoop .maximize.RssReader .rssPubDate {
+	padding-left: 3px;
 }
 
 .infoScoop .maximize.RssReader .maximizeRssItemList {
