@@ -1070,9 +1070,10 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 		if( closer ) closer.style.display = "none";
 		
 		IS_Portal.behindIframe.hide();
-		
+
+		var eventEl = Event.element(e);
 		// Forcus remains when using IE
-		if( Browser.isIE )
+		if( Browser.isIE && eventEl.type != 'input')
 			document.body.focus();
 	}
 	
