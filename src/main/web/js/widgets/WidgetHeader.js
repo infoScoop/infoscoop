@@ -1059,12 +1059,13 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 		var closer = $(this.eventKey + "_closer");
 		
 		IS_Event.stopObserving( window,'resize',this.handleHideMenu );
+		/*
 		if( e ) {
 			var element = Event.element( e );
 			if( element && (Element.childOf( element, menu ) || selectMenu && Element.childOf( element,selectMenu ) ||
 				menu.style.display == "none")) return;
 		}
-		
+		*/
 		if( menu ) menu.style.display = "none";
 		if( closer ) closer.style.display = "none";
 		
