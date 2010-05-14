@@ -388,8 +388,8 @@ ISA_SearchEngine.prototype.classDef = function() {
 		// 
 		engineTr.appendChild(
 			$.TD({style:"width:40px;textAlign:center;"}, $.INPUT({className:'defaultSelectedCheckbox',type:'checkbox', defaultChecked:defaultSearchItem.defaultSelected,
-			  onclick:{handler:function(){
-				  ISA_SearchEngine.updateSearchEngineItem(defaultSearchItem.id, 'defaultSelected', ''+this.checked);
+			  onchange:{handler:function(e){
+				  ISA_SearchEngine.updateSearchEngineItem(defaultSearchItem.id, 'defaultSelected', ''+Event.element(e).checked);
 			  }
 			  }}))
 			);
@@ -684,7 +684,6 @@ ISA_SearchEngine.prototype.classDef = function() {
 };
 
 ISA_SearchEngine.updateSearchEngineItem = function(id, name, value){
-	console.log(id, name,value);
 	var updateData = {};
 	updateData[name] = value;
 	var url = findHostURL() + "/services/searchEngine/updateSearchEngineItem";
