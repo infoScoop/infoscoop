@@ -688,7 +688,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		
 		return parseInt( itemsnum );
 	}
-	this.getHeightChangeUnit = function() { // henna nihonngo  -.-
+	this.getHeightChangeUnit = function() {
 		if( this.rssContentView )
 			return this.rssContentView.render.getDefaultHeight( this.rssContentView.renderContext );
 		

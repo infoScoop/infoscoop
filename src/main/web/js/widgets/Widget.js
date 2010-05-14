@@ -358,7 +358,7 @@ IS_Widget.prototype.classDef = function() {
 			self.elm_widgetContent.style.height = widgetHeight - headerHeight;
 			self.elm_widgetContent.style.overflow = "auto";//Autocomplete misalignment problem occurs if "overflow=hidden" is set in IE
 			if(!Browser.isIE)self.elm_widgetContent.style.overflowX = "hidden";//Fix 484
-			self.staticWidgetHeight = container.offsetHeight - headerHeight;
+			self.staticWidgetHeight = widgetHeight - headerHeight;
 		}else{
 			self.elm_widgetContent.style.height = "50px";
 			setTimeout(this._setStaticWidgetHeight.bind(this), 10);
@@ -400,6 +400,7 @@ IS_Widget.prototype.classDef = function() {
 		this.elm_widget = divWidget;
 		divWidget.className = "widget";
 		divWidget.id = self.id;
+		if(isStatic) divWidget.style.margin = 0;
 		
 		var divWidgetShade = document.createElement("div");
 		this.elm_widgetShade = divWidgetShade;
