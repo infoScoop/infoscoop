@@ -321,7 +321,7 @@ IS_Portal.SearchEngines = {
 		
 		searchTd = editoption.parentNode;
 		
-		var searchoption = $.DIV({id:"searchoption",style:"fontSize:14px;border:1px solid gray;width:300px;backgroundColor:#FFF;display:none;position:absolute;zIndex:999;padding:5px;"});
+		var searchoption = $.DIV({id:"searchoption",style:"fontSize:14px;border:1px solid gray;width:300px;backgroundColor:#FFF;display:none;position:absolute;zIndex:50;padding:5px;"});
 		
 		if(Browser.isIE){
 			var pos = Position.cumulativeOffset(searchTd);
