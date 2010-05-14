@@ -18,6 +18,11 @@ String windowId = request.getParameter("windowid");
 		<meta http-equiv="Cache-Control" content="no-cache">
 		<meta http-equiv="Expires" content="Thu, 01 Dec 1994 16:00:00 GMT">
 		<link rel="stylesheet" type="text/css" href="<%= staticContentURL %>/skin/styles.css">
+		<style>
+			body {
+				overflow: auto;
+			}
+		</style>
 		<script>
 		IS_Portal = {};
 		var imageURL = "<%= staticContentURL %>/skin/imgs/";
