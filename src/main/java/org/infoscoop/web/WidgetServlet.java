@@ -2,10 +2,8 @@ package org.infoscoop.web;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -18,21 +16,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.WidgetDAO;
-import org.infoscoop.dao.model.Preference;
 import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.Widget;
-import org.infoscoop.service.PreferenceService;
 import org.infoscoop.service.TabService;
 import org.infoscoop.util.I18NUtil;
-import org.infoscoop.util.Xml2Json;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 public class WidgetServlet extends HttpServlet {
 
