@@ -2,7 +2,6 @@
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@page import="java.util.regex.*"%>
 <%@page import="org.infoscoop.service.PropertiesService"%>
-<%@page import="org.infoscoop.service.PreferenceService" %>
 <%
 String staticContentURL = PropertiesService.getHandle().getProperty("staticContentURL"); 
 staticContentURL = Pattern.compile("^http(s)?://.*").matcher(staticContentURL.trim()).matches() ? staticContentURL : "../..";
@@ -42,13 +41,10 @@ if(keyword != null)
 		var searchEngineURL = searchEngineURL || localhostPrefix+"/schsrv";
 		var ajaxRequestTimeout = is_getPropertyInt(ajaxRequestTimeout, 15000);
 		var ajaxRequestRetryCount = is_getPropertyInt(ajaxRequestRetryCount,2);
-		var preference = <%= PreferenceService.getHandle().getPreferenceJSON(uid) %>
-		if(preference.property){
-			IS_Portal.SearchEngines.searchOption = preference.property.searchOption ? eval('(' + preference.property.searchOption+ ')') : {};
-		}
 		function search(){
+			IS_Portal.SearchEngines.searchOption = searchOption;
 			IS_Portal.SearchEngines.init();
-			IS_Portal.SearchEngines.buildSearchTabs('<%= keyword %>');
+			IS_Portal.SearchEngines.buildSearchTabs('<%= keyword %>',urllist);
 		}
 		</script>
 	</head>

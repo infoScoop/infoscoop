@@ -137,7 +137,6 @@ IS_SearchEngine.prototype.classDef = function() {
 			searchUrl = this.originalUrl + keyword;
 		}
 		var searchResultUrl = is_getProxyUrl(searchUrl, "SearchResult",this.encoding );
-		
 		this.redirectUrl = useProxyRedirect ? searchResultUrl : searchUrl;
 		if(useProxySearch && countRule && countRule.method && countRule.value){
 			var headers = ["MSDPortal-Cache", "Cache-NoResponse"];
@@ -405,7 +404,7 @@ IS_Portal.SearchEngines = {
 
 		var newwindowAttr = root.getAttribute('newwindow');
 		this._defaultSearchOption['newwindow'] = newwindowAttr ? /true/i.test(newwindowAttr) : false;
-		if(!this.searchOption.displayNewWindow)
+		if(typeof(this.searchOption.displayNewWindow) == undefined)
 		  this.searchOption.displayNewWindow = this._defaultSearchOption['newwindow'];
 
 		var prefsSitelist = this.searchOption.sitelist;
@@ -517,10 +516,12 @@ IS_Portal.SearchEngines = {
 		this._searchEngines = newSearchEngines;
 		var displayNewWindow = $('displaySearchResultsOnNewWindow').checked;
 		IS_Widget.setPreferenceCommand('searchOption', Object.toJSON({sitelist: selectSiteList, displayNewWindow:displayNewWindow}));
-		IS_Request.CommandQueue.fireRequest();
 		
 		this._selectedList = selectSiteList;
+		
 		this.searchOption.displayNewWindow = displayNewWindow;
+		this.searchOption.sitelist = selectSiteList;
+		
 		this._needRebuildTabs = true;
 		this._closeSearchOption();
 	},
@@ -551,6 +552,8 @@ IS_Portal.SearchEngines = {
 	buildSearchTabs : function(keyword, urllist){
 		if(!this.isNewWindow && this.searchOption.displayNewWindow){
 			var searchResultWindow = window.open("js/search/searchEngine.jsp?keyword=" + encodeURIComponent(keyword));
+			searchResultWindow.urllist = urllist;
+			searchResultWindow.searchOption = IS_Portal.SearchEngines.searchOption;
 			this._openWindowList.push(searchResultWindow);
 			return;
 		}
@@ -644,6 +647,7 @@ IS_Portal.SearchEngines = {
 					} else {
 						var retrieveUrl = url.replace(rssSearchEngine.rssPattern, rssSearchEngine.retrieveUrl);
 						var engine = new IS_SearchEngine(
+							rssSearchEngine.id,
 							urllist[i].title,
 							retrieveUrl,
 							originalUrl,
