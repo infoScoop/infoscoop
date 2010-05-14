@@ -705,15 +705,12 @@ IS_Portal.SearchEngines = {
 			this.next(tempEngines);
 		}
 
-		function adjustNewWindowIframeHeight(iframe){
-			iframe.style.height = getWindowSize(false) - findPosY(iframe) - (Browser.isIE ? 8 : 2);
-		}
 		if( tempEngines.length > 0){
 			if( !this.isNewWindow )
 			  IS_Portal.adjustIframeHeight(null, tempEngines[0].iframe);
 			else{
-				setTimeout(adjustNewWindowIframeHeight.bind(this, tempEngines[0].iframe),200);
-				IS_Event.observe(window, 'resize', adjustNewWindowIframeHeight.bind(this, tempEngines[0].iframe));
+				setTimeout(this._adjustNewWindowIframeHeight.bind(this, tempEngines[0].iframe),200);
+				IS_Event.observe(window, 'resize', this._adjustNewWindowIframeHeight.bind(this, tempEngines[0].iframe));
 			}
 		}
 		//Register keywords on database when searching
@@ -721,6 +718,10 @@ IS_Portal.SearchEngines = {
 			var cmd = new IS_Commands.AddKeywordCommand(keyword);
 			IS_Request.LogCommandQueue.addCommand(cmd);
 		}
+	},
+	
+	_adjustNewWindowIframeHeight: function(iframe){
+		iframe.style.height = getWindowSize(false) - findPosY(iframe) - (Browser.isIE ? 8 : 2);
 	},
 	
 	_buildTabsUl : function(tabsID, searchPanel) {
@@ -840,8 +841,12 @@ IS_Portal.SearchEngines = {
 				  tempEngines[i].renderResult();
 				Element.addClassName( tab,"selected");
 				tabContent.style.display = "";
-				if($('panel'))
+				if( !this.isNewWindow )
 				  IS_Portal.adjustIframeHeight(null, tempEngines[i].iframe);
+				else{
+					setTimeout(this._adjustNewWindowIframeHeight.bind(this, tempEngines[i].iframe),200);
+					IS_Event.observe(window, 'resize', this._adjustNewWindowIframeHeight.bind(this, tempEngines[i].iframe));
+				}
 			}else{
 				Element.removeClassName( tab,"selected");
 				tabContent.style.display = "none";
