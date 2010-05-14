@@ -1071,7 +1071,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		this.lazyAdjusting = true;
 		setTimeout( this.adjustMaximizeHeight.bind( this ),100 );
 	}
-	this.adjustMaximizeHeight = function() {console.log("#adjustMaximizeHeight");
+	this.adjustMaximizeHeight = function() {
 		this.lazyAdjusting = false;
 		
 		var maximizeHeight = getWindowSize(false) -findPosY( widget.elm_widget ) -65;
@@ -1118,6 +1118,8 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 			rssDetailTd.style.height = detailHeight;
 			if( Browser.isFirefox )
 				rssDetailTable.style.display = detailTdDisplay;
+			
+			widget.elm_widget.style.height = maximizeHeight;
 		}catch(e){
 
 			msg.warn( IS_R.getResource( IS_R.ms_errorOnWindowResize,[e]));

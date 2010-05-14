@@ -144,7 +144,7 @@ IS_Widget.Maximize.createMaximizeWidget = function( wigetObj ) {
 		this._adjustMaximizeHeight = function() {
 			this.adjustTimerY = undefined;
 			if( this.elm_widget ) {
-				var height = getWindowHeight() -findPosY( this.elm_widget ) -( Browser.isIE ? 0:60 );
+				var height = getWindowHeight() -findPosY( this.elm_widget ) -( Browser.isIE ? 5:60 );
 				if( !isNaN( height ) && height >= 0 )
 					this.elm_widget.style.height = height;
 			}

@@ -5,6 +5,10 @@
 	background-color: #FFF;
 }
 
+.infoScoop #maximize-panel .widget {
+	margin-bottom: 0;
+}
+
 .infoScoop .subWidget {
 	clear:both;
 	width:100%;
