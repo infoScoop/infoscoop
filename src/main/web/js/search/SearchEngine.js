@@ -114,11 +114,12 @@ IS_SearchEngine.prototype.classDef = function() {
 		this.iframe = searchIframe;
 		searchIframe.id = this.name + "_frame";
 		searchIframe.name = this.name + "_frame";
+		
 		searchIframe.style.width = "100%";
 		searchIframe.style.height = "768px";
-		searchIframe.style.margin = "2px";
 		searchIframe.scrolling = "auto";
 		searchIframe.style.border = "0 none white";
+		
 		resultDiv.appendChild(searchIframe);
 		this.container.appendChild(resultDiv);
 	}
@@ -295,18 +296,13 @@ IS_Portal.SearchEngines = {
 	_number: 0,
 	_searchEngineConfs : {},
 	_needRebuildTabs : false,
-	_openWindowList : [],
+	_searchResultsWindowInfo: {},
 	init : function() {
 		this.isNewWindow = $('panels') ? false : true;
 		var editoption = $('editsearchoption');
 		if(editoption){
 			IS_Event.observe(editoption, 'mousedown', this._buildEditSearchOption.bind(this));
 		}
-		
-		Event.observe(window, 'unload',  function(){
-			for(var i = 0; i < this._openWindowList.length; i++)
-			  this._openWindowList[i].close();
-		}.bind(this));
 	},
 
 	_buildEditSearchOption:function(){
@@ -551,10 +547,9 @@ IS_Portal.SearchEngines = {
 	
 	buildSearchTabs : function(keyword, urllist){
 		if(!this.isNewWindow && this.searchOption.displayNewWindow){
-			var searchResultWindow = window.open("js/search/searchEngine.jsp?keyword=" + encodeURIComponent(keyword));
-			searchResultWindow.urllist = urllist;
-			searchResultWindow.searchOption = IS_Portal.SearchEngines.searchOption;
-			this._openWindowList.push(searchResultWindow);
+			var windowId = new Date().getTime();
+			this._searchResultsWindowInfo[windowId] = {urllist:urllist};
+			window.open("js/search/searchEngine.jsp?windowid=" + windowId  + "&keyword=" + encodeURIComponent(keyword) );
 			return;
 		}
 		if(!this.isLoaded){
@@ -571,6 +566,7 @@ IS_Portal.SearchEngines = {
 		if(Browser.isSafari1 && IS_Portal.isTabLoading()){
 			return;
 		}
+
 		if(!this.isNewWindow)
 			IS_Portal.CommandBar.changeIframeView();
 		
@@ -606,16 +602,8 @@ IS_Portal.SearchEngines = {
 			IS_Portal.widgetDisplayUpdated();
 			IS_Portal.closeIFrame();
 			Element.hide('panels');
+			IS_Portal.refresh.cancel();
 		}
-
-		if(!urllist && this._searchEngines.length == 0 || urllist && this._rssSearchEngines.length == 0){
-			// Reload if loading config file for searching fails
-			this._loadConfig(false);
-			return;
-		}
-		
-		if(!this.isNewWindow)
-		  IS_Portal.refresh.cancel();
 		
 		this.clearTemp();
 		
@@ -716,12 +704,18 @@ IS_Portal.SearchEngines = {
 		for(var i = 0; i < parallelCount; i++) {
 			this.next(tempEngines);
 		}
-		/*for(var i = 0; i < tempEngines.length; i++) {
-			tempEngines[i].processSearch();
-		}*/
-		if(!this.isNewWindow && tempEngines.length > 0)
-			IS_Portal.adjustIframeHeight(null, tempEngines[0].iframe);
-		
+
+		function adjustNewWindowIframeHeight(iframe){
+			iframe.style.height = getWindowSize(false) - findPosY(iframe) - (Browser.isIE ? 8 : 2);
+		}
+		if( tempEngines.length > 0){
+			if( !this.isNewWindow )
+			  IS_Portal.adjustIframeHeight(null, tempEngines[0].iframe);
+			else{
+				setTimeout(adjustNewWindowIframeHeight.bind(this, tempEngines[0].iframe),200);
+				IS_Event.observe(window, 'resize', adjustNewWindowIframeHeight.bind(this, tempEngines[0].iframe));
+			}
+		}
 		//Register keywords on database when searching
 		if (keywordEntry && getBooleanValue(keywordEntry)) {
 			var cmd = new IS_Commands.AddKeywordCommand(keyword);

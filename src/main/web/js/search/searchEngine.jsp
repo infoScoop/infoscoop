@@ -9,6 +9,7 @@ String uid = (String) session.getAttribute("Uid");
 String keyword = request.getParameter("keyword");
 if(keyword != null)
 	keyword = new String(keyword.getBytes("iso-8859-1"), "UTF-8");
+String windowId = request.getParameter("windowid");
 %>
 <html>
 	<head>
@@ -42,7 +43,8 @@ if(keyword != null)
 		var ajaxRequestTimeout = is_getPropertyInt(ajaxRequestTimeout, 15000);
 		var ajaxRequestRetryCount = is_getPropertyInt(ajaxRequestRetryCount,2);
 		function search(){
-			IS_Portal.SearchEngines.searchOption = searchOption;
+			IS_Portal.SearchEngines.searchOption = opener.IS_Portal.SearchEngines.searchOption;
+			var urllist = opener.IS_Portal.SearchEngines._searchResultsWindowInfo['<%= windowId %>'].urllist;
 			IS_Portal.SearchEngines.init();
 			IS_Portal.SearchEngines.buildSearchTabs('<%= keyword %>',urllist);
 		}
