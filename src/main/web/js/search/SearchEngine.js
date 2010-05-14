@@ -286,6 +286,7 @@ IS_SearchEngine.prototype.classDef = function() {
 }
 
 IS_Portal.SearchEngines = {
+	searchOption : {},
 	_searchEngines : [],
 	_rssSearchEngines : [],
 	_defaultSearchOption : {
