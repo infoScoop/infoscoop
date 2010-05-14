@@ -170,14 +170,12 @@
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="rsa.js"/>
 			<filelist dir="${src.main.web}/js/lib" files="extras-array.js"/>
 			<filelist dir="${src.main.web}/js/lib" files="html-sanitizer-minified.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="Request.js"/>
+			<filelist dir="${src.main.web}/js/lib/prototype-window-1.3/" files="window.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="Validator.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="CalendarInput.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="groupSettingModal.js"/>
 			<filelist dir="${src.main.web}/js" files="Portal.js"/>
 			<filelist dir="${src.main.web}/js" files="DragWidget.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="CalendarInput.js"/>
-			<filelist dir="${src.main.web}/js/lib/prototype-window-1.3/" files="window.js"/>
-			<filelist dir="${src.main.web}/js/commands" files="UpdatePropertyCommand.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="groupSettingModal.js"/>
 			<filelist dir="${src.main.web}/js" files="Tab.js"/>
 			<filelist dir="${src.main.web}/js" files="WidgetsMap.js"/>
 			<filelist dir="${src.main.web}/js" files="WidgetsContainer.js"/>
@@ -232,6 +230,8 @@
 			<filelist dir="${src.main.web}/js/lib/date" files="date.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="msg.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="EventDispatcher.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="Request.js"/>
+			<filelist dir="${src.main.web}/js/commands" files="UpdatePropertyCommand.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type js --charset UTF-8 -o &quot;${build.main}/js/dist/Portal-core-${build.version}.js&quot; &quot;${build.main}/js/dist/Portal-core.js.tmp&quot;"/>

@@ -20,6 +20,7 @@ String windowId = request.getParameter("windowid");
 		<link rel="stylesheet" type="text/css" href="<%= staticContentURL %>/skin/styles.css">
 		<script>
 		IS_Portal = {};
+		var imageURL = "<%= staticContentURL %>/skin/imgs/";
 		</script>
 		<script src="../resources/resourceBundle.jsp"></script>
 		<!--start script-->
@@ -29,19 +30,22 @@ String windowId = request.getParameter("windowid");
 		<script src="<%= staticContentURL %>/js/utils/utils.js"></script>
 		<script src="<%= staticContentURL %>/js/utils/ajax304.js"></script>
 		<script src="<%= staticContentURL %>/js/utils/ajaxpool/ajax.js"></script>
+		<script src="<%=staticContentURL%>/js/utils/Request.js"></script>
 		<script src="<%= staticContentURL %>/js/utils/domhelper.js"></script>
 		<script src="<%=staticContentURL%>/js/utils/msg.js"></script>
 		<script src="<%= staticContentURL %>/js/search/SearchEngine.js"></script>
 		<script src="<%= staticContentURL %>/js/utils/EventDispatcher.js"></script>
+		<script src="<%=staticContentURL%>/js/commands/UpdatePropertyCommand.js"></script>
 		<!--end script-->
 		<script>
+		<jsp:include page="/prpsrv" flush="true" />
 		var localhostPrefix = "<%=request.getScheme()%>://localhost:<%=request.getServerPort()%><%=request.getContextPath()%>";
 		var hostPrefix = findHostURL(false) + "../../..";
 		var proxyServerURL = hostPrefix + "/proxy";
-		var imageURL = "<%= staticContentURL %>/skin/imgs/";
 		var searchEngineURL = searchEngineURL || localhostPrefix+"/schsrv";
 		var ajaxRequestTimeout = is_getPropertyInt(ajaxRequestTimeout, 15000);
 		var ajaxRequestRetryCount = is_getPropertyInt(ajaxRequestRetryCount,2);
+		IS_Request.LogCommandQueue = opener.IS_Request.LogCommandQueue;
 		function search(){
 			IS_Portal.SearchEngines.searchOption = opener.IS_Portal.SearchEngines.searchOption;
 			var urllist = opener.IS_Portal.SearchEngines._searchResultsWindowInfo['<%= windowId %>'].urllist;
