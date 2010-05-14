@@ -1306,6 +1306,7 @@ IS_Portal.buildPanel = function(panelNumber, type){
 	
 	// dynamic
 	var dynamicPanel = document.createElement("div");
+	dynamicPanel.style.clear = "both";
 	td.appendChild(dynamicPanel);
 	dynamicPanel.id = "dynamic-panel"+panelNumber;
 	var dynamicDiv = document.createElement("div");
