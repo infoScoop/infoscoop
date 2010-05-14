@@ -1516,6 +1516,10 @@ IS_Widget.prototype.classDef = function() {
 	this.adjustMaximize = function(){
 		Position.prepare();
 		var panelsDiv = $('panels');
+		
+		if(fixedPortalHeader && Browser.isIE)
+			IS_Portal.tabs[IS_Portal.currentTabId].panel.style.height = "auto";
+		
 		var pos = Position.cumulativeOffset(panelsDiv);
 		this.elm_widget.style.top=pos[1];
 		this.elm_widget.style.left=pos[0];
