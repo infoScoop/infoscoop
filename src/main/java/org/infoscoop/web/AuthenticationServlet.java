@@ -20,7 +20,6 @@ import org.infoscoop.dao.model.AuthCredential;
 import org.infoscoop.service.AuthCredentialService;
 import org.infoscoop.service.PropertiesService;
 import org.infoscoop.util.RSAKeyManager;
-import org.infoscoop.util.SpringUtil;
 
 public class AuthenticationServlet extends HttpServlet {
 
@@ -166,8 +165,7 @@ public class AuthenticationServlet extends HttpServlet {
 			String logMsg = "authentication failed. ";
 			log.error(logMsg, e);
 			
-			String resourceId = e.getResourceId();
-			session.setAttribute("errorMsg", (resourceId != null)? resourceId : "ms_invalidUsernameOrPassword");
+			session.setAttribute("errorMsg", "ms_invalidUsernameOrPassword");
 			//getServletContext().getRequestDispatcher(errorPath).forward(request, response);
 			((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
 		} catch (Exception e) {
