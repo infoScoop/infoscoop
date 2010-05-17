@@ -1,0 +1,603 @@
+body {margin : 0px ;padding : 0px ;}
+body {margin : 0 ;padding : 0 ;/* font-family : osaka, arial ; */}
+
+#admin-body {
+	width : 99% ;
+	border : 0px solid #fff ;
+	margin : 0 5px;
+	padding-top: 2px;
+}
+
+#admin-leftbox {
+	background-color : #336699 ;
+	color : #ffffff ;
+	margin : 0 ;
+	padding : 0;
+	border-bottom: 5px solid #EEE;
+}
+
+#admin-leftbox #admin-leftbox-title {
+	font-size : 18px ;
+	_font-size : x-medium;
+	text-decoration : none ;
+	padding-top : 5px ;
+	font-weight : bold ;
+	border : none ;
+}
+
+#admin-leftbox #admin-leftbox-navigator {
+	padding-top : 5px ;
+	margin-left: 5px;
+	width: auto;
+}
+
+#admin-leftbox #admin-leftbox-navigator a {
+/*
+	background-image : url(../images/menu_on.gif) ;
+	background-repeat : no-repeat ;
+*/
+	font-size : 13px ;
+	_font-size : x-small ;
+	text-decoration : none ;
+	margin-right: 0px;
+	padding : 0 10px ;
+	font-weight : bold ;
+	border : none ;
+	line-height : 180% ;
+}
+#admin-leftbox-navigator li a.tab {
+	background-color: #336699 !important;
+	color: white;
+}
+#admin-leftbox-navigator li a.tab.active {
+	color: #555 !important;
+	background-color: #EEE !important;
+}
+#admin-leftbox-navigator li a.tab span {
+	position: static !important;
+	float: left;
+	
+	white-space: nowrap;
+	word-break: keep-all;
+	
+	cursor: pointer;
+}
+#admin-leftbox-navigator #tab_information {
+	display: none;
+}
+
+a{text-decoration: none;}
+a:link {color:#0000cc;}
+a:visited { color:#551a8b;}
+a:active { color:#ff0000;}
+a:hover{text-decoration: underline;}
+
+.iconButton {
+	font-size:14px;
+	cursor:pointer;
+	margin-left:7px;
+}
+
+.treemenuNavigator{
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	background-color: #eeeeee;
+}
+.button:link { color:#000;}
+.button:visited { color:#000;}
+.button:active { color:#000;}
+.button:hover{
+	text-decoration: underline;
+	color:#f00;
+}
+
+.addProperty {
+	cursor:pointer;
+	font-size:0.82em;
+	color:#7777cc;
+	margin:2px;	
+}
+
+.delProperty {
+	cursor:pointer;
+	font-size:0.82em;
+	color:#7777cc;
+	margin:2px;	
+}
+
+.defaultPanelGroup {
+	width: 900px;
+	clear:both;
+}
+
+.defaultPanelWidgetsGroup {
+	width: 700px;
+	clear:both;
+}
+
+.headerProperties, .headerDefaultPanel, .headerPortalAdmins {
+	border : 1px solid gray;
+	background-color : #eeeeee;
+	text-align : center;
+}
+
+.rowDefaultPanel {
+	border : 1px solid gray;
+	padding: 3px;
+	margin:0px;
+	margin-bottom:-1px;
+	border-top:0px solid #fff;
+	
+	/* //�ł̃R�����g��IE�݂̂ɓK�p����� */
+//	margin-bottom:0px;
+}
+
+.searchEngineTitle, .propertiesTitle, .proxyTitle, .i18nTitle, .portalAdminsTitle {
+	font-size : 18px ;
+	_font-size : x-medium;
+	font-weight: bolder;
+	clear:both;
+}
+
+.i18nCategoryField {
+	display: block;
+	width: 18em;
+	margin-top: 1em;
+}
+.i18nCategoryTitle {
+	font-size : 16px ;
+	font-weight: bolder;
+}
+.i18nCategory {
+}
+.i18nLinkTd {
+	text-align: center !important;
+}
+
+.contentsSearchEngine, .contentsProxyConfig, .contentsDefaultPanel {
+	overflow: hidden;
+	word-break: break-all;
+	font-size : 13px ;
+	_font-size : x-small ;
+}
+
+.propertiesGroup, .portalAdminsGroup {
+	width: 80%;
+	clear:both;
+}
+
+.propertiesGroup .string input {
+	width: 100%;
+}
+
+.advancedProperty {
+	color: #FF0000;
+}
+
+.portalAdminInput {
+	border: 2px solid #54ce43;
+	padding-left: 3px;
+}
+
+/* begin defaultPanel Tab */
+
+ul.tabs#panelTabs {
+	float:left;
+	border-bottom: 1px solid gray;
+	
+	margin: 0px;
+	padding: 0px;
+}
+ul.tabs#panelTabs a.tab {
+}
+ul.tabs#panelTabs a.tab.selected span.title {
+}
+ul.tabs#panelTabs a.tab.selected.deletable span.title {
+	padding-right: 0.1em;
+	_height: 20px !important;
+}
+ul.tabs#panelTabs a.tab.selected.deletable span.title img {
+	border: none;
+	padding: 0px;
+	margin: 0px;
+	width: 16px;
+	height: 16px;
+	padding-right: 0.1em;
+}
+/* end defaultPanel Tab */
+
+.panelRoleTd, .portalLayoutTd {
+	padding: 0px 1px;
+	border-left: 1px dashed #555;
+	text-align: left;
+	cursor: pointer;
+}
+
+#panelStaticWidgetsTextarea, #panelDynamicWidgetsTextarea, #panelLayoutTextarea, #portalLayoutTextarea {
+	font-size : 13px ;
+	_font-size : x-small ;
+}
+
+#panelStaticLayoutModal .staticLayout {
+	width: 22%;
+	float: left;
+	margin-top: 5px;
+	margin-left: 5px;
+	padding: 5px;
+	border: solid 1px #000;
+	cursor: pointer;
+}
+
+#modal_container {
+	padding:5px;
+	background-color:#fff;
+	border:1px solid #666;
+	/*font-family:"Lucida Grande",Verdana;*/
+	font-size:12px;
+	color:#333;
+	text-align:left;
+}
+
+#modal_overlay {
+	background-color:#000;
+}
+
+#modal_container.adminTreeMenu,
+#modal_container.adminSearchEngine,
+#modal_container.adminDefaultPanel,
+#modal_container.adminWidgetConfModal,
+#modal_container.adminWidgetInstModal {
+	width:94%;
+	height:auto;
+	overflow:visible;
+}
+
+.adminFragment {
+	width:90%;
+/*	height:auto;*/
+	height:80%;
+	overflow:visible;
+}
+
+#modal_container iframe{
+	width:100%;
+	height:85%;
+	border: 1px outset #ffffff;
+	overflow:visible;
+}
+
+#modal_container.commitDialog {
+	width:200px;
+	text-align:center;
+	height:auto;
+	overflow:visible;
+	font-size:1.1em;
+}
+.modal_button{
+	width : 6em;
+}
+
+#upLoadDummyFrame {
+	display: none;
+}
+
+#adminWidgetConfContentTable{
+	width: 100%;
+}
+
+.adminAnnotation {
+	font-size: 60%;
+	color: #555;
+}
+.editOthersConfListSet {
+	/*margin-left: 10%;*/
+}
+.editConfListPanel {
+	padding: 0px;
+}
+
+.editConfListTable, .panelRoleTable, .portalLayoutTable {
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	empty-cells: show;
+	border: 1px solid #555;
+}
+.editConfListTr, .panelRoleTr, .portalLayoutTr {
+	background-color: #eee;
+}
+.selectedEditConf .editConfListTr, .panelRoleSelected .panelRoleTr, .portalLayoutSelected .portalLayoutTr {
+	background-color: #bdb;
+}
+.editConfListIconTd {
+	width: 20px;
+	padding: 0px 1px;
+	border-right: 1px dashed #555;
+	text-align: center;
+}
+.editConfListTitleTd {
+	overflow: hidden;
+	width: 100%;
+	padding: 0px 2px;
+	cursor: pointer;
+}
+.editConfListAddTd {
+	width: 20px;
+	padding: 0px 1px;
+	border-left: 1px dashed #555;
+	text-align: center;
+}
+.editConfListTitleText {
+	/*cursor: pointer;*/
+}
+
+.editConfListText {
+	font-style: bold;
+}
+
+.previewTitle {
+	font-weight: bold;
+	font-size: 80%;
+	color: #555;
+	margin-bottom: 0.7em;
+}
+.errorPreview {
+	color: #f00;
+}
+
+.editWidgetConfContent {
+    padding: 5px;
+	width: 100%;
+	height: 100%;
+}
+.addWidgetInputTable, .editWidgetConfTable {
+	font-size: 90%;
+	color: #333;
+}
+.editTitleTd{
+	text-align: right;
+}
+
+#adminWidgtConfContent legend {
+	font-size: 90%;
+	color: #666;
+	font-weight: bold;
+}
+
+.authorizationTable{
+}
+.authorizationTable th{
+	color: #0066B3;
+	background-color: #BFE4FF;
+}
+.modalContentHeader{
+	color: #0066B3;
+	background-color: #BFE4FF;
+}
+
+.indicatorOverlay {
+	position:absolute;
+	left:0px;
+	top:0px;
+	z-index:90000;
+	-moz-opacity:0.4;
+	opacity:0.4;
+	filter:alpha(opacity=40);
+	background-color:#FFF;
+}
+.nowLoading {
+	background : url(./imgs/indicator_verybig.gif) top center no-repeat;
+	width : 128px;
+	height : 128px;
+	position : absolute;
+	z-index: 10000;
+}
+
+#portalLayouts{
+	clear:both;
+	//clear:none;
+}
+
+#proxyConfigHeader {
+	/*background-image:url(imgs/skin_light_header.png);*/
+background-color:#eeeeee;
+}
+
+#proxyConfigHeader td{
+background-color:#eeeeee;
+border:1px solid;
+padding:2px;
+border-color:#FDFDFD #93AFBA #93AFBA #FDFDFD;
+font-family:Tahoma;
+font-size:12px;
+font-weight:bold;
+color:#055A78;
+vertical-align:middle;
+text-align:center;
+}
+.proxyConfigList td{
+border:1px solid;
+border-color:#FDFDFD #93AFBA #93AFBA #FDFDFD;
+background-color:transparent;
+font-family:Tahoma;
+font-size:12px;
+word-break:break-all; 
+text-align:left;
+background-color:#FFFFFF;
+color:#000000;
+}
+
+.dynamicPanelWidgetList{
+/*background-color:#FFFFFF;*/
+/*color:#000000;*/
+}
+.gadgetResources {
+}
+.gadgetResources fieldset {
+	padding: 0.25em;
+}
+.gadgetResources .button {
+	margin: 2px;
+	padding: 2px;
+	padding-left: 18px;
+	cursor: pointer;
+	background-color: white;
+	display: inline-block;
+}
+.gadgetResources .commands {
+	display: inline-block;
+	float: right;
+	text-align: right;
+	line-height: 1.5em;
+}
+.gadgetResources .button.add {
+	background: url( imgs/note_add.gif ) left center no-repeat;
+}
+.gadgetResources .button.update {
+	background: url( imgs/edit.gif ) left center no-repeat;
+}
+.gadgetResources .button.upload {
+	background: url( imgs/upload.gif ) left center no-repeat;
+}
+.gadgetResources .button.delete {
+	background: url( imgs/trash.gif ) left center no-repeat;
+}
+.gadgetResources .button.download {
+	background: url( imgs/download.gif ) left center no-repeat;
+}
+.gadgetResources .toolbar {
+	text-align: right;
+}
+.gadgetResources .button.save,
+.gadgetResources .button.reload {
+	margin-left: 0.5em;
+}
+
+.gadgetResources ul {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+	margin-bottom: 5px;
+	padding-left: 18px;
+}
+.gadgetResources li {
+	clear: both;
+}
+.gadgetResources .resource {
+	font-size: 90%;
+	border-bottom: 1px solid gray;
+}
+.gadgetResources .directory,
+.gadgetResources .file {
+	display: inline-block;
+	margin: 2px;
+	padding: 2px;
+	padding-left: 18px;
+	line-height: 1.5em;
+	_width: 5em;
+}
+.gadgetResources .directory {
+	background: url( imgs/folder.png ) left center no-repeat;
+}
+.gadgetResources .file {
+	background: url( imgs/page_white.png ) left center no-repeat;
+}
+.gadgetResources .file.image {
+	background: url( imgs/picture.png ) left center no-repeat;
+}
+.gadgetResources .file.gadget {
+	background: url( imgs/widget_add.gif ) left center no-repeat;
+}
+.gadgetResources textarea {
+	width: 40em;
+	height: 20em;
+	clear: both;
+}
+.gadgetResources .header {
+	color: white;
+	font-size: 125%;
+	font-weight: bold;
+	background-color: #336699;
+	line-height: 1.5em;
+}
+.gadgetResources .uploadPanel {
+	margin: 2px;
+}
+.gadgetResources .upload-description {
+	font-size: 90%;
+	margin: 0.5em 0.25em;
+}
+.gadgetResources .upload-description div {
+	margin: 0.25em;
+}
+.gadgetResources .description {
+	line-height: 2em;
+}
+.gadgetResources .uploadPanel form {
+	margin: 0.5em 0px;
+	text-align: center;
+}
+.gadgetResources .ok-cancel  {
+	margin-top: 1em;
+	text-align: center;
+}
+.gadgetResources .ok-cancel input {
+	margin-right: 5px;
+}
+
+.resetConfigurations-description {
+	padding: 0.25em;
+	font-size: 1.25em;
+	background-color: #EEEEEE;
+}
+.resetConfigurations-form {
+	margin: 1em 0.5em;
+}
+.resetConfigurations-commands  {
+	text-align: center;
+}
+.resetConfigurations-commands input {
+	margin-right: 5px;
+}
+
+/** for livepipe.js Control.Tabs **/
+#tabContainer ul.subsection_tabs{
+	list-style:none;
+	margin:0 0 5px 0;
+	padding:0;
+	clear:both;
+	border-bottom:1px solid #ccc;
+	float: left;
+}
+
+#tabContainer ul.subsection_tabs li.tab{
+	float:left;
+	margin-right:7px;
+	text-align:center
+	white-space:nowrap;
+	width:100px;
+}
+
+#tabContainer ul.subsection_tabs li.tab a{
+	display:block;
+	height:20px;
+	padding:0 6px 0 6px;
+	background-color:#fff;
+	color:#666;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+#tabContainer ul.subsection_tabs li.tab a:hover{
+	color:#666
+}
+
+#tabContainer ul.subsection_tabs li.tab a.active{
+	background-color:#ddd
+}
+
+#admins,#roles {
+	clear: both;
+}

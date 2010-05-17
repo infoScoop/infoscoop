@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="holidays" class="org.infoscoop.admin.command.HolidaysServiceCommand">
+		<property name="service"><ref bean="HolidaysService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="i18n"></prop>
+				<prop key="*">.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="i18n" class="org.infoscoop.admin.command.ServiceCommand">
+		<property name="service"><ref bean="I18NService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="i18n"></prop>
+				<prop key="*">.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="portalAdmins" class="org.infoscoop.admin.command.ServiceCommand">
+		<property name="service"><ref bean="PortalAdminsService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="admins"></prop>
+				<prop key="*">^update.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="forbiddenUrls" class="org.infoscoop.admin.command.ServiceCommand">
+		<property name="service"><ref bean="ForbiddenURLService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="forbiddenURL"></prop>
+				<prop key="*">^update.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="properties" class="org.infoscoop.admin.command.PropertiesServiceCommand">
+		<property name="service"><ref bean="PropertiesService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="properties"></prop>
+				<prop key="*">^update.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="portalLayout" class="org.infoscoop.admin.command.ServiceCommand">
+		<property name="service"><ref bean="PortalLayoutService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="portalLayout"></prop>
+				<prop key="menu"></prop>
+				<prop key="menu_tree"></prop>
+				<prop key="*">.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="widgetConf" class="org.infoscoop.admin.command.WidgetConfServiceCommand">
+		<property name="service"><ref bean="WidgetConfService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="widget"></prop>
+				<prop key="*">^update.*|^insert.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="searchEngine" class="org.infoscoop.admin.command.ServiceCommand">
+		<property name="service"><ref bean="searchEngineService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="search"></prop>
+				<prop key="*">.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="proxyConf" class="org.infoscoop.admin.command.ServiceCommand">
+		<property name="service"><ref bean="ProxyConfService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="proxy"></prop>
+				<prop key="*">.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="tabLayout" class="org.infoscoop.admin.command.ServiceCommand">
+		<property name="service"><ref bean="TabLayoutService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="defaultPanel"></prop>
+				<prop key="*">.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="menu" class="org.infoscoop.admin.command.SiteAggregationServiceCommand">
+		<property name="service"><ref bean="siteAggregationMenuService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="menu"></prop>
+				<prop key="menu_tree">^addTopMenuItem|^orderLock|^removeTopMenuItem|^replaceTopOrder</prop>
+				<prop key="*">^add.*|^update.*|^remove.*|^commit.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="gadget" class="org.infoscoop.admin.command.GadgetServiceCommand">
+		<property name="service"><ref bean="GadgetService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="widget"></prop>
+				<prop key="*">^update.*|^insert.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="gadgetResource" class="org.infoscoop.admin.command.GadgetServiceCommand">
+		<property name="service"><ref bean="GadgetResourceService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="widget"></prop>
+				<prop key="*">.*</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="information" class="org.infoscoop.admin.command.ServiceCommand">
+		<property name="service"><ref bean="InformationService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="*"></prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="tab" class="org.infoscoop.admin.command.ServiceCommand">
+		<property name="service"><ref bean="TabService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="*"></prop>
+			</props>
+		</property>
+	</bean>
+</beans>

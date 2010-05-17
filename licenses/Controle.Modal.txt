@@ -1,0 +1,8 @@
+/**
+ * @author Ryan Johnson <ryan@livepipe.net>
+ * @copyright 2007 LivePipe LLC
+ * @package Control.Modal
+ * @license MIT
+ * @url http://livepipe.net/projects/control_modal/
+ * @version 1.2.10
+ */
