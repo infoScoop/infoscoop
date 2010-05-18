@@ -165,7 +165,8 @@ public class AuthenticationServlet extends HttpServlet {
 			String logMsg = "authentication failed. ";
 			log.error(logMsg, e);
 			
-			session.setAttribute("errorMsg", "ms_invalidUsernameOrPassword");
+			String resourceId = e.getResourceId();
+			session.setAttribute("errorMsg", (resourceId != null)? resourceId : "ms_invalidUsernameOrPassword");
 			//getServletContext().getRequestDispatcher(errorPath).forward(request, response);
 			((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
 		} catch (Exception e) {
