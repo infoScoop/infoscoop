@@ -77,6 +77,9 @@ public class WidgetConfService {
 				builder.setEntityResolver(NoOpEntityResolver.getInstance());
 				List<Gadget> gadgets = GadgetDAO.newInstance().selectConfsByType(gadgetTypes);
 				for(Gadget gadget: gadgets){
+					if (!gadget.getName().equalsIgnoreCase(
+							gadget.getType() + ".xml"))
+						continue;
 					WidgetConfUtil.GadgetContext context = new WidgetConfUtil.GadgetContext().setUrl("g_update__" + gadget.getType());
 					Document gadgetDoc = builder.parse(new ByteArrayInputStream(gadget.getData()));
 					JSONObject gadgetJson = WidgetConfUtil.gadget2JSONObject( gadgetDoc.getDocumentElement(), context.getI18NConveter(locale, gadgetDoc),

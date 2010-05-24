@@ -101,7 +101,9 @@ public class GadgetDAO extends HibernateDaoSupport {
 	}
 
 	public List<Gadget> selectConfsByType(List<String> types) {
-		return super.getHibernateTemplate().findByCriteria( DetachedCriteria.forClass( Gadget.class )
-				.add( Expression.in( Gadget.PROP_NAME, types )));
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Gadget.class).add(
+						Expression.in(Gadget.PROP_NAME, types)).add(
+						Expression.eq(Gadget.PROP_PATH, "/")));
 	}
 }
