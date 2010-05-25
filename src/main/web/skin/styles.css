@@ -72,7 +72,7 @@ a:hover
 }
 
 body.fixedPortalHeader {
-  overflow: hidden;
+  overflow: auto;
 }
 
 body.fixedPortalHeader #panels .panel{
