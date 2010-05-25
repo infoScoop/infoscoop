@@ -3,7 +3,7 @@
 	<panel type="StaticPanel">
 		<widget column="1" href="" id="p_1_w_1" title="infoScoop OpenSource site" type="RssReader">
 			<data>
-				<property name="url">http://www.infoscoop.org/index.php/en/news.feed</property>
+				<property name="url">http://www.infoscoop.org/index.php/zh/news.feed</property>
 			</data>
 		</widget>
 

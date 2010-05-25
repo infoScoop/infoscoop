@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widgets uid="default" tabId="0" tabName="ホーム" tabType="static">
+<widgets uid="default" tabId="0" tabName="%{lb_home}" tabType="static">
 	<panel type="StaticPanel">
 		<widget column="1" href="" id="p_1_w_1" title="infoScoop OpenSource site" type="RssReader">
 			<data>
@@ -7,7 +7,7 @@
 			</data>
 		</widget>
 
-		<widget column="3" href="" id="p_1_w_5" title="カレンダー" type="Calendar" ignoreHeader="true">
+		<widget column="3" href="" id="p_1_w_5" title="Calendar" type="Calendar" ignoreHeader="true">
 			<data />
 		</widget>
 	</panel>

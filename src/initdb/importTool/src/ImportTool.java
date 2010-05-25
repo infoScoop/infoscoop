@@ -43,7 +43,7 @@ public class ImportTool {
 		public static final Map<TABLES,String> DIRECTORY_MAP;
 		static {
 			String basedir = "data/";
-			
+
 			DIRECTORY_MAP = new HashMap<TABLES, String>();
 			for( TABLES table : TABLES.values() )
 				DIRECTORY_MAP.put( table,basedir+table.name().toLowerCase());
@@ -52,7 +52,7 @@ public class ImportTool {
 			DIRECTORY_MAP.put( TABLES.I18NLOCALE,basedir+"i18nLocale");
 			DIRECTORY_MAP.put( TABLES.ACCOUNT,basedir+"accounts");
 		}
-		
+
 		private CSVBeanFactory<?> factory;
 
 		private TABLES( CSVBeanFactory<?> factory ) {
@@ -73,15 +73,15 @@ public class ImportTool {
 //		Set<TABLES> accepts = new HashSet<TABLES>( Arrays.asList( TABLES.values() ));
 		List<TABLES> accepts = new ArrayList<TABLES>();
 		String lang = null;
-		
+
 		if( args.length > 0 ) {
 			for( int i=0;i<args.length;i++ ) {
 				String arg = args[i].toUpperCase();
-				
+
 				TABLES table;
 				try {
 					table = TABLES.valueOf( arg );
-					
+
 					accepts.add( table );
 				} catch( IllegalArgumentException ex ) {
 					if( arg.equalsIgnoreCase("-lang") && i+1 < args.length ) {
@@ -95,60 +95,68 @@ public class ImportTool {
 			}
 			System.out.println("import tables "+accepts );
 		}
-		
+
 		if( accepts.size() == 0 ) {
 			System.out.println("import ALL tables.");
 			accepts.addAll( Arrays.asList( TABLES.values() ));
 		}
-		
+
 		if( lang != null )
 			System.out.println("lang set to ["+lang+"]");
-		
+
 		for( TABLES table : accepts ) {
 			try {
 				importTool.importTable( table,lang );
 			} catch( IOException ex ) {
 				System.out.println( ex.getMessage());
 				ex.printStackTrace();
-				
+
 				return;
 			}
 		}
 		System.out.println( accepts.size()+" tables imported");
 	}
-	
+
 	private ImportTool() {
 	}
 
 	private void importTable( TABLES table,String lang ) throws IOException {
 		System.out.println("import table "+table );
-		
+
 		ImportTable instance = new ImportTable( table,lang );
-		
+
 		SessionFactory sessionFactory = ( SessionFactory )context.getBean("sessionFactory");
-		
+
 		Collection<Object> beans = new ArrayList<Object>();
-		for( CSVField[] values : instance.parseCSV() )
-			beans.add( table.newBean( values ) );
-		
+		long c = 0;
+		for( CSVField[] values : instance.parseCSV() ){
+			try{
+				c++;
+				beans.add( table.newBean( values ) );
+			}catch (ArrayIndexOutOfBoundsException e) {
+				System.out.println("Exception occuerd at line " + c + ". values=" + Arrays.toString(values));
+				throw e;
+			}
+		}
+
 		org.hibernate.Session session = null;
 		Transaction transaction = null;
 		try {
 			session = sessionFactory.openSession();
 			transaction = session.beginTransaction();
-			
+
 			int n = 0;
 			for( Object bean : beans ) {
 				session.saveOrUpdate( bean );
 				n++;
 			}
-			
+
 			transaction.commit();
 			System.out.println( n +" record imported");
 		} catch( RuntimeException ex ) {
 			if( transaction != null )
 				transaction.rollback();
-			
+
 			throw ex;
 		} finally {
 			if( session != null )
@@ -161,27 +169,27 @@ class ImportTable {
 	private File importCsvFile;
 	private File langDir;
 	private File baseDir;
-	
+
 	public ImportTable( ImportTool.TABLES table,String lang ) throws IOException {
 		String base = ImportTool.TABLES.DIRECTORY_MAP.get( table );
 		if( lang != null )
 			importCsvFile = new File( base+"/"+lang+"/import.csv");
-		
+
 		if( importCsvFile == null || !importCsvFile.exists() )
 			importCsvFile = new File( base+"/import.csv");
-		
+
 		if( !importCsvFile.exists() )
 			throw new FileNotFoundException("["+base+"/import.csv] File is not found.");
-		
+
 		baseDir = importCsvFile.getParentFile();
-		
+
 		if( lang != null )
 			langDir = new File( baseDir,lang );
 	}
 	public List<CSVField[]> parseCSV() throws IOException {
 		BufferedReader r = new BufferedReader( new InputStreamReader(
 				new FileInputStream( importCsvFile ),"UTF-8"));
-		
+
 		r.mark(1);
 		int hoge = r.read();
 		if( hoge != 65279 ) {
@@ -193,6 +201,11 @@ class ImportTable {
 		CSVReader csv = new CSVReader( r );
 		String[] fields;
 		while(( fields = csv.readNext() ) != null ) {
+
+			if(fields.length == 1 && "".equals(fields[0])){
+				continue;
+			}
+
 			CSVField[] csvFields = new CSVField[ fields.length ];
 			for( int i=0;i<fields.length;i++ ) {
 				String field = fields[i];
@@ -215,7 +228,6 @@ class ImportTable {
 					csvFields[i] = new CSVField( fields[i] );
 				}
 			}
-
 			result.add( csvFields );
 		}
 
@@ -224,11 +236,11 @@ class ImportTable {
 
 	public CSVField getExternalFile( String source ) throws IOException {
 		File dataFile = findFile( source );
-		
+
 		InputStream in = new BufferedInputStream( new FileInputStream( dataFile ) );
 		byte[] buf = new byte[5120];
 		int reads = 0;
-		
+
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		while( ( reads = in.read( buf ) ) >= 0 ) {
 			baos.write( buf,0,reads );
@@ -242,13 +254,13 @@ class ImportTable {
 		File file =  new File( langDir,path );
 		if( !file.exists())
 			file = new File( baseDir,path );
-		
+
 		if( file.exists()) {
 //			System.out.println("File find at: "+file.getAbsolutePath() );
 		} else {
 //			System.out.println("File not found: "+file.getAbsolutePath() );
 		}
-		
+
 		return file;
 	}
 }
