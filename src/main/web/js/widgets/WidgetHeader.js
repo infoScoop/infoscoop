@@ -493,7 +493,10 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		div.title = alt;
 		if(imgUrl){
 			var url = '';
-			if(/http:\/\//.test(imgUrl)){
+			if(/__IS_GADGET_BASE_URL__/.test(imgUrl) && widget.gadgetType){
+				imgUrl = imgUrl.replace("__IS_GADGET_BASE_URL__", hostPrefix + '/gadget/' + widget.gadgetType)
+			}
+			if(/http[s]?:\/\//.test(imgUrl)){
 				url = imgUrl;
 			}else{
 				url = (!isCommonType(type) && widget.resourceUrl ? widget.resourceUrl : imageURL) + imgUrl;

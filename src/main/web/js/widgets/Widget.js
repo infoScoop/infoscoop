@@ -82,12 +82,15 @@ IS_Widget.prototype.classDef = function() {
 					_contentsType = 'javascript';
 					break;
 				}
+				if(this.widgetType.match(/^g_upload__(.*)\/gadget/)){
+					this.gadgetType = RegExp.$1;
+				}
 			}else{
 				_contentsType = (_contentsDef) ? _contentsDef.type : "javascript";
 			}
 			if(_contentsType == "javascript") {
 				if(this.widgetType.match(/^g_upload__(.*)\/gadget/)){
-					this.resourceUrl = typeConf.resource_url || ('.' + '/gadget/'+RegExp.$1+'/');
+					this.resourceUrl = typeConf.resource_url || ('.' + '/gadget/'+this.gadgetType+'/');
 					if(typeof IS_Widget[_contentsDef.className] == "undefined"){
 						var head = $$('head')[0];
 						head.appendChild(
