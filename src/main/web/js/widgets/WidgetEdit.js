@@ -41,8 +41,11 @@ IS_Widget.WidgetEdit = function (widget) {
 			if(!contentWidth || contentWidth < 200) contentWidth = 200;
 			var editStyle = widget.elm_widgetEditHeader.style;
 			editStyle.width = contentWidth;
-			editStyle.top = findPosY(elm_widgetContent);
-			editStyle.left = findPosX(elm_widgetContent);
+			var widgetContentPos = Position.cumulativeOffset(elm_widgetContent);
+			if(fixedPortalHeader) 
+				widgetContentPos[1] -= IS_Portal.tabs[IS_Portal.currentTabId].panel.scrollTop;
+			editStyle.top = widgetContentPos[1];
+			editStyle.left = widgetContentPos[0];
 		}
 		
 		var editNode = IS_WidgetConfiguration[widget.widgetType];

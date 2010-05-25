@@ -558,7 +558,6 @@ IS_Widget.RssReader.RssItemRender.prototype.postRender = function( ctx,rssItem,i
 IS_Widget.RssReader.RssItemRender.prototype.buildDesc = function( widget,rssDesc,rssItem ) {
 	var html = IS_Widget.RssReader.RssItemRender.getCategoryHtml(rssItem.category);
 	html += IS_Widget.RssReader.RssItemRender.normalizeDesc(rssItem.description, widget.content.rss.isIntranet);
-	console.log(html);
 	rssDesc.innerHTML = html;
 	var descLinks = rssDesc.getElementsByTagName("a");
 	if(descLinks) {
@@ -1062,8 +1061,11 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 	var windowInnerRight = (Browser.isIE)? (windowInnerWidth + scrollX) : (windowInnerWidth + scrollX - 25);
 	var windowInnerBottom = (Browser.isIE)? (windowInnerHeight + scrollY) : (windowInnerHeight + scrollY - 15);
 	
-	var itemsTop = findPosY( itemNode );
-	var itemsLeft = findPosX( itemNode );
+	var panelScrollOffset = fixedPortalHeader ? IS_Portal.tabs[IS_Portal.currentTabId].panel.scrollTop : 0;
+	
+	var xy = Position.cumulativeOffset(itemNode);
+	var itemsTop = xy[1] - panelScrollOffset;
+	var itemsLeft = xy[0];
 	if(itemsTop == 0 && itemsLeft == 0){
 		// For a case that item is unshown (order by time and category)
 		IS_Widget.RssReader.RssItemRender.hideRssDesc();
@@ -1086,7 +1088,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 	var contentScrollTop = rssContentView.elm_viewport.scrollTop;
 	var descTop = itemsTop - contentScrollTop;
 	var markTop = itemsTop - contentScrollTop + (moreTd.offsetHeight > 0 ? (moreTd.offsetHeight * 0.625 - 8) : 0);	// Place cursor on the middle of first line of title
-	var contentTop = findPosY(rssContentView.elm_content );
+	var contentTop = findPosY(rssContentView.elm_content ) - panelScrollOffset;
 	var contentHeight = rssContentView.elm_viewport.offsetHeight;
 	
 	if( (descTop+itemNode.offsetHeight) <= contentTop || (contentTop+contentHeight) <= descTop ){

@@ -370,7 +370,10 @@ IS_Widget.Calendar.DayHandler.prototype.classDef = function() {
 		divX = x;
 		divY = y - 5;
 //		detailDiv.style.top = y - 3;//Adjust cursor to be on div
-		detailDiv.style.top = findPosY(cell) + cell.offsetHeight;
+		var cellTop = findPosY(cell);
+		if(fixedPortalHeader)
+			cellTop -= IS_Portal.tabs[IS_Portal.currentTabId].panel.scrollTop;
+		detailDiv.style.top = cellTop + cell.offsetHeight;
 		
 		detailDiv.style.left = x;
 	}

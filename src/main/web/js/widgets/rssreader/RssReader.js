@@ -236,7 +236,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		}
 	}
 	
-	function handleReloadWidgetEvent(newUrl){console.info('handleReloadWidgetEvent:'+newUrl);
+	function handleReloadWidgetEvent(newUrl){
 		if(newUrl) {
 			var oldUrl = widget.getUserPref("url");
 			IS_EventDispatcher.removeListenerList('reloadWidget', oldUrl);
