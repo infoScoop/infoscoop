@@ -40,7 +40,6 @@
 	vertical-align: bottom;
     margin:0;
     padding:0;
-    font-weight:bold;
 }
 .infoScoop #tabs span.outer {
 	position:relative;
@@ -56,10 +55,14 @@
     background:url("imgs/tabright.gif") no-repeat right top;
     padding:2px 7px 2px 7px;
 	white-space:nowrap;
-    font-size:11px;
 	height:18px;
 	//height:22px;/* for IE */
 	overflow: hidden;
+}
+
+.infoScoop #tabs span.inner table {
+	height: 18px;
+	//height: 22px;/* for IE */
 }
 
 .infoScoop #tabs li .tabLoadingIcon {
@@ -105,21 +108,12 @@
 	padding-left: 0px;
 }
 .infoScoop #tabs .tab .tabTitle{
-	position:relative;
-	top:4px;
-	_top: 5px;
-    color:gray;
+	font-weight:bold;
+	font-size:11px;
+	color:gray;
 }
 .infoScoop #tabs .tab.selected .tabTitle {
     color:#627EB7;
-	top: -6px;
-	_top: -3px;
-}
-.infoScoop #tabs .tab.selected.loading .tabTitle {
-	top: -5px;
-}
-.infoScoop #tabs .tab.loading .tabTitle {
-	top: -3px;
 }
 
 .infoScoop #tabs .Tab_onHover {
@@ -195,13 +189,10 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 
 
 .infoScoop #tabs .tab .selectMenu {
-	position:relative;
 	width: 13px;
 	height: 13px;
-	margin-top: 3px;
-	margin-bottom: 3px;
-	margin-left: 4px;
-	margin-right: 1px;
+	margin: 3px 1px 3px 4px;
+	//margin-right: 8px;
 	cursor:pointer;
 	
 	display: none;
@@ -210,6 +201,14 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 	display: inline;
 }
 
+.infoScoop #tabs .tab .fixedTab {
+	width: 16px;
+	height: 16px;
+	/*margin: -8px 1px 0 -10px;*/
+	position:absolute;
+	top:0;
+	left:0;
+}
 
 .infoScoop .tabMenu {
 	position: absolute;

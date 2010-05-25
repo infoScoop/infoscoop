@@ -227,16 +227,11 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 	tab.id = "tab"+tabNumber;
 	tab.setAttribute("href",( tab.href = "#panel"+tabNumber ));
 	tab.className = "tab";
-   	
+	
 	var outerSpan = document.createElement('span');
 	outerSpan.className = 'outer';
 	var innerSpan = document.createElement('span');
 	innerSpan.className = 'inner';
-	
-	var tabLoadingIcon = document.createElement("img");
-	tabLoadingIcon.src = imageURL +"indicator.gif";
-	tabLoadingIcon.id = tab.id+"_loadingIcon";
-	tabLoadingIcon.className = "tabLoadingIcon";
 	
 	IS_EventDispatcher.addListener("tabLoadCompleted",tab.id,function() {
 			Element.removeClassName( tab,"loading");
@@ -245,44 +240,46 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 			Element.addClassName( tab,"loading");
 		},null,false );
 	
-	innerSpan.appendChild( tabLoadingIcon );
+	var tabTr = $.TR();
 	
-	// Creating tab name
-	var titleSpan = document.createElement("span");
-	titleSpan.id = tab.id + "_title";
-	titleSpan.className = "tabTitle";
-	titleSpan.appendChild( document.createTextNode( name ) );
-	innerSpan.appendChild(titleSpan);
+	tabTr.appendChild(
+		$.TD({},
+			$.IMG({src:imageURL +"indicator.gif", id:tab.id+"_loadingIcon", className:"tabLoadingIcon"})
+		)
+	);
 	
 	if(disabledDynamicPanel){
-		var refreshImg = document.createElement("img");
-		refreshImg.id = tab.id+"_selectMenu";
-		refreshImg.src = imageURL+"refresh.gif"
-		refreshImg.className = "selectMenu";
-		innerSpan.appendChild( refreshImg );
+		tabTr.appendChild(
+			$.TD({width:6},
+				$.IMG({src:imageURL+"pin-small.gif", className:"fixedTab", title:IS_R.ms_thisIsFixedTab})
+			)
+		);
+	}
+	
+	tabTr.appendChild($.TD({},
+		$.SPAN({id:tab.id + "_title", className:"tabTitle"}, name)
+	));
+	
+	if(disabledDynamicPanel){
+		var refreshImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"refresh.gif", className:"selectMenu"});
+		tabTr.appendChild($.TD({}, refreshImg));
 		IS_Event.observe(refreshImg, 'click', function(e){
-			console.info(this);
 			var tabObj = IS_Portal.tabs[this.id];
 			tabObj.refresh();
 		}.bindAsEventListener(tab), false, tab.id);
 	} else {
-		var selectMenuImg = document.createElement("img");
-		selectMenuImg.id = tab.id+"_selectMenu";
-		selectMenuImg.src = imageURL+"bullet_arrow_down.gif"
-		selectMenuImg.className = "selectMenu";
-		innerSpan.appendChild( selectMenuImg );
+		var selectMenuImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"bullet_arrow_down.gif", className:"selectMenu"});
+		tabTr.appendChild($.TD({}, selectMenuImg));
 		IS_Event.observe(selectMenuImg, 'click', IS_Portal.showTabMenu.bind(selectMenuImg, tab), false, tab.id);
 		IS_Event.observe(selectMenuImg, 'mousedown', function(e){Event.stop(e);}, false, tab.id);
 	}
 	
 	var tabOnMousedown = function(e){
-//		if(!IS_Portal.isDisplayTabTitleEditor){
-			//setTimeout(tabOnClick, 300);
-			IS_Portal.tabDrag(e, tab);
-//		}
+		IS_Portal.tabDrag(e, tab);
 	}
-	
 	IS_Event.observe(tab, 'mousedown', tabOnMousedown, false, tab.id);
+	
+	innerSpan.appendChild($.TABLE({cellPadding:0, cellSpacing:0}, $.TBODY({}, tabTr)));
 	
 	outerSpan.appendChild(innerSpan);
 	tab.appendChild(outerSpan);

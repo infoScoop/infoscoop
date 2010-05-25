@@ -1855,6 +1855,8 @@
 "js","ms_targetGroupNotFound","ALL","ALL","*There is no group to add users. Please create a group."
 "js","ms_teleconSetupRequire","ALL","ja","このウィジェットを使用するためには初期設定が必要です。<br/>検索キーワードを設定してください。"
 "js","ms_teleconSetupRequire","ALL","ALL","Initial setting is necessary to use this widget.<br/>Please enter a word to look up."
+"js","ms_thisIsFixedTab","ALL","ja","このタブは固定タブです。カスタマイズできません。"
+"js","ms_thisIsFixedTab","ALL","ALL","This tab is fixed. So you cannot custimze this."
 "js","ms_timeAlert","ALL","ja","「{0}」の時間です。"
 "js","ms_timeAlert","ALL","ALL","It is time of the \""{0}\"""
 "js","ms_timeOut","ALL","ja","タイムアウトしました。"
