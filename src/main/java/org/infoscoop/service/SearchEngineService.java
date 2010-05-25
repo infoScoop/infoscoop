@@ -363,6 +363,8 @@ public class SearchEngineService {
 				JSONObject countJson = new JSONObject();
 				countJson.put("method", countRule.getAttribute("method"));
 				countJson.put("value", countRule.getAttribute("value"));
+				String useCache = countRule.getAttribute("useCache");
+				countJson.put("useCache", (useCache !=null  ? "TRUE".equalsIgnoreCase(useCache) : false) );
 				searchObj.put("countRule", countJson);
 			}
 			// auths

@@ -750,6 +750,7 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 		if(option.count) {
 			var fMethod = $("formMethod").value;
 			var fValue = $("formValue").value;
+			var useCache = ""+ $("useCache").checked;
 
 			if(fMethod == "regexp"){
 				var error = IS_Validator.validate(fValue, {format:'regexp'}); 
@@ -766,7 +767,8 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 			updateData = Object.toJSON([
 				ISA_Admin.replaceUndefinedValue(searchEngine.id),{
 					method: fMethod,
-					value: fValue
+					value: fValue,
+					useCache: useCache
 				},"countRule"
 			]);
 		}
@@ -799,6 +801,8 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 					jsonStr += "method:" + "\"" + fMethod + "\"";
 					jsonStr += ",";
 					jsonStr += "value:" + "\"" + fValue + "\"";
+					jsonStr += ",";
+					jsonStr += "useCache:" + "\"" + useCache + "\"";
 					jsonStr += "}";
 					eval("jsonObj="+jsonStr);
 					searchEngine["countRule"] = jsonObj;
@@ -986,15 +990,25 @@ ISA_SearchEngine.EditorForm.makeCountEditForm = function(searchEngine){
 	/* Create main */
 	var editorFormTable = document.createElement("table");
 	editorFormTable.style.width = "100%";
-	contentDiv.appendChild(editorFormTable);
 	var editorFormTbody = document.createElement("tbody");
-	editorFormTable.appendChild(editorFormTbody);
 
 	// Input item:method
 	editorFormTbody.appendChild(makeMethodSelect());
 
 	// Input item:value
 	editorFormTbody.appendChild(makeValueText());
+	
+	// Input item:direct
+	editorFormTbody.appendChild(
+		$.TR({},
+			 $.TD({style:"textAlign:right;verticalAlign:top;"},ISA_R.alb_useCacheForSearchResults),
+			 $.TD({},$.INPUT({id:'useCache',type:'checkbox',defaultChecked:searchEngine.countRule.useCache}),$.DIV({style:"fontSize:80%;"},ISA_R.alb_descOfUseCacheForSearchResults))
+			   )
+		);
+	
+	editorFormTable.appendChild(editorFormTbody);
+	contentDiv.appendChild(editorFormTable);
+	
 	
 	return $.FIELDSET({},
 		$.LEGEND({}, ISA_R.alb_numberOfItems),

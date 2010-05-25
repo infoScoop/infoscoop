@@ -140,7 +140,10 @@ IS_SearchEngine.prototype.classDef = function() {
 		var searchResultUrl = is_getProxyUrl(searchUrl, "SearchResult",this.encoding );
 		this.redirectUrl = useProxyRedirect ? searchResultUrl : searchUrl;
 		if(useProxySearch && countRule && countRule.method && countRule.value){
-			var headers = ["MSDPortal-Cache", "Cache-NoResponse"];
+			
+			var headers = [];
+			if(countRule.useCache)
+			  headers = headers.concat(["MSDPortal-Cache", "Cache-NoResponse"]);
 			headers.push("MSDPortal-Select", countRule.method + "=" + encodeURIComponent(countRule.value));
 			
 			var opt = {
@@ -224,7 +227,7 @@ IS_SearchEngine.prototype.classDef = function() {
 	}
 	this.renderResult = function() {
 		if(!this.renderCompleted) {
-			if(this.cacheID)
+			if(this.cacheID && countRule.useCache)
 				this.iframe.src = hostPrefix + "/cacsrv?id=" + this.cacheID + "&url=" + encodeURIComponent(this.redirectUrl);
 			else
 				this.iframe.src = this.redirectUrl;
@@ -426,7 +429,9 @@ IS_Portal.SearchEngines = {
 			if(countEle){
 				var countMethod = countEle.getAttribute("method");
 				var countValue = countEle.getAttribute("value");
-				countRule = {method:countMethod, value:countValue};
+				var useCacheAtt = countEle.getAttribute("useCache");
+				var useCache = (useCacheAtt && /true/i.test(useCacheAtt) ) ? true : false;
+				countRule = {method:countMethod, value:countValue,useCache:useCache};
 			}
 			var searchId = configs[i].getAttribute("id");
 			
