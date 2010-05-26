@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="build-migrate" default="compile" basedir=".">
-	<property name="version" value="130to140" />
-	<property name="backup.table.sufix" value="_bak14"/>
-	<property name="target.db" value="db2"/>
-	<property name="target.db.dialect" value="org.hibernate.dialect.DB2Dialect"/>
-	<property name="target.db.jdbc.driver" value="com.ibm.db2.jcc.DB2Driver"/>
+	<property file="build.properties"/>
+	<property name="version" value="200to210" />
+	<property name="backup.table.sufix" value="_bak20"/>
+	<property name="target.db" value="mysql"/>
+	<property name="target.db.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+	<property name="target.db.jdbc.driver" value="com.mysql.jdbc.Driver"/>
 	<property name="build.migration" value="${basedir}/build/migration" />
 	<!--property name="dist.home" value="${basedir}/dist" /-->
 	<property name="src.initdb.home" value="${basedir}/src/initdb" />
@@ -59,18 +60,16 @@
 		<copy todir="${build.migration}/data/i18n">
 			<fileset dir="${src.initdb.home}/data/i18n"/>
 		</copy>
-		<copy todir="${build.migration}/data/gadget">
-			<fileset dir="${src.initdb.home}/data/gadget"/>
-		</copy>
-		<copy todir="${build.migration}/data/gadgeticon">
-			<fileset dir="${src.initdb.home}/data/gadgeticon"/>
-		</copy>
-		<copy todir="${build.migration}/data/adminrole">
-			<fileset dir="${src.initdb.home}/data/adminrole"/>
-		</copy>
 		<copy todir="${build.migration}/data/portallayout">
 			<fileset dir="${src.initdb.home}/data/portallayout"/>
 		</copy>
+		<copy todir="${build.migration}/data/proxyconfig">
+			<fileset dir="${src.initdb.home}/data/proxyconfig"/>
+		</copy>
+		<copy todir="${build.migration}/data/searchengine">
+			<fileset dir="${src.initdb.home}/data/searchengine"/>
+		</copy>
+		<antcall target="download-gadgets"/>
 		
 		<copy todir="${build.migration}/sql" filtering="true">
 			<fileset dir="${src.migration.script}/${version}/sql/${target.db}"/>
@@ -143,4 +142,12 @@
 	</target>
 	
 	<target name="all" depends="compile"/>
+	
+	<target name="download-gadgets">
+		<get src="${gadgets.url}"
+			dest="gadgets.zip" verbose="true" usetimestamp="true" />
+		
+		<unzip src="gadgets.zip" dest="${build.migration}/data/gadget" overwrite="true"/>
+		<delete file="gadgets.zip"/>
+	</target>
 </project>
