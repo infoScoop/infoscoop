@@ -187,8 +187,14 @@ CalendarInput.prototype = {
 				component.setScrollDate( component.getSelectedDate() );
 				Element.show( contents );
 				
-				contents.style.top = findPosY( input.parentNode ) +input.parentNode.offsetHeight;
-				contents.style.left = findPosX( input.parentNode ) +input.parentNode.offsetWidth-contents.offsetWidth;
+				var xy = Position.cumulativeOffset(input.parentNode);
+				
+				if(fixedPortalHeader){
+					xy[1] -= Position.realOffset(input.parentNode)[1];
+				}
+				
+				contents.style.top = xy[1] +input.parentNode.offsetHeight;
+				contents.style.left = xy[0] +input.parentNode.offsetWidth-contents.offsetWidth;
 				
 				if( IS_Portal.behindIframe )
 					IS_Portal.behindIframe.show(contents);
