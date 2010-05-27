@@ -160,22 +160,36 @@
 	<target name="compress-main" depends="prepare-main">
 
 		<concat destfile="${build.main}/js/dist/Portal.js.tmp" append="false" encoding="utf-8" fixlastline="true">
+			<!--filelist dir="${src.main.web}/js/lib/prototype-1.5.0" files="prototype.js"/-->
 			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
+			<!--filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="slider.js"/-->
+			<!--filelist dir="${src.main.web}/js/utils" files="ajax304.js"/-->
 			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
 			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
 			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="controls.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="jsbn.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="prng4.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="rng.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="rsa.js"/>
 			<filelist dir="${src.main.web}/js/lib" files="extras-array.js"/>
 			<filelist dir="${src.main.web}/js/lib" files="html-sanitizer-minified.js"/>
-			<filelist dir="${src.main.web}/js/lib/prototype-window-1.3/" files="window.js"/>
+			<!--filelist dir="${src.main.web}/js/utils" files="utils.js"/-->
+			<filelist dir="${src.main.web}/js/utils/ajaxpool" files="ajax.js"/>
+			<!--filelist dir="${src.main.web}/js" files="properties.js"/-->
+			<filelist dir="${src.main.web}/js/utils" files="Request.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="msg.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="Validator.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="CalendarInput.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="groupSettingModal.js"/>
 			<filelist dir="${src.main.web}/js" files="Portal.js"/>
 			<filelist dir="${src.main.web}/js" files="DragWidget.js"/>
+			<!--filelist dir="${src.main.web}/js/lib" files="xpath.js"/-->
+			<filelist dir="${src.main.web}/js/utils" files="CalendarInput.js"/>
+			<filelist dir="${src.main.web}/js/lib/prototype-window-1.3/" files="window.js"/>
+			<!--filelist dir="${src.main.web}/js/lib/prototype-window-1.3/" files="window_ext.js"/-->
+			<filelist dir="${src.main.web}/js/commands" files="UpdatePropertyCommand.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="EventDispatcher.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="groupSettingModal.js"/>
 			<filelist dir="${src.main.web}/js" files="Tab.js"/>
 			<filelist dir="${src.main.web}/js" files="WidgetsMap.js"/>
 			<filelist dir="${src.main.web}/js" files="WidgetsContainer.js"/>
@@ -221,17 +235,10 @@
 		
 		<concat destfile="${build.main}/js/dist/Portal-core.js.tmp" append="false" encoding="utf-8" fixlastline="true">
 			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
-			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
-			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="utils.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="domhelper.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="ajax304.js"/>
-			<filelist dir="${src.main.web}/js/utils/ajaxpool" files="ajax.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="utils.js"/>
+            <filelist dir="${src.main.web}/js/utils" files="domhelper.js"/>
 			<filelist dir="${src.main.web}/js/lib/date" files="date.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="msg.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="EventDispatcher.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="Request.js"/>
-			<filelist dir="${src.main.web}/js/commands" files="UpdatePropertyCommand.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type js --charset UTF-8 -o &quot;${build.main}/js/dist/Portal-core-${build.version}.js&quot; &quot;${build.main}/js/dist/Portal-core.js.tmp&quot;"/>
@@ -240,9 +247,22 @@
 			</classpath>
 		</java>
 		
-		<mkdir dir="${build.main}/js/search" />
+		<concat destfile="${build.main}/js/dist/Portal-SearchEngine.js.tmp" append="false" encoding="utf-8" fixlastline="true">
+			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="utils.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="ajax304.js"/>
+			<filelist dir="${src.main.web}/js/utils/ajaxpool" files="ajax.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="Request.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="domhelper.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="msg.js"/>
+			<filelist dir="${src.main.web}/js/search" files="SearchEngine.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="EventDispatcher.js"/>
+			<filelist dir="${src.main.web}/js/commands" files="UpdatePropertyCommand.js"/>
+		</concat>
 		<java jar="${yuicompressor}" fork="true">
-			<arg line="--type js --charset UTF-8 -o &quot;${build.main}/js/search/SearchEngine-${build.version}.js&quot; &quot;${src.main.web}/js/search/SearchEngine.js&quot;"/>
+			<arg line="--type js --charset UTF-8 -o &quot;${build.main}/js/dist/Portal-SearchEngine-${build.version}.js&quot; &quot;${build.main}/js/dist/Portal-SearchEngine.js.tmp&quot;"/>
 			<classpath>
 				<pathelement location="${yuicompressor}"/>
 			</classpath>
@@ -543,8 +563,7 @@
 			file="${build.main}/js/search/searchEngine.jsp"
 			match="&lt;!--start script--&gt;.*&lt;!--end script--&gt;"
 			replace="
-&lt;script src=&quot;&lt;%=staticContentURL%&gt;/js/dist/Portal-core-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;&#x0D;&#x0A;
-&lt;script src=&quot;&lt;%=staticContentURL%&gt;/js/search/SearchEngine-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
+&lt;script src=&quot;&lt;%=staticContentURL%&gt;/js/dist/Portal-SearchEngine-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
 			flags="s"
 			encoding="UTF-8"/>
 	</target>
