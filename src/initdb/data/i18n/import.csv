@@ -192,6 +192,8 @@
 "adminjs","alb_desc_widgetRefreshInterval","ALL","ALL","Auto refresh interval of each widget(second)"
 "adminjs","alb_desc_subWidgetRefreshInterval","ALL","ja","マルチRSSウィジェット内のRSSの自動更新間隔（ミリ秒）"
 "adminjs","alb_desc_subWidgetRefreshInterval","ALL","ALL","Auto refresh interval of RSS in multi RSS widget(mili minute)"
+"adminjs","alb_desc_defaultTheme","ALL","ja","ユーザが初めてログインした時に適用されるデザイン"
+"adminjs","alb_desc_defaultTheme","ALL","ALL","The design applied when a user logged in for the first time"
 "adminjs","alb_description","ALL","ja","説明"
 "adminjs","alb_description","ALL","ALL","Description"
 "adminjs","alb_destroyOldSettings","ALL","ja","テンプレートを選択すると、今までの設定は破棄されます。"

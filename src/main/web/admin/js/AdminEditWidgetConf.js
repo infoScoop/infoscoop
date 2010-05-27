@@ -821,6 +821,7 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 	  default://Nothing|hidden|string
 		var textbox = document.createElement("input");
 		textbox.type = "text";
+		textbox.style.width = '200px';
 		textbox.id = prefType + '_' + prefConf.name;
 		textbox.value = prefValue ? prefValue : "";
 		IS_Event.observe(textbox, 'change', onChange.bind(textbox, prefConf), false, "_widgetEditForm");

@@ -547,6 +547,7 @@ public class TabService {
 		PreferenceService.removeProperty(prefEl, "freshDays");
 		PreferenceService.removeProperty(prefEl, "mergeconfirm");
 		PreferenceService.removeProperty(prefEl, "searchOption");
+		PreferenceService.removeProperty(prefEl, "theme");
 		preference.setElement(prefEl);
 		if(tabId == null){
 			WidgetDAO.newInstance().deleteWidget( uid );
