@@ -31,6 +31,7 @@ var displayInlineHost = is_toUserPrefArray(is_getPropertyString(displayInlineHos
 var accessLogEntry = is_getPropertyBoolean(accessLogEntry, false);
 
 var sideMenuTabs = is_toUserPrefArray(is_getPropertyString(sideMenuTabs, "sidemenu|addContent|mySiteMap"));
+var defaultTheme = is_getPropertyString(defaultTheme, false);
 
 var hostPrefix = (isTabView)? findHostURL(false).replace(/\/tab.*/, "") : findHostURL(false);
 var proxyServerURL = hostPrefix + "/proxy";
