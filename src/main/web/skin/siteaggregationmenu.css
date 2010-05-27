@@ -255,7 +255,7 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 	height: 12px;
 	border-width: 0px;
 	background-color: transparent;
-	background: url(./img/menu/collapse_up.gif) center center no-repeat;
+	background: url(./imgs/collapse_up.gif) center center no-repeat;
 	cursor: pointer;
 }
 
@@ -264,7 +264,7 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 	height: 12px;
 	border-width: 0px;
 	background-color: transparent;
-	background: url(./img/menu/collapse.gif) center center no-repeat;
+	background: url(./imgs/collapse.gif) center center no-repeat;
 	cursor: pointer;
 }
 
