@@ -81,6 +81,8 @@ if( isPreview == null )
 	%>
     <script>
 		<jsp:include page="/prpsrv" flush="true" />
+		<jsp:include page="/session.js.jsp" flush="true" />
+		
 		var isTabView = false;
 		var imageURL = staticContentURL + "/skin/imgs/";
 
@@ -289,9 +291,6 @@ if( isPreview == null )
 		</div>
 	</body>
 	<script>
-		var scriptElm = document.createElement('script');
-		scriptElm.src = 'session.js.jsp<%if(isPreview.booleanValue()) { %>?isPreview=<%=isPreview%><%}%>';
-		document.getElementsByTagName('head')[0].appendChild(scriptElm);
 		var scriptElm = document.createElement('script');
 		scriptElm.src = 'portallayout?type=javascript';
 		document.getElementsByTagName('head')[0].appendChild(scriptElm);

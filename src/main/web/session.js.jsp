@@ -16,8 +16,6 @@
 # along with this program.  If not, see
 # <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 --%>
-
-
 <%@page import="org.infoscoop.admin.web.PreviewImpersonationFilter"%>
 <%@page import="org.w3c.util.UUID"%>
 <%@page import="org.infoscoop.service.SessionService"%>
