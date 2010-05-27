@@ -97,14 +97,14 @@
 			<param-name>excludePath</param-name>
 			<param-value>/xmlrpc,/login.jsp,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html</param-value>
 		</init-param>
-		%{loginUrlInitParam}
+		%{opIdentifierInitParam}
 	</filter>
 			]]></replacevalue>
 		</replace>
 		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
 			token="%{customizeSSOFilterClass}" value="${customizeSSOFilterClass}"/>
-		<antcall target="replace-loginUrlParam"/>
-		<antcall target="remove-loginUrlParam"/>
+		<antcall target="replace-opIdentifierParam"/>
+		<antcall target="remove-opIdentifierParam"/>
 		
 		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
 			<replacetoken><![CDATA[<!--CustomizeSSOFilterMapping-->]]></replacetoken>
@@ -117,22 +117,22 @@
 		</replace>
 	</target>
         
-	<target name="replace-loginUrlParam" if="customizeSSOFilterClass.loginUrl">
+	<target name="replace-opIdentifierParam" if="customizeSSOFilterClass.opIdentifier">
         <replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
-            token="%{loginUrlInitParam}">
+            token="%{opIdentifierInitParam}">
 			<replacevalue><![CDATA[
 		<init-param>
-			<param-name>loginUrl</param-name>
-			<param-value>%{loginUrlValue}</param-value>
+			<param-name>opIdentifier</param-name>
+			<param-value>%{opIdentifierValue}</param-value>
 		</init-param>
 			]]></replacevalue>
 		</replace>
         <replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
-            token="%{loginUrlValue}" value="${customizeSSOFilterClass.loginUrl}"/>
+            token="%{opIdentifierValue}" value="${customizeSSOFilterClass.opIdentifier}"/>
     </target>
-	<target name="remove-loginUrlParam" unless="customizeSSOFilterClass.loginUrl">
+	<target name="remove-opIdentifierParam" unless="customizeSSOFilterClass.opIdentifier">
         <replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true"
-            token="%{loginUrlInitParam}" value=""/>
+            token="%{opIdentifierInitParam}" value=""/>
     </target>
         
 	<target name="replace-logoutUrlParam" if="logoutUrl">

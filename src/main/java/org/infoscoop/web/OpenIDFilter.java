@@ -19,6 +19,7 @@ package org.infoscoop.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -52,7 +53,7 @@ import org.openid4java.message.ParameterList;
 public class OpenIDFilter implements Filter {
 	private static Log log = LogFactory.getLog(OpenIDFilter.class);
 	private Collection<String> excludePaths = new HashSet<String>();
-	private String loginUrl = null;
+	private String opIdentifier = null;
 	private ConsumerManager consumerMgr;
 	
 	public void destroy() {
@@ -77,10 +78,12 @@ public class OpenIDFilter implements Filter {
 			session.setAttribute("Uid", uid);
         }
         if (uid == null){
-        	if("/openid_login".equalsIgnoreCase(actionName)){
+			String host_url = request.getScheme() + "://" + request.getServerName() + (request.getServerPort() != 80 && request.getServerPort() != 443 ? (":" + request.getServerPort()) : "") + request.getContextPath();
+
+			if("/openid_login".equalsIgnoreCase(actionName)){
         		try{
-        			String returnToUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/openid_consumer_return";
-        			String openid=request.getParameter("openid");
+					String returnToUrl = host_url  + "/openid_consumer_return";
+        			String openid = request.getParameter("openid");
         			List discoveries = this.consumerMgr.discover(openid);
         			DiscoveryInformation discovered = this.consumerMgr.associate(discoveries);
 
@@ -140,19 +143,29 @@ public class OpenIDFilter implements Filter {
 
         				session.setAttribute("openid", authSuccess.getIdentity());
         				session.setAttribute("openid-claimed", authSuccess.getClaimed());
+        				System.out.println(authSuccess.getClaimed());
         				response.sendRedirect(".");  // success
         			}
         		} catch (OpenIDException e) {
         			log.error(e.getMessage(), e);
-        			response.sendRedirect(this.loginUrl);
+        			if(this.opIdentifier != null)
+        				response.sendRedirect(this.opIdentifier);
+        			else{
+        				String loginUrl = host_url + "/login.jsp";
+        				response.sendRedirect(loginUrl);
+        			}
         		}
     			return;
 
         	}else if(!isExcludePath(request.getServletPath())){
         		try {
-        			if(this.loginUrl == null)
-        				this.loginUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/login.jsp";
-        			response.sendRedirect(loginUrl);
+        			if(this.opIdentifier != null){
+        				String loginUrl = host_url + "/openid_login?openid=" + URLEncoder.encode(this.opIdentifier , "UTF-8");
+        				response.sendRedirect(loginUrl);            				
+        			}else{
+        				String loginUrl = host_url + "/login.jsp";
+        				response.sendRedirect(loginUrl);
+        			}
         		} catch(IOException e) {
         			log.error(e.getMessage(), e);
         		}
@@ -177,11 +190,11 @@ public class OpenIDFilter implements Filter {
 			}
 		}
 		
-		String loginUrlParam = config.getInitParameter("loginUrl");
-		if(loginUrlParam != null){
+		String opIdentifierParam = config.getInitParameter("opIdentifier");
+		if(opIdentifierParam != null){
 			if(log.isInfoEnabled())
-				log.info("loginUrl is set to " + loginUrlParam);
-			this.loginUrl = loginUrlParam;
+				log.info("loginUrl is set to " + opIdentifierParam);
+			this.opIdentifier = opIdentifierParam;
 		}
 		
 		int socketTimeout = 30 * 1000;
