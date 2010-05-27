@@ -2122,7 +2122,9 @@ IS_Portal.behindIframe = {
 		this.behindIframe.style.width = element.offsetWidth;
 		this.behindIframe.style.height = element.offsetHeight;
 		if(element.style.zIndex)
-		  this.behindIframe.style.zIndex = element.style.zIndex -1 ;
+			this.behindIframe.style.zIndex = element.style.zIndex -1;
+		else
+			this.behindIframe.style.zIndex = 0;
 		this.behindIframe.show();
 		
 		this.current = element;
