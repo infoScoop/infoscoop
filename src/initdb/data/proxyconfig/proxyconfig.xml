@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <proxy-config>
-	<case id="_1" pattern="^http://localhost(:[0-9]*)?/.*" type="direct" />
-	<default id="_2" type="direct" cacheLifeTime="10">
+	<case id="_1" pattern="^http://localhost(:[0-9]*)?/.*" type="direct" intranet="true"/>
+	<default id="_2" type="direct" cacheLifeTime="10" intranet="false">
 		<headers>
 			<header>Connection</header>
 			<header>Date</header>
