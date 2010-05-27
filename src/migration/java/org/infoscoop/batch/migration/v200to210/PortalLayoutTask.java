@@ -34,7 +34,7 @@ public class PortalLayoutTask implements HibernateBeansTask.BeanTask2 {
 		String backupTableSuffix = project.getProperty("BACKUP_TABLE_SUFFIX");
 		
 		String queryString = "select name,layout from "+schemaName
-			+".is_portallayouts"+backupTableSuffix;
+			+"is_portallayouts"+backupTableSuffix;
 		
 		DataSource dataSource = ( DataSource )SQLTask.getContext().getBean("dataSource");
 		Connection connection = null;

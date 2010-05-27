@@ -1,8 +1,8 @@
-alter table ${SCHEMA_NAME}.IS_PROPERTIES rename to IS_PROPERTIES@BACKUP_TABLE_SUFFIX@;
+alter table ${SCHEMA_NAME}IS_PROPERTIES rename to IS_PROPERTIES@BACKUP_TABLE_SUFFIX@;
 
-drop index is_properties_advanced on ${SCHEMA_NAME}.IS_PROPERTIES@BACKUP_TABLE_SUFFIX@;
+drop index is_properties_advanced on ${SCHEMA_NAME}IS_PROPERTIES@BACKUP_TABLE_SUFFIX@;
 
-create table ${SCHEMA_NAME}.IS_PROPERTIES (
+create table ${SCHEMA_NAME}IS_PROPERTIES (
   id varchar(256) CHARACTER SET latin1 not null primary key,
   category varchar(128),
   advanced integer not null,
@@ -14,4 +14,4 @@ create table ${SCHEMA_NAME}.IS_PROPERTIES (
   regexMsg varchar(1024)
 ) ENGINE=InnoDB;
 
-create index is_properties_advanced on ${SCHEMA_NAME}.IS_PROPERTIES(advanced);
+create index is_properties_advanced on ${SCHEMA_NAME}IS_PROPERTIES(advanced);

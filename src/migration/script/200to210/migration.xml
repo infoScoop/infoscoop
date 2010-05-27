@@ -24,9 +24,13 @@
 	<property file="${basedir}/migration.properties.tmp" prefix="datasource.xml"/>
 	<delete file="${basedir}/migration.properties.tmp"/>
 	
-	<target name="default-schema" unless="SCHEMA_NAME">
-		<property name="SCHEMA_NAME" value="${USER}"/>
-		<property name="datasource.xml.SCHEMA_NAME" value="${USER}"/>
+	<target name="set-schema" if="SCHEMA">
+		<property name="SCHEMA_NAME" value="${SCHEMA}."/>
+		<property name="datasource.xml.SCHEMA_NAME" value="${SCHEMA}"/>
+	</target>
+	<target name="default-schema" unless="SCHEMA">
+		<property name="SCHEMA_NAME" value=""/>
+		<property name="datasource.xml.SCHEMA_NAME" value=""/>
 	</target>
 	
 	<property name="basedir" value="." />
@@ -60,7 +64,7 @@
     	<property name="COMPRESS" value="in ${TABLESPACE} compress yes"/>
 	</target>
 	
-	<target name="prepare" depends="default-schema,set-compress">
+	<target name="prepare" depends="set-schema,default-schema,set-compress">
 		<delete file="classes/datasource.xml"/>
 		<filter token="DATABASE_URL" value="${datasource.xml.DATABASE_URL}"/>
 		<filter token="USER" value="${datasource.xml.USER}"/>
@@ -78,7 +82,8 @@
 		widget,
 		gadget,
 		portallayout,
-		properties
+		properties,
+		widgetConf
 	"/>
 	
 	<target name="clean-all" depends="
@@ -88,7 +93,8 @@
 		clean-widget,
 		clean-gadget,
 		clean-portallayout,
-		clean-properties
+		clean-properties,
+		clean-widgetConf
 	"/>
 		
 	<target name="clean-all-backup" depends="prepare">
@@ -175,13 +181,24 @@
 	
 	<target name="proxyConf" depends="clean-proxyConf">
 		<current.sql src="sql/proxyconf.sql"/>
-		<importDel3 source="data/proxyconfig/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.ProxyConfFactory"/>
 		<hibernate-beans type="Proxyconf">
 			<task class="org.infoscoop.batch.migration.v200to210.ProxyConfConvertTask"/>
 		</hibernate-beans>
 	</target>
 	<target name="clean-proxyConf" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_proxyconfs</property>
+			<sql file="sql/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<target name="widgetConf" depends="clean-widgetConf">
+		<current.sql src="sql/widgetconf.sql"/>
+		<hibernate-beans type="WidgetConf">
+			<task class="org.infoscoop.batch.migration.v200to210.WidgetConfConvertTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-widgetConf" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_widgetconfs</property>
 			<sql file="sql/restore.sql"/>
 		</exec-sql>
 	</target>

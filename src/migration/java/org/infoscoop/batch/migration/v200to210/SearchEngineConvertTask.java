@@ -46,7 +46,7 @@ public class SearchEngineConvertTask implements HibernateBeansTask.BeanTask2 {
 		String backupTableSuffix = project.getProperty("BACKUP_TABLE_SUFFIX");
 		
 		String queryString = "select data from " + schemaName
-				+ ".is_searchengines" + backupTableSuffix + " where temp=0";
+				+ "is_searchengines" + backupTableSuffix + " where temp=0";
 		
 		DataSource dataSource = ( DataSource )SQLTask.getContext().getBean("dataSource");
 		Connection connection = null;

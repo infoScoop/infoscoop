@@ -32,7 +32,7 @@ public class PropertiesConvertTask implements HibernateBeansTask.BeanTask2 {
 		String backupTableSuffix = project.getProperty("BACKUP_TABLE_SUFFIX");
 		
 		String queryString = "select id,value from "+schemaName
-			+".is_properties"+backupTableSuffix;
+			+"is_properties"+backupTableSuffix;
 		
 		DataSource dataSource = ( DataSource )SQLTask.getContext().getBean("dataSource");
 		Connection connection = null;
