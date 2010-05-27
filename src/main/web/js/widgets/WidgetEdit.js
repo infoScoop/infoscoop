@@ -520,6 +520,7 @@ IS_Widget.WidgetEdit = function (widget) {
 		}
 		
 		widget.elm_widgetEditHeader.style.display = "none";
+		IS_Portal.behindIframe.hide();
 		
 		var form = document.forms["frm_" + widget.id];
 		if (form ) {
@@ -847,6 +848,7 @@ IS_Widget.WidgetEdit = function (widget) {
 	
 	this.hideContents = function(){
 		widget.elm_widgetEditHeader.style.display = "none";
+		IS_Portal.behindIframe.hide();
 		this.clearContents();
 		//this.displayContents();
 		

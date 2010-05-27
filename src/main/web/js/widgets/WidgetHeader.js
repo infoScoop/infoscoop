@@ -697,6 +697,8 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			this.widgetEdit = new IS_Widget.WidgetEdit(widget);
 		this.widgetEdit.displayContents();
 		widget.elm_widgetEditHeader.style.display="block";
+		if(isStatic)
+			IS_Portal.behindIframe.show(widget.elm_widgetEditHeader);
 		
 		IS_Widget.adjustEditPanelsTextWidth();
 	};
