@@ -649,84 +649,79 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				}
 			}
 			
-			if(hasRsReader){
-				var folderFeedContainer = document.createElement("div");
+			var folderFeedContainer = document.createElement("div");
+			
+			folderFeedContainer.className = "multiDropHandle";
+			folderFeedContainer.style.display = "none";
+			
+			var headerTable = document.createElement("table");
+			headerTable.cellSpacing = 0;
+			headerTable.cellPadding = 0;
+			headerTable.style.width = "100%";
+			
+			if(Browser.isIE) headerTable.style.marginBottom = "2px";
+			
+			var headerTbody = document.createElement("tbody");
+			var headerTr = document.createElement("tr");
+			var closeTd = document.createElement("td");
+			headerTable.appendChild(headerTbody);
+			headerTbody.appendChild(headerTr);
+			folderFeedContainer.appendChild(headerTable);
+			
+			var folderIconTd = document.createElement("td");
+			folderIconTd.className = "menufolderfeed";
+			
+			var folderIcon = document.createElement("img"); 
+			folderIcon.src = imageURL + "drop_all.gif";
+			folderIconTd.appendChild(folderIcon);
+			
+			var folderFeedTitleTd = document.createElement("td");
+			folderFeedTitleTd.className = "menufolderfeed";
+			folderFeedTitleTd.style.width = "100%";
+			var folderFeedTitle = document.createElement("div"); 
+			
+			folderFeedTitle.className = "menufolderfeedTitle";
+			folderFeedTitle.innerHTML = IS_R.lb_dropAll;
+			folderFeedTitleTd.appendChild(folderFeedTitle);
+			
+			headerTr.appendChild(folderIconTd);
+			headerTr.appendChild(folderFeedTitleTd);
+//			var dragHandler = IS_SiteAggregationMenu.menuDragInit(menuItem, folderFeedContainer, folderFeedContainer, true, true);
+			IS_SiteAggregationMenu.getMultiDropDraggable(folderFeedContainer, menuItem);
+			
+			itemTd.appendChild(folderFeedContainer);
+//			IS_Event.observe(folderFeedContainer,"mousedown", dragHandler, false, "_menu");
+			/*
+			IS_Event.observe(itemTd,"mouseover", getTreeOverHandler(folderFeedContainer, lineTd), false, "_sidemenu");
+			IS_Event.observe(itemTd,"mouseout", getTreeOutHandler(folderFeedContainer), false, "_sidemenu");
+			*/
 				
-//				if(Browser.isIE) // The item is set in wrong position in IE if it is not in between BRs
-//					folderFeedContainer.appendChild(document.createElement("br"));
-				
-				folderFeedContainer.className = "multiDropHandle";
-				folderFeedContainer.style.display = "none";
-				
-				var headerTable = document.createElement("table");
-				headerTable.cellSpacing = 0;
-				headerTable.cellPadding = 0;
-				headerTable.style.width = "100%";
-				
-				if(Browser.isIE) headerTable.style.marginBottom = "2px";
-				
-				var headerTbody = document.createElement("tbody");
-				var headerTr = document.createElement("tr");
-				var closeTd = document.createElement("td");
-				headerTable.appendChild(headerTbody);
-				headerTbody.appendChild(headerTr);
-				folderFeedContainer.appendChild(headerTable);
-				
-				var folderIconTd = document.createElement("td");
-				folderIconTd.className = "menufolderfeed";
-				
-				var folderIcon = document.createElement("img"); 
-				folderIcon.src = imageURL + "drop_all.gif";
-				folderIconTd.appendChild(folderIcon);
-				
-				var folderFeedTitleTd = document.createElement("td");
-				folderFeedTitleTd.className = "menufolderfeed";
-				folderFeedTitleTd.style.width = "100%";
-				var folderFeedTitle = document.createElement("div"); 
-				
-				folderFeedTitle.className = "menufolderfeedTitle";
-				folderFeedTitle.innerHTML = IS_R.lb_dropAll;
-				folderFeedTitleTd.appendChild(folderFeedTitle);
-				
-				headerTr.appendChild(folderIconTd);
-				headerTr.appendChild(folderFeedTitleTd);
-//				var dragHandler = IS_SiteAggregationMenu.menuDragInit(menuItem, folderFeedContainer, folderFeedContainer, true, true);
-				IS_SiteAggregationMenu.getMultiDropDraggable(folderFeedContainer, menuItem);
-				
-				itemTd.appendChild(folderFeedContainer);
-//				IS_Event.observe(folderFeedContainer,"mousedown", dragHandler, false, "_menu");
-				/*
-				IS_Event.observe(itemTd,"mouseover", getTreeOverHandler(folderFeedContainer, lineTd), false, "_sidemenu");
-				IS_Event.observe(itemTd,"mouseout", getTreeOutHandler(folderFeedContainer), false, "_sidemenu");
-				*/
-				
-				IS_Event.observe(itemTd,"mouseover", function(){
-					clearTimeout(folderFeedContainer.overTimeout);
-					clearTimeout(folderFeedContainer.outTimeout);
-					if(lineTd.className == 'ygtvtp' || lineTd.className == 'ygtvlp'){
-					}else {
-						delayDisplay.call(itemTd, folderFeedContainer);
-					}
+			IS_Event.observe(itemTd,"mouseover", function(){
+				clearTimeout(folderFeedContainer.overTimeout);
+				clearTimeout(folderFeedContainer.outTimeout);
+				if(lineTd.className == 'ygtvtp' || lineTd.className == 'ygtvlp'){
+				}else {
+					delayDisplay.call(itemTd, folderFeedContainer);
+				}
 				}.bind(itemTd), false, "_sidemenu");
-				
-				IS_Event.observe(itemTd,"mouseout", function(){
-					clearTimeout(folderFeedContainer.overTimeout);
-					clearTimeout(folderFeedContainer.outTimeout);
-					if(!IS_Portal.isItemDragging){
-						delayDisplayNone.call(itemTd, folderFeedContainer);
-					}
-				}, false, "_sidemenu");
-				
-				function delayDisplay( div ){
-					div.overTimeout = setTimeout(function(){
-						div.style.display = "";
-					}.bind(div), 150);
+			
+			IS_Event.observe(itemTd,"mouseout", function(){
+				clearTimeout(folderFeedContainer.overTimeout);
+				clearTimeout(folderFeedContainer.outTimeout);
+				if(!IS_Portal.isItemDragging){
+					delayDisplayNone.call(itemTd, folderFeedContainer);
 				}
-				function delayDisplayNone( div ){
-					div.outTimeout = setTimeout(function(){
-						div.style.display = "none";
-					}.bind(div), 150);
-				}
+			}, false, "_sidemenu");
+			
+			function delayDisplay( div ){
+				div.overTimeout = setTimeout(function(){
+					div.style.display = "";
+				}.bind(div), 150);
+			}
+			function delayDisplayNone( div ){
+				div.outTimeout = setTimeout(function(){
+					div.style.display = "none";
+				}.bind(div), 150);
 			}
 		}
 		
