@@ -24,6 +24,8 @@
 	<property file="${basedir}/migration.properties.tmp" prefix="datasource.xml"/>
 	<delete file="${basedir}/migration.properties.tmp"/>
 	
+	<property file="${basedir}/conf/${DBMS}.properties"/>
+	
 	<target name="set-schema" if="SCHEMA">
 		<property name="SCHEMA_NAME" value="${SCHEMA}."/>
 		<property name="datasource.xml.SCHEMA_NAME" value="${SCHEMA}"/>
@@ -34,7 +36,7 @@
 	</target>
 	
 	<property name="basedir" value="." />
-	<property name="BACKUP_TABLE_SUFFIX" value="@BACKUP_TABLE_SUFFIX@"/>
+	<property name="BACKUP_TABLE_SUFFIX" value="_bak20"/>
 
 	<path id="task.classpath">
 		<pathelement location="classes"/>
@@ -43,7 +45,7 @@
 	</path>
 	
 	<presetdef name="current.sql">
-		<sql driver="@DATABASE_DRIVER@" url="${DATABASE_URL}" userid="${USER}" password="${PASSWORD}"
+		<sql driver="${DATABASE_DRIVER}" url="${DATABASE_URL}" userid="${USER}" password="${PASSWORD}"
 			encoding="UTF-8" delimiter=";" autocommit="true"/>
 	</presetdef>
 	
@@ -71,6 +73,8 @@
 		<filter token="PASSWORD" value="${datasource.xml.PASSWORD}"/>
 		<filter token="SCHEMA_NAME" value="${datasource.xml.SCHEMA_NAME}"/>
 		<filter token="LOG_LEVEL" value="${datasource.xml.LOG_LEVEL}"/>
+		<filter token="DATABASE_DRIVER" value="${DATABASE_DRIVER}"/>
+		<filter token="HIBERNATE_DIALECT" value="${HIBERNATE_DIALECT}"/>
 		<copy tofile="classes/datasource.xml" file="classes/datasource.xml.bak"
 			filtering="true"/>
 	</target>
@@ -98,49 +102,49 @@
 	"/>
 		
 	<target name="clean-all-backup" depends="prepare">
-		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_PROXYCONFS@BACKUP_TABLE_SUFFIX</sql></exec-sql>
-		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_SEARCHENGINES@BACKUP_TABLE_SUFFIX</sql></exec-sql>
-		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_PORTALLAYOUTS@BACKUP_TABLE_SUFFIX</sql></exec-sql>
-		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_PROPERTIES@BACKUP_TABLE_SUFFIX</sql></exec-sql>
-		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_GADGETS@BACKUP_TABLE_SUFFIX</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_PROXYCONFS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_SEARCHENGINES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_PORTALLAYOUTS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_PROPERTIES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_GADGETS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 	</target>
 	
 	<target name="widget">
-		<exec-sql quiet="true"><sql>ALTER TABLE IS_WIDGETS ADD noBorder int</sql></exec-sql>
+		<exec-sql quiet="true"><sql>ALTER TABLE ${SCHEMA_NAME}IS_WIDGETS ADD noBorder int</sql></exec-sql>
 	</target>
 	<target name="clean-widget" depends="prepare">
-		<exec-sql quiet="true"><sql>ALTER TABLE IS_WIDGETS DROP noBorder</sql></exec-sql>
+		<exec-sql quiet="true"><sql>ALTER TABLE ${SCHEMA_NAME}IS_WIDGETS DROP noBorder</sql></exec-sql>
 	</target>
 	
 	<target name="tab">
-		<exec-sql quiet="true"><sql>ALTER TABLE IS_TABS ADD disabledDynamicPanel int</sql></exec-sql>
+		<exec-sql quiet="true"><sql>ALTER TABLE ${SCHEMA_NAME}IS_TABS ADD disabledDynamicPanel int</sql></exec-sql>
 	</target>
 	<target name="clean-tab" depends="prepare">
-		<exec-sql quiet="true"><sql>ALTER TABLE IS_TABS DROP disabledDynamicPanel</sql></exec-sql>
+		<exec-sql quiet="true"><sql>ALTER TABLE ${SCHEMA_NAME}IS_TABS DROP disabledDynamicPanel</sql></exec-sql>
 	</target>
 	
 	<target name="gadget" depends="clean-gadget">
-		<current.sql src="sql/gadget.sql"/>
+		<current.sql src="sql/${DBMS}/gadget.sql"/>
 		<importDel2 source="data/gadget/import.csv" beanFactory="org.infoscoop.batch.migration.v1300to1400.GadgetFactory"/>
 	</target>
 	<target name="clean-gadget" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_gadgets</property>
-			<sql file="sql/restore.sql"/>
+			<sql file="sql/${DBMS}/restore.sql"/>
 		</exec-sql>
 	</target>
 	
 	<target name="i18n" depends="clean-i18n">
-		<current.sql src="sql/i18n.sql"/>
+		<current.sql src="sql/${DBMS}/i18n.sql"/>
 		<importDel source="data/i18n/import.csv" beanFactory="org.infoscoop.batch.migration.v_1_2_0_4_to_1_2_1_0.I18nFactory"/>
 	</target>
 	<target name="clean-i18n" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_i18n</property>
-			<sql file="sql/restore.sql"/>
+			<sql file="sql/${DBMS}/restore.sql"/>
 		</exec-sql>
 	</target>
 
 	<target name="portallayout" depends="clean-portallayout">
-		<current.sql src="sql/portallayout.sql"/>
+		<current.sql src="sql/${DBMS}/portallayout.sql"/>
 		<importDel source="data/portallayout/import.csv" beanFactory="org.infoscoop.batch.migration.v_1_2_0_4_to_1_2_1_0.PortalLayoutFactory"/>
 		<hibernate-beans type="Portallayout">
 			<task class="org.infoscoop.batch.migration.v200to210.PortalLayoutTask"/>
@@ -148,12 +152,12 @@
 	</target>
 	<target name="clean-portallayout" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_portallayouts</property>
-			<sql file="sql/restore.sql"/>
+			<sql file="sql/${DBMS}/restore.sql"/>
 		</exec-sql>
 	</target>
 	
 	<target name="properties" depends="clean-properties">
-		<current.sql src="sql/properties.sql"/>
+		<current.sql src="sql/${DBMS}/properties.sql"/>
 		<importDel source="data/properties/import.csv" beanFactory="org.infoscoop.batch.migration.v1300to1400.PropertiesFactory"/>
 		<hibernate-beans type="Properties">
 			<task class="org.infoscoop.batch.migration.v200to210.PropertiesConvertTask"/>
@@ -161,13 +165,13 @@
 	</target>
 	<target name="clean-properties" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_properties</property>
-			<sql file="sql/restore.sql"/>
-			<sql>drop index ${SCHEMA_NAME}.is_properties_advanced</sql>
+			<sql file="sql/${DBMS}/restore.sql"/>
+			<sql>drop index ${SCHEMA_NAME}is_properties_advanced</sql>
 		</exec-sql>
 	</target>
 	
 	<target name="searchEngine" depends="clean-searchEngine">
-		<current.sql src="sql/searchengine.sql"/>
+		<current.sql src="sql/${DBMS}/searchengine.sql"/>
 		<importDel3 source="data/searchengine/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.SearchEngineFactory"/>
 		<hibernate-beans type="Searchengine">
 			<task class="org.infoscoop.batch.migration.v200to210.SearchEngineConvertTask"/>
@@ -175,31 +179,31 @@
 	</target>
 	<target name="clean-searchEngine" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_searchEngines</property>
-			<sql file="sql/restore.sql"/>
+			<sql file="sql/${DBMS}/restore.sql"/>
 		</exec-sql>
 	</target>
 	
 	<target name="proxyConf" depends="clean-proxyConf">
-		<current.sql src="sql/proxyconf.sql"/>
+		<current.sql src="sql/${DBMS}/proxyconf.sql"/>
 		<hibernate-beans type="Proxyconf">
 			<task class="org.infoscoop.batch.migration.v200to210.ProxyConfConvertTask"/>
 		</hibernate-beans>
 	</target>
 	<target name="clean-proxyConf" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_proxyconfs</property>
-			<sql file="sql/restore.sql"/>
+			<sql file="sql/${DBMS}/restore.sql"/>
 		</exec-sql>
 	</target>
 	
 	<target name="widgetConf" depends="clean-widgetConf">
-		<current.sql src="sql/widgetconf.sql"/>
+		<current.sql src="sql/${DBMS}/widgetconf.sql"/>
 		<hibernate-beans type="WidgetConf">
 			<task class="org.infoscoop.batch.migration.v200to210.WidgetConfConvertTask"/>
 		</hibernate-beans>
 	</target>
 	<target name="clean-widgetConf" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_widgetconfs</property>
-			<sql file="sql/restore.sql"/>
+			<sql file="sql/${DBMS}/restore.sql"/>
 		</exec-sql>
 	</target>
 </project>

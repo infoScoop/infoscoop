@@ -3,10 +3,6 @@
 <project name="build-migrate" default="compile" basedir=".">
 	<property file="build.properties"/>
 	<property name="version" value="200to210" />
-	<property name="backup.table.sufix" value="_bak20"/>
-	<property name="target.db" value="mysql"/>
-	<property name="target.db.dialect" value="org.hibernate.dialect.MySQLDialect"/>
-	<property name="target.db.jdbc.driver" value="com.mysql.jdbc.Driver"/>
 	<property name="build.migration" value="${basedir}/build/migration" />
 	<!--property name="dist.home" value="${basedir}/dist" /-->
 	<property name="src.initdb.home" value="${basedir}/src/initdb" />
@@ -34,14 +30,12 @@
 	</target>
 	
 	<target name="prepare" depends="clean">
-		<filter token="BACKUP_TABLE_SUFFIX" value="${backup.table.sufix}"/>
-		<filter token="DATABASE_DRIVER" value="${target.db.jdbc.driver}"/>
 		<mkdir dir="${build.migration}"/>
 		<mkdir dir="${build.migration}/classes"/>
 		<copy todir="${build.migration}/classes">
 			<fileset dir="${src.migration.java}" includes="**/*.hbm.xml" />
 		</copy>
-		<copy todir="${build.migration}" file="${src.migration.script}/${version}/migration.xml" filtering="true"/>
+		<copy todir="${build.migration}" file="${src.migration.script}/${version}/migration.xml"/>
 		<copy todir="${build.migration}" file="${src.migration.script}/migration.properties"/>
 		<copy todir="${build.migration}" file="${src.migration.script}/migration.bat"/>
 		<copy todir="${build.migration}" file="${src.migration.script}/cleanup_temp_table.bat"/>
@@ -71,8 +65,12 @@
 		</copy>
 		<antcall target="download-gadgets"/>
 		
-		<copy todir="${build.migration}/sql" filtering="true">
-			<fileset dir="${src.migration.script}/${version}/sql/${target.db}"/>
+		<copy todir="${build.migration}/sql">
+			<fileset dir="${src.migration.script}/${version}/sql"/>
+		</copy>
+		
+		<copy todir="${build.migration}/conf">
+			<fileset dir="${src.migration.script}/${version}/conf"/>
 		</copy>
 		
 		<replaceregexp flags="sg" encoding="UTF-8"
@@ -92,14 +90,7 @@
 	</target>
 	
 	<target name="compile" depends="prepare,compile-infoscoop">
-		<mkdir dir="${build.migration}/tmpsrc"/>
-		<filter token="BACKUP_TABLE_SUFFIX" value="${backup.table.sufix}"/>
-		<filter token="DATABASE_DRIVER" value="${target.db.jdbc.driver}"/>
-		<filter token="HIBERNATE_DIALECT" value="${target.db.dialect}"/>
-		<copy todir="${build.migration}/tmpsrc" filtering="true">
-			<fileset dir="${src.migration.java}" />
-		</copy>
-		<javac srcdir="${build.migration}/tmpsrc" destdir="${build.migration}/classes" debug="true">
+		<javac srcdir="${src.migration.java}" destdir="${build.migration}/classes" debug="true">
 			<classpath>
 				<fileset dir="${build.migration}/lib" includes="*.jar" />
 			</classpath>
@@ -107,10 +98,8 @@
 		<jar basedir="${build.migration}/classes" jarfile="${build.migration}/classes/migration.jar" />
 		<delete dir="${build.migration}/classes/org"/>
 		
-		<copy tofile="${build.migration}/classes/datasource.xml.bak" file="${src.migration.java}/datasource.xml" filtering="true"/>
+		<copy tofile="${build.migration}/classes/datasource.xml.bak" file="${src.migration.java}/datasource.xml"/>
 		<copy todir="${build.migration}/classes" file="${src.migration.java}/log4j.xml"/>
-		
-		<delete dir="${build.migration}/tmpsrc"/>
 	</target>
 	<target name="compile-infoscoop">
 		<mkdir dir="${build.migration}/infoscoop"/>
