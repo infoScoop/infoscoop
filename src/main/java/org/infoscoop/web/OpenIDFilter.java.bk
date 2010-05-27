@@ -1,20 +1,3 @@
-/* infoScoop OpenSource
- * Copyright (C) 2010 Beacon IT Inc.
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License version 3
- * as published by the Free Software Foundation.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program.  If not, see
- * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
- */
-
 package org.infoscoop.web;
 
 import java.io.IOException;
@@ -52,7 +35,7 @@ import org.openid4java.message.ParameterList;
 public class OpenIDFilter implements Filter {
 	private static Log log = LogFactory.getLog(OpenIDFilter.class);
 	private Collection<String> excludePaths = new HashSet<String>();
-	private String loginUrl = null;
+	private String domainUrl = null;
 	private ConsumerManager consumerMgr;
 	
 	public void destroy() {
@@ -77,10 +60,49 @@ public class OpenIDFilter implements Filter {
 			session.setAttribute("Uid", uid);
         }
         if (uid == null){
-        	if("/openid_login".equalsIgnoreCase(actionName)){
+        	System.out.println("###" + actionName);
+        	if("/openid_consumer_return".equalsIgnoreCase(actionName)){
+        		try{
+        			ParameterList responselist =
+        				new ParameterList(request.getParameterMap());
+
+        			DiscoveryInformation discovered =
+        				(DiscoveryInformation) session.getAttribute("openid-disco");
+
+        			StringBuffer receivingURL = request.getRequestURL();
+        			String queryString = request.getQueryString();
+        			if (queryString != null && queryString.length() > 0)
+        				receivingURL.append("?").append(request.getQueryString());
+
+        			VerificationResult verification = this.consumerMgr.verify(
+        					receivingURL.toString(),
+        					responselist, discovered);
+
+        			// examine the verification result and extract the verified identifier
+        			Identifier verified = verification.getVerifiedId();
+        			if (verified != null){
+        				AuthSuccess authSuccess =
+        					(AuthSuccess) verification.getAuthResponse();
+
+        				session.setAttribute("openid", authSuccess.getIdentity());
+        				session.setAttribute("openid-claimed", authSuccess.getClaimed());
+        				response.sendRedirect(".");  // success
+        			}
+        		} catch (OpenIDException e) {
+        			log.error(e.getMessage(), e);
+        			if(this.domainUrl != null)
+        				response.sendRedirect(this.domainUrl);
+        			else{
+        				String loginUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/login.jsp";
+        				response.sendRedirect(loginUrl);
+        			}
+        		}
+    			return;
+
+        	}else if(this.domainUrl != null || "/openid_login".equalsIgnoreCase(actionName)){
         		try{
         			String returnToUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/openid_consumer_return";
-        			String openid=request.getParameter("openid");
+        			String openid = this.domainUrl != null ? this.domainUrl :request.getParameter("openid");
         			List discoveries = this.consumerMgr.discover(openid);
         			DiscoveryInformation discovered = this.consumerMgr.associate(discoveries);
 
@@ -115,43 +137,9 @@ public class OpenIDFilter implements Filter {
         			log.error(e.getMessage(), e);
         		}
     			return;
-        	}else if("/openid_consumer_return".equalsIgnoreCase(actionName)){
-        		try{
-        			ParameterList responselist =
-        				new ParameterList(request.getParameterMap());
-
-        			DiscoveryInformation discovered =
-        				(DiscoveryInformation) session.getAttribute("openid-disco");
-
-        			StringBuffer receivingURL = request.getRequestURL();
-        			String queryString = request.getQueryString();
-        			if (queryString != null && queryString.length() > 0)
-        				receivingURL.append("?").append(request.getQueryString());
-
-        			VerificationResult verification = this.consumerMgr.verify(
-        					receivingURL.toString(),
-        					responselist, discovered);
-
-        			// examine the verification result and extract the verified identifier
-        			Identifier verified = verification.getVerifiedId();
-        			if (verified != null){
-        				AuthSuccess authSuccess =
-        					(AuthSuccess) verification.getAuthResponse();
-
-        				session.setAttribute("openid", authSuccess.getIdentity());
-        				session.setAttribute("openid-claimed", authSuccess.getClaimed());
-        				response.sendRedirect(".");  // success
-        			}
-        		} catch (OpenIDException e) {
-        			log.error(e.getMessage(), e);
-        			response.sendRedirect(this.loginUrl);
-        		}
-    			return;
-
         	}else if(!isExcludePath(request.getServletPath())){
         		try {
-        			if(this.loginUrl == null)
-        				this.loginUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/login.jsp";
+        			String loginUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() +  request.getContextPath() + "/login.jsp";
         			response.sendRedirect(loginUrl);
         		} catch(IOException e) {
         			log.error(e.getMessage(), e);
@@ -181,7 +169,7 @@ public class OpenIDFilter implements Filter {
 		if(loginUrlParam != null){
 			if(log.isInfoEnabled())
 				log.info("loginUrl is set to " + loginUrlParam);
-			this.loginUrl = loginUrlParam;
+			this.domainUrl = loginUrlParam;
 		}
 		
 		int socketTimeout = 30 * 1000;
