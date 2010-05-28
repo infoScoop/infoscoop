@@ -821,6 +821,9 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	}
 	this.turnbackMaximize = function() {
 		widget.turnbackMaximize();
+		//Fixed Issue 149: Fragment Minibrowser shows a little off from the position whrere it should be when it maximized.
+		if(fixedPortalHeader)
+			IS_Portal.adjustPanelHeight();
 	}
 	
 	this.showLatestNews = function(e) {

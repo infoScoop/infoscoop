@@ -224,9 +224,6 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 	this.turnbackMaximize = function() {
 		var adjustBar = $( widget.id + "_heightAdjustBar" );
 		if( adjustBar ) adjustBar.style.display = "";
-		
-		if(fixedPortalHeader && Browser.isIE)
-			IS_Portal.adjustPanelHeight();
 	}
 }
 /**

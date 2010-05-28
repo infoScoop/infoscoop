@@ -1534,6 +1534,7 @@ IS_Widget.prototype.classDef = function() {
 		Position.prepare();
 		var panelsDiv = $('panels');
 		
+		//Fixed Issue 149: Fragment Minibrowser shows a little off from the position whrere it should be when it maximized.
 		if(fixedPortalHeader && Browser.isIE)
 			IS_Portal.tabs[IS_Portal.currentTabId].panel.style.height = "auto";
 		
