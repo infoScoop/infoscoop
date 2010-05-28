@@ -78,7 +78,8 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 		}
 		var url = widget.replaceUserPref(widget.getUserPref("url"));
 		var iframeSrc = widget.iframe.src;
-		if(iframeSrc != "./blank.html" && iframeSrc != hostPrefix + "/blank.html"){
+		var pattern = new RegExp("(("+hostPrefix+"(/admin)?)|\\.)/blank\\.html");
+		if(!pattern.test(iframeSrc)){
 			widget.iframe.contentWindow.location.reload( true );
 		}else{
 			widget.iframe.src = "./iframe.jsp?url="+encodeURIComponent( url )+ "&scrolling=auto";
@@ -182,7 +183,6 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 			
 			if(widget.panelType == "DynamicPanel")
 				this.buildAdjustHeightBar();
-			console.log("before loadUrl");
 			this.loadUrl();
 			this.displayContents();
 		}
