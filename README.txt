@@ -49,7 +49,7 @@ This code is licensed under the **GNU Lesser General Public License (LGPL) v3**.
 LICENSE.txt for licensing and copyright information.
 
 
-Changes from 2.0.0 to current 2.0.2 version.
+Changes from 2.0.1 to current 2.0.2 version.
 --------------------------------------------
 Please refer to the following URL.
 http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3DMilestone-2.0.2
