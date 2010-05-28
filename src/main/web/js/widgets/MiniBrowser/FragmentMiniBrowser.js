@@ -21,13 +21,11 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 	var self = this;
 	var adjustBar;
 	
-//	var fragmentServerURL = hostPrefix + '/frgsrv';
-	var fragmentServerURL = hostPrefix + '/proxy?filter=HTMLFragment';
+	var fragmentServerURL = hostPrefix + '/proxy';
 	
 	var isStatic;
 	
 	this.initialize = function(widgetObj){
-//		this._super.initialize(widgetObj);
 		widget = widgetObj;
 		IS_EventDispatcher.addListener("adjustedColumnWidth", null, this.setHeight.bind(this), widget, false);
 		IS_EventDispatcher.addListener("adjustedSiteMap", null, this.setHeight.bind(this), widget, false);
@@ -49,6 +47,7 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 		asynchronous : true,
 		request : true,
 		unloadCache : false,
+		method: 'post',
 		preLoad: function(){
 			var url = widget.getUserPref("url");
 			if( !url || url == "") {
@@ -64,8 +63,8 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 			}
 						
 			var url = fragmentServerURL
-			  + "&url=" + encodeURIComponent(widget.getUserPref("url"));
 			this.loadContentsOption.url = url;
+			this.loadContentsOption.parameters = "filter=HTMLFragment&url=" + encodeURIComponent(widget.getUserPref("url")) + "&additional_css=" + widget.getUserPref("additional_css");
 			this.loadContentsOption.requestHeaders = ["fragment-xpath", widget.getUserPref("xPath")];
 			if(widget.getUserPref("charset")){
 				this.loadContentsOption.requestHeaders.push("fragment-charset");
@@ -129,12 +128,6 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 		var xPathNode = iframeDoc.getElementById("fragmentXPath");
 		if(urlNode &&xPathNode) return;
 
-		var iframeDoc = Browser.isIE ? widget.iframe.contentWindow.document : widget.iframe.contentDocument;
-		var styleEl = document.createElement('style');
-		styleEl.innerHTML = widget.getUserPref('additional_css');
-		var head = iframeDoc.getElementsByTagName('head')[0];
-		head.appendChild(styleEl);
-		
 		this.setHeight();
 		
 		function replaceTarget(ifLinks, listener){

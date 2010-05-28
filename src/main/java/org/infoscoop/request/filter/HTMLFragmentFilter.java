@@ -24,7 +24,6 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +35,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -71,8 +69,8 @@ public class HTMLFragmentFilter extends ProxyFilter {
 			try {
 				cacheLifeTime = Integer.parseInt(cacheLifeTimeStr);
 			} catch (NumberFormatException e) {}
-		}
-
+		}		
+		
 		if (cacheURL != null && cacheURL.length() > 0) {
 			Cache cache = CacheService.getHandle().getCacheByUrl(cacheURL);
 			if (cache != null && cache.getId() != null) {
@@ -140,7 +138,7 @@ public class HTMLFragmentFilter extends ProxyFilter {
 		byte[] fragmentBytes = null;
 		if(xPath != null && 0 < xPath.length()){
 			DocumentBuildFilter filter = new DocumentBuildFilter();
-			
+
 			try{
 				String requestURL = request.getRedirectURL();
 				if( requestURL == null )
@@ -156,6 +154,19 @@ public class HTMLFragmentFilter extends ProxyFilter {
 				request.putResponseHeader("Content-Length", "0");
 				throw e;
 			}
+			
+			String css = request.getFilterParameter("additional_css");
+			Document htmlDoc = filter.getDocument();
+			NodeList heads = htmlDoc.getElementsByTagName("head");
+			Element containerEl;
+			if(heads.getLength() == 0)
+				containerEl = htmlDoc.getDocumentElement();
+			else
+				containerEl = (Element)htmlDoc.getElementsByTagName("head").item(0);
+			Element style = htmlDoc.createElement("style");
+			style.appendChild(htmlDoc.createTextNode(css));
+			containerEl.appendChild(style);
+			
 			fragmentBytes = fragmentHTML( filter.getDocument(), xPath, outputEncoding);
 		}
 		
