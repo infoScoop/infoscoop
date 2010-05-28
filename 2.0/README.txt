@@ -14,21 +14,21 @@ Please refer to the following URL.
 http://www.infoscoop.org/index.php/manual/quick-start.html
 
 
-How to update to 2.0.2 from an old version.
+How to update to 2.0.2 from an older version.
 -----------------------------------------
 1. Replace gadget files in the repository database and update i18n resources.
 
   (1). Open SQL executable tool.
-  (2). Execute following SQL command.
+  (2). Execute the following SQL command.
      > delete from IS_GADGETS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
      > delete from IS_I18NLOCALES
-  (3). Open command pronpt, change directory to tools/initdb
-  (4). Copy the suitable JDBC Driver to lib dir.
-       Only JDBC Driver for MySQL is already contained.
-  (5). Execute following command:
+  (3). Open command prompt, change directory to tools/initdb
+  (4). Copy a suitable JDBC Driver to lib directory.
+       Only a JDBC Driver for MySQL is already contained.
+  (5). Execute the following command:
      >import.sh(bat) GADGET,I18NLOCALE,I18N
 
-  [Warning]Executing steps above, following gadgets settings is initialized and Chinese resources is added:
+  [Warning]If executing steps above, following gadgets' settings will be initialized and Chinese resources will be added:
     * calc
     * todoList
     * alarm
@@ -36,10 +36,10 @@ How to update to 2.0.2 from an old version.
     * sticky
     * worldclock
 
-2. if the static content URL is set, replacement of  the static content files is necessary.
-  Replace the directory where static contents are stored currently to 'infoscoop/staticContent' directory.
+2. If static content URL is set, replacement of the static content files is necessary.
+   Replace the directory where static contents are currently stored to 'infoscoop/staticContent' directory.
 
-3. Redeploy infoscoop.war to WebApplication Server according to Quick Start.
+3. Redeploy infoscoop.war to WebApplication Server.
 
 
 Licensing and Copyright

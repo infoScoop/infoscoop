@@ -39,7 +39,7 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 2. 静的コンテンツを設定している場合は、静的コンテンツを入れ替えます。
   静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
 
-3. クイックスタートを参考にWebアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
+3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
 
 ライセンス・著作権
