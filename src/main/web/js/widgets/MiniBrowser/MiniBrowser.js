@@ -181,10 +181,10 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 		}else{
 			this.initIframe();
 			
-			if(widget.panelType == "DynamicPanel")
-				this.buildAdjustHeightBar();
 			this.loadUrl();
 			this.displayContents();
+			if(widget.panelType == "DynamicPanel")
+				setTimeout(this.buildAdjustHeightBar,10);
 		}
 		//changeTurnbkIcon();
 		IS_EventDispatcher.newEvent('loadComplete', widget.id, null);
