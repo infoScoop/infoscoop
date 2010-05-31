@@ -128,6 +128,7 @@
 	font-weight:bold;
 	font-size:11px;
 	color:gray;
+	white-space:nowrap;
 }
 .infoScoop #tabs .tab.selected .tabTitle {
     color:#627EB7;
