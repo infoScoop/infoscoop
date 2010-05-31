@@ -81,7 +81,6 @@ if( isPreview == null )
 	%>
     <script>
 		<jsp:include page="/prpsrv" flush="true" />
-		<jsp:include page="/session.js.jsp" flush="true" />
 		
 		var isTabView = false;
 		var imageURL = staticContentURL + "/skin/imgs/";
@@ -291,6 +290,21 @@ if( isPreview == null )
 		</div>
 	</body>
 	<script>
+
+		var sessionopt = {
+			asynchronous:true,
+			onSuccess: function(response){
+				eval('(' + response.responseText + ')');
+			},
+			onFailure: function(t) {
+				alert('Retrieving session id failed. ' + t.status + ' -- ' + t.statusText);
+			},
+			onExcepti: function(t) {
+				alert('Retrieving session id failed. ' + t);
+			}
+		};
+		AjaxRequest.invoke(hostPrefix + "/sessionid<% if(isPreview.booleanValue()) { %>?isPreview=<%= isPreview %><% } %>", sessionopt);
+		
 		var scriptElm = document.createElement('script');
 		scriptElm.src = 'portallayout?type=javascript';
 		document.getElementsByTagName('head')[0].appendChild(scriptElm);
