@@ -154,6 +154,7 @@ public class TabService {
 		
 		obsoleteStaticTabToDynamicTab( tabLayoutMap,currentTabList,uid  );
 		
+		Collection<Widget> removeWidgetList  = new ArrayList<Widget>();
 		List differenceTabs = getDifferenceTabs( tabLayoutMap,currentTabList,uid );
 		for( int i=0;i<differenceTabs.size();i++ ) {
 			TabLayout tabLayout = ( TabLayout )differenceTabs.get( i );
@@ -179,9 +180,14 @@ public class TabService {
 				widgetMap.put( widget.getWidgetid(),widget );
 			}
 			
-			List exists = WidgetDAO.newInstance().getExistsWidgets( uid,new ArrayList( widgetMap.keySet()) );
-			for( Iterator widgets=exists.iterator();widgets.hasNext();)
-				widgetMap.remove( (( Widget )widgets.next()).getWidgetid());
+			List<Widget> exists = WidgetDAO.newInstance().getExistsWidgets( uid,new ArrayList( widgetMap.keySet()) );
+			for( Widget widget : exists){
+				if(tab.getTabId().equals(widget.getTabid())){
+					widgetMap.remove( widget.getWidgetid());
+				}else{
+					removeWidgetList.add( widget );
+				}
+			}
 			
 			tabDAO.getHibernateTemplate().saveOrUpdateAll( widgetMap.values() );
 			WidgetDAO.newInstance().updateUserPrefs( widgetMap.values() );
@@ -191,6 +197,7 @@ public class TabService {
 			
 			currentTabList.add( tab );
 		}
+		WidgetDAO.newInstance().getHibernateTemplate().deleteAll( removeWidgetList );
 		
 		// Replace to new StaticPanel if it is edited.
 		for(Iterator ite = tabLayoutMap.keySet().iterator();ite.hasNext();){
@@ -207,7 +214,7 @@ public class TabService {
 				String tabType = tab.getType();
 				
 				if("static".equals(tabType.toLowerCase()) && widgetTabId.equals(tempTabId)){
-					tab.setOrder(new Integer(tempTabNumber));
+					tab.setOrder(Integer.valueOf(tempTabNumber));
 					
 					if(!tempDefaultUid.equals(widgetDefaultUid) || !tempLastModified.equals(widgetLastModified)){
 						// Replace StaticPanel if tabLayout and defaultUid are different.
