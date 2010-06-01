@@ -44,6 +44,7 @@ import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.util.SpringUtil;
+import org.json.JSONArray;
 import org.w3c.dom.Element;
 
 public class TabService {
@@ -111,7 +112,7 @@ public class TabService {
 	 * @throws DBAccessException 
 	 */
 	public Collection getWidgetsNode(String uid, String defaultUid) throws Exception {
-		Collection tabList = new ArrayList();
+		Collection<Object[]> tabList = new ArrayList<Object[]>();
 		Map tabLayoutsMap = TabLayoutService.getHandle().getMyTabLayout();
 		
 		if(uid != null){
@@ -154,7 +155,6 @@ public class TabService {
 		
 		obsoleteStaticTabToDynamicTab( tabLayoutMap,currentTabList,uid  );
 		
-		Collection<Widget> removeWidgetList  = new ArrayList<Widget>();
 		List differenceTabs = getDifferenceTabs( tabLayoutMap,currentTabList,uid );
 		for( int i=0;i<differenceTabs.size();i++ ) {
 			TabLayout tabLayout = ( TabLayout )differenceTabs.get( i );
@@ -174,9 +174,8 @@ public class TabService {
 				}
 			}
 			
-			Map widgetMap = new HashMap();
-			for( Iterator widgets=tabLayout.getDynamicPanelXmlWidgets( uid ).iterator();widgets.hasNext();) {
-				Widget widget = ( Widget )widgets.next();
+			Map<String, Widget> widgetMap = new HashMap<String, Widget>();
+			for( Widget widget: tabLayout.getDynamicPanelXmlWidgets( uid )) {
 				widgetMap.put( widget.getWidgetid(),widget );
 			}
 			
@@ -185,7 +184,13 @@ public class TabService {
 				if(tab.getTabId().equals(widget.getTabid())){
 					widgetMap.remove( widget.getWidgetid());
 				}else{
-					removeWidgetList.add( widget );
+					JSONArray children = new JSONArray(
+							widgetMap.get(widget.getWidgetid()).getUserPrefs().get("children").getValue());
+					long now = new Date().getTime();
+					for(int j = 0; j < children.length(); j++){
+						WidgetDAO.newInstance().deleteWidget(uid, widget.getTabid(), children.getString(j), now);
+					}
+					WidgetDAO.newInstance().deleteWidget(uid, widget.getTabid(), widget.getWidgetid(), now);
 				}
 			}
 			
@@ -197,7 +202,6 @@ public class TabService {
 			
 			currentTabList.add( tab );
 		}
-		WidgetDAO.newInstance().getHibernateTemplate().deleteAll( removeWidgetList );
 		
 		// Replace to new StaticPanel if it is edited.
 		for(Iterator ite = tabLayoutMap.keySet().iterator();ite.hasNext();){

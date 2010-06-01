@@ -313,10 +313,10 @@ public class TabLayout extends BaseTablayout {
 		return tab;
 	}
 	
-	public Collection getDynamicPanelXmlWidgets( String uid ) throws Exception {
+	public Collection<Widget> getDynamicPanelXmlWidgets( String uid ) throws Exception {
 		return getPanelXmlWidgets( uid,super.getId().getTabid(),getDynamicPanel(),false );
 	}
-	public Collection getStaticPanelXmlWidgets( String uid ) throws Exception {
+	public Collection<Widget> getStaticPanelXmlWidgets( String uid ) throws Exception {
 		return getPanelXmlWidgets( uid,super.getId().getTabid(),getStaticPanel(),true );
 	}
 	private Collection getPanelXmlWidgets(String uid, String tabId,
