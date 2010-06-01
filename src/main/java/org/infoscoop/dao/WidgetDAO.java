@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
@@ -38,14 +37,11 @@ import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.SystemMessage;
-import org.infoscoop.dao.model.USERPREFPK;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
-import org.infoscoop.service.MessageService;
 import org.infoscoop.service.SiteAggregationMenuService.ForceUpdateUserPref;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -466,4 +462,5 @@ public class WidgetDAO extends HibernateDaoSupport{
 		for( Object widget : widgets )
 			updateUserPrefs( ( Widget )widget );
 	}
+
 }
