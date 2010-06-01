@@ -70,6 +70,6 @@ public class UserPref extends BaseUserPref {
 		}
 	}
 	public boolean hasLongValue() {
-		return ( getShortValue() == null );
+		return !"".equals(getLongValue());
 	}
 }

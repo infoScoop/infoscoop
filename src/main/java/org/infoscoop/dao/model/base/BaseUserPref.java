@@ -89,7 +89,7 @@ public abstract class BaseUserPref  implements Serializable {
 	 * Return the value associated with the column: value
 	 */
 	public java.lang.String getShortValue () {
-		return shortValue;
+		return (shortValue != null ? shortValue : "");
 	}
 
 	/**
@@ -106,7 +106,7 @@ public abstract class BaseUserPref  implements Serializable {
 	 * Return the value associated with the column: long_value
 	 */
 	public java.lang.String getLongValue () {
-		return longValue;
+		return (longValue != null ? longValue : "");
 	}
 
 	/**
