@@ -18,6 +18,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SQLTask extends Task {
 	public static String PROPERTY_SCHEMA_NAME = "SCHEMA_NAME";
+	public static String BACKUP_TABLE_SUFFIX = "BACKUP_TABLE_SUFFIX";
 	private static ApplicationContext context; // dirty na scope ...
 	public static ApplicationContext getContext() {
 		if( context == null ) {
@@ -40,26 +41,34 @@ public class SQLTask extends Task {
 
 	List SQLs = new ArrayList();
 	public SQLDef createSQL() {
+		setBuckupTableSuffix();
 		SQLDef sqlDef = new SQLDef(super.getProject().getProperty(PROPERTY_SCHEMA_NAME));
 		
 		SQLs.add( sqlDef );
-		
 		return sqlDef;
 	}
 	
 	public void addSQL(String sql){
+		setBuckupTableSuffix();
 		SQLDef sqlDef = new SQLDef(super.getProject().getProperty(PROPERTY_SCHEMA_NAME));
+				
 		sqlDef.addText(sql);
-		
+
 		SQLs.add( sqlDef );
+	}
+	
+	private void setBuckupTableSuffix(){
+		String buckupTableSuffix = super.getProject().getProperty(BACKUP_TABLE_SUFFIX);
+		Property property = new Property();
+		property.setName(BACKUP_TABLE_SUFFIX);
+		property.addText(buckupTableSuffix);
+		properties.add(property);
 	}
 	
 	List properties = new ArrayList();
 	public Property createProperty() {
 		Property property = new Property();
-		
 		properties.add( property );
-		
 		return property;
 	}
 	

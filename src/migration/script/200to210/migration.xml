@@ -102,11 +102,11 @@
 	"/>
 		
 	<target name="clean-all-backup" depends="prepare">
-		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_PROXYCONFS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
-		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_SEARCHENGINES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
-		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_PORTALLAYOUTS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
-		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_PROPERTIES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
-		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}.IS_GADGETS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PROXYCONFS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_SEARCHENGINES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PORTALLAYOUTS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PROPERTIES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_GADGETS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 	</target>
 	
 	<target name="widget">
