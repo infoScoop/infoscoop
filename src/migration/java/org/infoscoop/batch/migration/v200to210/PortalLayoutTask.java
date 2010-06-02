@@ -22,7 +22,7 @@ public class PortalLayoutTask implements HibernateBeansTask.BeanTask2 {
 	public void execute(Project project, Object object) throws BuildException {
 		Portallayout bean = (Portallayout) object;
 		String id = bean.getName();
-		if (!"header".equals(id)) {
+		if (!"header".equals(id) && !"css".equals(id)) {
 			String value = properties.get(id);
 			if (value != null)
 				bean.setLayout(value);
