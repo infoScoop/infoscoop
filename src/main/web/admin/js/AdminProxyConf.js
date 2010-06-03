@@ -687,7 +687,8 @@ ISA_ProxyConf.prototype.classDef = function() {
 		configTr.appendChild(
 			$.TD({style:"textAlign:center;width:40px;"},
 				 $.SPAN({},$.INPUT({type:'checkbox',defaultChecked:/true/.test(caseConfigItem.intranet) ,onchange:{handler:function(){
-					 ISA_ProxyConf.updateProxyConfAttr( caseConfigItem, "intranet", ""+this.checked );
+					ISA_Admin.isUpdated = true;
+					ISA_ProxyConf.updateProxyConfAttr( caseConfigItem, "intranet", ""+this.checked );
 				 }}}))
 				   )
 			);
