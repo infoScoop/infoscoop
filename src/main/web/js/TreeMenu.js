@@ -592,10 +592,11 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		divMenuTitle.id = "t_" + menuItem.id;
 		divMenuTitle.className = "treeMenuTitle";
 		
+		var title = menuItem.directoryTitle || menuItem.title;
 		if (menuItem.href && !menuItem.linkDisabled) {
 			var aTag = document.createElement('a');
 			aTag.href = menuItem.href;
-			aTag.appendChild(document.createTextNode(menuItem.title));
+			aTag.appendChild(document.createTextNode(title));
 			if(menuItem.display == "self") {
 				aTag.target = "_self";
 			} else if(menuItem.display == "newwindow"){
@@ -612,9 +613,9 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			IS_Event.observe(aTag, "mousedown", function(e){Event.stop(e);}, false, "_sidemenu");
 			divMenuTitle.appendChild(aTag);
 		}else{
-			divMenuTitle.appendChild(document.createTextNode(menuItem.title));
+			divMenuTitle.appendChild(document.createTextNode(title));
 		}
-		divMenuTitle.title = menuItem.title;
+		divMenuTitle.title = title;
 		
 		if ( Browser.isIE ) {
 			divMenuItem.appendChild(divMenuTitle);
