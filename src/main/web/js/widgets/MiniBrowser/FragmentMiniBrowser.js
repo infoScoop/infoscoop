@@ -194,7 +194,7 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 		} else {
 			if(iframeDoc && iframeDoc.body){
 //				widget.iframe.style.height = (isAuto)? parseInt(iframeDoc.height) + offset : height;
-				if(Browser.isFirefox) widget.iframe.style.height = 0;
+				widget.iframe.style.height = 0;
 				widget.iframe.style.height =
 					(isAuto)? IS_Widget.FragmentMiniBrowser.getMiniBrowserHeight(iframeDoc) + offset: height;
 			}
