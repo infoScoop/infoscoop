@@ -837,7 +837,9 @@ if(!isTabView){
 		}else{
 			IS_Portal.start();
 		}
-		IS_Portal.deleteCache();//TODO:Should be delted at calling index.jsp
+		
+		if( Browser.isSafari1 )
+		  IS_Portal.deleteCache();//TODO:Should be delted at calling index.jsp
 	});
 }
 
