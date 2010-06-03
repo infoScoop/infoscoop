@@ -539,7 +539,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		inputs.each(function(input){
 			var name = input.value;
 			this.getRole(input.id).name = name;
-		});
+		}.bind(this));
 
 		$$(".roleSelectTd").each(function(selectTd){
 			var comboBox = selectTd.firstChild;
