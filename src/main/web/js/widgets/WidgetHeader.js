@@ -948,7 +948,6 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			menuDiv.appendChild( itemDiv );
 		}
 		menuDiv.style.top = 0;
-		menuDiv.style.left = 0;
 		document.body.appendChild(menuDiv);
 		
 		this.elm_menu = menuDiv;
@@ -1049,8 +1048,10 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			var offsetX= xy[0];
 			if( (offsetX + this.elm_menu.offsetWidth ) > winX ){//if the width of the whole menu is bigger than the distance between the left end of top menu and the right end of window
 				//offsetX = (winX  - this.elm_menu.offsetWidth) - 10;
-				this.elm_menu.style.right = 10;
+				this.elm_menu.style.left = "auto";
+				this.elm_menu.style.right = fixedPortalHeader ? 16:10;
 			}else{
+				this.elm_menu.style.right = "auto";
 				this.elm_menu.style.left = offsetX;
 			}
 			var offsetY = xy[1] + showToolsDiv.offsetHeight;
