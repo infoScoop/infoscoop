@@ -364,7 +364,7 @@ public class SearchEngineService {
 		JSONObject json = new JSONObject();
 		for (int i = 0; i < searchEngines.getLength(); i++) {
 			Element searchEl = (Element) searchEngines.item(i);
-
+			
 			String id = searchEl.getAttribute("id");
 			JSONObject searchObj = new JSONObject();
 			searchObj.put("id", id);
@@ -372,6 +372,12 @@ public class SearchEngineService {
 			searchObj.put("retrieveUrl", searchEl.getAttribute("retrieveUrl"));
 			String defaultSelected = searchEl.getAttribute("defaultSelected");
 			searchObj.put("defaultSelected", (defaultSelected != null ? "TRUE".equalsIgnoreCase(defaultSelected) : false) );
+			
+			// rssPattern
+			Element rssPattern = (Element) XPathAPI.selectSingleNode(searchEl,"rssPattern");
+			if(rssPattern != null){
+				searchObj.put("rssPattern", rssPattern.getTextContent());
+			}
 
 			// countRule
 			Element countRule = (Element) XPathAPI.selectSingleNode(searchEl,
