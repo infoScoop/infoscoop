@@ -194,8 +194,9 @@ IS_MySiteMap.prototype = {
 		var divIcon = $.DIV({Class:'menuItemIcon menuItemIcon_dropped'});
 		IS_Widget.setIcon(divIcon, widget.widgetType);
 		div.appendChild(divIcon);
-		
-		div.appendChild( document.createTextNode( widget.title || widget.widgetConf.title || IS_R.lb_notitle ) );
+
+		var widgetTitle = IS_Widget.WidgetHeader.getTitle(widget);
+		div.appendChild( document.createTextNode( widgetTitle || widget.widgetConf.title || IS_R.lb_notitle ) );
 		
 		Event.observe( div,"click",this.focusWidget.bind( this,tab,widget ));
 		
