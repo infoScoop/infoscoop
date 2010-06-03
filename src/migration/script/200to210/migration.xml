@@ -83,6 +83,7 @@
 		proxyConf,
 		searchEngine,
 		tab,
+		i18n,
 		widget,
 		gadget,
 		portallayout,
@@ -94,6 +95,7 @@
 		clean-proxyConf,
 		clean-searchEngine,
 		clean-tab,
+		clean-i18n,
 		clean-widget,
 		clean-gadget,
 		clean-portallayout,
@@ -102,6 +104,7 @@
 	"/>
 		
 	<target name="clean-all-backup" depends="prepare">
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_I18N${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PROXYCONFS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_SEARCHENGINES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PORTALLAYOUTS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
