@@ -421,7 +421,7 @@ IS_Portal.SearchEngines = {
 
 		var newwindowAttr = root.getAttribute('newwindow');
 		this._defaultSearchOption['newwindow'] = newwindowAttr ? /true/i.test(newwindowAttr) : false;
-		if(typeof(this.searchOption.displayNewWindow) == undefined)
+		if(typeof(this.searchOption.displayNewWindow) == "undefined")
 		  this.searchOption.displayNewWindow = this._defaultSearchOption['newwindow'];
 
 		var prefsSitelist = this.searchOption.sitelist;
