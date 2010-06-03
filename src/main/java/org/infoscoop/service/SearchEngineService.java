@@ -416,7 +416,6 @@ public class SearchEngineService {
 					String type = auth.getAttribute("type");
 					String regx = auth.getAttribute("regx");
 					List<String> matchStrList = RoleUtil.getPermittedMatchList(type, regx);
-					System.out.println(matchStrList);
 					if(matchStrList != null){
 						AdminServiceUtil.removeSelf(authsEl);
 						for(int k = 0; k < matchStrList.size(); k++){
