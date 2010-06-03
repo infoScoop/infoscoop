@@ -184,11 +184,13 @@ public class TabService {
 				if(tab.getTabId().equals(widget.getTabid())){
 					widgetMap.remove( widget.getWidgetid());
 				}else{
-					JSONArray children = new JSONArray(
-							widgetMap.get(widget.getWidgetid()).getUserPrefs().get("children").getValue());
 					long now = new Date().getTime();
-					for(int j = 0; j < children.length(); j++){
-						WidgetDAO.newInstance().deleteWidget(uid, widget.getTabid(), children.getString(j), now);
+					UserPref childrenPref = widgetMap.get(widget.getWidgetid()).getUserPrefs().get("children");
+					if(childrenPref != null){
+						JSONArray children = new JSONArray(childrenPref.getValue());
+						for(int j = 0; j < children.length(); j++){
+							WidgetDAO.newInstance().deleteWidget(uid, widget.getTabid(), children.getString(j), now);
+						}
 					}
 					WidgetDAO.newInstance().deleteWidget(uid, widget.getTabid(), widget.getWidgetid(), now);
 				}
