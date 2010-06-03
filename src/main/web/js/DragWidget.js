@@ -858,6 +858,7 @@ IS_Draggable.prototype = {
   },
   
   startDrag: function(event, pointer) {
+	  document.body.style.overflow = 'hidden';
     this.dragging = true;
 	IS_Portal.isItemDragging = true;
 	
@@ -1085,12 +1086,14 @@ IS_Draggable.prototype = {
 	if( !Browser.isFirefox3 )
     	IS_Draggables.deactivate(this);
     IS_Droppables.reset();
+	
   },
   
   endDrag: function(event) {
     if(!this.dragging) return;
     this.stopScrolling();
     this.finishDrag(event, true);
+	document.body.style.overflow = 'auto';
     Event.stop(event);
   },
   
