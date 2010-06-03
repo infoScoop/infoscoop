@@ -1007,10 +1007,11 @@ IS_Widget.WidgetEdit.makeHelpIcon = function( container,userPref ) {
 	description.className = "description";
 	description.innerHTML = userPref.description;
 	help.appendChild( description );
+	help.style.top = 0;
+	help.style.left = 0;
 	
 	a.observe("mouseover",function( event ) {
 		help.style.display = "block";
-		
 		if( help.offsetWidth > 300 )
 			help.style.width = 300;
 		
@@ -1022,7 +1023,7 @@ IS_Widget.WidgetEdit.makeHelpIcon = function( container,userPref ) {
 			x = x -help.offsetWidth -48;
 		
 		if( y +help.offsetHeight > y_limit )
-			y = y_limit -help.offsetHeight -8;
+			y = y_limit -help.offsetHeight -10;
 		
 		help.style.top = y;
 		help.style.left = x;

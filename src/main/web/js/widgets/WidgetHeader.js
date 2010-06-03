@@ -947,8 +947,9 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			itemDiv.id = "hm_" + widgetId + "_" + this.menuOptList[i].type;
 			menuDiv.appendChild( itemDiv );
 		}
+		menuDiv.style.top = 0;
+		menuDiv.style.left = 0;
 		document.body.appendChild(menuDiv);
-		
 		
 		this.elm_menu = menuDiv;
 		isInit = true;
