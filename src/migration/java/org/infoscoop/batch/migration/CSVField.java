@@ -1,4 +1,4 @@
-package org.infoscoop.batch.migration.v200to210;
+package org.infoscoop.batch.migration;
 
 import java.io.UnsupportedEncodingException;
 

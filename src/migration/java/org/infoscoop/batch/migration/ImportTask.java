@@ -1,4 +1,4 @@
-package org.infoscoop.batch.migration.v200to210;
+package org.infoscoop.batch.migration;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -19,7 +19,6 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.infoscoop.batch.migration.SQLTask;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -55,7 +54,7 @@ public class ImportTask extends Task {
 			List<CSVField[]> records = parseCSV( source );
 			session.getTransaction().begin();
 			for( int i=0;i<records.size();i++ ) {
-				CSVField[] record = ( CSVField[] )records.get( i );
+				CSVField[] record = (org.infoscoop.batch.migration.CSVField[] )records.get( i );
 				try {
 					session.saveOrUpdate( factory.newBean( record ));
 				} catch( Exception ex ) {
@@ -104,7 +103,7 @@ public class ImportTask extends Task {
 				
 				String externalFilePath = null;
 				
-				Pattern pattern = Pattern.compile("\\s*<XDS FIL='(.+)' />");
+				Pattern pattern = Pattern.compile("\\s*<LOB FILE='(.+)' />");
 				Matcher matcher = pattern.matcher( field );
 				if( matcher.matches())
 					externalFilePath = matcher.group(1);

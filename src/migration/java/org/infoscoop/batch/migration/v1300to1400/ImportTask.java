@@ -24,6 +24,9 @@ import org.infoscoop.batch.migration.SQLTask;
 import au.com.bytecode.opencsv.CSVReader;
 
 
+/**
+ * @deprecated
+ */
 public class ImportTask extends Task {
 	private String source;
 	public void setSource( String source ) {

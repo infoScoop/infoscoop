@@ -51,9 +51,7 @@
 	
 	<taskdef name="exec-sql" classname="org.infoscoop.batch.migration.SQLTask" classpathref="task.classpath"/>
 	<taskdef name="migration" classname="org.infoscoop.batch.migration.MigrationTask" classpathref="task.classpath"/>
-	<taskdef name="importDel" classname="org.infoscoop.batch.migration.v_1_2_0_4_to_1_2_1_0.ImportTask" classpathref="task.classpath"/>
-	<taskdef name="importDel2" classname="org.infoscoop.batch.migration.v1300to1400.ImportTask" classpathref="task.classpath"/>
-	<taskdef name="importDel3" classname="org.infoscoop.batch.migration.v200to210.ImportTask" classpathref="task.classpath"/>
+	<taskdef name="importDel" classname="org.infoscoop.batch.migration.ImportTask" classpathref="task.classpath"/>
 	<taskdef name="hibernate-beans" classname="org.infoscoop.batch.migration.HibernateBeansTask" classpathref="task.classpath"/>
 	
     <typedef name="property-xslt" classname="org.infoscoop.batch.migration.BeanPropertyXSLTTask" classpathref="task.classpath"/>
@@ -128,7 +126,7 @@
 	
 	<target name="gadget" depends="clean-gadget">
 		<current.sql src="sql/${DBMS}/gadget.sql"/>
-		<importDel2 source="data/gadget/import.csv" beanFactory="org.infoscoop.batch.migration.v1300to1400.GadgetFactory"/>
+		<importDel source="data/gadget/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.GadgetFactory"/>
 	</target>
 	<target name="clean-gadget" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_gadgets</property>
@@ -138,7 +136,7 @@
 	
 	<target name="i18n" depends="clean-i18n">
 		<current.sql src="sql/${DBMS}/i18n.sql"/>
-		<importDel source="data/i18n/import.csv" beanFactory="org.infoscoop.batch.migration.v_1_2_0_4_to_1_2_1_0.I18nFactory"/>
+		<importDel source="data/i18n/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.I18nFactory"/>
 	</target>
 	<target name="clean-i18n" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_i18n</property>
@@ -148,7 +146,7 @@
 
 	<target name="portallayout" depends="clean-portallayout">
 		<current.sql src="sql/${DBMS}/portallayout.sql"/>
-		<importDel source="data/portallayout/import.csv" beanFactory="org.infoscoop.batch.migration.v_1_2_0_4_to_1_2_1_0.PortalLayoutFactory"/>
+		<importDel source="data/portallayout/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.PortalLayoutFactory"/>
 		<hibernate-beans type="Portallayout">
 			<task class="org.infoscoop.batch.migration.v200to210.PortalLayoutTask"/>
 		</hibernate-beans>
@@ -161,7 +159,7 @@
 	
 	<target name="properties" depends="clean-properties">
 		<current.sql src="sql/${DBMS}/properties.sql"/>
-		<importDel source="data/properties/import.csv" beanFactory="org.infoscoop.batch.migration.v1300to1400.PropertiesFactory"/>
+		<importDel source="data/properties/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.PropertiesFactory"/>
 		<hibernate-beans type="Properties">
 			<task class="org.infoscoop.batch.migration.v200to210.PropertiesConvertTask"/>
 		</hibernate-beans>
@@ -175,7 +173,7 @@
 	
 	<target name="searchEngine" depends="clean-searchEngine">
 		<current.sql src="sql/${DBMS}/searchengine.sql"/>
-		<importDel3 source="data/searchengine/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.SearchEngineFactory"/>
+		<importDel source="data/searchengine/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.SearchEngineFactory"/>
 		<hibernate-beans type="Searchengine">
 			<task class="org.infoscoop.batch.migration.v200to210.SearchEngineConvertTask"/>
 		</hibernate-beans>

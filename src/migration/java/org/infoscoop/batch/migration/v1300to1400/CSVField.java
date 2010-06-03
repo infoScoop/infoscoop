@@ -3,6 +3,9 @@ package org.infoscoop.batch.migration.v1300to1400;
 import java.io.UnsupportedEncodingException;
 
 
+/**
+ * @deprecated
+ */
 public class CSVField {
 	private byte[] bytes;
 	private String string;
