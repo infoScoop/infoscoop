@@ -454,9 +454,13 @@ IS_Portal.showTabMenu = function(tabElement, e){
 			AjaxRequest.invoke(hostPrefix + "/widsrv?reset=true&tabId=" + tabId, opt);
 		}.bind(this, tabObj.id);
 
-		if(!tabObj.disabledDynamicPanel){
-			var initTabContent = $.DIV({}, IS_R.lb_initTab, $.BUTTON({onclick:{handler:initTab}}, IS_R.lb_execute) );
-			var initTabDiv = createItem({ className:"initialize",content: initTabContent });
+		if(tabObj.type == 'static' && !tabObj.disabledDynamicPanel){
+			var initTabDiv = createItem({
+			  anchor:true,
+			  className:"initialize",
+			  label: IS_R.lb_initTab,
+			  handler: initTab
+			});
 			initTabDiv.id = tabObj.id +"_menu_initTab";
 			menuDiv.appendChild( initTabDiv );
 		}
