@@ -64,7 +64,7 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 						
 			var url = fragmentServerURL
 			this.loadContentsOption.url = url;
-			this.loadContentsOption.parameters = "filter=HTMLFragment&url=" + encodeURIComponent(widget.getUserPref("url")) + "&additional_css=" + widget.getUserPref("additional_css");
+			this.loadContentsOption.parameters = "filter=HTMLFragment&url=" + encodeURIComponent(widget.getUserPref("url")) + "&additional_css=" + encodeURIComponent(widget.getUserPref("additional_css"));
 			this.loadContentsOption.requestHeaders = ["fragment-xpath", widget.getUserPref("xPath")];
 			if(widget.getUserPref("charset")){
 				this.loadContentsOption.requestHeaders.push("fragment-charset");
