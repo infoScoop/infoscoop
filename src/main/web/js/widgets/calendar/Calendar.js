@@ -502,7 +502,7 @@ IS_Widget.Calendar.DayHandler.prototype.classDef = function() {
 		detailDiv.style.display = "none";
 		detailDiv.style.position = "absolute";
 		detailDiv.innerHTML = '<div class="caleventdate">' + formatDate(date, calendar.Locale.EVENT_DATE_FORMAT) + '</div>';
-
+		detailDiv.style.top = 0;
 		
 		for(var i=0; i<sortedEvents.length; i++) {
 			this.buildEventDiv(sortedEvents[i]);
