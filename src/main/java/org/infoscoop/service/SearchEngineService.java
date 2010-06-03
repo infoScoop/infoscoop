@@ -410,11 +410,13 @@ public class SearchEngineService {
 			Element authsEl = (Element) XPathAPI.selectSingleNode(searchEl,	"auths");
 			if(authsEl != null){
 				NodeList roles = authsEl.getElementsByTagName("auth");
+				boolean isPermitted = false;
 				for (int j = 0; j < roles.getLength(); j++) {
 					Element auth = (Element) roles.item(j);
 					String type = auth.getAttribute("type");
 					String regx = auth.getAttribute("regx");
 					List<String> matchStrList = RoleUtil.getPermittedMatchList(type, regx);
+					System.out.println(matchStrList);
 					if(matchStrList != null){
 						AdminServiceUtil.removeSelf(authsEl);
 						for(int k = 0; k < matchStrList.size(); k++){
@@ -423,10 +425,12 @@ public class SearchEngineService {
 						if(!matchStrList.isEmpty()){
 							searchEl.setAttribute("retrieveUrl", retrieveUrl);
 						}
-					}else{
-						AdminServiceUtil.removeSelf(searchEl);
+						isPermitted = true;
+						break;
 					}
 				}
+				if (!isPermitted)
+					AdminServiceUtil.removeSelf(searchEl);
 			}
 		}
 	}
