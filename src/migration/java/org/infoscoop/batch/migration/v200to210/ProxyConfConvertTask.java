@@ -28,7 +28,7 @@ public class ProxyConfConvertTask implements HibernateBeansTask.BeanTask2 {
 
 				NodeList defaultList = doc.getElementsByTagName("default");
 				Element defaultEle = (Element) defaultList.item(0);
-				defaultEle.setAttribute("intranet", "true");
+				defaultEle.setAttribute("intranet", "false");
 
 				bean.setElement(doc.getDocumentElement());
 			} catch (SAXException e) {
