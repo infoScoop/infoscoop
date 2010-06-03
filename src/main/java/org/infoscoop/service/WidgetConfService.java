@@ -97,7 +97,7 @@ public class WidgetConfService {
 					if (!gadget.getName().equalsIgnoreCase(
 							gadget.getType() + ".xml"))
 						continue;
-					WidgetConfUtil.GadgetContext context = new WidgetConfUtil.GadgetContext().setUrl("g_update__" + gadget.getType());
+					WidgetConfUtil.GadgetContext context = new WidgetConfUtil.GadgetContext().setUrl("upload__" + gadget.getType());
 					Document gadgetDoc = builder.parse(new ByteArrayInputStream(gadget.getData()));
 					JSONObject gadgetJson = WidgetConfUtil.gadget2JSONObject( gadgetDoc.getDocumentElement(), context.getI18NConveter(locale, gadgetDoc),
 							true);
