@@ -82,6 +82,7 @@
 		searchEngine,
 		tab,
 		i18n,
+		i18nLocale,
 		widget,
 		gadget,
 		portallayout,
@@ -94,6 +95,7 @@
 		clean-searchEngine,
 		clean-tab,
 		clean-i18n,
+		clean-i18nLocale,
 		clean-widget,
 		clean-gadget,
 		clean-portallayout,
@@ -140,6 +142,16 @@
 	</target>
 	<target name="clean-i18n" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_i18n</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<target name="i18nLocale" depends="clean-i18nLocale">
+		<exec-sql quiet="true"><sql>DELETE FROM ${SCHEMA_NAME}IS_I18NLOCALES where lang = 'zh'</sql></exec-sql>
+		<exec-sql quiet="true"><sql>INSERT INTO ${SCHEMA_NAME}IS_I18NLOCALES (`type` ,`country` ,`lang`) VALUES ('js',  'ALL',  'zh'), ('layout',  'ALL',  'zh'), ('menu',  'ALL',  'zh'), ('property',  'ALL',  'zh'), ('widget',  'ALL',  'zh');</sql></exec-sql>
+	</target>
+	<target name="clean-i18nLocale" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_i18nlocales</property>
 			<sql file="sql/${DBMS}/restore.sql"/>
 		</exec-sql>
 	</target>
