@@ -843,7 +843,23 @@ if(!isTabView){
 	});
 }
 
-Event.observe(window, 'beforeunload',  windowUnload );
+Event.observe(window, 'beforeunload',  windowBeforeUnload );
+
+function windowBeforeUnload() {
+	IS_Request.asynchronous = false;
+	try{
+		IS_Request.LogCommandQueue.fireRequest();
+	}catch(e){}
+	
+	try{
+		IS_Request.CommandQueue.fireRequest();
+	}catch(e){
+		alert(IS_R.getResource(IS_R.ms_customizeSavingFailure1,[getText(e)]));
+	}
+	
+}
+
+Event.observe(window, Browser.isIE ? 'beforeunload' : 'unload',  windowUnload );
 
 function windowUnload() {
 	IS_Request.asynchronous = false;
@@ -853,17 +869,6 @@ function windowUnload() {
 		IS_Portal.processLogoff();
 	}catch(e){
 		alert(IS_R.getResource(IS_R.ms_logofftimeSavingfailure,[getText(e)]));
-	}
-	
-	try{
-		IS_Request.LogCommandQueue.fireRequest();
-	}catch(e){}
-	
-	try{
-		IS_Request.CommandQueue.fireRequest();
-	}catch(e){
-		alert(IS_R.getResource(IS_R.ms_customizeSavingFailure1,[getText(e)]));
-
 	}
 	
 	//Event.unloadCache();
@@ -884,7 +889,6 @@ function windowUnload() {
 		IS_EventDispatcher.eventListenerList[i] = null;
 	}
 }
-
 
 IS_Portal.currentLink = {};
 IS_Portal.iFrameOnLoad = function() {
