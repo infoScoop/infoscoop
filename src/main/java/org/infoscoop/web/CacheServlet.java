@@ -67,7 +67,7 @@ public class CacheServlet extends HttpServlet {
 				}else{
 					deleteCacheByUrl(uid, url);
 				}
-	            response.setStatus(200);
+	            response.setStatus(204);
 			} catch (Exception e) {
 	        	log.error("",e);
 				response.sendError(500, e.getMessage());
