@@ -34,6 +34,7 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
@@ -64,8 +65,6 @@ public class LDAPAccountManager implements IAccountManager{
 	static{
 		principalDefs.add(new PrincipalDef(LDAP_GROUP_PRINCIPAL, "LDAP Group"));
 	}
-
-	private InitialDirContext context;
 
 	private String connectionURL;
 	private String connectionName;
@@ -114,7 +113,7 @@ public class LDAPAccountManager implements IAccountManager{
 	}
 
 
-	private void initContext() throws NamingException{
+	private DirContext initContext() throws NamingException{
 		Hashtable env = new Hashtable();
 	    env.put(Context.INITIAL_CONTEXT_FACTORY,
 	            "com.sun.jndi.ldap.LdapCtxFactory");
@@ -125,9 +124,8 @@ public class LDAPAccountManager implements IAccountManager{
 	    	env.put(Context.SECURITY_PRINCIPAL , this.connectionName );
 	    	env.put(Context.SECURITY_CREDENTIALS , this.connectionPassword );
 	    }
-	    this.context = new InitialDirContext( env );
+	    return new InitialDirContext( env );
 	}
-
 
 	public void setUserSearchAttr(Map propAttrMap){
 		this.propAttrMap.putAll(propAttrMap);
@@ -182,11 +180,7 @@ public class LDAPAccountManager implements IAccountManager{
 	}
 
 	public IAccount getUser(String uid) throws NamingException {
-
-		if(this.context == null){
-			this.initContext();
-		}
-
+		
 		SearchControls searchControls = new SearchControls();
 		searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
 		NamingEnumeration searchResultEnum;
@@ -202,21 +196,28 @@ public class LDAPAccountManager implements IAccountManager{
 		}
 		if(uid != null && !"".equals(uid)) filters.put( uidAttrName, uid);
 
-		searchResultEnum = this.context.search(userBase, buildFilterByUid(filters), searchControls);
-		//roop of retrieval result
+		DirContext context = null;
+		try{
+			context = this.initContext();
+			searchResultEnum = context.search(userBase, buildFilterByUid(filters), searchControls);
+			//roop of retrieval result
 
-		while ( searchResultEnum.hasMore() ){
-			SearchResult searchResult =
-				(SearchResult)searchResultEnum.next();
+			while ( searchResultEnum.hasMore() ){
+				SearchResult searchResult =
+					(SearchResult)searchResultEnum.next();
 
-			String dn = searchResult.getName() + "," + userBase;
-			LDAPAccount user = createLDAPUser(dn, searchResult.getAttributes());
-			setGroup(user);
+				String dn = searchResult.getName() + "," + userBase;
+				LDAPAccount user = createLDAPUser(dn, searchResult.getAttributes());
+				setGroup(context,user);
 
-			return user;
+				return user;
+			}
+
+			return null;
+		}finally{
+			if(context != null)
+				context.close();
 		}
-		return null;
-
 	}
 
 	public List searchUser(Map searchConditionMap) throws Exception {
@@ -238,32 +239,40 @@ public class LDAPAccountManager implements IAccountManager{
 
 		});
 
-		Map groupFilterMap = (Map) confitionForBase.get(GROUP_SEARCH_BASE_KEY);
-		Collection groupMembers = null;
-		if( groupFilterMap != null ){
-			groupMembers = searchGroupMember(groupFilterMap);
-		}
-		Map userFilterMap = (Map)confitionForBase.get(USER_SEARCH_BASE_KEY);
+		DirContext context = null;
+		try{
+			context = this.initContext();
 
-		if( userFilterMap != null ){
-			users = searchFromUsers(userFilterMap);
-
-			if(groupMembers != null){
-				users.retainAll(groupMembers);
+			Map groupFilterMap = (Map) confitionForBase.get(GROUP_SEARCH_BASE_KEY);
+			Collection groupMembers = null;
+			if( groupFilterMap != null ){
+				groupMembers = searchGroupMember(context, groupFilterMap);
 			}
-		}else if(groupMembers != null){
-			users.addAll(groupMembers);
-		}
+			Map userFilterMap = (Map)confitionForBase.get(USER_SEARCH_BASE_KEY);
 
-		List result = new ArrayList();
-		for(Iterator it = users.iterator(); it.hasNext();){
-			LDAPAccount user = (LDAPAccount)it.next();
-			if(user.getGroupName() == null)
-				setGroup(user);
-			result.add(user);
-		}
+			if( userFilterMap != null ){
+				users = searchFromUsers(context, userFilterMap);
 
-		return result;
+				if(groupMembers != null){
+					users.retainAll(groupMembers);
+				}
+			}else if(groupMembers != null){
+				users.addAll(groupMembers);
+			}
+
+			List result = new ArrayList();
+			for(Iterator it = users.iterator(); it.hasNext();){
+				LDAPAccount user = (LDAPAccount)it.next();
+				if(user.getGroupName() == null)
+					setGroup(context, user);
+				result.add(user);
+			}
+
+			return result;
+		}finally{
+			context.close();
+		}
+		
 	}
 
 	public void login(String userid, String password) throws AuthenticationException{
@@ -312,7 +321,7 @@ public class LDAPAccountManager implements IAccountManager{
 		throw new UnsupportedOperationException();
 	}
 
-	private void setGroup(LDAPAccount user) throws NamingException{
+	private void setGroup(DirContext context, LDAPAccount user) throws NamingException{
 
 		SearchControls searchControls = new SearchControls();
 		searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
@@ -325,7 +334,7 @@ public class LDAPAccountManager implements IAccountManager{
 		filters.put(uniqueMemberAttrName, user.getDn());
 		String grpFilter = buildGroupFilterByDN(filters);
 
-		NamingEnumeration grpRes = this.context.search( groupBase,
+		NamingEnumeration grpRes = context.search( groupBase,
 				grpFilter, searchControls);
 
 		List grpList = new ArrayList();
@@ -347,11 +356,7 @@ public class LDAPAccountManager implements IAccountManager{
 
 	}
 
-	private List searchFromUsers(Map filters) throws NamingException{
-
-		if(this.context == null){
-			this.initContext();
-		}
+	private List searchFromUsers(DirContext context, Map filters) throws NamingException{
 
 		SearchControls searchControls = new SearchControls();
 		searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
@@ -360,7 +365,7 @@ public class LDAPAccountManager implements IAccountManager{
 		String filter = buildFilter(filters);
 		if(log.isInfoEnabled())
 			log.info("Search User from " + userBase + " by " +  filter );
-		searchResultEnum = this.context.search(userBase, filter, searchControls);
+		searchResultEnum = context.search(userBase, filter, searchControls);
 		//roop of retrieval result
 
 		List users = new ArrayList();
@@ -374,11 +379,7 @@ public class LDAPAccountManager implements IAccountManager{
 		return users;
 	}
 
-	private List searchGroupMember(Map filters) throws NamingException{
-
-		if(this.context == null){
-			this.initContext();
-		}
+	private List searchGroupMember(DirContext context, Map filters) throws NamingException{
 
 		SearchControls searchControls = new SearchControls();
 		searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
@@ -387,7 +388,7 @@ public class LDAPAccountManager implements IAccountManager{
 		String filter = buildFilter(filters);
 		if(log.isInfoEnabled())
 			log.info("Search User from " + userBase + " by " +  filter );
-		NamingEnumeration searchResultEnum = this.context.search(this.groupBase, filter, searchControls);
+		NamingEnumeration searchResultEnum = context.search(this.groupBase, filter, searchControls);
 
 
 		while ( searchResultEnum.hasMore() ){
@@ -420,7 +421,7 @@ public class LDAPAccountManager implements IAccountManager{
 			String userDn = (String)userDns.next();
 			Attributes userEntry = null;
 			try{
-				userEntry = this.context.getAttributes(userDn);//DN of user
+				userEntry = context.getAttributes(userDn);//DN of user
 			}catch(Exception e){
 				log.error(userDn + ": " + e.getMessage());
 			}
