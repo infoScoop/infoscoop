@@ -1001,10 +1001,11 @@ ISA_SearchEngine.EditorForm.makeCountEditForm = function(searchEngine){
 	editorFormTbody.appendChild(makeValueText());
 	
 	// Input item:direct
+	var useCacheDefaultChecked = searchEngine.countRule ? searchEngine.countRule.useCache : false;
 	editorFormTbody.appendChild(
 		$.TR({},
 			 $.TD({style:"textAlign:right;verticalAlign:top;"},ISA_R.alb_useCacheForSearchResults),
-			 $.TD({},$.INPUT({id:'useCache',type:'checkbox',defaultChecked:searchEngine.countRule.useCache}),$.DIV({style:"fontSize:80%;"},ISA_R.alb_descOfUseCacheForSearchResults))
+			 $.TD({},$.INPUT({id:'useCache',type:'checkbox',defaultChecked: useCacheDefaultChecked}),$.DIV({style:"fontSize:80%;"},ISA_R.alb_descOfUseCacheForSearchResults))
 			   )
 		);
 		
