@@ -16,7 +16,7 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 
 How to migrate from version 2.0
 -----------------------------
-To migrate from version 2.0 to 2.1, follow the steps below.
+To migrate from version 2.0 to 2.1 RC1, follow the steps below.
 
 [Transfer Data]
 It is strongly recommended that the following steps should be done after backing up the database data.
@@ -38,7 +38,7 @@ USER=root
 PASSWORD=
 #TABLESPACE=
 
-1)DBMS: Specify one of these; mysql、oracle、db2.
+1)DBMS: Specify one of these; mysql, oracle, db2.
 2)DATABASE_URL: Specify a URL to connect database with JDBC.
 3)SCHEMA: If the value is empty, the schema is to be the same as the user name. Note that this should not be set in case of MySQL.
 4)USER: Specify a database connection user.
@@ -53,14 +53,14 @@ Execute migration.bat(sh).
 
 4. Delete backup table
 
-After executing the migration tool, the operation creates a backup table that has a postfix named "_bak20".
+After executing the migration tool, the operation creates a backup table that has a suffix named "_bak20".
 Make sure that migration is properly done and delete the backup table by the following command.
 
 $ cleanup_temp_table.bat(sh)
 
 
 [Update Applications]
-1. Replace WAE file. As for the way to update a web application, refer to each manual of web application.
+1. Replace WAR file. As for the way to update a web application, refer to each manual of web application server.
 2. Change static contents if it is set. Replace the directory in which static contents are placed with infoscoop/staticContent.
 
 
