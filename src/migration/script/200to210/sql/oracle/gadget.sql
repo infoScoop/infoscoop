@@ -1,12 +1,9 @@
-drop sequence ${SCHEMA_NAME}is_gadgets_id_seq;
-
 alter table ${SCHEMA_NAME}is_gadgets rename to is_gadgets${BACKUP_TABLE_SUFFIX};
-
-drop index is_gadgets_type on ${SCHEMA_NAME}is_gadgets${BACKUP_TABLE_SUFFIX};
-drop index is_gadgets_path on ${SCHEMA_NAME}is_gadgets${BACKUP_TABLE_SUFFIX};
-drop index is_gadgets_name on ${SCHEMA_NAME}is_gadgets${BACKUP_TABLE_SUFFIX};
-
-create sequence ${SCHEMA_NAME}is_gadgets_id_seq;
+alter table ${SCHEMA_NAME}is_gadgets${BACKUP_TABLE_SUFFIX} rename constraint is_gadgets_unique to is_gadgets_unique${BACKUP_TABLE_SUFFIX};
+ALTER INDEX ${SCHEMA_NAME}IS_GADGETS_UNIQUE RENAME TO IS_GADGETS_UNIQUE${BACKUP_TABLE_SUFFIX};
+ALTER INDEX ${SCHEMA_NAME}is_gadgets_type RENAME TO is_gadgets_type${BACKUP_TABLE_SUFFIX};
+ALTER INDEX ${SCHEMA_NAME}is_gadgets_path RENAME TO is_gadgets_path${BACKUP_TABLE_SUFFIX};
+ALTER INDEX ${SCHEMA_NAME}is_gadgets_name RENAME TO is_gadgets_name${BACKUP_TABLE_SUFFIX};
 
 create table ${SCHEMA_NAME}is_gadgets (
   id number(18) not null primary key,
@@ -21,6 +18,8 @@ create table ${SCHEMA_NAME}is_gadgets (
 create index is_gadgets_type on ${SCHEMA_NAME}is_gadgets(type);
 create index is_gadgets_path on ${SCHEMA_NAME}is_gadgets(path);
 create index is_gadgets_name on ${SCHEMA_NAME}is_gadgets(name);
+
+create sequence ${SCHEMA_NAME}is_gadgets_id_seq;
 
 insert into ${SCHEMA_NAME}is_gadgets(type, path, name, data, lastmodified)
   select type, path, name, data, lastmodified
