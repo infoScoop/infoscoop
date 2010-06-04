@@ -72,6 +72,7 @@ public class ProxyRequest{
 	private static Log log = LogFactory.getLog(ProxyRequest.class);
 	
 	public static final String ALLOW_CIRCULAR_REDIRECT = "X-IS-ALLOWCIRCULARREDIRECT";
+	public static final String DISABLE_CACHE = "X-IS-DISABLE-CACHE";
 	
 	/**
 	 * Socket Connection Timeout 
@@ -168,7 +169,12 @@ public class ProxyRequest{
 	}
 	   
 	public boolean allowUserPublicCache(){		
-		return ((proxy.getCacheLifeTime()>0)&& this.getRequestHeaders("authCredentialId") == null && this.getRequestHeaders("authType") == null);
+		return (
+				(proxy.getCacheLifeTime()>0)&& 
+				this.getRequestHeader(DISABLE_CACHE) == null && 
+				this.getRequestHeaders("authCredentialId") == null &&
+				this.getRequestHeaders("authType") == null
+		);
 	}
 	
     /**

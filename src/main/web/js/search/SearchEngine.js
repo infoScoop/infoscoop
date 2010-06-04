@@ -159,8 +159,11 @@ IS_SearchEngine.prototype.classDef = function() {
 		if(useProxySearch && countRule && countRule.method && countRule.value){
 			
 			var headers = [];
-			if(countRule.useCache)
-			  headers = headers.concat(["MSDPortal-Cache", "Cache-NoResponse"]);
+			if(countRule.useCache){
+				headers = headers.concat(["MSDPortal-Cache", "Cache-NoResponse"]);
+			}else{
+				headers = headers.concat(["X-IS-DISABLE-CACHE", "TRUE"]);
+			}
 			headers.push("MSDPortal-Select", countRule.method + "=" + encodeURIComponent(countRule.value));
 			
 			var opt = {
