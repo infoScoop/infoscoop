@@ -17,6 +17,9 @@ public class I18nFactory implements CSVBeanFactory{
 		pk.setLang( values[3].toString() );
 		
 		I18n i18n = new I18n( pk );
+		if( "".equals( values[4].toString() ) )
+			values[4] = new CSVField("-");
+		
 		i18n.setMessage( values[4].toString() );
 		
 		return i18n;

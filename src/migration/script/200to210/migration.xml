@@ -148,7 +148,7 @@
 	
 	<target name="i18nLocale" depends="clean-i18nLocale">
 		<exec-sql quiet="true"><sql>DELETE FROM ${SCHEMA_NAME}IS_I18NLOCALES where lang = 'zh'</sql></exec-sql>
-		<exec-sql quiet="true"><sql>INSERT INTO ${SCHEMA_NAME}IS_I18NLOCALES (`type` ,`country` ,`lang`) VALUES ('js',  'ALL',  'zh'), ('layout',  'ALL',  'zh'), ('menu',  'ALL',  'zh'), ('property',  'ALL',  'zh'), ('widget',  'ALL',  'zh');</sql></exec-sql>
+		<importDel source="data/i18nLocale/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.I18nLocaleFactory"/>
 	</target>
 	<target name="clean-i18nLocale" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_i18nlocales</property>
