@@ -131,6 +131,7 @@
 		<importDel source="data/gadget/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.GadgetFactory"/>
 	</target>
 	<target name="clean-gadget" depends="prepare">
+		<exec-sql quiet="true"><sql>drop sequence ${SCHEMA_NAME}.is_gadgets_id_seq</sql></exec-sql>
 		<exec-sql quiet="true"><property name="table">is_gadgets</property>
 			<sql file="sql/${DBMS}/restore.sql"/>
 		</exec-sql>
