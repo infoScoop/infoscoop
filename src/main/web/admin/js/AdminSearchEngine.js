@@ -803,13 +803,14 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 					jsonStr += ",";
 					jsonStr += "value:" + "\"" + fValue + "\"";
 					jsonStr += ",";
-					jsonStr += "useCache:" + "\"" + useCache + "\"";
+					jsonStr += "useCache:" +  useCache;
 					jsonStr += "}";
 					eval("jsonObj="+jsonStr);
 					searchEngine["countRule"] = jsonObj;
 				}else{
 					searchEngine.countRule.method = fMethod;
 					searchEngine.countRule.value = fValue;
+					searchEngine.countRule.useCache = eval(useCache);
 				}
 				self.currentModal.close();
 			},
@@ -1006,7 +1007,7 @@ ISA_SearchEngine.EditorForm.makeCountEditForm = function(searchEngine){
 			 $.TD({},$.INPUT({id:'useCache',type:'checkbox',defaultChecked:searchEngine.countRule.useCache}),$.DIV({style:"fontSize:80%;"},ISA_R.alb_descOfUseCacheForSearchResults))
 			   )
 		);
-	
+		
 	editorFormTable.appendChild(editorFormTbody);
 	contentDiv.appendChild(editorFormTable);
 	
