@@ -547,6 +547,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssDesc = function( widget,opt 
 		this.rssFloat.id = this.descId;
 		this.rssFloat.appendChild( this.rssDesc );
 		
+		this.rssFloat.style.top = 0;
 		document.body.appendChild( this.rssFloat );
 		
 		// Mark the location of detail pop up
