@@ -1,4 +1,1 @@
 /* Custom CSS code is described here.  */
-body{
-	background: url(skin/imgs/stripe.png);
-}
