@@ -131,8 +131,9 @@ ISA_SearchEngine.prototype.classDef = function() {
 					   $.LEGEND({},ISA_R.alb_searchOptionDefaultSettings),
 					   $.DIV({},
 							 $.INPUT({type:"checkbox", defaultChecked: ISA_SearchEngine.newwindow,
-							   onclick:{handler:function(){
-								 ISA_SearchEngine.updateSearchConfAttr('newwindow', '' + this.checked);
+							   onchange:{handler:function(e){
+								   var checkbox = Event.element(e);
+								   ISA_SearchEngine.updateSearchConfAttr('newwindow', '' + checkbox.checked);
 							   }
 							 }}),
 							 ISA_R.alb_searchResultsOnNewWindow
