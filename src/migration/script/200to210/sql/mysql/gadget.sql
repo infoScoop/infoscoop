@@ -1,9 +1,5 @@
 alter table ${SCHEMA_NAME}IS_GADGETS rename to IS_GADGETS${BACKUP_TABLE_SUFFIX};
 
-drop index is_gadgets_type on ${SCHEMA_NAME}IS_GADGETS${BACKUP_TABLE_SUFFIX};
-drop index is_gadgets_path on ${SCHEMA_NAME}IS_GADGETS${BACKUP_TABLE_SUFFIX};
-drop index is_gadgets_name on ${SCHEMA_NAME}IS_GADGETS${BACKUP_TABLE_SUFFIX};
-
 create table ${SCHEMA_NAME}IS_GADGETS (
   id bigint not null auto_increment primary key,
   type varchar(50) CHARACTER SET latin1 not null,
