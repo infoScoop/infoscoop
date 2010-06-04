@@ -372,6 +372,7 @@ public class SearchEngineService {
 			searchObj.put("retrieveUrl", searchEl.getAttribute("retrieveUrl"));
 			String defaultSelected = searchEl.getAttribute("defaultSelected");
 			searchObj.put("defaultSelected", (defaultSelected != null ? "TRUE".equalsIgnoreCase(defaultSelected) : false) );
+			searchObj.put("encoding", searchEl.getAttribute("encoding"));
 			
 			// rssPattern
 			Element rssPattern = (Element) XPathAPI.selectSingleNode(searchEl,"rssPattern");
