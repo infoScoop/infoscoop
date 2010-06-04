@@ -181,7 +181,16 @@ IS_SidePanel.prototype.classDef = function () {
 		
 		var openDiv = document.createElement("div");
 		var openImg = document.createElement("img");
-		openImg.src = imageURL + opt.image + "_" + ((IS_Portal.lang == "ja") ? "ja" : "en") + ".gif";
+
+		openImg.src = imageURL + opt.image + "_"
+			+ IS_Portal.lang + ((IS_Portal.country == "") ? "" : "_" + IS_Portal.country) + ".gif";
+		openImg.onerror = function(){
+			openImg.src = imageURL + opt.image + "_" + IS_Portal.lang + ".gif";
+			
+			openImg.onerror = function(){
+				openImg.src = imageURL + opt.image + "_en.gif";
+			};
+		};
 		
 		openDiv.appendChild( openImg );
 		tabButton.appendChild( openDiv );
