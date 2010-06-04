@@ -54,6 +54,9 @@
 		<copy todir="${build.migration}/data/i18n">
 			<fileset dir="${src.initdb.home}/data/i18n"/>
 		</copy>
+		<copy todir="${build.migration}/data/i18nLocale">
+			<fileset dir="${src.initdb.home}/data/i18nLocale"/>
+		</copy>
 		<copy todir="${build.migration}/data/portallayout">
 			<fileset dir="${src.initdb.home}/data/portallayout"/>
 		</copy>
