@@ -74,6 +74,7 @@ IS_Portal.start = function() {
 	
 	var fontSize = getActiveStyle( document.body, "font-size");
 	IS_Portal.defaultFontSize = (fontSize.charAt(fontSize.length-1)=="%" ? fontSize : Math.round(parseInt(fontSize)/16*100) + "%" );
+	IS_Portal.setFontSize(null, true);
 	
 	var opt = {
 	  method: 'get' ,

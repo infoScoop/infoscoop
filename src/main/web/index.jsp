@@ -182,7 +182,6 @@ if( isPreview == null )
 		if(preference.property){
 			IS_Portal.logoffDateTime = new Date( preference.property.logoffDateTime ? preference.property.logoffDateTime : "").getTime();
 			IS_Portal.fontSize = preference.property.fontSize ? preference.property.fontSize : IS_Portal.defaultFontSize;
-			IS_Portal.setFontSize(null, true);
 			if(preference.property.freshDays) IS_Portal.freshDays = preference.property.freshDays;
 			IS_Portal.lastSaveFailed = preference.property.failed ? getBooleanValue(preference.property.failed) : false;
 			IS_Portal.mergeconfirm = preference.property.mergeconfirm ? getBooleanValue(preference.property.mergeconfirm) : true;
