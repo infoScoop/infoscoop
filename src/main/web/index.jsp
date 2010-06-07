@@ -20,8 +20,7 @@ if( isPreview == null )
     <meta http-equiv="Cache-Control" content="no-cache">
     <meta http-equiv="Expires" content="Thu, 01 Dec 1994 16:00:00 GMT">
 	<title></title>
-    <script type="text/javascript" src="session.js.jsp<%if(isPreview.booleanValue()) { %>?isPreview=<%=isPreview%><%}%>"></script>
-
+    
 	<!--start styles css-->
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/styles.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/siteaggregationmenu.css">
@@ -254,4 +253,20 @@ if( isPreview == null )
 		</table>
 		</div>
 	</body>
+	<script>
+
+		var sessionopt = {
+			asynchronous:true,
+			onSuccess: function(response){
+				eval('(' + response.responseText + ')');
+			},
+			onFailure: function(t) {
+				alert('Retrieving session id failed. ' + t.status + ' -- ' + t.statusText);
+			},
+			onExcepti: function(t) {
+				alert('Retrieving session id failed. ' + t);
+			}
+		};
+		AjaxRequest.invoke(hostPrefix + "/sessionid<% if(isPreview.booleanValue()) { %>?isPreview=<%= isPreview %><% } %>", sessionopt);
+	</script>
 </html>
