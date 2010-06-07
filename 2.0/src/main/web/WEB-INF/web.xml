@@ -368,6 +368,13 @@
 	</servlet>
 
 	<servlet>
+		<servlet-name>NewSessionIdServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.NewSessionIdServlet
+		</servlet-class>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>MultiRssServlet</servlet-name>
 		<servlet-class>
 			org.infoscoop.web.MultiRssServlet
@@ -723,6 +730,11 @@
 	<servlet-mapping>
 		<servlet-name>AuthenticationServlet</servlet-name>
 		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>NewSessionIdServlet</servlet-name>
+		<url-pattern>/sessionid</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
