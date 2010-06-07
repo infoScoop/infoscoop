@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgetConfiguration autoRefresh="true"  type="WidgetRanking" title="!{lb_WidgetRanking}" icon="crown_1.gif">
+	<WidgetPref datatype="hidden" name="freshDay" value="10"/>
+	<WidgetPref datatype="string" display_name="!{lb_itemCounts}" name="maxCount" value="20"/>
+	<WidgetPref datatype="string" display_name="!{lb_cacheLifeTimeMinute}" name="cacheLifetime" value="10"/>
+	<Header maximize="off">
+	</Header>
+	<Content className="WidgetRanking" type="javascript"/>
+</widgetConfiguration>

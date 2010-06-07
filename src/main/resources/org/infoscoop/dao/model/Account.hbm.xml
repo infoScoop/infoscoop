@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="Account"
+		table="IS_ACCOUNTS"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="Uid"
+			type="string"
+			column="`UID`"
+			length="150"
+		/>
+
+		<property
+			name="name"
+			column="NAME"
+			type="string"
+			length="255"
+			not-null="false"
+		/>
+
+		<property
+			name="password"
+			column="PASSWORD"
+			type="string"
+			length="255"
+			not-null="false"
+		/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,1 @@
+rename index ${SCHEMA_NAME}.${from} to ${to};

@@ -1,0 +1,342 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
+.infoScoop .widget {
+	clear:both;
+	width:100%;
+	margin-bottom: 10px;
+	background-color: #FFF;
+}
+
+.infoScoop #maximize-panel .widget {
+	margin-bottom: 0;
+}
+
+.infoScoop .subWidget {
+	clear:both;
+	width:100%;
+}
+
+.infoScoop .widget .widgetBox{
+	clear:both;
+	position: static;
+	/*
+	margin-left : 10px;
+	margin-bottom: 5px;
+	*/
+	width: auto;
+	overflow:hidden;
+
+	border: 1px solid #BCBCBC;
+	background-color:#FFF;
+}
+
+.infoScoop .widget .widgetShade {
+/*
+	padding:0 3px 3px 0;
+	background-color: green;
+*/
+
+}
+/*
+.infoScoop .widgetBoxNoHeader {
+	clear:both;
+	position: static;
+	width: auto;
+	overflow:hidden;
+	border: 1px solid gray;
+}
+*/
+#widgetGhost {
+	background-color:#f3f3f3;
+}
+
+.infoScoop .subWidget .widgetBox{
+	clear:both;
+	position: static;
+	margin : 1px 0 0;
+	width: auto;
+	overflow:hidden;
+	/*background-color: white;*/
+	border: none;
+}
+
+.infoScoop .subWidget .widgetShade {
+	border : 0px;
+	margin : 0px;
+}
+.infoScoop .widgetContent {
+	width:100%;
+	overflow:hidden;
+}
+
+
+.infoScoop #maximizeWidget {
+	width:94%;
+	//width:100%;
+}
+
+.infoScoop .maximizeButtons{
+}
+
+.infoScoop .maximizeContents {
+	min-width: 250px;
+	border: 2px solid #86A2C0;
+	background-color: #FFFFFF;
+	clear: both;
+}
+
+/* WidgetHeader */
+
+.infoScoop .widget .widgetHeader {
+	clear:both;
+	padding-top:0px;
+	padding-bottom:0px;
+	margin: 0px;
+	font-size:100%;
+	/*background-image:url(./imgs/widget_header.png);*/
+	background-position:bottom;
+	height: 22px;
+	cursor:move;
+	overflow:hidden;
+}
+
+.infoScoop .subWidget .widgetHeader{
+	clear: both;
+	width: 100%;
+	height: 22px;
+	background-color:#EEEEFF;
+	background-image:none;
+	cursor: move;
+	overflow:hidden;
+
+	border: none;
+
+}
+
+.infoScoop .widget .widgetHeader .rightHeader{
+	position: absolute;
+	top: 1px;
+	_top: 0px;
+	right: 2px;
+	height: 19px;
+}
+.infoScoop .widget .widgetHeader.blink,
+.infoScoop .widget .widgetHeader.blink .rightHeader {
+	background: url("./imgs/header_blink.gif") !important;
+	background-color: #F0F0F0 !important;
+}
+.infoScoop .widget .subWidget .widgetHeader.blink,
+.infoScoop .widget .subWidget .widgetHeader.blink .rightHeader {
+	background: url("./imgs/header_blink.gif") !important;
+	background-color: #EEEEFF !important;
+}
+
+.infoScoop .widgetHeader .widgetIndicator {
+/*	float:left;*/
+	border:0;
+/*	margin-top:2px;*/
+	vertical-align: text-bottom;
+	cursor:pointer;
+}
+
+.infoScoop .widgetHeader .widgetTitle {
+	padding-top:3px;
+	padding-left:3px;
+	padding-right:5px;
+	font-weight:bold;
+	font-size:14px;
+	line-height:1.2em;
+	//line-height:1.1em;
+	height:1.2em;
+	overflow:hidden;
+	word-break: break-all;
+	padding-top:2px;
+}
+
+.infoScoop .widgetHeader .headerIcon {
+	border:0;
+	margin-top:2px;
+	margin-bottom:1px;
+	vertical-align:top;
+	cursor:pointer;
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+
+.infoScoop .widgetHeader .widgetTitle a:hovor {
+	cursor: pointer;
+}
+
+.infoScoop .widgetHeader .headerIcon_turnbackMaximize {
+	position: relative;
+	text-align: right;
+	font-size: 9pt;
+	color: blue;
+	cursor: pointer;
+	_margin-top: 1;
+	margin-left: 4;
+	margin-right: 2;
+	padding-left: 2;
+	padding-right: 2;
+	border: 1px solid darkgray;
+	white-space:nowrap;
+}
+.infoScoop .widgetHeader .headerIcon_turnbackMaximize span {
+	margin-left: 1px;
+}
+
+.infoScoop .widgetMenu {
+	position: absolute;
+	border: 1px solid gray;
+	background-color: white;
+	z-index:50;
+}
+
+.infoScoop .widgetMenuCloser {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+* html .infoScoop .widgetMenuCloser {
+	background-color: white;
+	filter: alpha( opacity=1 );
+}
+
+
+.infoScoop .widgetEditHeader {
+	clear:both;
+	width:100%;
+	padding-top:1.3px;
+	padding-bottom:0px;
+	background: #F5F5F5;
+	margin: 0px;
+	font-size:80%;
+	overflow: hidden;
+	cursor:default;
+}
+
+.infoScoop .widgetEditHeader .widgetEditCtrl{
+	width:100%;
+	height:1em;
+}
+
+
+.infoScoop .widgetEditHeader .widgetSelect {
+	max-width: 70%;
+	float:left;
+	padding-left:2px;
+	padding-right:5px;
+	cursor:default;
+}
+
+.infoScoop .widgetEditHeader.widgetCheckbox {
+	width: 99%;
+	float:left;
+	padding-left:2px;
+	padding-right:5px;
+	font-size:75%;
+	color: black;
+	cursor:default;
+}
+
+.infoScoop .widgetEditHeader .widgetCancel {
+	float:right;
+	font-size: 75%;
+	padding-left:2px;
+	padding-right:5px;
+	color:#7777cc;
+	cursor:pointer;
+}
+
+.infoScoop .widgetEditHeader .widgetSave {
+	float:right;
+	font-size: 75%;
+	padding-left:2px;
+	padding-right:5px;
+	color:#7777cc;
+	cursor:pointer;
+}
+
+.infoScoop .widgetEditHeader .widgetCheck {
+	float:left;
+	font-size: 80%;
+	padding-left:2px;
+	padding-right:5px;
+	color:#7777cc;
+	cursor:pointer;
+}
+
+.infoScoop .widgetEditHeader .rssUrl_Icon {
+/*	float:left;*/
+/*	margin-left:2px;*/
+	margin-right:2px;
+	border:0px;
+	margin-top:2px;
+	width: 16px;
+	height: 14px;
+	cursor: pointer;
+	background: url(./imgs/rss_url.gif) left no-repeat;
+}
+
+.infoScoop .widgetEditHeader .widget_edit_pref_col_label {
+	width: 35%;
+	text-align: right;
+}
+.infoScoop .widgetEditHeader .widget_edit_pref_col_value {
+	width: 65%;
+	vertical-align: middle;
+}
+
+.infoScoop .widgetEditHeader a.help {
+	display:	inline-block;
+	text-align:	center;
+	width:	1.25em;
+	border:	1px solid #6677DD;
+	margin-left: 5px;
+	background-color:	white;
+	text-decoration:	none;
+	cursor: help;
+}
+
+.infoScoop .widgetEditHelp {
+	display:	none;
+	position:	absolute;
+	border:	1px solid #6677DD;
+	background-color:	white;
+	margin-left: 24px;
+	
+	overflow-x: hidden;
+	overflow-y: auto;
+	
+	word-break: break-all;
+	white-space: normal;
+	
+	font-size: 10.5pt;
+}
+.infoScoop .widgetEditHelp .header {
+	padding: 2;
+	padding-left: 16px;
+	background: url(./imgs/help.gif) left center no-repeat;
+	background-color: #DDF;
+	font-weight: bold;
+}
+.infoScoop .widgetEditHelp .description {
+	padding: 5;
+}

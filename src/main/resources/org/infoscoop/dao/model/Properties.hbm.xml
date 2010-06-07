@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="Properties"
+		table="IS_PROPERTIES"
+	>
+		<meta attribute="sync-DAO">false</meta>
+
+		<id
+			name="Id"
+			type="string"
+			column="ID"
+		>
+		</id>
+
+		<property
+			name="Category"
+			column="CATEGORY"
+			type="string"
+			not-null="true"
+			length="128"
+		/>
+		<property
+			name="Advanced"
+			column="ADVANCED"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="Value"
+			column="VALUE"
+			type="string"
+			not-null="false"
+			length="1024"
+		/>
+		<property
+			name="Datatype"
+			column="DATATYPE"
+			type="string"
+			not-null="true"
+			length="128"
+		/>
+		<property
+			name="Enumvalue"
+			column="ENUMVALUE"
+			type="string"
+			not-null="false"
+			length="1024"
+		/>
+		<property
+			name="Required"
+			column="REQUIRED"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="Regex"
+			column="REGEX"
+			type="string"
+			not-null="false"
+			length="1024"
+		/>
+		<property
+			name="Regexmsg"
+			column="REGEXMSG"
+			type="string"
+			not-null="false"
+			length="1024"
+		/>
+
+
+	</class>
+</hibernate-mapping>

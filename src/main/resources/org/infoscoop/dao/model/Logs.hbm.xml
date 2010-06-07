@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="Logs"
+		table="IS_LOGS"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="Id"
+			type="java.lang.Long"
+			column="ID"
+		>
+			<generator class="native">
+				<param name="sequence">is_logs_id_seq</param>
+			</generator>
+		</id>
+
+		<property
+			name="uid"
+			column="`UID`"
+			type="string"
+			not-null="true"
+			length="150"
+			access="field"
+		/>
+		<property
+			name="Type"
+			column="TYPE"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="url"
+			column="URL"
+			type="string"
+			not-null="false"
+			length="1024"
+			access="field"
+		/>
+		<property
+			name="urlKey"
+			column="URL_KEY"
+			type="string"
+			not-null="false"
+			length="256"
+			access="field"
+		/>
+		<property
+			name="rssurl"
+			column="RSSURL"
+			type="string"
+			not-null="false"
+			length="1024"
+			access="field"
+		/>
+		<property
+			name="rssurlKey"
+			column="RSSURL_KEY"
+			type="string"
+			not-null="false"
+			length="256"
+			access="field"
+		/>
+		<property
+			name="Date"
+			column="`DATE`"
+			type="string"
+			not-null="true"
+			length="24"
+		/>
+
+
+	</class>	
+</hibernate-mapping>

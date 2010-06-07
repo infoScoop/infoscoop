@@ -1,0 +1,52 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
+.tablib_table {
+	width: 100%;
+	text-align: center;
+	empty-cells: show;
+	padding: 3px 0;
+	margin-left: 0;
+	font: bold 11px Verdana, sans-serif;
+}
+.tablib_emptyTab {
+	border-bottom: 1px solid #676767;
+	padding: 0px 1px;
+}
+.tablib_spacerTab {
+	border-bottom: 1px solid #676767;
+	padding: 0px 1px;
+	width: 1px;
+}
+.tablib_selected {
+	width: 80px;
+	padding: 3px 0.5em;
+	margin-left: 3px;
+	border: 1px solid #778;
+	text-decoration: none;
+	border-bottom: none;
+	cursor: default;
+}
+.tablib_unselected {
+	width: 80px;
+	padding: 3px 0.5em;
+	margin-left: 3px;
+	border: 1px solid #778;
+	background: #dddddd;
+	text-decoration: none;
+	cursor: pointer;
+}
