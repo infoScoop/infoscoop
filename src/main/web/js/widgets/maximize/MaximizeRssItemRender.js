@@ -201,7 +201,7 @@ IS_Widget.MaximizeRssReader.RssItemRender.detailIframe = null;
 IS_Widget.MaximizeRssReader.RssItemRender.getDetailIframe = function() {
 	var maxIframe = IS_Widget.MaximizeRssReader.RssItemRender.detailIframe;
 	if( maxIframe ) {
-		maxIframe.src = "about:blank";
+		maxIframe.src = "./blank.html";
 		
 		return maxIframe;
 	}
