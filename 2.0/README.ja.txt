@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.0.2
+infoScoop OpenSource 2.0.3
 ==========================
 
 infoScoop OpenSourceとは
@@ -14,32 +14,12 @@ For more information, please see the infoScoop OpenSource website at http://www.
 http://www.infoscoop.org/index.php/manual/quick-start.html
 
 
-2.0.2へのバージョンアップ方法
+2.0.3へのバージョンアップ方法
 -----------------------------
-1. データベース内のガジェットを置き換え、国際化リソースを追加します。
-
-  (1). SQL実行ツールを開きます。
-  (2). 以下のSQLコマンドを実行します。
-     > delete from IS_GADGETS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
-     > delete from IS_I18NLOCALES
-  (3). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
-  (4). 適切なJDBCドライバーをlibディレクトリにコピーします。
-       MySQLのドライバーは予め含まれて居ます。
-  (5). 以下のコマンドを実行します。
-     >import.sh(bat) GADGET,I18NLOCALE,I18N
-
-  ※上記手順を実行すると、以下のガジェットの設定が初期化と中国語のリソースが追加されます。
-    * calc
-    * todoList
-    * alarm
-    * blogparts
-    * sticky
-    * worldclock
-
-2. 静的コンテンツを設定している場合は、静的コンテンツを入れ替えます。
+1. 静的コンテンツを設定している場合は、静的コンテンツを入れ替えます。
   静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
 
-3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
+2. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
 
 ライセンス・著作権
@@ -49,7 +29,7 @@ This code is licensed under the **GNU Lesser General Public License (LGPL) v3**.
 LICENSE.txt for licensing and copyright information.
 
 
-2.0.1から2.0.2での変更点
+2.0.2から2.0.3での変更点
 ------------------------
 以下のURLを参照してください。
-http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3DMilestone-2.0.2
+http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3DMilestone-2.0.3
