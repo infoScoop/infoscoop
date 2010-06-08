@@ -39,12 +39,10 @@
 		</property>
 	</bean-->
 	<!-- for ActiveDirecotry -->
-	<!-- bean id="LDAPSearchModule" singleton="true"
+	<!--bean id="LDAPAccountManager" singleton="true"
 		class="org.infoscoop.account.ldap.LDAPAccountManager">
 		<constructor-arg>
-			<value>hostname</value>
-		</constructor-arg><constructor-arg type="int">
-			<value>389</value>
+			<value>ldap://hostname:389</value>
 		</constructor-arg><constructor-arg>
 			<value>CN=Administrator,CN=Users,DC=infoscoop,DC=domain</value>
 		</constructor-arg><constructor-arg>
@@ -67,13 +65,10 @@
 				<entry key="org_member"><value>uniqueMember</value></entry>
 			</map>
 		</property>
-		<property name="displayNameUserAttr">
-			<value>displayName</value>
+		<property name="userNameAttr">
+			<value>cn</value>
 		</property>
-		<property name="displayMailUserAttr">
-			<value>mail</value>
-		</property>
-		<property name="displayNameGroupAttr">
+		<property name="groupNameAttr">
 			<value>cn</value>
 		</property>
 	</bean-->
