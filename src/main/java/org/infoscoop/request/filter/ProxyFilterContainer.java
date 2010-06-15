@@ -129,7 +129,9 @@ public class ProxyFilterContainer {
 			if( !allowAllHeader )
 				allowedHeaderNames.addAll( proxy.getAllowedHeaders() );
 		}
-
+		
+		AuthenticatorUtil.doAuthentication( client,method,request );
+		
 		StringBuffer headersSb = new StringBuffer();
 		for (String name : request.getRequestHeaders().keySet()) {
 
@@ -155,8 +157,6 @@ public class ProxyFilterContainer {
 			method.addRequestHeader(new Header(name, value));
 			headersSb.append(name + "=" + value + ",  ");
 		}
-		
-		AuthenticatorUtil.doAuthentication( client,method,request );
 		
 		int cacheStatus = getCache( client,method,request );
 		if( cacheStatus != 0 )

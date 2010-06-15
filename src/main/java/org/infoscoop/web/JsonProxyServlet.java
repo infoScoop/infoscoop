@@ -31,6 +31,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 import org.apache.commons.httpclient.HttpMethod;
@@ -148,7 +149,7 @@ public class JsonProxyServlet extends HttpServlet {
 		
 		JSONObject result;
 		try {
-			result = invokeJSONProxyRequest( uid,params,headers );
+			result = invokeJSONProxyRequest( req.getSession(), uid,params,headers );
 		} catch( Exception ex ) {
 			if( ex.getCause() != null )
 				ex = ( Exception )ex.getCause();
@@ -177,7 +178,7 @@ public class JsonProxyServlet extends HttpServlet {
 		
 		return singles;
 	}
-	private JSONObject invokeJSONProxyRequest( String uid,Map<String,String> params,Map<String,List<String>> rheaders ) throws Exception {
+	private JSONObject invokeJSONProxyRequest( HttpSession session, String uid,Map<String,String> params,Map<String,List<String>> rheaders ) throws Exception {
 		AuthType authz = AuthType.as( params.get("authz") );
 //		String container = params.get("container");
 //		String gadget = params.get("gadget");
@@ -203,7 +204,25 @@ public class JsonProxyServlet extends HttpServlet {
 		if( uidParamName != null && !"".equals( uidParamName ))
 			headers.put( Authenticator.UID_PARAM_NAME,uidParamName );
 		
+		String oauthServiceName = null;
 		switch( authz ) {
+		case OAUTH:
+			headers.put("authType","oauth");
+			oauthServiceName = params.get("OAUTH_SERVICE_NAME");
+			headers.put("oauthServiceName",oauthServiceName);
+			String tokensecret = (String) session.getAttribute(oauthServiceName + ".tokensecret");
+			if(tokensecret != null)
+				headers.put("tokensecret", tokensecret);
+				
+			String requesttoken = (String) session.getAttribute(oauthServiceName + ".requesttoken");
+			if(requesttoken != null)
+				headers.put("requesttoken", requesttoken);
+			
+			String accesstoken = (String) session.getAttribute(oauthServiceName + ".accesstoken");
+			if(accesstoken != null)
+				headers.put("accesstoken", accesstoken);
+			break;
+			
 		case POST_PORTAL_UID:
 			if( uid == null ) break;
 			
@@ -261,13 +280,18 @@ public class JsonProxyServlet extends HttpServlet {
 		for( String name : responseHeaders.keySet() ) {
 			if( !jsonHeaders.has( name ))
 				jsonHeaders.put( name,new JSONArray());
-			
-			JSONArray array = jsonHeaders.getJSONArray( name );
-			List<String> values = responseHeaders.get( name );
-			for( String value : values )
-				array.put( value );
+			if( "oauthApprovalUrl".equalsIgnoreCase(name)){
+				urlJson.put("oauthApprovalUrl", proxy.getResponseHeader(name));
+				status = 200;
+			}else if( name.indexOf(oauthServiceName) == 0){
+				session.setAttribute(name, proxy.getResponseHeader(name));
+			}else{
+				JSONArray array = jsonHeaders.getJSONArray( name );
+				List<String> values = responseHeaders.get( name );
+				for( String value : values )
+					array.put( value );
+			}
 		}
-		
 		urlJson.put("headers",jsonHeaders );
 		urlJson.put("rc",status );
 		

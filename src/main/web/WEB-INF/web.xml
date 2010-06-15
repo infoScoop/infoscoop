@@ -552,6 +552,13 @@
 			org.infoscoop.web.ProxyCredentialManageServlet
 		</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>OAuthCallbackServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.OAuthCallbackServlet
+		</servlet-class>
+	</servlet>
 
 	<servlet>
 		<servlet-name>I18NExportServlet</servlet-name>
@@ -721,6 +728,11 @@
 		<url-pattern>/authsrv/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet-mapping>
+		<servlet-name>OAuthCallbackServlet</servlet-name>
+		<url-pattern>/oauthcallback</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>AuthenticationServlet</servlet-name>
 		<url-pattern>/logout</url-pattern>

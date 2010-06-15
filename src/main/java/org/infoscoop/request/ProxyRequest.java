@@ -29,6 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -156,6 +157,9 @@ public class ProxyRequest{
     	ignoreHeaderNames.add("content-length");
     	ignoreHeaderNames.add("authtype");
     	ignoreHeaderNames.add("authcredentialid");
+    	String[] oauthHeaders = {"oauthServiceName","tokensecret","requesttoken", "accesstoken"};
+        Collection oauthHeaderList = Arrays.asList(oauthHeaders);
+        ignoreHeaderNames.addAll(oauthHeaderList);
     	ignoreHeaderNames.add(Authenticator.UID_PARAM_NAME.toLowerCase());
     	ignoreHeaderNames.add(Authenticator.PASSWD_PARAM_NAME.toLowerCase());
     	

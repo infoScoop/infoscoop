@@ -17,6 +17,8 @@
 
 package org.infoscoop.request;
 
+import net.oauth.OAuthConsumer;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 

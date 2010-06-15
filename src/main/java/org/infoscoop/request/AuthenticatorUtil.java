@@ -80,16 +80,20 @@ public class AuthenticatorUtil {
 					request.putResponseHeader("WWW-Authenticate", authType);
 					throw new ProxyAuthenticationException("invalid password.", e);
 				}
+				if(uid == null || "".equals(uid)){
+					request.putResponseHeader("WWW-Authenticate", authType);
+					throw new ProxyAuthenticationException("Userid may not be null.");
+				}
 				break;
 			case Authenticator.PORTAL_CREDENTIAL :
 				uid = request.getPortalUid();
 				pwd = "";
+				if(uid == null || "".equals(uid)){
+					request.putResponseHeader("WWW-Authenticate", authType);
+					throw new ProxyAuthenticationException("Userid may not be null.");
+				}
 				break;
 			default:
-			}
-			if(uid == null || "".equals(uid)){
-				request.putResponseHeader("WWW-Authenticate", authType);
-				throw new ProxyAuthenticationException("Userid may not be null.");
 			}
 			if(log.isDebugEnabled())log.debug("Authenticate uid: " + uid + ", password: " + pwd);
 			authenticator.doAuthentication(client, request, method, uid, pwd);

@@ -5,8 +5,6 @@
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="src/migration/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/asm-all-2.2.3.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/cglib-nodep-2.1_3.jar"/>
@@ -35,7 +33,6 @@
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/libidn-1.9.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/nekohtml.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/oauth-core-20090121.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/resolver.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/serializer.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/shindig-common-1.1-SNAPSHOT.jar"/>
@@ -53,5 +50,12 @@
 	<classpathentry kind="lib" path="lib/migration/ant.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/opencsv-1.8.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jruby.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-0.9.5.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-consumer-0.9.5.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-nodeps-0.9.5.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/oauth-20100601.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/oauth-consumer-20100601.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/oauth-httpclient3-20100601.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/oauth-provider-20100601.jar"/>
 	<classpathentry kind="output" path="src/main/web/WEB-INF/classes"/>
 </classpath>
