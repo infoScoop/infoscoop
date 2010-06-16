@@ -4,15 +4,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import net.oauth.ConsumerProperties;
 import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
@@ -27,32 +23,24 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.RedirectException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.OAuthConsumerDAO;
+import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.request.ProxyRequest.OAuthConfig;
 
 public class OAuthAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
 
 	private static String AUTH_CALLBACK_URL = "oauthcallback";
-    private static Properties consumerProperties = null;
-	private static ConsumerProperties consumers = null;
 
 	private static Log log = LogFactory.getLog(OAuthAuthenticator.class);
 	
+	private static Map<String, OAuthConsumer> consumers = new HashMap<String, OAuthConsumer>();
+	
 	public OAuthAuthenticator(){
-		String resourceName = "consumer.properties";
-		try {
-			consumerProperties = ConsumerProperties
-				.getProperties(ConsumerProperties.getResource(
-					resourceName, OAuthAuthenticator.class
-					.getClassLoader()));
-			consumers = new ConsumerProperties(consumerProperties);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
-	public OAuthConsumer getConsumer(String name) throws MalformedURLException{
-		return consumers.getConsumer(name);
+	public static OAuthConsumer getConsumer(String gadgetUrl, String serviceName) {
+		return consumers.get(gadgetUrl + "\t" + serviceName);
 	}
 	
 	public void doAuthentication(HttpClient client, ProxyRequest request,
@@ -96,26 +84,27 @@ public class OAuthAuthenticator implements Authenticator {
 	}
 	
 	protected OAuthConsumer newConsumer(String name, ProxyRequest.OAuthConfig oauthConfig){
-		
 		OAuthServiceProvider serviceProvider = 
 			new OAuthServiceProvider(
 					oauthConfig.requestTokenURL,
 					oauthConfig.userAuthorizationURL,
 					oauthConfig.accessTokenURL);
 		
-		OAuthConsumer consumer = new OAuthConsumer(consumerProperties
-				.getProperty(name + ".callbackURL"), consumerProperties
-				.getProperty(name + ".consumerKey"), consumerProperties
-				.getProperty(name + ".consumerSecret"), serviceProvider);
+		OAuthConsumerProp consumerProp = OAuthConsumerDAO.newInstance()
+				.getConsumer(oauthConfig.getGadgetUrl(), name);
+		OAuthConsumer consumer = new OAuthConsumer(null, consumerProp
+				.getConsumerKey(), consumerProp.getConsumerSecret(),
+				serviceProvider);
 		consumer.setProperty("name", name);
 		
-		for (Map.Entry prop : consumerProperties.entrySet()) {
-			String propName = (String) prop.getKey();
-			if (propName.startsWith(name + ".consumer.")) {
-				String c = propName.substring(name.length() + 10);
-				consumer.setProperty(c, prop.getValue());
-			}
-		}
+		if (consumerProp.getSignatureMethod() != null)
+			consumer.setProperty("oauth_signature_method", consumerProp
+					.getSignatureMethod());
+		if (consumerProp.getPrivateKey() != null)
+			consumer.setProperty("RSA-SHA1.PrivateKey", consumerProp
+					.getPrivateKey());
+		
+		consumers.put(consumerProp.getGadgetUrl() + "\t" + name, consumer);
 		return consumer;
 	}
 
@@ -126,7 +115,6 @@ public class OAuthAuthenticator implements Authenticator {
     private static OAuthAccessor newAccessor(OAuthConsumer consumer, OAuthConfig oauthConfig)
             throws OAuthException {
         OAuthAccessor accessor = new OAuthAccessor(consumer);
-        String consumerName = (String) consumer.getProperty("name");
         accessor.requestToken = oauthConfig.requestToken;
         accessor.accessToken = oauthConfig.accessToken;
         accessor.tokenSecret = oauthConfig.tokenSecret;

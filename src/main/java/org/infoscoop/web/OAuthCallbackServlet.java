@@ -42,10 +42,9 @@ public class OAuthCallbackServlet extends HttpServlet {
 			String consumerName = request.getParameter("consumer");
 			String gadgetUrl = request.getParameter("__GADGET_URL__");
 			
-			OAuthAuthenticator authenticator = (OAuthAuthenticator)SpringUtil.getBean("oauthAuthenticator");
 			final OAuthMessage requestMessage = OAuthServlet.getMessage(
 					request, null);
-			consumer = authenticator.getConsumer( consumerName );
+			consumer = OAuthAuthenticator.getConsumer(gadgetUrl, consumerName);
 			
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 	        accessor.accessToken = (String) session.getAttribute(consumerName+ ".accesstoken");
