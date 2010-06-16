@@ -168,22 +168,15 @@ public class OAuthAuthenticator implements Authenticator {
         throw new ProxyAuthenticationException("Redirect to authorization url.");
     }
 
-    private static String getCallbackURL(ProxyRequest request, String consumerName)
-        throws IOException {
-		String referer = request.getRequestHeader("referer");
-		Pattern p = Pattern
-				.compile("(.*)\\/gadgetsrv\\?.*&url=([^&]+).*");
-		Matcher m = p.matcher(referer);
-		if (m.matches()) {
-			String contextPath = m.group(1);
-			String gadgetType = URLDecoder.decode(m.group(2), "UTF-8");
-			URL base = new URL(contextPath + "/" + AUTH_CALLBACK_URL
-					+ "?__GADGET_TYPE__=" + gadgetType);
-			return OAuth.addParameters(base.toExternalForm() //
-					, "consumer", consumerName //
-					);
-		}
-		throw new IOException("invalid referer. " + referer);
-    }
+	private static String getCallbackURL(ProxyRequest request,
+			String consumerName) throws IOException {
+		String gadgetUrl = request.getOauthConfig().getGadgetUrl();
+		String hostPrefix = request.getOauthConfig().getHostPrefix();
+		URL base = new URL(hostPrefix + "/" + AUTH_CALLBACK_URL
+				+ "?__GADGET_URL__=" + gadgetUrl);
+		return OAuth.addParameters(base.toExternalForm() //
+				, "consumer", consumerName //
+				);
+	}
 
 }

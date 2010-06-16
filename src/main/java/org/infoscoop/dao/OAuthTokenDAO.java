@@ -25,6 +25,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.OAUTH_TOKEN_PK;
 import org.infoscoop.dao.model.OAuthToken;
+import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -43,10 +44,11 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 			throw new RuntimeException(
 					"uid, gadgetUrl and serviceName must be set.");
 		}
+		String gadgetUrlKey = Crypt.getHash(gadgetUrl);
 		Iterator results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthToken.class).add(
 						Expression.eq("Id.Uid", uid)).add(
-						Expression.eq("Id.GadgetUrl", gadgetUrl)).add(
+						Expression.eq("Id.GadgetUrlKey", gadgetUrlKey)).add(
 						Expression.eq("Id.ServiceName", serviceName)))
 				.iterator();
 		if (results.hasNext()) {
@@ -59,8 +61,10 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 			String serviceName, String accessToken, String tokenSecret) {
 		OAuthToken token = getAccessToken(uid, gadgetUrl, serviceName);
 		if (token == null) {
-			token = new OAuthToken(new OAUTH_TOKEN_PK(uid, gadgetUrl,
+			String gadgetUrlKey = Crypt.getHash(gadgetUrl);
+			token = new OAuthToken(new OAUTH_TOKEN_PK(uid, gadgetUrlKey,
 					serviceName));
+			token.setGadgetUrl(gadgetUrl);
 		}
 		token.setAccessToken(accessToken);
 		token.setTokenSecret(tokenSecret);

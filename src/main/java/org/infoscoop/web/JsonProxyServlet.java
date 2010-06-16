@@ -223,9 +223,10 @@ public class JsonProxyServlet extends HttpServlet {
 			oauthConfig.setUserAuthorizationURL(params.get("userAuthorizationURL"));
 			oauthConfig.setAccessTokenURL(params.get("accessTokenURL"));
 			oauthConfig.setAccessTokenMethod(params.get("accessTokenMethod"));
+			oauthConfig.setGadgetUrl(params.get("gadgetUrl"));
+			oauthConfig.setHostPrefix(params.get("hostPrefix"));
 			
-			String gadgetUrl = getGadgetUrl(rheaders);
-			String[] accessTokenInfo = getAccessToken(uid, gadgetUrl, oauthServiceName, session);
+			String[] accessTokenInfo = getAccessToken(uid, oauthConfig.getGadgetUrl(), oauthServiceName, session);
 			String accesstoken = accessTokenInfo[0];
 			String tokensecret = accessTokenInfo[1];
 			
@@ -344,24 +345,6 @@ public class JsonProxyServlet extends HttpServlet {
 	    }
 	    
 	    return headers;
-	}
-	
-	private String getGadgetUrl(Map<String, List<String>> headers) {
-		List<String> referers = headers.get("referer");
-		if (!referers.isEmpty()) {
-			Pattern p = Pattern
-					.compile(".*\\/gadgetsrv\\?.*&url=([^&]+).*");
-			Matcher m = p.matcher(referers.get(0));
-			if (m.matches()) {
-				try {
-					String gadgetUrl = URLDecoder.decode(m.group(1), "UTF-8");
-					return gadgetUrl;
-				} catch (UnsupportedEncodingException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}
-		throw new RuntimeException("invalid referer. " + referers);
 	}
 
 	

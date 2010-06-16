@@ -770,6 +770,25 @@ public class ProxyRequest{
 		String requestToken;
 		String accessToken;
 		String tokenSecret;
+		
+		String gadgetUrl;
+		String hostPrefix;
+
+		public String getGadgetUrl() {
+			return gadgetUrl;
+		}
+
+		public void setGadgetUrl(String gadgetUrl) {
+			this.gadgetUrl = gadgetUrl;
+		}
+
+		public String getHostPrefix() {
+			return hostPrefix;
+		}
+
+		public void setHostPrefix(String hostPrefix) {
+			this.hostPrefix = hostPrefix;
+		}
 
 		public OAuthConfig(String serviceName){
 			this.serviceName = serviceName;

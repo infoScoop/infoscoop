@@ -8,7 +8,7 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 	protected int hashCode = Integer.MIN_VALUE;
 
 	private java.lang.String uid;
-	private java.lang.String gadgetUrl;
+	private java.lang.String gadgetUrlKey;
 	private java.lang.String serviceName;
 
 
@@ -16,11 +16,11 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 	
 	public BaseOAUTH_TOKEN_PK (
 		java.lang.String uid,
-		java.lang.String gadgetUrl,
+		java.lang.String gadgetUrlKey,
 		java.lang.String serviceName) {
 
 		this.setUid(uid);
-		this.setGadgetUrl(gadgetUrl);
+		this.setGadgetUrlKey(gadgetUrlKey);
 		this.setServiceName(serviceName);
 	}
 
@@ -43,18 +43,18 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: gadget_url
+	 * Return the value associated with the column: gadget_url_key
 	 */
-	public java.lang.String getGadgetUrl () {
-		return gadgetUrl;
+	public java.lang.String getGadgetUrlKey () {
+		return gadgetUrlKey;
 	}
 
 	/**
-	 * Set the value related to the column: gadget_url
-	 * @param gadgetUrl the gadget_url value
+	 * Set the value related to the column: gadget_url_key
+	 * @param gadgetUrlKey the gadget_url_key value
 	 */
-	public void setGadgetUrl (java.lang.String gadgetUrl) {
-		this.gadgetUrl = gadgetUrl;
+	public void setGadgetUrlKey (java.lang.String gadgetUrlKey) {
+		this.gadgetUrlKey = gadgetUrlKey;
 	}
 
 
@@ -90,8 +90,8 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 			else {
 				return false;
 			}
-			if (null != this.getGadgetUrl() && null != mObj.getGadgetUrl()) {
-				if (!this.getGadgetUrl().equals(mObj.getGadgetUrl())) {
+			if (null != this.getGadgetUrlKey() && null != mObj.getGadgetUrlKey()) {
+				if (!this.getGadgetUrlKey().equals(mObj.getGadgetUrlKey())) {
 					return false;
 				}
 			}
@@ -120,8 +120,8 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 			else {
 				return super.hashCode();
 			}
-			if (null != this.getGadgetUrl()) {
-				sb.append(this.getGadgetUrl().hashCode());
+			if (null != this.getGadgetUrlKey()) {
+				sb.append(this.getGadgetUrlKey().hashCode());
 				sb.append(":");
 			}
 			else {

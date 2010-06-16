@@ -19,6 +19,22 @@ public class OAuthToken extends BaseOAuthToken {
 		super(id);
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public OAuthToken (
+		org.infoscoop.dao.model.OAUTH_TOKEN_PK id,
+		java.lang.String gadgetUrl,
+		java.lang.String accessToken,
+		java.lang.String tokenSecret) {
+
+		super (
+			id,
+			gadgetUrl,
+			accessToken,
+			tokenSecret);
+	}
+
 /*[CONSTRUCTOR MARKER END]*/
 
 
