@@ -29,7 +29,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -39,7 +38,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.httpclient.Credentials;
@@ -134,7 +132,8 @@ public class ProxyRequest{
     
     private String redirectURL;
     
-    public ProxyRequest( String url, String filterType){
+    private OAuthConfig oauthConfig;
+	public ProxyRequest( String url, String filterType){
         this.filterType = filterType;
         this.originalURL = url;
 		this.escapedOriginalURL = escapeURL( this.originalURL );
@@ -157,9 +156,6 @@ public class ProxyRequest{
     	ignoreHeaderNames.add("content-length");
     	ignoreHeaderNames.add("authtype");
     	ignoreHeaderNames.add("authcredentialid");
-    	String[] oauthHeaders = {"oauthServiceName","tokensecret","requesttoken", "accesstoken"};
-        Collection oauthHeaderList = Arrays.asList(oauthHeaders);
-        ignoreHeaderNames.addAll(oauthHeaderList);
     	ignoreHeaderNames.add(Authenticator.UID_PARAM_NAME.toLowerCase());
     	ignoreHeaderNames.add(Authenticator.PASSWD_PARAM_NAME.toLowerCase());
     	
@@ -754,6 +750,57 @@ public class ProxyRequest{
 		}
 		return returnStream.toByteArray();
 	}
+	
+    public OAuthConfig getOauthConfig() {
+		return oauthConfig;
+	}
+
+	public void setOauthConfig(OAuthConfig oauthConfig) {
+		this.oauthConfig = oauthConfig;
+	}
+
+	public class OAuthConfig {
+		String serviceName;
+		String requestTokenURL;
+		String requestTokenMethod;
+		String userAuthorizationURL;
+		String accessTokenURL;
+		String accessTokenMethod;
+		
+		String requestToken;
+		String accessToken;
+		String tokenSecret;
+
+		public OAuthConfig(String serviceName){
+			this.serviceName = serviceName;
+		}
+		
+		public void setRequestToken(String requestToken) {
+			this.requestToken = requestToken;
+		}
+		public void setAccessToken(String accessToken) {
+			this.accessToken = accessToken;
+		}
+		public void setTokenSecret(String tokenSecret) {
+			this.tokenSecret = tokenSecret;
+		}
+		
+		public void setRequestTokenURL(String requestTokenURL) {
+			this.requestTokenURL = requestTokenURL;
+		}
+		public void setRequestTokenMethod(String requestTokenMethod) {
+			this.requestTokenMethod = requestTokenMethod;
+		}
+		public void setUserAuthorizationURL(String userAuthorizationURL) {
+			this.userAuthorizationURL = userAuthorizationURL;
+		}
+		public void setAccessTokenURL(String accessTokenURL) {
+			this.accessTokenURL = accessTokenURL;
+		}
+		public void setAccessTokenMethod(String accessTokenMethod) {
+			this.accessTokenMethod = accessTokenMethod;
+		}
+	}
 
 }
 
@@ -822,7 +869,5 @@ class HeadersMap implements Map<String, List<String>>{
 	public Collection<List<String>> values() {
 		throw new UnsupportedOperationException("no implements");
 	}
-
-
 
 }

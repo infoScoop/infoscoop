@@ -209,27 +209,37 @@ public class JsonProxyServlet extends HttpServlet {
 		if( uidParamName != null && !"".equals( uidParamName ))
 			headers.put( Authenticator.UID_PARAM_NAME,uidParamName );
 		
+		ProxyRequest proxy = new ProxyRequest(url,contentType.filterType );
+		proxy.setPortalUid( uid );
 		String oauthServiceName = null;
 		switch( authz ) {
 		case OAUTH:
 			headers.put("authType","oauth");
 			oauthServiceName = params.get("OAUTH_SERVICE_NAME");
-			headers.put("oauthServiceName",oauthServiceName);
+			
+			ProxyRequest.OAuthConfig oauthConfig = proxy.new OAuthConfig(oauthServiceName);
+			oauthConfig.setRequestTokenURL(params.get("requestTokenURL"));
+			oauthConfig.setRequestTokenMethod(params.get("requestTokenMethod"));
+			oauthConfig.setUserAuthorizationURL(params.get("userAuthorizationURL"));
+			oauthConfig.setAccessTokenURL(params.get("accessTokenURL"));
+			oauthConfig.setAccessTokenMethod(params.get("accessTokenMethod"));
+			
 			String gadgetUrl = getGadgetUrl(rheaders);
-			String[] accessTokenInfo = getAccessToken(uid, gadgetUrl,
-					oauthServiceName, session);
+			String[] accessTokenInfo = getAccessToken(uid, gadgetUrl, oauthServiceName, session);
 			String accesstoken = accessTokenInfo[0];
 			String tokensecret = accessTokenInfo[1];
 			
 			if(tokensecret != null)
-				headers.put("tokensecret", tokensecret);
+				oauthConfig.setTokenSecret(tokensecret);
 				
 			String requesttoken = (String) session.getAttribute(oauthServiceName + ".requesttoken");
 			if(requesttoken != null)
-				headers.put("requesttoken", requesttoken);
+				oauthConfig.setRequestToken(requesttoken);
 			
 			if(accesstoken != null)
-				headers.put("accesstoken", accesstoken);
+				oauthConfig.setAccessToken(accesstoken);
+			
+			proxy.setOauthConfig(oauthConfig);
 			break;
 		case POST_PORTAL_UID:
 			if( uid == null ) break;
@@ -253,9 +263,6 @@ public class JsonProxyServlet extends HttpServlet {
 			headers.put("authuserid",username );
 			headers.put("authpassword",password );
 		}
-		
-		ProxyRequest proxy = new ProxyRequest(url,contentType.filterType );
-		proxy.setPortalUid( uid );
 		
 		if( !HttpMethods.GET.equals( httpMethod ) )
 			proxy.setReqeustBody( new ByteArrayInputStream( postData.getBytes("UTF-8")));

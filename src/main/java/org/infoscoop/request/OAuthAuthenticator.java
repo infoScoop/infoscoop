@@ -18,6 +18,7 @@ import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
 import net.oauth.OAuthException;
 import net.oauth.OAuthMessage;
+import net.oauth.OAuthServiceProvider;
 import net.oauth.client.OAuthClient;
 import net.oauth.client.httpclient3.HttpClient3;
 
@@ -26,6 +27,7 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.RedirectException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.request.ProxyRequest.OAuthConfig;
 
 public class OAuthAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
@@ -56,24 +58,14 @@ public class OAuthAuthenticator implements Authenticator {
 	public void doAuthentication(HttpClient client, ProxyRequest request,
 			HttpMethod method, String uid, String pwd)
 			throws ProxyAuthenticationException {
-		String name = request.getRequestHeader("oauthServiceName");
+		ProxyRequest.OAuthConfig oauthConfig = request.getOauthConfig();
 		try {
-			OAuthConsumer consumer = consumers.getConsumer(name);
-	        	        
-	        OAuthAccessor accessor = newAccessor(consumer, request);
+			OAuthConsumer consumer = newConsumer(oauthConfig.serviceName,oauthConfig);
+	        OAuthAccessor accessor = newAccessor(consumer, oauthConfig);
 	        if (accessor.accessToken == null) {
 		       	getRequestToken(request, accessor);
 	        }
-	        /*
-	        OAuthResponseMessage result = CLIENT.access(accessor.newRequestMessage(OAuthMessage.GET,
-                    "http://www.google.com/m8/feeds/contacts/default/full", null), ParameterStyle.AUTHORIZATION_HEADER);
-            int status = result.getHttpResponse().getStatusCode();
-            String st = null;
-            BufferedReader br = new BufferedReader(new InputStreamReader(result.getBodyAsStream()));
-            while( (st = br.readLine()) != null ){
-            	System.out.println(st);
-            }
-            */
+	                    
 	        Collection<Map.Entry<String, String>> parms = request.getFilterParameters().entrySet();
 	        OAuthMessage message = new OAuthMessage("GET", request.getTargetURL(), parms);
 	        message.addRequiredParameters(accessor);
@@ -102,21 +94,42 @@ public class OAuthAuthenticator implements Authenticator {
 		// TODO Auto-generated method stub
 		return 3;
 	}
+	
+	protected OAuthConsumer newConsumer(String name, ProxyRequest.OAuthConfig oauthConfig){
+		
+		OAuthServiceProvider serviceProvider = 
+			new OAuthServiceProvider(
+					oauthConfig.requestTokenURL,
+					oauthConfig.userAuthorizationURL,
+					oauthConfig.accessTokenURL);
+		
+		OAuthConsumer consumer = new OAuthConsumer(consumerProperties
+				.getProperty(name + ".callbackURL"), consumerProperties
+				.getProperty(name + ".consumerKey"), consumerProperties
+				.getProperty(name + ".consumerSecret"), serviceProvider);
+		consumer.setProperty("name", name);
+		
+		for (Map.Entry prop : consumerProperties.entrySet()) {
+			String propName = (String) prop.getKey();
+			if (propName.startsWith(name + ".consumer.")) {
+				String c = propName.substring(name.length() + 10);
+				consumer.setProperty(c, prop.getValue());
+			}
+		}
+		return consumer;
+	}
 
 	/**
 	 * Construct an accessor from cookies. The resulting accessor won't
      * necessarily have any tokens.
      */
-    private static OAuthAccessor newAccessor(OAuthConsumer consumer, ProxyRequest request)
+    private static OAuthAccessor newAccessor(OAuthConsumer consumer, OAuthConfig oauthConfig)
             throws OAuthException {
         OAuthAccessor accessor = new OAuthAccessor(consumer);
         String consumerName = (String) consumer.getProperty("name");
-        //accessor.requestToken = cookies.get(consumerName + ".requestToken");
-        accessor.requestToken = request.getRequestHeader("requesttoken");
-        //accessor.accessToken = cookies.get(consumerName + ".accessToken");
-        accessor.accessToken = request.getRequestHeader("accesstoken");
-        //accessor.tokenSecret = cookies.get(consumerName + ".tokenSecret");
-        accessor.tokenSecret = request.getRequestHeader("tokensecret");
+        accessor.requestToken = oauthConfig.requestToken;
+        accessor.accessToken = oauthConfig.accessToken;
+        accessor.tokenSecret = oauthConfig.tokenSecret;
         return accessor;
     }
     
