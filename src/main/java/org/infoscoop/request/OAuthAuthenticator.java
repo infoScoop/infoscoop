@@ -1,16 +1,15 @@
 package org.infoscoop.request;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.oauth.ConsumerProperties;
 import net.oauth.OAuth;
@@ -18,9 +17,7 @@ import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
 import net.oauth.OAuthException;
 import net.oauth.OAuthMessage;
-import net.oauth.ParameterStyle;
 import net.oauth.client.OAuthClient;
-import net.oauth.client.OAuthResponseMessage;
 import net.oauth.client.httpclient3.HttpClient3;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -159,10 +156,20 @@ public class OAuthAuthenticator implements Authenticator {
 
     private static String getCallbackURL(ProxyRequest request, String consumerName)
         throws IOException {
-        URL base = new URL("http://localhost:8080/infoscoop/" + AUTH_CALLBACK_URL );
-        return OAuth.addParameters(base.toExternalForm() //
-                , "consumer", consumerName //
-                );
+		String referer = request.getRequestHeader("referer");
+		Pattern p = Pattern
+				.compile("(.*)\\/gadgetsrv\\?.*__MODULE_ID__=([^&]+).*");
+		Matcher m = p.matcher(referer);
+		if (m.matches()) {
+			String contextPath = m.group(1);
+			String widgetId = m.group(2);
+			URL base = new URL(contextPath + "/" + AUTH_CALLBACK_URL
+					+ "?__MODULE_ID__=" + widgetId);
+			return OAuth.addParameters(base.toExternalForm() //
+					, "consumer", consumerName //
+					);
+		}
+		throw new IOException("invalid referer. " + referer);
     }
 
 }

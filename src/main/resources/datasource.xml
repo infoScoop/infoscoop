@@ -85,6 +85,7 @@
 					<value>org/infoscoop/dao/model/SystemMessage.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Account.hbm.xml</value>
 					<value>org/infoscoop/dao/model/GadgetIcon.hbm.xml</value>
+					<value>org/infoscoop/dao/model/oauth_token.hbm.xml</value>
 				</list>
 			</property>
 			<property name="hibernateProperties">

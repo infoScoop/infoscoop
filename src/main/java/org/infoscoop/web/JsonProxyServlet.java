@@ -26,6 +26,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +43,10 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.OAuthTokenDAO;
+import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.Authenticator;
+import org.infoscoop.request.OAuthAuthenticator;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.request.filter.DetectTypeFilter;
 import org.json.JSONArray;
@@ -210,7 +215,12 @@ public class JsonProxyServlet extends HttpServlet {
 			headers.put("authType","oauth");
 			oauthServiceName = params.get("OAUTH_SERVICE_NAME");
 			headers.put("oauthServiceName",oauthServiceName);
-			String tokensecret = (String) session.getAttribute(oauthServiceName + ".tokensecret");
+			String widgetId = getWidgetId(rheaders);
+			String[] accessTokenInfo = getAccessToken(uid, widgetId,
+					oauthServiceName, session);
+			String accesstoken = accessTokenInfo[0];
+			String tokensecret = accessTokenInfo[1];
+			
 			if(tokensecret != null)
 				headers.put("tokensecret", tokensecret);
 				
@@ -218,11 +228,9 @@ public class JsonProxyServlet extends HttpServlet {
 			if(requesttoken != null)
 				headers.put("requesttoken", requesttoken);
 			
-			String accesstoken = (String) session.getAttribute(oauthServiceName + ".accesstoken");
 			if(accesstoken != null)
 				headers.put("accesstoken", accesstoken);
 			break;
-			
 		case POST_PORTAL_UID:
 			if( uid == null ) break;
 			
@@ -329,5 +337,45 @@ public class JsonProxyServlet extends HttpServlet {
 	    }
 	    
 	    return headers;
+	}
+	
+	private String getWidgetId(Map<String, List<String>> headers){
+		List<String> referers = headers.get("referer");
+		if (!referers.isEmpty()) {
+			Pattern p = Pattern
+					.compile(".*\\/gadgetsrv\\?.*__MODULE_ID__=([^&]+).*");
+			Matcher m = p.matcher(referers.get(0));
+			if (m.matches()) {
+				String widgetId = m.group(1);
+				return widgetId;
+			}
+		}
+		throw new RuntimeException("invalid referer. " + referers);
+	}
+
+	
+	/**
+	 * get access token from session or db.
+	 * 
+	 * @param uid
+	 * @param widgetId
+	 * @param serviceName
+	 * @param session
+	 * @return
+	 */
+	private String[] getAccessToken(String uid, String widgetId,
+			String serviceName, HttpSession session) {
+		String accesstoken = (String) session.getAttribute(serviceName
+				+ ".accesstoken");
+		String tokensecret = (String) session.getAttribute(serviceName
+				+ ".tokensecret");
+		if (accesstoken != null && tokensecret != null)
+			return new String[] { accesstoken, tokensecret };
+
+		OAuthToken token = OAuthTokenDAO.newInstance().getAccessToken(uid,
+				widgetId, serviceName);
+		if (token == null)
+			return new String[] { null, null };
+		return new String[] { token.getAccessToken(), token.getTokenSecret() };
 	}
 }

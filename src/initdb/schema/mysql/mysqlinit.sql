@@ -408,3 +408,16 @@ create table IS_ACCOUNTS (
   name varchar(255),
   password varchar(255)
 ) ENGINE=InnoDB;
+
+--
+-- OAUTH_TOKEN
+--
+
+create table IS_OAUTH_TOKENS (
+  uid varchar(150) not null,
+  widget_id varchar(128) not null,
+  service_name varchar(255) not null,
+  access_token varchar(255),
+  token_secret varchar(255),
+  constraint is_userprefs_uq unique (uid, widget_id, service_name)
+) ENGINE=InnoDB;

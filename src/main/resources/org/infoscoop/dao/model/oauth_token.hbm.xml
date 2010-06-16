@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="OAuthToken"
+		table="IS_OAUTH_TOKENS"
+	>
+		<meta attribute="sync-DAO">false</meta>
+
+
+		<composite-id name="Id" class="OAUTH_TOKEN_PK">
+			<key-property name="Uid" column="uid" type="string"/>
+			<key-property name="WidgetId" column="widget_id" type="string"/>
+			<key-property name="ServiceName" column="service_name" type="string"/>
+		</composite-id>
+		
+		<property
+			name="accessToken"
+			column="access_token"
+			type="string"
+		/>
+		
+		<property
+			name="tokenSecret"
+			column="token_secret"
+			type="string"
+		/>
+	</class>	
+</hibernate-mapping>

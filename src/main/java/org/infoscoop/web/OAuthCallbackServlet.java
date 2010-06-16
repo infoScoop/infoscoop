@@ -18,6 +18,7 @@ import net.oauth.OAuthMessage;
 import net.oauth.OAuthProblemException;
 import net.oauth.server.OAuthServlet;
 
+import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.request.OAuthAuthenticator;
 import org.infoscoop.util.SpringUtil;
 
@@ -36,16 +37,19 @@ public class OAuthCallbackServlet extends HttpServlet {
 	throws IOException, ServletException {
 		OAuthConsumer consumer = null;
 		try {
+			HttpSession session = request.getSession();
+			String uid = (String) session.getAttribute("Uid");
 			String consumerName = request.getParameter("consumer");
+			String widgetId = request.getParameter("__MODULE_ID__");
+			
 			OAuthAuthenticator authenticator = (OAuthAuthenticator)SpringUtil.getBean("oauthAuthenticator");
 			final OAuthMessage requestMessage = OAuthServlet.getMessage(
 					request, null);
 			consumer = authenticator.getConsumer( consumerName );
 			
-			HttpSession session = request.getSession();
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
-	        accessor.requestToken = (String) session.getAttribute(consumerName+ ".requesttoken");
 	        accessor.accessToken = (String) session.getAttribute(consumerName+ ".accesstoken");
+	        accessor.requestToken = (String) session.getAttribute(consumerName+ ".requesttoken");
 	        accessor.tokenSecret = (String) session.getAttribute(consumerName+ ".tokensecret");
 	        
 			final String expectedToken = accessor.requestToken;
@@ -77,7 +81,15 @@ public class OAuthCallbackServlet extends HttpServlet {
 				problem.getParameters().putAll(result.getDump());
 				throw problem;
 			}
-			session.setAttribute(consumerName + ".accesstoken", accessor.accessToken);
+			
+			// add to both db and session for high performance.
+			OAuthTokenDAO.newInstance().saveAccessToken(uid, widgetId,
+					consumerName, accessor.accessToken, accessor.tokenSecret);
+			session.setAttribute(consumerName + ".accesstoken",
+					accessor.accessToken);
+			session.setAttribute(consumerName + ".tokensecret",
+					accessor.tokenSecret);
+			
 			PrintWriter out = response.getWriter();
 			out.println("got accesstoken");
 			out.flush();
