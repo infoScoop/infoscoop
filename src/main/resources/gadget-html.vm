@@ -11,7 +11,8 @@ var ${widgetId} = "${widgetId}";
 var staticContentURL = "${staticContentURL}";
 var widgetId = "${widgetId}";
 var tabId = "${tabId}";
-
+var oauthServicesJson = ${oauthServicesJson};
+var gadgetUrl = "${gadgetUrl}";
 window.onerror = function( message,fileName,lineNumber ) {
 	if( fileName && lineNumber ) {
 		gadgets.warn( widgetId+": "+message +" at "+fileName+" #"+lineNumber );

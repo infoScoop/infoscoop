@@ -357,6 +357,8 @@ gadgets.io = function() {
       var paramData = {
         url: url,
         httpMethod : httpMethod,
+       	gadgetUrl: gadgetUrl,
+       	hostPrefix: hostPrefix,
         headers: gadgets.io.encodeValues(headers, false),
         postData : params.POST_DATA || "",
         authz : auth || "",
@@ -390,6 +392,12 @@ gadgets.io = function() {
             }
           }
         }
+	    var oauthService = oauthServicesJson[paramData[gadgets.io.RequestParameters.OAUTH_SERVICE_NAME]];
+        paramData["requestTokenURL"] = oauthService["requestTokenURL"];
+        paramData["requestTokenMethod"] = oauthService["requestTokenMethod"];
+        paramData["userAuthorizationURL"] = oauthService["userAuthorizationURL"];
+        paramData["accessTokenURL"] = oauthService["accessTokenURL"];
+        paramData["accessTokenMethod"] = oauthService["accessTokenMethod"];
       }
 
       var proxyUrl = config.jsonProxyUrl.replace("%host%", document.location.host);

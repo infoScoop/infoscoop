@@ -81,15 +81,13 @@ public class OAuthCallbackServlet extends HttpServlet {
 				problem.getParameters().putAll(result.getDump());
 				throw problem;
 			}
-			
 			// add to both db and session for high performance.
 			OAuthTokenDAO.newInstance().saveAccessToken(uid, gadgetType,
 					consumerName, accessor.accessToken, accessor.tokenSecret);
-			session.setAttribute(consumerName + ".accesstoken",
-					accessor.accessToken);
-			session.setAttribute(consumerName + ".tokensecret",
-					accessor.tokenSecret);
 			
+			session.setAttribute(consumerName + ".accesstoken", accessor.accessToken);
+			session.removeAttribute(consumerName + ".requesttoken");
+			session.setAttribute(consumerName + ".tokensecret", accessor.tokenSecret);
 			PrintWriter out = response.getWriter();
 			out.println("got accesstoken");
 			out.flush();
