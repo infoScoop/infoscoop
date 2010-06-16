@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -158,13 +159,13 @@ public class OAuthAuthenticator implements Authenticator {
         throws IOException {
 		String referer = request.getRequestHeader("referer");
 		Pattern p = Pattern
-				.compile("(.*)\\/gadgetsrv\\?.*__MODULE_ID__=([^&]+).*");
+				.compile("(.*)\\/gadgetsrv\\?.*&url=([^&]+).*");
 		Matcher m = p.matcher(referer);
 		if (m.matches()) {
 			String contextPath = m.group(1);
-			String widgetId = m.group(2);
+			String gadgetType = URLDecoder.decode(m.group(2), "UTF-8");
 			URL base = new URL(contextPath + "/" + AUTH_CALLBACK_URL
-					+ "?__MODULE_ID__=" + widgetId);
+					+ "?__GADGET_TYPE__=" + gadgetType);
 			return OAuth.addParameters(base.toExternalForm() //
 					, "consumer", consumerName //
 					);

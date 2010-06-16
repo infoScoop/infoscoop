@@ -40,7 +40,7 @@ public class OAuthCallbackServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			String uid = (String) session.getAttribute("Uid");
 			String consumerName = request.getParameter("consumer");
-			String widgetId = request.getParameter("__MODULE_ID__");
+			String gadgetType = request.getParameter("__GADGET_TYPE__");
 			
 			OAuthAuthenticator authenticator = (OAuthAuthenticator)SpringUtil.getBean("oauthAuthenticator");
 			final OAuthMessage requestMessage = OAuthServlet.getMessage(
@@ -83,7 +83,7 @@ public class OAuthCallbackServlet extends HttpServlet {
 			}
 			
 			// add to both db and session for high performance.
-			OAuthTokenDAO.newInstance().saveAccessToken(uid, widgetId,
+			OAuthTokenDAO.newInstance().saveAccessToken(uid, gadgetType,
 					consumerName, accessor.accessToken, accessor.tokenSecret);
 			session.setAttribute(consumerName + ".accesstoken",
 					accessor.accessToken);

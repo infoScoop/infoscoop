@@ -215,8 +215,8 @@ public class JsonProxyServlet extends HttpServlet {
 			headers.put("authType","oauth");
 			oauthServiceName = params.get("OAUTH_SERVICE_NAME");
 			headers.put("oauthServiceName",oauthServiceName);
-			String widgetId = getWidgetId(rheaders);
-			String[] accessTokenInfo = getAccessToken(uid, widgetId,
+			String gadgetUrl = getGadgetUrl(rheaders);
+			String[] accessTokenInfo = getAccessToken(uid, gadgetUrl,
 					oauthServiceName, session);
 			String accesstoken = accessTokenInfo[0];
 			String tokensecret = accessTokenInfo[1];
@@ -339,15 +339,19 @@ public class JsonProxyServlet extends HttpServlet {
 	    return headers;
 	}
 	
-	private String getWidgetId(Map<String, List<String>> headers){
+	private String getGadgetUrl(Map<String, List<String>> headers) {
 		List<String> referers = headers.get("referer");
 		if (!referers.isEmpty()) {
 			Pattern p = Pattern
-					.compile(".*\\/gadgetsrv\\?.*__MODULE_ID__=([^&]+).*");
+					.compile(".*\\/gadgetsrv\\?.*&url=([^&]+).*");
 			Matcher m = p.matcher(referers.get(0));
 			if (m.matches()) {
-				String widgetId = m.group(1);
-				return widgetId;
+				try {
+					String gadgetUrl = URLDecoder.decode(m.group(1), "UTF-8");
+					return gadgetUrl;
+				} catch (UnsupportedEncodingException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 		throw new RuntimeException("invalid referer. " + referers);
@@ -358,12 +362,12 @@ public class JsonProxyServlet extends HttpServlet {
 	 * get access token from session or db.
 	 * 
 	 * @param uid
-	 * @param widgetId
+	 * @param gadgetUrl
 	 * @param serviceName
 	 * @param session
 	 * @return
 	 */
-	private String[] getAccessToken(String uid, String widgetId,
+	private String[] getAccessToken(String uid, String gadgetUrl,
 			String serviceName, HttpSession session) {
 		String accesstoken = (String) session.getAttribute(serviceName
 				+ ".accesstoken");
@@ -373,7 +377,7 @@ public class JsonProxyServlet extends HttpServlet {
 			return new String[] { accesstoken, tokensecret };
 
 		OAuthToken token = OAuthTokenDAO.newInstance().getAccessToken(uid,
-				widgetId, serviceName);
+				gadgetUrl, serviceName);
 		if (token == null)
 			return new String[] { null, null };
 		return new String[] { token.getAccessToken(), token.getTokenSecret() };

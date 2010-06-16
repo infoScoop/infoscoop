@@ -8,7 +8,7 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 	protected int hashCode = Integer.MIN_VALUE;
 
 	private java.lang.String uid;
-	private java.lang.String widgetId;
+	private java.lang.String gadgetUrl;
 	private java.lang.String serviceName;
 
 
@@ -16,11 +16,11 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 	
 	public BaseOAUTH_TOKEN_PK (
 		java.lang.String uid,
-		java.lang.String widgetId,
+		java.lang.String gadgetUrl,
 		java.lang.String serviceName) {
 
 		this.setUid(uid);
-		this.setWidgetId(widgetId);
+		this.setGadgetUrl(gadgetUrl);
 		this.setServiceName(serviceName);
 	}
 
@@ -43,18 +43,18 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: widget_id
+	 * Return the value associated with the column: gadget_url
 	 */
-	public java.lang.String getWidgetId () {
-		return widgetId;
+	public java.lang.String getGadgetUrl () {
+		return gadgetUrl;
 	}
 
 	/**
-	 * Set the value related to the column: widget_id
-	 * @param widgetId the widget_id value
+	 * Set the value related to the column: gadget_url
+	 * @param gadgetUrl the gadget_url value
 	 */
-	public void setWidgetId (java.lang.String widgetId) {
-		this.widgetId = widgetId;
+	public void setGadgetUrl (java.lang.String gadgetUrl) {
+		this.gadgetUrl = gadgetUrl;
 	}
 
 
@@ -90,8 +90,8 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 			else {
 				return false;
 			}
-			if (null != this.getWidgetId() && null != mObj.getWidgetId()) {
-				if (!this.getWidgetId().equals(mObj.getWidgetId())) {
+			if (null != this.getGadgetUrl() && null != mObj.getGadgetUrl()) {
+				if (!this.getGadgetUrl().equals(mObj.getGadgetUrl())) {
 					return false;
 				}
 			}
@@ -120,8 +120,8 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 			else {
 				return super.hashCode();
 			}
-			if (null != this.getWidgetId()) {
-				sb.append(this.getWidgetId().hashCode());
+			if (null != this.getGadgetUrl()) {
+				sb.append(this.getGadgetUrl().hashCode());
 				sb.append(":");
 			}
 			else {

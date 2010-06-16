@@ -415,9 +415,9 @@ create table IS_ACCOUNTS (
 
 create table IS_OAUTH_TOKENS (
   uid varchar(150) not null,
-  widget_id varchar(128) not null,
+  gadget_url varchar(128) not null,
   service_name varchar(255) not null,
   access_token varchar(255),
   token_secret varchar(255),
-  constraint is_userprefs_uq unique (uid, widget_id, service_name)
+  constraint is_userprefs_uq unique (uid, gadget_url, service_name)
 ) ENGINE=InnoDB;

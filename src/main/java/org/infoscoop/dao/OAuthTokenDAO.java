@@ -37,15 +37,16 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-	public OAuthToken getAccessToken(String uid, String widgetId,
+	public OAuthToken getAccessToken(String uid, String gadgetUrl,
 			String serviceName) {
-		if (widgetId == null || serviceName == null) {
-			throw new RuntimeException("widgetId and serviceName must be set.");
+		if (uid == null || gadgetUrl == null || serviceName == null) {
+			throw new RuntimeException(
+					"uid, gadgetUrl and serviceName must be set.");
 		}
 		Iterator results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthToken.class).add(
 						Expression.eq("Id.Uid", uid)).add(
-						Expression.eq("Id.WidgetId", widgetId)).add(
+						Expression.eq("Id.GadgetUrl", gadgetUrl)).add(
 						Expression.eq("Id.ServiceName", serviceName)))
 				.iterator();
 		if (results.hasNext()) {
@@ -54,11 +55,11 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 		return null;
 	}
 
-	public void saveAccessToken(String uid, String widgetId,
+	public void saveAccessToken(String uid, String gadgetUrl,
 			String serviceName, String accessToken, String tokenSecret) {
-		OAuthToken token = getAccessToken(uid, widgetId, serviceName);
+		OAuthToken token = getAccessToken(uid, gadgetUrl, serviceName);
 		if (token == null) {
-			token = new OAuthToken(new OAUTH_TOKEN_PK(uid, widgetId,
+			token = new OAuthToken(new OAUTH_TOKEN_PK(uid, gadgetUrl,
 					serviceName));
 		}
 		token.setAccessToken(accessToken);

@@ -13,7 +13,7 @@
 
 		<composite-id name="Id" class="OAUTH_TOKEN_PK">
 			<key-property name="Uid" column="uid" type="string"/>
-			<key-property name="WidgetId" column="widget_id" type="string"/>
+			<key-property name="GadgetUrl" column="gadget_url" type="string"/>
 			<key-property name="ServiceName" column="service_name" type="string"/>
 		</composite-id>
 		
