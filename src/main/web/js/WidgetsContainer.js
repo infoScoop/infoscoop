@@ -818,6 +818,7 @@ IS_WidgetsContainer.adjustColumnWidth = function( tabId, columnsWidth, isInitial
 		columns[0].style.width = "100%";
 		isClear = true;
 	}else{
+		var sumWidth = 0;
 		var loopCount = 0;
 		for (var i=0; i < columns.length; i++ ) {
 			if(!columns[i] || columns[i].nodeType != 1 || columns[i].className != "column") continue;
@@ -830,8 +831,12 @@ IS_WidgetsContainer.adjustColumnWidth = function( tabId, columnsWidth, isInitial
 				columns[i].style.width = width;
 				IS_Portal.tabs[adjustTabId].columnsWidth.push(width);
 			}else{
-				if(columnsWidth[loopCount])
+				if(i == columns.length-1){
+					columns[i].style.width = (100 - sumWidth) + "%";
+				}else if(columnsWidth[loopCount]){
 					columns[i].style.width = columnsWidth[loopCount];
+					sumWidth += parseFloat(columnsWidth[loopCount])+1;
+				}
 			}
 			loopCount++;
 		}
