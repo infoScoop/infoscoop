@@ -29,7 +29,7 @@ import org.infoscoop.request.ProxyRequest.OAuthConfig;
 
 public class OAuthAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
-
+	
 	private static String AUTH_CALLBACK_URL = "oauthcallback";
 
 	private static Log log = LogFactory.getLog(OAuthAuthenticator.class);
@@ -145,8 +145,7 @@ public class OAuthAuthenticator implements Authenticator {
         request.putResponseHeader(consumerName + ".requesttoken", accessor.requestToken);
         request.putResponseHeader(consumerName + ".tokensecret", accessor.tokenSecret);
         String authorizationURL = accessor.consumer.serviceProvider.userAuthorizationURL;
-        
-                authorizationURL = OAuth.addParameters(authorizationURL //
+        authorizationURL = OAuth.addParameters(authorizationURL //
                 , OAuth.OAUTH_TOKEN, accessor.requestToken);
         if (response.getParameter(OAuth.OAUTH_CALLBACK_CONFIRMED) == null) {
             authorizationURL = OAuth.addParameters(authorizationURL //

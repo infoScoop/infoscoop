@@ -143,6 +143,7 @@
 	<script src="js/AdminForbiddenURL.js"></script>
 	<script src="js/AdminGadgetUploadForm.js"></script>
 	<script src="js/AdminInformation.js"></script>
+	<script src="js/AdminAuthentication.js"></script>
 	<!--end script-->
 	
 	<script>
@@ -195,6 +196,7 @@
 		<%}%><%if( adminService.isPermitted("forbiddenURL")){%>
 			ISA_Admin.permissions.forbiddenURL = true;
 		<%}%>
+			ISA_Admin.permissions.authentication = true;
 	</script>
 </head>
 <body class="infoScoop admin">

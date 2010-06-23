@@ -18,9 +18,8 @@ import net.oauth.OAuthMessage;
 import net.oauth.OAuthProblemException;
 import net.oauth.server.OAuthServlet;
 
-import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.request.OAuthAuthenticator;
-import org.infoscoop.util.SpringUtil;
+import org.infoscoop.service.OAuthService;
 
 public class OAuthCallbackServlet extends HttpServlet {
 
@@ -81,14 +80,15 @@ public class OAuthCallbackServlet extends HttpServlet {
 				throw problem;
 			}
 			// add to both db and session for high performance.
-			OAuthTokenDAO.newInstance().saveAccessToken(uid, gadgetUrl,
+			OAuthService.getHandle().saveOAuthToken(
+					uid, gadgetUrl,
 					consumerName, accessor.accessToken, accessor.tokenSecret);
 			
 			session.setAttribute(consumerName + ".accesstoken", accessor.accessToken);
 			session.removeAttribute(consumerName + ".requesttoken");
 			session.setAttribute(consumerName + ".tokensecret", accessor.tokenSecret);
 			PrintWriter out = response.getWriter();
-			out.println("got accesstoken");
+			out.println("<script> window.close(); </script>");
 			out.flush();
 		} catch (Exception e) {
 			e.printStackTrace();

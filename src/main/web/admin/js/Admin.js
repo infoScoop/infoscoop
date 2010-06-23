@@ -312,6 +312,12 @@ ISA_Admin.TabBuilders = {
 			ISA_PortalAdmins.portalForbiddenURL = new ISA_PortalForbiddenURL();
 			ISA_PortalAdmins.portalForbiddenURL.build();
 		}
+	},
+	authentication: {
+		text: "OAuth",
+		build: function() {
+			ISA_Authentication.build();
+		}
 	}
 }
 

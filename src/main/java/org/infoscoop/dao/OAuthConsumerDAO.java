@@ -18,11 +18,13 @@
 package org.infoscoop.dao;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
+import org.infoscoop.dao.model.OAUTH_CONSUMER_PK;
 import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
@@ -64,12 +66,25 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 			newConsumer.setConsumerSecret(consumer.getConsumerSecret());
 			newConsumer.setSignatureMethod(consumer.getSignatureMethod());
 			newConsumer.setPrivateKey(consumer.getPrivateKey());
-			super.getHibernateTemplate().save(newConsumer);
+			super.getHibernateTemplate().saveOrUpdate(newConsumer);
 		}
 	}
 
 	public static void main(String args[]) {
 		System.out.println(Crypt
-				.getHash("http://localhost/gadget/oauth_sample.xml"));
+				.getHash("http://localhost/oauth_test/twit_oauth2.xml"));
+	}
+
+	public List<OAuthConsumerProp> getConsumers() {
+		return super.getHibernateTemplate().loadAll(OAuthConsumerProp.class);
+	}
+
+	public void saveConsumers(List<OAuthConsumerProp> consumers) {
+		for(OAuthConsumerProp consumer: consumers)
+			this.save(consumer);
+	}
+
+	public void delete(String gadgetUrl, String serviceName) {
+		super.getHibernateTemplate().delete(this.getConsumer(gadgetUrl, serviceName));
 	}
 }

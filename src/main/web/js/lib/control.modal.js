@@ -259,13 +259,13 @@ Object.extend(Control.Modal.prototype,{
 			this.open();
 	},
 	open: function(){
-		Control.Modal.behindIframe.show();
-		
 		if(!this.options.hover)
 			Event.observe($(document.getElementsByTagName('body')[0]),'keydown',Control.Modal.onKeyDown);
-		Control.Modal.current = this;
 		if(this.notifyResponders('beforeOpen') === false)
 			return;
+		
+		Control.Modal.current = this;
+		
 		if(!this.options.hover){
 			Control.Modal.overlay.setStyle({
 				zIndex: this.options.zIndex

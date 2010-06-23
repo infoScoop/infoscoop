@@ -299,7 +299,7 @@ public class JsonProxyServlet extends HttpServlet {
 			if( "oauthApprovalUrl".equalsIgnoreCase(name)){
 				urlJson.put("oauthApprovalUrl", proxy.getResponseHeader(name));
 				status = 200;
-			}else if( name.indexOf(oauthServiceName) == 0){
+			}else if( oauthServiceName != null && name.indexOf(oauthServiceName) == 0){
 				session.setAttribute(name, proxy.getResponseHeader(name));
 			}else{
 				JSONArray array = jsonHeaders.getJSONArray( name );
