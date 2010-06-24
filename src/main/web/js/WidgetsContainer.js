@@ -912,22 +912,28 @@ IS_WidgetsContainer.adjustColumns = {
 //		IS_WidgetsContainer.adjustColumns.hideAdjustDivs(targetEl1.parentNode, e);
 		var numCol = IS_Portal.tabs[IS_Portal.currentTabId].numCol;
 		
-		var _coefficient = (Browser.isSafari1) ? 0.996 : (Browser.isSafari) ? 0.998 : 1;
-		var p = ( targetEl1.offsetWidth / (parentWidth * _coefficient) ) * 100;
+		var p = ( targetEl1.offsetWidth / parentWidth ) * 100;
 		targetEl1.style.width = p + "%";
 		
-		p = (targetEl2.offsetWidth / (parentWidth *  _coefficient) ) * 100;
-		targetEl2.style.width = p + "%";
+		var columnsWidth = [];
+		var columns = targetEl1.parentNode.childNodes;
+		var sumWidth = 0;
+		var targetEl2colnum = targetEl2.getAttribute("colnum");
+		for(var i=0;i<columns.length;i++){
+			if(columns[i].className != "column") continue;
+			if(columns[i].getAttribute("colnum") == targetEl2colnum){
+				columnsWidth.push(0);
+				continue;
+			}
+			columnsWidth.push(columns[i].style.width);
+			sumWidth += parseFloat(columns[i].style.width) + 1;
+		}
+		targetEl2.style.width = (100 - sumWidth) + "%";
+		columnsWidth[parseInt(targetEl2colnum)-1] = targetEl2.style.width;
+		IS_Portal.tabs[IS_Portal.currentTabId].columnsWidth = columnsWidth;
 		
 		IS_Widget.adjustDescWidth();
 		IS_Portal.adjustGadgetHeight();
-		
-		IS_Portal.tabs[IS_Portal.currentTabId].columnsWidth = new Array();
-		var columns = targetEl1.parentNode.childNodes;
-		for(var i=0;i<columns.length;i++){
-			if(columns[i].className != "column") continue;
-			IS_Portal.tabs[IS_Portal.currentTabId].columnsWidth.push(columns[i].style.width);
-		}
 		
 		IS_WidgetsContainer.adjustColumns.hideAdjustDivs(targetEl1.parentNode);
 		IS_Portal.widgetDisplayUpdated();
@@ -956,7 +962,7 @@ IS_WidgetsContainer.adjustColumns = {
 		
 		var setWidth2 = (totalWidth - targetEl1.offsetWidth);
 		if(totalWidth - setWidth2 > 0){
-			targetEl2.style.width = setWidth2;
+			targetEl2.style.width = setWidth2 - 1;
 		}
 		
 		IS_WidgetsContainer.adjustColumns.isChanging = false;
