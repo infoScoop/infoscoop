@@ -1319,7 +1319,9 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 			if( this.checkEnableRssSearch() )
 			  div.style.display = "block";
 		} else {
+			IS_Portal.SearchEngines.loadConf();
 			setTimeout(this.searchApplyIconStyle.bind(this, div), 100);
+			return;
 		}
 
 		var disabledTitleList = [];
