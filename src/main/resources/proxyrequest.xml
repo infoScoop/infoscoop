@@ -17,6 +17,8 @@
 </bean>
 <bean id="oauthAuthenticator" class="org.infoscoop.request.OAuthAuthenticator">
 </bean>
+<bean id="signedAuthenticator" class="org.infoscoop.request.SignedAuthenticator">
+</bean>
 <bean id="g_basicAuthenticator" class="org.infoscoop.request.BasicAuthenticator">
 	<constructor-arg index="0"><value type="int">-1</value></constructor-arg>
 </bean>

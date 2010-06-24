@@ -242,6 +242,11 @@ public class JsonProxyServlet extends HttpServlet {
 			
 			proxy.setOauthConfig(oauthConfig);
 			break;
+		case SIGNED:
+			headers.put("authType", "signed");
+			headers.put("gadgetUrl", params.get("gadgetUrl"));
+			headers.put("moduleId", params.get("moduleId"));
+			break;
 		case POST_PORTAL_UID:
 			if( uid == null ) break;
 			
