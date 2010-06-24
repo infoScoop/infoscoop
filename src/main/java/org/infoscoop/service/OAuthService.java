@@ -45,8 +45,7 @@ public class OAuthService {
 		this.oauthCertificateDAO = oauthCertificateDAO;
 	}
 	
-	public String getOAuthConsumerListJson() throws Exception{
-		List<OAuthConsumerProp> consumerPropList = this.oauthConsumerDAO.getConsumers();
+	private String buildJsonArray(List<OAuthConsumerProp> consumerPropList) throws JSONException{
 		JSONArray cunsumerList = new JSONArray();
 		for(OAuthConsumerProp prop: consumerPropList){
 			JSONObject obj = new JSONObject();
@@ -58,10 +57,15 @@ public class OAuthService {
 			obj.put("signature_method", prop.getSignatureMethod());
 			cunsumerList.put(obj);
 		}
-
 		return cunsumerList.toString();
 	}
+	public String getOAuthConsumerListJson() throws Exception{
+		return buildJsonArray( this.oauthConsumerDAO.getConsumers() );
+	}
 
+	public String getGetConsumerListJsonByUrl(String url) throws Exception{
+		return buildJsonArray( this.oauthConsumerDAO.getConsumersByUrl(url) );
+	}
 	public void saveOAuthConsumerList(String saveArray, String deleteArray) throws Exception{
 		JSONArray consumerJsonList = new JSONArray(saveArray);
 

@@ -93,7 +93,7 @@ ISA_Authentication = {
 			},
 			onComplete: function(){
 				this.currentModal.close();
-			}
+			}.bind(this)
 		};
 		this.currentModal.open();
 		AjaxRequest.invoke(url, opt);

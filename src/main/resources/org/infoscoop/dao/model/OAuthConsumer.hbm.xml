@@ -43,6 +43,12 @@
 			not-null="false"
 			length="10"
 		/>
+		<property
+			name="IsUpload"
+			column="is_upload"
+			type="integer"
+			not-null="true"
+		/>
 
 	</class>	
 </hibernate-mapping>

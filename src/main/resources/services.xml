@@ -363,6 +363,9 @@
 				<property name="gadgetIconDAO">
 					<ref bean="gadgetIconDAO" />
 				</property>
+				<property name="oauthConsumerDAO">
+					<ref bean="oauthConsumerDAO" />
+				</property>
 			</bean>
 		</property>
 		<property name="transactionManager">

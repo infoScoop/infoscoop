@@ -75,7 +75,9 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 	}
 
 	public List<OAuthConsumerProp> getConsumers() {
-		return super.getHibernateTemplate().loadAll(OAuthConsumerProp.class);
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(OAuthConsumerProp.class).add(
+						Expression.eq(OAuthConsumerProp.PROP_IS_UPLOAD, 0)));
 	}
 
 	public void saveConsumers(List<OAuthConsumerProp> consumers) {
@@ -85,5 +87,12 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 
 	public void delete(String gadgetUrl, String serviceName) {
 		super.getHibernateTemplate().delete(this.getConsumer(gadgetUrl, serviceName));
+	}
+
+	public List<OAuthConsumerProp> getConsumersByUrl(String gadgetUrl) {
+		String gadgetUrlKey = Crypt.getHash(gadgetUrl);
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(OAuthConsumerProp.class).add(
+						Expression.eq("Id.GadgetUrlKey", gadgetUrlKey)));
 	}
 }

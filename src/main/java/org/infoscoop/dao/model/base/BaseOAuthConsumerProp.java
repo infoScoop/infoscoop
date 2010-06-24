@@ -20,6 +20,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	public static String PROP_CONSUMER_SECRET = "ConsumerSecret";
 	public static String PROP_ID = "Id";
 	public static String PROP_CONSUMER_KEY = "ConsumerKey";
+	public static String PROP_IS_UPLOAD = "IsUpload";
 
 
 	// constructors
@@ -61,6 +62,8 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	private java.lang.String consumerKey;
 	private java.lang.String consumerSecret;
 	private java.lang.String signatureMethod;
+	private java.lang.Integer isUpload;
+
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
@@ -145,6 +148,15 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	 */
 	public void setSignatureMethod (java.lang.String signatureMethod) {
 		this.signatureMethod = signatureMethod;
+	}
+
+
+	public java.lang.Integer getIsUpload() {
+		return isUpload;
+	}
+
+	public void setIsUpload(java.lang.Integer isUpload) {
+		this.isUpload = isUpload;
 	}
 
 

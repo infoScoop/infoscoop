@@ -76,6 +76,7 @@ public class WidgetConfUtil {
 		String rootPath = "/Module";
 		x2j.addPathRule(rootPath + "/ModulePrefs/Require", "feature", true, false);
 		x2j.addSkipRule(rootPath + "/ModulePrefs/Locale");
+		x2j.addPathRule(rootPath + "/ModulePrefs/OAuth/Service", null, true, false);
 		
 		x2j.addPathRule(rootPath + "/ModulePrefs", null, false, false);
 		
