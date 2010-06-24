@@ -65,7 +65,6 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 			newConsumer.setConsumerKey(consumer.getConsumerKey());
 			newConsumer.setConsumerSecret(consumer.getConsumerSecret());
 			newConsumer.setSignatureMethod(consumer.getSignatureMethod());
-			newConsumer.setPrivateKey(consumer.getPrivateKey());
 			super.getHibernateTemplate().saveOrUpdate(newConsumer);
 		}
 	}

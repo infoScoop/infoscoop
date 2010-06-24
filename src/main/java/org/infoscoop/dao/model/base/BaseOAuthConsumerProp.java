@@ -19,7 +19,6 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	public static String PROP_GADGET_URL = "GadgetUrl";
 	public static String PROP_CONSUMER_SECRET = "ConsumerSecret";
 	public static String PROP_ID = "Id";
-	public static String PROP_PRIVATE_KEY = "PrivateKey";
 	public static String PROP_CONSUMER_KEY = "ConsumerKey";
 
 
@@ -62,10 +61,6 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	private java.lang.String consumerKey;
 	private java.lang.String consumerSecret;
 	private java.lang.String signatureMethod;
-	private byte[] privateKey;
-
-
-
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
@@ -151,24 +146,6 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	public void setSignatureMethod (java.lang.String signatureMethod) {
 		this.signatureMethod = signatureMethod;
 	}
-
-
-
-	/**
-	 * Return the value associated with the column: private_key
-	 */
-	public byte[] getPrivateKey () {
-		return privateKey;
-	}
-
-	/**
-	 * Set the value related to the column: private_key
-	 * @param privateKey the private_key value
-	 */
-	public void setPrivateKey (byte[] privateKey) {
-		this.privateKey = privateKey;
-	}
-
 
 
 

@@ -100,9 +100,6 @@ public class OAuthAuthenticator implements Authenticator {
 		if (consumerProp.getSignatureMethod() != null)
 			consumer.setProperty("oauth_signature_method", consumerProp
 					.getSignatureMethod());
-		if (consumerProp.getPrivateKey() != null)
-			consumer.setProperty("RSA-SHA1.PrivateKey", consumerProp
-					.getPrivateKey());
 		
 		consumers.put(consumerProp.getGadgetUrl() + "\t" + name, consumer);
 		return consumer;

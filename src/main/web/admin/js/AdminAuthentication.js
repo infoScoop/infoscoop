@@ -4,16 +4,19 @@ ISA_Authentication = {
 	build: function(){
 		
 		var container = document.getElementById("authentication");
-		var tabUl = $.UL({id:"oauth_setting_tabs", className:"subsection_tabs tabs"},
-			 $.LI({},
-				  $.A({id:"oauth_setting_tabs_consumer",href:"#oauth_consumer", className:"tab"},
-					  $.SPAN({className:"title"},ISA_R.alb_oauthConsumerSettings))
-					),
-			 $.LI({},
-				  $.A({id:"oauth_setting_tabs_rsa",href:"#oauth_container", className:"tab"},
-					  $.SPAN({className:"title"},ISA_R.alb_oauthContainerCertificate))
-					)
-			   );
+		var tabUl =
+		  $.DIV({id:"tabContainer"},
+				$.UL({id:"oauth_setting_tabs", className:"subsection_tabs tabs"},
+					 $.LI({},
+						  $.A({id:"oauth_consumer_tab",href:"#oauth_consumer", className:"tab"},
+							  $.SPAN({className:"title"},ISA_R.alb_oauthConsumerSettings))
+							),
+					 $.LI({},
+						  $.A({id:"oauth_container_tab",href:"#oauth_container", className:"tab"},
+							  $.SPAN({className:"title"},ISA_R.alb_oauthContainerCertificate))
+							)
+					   )
+				  );
 		container.appendChild(tabUl);
 
 		container.appendChild(
@@ -23,11 +26,12 @@ ISA_Authentication = {
 		
 		this.controlTabs = new Control.Tabs("oauth_setting_tabs", {
 			beforeChange: function(old_container, new_container){
+				Element.removeClassName(old_container.id + "_tab","selected");
+				Element.addClassName(new_container.id+ "_tab", "selected");
 			}.bind(this)
 		});
 		this._displayConsumer();
 		this._displayContainerCert();
-		this.controlTabs.setActiveTab("oauth_consumer");
 
 		this.currentModal = new Control.Modal( false, {
 			contents: ISA_R.ams_applyingChanges,
@@ -131,7 +135,7 @@ ISA_Authentication = {
 		
 		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
 		controlDiv.appendChild(refreshDiv);
-		IS_Event.observe(refreshDiv, "click", this.build.bind(this), false, "_adminAuthentication");
+		IS_Event.observe(refreshDiv, "click", this._displayConsumer.bind(this), false, "_adminAuthentication");
 		
 		container.appendChild(controlDiv);
 		
@@ -154,8 +158,8 @@ ISA_Authentication = {
 		this._renderHeader( container );
 		
 		var table = ISA_Admin.buildTableHeader(
-			[ ISA_R.alb_gadgetUrl, ISA_R.alb_oauthServiceName, ISA_R.alb_oauthConsumerKey, ISA_R.alb_oauthConsumerSecret, ISA_R.alb_delete],
-			[ '30%', '15%', "25%", "25%", "5%"]
+			[ ISA_R.alb_gadgetUrl, ISA_R.alb_oauthServiceName, ISA_R.alb_oauthSignatureAlgorithm, ISA_R.alb_oauthConsumerKey, ISA_R.alb_oauthConsumerSecret, ISA_R.alb_delete],
+			[ '30%', '10%', "10%", "20%", "25%", "5%"]
 			);
 		table.id = "authentication_contentTable";
 		table.className = "proxyConfigList";
@@ -164,13 +168,15 @@ ISA_Authentication = {
 		table.style.borderLeft = "1px solid #EEEEEE";
 		table.style.width = "100%";
 		
+		container.appendChild( table );
+		
 		var tbody = table.firstChild;
 		var this_ = this;
 		oauthConsumerList.each( function( consumer, index ) {
 			tbody.appendChild( this._createRow( consumer, index ));
+			this._displayConsumerKeySecret('oauth_consumer_setting_' + index);
 		}.bind(this));
 		
-		container.appendChild( table );
 	},
 	
 	_createTextbox: function(id, value){
@@ -180,19 +186,37 @@ ISA_Authentication = {
 		  onblur:{handler: function(){}}
 		});
 	},
+
+	_displayConsumerKeySecret:function(elementId){
+		var signatureMethod = $F(elementId + '_signature_method');
+		var element1 = $(elementId + '_consumer_key');
+		var element2 = $(elementId + '_consumer_secret');
+		if(signatureMethod == 'HMAC-SHA1'){
+			element1.disabled = element2.disabled = false;
+			element1.style.borderColor = element2.style.borderColor= "#54ce43";
+		}else{
+			element1.disabled = element2.disabled = true;
+			element1.style.borderColor = element2.style.borderColor= "#EEE";
+			element1.value = element2.value = '';
+		}
+	},
 	
 	_createRow: function( consumer, index ){
 		var elementId = 'oauth_consumer_setting_' + index;
-		function getEditPrivateKeyBGColor(signatureMethod){
-			if(signatureMethod == 'HMAC-SHA1')
-			  return "#EEEEEE";
-			else
-			  return "#FFFFFF";
-		}
+		
 		var deleteIcon = ISA_Admin.createIconButton("", ISA_R.alb_delete, "trash.gif");
 		var tr = $.TR({id:elementId },
 					$.TD({}, this._createTextbox(elementId + '_gadget_url', consumer['gadget_url']) ),
 					$.TD({}, this._createTextbox(elementId + '_service_name', consumer['service_name']) ),
+					$.TD({},
+						 $.SELECT(
+							 {id: elementId + '_signature_method',
+							   onchange:{handler:this._displayConsumerKeySecret.bind(this, elementId),
+								 value:consumer['signature_method']}
+							 },
+							 $.OPTION({value:'HMAC-SHA1', defaultSelected: ('HMAC-SHA1' == consumer['signature_method']) }, 'HMAC-SHA1'),
+							 $.OPTION({value:'RSA-SHA1', defaultSelected: ('RSA-SHA1' == consumer['signature_method'])}, 'RSA-SHA1')
+							   )),
 					$.TD({}, this._createTextbox(elementId + '_consumer_key', consumer['consumer_key'] ) ),
 					$.TD({}, this._createTextbox(elementId + '_consumer_secret', consumer['consumer_secret'] ) ),
 					$.TD({style:"textAlign:center;"}, deleteIcon )
@@ -257,7 +281,7 @@ ISA_Authentication = {
 			},
 			onComplete: function(){
 				this.currentModal.close();
-			}
+			}.bind(this)
 		};
 		AjaxRequest.invoke(url, opt);
 		
@@ -280,7 +304,7 @@ ISA_Authentication = {
 		
 		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
 		controlDiv.appendChild(refreshDiv);
-		IS_Event.observe(refreshDiv, "click", this.build.bind(this), false, "_adminAuthenticationContainer");
+		IS_Event.observe(refreshDiv, "click", this._displayContainerCert.bind(this), false, "_adminAuthenticationContainer");
 		
 		container.appendChild(controlDiv);
 		

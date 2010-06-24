@@ -43,13 +43,6 @@
 			not-null="false"
 			length="10"
 		/>
-		<property
-			name="PrivateKey"
-			column="private_key"
-			type="binary"
-			not-null="false"
-		/>
-
 
 	</class>	
 </hibernate-mapping>
