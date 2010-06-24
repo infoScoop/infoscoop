@@ -5,7 +5,7 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 	
 	// Add edit of WidgetPref
 	var editWidgetPref = document.createElement("fieldset");
-	editWidgetPref.style.paddingBottom = "5px";
+	editWidgetPref.style.marginBottom = "10px";
 	var editLabel = document.createElement("legend");
 	editWidgetPref.appendChild( editLabel );
 	editLabel.innerHTML = ISA_R.alb_editWidgetSettings;
@@ -100,6 +100,7 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 	// Adding edit of UserPref
 	var existUserPrefs = false;
 	var editUserPref = document.createElement("fieldset");
+	editUserPref.style.marginBottom = "10px";
 	var editLabel = document.createElement("legend");
 	editUserPref.appendChild( editLabel );
 	editLabel.innerHTML = ISA_R.alb_editUserSettings;
@@ -137,11 +138,11 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 		for(var i = 0; i < serviceList.length; i++){
 			var serviceName = serviceList[i].name;
 			oauthFieldSet.appendChild(
-				$.TABLE({},
+				$.TABLE({width:"100%"},
 						$.TBODY({},
-								$.TR({}, $.TH({colSpan:2},serviceName)),
+								$.TR({style:"backgroundColor:#eeeeee;"}, $.TH({colSpan:2,style:"textAlign:left;padding:2px 20px;"},serviceName)),
 								$.TR({},
-									 $.TD({},ISA_R.alb_oauthSignatureAlgorithm),
+									 $.TD({width:"30%",style:"textAlign:right;"},ISA_R.alb_oauthSignatureAlgorithm),
 									 $.TD({},$.SELECT({id:'oauth_signature_method_' + serviceName, onchange:{
 									   handler:function(serviceName){
 										   var oauthConsumerKeyInput = $('oauth_consumer_key_' + serviceName);
@@ -158,12 +159,12 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 									   )
 									   ),
 								$.TR({},
-									 $.TD({},ISA_R.alb_oauthConsumerKey),
-									 $.TD({},$.INPUT({id:'oauth_consumer_key_' + serviceName}))
+									 $.TD({style:"textAlign:right;"},ISA_R.alb_oauthConsumerKey),
+									 $.TD({},$.INPUT({id:'oauth_consumer_key_' + serviceName, style:"width:200px;"}))
 									   ),
 								$.TR({},
-									 $.TD({},ISA_R.alb_oauthConsumerSecret),
-									 $.TD({},$.INPUT({id:'oauth_consumer_secret_' + serviceName }))
+									 $.TD({style:"textAlign:right;"},ISA_R.alb_oauthConsumerSecret),
+									 $.TD({},$.INPUT({id:'oauth_consumer_secret_' + serviceName, style:"width:200px;"}))
 									   )
 								  )
 						  )

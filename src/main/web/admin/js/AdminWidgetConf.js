@@ -59,6 +59,7 @@ ISA_WidgetConf.prototype.classDef = function() {
 		editWidgetsTd.style.verticalAlign = "top";
 
 		var widgetListFieldSet = document.createElement("fieldset");
+		widgetListFieldSet.style.marginBottom = "10px";
 		var widgetListLabel = document.createElement("legend");
 		widgetListLabel.innerHTML = ISA_R.ams_widgetList;
 		widgetListFieldSet.appendChild( widgetListLabel );

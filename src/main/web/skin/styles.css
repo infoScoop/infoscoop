@@ -46,6 +46,12 @@ a:hover
 	text-decoration: underline;
 }
 
+fieldset {
+	border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+}
+
 /** message bar */
 #error-msg-bar {
 	background-color:lightyellow;
