@@ -23,7 +23,6 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.model.OAuthCertificate;
@@ -89,7 +88,6 @@ public class SignedAuthenticator implements Authenticator {
 		consumer.setProperty("oauth_signature_method", "RSA-SHA1");
 		try {
 			String privateKey = new String(certificate.getPrivateKey(), "UTF-8");
-			System.out.println(privateKey);
 			consumer.setProperty(RSA_SHA1.PRIVATE_KEY, privateKey);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -127,7 +125,6 @@ public class SignedAuthenticator implements Authenticator {
 		if (query != null) {
 			String[] params = query.split("&");
 			for (int i = 0; i < params.length; i++) {
-				System.out.println(params[i]);
 				try {
 					String[] param = params[i].split("=");
 					String name = URLDecoder.decode(param[0], "UTF-8");
