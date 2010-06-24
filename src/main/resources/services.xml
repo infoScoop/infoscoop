@@ -537,6 +537,9 @@
 				<property name="oauthTokenDAO">
 					<ref bean="oauthTokenDAO" />
 				</property>
+				<property name="oauthCertificateDAO">
+					<ref bean="oauthCertificateDAO" />
+				</property>
 			</bean>
 		</property>
 		<property name="transactionManager">

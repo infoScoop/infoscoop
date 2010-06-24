@@ -423,6 +423,7 @@
 			<filelist dir="${src.admin.web}/js" files="AdminMenuExplorer.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminForbiddenURL.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminInformation.js"/>
+			<filelist dir="${src.admin.web}/js" files="AdminAuthentication.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalAdmin.js&quot; &quot;${build.admin}/js/dist/PortalAdmin.js.tmp&quot;"/>

@@ -374,4 +374,9 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
+	<bean id="oauthCertificateDAO" class="org.infoscoop.dao.OAuthCertificateDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
 </beans>

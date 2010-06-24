@@ -618,3 +618,46 @@ color:#000000;
 #admins,#roles {
 	clear: both;
 }
+
+/**
+ * OAuth Container Certification form
+ */
+#oauthContainerCertForm {
+	clear:both;
+	padding:10px 20px;
+	width:600px;
+}
+
+#oauthContainerCertForm ul{
+	list-style:none;
+	font-family:Tahoma;
+	color:#055A78;
+	margin:0;
+	padding:0;
+}
+
+#oauthContainerCertForm li{
+	padding:6px;
+	background:#eeeeee;
+	margin-bottom:1px;
+}
+
+#oauthContainerCertForm label {
+	float:left;
+	width:140px;
+	text-align:right;
+	margin-right:7px;
+	line-height:23px;
+}
+
+#oauthContainerCertForm input,
+#oauthContainerCertForm textarea {
+	padding:4px;
+	border:1px solid #999999;
+	width:340px;
+}
+
+#oauthContainerCertForm textarea {
+	width:380px;
+	height:200px;
+}

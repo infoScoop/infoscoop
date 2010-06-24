@@ -2,29 +2,46 @@ ISA_Authentication = {
 	_deletedConsumerList:[],
 	
 	build: function(){
-		var url = findHostURL() + "/services/authentication/getOAuthConsumerListJson";
-		var opt = {
-			method: 'post' ,
-			contentType: "application/json",
-			asynchronous:true,
-			onSuccess: function( resp ) {
-				ISA_Admin.isUpdated = false;
-				this._display(eval( resp.responseText ));
-			}.bind( this ),
-			onFailure: function(r, t) {
-				alert(ISA_R.ams_failedToUpdateOAuthSettings);
-				msg.error(ISA_R.ams_failedToUpdateOAuthSettings + t.status + " - " + t.statusText);
-			},
-			onException: function(r,t){
-				alert(ISA_R.ams_failedToUpdateOAuthSettings);
-				msg.error(ISA_R.ams_failedToUpdateOAuthSettings + getErrorMessage(t));
-			},
-			onComplete: function(){
-				currentModal.close();
-			}
-		};
-		AjaxRequest.invoke(url, opt);
 		
+		var container = document.getElementById("authentication");
+		var tabUl = $.UL({id:"oauth_setting_tabs", className:"subsection_tabs tabs"},
+			 $.LI({},
+				  $.A({id:"oauth_setting_tabs_consumer",href:"#oauth_consumer", className:"tab"},
+					  $.SPAN({className:"title"},ISA_R.alb_oauthConsumerSettings))
+					),
+			 $.LI({},
+				  $.A({id:"oauth_setting_tabs_rsa",href:"#oauth_container", className:"tab"},
+					  $.SPAN({className:"title"},ISA_R.alb_oauthContainerCertificate))
+					)
+			   );
+		container.appendChild(tabUl);
+
+		container.appendChild(
+			$.DIV({style:"clear:both;padding:5px;"},
+				  $.DIV({id:"oauth_consumer" }),
+				  $.DIV({id:"oauth_container"})));
+		
+		this.controlTabs = new Control.Tabs("oauth_setting_tabs", {
+			beforeChange: function(old_container, new_container){
+			}.bind(this)
+		});
+		this._displayConsumer();
+		this._displayContainerCert();
+		this.controlTabs.setActiveTab("oauth_consumer");
+
+		this.currentModal = new Control.Modal( false, {
+			contents: ISA_R.ams_applyingChanges,
+			opacity: 0.2,
+			overlayCloseOnClick: false
+		});
+	},
+	
+	_addConsumerSetting:function(){
+		
+		var authenticationContentTable = $("authentication_contentTable");
+		authenticationContentTable.firstChild.appendChild(
+			this._createRow({'gadget_url':'http://','service_name':'','consumer_key':'','consumer_secret':'','signature_method':'HMAC-SHA1'}, new Date().getTime())
+			);
 	},
 
 	_saveConsumerList:function(){
@@ -46,11 +63,6 @@ ISA_Authentication = {
 				signatureMethod:signatureMethod
 			})
 		}
-		var currentModal = new Control.Modal( false, {
-			contents: ISA_R.ams_applyingChanges,
-			opacity: 0.2,
-			overlayCloseOnClick: false
-		});
 
 		var url = findHostURL() + "/services/authentication/saveOAuthConsumerList";
 		var opt = {
@@ -60,12 +72,12 @@ ISA_Authentication = {
 			postBody: Object.toJSON([Object.toJSON(consumerList), Object.toJSON(this._deletedConsumerList)]),
 			onSuccess: function( resp ) {
 				ISA_Admin.isUpdated = false;
-				currentModal.update(ISA_R.ams_changeUpdated);
+				this.currentModal.update(ISA_R.ams_changeUpdated);
 				setTimeout( function() {
-					currentModal.close();
+					this.currentModal.close();
 				},500 );
 				
-				this.build();
+				this._renderConsumer();
 			}.bind( this ),
 			onFailure: function(r, t) {
 				alert(ISA_R.ams_failedToUpdateOAuthSettings);
@@ -76,21 +88,40 @@ ISA_Authentication = {
 				msg.error(ISA_R.ams_failedToUpdateOAuthSettings + getErrorMessage(t));
 			},
 			onComplete: function(){
-				currentModal.close();
+				this.currentModal.close();
 			}
 		};
-		currentModal.open();
+		this.currentModal.open();
 		AjaxRequest.invoke(url, opt);
 		
 	},
-	_addConsumerSetting:function(){
+	_displayConsumer: function(){
+		var url = findHostURL() + "/services/authentication/getOAuthConsumerListJson";
+		var opt = {
+			method: 'post' ,
+			contentType: "application/json",
+			asynchronous:true,
+			onSuccess: function( resp ) {
+				ISA_Admin.isUpdated = false;
+				this._renderConsumer(eval( resp.responseText ));
+			}.bind( this ),
+			onFailure: function(r, t) {
+				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				msg.error(ISA_R.ams_failedToGetOAuthSettings + t.status + " - " + t.statusText);
+			},
+			onException: function(r,t){
+				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				msg.error(ISA_R.ams_failedToGetOAuthSettings + getErrorMessage(t));
+			},
+			onComplete: function(){
+				this.currentModal.close();
+			}
+		};
+		AjaxRequest.invoke(url, opt);
 		
-		var authenticationContentTable = $("authentication_contentTable");
-		authenticationContentTable.firstChild.appendChild(
-			this._createRow({'gadget_url':'http://','service_name':'','consumer_key':'','consumer_secret':'','signature_method':'HMAC-SHA1'}, new Date().getTime())
-			);
 	},
-	_displayHeader: function(container){
+	
+	_renderHeader: function(container){
 		var controlDiv = document.createElement("div");
 		controlDiv.style.textAlign = "right";
 		
@@ -104,11 +135,6 @@ ISA_Authentication = {
 		
 		container.appendChild(controlDiv);
 		
-		var titleDiv = document.createElement("div");
-		titleDiv.className = "proxyTitle";
-		titleDiv.appendChild(document.createTextNode(ISA_R.alb_oauthConsumerSettings));
-		container.appendChild(titleDiv);
-		
 		var addButton = ISA_Admin.createIconButton(ISA_R.alb_add, ISA_R.alb_add, "add.gif", "left");
 		addButton.style.textAlign = "left"
 		
@@ -117,19 +143,19 @@ ISA_Authentication = {
 		container.appendChild(addButton);
 	},
 	
-	_display: function(oauthConsumerList){
+	_renderConsumer: function(oauthConsumerList){
 		this._deletedConsumerList = [];
 		IS_Event.unloadCache("_adminAuthentication");
 		
-		var container = document.getElementById("authentication");
+		var container = document.getElementById("oauth_consumer");
 		while(container.firstChild)
 		  container.removeChild( container.firstChild );
 		
-		this._displayHeader( container );
+		this._renderHeader( container );
 		
 		var table = ISA_Admin.buildTableHeader(
-			[ ISA_R.alb_gadgetUrl, ISA_R.alb_oauthServiceName, ISA_R.alb_oauthConsumerKey, ISA_R.alb_oauthConsumerSecret, ISA_R.alb_oauthSignatureAlgorithm, ISA_R.alb_oauthPrivateKey, ISA_R.alb_delete],
-			[ '30%', '10%', "20%", "20%", "10%", "5%", '5%']
+			[ ISA_R.alb_gadgetUrl, ISA_R.alb_oauthServiceName, ISA_R.alb_oauthConsumerKey, ISA_R.alb_oauthConsumerSecret, ISA_R.alb_delete],
+			[ '30%', '15%', "25%", "25%", "5%"]
 			);
 		table.id = "authentication_contentTable";
 		table.className = "proxyConfigList";
@@ -157,26 +183,6 @@ ISA_Authentication = {
 	
 	_createRow: function( consumer, index ){
 		var elementId = 'oauth_consumer_setting_' + index;
-		var editIcon = ISA_Admin.createIconButton("", ISA_R.alb_edit, "edit.gif");
-		
-		var modal = new Control.Modal(
-			editIcon,
-			{
-			  beforeOpen:function(){
-				  if( $F(elementId + '_signature_method') =='HMAC-SHA1'){
-					  return false;
-				  }
-			  },
-			  afterClose:function(){
-				  alert("todo implementation save private key");
-			  },
-			  contents: "<textarea style='width:280px;height:180px;'></textarea>",
-			  opacity: 0.5,
-			  width: '300',
-			  height:'200'
-			}
-			);
-		
 		function getEditPrivateKeyBGColor(signatureMethod){
 			if(signatureMethod == 'HMAC-SHA1')
 			  return "#EEEEEE";
@@ -189,25 +195,114 @@ ISA_Authentication = {
 					$.TD({}, this._createTextbox(elementId + '_service_name', consumer['service_name']) ),
 					$.TD({}, this._createTextbox(elementId + '_consumer_key', consumer['consumer_key'] ) ),
 					$.TD({}, this._createTextbox(elementId + '_consumer_secret', consumer['consumer_secret'] ) ),
-					$.TD({},
-						 $.SELECT(
-							 {id: elementId + '_signature_method',
-							   onchange:{handler:
-								   function(e){
-									   var signatureMethodSelect = Event.element(e);
-									   var signatureMethod = signatureMethodSelect.value;
-									   var element = $(signatureMethodSelect.id + '_pkedit');
-									   element.style.backgroundColor = getEditPrivateKeyBGColor(signatureMethod);
-								 },
-								 value:consumer['signature_method']}
-							 },
-							 $.OPTION({value:'HMAC-SHA1'}, 'HMAC-SHA1'),
-							 $.OPTION({value:'RSA-SHA1'}, 'RSA-SHA1')
-							   )),
-					$.TD({id:elementId + '_signature_method_pkedit', style:"textAlign:center;backgroundColor:" + getEditPrivateKeyBGColor(consumer['signature_method']) }, editIcon ),
 					$.TD({style:"textAlign:center;"}, deleteIcon )
 			   );
 		IS_Event.observe( deleteIcon,"click",function(tr, delObj){ tr.parentNode.removeChild(tr); this._deletedConsumerList.push(delObj);}.bind(this, tr, {gadgetUrl:consumer['gadget_url'],serviceName:consumer['service_name']}),true,"_adminAuthentication" );
 		return tr;
+	},
+
+	_saveContainerCert:function(){
+		var consumerKey = $F('oauth_container_consumer_key');
+		var privateKey = $F('oauth_container_private_key');
+		var certificate = $F('oauth_container_certificate');
+		
+		var url = findHostURL() + "/services/authentication/saveContainerCertificate";
+		var opt = {
+			method: 'post' ,
+			contentType: "application/json",
+			asynchronous:true,
+			postBody: Object.toJSON([consumerKey, privateKey, certificate]),
+			onSuccess: function( resp ) {
+				ISA_Admin.isUpdated = false;
+				this.currentModal.update(ISA_R.ams_changeUpdated);
+				setTimeout( function() {
+					this.currentModal.close();
+				}.bind(this),500 );
+				
+				this._renderContainerCert();
+			}.bind( this ),
+			onFailure: function(r, t) {
+				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				msg.error(ISA_R.ams_failedToUpdateOAuthSettings + t.status + " - " + t.statusText);
+			},
+			onException: function(r,t){
+				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				msg.error(ISA_R.ams_failedToUpdateOAuthSettings + getErrorMessage(t));
+			},
+			onComplete: function(){
+				this.currentModal.close();
+			}.bind(this)
+		};
+		this.currentModal.open();
+		AjaxRequest.invoke(url, opt);
+	},
+	
+	_displayContainerCert: function(){
+		var url = findHostURL() + "/services/authentication/getContainerCertificateJson";
+		var opt = {
+			method: 'post' ,
+			contentType: "application/json",
+			asynchronous:true,
+			onSuccess: function( resp ) {
+				ISA_Admin.isUpdated = false;
+				this._renderContainerCert(eval( '('+ resp.responseText+')' ));
+			}.bind( this ),
+			onFailure: function(r, t) {
+				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				msg.error(ISA_R.ams_failedToGetOAuthSettings + t.status + " - " + t.statusText);
+			},
+			onException: function(r,t){
+				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				msg.error(ISA_R.ams_failedToGetOAuthSettings + getErrorMessage(t));
+			},
+			onComplete: function(){
+				this.currentModal.close();
+			}
+		};
+		AjaxRequest.invoke(url, opt);
+		
+	},
+	
+	_renderContainerCert: function(certificate){
+		this._deletedConsumerList = [];
+		IS_Event.unloadCache( "_adminAuthenticationContainer");
+		
+		var container = document.getElementById("oauth_container");
+		while(container.firstChild)
+		  container.removeChild( container.firstChild );
+		
+		var controlDiv = document.createElement("div");
+		controlDiv.style.textAlign = "right";
+		
+		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
+		controlDiv.appendChild(commitDiv);
+		IS_Event.observe(commitDiv, "click", this._saveContainerCert.bind(this), false, "_adminAuthenticationContainer");
+		
+		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
+		controlDiv.appendChild(refreshDiv);
+		IS_Event.observe(refreshDiv, "click", this.build.bind(this), false, "_adminAuthenticationContainer");
+		
+		container.appendChild(controlDiv);
+		
+
+		var forms = $.DIV(
+			{id:'oauthContainerCertForm'},
+			$.UL({},
+				 $.LI({},
+					  $.LABEL({}, ISA_R.alb_oauthConsumerKey),
+					  $.INPUT({id:'oauth_container_consumer_key',value:certificate.consumerKey})
+						),
+				 $.LI({},
+					  $.LABEL({}, ISA_R.alb_oauthPrivateKey),
+					  $.TEXTAREA({id:'oauth_container_private_key',value:certificate.privateKey})
+						),
+				 $.LI({},
+					  $.LABEL({}, ISA_R.alb_oauthCertificate),
+					  $.TEXTAREA({id:'oauth_container_certificate',value:certificate.certificate})
+						)
+				   ) );
+		
+		container.appendChild( forms );
 	}
+	
 }

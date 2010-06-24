@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.dao.model.OAUTH_CONSUMER_PK;
 import org.infoscoop.dao.model.OAuthConsumerProp;
+import org.infoscoop.dao.model.OAuthCertificate;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
@@ -22,6 +24,8 @@ public class OAuthService {
 
 	private OAuthTokenDAO oauthTokenDAO;
 
+	private OAuthCertificateDAO oauthCertificateDAO;
+
 	public static OAuthService getHandle() {
 		return (OAuthService) SpringUtil.getBean("OAuthService");
 	}
@@ -32,9 +36,13 @@ public class OAuthService {
 	public void setOauthConsumerDAO(OAuthConsumerDAO oauthConsumerDAO) {
 		this.oauthConsumerDAO = oauthConsumerDAO;
 	}
-	
+
 	public void setOauthTokenDAO(OAuthTokenDAO oauthTokenDAO){
 		this.oauthTokenDAO = oauthTokenDAO;
+	}
+	
+	public void setOauthCertificateDAO(OAuthCertificateDAO oauthCertificateDAO){
+		this.oauthCertificateDAO = oauthCertificateDAO;
 	}
 	
 	public String getOAuthConsumerListJson() throws Exception{
@@ -83,6 +91,21 @@ public class OAuthService {
 	
 	public void saveOAuthToken(String uid, String gadgetUrl, String serviceName, String accessToken, String tokenSecret){
 		this.oauthTokenDAO.saveAccessToken(uid,gadgetUrl, serviceName, accessToken, tokenSecret);
-		
+	}
+	
+	public String getContainerCertificateJson()throws Exception{
+		JSONObject obj = new JSONObject();
+		OAuthCertificate cert = this.oauthCertificateDAO.get();
+		obj.put("consumerKey", (cert != null ? cert.getConsumerKey() : ""));
+		obj.put("privateKey", (cert != null ? new String(cert.getPrivateKey()) : ""));
+		obj.put("certificate", (cert != null ? new String(cert.getCertificate()) : ""));
+		return obj.toString();
+	}
+	
+	public void saveContainerCertificate(String consumerKey, String privateKey, String certificate){
+		OAuthCertificate cert = new OAuthCertificate(consumerKey);
+		cert.setPrivateKey(privateKey.getBytes());
+		cert.setCertificate(certificate.getBytes());
+		this.oauthCertificateDAO.save(cert);
 	}
 }
