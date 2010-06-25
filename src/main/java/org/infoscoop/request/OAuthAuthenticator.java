@@ -18,6 +18,7 @@
 package org.infoscoop.request;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -34,13 +35,16 @@ import net.oauth.OAuthMessage;
 import net.oauth.OAuthServiceProvider;
 import net.oauth.client.OAuthClient;
 import net.oauth.client.httpclient3.HttpClient3;
+import net.oauth.signature.RSA_SHA1;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.RedirectException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.OAuthConsumerDAO;
+import org.infoscoop.dao.model.OAuthCertificate;
 import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.request.ProxyRequest.OAuthConfig;
 
@@ -100,7 +104,7 @@ public class OAuthAuthenticator implements Authenticator {
 		return 3;
 	}
 	
-	protected OAuthConsumer newConsumer(String name, ProxyRequest.OAuthConfig oauthConfig){
+	protected OAuthConsumer newConsumer(String name, ProxyRequest.OAuthConfig oauthConfig) throws ProxyAuthenticationException{
 		OAuthServiceProvider serviceProvider = 
 			new OAuthServiceProvider(
 					oauthConfig.requestTokenURL,
@@ -109,14 +113,38 @@ public class OAuthAuthenticator implements Authenticator {
 		
 		OAuthConsumerProp consumerProp = OAuthConsumerDAO.newInstance()
 				.getConsumer(oauthConfig.getGadgetUrl(), name);
-		OAuthConsumer consumer = new OAuthConsumer(null, consumerProp
-				.getConsumerKey(), consumerProp.getConsumerSecret(),
-				serviceProvider);
+		
+		OAuthCertificate certificate = OAuthCertificateDAO.newInstance().get();
+		
+		String consumerKey;
+		String consumerSecret;
+		if("RSA-SHA1".equals(consumerProp.getSignatureMethod())){
+			consumerKey = certificate.getConsumerKey();
+			consumerSecret = "infoScoop";//TODO: 
+		}else{
+			consumerKey = consumerProp.getConsumerKey();
+			consumerSecret = consumerProp.getConsumerSecret();
+		}
+		
+		OAuthConsumer consumer = new OAuthConsumer(null, consumerKey, consumerSecret, serviceProvider);
 		consumer.setProperty("name", name);
 		
 		if (consumerProp.getSignatureMethod() != null)
 			consumer.setProperty("oauth_signature_method", consumerProp
 					.getSignatureMethod());
+		
+		if("RSA-SHA1".equals(consumerProp.getSignatureMethod())){
+			if (certificate == null)
+				throw new ProxyAuthenticationException(
+				"a container's certificate is not set.");
+			//consumer.setProperty("oauth_signature_method", "RSA-SHA1");
+			try {
+				String privateKey = new String(certificate.getPrivateKey(), "UTF-8");
+				consumer.setProperty(RSA_SHA1.PRIVATE_KEY, privateKey);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} 
+		}
 		
 		consumers.put(consumerProp.getGadgetUrl() + "\t" + name, consumer);
 		return consumer;
