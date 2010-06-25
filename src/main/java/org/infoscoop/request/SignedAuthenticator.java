@@ -5,7 +5,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,29 +41,27 @@ public class SignedAuthenticator implements Authenticator {
 			OAuthConsumer consumer = newConsumer();
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 
-			Map<String, List<String>> requestParameters = new HashMap<String, List<String>>();
+			Map<String, String> optionParams = new HashMap<String, String>(
+					request.getFilterParameters());
 
 			String targetUrlPath = analyzeUrl(request.getTargetURL(),
-					requestParameters);
-			
-			Collection<Map.Entry<String, String>> params = request
-					.getFilterParameters().entrySet();
-			OAuthMessage message = new OAuthMessage("GET", targetUrlPath,
-					params);
-			message.addRequiredParameters(accessor);
-			List<Map.Entry<String, String>> authParams = message
-					.getParameters();
-			List<NameValuePair> queryParams = buildQueryParams(
-					requestParameters, authParams);
+					optionParams);
 
 			String userId = SecurityController.getPrincipalByType(
 					"UIDPrincipal").getName();
-			queryParams.add(new NameValuePair("opensocial_viewer_id", userId));
-			queryParams.add(new NameValuePair("opensocial_owner_id", userId));
-			queryParams.add(new NameValuePair("opensocial_app_url", request
-					.getRequestHeader("gadgetUrl")));
-			queryParams.add(new NameValuePair("opensocial_app_id", request
-					.getRequestHeader("moduleId")));
+			optionParams.put("opensocial_viewer_id", userId);
+			optionParams.put("opensocial_owner_id", userId);
+			optionParams.put("opensocial_app_url", request
+					.getRequestHeader("gadgetUrl"));
+			optionParams.put("opensocial_app_id", request
+					.getRequestHeader("moduleId"));
+
+			OAuthMessage message = new OAuthMessage("GET", targetUrlPath,
+					optionParams.entrySet());
+			message.addRequiredParameters(accessor);
+			List<Map.Entry<String, String>> authParams = message
+					.getParameters();
+			List<NameValuePair> queryParams = buildQueryParams(authParams);
 			method.setQueryString((NameValuePair[]) queryParams
 					.toArray(new NameValuePair[0]));
 		} catch (Exception e) {
@@ -117,8 +114,7 @@ public class SignedAuthenticator implements Authenticator {
 		return requestUrl.toString();
 	}
 
-	private String analyzeUrl(String url,
-			Map<String, List<String>> requestParameters)
+	private String analyzeUrl(String url, Map<String, String> optionParams)
 			throws MalformedURLException {
 		URL u = new URL(url);
 		String query = u.getQuery();
@@ -131,12 +127,8 @@ public class SignedAuthenticator implements Authenticator {
 					if (name.startsWith("oauth") || name.startsWith("xoauth")
 							|| name.startsWith("opensocial"))
 						continue;
-					List<String> values = requestParameters.get(name);
-					if (values == null) {
-						values = new ArrayList<String>();
-						requestParameters.put(name, values);
-					}
-					values.add(URLDecoder.decode(param[1], "UTF-8"));
+					String value = URLDecoder.decode(param[1], "UTF-8");
+					optionParams.put(name, value);
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
@@ -146,15 +138,8 @@ public class SignedAuthenticator implements Authenticator {
 	}
 
 	private List<NameValuePair> buildQueryParams(
-			Map<String, List<String>> requestParameters,
 			List<Map.Entry<String, String>> authParams) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		for (Map.Entry<String, List<String>> entry : requestParameters
-				.entrySet()) {
-			for (String value : entry.getValue()) {
-				params.add(new NameValuePair(entry.getKey(), value));
-			}
-		}
 		for (Map.Entry<String, String> entry : authParams) {
 			params.add(new NameValuePair(entry.getKey(), entry.getValue()));
 		}
