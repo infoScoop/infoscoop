@@ -62,7 +62,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	private java.lang.String consumerKey;
 	private java.lang.String consumerSecret;
 	private java.lang.String signatureMethod;
-	private java.lang.Integer isUpload;
+	private java.lang.Integer isUpload = 0;
 
 	/**
 	 * Return the unique identifier of this class
