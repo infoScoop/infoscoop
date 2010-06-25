@@ -83,20 +83,15 @@ public class OAuthAuthenticator implements Authenticator {
 	        
             // Find the non-OAuth parameters:
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ProxyAuthenticationException(e);
+		}catch (URISyntaxException e) {
+			throw new ProxyAuthenticationException(e);
 		} catch (OAuthException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ProxyAuthenticationException(e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			throw new ProxyAuthenticationException(e);
+		} 
 		
-
 	}
 	
 	public int getCredentialType() {
