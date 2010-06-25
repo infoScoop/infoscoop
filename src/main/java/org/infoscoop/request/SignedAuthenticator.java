@@ -28,6 +28,7 @@ import org.infoscoop.dao.model.OAuthCertificate;
 
 public class SignedAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
+	private static final String PUBLIC_KEY_NAME = "public.cer";
 
 	private static Log log = LogFactory.getLog(SignedAuthenticator.class);
 
@@ -55,6 +56,8 @@ public class SignedAuthenticator implements Authenticator {
 					.getRequestHeader("gadgetUrl"));
 			optionParams.put("opensocial_app_id", request
 					.getRequestHeader("moduleId"));
+			optionParams.put("xoauth_signature_publickey", PUBLIC_KEY_NAME);
+			optionParams.put("xoauth_public_key", PUBLIC_KEY_NAME);
 
 			OAuthMessage message = new OAuthMessage("GET", targetUrlPath,
 					optionParams.entrySet());

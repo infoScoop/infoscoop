@@ -648,6 +648,16 @@
   	<servlet-class>org.infoscoop.web.AddonServlet</servlet-class>
   </servlet>
 
+  <servlet>
+  	<servlet-name>OAuthCertificateServlet</servlet-name>
+  	<servlet-class>org.infoscoop.web.OAuthCertificateServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+  	<servlet-name>OAuthCertificateServlet</servlet-name>
+  	<url-pattern>/opensocial/certificates/public.cer</url-pattern>
+  </servlet-mapping>
+
   <servlet-mapping>
   	<servlet-name>AddonServlet</servlet-name>
   	<url-pattern>/addon/*</url-pattern>
