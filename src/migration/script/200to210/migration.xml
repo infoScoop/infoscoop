@@ -87,7 +87,8 @@
 		gadget,
 		portallayout,
 		properties,
-		widgetConf
+		widgetConf,
+		oauth
 	"/>
 	
 	<target name="clean-all" depends="
@@ -100,7 +101,8 @@
 		clean-gadget,
 		clean-portallayout,
 		clean-properties,
-		clean-widgetConf
+		clean-widgetConf,
+		clean-oauth
 	"/>
 		
 	<target name="clean-all-backup" depends="prepare">
@@ -219,5 +221,14 @@
 		<exec-sql quiet="true"><property name="table">is_widgetconfs</property>
 			<sql file="sql/${DBMS}/restore.sql"/>
 		</exec-sql>
+	</target>
+	
+	<target name="oauth" depends="clean-oauth">
+		<current.sql src="sql/${DBMS}/oauth.sql"/>
+	</target>
+	<target name="clean-oauth" depends="prepare">
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_OAUTH_TOKENS</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_OAUTH_CONSUMERS</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_OAUTH_CERTIFICATE</sql></exec-sql>
 	</target>
 </project>
