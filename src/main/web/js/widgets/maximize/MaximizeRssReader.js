@@ -1011,7 +1011,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 			var iframe = IS_Widget.MaximizeRssReader.RssItemRender.getDetailIframe();
 			document.body.appendChild( iframe );
 			iframe.style.display = "none";
-			iframe.src = "about:blank";
+			iframe.src = "./blank.html";
 		}
 		
 		[
@@ -1217,7 +1217,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		var iframe = IS_Widget.MaximizeRssReader.RssItemRender.getDetailIframe();
 		if( iframe && iframe.style.display != "none"){
 			iframe.style.display = "none";
-			iframe.src = "";
+			iframe.src = "./blank.html";
 		}
 		
 		var detail = $("maximizeRssDetail_"+widget.id );
