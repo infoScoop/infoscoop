@@ -291,11 +291,13 @@ public class JsonProxyServlet extends HttpServlet {
 		
 		for( Map.Entry<String,String> filterParam : filterParams.entrySet() )
 			proxy.setFilterParameter( filterParam.getKey(),filterParam.getValue() );
-		
-		int status = httpMethod.invokeProxyRequest( proxy );
 
-		urlJson.put("body",getResponseBodyAsStringWithAutoDetect( proxy ));
+		int status = httpMethod.invokeProxyRequest( proxy );
 		
+		String bodyStr = getResponseBodyAsStringWithAutoDetect( proxy );
+
+		urlJson.put("body",bodyStr);
+
 		Map<String,List<String>> responseHeaders = proxy.getResponseHeaders();
 		JSONObject jsonHeaders = new JSONObject();
 		for( String name : responseHeaders.keySet() ) {
@@ -315,7 +317,11 @@ public class JsonProxyServlet extends HttpServlet {
 		}
 		urlJson.put("headers",jsonHeaders );
 		urlJson.put("rc",status );
-		
+
+		if(status == 401 && AuthType.OAUTH == authz){
+			log.error("OAuth request is failed:\n" + bodyStr);
+			urlJson.put("oauthError", "OAuth request is failed");
+		}
 		return json;
 	}
 
