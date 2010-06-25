@@ -49,6 +49,7 @@ import org.infoscoop.request.Authenticator;
 import org.infoscoop.request.OAuthAuthenticator;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.request.filter.DetectTypeFilter;
+import org.infoscoop.service.OAuthService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -212,10 +213,12 @@ public class JsonProxyServlet extends HttpServlet {
 		ProxyRequest proxy = new ProxyRequest(url,contentType.filterType );
 		proxy.setPortalUid( uid );
 		String oauthServiceName = null;
+		String gadgetUrl = null;
 		switch( authz ) {
 		case OAUTH:
 			headers.put("authType","oauth");
 			oauthServiceName = params.get("OAUTH_SERVICE_NAME");
+			gadgetUrl = params.get("gadgetUrl");
 			
 			ProxyRequest.OAuthConfig oauthConfig = proxy.new OAuthConfig(oauthServiceName);
 			oauthConfig.setRequestTokenURL(params.get("requestTokenURL"));
@@ -223,7 +226,7 @@ public class JsonProxyServlet extends HttpServlet {
 			oauthConfig.setUserAuthorizationURL(params.get("userAuthorizationURL"));
 			oauthConfig.setAccessTokenURL(params.get("accessTokenURL"));
 			oauthConfig.setAccessTokenMethod(params.get("accessTokenMethod"));
-			oauthConfig.setGadgetUrl(params.get("gadgetUrl"));
+			oauthConfig.setGadgetUrl(gadgetUrl);
 			oauthConfig.setHostPrefix(params.get("hostPrefix"));
 			
 			String[] accessTokenInfo = getAccessToken(uid, oauthConfig.getGadgetUrl(), oauthServiceName, session);
@@ -319,6 +322,7 @@ public class JsonProxyServlet extends HttpServlet {
 		urlJson.put("rc",status );
 
 		if(status == 401 && AuthType.OAUTH == authz){
+			OAuthService.getHandle().deleteOAuthToken(uid, gadgetUrl, oauthServiceName);
 			log.error("OAuth request is failed:\n" + bodyStr);
 			urlJson.put("oauthError", "OAuth request is failed");
 		}

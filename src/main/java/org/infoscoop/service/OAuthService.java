@@ -97,6 +97,9 @@ public class OAuthService {
 		this.oauthTokenDAO.saveAccessToken(uid,gadgetUrl, serviceName, accessToken, tokenSecret);
 	}
 	
+	public void deleteOAuthToken(String uid, String gadgetUrl, String serviceName){
+		this.oauthTokenDAO.deleteOAuthToken(this.oauthTokenDAO.getAccessToken(uid, gadgetUrl, serviceName));
+	}
 	public String getContainerCertificateJson()throws Exception{
 		JSONObject obj = new JSONObject();
 		OAuthCertificate cert = this.oauthCertificateDAO.get();

@@ -551,6 +551,7 @@
 		<property name="transactionAttributes">
 			<props>
 				<prop key="save*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
 			</props>
 		</property>
