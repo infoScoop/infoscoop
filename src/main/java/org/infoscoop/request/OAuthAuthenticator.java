@@ -115,7 +115,7 @@ public class OAuthAuthenticator implements Authenticator {
 		String consumerSecret;
 		if("RSA-SHA1".equals(consumerProp.getSignatureMethod())){
 			consumerKey = certificate.getConsumerKey();
-			consumerSecret = "infoScoop";//TODO: 
+			consumerSecret = null; 
 		}else{
 			consumerKey = consumerProp.getConsumerKey();
 			consumerSecret = consumerProp.getConsumerSecret();
