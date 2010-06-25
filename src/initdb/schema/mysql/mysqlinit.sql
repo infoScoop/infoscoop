@@ -431,6 +431,7 @@ create table IS_OAUTH_CONSUMERS (
   service_name varchar(255) not null,
   consumer_key varchar(255),
   consumer_secret varchar(255),
+  signature_method varchar(20),
   is_upload int(1),
   primary key (gadget_url_key, service_name)
 ) ENGINE=InnoDB;
