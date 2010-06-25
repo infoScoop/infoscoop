@@ -90,6 +90,8 @@ ISA_Admin.clearAdminCache = function() {
 	//IS_Event.unloadCache("_adminPanelTab");
 	IS_Event.unloadCache("_adminPortal");
 	IS_Event.unloadCache("_adminAdmins");
+	IS_Event.unloadCache("_adminAuthentication");
+	IS_Event.unloadCache("_adminAuthenticationCert");
 	for(var i=0;i<ISA_DragDrop.draggableList.length;i++){
 		ISA_DragDrop.draggableList[i].destroy();
 	}

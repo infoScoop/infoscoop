@@ -79,9 +79,9 @@ ISA_Authentication = {
 				this.currentModal.update(ISA_R.ams_changeUpdated);
 				setTimeout( function() {
 					this.currentModal.close();
-				},500 );
+				}.bind( this ),500 );
 				
-				this._renderConsumer();
+				this._displayConsumer();
 			}.bind( this ),
 			onFailure: function(r, t) {
 				alert(ISA_R.ams_failedToUpdateOAuthSettings);
@@ -110,16 +110,16 @@ ISA_Authentication = {
 				this._renderConsumer(eval( resp.responseText ));
 			}.bind( this ),
 			onFailure: function(r, t) {
-				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				alert(ISA_R.ams_failedToGetOAuthSettings);
 				msg.error(ISA_R.ams_failedToGetOAuthSettings + t.status + " - " + t.statusText);
 			},
 			onException: function(r,t){
-				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				alert(ISA_R.ams_failedToGetOAuthSettings);
 				msg.error(ISA_R.ams_failedToGetOAuthSettings + getErrorMessage(t));
 			},
 			onComplete: function(){
 				this.currentModal.close();
-			}
+			}.bind(this)
 		};
 		AjaxRequest.invoke(url, opt);
 		
@@ -243,7 +243,7 @@ ISA_Authentication = {
 					this.currentModal.close();
 				}.bind(this),500 );
 				
-				this._renderContainerCert();
+				this._displayContainerCert();
 			}.bind( this ),
 			onFailure: function(r, t) {
 				alert(ISA_R.ams_failedToUpdateOAuthSettings);
@@ -272,11 +272,11 @@ ISA_Authentication = {
 				this._renderContainerCert(eval( '('+ resp.responseText+')' ));
 			}.bind( this ),
 			onFailure: function(r, t) {
-				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				alert(ISA_R.ams_failedToGetOAuthSettings);
 				msg.error(ISA_R.ams_failedToGetOAuthSettings + t.status + " - " + t.statusText);
 			},
 			onException: function(r,t){
-				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				alert(ISA_R.ams_failedToGetOAuthSettings);
 				msg.error(ISA_R.ams_failedToGetOAuthSettings + getErrorMessage(t));
 			},
 			onComplete: function(){
@@ -289,7 +289,7 @@ ISA_Authentication = {
 	
 	_renderContainerCert: function(certificate){
 		this._deletedConsumerList = [];
-		IS_Event.unloadCache( "_adminAuthenticationContainer");
+		IS_Event.unloadCache( "_adminAuthenticationCert");
 		
 		var container = document.getElementById("oauth_container");
 		while(container.firstChild)
@@ -300,11 +300,11 @@ ISA_Authentication = {
 		
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		controlDiv.appendChild(commitDiv);
-		IS_Event.observe(commitDiv, "click", this._saveContainerCert.bind(this), false, "_adminAuthenticationContainer");
+		IS_Event.observe(commitDiv, "click", this._saveContainerCert.bind(this), false, "_adminAuthenticationCert");
 		
 		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
 		controlDiv.appendChild(refreshDiv);
-		IS_Event.observe(refreshDiv, "click", this._displayContainerCert.bind(this), false, "_adminAuthenticationContainer");
+		IS_Event.observe(refreshDiv, "click", this._displayContainerCert.bind(this), false, "_adminAuthenticationCert");
 		
 		container.appendChild(controlDiv);
 		
