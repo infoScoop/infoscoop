@@ -308,23 +308,32 @@ ISA_Authentication = {
 		
 		container.appendChild(controlDiv);
 		
-
+		var consumerKeyNote = $.P({className:"note"});
+		consumerKeyNote.innerHTML = ISA_R.ams_oauthConsumerKeyNote;
+		var privateKeyNote = $.P({className:"note"});
+		privateKeyNote.innerHTML = ISA_R.ams_oauthPrivateKeyNote;
+		var certificateNote = $.P({className:"note"});
+		var publicKeyUrl = hostPrefix + "/opensocial/certificates/public.cer";
+		certificateNote.innerHTML = ISA_R.getResource(ISA_R.ams_oauthCertificateNote, [publicKeyUrl, publicKeyUrl]);
 		var forms = $.DIV(
 			{id:'oauthContainerCertForm'},
 			$.UL({},
 				 $.LI({},
 					  $.LABEL({}, ISA_R.alb_oauthConsumerKey),
-					  $.INPUT({id:'oauth_container_consumer_key',value:certificate.consumerKey})
+					  $.INPUT({id:'oauth_container_consumer_key',value:certificate.consumerKey}),
+					  consumerKeyNote
 						),
 				 $.LI({},
 					  $.LABEL({}, ISA_R.alb_oauthPrivateKey),
-					  $.TEXTAREA({id:'oauth_container_private_key',value:certificate.privateKey})
+					  $.TEXTAREA({id:'oauth_container_private_key',value:certificate.privateKey}),
+					  privateKeyNote
 						),
 				 $.LI({},
 					  $.LABEL({}, ISA_R.alb_oauthCertificate),
-					  $.TEXTAREA({id:'oauth_container_certificate',value:certificate.certificate})
+					  $.TEXTAREA({id:'oauth_container_certificate',value:certificate.certificate}),
+					  certificateNote
 						)
-				   ) );
+			) );
 		
 		container.appendChild( forms );
 	}

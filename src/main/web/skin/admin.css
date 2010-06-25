@@ -661,3 +661,8 @@ color:#000000;
 	width:380px;
 	height:200px;
 }
+
+#oauthContainerCertForm p.note {
+	padding-left:150px;
+	font-size:90%;
+}
