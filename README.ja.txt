@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.1.0 RC1
+infoScoop OpenSource 2.1.0 RC2
 ===============================
 
 infoScoop OpenSourceとは
