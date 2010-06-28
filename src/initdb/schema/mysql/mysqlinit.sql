@@ -441,6 +441,6 @@ create table IS_OAUTH_CONSUMERS (
 --
 create table IS_OAUTH_CERTIFICATE (
   consumer_key varchar(255) not null primary key,
-  private_key blob,
-  certificate blob
+  private_key text,
+  certificate text
 ) ENGINE=InnoDB;

@@ -111,8 +111,8 @@ public class OAuthService {
 	
 	public void saveContainerCertificate(String consumerKey, String privateKey, String certificate){
 		OAuthCertificate cert = new OAuthCertificate(consumerKey);
-		cert.setPrivateKey(privateKey.getBytes());
-		cert.setCertificate(certificate.getBytes());
+		cert.setPrivateKey(privateKey);
+		cert.setCertificate(certificate);
 		this.oauthCertificateDAO.save(cert);
 	}
 }

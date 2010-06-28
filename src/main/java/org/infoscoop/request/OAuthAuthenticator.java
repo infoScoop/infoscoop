@@ -18,7 +18,6 @@
 package org.infoscoop.request;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -132,13 +131,8 @@ public class OAuthAuthenticator implements Authenticator {
 			if (certificate == null)
 				throw new ProxyAuthenticationException(
 				"a container's certificate is not set.");
-			//consumer.setProperty("oauth_signature_method", "RSA-SHA1");
-			try {
-				String privateKey = new String(certificate.getPrivateKey(), "UTF-8");
-				consumer.setProperty(RSA_SHA1.PRIVATE_KEY, privateKey);
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} 
+			consumer.setProperty(RSA_SHA1.PRIVATE_KEY, certificate.getPrivateKey());
+
 		}
 		
 		consumers.put(consumerProp.getGadgetUrl() + "\t" + name, consumer);

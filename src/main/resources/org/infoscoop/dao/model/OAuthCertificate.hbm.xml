@@ -19,13 +19,13 @@
 		<property
 			name="PrivateKey"
 			column="private_key"
-			type="binary"
+			type="string"
 			not-null="false"
 		/>
 		<property
 			name="Certificate"
 			column="certificate"
-			type="binary"
+			type="string"
 			not-null="false"
 		/>
 

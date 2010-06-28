@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 public abstract class BaseOAuthCertificate  implements Serializable {
 
-	public static String REF = "OauthCertificate";
+	public static String REF = "OAuthCertificate";
 	public static String PROP_CERTIFICATE = "Certificate";
 	public static String PROP_CONSUMER_KEY = "ConsumerKey";
 	public static String PROP_PRIVATE_KEY = "PrivateKey";
@@ -43,15 +43,14 @@ public abstract class BaseOAuthCertificate  implements Serializable {
 	private java.lang.String consumerKey;
 
 	// fields
-	private byte[] privateKey;
-	private byte[] certificate;
+	private java.lang.String privateKey;
+	private java.lang.String certificate;
 
 
 
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  generator-class="sequence"
      *  column="consumer_key"
      */
 	public java.lang.String getConsumerKey () {
@@ -73,7 +72,7 @@ public abstract class BaseOAuthCertificate  implements Serializable {
 	/**
 	 * Return the value associated with the column: private_key
 	 */
-	public byte[] getPrivateKey () {
+	public java.lang.String getPrivateKey () {
 		return privateKey;
 	}
 
@@ -81,7 +80,7 @@ public abstract class BaseOAuthCertificate  implements Serializable {
 	 * Set the value related to the column: private_key
 	 * @param privateKey the private_key value
 	 */
-	public void setPrivateKey (byte[] privateKey) {
+	public void setPrivateKey (java.lang.String privateKey) {
 		this.privateKey = privateKey;
 	}
 
@@ -90,7 +89,7 @@ public abstract class BaseOAuthCertificate  implements Serializable {
 	/**
 	 * Return the value associated with the column: certificate
 	 */
-	public byte[] getCertificate () {
+	public java.lang.String getCertificate () {
 		return certificate;
 	}
 
@@ -98,7 +97,7 @@ public abstract class BaseOAuthCertificate  implements Serializable {
 	 * Set the value related to the column: certificate
 	 * @param certificate the certificate value
 	 */
-	public void setCertificate (byte[] certificate) {
+	public void setCertificate (java.lang.String certificate) {
 		this.certificate = certificate;
 	}
 
@@ -109,9 +108,9 @@ public abstract class BaseOAuthCertificate  implements Serializable {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.dao.model.OAuthCertificate)) return false;
 		else {
-			org.infoscoop.dao.model.OAuthCertificate oauthCertificate = (org.infoscoop.dao.model.OAuthCertificate) obj;
-			if (null == this.getConsumerKey() || null == oauthCertificate.getConsumerKey()) return false;
-			else return (this.getConsumerKey().equals(oauthCertificate.getConsumerKey()));
+			org.infoscoop.dao.model.OAuthCertificate oAuthCertificate = (org.infoscoop.dao.model.OAuthCertificate) obj;
+			if (null == this.getConsumerKey() || null == oAuthCertificate.getConsumerKey()) return false;
+			else return (this.getConsumerKey().equals(oAuthCertificate.getConsumerKey()));
 		}
 	}
 

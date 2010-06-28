@@ -52,7 +52,7 @@ public class OAuthCertificateServlet extends HttpServlet {
 		try {
 			OAuthCertificate certificate = OAuthCertificateDAO.newInstance()
 					.get();
-			writer.write(new String(certificate.getCertificate(), "UTF-8"));
+			writer.write(certificate.getCertificate());
 		} catch (Exception e) {
 			log.error("unexpected error occured.", e);
 			response.sendError(500, e.getMessage());

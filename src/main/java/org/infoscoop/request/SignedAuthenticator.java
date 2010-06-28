@@ -85,7 +85,7 @@ public class SignedAuthenticator implements Authenticator {
 			method.setQueryString((NameValuePair[]) queryParams
 					.toArray(new NameValuePair[0]));
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new ProxyAuthenticationException(e);
 		}
 	}
 
@@ -103,14 +103,8 @@ public class SignedAuthenticator implements Authenticator {
 		OAuthConsumer consumer = new OAuthConsumer(null, certificate
 				.getConsumerKey(), null, serviceProvider);
 		consumer.setProperty("oauth_signature_method", "RSA-SHA1");
-		try {
-			String privateKey = new String(certificate.getPrivateKey(), "UTF-8");
-			consumer.setProperty(RSA_SHA1.PRIVATE_KEY, privateKey);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		consumer.setProperty(RSA_SHA1.PRIVATE_KEY, certificate.getPrivateKey());
+		
 		return consumer;
 	}
 
