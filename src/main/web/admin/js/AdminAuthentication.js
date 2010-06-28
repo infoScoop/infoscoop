@@ -203,7 +203,6 @@ ISA_Authentication = {
 	
 	_createRow: function( consumer, index ){
 		var elementId = 'oauth_consumer_setting_' + index;
-		
 		var deleteIcon = ISA_Admin.createIconButton("", ISA_R.alb_delete, "trash.gif");
 		var tr = $.TR({id:elementId },
 					$.TD({}, this._createTextbox(elementId + '_gadget_url', consumer['gadget_url']) ),
@@ -214,8 +213,8 @@ ISA_Authentication = {
 							   onchange:{handler:this._displayConsumerKeySecret.bind(this, elementId),
 								 value:consumer['signature_method']}
 							 },
-							 $.OPTION({value:'HMAC-SHA1', defaultSelected: ('HMAC-SHA1' == consumer['signature_method']) }, 'HMAC-SHA1'),
-							 $.OPTION({value:'RSA-SHA1', defaultSelected: ('RSA-SHA1' == consumer['signature_method'])}, 'RSA-SHA1')
+							 $.OPTION({value:'HMAC-SHA1', selected: ('HMAC-SHA1' == consumer['signature_method']) }, 'HMAC-SHA1'),
+							 $.OPTION({value:'RSA-SHA1', selected: ('RSA-SHA1' == consumer['signature_method'])}, 'RSA-SHA1')
 							   )),
 					$.TD({}, this._createTextbox(elementId + '_consumer_key', consumer['consumer_key'] ) ),
 					$.TD({}, this._createTextbox(elementId + '_consumer_secret', consumer['consumer_secret'] ) ),
