@@ -70,3 +70,7 @@ drop table is_gadget_icons;
 drop sequence is_messages_id_seq;
 drop table is_messages;
 drop table is_systemmessages;
+
+drop table is_oauth_tokens;
+drop table is_oauth_consumers;
+drop table is_oauth_certificate;

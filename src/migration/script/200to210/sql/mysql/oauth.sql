@@ -2,13 +2,13 @@
 -- OAUTH_TOKEN
 --
 create table IS_OAUTH_TOKENS (
-  `uid` varchar(150) not null,
+  `UID` varchar(150) not null,
   gadget_url varchar(1024) not null,
   gadget_url_key varchar(255) not null,
   service_name varchar(255) not null,
   access_token varchar(255) not null,
   token_secret varchar(255) not null,
-  primary key (`uid`, gadget_url_key, service_name)
+  primary key (`UID`, gadget_url_key, service_name)
 ) ENGINE=InnoDB;
 
 --
