@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="OAuthCertificate"
-		table="is_oauth_certificate"
+		table="IS_OAUTH_CERTIFICATE"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
