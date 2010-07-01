@@ -215,7 +215,7 @@ public class OpenIDFilter implements Filter {
 				config.getServletContext().setAttribute("openid-consumermanager",newmgr);
 			}
 			this.consumerMgr = newmgr;
-		} catch (ConsumerException e) {
+		} catch (Exception e) {
 			log.error(e.getMessage(),e);
 		}
 	}
