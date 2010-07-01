@@ -1,0 +1,96 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
+.DatatypeCalendar {
+	position: relative;
+	padding:	0px;
+	margin:		0px;
+	height:	22px;
+	
+	line-height:	22px;
+	vertical-align:	top;
+	text-align:	left;
+}
+.DatatypeCalendar .Calendar_Input {
+	height:	22px;
+	line-height:	16px;
+	vertical-align:	top;
+}
+.DatatypeCalendar .Calendar_Button {
+	position:	absolute;
+	width:	20px;
+	height:	20px;
+	top: 1px;
+	right:	0px;
+	vertical-align:	center;
+	
+	border:	none;
+	
+	font-color:	inherit;
+	font-style:	inherit;
+}
+.DatatypeCalendar .Calendar_Button_Icon,.Calendar_Button:hover,.Calendar_Button:active {
+	border:	none;
+	
+	cursor:	pointer;
+}
+
+.DatatypeCalendar .Calendar_Button_Icon {
+	margin: 2px;
+}
+.DatatypeCalendar .CalendarComponent_Panel {
+	overflow:	hidden;
+	z-index: 9999;
+}
+.CalendarComponent {
+	padding:	0.2em;
+	border:	2px ridge darkgray ;
+	background-color: white;
+}
+.CalendarComponent .CalendarComponent_Table {
+	width:	auto	!important;
+}
+.CalendarComponent .CalendarComponent_Header {
+	text-align:	center;
+}
+.CalendarComponent .CalendarComponent_WeekHeader {
+	font-size:	0.75em;
+}
+.CalendarComponent .CalendarComponent_Day_Cell {
+	//margin: 0.05em !important;
+	padding: 0.1em !important;
+	width:	auto !important;
+	height:	auto !important;
+}
+.CalendarComponent .CalendarComponent_Day {
+	padding:	2px;
+	font:12px Arial,Helvetica,sans-serif;
+	text-align:	center;
+	cursor:	pointer;
+}
+.CalendarComponent .CalendarComponent_Day_Focus {
+	padding:	1px;
+	border:	1px solid blue;
+}
+.CalendarComponent .CalendarComponent_Day_Selected {
+	padding:	0px;
+	border: 2px dotted pink;
+}
+
+.CalendarComponent .CalendarComponent_Panel .calweekdayrow {
+	background-color: white;
+} 

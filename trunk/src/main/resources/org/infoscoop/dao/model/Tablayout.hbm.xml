@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="TabLayout"
+		table="IS_TABLAYOUTS"
+	>
+		<meta attribute="sync-DAO">false</meta>
+
+		<composite-id name="Id" class="TABLAYOUTPK">
+			<key-property
+				name="Tabid"
+				column="TABID"
+				type="string"
+			/>
+			<key-property
+				name="Roleorder"
+				column="ROLEORDER"
+				type="integer"
+			/>
+			<key-property
+				name="Temp"
+				column="TEMP"
+				type="integer"
+			/>
+		</composite-id>
+
+		<property
+			name="Role"
+			column="ROLE"
+			type="text"
+			not-null="true"
+		/>
+		<property
+			name="Rolename"
+			column="ROLENAME"
+			type="string"
+			not-null="true"
+			length="256"
+		/>
+		<property
+			name="Principaltype"
+			column="PRINCIPALTYPE"
+			type="string"
+			not-null="true"
+			length="50"
+		/>
+		<property
+			name="Defaultuid"
+			column="DEFAULTUID"
+			type="string"
+			not-null="false"
+			length="150"
+		/>
+		<!-- please tell Joe Hudson that the type 'XML' could not be resolved.. defaulting to java.lang.String -->
+		<property
+			name="Widgets"
+			column="WIDGETS"
+			type="text"
+			not-null="true"
+		/>
+		<property
+			name="layout"
+			column="LAYOUT"
+			type="text"
+			access="field"
+		/>
+		<property
+			name="Widgetslastmodified"
+			column="WIDGETSLASTMODIFIED"
+			type="string"
+			not-null="true"
+			length="24"
+		/>
+		<property
+			name="Tabnumber"
+			column="TABNUMBER"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
+		<property
+			name="Deleteflag"
+			column="DELETEFLAG"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="Workinguid"
+			column="WORKINGUID"
+			type="string"
+			not-null="false"
+			length="150"
+		/>
+
+
+	</class>	
+</hibernate-mapping>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="OAuthCertificate"
+		table="IS_OAUTH_CERTIFICATE"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="ConsumerKey"
+			type="string"
+			column="consumer_key"
+		>
+		</id>
+
+		<property
+			name="PrivateKey"
+			column="private_key"
+			type="string"
+			not-null="false"
+		/>
+		<property
+			name="Certificate"
+			column="certificate"
+			type="string"
+			not-null="false"
+		/>
+
+
+	</class>	
+</hibernate-mapping>

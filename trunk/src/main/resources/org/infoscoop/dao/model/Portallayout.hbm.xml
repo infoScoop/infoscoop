@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="Portallayout"
+		table="IS_PORTALLAYOUTS"
+	>
+		<id
+			name="name"
+			type="string"
+			column="NAME"
+		>
+			<generator class="assigned"/>
+		</id>
+
+		<property
+			name="Layout"
+			column="LAYOUT"
+			type="text"
+			not-null="true"
+		/>
+
+
+	</class>	
+</hibernate-mapping>

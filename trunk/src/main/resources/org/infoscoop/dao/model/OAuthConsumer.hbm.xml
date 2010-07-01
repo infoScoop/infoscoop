@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="OAuthConsumerProp"
+		table="IS_OAUTH_CONSUMERS"
+	>
+		<meta attribute="sync-DAO">false</meta>
+
+		<composite-id name="Id" class="OAUTH_CONSUMER_PK">
+			<key-property name="GadgetUrlKey" column="gadget_url_key" type="string"/>
+			<key-property name="ServiceName" column="service_name" type="string"/>
+		</composite-id>
+
+		<property
+			name="GadgetUrl"
+			column="gadget_url"
+			type="string"
+			not-null="true"
+			length="1024"
+		/>
+		<property
+			name="ConsumerKey"
+			column="consumer_key"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="ConsumerSecret"
+			column="consumer_secret"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="SignatureMethod"
+			column="signature_method"
+			type="string"
+			not-null="false"
+			length="10"
+		/>
+		<property
+			name="IsUpload"
+			column="is_upload"
+			type="integer"
+			not-null="true"
+		/>
+
+	</class>	
+</hibernate-mapping>

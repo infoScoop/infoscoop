@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:mysql://localhost:3306/iscoop?useUnicode=true&amp;characterEncoding=UTF-8</value>
+		</property>
+		<property name="username">
+			<value>root</value>
+		</property>
+		<property name="password">
+			<value></value>
+		</property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+			<property name="dataSource"><ref local="dataSource"/></property>
+			<property name="mappingResources">
+				<list>
+					<value>org/infoscoop/dao/model/WidgetConf.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Siteaggregationmenu.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Siteaggregationmenu_temp.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Searchengine.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Proxyconf.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Preference.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Portallayout.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Tablayout.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Widget.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Tab.hbm.xml</value>
+					<value>org/infoscoop/dao/model/AuthCredential.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Properties.hbm.xml</value>
+					<value>org/infoscoop/dao/model/I18n.hbm.xml</value>
+					<value>org/infoscoop/dao/model/I18nlocale.hbm.xml</value>
+					<value>org/infoscoop/dao/model/I18nlastmodified.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Gadget.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Logs.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Cache.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Rsscache.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Keyword.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Portaladmins.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Session.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Forbiddenurls.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Holidays.hbm.xml</value>
+					<value>org/infoscoop/dao/model/MenuCache.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Accesslog.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Adminrole.hbm.xml</value>
+					<value>org/infoscoop/dao/model/UserPrefs.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Message.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Account.hbm.xml</value>
+					<value>org/infoscoop/dao/model/GadgetIcon.hbm.xml</value>
+				</list>
+			</property>
+			<property name="hibernateProperties">
+				<props>
+					<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+					<prop key="hibernate.default_schema"></prop>
+					<prop key="hibernate.show_sql">false</prop>
+					<prop key="hibernate.jdbc.use_get_generated_keys">false</prop>
+				</props>
+			</property>
+	</bean>
+</beans>

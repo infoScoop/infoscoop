@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sites>
+	<site-top id="news" title="%{news}">
+	    <site id="news_asahi" title="asahi.com" href="http://www.asahi.com/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://rss.asahi.com/f/asahi_newsheadlines</property>
+	    	</properties>
+	    </site>
+	    <site id="news_cnet" title="CNET Japan" href="http://japan.cnet.com/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://feeds.japan.cnet.com/cnet/rss</property>
+	    	</properties>
+	    </site>
+	    <site id="news_gigazine" title="GIGAZINE" href="http://gigazine.net/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://www.pheedo.jp/f/gigazine_2</property>
+	    	</properties>
+	    </site>
+	    <site id="news_jcast" title="J-CAST" href="http://www.j-cast.com/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://www.pheedo.jp/f/jcast_news_atom</property>
+	    	</properties>
+	    </site>
+	    <site id="news_keitaiwatch" title="ケータイ Watch" href="http://k-tai.impress.co.jp/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://www.pheedo.jp/f/k-tai_watch/</property>
+	    	</properties>
+	    </site>
+	    <site id="news_slashdotjp" title="Slashdot JP" href="http://slashdot.jp/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://rss.rssad.jp/rss/slashdot/slashdot.rss</property>
+	    	</properties>
+	    </site>
+	    <site id="news_mycom" title="マイコミジャーナル" href="http://journal.mycom.co.jp/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://feeds.journal.mycom.co.jp/rss/mycom/index</property>
+	    	</properties>
+	    </site>
+	    <site id="news_atmarkit" title="@IT" href="http://www.atmarkit.co.jp/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://rss.rssad.jp/rss/itmatmarkit/rss2dc.xml</property>
+	    	</properties>
+	    </site>
+	</site-top>
+	<site-top id="sports" title="%{sports}">
+	    <site id="sports_dragons" title="中日ドラゴンズ公式ブログ" href="http://dragons-official.at.webry.info/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://rss.rssad.jp/rss/webryblog/dragons-official.at.webry.info/rss/index.rdf</property>
+	    	</properties>
+	    </site>
+	    <site id="sports_goo" title="goo スポーツ" href="http://sports.goo.ne.jp/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://sports.goo.ne.jp/atom/index.xml</property>
+	    	</properties>
+	    </site>
+	    <site id="news_suponiti" title="スポニチワールドサッカープラス" href="http://wsp.sponichi.co.jp/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://wsp.sponichi.co.jp/column/index.xml</property>
+	    	</properties>
+	    </site>
+	    <site id="news_nikkansports" title="nikkansports.com" href="http://www.nikkansports.com/sports/top-sports.html" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://www.nikkansports.com/sports/index.rdf</property>
+	    	</properties>
+	    </site>
+	    <site id="news_sportsnavi" title="スポーツナビ" href="http://sportsnavi.yahoo.co.jp/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://bulknews.net/rss/rdf.cgi?SportsNavi</property>
+	    	</properties>
+	    </site>
+	    <site id="news_fumofumocolumn" title="スポーツ見るもの語る者～フモフモコラム" href="http://blog.livedoor.jp/vitaminw/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://blog.livedoor.jp/vitaminw/index.rdf</property>
+	    	</properties>
+	    </site>
+	    <site id="news_ragubiaikonikki" title="ラグビー愛好日記" href="http://koichi-murakami.cocolog-nifty.com/loverugby/" type="MultiRssReader">
+	    	<properties>
+	    		<property name="url">http://koichi-murakami.cocolog-nifty.com/loverugby/atom.xml</property>
+	    	</properties>
+	    </site>
+	</site-top>
+	
+	<site-top id="etcWidgets" title="%{etc_widgets}">
+	    <site id="etcWidgets_alarm" title="%{alarm_title}" type="g_upload__alarm/gadget" multi="true"/>
+	    <site id="etcWidgets_calculator" title="%{calculator_title}" type="g_upload__calc/gadget" multi="true"/>
+	    <site id="etcWidgets_stickey" title="%{stickey_title}" type="g_upload__sticky/gadget" multi="true"/>
+	    <site id="etcWidgets_TodoList" title="%{TodoList_title}" type="g_upload__todoList/gadget" multi="true"/>
+	    <site id="etcWidgets_worldclock" title="%{worldclock_title}" type="g_upload__worldclock/gadget" multi="true"/>
+		<site id="etcWidgets_Message" title="%{Message_title}" type="Message"/>
+		<site id="etcWidgets_WidgetRanking" title="%{WidgetRanking_title}" type="WidgetRanking"/>
+	</site-top>
+</sites>

@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+
+<project name="rdbimport" default="prepare-compile" basedir=".">
+    <property file="build.properties"/>
+	<property name="initdb.home" value="${basedir}/src/initdb" />
+	<property name="main.java" value="${basedir}/src/main/java" />
+	<property name="main.resources" value="${basedir}/src/main/resources" />
+	<property name="main.web" value="${basedir}/src/main/web" />
+	<property name="build.home" value="${basedir}/build" />
+	
+	<target name="prepare-compile">
+		<delete dir="${build.home}/initdb"/>
+		<mkdir dir="${build.home}/initdb"/>
+
+		<mkdir dir="${build.home}/initdb/bin"/>
+		<mkdir dir="${build.home}/initdb/infoscoop"/>
+		<mkdir dir="${build.home}/initdb/lib"/>
+		
+		<copy todir="${build.home}/initdb/schema">
+			<fileset dir="${initdb.home}/schema"/>
+		</copy>
+		
+		<copy todir="${build.home}/initdb/infoscoop/org/infoscoop/dao/model" includeemptydirs="yes">
+			<fileset dir="${main.resources}/org/infoscoop/dao/model">
+				<include name="*.hbm.xml"/>
+			</fileset>
+		</copy>
+		<javac srcdir="${main.java}" encoding="utf-8" destdir="${build.home}/initdb/infoscoop">
+			<classpath>
+				<fileset dir="${basedir}/lib" includes="*.jar" />
+				<fileset dir="${main.web}/WEB-INF/lib" includes="*.jar" />
+			</classpath>
+		</javac>
+		<jar basedir="${build.home}/initdb/infoscoop" jarfile="${build.home}/initdb/lib/infoscoop.jar" />
+		<delete dir="${build.home}/initdb/infoscoop"/>
+
+		<copy todir="${build.home}/initdb/lib">
+			<fileset dir="${main.web}/WEB-INF/lib">
+				<include name="antlr*.jar"/>
+				<include name="cglib*.jar"/>
+				<include name="commons*.jar"/>
+				<include name="dom4j*.jar"/>
+				<include name="hibernate*.jar"/>
+				<include name="jta.jar"/>
+				<include name="log4j*.jar"/>
+				<include name="opencsv*.jar"/>
+				<include name="spring.jar"/>
+				<include name="xercesImpl.jar"/>
+				<include name="json.jar"/>
+			</fileset>
+			<fileset dir="${initdb.home}/importTool/lib" includes="*.jar"/>
+		</copy>
+		
+		<javac srcdir="${initdb.home}/importTool/src" encoding="utf-8" destdir="${build.home}/initdb/bin" debug="true">
+			<classpath>
+				<fileset dir="${build.home}/initdb/lib" includes="*.jar" />
+			</classpath>
+		</javac>
+		<jar basedir="${build.home}/initdb/bin" jarfile="${build.home}/initdb/lib/importTool.jar" />
+		<delete dir="${build.home}/initdb/bin"/>
+		
+		<copy todir="${build.home}/initdb/bin" file="${initdb.home}/importTool/src/datasource.xml"/>
+		<copy todir="${build.home}/initdb/bin" file="${initdb.home}/importTool/src/log4j.xml"/>
+		<copy todir="${build.home}/initdb" file="${initdb.home}/importTool/import.bat"/>
+		<copy todir="${build.home}/initdb" file="${initdb.home}/importTool/lcp.bat"/>
+		<copy todir="${build.home}/initdb" file="${initdb.home}/importTool/import.sh"/>
+		
+		<copy todir="${build.home}/initdb/data">
+			<fileset dir="${initdb.home}/data"/>
+		</copy>
+		
+		<fixcrlf srcdir="${build.home}/initdb" eol="lf" eof="remove" includes="**/*.sh" />
+		
+		<antcall target="download-gadgets"/>
+	</target>
+	
+	<target name="download-gadgets">
+		<get src="${gadgets.url}"
+			dest="gadgets.zip" verbose="true" usetimestamp="true" />
+		
+		<unzip src="gadgets.zip" dest="${build.home}/initdb/data/gadget" overwrite="true"/>
+		<delete file="gadgets.zip"/>
+	</target>
+</project>
