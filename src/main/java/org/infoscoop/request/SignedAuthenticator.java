@@ -73,6 +73,8 @@ public class SignedAuthenticator implements Authenticator {
 					.getRequestHeader("gadgetUrl"));
 			optionParams.put("opensocial_app_id", request
 					.getRequestHeader("moduleId"));
+			optionParams.put("opensocial_instance_id", request
+					.getRequestHeader("moduleId"));
 			optionParams.put("xoauth_signature_publickey", PUBLIC_KEY_NAME);
 			optionParams.put("xoauth_public_key", PUBLIC_KEY_NAME);
 
