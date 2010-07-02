@@ -18,7 +18,6 @@ public class ContinuousHostMetaFetcher implements HostMetaFetcher {
 		this.fetchers = Arrays.asList(fetchers);
 	}
 
-	@Override
 	public HostMeta getHostMeta(String host) throws HostMetaException {
 		for (HostMetaFetcher fetcher : fetchers) {
 			try {
