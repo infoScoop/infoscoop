@@ -46,10 +46,13 @@ public class OAuthCallbackServlet extends HttpServlet {
 			consumer = OAuthAuthenticator.getConsumer(gadgetUrl, consumerName);
 			
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
-	        accessor.accessToken = (String) session.getAttribute(consumerName+ ".accesstoken");
-	        accessor.requestToken = (String) session.getAttribute(consumerName+ ".requesttoken");
-	        accessor.tokenSecret = (String) session.getAttribute(consumerName+ ".tokensecret");
-	        
+			accessor.accessToken = (String) session.getAttribute(gadgetUrl
+					+ "¥t" + consumerName + ".accesstoken");
+			accessor.requestToken = (String) session.getAttribute(gadgetUrl
+					+ "¥t" + consumerName + ".requesttoken");
+			accessor.tokenSecret = (String) session.getAttribute(gadgetUrl
+					+ "¥t" + consumerName + ".tokensecret");
+
 			final String expectedToken = accessor.requestToken;
 			String requestToken = request.getParameter(OAuth.OAUTH_TOKEN);
 			if (requestToken == null || requestToken.length() <= 0) {
@@ -83,10 +86,13 @@ public class OAuthCallbackServlet extends HttpServlet {
 			OAuthService.getHandle().saveOAuthToken(
 					uid, gadgetUrl,
 					consumerName, accessor.accessToken, accessor.tokenSecret);
-			
-			session.setAttribute(consumerName + ".accesstoken", accessor.accessToken);
-			session.removeAttribute(consumerName + ".requesttoken");
-			session.setAttribute(consumerName + ".tokensecret", accessor.tokenSecret);
+
+			session.setAttribute(gadgetUrl + "¥t" + consumerName
+					+ ".accesstoken", accessor.accessToken);
+			session.removeAttribute(gadgetUrl + "¥t" + consumerName
+					+ ".requesttoken");
+			session.setAttribute(gadgetUrl + "¥t" + consumerName
+					+ ".tokensecret", accessor.tokenSecret);
 			PrintWriter out = response.getWriter();
 			out.println("<script> window.close(); </script>");
 			out.flush();

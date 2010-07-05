@@ -173,9 +173,12 @@ public class OAuthAuthenticator implements Authenticator {
             parameters.add(new OAuth.Parameter("scope", scope.toString()));
         }
         OAuthMessage response = CLIENT.getRequestTokenResponse(accessor, null, parameters);
-        request.putResponseHeader(consumerName + ".requesttoken", accessor.requestToken);
-        request.putResponseHeader(consumerName + ".tokensecret", accessor.tokenSecret);
-        String authorizationURL = accessor.consumer.serviceProvider.userAuthorizationURL;
+		String gadgetUrl = request.getOauthConfig().getGadgetUrl();
+		request.putResponseHeader(gadgetUrl + "¥t" + consumerName
+				+ ".requesttoken", accessor.requestToken);
+		request.putResponseHeader(gadgetUrl + "¥t" + consumerName
+				+ ".tokensecret", accessor.tokenSecret);
+		String authorizationURL = accessor.consumer.serviceProvider.userAuthorizationURL;
         authorizationURL = OAuth.addParameters(authorizationURL //
                 , OAuth.OAUTH_TOKEN, accessor.requestToken);
         if (response.getParameter(OAuth.OAUTH_CALLBACK_CONFIRMED) == null) {

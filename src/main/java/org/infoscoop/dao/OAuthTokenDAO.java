@@ -72,6 +72,7 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 	}
 
 	public void deleteOAuthToken(OAuthToken token) {
-		super.getHibernateTemplate().delete(token);
+		if (token != null)
+			super.getHibernateTemplate().delete(token);
 	}
 }

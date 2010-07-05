@@ -309,7 +309,8 @@ public class JsonProxyServlet extends HttpServlet {
 			if( "oauthApprovalUrl".equalsIgnoreCase(name)){
 				urlJson.put("oauthApprovalUrl", proxy.getResponseHeader(name));
 				status = 200;
-			}else if( oauthServiceName != null && name.indexOf(oauthServiceName) == 0){
+			} else if (oauthServiceName != null
+					&& name.indexOf(gadgetUrl + "¥t" + oauthServiceName) == 0) {
 				session.setAttribute(name, proxy.getResponseHeader(name));
 			}else{
 				JSONArray array = jsonHeaders.getJSONArray( name );
@@ -322,7 +323,12 @@ public class JsonProxyServlet extends HttpServlet {
 		urlJson.put("rc",status );
 
 		if(status == 401 && AuthType.OAUTH == authz){
-			OAuthService.getHandle().deleteOAuthToken(uid, gadgetUrl, oauthServiceName);
+			OAuthService.getHandle().deleteOAuthToken(uid, gadgetUrl,
+					oauthServiceName);
+			session.removeAttribute(gadgetUrl + "¥t" + oauthServiceName
+					+ ".accesstoken");
+			session.removeAttribute(gadgetUrl + "¥t" + oauthServiceName
+					+ ".tokensecret");
 			log.error("OAuth request is failed:\n" + bodyStr);
 			urlJson.put("oauthError", "OAuth request is failed");
 		}
@@ -374,10 +380,10 @@ public class JsonProxyServlet extends HttpServlet {
 	 */
 	private String[] getAccessToken(String uid, String gadgetUrl,
 			String serviceName, HttpSession session) {
-		String accesstoken = (String) session.getAttribute(serviceName
-				+ ".accesstoken");
-		String tokensecret = (String) session.getAttribute(serviceName
-				+ ".tokensecret");
+		String accesstoken = (String) session.getAttribute(gadgetUrl + "¥t"
+				+ serviceName + ".accesstoken");
+		String tokensecret = (String) session.getAttribute(gadgetUrl + "¥t"
+				+ serviceName + ".tokensecret");
 		if (accesstoken != null && tokensecret != null)
 			return new String[] { accesstoken, tokensecret };
 
