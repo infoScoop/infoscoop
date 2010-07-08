@@ -33,4 +33,5 @@ features/skins/feature.xml
 features/tabs/feature.xml
 features/views/feature.xml
 features/drag/feature.xml
+features/oauthpopup/feature.xml
 features/infoscoop/feature.xml

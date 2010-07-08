@@ -145,7 +145,8 @@ var supportedFeatures = [
 	/*"core",*/"drag","dynamic-height",
 	"flash","minimessage","pubsub",
 	/*"rpc"*/,"setprefs",/*"settitle",*/
-	"skins","tabs","views"/*,"infoscoop"*/,"analytics"
+	"skins","tabs","views"/*,"infoscoop"*/,"analytics",
+	"oauthpopup"
 ];
 var featureConf = {};
 for( var i=0;i<supportedFeatures.length;i++ ) {

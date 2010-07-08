@@ -273,7 +273,7 @@ public class JsonProxyServlet extends HttpServlet {
 			headers.put("authpassword",password );
 		}
 		
-		if( !HttpMethods.GET.equals( httpMethod ) )
+		if (!HttpMethods.GET.equals(httpMethod) && postData != null)
 			proxy.setReqeustBody( new ByteArrayInputStream( postData.getBytes("UTF-8")));
 		
 		for( Map.Entry<String,String> header : headers.entrySet() )
