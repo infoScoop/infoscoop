@@ -1,6 +1,4 @@
 ISA_Authentication = {
-	_deletedConsumerList:[],
-	
 	build: function(){
 		
 		var container = document.getElementById("authentication");
@@ -73,7 +71,7 @@ ISA_Authentication = {
 			method: 'post' ,
 			contentType: "application/json",
 			asynchronous:true,
-			postBody: Object.toJSON([Object.toJSON(consumerList), Object.toJSON(this._deletedConsumerList)]),
+			postBody: Object.toJSON([Object.toJSON(consumerList)]),
 			onSuccess: function( resp ) {
 				ISA_Admin.isUpdated = false;
 				this.currentModal.update(ISA_R.ams_changeUpdated);
@@ -148,7 +146,6 @@ ISA_Authentication = {
 	},
 	
 	_renderConsumer: function(oauthConsumerList){
-		this._deletedConsumerList = [];
 		IS_Event.unloadCache("_adminAuthentication");
 		
 		var container = document.getElementById("oauth_consumer");
@@ -220,7 +217,7 @@ ISA_Authentication = {
 					$.TD({}, this._createTextbox(elementId + '_consumer_secret', consumer['consumer_secret'] ) ),
 					$.TD({style:"textAlign:center;"}, deleteIcon )
 			   );
-		IS_Event.observe( deleteIcon,"click",function(tr, delObj){ tr.parentNode.removeChild(tr); this._deletedConsumerList.push(delObj);}.bind(this, tr, {gadgetUrl:consumer['gadget_url'],serviceName:consumer['service_name']}),true,"_adminAuthentication" );
+		IS_Event.observe( deleteIcon,"click",function(tr, delObj){ tr.parentNode.removeChild(tr);}.bind(this, tr, {gadgetUrl:consumer['gadget_url'],serviceName:consumer['service_name']}),true,"_adminAuthentication" );
 		return tr;
 	},
 
@@ -287,7 +284,6 @@ ISA_Authentication = {
 	},
 	
 	_renderContainerCert: function(certificate){
-		this._deletedConsumerList = [];
 		IS_Event.unloadCache( "_adminAuthenticationCert");
 		
 		var container = document.getElementById("oauth_container");

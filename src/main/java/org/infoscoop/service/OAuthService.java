@@ -66,7 +66,9 @@ public class OAuthService {
 	public String getGetConsumerListJsonByUrl(String url) throws Exception{
 		return buildJsonArray( this.oauthConsumerDAO.getConsumersByUrl(url) );
 	}
-	public void saveOAuthConsumerList(String saveArray, String deleteArray) throws Exception{
+	public void saveOAuthConsumerList(String saveArray) throws Exception{
+		this.oauthConsumerDAO.deleteAll();
+		
 		JSONArray consumerJsonList = new JSONArray(saveArray);
 
 		List<OAuthConsumerProp> consumers = new ArrayList<OAuthConsumerProp>();
@@ -84,13 +86,6 @@ public class OAuthService {
 		}
 
 		this.oauthConsumerDAO.saveConsumers(consumers);
-
-
-		JSONArray deleteIdList = new JSONArray(deleteArray);
-		for(int i = 0; i < deleteIdList.length();i++){
-			JSONObject obj = deleteIdList.getJSONObject(i);
-			this.oauthConsumerDAO.delete(obj.getString("gadgetUrl"), obj.getString("serviceName"));
-		}
 	}
 	
 	public void saveOAuthToken(String uid, String gadgetUrl, String serviceName, String accessToken, String tokenSecret){

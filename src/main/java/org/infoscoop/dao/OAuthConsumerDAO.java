@@ -84,6 +84,10 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 		for(OAuthConsumerProp consumer: consumers)
 			this.save(consumer);
 	}
+	
+	public void deleteAll() {
+		super.getHibernateTemplate().deleteAll(getConsumers());
+	}
 
 	public void delete(String gadgetUrl, String serviceName) {
 		super.getHibernateTemplate().delete(this.getConsumer(gadgetUrl, serviceName));
