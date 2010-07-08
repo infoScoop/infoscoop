@@ -178,7 +178,7 @@ public class JsonProxyServlet extends HttpServlet {
 	private Map<String,String> getSingleParams( Map<String,String[]> parameters ) {
 		Map<String,String> singles = new HashMap<String,String>();
 		for( Map.Entry<String,String[]> p : parameters.entrySet() ) {
-			if( p.getValue().length > 0 )
+			if( p.getValue().length > 0 && p.getValue()[0] != null && p.getValue()[0].length() > 0)
 				singles.put( p.getKey(),p.getValue()[0]);
 		}
 		
@@ -353,7 +353,7 @@ public class JsonProxyServlet extends HttpServlet {
 	}
 	private Map<String,String> extractHeadersParam( String headerData ) throws UnsupportedEncodingException {
 		Map<String,String> headers = new HashMap<String,String>();
-	    if( headerData.length() > 0 ) {
+	    if( headerData != null && headerData.length() > 0 ) {
 			String[] pairs = headerData.split("&");
 			for( String pair : pairs ) {
 				String[] header = pair.split("=");

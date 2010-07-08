@@ -75,7 +75,7 @@ public class OAuthCallbackServlet extends HttpServlet {
 			if (verifier != null) {
 				parameters = OAuth.newList(OAuth.OAUTH_VERIFIER, verifier);
 			}
-			OAuthMessage result = OAuthAuthenticator.CLIENT.getAccessToken(accessor, null, parameters);
+			OAuthMessage result = OAuthAuthenticator.CLIENT.getAccessToken(accessor, (String)consumer.getProperty("accessTokenMethod"), parameters);
 			if (accessor.accessToken == null) {
 				OAuthProblemException problem = new OAuthProblemException(OAuth.Problems.PARAMETER_ABSENT);
 				problem.setParameter(OAuth.Problems.OAUTH_PARAMETERS_ABSENT, OAuth.OAUTH_TOKEN);

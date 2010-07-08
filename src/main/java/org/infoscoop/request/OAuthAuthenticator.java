@@ -21,10 +21,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
@@ -73,9 +75,17 @@ public class OAuthAuthenticator implements Authenticator {
 	        if (accessor.accessToken == null) {
 		       	getRequestToken(request, accessor);
 	        }
-	                    
-	        Collection<Map.Entry<String, String>> parms = request.getFilterParameters().entrySet();
-	        OAuthMessage message = new OAuthMessage("GET", request.getTargetURL(), parms);
+
+	        Map<String, String> params = request.getFilterParameters();
+	        if(request.getRequestBody() != null){
+	        	Properties postBody = new Properties();
+	        	postBody.load(request.getRequestBody());
+	        	for(Map.Entry<Object,Object> prop : postBody.entrySet()){
+	        		params.put((String)prop.getKey(), URLDecoder.decode((String)prop.getValue(),"UTF-8"));
+	        	}
+	        	request.getRequestBody().reset();
+	        }
+	        OAuthMessage message = new OAuthMessage(method.getName(), request.getTargetURL(), params.entrySet());
 	        message.addRequiredParameters(accessor);
 	        String authHeader = message.getAuthorizationHeader(null);
 	        request.putRequestHeader("Authorization", authHeader);
@@ -122,6 +132,8 @@ public class OAuthAuthenticator implements Authenticator {
 		
 		OAuthConsumer consumer = new OAuthConsumer(null, consumerKey, consumerSecret, serviceProvider);
 		consumer.setProperty("name", name);
+		consumer.setProperty("requestTokenMethod", oauthConfig.requestTokenMethod);
+		consumer.setProperty("accessTokenMethod", oauthConfig.accessTokenMethod);
 		
 		if (consumerProp.getSignatureMethod() != null)
 			consumer.setProperty("oauth_signature_method", consumerProp
@@ -132,7 +144,6 @@ public class OAuthAuthenticator implements Authenticator {
 				throw new ProxyAuthenticationException(
 				"a container's certificate is not set.");
 			consumer.setProperty(RSA_SHA1.PRIVATE_KEY, certificate.getPrivateKey());
-
 		}
 		
 		consumers.put(consumerProp.getGadgetUrl() + "\t" + name, consumer);
@@ -172,7 +183,7 @@ public class OAuthAuthenticator implements Authenticator {
         if (scope != null) {
             parameters.add(new OAuth.Parameter("scope", scope.toString()));
         }
-        OAuthMessage response = CLIENT.getRequestTokenResponse(accessor, null, parameters);
+        OAuthMessage response = CLIENT.getRequestTokenResponse(accessor, (String) accessor.consumer.getProperty("requestTokenMethod"), parameters);
 		String gadgetUrl = request.getOauthConfig().getGadgetUrl();
 		request.putResponseHeader(gadgetUrl + "¥t" + consumerName
 				+ ".requesttoken", accessor.requestToken);
