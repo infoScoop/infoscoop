@@ -45,13 +45,15 @@ public class OAuthCallbackServlet extends HttpServlet {
 					request, null);
 			consumer = OAuthAuthenticator.getConsumer(gadgetUrl, consumerName);
 			
+			String oauthPrefix = (gadgetUrl + "¥t" + consumerName)
+					.toLowerCase();
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
-			accessor.accessToken = (String) session.getAttribute(gadgetUrl
-					+ "¥t" + consumerName + ".accesstoken");
-			accessor.requestToken = (String) session.getAttribute(gadgetUrl
-					+ "¥t" + consumerName + ".requesttoken");
-			accessor.tokenSecret = (String) session.getAttribute(gadgetUrl
-					+ "¥t" + consumerName + ".tokensecret");
+			accessor.accessToken = (String) session.getAttribute(oauthPrefix
+					+ ".accesstoken");
+			accessor.requestToken = (String) session.getAttribute(oauthPrefix
+					+ ".requesttoken");
+			accessor.tokenSecret = (String) session.getAttribute(oauthPrefix
+					+ ".tokensecret");
 
 			final String expectedToken = accessor.requestToken;
 			String requestToken = request.getParameter(OAuth.OAUTH_TOKEN);

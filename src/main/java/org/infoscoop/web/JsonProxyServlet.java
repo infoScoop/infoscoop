@@ -301,6 +301,8 @@ public class JsonProxyServlet extends HttpServlet {
 
 		urlJson.put("body",bodyStr);
 
+		String oauthPrefix = (gadgetUrl + "¥t" + oauthServiceName)
+				.toLowerCase();
 		Map<String,List<String>> responseHeaders = proxy.getResponseHeaders();
 		JSONObject jsonHeaders = new JSONObject();
 		for( String name : responseHeaders.keySet() ) {
@@ -310,7 +312,7 @@ public class JsonProxyServlet extends HttpServlet {
 				urlJson.put("oauthApprovalUrl", proxy.getResponseHeader(name));
 				status = 200;
 			} else if (oauthServiceName != null
-					&& name.indexOf(gadgetUrl + "¥t" + oauthServiceName) == 0) {
+					&& name.indexOf(oauthPrefix) == 0) {
 				session.setAttribute(name, proxy.getResponseHeader(name));
 			}else{
 				JSONArray array = jsonHeaders.getJSONArray( name );
