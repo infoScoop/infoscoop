@@ -88,7 +88,8 @@
 		portallayout,
 		properties,
 		widgetConf,
-		oauth
+		oauth,
+		adminRole
 	"/>
 	
 	<target name="clean-all" depends="
@@ -102,7 +103,8 @@
 		clean-portallayout,
 		clean-properties,
 		clean-widgetConf,
-		clean-oauth
+		clean-oauth,
+		clean-adminRole
 	"/>
 		
 	<target name="clean-all-backup" depends="prepare">
@@ -112,6 +114,7 @@
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PORTALLAYOUTS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PROPERTIES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_GADGETS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_ADMINROLES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 	</target>
 	
 	<target name="widget">
@@ -230,5 +233,22 @@
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_OAUTH_TOKENS</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_OAUTH_CONSUMERS</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_OAUTH_CERTIFICATE</sql></exec-sql>
+	</target>
+	
+	<target name="adminRole" depends="clean-adminRole">
+		<current.sql src="sql/${DBMS}/adminrole.sql"/>
+	</target>
+	<target name="clean-adminRole" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_adminroles</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+		<exec-sql quiet="true"><property name="sequence">is_adminRoles_id_seq</property>
+			<sql file="sql/${DBMS}/restore-sequence.sql"/>
+		</exec-sql>
+		<exec-sql quiet="true">
+			<property name="table">is_adminroles</property>
+			<property name="sequence">is_adminRoles_unique</property>
+			<sql file="sql/${DBMS}/restore-constraint.sql"/>
+		</exec-sql>
 	</target>
 </project>
