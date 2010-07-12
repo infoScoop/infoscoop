@@ -17,15 +17,16 @@
 
 package org.infoscoop.request;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
@@ -70,28 +71,18 @@ public class OAuthAuthenticator implements Authenticator {
 		ProxyRequest.OAuthConfig oauthConfig = request.getOauthConfig();
 		try {
 			OAuthConsumer consumer = newConsumer(oauthConfig.serviceName,oauthConfig);
-	        OAuthAccessor accessor = newAccessor(consumer, oauthConfig);
-	        if (accessor.accessToken == null) {
-		       	getRequestToken(request, accessor);
-	        }
+			OAuthAccessor accessor = newAccessor(consumer, oauthConfig);
+			if (accessor.accessToken == null) {
+				getRequestToken(request, accessor);
+			}
+			
+			Map<String, String> params = this.parseRequestBody(request.getRequestBody());
+			OAuthMessage message = new OAuthMessage(method.getName(), request.getTargetURL(), params.entrySet());
+			message.addRequiredParameters(accessor);
+			String authHeader = message.getAuthorizationHeader(null);
+			request.putRequestHeader("Authorization", authHeader);
 
-	        Map<String, String> params = request.getFilterParameters();
-	        if(request.getRequestBody() != null){
-	        	Properties postBody = new Properties();
-	        	postBody.load(request.getRequestBody());
-	        	for(Map.Entry<Object,Object> prop : postBody.entrySet()){
-	        		params.put((String)prop.getKey(), URLDecoder.decode((String)prop.getValue(),"UTF-8"));
-	        	}
-	        	request.getRequestBody().reset();
-	        }
-	        OAuthMessage message = new OAuthMessage(method.getName(), request.getTargetURL(), params.entrySet());
-	        message.addRequiredParameters(accessor);
-	        String authHeader = message.getAuthorizationHeader(null);
-	        request.putRequestHeader("Authorization", authHeader);
-	        
-            // Find the non-OAuth parameters:
-		} catch (MalformedURLException e) {
-			throw new ProxyAuthenticationException(e);
+			// Find the non-OAuth parameters:
 		}catch (URISyntaxException e) {
 			throw new ProxyAuthenticationException(e);
 		} catch (OAuthException e) {
@@ -105,6 +96,26 @@ public class OAuthAuthenticator implements Authenticator {
 	public int getCredentialType() {
 		// TODO Auto-generated method stub
 		return 3;
+	}
+	
+	private Map<String, String> parseRequestBody(InputStream requestBody) throws IOException{
+		Map<String, String> params = new HashMap<String, String>();
+		if(requestBody != null){
+			BufferedReader br = new BufferedReader(new InputStreamReader(requestBody));
+			String postBodyStr = "";
+			String s = null;
+			while( ( s = br.readLine()) != null){
+				postBodyStr += URLDecoder.decode(s,"UTF-8");
+			}
+			String[] keyvalues = postBodyStr.split("&");
+			for (int i = 0; i < keyvalues.length; i++){
+				String[] keyvalue = keyvalues[i].split("=");
+				params.put(keyvalue[0].trim(), keyvalue[1].trim());
+			}
+			requestBody.reset();
+		}
+		return params;
+	
 	}
 	
 	protected OAuthConsumer newConsumer(String name, ProxyRequest.OAuthConfig oauthConfig) throws ProxyAuthenticationException{
