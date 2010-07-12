@@ -17,7 +17,8 @@ ISA_PortalAdmins.portalPermissionTypeInfo = $H({
 	properties: ISA_R.alb_properties,
 	proxy: ISA_R.alb_proxy,
 	admins: ISA_R.alb_admin,
-	forbiddenURL: ISA_R.alb_forbiddenURL
+	forbiddenURL: ISA_R.alb_forbiddenURL,
+	authentication: "OAuth"
 });
 
 ISA_PortalAdmins.prototype.classDef = function() {

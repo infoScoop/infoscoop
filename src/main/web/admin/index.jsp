@@ -195,8 +195,9 @@
 			ISA_Admin.permissions.portalAdmin = true;
 		<%}%><%if( adminService.isPermitted("forbiddenURL")){%>
 			ISA_Admin.permissions.forbiddenURL = true;
-		<%}%>
+		<%}%><%if( adminService.isPermitted("authentication")){%>
 			ISA_Admin.permissions.authentication = true;
+		<%}%>
 	</script>
 </head>
 <body class="infoScoop admin">
