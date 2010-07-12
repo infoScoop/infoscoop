@@ -17,18 +17,19 @@
 
 package org.infoscoop.command;
 
+import java.util.List;
 import java.util.Map;
-
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
+import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.service.AuthCredentialService;
-import org.json.JSONObject;
 
 /**
  * The command class executed when a widget is deleted.
@@ -98,6 +99,19 @@ public class RemoveWidget extends XMLCommandProcessor {
         		AuthCredentialService.getHandle().removeCredential(widget.getUid(), authCredentialId);
         	}
 
+			// if Gadget, delete oauth token.
+			if (widget.getType().startsWith("g_")) {
+				OAuthTokenDAO oauthTokenDAO = OAuthTokenDAO.newInstance();
+				String gadgetUrl = widget.getType().substring(2);
+				List<OAuthToken> tokens = oauthTokenDAO.getAccessTokens(uid,
+						gadgetUrl);
+				if (tokens.size() > 0) {
+					int count = widgetDAO
+							.getWidgetCountByType(widget.getType());
+					if (count == 0)
+						oauthTokenDAO.deleteOAuthToken(tokens);
+				}
+			}
         } catch (Exception e) {			
             String reason = "Failed to delete the widget.";
             log.error("Failed to execute the command of RemoveWidget", e);

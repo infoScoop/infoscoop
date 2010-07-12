@@ -18,6 +18,7 @@
 package org.infoscoop.dao;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,6 +57,15 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 		}
 		return null;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<OAuthToken> getAccessTokens(String uid, String gadgetUrl) {
+		String gadgetUrlKey = Crypt.getHash(gadgetUrl);
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(OAuthToken.class).add(
+						Expression.eq("Id.Uid", uid)).add(
+						Expression.eq("Id.GadgetUrlKey", gadgetUrlKey)));
+	}
 
 	public void saveAccessToken(String uid, String gadgetUrl,
 			String serviceName, String accessToken, String tokenSecret) {
@@ -74,5 +84,11 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 	public void deleteOAuthToken(OAuthToken token) {
 		if (token != null)
 			super.getHibernateTemplate().delete(token);
+	}
+
+	public void deleteOAuthToken(List<OAuthToken> tokens) {
+		for (OAuthToken token : tokens) {
+			super.getHibernateTemplate().delete(token);
+		}
 	}
 }

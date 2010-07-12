@@ -17,6 +17,7 @@
 
 package org.infoscoop.dao;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -32,16 +33,22 @@ import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.infoscoop.dao.model.Preference;
 import org.infoscoop.dao.model.SystemMessage;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.service.SiteAggregationMenuService.ForceUpdateUserPref;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONException;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -86,6 +93,22 @@ public class WidgetDAO extends HibernateDaoSupport{
 				new Object[] { uid });
 		return result;
     }
+    
+	public int getWidgetCountByType(final String type) {
+		return (Integer) super.getHibernateTemplate().execute(
+				new HibernateCallback() {
+					public Object doInHibernate(org.hibernate.Session session)
+							throws HibernateException, SQLException {
+						Criteria crit = session.createCriteria(Widget.class);
+						crit.add(Restrictions.eq(Widget.PROP_TYPE, type));
+						crit.add(Restrictions.eq(Widget.PROP_DELETEDATE, 0L));
+						crit.setProjection(Projections.rowCount());
+						return (Integer) crit.uniqueResult();
+					}
+
+				});
+	}
+    
 	public Widget getWidget(String uid, String tabId, String widgetId ){
 		String query = "from Widget where Uid = ? and Tabid = ? and Widgetid = ? and Deletedate = 0";
 		List result = super.getHibernateTemplate().find(query,
