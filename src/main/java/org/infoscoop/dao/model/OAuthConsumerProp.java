@@ -1,6 +1,7 @@
 package org.infoscoop.dao.model;
 
 import org.infoscoop.dao.model.base.BaseOAuthConsumerProp;
+import org.infoscoop.util.Crypt;
 
 
 
@@ -15,7 +16,7 @@ public class OAuthConsumerProp extends BaseOAuthConsumerProp {
 	/**
 	 * Constructor for primary key
 	 */
-	public OAuthConsumerProp (org.infoscoop.dao.model.OAUTH_CONSUMER_PK id) {
+	public OAuthConsumerProp (java.lang.Long id) {
 		super(id);
 	}
 
@@ -23,15 +24,25 @@ public class OAuthConsumerProp extends BaseOAuthConsumerProp {
 	 * Constructor for required fields
 	 */
 	public OAuthConsumerProp (
-		org.infoscoop.dao.model.OAUTH_CONSUMER_PK id,
-		java.lang.String gadgetUrl) {
+		java.lang.Long id,
+		java.lang.String gadgetUrl,
+		java.lang.String gadgetUrlKey,
+		java.lang.String serviceName,
+		java.lang.Integer isUpload) {
 
 		super (
 			id,
-			gadgetUrl);
+			gadgetUrl,
+			gadgetUrlKey,
+			serviceName,
+			isUpload);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
 
-
+	@Override
+	public void setGadgetUrl(String gadgetUrl) {
+		super.setGadgetUrl(gadgetUrl);
+		super.setGadgetUrlKey(Crypt.getHash(gadgetUrl));
+	}
 }

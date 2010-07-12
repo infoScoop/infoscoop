@@ -228,9 +228,8 @@ public class GadgetService {
 				String gadgetUrl = "upload__" + type;
 				for(int i = 0; i < authServiceArray.length(); i++){
 					JSONObject obj = authServiceArray.getJSONObject(i);
-					OAuthConsumerProp consumer = new OAuthConsumerProp(
-							new OAUTH_CONSUMER_PK(Crypt.getHash(gadgetUrl), obj.getString("serviceName"))
-					);
+					OAuthConsumerProp consumer = new OAuthConsumerProp();
+					consumer.setServiceName(obj.getString("serviceName"));
 					consumer.setGadgetUrl(gadgetUrl);
 					consumer.setConsumerKey(obj.getString("consumerKey"));
 					consumer.setConsumerSecret(obj.getString("consumerSecret"));

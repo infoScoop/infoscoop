@@ -4,23 +4,25 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_oauth_consumers table.
+ * This is an object that contains data related to the IS_OAUTH_CONSUMERS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_oauth_consumers"
+ *  table="IS_OAUTH_CONSUMERS"
  */
 
 public abstract class BaseOAuthConsumerProp  implements Serializable {
 
 	public static String REF = "OAuthConsumerProp";
+	public static String PROP_SERVICE_NAME = "ServiceName";
 	public static String PROP_SIGNATURE_METHOD = "SignatureMethod";
+	public static String PROP_GADGET_URL_KEY = "GadgetUrlKey";
 	public static String PROP_GADGET_URL = "GadgetUrl";
 	public static String PROP_CONSUMER_SECRET = "ConsumerSecret";
 	public static String PROP_ID = "Id";
-	public static String PROP_CONSUMER_KEY = "ConsumerKey";
 	public static String PROP_IS_UPLOAD = "IsUpload";
+	public static String PROP_CONSUMER_KEY = "ConsumerKey";
 
 
 	// constructors
@@ -31,7 +33,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseOAuthConsumerProp (org.infoscoop.dao.model.OAUTH_CONSUMER_PK id) {
+	public BaseOAuthConsumerProp (java.lang.Long id) {
 		this.setId(id);
 		initialize();
 	}
@@ -40,11 +42,17 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseOAuthConsumerProp (
-		org.infoscoop.dao.model.OAUTH_CONSUMER_PK id,
-		java.lang.String gadgetUrl) {
+		java.lang.Long id,
+		java.lang.String gadgetUrl,
+		java.lang.String gadgetUrlKey,
+		java.lang.String serviceName,
+		java.lang.Integer isUpload) {
 
 		this.setId(id);
 		this.setGadgetUrl(gadgetUrl);
+		this.setGadgetUrlKey(gadgetUrlKey);
+		this.setServiceName(serviceName);
+		this.setIsUpload(isUpload);
 		initialize();
 	}
 
@@ -55,20 +63,26 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private org.infoscoop.dao.model.OAUTH_CONSUMER_PK id;
+	private java.lang.Long id;
 
 	// fields
 	private java.lang.String gadgetUrl;
+	private java.lang.String gadgetUrlKey;
+	private java.lang.String serviceName;
 	private java.lang.String consumerKey;
 	private java.lang.String consumerSecret;
 	private java.lang.String signatureMethod;
-	private java.lang.Integer isUpload = 0;
+	private java.lang.Integer isUpload;
+
+
 
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
+     *  generator-class="sequence"
+     *  column="id"
      */
-	public org.infoscoop.dao.model.OAUTH_CONSUMER_PK getId () {
+	public java.lang.Long getId () {
 		return id;
 	}
 
@@ -76,7 +90,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (org.infoscoop.dao.model.OAUTH_CONSUMER_PK id) {
+	public void setId (java.lang.Long id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
@@ -97,6 +111,40 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	 */
 	public void setGadgetUrl (java.lang.String gadgetUrl) {
 		this.gadgetUrl = gadgetUrl;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: gadget_url_key
+	 */
+	public java.lang.String getGadgetUrlKey () {
+		return gadgetUrlKey;
+	}
+
+	/**
+	 * Set the value related to the column: gadget_url_key
+	 * @param gadgetUrlKey the gadget_url_key value
+	 */
+	public void setGadgetUrlKey (java.lang.String gadgetUrlKey) {
+		this.gadgetUrlKey = gadgetUrlKey;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: service_name
+	 */
+	public java.lang.String getServiceName () {
+		return serviceName;
+	}
+
+	/**
+	 * Set the value related to the column: service_name
+	 * @param serviceName the service_name value
+	 */
+	public void setServiceName (java.lang.String serviceName) {
+		this.serviceName = serviceName;
 	}
 
 
@@ -151,13 +199,22 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	}
 
 
-	public java.lang.Integer getIsUpload() {
+
+	/**
+	 * Return the value associated with the column: is_upload
+	 */
+	public java.lang.Integer getIsUpload () {
 		return isUpload;
 	}
 
-	public void setIsUpload(java.lang.Integer isUpload) {
+	/**
+	 * Set the value related to the column: is_upload
+	 * @param isUpload the is_upload value
+	 */
+	public void setIsUpload (java.lang.Integer isUpload) {
 		this.isUpload = isUpload;
 	}
+
 
 
 

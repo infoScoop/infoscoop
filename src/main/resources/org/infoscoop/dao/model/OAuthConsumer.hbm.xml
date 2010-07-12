@@ -9,11 +9,15 @@
 		table="IS_OAUTH_CONSUMERS"
 	>
 		<meta attribute="sync-DAO">false</meta>
-
-		<composite-id name="Id" class="OAUTH_CONSUMER_PK">
-			<key-property name="GadgetUrlKey" column="gadget_url_key" type="string"/>
-			<key-property name="ServiceName" column="service_name" type="string"/>
-		</composite-id>
+		<id
+			name="Id"
+			type="java.lang.Long"
+			column="ID"
+		>
+			<generator class="native">
+				<param name="sequence">is_oauth_consumers_id_seq</param>
+			</generator>
+		</id>
 
 		<property
 			name="GadgetUrl"
@@ -21,6 +25,20 @@
 			type="string"
 			not-null="true"
 			length="1024"
+		/>
+		<property
+			name="GadgetUrlKey"
+			column="gadget_url_key"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="ServiceName"
+			column="service_name"
+			type="string"
+			not-null="true"
+			length="255"
 		/>
 		<property
 			name="ConsumerKey"

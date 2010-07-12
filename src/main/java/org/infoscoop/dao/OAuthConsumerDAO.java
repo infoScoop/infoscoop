@@ -24,7 +24,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
-import org.infoscoop.dao.model.OAUTH_CONSUMER_PK;
 import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
@@ -47,8 +46,10 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 		String gadgetUrlKey = Crypt.getHash(gadgetUrl);
 		Iterator results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthConsumerProp.class).add(
-						Expression.eq("Id.GadgetUrlKey", gadgetUrlKey)).add(
-						Expression.eq("Id.ServiceName", serviceName)))
+						Expression.eq(OAuthConsumerProp.PROP_GADGET_URL_KEY,
+								gadgetUrlKey)).add(
+						Expression.eq(OAuthConsumerProp.PROP_SERVICE_NAME,
+								serviceName)))
 				.iterator();
 		if (results.hasNext()) {
 			return (OAuthConsumerProp) results.next();
@@ -58,7 +59,7 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 
 	public void save(OAuthConsumerProp consumer) {
 		OAuthConsumerProp newConsumer = getConsumer(consumer.getGadgetUrl(),
-				consumer.getId().getServiceName());
+				consumer.getServiceName());
 		if (newConsumer == null) {
 			super.getHibernateTemplate().save(consumer);
 		} else {
@@ -97,6 +98,7 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 		String gadgetUrlKey = Crypt.getHash(gadgetUrl);
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthConsumerProp.class).add(
-						Expression.eq("Id.GadgetUrlKey", gadgetUrlKey)));
+						Expression.eq(OAuthConsumerProp.PROP_GADGET_URL_KEY,
+								gadgetUrlKey)));
 	}
 }

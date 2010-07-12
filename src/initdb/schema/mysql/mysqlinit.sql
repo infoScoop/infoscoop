@@ -426,14 +426,14 @@ create table IS_OAUTH_TOKENS (
 -- OAUTH_CONSUMER
 --
 create table IS_OAUTH_CONSUMERS (
+  id bigint not null auto_increment primary key,
   gadget_url varchar(1024) not null,
   gadget_url_key varchar(255) not null,
   service_name varchar(255) not null,
   consumer_key varchar(255),
   consumer_secret varchar(255),
   signature_method varchar(20),
-  is_upload int(1) not null default 0,
-  primary key (gadget_url_key, service_name)
+  is_upload int(1) not null default 0
 ) ENGINE=InnoDB;
 
 --

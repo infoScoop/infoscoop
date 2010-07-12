@@ -49,7 +49,7 @@ public class OAuthService {
 		JSONArray cunsumerList = new JSONArray();
 		for(OAuthConsumerProp prop: consumerPropList){
 			JSONObject obj = new JSONObject();
-			obj.put("service_name", prop.getId().getServiceName());
+			obj.put("service_name", prop.getServiceName());
 			obj.put("gadget_url", prop.getGadgetUrl());
 			obj.put("consumer_key", prop.getConsumerKey());
 			obj.put("consumer_secret", prop.getConsumerSecret());
@@ -75,13 +75,13 @@ public class OAuthService {
 		for(int i = 0; i < consumerJsonList.length();i++){
 			JSONObject obj = consumerJsonList.getJSONObject(i);
 			String gadgetUrl = obj.getString("gadgetUrl");
-			OAuthConsumerProp consumer = new OAuthConsumerProp(
-					new OAUTH_CONSUMER_PK(Crypt.getHash(gadgetUrl), obj.getString("serviceName"))
-			);
+			OAuthConsumerProp consumer = new OAuthConsumerProp();
+			consumer.setServiceName(obj.getString("serviceName"));
 			consumer.setGadgetUrl(gadgetUrl);
 			consumer.setConsumerKey(obj.getString("consumerKey"));
 			consumer.setConsumerSecret(obj.getString("consumerSecret"));
 			consumer.setSignatureMethod(obj.getString("signatureMethod"));
+			consumer.setIsUpload(0);
 			consumers.add(consumer);
 		}
 
