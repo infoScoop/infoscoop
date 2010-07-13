@@ -432,8 +432,12 @@ public class ProxyRequest{
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
-			log.error( this.getTargetURL());
-			log.error("",e);
+			if (e.isTraceOn()) {
+				log.error(this.getTargetURL());
+				log.error("", e);
+			} else {
+				log.warn(this.getTargetURL() + " : " + e.getMessage());
+			}
 			return 401;
 		}
 	}
@@ -450,8 +454,12 @@ public class ProxyRequest{
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
-			log.error( this.getTargetURL());
-			log.error("",e);
+			if (e.isTraceOn()) {
+				log.error(this.getTargetURL());
+				log.error("", e);
+			} else {
+				log.warn(this.getTargetURL() + " : " + e.getMessage());
+			}
 			return 401;
 		}
 	}
@@ -468,8 +476,12 @@ public class ProxyRequest{
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
-			log.error( this.getTargetURL());
-			log.error("",e);
+			if (e.isTraceOn()) {
+				log.error(this.getTargetURL());
+				log.error("", e);
+			} else {
+				log.warn(this.getTargetURL() + " : " + e.getMessage());
+			}
 			return 401;
 		}
 	}
@@ -503,8 +515,12 @@ public class ProxyRequest{
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
-			log.error( this.getTargetURL());
-			log.error("",e);
+			if (e.isTraceOn()) {
+				log.error(this.getTargetURL());
+				log.error("", e);
+			} else {
+				log.warn(this.getTargetURL() + " : " + e.getMessage());
+			}
 			return 401;
 		}
 	}
@@ -519,8 +535,12 @@ public class ProxyRequest{
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
-			log.error( this.getTargetURL());
-			log.error("",e);
+			if (e.isTraceOn()) {
+				log.error(this.getTargetURL());
+				log.error("", e);
+			} else {
+				log.warn(this.getTargetURL() + " : " + e.getMessage());
+			}
 			return 401;
 		}
 	}
@@ -537,8 +557,12 @@ public class ProxyRequest{
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
-			log.error( this.getTargetURL());
-			log.error("",e);
+			if (e.isTraceOn()) {
+				log.error(this.getTargetURL());
+				log.error("", e);
+			} else {
+				log.warn(this.getTargetURL() + " : " + e.getMessage());
+			}
 			return 401;
 		}
 	}
@@ -553,8 +577,12 @@ public class ProxyRequest{
 			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
 			return filterContainer.invoke(client, method, this);
 		} catch (ProxyAuthenticationException e) {
-			log.error( this.getTargetURL());
-			log.error("",e);
+			if (e.isTraceOn()) {
+				log.error(this.getTargetURL());
+				log.error("", e);
+			} else {
+				log.warn(this.getTargetURL() + " : " + e.getMessage());
+			}
 			return 401;
 		}
 	}
@@ -738,6 +766,8 @@ public class ProxyRequest{
 	}
 	
 	public static byte[] stream2Bytes(InputStream is){
+		if (is == null)
+			return new byte[0];
 		BufferedInputStream inputStream = new BufferedInputStream(is);
 		ByteArrayOutputStream returnStream = new ByteArrayOutputStream();
 		int temp;

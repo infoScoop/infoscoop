@@ -18,11 +18,8 @@
 package org.infoscoop.request;
 
 public class ProxyAuthenticationException extends Exception {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -960080902866345421L;
+	private boolean isTraceOn = true;
 
 	public ProxyAuthenticationException(Exception e) {
 		super(e);
@@ -36,4 +33,22 @@ public class ProxyAuthenticationException extends Exception {
 		super(msg, e);
 	}
 
+	public ProxyAuthenticationException(Exception e, boolean isTraceOn) {
+		super(e);
+		this.isTraceOn = isTraceOn;
+	}
+	
+	public ProxyAuthenticationException(String msg, boolean isTraceOn) {
+		super(msg);
+		this.isTraceOn = isTraceOn;
+	}
+
+	public ProxyAuthenticationException(String msg, Exception e, boolean isTraceOn) {
+		super(msg, e);
+		this.isTraceOn = isTraceOn;
+	}
+
+	public boolean isTraceOn(){
+		return this.isTraceOn;
+	}
 }

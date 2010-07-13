@@ -201,7 +201,8 @@ public class OAuthAuthenticator implements Authenticator {
 					, OAuth.OAUTH_CALLBACK, callbackURL);
 		}
 		request.putResponseHeader("oauthApprovalUrl", authorizationURL);
-		throw new ProxyAuthenticationException("Redirect to authorization url.");
+		throw new ProxyAuthenticationException(
+				"Redirect to authorization url.", false);
 	}
 
 	private static String getCallbackURL(ProxyRequest request,
