@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.OAuthAuthenticator;
 import org.infoscoop.service.OAuthService;
+import org.infoscoop.util.I18NUtil;
 
 public class OAuthCallbackServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -94,7 +96,10 @@ public class OAuthCallbackServlet extends HttpServlet {
 			out.flush();
 		} catch (Exception e) {
 			log.error("unexpected error has occured.", e);
-			//TODO: show error page
+			RequestDispatcher dispatcher = request
+					.getRequestDispatcher("/error.jsp");
+			request.setAttribute("error_msg_id", "ms_oauthFailed");
+			dispatcher.forward(request, response);
 		}
 	}
 

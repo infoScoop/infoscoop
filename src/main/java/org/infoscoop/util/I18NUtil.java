@@ -122,6 +122,17 @@ public class I18NUtil {
 	public static String replace(String str, Map resMap) {
 		return replace(str, resMap, false, false);
 	}
+	
+	@SuppressWarnings("unchecked")
+	private Map currentResourceMap;
+
+	public I18NUtil(String type, Locale locale) {
+		this.currentResourceMap = getResourceMap(type, locale);
+	}
+
+	public String msg(String resourceId) {
+		return (String) this.currentResourceMap.get(resourceId);
+	}
 
 	private static class ResourceMap {
 		private String lastmodified;
