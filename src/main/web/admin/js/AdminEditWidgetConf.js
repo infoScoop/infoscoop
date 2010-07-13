@@ -178,7 +178,7 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 		var opt = {
 		  method: 'post',
 		  contentType: "application/json",
-		  postBody: Object.toJSON([ String( type ) ]),
+		  postBody: Object.toJSON([ String( type + "/gadget" ) ]),
 		  asynchronous:true,
 		  onSuccess: function(response){
 			  var consumerSettingList = eval( response .responseText );

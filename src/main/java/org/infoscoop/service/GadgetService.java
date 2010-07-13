@@ -225,7 +225,7 @@ public class GadgetService {
 			
 			if(!"false".equals(authServiceList)){
 				JSONArray authServiceArray = new JSONArray(authServiceList);
-				String gadgetUrl = "upload__" + type;
+				String gadgetUrl = "upload__" + type + "/gadget";
 				for(int i = 0; i < authServiceArray.length(); i++){
 					JSONObject obj = authServiceArray.getJSONObject(i);
 					OAuthConsumerProp consumer = new OAuthConsumerProp();
