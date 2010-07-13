@@ -40,7 +40,6 @@ import net.oauth.signature.RSA_SHA1;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.RedirectException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.OAuthCertificateDAO;
@@ -48,6 +47,7 @@ import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.model.OAuthCertificate;
 import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.request.ProxyRequest.OAuthConfig;
+import org.infoscoop.service.OAuthService;
 
 public class OAuthAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
@@ -173,42 +173,36 @@ public class OAuthAuthenticator implements Authenticator {
         return accessor;
     }
     
-	/**
-     * Get from oauth example CookieConsumer.
-     * @throws IOException 
-     * @throws URISyntaxException 
-	 * @throws ProxyAuthenticationException 
-     * 
-     * @throws RedirectException
-     *             to obtain authorization
-     */
-    private static void getRequestToken(ProxyRequest request, OAuthAccessor accessor)
-        throws OAuthException, IOException, URISyntaxException, ProxyAuthenticationException
-    {
-        final String consumerName = (String) accessor.consumer.getProperty("name");
-        final String callbackURL = getCallbackURL(request, consumerName);
-        List<OAuth.Parameter> parameters = OAuth.newList(OAuth.OAUTH_CALLBACK, callbackURL);
-        // Google needs to know what you intend to do with the access token:
-        Object scope = accessor.consumer.getProperty("request.scope");
-        if (scope != null) {
-            parameters.add(new OAuth.Parameter("scope", scope.toString()));
-        }
-        OAuthMessage response = CLIENT.getRequestTokenResponse(accessor, (String) accessor.consumer.getProperty("requestTokenMethod"), parameters);
+	private static void getRequestToken(ProxyRequest request,
+			OAuthAccessor accessor) throws OAuthException,
+			IOException, URISyntaxException, ProxyAuthenticationException {
+		final String consumerName = (String) accessor.consumer
+				.getProperty("name");
+		final String callbackURL = getCallbackURL(request, consumerName);
+		List<OAuth.Parameter> parameters = OAuth.newList(OAuth.OAUTH_CALLBACK,
+				callbackURL);
+		// Google needs to know what you intend to do with the access token:
+		Object scope = accessor.consumer.getProperty("request.scope");
+		if (scope != null) {
+			parameters.add(new OAuth.Parameter("scope", scope.toString()));
+		}
+		OAuthMessage response = CLIENT.getRequestTokenResponse(accessor,
+				(String) accessor.consumer.getProperty("requestTokenMethod"),
+				parameters);
 		String gadgetUrl = request.getOauthConfig().getGadgetUrl();
-		request.putResponseHeader(gadgetUrl + "¥t" + consumerName
-				+ ".requesttoken", accessor.requestToken);
-		request.putResponseHeader(gadgetUrl + "¥t" + consumerName
-				+ ".tokensecret", accessor.tokenSecret);
+		OAuthService.getHandle().saveOAuthToken(request.getPortalUid(),
+				gadgetUrl, consumerName, accessor.requestToken,
+				accessor.tokenSecret);
 		String authorizationURL = accessor.consumer.serviceProvider.userAuthorizationURL;
-        authorizationURL = OAuth.addParameters(authorizationURL //
-                , OAuth.OAUTH_TOKEN, accessor.requestToken);
-        if (response.getParameter(OAuth.OAUTH_CALLBACK_CONFIRMED) == null) {
-            authorizationURL = OAuth.addParameters(authorizationURL //
-                    , OAuth.OAUTH_CALLBACK, callbackURL);
-        }
-        request.putResponseHeader("oauthApprovalUrl", authorizationURL);
-        throw new ProxyAuthenticationException("Redirect to authorization url.");
-    }
+		authorizationURL = OAuth.addParameters(authorizationURL //
+				, OAuth.OAUTH_TOKEN, accessor.requestToken);
+		if (response.getParameter(OAuth.OAUTH_CALLBACK_CONFIRMED) == null) {
+			authorizationURL = OAuth.addParameters(authorizationURL //
+					, OAuth.OAUTH_CALLBACK, callbackURL);
+		}
+		request.putResponseHeader("oauthApprovalUrl", authorizationURL);
+		throw new ProxyAuthenticationException("Redirect to authorization url.");
+	}
 
 	private static String getCallbackURL(ProxyRequest request,
 			String consumerName) throws IOException {

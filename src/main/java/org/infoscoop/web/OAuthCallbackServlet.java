@@ -3,7 +3,6 @@ package org.infoscoop.web;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,14 +17,19 @@ import net.oauth.OAuthMessage;
 import net.oauth.OAuthProblemException;
 import net.oauth.server.OAuthServlet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.OAuthTokenDAO;
+import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.OAuthAuthenticator;
 import org.infoscoop.service.OAuthService;
 
 public class OAuthCallbackServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 
 	public static final String PATH = "/OAuth/Callback";
 
-	protected final Logger log = Logger.getLogger(getClass().getName());
+	private static Log log = LogFactory.getLog(JsonProxyServlet.class);
 
 	/**
 	 * Exchange an OAuth request token for an access token, and store the latter
@@ -45,20 +49,16 @@ public class OAuthCallbackServlet extends HttpServlet {
 					request, null);
 			consumer = OAuthAuthenticator.getConsumer(gadgetUrl, consumerName);
 			
-			String oauthPrefix = (gadgetUrl + "¥t" + consumerName)
-					.toLowerCase();
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
-			accessor.accessToken = (String) session.getAttribute(oauthPrefix
-					+ ".accesstoken");
-			accessor.requestToken = (String) session.getAttribute(oauthPrefix
-					+ ".requesttoken");
-			accessor.tokenSecret = (String) session.getAttribute(oauthPrefix
-					+ ".tokensecret");
+			OAuthToken token = OAuthTokenDAO.newInstance().getAccessToken(uid,
+					gadgetUrl, consumerName);
+			accessor.requestToken = token.getAccessToken();
+			accessor.tokenSecret = token.getTokenSecret();
 
 			final String expectedToken = accessor.requestToken;
 			String requestToken = request.getParameter(OAuth.OAUTH_TOKEN);
 			if (requestToken == null || requestToken.length() <= 0) {
-				log.warning(request.getMethod() + " "
+				log.warn(request.getMethod() + " "
 						+ OAuthServlet.getRequestURL(request));
 				requestToken = expectedToken;
 				if (requestToken == null) {
@@ -84,25 +84,18 @@ public class OAuthCallbackServlet extends HttpServlet {
 				problem.getParameters().putAll(result.getDump());
 				throw problem;
 			}
-			// add to both db and session for high performance.
-			OAuthService.getHandle().saveOAuthToken(
-					uid, gadgetUrl,
+			// add to db.
+			OAuthService.getHandle().saveOAuthToken(uid, gadgetUrl,
 					consumerName, accessor.accessToken, accessor.tokenSecret);
-
-			session.setAttribute(gadgetUrl + "¥t" + consumerName
-					+ ".accesstoken", accessor.accessToken);
-			session.removeAttribute(gadgetUrl + "¥t" + consumerName
-					+ ".requesttoken");
-			session.setAttribute(gadgetUrl + "¥t" + consumerName
-					+ ".tokensecret", accessor.tokenSecret);
+			
+			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
-			out.println("<script> window.close(); </script>");
+			out.println("<html><head><script> window.close();</script></head></html>");
 			out.flush();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("unexpected error has occured.", e);
+			//TODO: show error page
 		}
 	}
-
-	private static final long serialVersionUID = 1L;
 
 }

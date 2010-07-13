@@ -26,15 +26,12 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.DeleteMethod;
@@ -46,7 +43,6 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.Authenticator;
-import org.infoscoop.request.OAuthAuthenticator;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.request.filter.DetectTypeFilter;
 import org.infoscoop.service.OAuthService;
@@ -229,19 +225,12 @@ public class JsonProxyServlet extends HttpServlet {
 			oauthConfig.setGadgetUrl(gadgetUrl);
 			oauthConfig.setHostPrefix(params.get("hostPrefix"));
 			
-			String[] accessTokenInfo = getAccessToken(uid, oauthConfig.getGadgetUrl(), oauthServiceName, session);
-			String accesstoken = accessTokenInfo[0];
-			String tokensecret = accessTokenInfo[1];
-			
-			if(tokensecret != null)
-				oauthConfig.setTokenSecret(tokensecret);
-				
-			String requesttoken = (String) session.getAttribute(oauthServiceName + ".requesttoken");
-			if(requesttoken != null)
-				oauthConfig.setRequestToken(requesttoken);
-			
-			if(accesstoken != null)
-				oauthConfig.setAccessToken(accesstoken);
+			OAuthToken token = OAuthTokenDAO.newInstance().getAccessToken(uid,
+					gadgetUrl, oauthServiceName);
+			if(token != null){
+				oauthConfig.setAccessToken(token.getAccessToken());
+				oauthConfig.setTokenSecret(token.getTokenSecret());
+			}
 			
 			proxy.setOauthConfig(oauthConfig);
 			break;
@@ -301,8 +290,6 @@ public class JsonProxyServlet extends HttpServlet {
 
 		urlJson.put("body",bodyStr);
 
-		String oauthPrefix = (gadgetUrl + "¥t" + oauthServiceName)
-				.toLowerCase();
 		Map<String,List<String>> responseHeaders = proxy.getResponseHeaders();
 		JSONObject jsonHeaders = new JSONObject();
 		for( String name : responseHeaders.keySet() ) {
@@ -311,9 +298,6 @@ public class JsonProxyServlet extends HttpServlet {
 			if( "oauthApprovalUrl".equalsIgnoreCase(name)){
 				urlJson.put("oauthApprovalUrl", proxy.getResponseHeader(name));
 				status = 200;
-			} else if (oauthServiceName != null
-					&& name.indexOf(oauthPrefix) == 0) {
-				session.setAttribute(name, proxy.getResponseHeader(name));
 			}else{
 				JSONArray array = jsonHeaders.getJSONArray( name );
 				List<String> values = responseHeaders.get( name );
@@ -327,10 +311,6 @@ public class JsonProxyServlet extends HttpServlet {
 		if(status == 401 && AuthType.OAUTH == authz){
 			OAuthService.getHandle().deleteOAuthToken(uid, gadgetUrl,
 					oauthServiceName);
-			session.removeAttribute(gadgetUrl + "¥t" + oauthServiceName
-					+ ".accesstoken");
-			session.removeAttribute(gadgetUrl + "¥t" + oauthServiceName
-					+ ".tokensecret");
 			log.error("OAuth request is failed:\n" + bodyStr);
 			urlJson.put("oauthError", "OAuth request is failed");
 		}
@@ -368,31 +348,5 @@ public class JsonProxyServlet extends HttpServlet {
 	    }
 	    
 	    return headers;
-	}
-
-	
-	/**
-	 * get access token from session or db.
-	 * 
-	 * @param uid
-	 * @param gadgetUrl
-	 * @param serviceName
-	 * @param session
-	 * @return
-	 */
-	private String[] getAccessToken(String uid, String gadgetUrl,
-			String serviceName, HttpSession session) {
-		String accesstoken = (String) session.getAttribute(gadgetUrl + "¥t"
-				+ serviceName + ".accesstoken");
-		String tokensecret = (String) session.getAttribute(gadgetUrl + "¥t"
-				+ serviceName + ".tokensecret");
-		if (accesstoken != null && tokensecret != null)
-			return new String[] { accesstoken, tokensecret };
-
-		OAuthToken token = OAuthTokenDAO.newInstance().getAccessToken(uid,
-				gadgetUrl, serviceName);
-		if (token == null)
-			return new String[] { null, null };
-		return new String[] { token.getAccessToken(), token.getTokenSecret() };
 	}
 }
