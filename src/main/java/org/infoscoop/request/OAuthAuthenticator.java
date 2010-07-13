@@ -127,7 +127,8 @@ public class OAuthAuthenticator implements Authenticator {
 		
 		OAuthConsumerProp consumerProp = OAuthConsumerDAO.newInstance()
 				.getConsumer(oauthConfig.getGadgetUrl(), name);
-		
+		if(consumerProp == null)
+			throw new ProxyAuthenticationException("Consumer key and secret is not set for " + oauthConfig.getGadgetUrl());
 		OAuthCertificate certificate = OAuthCertificateDAO.newInstance().get();
 		
 		String consumerKey;
