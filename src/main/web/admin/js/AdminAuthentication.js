@@ -52,11 +52,17 @@ ISA_Authentication = {
 		var consumerList = [];
 		for(var i = 1; i < trList.length; i++){
 			var tr = trList[i];
+			if(this._validateUrl(i, tr.id))return;
+			if(this._validateServiceName(i, tr.id))return;
 			var gadgetUrl = $F(tr.id + '_gadget_url');
 			var serviceName = $F(tr.id + '_service_name');
 			var consumerKey = $F(tr.id + '_consumer_key');
 			var consumerSecret = $F(tr.id + '_consumer_secret');
 			var signatureMethod = $F(tr.id + '_signature_method');
+			if(signatureMethod == 'HMAC-SHA1'){
+				if(this._validateConsumerKey(i, tr.id))return;
+				if(this._validateConsumerSecret(i, tr.id))return;
+			}
 			consumerList.push({
 				gadgetUrl:gadgetUrl,
 				serviceName:serviceName,
@@ -97,6 +103,56 @@ ISA_Authentication = {
 		AjaxRequest.invoke(url, opt);
 		
 	},
+	
+	_validateUrl: function(index, elementId) {
+		var urlInput = $(elementId + '_gadget_url');
+		var newUrl = urlInput.value;
+		var error = false;
+		if( newUrl.length == 0 ) {
+			error = ISA_R.ams_requiredItem;
+		} else if(error = IS_Validator.validate(newUrl, {maxBytes:1024, regex:'^http(s)?://.*'})){
+		}
+		if(error)
+		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_gadgetUrl]) + ":" + error);
+		return error;
+	},
+	_validateServiceName: function(index, elementId) {
+		var urlInput = $(elementId + '_service_name');
+		var serviceName = urlInput.value;
+		var error = false;
+		if( serviceName.length == 0 ) {
+			error = ISA_R.ams_requiredItem;
+		} else if(error = IS_Validator.validate(serviceName, {maxBytes:255})){
+		}
+		if(error)
+		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_oauthServiceName]) + ":" + error);
+		return error;
+	},
+	_validateConsumerKey: function(index, elementId) {
+		var urlInput = $(elementId + '_consumer_key');
+		var serviceName = urlInput.value;
+		var error = false;
+		if( serviceName.length == 0 ) {
+			error = ISA_R.ams_requiredItem;
+		} else if(error = IS_Validator.validate(serviceName, {maxBytes:255})){
+		}
+		if(error)
+		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_oauthConsumerKey]) + ":" + error);
+		return error;
+	},
+	_validateConsumerSecret: function(index, elementId) {
+		var urlInput = $(elementId + '_consumer_secret');
+		var serviceName = urlInput.value;
+		var error = false;
+		if( serviceName.length == 0 ) {
+			error = ISA_R.ams_requiredItem;
+		} else if(error = IS_Validator.validate(serviceName, {maxBytes:255})){
+		}
+		if(error)
+		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_oauthConsumerSecret]) + ":" + error);
+		return error;
+	},
+	
 	_displayConsumer: function(){
 		var url = findHostURL() + "/services/authentication/getOAuthConsumerListJson";
 		var opt = {
@@ -178,9 +234,7 @@ ISA_Authentication = {
 	
 	_createTextbox: function(id, value){
 		return $.INPUT({id: id, value: value, className:'portalAdminInput',style:"width:100%;",
-		  onchange:{handler: function(){ ISA_Admin.isUpdated = true; }},
-		  onfocus:{handler: function(){} },
-		  onblur:{handler: function(){}}
+		  onchange:{handler: function(){ ISA_Admin.isUpdated = true; }}
 		});
 	},
 

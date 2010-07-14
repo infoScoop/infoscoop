@@ -1347,6 +1347,8 @@
 "adminjs","ams_longAdminSettings","ALL","ALL","Line {0} of administrator settings is too long. The length of administrator name must be within 150 single byte characters."
 "adminjs","ams_longAdminSettings","ALL","ja","管理者設定の{0}行目が長すぎます。管理者の長さは半角英数字で150文字までです。"
 "adminjs","ams_longAdminSettings","ALL","zh","管理员设定的{0}行过长。管理者的长度为半格英数字150文字以内。"
+"adminjs","ams_invalidOAuthSetting","ALL","ALL","There is error in \""{1}\"" of line {0}."
+"adminjs","ams_invalidOAuthSetting","ALL","ja","{0}行目の「{1}」に入力エラーがあります。"
 "adminjs","ams_menuNotFound","ALL","ALL","Menu is not found."
 "adminjs","ams_menuNotFound","ALL","ja","メニューが見つかりません。"
 "adminjs","ams_menuNotFound","ALL","zh","找不到菜单。"
