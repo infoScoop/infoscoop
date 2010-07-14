@@ -100,6 +100,7 @@
 		<copy todir="${build.main}" file="${src.main.web}/selectProfile.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/logoff.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/accessStats.jsp"/>
+		<copy todir="${build.main}" file="${src.main.web}/error.jsp"/>
 		
 		<copy todir="${build.main}" file="${src.main.web}/rpc_relay.html"/>
 		<copy todir="${build.main}" file="${src.main.web}/blank.html"/>
