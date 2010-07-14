@@ -191,7 +191,7 @@ IS_Widget.prototype.classDef = function() {
 			},this );
 		}
 		
-		return userPref[name];
+		return userPref[name];// This statement should be (userPref[name] || "")
 	}
 	
 	this.getBoolUserPref = function(name){
@@ -715,9 +715,10 @@ IS_Widget.prototype.classDef = function() {
 		};
 		
 		this.getUserPrefKeys().each( function( key ) {
-			params["up_"+key] = this.getUserPref( key );
+			if(this.getUserPref( key ))
+			  params["up_"+key] = this.getUserPref( key );
 		},this );
-		
+
 		$H( params ).each( function( entry ) {
 			var input = document.createElement("input");
 			input.type = "hidden";
