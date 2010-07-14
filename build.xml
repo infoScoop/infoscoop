@@ -19,6 +19,8 @@
 	<property name="build.main" value="${build.home}/main" />
 	<property name="build.initdb" value="${build.home}/initdb" />
 	<property name="build.migration" value="${build.home}/migration" />
+	<property name="googleapps.src" value="${basedir}/src/googleapps/java" />
+	<property name="googleapps.web" value="${basedir}/src/googleapps/web" />
 	
 	<!-- admin properties -->
 	<property name="src.admin.web" value="${src.main.web}/admin" />
@@ -43,18 +45,13 @@
 			<include name="*.jar" />
 		</fileset>
 	</path>
-    
-	<path id="compile.customize.classpath">
-		<!-- Include all JAR files that will be included in /WEB-INF/lib -->
-		<fileset dir="${customize.dir}">
-			<include name="web/WEB-INF/lib/*.jar" />
+	
+	<path id="compile.build.classpath">
+		<fileset dir="${basedir}/lib">
+			<include name="*.jar" />
 		</fileset>
-	</path>
-    
-	<path id="compile.customize2.classpath">
-		<!-- Include all JAR files that will be included in /WEB-INF/lib -->
-		<fileset dir="${customize.dir2}">
-			<include name="web/WEB-INF/lib/*.jar" />
+		<fileset dir="${build.main}/WEB-INF/lib">
+			<include name="*.jar" />
 		</fileset>
 	</path>
 	
@@ -760,6 +757,37 @@
 			</tarfileset>
     	</tar>
     </target>
+	
+	<!--build for google apps-->
+	<target name="googleapps-prepare">
+		<copy todir="${build.main}" file="${googleapps.web}/gapps_openid_login.jsp"/>
+		<delete>
+			<fileset dir="${build.main}/WEB-INF/lib">
+				<include name="openid4java-*.jar"/>
+			</fileset>
+		</delete>
+		<copy todir="${build.main}/WEB-INF/lib">
+			<fileset dir="${googleapps.web}/WEB-INF/lib">
+				<include name="**/*.jar"/>
+			</fileset>
+		</copy>
+		
+		<!--
+		<copy todir="${build.main}/WEB-INF/classes" encoding="UTF-8">
+			<fileset dir="${googleapps.resources}">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+		-->
+		
+		<javac srcdir="${googleapps.src}" encoding="utf-8" destdir="${build.main}/WEB-INF/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+			<classpath>
+				<path refid="compile.build.classpath" />
+			</classpath>
+		</javac>
+	</target>
+	<target name="googleapps-dist" depends="dist-main,googleapps-prepare,admin,build-war,dist">
+	</target>
     
 	<target name="optimize-gadget-features">
 		<delete>

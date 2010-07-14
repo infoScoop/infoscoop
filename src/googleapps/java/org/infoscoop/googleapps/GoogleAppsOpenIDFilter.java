@@ -15,11 +15,10 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
-package org.infoscoop.web;
+package org.infoscoop.googleapps;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.HashSet;
@@ -37,8 +36,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.googleapps.ContinuousHostMetaFetcher;
-import org.infoscoop.googleapps.GoogleHostedHostMetaFetcher;
+import org.infoscoop.web.SessionManagerFilter;
 import org.openid4java.OpenIDException;
 import org.openid4java.consumer.ConsumerManager;
 import org.openid4java.consumer.InMemoryConsumerAssociationStore;
@@ -72,6 +70,28 @@ import com.google.step2.xmlsimplesign.DefaultTrustRootsProvider;
 import com.google.step2.xmlsimplesign.TrustRootsProvider;
 import com.google.step2.xmlsimplesign.Verifier;
 
+/**
+ * This filter supports OpenID Federated Login for Google Apps.
+ * To use, add the following settings in web.xml.
+ *  <pre>
+ *	<filter>
+ *		<filter-name>GoogleAppsOpenIDFilter</filter-name>
+ *		<filter-class>org.infoscoop.googleapps.GoogleAppsOpenIDFilter</filter-class>
+ *		<!-- domain (optional) : if you want to use one domain, set this parametaer.-->
+ *		<init-param>
+ *			<param-name>domain</param-name>
+ *			<param-value>infoscoop.org</param-value>
+ *		</init-param>
+ *		<!-- socketTimeout(optional) : request timeout until Google OpenID Provider returns response. -->
+ *		<init-param>
+ *			<param-name>socketTimeout</param-name>
+ *			<param-value></param-value>
+ *		</init-param>
+ *	</filter>
+ *  </pre>
+ * 
+ * @author a-kimura
+ */
 public class GoogleAppsOpenIDFilter implements Filter {
 	private static Log log = LogFactory.getLog(GoogleAppsOpenIDFilter.class);
 	
