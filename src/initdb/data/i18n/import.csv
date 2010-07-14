@@ -3230,7 +3230,7 @@
 "widget","lb_Calendar","ALL","ja","カレンダー"
 "widget","lb_Calendar","ALL","zh","日历"
 "widget","lb_FragmentMiniBrowser","ALL","ALL","FragmentMiniBrowser"
-"widget","lb_FragmentMiniBrowser","ALL","ja","HTML切り取りミニブラウザ"
+"widget","lb_FragmentMiniBrowser","ALL","ja","切り取りミニブラウザ"
 "widget","lb_FragmentMiniBrowser","ALL","zh","截取HTML迷你浏览器"
 "widget","lb_Information","ALL","ALL","Information"
 "widget","lb_Information","ALL","ja","お知らせ"
