@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="src/main/web/js/gadget"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="src/migration/java"/>
+	<classpathentry kind="src" path="src/googleapps/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/asm-all-2.2.3.jar"/>
@@ -54,10 +55,13 @@
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/oauth-consumer-20100601.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/oauth-httpclient3-20100601.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/oauth-provider-20100601.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/step2-common-1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/step2-consumer-1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/httpclient-4.0.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/httpcore-4.0.1.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-nodeps-0.9.6-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="src/googleapps/web/WEB-INF/lib/httpclient-4.0.jar"/>
+	<classpathentry kind="lib" path="src/googleapps/web/WEB-INF/lib/httpcore-4.0.1.jar"/>
+	<classpathentry kind="lib" path="src/googleapps/web/WEB-INF/lib/openid4java-nodeps-0.9.6-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="src/googleapps/web/WEB-INF/lib/step2-common-1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="src/googleapps/web/WEB-INF/lib/step2-consumer-1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-0.9.5.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-consumer-0.9.5.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-nodeps-0.9.5.jar"/>
 	<classpathentry kind="output" path="src/main/web/WEB-INF/classes"/>
 </classpath>
