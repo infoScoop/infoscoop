@@ -113,7 +113,7 @@ ISA_Authentication = {
 		} else if(error = IS_Validator.validate(newUrl, {maxBytes:1024, regex:'^http(s)?://.*'})){
 		}
 		if(error)
-		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_gadgetUrl]) + ":" + error);
+		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_gadgetUrl]) + error);
 		return error;
 	},
 	_validateServiceName: function(index, elementId) {
@@ -125,7 +125,7 @@ ISA_Authentication = {
 		} else if(error = IS_Validator.validate(serviceName, {maxBytes:255})){
 		}
 		if(error)
-		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_oauthServiceName]) + ":" + error);
+		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_oauthServiceName]) + error);
 		return error;
 	},
 	_validateConsumerKey: function(index, elementId) {
@@ -137,7 +137,7 @@ ISA_Authentication = {
 		} else if(error = IS_Validator.validate(serviceName, {maxBytes:255})){
 		}
 		if(error)
-		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_oauthConsumerKey]) + ":" + error);
+		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_oauthConsumerKey]) + error);
 		return error;
 	},
 	_validateConsumerSecret: function(index, elementId) {
@@ -149,7 +149,7 @@ ISA_Authentication = {
 		} else if(error = IS_Validator.validate(serviceName, {maxBytes:255})){
 		}
 		if(error)
-		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_oauthConsumerSecret]) + ":" + error);
+		  alert(ISA_R.getResource(ISA_R.ams_invalidOAuthSetting, [index, ISA_R.alb_oauthConsumerSecret]) + error);
 		return error;
 	},
 	
