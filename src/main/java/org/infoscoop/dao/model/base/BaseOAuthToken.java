@@ -19,6 +19,7 @@ public abstract class BaseOAuthToken  implements Serializable {
 	public static String PROP_GADGET_URL = "gadgetUrl";
 	public static String PROP_ID = "Id";
 	public static String PROP_TOKEN_SECRET = "tokenSecret";
+	public static String PROP_REQUEST_TOKEN = "requestToken";
 
 
 	// constructors
@@ -40,12 +41,10 @@ public abstract class BaseOAuthToken  implements Serializable {
 	public BaseOAuthToken (
 		org.infoscoop.dao.model.OAUTH_TOKEN_PK id,
 		java.lang.String gadgetUrl,
-		java.lang.String accessToken,
 		java.lang.String tokenSecret) {
 
 		this.setId(id);
 		this.setGadgetUrl(gadgetUrl);
-		this.setAccessToken(accessToken);
 		this.setTokenSecret(tokenSecret);
 		initialize();
 	}
@@ -61,6 +60,7 @@ public abstract class BaseOAuthToken  implements Serializable {
 
 	// fields
 	private java.lang.String gadgetUrl;
+	private java.lang.String requestToken;
 	private java.lang.String accessToken;
 	private java.lang.String tokenSecret;
 
@@ -99,6 +99,23 @@ public abstract class BaseOAuthToken  implements Serializable {
 	 */
 	public void setGadgetUrl (java.lang.String gadgetUrl) {
 		this.gadgetUrl = gadgetUrl;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: request_token
+	 */
+	public java.lang.String getRequestToken () {
+		return requestToken;
+	}
+
+	/**
+	 * Set the value related to the column: request_token
+	 * @param requestToken the request_token value
+	 */
+	public void setRequestToken (java.lang.String requestToken) {
+		this.requestToken = requestToken;
 	}
 
 

@@ -6,7 +6,8 @@ create table is_oauth_tokens (
   gadget_url varchar(1024 BYTE) not null,
   gadget_url_key varchar(255 BYTE) not null,
   service_name varchar(255 BYTE) not null,
-  access_token varchar(255 BYTE) not null,
+  request_token varchar(255 BYTE),
+  access_token varchar(255 BYTE),
   token_secret varchar(255 BYTE) not null,
   primary key ("UID", gadget_url_key, service_name)
 );

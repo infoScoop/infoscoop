@@ -88,8 +88,11 @@ public class OAuthService {
 		this.oauthConsumerDAO.saveConsumers(consumers);
 	}
 	
-	public void saveOAuthToken(String uid, String gadgetUrl, String serviceName, String accessToken, String tokenSecret){
-		this.oauthTokenDAO.saveAccessToken(uid,gadgetUrl, serviceName, accessToken, tokenSecret);
+	public void saveOAuthToken(String uid, String gadgetUrl,
+			String serviceName, String requestToken, String accessToken,
+			String tokenSecret) {
+		this.oauthTokenDAO.saveAccessToken(uid, gadgetUrl, serviceName,
+				requestToken, accessToken, tokenSecret);
 	}
 	
 	public void deleteOAuthToken(String uid, String gadgetUrl, String serviceName){

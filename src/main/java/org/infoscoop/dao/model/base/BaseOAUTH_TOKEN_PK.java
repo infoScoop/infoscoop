@@ -26,15 +26,15 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: uid
+	 * Return the value associated with the column: `UID`
 	 */
 	public java.lang.String getUid () {
 		return uid;
 	}
 
 	/**
-	 * Set the value related to the column: uid
-	 * @param uid the uid value
+	 * Set the value related to the column: `UID`
+	 * @param uid the `UID` value
 	 */
 	public void setUid (java.lang.String uid) {
 		this.uid = uid;

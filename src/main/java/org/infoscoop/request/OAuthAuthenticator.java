@@ -192,7 +192,7 @@ public class OAuthAuthenticator implements Authenticator {
 				parameters);
 		String gadgetUrl = request.getOauthConfig().getGadgetUrl();
 		OAuthService.getHandle().saveOAuthToken(request.getPortalUid(),
-				gadgetUrl, consumerName, accessor.requestToken,
+				gadgetUrl, consumerName, accessor.requestToken, null,
 				accessor.tokenSecret);
 		String authorizationURL = accessor.consumer.serviceProvider.userAuthorizationURL;
 		authorizationURL = OAuth.addParameters(authorizationURL //

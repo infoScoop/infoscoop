@@ -68,7 +68,8 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 	}
 
 	public void saveAccessToken(String uid, String gadgetUrl,
-			String serviceName, String accessToken, String tokenSecret) {
+			String serviceName, String requestToken, String accessToken,
+			String tokenSecret) {
 		OAuthToken token = getAccessToken(uid, gadgetUrl, serviceName);
 		if (token == null) {
 			String gadgetUrlKey = Crypt.getHash(gadgetUrl);
@@ -76,6 +77,7 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 					serviceName));
 			token.setGadgetUrl(gadgetUrl);
 		}
+		token.setRequestToken(requestToken);
 		token.setAccessToken(accessToken);
 		token.setTokenSecret(tokenSecret);
 		super.getHibernateTemplate().saveOrUpdate(token);

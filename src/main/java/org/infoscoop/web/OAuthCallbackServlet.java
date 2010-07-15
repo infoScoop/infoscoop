@@ -54,7 +54,7 @@ public class OAuthCallbackServlet extends HttpServlet {
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 			OAuthToken token = OAuthTokenDAO.newInstance().getAccessToken(uid,
 					gadgetUrl, consumerName);
-			accessor.requestToken = token.getAccessToken();
+			accessor.requestToken = token.getRequestToken();
 			accessor.tokenSecret = token.getTokenSecret();
 
 			final String expectedToken = accessor.requestToken;
@@ -88,7 +88,8 @@ public class OAuthCallbackServlet extends HttpServlet {
 			}
 			// add to db.
 			OAuthService.getHandle().saveOAuthToken(uid, gadgetUrl,
-					consumerName, accessor.accessToken, accessor.tokenSecret);
+					consumerName, null, accessor.accessToken,
+					accessor.tokenSecret);
 			
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();

@@ -26,10 +26,16 @@
 		/>
 		
 		<property
+			name="requestToken"
+			column="request_token"
+			type="string"
+			length="255"
+		/>
+		
+		<property
 			name="accessToken"
 			column="access_token"
 			type="string"
-			not-null="true"
 			length="255"
 		/>
 		
