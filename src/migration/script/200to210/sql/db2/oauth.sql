@@ -22,7 +22,7 @@ create table is_oauth_consumers (
   consumer_key varchar(255),
   consumer_secret varchar(255),
   signature_method varchar(20),
-  is_upload int(1) not null default 0,
+  is_upload int not null default 0,
   primary key (gadget_url_key, service_name)
 ) compress yes;
 
