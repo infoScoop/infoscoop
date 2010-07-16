@@ -24,7 +24,6 @@ import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.OAuthAuthenticator;
 import org.infoscoop.service.OAuthService;
-import org.infoscoop.util.I18NUtil;
 
 public class OAuthCallbackServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -40,16 +39,14 @@ public class OAuthCallbackServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws IOException, ServletException {
-		OAuthConsumer consumer = null;
+		HttpSession session = request.getSession();
+		String uid = (String) session.getAttribute("Uid");
+		String consumerName = request.getParameter("consumer");
+		String gadgetUrl = request.getParameter("__GADGET_URL__");
 		try {
-			HttpSession session = request.getSession();
-			String uid = (String) session.getAttribute("Uid");
-			String consumerName = request.getParameter("consumer");
-			String gadgetUrl = request.getParameter("__GADGET_URL__");
-			
 			final OAuthMessage requestMessage = OAuthServlet.getMessage(
 					request, null);
-			consumer = OAuthAuthenticator.getConsumer(gadgetUrl, consumerName);
+			OAuthConsumer consumer = OAuthAuthenticator.getConsumer(gadgetUrl, consumerName);
 			
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 			OAuthToken token = OAuthTokenDAO.newInstance().getAccessToken(uid,
@@ -96,6 +93,8 @@ public class OAuthCallbackServlet extends HttpServlet {
 			out.println("<html><head><script> window.close();</script></head></html>");
 			out.flush();
 		} catch (Exception e) {
+			OAuthService.getHandle().deleteOAuthToken(uid, gadgetUrl,
+					consumerName);
 			log.error("unexpected error has occured.", e);
 			RequestDispatcher dispatcher = request
 					.getRequestDispatcher("/error.jsp");
