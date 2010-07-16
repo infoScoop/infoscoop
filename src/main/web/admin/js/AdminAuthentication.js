@@ -277,6 +277,7 @@ ISA_Authentication = {
 
 	_saveContainerCert:function(){
 		var consumerKey = $F('oauth_container_consumer_key');
+		if(this._validateContainerConsumerKey(consumerKey))return;
 		var privateKey = $F('oauth_container_private_key');
 		var certificate = $F('oauth_container_certificate');
 		
@@ -311,6 +312,17 @@ ISA_Authentication = {
 		AjaxRequest.invoke(url, opt);
 	},
 	
+	_validateContainerConsumerKey: function(consumerKey) {
+		var error = false;
+		if( consumerKey.length == 0 ) {
+			error = ISA_R.ams_requiredItem;
+		} else if(error = IS_Validator.validate(consumerKey, {maxBytes:255})){
+		}
+		if(error)
+		  alert("[" + ISA_R.alb_oauthConsumerKey + "] " + error);
+		return error;
+	},
+
 	_displayContainerCert: function(){
 		var url = findHostURL() + "/services/authentication/getContainerCertificateJson";
 		var opt = {
