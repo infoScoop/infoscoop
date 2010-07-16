@@ -171,6 +171,10 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/js/search/searchEngine.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
 		<url-pattern>/encsrv</url-pattern>
 	</filter-mapping>
 	<filter-mapping>

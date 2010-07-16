@@ -26,8 +26,6 @@ String staticContentURL = PropertiesService.getHandle().getProperty("staticConte
 staticContentURL = Pattern.compile("^http(s)?://.*").matcher(staticContentURL.trim()).matches() ? staticContentURL : "../..";
 String uid = (String) session.getAttribute("Uid");
 String keyword = request.getParameter("keyword");
-if(keyword != null)
-	keyword = new String(keyword.getBytes("iso-8859-1"), "UTF-8");
 String windowId = request.getParameter("windowid");
 %>
 <html>
@@ -36,6 +34,7 @@ String windowId = request.getParameter("windowid");
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-Control" content="no-cache">
 		<meta http-equiv="Expires" content="Thu, 01 Dec 1994 16:00:00 GMT">
+		<title><%= keyword %></title>
 		<link rel="stylesheet" type="text/css" href="<%= staticContentURL %>/skin/styles.css">
 		<style>
 			body {
