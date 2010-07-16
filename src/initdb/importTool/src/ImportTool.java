@@ -37,7 +37,8 @@ public class ImportTool {
 		FORBIDDENURLS( new ForbiddenUrlsFactory()),
 		GADGET( new GadgetFactory()),
 		ACCOUNT( new AccountFactory()),
-		GADGETICON( new GadgetIconFactory())
+		GADGETICON( new GadgetIconFactory()),
+		OAUTH_CERTIFICATE( new OAuthCertificateFactory())
 		;
 
 		public static final Map<TABLES,String> DIRECTORY_MAP;
@@ -545,5 +546,16 @@ class GadgetIconFactory implements CSVBeanFactory<GadgetIcon> {
 		gadgetIcon.setUrl( values[1].toString() );
 
 		return gadgetIcon;
+	}
+}
+
+class OAuthCertificateFactory implements CSVBeanFactory<OAuthCertificate> {
+	public OAuthCertificate newBean( CSVField[] values ) {
+		OAuthCertificate certificate = new OAuthCertificate();
+		certificate.setConsumerKey(values[0].toString());
+		certificate.setPrivateKey(values[1].toString());
+		certificate.setCertificate(values[2].toString());
+
+		return certificate;
 	}
 }
