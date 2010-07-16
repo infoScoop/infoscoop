@@ -105,12 +105,16 @@ public class OAuthAuthenticator implements Authenticator {
 			String postBodyStr = "";
 			String s = null;
 			while( ( s = br.readLine()) != null){
-				postBodyStr += URLDecoder.decode(s,"UTF-8");
+				postBodyStr += s;
 			}
 			String[] keyvalues = postBodyStr.split("&");
 			for (int i = 0; i < keyvalues.length; i++){
 				String[] keyvalue = keyvalues[i].split("=");
-				params.put(keyvalue[0].trim(), keyvalue[1].trim());
+				String name = URLDecoder.decode(keyvalue[0], "UTF-8")
+						.trim();
+				String value = keyvalue.length > 1 ? URLDecoder.decode(
+						keyvalue[1], "UTF-8").trim() : "";
+				params.put(name, value);
 			}
 			requestBody.reset();
 		}
