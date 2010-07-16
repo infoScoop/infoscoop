@@ -160,7 +160,10 @@ IS_Widget.prototype.classDef = function() {
 			if(!this.title) this.title = "";
 			widgetsXml.title = this.title;
 		}
-		
+
+		if(typeConf.ModulePrefs && typeConf.ModulePrefs.height)
+		  typeConf.height = typeConf.ModulePrefs.height;
+		  
 		this.hasMaximizeView = ( typeConf.Maximize != undefined);
 		
 		if(widgetsXml.href)
@@ -579,6 +582,7 @@ IS_Widget.prototype.classDef = function() {
 		msg.debug(this.id + " build time: " + (end - start));
 		
 		var widgetHeight = typeConf.height;
+		
 		if(isStatic && self.isStaticHeight && (!this.content || !this.content.disableSetSaticWidgetHeight)){
 			if(container){
 				self._setStaticWidgetHeight();
