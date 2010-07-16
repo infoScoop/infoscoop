@@ -1,6 +1,6 @@
 rename table ${SCHEMA_NAME}is_properties to is_properties${BACKUP_TABLE_SUFFIX};
 
-drop index is_properties_advanced on ${SCHEMA_NAME}is_properties${BACKUP_TABLE_SUFFIX};
+rename index ${SCHEMA_NAME}is_properties_advanced to is_properties_advanced${BACKUP_TABLE_SUFFIX};
 
 create table ${SCHEMA_NAME}is_properties (
   id varchar(512) not null primary key,

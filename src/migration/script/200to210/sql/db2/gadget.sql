@@ -1,8 +1,8 @@
-rename table ${SCHEMA_NAME}is_gadgets to is_gadgets${BACKUP_TABLE_SUFFIX};
+rename index ${SCHEMA_NAME}is_gadgets_type to is_gadgets_type${BACKUP_TABLE_SUFFIX};
+rename index ${SCHEMA_NAME}is_gadgets_path to is_gadgets_path${BACKUP_TABLE_SUFFIX};
+rename index ${SCHEMA_NAME}is_gadgets_name to is_gadgets_name${BACKUP_TABLE_SUFFIX};
 
-drop index is_gadgets_type on ${SCHEMA_NAME}is_gadgets${BACKUP_TABLE_SUFFIX};
-drop index is_gadgets_path on ${SCHEMA_NAME}is_gadgets${BACKUP_TABLE_SUFFIX};
-drop index is_gadgets_name on ${SCHEMA_NAME}is_gadgets${BACKUP_TABLE_SUFFIX};
+rename table ${SCHEMA_NAME}is_gadgets to is_gadgets${BACKUP_TABLE_SUFFIX};
 
 create table ${SCHEMA_NAME}is_gadgets (
   id bigint not null generated always as identity (start with 1, increment by 1, no cache) primary key,

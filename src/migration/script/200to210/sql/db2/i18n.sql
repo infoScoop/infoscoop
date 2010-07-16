@@ -1,4 +1,4 @@
-rename table ${SCHEMA_NAME}i18n to is_i18n${BACKUP_TABLE_SUFFIX};
+rename table ${SCHEMA_NAME}is_i18n to is_i18n${BACKUP_TABLE_SUFFIX};
 
 create table ${SCHEMA_NAME}is_i18n (
   type varchar(32) not null,

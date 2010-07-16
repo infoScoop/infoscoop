@@ -1,3 +1,4 @@
+alter table ${SCHEMA_NAME}is_adminRoles drop constraint is_adminRoles_uq;
 rename table ${SCHEMA_NAME}is_adminRoles to is_adminRoles${BACKUP_TABLE_SUFFIX};
 
 create table is_adminRoles (
@@ -9,8 +10,8 @@ create table is_adminRoles (
   constraint is_adminRoles_uq unique (roleid)
 ) compress yes;
 
-insert into ${SCHEMA_NAME}is_adminRoles 
-  select id, roleid, name, permission, allowdelete
+insert into ${SCHEMA_NAME}is_adminRoles(roleid, name, permission, allowdelete) 
+  select roleid, name, permission, allowdelete
   from ${SCHEMA_NAME}is_adminroles${BACKUP_TABLE_SUFFIX};
 
 UPDATE is_adminroles 
