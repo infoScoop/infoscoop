@@ -15,17 +15,17 @@ create table is_oauth_tokens (
 --
 -- OAUTH_CONSUMER
 --
+create sequence is_oauth_consumers_id_seq;
 create table is_oauth_consumers (
+  id number(18) not null primary key,
   gadget_url varchar(1024 BYTE) not null,
   gadget_url_key varchar(255 BYTE) not null,
   service_name varchar(255 BYTE) not null,
   consumer_key varchar(255 BYTE),
   consumer_secret varchar(255 BYTE),
   signature_method varchar(20 BYTE),
-  is_upload number(1) default 0 not null,
-  primary key (gadget_url_key, service_name)
+  is_upload number(1) default 0 not null
 );
-
 --
 -- OAUTH_CERTIFICATE
 --

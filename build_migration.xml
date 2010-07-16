@@ -66,6 +66,9 @@
 		<copy todir="${build.migration}/data/searchengine">
 			<fileset dir="${src.initdb.home}/data/searchengine"/>
 		</copy>
+		<copy todir="${build.migration}/data/oauth_certificate">
+			<fileset dir="${src.initdb.home}/data/oauth_certificate"/>
+		</copy>
 		<antcall target="download-gadgets"/>
 		
 		<copy todir="${build.migration}/sql">

@@ -1,6 +1,7 @@
 alter table ${SCHEMA_NAME}is_adminRoles rename to is_adminRoles${BACKUP_TABLE_SUFFIX};
 alter table ${SCHEMA_NAME}is_adminRoles${BACKUP_TABLE_SUFFIX} rename constraint is_adminRoles_unique to is_adminRoles_unique${BACKUP_TABLE_SUFFIX};
-rename ${SCHEMA_NAME}is_adminRoles_id_seq to is_adminRoles_id_seq${BACKUP_TABLE_SUFFIX};
+ALTER INDEX ${SCHEMA_NAME}is_adminRoles_unique RENAME TO is_adminRoles_unique${BACKUP_TABLE_SUFFIX};
+rename is_adminRoles_id_seq to is_adminRoles_id_seq${BACKUP_TABLE_SUFFIX};
 
 create table is_adminRoles (
   id integer not null primary key,
@@ -11,6 +12,10 @@ create table is_adminRoles (
   constraint is_adminRoles_unique unique (roleid)
 );
 create sequence is_adminRoles_id_seq;
+
+insert into ${SCHEMA_NAME}is_adminRoles 
+  select id, roleid, name, permission, allowdelete
+  from ${SCHEMA_NAME}is_adminroles${BACKUP_TABLE_SUFFIX};
 
 UPDATE is_adminroles 
   SET permission='["menu", "menu_tree", "search", "widget", "defaultPanel", "portalLayout", "i18n", "properties", "proxy", "admins", "forbiddenURL", "authentication"]' 

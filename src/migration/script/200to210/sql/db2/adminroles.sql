@@ -9,6 +9,10 @@ create table is_adminRoles (
   constraint is_adminRoles_uq unique (roleid)
 ) compress yes;
 
+insert into ${SCHEMA_NAME}is_adminRoles 
+  select id, roleid, name, permission, allowdelete
+  from ${SCHEMA_NAME}is_adminroles${BACKUP_TABLE_SUFFIX};
+
 UPDATE is_adminroles 
   SET permission='["menu", "menu_tree", "search", "widget", "defaultPanel", "portalLayout", "i18n", "properties", "proxy", "admins", "forbiddenURL", "authentication"]' 
   WHERE roleid='root'

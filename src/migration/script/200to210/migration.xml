@@ -113,6 +113,7 @@
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_SEARCHENGINES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PORTALLAYOUTS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PROPERTIES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_WIDGETCONFS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_GADGETS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_ADMINROLES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 	</target>
@@ -228,7 +229,9 @@
 	
 	<target name="oauth" depends="clean-oauth">
 		<current.sql src="sql/${DBMS}/oauth.sql"/>
+		<importDel source="data/oauth_certificate/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.OAuthCertificateFactory"/>
 	</target>
+	
 	<target name="clean-oauth" depends="prepare">
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_OAUTH_TOKENS</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_OAUTH_CONSUMERS</sql></exec-sql>
@@ -236,7 +239,7 @@
 	</target>
 	
 	<target name="adminRole" depends="clean-adminRole">
-		<current.sql src="sql/${DBMS}/adminrole.sql"/>
+		<current.sql src="sql/${DBMS}/adminroles.sql"/>
 	</target>
 	<target name="clean-adminRole" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_adminroles</property>
