@@ -1,5 +1,5 @@
-infoScoop OpenSource 2.1.0 RC2
-===============================
+infoScoop OpenSource 2.1.0
+==========================
 
 About infoScoop OpenSource
 --------------------------
@@ -16,7 +16,7 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 
 How to migrate from version 2.0
 -----------------------------
-To migrate from version 2.0 to 2.1 RC2, follow the steps below.
+To migrate from version 2.0 to 2.1, follow the steps below.
 
 [Transfer Data]
 It is strongly recommended that the following steps should be done after backing up the database data.
@@ -74,4 +74,4 @@ LICENSE.txt for licensing and copyright information.
 Changes from Version 2.0.1 to 2.1.0
 -----------------------------------
 Refer to the URL below.
-http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3DMilestone-2.1.0
+http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3AMilestone-2.1.0+label%3ADefect+OR+label%3AMilestone-2.1.0++label%3AEnhancement

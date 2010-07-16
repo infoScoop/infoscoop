@@ -1,5 +1,5 @@
-infoScoop OpenSource 2.1.0 RC2
-===============================
+infoScoop OpenSource 2.1.0
+==========================
 
 infoScoop OpenSourceとは
 ------------------------
@@ -76,4 +76,4 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 2.0.1から2.1.0での変更点
 ------------------------
 以下のURLを参照してください。
-http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3DMilestone-2.1.0
+http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3AMilestone-2.1.0+label%3ADefect+OR+label%3AMilestone-2.1.0++label%3AEnhancement
