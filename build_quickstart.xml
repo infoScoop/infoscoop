@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="infoScoop-2.1.0-quickstart" default="all" basedir=".">
+	<property name="basedir" value="." />
+	<property name="build.home" value="${basedir}/build" />
+	<property name="src.home" value="${basedir}/src" />
+	<property name="src.qs" value="${src.home}/quickstart" />
+	<property name="src.qs.tomcat" value="${src.qs}/tomcat" />
+	<property name="qs.home" value="${build.home}/infoscoop-2.1.0-quickstart" />
+	<property name="qs.tomcat.webapps" value="${qs.home}/apache-tomcat-6.0.28/webapps" />
+
+
+	<target name="all" depends="quickstart" />
+
+	<target name="clean" description="Delete old directory">
+		<delete dir="${qs.home}" />
+	</target>
+
+	<target name="quickstart" depends="clean">
+    	<ant antfile="${basedir}/build.xml"/>
+		<ant antfile="${basedir}/build_initdb.xml"/>
+    	<mkdir dir="${qs.home}" />
+		<copy todir="${qs.home}/initdb">
+			<fileset dir="${build.home}/initdb" />
+		</copy>
+		<copy todir="${qs.home}">
+			<fileset dir="${src.qs}" includes="*.sh" />
+			<fileset dir="${src.qs}" includes="*.bat" />
+			<fileset dir="${src.qs}" includes="*.txt" />
+			<fileset dir="${src.qs}" includes="*.sql" />
+		</copy>
+		<copy todir="${qs.home}" file="${basedir}/gpl-3.0.txt" />
+		<copy todir="${qs.home}" file="${basedir}/lgpl-3.0.txt" />
+		<copy todir="${qs.home}" file="${basedir}/LICENSE.txt" />
+		<unzip src="${src.qs}/apache-tomcat-6.0.28.zip" dest="${qs.home}" />
+		<delete dir="${qs.tomcat.webapps}/docs" />
+		<delete dir="${qs.tomcat.webapps}/examples" />
+		<copy todir="${qs.tomcat.webapps}" file="${build.home}/infoscoop.war" />
+		<fixcrlf srcdir="${qs.home}" eol="lf" eof="remove" includes="**/*.sh" />
+		<copy todir="${qs.home}/apache-tomcat-6.0.28/lib">
+			<fileset dir="${src.qs.tomcat}/lib" />
+		</copy>
+		<copy todir="${qs.home}/apache-tomcat-6.0.28/conf">
+			<fileset dir="${src.qs.tomcat}/conf" />
+		</copy>
+		<copy todir="${qs.home}/apache-tomcat-6.0.28/conf/Catalina/localhost"
+		      file="${src.qs.tomcat}/context/infoscoop.xml" />
+	</target>
+	
+</project>
