@@ -386,7 +386,8 @@ gadgets.rpc = function() {
       } catch (e) {
         // Shouldn't happen due to origin check. Caught to emit
         // more meaningful error to the caller.
-        gadgets.error("Same domain call failed: parent= incorrectly set.");
+        //gadgets.error("Same domain call failed: parent= incorrectly set.");
+        throw e;
       }
 //  }
 
