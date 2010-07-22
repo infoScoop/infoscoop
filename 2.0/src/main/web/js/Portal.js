@@ -743,7 +743,7 @@ IS_Portal.adjustIframeHeight = function(e, iframeObj) {
 IS_Portal.deleteCache = function() {
 	var opt = {
 		method: 'get' ,
-		asynchronous:true,
+		asynchronous:false,
 		onSuccess: function(req){},
 		onFailure: function(t) {
 			msg.warn(IS_R.getResource(IS_R.ms_cacheDeleteFailure,[t.status,t.statusText]));
