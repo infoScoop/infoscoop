@@ -338,9 +338,15 @@ CalendarComponent.prototype = {
 			IS_Event.observe( body,"mouseover",handleMouseOver );
 			IS_Event.observe( body,"mouseout",handleMouseOut );
 			
+			IS_Event.observe( previousMonth,'click',function(e){
+				if( e ) Event.stop( e );
+
+			});
+			IS_Event.observe( nextMonth,'click',function(e){
+				if( e ) Event.stop( e );
+			});
 			IS_Event.observe( previousMonth,'mouseup',self.previousMonth.bindAsEventListener( self ));
 			IS_Event.observe( nextMonth,'mouseup',self.nextMonth.bindAsEventListener( self ));
-			
 			ready = true;
 		}
 		
@@ -397,16 +403,14 @@ CalendarComponent.prototype = {
 		};
 		
 		self.previousMonth = function( e ) {
-			scrollMonth( -1 );
-			
 			if( e )
-				IS_Event.stop( e );
+				Event.stop( e );
+			scrollMonth( -1 );
 		};
 		self.nextMonth = function( e ) {
-			scrollMonth( 1 );
-			
 			if( e )
-				IS_Event.stop( e );
+				Event.stop( e );
+			scrollMonth( 1 );
 		};
 		
 		function updateBody( tBody ) {
