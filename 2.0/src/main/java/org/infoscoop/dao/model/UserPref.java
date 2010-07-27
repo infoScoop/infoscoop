@@ -34,7 +34,7 @@ public class UserPref extends BaseUserPref {
 	public String getValue() {
 		String shortValue = getShortValue();
 		
-		return ( shortValue == null ? getLongValue() : shortValue );
+		return ( "".equals(shortValue) ? getLongValue() : shortValue );
 	}
 	public void setValue( String value ) {
 		int length;
