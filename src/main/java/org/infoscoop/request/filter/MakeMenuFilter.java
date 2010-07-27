@@ -144,6 +144,7 @@ public class MakeMenuFilter extends ProxyFilter {
 		boolean firstItem = true;
 		boolean firstSiteTop = true;
 		boolean close = false;
+		boolean emptySiteTop = false;
 		Stack idStack = new Stack(); 
 		
 		long start = System.currentTimeMillis();
@@ -179,8 +180,14 @@ public class MakeMenuFilter extends ProxyFilter {
 			if(qName.equals("site")||qName.equals("site-top")){
 				//String menuId = (qName.equals("site") || this.siteTopId == null) ? attributes.getValue("id") : this.siteTopId;
 				String menuId = attributes.getValue("id");
+				String title = attributes.getValue("title");
 				
 				if(qName.equals("site-top")){
+					if (menuId == null || title == null){
+						emptySiteTop = true;
+						return;
+					}
+					emptySiteTop = false;
 					if(!firstSiteTop){
 						siteTopArray.append(",");
 					}
@@ -207,7 +214,7 @@ public class MakeMenuFilter extends ProxyFilter {
 				menuItemArray.append(menuId).append(":");
 				menuItemArray.append("{");
 				menuItemArray.append("id:").append( JSONObject.quote(menuId) );
-				String title = I18NUtil.replace( attributes.getValue("title"),resMap );
+				title = I18NUtil.replace(title, resMap);
 				if( title.length() > 80 )
 					title = title.substring(0,80);
 				
@@ -293,7 +300,8 @@ public class MakeMenuFilter extends ProxyFilter {
 		
 		boolean endSiteElement = false;
 		public void endElement(String uri, String localName, String qName) throws SAXException {
-			if(qName.equals("site")||qName.equals("site-top")){
+			if (qName.equals("site")
+					|| (qName.equals("site-top") && !emptySiteTop)) {
 //				if(endSiteElement && !close){
 				if(!close){
 					menuItemArray.append("}");
