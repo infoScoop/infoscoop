@@ -359,7 +359,7 @@ IS_Portal.SearchEngines = {
 			$.DIV(
 				{style:"margin:5px;"},
 				$.INPUT(
-					{id:"displaySearchResultsOnNewWindow",type:'checkbox', defaultChecked:this.searchOption.displayNewWindow }),
+					{id:"displaySearchResultsOnNewWindow",type:'checkbox' }),
 					IS_R.lb_searchResultsOnNewWindow
 				 )
 			);
@@ -376,7 +376,7 @@ IS_Portal.SearchEngines = {
 		for(var i = 0; i < configs.length;i++){
 			var searchId = configs[i].getAttribute("id");
 			var title = configs[i].getAttribute("title");
-			selectsearchsitediv.appendChild($.DIV({},$.INPUT({type:'checkbox', value:searchId, defaultChecked:this._selectedList.include(searchId) }),title));
+			selectsearchsitediv.appendChild($.DIV({},$.INPUT({id:'searchEnableOption' + searchId, type:'checkbox', value:searchId }),title));
 		}
 		searchTd.appendChild(searchoption);
 
@@ -407,6 +407,14 @@ IS_Portal.SearchEngines = {
 		closer.style.height = winY;
 		closer.style.display = "";
 
+		var displaySearchResultsOnNewWindow = $('displaySearchResultsOnNewWindow');
+		displaySearchResultsOnNewWindow.defaultChecked = displaySearchResultsOnNewWindow.checked = this.searchOption.displayNewWindow;
+		var configs = this._searchEngineConfigEls;
+		for(var i = 0; i < configs.length;i++){
+			var searchId = configs[i].getAttribute("id");
+			var searchOption = $('searchEnableOption' + searchId);
+			searchOption.defaultChecked = searchOption.checked = this._selectedList.include(searchId);
+		}
 		var searchOptionSpan = $('searchoption');
 		Element.show(searchOptionSpan);
 		IS_Portal.behindIframe.show(searchOptionSpan);
@@ -529,6 +537,7 @@ IS_Portal.SearchEngines = {
 			if(searchSiteCheckBoxList[i].checked){
 				selectSiteList.push(searchId);
 				var args = this._searchEngineConfs[searchId];
+				console.log(searchId,args);
 				if(!searchEngine)
 				    searchEngine = new IS_SearchEngine(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8],args[9]) ;
 				newSearchEngines.push(searchEngine);
