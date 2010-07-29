@@ -104,3 +104,4 @@ Changes from Version 2.1.0 to 2.1.1
 -----------------------------------
 Refer to the URL below.
 https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.1.1
+http://code.google.com/p/infoscoop-gadgets/issues/list?can=1&q=milestone=Release1.0.4

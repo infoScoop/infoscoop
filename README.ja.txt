@@ -110,3 +110,4 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 ------------------------
 以下のURLを参照してください。
 https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.1.1
+http://code.google.com/p/infoscoop-gadgets/issues/list?can=1&q=milestone=Release1.0.4
