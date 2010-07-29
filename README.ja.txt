@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.1.0
+infoScoop OpenSource 2.1.1
 ==========================
 
 infoScoop OpenSourceとは
@@ -8,7 +8,8 @@ infoScoop OpenSourceとは
 を実現し、個人の情報処理スキルやワークスタイルに合わせた 「使いたくなる」 ポータ
 ルを実現します。
 
-詳細な説明は、以下のinfoScoop OpenSource公式サイトを参照ください。http://www.infoscoop.org/
+詳細な説明は、以下のinfoScoop OpenSource公式サイトを参照ください。
+http://www.infoscoop.org/
 
 バージョン2.0からの移行手順
 -----------------------------
@@ -61,10 +62,41 @@ $ cleanup_temp_table.bat(sh)
 2. 静的コンテンツを設定している場合は、静的コンテンツを入れ替えます。
   静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
 
+
+バージョン2.1からの移行手順
+-----------------------------
+2.1から本バージョンに移行するには以下の手順を実行します。
+
+1. データベース内のガジェットを置き換え、国際化リソースを追加します。
+
+  (1). SQL実行ツールを開きます。
+  (2). 以下のSQLコマンドを実行します。
+     > delete from IS_GADGETS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
+     > delete from IS_GADGET_ICONS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
+  (3). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
+  (4). 適切なJDBCドライバーをlibディレクトリにコピーします。
+  (5). 以下のコマンドを実行します。
+     >import.sh(bat) GADGET,GADGETICON,I18N
+
+  ※上記手順を実行すると、以下のガジェットの設定が初期化されます。
+    * calc
+    * todoList
+    * alarm
+    * blogparts
+    * sticky
+    * worldclock
+
+2. 静的コンテンツを設定している場合は、静的コンテンツを入れ替えます。
+  静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
+
+3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
+
+
 インストール方法
 ----------------
 以下のURLを参照してください。
 http://www.infoscoop.org/index.php/manual/quick-start.html
+
 
 ライセンス・著作権
 ------------------
@@ -73,7 +105,8 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 ライセンスに基づいて公開します。
 ライセンスおよびコピーライト情報は LICENSE.txt を参照ください。
 
-2.0.1から2.1.0での変更点
+
+2.1.0から2.1.1での変更点
 ------------------------
 以下のURLを参照してください。
-http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3AMilestone-2.1.0+label%3ADefect+OR+label%3AMilestone-2.1.0++label%3AEnhancement
+https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.1.1
