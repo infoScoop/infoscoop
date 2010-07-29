@@ -43,6 +43,8 @@ gadgets.rpc.register("set_title",function( title ) {
 	if( widget.authToken != this.t ) return;
 	
 	title = title.replace(/^\s*(.+)\s*$/,"$1");
+	if(title.length > 80)
+		title = title.substring(0, 80);
 	
 	if( title != widget.title ){
 		widget.title = title;

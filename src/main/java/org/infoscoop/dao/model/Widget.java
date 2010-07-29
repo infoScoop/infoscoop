@@ -179,4 +179,11 @@ public class Widget extends BaseWidget {
 	public String getMenuid() {
 		return StringUtil.getNullSafe( super.getMenuid() );
 	}
+	
+	@Override
+	public void setTitle(String title) {
+		if (title.length() > 80)
+			title = title.substring(0, 80);
+		super.setTitle(title);
+	}
 }
