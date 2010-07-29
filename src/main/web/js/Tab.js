@@ -433,7 +433,7 @@ IS_Portal.showTabMenu = function(tabElement, e){
 		menuDiv.appendChild( resetColumnWidthDiv );
 
 		var initTab = function(tabId){
-			if( !confirm( IS_R.ms_clearConfigurationConfirm ))
+			if( !confirm( IS_R.ms_clearTabConfigurationConfirm ))
 				return;
 			
 			IS_Request.asynchronous = false;
