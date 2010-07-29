@@ -133,7 +133,14 @@ public class ProxyRequest{
     private String redirectURL;
     
     private OAuthConfig oauthConfig;
-	public ProxyRequest( String url, String filterType){
+    
+    private String targetJSessionId;
+    
+    public String getTargetJSessionId() {
+		return targetJSessionId;
+	}
+
+    public ProxyRequest( String url, String filterType){
         this.filterType = filterType;
         this.originalURL = url;
 		this.escapedOriginalURL = escapeURL( this.originalURL );
@@ -621,7 +628,7 @@ public class ProxyRequest{
 				String[] nameValue = cookies[i].split("=");
 				if(nameValue.length != 2)continue;
 				if("JSESSIONID".equals(nameValue[0].trim())){
-					return;
+					this.targetJSessionId = nameValue[1].trim();
 				}
 			}
 		}
