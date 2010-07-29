@@ -166,7 +166,7 @@ gadgets.window = gadgets.window || {};
         !isNaN(newHeight) &&
         !(heightAutoCalculated && newHeight === 0)) {
       oldHeight = newHeight;
-      gadgets.rpc.call(null, "resize_iframe", null, newHeight);
+      gadgets.rpc.call(null, "resize_iframe", null, newHeight, heightAutoCalculated);
     }
   };
 }());

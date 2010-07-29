@@ -1,4 +1,4 @@
-gadgets.rpc.register("resize_iframe",function( height ) {
+gadgets.rpc.register("resize_iframe",function( height, heightAutoCalculated ) {
 	var widget = IS_Portal.getWidget( this.mid,this.tid );
 	if( widget.authToken != this.t ) return;
 	if(widget.isStaticHeight) return;
@@ -12,6 +12,8 @@ gadgets.rpc.register("resize_iframe",function( height ) {
 	
 	if( height <= 0 )
 		height = 1;
+	
+	widget.adjustHeightAuto = heightAutoCalculated;
 	
 	iframe.style.height = height;
 });

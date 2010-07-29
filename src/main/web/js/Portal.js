@@ -1789,7 +1789,8 @@ IS_Portal._adjustGadgetHeight = function( gadget,swap ){
 			
 			var module = IS_Widget.getConfiguration( gadget.widgetType );
 			if( module && module.ModulePrefs && module.ModulePrefs.Require &&
-				module.ModulePrefs.Require["dynamic-height"] ) {
+				module.ModulePrefs.Require["dynamic-height"] &&
+				gadget.adjustHeightAuto ) {
 				return gadgets.rpc.call( gadget.iframe.name,"adjustHeight");
 			} else {
 				return;
