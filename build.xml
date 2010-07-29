@@ -553,6 +553,12 @@
 			encoding="UTF-8"/>
 		<replaceregexp
 			file="${build.main}/index.jsp"
+			match="&quot;([^&quot;]+)\.js(\?.*)&quot;"
+			replace="&quot;\1.js\2&amp;${build.timestamp}&quot;"
+			flags="mg"
+			encoding="UTF-8"/>
+		<replaceregexp
+			file="${build.main}/index.jsp"
 			match="(href=&quot;[^&quot;]+)\.css&quot;"
 			replace="\1.css?${build.timestamp}&quot;"
 			flags="mg"
