@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.0.3
+infoScoop OpenSource 2.0.4
 ==========================
 
 What is it?
@@ -14,12 +14,31 @@ Please refer to the following URL.
 http://www.infoscoop.org/index.php/manual/quick-start.html
 
 
-How to update to 2.0.3 from an older version.
+How to update to 2.0.4 from an older version.
 -----------------------------------------
-1. If static content URL is set, replacement of the static content files is necessary.
-   Replace the directory where static contents are currently stored to 'infoscoop/staticContent' directory.
+1. Replace gadget files in the repository database and update i18n resources.
 
-2. Redeploy infoscoop.war to WebApplication Server.
+  (1). Open SQL executable tool.
+  (2). Execute following SQL command.
+     > delete from IS_GADGETS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
+     > delete from IS_GADGET_ICONS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
+  (3). Open command pronpt, change directory to tools/initdb
+  (4). Copy the suitable JDBC Driver to lib dir.
+  (5). Execute following command:
+     >import.sh(bat) GADGET,GADGETICON,I18N
+
+  [Warning]Executing steps above, following gadgets settings is initialized:
+    * calc
+    * todoList
+    * alarm
+    * blogparts
+    * sticky
+    * worldclock
+
+2. if the static content URL is set, replacement of  the static content files is necessary.
+  Replace the directory where static contents are stored currently to 'infoscoop/staticContent' directory.
+
+3. Redeploy infoscoop.war to WebApplication Server.
 
 
 Licensing and Copyright
@@ -29,7 +48,8 @@ This code is licensed under the **GNU Lesser General Public License (LGPL) v3**.
 LICENSE.txt for licensing and copyright information.
 
 
-Changes from 2.0.2 to current 2.0.3 version.
+Changes from 2.0.3 to current 2.0.4 version.
 --------------------------------------------
 Please refer to the following URL.
-http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3DMilestone-2.0.3
+http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3DMilestone-2.0.4
+http://code.google.com/p/infoscoop-gadgets/issues/list?can=1&q=milestone=Release1.0.4
