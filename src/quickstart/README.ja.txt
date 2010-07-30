@@ -10,9 +10,18 @@ infoScoop OpenSourceとは
 
 詳細な説明は、以下のinfoScoop OpenSource公式サイトを参照ください。http://www.infoscoop.org/
 
+
+前提条件
+----------------
+infoScoop OpenSourceのセットアップを行う前に、以下の準備が必要です。
+
+・JDK 5.0
+・MySQL 5.1
+
+
 セットアップ方法
 ----------------
-infoscoop-2.1.0-quickstart.zipを解凍し以下の手順を実行してください。
+infoscoop-2.1.0-quickstart.zip(tar.gz)を解凍し以下の手順を実行してください。
 
 1. リポジトリデータベースの作成
 
@@ -27,7 +36,9 @@ mysql>exit
 
 以下のコマンドを実行し、作成したデータベースに初期データを投入します。
 
-$ mysql -uroot iscoop < infoscoop-2.1.0-quickstart/init_infoscoop.sql
+$ mysql -uroot iscoop < infoscoop-2.1.0-quickstart/init_infoscoop.ja.sql
+
+* init_infoscoop.sql を選択した場合はメニュー等のサンプル設定が英語になります。
 
 3. データベース接続設定
 
@@ -65,10 +76,23 @@ http://<ホスト名>:8080/infoscoop/
 
 ログイン画面が表示されます。初期状態ではユーザはadmin/adminのみです。
 
-ユーザの追加は管理画面から行います。
-管理画面は以下のアドレスを表示し、ユーザを追加してください。
 
-http://<ホスト名>:8080/infoscoop/admin
+ユーザの追加方法
+----------------
+1. import.csv の編集
+
+以下のファイルを編集します。
+
+infoscoop-2.1.0-quickstart/initdb/data/accounts/import.csv
+
+<ユーザID>,<ユーザ名>,<パスワード> の形式でユーザを追加します。
+
+2. addaccount.bat(sh) の実行
+
+initdbディレクトリに移動し、addaccount.bat(sh)を実行します。
+
+$ cd infoscoop-2.1.0-quickstart/initdb
+$ addaccount.bat(sh)
 
 
 ライセンス・著作権

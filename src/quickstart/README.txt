@@ -8,14 +8,17 @@ About infoScoop OpenSource
 For more information, please see the infoScoop OpenSource website at http://www.infoscoop.org/.
 
 
-How to Install
----------------
-Refer to the URL below.
-http://www.infoscoop.org/index.php/manual/quick-start.html
+Installation Requirements
+----------------
+These are requirements that needs before the setup of infoScoop OpenSource.
+
+・JDK 5.0
+・MySQL	5.1
+
 
 How to Setup
 ----------------
-Unzip infoscoop-2.1.0-quickstart.zip and follow the steps below.
+Unzip infoscoop-2.1.0-quickstart.zip(tar.gz) and follow the steps below.
 
 1. Create Repository Database
 
@@ -27,9 +30,11 @@ mysql>exit
 
 2. Import Initial Data to Repository Database
 
-execute the following commands which inserts initial data to the created database.
+Execute the following commands which inserts initial data to the created database.
 
 $ mysql -uroot iscoop < infoscoop-2.1.0-quickstart/init_infoscoop.sql
+
+* Choose 'init_info_infoscoop.ja.sql' file, if you want Japanese sample settings.
 
 3. Settings of database
 
@@ -47,19 +52,19 @@ Change Resource element of GlobalNamingResources element.
   When connecting to a MySQL server of an another server,change "localhost" to a proper host name.
   Besides, If default port is not used, "3306" must be changed to proper value as well.
 
-4. Start up infoScoop OpenScorce Server
+4. Start up infoScoop OpenSource Server
 
 Execute the following command.
 
 $ startup.bat(sh)
 
-That is how to setup infoScoop OpenScorce Quickstart.
+That is how to setup infoScoop OpenSource Quickstart.
 
 To stop it, execute the following command.
 
 $ shutdown.bat(sh)
 
-5. Startup infoScoop OpenScorce
+5. Startup infoScoop OpenSource
 
 Start a browser, and access to the following url.
 
@@ -67,10 +72,25 @@ http://<hostname>:8080/infoscoop/
 
 The login page is displayed. The user is only admin/admin in the initial state.
 
-New users can be added at the administration page.
-To display the administration screen, access to the following url.
 
-http://<hostname>:8080/infoscoop/admin
+How to Add Users
+---------------
+1. Edit import.csv
+
+Edit the following file.
+
+infoscoop-2.1.0-quickstart/initdb/data/accounts/import.csv
+
+Add new users with the following format.
+
+<USER_ID>,<USER_NAME>,<PASSWORD>
+
+2. Execute addaccount.bat(sh)
+
+Move to 'initdb' directory, and execute 'addaccount.bat(sh)' file.
+
+$ cd infoscoop-2.1.0-quickstart/initdb
+$ addaccount.bat(sh)
 
 
 License and Copyright

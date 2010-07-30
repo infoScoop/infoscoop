@@ -2,6 +2,7 @@
 <project name="infoScoop-2.1.0-quickstart" default="all" basedir=".">
 	<property name="basedir" value="." />
 	<property name="build.home" value="${basedir}/build" />
+	<property name="dist.home" value="${basedir}/dist" />
 	<property name="src.home" value="${basedir}/src" />
 	<property name="src.qs" value="${src.home}/quickstart" />
 	<property name="src.qs.tomcat" value="${src.qs}/tomcat" />
@@ -9,7 +10,7 @@
 	<property name="qs.tomcat.webapps" value="${qs.home}/apache-tomcat-6.0.28/webapps" />
 
 
-	<target name="all" depends="quickstart" />
+	<target name="all" depends="quickstart,archive-quickstart" />
 
 	<target name="clean" description="Delete old directory">
 		<delete dir="${qs.home}" />
@@ -21,6 +22,7 @@
     	<mkdir dir="${qs.home}" />
 		<copy todir="${qs.home}/initdb">
 			<fileset dir="${build.home}/initdb" />
+			<fileset dir="${src.qs}" includes="addaccount.*" />
 		</copy>
 		<copy todir="${qs.home}">
 			<fileset dir="${src.qs}" includes="*.sh" />
@@ -28,6 +30,9 @@
 			<fileset dir="${src.qs}" includes="*.txt" />
 			<fileset dir="${src.qs}" includes="*.sql" />
 		</copy>
+		<delete>
+			<fileset dir="${qs.home}" includes="addaccount.*" />
+		</delete>
 		<copy todir="${qs.home}" file="${basedir}/gpl-3.0.txt" />
 		<copy todir="${qs.home}" file="${basedir}/lgpl-3.0.txt" />
 		<copy todir="${qs.home}" file="${basedir}/LICENSE.txt" />
@@ -46,4 +51,19 @@
 		      file="${src.qs.tomcat}/context/infoscoop.xml" />
 	</target>
 	
+	<target name="archive-quickstart" >
+		<zip compress="true" destfile="${dist.home}/infoscoop-2.1.0-quickstart.zip" basedir="${qs.home}"/>
+    	<tar destfile="${dist.home}/infoscoop-2.1.0-quickstart.tar.gz" compression="gzip">
+    		<tarfileset dir="${qs.home}" mode="755">
+				<include name="**/*.sh"/>
+			</tarfileset>
+    		<tarfileset dir="${qs.home}">
+				<exclude name="**/*.sh"/>
+<!--
+				<exclude name="*.zip"/>
+-->
+			</tarfileset>
+    	</tar>
+	</target>
+			
 </project>
