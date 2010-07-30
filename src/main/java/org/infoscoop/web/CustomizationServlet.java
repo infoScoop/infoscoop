@@ -124,7 +124,7 @@ public class CustomizationServlet extends HttpServlet {
 				value = "";
 
 			if("commandbar".equals(key.toLowerCase())){
-				layoutJson.put("commandbar", value);
+				layoutJson.put("commandbar", applyFreemakerTemplate(root, value));
 			}else {
 				layoutJson.put("staticPanel" + key, value);
 			}
@@ -175,25 +175,36 @@ public class CustomizationServlet extends HttpServlet {
 					layout = "";
 			}
 
-			try {
-				Writer out = new StringWriter();
-				Template t = new Template("portalLayout_template", new StringReader( layout ) ,cfg);
+			layout = applyFreemakerTemplate(root, layout);
+			layoutJson.put( name,(isIframeToolBar)? new JSONArray(layout) : layout );
+		}
 
-				t.setTemplateExceptionHandler(
+		return "IS_Customization = " + layoutJson.toString() + ";";
+	}
+
+	private String applyFreemakerTemplate(Map<String, Object> root, String value)  {
+		try {
+
+			Writer out = new StringWriter();
+			Template t = new Template("portalLayout_template", new StringReader( value ) ,cfg);
+
+			t.setTemplateExceptionHandler(
 					new TemplateExceptionHandler() {
 						public void handleTemplateException(TemplateException templateexception, Environment environment, Writer writer){
 							log.error("--- templete error occurred", templateexception);
 						}
-				});
-				t.process( root, out );
+					});
+			t.process( root, out );
 
-				layoutJson.put(name, (isIframeToolBar)? new JSONArray(out.toString()) : out.toString() );
-			} catch( freemarker.core.ParseException ex ) {
-				layoutJson.put( name,(isIframeToolBar)? new JSONArray(layout) : layout );
-			}
+			return out.toString();
+		} catch( freemarker.core.ParseException e ) {
+			log.error("--- templete error occurred", e);
+		} catch (TemplateException e) {
+			log.error("--- templete error occurred", e);
+		} catch (IOException e) {
+			log.error("--- templete error occurred", e);
 		}
-
-		return "IS_Customization = " + layoutJson.toString() + ";";
+		return value;
 	}
 
 }
