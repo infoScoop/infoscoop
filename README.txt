@@ -77,7 +77,7 @@ To migrate from version 2.1.0 to 2.1.1, follow the steps below.
   (3). Open command pronpt, change directory to tools/initdb
   (4). Copy the suitable JDBC Driver to lib dir.
   (5). Execute following command:
-     >import.sh(bat) GADGET,GADGETICON,I18N
+     >import.sh(bat) GADGET GADGETICON I18N
 
   [Warning]Executing steps above, following gadgets settings is initialized:
     * calc
