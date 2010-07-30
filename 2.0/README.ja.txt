@@ -20,12 +20,13 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 
   (1). SQL実行ツールを開きます。
   (2). 以下のSQLコマンドを実行します。
+     > delete from IS_I18NLOCALES
      > delete from IS_GADGETS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
      > delete from IS_GADGET_ICONS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
   (3). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
   (4). 適切なJDBCドライバーをlibディレクトリにコピーします。
   (5). 以下のコマンドを実行します。
-     >import.sh(bat) GADGET GADGETICON I18N
+     >import.sh(bat) GADGET GADGETICONI 18NLOCALE I18N
 
   ※上記手順を実行すると、以下のガジェットの設定が初期化されます。
     * calc
