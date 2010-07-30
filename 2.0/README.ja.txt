@@ -25,7 +25,7 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
   (3). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
   (4). 適切なJDBCドライバーをlibディレクトリにコピーします。
   (5). 以下のコマンドを実行します。
-     >import.sh(bat) GADGET,GADGETICON,I18N
+     >import.sh(bat) GADGET GADGETICON I18N
 
   ※上記手順を実行すると、以下のガジェットの設定が初期化されます。
     * calc
@@ -51,5 +51,5 @@ LICENSE.txt for licensing and copyright information.
 2.0.3から2.0.4での変更点
 ------------------------
 以下のURLを参照してください。
-http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3DMilestone-2.0.3
+http://code.google.com/p/infoscoop/issues/list?can=1&q=label%3DMilestone-2.0.4
 http://code.google.com/p/infoscoop-gadgets/issues/list?can=1&q=milestone=Release1.0.4
