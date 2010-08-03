@@ -26,7 +26,7 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
   (3). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
   (4). 適切なJDBCドライバーをlibディレクトリにコピーします。
   (5). 以下のコマンドを実行します。
-     >import.sh(bat) GADGET GADGETICONI 18NLOCALE I18N
+     >import.sh(bat) GADGET GADGETICON 18NLOCALE I18N
 
   ※上記手順を実行すると、以下のガジェットの設定が初期化されます。
     * calc
