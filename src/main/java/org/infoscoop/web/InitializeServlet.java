@@ -1,15 +1,15 @@
 /* infoScoop OpenSource
  * Copyright (C) 2010 Beacon IT Inc.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3
  * as published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Security;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -55,7 +56,7 @@ public class InitializeServlet extends HttpServlet {
 	 * It is a precondition to operate a servlet that a file of DAO setting (/WEB-INF/conf/dao-config.xml) is set definitely.
 	 */
 	public void init(ServletConfig config) throws ServletException {
-		
+
 		initLog4jProperties(config);
 		//loadDAOConfig(config);
 		initVelocity(config);
@@ -63,6 +64,7 @@ public class InitializeServlet extends HttpServlet {
 		ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
 		SpringUtil.setContext(ctx);
 		initSearchUserService();
+		Locale.setDefault(new Locale("en"));
 		Security.setProperty("networkaddress.cache.ttl", "60");
 	}
 

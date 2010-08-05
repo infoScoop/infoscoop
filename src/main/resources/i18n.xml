@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean name="messageSource"
+        class="org.infoscoop.util.ISResourceBundleMessageSource">
+    <property name="basenames">
+      <list>
+        <value>i18n_adminjs</value>
+        <value>i18n_js</value>
+      </list>
+    </property>
+  </bean>
+
+</beans>
