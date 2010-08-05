@@ -1,0 +1,53 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
+
+.infoScoop .adjustMiniBrowserBarOver,
+.infoScoop .adjustMiniBrowserBarOut {
+	position: relative;
+	display: block;
+	cursor: row-resize;
+	text-align: center;
+	background-color: #EEE;
+	_font-size: 0px;
+	padding-top: 1px;
+	height: 7px;
+	text-align: center;
+	border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	overflow:hidden;
+}
+.infoScoop .handleSideBar {
+    border-top: 1px solid #CCC;
+}
+.infoScoop .adjustMiniBrowserBarOver {
+}
+.infoScoop .adjustMiniBrowserBarOut {
+}
+
+.infoScoop .adjustMiniBrowserBarOver .adjustMiniBrowserBarHandle,
+.infoScoop .adjustMiniBrowserBarOut .adjustMiniBrowserBarHandle {
+	display: inline-block;
+	_display: inline;
+	position: relative;
+	height: 6px;
+	width: 64px;
+	background: url(./imgs/adjust-bar-handle.gif) top center no-repeat;
+	_overflow: hidden;
+	top: -1px;
+}

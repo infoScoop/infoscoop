@@ -1,0 +1,10 @@
+<Context path="/infoscoop" reloadable="false" >
+        <Resource name="jdbc/infoscoop"
+                  auth="Container"
+                  type="javax.sql.DataSource"
+                  driverClassName="com.mysql.jdbc.Driver"
+                  url="jdbc:mysql://localhost:3306/iscoop"
+                  username="root"
+                  password=""
+                  validationQuery="select 1" />
+</Context>

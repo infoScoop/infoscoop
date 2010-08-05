@@ -1,1 +1,0 @@
-alter table ${SCHEMA_NAME}.portaladmins rename to portaladmins@BACKUP_TABLE_SUFFIX@;

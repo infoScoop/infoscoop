@@ -1,0 +1,251 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
+
+.infoScoop #portal-command{
+}
+
+.infoScoop #portal-command .command,
+.infoScoop #modal_container.preference .preferenceClose.command{
+	font-size: 13px;
+	margin-right: 3px;
+	white-space:nowrap;
+	cursor:pointer;
+	color:#7777cc;
+}
+
+.infoScoop #portal-command div.toppage {
+	background:url(./imgs/house.gif) top left no-repeat !important;
+	margin:2px;
+	height:16px;
+	cursor:pointer;
+	padding-left:18px;
+}
+.infoScoop #portal-command a.command.manual img {
+	border: none;
+	cursor:pointer;
+}
+
+.infoScoop #portal-command div.ranking.command {
+	background:url(./imgs/award_star_gold_1.gif) top left no-repeat;
+	margin:2px;
+	height:16px;
+	cursor:pointer;
+	padding-left:18px;
+}
+
+.infoScoop #portal-command #portal-logout {
+	background:	url(./imgs/door_in.gif) top left no-repeat;
+	margin:2px;
+	height:16px;
+	cursor:pointer;
+	padding-left:18px;
+}
+
+.infoScoop #portal-command .fontChange_large {
+	background:url(./imgs/font.gif) bottom left no-repeat;
+	width:16px;
+	height:16px;
+	float:left;
+	cursor:pointer;
+	margin:0;
+}
+
+.infoScoop #portal-command .fontChange_small {
+	background:url(./imgs/font_s.gif) bottom left no-repeat;
+	width:10px;
+	height:16px;
+	float:left;
+	cursor:pointer;
+	margin:0px;
+}
+
+.infoScoop #portal-command .fontChange_standard {
+	background:url(./imgs/font_m.gif) bottom left no-repeat;
+	width:13px;
+	height:16px;
+	float:left;
+	cursor:pointer;
+	margin:0px;
+}
+
+/* Trash */
+
+.infoScoop #portal-command .trashIcon {
+	background:url(./imgs/trash.gif) top left no-repeat;
+	width:16px;
+	/*margin:2px 2px 2px 2px;*/
+	height:16px;
+	cursor:pointer;
+}
+.infoScoop .trashContainer {
+	width:100%;
+}
+.infoScoop .trashContainer .trashHeader {
+	border-bottom:1px solid gray;
+	padding-bottom:2px;
+}
+.infoScoop .trashContainer .trashHeader .trashIcon{
+	cursor:auto;
+}
+.infoScoop .trashContainer .trashTitle{
+	float:left;
+}
+.infoScoop .trashContainer .trashHeaderMenu{
+	cursor:pointer;
+}
+.infoScoop .trashContainer td,
+.infoScoop .trashContainer th{
+	font-size:80%;
+	white-space:nowrap;
+}
+.infoScoop .trashContainer th{
+	border:1px solid gray;
+}
+.infoScoop .trashContainer .trashTable{
+	width:100%;
+	table-layout:fixed;
+}
+.infoScoop .trashContainer .trashTable td {
+	overflow: hidden;
+}
+.infoScoop #trashContext table{
+	border:1px solid gray;
+	background-color:#FFF;
+}
+.infoScoop #trashContext td{
+	cursor:pointer;
+	font-size:80%;
+}
+.infoScoop .trashContainer .trashSelectedWidget{
+	background-color:#008;
+	color:#FFF;
+}
+.infoScoop .trashContainer .trashSelectedMenu {
+	background-color:#008;
+	color:#FFF;
+}
+
+/* Preference */
+
+.infoScoop #portal-command div.allPreference {
+	background:url(./imgs/wrench.gif) top left no-repeat;
+	width:16px;
+	margin:2px 2px 2px 2px;
+	height:16px;
+	cursor:pointer;
+}
+
+.infoScoop #modal_container.preference {
+	height:auto;
+	overflow:visible;
+}
+
+.infoScoop #modal_container.preference .preferenceClose {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+
+.infoScoop #modal_container.preference .preferenceTable {
+/*	width:400px;*/
+	min-height:100px;
+	padding:10px;
+	height:auto;
+}
+.infoScoop #modal_container.preference .preferenceTable {
+	height: 100px;
+}
+
+.infoScoop #modal_container.preference .preferenceTable td{
+	font-size:13px;
+	vertical-align:top;
+}
+
+.infoScoop #modal_container.preference .preferenceHeader {
+	position: relative;
+}
+.infoScoop #modal_container.preference .preferencePage {
+}
+
+.infoScoop #modal_container.preference .preferencePage fieldset {
+	padding: 5px;
+}
+
+.infoScoop #modal_container.preference .preferencePage .preferenceMenu{
+	height:100%;
+	vertical-align:top;
+}
+
+.infoScoop #modal_container.preference .preferencePage .preferenceMenu div{
+	cursor:pointer;
+	height:30px;
+	font-size: 13px;
+	color:#7777cc;
+}
+
+.infoScoop #modal_container.preference .preferencePage .preferenceMenu span{
+	position:relative;
+	top:8px;
+}
+
+.infoScoop #modal_container.preference .preferencePage fieldSet{
+	margin-bottom:8px;
+}
+
+.infoScoop #modal_container.preference .preferencePage .pageTitle{
+	border-bottom:1px solid #DDDDDD;
+	margin-bottom:0.3em;
+}
+
+.infoScoop #modal_container.preference .preferencePage .option .rightTd{
+	text-align:right;
+}
+
+
+.infoScoop .authCredentialListIcon {
+	background:url(./imgs/page_user.gif) top left no-repeat;
+	width:16px;
+	height:16px;
+	cursor:pointer;
+}
+
+.infoScoop .authCredentialInfoList{
+	width:100%;
+}
+.infoScoop .authCredentialInfoList .authCredentialInfoList table{
+	width:100%;
+}
+.infoScoop .authCredentialInfoList .authCredentialInfoTable th{
+	border:1px solid gray;
+}
+
+.infoScoop .authCredentialInfoList .authCredentialInfoTitle{
+	padding:2px;
+	font-size :90%;
+	color:gray;
+}
+
+.infoScoop .authCredentialInfoList .authCredentialListTable{
+	width:100%;
+}
+.infoScoop .authCredentialInfoList .authCredentialListLightTd{
+	background-color: #eeeeee;
+	font-size:80%;
+	text-align:right;
+	vertical-align:top;
+}

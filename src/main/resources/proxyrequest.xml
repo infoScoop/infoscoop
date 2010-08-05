@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+<bean id="basicAuthenticator" class="org.infoscoop.request.BasicAuthenticator" />
+<bean id="ntlmAuthenticator" class="org.infoscoop.request.NTLMAuthenticator">
+	<property name="domainController"><value>domain_controller_host_name</value></property>
+</bean>
+<bean id="postCredentialAuthenticator" class="org.infoscoop.request.PostCredentialAuthenticator">
+	<property name="uidParamName"><value>is-user</value></property>
+	<property name="pwdParamName"><value>is-passwd</value></property>
+</bean>
+<bean id="postPortalCredentialAuthenticator" class="org.infoscoop.request.PostPortalCredentialAuthenticator">
+	<property name="uidParamName"><value>is-user</value></property>
+</bean>
+<bean id="sendPortalCredentialHeaderAuthenticator" class="org.infoscoop.request.SendPortalCredentialHeaderAuthenticator" >
+	<property name="uidHeaderName"><value>is-user</value></property>
+</bean>
+<bean id="oauthAuthenticator" class="org.infoscoop.request.OAuthAuthenticator">
+</bean>
+<bean id="signedAuthenticator" class="org.infoscoop.request.SignedAuthenticator">
+</bean>
+<bean id="g_basicAuthenticator" class="org.infoscoop.request.BasicAuthenticator">
+	<constructor-arg index="0"><value type="int">-1</value></constructor-arg>
+</bean>
+<bean id="g_postPortalCredentialAuthenticator" class="org.infoscoop.request.PostPortalCredentialAuthenticator">
+	<property name="uidParamName"><value>is-user</value></property>
+</bean>
+<bean id="g_sendPortalCredentialHeaderAuthenticator" class="org.infoscoop.request.SendPortalCredentialHeaderAuthenticator" >
+	<property name="uidHeaderName"><value>is-user</value></property>
+</bean>
+<bean id="rssFilter" class="org.infoscoop.request.filter.RssFilter" ></bean>
+<bean id="RssReader" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="rssFilter"/></list>
+  </property>
+</bean>
+<bean id="feedJsonFilter" class="org.infoscoop.request.filter.FeedJsonFilter" ></bean>
+<bean id="FeedJson" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="rssFilter"/><ref bean="feedJsonFilter"/></list>
+  </property>
+</bean>
+<bean id="nekoFilter" class="org.infoscoop.request.filter.NekoFilter" ></bean>
+<bean id="Neko" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="nekoFilter"/></list>
+  </property>
+</bean>
+<bean id="noOperationFilter" class="org.infoscoop.request.filter.NoOperationFilter" ></bean>
+<bean id="NoOperation" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="noOperationFilter"/></list>
+  </property>
+</bean>
+<bean id="calendarFilter" class="org.infoscoop.request.filter.CalendarFilter" ></bean>
+<bean id="Calendar" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="calendarFilter"/></list>
+  </property>
+</bean>
+<bean id="makeMenuFilter" class="org.infoscoop.request.filter.MakeMenuFilter" ></bean>
+<bean id="MakeMenu" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="makeMenuFilter"/></list>
+  </property>
+</bean>
+<bean id="urlReplaceFilter" class="org.infoscoop.request.filter.URLReplaceFilter" ></bean>
+<bean id="URLReplace" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="urlReplaceFilter"/></list>
+  </property>
+</bean>
+<bean id="searchResultFilter" class="org.infoscoop.request.filter.SearchResultFilter" ></bean>
+<bean id="SearchResult" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="searchResultFilter"/></list>
+  </property>
+</bean>
+<bean id="gadgetFilter" class="org.infoscoop.request.filter.GadgetFilter" ></bean>
+<bean id="Gadget" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="gadgetFilter"/></list>
+  </property>
+</bean>
+<bean id="gadgetViewFilter" class="org.infoscoop.request.filter.GadgetViewFilter" ></bean>
+<bean id="GadgetView" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="gadgetViewFilter"/><ref bean="gadgetFilter"/></list>
+  </property>
+</bean>
+<bean id="detectFilter" class="org.infoscoop.request.filter.DetectTypeFilter" ></bean>
+<bean id="Detect" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="detectFilter"/></list>
+  </property>
+</bean>
+<bean id="xmlFilter" class="org.infoscoop.request.filter.XMLFilter" ></bean>
+<bean id="XML" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="xmlFilter"/></list>
+  </property>
+</bean>
+<bean id="fragmentFilter" class="org.infoscoop.request.filter.HTMLFragmentFilter" ></bean>
+<bean id="HTMLFragment" class="org.infoscoop.request.filter.ProxyFilterContainer" >
+  <property name="filter">
+    <list><ref bean="fragmentFilter"/></list>
+  </property>
+</bean>
+</beans>

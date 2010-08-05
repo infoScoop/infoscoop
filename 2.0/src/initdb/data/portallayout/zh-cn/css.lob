@@ -1,4 +1,0 @@
-/* 这里记述自定义的CCS编码 */
-body{
-	background: url(skin/imgs/stripe.png);
-}

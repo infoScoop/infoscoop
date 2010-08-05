@@ -1,0 +1,215 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
+.infoScoop .widgetContent.Calendar .calnavleft {
+	position:absolute;
+	top:0;
+	bottom:0;
+	height:16px;
+	width:16px;
+	left:2px;
+	cursor:pointer;
+	background:url(./imgs/resultset_previous.gif) center center no-repeat;
+}
+
+.infoScoop .widgetContent.Calendar .calnavright {
+	position:absolute;
+	top:0;
+	bottom:0;
+	height:16px;
+	width:16px;
+	right:2px;
+	cursor:pointer;
+	background:url(./imgs/resultset_next.gif) center center no-repeat;
+}
+
+/* Calendar element styles */
+
+.infoScoop .widgetContent.Calendar .calendar {
+/*	font:73% Arial,Helvetica,sans-serif;*/
+	font:12px Arial,Helvetica,sans-serif;
+	text-align:center;
+	border-spacing:0;
+	width:100%;
+	height:100%;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell {
+	width:1.5em;
+	height:12%;
+	border:1px solid #E0E0E0;
+	background-color:#FFF;
+	padding-bottom:0px;
+}
+
+.infoScoop .widgetContent.Calendar .calendar.wait td.calcell {
+	color:#999;
+	background-color:#CCC;
+}
+
+.infoScoop .widgetContent.Calendar .calendar.wait td.calcell a {
+	color:#999;
+	font-style:italic;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell a {
+	color:#003DB8;
+	text-decoration:none;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell.today {
+	border:1px solid #000;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell.oom {
+	cursor:default;
+	color:#999;
+	background-color:#EEE;
+	border:1px solid #E0E0E0;
+	font:12px Arial,Helvetica,sans-serif;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell.selected {
+	color:#003DB8;
+	background-color:#FFF19F;
+	border:1px solid #FF9900;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell.calcellhover {
+	cursor:pointer;
+	color:#FFF;
+	background-color:#FF9900;
+	border:1px solid #FF9900;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell.calcellhover a {
+	color:#FFF;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell.restricted {
+	text-decoration:line-through;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell.previous {
+	color:#CCC;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell .date {
+	width:100%;
+	height:100%;
+	margin:0px;
+	padding:0px;
+	text-align:center;
+/*	font:73% Arial,Helvetica,sans-serif;*/
+	font:12px Arial,Helvetica,sans-serif;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell .sunday {
+	color:#f00;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell .saturday {
+	color:#00f;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell .block {
+	width:25%;
+	height:5px;
+	margin:0px;
+	padding:0px;
+}
+
+.infoScoop .widgetContent.Calendar td.calcell.highlight1 { background-color:#CCFF99; }
+.infoScoop .widgetContent.Calendar td.calcell.highlight2 { background-color:#99CCFF; }
+.infoScoop .widgetContent.Calendar td.calcell.highlight3 { background-color:#FFCCCC; }
+.infoScoop .widgetContent.Calendar td.calcell.highlight4 { background-color:#CCFF99; }
+
+
+.infoScoop .widgetContent.Calendar .calhead {
+	border:1px solid #E0E0E0;
+	vertical-align:middle;
+	background-color:#FFF;
+	height:12px;
+	overflow:hidden;
+}
+
+.infoScoop .widgetContent.Calendar .calheader {
+	position:relative;
+	width:100%;
+	font-size:12px;
+}
+
+.infoScoop .widgetContent.Calendar .calheader img {
+	border:none;
+}
+
+.infoScoop .widgetContent.Calendar .calweekdayrow {
+	height:12%;
+}
+
+.infoScoop .widgetContent.Calendar .calweekdaycell {
+	font-size:12px;
+	color:#666;
+	font-weight:normal;
+	width:14.28%;
+}
+
+.infoScoop .widgetContent.Calendar .calfoot {
+	background-color:#EEE;
+}
+
+.infoScoop .widgetContent.Calendar .calrowhead, .calrowfoot {
+	color:#666;
+	font-size:9px;
+	font-style:italic;
+	font-weight:normal;
+	width:15px;
+}
+
+.infoScoop .widgetContent.Calendar .calrowhead {
+	border-right-width:2px;
+}
+.infoScoop .caldaydetail {
+/*	font:73% Arial,Helvetica,sans-serif;*/
+	font:12px Arial,Helvetica,sans-serif;
+	background-color:#eeeeee;
+	border:1px solid #999;
+	border-width: 1px 2px 3px 1px;
+	text-align:left;
+	overflow:hidden;
+}
+.infoScoop .caldaydetail .caleventdate {
+	width:100%;
+	color:#666;
+	background-color:#FFC;
+	font-weight:bold;
+}
+.infoScoop .caldaydetail .calevent {
+	padding-left:0px;
+}
+.infoScoop .caldaydetail .caleventsummary {
+	background-color:#FFF;
+	border-top:1px solid #CCC;
+	border-bottom:1px solid #CCC;
+}
+.infoScoop .caldaydetail .caleventtime {
+}
+.infoScoop .caldaydetail .caleventdesc {
+	margin-left:10px;
+	margin-top:5px;
+	margin-bottom:5px;
+}

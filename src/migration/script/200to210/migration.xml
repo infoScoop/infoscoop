@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="migrate" default="all" basedir=".">
+    <delete file="${basedir}/migration.properties.tmp"/>
+	<copy tofile="${basedir}/migration.properties.tmp" file="${basedir}/migration.properties" encoding="UTF-8">
+		<filterchain>
+			<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks">
+				<param name="linebreaks" value="&#65279;"/>
+			</filterreader>
+		</filterchain>
+	</copy>
+	<property file="${basedir}/migration.properties.tmp"/>
+	<delete file="${basedir}/migration.properties.tmp"/>
+	
+	<copy tofile="${basedir}/migration.properties.tmp" file="${basedir}/migration.properties" encoding="UTF-8">
+		<filterchain>
+			<tokenfilter>
+  				  <replacestring from="&amp;" to="&amp;amp;"/>
+  				  <replacestring from="&lt;" to="&amp;lt;"/>
+  				  <replacestring from="&gt;" to="&amp;gt;"/>
+			</tokenfilter>
+		</filterchain>
+	</copy>
+	<property file="${basedir}/migration.properties.tmp" prefix="datasource.xml"/>
+	<delete file="${basedir}/migration.properties.tmp"/>
+	
+	<property file="${basedir}/conf/${DBMS}.properties"/>
+	
+	<target name="set-schema" if="SCHEMA">
+		<property name="SCHEMA_NAME" value="${SCHEMA}."/>
+		<property name="datasource.xml.SCHEMA_NAME" value="${SCHEMA}"/>
+	</target>
+	<target name="default-schema" unless="SCHEMA">
+		<property name="SCHEMA_NAME" value=""/>
+		<property name="datasource.xml.SCHEMA_NAME" value=""/>
+	</target>
+	
+	<property name="basedir" value="." />
+	<property name="BACKUP_TABLE_SUFFIX" value="_bak20"/>
+
+	<path id="task.classpath">
+		<pathelement location="classes"/>
+		<pathelement location="classes/migration.jar"/>
+		<fileset dir="lib" includes="*.jar" />
+	</path>
+	
+	<presetdef name="current.sql">
+		<sql driver="${DATABASE_DRIVER}" url="${DATABASE_URL}" userid="${USER}" password="${PASSWORD}"
+			encoding="UTF-8" delimiter=";" autocommit="true"/>
+	</presetdef>
+	
+	<taskdef name="exec-sql" classname="org.infoscoop.batch.migration.SQLTask" classpathref="task.classpath"/>
+	<taskdef name="migration" classname="org.infoscoop.batch.migration.MigrationTask" classpathref="task.classpath"/>
+	<taskdef name="importDel" classname="org.infoscoop.batch.migration.ImportTask" classpathref="task.classpath"/>
+	<taskdef name="hibernate-beans" classname="org.infoscoop.batch.migration.HibernateBeansTask" classpathref="task.classpath"/>
+	
+    <typedef name="property-xslt" classname="org.infoscoop.batch.migration.BeanPropertyXSLTTask" classpathref="task.classpath"/>
+	<typedef name="property-regx" classname="org.infoscoop.batch.migration.BeanPropertyRegxTask" classpathref="task.classpath"/>
+	
+	<target name="set-compress" depends="set-compress2" unless="TABLESPACE">
+    	<property name="COMPRESS" value="compress yes"/>
+	</target>
+	<target name="set-compress2" if="TABLESPACE">
+    	<property name="COMPRESS" value="in ${TABLESPACE} compress yes"/>
+	</target>
+	
+	<target name="prepare" depends="set-schema,default-schema,set-compress">
+		<delete file="classes/datasource.xml"/>
+		<filter token="DATABASE_URL" value="${datasource.xml.DATABASE_URL}"/>
+		<filter token="USER" value="${datasource.xml.USER}"/>
+		<filter token="PASSWORD" value="${datasource.xml.PASSWORD}"/>
+		<filter token="SCHEMA_NAME" value="${datasource.xml.SCHEMA_NAME}"/>
+		<filter token="LOG_LEVEL" value="${datasource.xml.LOG_LEVEL}"/>
+		<filter token="DATABASE_DRIVER" value="${DATABASE_DRIVER}"/>
+		<filter token="HIBERNATE_DIALECT" value="${HIBERNATE_DIALECT}"/>
+		<copy tofile="classes/datasource.xml" file="classes/datasource.xml.bak"
+			filtering="true"/>
+	</target>
+	
+	<target name="all" depends="
+		proxyConf,
+		searchEngine,
+		tab,
+		i18n,
+		i18nLocale,
+		widget,
+		gadget,
+		portallayout,
+		properties,
+		widgetConf,
+		oauth,
+		adminRole
+	"/>
+	
+	<target name="clean-all" depends="
+		clean-proxyConf,
+		clean-searchEngine,
+		clean-tab,
+		clean-i18n,
+		clean-i18nLocale,
+		clean-widget,
+		clean-gadget,
+		clean-portallayout,
+		clean-properties,
+		clean-widgetConf,
+		clean-oauth,
+		clean-adminRole
+	"/>
+		
+	<target name="clean-all-backup" depends="prepare">
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_I18N${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PROXYCONFS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_SEARCHENGINES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PORTALLAYOUTS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_PROPERTIES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_WIDGETCONFS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_GADGETS${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_ADMINROLES${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+	</target>
+	
+	<target name="widget">
+		<exec-sql quiet="true"><sql>ALTER TABLE ${SCHEMA_NAME}IS_WIDGETS ADD noBorder int</sql></exec-sql>
+	</target>
+	<target name="clean-widget" depends="prepare">
+		<exec-sql quiet="true"><sql>ALTER TABLE ${SCHEMA_NAME}IS_WIDGETS DROP noBorder</sql></exec-sql>
+	</target>
+	
+	<target name="tab">
+		<exec-sql quiet="true"><sql>ALTER TABLE ${SCHEMA_NAME}IS_TABS ADD disabledDynamicPanel int</sql></exec-sql>
+	</target>
+	<target name="clean-tab" depends="prepare">
+		<exec-sql quiet="true"><sql>ALTER TABLE ${SCHEMA_NAME}IS_TABS DROP disabledDynamicPanel</sql></exec-sql>
+	</target>
+	
+	<target name="gadget" depends="clean-gadget">
+		<current.sql src="sql/${DBMS}/gadget.sql"/>
+		<importDel source="data/gadget/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.GadgetFactory"/>
+	</target>
+	<target name="clean-gadget" depends="prepare">
+		<exec-sql quiet="true"><sql>drop sequence ${SCHEMA_NAME}is_gadgets_id_seq</sql></exec-sql>
+		<exec-sql quiet="true"><property name="table">is_gadgets</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<target name="i18n" depends="clean-i18n">
+		<current.sql src="sql/${DBMS}/i18n.sql"/>
+		<importDel source="data/i18n/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.I18nFactory"/>
+	</target>
+	<target name="clean-i18n" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_i18n</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<target name="i18nLocale" depends="clean-i18nLocale">
+		<exec-sql quiet="true"><sql>DELETE FROM ${SCHEMA_NAME}IS_I18NLOCALES where lang = 'zh'</sql></exec-sql>
+		<importDel source="data/i18nLocale/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.I18nLocaleFactory"/>
+	</target>
+	<target name="clean-i18nLocale" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_i18nlocales</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+	</target>
+
+	<target name="portallayout" depends="clean-portallayout">
+		<current.sql src="sql/${DBMS}/portallayout.sql"/>
+		<importDel source="data/portallayout/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.PortalLayoutFactory"/>
+		<hibernate-beans type="Portallayout">
+			<task class="org.infoscoop.batch.migration.v200to210.PortalLayoutTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-portallayout" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_portallayouts</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<target name="properties" depends="clean-properties">
+		<current.sql src="sql/${DBMS}/properties.sql"/>
+		<importDel source="data/properties/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.PropertiesFactory"/>
+		<hibernate-beans type="Properties">
+			<task class="org.infoscoop.batch.migration.v200to210.PropertiesConvertTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-properties" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_properties</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+			<sql>drop index ${SCHEMA_NAME}is_properties_advanced</sql>
+		</exec-sql>
+	</target>
+	
+	<target name="searchEngine" depends="clean-searchEngine">
+		<current.sql src="sql/${DBMS}/searchengine.sql"/>
+		<importDel source="data/searchengine/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.SearchEngineFactory"/>
+		<hibernate-beans type="Searchengine">
+			<task class="org.infoscoop.batch.migration.v200to210.SearchEngineConvertTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-searchEngine" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_searchEngines</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<target name="proxyConf" depends="clean-proxyConf">
+		<current.sql src="sql/${DBMS}/proxyconf.sql"/>
+		<hibernate-beans type="Proxyconf">
+			<task class="org.infoscoop.batch.migration.v200to210.ProxyConfConvertTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-proxyConf" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_proxyconfs</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<target name="widgetConf" depends="clean-widgetConf">
+		<current.sql src="sql/${DBMS}/widgetconf.sql"/>
+		<hibernate-beans type="WidgetConf">
+			<task class="org.infoscoop.batch.migration.v200to210.WidgetConfConvertTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-widgetConf" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_widgetconfs</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+	</target>
+	
+	<target name="oauth" depends="clean-oauth">
+		<current.sql src="sql/${DBMS}/oauth.sql"/>
+		<importDel source="data/oauth_certificate/import.csv" beanFactory="org.infoscoop.batch.migration.v200to210.OAuthCertificateFactory"/>
+	</target>
+	
+	<target name="clean-oauth" depends="prepare">
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_OAUTH_TOKENS</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_OAUTH_CONSUMERS</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}IS_OAUTH_CERTIFICATE</sql></exec-sql>
+	</target>
+	
+	<target name="adminRole" depends="clean-adminRole">
+		<current.sql src="sql/${DBMS}/adminroles.sql"/>
+	</target>
+	<target name="clean-adminRole" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_adminroles</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+		<exec-sql quiet="true"><property name="sequence">is_adminRoles_id_seq</property>
+			<sql file="sql/${DBMS}/restore-sequence.sql"/>
+		</exec-sql>
+		<exec-sql quiet="true">
+			<property name="table">is_adminroles</property>
+			<property name="sequence">is_adminRoles_unique</property>
+			<sql file="sql/${DBMS}/restore-constraint.sql"/>
+		</exec-sql>
+	</target>
+</project>

@@ -1,0 +1,130 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
+
+.mySiteMapOpen {
+	position:relative;
+	top:3px;
+	left:-1px;
+	width:18px;
+	cursor:pointer;
+	border-left: 1px solid gray;
+	padding: 2px 0px;
+}
+
+.mySiteMapClose {
+	position:relative;
+	top:3px;
+	left:-1px;
+	width:18px;
+	cursor:pointer;
+	padding: 2px 0px;
+}
+
+.mySiteMap {
+}
+
+.mySiteMap .rootTable {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	table-layout: fixed;
+}
+.mySiteMap .rootTable .rootTableContent {
+	height: 100%;
+	vertical-align: top;
+}
+.mySiteMap .controller {
+	border-bottom: 1px solid gray;
+	border-top: 1px solid gray;
+}
+.mySiteMap .controller td.label {
+	width: 2em;
+}
+.mySiteMap .button.refresh {
+	width: 16px;
+	height: 16px;
+	background: url("./imgs/refresh.gif") no-repeat scroll center center;
+}
+.mySiteMap .tabList {
+	margin-top: 0;
+	margin-left: 0;
+	padding-left: 0;
+	list-style-type: none;
+}
+
+.mySiteMap .tabListItem {
+	margin-top: 0.25em;
+	margin-bottom: 0.5em;
+}
+
+.mySiteMap .tabListItem .tabName {
+	height: 16px;
+	padding-left: 20px;
+}
+
+.mySiteMap .tabListItem .tabWidgetList {
+	padding-left: 20px;
+}
+.mySiteMap .tabListItem .tabName {
+	cursor: pointer;
+}
+.mySiteMap .tabListItem.openTab .tabName {
+	background: url("./imgs/mysitemap_tab_open.gif") no-repeat scroll left top;
+}
+.mySiteMap .tabListItem.closeTab .tabName {
+	background: url("./imgs/mysitemap_tab_close.gif") no-repeat scroll left top;
+}
+.mySiteMap .tabListItem.emptyTab .tabName {
+	cursor: default;
+}
+
+.mySiteMap .tabListItem a.label {
+	display: block;
+	color: #6677DD;
+}
+
+.mySiteMap .tabWidgetList,.mySiteMap .tabSubWidgetList {
+	padding-left: 0;
+	margin-top: 2px;
+	margin-left: 0;
+	list-style-type: none;
+}
+.mySiteMap .tabSubWidgetList {
+	padding-left: 20px;
+}
+.mySiteMap .tabWidgetListItem {
+	margin-top: 2;
+	margin-bottom: 2;
+}
+.mySiteMap .tabWidgetListItem .widgetName {
+	cursor: pointer;
+	height: 16px;
+}
+
+.mySiteMap .menuItemIcon {
+	margin-right: 5px;
+}
+
+.mySiteMap .label {
+	font-size: 0.8em;
+	white-space: nowrap;
+	word-break: keep-all;
+}
+.mySiteMapPulldownItem {
+	white-space: nowrap;
+}
