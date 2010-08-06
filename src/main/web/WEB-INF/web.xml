@@ -362,6 +362,14 @@
 	</servlet>
 
 	<servlet>
+		<servlet-name>AdminDispatcher</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>NewSessionIdServlet</servlet-name>
 		<servlet-class>
 			org.infoscoop.web.NewSessionIdServlet
@@ -658,6 +666,11 @@
   	<servlet-class>org.infoscoop.web.OAuthCertificateServlet</servlet-class>
   </servlet>
 
+　 <servlet-mapping>
+    <servlet-name>AdminDispatcher</servlet-name>
+    <url-pattern>/admin/*</url-pattern>
+  </servlet-mapping>
+  
   <servlet-mapping>
   	<servlet-name>OAuthCertificateServlet</servlet-name>
   	<url-pattern>/opensocial/certificates/public.cer</url-pattern>

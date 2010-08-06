@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+  <definition name="base.definition" template="/WEB-INF/jsp/admin/layouts/classic.jsp">
+    <put-attribute name="title" value="infoScoop Administrator" />
+    <put-attribute name="header" value="/WEB-INF/jsp/admin/tiles/banner.jsp" />
+    <put-attribute name="menu" value="/WEB-INF/jsp/admin/tiles/common_menu.jsp" />
+    <put-attribute name="body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
+    <put-attribute name="footer" value="/WEB-INF/jsp/admin/tiles/credits.jsp" />
+  </definition>
+  
+  <definition name="menu" extends="base.definition">
+	<put-attribute name="title" value="Menu adminitrator"/>
+	<put-attribute name="body" value="/WEB-INF/jsp/admin/menu/index.jsp"/>
+  </definition>
+</tiles-definitions>

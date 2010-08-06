@@ -63,5 +63,16 @@
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-0.9.5.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-consumer-0.9.5.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-nodeps-0.9.5.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/commons-beanutils-1.8.0.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/commons-digester-2.0.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jcl-over-slf4j-1.5.8.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/slf4j-api-1.5.8.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/spring-web.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/spring-webmvc.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/tiles-api-2.2.2.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/tiles-core-2.2.2.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/tiles-jsp-2.2.2.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/tiles-servlet-2.2.2.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/tiles-template-2.2.2.jar"/>
 	<classpathentry kind="output" path="src/main/web/WEB-INF/classes"/>
 </classpath>
