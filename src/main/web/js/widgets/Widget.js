@@ -135,7 +135,7 @@ IS_Widget.prototype.classDef = function() {
 			contentsType = _contentsType;
 			//this.title = typeConf.title; //refs 1878
 			this.title_url = typeConf.href;
-			this.scrolling = getBooleanValue(typeConf.scrolling);
+			this.scrolling = getBooleanValue(typeConf.scrolling || (typeConf.ModulePrefs && typeConf.ModulePrefs.scrolling));
 
 			userPref = IS_Widget.mergePreference(typeConf, widgetsXml);
 			if(isTabView)
