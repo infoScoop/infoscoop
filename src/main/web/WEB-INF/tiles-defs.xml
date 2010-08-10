@@ -9,23 +9,4 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/jsp/admin/tiles/footer.jsp" />
 	</definition>
-	
-	<definition name="menu/index" extends="base.definition">
-		<put-attribute name="type" value="menu"/>
-		<put-attribute name="title" value="menu.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/admin/menu/index.jsp"/>
-	</definition>
-	<definition name="menu/data" template="/WEB-INF/jsp/admin/menu/data.jsp" />
-	
-	<definition name="tab/index" extends="base.definition">
-		<put-attribute name="type" value="tab"/>
-		<put-attribute name="title" value="tab.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/admin/tab/index.jsp"/>
-	</definition>
-	
-	<definition name="group/index" extends="base.definition">
-		<put-attribute name="type" value="group"/>
-		<put-attribute name="title" value="tab.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/admin/group/index.jsp"/>
-	</definition>
 </tiles-definitions>

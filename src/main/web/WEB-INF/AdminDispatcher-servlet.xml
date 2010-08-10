@@ -11,10 +11,11 @@
 		</property>
 	</bean>
 	
-	<bean id="veiwResolver"
+	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<property name="viewClass"
-		value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/jsp/admin/"/>
+		<property name="suffix" value=".jsp"/>
 	</bean>
 	
 	<bean id="menuController" class="org.infoscoop.manager.controller.MenuController"/>
