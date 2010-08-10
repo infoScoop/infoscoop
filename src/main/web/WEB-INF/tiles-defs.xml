@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tiles-definitions PUBLIC
-       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
-       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+			 "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+			 "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-  <definition name="base.definition" template="/WEB-INF/jsp/admin/layouts/classic.jsp">
-    <put-attribute name="title" value="infoScoop Administrator" />
-    <put-attribute name="header" value="/WEB-INF/jsp/admin/tiles/banner.jsp" />
-    <put-attribute name="menu" value="/WEB-INF/jsp/admin/tiles/common_menu.jsp" />
-    <put-attribute name="body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
-    <put-attribute name="footer" value="/WEB-INF/jsp/admin/tiles/credits.jsp" />
-  </definition>
-  
-  <definition name="menu" extends="base.definition">
-	<put-attribute name="title" value="Menu adminitrator"/>
-	<put-attribute name="body" value="/WEB-INF/jsp/admin/menu/index.jsp"/>
-  </definition>
+	<definition name="base.definition" template="/WEB-INF/jsp/admin/layouts/default.jsp">
+		<put-attribute name="header" value="/WEB-INF/jsp/admin/tiles/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/admin/tiles/common_menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/admin/tiles/footer.jsp" />
+	</definition>
+	
+	<definition name="menu/index" extends="base.definition">
+		<put-attribute name="type" value="menu"/>
+		<put-attribute name="title" value="menu.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/menu/index.jsp"/>
+	</definition>
+	<definition name="menu/data" template="/WEB-INF/jsp/admin/menu/data.jsp" />
+	
+	<definition name="tab/index" extends="base.definition">
+		<put-attribute name="type" value="tab"/>
+		<put-attribute name="title" value="tab.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/tab/index.jsp"/>
+	</definition>
+	
+	<definition name="group/index" extends="base.definition">
+		<put-attribute name="type" value="group"/>
+		<put-attribute name="title" value="tab.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/group/index.jsp"/>
+	</definition>
 </tiles-definitions>

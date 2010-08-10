@@ -49,9 +49,4 @@ public class SpringUtil {
 	public static void setContext(ApplicationContext ctx) {
 		context = ctx;
 	}
-
-	public static ResourceBundle getResourceBundle(String type, Locale locale){
-		ISResourceBundleMessageSource  messageSource = (ISResourceBundleMessageSource)context.getBean("messageSource");
-		return messageSource.getResourceBundle(type, locale);
-	}
 }

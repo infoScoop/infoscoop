@@ -3,11 +3,12 @@
 
 <beans>
   <bean name="messageSource"
-        class="org.infoscoop.util.ISResourceBundleMessageSource">
+        class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basenames">
       <list>
         <value>i18n_adminjs</value>
         <value>i18n_js</value>
+        <value>i18n_manager</value>
       </list>
     </property>
   </bean>

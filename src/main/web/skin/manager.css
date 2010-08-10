@@ -1,0 +1,89 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.	If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
+body {
+	margin:0;
+	padding:0;
+	font: bold 11px/1.5em Verdana;
+}
+
+h2 {
+	font: bold 14px Verdana, Arial, Helvetica, sans-serif;
+	color: #000;
+	margin: 0px;
+	padding: 0px 0px 0px 15px;
+}
+
+/*- Menu Tabs--------------------------- */
+
+
+#tabs {
+	float:left;
+	width:100%;
+	background:#BBD9EE;
+	font-size:93%;
+	line-height:normal;
+}
+#tabs ul {
+	margin:0;
+	padding:10px 10px 0 50px;
+	list-style:none;
+}
+#tabs li {
+	display:inline;
+	margin:0;
+	padding:0;
+}
+#tabs a {
+	float:left;
+	background:url("imgs/manager/tableft.gif") no-repeat left top;
+	margin:0;
+	padding:0 0 0 4px;
+	text-decoration:none;
+	width:100px;
+	text-align:center;
+}
+#tabs a span {
+	float:left;
+	display:block;
+	background:url("imgs/manager/tabright.gif") no-repeat right top;
+	padding:5px 15px 4px 6px;
+	color:#666;
+}
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+#tabs a span {float:none;}
+/* End IE5-Mac hack */
+#tabs a:hover span {
+	color:#FF9834;
+}
+#tabs a:hover {
+	background-position:0% -42px;
+}
+#tabs a:hover span {
+	background-position:100% -42px;
+}
+#tabs .current a {
+	background-position:0% -42px;
+}
+#tabs .current a span {
+	background-position:100% -42px;
+}
+
+#footer{
+	font-size: 0.9em;
+	text-align: center;
+}

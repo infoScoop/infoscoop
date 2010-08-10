@@ -1,34 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="mappings">
-			<props>
-				<prop key="*">urlFilenameViewController</prop>
-			</props>
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles-defs.xml</value>
+			</list>
 		</property>
 	</bean>
-
-	<!-- bean id="veiwResolver"
-		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-    <property name="viewClass"
-      value="org.springframework.web.servlet.view.JstlView"/>
-		<property name="prefix"><value>/WEB-INF/jsp/admin/</value></property>
-    	<property name="suffix"><value>.jsp</value></property>
-	</bean-->
-	<bean id="tilesConfigurer"
-	    class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
-	    <property name="definitions">
-	        <list>
-	            <value>/WEB-INF/tiles-defs.xml</value>
-	        </list>
-	    </property>
-	</bean>
+	
 	<bean id="veiwResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-    	<property name="viewClass"
-      	value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+		<property name="viewClass"
+		value="org.springframework.web.servlet.view.tiles2.TilesView"/>
 	</bean>
-	<bean id="urlFilenameViewController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController"/>
-
+	
+	<bean id="menuController" class="org.infoscoop.manager.controller.MenuController"/>
+	<bean id="tabController" class="org.infoscoop.manager.controller.TabController"/>
+	<bean id="groupController" class="org.infoscoop.manager.controller.GroupController"/>
 </beans>
