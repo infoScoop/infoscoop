@@ -75,8 +75,8 @@
 		var localhostPrefix = "<%=request.getScheme()%>://localhost:<%=request.getServerPort()%><%=request.getContextPath()%>";
 	</script>
 	
-	<script src="../js/resources/resourceBundle.jsp"></script>
-	<script src="./js/resources/resourceBundle.jsp"></script>
+	<script src="../js/resources/resources_<%=request.getLocale().getLanguage() %>.js"></script>
+	<script src="./js/resources/resources_<%=request.getLocale().getLanguage() %>.js"></script>
     <script src="../js/gadget/features/core:rpc:pubsub:infoscoop.js?c=1"></script>
 	
 	<!--start script-->

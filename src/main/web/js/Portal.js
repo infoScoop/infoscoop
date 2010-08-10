@@ -55,6 +55,14 @@ IS_Request.LogCommandQueue = new IS_Request.Queue("/logsrv", logCommandQueueWait
 IS_Portal.imageController = {};//For image thumbnail. Refer to RssItemRender.js
 IS_Portal.iframeToolBarIconsTable;
 var IS_User = new Object();
+IS_R.getResource = function(message, array){
+	if(message && array){
+		for(var i=0;i<array.length;i++){
+			message = message.replace("{" + i + "}", array[i]);
+		}
+	}
+	return message;
+}
 
 IS_Portal.defaultFontSize = "100%";
 
