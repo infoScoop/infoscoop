@@ -87,3 +87,21 @@ h2 {
 	font-size: 0.9em;
 	text-align: center;
 }
+
+/*- Menu --------------------------- */
+#menu_tree{
+	width:50%;
+	overflow:auto;
+	float:left;
+}
+#menu_right{
+	width:50%;
+	overflow:auto;
+	float:left;
+}
+#menu_tree .menu_command{
+	display:inline;
+	color:#00F;
+	padding-left:10px;
+	cursor:pointer;
+}

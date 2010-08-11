@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="MenuItem"
+		table="is_menu_items"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="Id"
+			type="string"
+			column="id"
+			length="255"
+		/>
+		<property
+			name="Title"
+			column="title"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="ParentId"
+			column="parent_id"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+
+
+	</class>	
+</hibernate-mapping>

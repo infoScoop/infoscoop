@@ -379,4 +379,9 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
+	<bean id="menuItemDAO" class="org.infoscoop.dao.MenuItemDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
 </beans>

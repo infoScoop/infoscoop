@@ -445,3 +445,12 @@ create table IS_OAUTH_CERTIFICATE (
   private_key text,
   certificate text
 ) ENGINE=InnoDB;
+
+--
+-- MENU_ITEM
+--
+create table IS_MENU_ITEMS(
+  id varchar(255) primary key,
+  title varchar(255) not null,
+  parent_id varchar(255)
+) ENGINE=InnoDB;
