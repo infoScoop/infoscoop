@@ -15,6 +15,7 @@
 			column="id"
 			length="255"
 		/>
+
 		<property
 			name="Title"
 			column="title"
@@ -28,6 +29,41 @@
 			type="string"
 			not-null="false"
 			length="255"
+		/>
+		<property
+			name="Order"
+			column="`order`"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="Type"
+			column="`type`"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="Href"
+			column="href"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="Publish"
+			column="publish"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="Alert"
+			column="alert"
+			type="integer"
+			not-null="true"
+			length="10"
 		/>
 
 

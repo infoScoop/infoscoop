@@ -452,5 +452,25 @@ create table IS_OAUTH_CERTIFICATE (
 create table IS_MENU_ITEMS(
   id varchar(255) primary key,
   title varchar(255) not null,
-  parent_id varchar(255)
+  parent_id varchar(255),
+  `order` int not null default 0,
+  type varchar(255),
+  href varchar(255),
+  publish int not null default 0, -- 0=unpublished, 1=published
+  alert int not null default 1 -- 0=no alert, 1=alert, 2=force drop
 ) ENGINE=InnoDB;
+
+--
+-- MENU_USERPREFS
+--
+create table IS_MENU_USERPREFS (
+	fk_menu_item_id varchar(255) not null,
+	name varchar(255) not null,
+	value varchar(4000),
+	long_value text,
+	primary key (fk_menu_item_id, name),
+	foreign key (fk_menu_item_id) references IS_MENU_ITEMS(id) on delete cascade
+) ENGINE=InnoDB;
+
+create index is_menu_userprefs_fk_menu_item_id on IS_MENU_USERPREFS(fk_menu_item_id);
+create index is_menu_userprefs_name on IS_MENU_USERPREFS(name);

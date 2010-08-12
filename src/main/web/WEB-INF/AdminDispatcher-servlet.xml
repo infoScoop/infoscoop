@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
 	<bean id="tilesConfigurer"
 		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
@@ -18,7 +20,5 @@
 		<property name="suffix" value=".jsp"/>
 	</bean>
 	
-	<bean id="menuController" class="org.infoscoop.manager.controller.MenuController"/>
-	<bean id="tabController" class="org.infoscoop.manager.controller.TabController"/>
-	<bean id="groupController" class="org.infoscoop.manager.controller.GroupController"/>
+	<context:component-scan base-package="org.infoscoop.manager.controller" />
 </beans>

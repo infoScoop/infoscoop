@@ -4,19 +4,24 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_menu_item table.
+ * This is an object that contains data related to the is_menu_items table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_menu_item"
+ *  table="is_menu_items"
  */
 
 public abstract class BaseMenuItem  implements Serializable {
 
 	public static String REF = "MenuItem";
+	public static String PROP_PUBLISH = "Publish";
 	public static String PROP_PARENT_ID = "ParentId";
+	public static String PROP_ALERT = "Alert";
+	public static String PROP_TYPE = "Type";
+	public static String PROP_ORDER = "Order";
 	public static String PROP_ID = "Id";
+	public static String PROP_HREF = "Href";
 	public static String PROP_TITLE = "Title";
 
 
@@ -38,10 +43,16 @@ public abstract class BaseMenuItem  implements Serializable {
 	 */
 	public BaseMenuItem (
 		java.lang.String id,
-		java.lang.String title) {
+		java.lang.String title,
+		java.lang.Integer order,
+		java.lang.Integer publish,
+		java.lang.Integer alert) {
 
 		this.setId(id);
 		this.setTitle(title);
+		this.setOrder(order);
+		this.setPublish(publish);
+		this.setAlert(alert);
 		initialize();
 	}
 
@@ -57,6 +68,11 @@ public abstract class BaseMenuItem  implements Serializable {
 	// fields
 	private java.lang.String title;
 	private java.lang.String parentId;
+	private java.lang.Integer order;
+	private java.lang.String type;
+	private java.lang.String href;
+	private java.lang.Integer publish;
+	private java.lang.Integer alert;
 
 
 
@@ -111,6 +127,91 @@ public abstract class BaseMenuItem  implements Serializable {
 	 */
 	public void setParentId (java.lang.String parentId) {
 		this.parentId = parentId;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: `order`
+	 */
+	public java.lang.Integer getOrder () {
+		return order;
+	}
+
+	/**
+	 * Set the value related to the column: `order`
+	 * @param order the `order` value
+	 */
+	public void setOrder (java.lang.Integer order) {
+		this.order = order;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: `type`
+	 */
+	public java.lang.String getType () {
+		return type;
+	}
+
+	/**
+	 * Set the value related to the column: `type`
+	 * @param type the `type` value
+	 */
+	public void setType (java.lang.String type) {
+		this.type = type;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: href
+	 */
+	public java.lang.String getHref () {
+		return href;
+	}
+
+	/**
+	 * Set the value related to the column: href
+	 * @param href the href value
+	 */
+	public void setHref (java.lang.String href) {
+		this.href = href;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: publish
+	 */
+	public java.lang.Integer getPublish () {
+		return publish;
+	}
+
+	/**
+	 * Set the value related to the column: publish
+	 * @param publish the publish value
+	 */
+	public void setPublish (java.lang.Integer publish) {
+		this.publish = publish;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: alert
+	 */
+	public java.lang.Integer getAlert () {
+		return alert;
+	}
+
+	/**
+	 * Set the value related to the column: alert
+	 * @param alert the alert value
+	 */
+	public void setAlert (java.lang.Integer alert) {
+		this.alert = alert;
 	}
 
 

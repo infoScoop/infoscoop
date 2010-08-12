@@ -89,19 +89,59 @@ h2 {
 }
 
 /*- Menu --------------------------- */
-#menu_tree{
-	width:50%;
-	overflow:auto;
+#menu_left{
+	width:44%;
 	float:left;
+}
+#menu_left a{
+	cursor:pointer;
+}
+#menu_tree{
+	overflow:auto;
+}
+#menu_tree .menu_open{
+	cursor:pointer;
+	font-size:8px;
+	line-height:15px;
 }
 #menu_right{
-	width:50%;
+	width:55%;
 	overflow:auto;
 	float:left;
 }
-#menu_tree .menu_command{
-	display:inline;
-	color:#00F;
-	padding-left:10px;
+#menu_item_command{
+	position:absolute;
+	z-index:2000;
+	background:#f0f0f0;
+	border:1px solid #979797;
+	-moz-box-shadow: 1px 1px 2px #999;
+	-webkit-box-shadow: 1px 1px 2px #999;
+	box-shadow: 1px 1px 2px #999;
+	padding: 0;
+	margin: 0;
+	min-width:180px;
+}
+#menu_item_command ul{
+	display:block;
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+#menu_item_command a{
 	cursor:pointer;
+	color:black;
+	padding: 1px 6px;
+	margin: 1px 1px 0;
+	line-height: 17px;
+	display:block;
+	text-decoration:none;
+}
+#menu_item_command a:hover{
+	padding:0 5px;
+	background:#e8eff7;
+	border:1px solid #aecff7;
+	color:black;
+	-moz-border-radius:2px;
+	-webkit-border-radius:2px;
+	border-radius:2px; }
 }

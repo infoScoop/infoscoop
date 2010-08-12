@@ -6,7 +6,9 @@ import java.util.List;
 import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.model.MenuItem;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,43 +19,41 @@ public class MenuController {
 	}
 
 	@RequestMapping
-	public ModelAndView data(@RequestParam("id") String menuId)
-			throws Exception {
-		List<MenuItem> items = null;
-		if (menuId.equals("0")) {
-			items = MenuItemDAO.newInstance().getTopItems();
-		} else {
-			items = MenuItemDAO.newInstance().getChildItems(menuId);
-		}
-		// if (items.size() == 0)
-		// throw new NotFountException();
-
+	public ModelAndView tree() throws Exception {
+		List<MenuItem> items = MenuItemDAO.newInstance().getTree();
 		ModelAndView model = new ModelAndView();
 		model.addObject("items", items);
 		return model;
 	}
 
 	@RequestMapping
-	public ModelAndView showAddItem(@RequestParam("id") String parentId)
+	public void showAddItem(@RequestParam("id") String parentId, Model model)
 			throws Exception {
-		ModelAndView model = new ModelAndView();
-		model.addObject("parentId", parentId);
-		return model;
+		MenuItem item = new MenuItem();
+		item.setParentId(parentId);
+		item.setOrder(0);
+		model.addAttribute(item);
 	}
 
-	@RequestMapping
-	public MenuItem addItem(@RequestParam("parentId") String parentId,
-			@RequestParam("title") String title) throws Exception {
-		MenuItem item = new MenuItem();
+	@RequestMapping(method = RequestMethod.POST)
+	public MenuItem addItem(MenuItem item) throws Exception {
 		item.setId("m_" + new Date().getTime());
-		item.setTitle(title);
-		item.setParentId(parentId);
 		MenuItemDAO.newInstance().save(item);
 		return item;
 	}
 
-	@RequestMapping
+	@RequestMapping(method = RequestMethod.POST)
 	public void removeItem(@RequestParam("id") String id) throws Exception {
 		MenuItemDAO.newInstance().delete(id);
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public MenuItem moveItem(@RequestParam("id") String id,
+			@RequestParam("parentId") String parentId) throws Exception {
+		MenuItemDAO dao = MenuItemDAO.newInstance();
+		MenuItem item = dao.get(id);
+		item.setParentId(parentId);
+		dao.save(item);
+		return item;
 	}
 }

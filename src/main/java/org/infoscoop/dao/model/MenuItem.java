@@ -1,5 +1,8 @@
 package org.infoscoop.dao.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.infoscoop.dao.model.base.BaseMenuItem;
 
 
@@ -24,14 +27,36 @@ public class MenuItem extends BaseMenuItem {
 	 */
 	public MenuItem (
 		java.lang.String id,
-		java.lang.String title) {
+		java.lang.String title,
+		java.lang.Integer order,
+		java.lang.Integer publish,
+		java.lang.Integer alert) {
 
 		super (
 			id,
-			title);
+			title,
+			order,
+			publish,
+			alert);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
 
+	private List<MenuItem> childItems = new ArrayList<MenuItem>();
+	
+	public boolean hasChild() {
+		return this.childItems.size() > 0;
+	}
 
+	public void setChildItems(List<MenuItem> childItems) {
+		this.childItems = childItems;
+	}
+
+	public void addChildItem(MenuItem item) {
+		this.childItems.add(item);
+	}
+
+	public List<MenuItem> getChildItems() {
+		return this.childItems;
+	}
 }

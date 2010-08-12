@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="MenuUserpref"
+		table="is_menu_userprefs"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<composite-id name="Id" class="MenuUserprefsPK">
+			<key-many-to-one
+				name="FkMenuItem"
+				class="MenuItem"
+				column="fk_menu_item_id"
+			/>
+			<key-property
+				name="Name"
+				column="name"
+				type="string"
+			/>
+		</composite-id>
+
+		<property
+			name="shortValue"
+			column="value"
+			type="string"
+			not-null="false"
+		/>
+		<property
+			name="longValue"
+			column="long_value"
+			type="string"
+			not-null="false"
+		/>
+
+
+	</class>	
+</hibernate-mapping>

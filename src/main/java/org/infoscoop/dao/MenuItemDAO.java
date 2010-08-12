@@ -17,12 +17,14 @@
 
 package org.infoscoop.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -45,7 +47,7 @@ public class MenuItemDAO extends HibernateDaoSupport {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<MenuItem> getTopItems() {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuItem.class).add(
@@ -57,6 +59,33 @@ public class MenuItemDAO extends HibernateDaoSupport {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuItem.class).add(
 						Expression.eq(MenuItem.PROP_PARENT_ID, parentId)));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<MenuItem> getAllItems() {
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(MenuItem.class));
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List<MenuItem> getTree() {
+		List<MenuItem> flatItems = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(MenuItem.class).addOrder(
+						Order.asc(MenuItem.PROP_ORDER)));
+		return createMenuTree(flatItems, "");
+	}
+	
+	private List<MenuItem> createMenuTree(List<MenuItem> flatItems,
+			String parentId) {
+		List<MenuItem> items = new ArrayList<MenuItem>();
+		for (MenuItem item : flatItems) {
+			if (item.getParentId().equals(parentId))
+				items.add(item);
+		}
+		for (MenuItem item : items) {
+			item.setChildItems(createMenuTree(flatItems, item.getId()));
+		}
+		return items;
 	}
 
 	public void save(MenuItem item) {
