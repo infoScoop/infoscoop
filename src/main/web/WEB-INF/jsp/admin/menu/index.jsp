@@ -81,6 +81,9 @@ $(function () {
 		"ui" : {
 			"select_limit" : 1
 		},
+		"core" : {
+			"animation" : 100
+		},
 		"plugins" : [ "themes", "html_data", "crrm", "dnd", "ui" ]
 	});
 	$("#menu_tree").bind("move_node.jstree", function(event, data){
@@ -95,6 +98,7 @@ $(function () {
 			}
 		);
 	});
+	$("#menu_command a").button();
 	function resizeMenuTree(){
 		var height = $(window).height() - $("#menu_tree").offset().top - $("#footer").height() - 13;
 		$("#menu_tree").css("height", height);

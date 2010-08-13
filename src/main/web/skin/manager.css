@@ -104,6 +104,12 @@ body {
 	cursor:pointer;
 	font-size:8px;
 	line-height:15px;
+	width:16px;
+	display:inline-block;
+	text-align:center;
+}
+#menu_command{
+	padding-bottom:5px;
 }
 #menu_right{
 	width:59%;
