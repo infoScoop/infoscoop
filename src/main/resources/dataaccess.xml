@@ -384,4 +384,9 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
+	<bean id="tabTemplateDAO" class="org.infoscoop.dao.TabTemplateDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
 </beans>

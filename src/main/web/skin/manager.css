@@ -229,3 +229,29 @@ body {
 .error a    { color: #8a1f11; }
 .notice a   { color: #514721; }
 .success a  { color: #264409; }
+
+/*- Tab--------------------------- */
+.tab_table {
+	border:1px solid #CCCCCC;
+	font-size:1.3em;
+	text-align:center;
+	width:400px;
+}
+.tab_table tr td {
+	border:1px solid #CCCCCC;
+}
+.tab_table tr th {
+	background-color: #d3DADE;
+	padding: 3px;
+}
+.tab_table tr.rowb {
+	background-color:#EAf2FD;
+}
+.tab_table tr.filterColumns td {
+	padding:2px;
+}
+.trash {
+	background: url(imgs/trash.gif ) no-repeat;
+	font-size: 1.3em;
+	padding-left:15px;
+}

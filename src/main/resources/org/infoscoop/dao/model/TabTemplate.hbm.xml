@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="TabTemplate"
+		table="is_tabtemplates"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="Id"
+			type="string"
+			column="tab_id"
+		>
+		</id>
+
+		<property
+			name="TabName"
+			column="tab_name"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="Published"
+			column="published"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="AccessLevel"
+			column="access_level"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+
+
+	</class>	
+</hibernate-mapping>

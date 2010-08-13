@@ -89,6 +89,7 @@
 					<value>org/infoscoop/dao/model/OAuthConsumer.hbm.xml</value>
 					<value>org/infoscoop/dao/model/OAuthCertificate.hbm.xml</value>
 					<value>org/infoscoop/dao/model/MenuItem.hbm.xml</value>
+					<value>org/infoscoop/dao/model/TabTemplate.hbm.xml</value>
 				</list>
 			</property>
 			<property name="hibernateProperties">

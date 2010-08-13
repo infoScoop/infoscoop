@@ -474,3 +474,10 @@ create table IS_MENU_USERPREFS (
 
 create index is_menu_userprefs_fk_menu_item_id on IS_MENU_USERPREFS(fk_menu_item_id);
 create index is_menu_userprefs_name on IS_MENU_USERPREFS(name);
+
+create table IS_TABTEMPLATES(
+  tab_id varchar(255) primary key,
+  tab_name varchar(255) not null,
+  published int not null default 0, -- 0=unpublished, 1=published
+  access_level int not null default 1 -- 0=public, 1=special
+) ENGINE=InnoDB;
