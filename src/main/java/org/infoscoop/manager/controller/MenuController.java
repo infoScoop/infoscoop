@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MenuController {
@@ -19,11 +18,9 @@ public class MenuController {
 	}
 
 	@RequestMapping
-	public ModelAndView tree() throws Exception {
+	public void tree(Model model) throws Exception {
 		List<MenuItem> items = MenuItemDAO.newInstance().getTree();
-		ModelAndView model = new ModelAndView();
-		model.addObject("items", items);
-		return model;
+		model.addAttribute("items", items);
 	}
 
 	@RequestMapping
@@ -35,9 +32,22 @@ public class MenuController {
 		model.addAttribute(item);
 	}
 
+	@RequestMapping
+	public void showEditItem(@RequestParam("id") String id, Model model)
+			throws Exception {
+		MenuItem item = MenuItemDAO.newInstance().get(id);
+		model.addAttribute(item);
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	public MenuItem addItem(MenuItem item) throws Exception {
 		item.setId("m_" + new Date().getTime());
+		MenuItemDAO.newInstance().save(item);
+		return item;
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public MenuItem updateItem(MenuItem item) throws Exception {
 		MenuItemDAO.newInstance().save(item);
 		return item;
 	}

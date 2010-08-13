@@ -18,79 +18,80 @@
 body {
 	margin:0;
 	padding:0;
-	font: bold 11px/1.5em Verdana;
+	font-size:11px;
+	font-family:Arial,Helvetica,sans-serif;
+	background: url(imgs/manager/img01.jpg) repeat-x scroll left top #F0F0F0;
 }
 
-h2 {
-	font: bold 14px Verdana, Arial, Helvetica, sans-serif;
-	color: #000;
-	margin: 0px;
-	padding: 0px 0px 0px 15px;
+#body{
+	background-color:#FFF;
+	margin:5px;
+	padding:5px;
+}
+
+/*- Header--------------------------- */
+#header {
+	height:88px;
+}
+#logo h1{
+	margin:0;
+	padding:30px 0 0 30px;
+	color:#FFF;
 }
 
 /*- Menu Tabs--------------------------- */
-
-
 #tabs {
-	float:left;
-	width:100%;
-	background:#BBD9EE;
-	font-size:93%;
-	line-height:normal;
-}
-#tabs ul {
-	margin:0;
-	padding:10px 10px 0 50px;
-	list-style:none;
-}
-#tabs li {
-	display:inline;
-	margin:0;
-	padding:0;
-}
-#tabs a {
-	float:left;
-	background:url("imgs/manager/tableft.gif") no-repeat left top;
-	margin:0;
-	padding:0 0 0 4px;
-	text-decoration:none;
-	width:100px;
-	text-align:center;
-}
-#tabs a span {
-	float:left;
-	display:block;
-	background:url("imgs/manager/tabright.gif") no-repeat right top;
-	padding:5px 15px 4px 6px;
-	color:#666;
-}
-/* Commented Backslash Hack hides rule from IE5-Mac \*/
-#tabs a span {float:none;}
-/* End IE5-Mac hack */
-#tabs a:hover span {
-	color:#FF9834;
-}
-#tabs a:hover {
-	background-position:0% -42px;
-}
-#tabs a:hover span {
-	background-position:100% -42px;
-}
-#tabs .current a {
-	background-position:0% -42px;
-}
-#tabs .current a span {
-	background-position:100% -42px;
+	height: 32px;
+	margin: 0 auto;
+	padding: 0 0 0 20px;
 }
 
+#tabs ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	line-height: normal;
+}
+
+#tabs li {
+	float: left;
+	border-left: 1px solid #4E9CE9;
+}
+
+#tabs a {
+	display: block;
+	width: 155px;
+	height: 24px;
+	padding-top: 8px;
+	text-decoration: none;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF;
+	border: none;
+}
+
+#tabs a:hover{
+	background: #4E9CE9;
+}
+
+#tabs .current a {
+	background: #F0F0F0;
+	padding-left: 0;
+	color: #30476A;
+}
+
+/*- Footer --------------------------- */
 #footer{
 	font-size: 0.9em;
 	text-align: center;
+	padding-bottom:3px;
 }
 
 /*- Menu --------------------------- */
 #menu_left{
-	width:44%;
+	width:40%;
 	float:left;
 }
 #menu_left a{
@@ -105,7 +106,7 @@ h2 {
 	line-height:15px;
 }
 #menu_right{
-	width:55%;
+	width:59%;
 	overflow:auto;
 	float:left;
 }
@@ -143,5 +144,88 @@ h2 {
 	color:black;
 	-moz-border-radius:2px;
 	-webkit-border-radius:2px;
-	border-radius:2px; }
+	border-radius:2px;
 }
+
+/*- Form --------------------------- */
+.cssform{
+	background-color:#FAFAFA;
+	margin-left: 5px;
+	padding: 15px 15px 25px;
+	border: 1px solid #E4E4E4;
+}
+.cssform fieldset{
+	border: none;
+	border-top: 1px solid #AAA;
+	padding: 0;
+	margin: 0 0 0 10px;
+}
+.cssform legend{
+	font-weight: bold;
+	font-size:1.1em;
+	_margin: 0 -7px; /* IE Win */
+}
+.cssform legend, .cssform label{
+	padding-left: 0;
+	color: #333;
+}
+.cssform p{
+	width: 300px;
+	clear: left;
+	margin: 0;
+	padding: 5px 0 8px 0;
+	padding-left: 155px; /*width of left column containing the label elements*/
+	height: 1%;
+}
+
+.cssform label{
+	float: left;
+	margin-left: -155px; /*width of left column*/
+	width: 150px; /*width of labels. Should be smaller than left column (155px) to create some right margin*/
+	text-align:right;
+	padding-top: 5px;
+}
+
+.cssform input[type="text"]{ /*width of text boxes. IE6 does not understand this attribute*/
+	width: 180px;
+}
+.cssform input[type=text],
+.cssform input[type=password],
+.cssform input.text,
+.cssform input.title,
+.cssform textarea,
+.cssform select {
+	background-color:#fff;
+	border:1px solid #bbb;
+}
+.cssform input[type=text]:focus,
+.cssform input[type=password]:focus,
+.cssform input.text:focus,
+.cssform input.title:focus,
+.cssform textarea:focus,
+.cssform select:focus {
+	border-color:#666;
+}
+
+.cssform textarea{
+	width: 250px;
+	height: 150px;
+}
+.cssform .radio label{
+	float: none;
+	margin-left: 0;
+}
+
+/* Success, notice and error boxes
+-------------------------------------------------------------- */
+
+.error,
+.notice,
+.success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
+
+.error      { background: #FBE3E4; color: #8a1f11; border-color: #FBC2C4; }
+.notice     { background: #FFF6BF; color: #514721; border-color: #FFD324; }
+.success    { background: #E6EFC2; color: #264409; border-color: #C6D880; }
+.error a    { color: #8a1f11; }
+.notice a   { color: #514721; }
+.success a  { color: #264409; }

@@ -4,7 +4,6 @@
 	<tiles:putAttribute name="type" value="menu"/>
 	<tiles:putAttribute name="title" value="menu.title"/>
 	<tiles:putAttribute name="body" type="string">
-<script type="text/javascript" src="../../js/lib/jquery.js"></script>
 <script type="text/javascript" src="../../js/lib/jsTree.v.1.0rc2/jquery.jstree.js"></script>
 <script type="text/javascript" class="source">
 function selectItem(id){
@@ -14,10 +13,24 @@ function selectItem(id){
 function getSelectedItem(){
 	return $("#menu_tree").jstree("get_selected")[0];
 }
-function showAddItem(){
+function showAddItem(isTop){
+	if(isTop)
+		$("#menu_tree").jstree("deselect_all");
 	var selectedItem = getSelectedItem();
 	var id = selectedItem ? selectedItem.id : "";
 	$.get("showAddItem", {id:id}, function(html){
+		$("#menu_right").html(html);
+	})
+	$("#menu_item_command").hide();
+}
+function showEditItem(){
+	var selectedItem = getSelectedItem();
+	if(!selectedItem){
+		alert("不正な操作が行われました。");
+		return;
+	}
+	var id = selectedItem.id;
+	$.get("showEditItem", {id:id}, function(html){
 		$("#menu_right").html(html);
 	})
 	$("#menu_item_command").hide();
@@ -36,7 +49,15 @@ function addItemToTree(parentId, id, title){
 		true
 	);
 }
-function deleteItem(id){
+function renameItem(id, title){
+	try{
+		var titleNode = $("#" + id + " a").contents().filter(function() { return this.nodeType == 3; })[0];
+		titleNode.nodeValue = title;
+	}catch(e){
+		console.error(e);
+	}
+}
+function deleteItem(){
 	var id = getSelectedItem().id;
 	$.post("removeItem", {id: id}, function(){
 		$("#menu_tree").jstree("remove", "#"+id);
@@ -75,7 +96,7 @@ $(function () {
 		);
 	});
 	function resizeMenuTree(){
-		var height = $(window).height() - $("#menu_tree").offset().top - $("#footer").height();
+		var height = $(window).height() - $("#menu_tree").offset().top - $("#footer").height() - 13;
 		$("#menu_tree").css("height", height);
 		$("#menu_right").css("height", height);
 	}
@@ -89,7 +110,7 @@ $(function () {
 <div id="menu">
 	<div id="menu_left">
 		<div id="menu_command">
-			<a onclick="showAddItem()">トップメニューを追加</a>
+			<a onclick="showAddItem(true)">トップメニューを追加</a>
 		</div>
 		<div id="menu_tree">
 			
@@ -102,7 +123,7 @@ $(function () {
 	<div id="menu_item_command" class="menu_item_command" style="display:none">
 		<ul>
 			<li><a onclick="showAddItem()">追加</a></li>
-			<li><a onclick="deleteItem()">編集</a></li>
+			<li><a onclick="showEditItem()">編集</a></li>
 			<li><a onclick="deleteItem()">削除</a></li>
 			<li><a onclick="deleteItem()">公開/非公開を切り替える</a></li>
 			<li><a onclick="deleteItem()">公開範囲を設定する</a></li>
