@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.WidgetConf;
+import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -37,6 +38,9 @@ public class WidgetConfDAO extends HibernateDaoSupport {
 	private WidgetConfDAO() {
 	}
 
+	public static WidgetConfDAO newInstance() {
+		return (WidgetConfDAO) SpringUtil.getBean("widgetConfDAO");
+	}
 
 	public WidgetConf get(String type) {
 		return (WidgetConf)super.getHibernateTemplate().get(WidgetConf.class, type);

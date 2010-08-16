@@ -2,9 +2,14 @@ package org.infoscoop.manager.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.model.MenuItem;
+import org.infoscoop.service.GadgetService;
+import org.infoscoop.service.WidgetConfService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +31,15 @@ public class MenuController {
 	@RequestMapping
 	public void showAddItem(@RequestParam("id") String parentId, Model model)
 			throws Exception {
+		model.addAttribute("parentId", parentId);
+	}
+
+	@RequestMapping
+	public void showAddItem2(@RequestParam("id") String parentId,
+			@RequestParam("type") String type, Model model) throws Exception {
 		MenuItem item = new MenuItem();
 		item.setParentId(parentId);
+		item.setType(type);
 		item.setOrder(0);
 		model.addAttribute(item);
 	}
@@ -65,5 +77,17 @@ public class MenuController {
 		item.setParentId(parentId);
 		dao.save(item);
 		return item;
+	}
+
+	@RequestMapping
+	public void getGadgetConf(HttpServletRequest request, Model model)
+			throws Exception {
+		Locale locale = request.getLocale();
+		String buildinGadgets = WidgetConfService.getHandle()
+				.getWidgetConfsJson(locale);
+		String uploadGadgets = GadgetService.getHandle().getGadgetJson(locale,
+				3000);
+		model.addAttribute("buildin", buildinGadgets);
+		model.addAttribute("upload", uploadGadgets);
 	}
 }

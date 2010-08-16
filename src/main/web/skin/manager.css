@@ -115,6 +115,7 @@ body {
 	width:59%;
 	overflow:auto;
 	float:left;
+	padding-left:10px;
 }
 #menu_item_command{
 	position:absolute;

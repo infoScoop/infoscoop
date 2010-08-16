@@ -6,6 +6,18 @@
 	<tiles:putAttribute name="body" type="string">
 <script type="text/javascript" src="../../js/lib/jsTree.v.1.0rc2/jquery.jstree.js"></script>
 <script type="text/javascript" class="source">
+var gadgetConfs;
+function getGadget(type){
+	return gadgetConfs.buildin[type] || gadgetConfs.upload[type];
+}
+function getGadgetTitle(gadget){
+	if(typeof gadget == "string")
+		gadget = getGadget(gadget);
+	return gadget.title
+		 || gadget.ModulePrefs.directory_title
+		 || gadget.ModulePrefs.title
+		 || gadget.type;
+}
 function selectItem(id){
 	$("#menu_tree").jstree("deselect_all");
 	$("#menu_tree").jstree("select_node", "#"+id);
@@ -22,6 +34,9 @@ function showAddItem(isTop){
 		$("#menu_right").html(html);
 	})
 	$("#menu_item_command").hide();
+}
+function showAddItem2(type, parentId){
+	$("#menu_right").load("showAddItem2", {id: parentId, type:type});
 }
 function showEditItem(){
 	var selectedItem = getSelectedItem();
@@ -102,12 +117,23 @@ $(function () {
 	function resizeMenuTree(){
 		var height = $(window).height() - $("#menu_tree").offset().top - $("#footer").height() - 13;
 		$("#menu_tree").css("height", height);
+		var height = $(window).height() - $("#menu_right").offset().top - $("#footer").height() - 13;
 		$("#menu_right").css("height", height);
 	}
 	$(window).resize(resizeMenuTree);
 	resizeMenuTree();
 	$(document.body).click(function(){
 		$("#menu_item_command").hide();
+	});
+	
+	
+	//ガジェット設定を読み込む
+	$.getJSON("getGadgetConf", null, function(json, status){
+		gadgetConfs = json;
+		//TODO 以下の処理はサーバーサイドでやりたい
+		$.each(gadgetConfs.upload, function(type, gadget){
+			gadgetConfs.upload[type].type = type;
+		});
 	});
 });
 </script>
@@ -121,7 +147,7 @@ $(function () {
 		</div>
 	</div>
 	<div id="menu_right">
-		aaaaaaaaa
+		メニュー管理画面です。
 	</div>
 	<div style="clear:both"></div>
 	<div id="menu_item_command" class="menu_item_command" style="display:none">

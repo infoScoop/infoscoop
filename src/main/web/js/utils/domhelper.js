@@ -39,6 +39,8 @@ $.defineTag = function( tag ) {
 
 $.NBSP = '\u00a0';
 
+var isjQuery = !(typeof jQuery == "undefined");
+
 $._createNode = function( tag, args ) {
     var fix = { 'class':'className', 'Class':'className' };
     var e;
@@ -60,7 +62,10 @@ $._createNode = function( tag, args ) {
             } else if(a.indexOf('on') == 0){
 				var eventConf = attrs[a];
 				if(!(eventConf.handler instanceof Function))continue;
-            	IS_Event.observe(e, a.substring(2), eventConf.handler, eventConf.capture, eventConf.id);
+				if(!isjQuery)
+            		IS_Event.observe(e, a.substring(2), eventConf.handler, eventConf.capture, eventConf.id);
+            	else
+            		$(e)[a.substring(2)](eventConf.handler);
             } else {
 				e[a] = attrs[attr];
 			}

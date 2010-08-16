@@ -5,15 +5,17 @@
 	<form:hidden path="id" />
 	<form:hidden path="parentId" />
 	<form:hidden path="order" />
+	<form:hidden path="type" />
+	<fieldset>
+		<legend>タイプ</legend>
+		<p id="typeName">
+		</p>
+	</fieldset>
 	<fieldset>
 		<legend>共通設定</legend>
 		<p>
 			<form:label for="title" path="title" cssErrorClass="error">タイトル</form:label>
 			<form:input path="title" /><form:errors path="title" />
-		</p>
-		<p>
-			<form:label for="type" path="type" cssErrorClass="error">タイプ</form:label>
-			<form:input path="type" /><form:errors path="type" />
 		</p>
 		<p>
 			<form:label for="href" path="href" cssErrorClass="error">リンク</form:label>
@@ -37,7 +39,7 @@
 			<form:errors path="alert" />
 		</p>
 	</fieldset>
-	<fieldset>
+	<fieldset id="gadget_settings">
 		<legend>ガジェット設定</legend>
 		
 	</fieldset>
@@ -47,6 +49,35 @@
 	</p>
 </form:form>
 <script type="text/javascript">
+var gadgetConf = getGadget("${menuItem.type}");
+
+//タイプ名を表示
+$("#typeName").append(getGadgetTitle(gadgetConf));
+
+//ガジェット設定用フォーム作成
+$.each(gadgetConf.UserPref, function(name, userPref){
+	if((userPref.admin_datatype || userPref.datatype) == "hidden")
+		return true;
+	try{
+		var p = $.P({},
+			$.LABEL(
+				{for:"userPref["+name+"]"},
+				userPref.display_name || name
+			),
+			$.INPUT(
+				{
+					name:"userPref["+name+"]",
+					type:"text"
+				}
+			)
+		);
+		$("#gadget_settings").append(p);
+	}catch(e){
+		console.info(e);
+		return false;
+	}
+});
+
 $("#menuItem").ajaxForm(function(html){
 	$("#menu_right").html(html);
 });
