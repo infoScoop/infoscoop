@@ -44,7 +44,7 @@
 				<include name="jta.jar"/>
 				<include name="log4j*.jar"/>
 				<include name="opencsv*.jar"/>
-				<include name="spring.jar"/>
+				<include name="org.springframework*.jar"/>
 				<include name="xercesImpl.jar"/>
 				<include name="json.jar"/>
 			</fileset>
