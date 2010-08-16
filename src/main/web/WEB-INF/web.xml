@@ -348,9 +348,9 @@
 	</servlet>
 
 	<servlet>
-		<servlet-name>HttpProxy</servlet-name>
-		<display-name>Http Proxy</display-name>
 		<description>A proxy for Http requests</description>
+		<display-name>Http Proxy</display-name>
+		<servlet-name>HttpProxy</servlet-name>
 		<servlet-class>
 			org.infoscoop.web.ProxyServlet
 		</servlet-class>
