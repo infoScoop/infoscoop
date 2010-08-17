@@ -21,14 +21,21 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.util.SpringUtil;
+import org.infoscoop.util.XmlUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class GadgetDAO extends HibernateDaoSupport {
+	private static Log log = LogFactory.getLog(GadgetDAO.class);
+	
 	public static GadgetDAO newInstance(){
 		
         return (GadgetDAO)SpringUtil.getContext().getBean("gadgetDAO");
@@ -40,6 +47,20 @@ public class GadgetDAO extends HibernateDaoSupport {
 	public Gadget select( String type ) {
 		return select( type,"/",type +".xml");
 	}
+	
+	public Element getGadgetElement(String type) {
+		Gadget gadget = select(type);
+		if (gadget == null)
+			return null;
+		try {
+			String xml = new String(gadget.getData(), "UTF-8");
+			return ((Document) XmlUtil.string2Dom(xml)).getDocumentElement();
+		} catch (Exception e) {
+			log.error("", e);
+		}
+		return null;
+	}
+	
 	public List<Gadget> selectGadgetXMLs() {
 		String queryString = "from Gadget where path = '/' and name in "
 			+"( select concat(type,'.xml') from Gadget ) and name = concat(type,'.xml')";

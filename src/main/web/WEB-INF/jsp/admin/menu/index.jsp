@@ -25,18 +25,18 @@ function selectItem(id){
 function getSelectedItem(){
 	return $("#menu_tree").jstree("get_selected")[0];
 }
-function showAddItem(isTop){
+function selectGadgetType(isTop){
 	if(isTop)
 		$("#menu_tree").jstree("deselect_all");
 	var selectedItem = getSelectedItem();
 	var id = selectedItem ? selectedItem.id : "";
-	$.get("showAddItem", {id:id}, function(html){
+	$.get("selectGadgetType", {id:id}, function(html){
 		$("#menu_right").html(html);
 	})
 	$("#menu_item_command").hide();
 }
-function showAddItem2(type, parentId){
-	$("#menu_right").load("showAddItem2", {id: parentId, type:type});
+function showAddItem(type, parentId){
+	$("#menu_right").load("showAddItem", {id: parentId, type:type});
 }
 function showEditItem(){
 	var selectedItem = getSelectedItem();
@@ -50,7 +50,7 @@ function showEditItem(){
 	})
 	$("#menu_item_command").hide();
 }
-function addItemToTree(parentId, id, title){
+function addItemToTree(parentId, id, title, publish){
 	$("#menu_tree").jstree("create",
 		parentId ? "#"+parentId : -1,
 		"last",
@@ -59,15 +59,18 @@ function addItemToTree(parentId, id, title){
 			data : title
 		},
 		function(target){
-			target.append('<span onclick="showMenuCommand(event, this, \''+id+'\')" class="menu_open">▼</span>');
+			target.find("a:first").append('<span onclick="showMenuCommand(event, this, \''+id+'\')" class="menu_open">▼</span>');
+			target.append('<div class="info"><span class="publish'+(publish?'">公開':' un">非公開')+'</span></div>');
 		},
 		true
 	);
 }
-function renameItem(id, title){
+function updateItemInTree(id, title, publish){
 	try{
 		var titleNode = $("#" + id + " a").contents().filter(function() { return this.nodeType == 3; })[0];
 		titleNode.nodeValue = title;
+		$("#"+id+" .info span.publish").toggleClass("un", !publish);
+		$("#"+id+" .info span.publish").html(publish? "公開":"非公開");
 	}catch(e){
 		console.error(e);
 	}
@@ -140,7 +143,7 @@ $(function () {
 <div id="menu">
 	<div id="menu_left">
 		<div id="menu_command">
-			<a onclick="showAddItem(true)">トップメニューを追加</a>
+			<a onclick="selectGadgetType(true)">トップメニューを追加</a>
 		</div>
 		<div id="menu_tree">
 			
@@ -152,7 +155,7 @@ $(function () {
 	<div style="clear:both"></div>
 	<div id="menu_item_command" class="menu_item_command" style="display:none">
 		<ul>
-			<li><a onclick="showAddItem()">追加</a></li>
+			<li><a onclick="selectGadgetType()">追加</a></li>
 			<li><a onclick="showEditItem()">編集</a></li>
 			<li><a onclick="deleteItem()">削除</a></li>
 			<li><a onclick="deleteItem()">公開/非公開を切り替える</a></li>

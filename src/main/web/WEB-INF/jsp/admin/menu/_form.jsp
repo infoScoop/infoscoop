@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <form:form modelAttribute="menuItem" method="post" action="${action}" class="cssform">
 	<form:hidden path="id" />
@@ -8,7 +9,13 @@
 	<form:hidden path="type" />
 	<fieldset>
 		<legend>タイプ</legend>
-		<p id="typeName">
+		<p>
+			<x:choose>
+				<x:when select="$conf/widgetConfiguration/@title"><x:out select="$conf/widgetConfiguration/@title" /></x:when>
+				<x:when select="$conf/Module/ModulePrefs/@directory_title"><x:out select="$conf/Module/ModulePrefs/@directory_title" /></x:when>
+				<x:when select="$conf/Module/ModulePrefs/@title"><x:out select="$conf/Module/ModulePrefs/@title" /></x:when>
+				<x:otherwise>${menuItem.type}</x:otherwise>
+			</x:choose>
 		</p>
 	</fieldset>
 	<fieldset>
@@ -41,7 +48,43 @@
 	</fieldset>
 	<fieldset id="gadget_settings">
 		<legend>ガジェット設定</legend>
-		
+		<x:forEach var="userPref" select="$conf//UserPref">
+			<x:if select="$userPref/@admin_datatype or $userPref/@datatype!='hidden'">
+				<p>
+					<label><x:out select="$userPref/@display_name"/></label>
+					<x:choose>
+						<x:when select="$userPref/@admin_datatype">
+							<c:set var="datatype"><x:out select="$userPref/@admin_datatype"/></c:set>
+						</x:when>
+						<x:otherwise>
+							<c:set var="datatype"><x:out select="$userPref/@datatype"/></c:set>
+						</x:otherwise>
+					</x:choose>
+					<c:set var="name"><x:out select="$userPref/@name"/></c:set>
+					<x:choose>
+						<x:when select="$userPref/EnumValue">
+							<select name="userPref[${name}]" class="${datatype}">
+							<x:forEach var="enum" select="$userPref/EnumValue">
+								<c:set var="value"><x:out select="$enum/@value"/></c:set>
+								<c:set var="display_value"><x:out select="$enum/@display_value"/></c:set>
+								<c:choose>
+									<c:when test="${menuItem.userPref[name] == value}">
+										<option value="${value}" selected="selected">${display_value}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${value}">${display_value}</option>
+									</c:otherwise>
+								</c:choose>
+							</x:forEach>
+							</select>
+						</x:when>
+						<x:otherwise>
+							<input type="${datatype}" name="userPref[${name}]" value="${menuItem.userPref[name]}" class="${datatype}"/>
+						</x:otherwise>
+					</x:choose>
+				</p>
+			</x:if>
+		</x:forEach>
 	</fieldset>
 	<p>
 		<input type="submit" value="作成" class="button"/>
@@ -49,43 +92,20 @@
 	</p>
 </form:form>
 <script type="text/javascript">
-var gadgetConf = getGadget("${menuItem.type}");
-
-//UserPrefの値をJavaScriptで使えるようにJSONにする
-var itemUserPref = {
-<c:forEach var="userPref" items="${menuItem.userPref}" varStatus="status">
-	<c:if test="${! status.first}">,</c:if>"${userPref.key}":"${userPref.value}"
-</c:forEach>
-}
-
-//タイプ名を表示
-$("#typeName").append(getGadgetTitle(gadgetConf));
-
-//ガジェット設定用フォーム作成
-$.each(gadgetConf.UserPref, function(name, userPref){
-	if((userPref.admin_datatype || userPref.datatype) == "hidden")
-		return true;
-	try{
-		var p = $.P({},
-			$.LABEL(
-				{for:"userPref["+name+"]"},
-				userPref.display_name || name
-			),
-			$.INPUT(
-				{
-					name:"userPref["+name+"]",
-					type:"text",
-					value:itemUserPref[name] || ""
-				}
-			)
-		);
-		$("#gadget_settings").append(p);
-	}catch(e){
-		console.info(e);
-		return false;
+$("#gadget_settings input").each(function(){
+	//TODO ここでdatatypeに従ってinputタグを変換
+});
+$("#gadget_settings select").each(function(){
+	if(this.className == "radio"){
+		var name = this.name;
+		var radioEl = $.SPAN({className:'radio'});
+		$(this).find("option").each(function(){
+			radioEl.appendChild($.INPUT({type:'radio', value:this.value, name:name, checked:this.selected?"checked":false}));
+			radioEl.appendChild($.LABEL({}, this.innerHTML));
+		});
+		$(this).replaceWith(radioEl);
 	}
 });
-
 $("#menuItem").ajaxForm(function(html){
 	$("#menu_right").html(html);
 });

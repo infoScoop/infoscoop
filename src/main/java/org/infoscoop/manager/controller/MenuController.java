@@ -6,7 +6,9 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.MenuItemDAO;
+import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.w3c.dom.Element;
 
 @Controller
 public class MenuController {
@@ -29,19 +32,29 @@ public class MenuController {
 	}
 
 	@RequestMapping
-	public void showAddItem(@RequestParam("id") String parentId, Model model)
-			throws Exception {
+	public void selectGadgetType(@RequestParam("id") String parentId,
+			Model model) throws Exception {
 		model.addAttribute("parentId", parentId);
 	}
 
 	@RequestMapping
-	public void showAddItem2(@RequestParam("id") String parentId,
+	public void showAddItem(@RequestParam("id") String parentId,
 			@RequestParam("type") String type, Model model) throws Exception {
 		MenuItem item = new MenuItem();
 		item.setParentId(parentId);
 		item.setType(type);
 		item.setOrder(0);
+		item.setPublish(0);
 		model.addAttribute(item);
+
+		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。
+		Element conf = null;
+		if (type.startsWith("upload__")) {
+			conf = GadgetDAO.newInstance().getGadgetElement(type.substring(8));
+		} else {
+			conf = WidgetConfDAO.newInstance().getElement(type);
+		}
+		model.addAttribute("conf", conf.getOwnerDocument());
 	}
 
 	@RequestMapping
@@ -49,6 +62,12 @@ public class MenuController {
 			throws Exception {
 		MenuItem item = MenuItemDAO.newInstance().get(id);
 		model.addAttribute(item);
+
+		String type = item.getType();
+		Element conf = WidgetConfDAO.newInstance().getElement(type);
+		if (conf == null)
+			conf = GadgetDAO.newInstance().getGadgetElement(type);
+		model.addAttribute("conf", conf.getOwnerDocument());
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
