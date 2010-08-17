@@ -43,8 +43,8 @@ public abstract class BaseMenuUserpref  implements Serializable {
 	private org.infoscoop.dao.model.MenuUserprefsPK id;
 
 	// fields
-	private java.lang.String shortValue;
 	private java.lang.String longValue;
+	private java.lang.String shortValue;
 
 
 
@@ -69,23 +69,6 @@ public abstract class BaseMenuUserpref  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: value
-	 */
-	public java.lang.String getShortValue () {
-		return shortValue;
-	}
-
-	/**
-	 * Set the value related to the column: value
-	 * @param shortValue the value value
-	 */
-	public void setShortValue (java.lang.String shortValue) {
-		this.shortValue = shortValue;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: long_value
 	 */
 	public java.lang.String getLongValue () {
@@ -98,6 +81,23 @@ public abstract class BaseMenuUserpref  implements Serializable {
 	 */
 	public void setLongValue (java.lang.String longValue) {
 		this.longValue = longValue;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: value
+	 */
+	public java.lang.String getShortValue () {
+		return shortValue;
+	}
+
+	/**
+	 * Set the value related to the column: value
+	 * @param shortValue the value value
+	 */
+	public void setShortValue (java.lang.String shortValue) {
+		this.shortValue = shortValue;
 	}
 
 

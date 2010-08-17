@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.model.base.BaseMenuItem;
 
 
@@ -62,10 +63,15 @@ public class MenuItem extends BaseMenuItem {
 		return this.childItems;
 	}
 	
-	private Map<String, String> userPref = new HashMap<String, String>();
+	private Map<String, String> userPref;
 	
-	public Map<String, String> getUserPref(){
-		System.out.println(this.userPref);
+	public Map<String, String> getUserPref() {
+		if (userPref == null) {
+			userPref = new HashMap<String, String>();
+			if (getId() != null)
+				userPref
+						.putAll(MenuItemDAO.newInstance().getUserPrefs(getId()));
+		}
 		return this.userPref;
 	}
 }

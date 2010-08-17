@@ -51,6 +51,13 @@
 <script type="text/javascript">
 var gadgetConf = getGadget("${menuItem.type}");
 
+//UserPrefの値をJavaScriptで使えるようにJSONにする
+var itemUserPref = {
+<c:forEach var="userPref" items="${menuItem.userPref}" varStatus="status">
+	<c:if test="${! status.first}">,</c:if>"${userPref.key}":"${userPref.value}"
+</c:forEach>
+}
+
 //タイプ名を表示
 $("#typeName").append(getGadgetTitle(gadgetConf));
 
@@ -67,7 +74,8 @@ $.each(gadgetConf.UserPref, function(name, userPref){
 			$.INPUT(
 				{
 					name:"userPref["+name+"]",
-					type:"text"
+					type:"text",
+					value:itemUserPref[name] || ""
 				}
 			)
 		);

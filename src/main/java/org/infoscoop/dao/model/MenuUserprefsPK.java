@@ -9,11 +9,11 @@ public class MenuUserprefsPK extends BaseMenuUserprefsPK {
 	public MenuUserprefsPK () {}
 	
 	public MenuUserprefsPK (
-		org.infoscoop.dao.model.MenuItem fkMenuItem,
+		java.lang.String menuItemId,
 		java.lang.String name) {
 
 		super (
-			fkMenuItem,
+			menuItemId,
 			name);
 	}
 /*[CONSTRUCTOR MARKER END]*/

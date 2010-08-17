@@ -10,10 +10,10 @@
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<composite-id name="Id" class="MenuUserprefsPK">
-			<key-many-to-one
-				name="FkMenuItem"
-				class="MenuItem"
+			<key-property
+				name="MenuItemId"
 				column="fk_menu_item_id"
+				type="string"
 			/>
 			<key-property
 				name="Name"

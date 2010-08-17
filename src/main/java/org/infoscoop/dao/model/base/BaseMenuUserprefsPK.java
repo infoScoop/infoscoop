@@ -7,17 +7,17 @@ public abstract class BaseMenuUserprefsPK implements Serializable {
 
 	protected int hashCode = Integer.MIN_VALUE;
 
-	private org.infoscoop.dao.model.MenuItem fkMenuItem;
+	private java.lang.String menuItemId;
 	private java.lang.String name;
 
 
 	public BaseMenuUserprefsPK () {}
 	
 	public BaseMenuUserprefsPK (
-		org.infoscoop.dao.model.MenuItem fkMenuItem,
+		java.lang.String menuItemId,
 		java.lang.String name) {
 
-		this.setFkMenuItem(fkMenuItem);
+		this.setMenuItemId(menuItemId);
 		this.setName(name);
 	}
 
@@ -25,16 +25,16 @@ public abstract class BaseMenuUserprefsPK implements Serializable {
 	/**
 	 * Return the value associated with the column: fk_menu_item_id
 	 */
-	public org.infoscoop.dao.model.MenuItem getFkMenuItem () {
-		return fkMenuItem;
+	public java.lang.String getMenuItemId () {
+		return menuItemId;
 	}
 
 	/**
 	 * Set the value related to the column: fk_menu_item_id
-	 * @param fkMenuItem the fk_menu_item_id value
+	 * @param menuItemId the fk_menu_item_id value
 	 */
-	public void setFkMenuItem (org.infoscoop.dao.model.MenuItem fkMenuItem) {
-		this.fkMenuItem = fkMenuItem;
+	public void setMenuItemId (java.lang.String menuItemId) {
+		this.menuItemId = menuItemId;
 	}
 
 
@@ -62,8 +62,8 @@ public abstract class BaseMenuUserprefsPK implements Serializable {
 		if (!(obj instanceof org.infoscoop.dao.model.MenuUserprefsPK)) return false;
 		else {
 			org.infoscoop.dao.model.MenuUserprefsPK mObj = (org.infoscoop.dao.model.MenuUserprefsPK) obj;
-			if (null != this.getFkMenuItem() && null != mObj.getFkMenuItem()) {
-				if (!this.getFkMenuItem().equals(mObj.getFkMenuItem())) {
+			if (null != this.getMenuItemId() && null != mObj.getMenuItemId()) {
+				if (!this.getMenuItemId().equals(mObj.getMenuItemId())) {
 					return false;
 				}
 			}
@@ -85,8 +85,8 @@ public abstract class BaseMenuUserprefsPK implements Serializable {
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			StringBuilder sb = new StringBuilder();
-			if (null != this.getFkMenuItem()) {
-				sb.append(this.getFkMenuItem().hashCode());
+			if (null != this.getMenuItemId()) {
+				sb.append(this.getMenuItemId().hashCode());
 				sb.append(":");
 			}
 			else {
