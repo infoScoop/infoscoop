@@ -108,6 +108,17 @@ body {
 	display:inline-block;
 	text-align:center;
 }
+#menu_tree .info{
+	padding-left:40px;
+	font-size:9px;
+	line-height:9px;
+}
+#menu_tree .info .publish{
+	color:#4E763E;
+}
+#menu_tree .info .un{
+	color:#D00;
+}
 #menu_command{
 	padding-bottom:5px;
 }
