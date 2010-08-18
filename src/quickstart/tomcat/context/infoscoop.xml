@@ -3,7 +3,7 @@
                   auth="Container"
                   type="javax.sql.DataSource"
                   driverClassName="com.mysql.jdbc.Driver"
-                  url="jdbc:mysql://localhost:3306/iscoop"
+                  url="jdbc:mysql://localhost:3306/iscoop?useUnicode=true&amp;characterEncoding=UTF-8"
                   username="root"
                   password=""
                   validationQuery="select 1" />
