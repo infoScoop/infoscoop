@@ -406,8 +406,8 @@ IS_WidgetsContainer.prototype.classDef = function() {
 						if(widgetConfList[0].tabNumber){
 							IS_Portal.tabs["tab0"].tabNumber = widgetConfList[0].tabNumber;
 						}
-						var tabs = $('tabs');
-						IS_Portal.tabList[0].style.display = "none";
+						//var tabs = $('tabs');
+						//IS_Portal.tabList[0].style.display = "none";
 					}
 				}
 			}
@@ -428,7 +428,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			IS_Holiday.load(false);
 			freshDays = IS_Portal.getFreshDays(IS_Portal.freshDays);
 			//IS_Portal.freshDays = freshDays;
-	
+
 			var goHome = $("portal-go-home");
 			if(goHome){
 				goHome.style.display = "none";

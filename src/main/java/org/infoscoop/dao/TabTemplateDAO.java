@@ -41,7 +41,7 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 				DetachedCriteria.forClass(TabTemplate.class));
 	}
 
-/*	
+
 	@SuppressWarnings("unchecked")
 	public TabTemplate get(String id) {
 		List<TabTemplate> items = super.getHibernateTemplate().findByCriteria(
@@ -52,7 +52,7 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 		return null;
 	}
 	
-
+	/*	
 
 	@SuppressWarnings("unchecked")
 	public List<TabTemplate> getChildItems(String parentId) {

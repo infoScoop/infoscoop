@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 public abstract class BaseTabTemplate  implements Serializable {
 
-	public static String REF = "Tabtemplate";
+	public static String REF = "TabTemplate";
 	public static String PROP_ACCESS_LEVEL = "AccessLevel";
 	public static String PROP_PUBLISHED = "Published";
 	public static String PROP_ID = "Id";
@@ -63,6 +63,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private java.lang.String tabName;
 	private java.lang.Integer published;
 	private java.lang.Integer accessLevel;
+	private java.lang.String layout;
 
 
 
@@ -138,14 +139,31 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 
 
+	/**
+	 * Return the value associated with the column: layout
+	 */
+	public java.lang.String getLayout () {
+		return layout;
+	}
+
+	/**
+	 * Set the value related to the column: access_level
+	 * @param accessLevel the access_level value
+	 */
+	public void setLayout (java.lang.String layout) {
+		this.layout = layout;
+	}
+
+
+
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.dao.model.TabTemplate)) return false;
 		else {
-			org.infoscoop.dao.model.TabTemplate tabtemplate = (org.infoscoop.dao.model.TabTemplate) obj;
-			if (null == this.getId() || null == tabtemplate.getId()) return false;
-			else return (this.getId().equals(tabtemplate.getId()));
+			org.infoscoop.dao.model.TabTemplate tabTemplate = (org.infoscoop.dao.model.TabTemplate) obj;
+			if (null == this.getId() || null == tabTemplate.getId()) return false;
+			else return (this.getId().equals(tabTemplate.getId()));
 		}
 	}
 

@@ -9,4 +9,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/jsp/admin/tiles/footer.jsp" />
 	</definition>
+	<definition name="prototype.definition" template="/WEB-INF/jsp/admin/layouts/prototype.jsp">
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
+	</definition>
+	<definition name="tab_dialog.definition" template="/WEB-INF/jsp/admin/layouts/tab_dialog.jsp">
+		<put-attribute name="header" value="/WEB-INF/jsp/admin/tiles/tab_dialog_header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
+	</definition>
 </tiles-definitions>

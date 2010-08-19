@@ -37,6 +37,12 @@
 			not-null="true"
 			length="10"
 		/>
+		<property
+			name="layout"
+			column="layout"
+			type="text"
+			access="field"
+		/>
 
 
 	</class>	
