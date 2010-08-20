@@ -119,8 +119,8 @@ $(function () {
 	$("#menu_command a").button();
 	function resizeMenuTree(){
 		var height = $(window).height() - $("#menu_tree").offset().top - $("#footer").height() - 13;
+		console.info(height);
 		$("#menu_tree").css("height", height);
-		var height = $(window).height() - $("#menu_right").offset().top - $("#footer").height() - 13;
 		$("#menu_right").css("height", height);
 	}
 	$(window).resize(resizeMenuTree);
