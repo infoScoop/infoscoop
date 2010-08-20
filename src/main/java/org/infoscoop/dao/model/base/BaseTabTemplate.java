@@ -16,9 +16,10 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 	public static String REF = "TabTemplate";
 	public static String PROP_ACCESS_LEVEL = "AccessLevel";
+	public static String PROP_NAME = "Name";
+	public static String PROP_LAYOUT = "layout";
 	public static String PROP_PUBLISHED = "Published";
 	public static String PROP_ID = "Id";
-	public static String PROP_TAB_NAME = "TabName";
 
 
 	// constructors
@@ -29,7 +30,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseTabTemplate (java.lang.String id) {
+	public BaseTabTemplate (java.lang.Integer id) {
 		this.setId(id);
 		initialize();
 	}
@@ -38,13 +39,13 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseTabTemplate (
-		java.lang.String id,
-		java.lang.String tabName,
+		java.lang.Integer id,
+		java.lang.String name,
 		java.lang.Integer published,
 		java.lang.Integer accessLevel) {
 
 		this.setId(id);
-		this.setTabName(tabName);
+		this.setName(name);
 		this.setPublished(published);
 		this.setAccessLevel(accessLevel);
 		initialize();
@@ -57,22 +58,27 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String id;
+	private java.lang.Integer id;
 
 	// fields
-	private java.lang.String tabName;
+	private java.lang.String name;
 	private java.lang.Integer published;
 	private java.lang.Integer accessLevel;
 	private java.lang.String layout;
+
+	// collections
+	private java.util.Set<org.infoscoop.dao.model.TabTemplateParsonalizeGadget> tabTemplateParsonalizeGadgets;
+	private java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> tabTemplateStaticGadgets;
 
 
 
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  column="tab_id"
+     *  generator-class="native"
+     *  column="id"
      */
-	public java.lang.String getId () {
+	public java.lang.Integer getId () {
 		return id;
 	}
 
@@ -80,7 +86,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (java.lang.String id) {
+	public void setId (java.lang.Integer id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
@@ -89,18 +95,18 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: tab_name
+	 * Return the value associated with the column: name
 	 */
-	public java.lang.String getTabName () {
-		return tabName;
+	public java.lang.String getName () {
+		return name;
 	}
 
 	/**
-	 * Set the value related to the column: tab_name
-	 * @param tabName the tab_name value
+	 * Set the value related to the column: name
+	 * @param name the name value
 	 */
-	public void setTabName (java.lang.String tabName) {
-		this.tabName = tabName;
+	public void setName (java.lang.String name) {
+		this.name = name;
 	}
 
 
@@ -147,11 +153,55 @@ public abstract class BaseTabTemplate  implements Serializable {
 	}
 
 	/**
-	 * Set the value related to the column: access_level
-	 * @param accessLevel the access_level value
+	 * Set the value related to the column: layout
+	 * @param layout the layout value
 	 */
 	public void setLayout (java.lang.String layout) {
 		this.layout = layout;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TabTemplateParsonalizeGadgets
+	 */
+	public java.util.Set<org.infoscoop.dao.model.TabTemplateParsonalizeGadget> getTabTemplateParsonalizeGadgets () {
+		return tabTemplateParsonalizeGadgets;
+	}
+
+	/**
+	 * Set the value related to the column: TabTemplateParsonalizeGadgets
+	 * @param tabTemplateParsonalizeGadgets the TabTemplateParsonalizeGadgets value
+	 */
+	public void setTabTemplateParsonalizeGadgets (java.util.Set<org.infoscoop.dao.model.TabTemplateParsonalizeGadget> tabTemplateParsonalizeGadgets) {
+		this.tabTemplateParsonalizeGadgets = tabTemplateParsonalizeGadgets;
+	}
+
+	public void addToTabTemplateParsonalizeGadgets (org.infoscoop.dao.model.TabTemplateParsonalizeGadget tabTemplateParsonalizeGadget) {
+		if (null == getTabTemplateParsonalizeGadgets()) setTabTemplateParsonalizeGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateParsonalizeGadget>());
+		getTabTemplateParsonalizeGadgets().add(tabTemplateParsonalizeGadget);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: TabTemplateStaticGadgets
+	 */
+	public java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> getTabTemplateStaticGadgets () {
+		return tabTemplateStaticGadgets;
+	}
+
+	/**
+	 * Set the value related to the column: TabTemplateStaticGadgets
+	 * @param tabTemplateStaticGadgets the TabTemplateStaticGadgets value
+	 */
+	public void setTabTemplateStaticGadgets (java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> tabTemplateStaticGadgets) {
+		this.tabTemplateStaticGadgets = tabTemplateStaticGadgets;
+	}
+
+	public void addToTabTemplateStaticGadgets (org.infoscoop.dao.model.TabTemplateStaticGadget tabTemplateStaticGadget) {
+		if (null == getTabTemplateStaticGadgets()) setTabTemplateStaticGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateStaticGadget>());
+		getTabTemplateStaticGadgets().add(tabTemplateStaticGadget);
 	}
 
 

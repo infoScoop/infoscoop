@@ -5,8 +5,8 @@
 
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
-		name="TabTemplate"
-		table="is_tabtemplates"
+		name="TabTemplateParsonalizeGadget"
+		table="is_tabtemplate_parsonalize_gadgets"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
@@ -18,41 +18,38 @@
 		</id>
 
 		<property
-			name="Name"
-			column="name"
-			type="string"
-			not-null="true"
-			length="255"
-		/>
-		<property
-			name="Published"
-			column="published"
+			name="ColumnNum"
+			column="column_num"
 			type="integer"
 			not-null="true"
 			length="10"
 		/>
-		<property
-			name="AccessLevel"
-			column="access_level"
-			type="integer"
+		<many-to-one
+			name="FkGadgetInstance"
+			column="fk_gadget_instance_id"
+			class="GadgetInstance"
 			not-null="true"
-			length="10"
-		/>
-		<property
-			name="layout"
-			column="layout"
-			type="string"
-		/>
+		>
+		</many-to-one>
+		<many-to-one
+			name="Sibling"
+			column="sibling_id"
+			class="TabTemplateParsonalizeGadget"
+			not-null="false"
+		>
+		</many-to-one>
+		<many-to-one
+			name="FkTabTemplate"
+			column="fk_tabtemplate_id"
+			class="TabTemplate"
+			not-null="true"
+		>
+		</many-to-one>
 	
 
 		<set name="TabTemplateParsonalizeGadgets" inverse="true">
 			<key column="id"/>
 			<one-to-many class="TabTemplateParsonalizeGadget"/>
-		</set>
-
-		<set name="TabTemplateStaticGadgets" inverse="true">
-			<key column="id"/>
-			<one-to-many class="TabTemplateStaticGadget"/>
 		</set>
 
 

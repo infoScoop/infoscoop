@@ -43,7 +43,7 @@ public class GadgetDAO extends HibernateDaoSupport {
 	
 	public static void main(String args[]) throws IOException{
 	}
-	
+
 	public Gadget select( String type ) {
 		return select( type,"/",type +".xml");
 	}
@@ -61,7 +61,7 @@ public class GadgetDAO extends HibernateDaoSupport {
 		return null;
 	}
 	
-	public List<Gadget> selectGadgetXMLs() {
+	public List<Gadget> selectGadgetConfs() {
 		String queryString = "from Gadget where path = '/' and name in "
 			+"( select concat(type,'.xml') from Gadget ) and name = concat(type,'.xml')";
 		
@@ -144,4 +144,5 @@ public class GadgetDAO extends HibernateDaoSupport {
 						Expression.in(Gadget.PROP_NAME, types)).add(
 						Expression.eq(Gadget.PROP_PATH, "/")));
 	}
+
 }

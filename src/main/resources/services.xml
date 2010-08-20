@@ -360,6 +360,9 @@
 				<property name="gadgetDAO">
 					<ref bean="gadgetDAO" />
 				</property>
+				<property name="widgetConfDAO">
+					<ref bean="widgetConfDAO" />
+				</property>
 				<property name="gadgetIconDAO">
 					<ref bean="gadgetIconDAO" />
 				</property>

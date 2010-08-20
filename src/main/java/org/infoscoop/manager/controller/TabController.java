@@ -1,14 +1,19 @@
 package org.infoscoop.manager.controller;
 
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.infoscoop.dao.GadgetDAO;
+import org.infoscoop.dao.GadgetInstanceDAO;
+import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.WidgetConfDAO;
+import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.TabTemplate;
+import org.infoscoop.service.GadgetService;
+import org.infoscoop.service.TabLayoutService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,14 +39,16 @@ public class TabController {
 	}
 	
 	@RequestMapping
-	public void selectGadgetType(@RequestParam("id") String parentId,
+	public void selectGadgetType(HttpServletRequest request, @RequestParam("id") String containerId,
 			Model model) throws Exception {
-		model.addAttribute("parentId", parentId);
+		model.addAttribute("containerId", containerId);
+		model.addAttribute("gadgetConfs", GadgetService.getHandle().getGadgetConfs(request.getLocale()));
 	}
 	
 	@RequestMapping
-	public void showGadgetDialog(@RequestParam("type") String type, Model model)throws Exception {
+	public void showGadgetDialog(HttpServletRequest request, @RequestParam("type") String type, Model model)throws Exception {
 		MenuItem menuItem = new MenuItem();
+		menuItem.setType(type);
 		model.addAttribute("menuItem", menuItem);
 		
 		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。
@@ -52,11 +59,20 @@ public class TabController {
 			conf = WidgetConfDAO.newInstance().getElement(type);
 		}
 		model.addAttribute("conf", conf.getOwnerDocument());
+	
+	}
+
+	@RequestMapping
+	public void listGadgetInstances(){
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public void submitGadgetSettings(GadgetInstance gadget)throws Exception {
+		TabLayoutService.getHandle().insertStaticGadget("temp", gadget);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public void addTab(TabTemplate tab)throws Exception {
-		tab.setId("m_" + new Date().getTime());
 		TabTemplateDAO.newInstance().save(tab);
 	}
 	

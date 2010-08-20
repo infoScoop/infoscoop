@@ -91,6 +91,10 @@
 					<value>org/infoscoop/dao/model/MenuItem.hbm.xml</value>
 					<value>org/infoscoop/dao/model/MenuUserpref.hbm.xml</value>
 					<value>org/infoscoop/dao/model/TabTemplate.hbm.xml</value>
+					<value>org/infoscoop/dao/model/TabTemplateStaticGadget.hbm.xml</value>
+					<value>org/infoscoop/dao/model/TabTemplateParsonalizeGadget.hbm.xml</value>
+					<value>org/infoscoop/dao/model/GadgetInstance.hbm.xml</value>
+					<value>org/infoscoop/dao/model/GadgetInstanceUserpref.hbm.xml</value>
 				</list>
 			</property>
 			<property name="hibernateProperties">

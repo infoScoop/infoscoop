@@ -636,7 +636,7 @@ IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
 <form:form modelAttribute="tabTemplate" id="add_tab" method="post" action="addTab">
 	<div class="infoScoop">
 		<h1>タブ設定画面</h1>
-		<p><label>タイトル：</label><form:input path="tabName"/></p>
+		<p><label>タイトル：</label><form:input path="name"/></p>
 		<p><label>公開：</label><form:radiobutton path="published" value="1" label="公開"/>
 				<form:radiobutton path="published" value="0" label="非公開"/>
 		</p>

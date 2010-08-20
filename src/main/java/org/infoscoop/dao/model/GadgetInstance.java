@@ -1,38 +1,38 @@
 package org.infoscoop.dao.model;
 
-import org.infoscoop.dao.model.base.BaseTabTemplate;
+import org.infoscoop.dao.model.base.BaseGadgetInstance;
 
 
 
-public class TabTemplate extends BaseTabTemplate {
+public class GadgetInstance extends BaseGadgetInstance {
 	private static final long serialVersionUID = 1L;
 
 /*[CONSTRUCTOR MARKER BEGIN]*/
-	public TabTemplate () {
+	public GadgetInstance () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public TabTemplate (java.lang.Integer id) {
+	public GadgetInstance (java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public TabTemplate (
+	public GadgetInstance (
 		java.lang.Integer id,
-		java.lang.String name,
-		java.lang.Integer published,
-		java.lang.Integer accessLevel) {
+		java.lang.String type,
+		java.lang.String title,
+		java.lang.String href) {
 
 		super (
 			id,
-			name,
-			published,
-			accessLevel);
+			type,
+			title,
+			href);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

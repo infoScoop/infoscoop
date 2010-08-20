@@ -116,6 +116,13 @@ IS_Portal.start = function() {
 	IS_Portal.buildLogout();
 	
 	IS_Portal.buildTabs();
+	
+	//Holiday information
+	IS_Holiday = new IS_Widget.Calendar.iCalendar(localhostPrefix + "/holidaysrv");
+	IS_Holiday.load(false);
+	freshDays = IS_Portal.getFreshDays(IS_Portal.freshDays);
+	//IS_Portal.freshDays = freshDays;
+
 	new IS_WidgetsContainer();
 	new IS_SiteAggregationMenu();
 	IS_Portal.sidePanel = new IS_SidePanel();

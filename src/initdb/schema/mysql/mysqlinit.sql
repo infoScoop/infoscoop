@@ -475,9 +475,50 @@ create table IS_MENU_USERPREFS (
 create index is_menu_userprefs_fk_menu_item_id on IS_MENU_USERPREFS(fk_menu_item_id);
 create index is_menu_userprefs_name on IS_MENU_USERPREFS(name);
 
-create table IS_TABTEMPLATES(
-  tab_id varchar(255) primary key,
-  tab_name varchar(255) not null,
-  published int not null default 0, -- 0=unpublished, 1=published
-  access_level int not null default 1 -- 0=public, 1=special
+--
+-- IS_GADGET_INSTANCES
+--
+CREATE TABLE IS_GADGET_INSTANCES (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	type VARCHAR( 255 ) NOT NULL ,
+	title VARCHAR( 255 ) NOT NULL ,
+	href VARCHAR( 1024 ) NOT NULL ,
+	INDEX (  `type` ,  `title` )
+) ENGINE = INNODB
+
+create table IS_GADGET_INSTANCE_USERPREFS (
+	fk_gadget_instance_id int UNSIGNED not null,
+	name varchar(255) not null,
+	value varchar(4000),
+	long_value text,
+	primary key (fk_gadget_instance_id, name),
+	foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade
 ) ENGINE=InnoDB;
+
+create table IS_TAB_TEMPLATES(
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	name varchar(255) not null,
+	layout text,
+	published int not null default 0, -- 0=unpublished, 1=published
+	access_level int not null default 1 -- 0=public, 1=special
+) ENGINE=InnoDB;
+
+CREATE TABLE  IS_TAB_TEMPLATE_STATIC_GADGETS (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	fk_tabtemplate_id INT UNSIGNED NOT NULL,
+	container_id VARCHAR( 255 ) NOT NULL ,
+	fk_gadget_instance_id INT UNSIGNED  NOT NULL,
+	foreign key (fk_tabtemplate_id) references IS_TABTEMPLATES(id) on delete cascade,
+	foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade
+) ENGINE = INNODB
+
+CREATE TABLE IS_TAB_TEMPLATE_PARSONALIZE_GADGETS (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	fk_tabtemplate_id INT UNSIGNED NOT NULL,
+	column_num int NOT NULL,
+	sibling_id int UNSIGNED,
+	fk_gadget_instance_id INT UNSIGNED  NOT NULL,
+	foreign key (fk_tabtemplate_id) references IS_TABTEMPLATES(id) on delete cascade,
+	foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade,
+	foreign key (sibling_id) references IS_TABTEMPLATE_PARSONALIZE_GADGETS(id) on delete cascade
+) ENGINE = INNODB

@@ -1,9 +1,7 @@
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<div id="tabs">
-	<ul>
-		<li <c:if test="${type == 'menu'}">class="current"</c:if>><a href="../menu/index"><span>New Gadget</span></a></li>
-		<li <c:if test="${type == 'tab'}">class="current"</c:if>><a href="../tab/index"><span>Gadget Instance List</span></a></li>
-	</ul>
-</div>
+<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+	<li class="ui-state-default ui-corner-top <c:if test="${type == 'menu'}">ui-tabs-selected ui-state-active</c:if>"><a href="selectGadgetType"><span>New Gadget</span></a></li>
+	<li class="ui-state-default ui-corner-top <c:if test="${type == 'tab'}">ui-tabs-selected ui-state-active</c:if>"><a href="listGadgetInstances"><span>Gadget Instance List</span></a></li>
+</ul>

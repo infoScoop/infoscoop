@@ -1,8 +1,13 @@
 <%@ page contentType="text/html; charset=UTF8" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<form:form modelAttribute="menuItem" method="post" action="${action}" class="cssform">
+<tiles:insertDefinition name="tab_dialog.definition" flush="true">
+	<tiles:putAttribute name="type" value="menu"/>
+	<tiles:putAttribute name="title" value="tab.title"/>
+	<tiles:putAttribute name="body" type="string">
+<form:form modelAttribute="menuItem" method="post" action="submitGadgetSettings" class="cssform">
 	<form:hidden path="id" />
 	<form:hidden path="parentId" />
 	<form:hidden path="order" />
@@ -111,3 +116,5 @@ $("#menuItem").ajaxForm(function(html){
 });
 $("#menuItem input.button").button();
 </script>
+	</tiles:putAttribute>
+</tiles:insertDefinition>

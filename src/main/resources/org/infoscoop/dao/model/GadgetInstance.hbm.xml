@@ -5,8 +5,8 @@
 
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
-		name="TabTemplate"
-		table="is_tabtemplates"
+		name="GadgetInstance"
+		table="is_gadget_instances"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
@@ -18,42 +18,37 @@
 		</id>
 
 		<property
-			name="Name"
-			column="name"
+			name="Type"
+			column="type"
 			type="string"
 			not-null="true"
 			length="255"
 		/>
 		<property
-			name="Published"
-			column="published"
-			type="integer"
-			not-null="true"
-			length="10"
-		/>
-		<property
-			name="AccessLevel"
-			column="access_level"
-			type="integer"
-			not-null="true"
-			length="10"
-		/>
-		<property
-			name="layout"
-			column="layout"
+			name="Title"
+			column="title"
 			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="Href"
+			column="href"
+			type="string"
+			not-null="true"
+			length="1024"
 		/>
 	
 
-		<set name="TabTemplateParsonalizeGadgets" inverse="true">
+		<!--set name="TabtemplateParsonalizeGadgets" inverse="true">
 			<key column="id"/>
 			<one-to-many class="TabTemplateParsonalizeGadget"/>
 		</set>
 
-		<set name="TabTemplateStaticGadgets" inverse="true">
+		<set name="TabtemplateStaticGadgets" inverse="true">
 			<key column="id"/>
 			<one-to-many class="TabTemplateStaticGadget"/>
-		</set>
+		</set-->
 
 
 	</class>	

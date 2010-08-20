@@ -7,15 +7,17 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<title><spring:message code="manager.title" /> - <spring:message code="${title}" /></title>
-		<link rel="stylesheet" type="text/css" href="../../skin/manager.css">
 		<script type="text/javascript" src="../../js/lib/jquery.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../skin/manager.css">
 		<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/css/smoothness/jquery-ui-1.8.4.custom.css">
 		<script type="text/javascript" src="../../js/lib/jquery-ui/jquery-ui-1.8.4.custom.min.js"></script>
 		<script type="text/javascript" src="../../js/lib/jquery.form.js"></script>
 		<script type="text/javascript" src="../../js/utils/domhelper.js"></script>
 	</head>
 	<body>
-		<div id="header"><tiles:insertAttribute name="header" /></div>
-		<div id="body"><tiles:insertAttribute name="body" /></div>
+		<div class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+			<tiles:insertAttribute name="header" />
+			<div id="body"><tiles:insertAttribute name="body" /></div>
+		</div>
 	</body>
 </html>

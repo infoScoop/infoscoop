@@ -34,9 +34,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
+import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabLayoutDAO;
 import org.infoscoop.dao.WidgetDAO;
+import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.util.RoleUtil;
 import org.infoscoop.util.SpringUtil;
@@ -113,6 +115,10 @@ public class TabLayoutService {
 		return myUid;
 	}
 
+	public void insertStaticGadget(String container_id, GadgetInstance gadget){
+
+		GadgetInstanceDAO.newInstance().save(gadget);
+	}
 	/**
 	 * @param tabId
 	 * @param tabNumber
