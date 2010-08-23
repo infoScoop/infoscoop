@@ -29,7 +29,7 @@ $(function(){
 		<tbody>
 <c:forEach var="tab" items="${tabs}">
 			<tr>
-				<td>${tab.tabName}</td>
+				<td>${tab.name}</td>
 				<td>${tab.published}</td>
 				<td>${tab.accessLevel}</td>
 				<td><span class="trash"></span></td>
