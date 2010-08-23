@@ -484,7 +484,7 @@ CREATE TABLE IS_GADGET_INSTANCES (
 	title VARCHAR( 255 ) NOT NULL ,
 	href VARCHAR( 1024 ) NOT NULL ,
 	INDEX (  `type` ,  `title` )
-) ENGINE = INNODB
+) ENGINE = INNODB;
 
 create table IS_GADGET_INSTANCE_USERPREFS (
 	fk_gadget_instance_id int UNSIGNED not null,
@@ -508,9 +508,9 @@ CREATE TABLE  IS_TAB_TEMPLATE_STATIC_GADGETS (
 	fk_tabtemplate_id INT UNSIGNED NOT NULL,
 	container_id VARCHAR( 255 ) NOT NULL ,
 	fk_gadget_instance_id INT UNSIGNED  NOT NULL,
-	foreign key (fk_tabtemplate_id) references IS_TABTEMPLATES(id) on delete cascade,
+	foreign key (fk_tabtemplate_id) references IS_TAB_TEMPLATES(id) on delete cascade,
 	foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade
-) ENGINE = INNODB
+) ENGINE = INNODB;
 
 CREATE TABLE IS_TAB_TEMPLATE_PARSONALIZE_GADGETS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -518,7 +518,7 @@ CREATE TABLE IS_TAB_TEMPLATE_PARSONALIZE_GADGETS (
 	column_num int NOT NULL,
 	sibling_id int UNSIGNED,
 	fk_gadget_instance_id INT UNSIGNED  NOT NULL,
-	foreign key (fk_tabtemplate_id) references IS_TABTEMPLATES(id) on delete cascade,
+	foreign key (fk_tabtemplate_id) references IS_TAB_TEMPLATES(id) on delete cascade,
 	foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade,
-	foreign key (sibling_id) references IS_TABTEMPLATE_PARSONALIZE_GADGETS(id) on delete cascade
-) ENGINE = INNODB
+	foreign key (sibling_id) references IS_TAB_TEMPLATE_PARSONALIZE_GADGETS(id) on delete cascade
+) ENGINE = INNODB;
