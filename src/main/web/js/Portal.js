@@ -122,7 +122,7 @@ IS_Portal.start = function() {
 	Event.observe(window, 'resize', IS_Portal.adjustSiteMenuHeight, false);
 	Event.observe(window, 'resize', IS_Portal.adjustIframeHeight, false);
 	Event.observe(window, 'resize', IS_Portal.adjustGadgetHeight , false);
-
+	Event.observe(window, 'resize', IS_Portal.adjustStaticWidgetHeight, false);
 
 	var messageBarDiv = $('message-bar-controles');
 	var messageMoreBtn = document.createElement('input');

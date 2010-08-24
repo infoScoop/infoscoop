@@ -313,6 +313,8 @@
 "adminjs","alb_disableCustomizedArea","ALL","ALL","Do not use the personalized area."
 "adminjs","alb_disableCustomizedArea","ALL","ja","パーソナライズエリアを使用しない"
 "adminjs","alb_disableCustomizedArea","ALL","zh","不使用个性化领域"
+"adminjs","alb_adjustToWindowHeight","ALL","ALL","Display the height of a fixed area to the height of the browser."
+"adminjs","alb_adjustToWindowHeight","ALL","ja","固定領域の高さをブラウザの高さに合わせて表示する。"
 "adminjs","alb_displayLinkSettings","ALL","ALL","Display link settings:"
 "adminjs","alb_displayLinkSettings","ALL","ja","リンク表示設定："
 "adminjs","alb_displayLinkSettings","ALL","zh","链接表示设定："

@@ -2689,6 +2689,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			case "disableddynamicpanel":
 				displayRole.disabledDynamicPanel = newValue;
 				break;
+			case "adjusttowindowheight":
+				displayRole.adjustToWindowHeight = newValue;
+				break;
 			default:
 				break;
 		}

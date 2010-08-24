@@ -240,6 +240,7 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 		}
 		setTimeout(viewForm, 10);
 	},
+	isFixedSataticPanelHeight:false,
 	build: function(formDiv) {
 		var messageLabel = document.createElement("div");
 		messageLabel.style.clear = "both";
@@ -252,13 +253,27 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 		messageLabel.appendChild(messageNotice);
 		formDiv.appendChild(messageLabel);
 		formDiv.appendChild(document.createElement("br"));
+		formDiv.appendChild(
+			$.DIV({},
+				  $.INPUT({id:'adjustToWindowHeight',type:'checkbox', onclick:{handler:
+					  function(e){
+						  var checkbox = Event.element(e);
+						  this.isFixedSataticPanelHeight = checkbox.checked;
+						  var widgetDivs = $$(".staticLayout");
+						  for(var i = 0; i < widgetDivs.length; i++){
+							  if(i > 0 && i < 4)continue;
+							  widgetDivs[i].style.backgroundColor = this.isFixedSataticPanelHeight ? "#CCC": "#FFF";
+						  }
+					  }.bind(this)}}),
+				  $.LABEL({"htmlFor": 'adjustToWindowHeight'},ISA_R.alb_adjustToWindowHeight))
+			);
 		// This must be increased if any file is added to admin/staticPanel
 		for(var i=0; i < 8; i++){
 			var json = {};
 			json = this.templates.setStaticLayout(json, i);
 			if(!json) continue;
 			var nothing = (i == 0);
-			formDiv.appendChild(this.buildLayout(json, nothing));
+			formDiv.appendChild(this.buildLayout(json, nothing,i));
 		}
 		
 		var buttonDiv = document.createElement("div");
@@ -272,20 +287,24 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 		IS_Event.observe(closeButton, "click", this.hide.bind(this), false, "_adminPanel");
 		formDiv.appendChild(buttonDiv);
 	},
-	buildLayout: function(json, isNothing) {
+	buildLayout: function(json, isNothing, i) {
 		var self = this;
 		var layoutDiv = document.createElement("div");
 		layoutDiv.className = "staticLayout";
 		layoutDiv.innerHTML = json.layout;
 		this.drawOutLine(layoutDiv);
-		var layoutMouseOver = function(e) {
+		var layoutMouseOver = function(i) {
+			if(this.isFixedSataticPanelHeight && (i == 0 || i > 3)  ) return;
 			layoutDiv.style.backgroundColor = "#7777cc";
 		};
-		var layoutMouseOut = function(e) {
+		var layoutMouseOut = function(i) {
+			if(this.isFixedSataticPanelHeight && (i == 0 || i > 3) ) return;
 			layoutDiv.style.backgroundColor = "";
 		};
 		var layoutClick = function(e) {
+			if(this.isFixedSataticPanelHeight && (i == 0 || i > 3) ) return;
 			if(isNothing) json.layout = "";
+			this.isaDefaultPanel.setNewValue('adjustToWindowHeight', this.isFixedSataticPanelHeight);
 			self.isaDefaultPanel.changeStaticLayout(json);
 			self.hide();
 		};
@@ -297,9 +316,9 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 				e.stopPropagation();
 			}
 		};
-		IS_Event.observe(layoutDiv, 'mouseover', layoutMouseOver, false, "_adminPanel");
-		IS_Event.observe(layoutDiv, 'mouseout', layoutMouseOut, false, "_adminPanel");
-		IS_Event.observe(layoutDiv, 'click', layoutClick, false, "_adminPanel");
+		IS_Event.observe(layoutDiv, 'mouseover', layoutMouseOver.bind(this,i), false, "_adminPanel");
+		IS_Event.observe(layoutDiv, 'mouseout', layoutMouseOut.bind(this,i), false, "_adminPanel");
+		IS_Event.observe(layoutDiv, 'click', layoutClick.bind(this,i), false, "_adminPanel");
 		IS_Event.observe(layoutDiv, 'click', eventCancelBubble, false, "_adminPanel");
 		return layoutDiv;
 	},

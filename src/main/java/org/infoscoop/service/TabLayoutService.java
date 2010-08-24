@@ -190,7 +190,11 @@ public class TabLayoutService {
 					}
 					xml.append(">");
 					xml.append("\n");
-					xml.append("<panel type=\"StaticPanel\">");
+					Boolean adjustToWindowHeight = (Boolean) map
+					.get("adjustToWindowHeight");
+					xml.append("<panel type=\"StaticPanel\"" +
+							(adjustToWindowHeight != null && adjustToWindowHeight ? " adjustToWindowHeight=\"true\"" : "") + 
+							">");
 					xml.append("\n");
 					JSONObject staticJson = new JSONObject((String)map.get("staticPanel"));
 					for (Iterator widgetsIt = staticJson.keys(); widgetsIt.hasNext();) {
@@ -400,6 +404,7 @@ public class TabLayoutService {
 					tablayout.getStaticPanelJsonWithComment() : tablayout.getStaticPanelJson());
 			value.put("layout", tablayout.getLayout());
 			value.put("dynamicPanel", tablayout.getDynamicPanelJson());
+			value.put("adjustToWindowHeight", tablayout.isAdjustToWindowHeight());
 			value.put("disabledDynamicPanel", tablayout.isDisabledDynamicPanel());
 			
 			result.put(value.getString("id"), value);
@@ -467,7 +472,7 @@ public class TabLayoutService {
 	 * @throws ClassNotFoundException
 	 * @throws Exception
 	 */
-	public Map getMyTabLayoutHTML() throws ClassNotFoundException, Exception{
+	public Map<String, TabLayout> getMyTabLayoutHTML() throws ClassNotFoundException, Exception{
 		Map map = getMyTabLayout();
 		Map customizationMap = new SequencedHashMap();
 		
@@ -477,7 +482,7 @@ public class TabLayoutService {
 			String tabId = (String)ite.next();
 			TabLayout tabLayout = (TabLayout)map.get(tabId);
 			
-			customizationMap.put(tabId, tabLayout.getLayout());
+			customizationMap.put(tabId, tabLayout);
 		}
 		
 		return customizationMap;

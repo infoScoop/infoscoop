@@ -1203,6 +1203,8 @@ IS_Portal.changeActiveTab = function( changeTab, isInitialize ){
 	
 	IS_Widget.RssReader.RssItemRender.adjustRssDesc();
 	
+	IS_Portal.adjustStaticWidgetHeight();
+	
 	var changePanel = function(e){
 		try{
 			if(lastTabId != null){
@@ -1266,6 +1268,31 @@ if( Browser.isSafari1 ) {
 	}).apply( IS_Portal );
 }
 
+IS_Portal.adjustStaticWidgetHeight = function(){
+	var tabNumber = IS_Portal.currentTabId.substr(3);
+	var adjustToWindowHeight = IS_Customization["staticPanel"+tabNumber].adjustToWindowHeight;
+	if(!adjustToWindowHeight)return;
+	var widgets = IS_Portal.widgetLists[IS_Portal.currentTabId];
+	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - $("tab-container").getHeight() - 36;
+	var isReady = false;
+	for(widgetId in widgets){
+		var widget = widgets[widgetId];
+		if(!widget.isBuilt)break;
+		if(widget.panelType == "StaticPanel" && widget.widgetType != 'Ticker' && widget.widgetType != 'Ranking'){
+			if(widget.iframe)
+			  widget.iframe.style.height = adjustHeight + "px";
+			widget.elm_widgetContent.style.height = adjustHeight + "px";
+			widget.staticWidgetHeight =  adjustHeight ;
+
+			if(widget.widgetType == 'RssReader' && widget.content.rssContentView){
+				widget.content.rssContentView.setViewportHeight( adjustHeight );
+			}
+		}
+		isReady = true;
+	}
+	if(!isReady)setTimeout(IS_Portal.adjustStaticWidgetHeight,300);
+}
+
 /**
   Cover div at switching tab
   
@@ -1317,7 +1344,7 @@ IS_Portal.buildPanel = function(panelNumber, type){
 	staticDiv.id = "static-portal-widgets"+panelNumber;
 	
 	if(type == "static"){
-		staticPanel.innerHTML = IS_Customization["staticPanel"+panelNumber];
+		staticPanel.innerHTML = IS_Customization["staticPanel"+panelNumber].layout;
 		
 		td.appendChild(staticPanel);
 	}

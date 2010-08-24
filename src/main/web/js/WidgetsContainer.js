@@ -449,10 +449,11 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			for(var num = 0; num < widgetConfList.length; num++){
 				if(!isTabView && !buildTargetTabIds.contains(widgetConfList[num].tabId))
 					continue;
-					
 				var isBuild = (widgetConfList[num].tabId == IS_Portal.currentTabId.substring(3))? true:false;
 				var id = "tab"+widgetConfList[num].tabId;
 				if(widgetConfList[num].staticPanel){
+					
+					var adjustToWindowHeight = widgetConfList[num].adjustToWindowHeight;
 					var widgets = widgetConfList[num].staticPanel;
 					buildStaticPanel(id, widgets, isBuild);
 				}
