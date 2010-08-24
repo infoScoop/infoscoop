@@ -8,12 +8,10 @@ import java.util.Map;
 import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.model.base.BaseMenuItem;
 
-
-
 public class MenuItem extends BaseMenuItem {
 	private static final long serialVersionUID = 1L;
 
-/*[CONSTRUCTOR MARKER BEGIN]*/
+	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public MenuItem () {
 		super();
 	}
@@ -30,15 +28,17 @@ public class MenuItem extends BaseMenuItem {
 	 */
 	public MenuItem (
 		java.lang.String id,
+		org.infoscoop.dao.model.GadgetInstance fkGadgetInstance,
 		java.lang.String title,
-		java.lang.Integer order,
+		java.lang.Integer menuOrder,
 		java.lang.Integer publish,
 		java.lang.Integer alert) {
 
 		super (
 			id,
+			fkGadgetInstance,
 			title,
-			order,
+			menuOrder,
 			publish,
 			alert);
 	}
@@ -74,4 +74,5 @@ public class MenuItem extends BaseMenuItem {
 		}
 		return this.userPref;
 	}
+
 }

@@ -13,8 +13,8 @@
 			name="Id"
 			type="string"
 			column="id"
-			length="255"
-		/>
+		>
+		</id>
 
 		<property
 			name="Title"
@@ -24,25 +24,11 @@
 			length="255"
 		/>
 		<property
-			name="ParentId"
-			column="parent_id"
-			type="string"
-			not-null="false"
-			length="255"
-		/>
-		<property
-			name="Order"
-			column="`order`"
+			name="MenuOrder"
+			column="menu_order"
 			type="integer"
 			not-null="true"
 			length="10"
-		/>
-		<property
-			name="Type"
-			column="`type`"
-			type="string"
-			not-null="false"
-			length="255"
 		/>
 		<property
 			name="Href"
@@ -65,6 +51,26 @@
 			not-null="true"
 			length="10"
 		/>
+		<many-to-one
+			name="FkParent"
+			column="fk_parent_id"
+			class="MenuItem"
+			not-null="false"
+		>
+		</many-to-one>
+		<many-to-one cascade="save-update"
+			name="FkGadgetInstance"
+			column="fk_gadget_instance_id"
+			class="GadgetInstance"
+			not-null="true"
+		>
+		</many-to-one>
+	
+
+		<set name="MenuItems" inverse="true">
+			<key column="id"/>
+			<one-to-many class="MenuItem"/>
+		</set>
 
 
 	</class>	

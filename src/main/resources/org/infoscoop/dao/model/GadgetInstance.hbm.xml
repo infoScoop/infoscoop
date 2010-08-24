@@ -38,7 +38,11 @@
 			not-null="true"
 			length="1024"
 		/>
-	
+		
+		<set name="gadgetInstanceUserPrefs" inverse="true" cascade="save-update">
+			<key column="fk_gadget_instance_id"/>
+			<one-to-many class="GadgetInstanceUserpref"/>
+		</set>
 
 		<!--set name="TabtemplateParsonalizeGadgets" inverse="true">
 			<key column="id"/>

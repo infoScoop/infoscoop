@@ -4,9 +4,11 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <form:form modelAttribute="menuItem" method="post" action="${action}" class="cssform">
 	<form:hidden path="id" />
-	<form:hidden path="parentId" />
-	<form:hidden path="order" />
-	<form:hidden path="type" />
+	<c:if test="${menuItem.fkParent != null}">
+		<form:hidden path="fkParent.id" />
+	</c:if>
+	<form:hidden path="menuOrder" />
+	<form:hidden path="fkGadgetInstance.type" />
 	<fieldset>
 		<legend>タイプ</legend>
 		<p>
@@ -63,7 +65,7 @@
 					<c:set var="name"><x:out select="$userPref/@name"/></c:set>
 					<x:choose>
 						<x:when select="$userPref/EnumValue">
-							<select name="userPref[${name}]" class="${datatype}">
+							<select name="fkGadgetInstance.userPrefs[${name}]" class="${datatype}">
 							<x:forEach var="enum" select="$userPref/EnumValue">
 								<c:set var="value"><x:out select="$enum/@value"/></c:set>
 								<c:set var="display_value"><x:out select="$enum/@display_value"/></c:set>
@@ -79,7 +81,7 @@
 							</select>
 						</x:when>
 						<x:otherwise>
-							<input type="${datatype}" name="userPref[${name}]" value="${menuItem.userPref[name]}" class="${datatype}"/>
+							<input type="${datatype}" name="fkGadgetInstance.userPrefs[${name}]" value="${menuItem.fkGadgetInstance.userPrefs[name]}" class="${datatype}"/>
 						</x:otherwise>
 					</x:choose>
 				</p>

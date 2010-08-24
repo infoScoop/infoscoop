@@ -16,12 +16,12 @@ public abstract class BaseMenuItem  implements Serializable {
 
 	public static String REF = "MenuItem";
 	public static String PROP_PUBLISH = "Publish";
-	public static String PROP_PARENT_ID = "ParentId";
 	public static String PROP_ALERT = "Alert";
-	public static String PROP_TYPE = "Type";
-	public static String PROP_ORDER = "Order";
+	public static String PROP_MENU_ORDER = "MenuOrder";
 	public static String PROP_ID = "Id";
 	public static String PROP_HREF = "Href";
+	public static String PROP_FK_GADGET_INSTANCE = "FkGadgetInstance";
+	public static String PROP_FK_PARENT = "FkParent";
 	public static String PROP_TITLE = "Title";
 
 
@@ -43,14 +43,16 @@ public abstract class BaseMenuItem  implements Serializable {
 	 */
 	public BaseMenuItem (
 		java.lang.String id,
+		org.infoscoop.dao.model.GadgetInstance fkGadgetInstance,
 		java.lang.String title,
-		java.lang.Integer order,
+		java.lang.Integer menuOrder,
 		java.lang.Integer publish,
 		java.lang.Integer alert) {
 
 		this.setId(id);
+		this.setFkGadgetInstance(fkGadgetInstance);
 		this.setTitle(title);
-		this.setOrder(order);
+		this.setMenuOrder(menuOrder);
 		this.setPublish(publish);
 		this.setAlert(alert);
 		initialize();
@@ -67,12 +69,17 @@ public abstract class BaseMenuItem  implements Serializable {
 
 	// fields
 	private java.lang.String title;
-	private java.lang.String parentId;
-	private java.lang.Integer order;
-	private java.lang.String type;
+	private java.lang.Integer menuOrder;
 	private java.lang.String href;
 	private java.lang.Integer publish;
 	private java.lang.Integer alert;
+
+	// many to one
+	private org.infoscoop.dao.model.MenuItem fkParent;
+	private org.infoscoop.dao.model.GadgetInstance fkGadgetInstance;
+
+	// collections
+	private java.util.Set<org.infoscoop.dao.model.MenuItem> menuItems;
 
 
 
@@ -115,52 +122,18 @@ public abstract class BaseMenuItem  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: parent_id
+	 * Return the value associated with the column: order
 	 */
-	public java.lang.String getParentId () {
-		return parentId;
+	public java.lang.Integer getMenuOrder () {
+		return menuOrder;
 	}
 
 	/**
-	 * Set the value related to the column: parent_id
-	 * @param parentId the parent_id value
+	 * Set the value related to the column: menu_order
+	 * @param menuOrder the menu_order value
 	 */
-	public void setParentId (java.lang.String parentId) {
-		this.parentId = parentId;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: `order`
-	 */
-	public java.lang.Integer getOrder () {
-		return order;
-	}
-
-	/**
-	 * Set the value related to the column: `order`
-	 * @param order the `order` value
-	 */
-	public void setOrder (java.lang.Integer order) {
-		this.order = order;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: `type`
-	 */
-	public java.lang.String getType () {
-		return type;
-	}
-
-	/**
-	 * Set the value related to the column: `type`
-	 * @param type the `type` value
-	 */
-	public void setType (java.lang.String type) {
-		this.type = type;
+	public void setMenuOrder (java.lang.Integer menuOrder) {
+		this.menuOrder = menuOrder;
 	}
 
 
@@ -212,6 +185,62 @@ public abstract class BaseMenuItem  implements Serializable {
 	 */
 	public void setAlert (java.lang.Integer alert) {
 		this.alert = alert;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: fk_parent_id
+	 */
+	public org.infoscoop.dao.model.MenuItem getFkParent () {
+		return fkParent;
+	}
+
+	/**
+	 * Set the value related to the column: fk_parent_id
+	 * @param fkParent the fk_parent_id value
+	 */
+	public void setFkParent (org.infoscoop.dao.model.MenuItem fkParent) {
+		this.fkParent = fkParent;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: fk_gadget_instance_id
+	 */
+	public org.infoscoop.dao.model.GadgetInstance getFkGadgetInstance () {
+		return fkGadgetInstance;
+	}
+
+	/**
+	 * Set the value related to the column: fk_gadget_instance_id
+	 * @param fkGadgetInstance the fk_gadget_instance_id value
+	 */
+	public void setFkGadgetInstance (org.infoscoop.dao.model.GadgetInstance fkGadgetInstance) {
+		this.fkGadgetInstance = fkGadgetInstance;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: MenuItems
+	 */
+	public java.util.Set<org.infoscoop.dao.model.MenuItem> getMenuItems () {
+		return menuItems;
+	}
+
+	/**
+	 * Set the value related to the column: MenuItems
+	 * @param menuItems the MenuItems value
+	 */
+	public void setMenuItems (java.util.Set<org.infoscoop.dao.model.MenuItem> menuItems) {
+		this.menuItems = menuItems;
+	}
+
+	public void addToMenuItems (org.infoscoop.dao.model.MenuItem menuItem) {
+		if (null == getMenuItems()) setMenuItems(new java.util.TreeSet<org.infoscoop.dao.model.MenuItem>());
+		getMenuItems().add(menuItem);
 	}
 
 

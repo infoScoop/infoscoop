@@ -1,6 +1,9 @@
 package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
+import java.util.HashSet;
+
+import org.infoscoop.dao.model.GadgetInstanceUserpref;
 
 
 /**
@@ -63,7 +66,7 @@ public abstract class BaseGadgetInstance  implements Serializable {
 	private java.lang.String type;
 	private java.lang.String title;
 	private java.lang.String href;
-
+	private java.util.Set<GadgetInstanceUserpref> gadgetInstanceUserPrefs = new HashSet<GadgetInstanceUserpref>();
 
 
 	/**
@@ -137,8 +140,13 @@ public abstract class BaseGadgetInstance  implements Serializable {
 		this.href = href;
 	}
 
+	public java.util.Set<GadgetInstanceUserpref> getGadgetInstanceUserPrefs() {
+		return gadgetInstanceUserPrefs;
+	}
 
-
+	public void setGadgetInstanceUserPrefs(java.util.Set<GadgetInstanceUserpref> userPrerfs) {
+		this.gadgetInstanceUserPrefs = userPrerfs;
+	}
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;

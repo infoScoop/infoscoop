@@ -450,14 +450,16 @@ create table IS_OAUTH_CERTIFICATE (
 -- MENU_ITEM
 --
 create table IS_MENU_ITEMS(
-  id varchar(255) primary key,
+  id varchar(255) not null primary key,
   title varchar(255) not null,
-  parent_id varchar(255),
-  `order` int not null default 0,
-  type varchar(255),
+  menu_order int not null default 0,
   href varchar(255),
   publish int not null default 0, -- 0=unpublished, 1=published
-  alert int not null default 1 -- 0=no alert, 1=alert, 2=force drop
+  alert int not null default 1, -- 0=no alert, 1=alert, 2=force drop
+  fk_parent_id varchar(255),
+  fk_gadget_instance_id int unsigned not null,
+  foreign key (fk_parent_id) references IS_MENU_ITEMS(id) on delete cascade,
+  foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --
@@ -476,7 +478,7 @@ create index is_menu_userprefs_fk_menu_item_id on IS_MENU_USERPREFS(fk_menu_item
 create index is_menu_userprefs_name on IS_MENU_USERPREFS(name);
 
 --
--- IS_GADGET_INSTANCES
+-- GADGET_INSTANCE
 --
 CREATE TABLE IS_GADGET_INSTANCES (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -486,6 +488,9 @@ CREATE TABLE IS_GADGET_INSTANCES (
 	INDEX (  `type` ,  `title` )
 ) ENGINE = INNODB;
 
+--
+-- GADGET_INSTANCE_USERPREF
+--
 create table IS_GADGET_INSTANCE_USERPREFS (
 	fk_gadget_instance_id int UNSIGNED not null,
 	name varchar(255) not null,
@@ -495,6 +500,9 @@ create table IS_GADGET_INSTANCE_USERPREFS (
 	foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade
 ) ENGINE=InnoDB;
 
+--
+-- TAB_TEMPLATE
+--
 create table IS_TAB_TEMPLATES(
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 	name varchar(255) not null,
@@ -503,6 +511,9 @@ create table IS_TAB_TEMPLATES(
 	access_level int not null default 1 -- 0=public, 1=special
 ) ENGINE=InnoDB;
 
+--
+-- TAB_TEMPLATE_STATIC_GADGET
+--
 CREATE TABLE  IS_TAB_TEMPLATE_STATIC_GADGETS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 	fk_tabtemplate_id INT UNSIGNED NOT NULL,
@@ -512,6 +523,9 @@ CREATE TABLE  IS_TAB_TEMPLATE_STATIC_GADGETS (
 	foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade
 ) ENGINE = INNODB;
 
+--
+-- TAB_TEMPLATE_PARSONALIZE_GADGET
+--
 CREATE TABLE IS_TAB_TEMPLATE_PARSONALIZE_GADGETS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 	fk_tabtemplate_id INT UNSIGNED NOT NULL,

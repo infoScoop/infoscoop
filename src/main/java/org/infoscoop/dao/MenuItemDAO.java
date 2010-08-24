@@ -31,6 +31,7 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.MenuUserpref;
+import org.infoscoop.dao.model.GadgetInstanceUserpref;
 import org.infoscoop.dao.model.MenuUserprefsPK;
 import org.infoscoop.dao.model.USERPREFPK;
 import org.infoscoop.dao.model.UserPref;
@@ -76,7 +77,7 @@ public class MenuItemDAO extends HibernateDaoSupport {
 	public List<MenuItem> getTree() {
 		List<MenuItem> flatItems = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuItem.class).addOrder(
-						Order.asc(MenuItem.PROP_ORDER)));
+						Order.asc(MenuItem.PROP_MENU_ORDER)));
 		return createMenuTree(flatItems, "");
 	}
 
@@ -84,7 +85,7 @@ public class MenuItemDAO extends HibernateDaoSupport {
 			String parentId) {
 		List<MenuItem> items = new ArrayList<MenuItem>();
 		for (MenuItem item : flatItems) {
-			if (item.getParentId().equals(parentId))
+			if (item.getFkParent().equals(parentId))
 				items.add(item);
 		}
 		for (MenuItem item : items) {
@@ -95,8 +96,6 @@ public class MenuItemDAO extends HibernateDaoSupport {
 
 	public void save(MenuItem item) {
 		super.getHibernateTemplate().saveOrUpdate(item);
-		super.getHibernateTemplate().flush();
-		updateUserPrefs(item);
 	}
 
 	public void delete(String id) {
@@ -118,34 +117,5 @@ public class MenuItemDAO extends HibernateDaoSupport {
 		return userPrefs;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void updateUserPrefs(MenuItem menu) {
-		List<MenuUserpref> c1 = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(MenuUserpref.class).add(
-						Expression.eq("Id.MenuItemId", menu.getId())));
-		Map<String, MenuUserpref> current = new HashMap<String, MenuUserpref>();
-		for (MenuUserpref userPref : c1)
-			current.put(userPref.getId().getName(), userPref);
 
-		Map<String, String> userPrefs = menu.getUserPref();
-		Set<String> keySet = new HashSet<String>(userPrefs.keySet());
-		keySet.addAll(current.keySet());
-
-		for (String key : keySet) {
-			if (!userPrefs.containsKey(key)) {
-				MenuUserpref userPref = current.get(key);
-				super.getHibernateTemplate().delete(userPref);
-			} else {
-				String value = userPrefs.get(key);
-				MenuUserpref userPref = new MenuUserpref(new MenuUserprefsPK(
-						menu.getId(), key));
-				userPref.setValue(value);
-				if (userPref.getId().getMenuItemId() == null)
-					userPref.getId().setMenuItemId(menu.getId());
-
-				super.getHibernateTemplate().saveOrUpdate(userPref);
-			}
-		}
-		super.getHibernateTemplate().flush();
-	}
 }

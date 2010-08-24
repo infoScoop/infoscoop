@@ -7,8 +7,10 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 
 import org.infoscoop.dao.GadgetDAO;
+import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.WidgetConfDAO;
+import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
@@ -40,10 +42,13 @@ public class MenuController {
 	@RequestMapping
 	public void showAddItem(@RequestParam("id") String parentId,
 			@RequestParam("type") String type, Model model) throws Exception {
+		MenuItem parentItem = MenuItemDAO.newInstance().get(parentId);
 		MenuItem item = new MenuItem();
-		item.setParentId(parentId);
-		item.setType(type);
-		item.setOrder(0);
+		GadgetInstance gadget = new GadgetInstance();
+		item.setFkParent(parentItem);
+		item.setFkGadgetInstance(gadget);
+		item.getFkGadgetInstance().setType(type);
+		item.setMenuOrder(0);
 		item.setPublish(0);
 		model.addAttribute(item);
 
@@ -63,7 +68,8 @@ public class MenuController {
 		MenuItem item = MenuItemDAO.newInstance().get(id);
 		model.addAttribute(item);
 
-		String type = item.getType();
+		String type = item.getFkGadgetInstance().getType();
+		//String type = item.getType();
 		Element conf = WidgetConfDAO.newInstance().getElement(type);
 		if (conf == null)
 			conf = GadgetDAO.newInstance().getGadgetElement(type);
@@ -73,6 +79,9 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	public MenuItem addItem(MenuItem item) throws Exception {
 		item.setId("m_" + new Date().getTime());
+		item.getFkGadgetInstance().setTitle(item.getTitle());
+		item.getFkGadgetInstance().setHref(item.getHref());
+		
 		MenuItemDAO.newInstance().save(item);
 		return item;
 	}
@@ -91,9 +100,10 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	public MenuItem moveItem(@RequestParam("id") String id,
 			@RequestParam("parentId") String parentId) throws Exception {
+		MenuItem parentItem = MenuItemDAO.newInstance().get(parentId);
 		MenuItemDAO dao = MenuItemDAO.newInstance();
 		MenuItem item = dao.get(id);
-		item.setParentId(parentId);
+		item.setFkParent(parentItem);
 		dao.save(item);
 		return item;
 	}
