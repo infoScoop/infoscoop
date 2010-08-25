@@ -447,6 +447,28 @@ create table IS_OAUTH_CERTIFICATE (
 ) ENGINE=InnoDB;
 
 --
+-- IS_ROLES
+--
+CREATE TABLE IS_ROLES (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  `name` VARCHAR( 255 ) NOT NULL ,
+  `description` TEXT NULL
+) ENGINE = InnoDB;
+
+--
+-- IS_ROLE_PRINCIPALS
+--
+CREATE TABLE IF NOT EXISTS IS_ROLE_PRINCIPALS (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `order_index` int(11) DEFAULT NULL,
+  `fk_role_id` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`fk_role_id`) REFERENCES `is_roles` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+--
 -- GADGET_INSTANCE
 --
 CREATE TABLE IS_GADGET_INSTANCES (

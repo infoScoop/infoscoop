@@ -204,6 +204,11 @@
 	</filter-mapping>
 
 	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/manager/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
 		<filter-name>PreviewImpersonationFilter</filter-name>
 		<url-pattern>/adminpreview/*</url-pattern>
 	</filter-mapping>
@@ -367,7 +372,7 @@
 		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
+
 	<servlet>
 		<servlet-name>NewSessionIdServlet</servlet-name>
 		<servlet-class>
@@ -669,7 +674,7 @@
     <servlet-name>AdminDispatcher</servlet-name>
     <url-pattern>/manager/*</url-pattern>
   </servlet-mapping>
-  
+
   <servlet-mapping>
   	<servlet-name>OAuthCertificateServlet</servlet-name>
   	<url-pattern>/opensocial/certificates/public.cer</url-pattern>
