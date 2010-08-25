@@ -447,37 +447,6 @@ create table IS_OAUTH_CERTIFICATE (
 ) ENGINE=InnoDB;
 
 --
--- MENU_ITEM
---
-create table IS_MENU_ITEMS(
-  id varchar(255) not null primary key,
-  title varchar(255) not null,
-  menu_order int not null default 0,
-  href varchar(255),
-  publish int not null default 0, -- 0=unpublished, 1=published
-  alert int not null default 1, -- 0=no alert, 1=alert, 2=force drop
-  fk_parent_id varchar(255),
-  fk_gadget_instance_id int unsigned not null,
-  foreign key (fk_parent_id) references IS_MENU_ITEMS(id) on delete cascade,
-  foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade
-) ENGINE=InnoDB;
-
---
--- MENU_USERPREFS
---
-create table IS_MENU_USERPREFS (
-	fk_menu_item_id varchar(255) not null,
-	name varchar(255) not null,
-	value varchar(4000),
-	long_value text,
-	primary key (fk_menu_item_id, name),
-	foreign key (fk_menu_item_id) references IS_MENU_ITEMS(id) on delete cascade
-) ENGINE=InnoDB;
-
-create index is_menu_userprefs_fk_menu_item_id on IS_MENU_USERPREFS(fk_menu_item_id);
-create index is_menu_userprefs_name on IS_MENU_USERPREFS(name);
-
---
 -- GADGET_INSTANCE
 --
 CREATE TABLE IS_GADGET_INSTANCES (
@@ -498,6 +467,22 @@ create table IS_GADGET_INSTANCE_USERPREFS (
 	long_value text,
 	primary key (fk_gadget_instance_id, name),
 	foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade
+) ENGINE=InnoDB;
+
+--
+-- MENU_ITEM
+--
+create table IS_MENU_ITEMS(
+  id varchar(255) not null primary key,
+  title varchar(255) not null,
+  menu_order int not null default 0,
+  href varchar(255),
+  publish int not null default 0, -- 0=unpublished, 1=published
+  alert int not null default 1, -- 0=no alert, 1=alert, 2=force drop
+  fk_parent_id varchar(255),
+  fk_gadget_instance_id int unsigned not null,
+  foreign key (fk_parent_id) references IS_MENU_ITEMS(id) on delete cascade,
+  foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --

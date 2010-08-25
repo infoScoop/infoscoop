@@ -18,11 +18,7 @@
 package org.infoscoop.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,12 +26,6 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.infoscoop.dao.model.MenuItem;
-import org.infoscoop.dao.model.MenuUserpref;
-import org.infoscoop.dao.model.GadgetInstanceUserpref;
-import org.infoscoop.dao.model.MenuUserprefsPK;
-import org.infoscoop.dao.model.USERPREFPK;
-import org.infoscoop.dao.model.UserPref;
-import org.infoscoop.dao.model.Widget;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -78,14 +68,17 @@ public class MenuItemDAO extends HibernateDaoSupport {
 		List<MenuItem> flatItems = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuItem.class).addOrder(
 						Order.asc(MenuItem.PROP_MENU_ORDER)));
-		return createMenuTree(flatItems, "");
+		return createMenuTree(flatItems, null);
 	}
 
 	private List<MenuItem> createMenuTree(List<MenuItem> flatItems,
 			String parentId) {
 		List<MenuItem> items = new ArrayList<MenuItem>();
 		for (MenuItem item : flatItems) {
-			if (item.getFkParent().equals(parentId))
+			if (parentId == null && item.getFkParent() == null)
+				items.add(item);
+			else if (item.getFkParent() != null
+					&& item.getFkParent().getId().equals(parentId))
 				items.add(item);
 		}
 		for (MenuItem item : items) {
@@ -103,19 +96,4 @@ public class MenuItemDAO extends HibernateDaoSupport {
 		if (item != null)
 			super.getHibernateTemplate().delete(item);
 	}
-
-	@SuppressWarnings("unchecked")
-	public Map<String, String> getUserPrefs(String id) {
-		Map<String, String> userPrefs = new HashMap<String, String>();
-		List<MenuUserpref> results = super.getHibernateTemplate()
-				.findByCriteria(
-						DetachedCriteria.forClass(MenuUserpref.class).add(
-								Expression.eq("Id.MenuItemId", id)));
-		for (MenuUserpref userPref : results)
-			userPrefs.put(userPref.getId().getName(), userPref.getValue());
-
-		return userPrefs;
-	}
-
-
 }

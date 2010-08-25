@@ -118,9 +118,10 @@ $(function () {
 	});
 	$("#menu_command a").button();
 	function resizeMenuTree(){
-		var height = $(window).height() - $("#menu_tree").offset().top - $("#footer").height() - 13;
-		console.info(height);
+		var baseHeight = $(window).height() - $("#footer").height() - 13;
+		var height = baseHeight - $("#menu_tree").offset().top;
 		$("#menu_tree").css("height", height);
+		height = baseHeight - $("#menu_right").offset().top;
 		$("#menu_right").css("height", height);
 	}
 	$(window).resize(resizeMenuTree);

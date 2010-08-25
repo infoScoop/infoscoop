@@ -7,7 +7,6 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 
 import org.infoscoop.dao.GadgetDAO;
-import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.GadgetInstance;
@@ -15,6 +14,7 @@ import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,13 +63,15 @@ public class MenuController {
 	}
 
 	@RequestMapping
+	@Transactional
 	public void showEditItem(@RequestParam("id") String id, Model model)
 			throws Exception {
 		MenuItem item = MenuItemDAO.newInstance().get(id);
 		model.addAttribute(item);
 
 		String type = item.getFkGadgetInstance().getType();
-		//String type = item.getType();
+		//lazy=trueだが、Viewに渡すために事前に取得する。何かメソッド呼ぶと事前に取得できる。
+		item.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
 		Element conf = WidgetConfDAO.newInstance().getElement(type);
 		if (conf == null)
 			conf = GadgetDAO.newInstance().getGadgetElement(type);
@@ -77,6 +79,7 @@ public class MenuController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
 	public MenuItem addItem(MenuItem item) throws Exception {
 		item.setId("m_" + new Date().getTime());
 		item.getFkGadgetInstance().setTitle(item.getTitle());
@@ -87,21 +90,24 @@ public class MenuController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
 	public MenuItem updateItem(MenuItem item) throws Exception {
 		MenuItemDAO.newInstance().save(item);
 		return item;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
 	public void removeItem(@RequestParam("id") String id) throws Exception {
 		MenuItemDAO.newInstance().delete(id);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
 	public MenuItem moveItem(@RequestParam("id") String id,
 			@RequestParam("parentId") String parentId) throws Exception {
-		MenuItem parentItem = MenuItemDAO.newInstance().get(parentId);
 		MenuItemDAO dao = MenuItemDAO.newInstance();
+		MenuItem parentItem = dao.get(parentId);
 		MenuItem item = dao.get(id);
 		item.setFkParent(parentItem);
 		dao.save(item);

@@ -48,7 +48,7 @@ public class TabController {
 	@RequestMapping
 	public void showGadgetDialog(HttpServletRequest request, @RequestParam("type") String type, Model model)throws Exception {
 		MenuItem menuItem = new MenuItem();
-		menuItem.setType(type);
+		//menuItem.setType(type);
 		model.addAttribute("menuItem", menuItem);
 		
 		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。

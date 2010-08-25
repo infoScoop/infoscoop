@@ -1,8 +1,8 @@
 package org.infoscoop.dao.model;
 
-import org.infoscoop.dao.model.base.BaseIsGadgetInstanceUserprefsPK;
+import org.infoscoop.dao.model.base.BaseGadgetInstanceUserprefPK;
 
-public class GadgetInstanceUserprefPK extends BaseIsGadgetInstanceUserprefsPK {
+public class GadgetInstanceUserprefPK extends BaseGadgetInstanceUserprefPK {
 	private static final long serialVersionUID = 1L;
 
 /*[CONSTRUCTOR MARKER BEGIN]*/

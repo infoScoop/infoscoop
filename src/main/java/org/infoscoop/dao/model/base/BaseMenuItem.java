@@ -122,7 +122,7 @@ public abstract class BaseMenuItem  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: order
+	 * Return the value associated with the column: menu_order
 	 */
 	public java.lang.Integer getMenuOrder () {
 		return menuOrder;

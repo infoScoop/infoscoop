@@ -70,7 +70,7 @@
 								<c:set var="value"><x:out select="$enum/@value"/></c:set>
 								<c:set var="display_value"><x:out select="$enum/@display_value"/></c:set>
 								<c:choose>
-									<c:when test="${menuItem.userPref[name] == value}">
+									<c:when test="${menuItem.fkGadgetInstance.userPrefs[name] == value}">
 										<option value="${value}" selected="selected">${display_value}</option>
 									</c:when>
 									<c:otherwise>
