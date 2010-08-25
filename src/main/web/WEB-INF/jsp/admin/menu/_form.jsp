@@ -7,6 +7,9 @@
 	<c:if test="${menuItem.fkParent != null}">
 		<form:hidden path="fkParent.id" />
 	</c:if>
+	<c:if test="${menuItem.fkGadgetInstance != null}">
+		<form:hidden path="fkGadgetInstance.id" />
+	</c:if>
 	<form:hidden path="menuOrder" />
 	<form:hidden path="fkGadgetInstance.type" />
 	<fieldset>

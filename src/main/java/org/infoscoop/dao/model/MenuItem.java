@@ -55,4 +55,16 @@ public class MenuItem extends BaseMenuItem {
 	public List<MenuItem> getChildItems() {
 		return this.childItems;
 	}
+	
+	public boolean isPublishBool() {
+		return super.getPublish() == 1;
+	}
+
+	public void setPublishBool(boolean publish) {
+		super.setPublish(publish ? 1 : 0);
+	}
+
+	public void toggolePublish() {
+		setPublishBool(!isPublishBool());
+	}
 }

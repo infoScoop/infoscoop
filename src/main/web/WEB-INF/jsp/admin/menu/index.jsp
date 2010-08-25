@@ -36,7 +36,9 @@ function selectGadgetType(isTop){
 	$("#menu_item_command").hide();
 }
 function showAddItem(type, parentId){
-	$("#menu_right").load("showAddItem", {id: parentId, type:type});
+	$.get("showAddItem", {id: parentId, type:type}, function(html){
+		$("#menu_right").html(html);
+	});
 }
 function showEditItem(){
 	var selectedItem = getSelectedItem();
@@ -69,8 +71,8 @@ function updateItemInTree(id, title, publish){
 	try{
 		var titleNode = $("#" + id + " a").contents().filter(function() { return this.nodeType == 3; })[0];
 		titleNode.nodeValue = title;
-		$("#"+id+" .info span.publish").toggleClass("un", !publish);
-		$("#"+id+" .info span.publish").html(publish? "公開":"非公開");
+		var publishElm = $("#"+id+" .info span.publish").first();
+		publishElm.toggleClass("un", !publish).html(publish? "公開":"非公開");
 	}catch(e){
 		console.error(e);
 	}
@@ -81,6 +83,14 @@ function deleteItem(){
 		$("#menu_tree").jstree("remove", "#"+id);
 	});
 	$("#menu_item_command").hide();
+}
+function togglePublish(){
+	var id = getSelectedItem().id;
+	$.post("togglePublish", {id: id}, function(){
+		var publishElm = $("#"+id+" .info span.publish").first();
+		var publish = publishElm.hasClass('un');//現在の反対にする
+		publishElm.toggleClass("un", !publish).html(publish? "公開":"非公開");
+	});
 }
 function showMenuCommand(event, link, id){
 	selectItem(id);
@@ -159,8 +169,8 @@ $(function () {
 			<li><a onclick="selectGadgetType()">追加</a></li>
 			<li><a onclick="showEditItem()">編集</a></li>
 			<li><a onclick="deleteItem()">削除</a></li>
-			<li><a onclick="deleteItem()">公開/非公開を切り替える</a></li>
-			<li><a onclick="deleteItem()">公開範囲を設定する</a></li>
+			<li><a onclick="togglePublish()">公開/非公開を切り替える</a></li>
+			<li><a onclick="togglePublish()">公開範囲を設定する</a></li>
 		</ul>
 	</div>
 </div>
