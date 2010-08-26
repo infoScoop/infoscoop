@@ -237,7 +237,7 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 }
 
 #panelStaticLayoutModal .staticLayout {
-	width: 22%;
+	width: 23%;
 	float: left;
 	margin-top: 5px;
 	margin-left: 5px;
@@ -246,7 +246,8 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 	cursor: pointer;
 }
 
-#modal_container {
+#
+modal_container {
 	padding:5px;
 	background-color:#fff;
 	border:1px solid #666;
