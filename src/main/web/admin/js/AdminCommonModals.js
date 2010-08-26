@@ -917,7 +917,8 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 		if(/^g_upload__/.test( menuItem.type ) || /^Gadget$/i.test( menuItem.type )) {
 			singleton = widgetConf.ModulePrefs && /true/i.test( widgetConf.ModulePrefs.singleton )
 		} else {
-			singleton = widgetConf.singleton;
+			//singleton = widgetConf.singleton;
+			singleton = (menuItem.type == 'RssReader' || menuItem.type == 'MultiRssReader');
 		}
 		
 		var isDefaultPanelTabActive = ($('tab_defaultPanel') && $('tab_defaultPanel').className == 'tab active');
