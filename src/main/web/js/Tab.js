@@ -1269,6 +1269,9 @@ if( Browser.isSafari1 ) {
 }
 
 IS_Portal.adjustStaticWidgetHeight = function(){
+	var currentTab = IS_Portal.tabs[IS_Portal.currentTabId];
+	if(currentTab.type != "static")return;
+	
 	var tabNumber = IS_Portal.currentTabId.substr(3);
 	var adjustToWindowHeight = IS_Customization["staticPanel"+tabNumber].adjustToWindowHeight;
 	if(!adjustToWindowHeight)return;

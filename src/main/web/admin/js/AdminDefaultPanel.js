@@ -1134,6 +1134,11 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		var dynamicDiv = $("tab_"+this.displayTabId+"_panelDynamicDiv");
 		var tabNameDiv = $("tab_"+this.displayTabId+"_tabNameDiv");
+			
+		// Replace to the permission ID currently displayed
+		this.displayRoleId = jsonRole.id;
+		this.displayRoleOrder = jsonRole.roleOrder;
+		
 		if(jsonRole.tabId == commandBarTabId) {
 			this.buildCommandWidgetsList(jsonRole);
 			this.addSortableEventCommand();
@@ -1144,16 +1149,36 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			this.buildDynamicWidgetsList(jsonRole);
 			if(dynamicDiv) dynamicDiv.style.display = "";
 			if(tabNameDiv) tabNameDiv.style.display = "";
-			$("tab_"+this.displayTabId+"_disableCustomizedArea").checked = jsonRole.disabledDynamicPanel;
-			if(jsonRole.disabledDynamicPanel)
-				$("tab_"+this.displayTabId+"_panelDynamicDiv").hide();
+			
+			var panelUsage = ( jsonRole.disabledDynamicPanel ? (jsonRole.adjustToWindowHeight ? 'useStaticOnly_adjustHeight' : 'useStaticOnly' ) : 'useBothPanel');
+			$('panelUsageSelect').value = panelUsage;
+			jsonRole.panelUsage = panelUsage;
+			this.switchPanelDisplay(panelUsage);
+		
 		}
 
-		// Replace to the permission ID currently displayed
-		this.displayRoleId = jsonRole.id;
-		this.displayRoleOrder = jsonRole.roleOrder;
 	}
 
+	this.switchPanelDisplay =function(panelUsage){
+		
+		switch(panelUsage){
+		  case 'useStaticOnly_adjustHeight':
+			self.setNewValue("disabledDynamicPanel", true);
+			self.setNewValue('adjustToWindowHeight', true);
+			$("tab_"+self.displayTabId+"_personalizedAreaFieldSet").hide();
+			break;
+		  case 'useStaticOnly':
+			self.setNewValue("disabledDynamicPanel", true);
+			self.setNewValue('adjustToWindowHeight', false);
+			$("tab_"+self.displayTabId+"_personalizedAreaFieldSet").hide();
+			break;
+		  default:
+			self.setNewValue("disabledDynamicPanel", false);
+			self.setNewValue('adjustToWindowHeight', false);
+			$("tab_"+self.displayTabId+"_personalizedAreaFieldSet").show();
+		}
+	}
+	
 	/**
 		Delete permission
 	*/
@@ -1183,7 +1208,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		editAreaDiv.appendChild(editNamesDiv);
 		
 		var editRoleNameDiv = document.createElement("div");
-		editRoleNameDiv.style.padding = "5px";
+		editRoleNameDiv.style.padding = "3px";
 		editRoleNameDiv.appendChild(document.createTextNode(ISA_R.alb_roleNameColon));
 		var editRoleNameInput = document.createElement("input");
 		editRoleNameInput.id = "tab_"+this.displayTabId+"_panelRoleNameText";
@@ -1223,7 +1248,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 
 		var editRoleTypeDiv = document.createElement("div");
-		editRoleTypeDiv.style.padding = "5px";
+		editRoleTypeDiv.style.padding = "3px";
 		editRoleTypeDiv.appendChild(document.createTextNode(ISA_R.alb_subjectColon));
 		var selectPrincipal = document.createElement("select");
 		selectPrincipal.className = "panelPrincipalType";
@@ -1250,7 +1275,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		editNamesDiv.appendChild(editRoleTypeDiv);
 
 		var editRoleDiv = document.createElement("div");
-		editRoleDiv.style.padding = "5px";
+		editRoleDiv.style.padding = "3px";
 		editRoleDiv.appendChild(document.createTextNode(ISA_R.alb_regularExpressionColon));
 		var editRoleInput = document.createElement("input");
 		editRoleInput.id = "tab_"+this.displayTabId+"_panelRegExpText";
@@ -1291,7 +1316,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		var editTabNameDiv = document.createElement("div");
 		editTabNameDiv.id = "tab_"+this.displayTabId+"_tabNameDiv";
-		editTabNameDiv.style.padding = "5px";
+		editTabNameDiv.style.padding = "3px";
 		editTabNameDiv.appendChild(document.createTextNode(ISA_R.alb_tabName+":"));
 		var editTabNameInput = document.createElement("input");
 		editTabNameInput.id = "tab_"+this.displayTabId+"_panelTabNameText";
@@ -1328,8 +1353,32 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		editTabNameDiv.appendChild(editTabNameInput);
 		editNamesDiv.appendChild(editTabNameDiv);
 
-		// Fixed area settings
-		editAreaDiv.appendChild(document.createElement("br"));
+		function changePanelUsage(e){
+			var select = Event.element(e);
+			var jsonRole = self.displayRoleJsons[self.displayRoleId];
+			if(jsonRole.panelUsage != select.value){
+				if(!confirm(ISA_R.ams_confirmClearStaticAreaSetting))
+					return false;
+			};
+			
+			jsonRole.panelUsage = select.value;
+			self.switchPanelDisplay(select.value);
+			self.templates.setStaticLayout0(jsonRole,0);
+			self.changeStaticLayout(jsonRole);
+		}
+		
+		if("commandbar" != self.displayTabId){
+			editAreaDiv.appendChild(
+				$.DIV({style:"padding:3px;"},
+					  ISA_R.alb_panelUsageSetting,
+					  $.SELECT({id:'panelUsageSelect',name:'panelUsage',onchange:{handler:changePanelUsage}},
+							   $.OPTION({value: 'useBothPanel'},ISA_R.alb_useBothPanel),
+							   $.OPTION({value: 'useStaticOnly'},ISA_R.alb_disableCustomizedArea),
+							   $.OPTION({value: 'useStaticOnly_adjustHeight'},ISA_R.alb_adjustToWindowHeight)
+							 )
+						)
+				);
+		}
 
 		var labelSetStaticDiv = document.createElement("fieldset");
 		var labelSetStaticLegend = document.createElement("legend");
@@ -1347,37 +1396,10 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		if("commandbar" != self.displayTabId){
 			editAreaDiv.appendChild(document.createElement("br"));
 
-			var labelSetDynamicDiv = document.createElement("fieldset");
-			var labelSetDynamicLegend = document.createElement("legend");
-			labelSetDynamicLegend.appendChild(document.createTextNode(ISA_R.alb_customizedArea));
-			labelSetDynamicDiv.appendChild(labelSetDynamicLegend);
+			var labelSetDynamicDiv = $.FIELDSET({id:'tab_'+self.displayTabId+'_personalizedAreaFieldSet'},
+												$.LEGEND({},ISA_R.alb_customizedArea));
 			editAreaDiv.appendChild(labelSetDynamicDiv);
-
-			var disableCustomizedAreaId = "tab_"+this.displayTabId+"_disableCustomizedArea";
-			labelSetDynamicDiv.appendChild(
-				$.DIV(
-					{},
-					$.INPUT(
-						{
-							id: disableCustomizedAreaId,
-							type: "checkbox",
-							onchange: {
-								handler: function(e){
-									var disabledDynamicPanel = $("tab_"+self.displayTabId+"_disableCustomizedArea").checked;
-									if(disabledDynamicPanel)
-										$("tab_"+self.displayTabId+"_panelDynamicDiv").hide();
-									else
-										$("tab_"+self.displayTabId+"_panelDynamicDiv").show();
-									self.setNewValue("disabledDynamicPanel", disabledDynamicPanel);
-								},
-								id: ["_adminPanelTab","_adminPanel"]
-							}
-						}
-					),
-					$.LABEL({"htmlFor": disableCustomizedAreaId}, ISA_R.alb_disableCustomizedArea)
-				)
-			);
-
+			
 			var editDynamicDiv = document.createElement("div");
 			editDynamicDiv.id = "tab_"+this.displayTabId+"_panelDynamicDiv";
 			//editDynamicDiv.appendChild(labelSetDynamicDiv);
@@ -1845,7 +1867,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 	/**
 		Creating Static widget list
-	*/
 	this.buildStaticWidgetsList = function(layout, staticJson) {
 		if(!this.staticContainer) return;
 
@@ -1967,7 +1988,137 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			childDivs[i].style.overflow = "hidden";
 		}
 	}
+	*/
+	
+	/**
+		Creating Static widget list
+	*/
+	this.buildStaticWidgetsList = function(layout, staticJson) {
+		console.log("bbbb");
+		if(!this.staticContainer) return;
 
+		while( this.editStaticDiv.firstChild )
+			this.editStaticDiv.removeChild( this.editStaticDiv.firstChild );
+
+		this.editStaticDiv.appendChild( this.staticContainer );
+
+		var buttonDiv = document.createElement("div");
+		buttonDiv.style.clear = "both";
+		this.editStaticDiv.insertBefore(buttonDiv, this.staticContainer);
+		// Selecting layout button
+		var selectButton = document.createElement("input");
+		selectButton.type = "button";
+		selectButton.value = ISA_R.alb_selectLayout;
+		IS_Event.observe(selectButton, 'click', this.selectLayoutModal.init.bind(this), false, ["_adminPanelTab","_adminPanel"]);
+		buttonDiv.appendChild(selectButton);
+		buttonDiv.appendChild(document.createTextNode("　"));
+
+		console.log(this.displayRoleJsons[this.displayRoleId]);
+		if('useStaticOnly_adjustHeight' != this.displayRoleJsons[this.displayRoleId].panelUsage){
+			// Editting HTML button
+			var htmlButton = document.createElement("input");
+			htmlButton.type = "button";
+			htmlButton.value = ISA_R.alb_editHTML;
+			IS_Event.observe(htmlButton, 'click', this.editHTMLModal.init.bind(this, layout), false, ["_adminPanelTab","_adminPanel"]);
+			buttonDiv.appendChild(htmlButton);
+		}
+
+		// Remove the item displayed ay last time
+		this.clearStaticContainer();
+
+		this.staticContainer.innerHTML = ISA_Admin.replaceUndefinedValue(layout);
+		var childDivs = this.staticContainer.getElementsByTagName('div');
+		for(var i = 0; i < childDivs.length; i++){
+			if(!childDivs[i].id) continue;
+			childDivs[i].style.border = "solid 1px #000";
+			var json = staticJson[childDivs[i].id];
+			if( !json ) continue;
+
+			var editImgSpan = document.createElement('span');//It does not work if the handler of Control modal is added to img element in IE
+			var editImg = document.createElement("img");
+			editImg.src = imageURL + "edit.gif";
+			editImg.style.cursor = "pointer";
+			editImg.title = ISA_R.alb_editing;
+			editImgSpan.appendChild(editImg);
+			if(!childDivs[i].firstChild) {
+				childDivs[i].appendChild(editImgSpan);
+			} else {
+				childDivs[i].insertBefore(editImgSpan, childDivs[i].firstChild);
+			}
+//			IS_Event.observe(editImg, 'click', this.selectWidgetModal.init.bind(this, json.id, "static"), false, ["_adminPanelTab","_adminPanel"]);
+			var editorFormObj =
+			  new ISA_CommonModals.EditorForm(
+				  editImgSpan,
+				  function(widgetJSON){
+					  var selectType = ISA_CommonModals.EditorForm.getSelectType();
+					  if( widgetJSON.type != selectType )
+						  widgetJSON.properties = {};
+					  
+					  var roleJSON = self.displayRoleJsons[self.displayRoleId];
+					  var oldId = widgetJSON.id;
+					  //var widgetJSON = roleJSON.staticPanel[widgetObj.id];
+					  //var widgetJSON = Object.clone(roleJSON.staticPanel[widgetObj.id]);
+					  widgetJSON.id = "w_"+new Date().getTime();
+					  widgetJSON.type = ISA_CommonModals.EditorForm.getSelectType();
+					  widgetJSON.properties = ISA_CommonModals.EditorForm.getProperty(widgetJSON);
+					  widgetJSON.ignoreHeader = ISA_CommonModals.EditorForm.isIgnoreHeader();
+					  if(!widgetJSON.ignoreHeader) delete widgetJSON.ignoreHeader;
+					  widgetJSON.noBorder = ISA_CommonModals.EditorForm.isNoBorder();
+					  if(!widgetJSON.noBorder) delete widgetJSON.noBorder;
+
+					  widgetJSON.title = ISA_Admin.trim($("formTitle").value);
+					  widgetJSON.href =  $("formHref").value;
+					  var _widgetTitleDiv = $("title_" + oldId);
+					  _widgetTitleDiv.innerHTML = widgetJSON.title;
+
+					  delete roleJSON.staticPanel[oldId];
+					  roleJSON.staticPanel[widgetJSON.id] = widgetJSON;
+					  roleJSON.layout = roleJSON.layout.replace( escapeHTMLEntity( oldId ),widgetJSON.id );
+
+					  self.changeStaticLayout( roleJSON );
+
+					  if( Control.Modal.current ) {
+						  Control.Modal.close();
+					  } else {
+						  Control.Modal.container.hide();
+					  }
+				  },{
+					menuFieldSetLegend:ISA_R.alb_widgetHeaderSettings,
+					setDefaultValue: false,
+					disableMiniBrowserHeight: true,
+					showIgnoreHeaderForm:true,
+					showNoBorderForm:true,
+					displayACLFieldSet:false,
+					disableDisplayRadio:true,
+					omitTypeList:['Ranking','Ticker','MultiRssReader']
+				  });
+			IS_Event.observe(editImgSpan, 'click', function(editorFormObj,json){editorFormObj.showEditorForm(json);}.bind(editImgSpan,editorFormObj,json), false, ["_adminPanelTab","_adminPanel"]);
+
+
+			var widgetTypeDiv = document.createElement("div");
+			widgetTypeDiv.style.paddingTop = '10px';
+			widgetTypeDiv.style.paddingBottom = '20px';
+			widgetTypeDiv.style.paddingLeft = '20px';
+			widgetTypeDiv.style.paddingRight = '20px';
+			widgetTypeDiv.style.textAlign = 'center';
+			var widgetTitleDiv = document.createElement("span");
+			widgetTitleDiv.id = "title_" + json.id;
+
+			var iconDiv = ISA_Admin.buildWidgetTypeIconDiv(json.type);
+			iconDiv.style.cssFloat = iconDiv.style.styleFloat = "left";
+
+			widgetTitleDiv.appendChild(iconDiv);
+			if(json.title && json.title.length > 0){
+				widgetTitleDiv.appendChild(document.createTextNode(json.title));
+			}else{
+				widgetTitleDiv.appendChild(document.createTextNode(ISA_R.alb_noneSetting));
+			}
+			widgetTypeDiv.appendChild(widgetTitleDiv);
+			childDivs[i].appendChild(widgetTypeDiv);
+
+			childDivs[i].style.overflow = "hidden";
+		}
+	}
 	/**
 		Change layout of Static widget
 	*/

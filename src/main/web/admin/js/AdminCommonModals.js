@@ -86,6 +86,18 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 		buttonDiv.style.textAlign = "center";
 		
 		if (options.displayOK) {
+			if( menuItem.isDelete && menuItem.type ){
+				buttonDiv.appendChild(
+					$.DIV({},
+						  $.INPUT({id:'removeGadgetOnUserPortal',type:'checkbox', onclick:{handler:
+							  function(menuItem,e){
+								  var checkbox = Event.element(e);
+								  menuItem.forceDelete = checkbox.checked;
+							  }.bind(null,menuItem)}}),
+						  $.LABEL({"htmlFor": 'removeGadgetOnUserPortal'},ISA_R.alb_deleteGadgetOnUserPortal)
+							)
+					);
+			}
 			var elementInput = document.createElement("input");
 			elementInput.className = "modal_button";
 			elementInput.type = "button";
@@ -95,6 +107,7 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 			menuItem.isDelete = null;
 			IS_Event.observe(elementInput, 'click', self.submitEditorForm.bind(self), false, "_adminMenu");
 			buttonDiv.appendChild(elementInput);
+
 		}
 		
 		var closeButton = document.createElement("input");

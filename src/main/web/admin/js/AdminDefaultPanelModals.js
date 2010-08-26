@@ -240,33 +240,14 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 		}
 		setTimeout(viewForm, 10);
 	},
-	isFixedSataticPanelHeight:false,
 	build: function(formDiv) {
-		var messageLabel = document.createElement("div");
-		messageLabel.style.clear = "both";
-		messageLabel.appendChild(document.createTextNode(ISA_R.alb_selectTemplate));
-		var messageNotice = document.createElement("span");
-		messageNotice.style.color = "red";
-		messageNotice.style.fontWeight = "bold";
-		messageNotice.appendChild(document.createTextNode(ISA_R.alb_destroyOldSettings));
-		messageLabel.appendChild(document.createElement("br"));
-		messageLabel.appendChild(messageNotice);
-		formDiv.appendChild(messageLabel);
-		formDiv.appendChild(document.createElement("br"));
 		formDiv.appendChild(
-			$.DIV({},
-				  $.INPUT({id:'adjustToWindowHeight',type:'checkbox', onclick:{handler:
-					  function(e){
-						  var checkbox = Event.element(e);
-						  this.isFixedSataticPanelHeight = checkbox.checked;
-						  var widgetDivs = $$(".staticLayout");
-						  for(var i = 0; i < widgetDivs.length; i++){
-							  if(i > 0 && i < 4)continue;
-							  widgetDivs[i].style.backgroundColor = this.isFixedSataticPanelHeight ? "#CCC": "#FFF";
-						  }
-					  }.bind(this)}}),
-				  $.LABEL({"htmlFor": 'adjustToWindowHeight'},ISA_R.alb_adjustToWindowHeight))
+			$.DIV({style:"clear:both;padding:3px;"},
+				  $.DIV({}, ISA_R.alb_selectTemplate),
+				  $.DIV({style:"color:red;fontWeight:bold"},ISA_R.alb_destroyOldSettings)
+					)
 			);
+		
 		// This must be increased if any file is added to admin/staticPanel
 		for(var i=0; i < 8; i++){
 			var json = {};
@@ -294,17 +275,13 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 		layoutDiv.innerHTML = json.layout;
 		this.drawOutLine(layoutDiv);
 		var layoutMouseOver = function(i) {
-			if(this.isFixedSataticPanelHeight && (i == 0 || i > 3)  ) return;
 			layoutDiv.style.backgroundColor = "#7777cc";
 		};
 		var layoutMouseOut = function(i) {
-			if(this.isFixedSataticPanelHeight && (i == 0 || i > 3) ) return;
 			layoutDiv.style.backgroundColor = "";
 		};
 		var layoutClick = function(e) {
-			if(this.isFixedSataticPanelHeight && (i == 0 || i > 3) ) return;
 			if(isNothing) json.layout = "";
-			this.isaDefaultPanel.setNewValue('adjustToWindowHeight', this.isFixedSataticPanelHeight);
 			self.isaDefaultPanel.changeStaticLayout(json);
 			self.hide();
 		};
@@ -716,8 +693,9 @@ ISA_DefaultPanel.prototype.templates = {
 		return jsonObject;
 	},
 	getStaticLayout: function(number){
-		if(this.layouts[number]) return this.layouts[number];
-		var url = adminHostPrefix + "/staticPanel/" + number + ".html";
+	//	if(this.layouts[number]) return this.layouts[number];
+		var defaultPanel = ISA_DefaultPanel.defaultPanel;
+		var url = adminHostPrefix + ( defaultPanel.displayRoleJsons[defaultPanel.displayRoleId].adjustToWindowHeight ? '/staticPanelAdjustHeight/' : '/staticPanel/') + number + ".html";
 		var html = null;
 		var opt = {
 			method: 'get' ,
@@ -740,8 +718,11 @@ ISA_DefaultPanel.prototype.templates = {
 		return html;
 	},
 	// Set for default fixed area
-	setStaticLayout0: function(jsonObject){
-		return this.setStaticLayout(jsonObject, 3);
+	setStaticLayout0: function(jsonObject, number){
+		for(var i=0; i < 8; i++)
+		  this.getStaticLayout(i);
+		
+		return this.setStaticLayout(jsonObject, (number ? number : 3));
 	},
 	/**
 		Set fixed area of command bar
