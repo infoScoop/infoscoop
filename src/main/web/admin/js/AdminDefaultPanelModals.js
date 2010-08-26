@@ -695,7 +695,7 @@ ISA_DefaultPanel.prototype.templates = {
 	getStaticLayout: function(number){
 	//	if(this.layouts[number]) return this.layouts[number];
 		var defaultPanel = ISA_DefaultPanel.defaultPanel;
-		var url = adminHostPrefix + ( defaultPanel.displayRoleJsons[defaultPanel.displayRoleId].adjustToWindowHeight ? '/staticPanelAdjustHeight/' : '/staticPanel/') + number + ".html";
+		var url = adminHostPrefix + ( defaultPanel.displayRoleJsons[defaultPanel.displayRoleId] && defaultPanel.displayRoleJsons[defaultPanel.displayRoleId].adjustToWindowHeight ? '/staticPanelAdjustHeight/' : '/staticPanel/') + number + ".html";
 		var html = null;
 		var opt = {
 			method: 'get' ,
