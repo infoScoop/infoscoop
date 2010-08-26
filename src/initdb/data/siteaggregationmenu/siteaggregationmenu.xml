@@ -60,49 +60,42 @@
 	<site-top title="%{sports}" id="sports">
 		<site type="MultiRssReader" title="BBC SPORT" href="http://news.bbc.co.uk/sport" id="sports_bbc">
 			<properties>
-				<property  name="url">
-					http://newsrss.bbc.co.uk/rss/sportonline_world_edition/front_page/rss.xml</property>
+				<property  name="url">http://newsrss.bbc.co.uk/rss/sportonline_world_edition/front_page/rss.xml</property>
 			</properties>
 		</site>
 		<site type="MultiRssReader" title="Deadspin" href="http://deadspin.com/" id="sports_deadspin">
 			<properties>
-				<property  name="url">
-					http://deadspin.com/tag/top/index.xml</property>
+				<property  name="url">http://deadspin.com/tag/top/index.xml</property>
 			</properties>
 		</site>
 	
 		<site type="MultiRssReader" title="ESPN" href="http://espn.go.com/" id="sports_espn">
 			<properties>
-				<property  name="url">
-					http://sports-ak.espn.go.com/espn/rss/news</property>
+				<property  name="url">http://sports-ak.espn.go.com/espn/rss/news</property>
 			</properties>
 		</site>
 	
 		<site type="MultiRssReader" title="ESPN: TrueHoop" href="http://espn.go.com/blog/truehoop" id="sports_truehoop">
 			<properties>
-				<property  name="url">
-					http://espn.go.com/blog/feed?blog=truehoop</property>
+				<property  name="url">http://espn.go.com/blog/feed?blog=truehoop</property>
 			</properties>
 		</site>
 	
 		<site type="MultiRssReader" title="Off Wing Opinion" href="http://offwing.com/" id="sports_offwing">
 			<properties>
-				<property  name="url">
-					http://offwing.com/feed</property>
+				<property  name="url">http://offwing.com/feed</property>
 			</properties>
 		</site>
 	
 		<site type="MultiRssReader" title="Sportsfrog.com" href="http://www.sportsfrog.com/" id="sports_sportsfrog">
 			<properties>
-				<property  name="url">
-					http://www.sportsfrog.com/feed/</property>
+				<property  name="url">http://www.sportsfrog.com/feed/</property>
 			</properties>
 		</site>
 	
 		<site type="MultiRssReader" title="YFSF" href="http://www.yfsf.org/" id="sports_yfsf">
 			<properties>
-				<property  name="url">
-					http://www.yfsf.org/atom.xml</property>
+				<property  name="url">http://www.yfsf.org/atom.xml</property>
 			</properties>
 		</site>
 	</site-top>

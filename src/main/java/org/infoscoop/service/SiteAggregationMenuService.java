@@ -569,7 +569,7 @@ public class SiteAggregationMenuService {
 	/* (Not Javadoc)
 	 * @see jp.co.beacon_it.msd.admin.web.IMenuAdminService#removeMenuItem(java.lang.String)
 	 */
-	public synchronized void removeMenuItem(String menuType, String menuId, String sitetopId) throws Exception {
+	public synchronized String removeMenuItem(String menuType, String menuId, String sitetopId) throws Exception {
 		
 		if(log.isInfoEnabled()){
 			log.info("RemoveMenuItem: menuId=" + menuId); 
@@ -584,12 +584,26 @@ public class SiteAggregationMenuService {
 
 		Document document = node.getOwnerDocument();
 
+		Set<String> removeMenuIdSet = new HashSet<String>();
+		removeMenuIdSet.add(menuId);
+		NodeList removeMenuItems = ((Element)node).getElementsByTagName("site");
+		for(int i = 0; i < removeMenuItems.getLength(); i++){
+			Element menuItem = (Element)removeMenuItems.item(i);
+			removeMenuIdSet.add(menuItem.getAttribute("id"));
+		}
+		
 		// Delete node matches menuId
 		AdminServiceUtil.removeSelf(node);
-
+		
 		// Update
 		entity.setElement(document.getDocumentElement());
 		this.siteAggregationMenuTempDAO.update(entity);
+		
+		JSONArray response = new JSONArray();
+		for(String mid: removeMenuIdSet){
+			response.put(mid);
+		}
+		return response.toString();
 	}
 	
 	public synchronized void removeTopMenuItem(String menuType, String menuId, String sitetopId) throws Exception {
@@ -955,7 +969,7 @@ public class SiteAggregationMenuService {
 	 * @param forceUpdateMap
 	 * @throws Exception
 	 */
-	public synchronized void commitMenu(String menuType, Map<String, List<ForceUpdateUserPref>> forceUpdateMap, List<String> editSitetopIdList) throws Exception{
+	public synchronized void commitMenu(String menuType, Map<String, List<ForceUpdateUserPref>> forceUpdateMap, List<String> forceDeleteList, List<String> editSitetopIdList) throws Exception{
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String myUid = p.getName();
 		
@@ -1059,6 +1073,9 @@ public class SiteAggregationMenuService {
 			}
 		}
 		
+		for(String menuId :forceDeleteList){
+			dao.deleteWidgetById(menuId);
+		}
 		// Deleting tree
 		for(Element deleteSiteTop : deleteSiteTopList){
 			AdminServiceUtil.removeSelf(deleteSiteTop);

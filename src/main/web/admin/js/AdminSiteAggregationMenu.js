@@ -72,6 +72,7 @@ ISA_SiteAggregationMenu.mergeMenu = function(menuItems, mapJson){
 }
 
 ISA_SiteAggregationMenu.forceUpdatePrefMap = {};
+ISA_SiteAggregationMenu.forceDeleteList = [];
 
 ISA_SiteAggregationMenu.setWidgetConf = function(_widgetConfList, isAddMulti) {
 	ISA_SiteAggregationMenu.widgetConfs = _widgetConfList;
@@ -678,7 +679,10 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		var opt = {
 			method: 'post' ,
 			contentType: "application/x-www-form-urlencoded",
-			postBody: 'menuType=' + this.menuType + '&forceUpdateMap=' + Object.toJSON(ISA_SiteAggregationMenu.forceUpdatePrefMap) + '&editSitetopIdList=' + Object.toJSON(this.editSitetopIdList),
+			postBody: 'menuType=' + this.menuType
+			  + '&forceUpdateMap=' + Object.toJSON(ISA_SiteAggregationMenu.forceUpdatePrefMap)
+				+ '&forceDeleteList=' + Object.toJSON(ISA_SiteAggregationMenu.forceDeleteList)
+				+ '&editSitetopIdList=' + Object.toJSON(this.editSitetopIdList),
 			asynchronous:true,
 			onSuccess: function(response){
 				ISA_TempGadgetsConfs = [];
@@ -1079,7 +1083,6 @@ ISA_SiteAggregationMenu.getUpdMenuItem = function(menuItem, menuType){
 		if(formServiceAuthType) menuItem.serviceAuthType = formServiceAuthType.value;
 		var formServiceAuthParamName = $('formServiceAuthParamName');
 		if(formServiceAuthParamName && formServiceAuthParamName.value) menuItem.serviceAuthType += ' ' + encodeURIComponent(formServiceAuthParamName.value);
-		console.log(menuItem.serviceAuthType);
 	}
 	
 	var formHeaderOnly = $("formHeaderOnly");
@@ -1491,6 +1494,8 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 						asynchronous: true,
 						onSuccess: function(response){
 							binder.isUpdated = true;
+							if(menuItem.forceDelete)
+							  ISA_SiteAggregationMenu.forceDeleteList = ISA_SiteAggregationMenu.forceDeleteList.concat(eval(response.responseText));
 							ISA_SiteAggregationMenu.removeMenuTree(menuItem);
 						},
 						onFailure: function(t){
