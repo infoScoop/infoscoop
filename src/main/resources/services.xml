@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-	<bean id="hibernateTransactionManger"
-			class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory"/>
-		</property>
-	</bean>
 	<bean id="CommandExecutionService"
 		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="target">
@@ -15,7 +9,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -36,7 +30,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -57,7 +51,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -86,7 +80,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -113,7 +107,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -133,7 +127,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -152,7 +146,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -177,7 +171,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -201,7 +195,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -229,7 +223,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -251,7 +245,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -278,7 +272,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -298,7 +292,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -322,7 +316,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -343,7 +337,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -372,7 +366,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -397,7 +391,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -419,7 +413,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -440,7 +434,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -466,7 +460,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -485,7 +479,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -505,7 +499,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -524,7 +518,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
@@ -549,7 +543,7 @@
 			</bean>
 		</property>
 		<property name="transactionManager">
-			<ref bean="hibernateTransactionManger" />
+			<ref bean="transactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>

@@ -61,12 +61,17 @@ $._createNode = function( tag, args ) {
                }
             } else if(a.indexOf('on') == 0){
 				var eventConf = attrs[a];
+				if(isjQuery){
+					if(eventConf instanceof Function)
+						$(e)[a.substring(2)](eventConf);
+					else if(eventConf.handler instanceof Function)
+						$(e)[a.substring(2)](eventConf.handler);
+					continue;
+				}
 				if(!(eventConf.handler instanceof Function))continue;
 				if(!isjQuery)
-            		IS_Event.observe(e, a.substring(2), eventConf.handler, eventConf.capture, eventConf.id);
-            	else
-            		$(e)[a.substring(2)](eventConf.handler);
-            } else {
+					IS_Event.observe(e, a.substring(2), eventConf.handler, eventConf.capture, eventConf.id);
+			} else {
 				e[a] = attrs[attr];
 			}
         }

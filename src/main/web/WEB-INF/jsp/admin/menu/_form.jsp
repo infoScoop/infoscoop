@@ -54,17 +54,17 @@
 	<fieldset id="gadget_settings">
 		<legend>ガジェット設定</legend>
 		<x:forEach var="userPref" select="$conf//UserPref">
-			<x:if select="$userPref/@admin_datatype or $userPref/@datatype!='hidden'">
-				<p>
+			<x:if select="$userPref/@admin_datatype or not($userPref/@datatype) or $userPref/@datatype!='hidden'">
+				<x:choose>
+					<x:when select="$userPref/@admin_datatype">
+						<c:set var="datatype"><x:out select="$userPref/@admin_datatype"/></c:set>
+					</x:when>
+					<x:otherwise>
+						<c:set var="datatype"><x:out select="$userPref/@datatype"/></c:set>
+					</x:otherwise>
+				</x:choose>
+				<p class="${datatype}">
 					<label><x:out select="$userPref/@display_name"/></label>
-					<x:choose>
-						<x:when select="$userPref/@admin_datatype">
-							<c:set var="datatype"><x:out select="$userPref/@admin_datatype"/></c:set>
-						</x:when>
-						<x:otherwise>
-							<c:set var="datatype"><x:out select="$userPref/@datatype"/></c:set>
-						</x:otherwise>
-					</x:choose>
 					<c:set var="name"><x:out select="$userPref/@name"/></c:set>
 					<x:choose>
 						<x:when select="$userPref/EnumValue">
@@ -97,20 +97,7 @@
 	</p>
 </form:form>
 <script type="text/javascript">
-$("#gadget_settings input").each(function(){
-	//TODO ここでdatatypeに従ってinputタグを変換
-});
-$("#gadget_settings select").each(function(){
-	if(this.className == "radio"){
-		var name = this.name;
-		var radioEl = $.SPAN({className:'radio'});
-		$(this).find("option").each(function(){
-			radioEl.appendChild($.INPUT({type:'radio', value:this.value, name:name, checked:this.selected?"checked":false}));
-			radioEl.appendChild($.LABEL({}, this.innerHTML));
-		});
-		$(this).replaceWith(radioEl);
-	}
-});
+rebuildGadgetUserPrefs();
 $("#menuItem").ajaxForm(function(html){
 	$("#menu_right").html(html);
 });

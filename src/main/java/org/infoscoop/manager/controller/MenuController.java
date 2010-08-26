@@ -13,6 +13,7 @@ import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -24,13 +25,16 @@ import org.w3c.dom.Element;
 
 @Controller
 public class MenuController {
+	@Autowired
+	private MenuItemDAO menuItemDAO;
+	
 	@RequestMapping
 	public void index() throws Exception {
 	}
 
 	@RequestMapping
 	public void tree(Model model) throws Exception {
-		List<MenuItem> items = MenuItemDAO.newInstance().getTree();
+		List<MenuItem> items = menuItemDAO.getTree();
 		model.addAttribute("items", items);
 	}
 
@@ -43,7 +47,7 @@ public class MenuController {
 	@RequestMapping
 	public void showAddItem(@RequestParam("id") String parentId,
 			@RequestParam("type") String type, Model model) throws Exception {
-		MenuItem parentItem = MenuItemDAO.newInstance().get(parentId);
+		MenuItem parentItem = menuItemDAO.get(parentId);
 		MenuItem item = new MenuItem();
 		GadgetInstance gadget = new GadgetInstance();
 		item.setFkParent(parentItem);
@@ -61,7 +65,7 @@ public class MenuController {
 	@Transactional
 	public void showEditItem(@RequestParam("id") String id, Model model)
 			throws Exception {
-		MenuItem item = MenuItemDAO.newInstance().get(id);
+		MenuItem item = menuItemDAO.get(id);
 		model.addAttribute(item);
 
 		String type = item.getFkGadgetInstance().getType();
@@ -78,7 +82,7 @@ public class MenuController {
 		item.getFkGadgetInstance().setTitle(item.getTitle());
 		item.getFkGadgetInstance().setHref(item.getHref());
 		
-		MenuItemDAO.newInstance().save(item);
+		menuItemDAO.save(item);
 		return item;
 	}
 
@@ -87,7 +91,8 @@ public class MenuController {
 	public MenuItem updateItem(MenuItem item) throws Exception {
 		item.getFkGadgetInstance().setTitle(item.getTitle());
 		item.getFkGadgetInstance().setHref(item.getHref());
-		MenuItemDAO.newInstance().save(item);
+		menuItemDAO.save(item);
+		//menuItemDAO.save(item);
 		return item;
 	}
 	
@@ -95,28 +100,26 @@ public class MenuController {
 	@Transactional
 	public MenuItem togglePublish(@RequestParam("id") String id)
 			throws Exception {
-		MenuItemDAO dao = MenuItemDAO.newInstance();
-		MenuItem item = dao.get(id);
+		MenuItem item = menuItemDAO.get(id);
 		item.toggolePublish();
-		dao.save(item);
+		menuItemDAO.save(item);
 		return item;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public void removeItem(@RequestParam("id") String id) throws Exception {
-		MenuItemDAO.newInstance().delete(id);
+		menuItemDAO.delete(id);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public MenuItem moveItem(@RequestParam("id") String id,
 			@RequestParam("parentId") String parentId) throws Exception {
-		MenuItemDAO dao = MenuItemDAO.newInstance();
-		MenuItem parentItem = dao.get(parentId);
-		MenuItem item = dao.get(id);
+		MenuItem parentItem = menuItemDAO.get(parentId);
+		MenuItem item = menuItemDAO.get(id);
 		item.setFkParent(parentItem);
-		dao.save(item);
+		menuItemDAO.save(item);
 		return item;
 	}
 
