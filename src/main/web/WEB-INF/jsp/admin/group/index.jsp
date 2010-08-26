@@ -7,30 +7,13 @@
 	<tiles:putAttribute name="body" type="string">
 
 <script type="text/javascript" class="source">
-$(function(){
-	$('#add_button').click(function(){
-		window.open("editGroup", "グループ設定", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes');
-	});
-
-	$('.edit').click(function(){
-		var roleID = this.parentNode.parentNode.id;
-		window.open("updateGroup?id="+ roleID,"グループ編集画面", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes');
-	});
-/*
-	$('.trash').click(function(){
-		var roleID = this.parentNode.parentNode.id;
-		alert("このグループを削除しますか？");
-
-	});
-	*/
-});
 function deleteRole(roleId){
 	window.location.href = "delete?roleId=" +  roleId;
 }
 </script>
 
 <div style="height:500px;">
-	<input id="add_button" type="button" value="追加"/>
+	<a href="edit" id="add_button" class="button">追加</a>
 	<table id="tab_table" class="tab_table" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr>
@@ -54,7 +37,7 @@ function deleteRole(roleId){
 					<td>${principal.type}</td>
 					<td>${principal.name}</td>
 					<c:if test="${status.index == 0}">
-						<td rowspan="${principalSize}"><span class="edit">編集アイコン</span></td>
+						<td rowspan="${principalSize}"><span class="edit"><a href="edit?id=${role.id}">編集アイコン</a></span></td>
 						<td rowspan="${principalSize}"><span class="trash"  onclick="deleteRole('${role.id}')" ></span></td>
  					</c:if>
 				</tr>

@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_tabtemplates table.
+ * This is an object that contains data related to the is_tab_templates table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_tabtemplates"
+ *  table="is_tab_templates"
  */
 
 public abstract class BaseTabTemplate  implements Serializable {
@@ -177,11 +177,6 @@ public abstract class BaseTabTemplate  implements Serializable {
 		this.tabTemplateParsonalizeGadgets = tabTemplateParsonalizeGadgets;
 	}
 
-	public void addToTabTemplateParsonalizeGadgets (org.infoscoop.dao.model.TabTemplateParsonalizeGadget tabTemplateParsonalizeGadget) {
-		if (null == getTabTemplateParsonalizeGadgets()) setTabTemplateParsonalizeGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateParsonalizeGadget>());
-		getTabTemplateParsonalizeGadgets().add(tabTemplateParsonalizeGadget);
-	}
-
 
 
 	/**
@@ -197,11 +192,6 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 */
 	public void setTabTemplateStaticGadgets (java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> tabTemplateStaticGadgets) {
 		this.tabTemplateStaticGadgets = tabTemplateStaticGadgets;
-	}
-
-	public void addToTabTemplateStaticGadgets (org.infoscoop.dao.model.TabTemplateStaticGadget tabTemplateStaticGadget) {
-		if (null == getTabTemplateStaticGadgets()) setTabTemplateStaticGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateStaticGadget>());
-		getTabTemplateStaticGadgets().add(tabTemplateStaticGadget);
 	}
 
 

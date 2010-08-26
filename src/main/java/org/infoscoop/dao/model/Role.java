@@ -1,5 +1,8 @@
 package org.infoscoop.dao.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.infoscoop.dao.model.base.BaseRole;
 
 
@@ -35,7 +38,14 @@ public class Role extends BaseRole {
 
 
 	public String getSize(){
+		if(this.getRolePrincipals() == null)return "0";
 		return Integer.toString(this.getRolePrincipals().size());
 	}
-
+	
+	private List<String> deletePrincipalIdList = new ArrayList<String>();
+	
+	public List<String> getDeletePrincipalIdList(){
+		return this.deletePrincipalIdList;
+	}
+	
 }

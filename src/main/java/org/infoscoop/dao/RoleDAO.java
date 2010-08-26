@@ -41,8 +41,8 @@ public class RoleDAO extends HibernateDaoSupport {
 		return super.getHibernateTemplate().get(RolePrincipal.class, new Integer(rolePrincipalId));
 	}
 
-	public void deleteRolePrincipal(RolePrincipal rolePrincipalId) {
-		super.getHibernateTemplate().delete(rolePrincipalId);
+	public void deleteRolePrincipal(RolePrincipal rolePrincipal) {
+		super.getHibernateTemplate().delete(rolePrincipal);
 	}
 
 	public void updatePrindipcal(RolePrincipal rolePrincipal) {

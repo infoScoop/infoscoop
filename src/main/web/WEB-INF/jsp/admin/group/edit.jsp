@@ -9,9 +9,6 @@
 <script type="text/javascript" class="source">
 //
 $(function () {
-	$("#add_group").submit(function(){
-		setTimeout(window.opener.location.reload(), 30000, true);
-	});
 
 	$("#addButton").click(function(){
 		var count = (table).rows.length;
@@ -29,17 +26,22 @@ $(function () {
 	});
 });
 
-function deletePrincipal(rolePrincipalId, roleId){
-	window.location.href = "deleteRolePrincipal?rolePrincipalId="+ rolePrincipalId +"&roleId="+ roleId;
+function deletePrincipal(index){
+	$(document.forms[0]['rolePrincipals[' + index + '].id']).name="deletePrincipalId";
+	$(document.forms[0]['rolePrincipals[' + index + '].name']).remove();
+	$(document.forms[0]['rolePrincipals[' + index + '].type']).remove();
+	document.forms[0].action = 'deleteRolePrincipal';
+	document.forms[0].submit();
+	//window.location.href = "deleteRolePrincipal?rolePrincipalId="+ rolePrincipalId +"&roleId="+ roleId;
 }
 
 </script>
 
 <div>
 	<h3>グループ設定画面</h3>
-	<form:form modelAttribute="role" id="add_group" method="post" action="update">
+	<form:form modelAttribute="role" id="add_group" method="post" action="save">
 		<c:set var="principalSize" value="${role.size}" />
-		<h2>グループ名： ${role.name}<form:hidden path="name"/></h2>
+		<h2>グループ名： <form:input path="name"/></h2>
 		<form:hidden path="id" />
 		<table id="table" class="tab_table" cellspacing="0" cellpadding="0">
 		<thead>
@@ -51,6 +53,9 @@ function deletePrincipal(rolePrincipalId, roleId){
 		</thead>
 		<tfoot></tfoot>
 		<tbody>
+		<c:forEach var="principalId" items="${role.deletePrincipalIdList}" varStatus="status">
+			<input name="deletePrincipalIdList[<c:out value='${status.index}'/>]" type="hidden" value="${principalId}" />
+		</c:forEach>
 
 		<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
 			<tr>
@@ -63,7 +68,7 @@ function deletePrincipal(rolePrincipalId, roleId){
 					<input name="rolePrincipals[<c:out value='${status.index}'/>].name" type="hidden" value="${principal.name}" />
 				</td>
 				<td>
-					<span class="trash"  onclick="deletePrincipal('${principal.id}', '${role.id}')"></span>
+					<span class="trash"  onclick="deletePrincipal(${status.index})"></span>
 					<input name="rolePrincipals[<c:out value='${status.index}'/>].id" type="hidden" value="${principal.id}" />
 				</td>
 			</tr>
@@ -72,7 +77,7 @@ function deletePrincipal(rolePrincipalId, roleId){
 		</table>
 		<input id="addButton" type="button" value="追加" />
 		<input type="submit" name="button" value="保存" />
-		<input type="button" value="閉じる" onclick="window.close()" />
+		<input type="button" value="キャンセル" onclick="javascript:window.location.href='index'" />
 	</form:form>
 </div>
 

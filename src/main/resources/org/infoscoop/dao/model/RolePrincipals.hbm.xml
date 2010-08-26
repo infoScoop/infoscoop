@@ -35,6 +35,8 @@
 			name="FkRole"
 			column="fk_role_id"
 			class="Role"
+			insert="false"
+			update="false"
 			not-null="true"
 		>
 		</many-to-one>

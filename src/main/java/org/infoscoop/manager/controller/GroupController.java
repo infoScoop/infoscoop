@@ -1,5 +1,6 @@
 package org.infoscoop.manager.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.infoscoop.dao.RoleDAO;
@@ -22,25 +23,16 @@ public class GroupController {
 	}
 
 	@RequestMapping
-	public void editGroup(Model model)
+	@Transactional
+	public void edit( @RequestParam(value="id", required=false) String roleId, Model model)
 			throws Exception {
-		Role grp = new Role();
-		model.addAttribute("role", grp);
-	}
-
-	@RequestMapping
-	public void updateGroup( @RequestParam("id") String roleId, Model model)
-			throws Exception {
-		Role role = RoleDAO.newInstance().get(roleId);
-		model.addAttribute("role", role);
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
-	public void saveGroup(Role grp)throws Exception {
-		for(RolePrincipal principal :grp.getRolePrincipals()){
-			principal.setFkRole(grp);
+		Role role;
+		if(roleId == null){
+			role = new Role();
+		}else{
+			role = RoleDAO.newInstance().get(roleId);
 		}
-		RoleDAO.newInstance().save(grp);
+		model.addAttribute("role", role);
 	}
 
 	@RequestMapping
@@ -50,23 +42,34 @@ public class GroupController {
 		return "redirect:index";
 	}
 
-	@RequestMapping
-	public String deleteRolePrincipal( @RequestParam("rolePrincipalId") String rolePrincipalId, @RequestParam("roleId") String roleId)
+	@RequestMapping(method = RequestMethod.POST)
+	public String deleteRolePrincipal( Role role, 
+			Model model)
 			throws Exception {
-		RolePrincipal principal = RoleDAO.newInstance().getRolePrincipal(rolePrincipalId);
-		RoleDAO.newInstance().deleteRolePrincipal(principal);
-		return "redirect:updateGroup?id="+ roleId;
+
+		List<RolePrincipal> list = new ArrayList<RolePrincipal>();
+		for(RolePrincipal rolePrincipal : role.getRolePrincipals()){
+			if(rolePrincipal !=null && rolePrincipal.getId() != null){
+				if(rolePrincipal.getType() != null)
+					list.add(rolePrincipal);
+				else if(rolePrincipal.getType() == null)
+					role.getDeletePrincipalIdList().add(rolePrincipal.getId().toString());
+			}
+		}
+		role.setRolePrincipals(list);
+		model.addAttribute("role", role);
+		
+		return "group/edit";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public String update(Role role) throws Exception {
-//		Role role = RoleDAO.newInstance().get(roleId);
-		for(RolePrincipal principal :role.getRolePrincipals()){
-			principal.setFkRole(role);
-			//RoleDAO.newInstance().updatePrindipcal(principal);
-		}
+	public String save(Role role) throws Exception {
 		RoleDAO.newInstance().save(role);
-		return "redirect:updateGroup?id="+ role.getId();
+		for(String id: role.getDeletePrincipalIdList()){
+			RolePrincipal principal = RoleDAO.newInstance().getRolePrincipal(id);
+			RoleDAO.newInstance().deleteRolePrincipal(principal);
+		}
+		return "redirect:index";
 	}
 }

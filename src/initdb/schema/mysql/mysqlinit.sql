@@ -463,7 +463,7 @@ CREATE TABLE IF NOT EXISTS IS_ROLE_PRINCIPALS (
   `type` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `order_index` int(11) DEFAULT NULL,
-  `fk_role_id` bigint(20) unsigned DEFAULT NULL,
+  `fk_role_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`fk_role_id`) REFERENCES `is_roles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;

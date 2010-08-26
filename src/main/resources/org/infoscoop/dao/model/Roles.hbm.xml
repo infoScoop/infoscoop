@@ -32,8 +32,8 @@
 		/>
 
 
-		<list name="RolePrincipals" inverse="false" cascade="save-update" lazy="false" table="is_role_principals">
-			<key column="fk_role_id"/>
+		<list name="RolePrincipals" inverse="false" cascade="save-update,delete" lazy="false" table="is_role_principals">
+			<key column="fk_role_id" not-null="true"/>
 			<list-index column="order_index" />
 			<one-to-many class="RolePrincipal"/>
 		</list>
