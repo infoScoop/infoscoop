@@ -6,6 +6,11 @@
 	<tiles:putAttribute name="body" type="string">
 <script type="text/javascript" src="../../js/lib/jsTree.v.1.0rc2/jquery.jstree.js"></script>
 <script type="text/javascript" class="source">
+var hostPrefix = "/infoscoop";//TODO スクリプトで計算
+//TODO propertiesテーブルから取得して補正する
+var staticContentURL="../..";
+var imageURL = staticContentURL + "/skin/imgs/";
+
 var gadgetConfs;
 function getGadget(type){
 	return gadgetConfs.buildin[type] || gadgetConfs.upload[type];
@@ -17,6 +22,19 @@ function getGadgetTitle(gadget){
 		 || gadget.ModulePrefs.directory_title
 		 || gadget.ModulePrefs.title
 		 || gadget.type;
+}
+function getIconUrl(type){
+	var gadget = getGadget(type);
+	try{
+		if(gadget.icon)
+			return imageURL + gadget.icon;
+		else if(gadget.ModulePrefs.Icon.content)
+			var icon = gadget.ModulePrefs.Icon.content;
+			var realType = type.replace("upload__","");
+			return icon.replace("__IS_GADGET_BASE_URL__", hostPrefix + '/gadget/' + realType);
+	}catch(e){
+		return imageURL + "widget_add.gif";
+	}
 }
 function selectItem(id){
 	$("#menu_tree").jstree("deselect_all");
@@ -52,7 +70,7 @@ function showEditItem(){
 	})
 	$("#menu_item_command").hide();
 }
-function addItemToTree(parentId, id, title, publish){
+function addItemToTree(parentId, id, title, type, publish){
 	$("#menu_tree").jstree("create",
 		parentId ? "#"+parentId : -1,
 		"last",
@@ -63,6 +81,9 @@ function addItemToTree(parentId, id, title, publish){
 		function(target){
 			target.find("a:first").append('<span onclick="showMenuCommand(event, this, \''+id+'\')" class="menu_open">▼</span>');
 			target.append('<div class="info"><span class="publish'+(publish?'">公開':' un">非公開')+'</span></div>');
+			$("a:first ins", target)
+				.css("background", "url("+getIconUrl(type)+")")
+				.css("display", "inline-block");
 		},
 		true
 	);
@@ -190,11 +211,14 @@ function rebuildGadgetUserPrefs(){
 	});
 }
 $(function () {
-	$("#menu_tree").jstree({
+	var menuTree = $("#menu_tree").jstree({
 		"html_data" : {
 			"ajax" : {
 				"url" : "tree"
 			}
+		},
+		"themes" : {
+			"icons" : false
 		},
 		"ui" : {
 			"select_limit" : 1
@@ -204,7 +228,7 @@ $(function () {
 		},
 		"plugins" : [ "themes", "html_data", "crrm", "dnd", "ui" ]
 	});
-	$("#menu_tree").bind("move_node.jstree", function(event, data){
+	menuTree.bind("move_node.jstree", function(event, data){
 		var node = data.rslt.o;
 		var parentNode = data.inst._get_parent(node);
 		$.post("moveItem",
@@ -215,6 +239,9 @@ $(function () {
 			function(response){
 			}
 		);
+	});
+	menuTree.bind("loaded.jstree", function(event, data){
+		//TODO フラグを立てる
 	});
 	$("#menu_command a").button();
 	function resizeMenuTree(){
@@ -237,6 +264,11 @@ $(function () {
 		//TODO 以下の処理はサーバーサイドでやりたい
 		$.each(gadgetConfs.upload, function(type, gadget){
 			gadgetConfs.upload[type].type = type;
+		});
+		$("li", menuTree).each(function(){
+			$("a ins", this).first()
+				.css("background", "url("+getIconUrl(this.type)+")")
+				.css("display", "inline-block");
 		});
 	});
 });

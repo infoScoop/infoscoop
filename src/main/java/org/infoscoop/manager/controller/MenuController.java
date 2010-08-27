@@ -33,6 +33,7 @@ public class MenuController {
 	}
 
 	@RequestMapping
+	@Transactional
 	public void tree(Model model) throws Exception {
 		List<MenuItem> items = menuItemDAO.getTree();
 		model.addAttribute("items", items);
@@ -57,7 +58,6 @@ public class MenuController {
 		item.setPublish(0);
 		model.addAttribute(item);
 
-		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。
 		model.addAttribute("conf", getGadgetConf(type));
 	}
 
@@ -136,6 +136,7 @@ public class MenuController {
 	}
 	
 	private Document getGadgetConf(String type) {
+		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。
 		Element conf = null;
 		if (type.startsWith("upload__")) {
 			conf = GadgetDAO.newInstance().getGadgetElement(type.substring(8));
