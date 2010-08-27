@@ -515,7 +515,7 @@ create table IS_TAB_TEMPLATES(
 	name varchar(255) not null,
 	layout text,
 	published int not null default 0, -- 0=unpublished, 1=published
-	access_level int not null default 1 -- 0=public, 1=special
+	access_level int -- 0=public, 1=special
 ) ENGINE=InnoDB;
 
 --

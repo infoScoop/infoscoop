@@ -62,7 +62,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 	// fields
 	private java.lang.String name;
-	private java.lang.Integer published;
+	private java.lang.Integer published = Integer.valueOf(0);
 	private java.lang.Integer accessLevel;
 	private java.lang.String layout;
 

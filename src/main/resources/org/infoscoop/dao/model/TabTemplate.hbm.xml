@@ -31,11 +31,11 @@
 			not-null="true"
 			length="10"
 		/>
+		<!-- TODO must rename this property to fk_role_id -->
 		<property
 			name="AccessLevel"
 			column="access_level"
 			type="integer"
-			not-null="true"
 			length="10"
 		/>
 		<property

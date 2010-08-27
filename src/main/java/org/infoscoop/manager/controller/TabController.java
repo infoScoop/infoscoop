@@ -34,7 +34,9 @@ public class TabController {
 	public void showAddTab(Model model)
 			throws Exception {
 		TabTemplate tab = new TabTemplate();
+		tab.setName("V‚µ‚¢ƒ^ƒu");
 		tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
+		TabTemplateDAO.newInstance().save(tab);
 		model.addAttribute(tab);
 	}
 	
@@ -48,10 +50,10 @@ public class TabController {
 	@RequestMapping
 	public void showGadgetDialog(HttpServletRequest request, @RequestParam("type") String type, Model model)throws Exception {
 		MenuItem menuItem = new MenuItem();
-		//menuItem.setType(type);
+//		menuItem.setType(type);
 		model.addAttribute("menuItem", menuItem);
 		
-		//TODO å›½éš›åŒ–å‡¦ç†ã—ã¦è¨€èªžã”ã¨ã«DBã«ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã¨ã—ã¦ä¿å­˜ã™ã‚‹ã€‚ãã—ã¦ãã‚Œã‚’å–å¾—ã™ã‚‹ã€‚
+		//TODO ‘Û‰»ˆ—‚µ‚ÄŒ¾Œê‚²‚Æ‚ÉDB‚ÉƒLƒƒƒbƒVƒ…‚Æ‚µ‚Ä•Û‘¶‚·‚éB‚»‚µ‚Ä‚»‚ê‚ðŽæ“¾‚·‚éB
 		Element conf = null;
 		if (type.startsWith("upload__")) {
 			conf = GadgetDAO.newInstance().getGadgetElement(type.substring(8));
@@ -73,6 +75,7 @@ public class TabController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public void addTab(TabTemplate tab)throws Exception {
+		
 		TabTemplateDAO.newInstance().save(tab);
 	}
 	
