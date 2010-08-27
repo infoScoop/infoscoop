@@ -9,10 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.WidgetConfDAO;
+import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
+import org.infoscoop.util.I18NUtil;
+import org.infoscoop.util.XmlUtil;
+import org.infoscoop.widgetconf.I18NConverter;
+import org.infoscoop.widgetconf.MessageBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +32,7 @@ import org.w3c.dom.Element;
 public class MenuController {
 	@Autowired
 	private MenuItemDAO menuItemDAO;
-	
+
 	@RequestMapping
 	public void index() throws Exception {
 	}
@@ -46,8 +51,10 @@ public class MenuController {
 	}
 
 	@RequestMapping
+	@Transactional
 	public void showAddItem(@RequestParam("id") String parentId,
-			@RequestParam("type") String type, Model model) throws Exception {
+			@RequestParam("type") String type, Model model, Locale locale)
+			throws Exception {
 		MenuItem parentItem = menuItemDAO.get(parentId);
 		MenuItem item = new MenuItem();
 		GadgetInstance gadget = new GadgetInstance();
@@ -58,21 +65,21 @@ public class MenuController {
 		item.setPublish(0);
 		model.addAttribute(item);
 
-		model.addAttribute("conf", getGadgetConf(type));
+		model.addAttribute("conf", getGadgetConf(type, locale));
 	}
 
 	@RequestMapping
 	@Transactional
-	public void showEditItem(@RequestParam("id") String id, Model model)
-			throws Exception {
+	public void showEditItem(@RequestParam("id") String id, Model model,
+			Locale locale) throws Exception {
 		MenuItem item = menuItemDAO.get(id);
 		model.addAttribute(item);
 
 		String type = item.getFkGadgetInstance().getType();
-		//lazy=trueだが、Viewに渡すために事前に取得する。何かメソッド呼ぶと事前に取得できる。
+		// lazy=trueだが、Viewに渡すために事前に取得する。何かメソッド呼ぶと事前に取得できる。
 		item.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
 
-		model.addAttribute("conf", getGadgetConf(type));
+		model.addAttribute("conf", getGadgetConf(type, locale));
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -81,7 +88,7 @@ public class MenuController {
 		item.setId("m_" + new Date().getTime());
 		item.getFkGadgetInstance().setTitle(item.getTitle());
 		item.getFkGadgetInstance().setHref(item.getHref());
-		
+
 		menuItemDAO.save(item);
 		return item;
 	}
@@ -92,10 +99,10 @@ public class MenuController {
 		item.getFkGadgetInstance().setTitle(item.getTitle());
 		item.getFkGadgetInstance().setHref(item.getHref());
 		menuItemDAO.save(item);
-		//menuItemDAO.save(item);
+		// menuItemDAO.save(item);
 		return item;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public MenuItem togglePublish(@RequestParam("id") String id)
@@ -134,15 +141,29 @@ public class MenuController {
 		model.addAttribute("buildin", buildinGadgets);
 		model.addAttribute("upload", uploadGadgets);
 	}
-	
-	private Document getGadgetConf(String type) {
-		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。
-		Element conf = null;
+
+	private Document getGadgetConf(String type, Locale locale) throws Exception {
+		// TODO 言語ごとにDBにキャッシュとして保存する。
+		Document conf = null;
 		if (type.startsWith("upload__")) {
-			conf = GadgetDAO.newInstance().getGadgetElement(type.substring(8));
+			String realType = type.substring(8);// upload__を除く
+			Gadget gadget = GadgetDAO.newInstance().select(realType);
+			String gadgetXml = new String(gadget.getData(), "UTF-8");
+			Document gadgetDoc = (Document) XmlUtil.string2Dom(gadgetXml);
+			I18NConverter i18n = new I18NConverter(locale,
+					new MessageBundle.Factory.Upload(0, realType)
+							.createBundles(gadgetDoc));
+			gadgetXml = i18n.replace(gadgetXml);
+			conf = (Document) XmlUtil.string2Dom(gadgetXml);
 		} else {
-			conf = WidgetConfDAO.newInstance().getElement(type);
+			Element widgetConfElm = WidgetConfDAO.newInstance()
+					.getElement(type);
+			String widgetXml = XmlUtil.dom2String(widgetConfElm);
+			System.out.println(widgetXml);
+			widgetXml = I18NUtil.resolveForXML(I18NUtil.TYPE_WIDGET, widgetXml,
+					locale);
+			conf = (Document) XmlUtil.string2Dom(widgetXml);
 		}
-		return conf.getOwnerDocument();
+		return conf;
 	}
 }
