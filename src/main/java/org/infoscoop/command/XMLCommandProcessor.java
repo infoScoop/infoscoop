@@ -32,7 +32,7 @@ abstract public class XMLCommandProcessor {
      *            an element of command
      * @param commandXml
 	 */
-	XMLCommandProcessor(){
+	protected XMLCommandProcessor(){
 	}
 	
 	public void initialize(String uid, Element commandXml){

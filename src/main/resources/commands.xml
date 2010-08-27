@@ -19,4 +19,6 @@
 	<bean id="ExecLogoffProcess" singleton="false" class="org.infoscoop.command.ExecLogoffProcess" />
 	<bean id="AddKeyword" singleton="false" class="org.infoscoop.command.AddKeyword" />
 	<bean id="AddLog" singleton="false" class="org.infoscoop.command.AddLog" />
+	
+	<bean id="managerAddWidget" singleton="false" class="org.infoscoop.manager.controller.TabController.AddWidget" />
 </beans>

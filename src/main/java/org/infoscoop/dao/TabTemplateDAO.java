@@ -23,7 +23,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
+import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.TabTemplate;
+import org.infoscoop.dao.model.TabTemplateParsonalizeGadget;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -46,7 +48,7 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 	public TabTemplate get(String id) {
 		List<TabTemplate> items = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(TabTemplate.class).add(
-						Expression.eq(TabTemplate.PROP_ID, id)));
+						Expression.eq(TabTemplate.PROP_ID, Integer.valueOf(id))));
 		if (items.size() == 1)
 			return items.get(0);
 		return null;
@@ -65,12 +67,18 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().saveOrUpdate(item);
 	}
 
-/*
-	public void delete(String id) {
-		TabTemplate item = get(id);
-		if (item != null)
-			super.getHibernateTemplate().delete(item);
+	public TabTemplateParsonalizeGadget getColumnWidgetBySibling(String tabId,
+			String siblingId, Integer columnNum) {
+		
+		return (TabTemplateParsonalizeGadget) super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(TabTemplateParsonalizeGadget.class)
+				.add(Expression.eq(TabTemplateParsonalizeGadget.PROP_FK_TAB_TEMPLATE, tabId))
+				.add(Expression.eq(TabTemplateParsonalizeGadget.PROP_ID, siblingId))
+				.add(Expression.eq(TabTemplateParsonalizeGadget.PROP_COLUMN_NUM, columnNum))).get(0);
 	}
-*/
+
+	public void delete(TabTemplate tab) {
+		super.getHibernateTemplate().delete(tab);
+	}
 	
 }

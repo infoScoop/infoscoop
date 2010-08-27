@@ -140,11 +140,9 @@ IS_Portal.unDisplayMsgBar = function(){}
 IS_Portal.adjustPanelHeight = function(){};
 IS_Portal.adjustIframeHeight = function(){};
 IS_SidePanel.adjustPosition = function(){};
-IS_Request.CommandQueue = new IS_Request.Queue("/comsrv", commandQueueWait, !is_userId);
+IS_Request.CommandQueue = new IS_Request.Queue("/manager/tab/comsrv", commandQueueWait, !is_userId);
 IS_Request.LogCommandQueue = new IS_Request.Queue("/logsrv", logCommandQueueWait, false, true);
 IS_Portal.addTab = function(idNumber, name, type, numCol, columnsWidth, isInitialize, tabOrder){
-	IS_Portal.currentTabId = ("tab" + idNumber);
-	
 	var panels = $("panels");
 	var panelDiv = IS_Portal.buildPanel( idNumber, type );
 	panelDiv.style.display = "";
@@ -163,17 +161,16 @@ function isHidePanel(){
 	return false;
 }
 //
-IS_Portal.currentTabId = "tab0";
+IS_Portal.currentTabId = "tab${tabTemplate.id}";
 function init() {
 
-	new IS_WidgetsContainer();
+	new IS_WidgetsContainer("/manager/tab/widsrv");
 	new IS_SiteAggregationMenu();
 	new IS_SidePanel.SiteMap();
 
 	//Holiday information
 	IS_Holiday = new IS_Widget.Calendar.iCalendar(localhostPrefix + "/holidaysrv");
 	IS_Holiday.load(false);
-	setTimeout(function(){$('static-panel0').hide();},1000);
 
 	//menuItem to panel
 	var panelBody = document.body;

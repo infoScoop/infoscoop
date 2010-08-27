@@ -35,7 +35,6 @@
 			name="Href"
 			column="href"
 			type="string"
-			not-null="true"
 			length="1024"
 		/>
 		

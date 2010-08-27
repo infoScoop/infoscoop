@@ -25,14 +25,12 @@ public class TabTemplate extends BaseTabTemplate {
 	public TabTemplate (
 		java.lang.Integer id,
 		java.lang.String name,
-		java.lang.Integer published,
-		java.lang.Integer accessLevel) {
+		java.lang.Integer published) {
 
 		super (
 			id,
 			name,
-			published,
-			accessLevel);
+			published);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

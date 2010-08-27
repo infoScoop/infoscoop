@@ -1,9 +1,6 @@
 package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
-import java.util.HashSet;
-
-import org.infoscoop.dao.model.GadgetInstanceUserpref;
 
 
 /**
@@ -43,13 +40,11 @@ public abstract class BaseGadgetInstance  implements Serializable {
 	public BaseGadgetInstance (
 		java.lang.Integer id,
 		java.lang.String type,
-		java.lang.String title,
-		java.lang.String href) {
+		java.lang.String title) {
 
 		this.setId(id);
 		this.setType(type);
 		this.setTitle(title);
-		this.setHref(href);
 		initialize();
 	}
 
@@ -66,7 +61,10 @@ public abstract class BaseGadgetInstance  implements Serializable {
 	private java.lang.String type;
 	private java.lang.String title;
 	private java.lang.String href;
-	private java.util.Set<GadgetInstanceUserpref> gadgetInstanceUserPrefs = new HashSet<GadgetInstanceUserpref>();
+
+	// collections
+	private java.util.Set<org.infoscoop.dao.model.GadgetInstanceUserpref> gadgetInstanceUserPrefs;
+
 
 
 	/**
@@ -140,13 +138,30 @@ public abstract class BaseGadgetInstance  implements Serializable {
 		this.href = href;
 	}
 
-	public java.util.Set<GadgetInstanceUserpref> getGadgetInstanceUserPrefs() {
+
+
+	/**
+	 * Return the value associated with the column: gadgetInstanceUserPrefs
+	 */
+	public java.util.Set<org.infoscoop.dao.model.GadgetInstanceUserpref> getGadgetInstanceUserPrefs () {
 		return gadgetInstanceUserPrefs;
 	}
 
-	public void setGadgetInstanceUserPrefs(java.util.Set<GadgetInstanceUserpref> userPrerfs) {
-		this.gadgetInstanceUserPrefs = userPrerfs;
+	/**
+	 * Set the value related to the column: gadgetInstanceUserPrefs
+	 * @param gadgetInstanceUserPrefs the gadgetInstanceUserPrefs value
+	 */
+	public void setGadgetInstanceUserPrefs (java.util.Set<org.infoscoop.dao.model.GadgetInstanceUserpref> gadgetInstanceUserPrefs) {
+		this.gadgetInstanceUserPrefs = gadgetInstanceUserPrefs;
 	}
+
+	public void addTogadgetInstanceUserPrefs (org.infoscoop.dao.model.GadgetInstanceUserpref gadgetInstanceUserpref) {
+		if (null == getGadgetInstanceUserPrefs()) setGadgetInstanceUserPrefs(new java.util.TreeSet<org.infoscoop.dao.model.GadgetInstanceUserpref>());
+		getGadgetInstanceUserPrefs().add(gadgetInstanceUserpref);
+	}
+
+
+
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;

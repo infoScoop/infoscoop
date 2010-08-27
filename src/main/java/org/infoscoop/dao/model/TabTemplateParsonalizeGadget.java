@@ -25,13 +25,13 @@ public class TabTemplateParsonalizeGadget extends BaseTabTemplateParsonalizeGadg
 	public TabTemplateParsonalizeGadget (
 		java.lang.Integer id,
 		org.infoscoop.dao.model.GadgetInstance fkGadgetInstance,
-		org.infoscoop.dao.model.TabTemplate fkTabtemplate,
+		org.infoscoop.dao.model.TabTemplate fkTabTemplate,
 		java.lang.Integer columnNum) {
 
 		super (
 			id,
 			fkGadgetInstance,
-			fkTabtemplate,
+			fkTabTemplate,
 			columnNum);
 	}
 

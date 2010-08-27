@@ -30,14 +30,12 @@ public class GadgetInstance extends BaseGadgetInstance {
 	public GadgetInstance (
 		java.lang.Integer id,
 		java.lang.String type,
-		java.lang.String title,
-		java.lang.String href) {
+		java.lang.String title) {
 
 		super (
 			id,
 			type,
-			title,
-			href);
+			title);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

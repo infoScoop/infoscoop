@@ -41,13 +41,11 @@ public abstract class BaseTabTemplate  implements Serializable {
 	public BaseTabTemplate (
 		java.lang.Integer id,
 		java.lang.String name,
-		java.lang.Integer published,
-		java.lang.Integer accessLevel) {
+		java.lang.Integer published) {
 
 		this.setId(id);
 		this.setName(name);
 		this.setPublished(published);
-		this.setAccessLevel(accessLevel);
 		initialize();
 	}
 
@@ -177,6 +175,11 @@ public abstract class BaseTabTemplate  implements Serializable {
 		this.tabTemplateParsonalizeGadgets = tabTemplateParsonalizeGadgets;
 	}
 
+	public void addToTabTemplateParsonalizeGadgets (org.infoscoop.dao.model.TabTemplateParsonalizeGadget tabTemplateParsonalizeGadget) {
+		if (null == getTabTemplateParsonalizeGadgets()) setTabTemplateParsonalizeGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateParsonalizeGadget>());
+		getTabTemplateParsonalizeGadgets().add(tabTemplateParsonalizeGadget);
+	}
+
 
 
 	/**
@@ -192,6 +195,11 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 */
 	public void setTabTemplateStaticGadgets (java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> tabTemplateStaticGadgets) {
 		this.tabTemplateStaticGadgets = tabTemplateStaticGadgets;
+	}
+
+	public void addToTabTemplateStaticGadgets (org.infoscoop.dao.model.TabTemplateStaticGadget tabTemplateStaticGadget) {
+		if (null == getTabTemplateStaticGadgets()) setTabTemplateStaticGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateStaticGadget>());
+		getTabTemplateStaticGadgets().add(tabTemplateStaticGadget);
 	}
 
 

@@ -25,7 +25,7 @@ IS_Portal.loadWidgetQueue = {};
 IS_Portal.loadingWidgetCount = 0;
 var IS_WidgetsContainer = IS_Class.create();
 IS_WidgetsContainer.prototype.classDef = function() {
-	this.initialize = function() {
+	this.initialize = function(srvName) {
 		var opt = {
 		    method: 'get' ,
 		    asynchronous:true,
@@ -61,7 +61,10 @@ IS_WidgetsContainer.prototype.classDef = function() {
 		        IS_WidgetsContainer.loadFailed = true;
 		    }
 		};
-		var srvName = "widsrv" + ( (typeof displayTabOrder != "undefined") ? "?tabOrder=" + displayTabOrder : "" );
+		if(typeof srvName != "undefined")
+		  srvName = srvName+ "?tabId=" + IS_Portal.currentTabId.substr(3);
+		else
+		  var srvName = "widsrv" + ( (typeof displayTabOrder != "undefined") ? "?tabOrder=" + displayTabOrder : "" );
 		AjaxRequest.invoke(hostPrefix + "/" + srvName, opt);
 	}
 	
@@ -104,7 +107,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 		
 		try {
 			var deletes = [];
-			
 			$H( widgets ).values().findAll( function( widgetConf ) {
 				return !widgetConf.type;
 			}).each( function( widgetConf ) {
@@ -401,14 +403,13 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					
 					IS_Portal.addTab( id, tabName, tabType, numCol, columnsWidth, disabledDynamicPanel, true);
 					buildTargetTabIds.push(id);
-					
+					/*
 					if(!useTab){
 						if(widgetConfList[0].tabNumber){
 							IS_Portal.tabs["tab0"].tabNumber = widgetConfList[0].tabNumber;
 						}
-						//var tabs = $('tabs');
-						//IS_Portal.tabList[0].style.display = "none";
 					}
+					*/
 				}
 			}
 			
@@ -462,7 +463,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 	
 			// loadContents();
 			
-			var loadWidgets = IS_Portal.getLoadWidgets("tab0");
+			var loadWidgets = IS_Portal.getLoadWidgets(IS_Portal.currentTabId);
 			if(loadWidgets.length > 0) {
 				var eventTargetList = loadWidgets.collect( function( loadWidget ) {
 					return {type:"loadComplete", id:loadWidget.id}
@@ -538,6 +539,8 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			
 			if(fixedPortalHeader) 
 				IS_Portal.adjustPanelHeight(null);
+		}catch(e){
+			console.error(e);
 		}finally{
 			//refs#3864 stop indicator anyway when widgets are end of load.
 			IS_Portal.endIndicator();

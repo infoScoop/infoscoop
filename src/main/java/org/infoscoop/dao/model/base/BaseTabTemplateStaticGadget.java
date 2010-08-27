@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_tabtemplate_static_gadgets table.
+ * This is an object that contains data related to the is_tab_template_static_gadgets table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_tabtemplate_static_gadgets"
+ *  table="is_tab_template_static_gadgets"
  */
 
 public abstract class BaseTabTemplateStaticGadget  implements Serializable {

@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="TabTemplateParsonalizeGadget"
-		table="is_tabtemplate_parsonalize_gadgets"
+		table="is_tab_template_parsonalize_gadgets"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
@@ -25,6 +25,7 @@
 			length="10"
 		/>
 		<many-to-one
+			cascade="save-update"
 			name="FkGadgetInstance"
 			column="fk_gadget_instance_id"
 			class="GadgetInstance"

@@ -45,7 +45,7 @@
 		/>
 	
 
-		<set name="TabTemplateParsonalizeGadgets" inverse="true">
+		<set name="TabTemplateParsonalizeGadgets" cascade="save-update" inverse="true">
 			<key column="id"/>
 			<one-to-many class="TabTemplateParsonalizeGadget"/>
 		</set>

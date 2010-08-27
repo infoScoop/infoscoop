@@ -32,7 +32,7 @@ $(function(){
 				<td>${tab.name}</td>
 				<td>${tab.published}</td>
 				<td>${tab.accessLevel}</td>
-				<td><span class="trash"></span></td>
+				<td><a href="deleteTab?id=${tab.id}"><span class="trash"></a></span></td>
 			</tr>
 </c:forEach>
 		</tbody>

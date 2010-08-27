@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_tabtemplate_parsonalize_gadgets table.
+ * This is an object that contains data related to the is_tab_template_parsonalize_gadgets table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_tabtemplate_parsonalize_gadgets"
+ *  table="is_tab_template_parsonalize_gadgets"
  */
 
 public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable {
@@ -65,8 +65,8 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 
 	// many to one
 	private org.infoscoop.dao.model.GadgetInstance fkGadgetInstance;
-	private org.infoscoop.dao.model.TabTemplate fkTabTemplate;
 	private org.infoscoop.dao.model.TabTemplateParsonalizeGadget sibling;
+	private org.infoscoop.dao.model.TabTemplate fkTabTemplate;
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.TabTemplateParsonalizeGadget> tabTemplateParsonalizeGadgets;
@@ -130,23 +130,6 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 
 
 	/**
-	 * Return the value associated with the column: fk_tabtemplate_id
-	 */
-	public org.infoscoop.dao.model.TabTemplate getFkTabTemplate () {
-		return fkTabTemplate;
-	}
-
-	/**
-	 * Set the value related to the column: fk_tabtemplate_id
-	 * @param fkTabTemplate the fk_tabtemplate_id value
-	 */
-	public void setFkTabTemplate (org.infoscoop.dao.model.TabTemplate fkTabTemplate) {
-		this.fkTabTemplate = fkTabTemplate;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: sibling_id
 	 */
 	public org.infoscoop.dao.model.TabTemplateParsonalizeGadget getSibling () {
@@ -159,6 +142,23 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 	 */
 	public void setSibling (org.infoscoop.dao.model.TabTemplateParsonalizeGadget sibling) {
 		this.sibling = sibling;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: fk_tabtemplate_id
+	 */
+	public org.infoscoop.dao.model.TabTemplate getFkTabTemplate () {
+		return fkTabTemplate;
+	}
+
+	/**
+	 * Set the value related to the column: fk_tabtemplate_id
+	 * @param fkTabTemplate the fk_tabtemplate_id value
+	 */
+	public void setFkTabTemplate (org.infoscoop.dao.model.TabTemplate fkTabTemplate) {
+		this.fkTabTemplate = fkTabTemplate;
 	}
 
 
