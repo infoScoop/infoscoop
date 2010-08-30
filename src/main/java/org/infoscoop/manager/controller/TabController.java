@@ -1,6 +1,7 @@
 package org.infoscoop.manager.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
@@ -13,13 +14,15 @@ import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.TabTemplateDAO;
+import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
 import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.GadgetInstance;
-import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplateParsonalizeGadget;
+import org.infoscoop.dao.model.TabTemplateStaticGadget;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.TabLayoutService;
+import org.infoscoop.service.WidgetConfService;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.XmlUtil;
 import org.json.JSONObject;
@@ -41,7 +44,7 @@ public class TabController {
 	@RequestMapping
 	public void index(Model model)throws Exception {
 		List<TabTemplate> tabs = TabTemplateDAO.newInstance().all();
-		System.out.print(tabs);
+		//temp = 0のデータのみを表示させるようにする。
 		model.addAttribute("tabs", tabs);
 	}
 
@@ -49,7 +52,9 @@ public class TabController {
 	public void showAddTab(Model model)
 			throws Exception {
 		TabTemplate tab = new TabTemplate();
-		tab.setName("新しい名前");
+		tab.setName("New Tab");
+		tab.setPublished(0);
+		tab.setTemp(1);
 		tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
 		TabTemplateDAO.newInstance().save(tab);
 		model.addAttribute(tab);
@@ -64,26 +69,32 @@ public class TabController {
 	}
 	
 	@RequestMapping
-	public void selectGadgetType(HttpServletRequest request, @RequestParam("id") String containerId,
+	public void selectGadgetType(
+			HttpServletRequest request, 
+			@RequestParam("tabId") String tabId,
+			@RequestParam("containerId") String containerId,
 			Model model) throws Exception {
+		model.addAttribute("tabId", tabId);
 		model.addAttribute("containerId", containerId);
 		model.addAttribute("gadgetConfs", GadgetService.getHandle().getGadgetConfs(request.getLocale()));
 	}
 	
 	@RequestMapping
-	public void showGadgetDialog(HttpServletRequest request, @RequestParam("type") String type, Model model)throws Exception {
-		MenuItem menuItem = new MenuItem();
-		//		menuItem.setType(type);
-		model.addAttribute("menuItem", menuItem);
+	public void showGadgetDialog(
+			HttpServletRequest request, 
+			@RequestParam("type") String type,
+			@RequestParam("tabId") String tabId,
+			@RequestParam("containerId") String containerId,
+			Model model)throws Exception {
+		TabTemplateStaticGadget staticGadget = new TabTemplateStaticGadget();
+		GadgetInstance gadgetInstance = new GadgetInstance();
+		staticGadget.setFkGadgetInstance(gadgetInstance);
+		staticGadget.getFkGadgetInstance().setType(type);
+		staticGadget.setTabTemplateId(tabId);
+		model.addAttribute("tabTemplateStaticGadget", staticGadget);
 		
-		//TODO 
-		Element conf = null;
-		if (type.startsWith("upload__")) {
-			conf = GadgetDAO.newInstance().getGadgetElement(type.substring(8));
-		} else {
-			conf = WidgetConfDAO.newInstance().getElement(type);
-		}
-		model.addAttribute("conf", conf.getOwnerDocument());
+		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。
+		model.addAttribute("conf", getGadgetConf(type));
 	
 	}
 
@@ -92,13 +103,20 @@ public class TabController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void submitGadgetSettings(GadgetInstance gadget)throws Exception {
-		TabLayoutService.getHandle().insertStaticGadget("temp", gadget);
+	public void submitGadgetSettings(
+			TabTemplateStaticGadget staticGadget,
+			Model model)throws Exception {
+		TabTemplate tab = TabTemplateDAO.newInstance().get(staticGadget.getTabTemplateId());
+		staticGadget.setFkTabTemplate(tab);
+		TabTemplateStaticGadgetDAO.newInstance().save(staticGadget);
+		model.addAttribute(staticGadget);
+		
+		//TabLayoutService.getHandle().insertStaticGadget("temp", staticGadget);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public void addTab(TabTemplate tab, Model model)throws Exception {
-		
+		tab.setTemp(0);
 		TabTemplateDAO.newInstance().save(tab);
 		model.addAttribute(tab);
 	}
@@ -119,7 +137,28 @@ public class TabController {
 		model.addAttribute(tab);
 	}
 	
-	/**
+	@RequestMapping
+	public void getGadgetConf(HttpServletRequest request, Model model)
+			throws Exception {
+		Locale locale = request.getLocale();
+		String buildinGadgets = WidgetConfService.getHandle()
+				.getWidgetConfsJson(locale);
+		String uploadGadgets = GadgetService.getHandle().getGadgetJson(locale,
+				3000);
+		model.addAttribute("buildin", buildinGadgets);
+		model.addAttribute("upload", uploadGadgets);
+	}
+	
+	private Document getGadgetConf(String type) {
+		Element conf = null;
+		if (type.startsWith("upload__")) {
+			conf = GadgetDAO.newInstance().getGadgetElement(type.substring(8));
+		} else {
+			conf = WidgetConfDAO.newInstance().getElement(type);
+		}
+		return conf.getOwnerDocument();
+	}
+		/**
 	 * Copy from CommandExecutionService
 	 * @param uid
 	 * @param commandXML
@@ -184,16 +223,16 @@ public class TabController {
 	        }
 
 	        if (widgetId == null || widgetId == "") {
-	            String reason = "It's an unjust widgetId．widgetId:[" + widgetId + "]";
-	            log.error("Failed to execute the command of AddWidget： " + reason);
+	            String reason = "It's an unjust widgetId. widgetId:[" + widgetId + "]";
+	            log.error("Failed to execute the command of AddWidget:" + reason);
 	            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
 	                    log, commandId, false, reason);
 	            return;
 	        }
 
 	        if (targetColumn != null && !"".equals(targetColumn) && !XMLCommandUtil.isNumberValue(targetColumn)) {
-	        	String reason = "It's an unjust value of column．targetColumn:[" + targetColumn + "]";
-	            log.error("Failed to execute the command of AddWidget： " + reason);
+	        	String reason = "It's an unjust value of column�師argetColumn:[" + targetColumn + "]";
+	            log.error("Failed to execute the command of AddWidget��" + reason);
 	            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
 	                    log, commandId, false, reason);
 	            return;
@@ -208,7 +247,7 @@ public class TabController {
 	    	} catch (Exception e) {
 	    		log.error("", e);
 	            String reason = "The information of widget is unjust.";
-	            log.error("Failed to execute the command of AddWidget： " + reason);
+	            log.error("Failed to execute the command of AddWidget��" + reason);
 	            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
 	                    log, commandId, false, reason);
 	            throw e;
@@ -263,7 +302,7 @@ public class TabController {
 	    	} catch (Exception e) {
 	    		log.error("", e);
 	            String reason = "Failed to save the widget.";
-	            log.error("Failed to execute the command of AddWidget： " + reason);
+	            log.error("Failed to execute the command of AddWidget��" + reason);
 	            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
 	                    log, commandId, false, reason);
 	            throw e;

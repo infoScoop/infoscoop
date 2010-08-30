@@ -7,11 +7,11 @@
 	<tiles:putAttribute name="type" value="menu"/>
 	<tiles:putAttribute name="title" value="tab.title"/>
 	<tiles:putAttribute name="body" type="string">
-<form:form modelAttribute="menuItem" method="post" action="submitGadgetSettings" class="cssform">
+<form:form modelAttribute="tabTemplateStaticGadget" method="post" action="submitGadgetSettings" class="cssform">
 	<form:hidden path="id" />
-	<form:hidden path="parentId" />
-	<form:hidden path="order" />
-	<form:hidden path="type" />
+	<form:hidden path="containerId" />
+	<form:hidden path="tabTemplateId" />
+	<form:hidden path="fkGadgetInstance.type" />
 	<fieldset>
 		<legend>タイプ</legend>
 		<p>
@@ -19,36 +19,19 @@
 				<x:when select="$conf/widgetConfiguration/@title"><x:out select="$conf/widgetConfiguration/@title" /></x:when>
 				<x:when select="$conf/Module/ModulePrefs/@directory_title"><x:out select="$conf/Module/ModulePrefs/@directory_title" /></x:when>
 				<x:when select="$conf/Module/ModulePrefs/@title"><x:out select="$conf/Module/ModulePrefs/@title" /></x:when>
-				<x:otherwise>${menuItem.type}</x:otherwise>
+				<x:otherwise>${tabTemplateStaticGadget.fkGadgetInstance.type}</x:otherwise>
 			</x:choose>
 		</p>
 	</fieldset>
 	<fieldset>
 		<legend>共通設定</legend>
 		<p>
-			<form:label for="title" path="title" cssErrorClass="error">タイトル</form:label>
-			<form:input path="title" /><form:errors path="title" />
+			<form:label for="fkGadgetInstance.title" path="fkGadgetInstance.title" cssErrorClass="error">タイトル</form:label>
+			<form:input path="fkGadgetInstance.title" /><form:errors path="fkGadgetInstance.title" />
 		</p>
 		<p>
-			<form:label for="href" path="href" cssErrorClass="error">リンク</form:label>
-			<form:input path="href" /><form:errors path="href" />
-		</p>
-		<p>
-			<label>公開設定</label>
-			<span class="radio">
-				<form:radiobutton path="publish" value="0" label="非公開" cssErrorClass="error" />
-				<form:radiobutton path="publish" value="1" label="公開" cssErrorClass="error" />
-				<form:errors path="publish" />
-			</span>
-		</p>
-		<p>
-			<form:label for="alert" path="alert" cssErrorClass="error">通知方法</form:label>
-			<form:select path="alert">
-				<form:option value="0" label="通知しない"/>
-				<form:option value="1" label="通知する" selected="true"/>
-				<form:option value="2" label="強制的に追加する"/>
-			</form:select>
-			<form:errors path="alert" />
+			<form:label for="fkGadgetInstance.href" path="fkGadgetInstance.href" cssErrorClass="error">リンク</form:label>
+			<form:input path="fkGadgetInstance.href" /><form:errors path="fkGadgetInstance.href" />
 		</p>
 	</fieldset>
 	<fieldset id="gadget_settings">
@@ -68,12 +51,12 @@
 					<c:set var="name"><x:out select="$userPref/@name"/></c:set>
 					<x:choose>
 						<x:when select="$userPref/EnumValue">
-							<select name="userPref[${name}]" class="${datatype}">
+							<select name="fkGadgetInstance.userPrefs[${name}]" class="${datatype}">
 							<x:forEach var="enum" select="$userPref/EnumValue">
 								<c:set var="value"><x:out select="$enum/@value"/></c:set>
 								<c:set var="display_value"><x:out select="$enum/@display_value"/></c:set>
 								<c:choose>
-									<c:when test="${menuItem.userPref[name] == value}">
+									<c:when test="${tabTemplateStaticGadget.fkGadgetInstance.userPrefs[name] == value}">
 										<option value="${value}" selected="selected">${display_value}</option>
 									</c:when>
 									<c:otherwise>
@@ -84,7 +67,7 @@
 							</select>
 						</x:when>
 						<x:otherwise>
-							<input type="${datatype}" name="userPref[${name}]" value="${menuItem.userPref[name]}" class="${datatype}"/>
+							<input type="${datatype}" name="fkGadgetInstance.userPrefs[${name}]" value="${tabTemplateStaticGadget.fkGadgetInstance.userPrefs[name]}" class="${datatype}"/>
 						</x:otherwise>
 					</x:choose>
 				</p>

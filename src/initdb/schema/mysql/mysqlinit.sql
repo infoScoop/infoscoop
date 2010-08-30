@@ -516,6 +516,7 @@ create table IS_TAB_TEMPLATES(
 	layout text,
 	published int not null default 0, -- 0=unpublished, 1=published
 	access_level int -- 0=public, 1=special
+	temp int not null default 1
 ) ENGINE=InnoDB;
 
 --

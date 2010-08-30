@@ -35,5 +35,15 @@ public class TabTemplateStaticGadget extends BaseTabTemplateStaticGadget {
 
 /*[CONSTRUCTOR MARKER END]*/
 
+	private String tabTemplateId;
+	
+	public String getTabTemplateId(){
+		return this.tabTemplateId;
+	}
 
+	public void setTabTemplateId(String tabId){
+		this.tabTemplateId = tabId;
+	}
+	
+	
 }

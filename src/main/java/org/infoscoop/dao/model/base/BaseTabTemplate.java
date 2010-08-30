@@ -17,9 +17,10 @@ public abstract class BaseTabTemplate  implements Serializable {
 	public static String REF = "TabTemplate";
 	public static String PROP_ACCESS_LEVEL = "AccessLevel";
 	public static String PROP_NAME = "Name";
-	public static String PROP_LAYOUT = "layout";
+	public static String PROP_LAYOUT = "Layout";
 	public static String PROP_PUBLISHED = "Published";
 	public static String PROP_ID = "Id";
+	public static String PROP_TEMP = "Temp";
 
 
 	// constructors
@@ -41,11 +42,13 @@ public abstract class BaseTabTemplate  implements Serializable {
 	public BaseTabTemplate (
 		java.lang.Integer id,
 		java.lang.String name,
-		java.lang.Integer published) {
+		java.lang.Integer published,
+		java.lang.Integer temp) {
 
 		this.setId(id);
 		this.setName(name);
 		this.setPublished(published);
+		this.setTemp(temp);
 		initialize();
 	}
 
@@ -63,6 +66,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private java.lang.Integer published = Integer.valueOf(0);
 	private java.lang.Integer accessLevel;
 	private java.lang.String layout;
+	private java.lang.Integer temp;
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.TabTemplateParsonalizeGadget> tabTemplateParsonalizeGadgets;
@@ -156,6 +160,23 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 */
 	public void setLayout (java.lang.String layout) {
 		this.layout = layout;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: temp
+	 */
+	public java.lang.Integer getTemp () {
+		return temp;
+	}
+
+	/**
+	 * Set the value related to the column: temp
+	 * @param temp the temp value
+	 */
+	public void setTemp (java.lang.Integer temp) {
+		this.temp = temp;
 	}
 
 

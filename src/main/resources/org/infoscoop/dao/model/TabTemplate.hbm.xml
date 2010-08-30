@@ -39,18 +39,24 @@
 			length="10"
 		/>
 		<property
-			name="layout"
+			name="Layout"
 			column="layout"
 			type="string"
 		/>
-	
+		<property
+			name="Temp"
+			column="temp"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
 
 		<set name="TabTemplateParsonalizeGadgets" cascade="save-update" inverse="true">
 			<key column="id"/>
 			<one-to-many class="TabTemplateParsonalizeGadget"/>
 		</set>
 
-		<set name="TabTemplateStaticGadgets" inverse="true">
+		<set name="TabTemplateStaticGadgets" cascade="save-update" inverse="true">
 			<key column="id"/>
 			<one-to-many class="TabTemplateStaticGadget"/>
 		</set>

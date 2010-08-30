@@ -534,10 +534,11 @@ function init() {
 
 	function addEventStaticWidget(){
 		var static_columns = $$('#staticAreaContainer .static_column');
+		var tabId = IS_Portal.currentTabId.replace("tab","");
 		for (var j=0; j<static_columns.length; j++ ) {
 			var div = static_columns[j];
 			div.id = 'static_column_' + j;
-			div.href = hostPrefix + "/manager/tab/selectGadgetType?id=" + 'static_column_' + j;
+			div.href = hostPrefix + "/manager/tab/selectGadgetType?tabId=" + tabId + "&containerId=" + 'static_column_' + j;
 			var layoutMouseOver = function(el) {
 				el.style.backgroundColor = "#9999cc";
 			};
