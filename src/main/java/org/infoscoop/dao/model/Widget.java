@@ -182,7 +182,7 @@ public class Widget extends BaseWidget {
 	
 	@Override
 	public void setTitle(String title) {
-		if (title.length() > 80)
+		if (title != null && title.length() > 80)
 			title = title.substring(0, 80);
 		super.setTitle(title);
 	}
