@@ -21,6 +21,7 @@
 package org.infoscoop.web;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -70,7 +71,7 @@ public class SessionManagerFilter implements Filter {
 
 	private Collection excludePaths = new HashSet();
 	private Collection<String> excludePathx = new HashSet<String>();
-	private Collection redirectPaths = new HashSet();
+	private boolean withoutCotextPath = false;
 
 	public void init(FilterConfig config) throws ServletException {
 
@@ -86,14 +87,9 @@ public class SessionManagerFilter implements Filter {
 				}
 			}
 		}
-
-		String redirectPathStr = config.getInitParameter("redirectPath");
-		if(redirectPathStr != null){
-			String[] pathArray = redirectPathStr.split(",");
-			for(int i = 0; i < pathArray.length; i++){
-				redirectPaths.add(pathArray[i].trim());
-			}
-		}
+		String withoutCotextPath = config.getInitParameter("withoutCotextPath");
+		if (withoutCotextPath != null)
+			this.withoutCotextPath = Boolean.valueOf(withoutCotextPath);
 	}
 
 	private String getUidFromHeader(HttpServletRequest req){
@@ -169,9 +165,6 @@ public class SessionManagerFilter implements Filter {
 			if(SessionCreateConfig.doLogin()){
 				uid = getUidFromSession(httpReq);
 				
-				if(redirectPaths.contains(httpReq.getServletPath())){
-					httpResponse.addCookie(new Cookie("redirect_path", httpReq.getServletPath()));
-				}
 				if( uid == null && !isExcludePath(httpReq.getServletPath())){
 					if (httpRequest.getHeader("MSDPortal-Ajax") != null) {
 						if(log.isInfoEnabled())
@@ -226,11 +219,12 @@ public class SessionManagerFilter implements Filter {
 				}
 			}
 			
-			if( uid == null && SessionCreateConfig.doLogin() && !isExcludePath(httpReq.getServletPath())) {
-				String requestUri = httpReq.getRequestURI();
-				String loginUrl = requestUri.lastIndexOf("/admin/") > 0 ?
-					requestUri.substring( 0,requestUri.lastIndexOf("/"))+"/../login.jsp" : "login.jsp";
-				
+			if (uid == null && SessionCreateConfig.doLogin()
+					&& !isExcludePath(httpReq.getServletPath())) {
+				String loginUrl = this.withoutCotextPath ? "" : httpReq
+						.getContextPath();
+				loginUrl += "/login.jsp?url="
+						+ URLEncoder.encode(httpReq.getRequestURI(), "UTF-8");
 				httpResponse.sendRedirect(loginUrl);
 				return;
 			}

@@ -50,8 +50,8 @@
 			<param-value>/xmlrpc,/login.jsp,/changePassword.jsp,/authsrv,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html</param-value>
 		</init-param>
 		<init-param>
-			<param-name>redirectPath</param-name>
-			<param-value>/index.jsp,/messageConsole.html</param-value>
+			<param-name>withoutCotextPath</param-name>
+			<param-value>false</param-value>
 		</init-param>
 	</filter>
 

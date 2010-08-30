@@ -169,15 +169,11 @@ public class AuthenticationServlet extends HttpServlet {
 					}
 				}
 			}
-			String redirectPath = "/index.jsp";
-			Cookie[] cookies = request.getCookies();
-			for(int i = 0; i < cookies.length; i++){
-				if("redirect_path".equals(cookies[i].getName())){
-					redirectPath = cookies[i].getValue();
-					break;
-				}
+			String redirectPath = request.getParameter("url");
+			if (redirectPath == null) {
+				redirectPath = request.getContextPath() + "/index.jsp";
 			}
-			((HttpServletResponse)response).sendRedirect(request.getContextPath() + redirectPath);
+			((HttpServletResponse)response).sendRedirect(redirectPath);
 		}catch (AuthenticationException e){
 			String logMsg = "authentication failed. ";
 			log.error(logMsg, e);
