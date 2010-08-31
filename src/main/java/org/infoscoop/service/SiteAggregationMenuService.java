@@ -1074,7 +1074,7 @@ public class SiteAggregationMenuService {
 		}
 		
 		for(String menuId :forceDeleteList){
-			dao.deleteWidgetById(menuId);
+			dao.deleteWidgetByMenuId(menuId);
 		}
 		// Deleting tree
 		for(Element deleteSiteTop : deleteSiteTopList){

@@ -263,12 +263,12 @@ public class WidgetDAO extends HibernateDaoSupport{
 	}
 
 
-	public void deleteWidgetById( String widgetId ) {
+	public void deleteWidgetByMenuId( String menuId ) {
 
-		String queryString = "delete from Widget where widgetId in (?, ?)";
+		String queryString = "delete from Widget where widgetId in (?, ?) or menuid = ?";
 
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[] { "w_" + widgetId, "p_" + widgetId });
+				new Object[] { "w_" + menuId, "p_" + menuId, menuId });
 	}
 
 
