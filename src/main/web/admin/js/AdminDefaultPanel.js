@@ -503,9 +503,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				tabNumber : "",
 				isDefault : true
 			};
-			// Set default fixed area
-			jsonObject = self.templates.setStaticLayout0(jsonObject);
-
 			self.displayRoleJsons = {};
 			self.displayRoleJsons[datetime] = jsonObject;
 			self.displayRoleId = jsonObject.id;
@@ -514,6 +511,10 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			IS_EventDispatcher.addListener('updatePanelOnSuccess', 'default', self.addAfter, true);
 			jsonObject = self.setColumnsArray(jsonObject);
 			self.isUpdated = true;
+			
+			// Set default fixed area
+			jsonObject = self.templates.setStaticLayout0(jsonObject);
+			
 			self.updatePanel( false );
 			
 			ISA_Admin.isUpdated = true;
@@ -1150,7 +1151,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			if(dynamicDiv) dynamicDiv.style.display = "";
 			if(tabNameDiv) tabNameDiv.style.display = "";
 			
-			var panelUsage = ( jsonRole.disabledDynamicPanel ? (jsonRole.adjustToWindowHeight ? 'useStaticOnly_adjustHeight' : 'useStaticOnly' ) : 'useBothPanel');
+			var panelUsage = ( jsonRole.disabledDynamicPanel ? (jsonRole.adjustToWindowHeight ? 'useStaticOnly_adjustHeight' : 'useStaticOnly' ) : 'useBothArea');
 			$('panelUsageSelect').value = panelUsage;
 			jsonRole.panelUsage = panelUsage;
 			this.switchPanelDisplay(panelUsage);
@@ -1370,9 +1371,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		if("commandbar" != self.displayTabId){
 			editAreaDiv.appendChild(
 				$.DIV({style:"padding:3px;"},
-					  ISA_R.alb_panelUsageSetting,
+					  ISA_R.alb_selectDisplayArea,
 					  $.SELECT({id:'panelUsageSelect',name:'panelUsage',onchange:{handler:changePanelUsage}},
-							   $.OPTION({value: 'useBothPanel'},ISA_R.alb_useBothPanel),
+							   $.OPTION({value: 'useBothArea'},ISA_R.alb_useBothArea),
 							   $.OPTION({value: 'useStaticOnly'},ISA_R.alb_disableCustomizedArea),
 							   $.OPTION({value: 'useStaticOnly_adjustHeight'},ISA_R.alb_adjustToWindowHeight)
 							 )
