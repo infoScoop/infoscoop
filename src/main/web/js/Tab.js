@@ -1282,13 +1282,15 @@ IS_Portal.adjustStaticWidgetHeight = function(){
 		var widget = widgets[widgetId];
 		if(!widget.isBuilt)break;
 		if(widget.panelType == "StaticPanel" && widget.widgetType != 'Ticker' && widget.widgetType != 'Ranking'){
+			var height = widget.headerContent ? adjustHeight : adjustHeight + 22;
+			if(widget.widgetConf && widget.widgetConf.noBorder) height += 2;
 			if(widget.iframe)
-			  widget.iframe.style.height = adjustHeight + "px";
-			widget.elm_widgetContent.style.height = adjustHeight + "px";
-			widget.staticWidgetHeight =  adjustHeight ;
+			  widget.iframe.style.height = height + "px";
+			widget.elm_widgetContent.style.height = height + "px";
+			widget.staticWidgetHeight =  height ;
 
 			if(widget.widgetType == 'RssReader' && widget.content.rssContentView){
-				widget.content.rssContentView.setViewportHeight( adjustHeight );
+				widget.content.rssContentView.setViewportHeight( height );
 			}
 		}
 		isReady = true;

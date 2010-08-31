@@ -52,15 +52,9 @@
 */
 
 }
-/*
 .infoScoop .widgetBoxNoHeader {
-	clear:both;
-	position: static;
-	width: auto;
-	overflow:hidden;
-	border: 1px solid gray;
+	border: 1px solid #BCBCBC;
 }
-*/
 #widgetGhost {
 	background-color:#f3f3f3;
 }
