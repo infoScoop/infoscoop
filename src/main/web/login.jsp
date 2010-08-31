@@ -105,6 +105,8 @@ if(errorMsg != null){
 					</tr>
 <%}%>
 				</table>
+				<% String url = request.getParameter("url"); %>
+				<input type="hidden" name="url" value="<%=url!=null?url:""%>">
 				</form>
 			</div>
 		</center>
