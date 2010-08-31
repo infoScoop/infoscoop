@@ -96,6 +96,8 @@
 					<value>org/infoscoop/dao/model/RolePrincipals.hbm.xml</value>
 					<value>org/infoscoop/dao/model/GadgetInstance.hbm.xml</value>
 					<value>org/infoscoop/dao/model/GadgetInstanceUserpref.hbm.xml</value>
+					<value>org/infoscoop/dao/model/User.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Group.hbm.xml</value>
 				</list>
 			</property>
 			<property name="hibernateProperties">
