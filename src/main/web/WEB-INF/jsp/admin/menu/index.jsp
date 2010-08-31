@@ -10,7 +10,7 @@ var hostPrefix = "/infoscoop";//TODO スクリプトで計算
 //TODO propertiesテーブルから取得して補正する
 var staticContentURL="../..";
 var imageURL = staticContentURL + "/skin/imgs/";
-
+var copiedItemId;
 var gadgetConfs;
 function getGadget(type){
 	return gadgetConfs.buildin[type] || gadgetConfs.upload[type];
@@ -110,12 +110,15 @@ function updateItemInTree(id, title, publish){
 }
 function copyItem(e, a){
 	$("#menu_item_command .paste").removeClass("disabled");
+	copiedItemId = getSelectedItem().id;
 	e.stopPropagation();
 }
 function pasteItem(a){
-	if($(a).hasClass("disabled"))
-		return;
-	alert("paste!!");
+	if($(a).hasClass("disabled") || !copiedItemId) return;
+	var id = getSelectedItem().id;
+	$.post("copyItem", {parentId:id, id:copiedItemId}, function(data){
+		addItemToTree(data.parentId, data.id, data.title, data.type, data.publish);
+	}, "json");
 }
 function deleteItem(){
 	var id = getSelectedItem().id;
@@ -191,6 +194,17 @@ function rebuildGadgetUserPrefs(){
 		switch(datatype){
 			case "bool":
 				this.type = "checkbox";
+				var boolFalse = $.INPUT({type:"hidden", value:"false", name:this.name});
+				$(this).after(boolFalse);
+				if(this.value == "true"){
+					this.checked = "checked";
+					boolFalse.disabled = "disabled";
+				} else {
+					this.value = "true";
+				}
+				$(this).change(function(){
+					$(this).next().attr("disabled", this.checked ? "disabled":"");
+				});
 				break;
 			case "list":
 				replaceListForm(this);

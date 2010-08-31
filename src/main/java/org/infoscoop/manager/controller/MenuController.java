@@ -1,8 +1,10 @@
 package org.infoscoop.manager.controller;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +14,8 @@ import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
+import org.infoscoop.dao.model.GadgetInstanceUserpref;
+import org.infoscoop.dao.model.GadgetInstanceUserprefPK;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
@@ -116,8 +120,7 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public String showEditInstance(@RequestParam("instanceId") int instanceId,
-			@RequestParam("id") String parentId, Locale locale,
-			Model model)
+			@RequestParam("id") String parentId, Locale locale, Model model)
 			throws Exception {
 		MenuItem item = new MenuItem();
 		if (parentId != null && parentId.length() > 0) {
@@ -134,7 +137,7 @@ public class MenuController {
 		item.setHref(gadgetInstance.getHref());
 		item.setMenuOrder(0);
 		item.setPublish(0);
-		
+
 		model.addAttribute(item);
 		model.addAttribute("conf", getGadgetConf(gadgetInstance.getType(),
 				locale));
@@ -166,6 +169,46 @@ public class MenuController {
 		item.setFkParent(parentItem);
 		menuItemDAO.save(item);
 		return item;
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
+	public MenuItem copyItem(@RequestParam("id") String id,
+			@RequestParam("parentId") String parentId) throws Exception {
+		MenuItem parentItem = menuItemDAO.get(parentId);
+		MenuItem item = menuItemDAO.get(id);
+
+		MenuItem newItem = new MenuItem();
+
+		newItem.setId("m_" + new Date().getTime());
+		newItem.setFkParent(parentItem);
+
+		newItem.setTitle(item.getTitle());
+		newItem.setHref(item.getHref());
+		newItem.setAlert(item.getAlert());
+		newItem.setMenuOrder(item.getMenuOrder());
+		newItem.setPublish(item.getPublish());
+
+		GadgetInstance gadget = item.getFkGadgetInstance();
+		GadgetInstance newGadget = new GadgetInstance();
+		newGadget.setTitle(gadget.getTitle());
+		newGadget.setType(gadget.getType());
+		newGadget.setHref(gadget.getHref());
+		Set<GadgetInstanceUserpref> newUps = new HashSet<GadgetInstanceUserpref>();
+		Set<GadgetInstanceUserpref> ups = gadget.getGadgetInstanceUserPrefs();
+		if (ups != null) {
+			for (GadgetInstanceUserpref up : ups) {
+				GadgetInstanceUserpref newUp = new GadgetInstanceUserpref(
+						new GadgetInstanceUserprefPK(newGadget, up.getId()
+								.getName()));
+				newUp.setValue(up.getValue());
+				newUps.add(newUp);
+			}
+		}
+		newGadget.setGadgetInstanceUserPrefs(newUps);
+		newItem.setFkGadgetInstance(newGadget);
+		menuItemDAO.save(newItem);
+		return newItem;
 	}
 
 	@RequestMapping
