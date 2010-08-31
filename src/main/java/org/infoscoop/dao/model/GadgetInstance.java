@@ -67,8 +67,11 @@ public class GadgetInstance extends BaseGadgetInstance {
 			return this.userPrefs;
 		}else{
 			this.userPrefs = new UPMap(this);
-			for(GadgetInstanceUserpref up : super.getGadgetInstanceUserPrefs()){
-				userPrefs.put(up.getId().getName(), up.getValue());
+			if (super.getGadgetInstanceUserPrefs() != null) {
+				for (GadgetInstanceUserpref up : super
+						.getGadgetInstanceUserPrefs()) {
+					userPrefs.put(up.getId().getName(), up.getValue());
+				}
 			}
 			return this.userPrefs;
 		}
@@ -90,9 +93,13 @@ public class GadgetInstance extends BaseGadgetInstance {
 		public String put(String name, String value) {
 			super.put(name, value);
 			GadgetInstanceUserpref up = new GadgetInstanceUserpref(
-					new org.infoscoop.dao.model.GadgetInstanceUserprefPK(this.self, name));
+					new org.infoscoop.dao.model.GadgetInstanceUserprefPK(
+							this.self, name));
 			up.setValue(value);
-			this.self.getGadgetInstanceUserPrefs().add(up);
+			if (this.self.getGadgetInstanceUserPrefs() == null)
+				this.self
+						.setGadgetInstanceUserPrefs(new HashSet<GadgetInstanceUserpref>());
+			this.self.addTogadgetInstanceUserPrefs(up);
 			return name;
 		}
 	}

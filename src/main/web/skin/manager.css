@@ -164,6 +164,9 @@ body {
 	-webkit-border-radius:2px;
 	border-radius:2px;
 }
+#menu_item_command a.disabled{
+	color:gray;
+}
 #menuItem #gadget_settings .list .value{
 	float:left;
 	background-color:#FAFAFA;

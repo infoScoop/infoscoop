@@ -7,6 +7,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 
 import org.infoscoop.dao.GadgetDAO;
+import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.Gadget;
@@ -42,6 +43,15 @@ public class MenuController {
 	public void tree(Model model) throws Exception {
 		List<MenuItem> items = menuItemDAO.getTree();
 		model.addAttribute("items", items);
+	}
+
+	@RequestMapping
+	public void selectGadgetInstance(@RequestParam("id") String parentId,
+			Model model) throws Exception {
+		GadgetInstanceDAO dao = GadgetInstanceDAO.newInstance();
+		List<GadgetInstance> gadgetInstances = dao.all();
+		model.addAttribute("instances", gadgetInstances);
+		model.addAttribute("parentId", parentId);
 	}
 
 	@RequestMapping
@@ -105,6 +115,34 @@ public class MenuController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
+	public String showEditInstance(@RequestParam("instanceId") int instanceId,
+			@RequestParam("id") String parentId, Locale locale,
+			Model model)
+			throws Exception {
+		MenuItem item = new MenuItem();
+		if (parentId != null && parentId.length() > 0) {
+			MenuItem parentItem = menuItemDAO.get(parentId);
+			if (parentItem != null)
+				item.setFkParent(parentItem);
+		}
+		GadgetInstanceDAO dao = GadgetInstanceDAO.newInstance();
+		GadgetInstance gadgetInstance = dao.get(instanceId);
+		// lazy=trueだが、Viewに渡すために事前に取得する。何かメソッド呼ぶと事前に取得できる。
+		gadgetInstance.getGadgetInstanceUserPrefs().size();
+		item.setFkGadgetInstance(gadgetInstance);
+		item.setTitle(gadgetInstance.getTitle());
+		item.setHref(gadgetInstance.getHref());
+		item.setMenuOrder(0);
+		item.setPublish(0);
+		
+		model.addAttribute(item);
+		model.addAttribute("conf", getGadgetConf(gadgetInstance.getType(),
+				locale));
+		return "menu/showAddItem";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
 	public MenuItem togglePublish(@RequestParam("id") String id)
 			throws Exception {
 		MenuItem item = menuItemDAO.get(id);
@@ -159,7 +197,6 @@ public class MenuController {
 			Element widgetConfElm = WidgetConfDAO.newInstance()
 					.getElement(type);
 			String widgetXml = XmlUtil.dom2String(widgetConfElm);
-			System.out.println(widgetXml);
 			widgetXml = I18NUtil.resolveForXML(I18NUtil.TYPE_WIDGET, widgetXml,
 					locale);
 			conf = (Document) XmlUtil.string2Dom(widgetXml);

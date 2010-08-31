@@ -43,15 +43,21 @@ function selectItem(id){
 function getSelectedItem(){
 	return $("#menu_tree").jstree("get_selected")[0];
 }
-function selectGadgetType(isTop){
+function selectGadgetInstance(isTop){
 	if(isTop)
 		$("#menu_tree").jstree("deselect_all");
 	var selectedItem = getSelectedItem();
 	var id = selectedItem ? selectedItem.id : "";
+	$.get("selectGadgetInstance", {id:id}, function(html){
+		$("#menu_right").html(html);
+	});
+}
+function selectGadgetType(){
+	var selectedItem = getSelectedItem();
+	var id = selectedItem ? selectedItem.id : "";
 	$.get("selectGadgetType", {id:id}, function(html){
 		$("#menu_right").html(html);
-	})
-	$("#menu_item_command").hide();
+	});
 }
 function showAddItem(type, parentId){
 	$.get("showAddItem", {id: parentId, type:type}, function(html){
@@ -67,8 +73,12 @@ function showEditItem(){
 	var id = selectedItem.id;
 	$.get("showEditItem", {id:id}, function(html){
 		$("#menu_right").html(html);
-	})
-	$("#menu_item_command").hide();
+	});
+}
+function showEditInstance(instanceId, parentId){
+	$.post("showEditInstance", {instanceId:instanceId, id:parentId}, function(html){
+		$("#menu_right").html(html);
+	});
 }
 function addItemToTree(parentId, id, title, type, publish){
 	$("#menu_tree").jstree("create",
@@ -98,12 +108,20 @@ function updateItemInTree(id, title, publish){
 		console.error(e);
 	}
 }
+function copyItem(e, a){
+	$("#menu_item_command .paste").removeClass("disabled");
+	e.stopPropagation();
+}
+function pasteItem(a){
+	if($(a).hasClass("disabled"))
+		return;
+	alert("paste!!");
+}
 function deleteItem(){
 	var id = getSelectedItem().id;
 	$.post("removeItem", {id: id}, function(){
 		$("#menu_tree").jstree("remove", "#"+id);
 	});
-	$("#menu_item_command").hide();
 }
 function togglePublish(){
 	var id = getSelectedItem().id;
@@ -276,7 +294,7 @@ $(function () {
 <div id="menu">
 	<div id="menu_left">
 		<div id="menu_command">
-			<a onclick="selectGadgetType(true)">トップメニューを追加</a>
+			<a onclick="selectGadgetInstance(true)">トップメニューを追加</a>
 		</div>
 		<div id="menu_tree">
 			
@@ -288,11 +306,13 @@ $(function () {
 	<div style="clear:both"></div>
 	<div id="menu_item_command" class="menu_item_command" style="display:none">
 		<ul>
-			<li><a onclick="selectGadgetType()">追加</a></li>
-			<li><a onclick="showEditItem()">編集</a></li>
-			<li><a onclick="deleteItem()">削除</a></li>
-			<li><a onclick="togglePublish()">公開/非公開を切り替える</a></li>
-			<li><a onclick="togglePublish()">公開範囲を設定する</a></li>
+			<li><a onclick="selectGadgetInstance(event, this)">追加</a></li>
+			<li><a onclick="showEditItem(event, this)">編集</a></li>
+			<li><a onclick="copyItem(event, this)">コピー</a></li>
+			<li><a onclick="pasteItem(event, this)" class="paste disabled">ペースト</a></li>
+			<li><a onclick="deleteItem(event, this)">削除</a></li>
+			<li><a onclick="togglePublish(event, this)">公開/非公開を切り替える</a></li>
+			<li><a onclick="togglePublish(event, this)">公開範囲を設定する</a></li>
 		</ul>
 	</div>
 </div>
