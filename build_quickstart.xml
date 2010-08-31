@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="infoScoop-2.1.1-quickstart" default="all" basedir=".">
+<project name="infoScoop-quickstart" default="all" basedir=".">
+	<property file="build.properties"/>
 	<property name="basedir" value="." />
 	<property name="build.home" value="${basedir}/build" />
 	<property name="dist.home" value="${basedir}/dist" />
@@ -7,7 +8,8 @@
 	<property name="src.qs" value="${src.home}/quickstart" />
 	<property name="src.qs.tomcat" value="${src.qs}/tomcat" />
 	<property name="qs.build" value="${build.home}/quickstart" />
-	<property name="qs.home" value="${qs.build}/infoscoop-2.1.1-quickstart" />
+	<property name="qs.home" value="${qs.build}/infoscoop-${build.version}-quickstart" />
+	<property name="qs.file.name" value="infoscoop-${build.version}-quickstart" />
 	<property name="qs.tomcat.webapps" value="${qs.home}/apache-tomcat-6.0.28/webapps" />
 
 
@@ -53,8 +55,8 @@
 	</target>
 	
 	<target name="archive-quickstart" >
-		<zip compress="true" destfile="${dist.home}/infoscoop-2.1.1-quickstart.zip" basedir="${qs.build}"/>
-    	<tar destfile="${dist.home}/infoscoop-2.1.1-quickstart.tar.gz" compression="gzip">
+		<zip compress="true" destfile="${dist.home}/${qs.file.name}.zip" basedir="${qs.build}"/>
+    	<tar destfile="${dist.home}/${qs.file.name}.tar.gz" compression="gzip">
     		<tarfileset dir="${qs.build}" mode="755">
 				<include name="**/*.sh"/>
 			</tarfileset>
