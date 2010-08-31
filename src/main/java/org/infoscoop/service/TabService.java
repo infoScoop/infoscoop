@@ -559,14 +559,14 @@ public class TabService {
 		if( uid == null )
 			return;
 		
-		Preference preference = PreferenceDAO.newInstance().select(uid);
-		Element prefEl = preference.getElement();
-		PreferenceService.removeProperty(prefEl, "freshDays");
-		PreferenceService.removeProperty(prefEl, "mergeconfirm");
-		PreferenceService.removeProperty(prefEl, "searchOption");
-		PreferenceService.removeProperty(prefEl, "theme");
-		preference.setElement(prefEl);
 		if(tabId == null){
+			Preference preference = PreferenceDAO.newInstance().select(uid);
+			Element prefEl = preference.getElement();
+			PreferenceService.removeProperty(prefEl, "freshDays");
+			PreferenceService.removeProperty(prefEl, "mergeconfirm");
+			PreferenceService.removeProperty(prefEl, "searchOption");
+			PreferenceService.removeProperty(prefEl, "theme");
+			preference.setElement(prefEl);
 			WidgetDAO.newInstance().deleteWidget( uid );
 			TabDAO.newInstance().deleteTab( uid );
 		}else{
