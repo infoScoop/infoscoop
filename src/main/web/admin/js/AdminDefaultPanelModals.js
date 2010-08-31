@@ -249,11 +249,12 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 			);
 		
 		// This must be increased if any file is added to admin/staticPanel
+		var adjustToWindowHeight = (this.isaDefaultPanel.displayRoleJsons[this.isaDefaultPanel.displayRoleId] && this.isaDefaultPanel.displayRoleJsons[this.isaDefaultPanel.displayRoleId].adjustToWindowHeight ? true : false);
 		for(var i=0; i < 8; i++){
 			var json = {};
 			json = this.templates.setStaticLayout(json, i);
 			if(!json) continue;
-			var nothing = (i == 0);
+			var nothing = (!adjustToWindowHeight && i == 0);
 			formDiv.appendChild(this.buildLayout(json, nothing,i));
 		}
 		
