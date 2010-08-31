@@ -174,3 +174,17 @@ gadgets.rpc.register("is_set_relay_url",function( relayUrl ) {
 	
 	gadgets.rpc.setRelayUrl( widget.iframe.name,relayUrl );
 });
+
+gadgets.rpc.register("is_hide_gadget",function() {
+	var widget = IS_Portal.getWidget( this.mid,this.tid );
+	if( widget.authToken != this.t ) return;
+	
+	return Element.hide(widget.elm_widget);
+});
+
+gadgets.rpc.register("is_show_gadget",function() {
+	var widget = IS_Portal.getWidget( this.mid,this.tid );
+	if( widget.authToken != this.t ) return;
+	
+	return Element.show(widget.elm_widget);
+});

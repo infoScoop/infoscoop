@@ -104,3 +104,17 @@ function _IS_OpenPortalIframe(url){
 function _IS_ChangeBackground(opt){
 	gadgets.rpc.call(null,"is_change_background",null, opt);
 }
+
+/*
+ * Hide gadget element.
+ */
+function _IS_HideGadget(){
+	gadgets.rpc.call(null,"is_hide_gadget",null);
+}
+
+/*
+ * Show gadget element.
+ */
+function _IS_ShowGadget(){
+	gadgets.rpc.call(null,"is_show_gadget",null);
+}
