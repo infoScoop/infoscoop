@@ -118,3 +118,7 @@ function _IS_HideGadget(){
 function _IS_ShowGadget(){
 	gadgets.rpc.call(null,"is_show_gadget",null);
 }
+
+function _IS_CloseGadget(opt){
+	gadgets.rpc.call(null,"is_close_gadget",null, opt);
+}

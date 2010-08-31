@@ -188,3 +188,9 @@ gadgets.rpc.register("is_show_gadget",function() {
 	
 	return Element.show(widget.elm_widget);
 });
+
+gadgets.rpc.register("is_close_gadget",function( relayUrl ) {
+	var widget = IS_Portal.getWidget( this.mid,this.tid );
+	if( widget.authToken != this.t ) return;
+	widget.headerContent.close();
+});
