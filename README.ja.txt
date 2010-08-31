@@ -70,7 +70,7 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 ライセンスおよびコピーライト情報は LICENSE.txt を参照ください。
 
 
-2.1.1から2.2.0での変更点
+2.1.1から2.2での変更点
 ------------------------
 以下のURLを参照してください。
 https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.0
