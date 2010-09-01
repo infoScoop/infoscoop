@@ -465,7 +465,7 @@ CREATE TABLE IF NOT EXISTS IS_ROLE_PRINCIPALS (
   `order_index` int(11) DEFAULT NULL,
   `fk_role_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`fk_role_id`) REFERENCES `is_roles` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`fk_role_id`) REFERENCES IS_ROLES (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 --

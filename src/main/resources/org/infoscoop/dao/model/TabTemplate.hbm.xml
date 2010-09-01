@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="TabTemplate"
-		table="is_tab_templates"
+		table="IS_TAB_TEMPLATES"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id

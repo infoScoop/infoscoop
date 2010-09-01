@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="Role"
-		table="is_roles"
+		table="IS_ROLES"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id

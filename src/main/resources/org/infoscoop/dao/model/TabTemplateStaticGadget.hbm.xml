@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="TabTemplateStaticGadget"
-		table="is_tab_template_static_gadgets"
+		table="IS_TAB_TEMPLATE_STASTIC_GADGETS"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id

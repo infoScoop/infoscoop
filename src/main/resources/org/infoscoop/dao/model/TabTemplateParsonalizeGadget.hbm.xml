@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="TabTemplateParsonalizeGadget"
-		table="is_tab_template_parsonalize_gadgets"
+		table="IS_TAB_TEMPLATE_PARSONALIZE_GADGETS"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
