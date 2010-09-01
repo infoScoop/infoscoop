@@ -11,18 +11,43 @@
 $(function () {
 
 	$("#addButton").click(function(){
-		var count = (table).rows.length;
 		var tbl = document.getElementById("table");
+		var count = tbl.rows.length;
 		var row = tbl.insertRow(count);
 		var cell1 = row.insertCell(0);
 		var cell2 = row.insertCell(1);
 		var cell3 = row.insertCell(2);
 
 		count--;
-		cell1.innerHTML = "<select id='rolePrincipals["+ count +"].type' name='rolePrincipals[" + count + "].type'><option value='ユーザ'>ユーザ</option><option value='組織'>組織</option></select>";
-		cell2.innerHTML = "<input id='rolePrincipals[" + count + "].name' name='rolePrincipals[" + count + "].name' type='text' value=''/>";
-		cell3.innerHTML = "<span class='trash'></span>";
+		cell1.innerHTML = "<span>"+ document.getElementById("roleType").value +"</span><input name='rolePrincipals["+ count +"].type' type='hidden' value='"+ document.getElementById("roleType").value +"' />";
+		cell2.innerHTML = "<span>"+ document.getElementById("target").value +"</span><input name='rolePrincipals["+ count +"].name' type='hidden' value='"+ document.getElementById("target").value +"' />";
+		cell3.innerHTML = "<span class='trash' onclick='deletePrincipal("+ count +")'></span><input name='rolePrincipals["+ count +"].id' type='hidden' value='' />";
 
+		document.getElementById("roleType").value = "ユーザ";
+		document.getElementById("target").value = "";
+	});
+
+	$(function() {
+		var params = {
+			output:  'json',
+			results: 5,
+			query:   undefined
+		};
+		$('#target').autocomplete( { source:
+			function ( request, response )  {
+				params.query = request.term;
+				var type = document.getElementById("roleType").value;
+				if (type == "ユーザ")
+					var url = 'autocompleteUser';
+				else if (type == "組織")
+					var url = 'autocompleteGroup';
+				$.post( url, params, function(data) {
+					var list = [];
+					for(var i in data)
+						list.push(data[i].name);
+					response(list);
+				}, "json" );
+		}});
 	});
 });
 
@@ -33,15 +58,28 @@ function deletePrincipal(index){
 	document.forms[0].action = 'deleteRolePrincipal';
 	document.forms[0].submit();
 	//window.location.href = "deleteRolePrincipal?rolePrincipalId="+ rolePrincipalId +"&roleId="+ roleId;
-}
+};
+
+function checkForm(){
+	if(document.getElementById("roleName").value == ""){
+		alert('グループ名を入力してください');
+		document.getElementById("roleName").focus();
+		return false;
+	} else if(document.getElementById("table").rows.length == 1){
+		alert("\"ユーザ\" または \"組織\"を追加してください。");
+		document.getElementById("target").focus();
+		return false;
+	}
+};
+
 
 </script>
 
 <div>
 	<h3>グループ設定画面</h3>
-	<form:form modelAttribute="role" id="add_group" method="post" action="save">
+	<form:form modelAttribute="role" id="add_group" method="post" action="save" onSubmit="return checkForm()" >
 		<c:set var="principalSize" value="${role.size}" />
-		<h2>グループ名： <form:input path="name"/></h2>
+		<h2>グループ名： <form:input id="roleName" path="name"/></h2>
 		<form:hidden path="id" />
 		<table id="table" class="tab_table" cellspacing="0" cellpadding="0">
 		<thead>
@@ -75,7 +113,23 @@ function deletePrincipal(index){
 		</c:forEach>
 
 		</table>
+		<br />
+		<br />
+
+
+		<span>タイプ：</span>
+		<select id="roleType">
+			<option value='ユーザ'>ユーザ</option><option value='組織'>組織</option>
+		</select>
+		<span>　　対象範囲：</span>
+		<input id="target" type="text"></input>
+
 		<input id="addButton" type="button" value="追加" />
+
+		<br />
+		<br />
+		<br />
+
 		<input type="submit" name="button" value="保存" />
 		<input type="button" value="キャンセル" onclick="javascript:window.location.href='index'" />
 	</form:form>
