@@ -544,3 +544,20 @@ CREATE TABLE IS_TAB_TEMPLATE_PARSONALIZE_GADGETS (
 	foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade,
 	foreign key (sibling_id) references IS_TAB_TEMPLATE_PARSONALIZE_GADGETS(id) on delete cascade
 ) ENGINE = INNODB;
+
+--
+-- IS_USERS
+--
+CREATE TABLE IS_USERS (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`name` VARCHAR( 255 ) NOT NULL ,
+`email` VARCHAR( 255 ) NOT NULL
+) ENGINE = InnoDB;
+
+--
+-- IS_GROUPS
+--
+CREATE TABLE IS_GROUPS (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`name` VARCHAR( 255 ) NOT NULL
+) ENGINE = InnoDB;
