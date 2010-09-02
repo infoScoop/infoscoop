@@ -60,7 +60,7 @@ h2 {
 
 <script src="../../js/resources/resources_ja.js"></script>
 <script>
-var staticContentURL="../..";
+var staticContentURL=window.location.href.substring(0, window.location.href.indexOf("/manager/tab/") );
 var ajaxRequestTimeout=15000;
 var messagePriority = 4;
 var localhostPrefix = "http://localhost:8080/infoscoop";
