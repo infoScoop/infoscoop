@@ -1,6 +1,7 @@
 package org.infoscoop.manager.controller;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -23,6 +24,7 @@ import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplateParsonalizeGadget;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
 import org.infoscoop.service.GadgetService;
+import org.infoscoop.service.TabLayoutService;
 import org.infoscoop.service.WidgetConfService;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.XmlUtil;
@@ -46,11 +48,17 @@ public class TabController {
 	@RequestMapping
 	public void index(Model model)throws Exception {
 		List<TabTemplate> tabs = TabTemplateDAO.newInstance().all();
-		//temp = 0のデータのみを表示させるようにする。
-		model.addAttribute("tabs", tabs);
+		List<TabTemplate> tabsTemp0 = new ArrayList<TabTemplate>();
+		for(TabTemplate tab: tabs){
+			if(tab.getTemp() == 0){
+				tabsTemp0.add(tab);
+			}
+		}
+		model.addAttribute("tabs", tabsTemp0);
 	}
 
 	@RequestMapping
+	@Transactional
 	public void showAddTab(Model model)
 			throws Exception {
 		TabTemplate tab = new TabTemplate();
@@ -63,6 +71,19 @@ public class TabController {
 	}
 
 	@RequestMapping
+	@Transactional
+	public String deleteTempTab(
+			@RequestParam("id") String tabId,
+			Model model) throws Exception {
+		TabTemplate tab = TabTemplateDAO.newInstance().get(tabId);
+		if(tab.getTemp() == 1){
+			TabTemplateDAO.newInstance().delete(tab);
+		}
+		return "redirect:index";
+	}
+	
+	@RequestMapping
+	@Transactional
 	public String deleteTab(@RequestParam("id") String tabId,
 			Model model) throws Exception {
 		TabTemplate tab = TabTemplateDAO.newInstance().get(tabId);
@@ -82,6 +103,7 @@ public class TabController {
 	}
 	
 	@RequestMapping
+	@Transactional
 	public void showGadgetDialog(
 			HttpServletRequest request, 
 			@RequestParam("type") String type,
@@ -105,6 +127,7 @@ public class TabController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
 	public void submitGadgetSettings(
 			TabTemplateStaticGadget staticGadget,
 			Model model)throws Exception {
@@ -113,11 +136,13 @@ public class TabController {
 		TabTemplateStaticGadgetDAO.newInstance().save(staticGadget);
 		model.addAttribute(staticGadget);
 		
-		//TabLayoutService.getHandle().insertStaticGadget("temp", staticGadget);
+		//This is not needed any more.
+		//TabLayoutService.getHandle().insertStaticGadget("temp", staticGadget.getFkGadgetInstance());
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public void addTab(TabTemplate tab, Model model)throws Exception {
+	@Transactional
+	public void addTab(TabTemplate tab, Model model)throws Exception {		
 		tab.setTemp(0);
 		TabTemplateDAO.newInstance().save(tab);
 		model.addAttribute(tab);

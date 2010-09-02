@@ -161,8 +161,12 @@ function isHidePanel(){
 }
 //
 IS_Portal.currentTabId = "tab${tabTemplate.id}";
+IS_Portal.deleteTempTabFlag = 1;//1-- beforeunloadを実行, 0-- beforeunloadを実行しない
+
 function init() {
 
+	Event.observe('submit_button', 'click', changeFlag, false);
+	
 	new IS_WidgetsContainer("/manager/tab/widsrv");
 	new IS_SiteAggregationMenu();
 	new IS_SidePanel.SiteMap();
@@ -533,6 +537,7 @@ function init() {
 
 	function addEventStaticWidget(){
 		var static_columns = $$('#staticAreaContainer .static_column');
+		deleteTempTabFlag = 0;
 		var tabId = IS_Portal.currentTabId.replace("tab","");
 		for (var j=0; j<static_columns.length; j++ ) {
 			var div = static_columns[j];
@@ -621,7 +626,45 @@ function init() {
 		);
 
 };
+
+function changeFlag(){
+	IS_Portal.deleteTempTabFlag =0;//Don't excute beforeunload
+}
+
+function isTemp(flag){
+	if (flag == 1)
+		return true;
+	else
+		return false;
+}
+
+function deleteTempTabTemplate(){
+	if(isTemp(IS_Portal.deleteTempTabFlag)){
+		var a = new Ajax.Request(
+			"deleteTempTab",
+			{
+				"method": "get",
+				"parameters": "id=${tabTemplate.id}",
+				asynchronous: false,
+				onSuccess: function(request) {
+					alert('temp=1のタブを削除しました');
+				},
+				onFailure: function(request) {
+					alert('読み込みに失敗しました');
+				},
+				onException: function (request) {
+					alert('読み込み中にエラーが発生しました');
+				}
+			}
+		);
+	}
+}
+
+
+
 Event.observe(window, "load", init, false);
+Event.observe(window, "beforeunload", deleteTempTabTemplate, false);
+
 
 IS_Portal.widgetDropped = function( widget ) {
 	if( IS_TreeMenu.isMenuItem( widget.id ) )
@@ -651,7 +694,7 @@ IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
 			<h2>パーソナライズエリア</h2>
 			<div id="personarizeAreaContainer"><div id="panels"><div id="tab-container"></div></div></div>
 		</div>
-		<div style="clear:both;text-align:center;"><input type="submit" name="button" /></div>
+		<div style="clear:both;text-align:center;"><input id="submit_button" type="submit" name="button" /></div>
 	</div>
 </form:form>
 
