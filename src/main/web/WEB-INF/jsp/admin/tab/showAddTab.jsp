@@ -141,7 +141,6 @@ IS_Portal.adjustPanelHeight = function(){};
 IS_Portal.adjustIframeHeight = function(){};
 IS_SidePanel.adjustPosition = function(){};
 IS_Request.CommandQueue = new IS_Request.Queue("/manager/tab/comsrv", commandQueueWait, !is_userId);
-IS_Request.LogCommandQueue = new IS_Request.Queue("/logsrv", logCommandQueueWait, false, true);
 IS_Portal.addTab = function(idNumber, name, type, numCol, columnsWidth, isInitialize, tabOrder){
 	var panels = $("panels");
 	var panelDiv = IS_Portal.buildPanel( idNumber, type );

@@ -1,9 +1,12 @@
 package org.infoscoop.manager.controller;
 
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -12,7 +15,6 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.XMLCommandProcessor;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.GadgetDAO;
-import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
 import org.infoscoop.dao.WidgetConfDAO;
@@ -21,7 +23,6 @@ import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplateParsonalizeGadget;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
 import org.infoscoop.service.GadgetService;
-import org.infoscoop.service.TabLayoutService;
 import org.infoscoop.service.WidgetConfService;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.XmlUtil;
@@ -33,6 +34,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.AbstractView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -123,12 +125,12 @@ public class TabController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public void comsrv(HttpServletRequest request) throws Exception{
+	public XmlView comsrv(HttpServletRequest request) throws Exception{
 		String uid = (String) request.getSession().getAttribute("Uid");
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document doc = builder.parse(request.getInputStream());
 		Element root = doc.getDocumentElement();
-		this.executeCommand(uid, root);
+		return this.executeCommand(uid, root);
 	}
 	
 	@RequestMapping
@@ -162,9 +164,10 @@ public class TabController {
 	 * Copy from CommandExecutionService
 	 * @param uid
 	 * @param commandXML
+		 * @return 
 	 * @throws Exception 
 	 */
-	private void executeCommand(String uid, Element commandXML) throws Exception{
+	private XmlView executeCommand(String uid, Element commandXML) throws Exception{
 		NodeList commandList = commandXML.getElementsByTagName("command");
 		
 		XMLCommandProcessor[] commands = new XMLCommandProcessor[commandList.getLength()];
@@ -197,6 +200,45 @@ public class TabController {
 				log.error("Command " + type + " is not exist.");
 			}
 		}
+
+		StringWriter writer = new StringWriter();
+		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
+		writer.write("<responses>");
+		for(int i = 0; i < commands.length; i++){
+			if(commands[i] != null){
+				if(log.isInfoEnabled() ){
+					log.info("Command [" + commands[i].getCommandId() + "] result: " + commands[i].getResult());
+				}
+				writer.write(commands[i].getResult().toString());
+			}
+		}
+		writer.write("</responses>");
+		XmlView view = new XmlView();
+		view.setXmlString(writer.toString());
+		return view;
+	}
+	
+	public static class XmlView extends AbstractView{
+
+		private String xmlString;
+		
+		void setXmlString(String xmlStr){
+			this.xmlString = xmlStr;
+		}
+		
+		public String getContentType(){
+			return "text/xml; charset=UTF-8" ;
+		}
+
+		@Override
+		protected void renderMergedOutputModel(Map<String, Object> map,
+				HttpServletRequest request, HttpServletResponse response)
+				throws Exception {
+					        
+			response.setContentType( "text/xml; charset=UTF-8" );
+			response.getWriter().write( xmlString );
+		}
+		
 	}
 	
 	public static class AddWidget extends XMLCommandProcessor{
