@@ -295,3 +295,8 @@ body {
 	font-size: 1.3em;
 	padding-left:15px;
 }
+.edit {
+	background: url(imgs/edit.gif ) no-repeat;
+	font-size: 1.3em;
+	padding-left:15px;
+}

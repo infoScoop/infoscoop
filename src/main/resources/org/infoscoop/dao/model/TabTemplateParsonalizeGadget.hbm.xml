@@ -30,6 +30,7 @@
 			column="fk_gadget_instance_id"
 			class="GadgetInstance"
 			not-null="true"
+			lazy="false"
 		>
 		</many-to-one>
 		<many-to-one

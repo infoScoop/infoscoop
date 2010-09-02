@@ -84,8 +84,6 @@ var logCommandQueueWait = 30;
 
 IS_R['getResource'] = function(s){return s;}
 var gadgets = {'rpc':{'setRelayUrl':function(){},'setAuthToken':function(){}}};
-IS_Portal = {};
-IS_Portal.isItemDragging = false;
 IS_Widget = {};
 IS_Widget.getIcon = function() {
 	return imageURL + 'widget_add.gif'; 
@@ -93,20 +91,27 @@ IS_Widget.getIcon = function() {
 IS_WidgetIcons = {
 	'RssReader':imageURL + 'widget_add.gif'
 }
-IS_Portal.isChecked = function(){
-	return false;
-}
-IS_Portal.endIndicator = function(){};
-IS_Portal.showDragOverlay = function(){};
-IS_Portal.widgetDisplayUpdated = function(){};
-IS_Portal.columnsObjs = new Object();
-IS_Portal.tabs = new Object();
 var displayTabOrder = "0";
-IS_Portal.fontSize = '14px';
-IS_Portal.rssSearchBoxList = new Object();
-IS_Portal.hideDragOverlay = function() {};
-IS_Portal.displayMsgBar = function(){};
-IS_Portal.unDisplayMsgBar = function(){}
+IS_Portal = {
+	tabs: {},
+	fontSize: '14px',
+	isItemDragging: false,
+	columnsObjs: {},
+	rssSearchBoxList: {},
+	isChecked: function(){return false},
+	showDragOverlay: function(){},
+	hideDragOverlay: function() {},
+	displayMsgBar: function(){},
+	unDisplayMsgBar: function(){},
+	adjustPanelHeight: function(){},
+	adjustIframeHeight: function(){},
+	deleteCacheByUrl:function(){},
+	endIndicator: function(){},
+	widgetDisplayUpdated: function(){},
+	Trash:{
+		add:function(){}
+	}
+}
 
 </script>
 <script src="../../js/utils/utils.js"></script>
@@ -131,14 +136,13 @@ IS_Portal.unDisplayMsgBar = function(){}
 <script src="../../js/commands/UpdatePropertyCommand.js"></script>
 
 <script src="../../js/widgets/rssreader/RssReader.js"></script> 
+<script src="../../js/widgets/MultiRssReader/MultiRssReader.js"></script> 
 <script src="../../js/widgets/rssreader/RssItemRender.js"></script>
 <script src="../../js/widgets/calendar/Calendar.js"></script>
 <script src="../../js/widgets/calendar/iCalendar.js"></script>
 <script src="../../js/widgets/Message/Message.js"></script>
 
 <script type="text/javascript" class="source">
-IS_Portal.adjustPanelHeight = function(){};
-IS_Portal.adjustIframeHeight = function(){};
 IS_SidePanel.adjustPosition = function(){};
 IS_Request.CommandQueue = new IS_Request.Queue("/manager/tab/comsrv", commandQueueWait, !is_userId);
 IS_Portal.addTab = function(idNumber, name, type, numCol, columnsWidth, isInitialize, tabOrder){
@@ -159,6 +163,18 @@ IS_Portal.CommandBar = {
 function isHidePanel(){
 	return false;
 }
+// mock for search engines
+IS_Portal.searchWidgetAndFeedNode = function(){};
+IS_Portal.SearchEngines = {
+	matchRssSearch : function(){return false;},
+	loadConf : function(){}
+};
+// mock for behindIframe
+IS_Portal.behindIframe = {
+	show:function(){},
+	hide:function(){}
+}
+
 //
 IS_Portal.currentTabId = "tab${tabTemplate.id}";
 IS_Portal.deleteTempTabFlag = 1;//1-- beforeunloadを実行, 0-- beforeunloadを実行しない
@@ -670,6 +686,7 @@ IS_Portal.widgetDropped = function( widget ) {
 	if( IS_TreeMenu.isMenuItem( widget.id ) )
 		IS_EventDispatcher.newEvent( IS_Widget.DROP_WIDGET, IS_TreeMenu.getMenuId( widget.id ) );
 }
+
 IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
 
 </script>

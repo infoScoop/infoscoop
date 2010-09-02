@@ -59,14 +59,19 @@ public class TabController {
 
 	@RequestMapping
 	@Transactional
-	public void showAddTab(Model model)
+	public void editTab(@RequestParam(value="id", required=false) String tabId, Model model)
 			throws Exception {
-		TabTemplate tab = new TabTemplate();
-		tab.setName("New Tab");
-		tab.setPublished(0);
-		tab.setTemp(1);
-		tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
-		TabTemplateDAO.newInstance().save(tab);
+		TabTemplate tab;
+		if(tabId != null){
+			tab = TabTemplateDAO.newInstance().get(tabId);
+		}else{
+			tab = new TabTemplate();
+			tab.setName("New Tab");
+			tab.setPublished(0);
+			tab.setTemp(1);
+			tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
+			TabTemplateDAO.newInstance().save(tab);
+		}
 		model.addAttribute(tab);
 	}
 
@@ -159,9 +164,15 @@ public class TabController {
 	}
 	
 	@RequestMapping
-	public void widsrv(@RequestParam("tabId") String tabId, Model model){
+	public void widsrv(
+			HttpServletRequest request, 
+			@RequestParam("tabId") String tabId, 
+			Model model){
 		TabTemplate tab = TabTemplateDAO.newInstance().get(tabId);
+		String uid = (String) request.getSession().getAttribute("Uid");
+		model.addAttribute("uid", uid);
 		model.addAttribute(tab);
+		model.addAttribute("parsonarizeGadgets", tab.getTabTemplateParsonalizeGadgets());
 	}
 	
 	@RequestMapping
@@ -298,8 +309,8 @@ public class TabController {
 	        }
 
 	        if (targetColumn != null && !"".equals(targetColumn) && !XMLCommandUtil.isNumberValue(targetColumn)) {
-	        	String reason = "It's an unjust value of column�師argetColumn:[" + targetColumn + "]";
-	            log.error("Failed to execute the command of AddWidget��" + reason);
+	        	String reason = "It's an unjust value of column targetColumn:[" + targetColumn + "]";
+	            log.error("Failed to execute the command of AddWidget" + reason);
 	            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
 	                    log, commandId, false, reason);
 	            return;
@@ -314,7 +325,7 @@ public class TabController {
 	    	} catch (Exception e) {
 	    		log.error("", e);
 	            String reason = "The information of widget is unjust.";
-	            log.error("Failed to execute the command of AddWidget��" + reason);
+	            log.error("Failed to execute the command of AddWidget" + reason);
 	            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
 	                    log, commandId, false, reason);
 	            throw e;
