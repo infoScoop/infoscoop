@@ -34,4 +34,8 @@ public class GadgetInstanceDAO extends HibernateDaoSupport {
 			return gadgets.get(0);
 		return null;
 	}
+	
+	public void delete(GadgetInstance staticGadget) {
+		super.getHibernateTemplate().delete(staticGadget);
+	}
 }

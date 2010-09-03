@@ -39,7 +39,7 @@ public class TabTemplateStaticGadgetDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TabTemplate> all() {
+	public List<TabTemplateStaticGadget> all() {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(TabTemplateStaticGadget.class));
 	}

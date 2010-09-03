@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.XMLCommandProcessor;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.GadgetDAO;
+import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
@@ -36,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -51,9 +54,16 @@ import org.w3c.dom.NodeList;
 public class TabController {
 	private static Log log = LogFactory.getLog(TabController.class);
 	
+	@Autowired
+	private TabTemplateDAO tabTemplateDAO;
+	@Autowired
+	private TabTemplateStaticGadgetDAO tabTemplateStaticGadgetDAO;
+	@Autowired
+	private GadgetInstanceDAO gadgetInstanceDAO;
+	
 	@RequestMapping
 	public void index(Model model)throws Exception {
-		List<TabTemplate> tabs = TabTemplateDAO.newInstance().all();
+		List<TabTemplate> tabs = tabTemplateDAO.all();
 		List<TabTemplate> tabsTemp0 = new ArrayList<TabTemplate>();
 		for(TabTemplate tab: tabs){
 			if(tab.getTemp() == 0){
@@ -69,14 +79,14 @@ public class TabController {
 			throws Exception {
 		TabTemplate tab;
 		if(tabId != null){
-			tab = TabTemplateDAO.newInstance().get(tabId);
+			tab = tabTemplateDAO.get(tabId);
 		}else{
 			tab = new TabTemplate();
 			tab.setName("New Tab");
 			tab.setPublished(0);
 			tab.setTemp(1);
 			tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
-			TabTemplateDAO.newInstance().save(tab);
+			tabTemplateDAO.save(tab);
 		}
 		model.addAttribute(tab);
 	}
@@ -88,7 +98,13 @@ public class TabController {
 			Model model) throws Exception {
 		TabTemplate tab = TabTemplateDAO.newInstance().get(tabId);
 		if(tab.getTemp() == 1){
-			TabTemplateDAO.newInstance().delete(tab);
+			Set<TabTemplateStaticGadget> sgs = 
+				tab.getTabTemplateStaticGadgets();
+			for(TabTemplateStaticGadget s: sgs){
+					tabTemplateStaticGadgetDAO.delete(s);
+					gadgetInstanceDAO.delete(s.getFkGadgetInstance());
+			}
+			tabTemplateDAO.delete(tab);
 		}
 		return "redirect:index";
 	}
@@ -97,8 +113,8 @@ public class TabController {
 	@Transactional
 	public String deleteTab(@RequestParam("id") String tabId,
 			Model model) throws Exception {
-		TabTemplate tab = TabTemplateDAO.newInstance().get(tabId);
-		TabTemplateDAO.newInstance().delete(tab);
+		TabTemplate tab = tabTemplateDAO.get(tabId);
+		tabTemplateDAO.delete(tab);
 		return "redirect:index";
 	}
 	
@@ -126,6 +142,7 @@ public class TabController {
 		staticGadget.setFkGadgetInstance(gadgetInstance);
 		staticGadget.getFkGadgetInstance().setType(type);
 		staticGadget.setTabTemplateId(tabId);
+		staticGadget.setContainerId(containerId);
 		model.addAttribute("tabTemplateStaticGadget", staticGadget);
 		
 		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。
@@ -142,9 +159,9 @@ public class TabController {
 	public void submitGadgetSettings(
 			TabTemplateStaticGadget staticGadget,
 			Model model)throws Exception {
-		TabTemplate tab = TabTemplateDAO.newInstance().get(staticGadget.getTabTemplateId());
+		TabTemplate tab = tabTemplateDAO.get(staticGadget.getTabTemplateId());
 		staticGadget.setFkTabTemplate(tab);
-		TabTemplateStaticGadgetDAO.newInstance().save(staticGadget);
+		tabTemplateStaticGadgetDAO.save(staticGadget);
 		model.addAttribute(staticGadget);
 		
 		//This is not needed any more.
@@ -155,7 +172,7 @@ public class TabController {
 	@Transactional
 	public void addTab(TabTemplate tab, Model model)throws Exception {		
 		tab.setTemp(0);
-		TabTemplateDAO.newInstance().save(tab);
+		tabTemplateDAO.save(tab);
 		model.addAttribute(tab);
 	}
 
@@ -175,7 +192,7 @@ public class TabController {
 			HttpServletRequest request, 
 			@RequestParam("tabId") String tabId, 
 			Model model){
-		TabTemplate tab = TabTemplateDAO.newInstance().get(tabId);
+		TabTemplate tab = tabTemplateDAO.get(tabId);
 		String uid = (String) request.getSession().getAttribute("Uid");
 		model.addAttribute("uid", uid);
 		model.addAttribute(tab);
@@ -396,7 +413,7 @@ public class TabController {
 	    		//GadgetInstanceDAO.newInstance().save(ginst);
 	    		tab.getTabTemplateParsonalizeGadgets().add(gadget);
 	    		gadget.setFkTabTemplate(tab);
-	    		TabTemplateDAO.newInstance().save(tab);
+	    		tabDAO.save(tab);
 	    	} catch (Exception e) {
 	    		log.error("", e);
 	            String reason = "Failed to save the widget.";
