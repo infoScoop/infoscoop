@@ -62,7 +62,7 @@
 			name="FkGadgetInstance"
 			column="fk_gadget_instance_id"
 			class="GadgetInstance"
-			not-null="true"
+			not-null="false"
 			outer-join="true"
 		>
 		</many-to-one>

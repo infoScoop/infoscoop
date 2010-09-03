@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_menu_items table.
+ * This is an object that contains data related to the IS_MENU_ITEMS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_menu_items"
+ *  table="IS_MENU_ITEMS"
  */
 
 public abstract class BaseMenuItem  implements Serializable {
@@ -43,14 +43,12 @@ public abstract class BaseMenuItem  implements Serializable {
 	 */
 	public BaseMenuItem (
 		java.lang.String id,
-		org.infoscoop.dao.model.GadgetInstance fkGadgetInstance,
 		java.lang.String title,
 		java.lang.Integer menuOrder,
 		java.lang.Integer publish,
 		java.lang.Integer alert) {
 
 		this.setId(id);
-		this.setFkGadgetInstance(fkGadgetInstance);
 		this.setTitle(title);
 		this.setMenuOrder(menuOrder);
 		this.setPublish(publish);
@@ -236,11 +234,6 @@ public abstract class BaseMenuItem  implements Serializable {
 	 */
 	public void setMenuItems (java.util.Set<org.infoscoop.dao.model.MenuItem> menuItems) {
 		this.menuItems = menuItems;
-	}
-
-	public void addToMenuItems (org.infoscoop.dao.model.MenuItem menuItem) {
-		if (null == getMenuItems()) setMenuItems(new java.util.TreeSet<org.infoscoop.dao.model.MenuItem>());
-		getMenuItems().add(menuItem);
 	}
 
 

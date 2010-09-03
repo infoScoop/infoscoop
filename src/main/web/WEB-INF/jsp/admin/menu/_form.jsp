@@ -7,22 +7,26 @@
 	<c:if test="${menuItem.fkParent != null}">
 		<form:hidden path="fkParent.id" />
 	</c:if>
-	<c:if test="${menuItem.fkGadgetInstance != null}">
+	<c:if test="${conf != null}">
 		<form:hidden path="fkGadgetInstance.id" />
 	</c:if>
 	<form:hidden path="menuOrder" />
 	<form:hidden path="fkGadgetInstance.type" />
+	<c:if test="${conf != null }">
 	<fieldset>
 		<legend>タイプ</legend>
 		<p>
+			<c:if test="${conf != null}">
 			<x:choose>
 				<x:when select="$conf/widgetConfiguration/@title"><x:out select="$conf/widgetConfiguration/@title" /></x:when>
 				<x:when select="$conf/Module/ModulePrefs/@directory_title"><x:out select="$conf/Module/ModulePrefs/@directory_title" /></x:when>
 				<x:when select="$conf/Module/ModulePrefs/@title"><x:out select="$conf/Module/ModulePrefs/@title" /></x:when>
 				<x:otherwise>${menuItem.type}</x:otherwise>
 			</x:choose>
+			</c:if>
 		</p>
 	</fieldset>
+	</c:if>
 	<fieldset>
 		<legend>共通設定</legend>
 		<p>
@@ -51,8 +55,10 @@
 			<form:errors path="alert" />
 		</p>
 	</fieldset>
+	<c:if test="${conf != null}">
 	<fieldset id="gadget_settings">
 		<legend>ガジェット設定</legend>
+		<c:if test="${conf != null}">
 		<x:forEach var="userPref" select="$conf//UserPref">
 			<x:if select="$userPref/@admin_datatype or not($userPref/@datatype) or $userPref/@datatype!='hidden'">
 				<x:choose>
@@ -90,14 +96,18 @@
 				</p>
 			</x:if>
 		</x:forEach>
+		</c:if>
 	</fieldset>
+	</c:if>
 	<p>
 		<input type="submit" value="作成" class="button"/>
 		<input type="reset" value="リセット" class="button" />
 	</p>
 </form:form>
 <script type="text/javascript">
+<c:if test="${menuItem.fkGadgetInstance != null}">
 rebuildGadgetUserPrefs();
+</c:if>
 $("#menuItem").ajaxForm(function(html){
 	$("#menu_right").html(html);
 });

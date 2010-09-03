@@ -63,23 +63,38 @@ public class MenuController {
 			Model model) throws Exception {
 		model.addAttribute("parentId", parentId);
 	}
+	
+	@RequestMapping
+	public String newLinkMenu(@RequestParam("id") String parentId, Model model)
+			throws Exception {
+		MenuItem parentItem = menuItemDAO.get(parentId);
+		MenuItem item = new MenuItem();
+		item.setId("m_" + new Date().getTime());
+		item.setFkParent(parentItem);
+		item.setMenuOrder(0);
+		item.setPublish(0);
+		model.addAttribute(item);
+		return "menu/editLinkMenu";
+	}
 
 	@RequestMapping
 	@Transactional
 	public void showAddItem(@RequestParam("id") String parentId,
-			@RequestParam("type") String type, Model model, Locale locale)
+			@RequestParam(value = "type", required = false) String type,
+			Model model, Locale locale)
 			throws Exception {
 		MenuItem parentItem = menuItemDAO.get(parentId);
 		MenuItem item = new MenuItem();
-		GadgetInstance gadget = new GadgetInstance();
 		item.setFkParent(parentItem);
-		item.setFkGadgetInstance(gadget);
-		item.getFkGadgetInstance().setType(type);
 		item.setMenuOrder(0);
 		item.setPublish(0);
+		if (type != null && type.length() > 0) {
+			GadgetInstance gadget = new GadgetInstance();
+			item.setFkGadgetInstance(gadget);
+			item.getFkGadgetInstance().setType(type);
+			model.addAttribute("conf", getGadgetConf(type, locale));
+		}
 		model.addAttribute(item);
-
-		model.addAttribute("conf", getGadgetConf(type, locale));
 	}
 
 	@RequestMapping
@@ -89,20 +104,26 @@ public class MenuController {
 		MenuItem item = menuItemDAO.get(id);
 		model.addAttribute(item);
 
-		String type = item.getFkGadgetInstance().getType();
-		// lazy=trueだが、Viewに渡すために事前に取得する。何かメソッド呼ぶと事前に取得できる。
-		item.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
-
-		model.addAttribute("conf", getGadgetConf(type, locale));
+		GadgetInstance gadget = item.getFkGadgetInstance();
+		if (gadget != null) {
+			String type = gadget.getType();
+			if (type != null && type.length() > 0) {
+				// lazy=trueだが、Viewに渡すために事前に取得する。何かメソッド呼ぶと事前に取得できる。
+				item.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
+				model.addAttribute("conf", getGadgetConf(type, locale));
+			}
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public MenuItem addItem(MenuItem item) throws Exception {
 		item.setId("m_" + new Date().getTime());
-		item.getFkGadgetInstance().setTitle(item.getTitle());
-		item.getFkGadgetInstance().setHref(item.getHref());
-
+		GadgetInstance gadget = item.getFkGadgetInstance();
+		if (gadget != null) {
+			gadget.setTitle(item.getTitle());
+			gadget.setHref(item.getHref());
+		}
 		menuItemDAO.save(item);
 		return item;
 	}
@@ -110,10 +131,12 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public MenuItem updateItem(MenuItem item) throws Exception {
-		item.getFkGadgetInstance().setTitle(item.getTitle());
-		item.getFkGadgetInstance().setHref(item.getHref());
+		GadgetInstance gadget = item.getFkGadgetInstance();
+		if (gadget != null) {
+			gadget.setTitle(item.getTitle());
+			gadget.setHref(item.getHref());
+		}
 		menuItemDAO.save(item);
-		// menuItemDAO.save(item);
 		return item;
 	}
 

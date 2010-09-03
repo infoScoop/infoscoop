@@ -24,6 +24,8 @@ function getGadgetTitle(gadget){
 		 || gadget.type;
 }
 function getIconUrl(type){
+	if(!type)
+		return imageURL + "manager/bullet_black.gif";
 	var gadget = getGadget(type);
 	try{
 		if(gadget.icon)
@@ -60,7 +62,7 @@ function selectGadgetType(){
 	});
 }
 function showAddItem(type, parentId){
-	$.get("showAddItem", {id: parentId, type:type}, function(html){
+	$.get("showAddItem", {id: parentId, type: type?type:""}, function(html){
 		$("#menu_right").html(html);
 	});
 }
@@ -91,17 +93,19 @@ function addItemToTree(parentId, id, title, type, publish){
 		function(target){
 			target.find("a:first").append('<span onclick="showMenuCommand(event, this, \''+id+'\')" class="menu_open">▼</span>');
 			target.append('<div class="info"><span class="publish'+(publish?'">公開':' un">非公開')+'</span></div>');
+			var icon = getIconUrl(type);
 			$("a:first ins", target)
-				.css("background", "url("+getIconUrl(type)+")")
-				.css("display", "inline-block");
+				.css("display", "inline-block")
+				.css("background", "url("+icon+")");
 		},
 		true
 	);
 }
 function updateItemInTree(id, title, publish){
 	try{
-		var titleNode = $("#" + id + " a").contents().filter(function() { return this.nodeType == 3; })[0];
-		titleNode.nodeValue = title;
+		/*var titleNode = $("#" + id + " a").contents().filter(function() { return this.nodeType == 3; })[0];
+		titleNode.nodeValue = title;*/
+		$("#menu_tree").jstree("set_text", "#"+id, title);
 		var publishElm = $("#"+id+" .info span.publish").first();
 		publishElm.toggleClass("un", !publish).html(publish? "公開":"非公開");
 	}catch(e){
@@ -298,9 +302,10 @@ $(function () {
 			gadgetConfs.upload[type].type = type;
 		});
 		$("li", menuTree).each(function(){
+			var icon = getIconUrl(this.type);
 			$("a ins", this).first()
-				.css("background", "url("+getIconUrl(this.type)+")")
-				.css("display", "inline-block");
+				.css("display", "inline-block")
+				.css("background", "url("+icon+")");
 		});
 	});
 });
@@ -308,7 +313,7 @@ $(function () {
 <div id="menu">
 	<div id="menu_left">
 		<div id="menu_command">
-			<a onclick="selectGadgetInstance(event, this, true)">トップメニューを追加</a>
+			<a onclick="showAddItem(false, '')">トップメニューを追加</a>
 		</div>
 		<div id="menu_tree">
 			
