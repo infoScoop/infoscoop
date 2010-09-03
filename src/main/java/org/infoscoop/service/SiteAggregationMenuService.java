@@ -40,15 +40,18 @@ import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.exception.MenusIllegalEditException;
 import org.infoscoop.admin.exception.MenusTimeoutException;
+import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.SiteAggregationMenuDAO;
 import org.infoscoop.dao.SiteAggregationMenuTempDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Adminrole;
+import org.infoscoop.dao.model.GadgetInstance;
+import org.infoscoop.dao.model.GadgetInstanceUserpref;
+import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.Portaladmins;
 import org.infoscoop.dao.model.SITEAGGREGATIONMENU_TEMPPK;
 import org.infoscoop.dao.model.Siteaggregationmenu;
 import org.infoscoop.dao.model.Siteaggregationmenu_temp;
-import org.infoscoop.util.RoleUtil;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.StringUtil;
 import org.infoscoop.util.XmlUtil;
@@ -1100,24 +1103,16 @@ public class SiteAggregationMenuService {
 		
 		return entity;
 	}
-	
+		
 	public String getMenuTreeXml(String menuType, boolean ignoreAccessControl) throws Exception {
 		try {
-			
-			// Obtain data
-			Siteaggregationmenu entity = this.siteAggregationMenuDAO.select(menuType);
-			if (entity == null) {
-				log.error("siteaggregationmenu not found.");
-				return "";
-			}
-			
+			List<MenuItem> items = MenuItemDAO.newInstance().getTree();
+						
 			StringBuffer buf = new StringBuffer();
 			buf.append("<sites>\n");
 			
-			Document doc = entity.getElement().getOwnerDocument();
-			NodeList siteTops = doc.getElementsByTagName("site-top");
-			for(int i = 0; i < siteTops.getLength(); i++){
-				buildAuthorizedMenuXml((Element) siteTops.item(i), buf, ignoreAccessControl );
+			for(MenuItem item: items){
+				buildAuthorizedMenuXml(item, buf, ignoreAccessControl );
 			}
 			buf.append("</sites>");
 			
@@ -1127,16 +1122,17 @@ public class SiteAggregationMenuService {
 			throw e;
 		}
 	}
-		
-	private static void buildAuthorizedMenuXml(Element siteNode, StringBuffer buf, boolean noAuth ) throws ClassNotFoundException{
+	
+	private static void buildAuthorizedMenuXml(MenuItem menuItem, StringBuffer buf, boolean noAuth ) throws ClassNotFoundException{
 
-		NodeList childNodes = siteNode.getChildNodes();
-		Collection childSites = new ArrayList();
+		List<MenuItem> childItems = menuItem.getChildItems();
 		Element propertiesNode = null;
 		boolean accessible = true;
 		
-		for(int i = 0; i < childNodes.getLength(); i++){
-			Node node = childNodes.item(i);
+		//TODO:ACL
+		/*
+		for(MenuItem item: childItems){
+			Node node = childItems.item(i);
 			if("auths".equals(node.getNodeName()) && !noAuth ){
 				accessible = false;
 				Element rolesEl = (Element)node;
@@ -1160,46 +1156,39 @@ public class SiteAggregationMenuService {
 		if(!accessible){
 			return;
 		}
-		
-		buf.append("<").append(siteNode.getNodeName());
-		NamedNodeMap attrs = siteNode.getAttributes();
-		for(int i = 0; i < attrs.getLength(); i++){
-			Attr attr = (Attr)attrs.item(i);
-			buf.append(" ").append(attr.getName()).append("=\"").append(XmlUtil.escapeXmlEntities(attr.getValue())).append("\"");
+		*/
+		String menuElName = ( menuItem.getFkParent() == null ? "site-top" : "site" );
+		buf.append("<" + menuElName);
+		buf.append(" id=\"" + menuItem.getId() + "\"");
+		buf.append(" title=\"" + menuItem.getTitle() + "\"");
+		if(menuItem.getHref() != null)
+			buf.append(" href=\"" + menuItem.getHref() + "\"");
+		GadgetInstance gadgetInstance = menuItem.getFkGadgetInstance();
+		if(gadgetInstance != null){
+			buf.append(" ginstid=\"" + gadgetInstance.getId() + "\"");
+			buf.append(" type=\"" + gadgetInstance.getType() + "\"");
 		}
 		buf.append(">\n");
-
-		if(propertiesNode != null){
-			NodeList properties = propertiesNode.getElementsByTagName("property");
+		
+		if(gadgetInstance != null && !gadgetInstance.getGadgetInstanceUserPrefs().isEmpty()){
 			buf.append("<properties>\n");
-			for(int i = 0; i < properties.getLength(); i++){
-				Element property = (Element)properties.item(i);
-				setElement2Buf(property, buf);
+			for(GadgetInstanceUserpref userPref: gadgetInstance.getGadgetInstanceUserPrefs()){
+				setElement2Buf(userPref, buf);
 			}
 			buf.append("</properties>\n");
 		}
 		
-		for(Iterator it = childSites.iterator(); it.hasNext();){
-			Element site = (Element)it.next();
-			buildAuthorizedMenuXml(site, buf, noAuth );
-		}
+		for(MenuItem item: menuItem.getChildItems())
+			buildAuthorizedMenuXml(item, buf, noAuth );
 		
-		buf.append("</").append(siteNode.getNodeName()).append(">\n");
+		buf.append("</").append(menuElName).append(">\n");
 		
 	}
 	
-	private static void setElement2Buf(Element xml, StringBuffer buf){
-		buf.append("<").append(xml.getNodeName());
-		NamedNodeMap attrs = xml.getAttributes();
-		for(int i = 0; i < attrs.getLength(); i++){
-			Attr attr = (Attr)attrs.item(i);
-			buf.append(" ").append(attr.getName()).append("=\"").append(XmlUtil.escapeXmlEntities(attr.getValue())).append("\"");
-		}
-		if(xml.hasChildNodes()){
-			buf.append(">").append(XmlUtil.escapeXmlEntities(xml.getFirstChild().getNodeValue())).append("</").append(xml.getNodeName()).append(">");
-		}else{
-			buf.append("/>\n");
-		}
+	private static void setElement2Buf(GadgetInstanceUserpref userPref, StringBuffer buf){
+		buf.append("<property name=\"" + userPref.getId().getName() + "\">");
+		buf.append(userPref.getValue());
+		buf.append("</property>");
 	}
 	
 	private static Element getFirstChildElementByName(Element el, String name){
