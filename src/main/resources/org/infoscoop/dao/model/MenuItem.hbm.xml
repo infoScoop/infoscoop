@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="MenuItem"
-		table="is_menu_items"
+		table="IS_MENU_ITEMS"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id

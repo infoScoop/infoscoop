@@ -63,7 +63,7 @@ public abstract class BaseGadgetInstance  implements Serializable {
 	private java.lang.String href;
 
 	// collections
-	private java.util.Set<org.infoscoop.dao.model.GadgetInstanceUserpref> gadgetInstanceUserPrefs;
+	private java.util.Set<org.infoscoop.dao.model.GadgetInstanceUserpref> gadgetInstanceUserPrefs = new java.util.TreeSet<org.infoscoop.dao.model.GadgetInstanceUserpref>();
 
 
 

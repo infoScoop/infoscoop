@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="GadgetInstanceUserpref"
-		table="is_gadget_instance_userprefs"
+		table="IS_GADGET_INSTANCE_USERPREFS"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<composite-id name="Id" class="GadgetInstanceUserprefPK">

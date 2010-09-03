@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="GadgetInstance"
-		table="is_gadget_instances"
+		table="IS_GADGET_INSTANCES"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id

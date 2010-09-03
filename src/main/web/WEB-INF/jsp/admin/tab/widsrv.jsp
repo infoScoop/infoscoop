@@ -19,11 +19,11 @@
 			"tabId":"${tabTemplate.id}",
 			"href":"${gadget.fkGadgetInstance.href}",
 			"title":"${gadget.fkGadgetInstance.title}",
-			"siblingId:"",
-			"type":${gadget.fkGadgetInstance.type}",
+			"siblingId":"",
+			"type":"${gadget.fkGadgetInstance.type}",
 			"property":{
-				<c:forEach items="${gadget.fkGadgetInstance.gadgetInstanceUserpref}" var="userPref">
-					"${userPref.name}": "${userPref.value}"
+				<c:forEach items="${gadget.fkGadgetInstance.gadgetInstanceUserPrefs}" var="userPref">
+					"${userPref.id.name}": "${userPref.value}"
 				</c:forEach>
 			}
 		}
