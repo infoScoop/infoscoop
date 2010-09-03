@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<ul>
 <c:forEach var="item" items="${items}">
 <c:set var="hasChild" value="${fn:length(item.childItems) > 0}"/>
 <li <c:if test="${hasChild}">class="jstree-closed"</c:if> id="${item.id}" type="${item.fkGadgetInstance.type}">
@@ -19,3 +20,4 @@
 	</c:if>
 </li>
 </c:forEach>
+</ul>
