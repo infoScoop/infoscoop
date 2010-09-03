@@ -12,7 +12,7 @@ import java.io.Serializable;
  *  table="is_gadget_instance_userprefs"
  */
 
-public abstract class BaseGadgetInstanceUserpref  implements Serializable,Comparable{
+public abstract class BaseGadgetInstanceUserpref  implements Serializable{
 
 	public static String REF = "GadgetInstanceUserpref";
 	public static String PROP_VALUE = "Value";
@@ -122,13 +122,6 @@ public abstract class BaseGadgetInstanceUserpref  implements Serializable,Compar
 			}
 		}
 		return this.hashCode;
-	}
-
-
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		return arg0.hashCode() - this.hashCode();
 	}
 
 	public String toString () {
