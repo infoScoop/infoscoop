@@ -43,7 +43,7 @@ function selectItem(id){
 function getSelectedItem(){
 	return $("#menu_tree").jstree("get_selected")[0];
 }
-function selectGadgetInstance(isTop){
+function selectGadgetInstance(e, a, isTop){
 	if(isTop)
 		$("#menu_tree").jstree("deselect_all");
 	var selectedItem = getSelectedItem();
@@ -308,7 +308,7 @@ $(function () {
 <div id="menu">
 	<div id="menu_left">
 		<div id="menu_command">
-			<a onclick="selectGadgetInstance(true)">トップメニューを追加</a>
+			<a onclick="selectGadgetInstance(event, this, true)">トップメニューを追加</a>
 		</div>
 		<div id="menu_tree">
 			
