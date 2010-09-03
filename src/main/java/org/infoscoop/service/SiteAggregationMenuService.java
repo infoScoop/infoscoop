@@ -1170,13 +1170,13 @@ public class SiteAggregationMenuService {
 		}
 		buf.append(">\n");
 		
+		buf.append("<properties>\n");
 		if(gadgetInstance != null && !gadgetInstance.getGadgetInstanceUserPrefs().isEmpty()){
-			buf.append("<properties>\n");
 			for(GadgetInstanceUserpref userPref: gadgetInstance.getGadgetInstanceUserPrefs()){
 				setElement2Buf(userPref, buf);
 			}
-			buf.append("</properties>\n");
 		}
+		buf.append("</properties>\n");
 		
 		for(MenuItem item: menuItem.getChildItems())
 			buildAuthorizedMenuXml(item, buf, noAuth );
