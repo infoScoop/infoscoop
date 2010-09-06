@@ -21,4 +21,5 @@
 	<bean id="AddLog" singleton="false" class="org.infoscoop.command.AddLog" />
 	
 	<bean id="managerAddWidget" singleton="false" class="org.infoscoop.manager.controller.TabController.AddWidget" />
+	<bean id="managerUpdateWidgetLocation" singleton="false" class="org.infoscoop.manager.controller.TabController.UpdateWidgetLocation" />
 </beans>

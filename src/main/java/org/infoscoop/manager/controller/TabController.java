@@ -2,7 +2,8 @@ package org.infoscoop.manager.controller;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -24,8 +25,6 @@ import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
 import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.GadgetInstance;
-import org.infoscoop.dao.model.GadgetInstanceUserpref;
-import org.infoscoop.dao.model.GadgetInstanceUserprefPK;
 import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplateParsonalizeGadget;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
@@ -196,11 +195,30 @@ public class TabController {
 		String uid = (String) request.getSession().getAttribute("Uid");
 		model.addAttribute("uid", uid);
 		model.addAttribute(tab);
-		//TODO:
-		for(TabTemplateParsonalizeGadget g: tab.getTabTemplateParsonalizeGadgets()){
-			g.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
+		
+		Collection<TabTemplateParsonalizeGadget> firstOfColumn = new ArrayList<TabTemplateParsonalizeGadget>();
+		Map<Integer, TabTemplateParsonalizeGadget> gadgetMap = new HashMap<Integer, TabTemplateParsonalizeGadget>();
+		for(TabTemplateParsonalizeGadget gadget : tab.getTabTemplateParsonalizeGadgets()){
+			gadget.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
+			if(gadget.getSibling() == null){
+				firstOfColumn.add(gadget);
+			}else{
+				gadgetMap.put(gadget.getSibling().getId(), gadget);
+			}
 		}
+		Collection<TabTemplateParsonalizeGadget> gadgets = new ArrayList<TabTemplateParsonalizeGadget>();
+		for(TabTemplateParsonalizeGadget gadget : firstOfColumn){
+			addNextSibling(gadget,gadgets,gadgetMap);
+		}
+		model.addAttribute("gadgets", gadgets);	
 			
+	}
+	
+	private void addNextSibling(TabTemplateParsonalizeGadget gadget, Collection<TabTemplateParsonalizeGadget> gadgets, Map<Integer, TabTemplateParsonalizeGadget> gadgetMap){
+		gadgets.add(gadget);
+		TabTemplateParsonalizeGadget nextSibling = gadgetMap.get(gadget.getId());
+		if(nextSibling != null)
+			addNextSibling(nextSibling,gadgets,gadgetMap);
 	}
 	
 	@RequestMapping
@@ -320,7 +338,6 @@ public class TabController {
 	        String targetColumn = super.commandXml.getAttribute("targetColumn").trim();
 	        String parent = super.commandXml.getAttribute("parent").trim();
 	        String sibling = super.commandXml.getAttribute("sibling").trim();
-	        String menuid = super.commandXml.getAttribute("menuId").trim();
 	        String ginstid = super.commandXml.getAttribute("ginstid").trim();
 
 	        if(log.isInfoEnabled()){
@@ -344,28 +361,13 @@ public class TabController {
 	                    log, commandId, false, reason);
 	            return;
 	        }
-	        
-	        
-	        // convert the JSON to XML.
-	        String confJSONStr = super.commandXml.getAttribute("widgetConf");
-	        JSONObject confJson = null;
-	        try {
-	    		confJson = new JSONObject(confJSONStr);
-	    	} catch (Exception e) {
-	    		log.error("", e);
-	            String reason = "The information of widget is unjust.";
-	            log.error("Failed to execute the command of AddWidget" + reason);
-	            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
-	                    log, commandId, false, reason);
-	            throw e;
-			}
-	    	
+	        	    	
 	    	try{
-	    		TabTemplateParsonalizeGadget gadget = new TabTemplateParsonalizeGadget();
-	    		
 	    		TabTemplateDAO tabDAO = TabTemplateDAO.newInstance();
 	    		TabTemplate tab = tabDAO.get(tabId);
 	    		
+	    		TabTemplateParsonalizeGadget gadget = new TabTemplateParsonalizeGadget();
+	    			    		
 	    		TabTemplateParsonalizeGadget nextSibling = null;
 	        	if( parent != null && !"".equals( parent )) {
 	        		//newNextSibling = tabDAO.getSubWidgetBySibling( uid,tabId,sibling,parent,widgetId );
@@ -387,16 +389,9 @@ public class TabController {
 	    		}
 	    		gadget.setSibling(nextSibling);;
 	    		
-	    		/*
-	    		if (confJson.has("ignoreHeader"))
-	    			widget.setIgnoreHeader(confJson.getBoolean("ignoreHeader"));
-	    		if (confJson.has("noBorder"))
-	    			widget.setIgnoreHeader(confJson.getBoolean("noBorder"));
-				*/
 	    		GadgetInstance ginst = GadgetInstanceDAO.newInstance().get(Integer.valueOf(ginstid));
 	    		
 	    		gadget.setFkGadgetInstance(ginst);
-	    		//GadgetInstanceDAO.newInstance().save(ginst);
 	    		
 	    		tab.getTabTemplateParsonalizeGadgets().add(gadget);
 	    		gadget.setFkTabTemplate(tab);
@@ -415,6 +410,111 @@ public class TabController {
 		}
 		
 	}
+	
+	public static class UpdateWidgetLocation extends XMLCommandProcessor {
+
+	    private Log log = LogFactory.getLog(this.getClass());
+
+	    /**
+	     * create a new object of UpdateWidgetLocation.
+	     */
+	    public UpdateWidgetLocation() {
+
+	    }
+
+	    /**
+	     * udpate the information of the widget's location.
+	     * 
+	     * @param uid
+	     *            a userId that is target of operation.
+	     * @param el
+	     *             The element of request command. Attributes of "widgetId", "targetColumn", and "sibling" are necessary for the Element. <BR>
+	     *            <BR>
+	     *             example of input element：<BR>
+	     * 
+	     * <pre>
+	     *  &lt;command type=&quot;UpdateWidgetLocation&quot; id=&quot;UpdateWidgetLocation_w_4&quot; widgetId=&quot;w_4&quot; targetColumn=&quot;3&quot; sibling=&quot;w_1&quot;/&gt;
+	     * </pre>
+	     */
+
+		public void execute() {
+
+	        String commandId = super.commandXml.getAttribute("id").trim();
+	        String widgetId = super.commandXml.getAttribute("widgetId").trim();
+	        String tabId = super.commandXml.getAttribute("tabId").trim();
+	        String targetColumn = super.commandXml.getAttribute("targetColumn").trim();
+	        String parentId = super.commandXml.getAttribute("parent").trim();
+	        String siblingId = super.commandXml.getAttribute("sibling").trim();
+	        
+	        if(log.isInfoEnabled()){
+	        	String logMsg = "uid:[" + uid + "]: processXML: tabId:[" + tabId
+						+ "], widgetId:[" + widgetId + "], targetColumn:["
+						+ targetColumn + "], parent:[" + parentId + "], sibling:[" + siblingId + "]";
+	        	log.info(logMsg);
+	        }
+	        if (widgetId == null || widgetId == "") {
+	            String reason = "It's an unjust widgetId．widgetId:[" + widgetId + "]";
+	            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+	                    log, commandId, false, reason);
+	            return;
+	        }
+
+	        if (targetColumn != null && !"".equals(targetColumn) && !XMLCommandUtil.isNumberValue(targetColumn)) {
+	            String reason = "The value of column is unjust．targetColumn:[" + targetColumn + "]";
+	            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+	                    log, commandId, false, reason);
+	            return;
+	        }
+
+    		TabTemplateDAO tabDAO = TabTemplateDAO.newInstance();
+    		TabTemplate tab = tabDAO.get(tabId);
+    		
+	        TabTemplateParsonalizeGadget gadget = tab.getTabTemplateParsonalizeGadget(widgetId);
+	        if (gadget == null) {
+	            String reason = "Not found the information of the widget(wigetID) that is origin of movement．widgetId:["
+	                    + widgetId + "]";
+	            this.result =  XMLCommandUtil.createResultElement(uid, "processXML",
+	                    log, commandId, false, reason);
+	            return;
+	        }
+	        
+	        TabTemplateParsonalizeGadget oldNextSibling = tab.getTabTemplateParsonalizeGadgetBySibling( gadget.getId() );            	
+	        if(oldNextSibling != null){
+	        	oldNextSibling.setSibling(gadget.getSibling());
+	        }
+
+	        TabTemplateParsonalizeGadget newNextSibling;
+	        if(parentId != null && !"".equals(parentId)){
+				newNextSibling = tab.getSubWidgetBySibling( siblingId, parentId );
+			} else {
+				newNextSibling = tab.getNextSiblingOnColumn(siblingId,Integer.valueOf( targetColumn ) );
+			}
+	        
+	        if(newNextSibling != null){
+	        	newNextSibling.setSibling(gadget);
+	        	log.info("Replace siblingId of [" + newNextSibling.getId() + "] to " + gadget.getId());
+	        }
+	        
+	        TabTemplateParsonalizeGadget sibling = tab.getTabTemplateParsonalizeGadget(siblingId);
+	        
+	        gadget.setSibling(sibling);
+	      
+	        try{
+	        	gadget.setColumnNum(new Integer(targetColumn));
+	        }catch(NumberFormatException e){
+	        	gadget.setColumnNum(null);
+	        }
+
+	        /* TODO:
+	        if(parentId != null)
+	        	gadget.setParent(parent);
+	        */
+	        this.result = XMLCommandUtil.createResultElement(uid, "processXML", log,
+	                commandId, true, null);
+
+		}
+	}
+
 	
 	public class AddMultiWidget extends XMLCommandProcessor{
 
