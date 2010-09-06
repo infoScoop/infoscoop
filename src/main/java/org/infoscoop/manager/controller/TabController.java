@@ -321,6 +321,7 @@ public class TabController {
 	        String parent = super.commandXml.getAttribute("parent").trim();
 	        String sibling = super.commandXml.getAttribute("sibling").trim();
 	        String menuid = super.commandXml.getAttribute("menuId").trim();
+	        String ginstid = super.commandXml.getAttribute("ginstid").trim();
 
 	        if(log.isInfoEnabled()){
 	        	log.info("uid:[" + uid + "]: processXML: widgetId:[" + widgetId
@@ -360,7 +361,6 @@ public class TabController {
 			}
 	    	
 	    	try{
-	    		GadgetInstance ginst = new GadgetInstance();
 	    		TabTemplateParsonalizeGadget gadget = new TabTemplateParsonalizeGadget();
 	    		
 	    		TabTemplateDAO tabDAO = TabTemplateDAO.newInstance();
@@ -386,31 +386,18 @@ public class TabController {
 	    			gadget.setColumnNum(new Integer(targetColumn));
 	    		}
 	    		gadget.setSibling(nextSibling);;
-	    		if(confJson.has("title"))
-	    			ginst.setTitle(confJson.getString("title"));
-	    		if(confJson.has("href"))
-	    			ginst.setHref(confJson.getString("href"));
-	    		if(confJson.has("type"))
-	    			ginst.setType(confJson.getString("type"));
 	    		
-	    		if(confJson.has("property")){
-	    			JSONObject userPrefs = confJson.getJSONObject("property");
-	    			for(Iterator<Object> keys = userPrefs.keys();keys.hasNext();){
-	    				String name = (String) keys.next();
-	    				String value = userPrefs.getString(name);
-	    				GadgetInstanceUserpref pref = new GadgetInstanceUserpref(new GadgetInstanceUserprefPK(ginst, name));
-	    				pref.setValue(value);
-	    				ginst.getGadgetInstanceUserPrefs().add(pref);
-	    			}
-	    		}
 	    		/*
 	    		if (confJson.has("ignoreHeader"))
 	    			widget.setIgnoreHeader(confJson.getBoolean("ignoreHeader"));
 	    		if (confJson.has("noBorder"))
 	    			widget.setIgnoreHeader(confJson.getBoolean("noBorder"));
 				*/
+	    		GadgetInstance ginst = GadgetInstanceDAO.newInstance().get(Integer.valueOf(ginstid));
+	    		
 	    		gadget.setFkGadgetInstance(ginst);
 	    		//GadgetInstanceDAO.newInstance().save(ginst);
+	    		
 	    		tab.getTabTemplateParsonalizeGadgets().add(gadget);
 	    		gadget.setFkTabTemplate(tab);
 	    		tabDAO.save(tab);

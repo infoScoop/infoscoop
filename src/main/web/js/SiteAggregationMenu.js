@@ -2115,6 +2115,7 @@ IS_SiteAggregationMenu.getConfigurationFromMenuItem = function(menuItem, columnN
 	widgetConf = IS_WidgetsContainer.WidgetConfiguration.getConfigurationJSONObject(
 		menuItem.type, w_id, columnNum, menuItem.title, menuItem.href, menuItem.properties);
 	widgetConf.menuId = menuItem.id;
+	widgetConf.ginstid =  menuItem.ginstid;
 	
 	return widgetConf;
 }

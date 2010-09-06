@@ -270,6 +270,10 @@ public class MakeMenuFilter extends ProxyFilter {
 				if(alert != null){
 					menuItemArray.append(",alert:").append(alert);
 				}
+				String gInstId = attributes.getValue("ginstid");
+				if(gInstId != null){
+					menuItemArray.append(",ginstid:").append(gInstId);
+				}
 				if(parentId != null){
 					menuItemArray.append(",parentId:").append(JSONObject.quote(parentId));
 				}

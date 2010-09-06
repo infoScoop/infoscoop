@@ -288,7 +288,7 @@ IS_Commands.RemoveTabCommand.prototype.parseResponse = function(docEl){
 /**
  * AddWidgetCommand
  */
-IS_Commands.AddWidgetCommand = function(tabId, owner, targetColumn, sibling, widgetConf, parentId, menuId){
+IS_Commands.AddWidgetCommand = function(tabId, owner, targetColumn, sibling, widgetConf, parentId, menuId, ginstid){
 	this.obj = owner;
 	this.type = "AddWidget";
 	this.tabId = tabId;
@@ -296,6 +296,7 @@ IS_Commands.AddWidgetCommand = function(tabId, owner, targetColumn, sibling, wid
 	this.targetColumn = targetColumn;
 	this.sibling = sibling;
 	this.menuId = menuId || "";
+	if(ginstid)this.ginstid  = ginstid;
 	
 	this.widgetId = IS_Portal.getTrueId(owner.id);
 	this.widgetConf = widgetConf;
@@ -310,6 +311,7 @@ IS_Commands.AddWidgetCommand.prototype.toRequestString = function(){
 		id:this.id,
 		parent:this.parentId,
 		menuId:this.menuId,
+		ginstid:this.ginstid,
 		tabId:this.tabId,
 		widgetId:this.widgetId,
 		targetColumn:this.targetColumn,

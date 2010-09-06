@@ -2067,7 +2067,7 @@ IS_Widget.addWidgetCommand = function(owner){
 	}
 	var widgetConf = owner.widgetConf;
 	
-	var cmd = new IS_Commands.AddWidgetCommand(owner.tabId.substring(3), owner, owner.widgetConf.column, sibling, IS_Widget.getWidgetConfJSONString(widgetConf), widgetConf.parentId, widgetConf.menuId);
+	var cmd = new IS_Commands.AddWidgetCommand(owner.tabId.substring(3), owner, owner.widgetConf.column, sibling, IS_Widget.getWidgetConfJSONString(widgetConf), widgetConf.parentId, widgetConf.menuId, widgetConf.ginstid);
 	IS_Request.CommandQueue.addCommand(cmd);
 	
 	if(owner.parent){
