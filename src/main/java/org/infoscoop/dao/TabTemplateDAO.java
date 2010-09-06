@@ -80,5 +80,9 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 	public void delete(TabTemplate tab) {
 		super.getHibernateTemplate().delete(tab);
 	}
-	
+
+	public void deleteParsonalizeGadget(Integer id) {
+		super.getHibernateTemplate().bulkUpdate("delete from TabTemplateParsonalizeGadget where id = ?", new Object[]{id});
+	}
+
 }

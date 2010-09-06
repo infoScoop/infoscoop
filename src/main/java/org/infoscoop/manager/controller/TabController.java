@@ -20,15 +20,20 @@ import org.infoscoop.command.XMLCommandProcessor;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetInstanceDAO;
+import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
 import org.infoscoop.dao.WidgetConfDAO;
+import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.GadgetInstance;
+import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplateParsonalizeGadget;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
+import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
+import org.infoscoop.service.AuthCredentialService;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
 import org.infoscoop.util.SpringUtil;
@@ -515,6 +520,63 @@ public class TabController {
 		}
 	}
 
+	public static class RemoveWidget extends XMLCommandProcessor {
+
+	    private Log log = LogFactory.getLog(this.getClass());
+
+	    public RemoveWidget() {
+	    }
+	    
+	    public void execute() throws Exception{
+		 	
+	    	String commandId = super.commandXml.getAttribute("id").trim();
+	        String tabId = super.commandXml.getAttribute("tabId").trim();
+	        String widgetId = super.commandXml.getAttribute("widgetId").trim();
+	        String parent = super.commandXml.getAttribute("parent").trim();
+	        
+	        if(log.isInfoEnabled()){
+	        	String logMsg = "uid:[" + uid + "]: processXML: tabId:[" + tabId + "], widgetId:[" + widgetId + "], parent:[" + parent + "]";
+	        	log.info(logMsg);
+	        }
+	        if (widgetId == null || widgetId == "") {
+	        	String reason = "It's an unjust widgetId．widgetId:[" + widgetId + "]";
+	            this.result =  XMLCommandUtil.createResultElement(uid, "processXML",
+	                    log, commandId, false, reason);
+	            return;
+	        }
+	        
+	        try{
+	        	TabTemplateDAO tabDAO = TabTemplateDAO.newInstance();
+	        	TabTemplate tab = tabDAO.get(tabId);
+	        	//TabTemplateParsonalizeGadget widget =tab.removeTabTemplateParsonalizeGadget(widgetId);
+	        	TabTemplateParsonalizeGadget widget =tab.removeTabTemplateParsonalizeGadget(widgetId);
+	        	
+	        	if(widget == null ){
+	                this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+	                        log, commandId, false, "Failed to delete the widget. Not found the widget to delete.");
+	                return;
+	        	}
+	        	
+	        	//TODO:check whether the widget is null or not;
+	        	TabTemplateParsonalizeGadget nextSibling = tab.getNextSibling(widgetId);
+	        	if(nextSibling != null){
+	        		nextSibling.setSibling(widget.getSibling());
+	        	}
+	        	tabDAO.deleteParsonalizeGadget(widget.getId());
+	        		        	
+	        } catch (Exception e) {			
+	            String reason = "Failed to delete the widget.";
+	            log.error("Failed to execute the command of RemoveWidget", e);
+	            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+	                    log, commandId, false, reason);
+	            
+	            throw e;
+			}
+	        this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+	                log, commandId, true, null);
+	    }
+	    
+	}
 	
 	public class AddMultiWidget extends XMLCommandProcessor{
 

@@ -120,5 +120,20 @@ public class TabTemplate extends BaseTabTemplate {
 		return null;
 	}
 
+	public TabTemplateParsonalizeGadget removeTabTemplateParsonalizeGadget(String widgetId) {
+		TabTemplateParsonalizeGadget gadget = this.getTabTemplateParsonalizeGadget(widgetId);
+		this.getTabTemplateParsonalizeGadgets().remove(gadget);
+		return gadget;
+	}
+
+	public TabTemplateParsonalizeGadget getNextSibling(String siblingId) {
+		for(TabTemplateParsonalizeGadget gadget : super.getTabTemplateParsonalizeGadgets()){
+			if(gadget.getSibling() == null)continue;
+			if( gadget.getSibling().getId().equals(Integer.valueOf(siblingId)))
+				return gadget;
+		}
+		return null;
+	}
+
 
 }
