@@ -23,9 +23,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
-import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.TabTemplate;
-import org.infoscoop.dao.model.TabTemplateParsonalizeGadget;
+import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -67,14 +66,14 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().saveOrUpdate(item);
 	}
 
-	public TabTemplateParsonalizeGadget getColumnWidgetBySibling(String tabId,
+	public TabTemplatePersonalizeGadget getColumnWidgetBySibling(String tabId,
 			String siblingId, Integer columnNum) {
 		
-		return (TabTemplateParsonalizeGadget) super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(TabTemplateParsonalizeGadget.class)
-				.add(Expression.eq(TabTemplateParsonalizeGadget.PROP_FK_TAB_TEMPLATE, tabId))
-				.add(Expression.eq(TabTemplateParsonalizeGadget.PROP_ID, siblingId))
-				.add(Expression.eq(TabTemplateParsonalizeGadget.PROP_COLUMN_NUM, columnNum))).get(0);
+		return (TabTemplatePersonalizeGadget) super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(TabTemplatePersonalizeGadget.class)
+				.add(Expression.eq(TabTemplatePersonalizeGadget.PROP_FK_TAB_TEMPLATE, tabId))
+				.add(Expression.eq(TabTemplatePersonalizeGadget.PROP_ID, siblingId))
+				.add(Expression.eq(TabTemplatePersonalizeGadget.PROP_COLUMN_NUM, columnNum))).get(0);
 	}
 
 	public void delete(TabTemplate tab) {
@@ -82,7 +81,7 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 	}
 
 	public void deleteParsonalizeGadget(Integer id) {
-		super.getHibernateTemplate().bulkUpdate("delete from TabTemplateParsonalizeGadget where id = ?", new Object[]{id});
+		super.getHibernateTemplate().bulkUpdate("delete from TabTemplatePersonalizeGadget where id = ?", new Object[]{id});
 	}
 
 }

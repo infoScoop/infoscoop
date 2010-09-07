@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_tab_templates table.
+ * This is an object that contains data related to the IS_TAB_TEMPLATES table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_tab_templates"
+ *  table="IS_TAB_TEMPLATES"
  */
 
 public abstract class BaseTabTemplate  implements Serializable {
@@ -63,13 +63,13 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 	// fields
 	private java.lang.String name;
-	private java.lang.Integer published = Integer.valueOf(0);
+	private java.lang.Integer published;
 	private java.lang.Integer accessLevel;
 	private java.lang.String layout;
 	private java.lang.Integer temp;
 
 	// collections
-	private java.util.Set<org.infoscoop.dao.model.TabTemplateParsonalizeGadget> tabTemplateParsonalizeGadgets;
+	private java.util.Set<org.infoscoop.dao.model.TabTemplatePersonalizeGadget> tabTemplatePersonalizeGadgets;
 	private java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> tabTemplateStaticGadgets;
 
 
@@ -182,23 +182,23 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TabTemplateParsonalizeGadgets
+	 * Return the value associated with the column: TabTemplatePersonalizeGadgets
 	 */
-	public java.util.Set<org.infoscoop.dao.model.TabTemplateParsonalizeGadget> getTabTemplateParsonalizeGadgets () {
-		return tabTemplateParsonalizeGadgets;
+	public java.util.Set<org.infoscoop.dao.model.TabTemplatePersonalizeGadget> getTabTemplatePersonalizeGadgets () {
+		return tabTemplatePersonalizeGadgets;
 	}
 
 	/**
-	 * Set the value related to the column: TabTemplateParsonalizeGadgets
-	 * @param tabTemplateParsonalizeGadgets the TabTemplateParsonalizeGadgets value
+	 * Set the value related to the column: TabTemplatePersonalizeGadgets
+	 * @param tabTemplatePersonalizeGadgets the TabTemplatePersonalizeGadgets value
 	 */
-	public void setTabTemplateParsonalizeGadgets (java.util.Set<org.infoscoop.dao.model.TabTemplateParsonalizeGadget> tabTemplateParsonalizeGadgets) {
-		this.tabTemplateParsonalizeGadgets = tabTemplateParsonalizeGadgets;
+	public void setTabTemplatePersonalizeGadgets (java.util.Set<org.infoscoop.dao.model.TabTemplatePersonalizeGadget> tabTemplatePersonalizeGadgets) {
+		this.tabTemplatePersonalizeGadgets = tabTemplatePersonalizeGadgets;
 	}
 
-	public void addToTabTemplateParsonalizeGadgets (org.infoscoop.dao.model.TabTemplateParsonalizeGadget tabTemplateParsonalizeGadget) {
-		if (null == getTabTemplateParsonalizeGadgets()) setTabTemplateParsonalizeGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateParsonalizeGadget>());
-		getTabTemplateParsonalizeGadgets().add(tabTemplateParsonalizeGadget);
+	public void addToTabTemplatePersonalizeGadgets (org.infoscoop.dao.model.TabTemplatePersonalizeGadget tabTemplatePersonalizeGadget) {
+		if (null == getTabTemplatePersonalizeGadgets()) setTabTemplatePersonalizeGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplatePersonalizeGadget>());
+		getTabTemplatePersonalizeGadgets().add(tabTemplatePersonalizeGadget);
 	}
 
 

@@ -20,20 +20,15 @@ import org.infoscoop.command.XMLCommandProcessor;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetInstanceDAO;
-import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
 import org.infoscoop.dao.WidgetConfDAO;
-import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.GadgetInstance;
-import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.dao.model.TabTemplate;
-import org.infoscoop.dao.model.TabTemplateParsonalizeGadget;
+import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
-import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
-import org.infoscoop.service.AuthCredentialService;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
 import org.infoscoop.util.SpringUtil;
@@ -201,9 +196,9 @@ public class TabController {
 		model.addAttribute("uid", uid);
 		model.addAttribute(tab);
 		
-		Collection<TabTemplateParsonalizeGadget> firstOfColumn = new ArrayList<TabTemplateParsonalizeGadget>();
-		Map<Integer, TabTemplateParsonalizeGadget> gadgetMap = new HashMap<Integer, TabTemplateParsonalizeGadget>();
-		for(TabTemplateParsonalizeGadget gadget : tab.getTabTemplateParsonalizeGadgets()){
+		Collection<TabTemplatePersonalizeGadget> firstOfColumn = new ArrayList<TabTemplatePersonalizeGadget>();
+		Map<Integer, TabTemplatePersonalizeGadget> gadgetMap = new HashMap<Integer, TabTemplatePersonalizeGadget>();
+		for(TabTemplatePersonalizeGadget gadget : tab.getTabTemplatePersonalizeGadgets()){
 			gadget.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
 			if(gadget.getSibling() == null){
 				firstOfColumn.add(gadget);
@@ -211,17 +206,17 @@ public class TabController {
 				gadgetMap.put(gadget.getSibling().getId(), gadget);
 			}
 		}
-		Collection<TabTemplateParsonalizeGadget> gadgets = new ArrayList<TabTemplateParsonalizeGadget>();
-		for(TabTemplateParsonalizeGadget gadget : firstOfColumn){
+		Collection<TabTemplatePersonalizeGadget> gadgets = new ArrayList<TabTemplatePersonalizeGadget>();
+		for(TabTemplatePersonalizeGadget gadget : firstOfColumn){
 			addNextSibling(gadget,gadgets,gadgetMap);
 		}
 		model.addAttribute("gadgets", gadgets);	
 			
 	}
 	
-	private void addNextSibling(TabTemplateParsonalizeGadget gadget, Collection<TabTemplateParsonalizeGadget> gadgets, Map<Integer, TabTemplateParsonalizeGadget> gadgetMap){
+	private void addNextSibling(TabTemplatePersonalizeGadget gadget, Collection<TabTemplatePersonalizeGadget> gadgets, Map<Integer, TabTemplatePersonalizeGadget> gadgetMap){
 		gadgets.add(gadget);
-		TabTemplateParsonalizeGadget nextSibling = gadgetMap.get(gadget.getId());
+		TabTemplatePersonalizeGadget nextSibling = gadgetMap.get(gadget.getId());
 		if(nextSibling != null)
 			addNextSibling(nextSibling,gadgets,gadgetMap);
 	}
@@ -371,9 +366,9 @@ public class TabController {
 	    		TabTemplateDAO tabDAO = TabTemplateDAO.newInstance();
 	    		TabTemplate tab = tabDAO.get(tabId);
 	    		
-	    		TabTemplateParsonalizeGadget gadget = new TabTemplateParsonalizeGadget();
+	    		TabTemplatePersonalizeGadget gadget = new TabTemplatePersonalizeGadget();
 	    			    		
-	    		TabTemplateParsonalizeGadget nextSibling = null;
+	    		TabTemplatePersonalizeGadget nextSibling = null;
 	        	if( parent != null && !"".equals( parent )) {
 	        		//newNextSibling = tabDAO.getSubWidgetBySibling( uid,tabId,sibling,parent,widgetId );
 	        		nextSibling = null;
@@ -388,17 +383,17 @@ public class TabController {
 	 //       		WidgetDAO.newInstance().updateWidget(uid, tabId, newNextSibling);
 	        	}
 	        	
-	    		
+	    		gadget.setWidgetId(widgetId);
 	    		if(targetColumn != null && !"".equals(targetColumn)){
 	    			gadget.setColumnNum(new Integer(targetColumn));
 	    		}
-	    		gadget.setSibling(nextSibling);;
+	    		gadget.setSibling(nextSibling);
 	    		
 	    		GadgetInstance ginst = GadgetInstanceDAO.newInstance().get(Integer.valueOf(ginstid));
 	    		
 	    		gadget.setFkGadgetInstance(ginst);
 	    		
-	    		tab.getTabTemplateParsonalizeGadgets().add(gadget);
+	    		tab.getTabTemplatePersonalizeGadgets().add(gadget);
 	    		gadget.setFkTabTemplate(tab);
 	    		tabDAO.save(tab);
 	    	} catch (Exception e) {
@@ -474,7 +469,7 @@ public class TabController {
     		TabTemplateDAO tabDAO = TabTemplateDAO.newInstance();
     		TabTemplate tab = tabDAO.get(tabId);
     		
-	        TabTemplateParsonalizeGadget gadget = tab.getTabTemplateParsonalizeGadget(widgetId);
+	        TabTemplatePersonalizeGadget gadget = tab.getPersonalizeGadgetByWidgetId(widgetId);
 	        if (gadget == null) {
 	            String reason = "Not found the information of the widget(wigetID) that is origin of movement．widgetId:["
 	                    + widgetId + "]";
@@ -483,12 +478,12 @@ public class TabController {
 	            return;
 	        }
 	        
-	        TabTemplateParsonalizeGadget oldNextSibling = tab.getTabTemplateParsonalizeGadgetBySibling( gadget.getId() );            	
+	        TabTemplatePersonalizeGadget oldNextSibling = tab.getPersonalizeGadgetBySibling( gadget.getWidgetId());            	
 	        if(oldNextSibling != null){
 	        	oldNextSibling.setSibling(gadget.getSibling());
 	        }
 
-	        TabTemplateParsonalizeGadget newNextSibling;
+	        TabTemplatePersonalizeGadget newNextSibling;
 	        if(parentId != null && !"".equals(parentId)){
 				newNextSibling = tab.getSubWidgetBySibling( siblingId, parentId );
 			} else {
@@ -500,7 +495,7 @@ public class TabController {
 	        	log.info("Replace siblingId of [" + newNextSibling.getId() + "] to " + gadget.getId());
 	        }
 	        
-	        TabTemplateParsonalizeGadget sibling = tab.getTabTemplateParsonalizeGadget(siblingId);
+	        TabTemplatePersonalizeGadget sibling = tab.getPersonalizeGadgetByWidgetId(siblingId);
 	        
 	        gadget.setSibling(sibling);
 	      
@@ -548,8 +543,8 @@ public class TabController {
 	        try{
 	        	TabTemplateDAO tabDAO = TabTemplateDAO.newInstance();
 	        	TabTemplate tab = tabDAO.get(tabId);
-	        	//TabTemplateParsonalizeGadget widget =tab.removeTabTemplateParsonalizeGadget(widgetId);
-	        	TabTemplateParsonalizeGadget widget =tab.removeTabTemplateParsonalizeGadget(widgetId);
+	        	TabTemplatePersonalizeGadget widget = tab.getPersonalizeGadgetByWidgetId(widgetId);
+	        	tab.removeTabTemplatePersonalizeGadget(widget);
 	        	
 	        	if(widget == null ){
 	                this.result = XMLCommandUtil.createResultElement(uid, "processXML",
@@ -558,7 +553,7 @@ public class TabController {
 	        	}
 	        	
 	        	//TODO:check whether the widget is null or not;
-	        	TabTemplateParsonalizeGadget nextSibling = tab.getNextSibling(widgetId);
+	        	TabTemplatePersonalizeGadget nextSibling = tab.getNextSibling(widgetId);
 	        	if(nextSibling != null){
 	        		nextSibling.setSibling(widget.getSibling());
 	        	}

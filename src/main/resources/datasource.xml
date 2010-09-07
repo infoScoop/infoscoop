@@ -91,7 +91,7 @@
 					<value>org/infoscoop/dao/model/MenuItem.hbm.xml</value>
 					<value>org/infoscoop/dao/model/TabTemplate.hbm.xml</value>
 					<value>org/infoscoop/dao/model/TabTemplateStaticGadget.hbm.xml</value>
-					<value>org/infoscoop/dao/model/TabTemplateParsonalizeGadget.hbm.xml</value>
+					<value>org/infoscoop/dao/model/TabTemplatePersonalizeGadget.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Roles.hbm.xml</value>
 					<value>org/infoscoop/dao/model/RolePrincipals.hbm.xml</value>
 					<value>org/infoscoop/dao/model/GadgetInstance.hbm.xml</value>
@@ -108,7 +108,7 @@
 					<!--end dataSource.dialect-->
 					</prop>
 					<prop key="hibernate.default_schema"><!--start dataSource.schema--><!--end dataSource.schema--></prop>
-					<prop key="hibernate.show_sql">false</prop>
+					<prop key="hibernate.show_sql">true</prop>
 					<prop key="hibernate.jdbc.use_get_generated_keys">false</prop>
 				</props>
 			</property>

@@ -543,18 +543,20 @@ CREATE TABLE  IS_TAB_TEMPLATE_STATIC_GADGETS (
 ) ENGINE = INNODB;
 
 --
--- TAB_TEMPLATE_PARSONALIZE_GADGET
+-- TAB_TEMPLATE_PERSONALIZE_GADGET
 --
-CREATE TABLE IS_TAB_TEMPLATE_PARSONALIZE_GADGETS (
+CREATE TABLE IS_TAB_TEMPLATE_PERSONALIZE_GADGETS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 	fk_tabtemplate_id INT UNSIGNED NOT NULL,
+	widget_id VARCHAR( 128 ),
 	column_num int NOT NULL,
 	sibling_id int UNSIGNED,
 	fk_gadget_instance_id INT UNSIGNED  NOT NULL,
 	foreign key (fk_tabtemplate_id) references IS_TAB_TEMPLATES(id) on delete cascade,
 	foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade,
-	foreign key (sibling_id) references IS_TAB_TEMPLATE_PARSONALIZE_GADGETS(id) on delete cascade
+	foreign key (sibling_id) references IS_TAB_TEMPLATE_PERSONALIZE_GADGETS(id) on delete cascade
 ) ENGINE = INNODB;
+create index is_tab_template_personalize_gadgets_widget_id on IS_TAB_TEMPLATE_PERSONALIZE_GADGETS(widget_id);
 
 --
 -- IS_USERS

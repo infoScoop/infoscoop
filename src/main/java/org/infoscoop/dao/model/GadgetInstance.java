@@ -103,4 +103,9 @@ public class GadgetInstance extends BaseGadgetInstance {
 			return name;
 		}
 	}
+	
+	public String getGadgetType(){
+		String type = super.getType();
+		return (type.indexOf("upload_") == 0 ? "g_" + type + "/gadget" : type);
+	}
 }

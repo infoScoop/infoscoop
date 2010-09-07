@@ -51,9 +51,9 @@
 			length="10"
 		/>
 
-		<set name="TabTemplateParsonalizeGadgets" cascade="save-update" inverse="true" lazy="false">
+		<set name="TabTemplatePersonalizeGadgets" cascade="save-update" inverse="true" lazy="false">
 			<key column="fk_tabtemplate_id"/>
-			<one-to-many class="TabTemplateParsonalizeGadget"/>
+			<one-to-many class="TabTemplatePersonalizeGadget"/>
 		</set>
 
 		<set name="TabTemplateStaticGadgets" cascade="save-update" inverse="true">

@@ -5,8 +5,8 @@
 
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
-		name="TabTemplateParsonalizeGadget"
-		table="IS_TAB_TEMPLATE_PARSONALIZE_GADGETS"
+		name="TabTemplatePersonalizeGadget"
+		table="IS_TAB_TEMPLATE_PERSONALIZE_GADGETS"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
@@ -17,6 +17,12 @@
 			<generator class="native"/>
 		</id>
 
+		<property
+			name="WidgetId"
+			column="widget_id"
+			type="string"
+			not-null="true"
+		/>
 		<property
 			name="ColumnNum"
 			column="column_num"
@@ -36,7 +42,7 @@
 		<many-to-one
 			name="Sibling"
 			column="sibling_id"
-			class="TabTemplateParsonalizeGadget"
+			class="TabTemplatePersonalizeGadget"
 			not-null="false"
 		>
 		</many-to-one>
@@ -51,7 +57,7 @@
 
 		<set name="TabTemplateParsonalizeGadgets" inverse="true">
 			<key column="id"/>
-			<one-to-many class="TabTemplateParsonalizeGadget"/>
+			<one-to-many class="TabTemplatePersonalizeGadget"/>
 		</set>
 
 

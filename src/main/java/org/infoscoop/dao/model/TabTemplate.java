@@ -87,53 +87,57 @@ public class TabTemplate extends BaseTabTemplate {
 	}
 */
 
-	public TabTemplateParsonalizeGadget getTabTemplateParsonalizeGadget(String id) {
-		for(TabTemplateParsonalizeGadget gadget : super.getTabTemplateParsonalizeGadgets()){
-			if(gadget.getId().equals(Integer.valueOf(id)))return gadget;
+	public TabTemplatePersonalizeGadget getPersonalizeGadget(Integer id) {
+		for(TabTemplatePersonalizeGadget gadget : super.getTabTemplatePersonalizeGadgets()){
+			if(gadget.getId().equals(id))return gadget;
 		}
 		return null;
 	}
 
-	public TabTemplateParsonalizeGadget getTabTemplateParsonalizeGadgetBySibling(Integer id) {
-		for(TabTemplateParsonalizeGadget gadget : super.getTabTemplateParsonalizeGadgets()){
+	public TabTemplatePersonalizeGadget getPersonalizeGadgetByWidgetId(String widgetId) {
+		for(TabTemplatePersonalizeGadget gadget : super.getTabTemplatePersonalizeGadgets()){
+			if(gadget.getWidgetId().equals(widgetId))return gadget;
+		}
+		return null;
+	}
+
+	public TabTemplatePersonalizeGadget getPersonalizeGadgetBySibling(String widgetId) {
+		for(TabTemplatePersonalizeGadget gadget : super.getTabTemplatePersonalizeGadgets()){
 			if(gadget.getSibling() == null)continue;
 			
-			if(id == gadget.getSibling().getId())return gadget;
+			if(widgetId == gadget.getSibling().getWidgetId())return gadget;
 		}
 		return null;
 	}
 
-	public TabTemplateParsonalizeGadget getSubWidgetBySibling(String siblingId, String parentId) {
-		Collection<TabTemplateParsonalizeGadget> subWidgets = new ArrayList<TabTemplateParsonalizeGadget>();
-		for(TabTemplateParsonalizeGadget gadget : super.getTabTemplateParsonalizeGadgets()){
+	public TabTemplatePersonalizeGadget getSubWidgetBySibling(String siblingId, String parentId) {
+		Collection<TabTemplatePersonalizeGadget> subWidgets = new ArrayList<TabTemplatePersonalizeGadget>();
+		for(TabTemplatePersonalizeGadget gadget : super.getTabTemplatePersonalizeGadgets()){
 			//
 		}
 		return null;
 	}
 
-	public TabTemplateParsonalizeGadget getNextSiblingOnColumn(String siblingId, Integer colNum) {
-		for(TabTemplateParsonalizeGadget gadget : super.getTabTemplateParsonalizeGadgets()){
+	public TabTemplatePersonalizeGadget getNextSiblingOnColumn(String siblingId, Integer colNum) {
+		for(TabTemplatePersonalizeGadget gadget : super.getTabTemplatePersonalizeGadgets()){
 			if(gadget.getColumnNum() == null || gadget.getSibling() == null)continue;
-			if(colNum.equals(gadget.getColumnNum()) && gadget.getSibling().getId().equals(Integer.valueOf(siblingId)))
+			if(colNum.equals(gadget.getColumnNum()) && gadget.getSibling().getWidgetId().equals(siblingId))
 				return gadget;
 		}
 		return null;
 	}
 
-	public TabTemplateParsonalizeGadget removeTabTemplateParsonalizeGadget(String widgetId) {
-		TabTemplateParsonalizeGadget gadget = this.getTabTemplateParsonalizeGadget(widgetId);
-		this.getTabTemplateParsonalizeGadgets().remove(gadget);
-		return gadget;
+	public void removeTabTemplatePersonalizeGadget(TabTemplatePersonalizeGadget widget) {
+		this.getTabTemplatePersonalizeGadgets().remove(widget);
 	}
 
-	public TabTemplateParsonalizeGadget getNextSibling(String siblingId) {
-		for(TabTemplateParsonalizeGadget gadget : super.getTabTemplateParsonalizeGadgets()){
+	public TabTemplatePersonalizeGadget getNextSibling(String siblingId) {
+		for(TabTemplatePersonalizeGadget gadget : super.getTabTemplatePersonalizeGadgets()){
 			if(gadget.getSibling() == null)continue;
 			if( gadget.getSibling().getId().equals(Integer.valueOf(siblingId)))
 				return gadget;
 		}
 		return null;
 	}
-
 
 }

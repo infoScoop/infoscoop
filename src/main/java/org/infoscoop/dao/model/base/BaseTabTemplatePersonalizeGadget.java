@@ -4,17 +4,18 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_tab_template_parsonalize_gadgets table.
+ * This is an object that contains data related to the IS_TAB_TEMPLATE_PERSONALIZE_GADGETS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_tab_template_parsonalize_gadgets"
+ *  table="IS_TAB_TEMPLATE_PERSONALIZE_GADGETS"
  */
 
-public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable {
+public abstract class BaseTabTemplatePersonalizeGadget  implements Serializable {
 
-	public static String REF = "TabTemplateParsonalizeGadget";
+	public static String REF = "TabTemplatePersonalizeGadget";
+	public static String PROP_WIDGET_ID = "WidgetId";
 	public static String PROP_SIBLING = "Sibling";
 	public static String PROP_ID = "Id";
 	public static String PROP_FK_TAB_TEMPLATE = "FkTabTemplate";
@@ -23,14 +24,14 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 
 
 	// constructors
-	public BaseTabTemplateParsonalizeGadget () {
+	public BaseTabTemplatePersonalizeGadget () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseTabTemplateParsonalizeGadget (java.lang.Integer id) {
+	public BaseTabTemplatePersonalizeGadget (java.lang.Integer id) {
 		this.setId(id);
 		initialize();
 	}
@@ -38,15 +39,17 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 	/**
 	 * Constructor for required fields
 	 */
-	public BaseTabTemplateParsonalizeGadget (
+	public BaseTabTemplatePersonalizeGadget (
 		java.lang.Integer id,
 		org.infoscoop.dao.model.GadgetInstance fkGadgetInstance,
 		org.infoscoop.dao.model.TabTemplate fkTabTemplate,
+		java.lang.String widgetId,
 		java.lang.Integer columnNum) {
 
 		this.setId(id);
 		this.setFkGadgetInstance(fkGadgetInstance);
 		this.setFkTabTemplate(fkTabTemplate);
+		this.setWidgetId(widgetId);
 		this.setColumnNum(columnNum);
 		initialize();
 	}
@@ -61,15 +64,16 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 	private java.lang.Integer id;
 
 	// fields
+	private java.lang.String widgetId;
 	private java.lang.Integer columnNum;
 
 	// many to one
 	private org.infoscoop.dao.model.GadgetInstance fkGadgetInstance;
-	private org.infoscoop.dao.model.TabTemplateParsonalizeGadget sibling;
+	private org.infoscoop.dao.model.TabTemplatePersonalizeGadget sibling;
 	private org.infoscoop.dao.model.TabTemplate fkTabTemplate;
 
 	// collections
-	private java.util.Set<org.infoscoop.dao.model.TabTemplateParsonalizeGadget> tabTemplateParsonalizeGadgets;
+	private java.util.Set<org.infoscoop.dao.model.TabTemplatePersonalizeGadget> tabTemplateParsonalizeGadgets;
 
 
 
@@ -92,6 +96,23 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
+
+
+
+	/**
+	 * Return the value associated with the column: widget_id
+	 */
+	public java.lang.String getWidgetId () {
+		return widgetId;
+	}
+
+	/**
+	 * Set the value related to the column: widget_id
+	 * @param widgetId the widget_id value
+	 */
+	public void setWidgetId (java.lang.String widgetId) {
+		this.widgetId = widgetId;
+	}
 
 
 
@@ -132,7 +153,7 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 	/**
 	 * Return the value associated with the column: sibling_id
 	 */
-	public org.infoscoop.dao.model.TabTemplateParsonalizeGadget getSibling () {
+	public org.infoscoop.dao.model.TabTemplatePersonalizeGadget getSibling () {
 		return sibling;
 	}
 
@@ -140,7 +161,7 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 	 * Set the value related to the column: sibling_id
 	 * @param sibling the sibling_id value
 	 */
-	public void setSibling (org.infoscoop.dao.model.TabTemplateParsonalizeGadget sibling) {
+	public void setSibling (org.infoscoop.dao.model.TabTemplatePersonalizeGadget sibling) {
 		this.sibling = sibling;
 	}
 
@@ -166,7 +187,7 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 	/**
 	 * Return the value associated with the column: TabTemplateParsonalizeGadgets
 	 */
-	public java.util.Set<org.infoscoop.dao.model.TabTemplateParsonalizeGadget> getTabTemplateParsonalizeGadgets () {
+	public java.util.Set<org.infoscoop.dao.model.TabTemplatePersonalizeGadget> getTabTemplateParsonalizeGadgets () {
 		return tabTemplateParsonalizeGadgets;
 	}
 
@@ -174,13 +195,13 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 	 * Set the value related to the column: TabTemplateParsonalizeGadgets
 	 * @param tabTemplateParsonalizeGadgets the TabTemplateParsonalizeGadgets value
 	 */
-	public void setTabTemplateParsonalizeGadgets (java.util.Set<org.infoscoop.dao.model.TabTemplateParsonalizeGadget> tabTemplateParsonalizeGadgets) {
+	public void setTabTemplateParsonalizeGadgets (java.util.Set<org.infoscoop.dao.model.TabTemplatePersonalizeGadget> tabTemplateParsonalizeGadgets) {
 		this.tabTemplateParsonalizeGadgets = tabTemplateParsonalizeGadgets;
 	}
 
-	public void addToTabTemplateParsonalizeGadgets (org.infoscoop.dao.model.TabTemplateParsonalizeGadget tabTemplateParsonalizeGadget) {
-		if (null == getTabTemplateParsonalizeGadgets()) setTabTemplateParsonalizeGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateParsonalizeGadget>());
-		getTabTemplateParsonalizeGadgets().add(tabTemplateParsonalizeGadget);
+	public void addToTabTemplateParsonalizeGadgets (org.infoscoop.dao.model.TabTemplatePersonalizeGadget tabTemplatePersonalizeGadget) {
+		if (null == getTabTemplateParsonalizeGadgets()) setTabTemplateParsonalizeGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplatePersonalizeGadget>());
+		getTabTemplateParsonalizeGadgets().add(tabTemplatePersonalizeGadget);
 	}
 
 
@@ -188,11 +209,11 @@ public abstract class BaseTabTemplateParsonalizeGadget  implements Serializable 
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof org.infoscoop.dao.model.TabTemplateParsonalizeGadget)) return false;
+		if (!(obj instanceof org.infoscoop.dao.model.TabTemplatePersonalizeGadget)) return false;
 		else {
-			org.infoscoop.dao.model.TabTemplateParsonalizeGadget tabTemplateParsonalizeGadget = (org.infoscoop.dao.model.TabTemplateParsonalizeGadget) obj;
-			if (null == this.getId() || null == tabTemplateParsonalizeGadget.getId()) return false;
-			else return (this.getId().equals(tabTemplateParsonalizeGadget.getId()));
+			org.infoscoop.dao.model.TabTemplatePersonalizeGadget tabTemplatePersonalizeGadget = (org.infoscoop.dao.model.TabTemplatePersonalizeGadget) obj;
+			if (null == this.getId() || null == tabTemplatePersonalizeGadget.getId()) return false;
+			else return (this.getId().equals(tabTemplatePersonalizeGadget.getId()));
 		}
 	}
 

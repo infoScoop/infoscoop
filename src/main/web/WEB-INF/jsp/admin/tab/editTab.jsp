@@ -79,8 +79,7 @@ var rssPageSize = 25;
 var ajaxRequestRetryCount=2;
 var freshDays = 1;
 var rssMaxCount = 100;
-var commandQueueWait = 30;
-var logCommandQueueWait = 30;
+var commandQueueWait = 15;
 
 IS_R['getResource'] = function(s){return s;}
 var gadgets = {'rpc':{'setRelayUrl':function(){},'setAuthToken':function(){}}};
