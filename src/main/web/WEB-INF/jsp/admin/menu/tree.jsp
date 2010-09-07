@@ -13,10 +13,8 @@
 		</c:choose>
 	</div>
 	<c:if test="${hasChild}">
-		<ul>
-			<c:set var="items" value="${item.childItems}" scope="request"/>
-			<c:import url="/WEB-INF/jsp/admin/menu/tree.jsp"/>
-		</ul>
+		<c:set var="items" value="${item.childItems}" scope="request"/>
+		<c:import url="/WEB-INF/jsp/admin/menu/tree.jsp"/>
 	</c:if>
 </li>
 </c:forEach>

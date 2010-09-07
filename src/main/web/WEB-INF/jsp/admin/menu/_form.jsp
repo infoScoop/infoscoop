@@ -4,14 +4,17 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <form:form modelAttribute="menuItem" method="post" action="${action}" class="cssform">
 	<form:hidden path="id" />
+	<c:if test="${menuItem.fkMenuTree != null}">
+		<form:hidden path="fkMenuTree.id" />
+	</c:if>
 	<c:if test="${menuItem.fkParent != null}">
 		<form:hidden path="fkParent.id" />
 	</c:if>
 	<c:if test="${conf != null}">
 		<form:hidden path="fkGadgetInstance.id" />
+		<form:hidden path="fkGadgetInstance.type" />
 	</c:if>
 	<form:hidden path="menuOrder" />
-	<form:hidden path="fkGadgetInstance.type" />
 	<c:if test="${conf != null }">
 	<fieldset>
 		<legend>タイプ</legend>

@@ -66,6 +66,13 @@
 			outer-join="true"
 		>
 		</many-to-one>
+		<many-to-one
+			name="FkMenuTree"
+			column="fk_menu_tree_id"
+			class="MenuTree"
+			not-null="true"
+		>
+		</many-to-one>
 	
 
 		<set name="MenuItems" inverse="true">

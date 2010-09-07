@@ -13,6 +13,8 @@
 		<script type="text/javascript" src="../../js/lib/jquery-ui/jquery-ui-1.8.4.custom.min.js"></script>
 		<script type="text/javascript" src="../../js/lib/jquery.form.js"></script>
 		<script type="text/javascript" src="../../js/utils/domhelper.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../js/lib/tablesorter/themes/blue/style.css">
+		<script type="text/javascript" src="../../js/lib/tablesorter/jquery.tablesorter.min.js"></script>
 	</head>
 	<body>
 		<div id="header"><tiles:insertAttribute name="header" /></div>

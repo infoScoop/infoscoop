@@ -11,12 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.MenuItemDAO;
+import org.infoscoop.dao.MenuTreeDAO;
 import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.GadgetInstanceUserpref;
 import org.infoscoop.dao.model.GadgetInstanceUserprefPK;
 import org.infoscoop.dao.model.MenuItem;
+import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
 import org.infoscoop.util.I18NUtil;
@@ -37,15 +39,56 @@ import org.w3c.dom.Element;
 public class MenuController {
 	@Autowired
 	private MenuItemDAO menuItemDAO;
+	@Autowired
+	private MenuTreeDAO menuTreeDAO;
 
 	@RequestMapping
-	public void index() throws Exception {
+	public void index(Model model) throws Exception {
+		List<MenuTree> menus = menuTreeDAO.all();
+		model.addAttribute("menus", menus);
+	}
+	
+	@RequestMapping
+	@Transactional
+	public void editMenu(
+			@RequestParam(value = "id", required = false) Integer id,
+			Model model) throws Exception {
+		MenuTree menu = null;
+		if (id == null) {
+			menu = new MenuTree();
+			menu.setTitle("untitled");
+		} else {
+			menu = menuTreeDAO.get(id);
+		}
+		model.addAttribute(menu);
+	}
+	
+	@RequestMapping
+	@Transactional
+	public MenuTree formMenu(@RequestParam("id") Integer id) throws Exception {
+		return menuTreeDAO.get(id);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
+	public MenuTree saveMenu(MenuTree menu) throws Exception {
+		menuTreeDAO.save(menu);
+		return menu;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
+	public void deleteMenu(@RequestParam("id") Integer id) throws Exception {
+		menuTreeDAO.delete(id);
 	}
 
 	@RequestMapping
 	@Transactional
-	public void tree(Model model) throws Exception {
-		List<MenuItem> items = menuItemDAO.getTree();
+	public void tree(@RequestParam(value = "id", required = false) Integer id,
+			Model model) throws Exception {
+		if (id == null)
+			return;
+		List<MenuItem> items = menuTreeDAO.getTree(id);
 		model.addAttribute("items", items);
 	}
 
@@ -69,6 +112,7 @@ public class MenuController {
 			throws Exception {
 		MenuItem parentItem = menuItemDAO.get(parentId);
 		MenuItem item = new MenuItem();
+		item.setFkMenuTree(parentItem.getFkMenuTree());
 		item.setId("m_" + new Date().getTime());
 		item.setFkParent(parentItem);
 		item.setMenuOrder(0);
@@ -79,12 +123,14 @@ public class MenuController {
 
 	@RequestMapping
 	@Transactional
-	public void showAddItem(@RequestParam("id") String parentId,
+	public void showAddItem(@RequestParam("menuId") int menuId,
+			@RequestParam("id") String parentId,
 			@RequestParam(value = "type", required = false) String type,
-			Model model, Locale locale)
-			throws Exception {
+			Model model, Locale locale) throws Exception {
+		MenuTree menu = menuTreeDAO.get(menuId);
 		MenuItem parentItem = menuItemDAO.get(parentId);
 		MenuItem item = new MenuItem();
+		item.setFkMenuTree(menu);
 		item.setFkParent(parentItem);
 		item.setMenuOrder(0);
 		item.setPublish(0);
@@ -121,8 +167,11 @@ public class MenuController {
 		item.setId("m_" + new Date().getTime());
 		GadgetInstance gadget = item.getFkGadgetInstance();
 		if (gadget != null) {
-			gadget.setTitle(item.getTitle());
-			gadget.setHref(item.getHref());
+			String type = gadget.getType();
+			if (type != null && type.length() > 0) {
+				gadget.setTitle(item.getTitle());
+				gadget.setHref(item.getHref());
+			}
 		}
 		menuItemDAO.save(item);
 		return item;
@@ -133,8 +182,11 @@ public class MenuController {
 	public MenuItem updateItem(MenuItem item) throws Exception {
 		GadgetInstance gadget = item.getFkGadgetInstance();
 		if (gadget != null) {
-			gadget.setTitle(item.getTitle());
-			gadget.setHref(item.getHref());
+			String type = gadget.getType();
+			if (type != null && type.length() > 0) {
+				gadget.setTitle(item.getTitle());
+				gadget.setHref(item.getHref());
+			}
 		}
 		menuItemDAO.save(item);
 		return item;
@@ -146,10 +198,10 @@ public class MenuController {
 			@RequestParam("id") String parentId, Locale locale, Model model)
 			throws Exception {
 		MenuItem item = new MenuItem();
-		if (parentId != null && parentId.length() > 0) {
-			MenuItem parentItem = menuItemDAO.get(parentId);
-			if (parentItem != null)
-				item.setFkParent(parentItem);
+		MenuItem parentItem = menuItemDAO.get(parentId);
+		if (parentItem != null) {
+			item.setFkParent(parentItem);
+			item.setFkMenuTree(parentItem.getFkMenuTree());
 		}
 		GadgetInstanceDAO dao = GadgetInstanceDAO.newInstance();
 		GadgetInstance gadgetInstance = dao.get(instanceId);

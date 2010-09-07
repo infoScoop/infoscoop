@@ -18,6 +18,7 @@
 package org.infoscoop.dao;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -47,22 +48,6 @@ public class MenuItemDAO extends HibernateDaoSupport {
 		return null;
 	}
 
-	/*
-	 * @SuppressWarnings("unchecked") public List<MenuItem> getTopItems() {
-	 * return super.getHibernateTemplate().findByCriteria(
-	 * DetachedCriteria.forClass(MenuItem.class).add(
-	 * Expression.eq(MenuItem.PROP_PARENT_ID, ""))); }
-	 * 
-	 * @SuppressWarnings("unchecked") public List<MenuItem> getChildItems(String
-	 * parentId) { return super.getHibernateTemplate().findByCriteria(
-	 * DetachedCriteria.forClass(MenuItem.class).add(
-	 * Expression.eq(MenuItem.PROP_PARENT_ID, parentId))); }
-	 * 
-	 * @SuppressWarnings("unchecked") public List<MenuItem> getAllItems() {
-	 * return super.getHibernateTemplate().findByCriteria(
-	 * DetachedCriteria.forClass(MenuItem.class)); }
-	 */
-
 	@SuppressWarnings("unchecked")
 	public List<MenuItem> getTree() {
 		List<MenuItem> flatItems = super.getHibernateTemplate().findByCriteria(
@@ -71,8 +56,10 @@ public class MenuItemDAO extends HibernateDaoSupport {
 		return createMenuTree(flatItems, null);
 	}
 
-	private List<MenuItem> createMenuTree(List<MenuItem> flatItems,
-			String parentId) {
+	protected static List<MenuItem> createMenuTree(
+			Collection<MenuItem> flatItems, String parentId) {
+		if (flatItems == null)
+			return null;
 		List<MenuItem> items = new ArrayList<MenuItem>();
 		for (MenuItem item : flatItems) {
 			if (parentId == null && item.getFkParent() == null)

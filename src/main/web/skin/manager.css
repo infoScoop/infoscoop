@@ -90,6 +90,16 @@ body {
 }
 
 /*- Menu --------------------------- */
+#menu_list .delete_icon{
+	background-image:url(imgs/trash.gif);
+	width:16px;
+	height:16px;
+	cursor:pointer;
+	display:inline-block;
+}
+#menu_list td.icon, #menu_list td.radio{
+	text-align:center;
+}
 #menu_left{
 	width:40%;
 	float:left;
@@ -210,7 +220,6 @@ body {
 	color: #333;
 }
 .cssform p{
-	width: 300px;
 	clear: left;
 	margin: 0;
 	padding: 5px 0 8px 0;

@@ -17,6 +17,7 @@ public abstract class BaseMenuItem  implements Serializable {
 	public static String REF = "MenuItem";
 	public static String PROP_PUBLISH = "Publish";
 	public static String PROP_ALERT = "Alert";
+	public static String PROP_FK_MENU_TREE = "FkMenuTree";
 	public static String PROP_MENU_ORDER = "MenuOrder";
 	public static String PROP_ID = "Id";
 	public static String PROP_HREF = "Href";
@@ -43,12 +44,14 @@ public abstract class BaseMenuItem  implements Serializable {
 	 */
 	public BaseMenuItem (
 		java.lang.String id,
+		org.infoscoop.dao.model.MenuTree fkMenuTree,
 		java.lang.String title,
 		java.lang.Integer menuOrder,
 		java.lang.Integer publish,
 		java.lang.Integer alert) {
 
 		this.setId(id);
+		this.setFkMenuTree(fkMenuTree);
 		this.setTitle(title);
 		this.setMenuOrder(menuOrder);
 		this.setPublish(publish);
@@ -75,6 +78,7 @@ public abstract class BaseMenuItem  implements Serializable {
 	// many to one
 	private org.infoscoop.dao.model.MenuItem fkParent;
 	private org.infoscoop.dao.model.GadgetInstance fkGadgetInstance;
+	private org.infoscoop.dao.model.MenuTree fkMenuTree;
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.MenuItem> menuItems;
@@ -222,6 +226,23 @@ public abstract class BaseMenuItem  implements Serializable {
 
 
 	/**
+	 * Return the value associated with the column: fk_menu_tree_id
+	 */
+	public org.infoscoop.dao.model.MenuTree getFkMenuTree () {
+		return fkMenuTree;
+	}
+
+	/**
+	 * Set the value related to the column: fk_menu_tree_id
+	 * @param fkMenuTree the fk_menu_tree_id value
+	 */
+	public void setFkMenuTree (org.infoscoop.dao.model.MenuTree fkMenuTree) {
+		this.fkMenuTree = fkMenuTree;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: MenuItems
 	 */
 	public java.util.Set<org.infoscoop.dao.model.MenuItem> getMenuItems () {
@@ -234,6 +255,11 @@ public abstract class BaseMenuItem  implements Serializable {
 	 */
 	public void setMenuItems (java.util.Set<org.infoscoop.dao.model.MenuItem> menuItems) {
 		this.menuItems = menuItems;
+	}
+
+	public void addToMenuItems (org.infoscoop.dao.model.MenuItem menuItem) {
+		if (null == getMenuItems()) setMenuItems(new java.util.TreeSet<org.infoscoop.dao.model.MenuItem>());
+		getMenuItems().add(menuItem);
 	}
 
 

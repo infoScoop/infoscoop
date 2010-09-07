@@ -492,6 +492,15 @@ create table IS_GADGET_INSTANCE_USERPREFS (
 ) ENGINE=InnoDB;
 
 --
+-- MENU_TREE
+--
+create table IS_MENU_TREES(
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title varchar(255) not null,
+  position varchar(10) -- top or side
+) ENGINE=InnoDB;
+
+--
 -- MENU_ITEM
 --
 create table IS_MENU_ITEMS(
@@ -502,9 +511,11 @@ create table IS_MENU_ITEMS(
   publish int not null default 0, -- 0=unpublished, 1=published
   alert int not null default 1, -- 0=no alert, 1=alert, 2=force drop
   fk_parent_id varchar(255),
-  fk_gadget_instance_id int unsigned not null,
+  fk_gadget_instance_id int unsigned,
+  fk_menu_tree_id int unsigned not null,
   foreign key (fk_parent_id) references IS_MENU_ITEMS(id) on delete cascade,
-  foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade
+  foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade,
+  foreign key (fk_menu_tree_id) references IS_MENU_TREES(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --
