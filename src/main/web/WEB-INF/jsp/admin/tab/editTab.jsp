@@ -591,7 +591,7 @@ function init() {
 				afterOpen:function(){
 					if(initSelectLayoutPanel)return;
 					initSelectLayoutPanel = true;
-					var staticLayoutList = $$('#staticAreaContainer .staticLayout');
+					var staticLayoutList = $$('#modal_container .staticLayout');
 					for(var i = 0; i < staticLayoutList.length; i++){
 						var layoutDiv = staticLayoutList[i];
 						var layoutMouseOver = function(el) {
@@ -609,7 +609,7 @@ function init() {
 						Event.observe(layoutDiv, 'mouseout', layoutMouseOut.bind(null, layoutDiv), false);
 						Event.observe(layoutDiv, 'click', layoutClick.bind(null, layoutDiv), false);
 					}
-					Event.observe( $('select_layout_cancel'), function(){
+					Event.observe( $('select_layout_cancel'), 'click', function(){
 						Control.Modal.close();
 					},false);
 				}
