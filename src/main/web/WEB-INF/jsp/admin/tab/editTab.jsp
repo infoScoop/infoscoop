@@ -602,6 +602,7 @@ function init() {
 						};
 						var layoutClick = function(el,e) {
 							$('staticAreaContainer').innerHTML = el.innerHTML;
+							$('layout').value = el.innerHTML;
 							Event.stop(e);
 							Control.Modal.close();
 						};
