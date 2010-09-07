@@ -1164,13 +1164,26 @@ public class SiteAggregationMenuService {
 		if(menuItem.getHref() != null)
 			buf.append(" href=\"" + menuItem.getHref() + "\"");
 		GadgetInstance gadgetInstance = menuItem.getFkGadgetInstance();
+		boolean isRemoteGadget = false;
 		if(gadgetInstance != null){
 			buf.append(" ginstid=\"" + gadgetInstance.getId() + "\"");
-			buf.append(" type=\"" + gadgetInstance.getType() + "\"");
+			String type = gadgetInstance.getType();
+			if(type.indexOf("http") == 0 ){
+				buf.append(" type=\"Gadget\"");
+				isRemoteGadget = true;
+			}else if (type.indexOf("upload_") == 0){
+				buf.append(" type=\"g_" + gadgetInstance.getType() + "/gadget\"");
+			}else
+				buf.append(" type=\"" + gadgetInstance.getType() + "\"");
 		}
 		buf.append(">\n");
 		
 		buf.append("<properties>\n");
+		if(isRemoteGadget){
+			buf.append("<property name=\"url\">");
+			buf.append("g_" + gadgetInstance.getType() + "/gadget");
+			buf.append("</property>");
+		}
 		if(gadgetInstance != null && !gadgetInstance.getGadgetInstanceUserPrefs().isEmpty()){
 			for(GadgetInstanceUserpref userPref: gadgetInstance.getGadgetInstanceUserPrefs()){
 				setElement2Buf(userPref, buf);
