@@ -15,7 +15,6 @@ import java.io.Serializable;
 public abstract class BaseMenuTree  implements Serializable {
 
 	public static String REF = "MenuTree";
-	public static String PROP_POSITION = "Position";
 	public static String PROP_ID = "Id";
 	public static String PROP_TITLE = "Title";
 
@@ -56,9 +55,9 @@ public abstract class BaseMenuTree  implements Serializable {
 
 	// fields
 	private java.lang.String title;
-	private java.lang.String position;
 
 	// collections
+	private java.util.Set<org.infoscoop.dao.model.MenuPosition> menuPositions;
 	private java.util.Set<org.infoscoop.dao.model.MenuItem> menuItems;
 
 
@@ -103,18 +102,23 @@ public abstract class BaseMenuTree  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: position
+	 * Return the value associated with the column: MenuPositions
 	 */
-	public java.lang.String getPosition () {
-		return position;
+	public java.util.Set<org.infoscoop.dao.model.MenuPosition> getMenuPositions () {
+		return menuPositions;
 	}
 
 	/**
-	 * Set the value related to the column: position
-	 * @param position the position value
+	 * Set the value related to the column: MenuPositions
+	 * @param menuPositions the MenuPositions value
 	 */
-	public void setPosition (java.lang.String position) {
-		this.position = position;
+	public void setMenuPositions (java.util.Set<org.infoscoop.dao.model.MenuPosition> menuPositions) {
+		this.menuPositions = menuPositions;
+	}
+
+	public void addToMenuPositions (org.infoscoop.dao.model.MenuPosition menuPosition) {
+		if (null == getMenuPositions()) setMenuPositions(new java.util.TreeSet<org.infoscoop.dao.model.MenuPosition>());
+		getMenuPositions().add(menuPosition);
 	}
 
 

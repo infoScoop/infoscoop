@@ -48,6 +48,17 @@ public class MenuController {
 		model.addAttribute("menus", menus);
 	}
 	
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
+	public MenuTree changePosition(
+			@RequestParam(value = "id", required = false) Integer id,
+			@RequestParam(value = "position", required = false) String position)
+			throws Exception {
+		MenuTree menu = menuTreeDAO.get(id);
+		menuTreeDAO.updatePosition(menu, position);
+		return menu;
+	}
+	
 	@RequestMapping
 	@Transactional
 	public void editMenu(

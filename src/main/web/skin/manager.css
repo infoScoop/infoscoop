@@ -90,14 +90,23 @@ body {
 }
 
 /*- Menu --------------------------- */
-#menu_list .delete_icon{
-	background-image:url(imgs/trash.gif);
+#menu_list .icon{
 	width:16px;
 	height:16px;
 	cursor:pointer;
 	display:inline-block;
+	vertical-align:bottom;
 }
-#menu_list td.icon, #menu_list td.radio{
+#menu_list .icon.edit_icon{
+	background-image:url(imgs/edit.gif);
+}
+#menu_list .icon.save_icon{
+	background-image:url(imgs/database_save.gif);
+}
+#menu_list .icon.delete_icon{
+	background-image:url(imgs/trash.gif);
+}
+#menu_list td.icon_cell, #menu_list td.radio_cell{
 	text-align:center;
 }
 #menu_left{

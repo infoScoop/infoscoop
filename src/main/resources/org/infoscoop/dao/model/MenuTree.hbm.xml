@@ -26,14 +26,12 @@
 			not-null="true"
 			length="255"
 		/>
-		<property
-			name="Position"
-			column="position"
-			type="string"
-			not-null="false"
-			length="10"
-		/>
 	
+
+		<set name="MenuPositions" inverse="true" cascade="save-update" outer-join="true">
+			<key column="fk_menu_tree_id"/>
+			<one-to-many class="MenuPosition"/>
+		</set>
 
 		<set name="MenuItems" inverse="true" cascade="all">
 			<key column="fk_menu_tree_id"/>

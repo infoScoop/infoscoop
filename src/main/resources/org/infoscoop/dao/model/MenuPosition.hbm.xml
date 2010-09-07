@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="MenuPosition"
+		table="IS_MENU_POSITIONS"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="Id"
+			type="string"
+			column="position"
+		>
+		</id>
+
+		<many-to-one
+			name="FkMenuTree"
+			column="fk_menu_tree_id"
+			class="MenuTree"
+			not-null="true"
+			outer-join="true"
+		>
+		</many-to-one>
+
+
+	</class>	
+</hibernate-mapping>

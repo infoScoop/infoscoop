@@ -24,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.MenuItem;
+import org.infoscoop.dao.model.MenuPosition;
 import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -45,6 +46,24 @@ public class MenuTreeDAO extends HibernateDaoSupport {
 			return menus.get(0);
 		return null;
 	}
+
+	@SuppressWarnings("unchecked")
+	private MenuPosition getPosition(String position) {
+		List<MenuPosition> positions = super.getHibernateTemplate()
+				.findByCriteria(
+						DetachedCriteria.forClass(MenuPosition.class).add(
+								Expression.eq(MenuPosition.PROP_ID, position)));
+		if (positions.size() == 1)
+			return positions.get(0);
+		return null;
+	}
+	
+	public MenuTree getByPosition(String position) {
+		MenuPosition pos = getPosition(position);
+		if (pos != null)
+			return pos.getFkMenuTree();
+		return null;
+	}
 	
 	public List<MenuItem> getTree(int id) {
 		return MenuItemDAO.createMenuTree(get(id).getMenuItems(), null);
@@ -55,6 +74,17 @@ public class MenuTreeDAO extends HibernateDaoSupport {
 		List<MenuTree> menus = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuTree.class));
 		return menus;
+	}
+	
+	public void updatePosition(MenuTree menu, String position){
+		MenuPosition pos = getPosition(position);
+		if (pos != null)
+			pos.setFkMenuTree(menu);
+		else
+			pos = new MenuPosition(position, menu);
+		menu.getMenuPositions().clear();
+		menu.addToMenuPositions(pos);
+		super.getHibernateTemplate().saveOrUpdate(menu);
 	}
 
 	public void save(MenuTree menu) {

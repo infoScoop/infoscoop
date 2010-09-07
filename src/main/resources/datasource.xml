@@ -89,6 +89,7 @@
 					<value>org/infoscoop/dao/model/OAuthConsumer.hbm.xml</value>
 					<value>org/infoscoop/dao/model/OAuthCertificate.hbm.xml</value>
 					<value>org/infoscoop/dao/model/MenuTree.hbm.xml</value>
+					<value>org/infoscoop/dao/model/MenuPosition.hbm.xml</value>
 					<value>org/infoscoop/dao/model/MenuItem.hbm.xml</value>
 					<value>org/infoscoop/dao/model/TabTemplate.hbm.xml</value>
 					<value>org/infoscoop/dao/model/TabTemplateStaticGadget.hbm.xml</value>
@@ -109,7 +110,7 @@
 					<!--end dataSource.dialect-->
 					</prop>
 					<prop key="hibernate.default_schema"><!--start dataSource.schema--><!--end dataSource.schema--></prop>
-					<prop key="hibernate.show_sql">false</prop>
+					<prop key="hibernate.show_sql">true</prop>
 					<prop key="hibernate.jdbc.use_get_generated_keys">false</prop>
 				</props>
 			</property>

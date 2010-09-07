@@ -496,8 +496,16 @@ create table IS_GADGET_INSTANCE_USERPREFS (
 --
 create table IS_MENU_TREES(
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  title varchar(255) not null,
-  position varchar(10) -- top or side
+  title varchar(255) not null
+) ENGINE=InnoDB;
+
+--
+-- MENU_POSITION
+--
+create table IS_MENU_POSITIONS(
+  position varchar(10) NOT NULL PRIMARY KEY, -- top or side
+  fk_menu_tree_id int unsigned not null,
+  foreign key (fk_menu_tree_id) references IS_MENU_TREES(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --

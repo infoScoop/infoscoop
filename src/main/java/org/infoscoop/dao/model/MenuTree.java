@@ -1,5 +1,8 @@
 package org.infoscoop.dao.model;
 
+import java.util.HashSet;
+import java.util.Iterator;
+
 import org.infoscoop.dao.model.base.BaseMenuTree;
 
 
@@ -34,4 +37,10 @@ public class MenuTree extends BaseMenuTree {
 /*[CONSTRUCTOR MARKER END]*/
 
 
+	public String getPosition() {
+		Iterator<MenuPosition> it = getMenuPositions().iterator();
+		if (it.hasNext())
+			return it.next().getId();
+		return null;
+	}
 }
