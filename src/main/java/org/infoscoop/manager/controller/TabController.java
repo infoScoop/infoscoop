@@ -196,6 +196,10 @@ public class TabController {
 		model.addAttribute("uid", uid);
 		model.addAttribute(tab);
 		
+		for(TabTemplateStaticGadget gadget : tab.getTabTemplateStaticGadgets())
+			gadget.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
+		
+		
 		Collection<TabTemplatePersonalizeGadget> firstOfColumn = new ArrayList<TabTemplatePersonalizeGadget>();
 		Map<Integer, TabTemplatePersonalizeGadget> gadgetMap = new HashMap<Integer, TabTemplatePersonalizeGadget>();
 		for(TabTemplatePersonalizeGadget gadget : tab.getTabTemplatePersonalizeGadgets()){

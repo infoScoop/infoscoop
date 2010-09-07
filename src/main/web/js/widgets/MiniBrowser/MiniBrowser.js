@@ -78,11 +78,11 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 		}
 		var url = widget.replaceUserPref(widget.getUserPref("url"));
 		var iframeSrc = widget.iframe.src;
-		var pattern = new RegExp("(("+hostPrefix+"(/admin)?)|\\.)/blank\\.html");
+		var pattern = new RegExp("(("+hostPrefix+"(/admin|/manager/.*)?)|\\.)/blank\\.html");
 		if(!pattern.test(iframeSrc)){
 			widget.iframe.contentWindow.location.reload( true );
 		}else{
-			widget.iframe.src = "./iframe.jsp?url="+encodeURIComponent( url )+ "&scrolling=auto";
+			widget.iframe.src = hostPrefix + "/iframe.jsp?url="+encodeURIComponent( url )+ "&scrolling=auto";
 		}
 	};
 	this.refresh = function() {

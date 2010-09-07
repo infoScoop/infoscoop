@@ -140,6 +140,8 @@ IS_Portal = {
 <script src="../../js/widgets/calendar/Calendar.js"></script>
 <script src="../../js/widgets/calendar/iCalendar.js"></script>
 <script src="../../js/widgets/Message/Message.js"></script>
+<script src="../../js/widgets/MiniBrowser/MiniBrowser.js"></script>
+<script src="../../js/widgets/MiniBrowser/FragmentMiniBrowser.js"></script>
 
 <script type="text/javascript" class="source">
 IS_SidePanel.adjustPosition = function(){};
@@ -173,6 +175,7 @@ IS_Portal.behindIframe = {
 	show:function(){},
 	hide:function(){}
 }
+IS_forbiddenURLs = {};
 
 //
 IS_Portal.currentTabId = "tab${tabTemplate.id}";
