@@ -16,6 +16,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.infoscoop.widgetconf.MessageBundle;
 import org.infoscoop.command.XMLCommandProcessor;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.GadgetDAO;
@@ -24,6 +26,7 @@ import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
 import org.infoscoop.dao.WidgetConfDAO;
+import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
@@ -31,8 +34,10 @@ import org.infoscoop.dao.model.TabTemplateStaticGadget;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
+import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.XmlUtil;
+import org.infoscoop.widgetconf.I18NConverter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,8 +79,9 @@ public class TabController {
 
 	@RequestMapping
 	@Transactional
-	public void editTab(@RequestParam(value="id", required=false) String tabId, Model model)
-			throws Exception {
+	public void editTab(
+			@RequestParam(value="id", required=false) String tabId,
+			Model model)throws Exception {
 		TabTemplate tab;
 		if(tabId != null){
 			tab = tabTemplateDAO.get(tabId);
@@ -84,7 +90,7 @@ public class TabController {
 			tab.setName("New Tab");
 			tab.setPublished(0);
 			tab.setTemp(1);
-			tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
+			tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
 			tabTemplateDAO.save(tab);
 		}
 		model.addAttribute(tab);
@@ -130,25 +136,59 @@ public class TabController {
 	
 	@RequestMapping
 	@Transactional
-	public void showGadgetDialog(
+	public void newStaticGadget(
 			HttpServletRequest request, 
 			@RequestParam("type") String type,
 			@RequestParam("tabId") String tabId,
 			@RequestParam("containerId") String containerId,
+			Locale locale,
 			Model model)throws Exception {
 		TabTemplateStaticGadget staticGadget = new TabTemplateStaticGadget();
-		GadgetInstance gadgetInstance = new GadgetInstance();
-		staticGadget.setFkGadgetInstance(gadgetInstance);
-		staticGadget.getFkGadgetInstance().setType(type);
-		staticGadget.setTabTemplateId(tabId);
-		staticGadget.setContainerId(containerId);
+			GadgetInstance gadgetInstance = new GadgetInstance();
+			staticGadget.setFkGadgetInstance(gadgetInstance);
+			staticGadget.getFkGadgetInstance().setType(type);
+			staticGadget.setTabTemplateId(tabId);
+			staticGadget.setContainerId(containerId);
 		model.addAttribute("tabTemplateStaticGadget", staticGadget);
 		
 		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。
-		model.addAttribute("conf", getGadgetConf(type));
+		model.addAttribute("conf", getGadgetConf(type, locale));
 	
 	}
 
+	
+	@RequestMapping
+	@Transactional
+	public void editStaticGadget(
+			HttpServletRequest request, 
+			@RequestParam("tabId") String tabId,
+			@RequestParam("containerId") String containerId,
+			Locale locale,
+			Model model)throws Exception {
+		TabTemplateStaticGadget staticGadget = null;
+		TabTemplate tab = tabTemplateDAO.get(tabId);
+		Set<TabTemplateStaticGadget> sgs = tab.getTabTemplateStaticGadgets();
+		for(TabTemplateStaticGadget sg: sgs){
+			if(sg.getContainerId().equals(containerId)){
+				staticGadget = sg;
+				sg.setTabTemplateId(tabId);
+				model.addAttribute(staticGadget);
+				break;
+			}
+		}
+		
+		GadgetInstance gadget = staticGadget.getFkGadgetInstance();
+		if (gadget != null) {
+			String type = gadget.getType();
+			if (type != null && type.length() > 0) {
+				// lazy=trueだが、Viewに渡すために事前に取得する。何かメソッド呼ぶと事前に取得できる。
+				gadget.getGadgetInstanceUserPrefs().size();
+				//viewで使えるようconf
+				model.addAttribute("conf", getGadgetConf(type, locale));
+			}
+		}
+	}
+	
 	@RequestMapping
 	public void listGadgetInstances(){
 	}
@@ -237,14 +277,28 @@ public class TabController {
 		model.addAttribute("upload", uploadGadgets);
 	}
 	
-	private Document getGadgetConf(String type) {
-		Element conf = null;
+	private Document getGadgetConf(String type, Locale locale) throws Exception {
+		// TODO 言語ごとにDBにキャッシュとして保存する。
+		Document conf = null;
 		if (type.startsWith("upload__")) {
-			conf = GadgetDAO.newInstance().getGadgetElement(type.substring(8));
+			String realType = type.substring(8);// upload__を除く
+			Gadget gadget = GadgetDAO.newInstance().select(realType);
+			String gadgetXml = new String(gadget.getData(), "UTF-8");
+			Document gadgetDoc = (Document) XmlUtil.string2Dom(gadgetXml);
+			I18NConverter i18n = new I18NConverter(locale,
+					new MessageBundle.Factory.Upload(0, realType)
+							.createBundles(gadgetDoc));
+			gadgetXml = i18n.replace(gadgetXml);
+			conf = (Document) XmlUtil.string2Dom(gadgetXml);
 		} else {
-			conf = WidgetConfDAO.newInstance().getElement(type);
+			Element widgetConfElm = WidgetConfDAO.newInstance()
+					.getElement(type);
+			String widgetXml = XmlUtil.dom2String(widgetConfElm);
+			widgetXml = I18NUtil.resolveForXML(I18NUtil.TYPE_WIDGET, widgetXml,
+					locale);
+			conf = (Document) XmlUtil.string2Dom(widgetXml);
 		}
-		return conf.getOwnerDocument();
+		return conf;
 	}
 		/**
 	 * Copy from CommandExecutionService

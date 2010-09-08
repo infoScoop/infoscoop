@@ -13,7 +13,7 @@
 <div id="gadgetTypeList">
 	<ul>
 		<c:forEach var="conf" items="${gadgetConfs}">
-			<li><a href="showGadgetDialog?tabId=${tabId}&containerId=${containerId}&type=${conf.type}">${conf.title}</a></li>
+			<li><a href="newStaticGadget?tabId=${tabId}&containerId=${containerId}&type=${conf.type}">${conf.title}</a></li>
 		</c:forEach>
 	</ul>
 

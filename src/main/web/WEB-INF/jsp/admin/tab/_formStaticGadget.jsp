@@ -3,10 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<tiles:insertDefinition name="tab_dialog.definition" flush="true">
-	<tiles:putAttribute name="type" value="menu"/>
-	<tiles:putAttribute name="title" value="tab.title"/>
-	<tiles:putAttribute name="body" type="string">
 <form:form modelAttribute="tabTemplateStaticGadget" method="post" action="submitGadgetSettings" class="cssform">
 	<form:hidden path="id" />
 	<form:hidden path="containerId" />
@@ -22,6 +18,7 @@
 				<x:otherwise>${tabTemplateStaticGadget.fkGadgetInstance.type}</x:otherwise>
 			</x:choose>
 		</p>
+		<a id="change_type"/>Change Type</a>
 	</fieldset>
 	<fieldset>
 		<legend>共通設定</legend>
@@ -94,10 +91,5 @@ $("#gadget_settings select").each(function(){
 		$(this).replaceWith(radioEl);
 	}
 });
-$("#menuItem").ajaxForm(function(html){
-	$("#menu_right").html(html);
-});
-$("#menuItem input.button").button();
+
 </script>
-	</tiles:putAttribute>
-</tiles:insertDefinition>

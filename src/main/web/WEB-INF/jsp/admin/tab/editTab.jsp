@@ -56,6 +56,13 @@ h2 {
 .widget .widgetHeader {
 	background-image:url("../../skin/imgs/theme/widget_header.png");
 }
+
+.edit_static_gadget{
+	text-decoration: underline;
+	color : blue;
+	cursor: pointer;
+}
+
 </style>
 
 <script src="../../js/resources/resources_ja.js"></script>
@@ -555,7 +562,7 @@ function init() {
 
 	function addEventStaticWidget(){
 		var static_columns = $$('#staticAreaContainer .static_column');
-		deleteTempTabFlag = 0;
+		IS_Portal.deleteTempTabFlag = 1;
 		var tabId = IS_Portal.currentTabId.replace("tab","");
 		for (var j=0; j<static_columns.length; j++ ) {
 			var div = static_columns[j];
@@ -579,7 +586,25 @@ function init() {
 				  iframe:true// ajax is better
 				}
 				);
-			Event.observe(div, 'click', function(){modal.open();}, false);
+			Event.observe(div, 'click', function(){this.open();}.bind(modal), false);
+		}
+		
+		//Add event to edit static gadgets
+		var edit_buttons = $$('.edit_static_gadget');
+		for (var k=0; k<edit_buttons.length; k++){
+			var edit_button = edit_buttons[k];
+			edit_button.id = 'edit_button' + k;
+			edit_button.href = hostPrefix + "/manager/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + 'static_column_' + k;
+			var modal = new Control.Modal(
+				'edit_button' + k,
+				{
+				  opacity: 0.4,
+				  width: 580,
+				  height: 440,
+				  iframe:true// ajax is better
+				}
+				);
+			Event.observe(edit_button, 'click', function(){this.open();}.bind(modal), false);
 		}
 	};
 	addEventStaticWidget();
