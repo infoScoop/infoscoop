@@ -22,18 +22,19 @@
 	</thead>
 	<tbody>
 		<c:forEach var="menu" items="${menus}">
-		<tr>
+		<tr menu_id="${menu.id}">
 			<td class="title">
 				<a href="editMenu?id=${menu.id}">${menu.title}</a>
 				<input type="text" value="${menu.title}" style="display:none">
+				<div class="icon edit_icon">
 			</td>
 			<td class="radio_cell">
 				<span>${menu.top ? "表示" : ""}</span>
-				<input type="radio" name="top" ${menu.top ? "checked=\"checked\"" : ""} style="display:none" menu_id="${menu.id}">
+				<input type="radio" name="top" ${menu.top ? "checked=\"checked\"" : ""} style="display:none">
 			</td>
 			<td class="radio_cell">
 				<span>${menu.side ? "表示" : ""}</span>
-				<input type="radio" name="side" ${menu.side ? "checked=\"checked\"" : ""} style="display:none" menu_id="${menu.id}">
+				<input type="radio" name="side" ${menu.side ? "checked=\"checked\"" : ""} style="display:none">
 			</td>
 			<td class="icon_cell"><div class="icon delete_icon" menu_id="${menu.id}"></div></td>
 		</tr>
@@ -50,7 +51,24 @@ $("#add_menu").button();
 $("#menu_list").tablesorter({
 	headers: {1:{sorter:false},2:{sorter:false},3:{sorter:false}}
 });
-$("#change_position_top, #change_position_side").click(function(){
+$(".title .icon").click(function(event){
+	var icon = $(this);
+	if(icon.hasClass("edit_icon")){
+		icon.prev().show().focus().prev().hide();
+		icon.removeClass("edit_icon").addClass("save_icon");
+	} else {
+		var title = icon.prev().val();
+		var menuId = icon.parents("tr:first").attr("menu_id");
+		$.post("saveTitle", {id:menuId, title:title}, function(html){
+			icon.prev().hide().prev().text(title).show();
+			icon.removeClass("save_icon").addClass("edit_icon");
+			console.info(html);
+		});
+	}
+	event.stopPropagation();
+});
+$(".title input").click(function(event){event.stopPropagation();});
+$("#change_position_top, #change_position_side").click(function(event){
 	var name = this.id === "change_position_top" ? "top" : "side",
 		icon = $(this),
 		radios = $("#menu_list td.radio_cell input[name="+name+"]");
@@ -58,16 +76,17 @@ $("#change_position_top, #change_position_side").click(function(){
 		radios.show().prev().hide();
 		icon.removeClass("edit_icon").addClass("save_icon");
 	} else {
-		var menuId = radios.filter(":radio:checked").attr("menu_id");
+		var menuId = radios.filter(":radio:checked").parents("tr:first").attr("menu_id");
 		$.post("changePosition", {id:menuId, position:name}, function(html){
 			radios.hide().prev().each(function(){
-				if($(this).next().attr("menu_id") === menuId) $(this).html("表示").show();
+				if($(this).next().attr("menu_id") === menuId) $(this).text("表示").show();
 				else $(this).empty().show();
 			});
 			icon.removeClass("save_icon").addClass("edit_icon");
 			console.info(html);
 		});
 	}
+	event.stopPropagation();
 });
 $("#menu_list .delete_icon").live("click", function(){
 	var deleteIcon = $(this);
@@ -77,6 +96,15 @@ $("#menu_list .delete_icon").live("click", function(){
 			console.info(html);
 		});
 	}
+});
+$(document).click(function(){
+	$("#menu_list .title a").each(function(){
+		$(this).show().next().hide();
+	});
+	$("#menu_list td.radio_cell span").each(function(){
+		$(this).show().next().hide();
+	});
+	$("#menu_list .icon.save_icon").removeClass("save_icon").addClass("edit_icon");
 });
 </script>
 	</tiles:putAttribute>

@@ -51,12 +51,19 @@ public class MenuController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public MenuTree changePosition(
-			@RequestParam(value = "id", required = false) Integer id,
-			@RequestParam(value = "position", required = false) String position)
-			throws Exception {
+	public MenuTree changePosition(@RequestParam("id") Integer id,
+			@RequestParam("position") String position) throws Exception {
 		MenuTree menu = menuTreeDAO.get(id);
 		menuTreeDAO.updatePosition(menu, position);
+		return menu;
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
+	public MenuTree saveTitle(@RequestParam("id") Integer id,
+			@RequestParam("title") String title) throws Exception {
+		MenuTree menu = menuTreeDAO.get(id);
+		menu.setTitle(title);
 		return menu;
 	}
 	
