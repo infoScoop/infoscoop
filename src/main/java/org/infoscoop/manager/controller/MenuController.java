@@ -48,6 +48,15 @@ public class MenuController {
 		List<MenuTree> menus = menuTreeDAO.all();
 		model.addAttribute("menus", menus);
 	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
+	public void newMenu(Model model) throws Exception {
+		MenuTree menu = new MenuTree();
+		menu.setTitle("untitled");
+		menuTreeDAO.save(menu);
+		model.addAttribute("menu", menu);
+	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
@@ -72,27 +81,14 @@ public class MenuController {
 	public void editMenu(
 			@RequestParam(value = "id", required = false) Integer id,
 			Model model) throws Exception {
-		MenuTree menu = null;
+		/*MenuTree menu = null;
 		if (id == null) {
 			menu = new MenuTree();
 			menu.setTitle("untitled");
 		} else {
 			menu = menuTreeDAO.get(id);
-		}
-		model.addAttribute(menu);
-	}
-	
-	@RequestMapping
-	@Transactional
-	public MenuTree formMenu(@RequestParam("id") Integer id) throws Exception {
-		return menuTreeDAO.get(id);
-	}
-	
-	@RequestMapping(method = RequestMethod.POST)
-	@Transactional
-	public MenuTree saveMenu(MenuTree menu) throws Exception {
-		menuTreeDAO.save(menu);
-		return menu;
+		}*/
+		model.addAttribute("menuId", id);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

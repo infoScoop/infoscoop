@@ -11,7 +11,7 @@ var hostPrefix = "/infoscoop";//TODO スクリプトで計算
 //TODO propertiesテーブルから取得して補正する
 var staticContentURL="../..";
 var imageURL = staticContentURL + "/skin/imgs/"
-var copiedItemId, gadgetConfs, menuId = "${menuTree.id}";
+var copiedItemId, gadgetConfs, menuId = "${menuId}";
 function getGadget(type){
 	return gadgetConfs.buildin[type] || gadgetConfs.upload[type];
 }
@@ -44,9 +44,6 @@ function selectItem(id){
 }
 function getSelectedItem(){
 	return $("#menu_tree").jstree("get_selected")[0];
-}
-function editMenu(){
-	$("#menu_right").load("formMenu?id="+menuId);
 }
 function selectGadgetInstance(e, a, isTop){
 	if(isTop)
@@ -317,14 +314,13 @@ $(function () {
 	<div id="menu_left">
 		<div id="menu_command">
 			<a onclick="showAddItem(false, '')">トップメニューを追加</a>
-			<a onclick="editMenu()">プロパティを変更</a>
 		</div>
 		<div id="menu_tree">
 			
 		</div>
 	</div>
 	<div id="menu_right">
-		<c:import url="/WEB-INF/jsp/admin/menu/formMenu.jsp"/>
+		メニューツリーを編集する画面です。<br>
 	</div>
 	<div style="clear:both"></div>
 	<div id="menu_item_command" class="menu_item_command" style="display:none">

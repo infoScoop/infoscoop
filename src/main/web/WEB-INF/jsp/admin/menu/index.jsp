@@ -10,7 +10,7 @@
 	この画面では、メニューツリーを追加/編集/削除できます。<br>
 	トップに表示、サイドに表示を選択した場合のみ、そのメニューがポータル画面に表示されます。<br>
 </p>
-<a href="editMenu" id="add_menu">メニューを追加</a>
+<button id="add_menu">メニューを追加</button>
 <table id="menu_list" class="tablesorter">
 	<thead>
 		<tr>
@@ -47,15 +47,24 @@
 	</tbody>
 </table>
 <script type="text/javascript">
-$("#add_menu").button();
+$("#add_menu").button().click(function(){
+	$.post("newMenu", {}, function(html){
+		var tbody = $("#menu_list tbody");
+		//if a count of menu trees is 0, a message should be deleted.
+		if(!$("tr:first", tbody).attr("menu_id"))
+			tbody.empty();
+		tbody.append(html);
+	});
+});
 $("#menu_list").tablesorter({
 	headers: {1:{sorter:false},2:{sorter:false},3:{sorter:false}}
 });
-$(".title .icon").click(function(event){
+$("#menu_list .title .icon").livequery("click", function(event){
 	var icon = $(this);
 	if(icon.hasClass("edit_icon")){
 		icon.prev().show().focus().prev().hide();
 		icon.removeClass("edit_icon").addClass("save_icon");
+		event.stopPropagation();
 	} else {
 		var title = icon.prev().val();
 		var menuId = icon.parents("tr:first").attr("menu_id");
@@ -65,9 +74,10 @@ $(".title .icon").click(function(event){
 			console.info(html);
 		});
 	}
+});
+$("#menu_list input").livequery("click", function(event){
 	event.stopPropagation();
 });
-$(".title input").click(function(event){event.stopPropagation();});
 $("#change_position_top, #change_position_side").click(function(event){
 	var name = this.id === "change_position_top" ? "top" : "side",
 		icon = $(this),
@@ -79,7 +89,7 @@ $("#change_position_top, #change_position_side").click(function(event){
 		var menuId = radios.filter(":radio:checked").parents("tr:first").attr("menu_id");
 		$.post("changePosition", {id:menuId, position:name}, function(html){
 			radios.hide().prev().each(function(){
-				if($(this).next().attr("menu_id") === menuId) $(this).text("表示").show();
+				if($(this).parents("tr:first").attr("menu_id") === menuId) $(this).text("表示").show();
 				else $(this).empty().show();
 			});
 			icon.removeClass("save_icon").addClass("edit_icon");
@@ -88,7 +98,7 @@ $("#change_position_top, #change_position_side").click(function(event){
 	}
 	event.stopPropagation();
 });
-$("#menu_list .delete_icon").live("click", function(){
+$("#menu_list .delete_icon").livequery("click", function(){
 	var deleteIcon = $(this);
 	if(confirm("削除してよろしいですか？")){
 		$.post("deleteMenu", {id:deleteIcon.attr("menu_id")}, function(html){
@@ -97,12 +107,14 @@ $("#menu_list .delete_icon").live("click", function(){
 		});
 	}
 });
-$(document).click(function(){
+$(document.body).click(function(){
 	$("#menu_list .title a").each(function(){
-		$(this).show().next().hide();
+		var a = $(this);
+		a.show().next().hide().val(a.text());
 	});
 	$("#menu_list td.radio_cell span").each(function(){
-		$(this).show().next().hide();
+		var span = $(this);
+		span.show().next().hide().attr("checked", span.text() ? "checked":null);
 	});
 	$("#menu_list .icon.save_icon").removeClass("save_icon").addClass("edit_icon");
 });
