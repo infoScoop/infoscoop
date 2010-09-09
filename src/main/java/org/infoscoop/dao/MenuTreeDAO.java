@@ -73,18 +73,22 @@ public class MenuTreeDAO extends HibernateDaoSupport {
 	public List<MenuTree> all() {
 		List<MenuTree> menus = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuTree.class));
+		// join
+		List<MenuPosition> poss = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(MenuPosition.class));
+		for (MenuTree menu : menus) {
+			for (MenuPosition pos : poss) {
+				if (menu.getId() == pos.getFkMenuTree().getId())
+					menu.addPosition(pos.getId());
+			}
+		}
 		return menus;
 	}
 	
 	public void updatePosition(MenuTree menu, String position){
 		MenuPosition pos = getPosition(position);
-		if (pos != null)
-			pos.setFkMenuTree(menu);
-		else
-			pos = new MenuPosition(position, menu);
-		menu.getMenuPositions().clear();
-		menu.addToMenuPositions(pos);
-		super.getHibernateTemplate().saveOrUpdate(menu);
+		pos.setFkMenuTree(menu);
+		super.getHibernateTemplate().saveOrUpdate(pos);
 	}
 
 	public void save(MenuTree menu) {

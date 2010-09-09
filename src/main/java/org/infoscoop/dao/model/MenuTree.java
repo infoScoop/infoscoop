@@ -1,7 +1,9 @@
 package org.infoscoop.dao.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 import org.infoscoop.dao.model.base.BaseMenuTree;
 
@@ -35,12 +37,29 @@ public class MenuTree extends BaseMenuTree {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	private List<String> positions;
+	
+	public void addPosition(String position) {
+		if (positions == null)
+			positions = new ArrayList<String>();
+		positions.add(position);
+	}
 
+	public boolean isTop() {
+		return hasPosition("top");
+	}
 
-	public String getPosition() {
-		Iterator<MenuPosition> it = getMenuPositions().iterator();
-		if (it.hasNext())
-			return it.next().getId();
-		return null;
+	public boolean isSide() {
+		return hasPosition("side");
+	}
+
+	public boolean hasPosition(String position) {
+		if (positions == null)
+			return false;
+		for (String pos : positions) {
+			if (pos.equals(position))
+				return true;
+		}
+		return false;
 	}
 }

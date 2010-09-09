@@ -28,12 +28,12 @@
 				<input type="text" value="${menu.title}" style="display:none">
 			</td>
 			<td class="radio_cell">
-				<span>${menu.position == "top" ? "表示" : ""}</span>
-				<input type="radio" name="top" ${menu.position == "top" ? "checked=\"checked\"" : ""} style="display:none" menu_id="${menu.id}">
+				<span>${menu.top ? "表示" : ""}</span>
+				<input type="radio" name="top" ${menu.top ? "checked=\"checked\"" : ""} style="display:none" menu_id="${menu.id}">
 			</td>
 			<td class="radio_cell">
-				<span>${menu.position == "side" ? "表示" : ""}</span>
-				<input type="radio" name="side" ${menu.position == "side" ? "checked=\"checked\"" : ""} style="display:none" menu_id="${menu.id}">
+				<span>${menu.side ? "表示" : ""}</span>
+				<input type="radio" name="side" ${menu.side ? "checked=\"checked\"" : ""} style="display:none" menu_id="${menu.id}">
 			</td>
 			<td class="icon_cell"><div class="icon delete_icon" menu_id="${menu.id}"></div></td>
 		</tr>

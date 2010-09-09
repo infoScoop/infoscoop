@@ -43,6 +43,7 @@ public class MenuController {
 	private MenuTreeDAO menuTreeDAO;
 
 	@RequestMapping
+	@Transactional
 	public void index(Model model) throws Exception {
 		List<MenuTree> menus = menuTreeDAO.all();
 		model.addAttribute("menus", menus);
