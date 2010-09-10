@@ -8,7 +8,7 @@
 <script type="text/javascript" class="source">
 $(function(){
 	$('#add_button').click(function(){
-		window.open("editTab", "タブ設定", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes');
+		window.open("newTab", "タブ設定", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes');
 	});
 });
 </script>

@@ -1,10 +1,13 @@
 package org.infoscoop.dao.model;
 
+import java.util.Set;
+
 import org.infoscoop.dao.model.base.BaseTabTemplatePersonalizeGadget;
 
 
 
-public class TabTemplatePersonalizeGadget extends BaseTabTemplatePersonalizeGadget {
+public class TabTemplatePersonalizeGadget extends BaseTabTemplatePersonalizeGadget 
+		implements Cloneable{
 	private static final long serialVersionUID = 1L;
 
 /*[CONSTRUCTOR MARKER BEGIN]*/
@@ -40,4 +43,14 @@ public class TabTemplatePersonalizeGadget extends BaseTabTemplatePersonalizeGadg
 /*[CONSTRUCTOR MARKER END]*/
 
 
+	public TabTemplatePersonalizeGadget createTemp ()throws CloneNotSupportedException{
+		TabTemplatePersonalizeGadget personalizeGadgetClone = new TabTemplatePersonalizeGadget();
+		personalizeGadgetClone.setColumnNum(this.getColumnNum());
+		personalizeGadgetClone.setFkGadgetInstance(this.getFkGadgetInstance());
+		personalizeGadgetClone.setFkTabTemplate(this.getFkTabTemplate());
+		personalizeGadgetClone.setSiblingId(this.getSiblingId());
+		personalizeGadgetClone.setWidgetId(this.getWidgetId());
+		return personalizeGadgetClone;
+	}
+		
 }

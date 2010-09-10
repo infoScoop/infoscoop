@@ -16,6 +16,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 	public static String REF = "TabTemplate";
 	public static String PROP_ACCESS_LEVEL = "AccessLevel";
+	public static String PROP_TAB_ID = "TabId";
 	public static String PROP_NAME = "Name";
 	public static String PROP_LAYOUT = "Layout";
 	public static String PROP_PUBLISHED = "Published";
@@ -62,6 +63,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private java.lang.Integer id;
 
 	// fields
+	private java.lang.String tabId;
 	private java.lang.String name;
 	private java.lang.Integer published;
 	private java.lang.Integer accessLevel;
@@ -95,9 +97,24 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 
 
-
 	/**
 	 * Return the value associated with the column: name
+	 */
+	public java.lang.String getTabId () {
+		return tabId;
+	}
+
+	/**
+	 * Set the value related to the column: tabId
+	 * @param name the name value
+	 */
+	public void setTabId (java.lang.String tabId) {
+		this.tabId = tabId;
+	}
+	
+
+	/**
+	 * Return the value associated with the column: tabId
 	 */
 	public java.lang.String getName () {
 		return name;

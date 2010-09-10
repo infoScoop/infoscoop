@@ -3,6 +3,7 @@ package org.infoscoop.manager.controller;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -79,29 +80,37 @@ public class TabController {
 
 	@RequestMapping
 	@Transactional
-	public void editTab(
+	public void newTab(
 			@RequestParam(value="id", required=false) String tabId,
 			Model model)throws Exception {
-		TabTemplate tab;
-		if(tabId != null){
-			tab = tabTemplateDAO.get(tabId);
-		}else{
-			tab = new TabTemplate();
+		TabTemplate tab = new TabTemplate();
+			tab.setTabId("t_" + new Date().getTime());
 			tab.setName("New Tab");
 			tab.setPublished(0);
 			tab.setTemp(1);
 			tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
 			tabTemplateDAO.save(tab);
-		}
-		model.addAttribute(tab);
+			model.addAttribute(tab);
+		
+	}
+	
+	@RequestMapping
+	@Transactional
+	public void editTab(
+			@RequestParam(value="id", required=false) String id,
+			Model model)throws Exception {
+			TabTemplate tab = tabTemplateDAO.get(id);
+			TabTemplate tabCopy = tab.createTemp();
+			tabTemplateDAO.save(tabCopy);
+			model.addAttribute(tabCopy);
 	}
 
 	@RequestMapping
 	@Transactional
 	public String deleteTempTab(
-			@RequestParam("id") String tabId,
+			@RequestParam("id") String id,
 			Model model) throws Exception {
-		TabTemplate tab = TabTemplateDAO.newInstance().get(tabId);
+		TabTemplate tab = tabTemplateDAO.get(id);
 		if(tab.getTemp() == 1){
 			Set<TabTemplateStaticGadget> sgs = 
 				tab.getTabTemplateStaticGadgets();
@@ -214,6 +223,18 @@ public class TabController {
 		tabTemplateDAO.save(tab);
 		model.addAttribute(tab);
 	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
+	public void updateTab(TabTemplate tab, Model model)throws Exception {		
+		tab.setTemp(0);
+		//String originalTabId = tab.getTabId();
+		//TabTemplate originalTab = tabTemplateDAO.getTabInstance(originalTabId, 0);
+		//originalTab.setTemp(1);
+		tabTemplateDAO.save(tab);
+		//this.deleteTempTab(Integer.toString(originalTab.getId()), model);
+		model.addAttribute(tab);
+	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
@@ -244,10 +265,10 @@ public class TabController {
 		Map<Integer, TabTemplatePersonalizeGadget> gadgetMap = new HashMap<Integer, TabTemplatePersonalizeGadget>();
 		for(TabTemplatePersonalizeGadget gadget : tab.getTabTemplatePersonalizeGadgets()){
 			gadget.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
-			if(gadget.getSibling() == null){
+			if(gadget.getSiblingId() == null){
 				firstOfColumn.add(gadget);
 			}else{
-				gadgetMap.put(gadget.getSibling().getId(), gadget);
+				gadgetMap.put(gadget.getSiblingId(), gadget);
 			}
 		}
 		Collection<TabTemplatePersonalizeGadget> gadgets = new ArrayList<TabTemplatePersonalizeGadget>();
@@ -436,8 +457,8 @@ public class TabController {
 	        	}
 	        	
 	        	if(nextSibling != null){
-	        		gadget.setSibling( nextSibling );
-	        		log.info("Replace siblingId of [" + gadget.getSibling() + "] to " + widgetId );
+	        		gadget.setSiblingId( nextSibling.getId() );
+	        		log.info("Replace siblingId of [" + gadget.getSiblingId() + "] to " + widgetId );
 	 //       		WidgetDAO.newInstance().updateWidget(uid, tabId, newNextSibling);
 	        	}
 	        	
@@ -445,7 +466,7 @@ public class TabController {
 	    		if(targetColumn != null && !"".equals(targetColumn)){
 	    			gadget.setColumnNum(new Integer(targetColumn));
 	    		}
-	    		gadget.setSibling(nextSibling);
+	    		gadget.setSiblingId(nextSibling.getId());
 	    		
 	    		GadgetInstance ginst = GadgetInstanceDAO.newInstance().get(Integer.valueOf(ginstid));
 	    		
@@ -538,7 +559,7 @@ public class TabController {
 	        
 	        TabTemplatePersonalizeGadget oldNextSibling = tab.getPersonalizeGadgetBySibling( gadget.getWidgetId());            	
 	        if(oldNextSibling != null){
-	        	oldNextSibling.setSibling(gadget.getSibling());
+	        	oldNextSibling.setSiblingId(gadget.getSiblingId());
 	        }
 
 	        TabTemplatePersonalizeGadget newNextSibling;
@@ -549,13 +570,13 @@ public class TabController {
 			}
 	        
 	        if(newNextSibling != null){
-	        	newNextSibling.setSibling(gadget);
+	        	newNextSibling.setSiblingId(gadget.getId());
 	        	log.info("Replace siblingId of [" + newNextSibling.getId() + "] to " + gadget.getId());
 	        }
 	        
 	        TabTemplatePersonalizeGadget sibling = tab.getPersonalizeGadgetByWidgetId(siblingId);
 	        
-	        gadget.setSibling(sibling);
+	        gadget.setSiblingId(sibling.getId());
 	      
 	        try{
 	        	gadget.setColumnNum(new Integer(targetColumn));
@@ -613,7 +634,7 @@ public class TabController {
 	        	//TODO:check whether the widget is null or not;
 	        	TabTemplatePersonalizeGadget nextSibling = tab.getNextSibling(widgetId);
 	        	if(nextSibling != null){
-	        		nextSibling.setSibling(widget.getSibling());
+	        		nextSibling.setSiblingId(widget.getSiblingId());
 	        	}
 	        	tabDAO.deleteParsonalizeGadget(widget.getId());
 	        		        	

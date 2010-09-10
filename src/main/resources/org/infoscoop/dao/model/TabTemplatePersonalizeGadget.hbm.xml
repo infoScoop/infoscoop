@@ -39,13 +39,20 @@
 			lazy="false"
 		>
 		</many-to-one>
-		<many-to-one
-			name="Sibling"
+		<property
+			name="SiblingId"
 			column="sibling_id"
-			class="TabTemplatePersonalizeGadget"
+			type="integer"
 			not-null="false"
 		>
-		</many-to-one>
+		</property>
+		<!-- property
+			name="ParentId"
+			column="parent_id"
+			type="integer"
+			not-null="false"
+		>
+		</property-->
 		<many-to-one
 			name="FkTabTemplate"
 			column="fk_tabtemplate_id"
@@ -53,13 +60,6 @@
 			not-null="true"
 		>
 		</many-to-one>
-	
-
-		<set name="TabTemplateParsonalizeGadgets" inverse="true">
-			<key column="id"/>
-			<one-to-many class="TabTemplatePersonalizeGadget"/>
-		</set>
-
 
 	</class>	
 </hibernate-mapping>

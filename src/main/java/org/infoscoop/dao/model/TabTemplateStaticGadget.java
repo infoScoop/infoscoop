@@ -45,5 +45,12 @@ public class TabTemplateStaticGadget extends BaseTabTemplateStaticGadget {
 		this.tabTemplateId = tabId;
 	}
 	
-	
+	public TabTemplateStaticGadget createTemp ()throws CloneNotSupportedException{
+		TabTemplateStaticGadget staticGadgetClone = new TabTemplateStaticGadget();
+		staticGadgetClone.setContainerId(this.getContainerId());
+		staticGadgetClone.setFkGadgetInstance(this.getFkGadgetInstance());
+		staticGadgetClone.setFkTabTemplate(this.getFkTabTemplate());
+		staticGadgetClone.setTabTemplateId(this.getTabTemplateId());
+		return staticGadgetClone;
+	}
 }

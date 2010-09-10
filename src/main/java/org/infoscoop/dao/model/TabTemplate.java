@@ -2,6 +2,8 @@ package org.infoscoop.dao.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.infoscoop.dao.model.base.BaseTabTemplate;
 
@@ -103,9 +105,9 @@ public class TabTemplate extends BaseTabTemplate {
 
 	public TabTemplatePersonalizeGadget getPersonalizeGadgetBySibling(String widgetId) {
 		for(TabTemplatePersonalizeGadget gadget : super.getTabTemplatePersonalizeGadgets()){
-			if(gadget.getSibling() == null)continue;
-			
-			if(widgetId == gadget.getSibling().getWidgetId())return gadget;
+			if(gadget.getSiblingId() == null)continue;
+			TabTemplatePersonalizeGadget sibling = this.getPersonalizeGadget(gadget.getSiblingId());
+			if(widgetId == sibling.getWidgetId())return gadget;
 		}
 		return null;
 	}
@@ -120,8 +122,9 @@ public class TabTemplate extends BaseTabTemplate {
 
 	public TabTemplatePersonalizeGadget getNextSiblingOnColumn(String siblingId, Integer colNum) {
 		for(TabTemplatePersonalizeGadget gadget : super.getTabTemplatePersonalizeGadgets()){
-			if(gadget.getColumnNum() == null || gadget.getSibling() == null)continue;
-			if(colNum.equals(gadget.getColumnNum()) && gadget.getSibling().getWidgetId().equals(siblingId))
+			if(gadget.getColumnNum() == null || gadget.getSiblingId() == null)continue;
+			TabTemplatePersonalizeGadget sibling = this.getPersonalizeGadget(gadget.getSiblingId());
+			if(colNum.equals(gadget.getColumnNum()) && sibling.getWidgetId().equals(siblingId))
 				return gadget;
 		}
 		return null;
@@ -133,11 +136,41 @@ public class TabTemplate extends BaseTabTemplate {
 
 	public TabTemplatePersonalizeGadget getNextSibling(String siblingId) {
 		for(TabTemplatePersonalizeGadget gadget : super.getTabTemplatePersonalizeGadgets()){
-			if(gadget.getSibling() == null)continue;
-			if( gadget.getSibling().getId().equals(Integer.valueOf(siblingId)))
+			if(gadget.getSiblingId() == null)continue;
+			if( gadget.getSiblingId().equals(Integer.valueOf(siblingId)))
 				return gadget;
 		}
 		return null;
 	}
 
+	public TabTemplate createTemp() throws CloneNotSupportedException{
+		TabTemplate tabClone = new TabTemplate();
+		
+		Set<TabTemplatePersonalizeGadget> tabPGs 
+			= this.getTabTemplatePersonalizeGadgets();
+		Set<TabTemplatePersonalizeGadget> tabClonePGs = new HashSet<TabTemplatePersonalizeGadget>();
+		for(TabTemplatePersonalizeGadget pg: tabPGs){
+			tabClonePGs.add(pg.createTemp());
+		}
+		
+		
+		
+		Set<TabTemplateStaticGadget> tabSGs 
+			= this.getTabTemplateStaticGadgets();
+		Set<TabTemplateStaticGadget> tabCloneSGs = new HashSet<TabTemplateStaticGadget>();
+		for(TabTemplateStaticGadget sg: tabSGs){
+			tabCloneSGs.add(sg.createTemp());
+		}
+		
+		tabClone.setName(this.getName());
+		tabClone.setPublished(this.getPublished());
+		tabClone.setLayout(this.getLayout());
+		tabClone.setAccessLevel(this.getAccessLevel());
+		tabClone.setTabId(this.getTabId());
+		tabClone.setTemp(Integer.valueOf(1));
+		tabClone.setTabTemplatePersonalizeGadgets(tabClonePGs);
+		tabClone.setTabTemplateStaticGadgets(tabCloneSGs);
+		
+		return tabClone;
+	}
 }

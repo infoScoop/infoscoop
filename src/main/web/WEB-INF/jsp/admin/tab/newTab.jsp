@@ -704,8 +704,6 @@ function deleteTempTabTemplate(){
 	}
 }
 
-
-
 Event.observe(window, "load", init, false);
 Event.observe(window, "beforeunload", deleteTempTabTemplate, false);
 
@@ -718,8 +716,7 @@ IS_Portal.widgetDropped = function( widget ) {
 IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
 
 </script>
-
-<c:set var="action" value="updateTab" scope="request"/>
+<c:set var="action" value="addTab" scope="request"/>
 <c:import url="/WEB-INF/jsp/admin/tab/_formTab.jsp"/>
 
 <div style="display:none" id='edit_layout_modal'>
