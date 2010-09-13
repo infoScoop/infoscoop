@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.1.1
+infoScoop OpenSource 2.1.2
 ==========================
 
 infoScoop OpenSourceとは
@@ -63,9 +63,9 @@ $ cleanup_temp_table.bat(sh)
   静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
 
 
-バージョン2.1からの移行手順
+バージョン2.1.0からの移行手順
 -----------------------------
-2.1から本バージョンに移行するには以下の手順を実行します。
+2.1.0から本バージョンに移行するには以下の手順を実行します。
 
 1. データベース内のガジェットを置き換え、国際化リソースを追加します。
 
@@ -91,6 +91,14 @@ $ cleanup_temp_table.bat(sh)
 
 3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
+バージョン2.1.1からの移行手順
+-----------------------------
+2.1.1から本バージョンに移行するには以下の手順を実行します。
+
+1. 静的コンテンツを設定している場合は、静的コンテンツを入れ替えます。
+  静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
+
+2. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
 インストール方法
 ----------------
@@ -106,8 +114,7 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 ライセンスおよびコピーライト情報は LICENSE.txt を参照ください。
 
 
-2.1.0から2.1.1での変更点
+2.1.1から2.1.2での変更点
 ------------------------
 以下のURLを参照してください。
-https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.1.1
-http://code.google.com/p/infoscoop-gadgets/issues/list?can=1&q=milestone=Release1.0.4
+https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.1.2

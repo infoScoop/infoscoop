@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.1.1
+infoScoop OpenSource 2.1.2
 ==========================
 
 About infoScoop OpenSource
@@ -16,7 +16,7 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 
 How to migrate from version 2.0
 -------------------------------
-To migrate from version 2.0 to 2.1, follow the steps below.
+To migrate from version 2.0 to 2.1.2, follow the steps below.
 
 [Transfer Data]
 It is strongly recommended that the following steps should be done after backing up the database data.
@@ -66,7 +66,7 @@ $ cleanup_temp_table.bat(sh)
 
 How to migrate from version 2.1.0
 ---------------------------------
-To migrate from version 2.1.0 to 2.1.1, follow the steps below.
+To migrate from version 2.1.0 to 2.1.2, follow the steps below.
 
 1. Replace gadget files in the repository database and update i18n resources.
 
@@ -92,6 +92,14 @@ To migrate from version 2.1.0 to 2.1.1, follow the steps below.
 
 3. Redeploy infoscoop.war to WebApplication Server.
 
+How to migrate from version 2.1.1
+---------------------------------
+To migrate from version 2.1.1 to 2.1.2, follow the steps below.
+
+1. if the static content URL is set, replacement of  the static content files is necessary.
+  Replace the directory where static contents are stored currently to 'infoscoop/staticContent' directory.
+
+2. Redeploy infoscoop.war to WebApplication Server.
 
 License and Copyright
 ---------------------
@@ -100,8 +108,7 @@ This code is licensed under the **GNU Lesser General Public License (LGPL) v3**.
 LICENSE.txt for licensing and copyright information.
 
 
-Changes from Version 2.1.0 to 2.1.1
+Changes from Version 2.1.1 to 2.1.2
 -----------------------------------
 Refer to the URL below.
-https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.1.1
-http://code.google.com/p/infoscoop-gadgets/issues/list?can=1&q=milestone=Release1.0.4
+https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.1.2
