@@ -466,7 +466,6 @@ public class TabController {
 	    		if(targetColumn != null && !"".equals(targetColumn)){
 	    			gadget.setColumnNum(new Integer(targetColumn));
 	    		}
-	    		gadget.setSiblingId(nextSibling.getId());
 	    		
 	    		GadgetInstance ginst = GadgetInstanceDAO.newInstance().get(Integer.valueOf(ginstid));
 	    		
@@ -575,8 +574,8 @@ public class TabController {
 	        }
 	        
 	        TabTemplatePersonalizeGadget sibling = tab.getPersonalizeGadgetByWidgetId(siblingId);
-	        
-	        gadget.setSiblingId(sibling.getId());
+	        if(sibling != null)
+	        	gadget.setSiblingId(sibling.getId());
 	      
 	        try{
 	        	gadget.setColumnNum(new Integer(targetColumn));
