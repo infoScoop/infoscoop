@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.1.1
+infoScoop OpenSource 2.1.2
 ==========================
 
 About infoScoop OpenSource
@@ -12,13 +12,13 @@ Installation Requirements
 ----------------
 These are requirements that needs before the setup of infoScoop OpenSource.
 
-・JDK 5.0
+・JDK 5.0 or higher
 ・MySQL	5.1
 
 
 How to Setup
 ----------------
-Unzip infoscoop-2.1.1-quickstart.zip(tar.gz) and follow the steps below.
+Unzip infoscoop-2.1.2-quickstart.zip(tar.gz) and follow the steps below.
 
 1. Create Repository Database
 
@@ -32,7 +32,7 @@ mysql>exit
 
 Execute the following commands which inserts initial data to the created database.
 
-$ mysql -uroot iscoop < infoscoop-2.1.1-quickstart/init_infoscoop.sql
+$ mysql -uroot iscoop < infoscoop-2.1.2-quickstart/init_infoscoop.sql
 
 * Choose 'init_info_infoscoop.ja.sql' file, if you want Japanese sample settings.
 
@@ -79,7 +79,7 @@ How to Add Users
 
 Edit the following file.
 
-infoscoop-2.1.1-quickstart/initdb/data/accounts/import.csv
+infoscoop-2.1.2-quickstart/initdb/data/accounts/import.csv
 
 Add new users with the following format.
 
@@ -89,7 +89,7 @@ Add new users with the following format.
 
 Move to 'initdb' directory, and execute 'addaccount.bat(sh)' file.
 
-$ cd infoscoop-2.1.1-quickstart/initdb
+$ cd infoscoop-2.1.2-quickstart/initdb
 $ addaccount.bat(sh)
 
 
@@ -100,8 +100,7 @@ This code is licensed under the **GNU Lesser General Public License (LGPL) v3**.
 LICENSE.txt for licensing and copyright information.
 
 
-Changes from Version 2.1.0 to 2.1.1
+Changes from Version 2.1.1 to 2.1.2
 -----------------------------------
 Refer to the URL below.
-https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.1.1
-http://code.google.com/p/infoscoop-gadgets/issues/list?can=1&q=milestone=Release1.0.4
+https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.1.2
