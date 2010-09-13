@@ -103,7 +103,6 @@
 		<copy todir="${build.main}" file="${src.main.web}/blank.html"/>
 
 
-		<copy todir="${build.main}/js/resources" file="${src.main.web}/js/resources/resourceBundle.jsp"/>
 		<copy todir="${build.main}/js/search" file="${src.main.web}/js/search/searchEngine.jsp"/>
 		
 		<copy todir="${build.main}" file="${src.main.web}/iframe.jsp"/>
