@@ -16,11 +16,12 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 	public static String REF = "TabTemplate";
 	public static String PROP_ACCESS_LEVEL = "AccessLevel";
-	public static String PROP_TAB_ID = "TabId";
 	public static String PROP_NAME = "Name";
+	public static String PROP_TAB_ID = "TabId";
 	public static String PROP_LAYOUT = "Layout";
 	public static String PROP_PUBLISHED = "Published";
 	public static String PROP_ID = "Id";
+	public static String PROP_ORIGINAL_ID = "OriginalId";
 	public static String PROP_TEMP = "Temp";
 
 
@@ -42,11 +43,13 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 */
 	public BaseTabTemplate (
 		java.lang.Integer id,
+		java.lang.String tabId,
 		java.lang.String name,
 		java.lang.Integer published,
 		java.lang.Integer temp) {
 
 		this.setId(id);
+		this.setTabId(tabId);
 		this.setName(name);
 		this.setPublished(published);
 		this.setTemp(temp);
@@ -63,6 +66,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private java.lang.Integer id;
 
 	// fields
+	private java.lang.Integer originalId;
 	private java.lang.String tabId;
 	private java.lang.String name;
 	private java.lang.Integer published;
@@ -97,24 +101,43 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 
 
+
 	/**
-	 * Return the value associated with the column: name
+	 * Return the value associated with the column: original_id
+	 */
+	public java.lang.Integer getOriginalId () {
+		return originalId;
+	}
+
+	/**
+	 * Set the value related to the column: original_id
+	 * @param originalId the original_id value
+	 */
+	public void setOriginalId (java.lang.Integer originalId) {
+		this.originalId = originalId;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: tab_id
 	 */
 	public java.lang.String getTabId () {
 		return tabId;
 	}
 
 	/**
-	 * Set the value related to the column: tabId
-	 * @param name the name value
+	 * Set the value related to the column: tab_id
+	 * @param tabId the tab_id value
 	 */
 	public void setTabId (java.lang.String tabId) {
 		this.tabId = tabId;
 	}
-	
+
+
 
 	/**
-	 * Return the value associated with the column: tabId
+	 * Return the value associated with the column: name
 	 */
 	public java.lang.String getName () {
 		return name;

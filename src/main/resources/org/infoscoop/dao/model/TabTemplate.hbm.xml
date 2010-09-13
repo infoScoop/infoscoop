@@ -17,6 +17,12 @@
 			<generator class="native"/>
 		</id>
 		<property
+			name="OriginalId"
+			column="original_id"
+			not-null="false"
+			type="integer"
+		/>
+		<property
 			name="TabId"
 			column="tab_id"
 			type="string"

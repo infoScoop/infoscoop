@@ -101,6 +101,7 @@ public class TabController {
 			Model model)throws Exception {
 			TabTemplate tab = tabTemplateDAO.get(id);
 			TabTemplate tabCopy = tab.createTemp();
+			tabCopy.setOriginalId(Integer.valueOf(id));
 			tabTemplateDAO.save(tabCopy);
 			model.addAttribute(tabCopy);
 	}
@@ -227,12 +228,11 @@ public class TabController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public void updateTab(TabTemplate tab, Model model)throws Exception {		
+		TabTemplate tabOriginal = 
+			tabTemplateDAO.get(Integer.toString(tab.getOriginalId()));
 		tab.setTemp(0);
-		//String originalTabId = tab.getTabId();
-		//TabTemplate originalTab = tabTemplateDAO.getTabInstance(originalTabId, 0);
-		//originalTab.setTemp(1);
 		tabTemplateDAO.save(tab);
-		//this.deleteTempTab(Integer.toString(originalTab.getId()), model);
+		tabTemplateDAO.delete(tabOriginal);
 		model.addAttribute(tab);
 	}
 

@@ -29,12 +29,14 @@ public class TabTemplate extends BaseTabTemplate {
 	 */
 	public TabTemplate (
 		java.lang.Integer id,
+		java.lang.String tabId,
 		java.lang.String name,
 		java.lang.Integer published,
 		java.lang.Integer temp) {
 
 		super (
 			id,
+			tabId,
 			name,
 			published,
 			temp);

@@ -531,6 +531,7 @@ create table IS_MENU_ITEMS(
 --
 create table IS_TAB_TEMPLATES(
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	original_id int,
 	tab_id varchar(255) not null,
 	name varchar(255) not null,
 	layout text,
