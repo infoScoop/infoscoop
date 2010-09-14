@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.model.base.BaseTabTemplate;
 
 
@@ -147,10 +148,18 @@ public class TabTemplate extends BaseTabTemplate {
 
 	public TabTemplate createTemp() throws CloneNotSupportedException{
 		TabTemplate tabClone = new TabTemplate();
+		tabClone.setName(this.getName());
+		tabClone.setPublished(this.getPublished());
+		tabClone.setLayout(this.getLayout());
+		tabClone.setAccessLevel(this.getAccessLevel());
+		tabClone.setTabId(this.getTabId());
+		tabClone.setTemp(Integer.valueOf(1));
+		TabTemplateDAO.newInstance().save(tabClone);
 		
-		Set<TabTemplatePersonalizeGadget> tabPGs 
-			= this.getTabTemplatePersonalizeGadgets();
-		Set<TabTemplatePersonalizeGadget> tabClonePGs = new HashSet<TabTemplatePersonalizeGadget>();
+		Set<TabTemplatePersonalizeGadget> tabPGs =
+				this.getTabTemplatePersonalizeGadgets();
+		Set<TabTemplatePersonalizeGadget> tabClonePGs = 
+				new HashSet<TabTemplatePersonalizeGadget>();
 		for(TabTemplatePersonalizeGadget pg: tabPGs){
 			tabClonePGs.add(pg.createTemp());
 		}
@@ -161,15 +170,10 @@ public class TabTemplate extends BaseTabTemplate {
 			= this.getTabTemplateStaticGadgets();
 		Set<TabTemplateStaticGadget> tabCloneSGs = new HashSet<TabTemplateStaticGadget>();
 		for(TabTemplateStaticGadget sg: tabSGs){
-			tabCloneSGs.add(sg.createTemp());
+			tabCloneSGs.add(sg.createTemp(tabClone));
 		}
 		
-		tabClone.setName(this.getName());
-		tabClone.setPublished(this.getPublished());
-		tabClone.setLayout(this.getLayout());
-		tabClone.setAccessLevel(this.getAccessLevel());
-		tabClone.setTabId(this.getTabId());
-		tabClone.setTemp(Integer.valueOf(1));
+		
 		tabClone.setTabTemplatePersonalizeGadgets(tabClonePGs);
 		tabClone.setTabTemplateStaticGadgets(tabCloneSGs);
 		

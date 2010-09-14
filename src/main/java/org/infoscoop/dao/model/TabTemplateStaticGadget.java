@@ -1,5 +1,6 @@
 package org.infoscoop.dao.model;
 
+import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
 import org.infoscoop.dao.model.base.BaseTabTemplateStaticGadget;
 
 
@@ -45,12 +46,16 @@ public class TabTemplateStaticGadget extends BaseTabTemplateStaticGadget {
 		this.tabTemplateId = tabId;
 	}
 	
-	public TabTemplateStaticGadget createTemp ()throws CloneNotSupportedException{
-		TabTemplateStaticGadget staticGadgetClone = new TabTemplateStaticGadget();
-		staticGadgetClone.setContainerId(this.getContainerId());
-		staticGadgetClone.setFkGadgetInstance(this.getFkGadgetInstance());
-		staticGadgetClone.setFkTabTemplate(this.getFkTabTemplate());
-		staticGadgetClone.setTabTemplateId(this.getTabTemplateId());
-		return staticGadgetClone;
+	public TabTemplateStaticGadget createTemp(
+			TabTemplate tabCopy)throws CloneNotSupportedException{
+		TabTemplateStaticGadget SGClone = new TabTemplateStaticGadget();
+		
+		SGClone.setContainerId(this.getContainerId());
+		SGClone.setFkGadgetInstance(this.getFkGadgetInstance());
+		SGClone.setFkTabTemplate(tabCopy);
+		
+		TabTemplateStaticGadgetDAO.newInstance().save(SGClone);
+		
+		return SGClone;
 	}
 }

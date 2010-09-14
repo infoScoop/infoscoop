@@ -171,17 +171,17 @@ public class TabController {
 	@Transactional
 	public void editStaticGadget(
 			HttpServletRequest request, 
-			@RequestParam("tabId") String tabId,
+			@RequestParam("id") String id,
 			@RequestParam("containerId") String containerId,
 			Locale locale,
 			Model model)throws Exception {
 		TabTemplateStaticGadget staticGadget = null;
-		TabTemplate tab = tabTemplateDAO.get(tabId);
+		TabTemplate tab = tabTemplateDAO.get(id);
 		Set<TabTemplateStaticGadget> sgs = tab.getTabTemplateStaticGadgets();
 		for(TabTemplateStaticGadget sg: sgs){
 			if(sg.getContainerId().equals(containerId)){
 				staticGadget = sg;
-				sg.setTabTemplateId(tabId);
+				sg.setTabTemplateId(id);
 				model.addAttribute(staticGadget);
 				break;
 			}

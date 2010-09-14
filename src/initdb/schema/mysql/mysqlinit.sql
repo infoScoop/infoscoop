@@ -537,7 +537,7 @@ create table IS_TAB_TEMPLATES(
 	layout text,
 	published int not null default 0, -- 0=unpublished, 1=published
 	access_level int, -- 0=public, 1=special
-	temp int not null default 1
+	temp int not null default 1 -- 0=data to show, 1=temporary data
 ) ENGINE=InnoDB;
 
 --
@@ -545,8 +545,8 @@ create table IS_TAB_TEMPLATES(
 --
 CREATE TABLE  IS_TAB_TEMPLATE_STATIC_GADGETS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-	fk_tabtemplate_id INT UNSIGNED NOT NULL,
 	container_id VARCHAR( 255 ) NOT NULL ,
+	fk_tabtemplate_id INT UNSIGNED NOT NULL,
 	fk_gadget_instance_id INT UNSIGNED  NOT NULL,
 	foreign key (fk_tabtemplate_id) references IS_TAB_TEMPLATES(id) on delete cascade,
 	foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade
