@@ -224,7 +224,8 @@ public class SessionManagerFilter implements Filter {
 				String loginUrl = this.withoutCotextPath ? "" : httpReq
 						.getContextPath();
 				loginUrl += "/login.jsp?url="
-						+ URLEncoder.encode(httpReq.getRequestURI(), "UTF-8");
+						+ URLEncoder.encode(httpReq.getRequestURI() + "?"
+								+ httpReq.getQueryString(), "UTF-8");
 				httpResponse.sendRedirect(loginUrl);
 				return;
 			}
