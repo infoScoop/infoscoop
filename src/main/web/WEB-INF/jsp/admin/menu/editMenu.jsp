@@ -262,6 +262,21 @@ $(function () {
 		"core" : {
 			"animation" : 100
 		},
+		"crrm" : {
+			"move" : {
+				"check_move": function(m){
+					var p = this._get_parent(m.o);
+					//p: original parent, m.np: parent of moved item
+					//deny dropping child item to top
+					if(p != -1 && m.np === this.get_container())
+						return false;
+					//deny dropping top item to child
+					if(p === -1 && m.np != this.get_container())
+						return false;
+					return true;
+				}
+			}
+		},
 		"plugins" : [ "themes", "html_data", "crrm", "dnd", "ui" ]
 	});
 	menuTree.bind("move_node.jstree", function(event, data){
@@ -275,9 +290,6 @@ $(function () {
 			function(response){
 			}
 		);
-	});
-	menuTree.bind("loaded.jstree", function(event, data){
-		//TODO フラグを立てる
 	});
 	$("#menu_command a").button();
 	function resizeMenuTree(){
