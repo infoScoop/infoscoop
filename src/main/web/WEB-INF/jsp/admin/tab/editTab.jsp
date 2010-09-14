@@ -723,8 +723,8 @@ function displayStaticGadget(widgetOpt){
 	widget.panelType = "StaticPanel";
 	widget.containerId = containerId;
 	widget.build();
-	widget.loadContents();
 	$(containerId).appendChild(widget.elm_widget);
+	widget.loadContents();
 }
 </script>
 

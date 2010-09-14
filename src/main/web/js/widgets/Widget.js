@@ -783,7 +783,7 @@ IS_Widget.prototype.classDef = function() {
 		// omit the URL over the limits in IE by force
 		if(url.length > 2080)
 			url = url.substring(0, 2080);
-		
+
 		self.iframe.src = url;
 	}
 	
@@ -821,7 +821,7 @@ IS_Widget.prototype.classDef = function() {
 		self.iframe.id = "ifrm_" + self.id;
 		self.iframe.name = "ifrm_" + self.id;
 		self.iframe.frameBorder = 0;
-		self.iframe.src = "./blank.html";
+		self.iframe.src = hostPrefix + "/blank.html";
 		
 		var scrolling = self.scrolling;
 		if(/FragmentMiniBrowser/.test(self.widgetType ) )
