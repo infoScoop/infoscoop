@@ -127,14 +127,20 @@ public class GadgetService {
 		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 		builderFactory.setValidating(false);
 		for(Gadget gadget : gadgets){
-			Document gadgetDoc = newDocumentBuilder().parse(new ByteArrayInputStream(gadget.getData()));
-			Element gadgetEl = gadgetDoc.getDocumentElement();
-			Element modulePrefs = (Element)gadgetEl.getElementsByTagName("ModulePrefs").item(0);
-			String title = modulePrefs.getAttribute("title");
-			
 			String type = gadget.getType();
+			
+			Document gadgetDoc = newDocumentBuilder().parse(new ByteArrayInputStream(gadget.getData()));
+			Element modulePrefs = (Element)gadgetDoc.getElementsByTagName("ModulePrefs").item(0);
+			
+			String title = modulePrefs.getAttribute("title");
+
+			I18NConverter i18n = new I18NConverter(locale,
+					new MessageBundle.Factory.Upload(0, type)
+							.createBundles(gadgetDoc));
+			title = i18n.replace(title);
+			
 			String xml = new String(gadget.getData(), "UTF-8");
-			gadgetConfs.add(new GadgetConf(type, title, xml));
+			gadgetConfs.add(new GadgetConf("upload__" + type, title, xml));
 		}
 		
 		List<WidgetConf> widgetConfs = this.widgetConfDAO.selectAll();
@@ -142,6 +148,7 @@ public class GadgetService {
 			Document widgetConfDoc = newDocumentBuilder().parse(new ByteArrayInputStream(conf.getData().getBytes("UTF-8")));
 			Element widgetConfEl = widgetConfDoc.getDocumentElement();
 			String title = widgetConfEl.getAttribute("title");
+			title = I18NUtil.resolve(I18NUtil.TYPE_WIDGET, title, locale);
 			String type = conf.getType();
 			String xml = new String(conf.getData());
 			gadgetConfs.add(new GadgetConf(type, title, xml));
