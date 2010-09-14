@@ -161,7 +161,7 @@ public class TabTemplate extends BaseTabTemplate {
 		Set<TabTemplatePersonalizeGadget> tabClonePGs = 
 				new HashSet<TabTemplatePersonalizeGadget>();
 		for(TabTemplatePersonalizeGadget pg: tabPGs){
-			tabClonePGs.add(pg.createTemp());
+			tabClonePGs.add(pg.createTemp(tabClone));
 		}
 		
 		

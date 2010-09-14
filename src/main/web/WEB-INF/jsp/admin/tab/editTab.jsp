@@ -717,6 +717,15 @@ IS_Portal.widgetDropped = function( widget ) {
 
 IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
 
+function displayStaticGadget(widgetOpt){
+	var containerId = widgetOpt.id;
+	var widget = new IS_Widget(false, widgetOpt);
+	widget.panelType = "StaticPanel";
+	widget.containerId = containerId;
+	widget.build();
+	widget.loadContents();
+	$(containerId).appendChild(widget.elm_widget);
+}
 </script>
 
 <c:set var="action" value="updateTab" scope="request"/>

@@ -1,7 +1,5 @@
 package org.infoscoop.dao.model;
 
-import java.util.Set;
-
 import org.infoscoop.dao.model.base.BaseTabTemplatePersonalizeGadget;
 
 
@@ -43,13 +41,14 @@ public class TabTemplatePersonalizeGadget extends BaseTabTemplatePersonalizeGadg
 /*[CONSTRUCTOR MARKER END]*/
 
 
-	public TabTemplatePersonalizeGadget createTemp ()throws CloneNotSupportedException{
+	public TabTemplatePersonalizeGadget createTemp (TabTemplate tabTemplate)throws CloneNotSupportedException{
 		TabTemplatePersonalizeGadget personalizeGadgetClone = new TabTemplatePersonalizeGadget();
 		personalizeGadgetClone.setColumnNum(this.getColumnNum());
 		personalizeGadgetClone.setFkGadgetInstance(this.getFkGadgetInstance());
 		personalizeGadgetClone.setFkTabTemplate(this.getFkTabTemplate());
 		personalizeGadgetClone.setSiblingId(this.getSiblingId());
 		personalizeGadgetClone.setWidgetId(this.getWidgetId());
+		personalizeGadgetClone.setFkTabTemplate(tabTemplate);
 		return personalizeGadgetClone;
 	}
 		

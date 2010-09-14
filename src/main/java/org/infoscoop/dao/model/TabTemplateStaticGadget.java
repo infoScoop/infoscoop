@@ -54,7 +54,7 @@ public class TabTemplateStaticGadget extends BaseTabTemplateStaticGadget {
 		SGClone.setFkGadgetInstance(this.getFkGadgetInstance());
 		SGClone.setFkTabTemplate(tabCopy);
 		
-		TabTemplateStaticGadgetDAO.newInstance().save(SGClone);
+		//TabTemplateStaticGadgetDAO.newInstance().save(SGClone);
 		
 		return SGClone;
 	}

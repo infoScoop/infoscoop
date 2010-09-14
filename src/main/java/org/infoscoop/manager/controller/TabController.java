@@ -211,7 +211,8 @@ public class TabController {
 		TabTemplate tab = tabTemplateDAO.get(staticGadget.getTabTemplateId());
 		staticGadget.setFkTabTemplate(tab);
 		tabTemplateStaticGadgetDAO.save(staticGadget);
-		model.addAttribute(staticGadget);
+		model.addAttribute(tab);
+		model.addAttribute("gadget", staticGadget);
 		
 		//This is not needed any more.
 		//TabLayoutService.getHandle().insertStaticGadget("temp", staticGadget.getFkGadgetInstance());
