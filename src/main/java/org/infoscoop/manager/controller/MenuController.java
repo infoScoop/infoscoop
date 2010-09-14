@@ -81,13 +81,6 @@ public class MenuController {
 	public void editMenu(
 			@RequestParam(value = "id", required = false) Integer id,
 			Model model) throws Exception {
-		/*MenuTree menu = null;
-		if (id == null) {
-			menu = new MenuTree();
-			menu.setTitle("untitled");
-		} else {
-			menu = menuTreeDAO.get(id);
-		}*/
 		model.addAttribute("menuId", id);
 	}
 	
@@ -103,7 +96,7 @@ public class MenuController {
 			Model model) throws Exception {
 		if (id == null)
 			return;
-		List<MenuItem> items = menuTreeDAO.getTree(id);
+		List<MenuItem> items = menuItemDAO.getTree(id);
 		model.addAttribute("items", items);
 	}
 
@@ -220,7 +213,7 @@ public class MenuController {
 		}
 		GadgetInstanceDAO dao = GadgetInstanceDAO.newInstance();
 		GadgetInstance gadgetInstance = dao.get(instanceId);
-		// lazy=trueだが、Viewに渡すために事前に取得する。何かメソッド呼ぶと事前に取得できる。
+		// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
 		gadgetInstance.getGadgetInstanceUserPrefs().size();
 		item.setFkGadgetInstance(gadgetInstance);
 		item.setTitle(gadgetInstance.getTitle());
@@ -253,11 +246,39 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public MenuItem moveItem(@RequestParam("id") String id,
-			@RequestParam("parentId") String parentId) throws Exception {
+			@RequestParam("parentId") String parentId,
+			@RequestParam("refId") String refId,
+			@RequestParam("position") String position) throws Exception {
 		MenuItem parentItem = menuItemDAO.get(parentId);
 		MenuItem item = menuItemDAO.get(id);
 		item.setFkParent(parentItem);
-		menuItemDAO.save(item);
+		if (position.equals("last")) {
+			item.setMenuOrder(0);
+			menuItemDAO.save(item);
+		} else {
+			List<MenuItem> siblings = menuItemDAO.getByParentId(parentId);
+			int nextOrder = 0;
+			for (MenuItem sibling : siblings) {
+				if (sibling.getId().equals(refId)) {
+					if (position.equals("before")) {
+						item.setMenuOrder(nextOrder);
+						sibling.setMenuOrder(++nextOrder);
+						menuItemDAO.save(item);
+						menuItemDAO.save(sibling);
+					} else {
+						sibling.setMenuOrder(nextOrder);
+						item.setMenuOrder(++nextOrder);
+						menuItemDAO.save(sibling);
+						menuItemDAO.save(item);
+					}
+					nextOrder++;
+				} else if (!sibling.getId().equals(id)) {
+					sibling.setMenuOrder(nextOrder);
+					menuItemDAO.save(sibling);
+					nextOrder++;
+				}
+			}
+		}
 		return item;
 	}
 

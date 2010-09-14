@@ -280,12 +280,16 @@ $(function () {
 		"plugins" : [ "themes", "html_data", "crrm", "dnd", "ui" ]
 	});
 	menuTree.bind("move_node.jstree", function(event, data){
-		var node = data.rslt.o;
-		var parentNode = data.inst._get_parent(node);
+		var node = data.rslt.o,
+			parentNode = data.inst._get_parent(node);
+			refNode = data.rslt.r,
+			position = data.rslt.p;//last, after, before
 		$.post("moveItem",
 			{
 				id: node.attr("id"),
-				parentId: parentNode.attr ? parentNode.attr("id") : ""
+				parentId: parentNode.attr ? parentNode.attr("id") : "",
+				refId: refNode ? refNode.attr("id") : "",
+				position: position
 			},
 			function(response){
 			}

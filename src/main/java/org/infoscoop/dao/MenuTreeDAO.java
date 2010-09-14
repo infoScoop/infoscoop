@@ -64,10 +64,6 @@ public class MenuTreeDAO extends HibernateDaoSupport {
 			return pos.getFkMenuTree();
 		return null;
 	}
-	
-	public List<MenuItem> getTree(int id) {
-		return MenuItemDAO.createMenuTree(get(id).getMenuItems(), null);
-	}
 
 	@SuppressWarnings("unchecked")
 	public List<MenuTree> all() {

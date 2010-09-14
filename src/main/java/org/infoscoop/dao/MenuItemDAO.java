@@ -27,6 +27,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.infoscoop.dao.model.MenuItem;
+import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -47,12 +48,44 @@ public class MenuItemDAO extends HibernateDaoSupport {
 			return items.get(0);
 		return null;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<MenuItem> getByParentId(String parentId) {
+		if (parentId == null)
+			return null;
+		MenuItem parent = get(parentId);
+		if (parent == null)
+			return null;
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(MenuItem.class).add(
+						Expression.eq(MenuItem.PROP_FK_PARENT, parent))
+						.addOrder(Order.asc(MenuItem.PROP_MENU_ORDER)));
+	}
 
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	public List<MenuItem> getTree() {
 		List<MenuItem> flatItems = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuItem.class).addOrder(
 						Order.asc(MenuItem.PROP_MENU_ORDER)));
+		return createMenuTree(flatItems, null);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<MenuItem> getTree(Integer menuTreeId) {
+		if (menuTreeId == null)
+			return null;
+		List<MenuTree> menus = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(MenuTree.class).add(
+						Expression.eq(MenuTree.PROP_ID, menuTreeId)));
+		if (menus.size() == 0)
+			return null;
+		List<MenuItem> flatItems = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(MenuItem.class)
+						.add(
+								Expression.eq(MenuItem.PROP_FK_MENU_TREE, menus
+										.get(0))).addOrder(
+								Order.asc(MenuItem.PROP_MENU_ORDER)));
 		return createMenuTree(flatItems, null);
 	}
 
