@@ -114,20 +114,6 @@ public class MenuController {
 			Model model) throws Exception {
 		model.addAttribute("parentId", parentId);
 	}
-	
-	@RequestMapping
-	public String newLinkMenu(@RequestParam("id") String parentId, Model model)
-			throws Exception {
-		MenuItem parentItem = menuItemDAO.get(parentId);
-		MenuItem item = new MenuItem();
-		item.setFkMenuTree(parentItem.getFkMenuTree());
-		item.setId("m_" + new Date().getTime());
-		item.setFkParent(parentItem);
-		item.setMenuOrder(0);
-		item.setPublish(0);
-		model.addAttribute(item);
-		return "menu/editLinkMenu";
-	}
 
 	@RequestMapping
 	@Transactional
@@ -137,10 +123,18 @@ public class MenuController {
 			Model model, Locale locale) throws Exception {
 		MenuTree menu = menuTreeDAO.get(menuId);
 		MenuItem parentItem = menuItemDAO.get(parentId);
+		MenuItem last =null;
+		if (parentId.length() > 0) {
+			last = menuItemDAO.getLastChild(parentId);
+		} else {
+			List<MenuItem> tops = menuItemDAO.getTops(menu);
+			if (tops != null && tops.size() > 0)
+				last = tops.get(tops.size() - 1);
+		}
 		MenuItem item = new MenuItem();
 		item.setFkMenuTree(menu);
 		item.setFkParent(parentItem);
-		item.setMenuOrder(0);
+		item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
 		item.setPublish(0);
 		if (type != null && type.length() > 0) {
 			GadgetInstance gadget = new GadgetInstance();
@@ -205,12 +199,16 @@ public class MenuController {
 	public String showEditInstance(@RequestParam("instanceId") int instanceId,
 			@RequestParam("id") String parentId, Locale locale, Model model)
 			throws Exception {
+		if(parentId.length() == 0)
+			throw new Exception("parentId is required.");
 		MenuItem item = new MenuItem();
 		MenuItem parentItem = menuItemDAO.get(parentId);
-		if (parentItem != null) {
-			item.setFkParent(parentItem);
-			item.setFkMenuTree(parentItem.getFkMenuTree());
-		}
+		if (parentItem == null)
+			throw new Exception("A menu item which id is \"" + parentId
+					+ "\" is not found.");
+		item.setFkParent(parentItem);
+		item.setFkMenuTree(parentItem.getFkMenuTree());
+		MenuItem last =menuItemDAO.getLastChild(parentId);
 		GadgetInstanceDAO dao = GadgetInstanceDAO.newInstance();
 		GadgetInstance gadgetInstance = dao.get(instanceId);
 		// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
@@ -218,7 +216,7 @@ public class MenuController {
 		item.setFkGadgetInstance(gadgetInstance);
 		item.setTitle(gadgetInstance.getTitle());
 		item.setHref(gadgetInstance.getHref());
-		item.setMenuOrder(0);
+		item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
 		item.setPublish(0);
 
 		model.addAttribute(item);
@@ -249,33 +247,41 @@ public class MenuController {
 			@RequestParam("parentId") String parentId,
 			@RequestParam("refId") String refId,
 			@RequestParam("position") String position) throws Exception {
-		MenuItem parentItem = menuItemDAO.get(parentId);
 		MenuItem item = menuItemDAO.get(id);
-		item.setFkParent(parentItem);
+		if (parentId.length() > 0) {
+			MenuItem parentItem = menuItemDAO.get(parentId);
+			item.setFkParent(parentItem);
+		}
 		if (position.equals("last")) {
-			item.setMenuOrder(0);
+			MenuItem last = menuItemDAO.getLastChild(parentId);
+			item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
 			menuItemDAO.save(item);
 		} else {
-			List<MenuItem> siblings = menuItemDAO.getByParentId(parentId);
+			//loop all sibling items and renumber them.
+			List<MenuItem> siblings = parentId.length() > 0 ? menuItemDAO
+					.getByParentId(parentId) : menuItemDAO.getTops(item
+					.getFkMenuTree());
 			int nextOrder = 0;
-			for (MenuItem sibling : siblings) {
-				if (sibling.getId().equals(refId)) {
-					if (position.equals("before")) {
-						item.setMenuOrder(nextOrder);
-						sibling.setMenuOrder(++nextOrder);
-						menuItemDAO.save(item);
-						menuItemDAO.save(sibling);
-					} else {
+			if (siblings != null) {
+				for (MenuItem sibling : siblings) {
+					if (sibling.getId().equals(refId)) {
+						if (position.equals("before")) {
+							item.setMenuOrder(nextOrder);
+							sibling.setMenuOrder(++nextOrder);
+							menuItemDAO.save(item);
+							menuItemDAO.save(sibling);
+						} else {
+							sibling.setMenuOrder(nextOrder);
+							item.setMenuOrder(++nextOrder);
+							menuItemDAO.save(sibling);
+							menuItemDAO.save(item);
+						}
+						nextOrder++;
+					} else if (!sibling.getId().equals(id)) {
 						sibling.setMenuOrder(nextOrder);
-						item.setMenuOrder(++nextOrder);
 						menuItemDAO.save(sibling);
-						menuItemDAO.save(item);
+						nextOrder++;
 					}
-					nextOrder++;
-				} else if (!sibling.getId().equals(id)) {
-					sibling.setMenuOrder(nextOrder);
-					menuItemDAO.save(sibling);
-					nextOrder++;
 				}
 			}
 		}

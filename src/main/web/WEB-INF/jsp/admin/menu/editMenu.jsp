@@ -43,16 +43,20 @@ function selectItem(id){
 	$("#menu_tree").jstree("select_node", "#"+id);
 }
 function getSelectedItem(){
+	console.info($("#menu_tree").jstree("get_selected"));
 	return $("#menu_tree").jstree("get_selected")[0];
 }
 function selectGadgetInstance(e, a, isTop){
 	if(isTop)
 		$("#menu_tree").jstree("deselect_all");
-	var selectedItem = getSelectedItem();
-	var id = selectedItem ? selectedItem.id : "";
-	$.get("selectGadgetInstance", {id:id}, function(html){
-		$("#menu_right").html(html);
-	});
+	var selectedItem = getSelectedItem(),
+		id = selectedItem ? selectedItem.id : "";
+	$.get("selectGadgetInstance", {
+			id:id
+		}, function(html){
+			$("#menu_right").html(html);
+		}
+	);
 }
 function selectGadgetType(){
 	var selectedItem = getSelectedItem();

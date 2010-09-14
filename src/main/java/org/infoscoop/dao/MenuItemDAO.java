@@ -61,6 +61,31 @@ public class MenuItemDAO extends HibernateDaoSupport {
 						Expression.eq(MenuItem.PROP_FK_PARENT, parent))
 						.addOrder(Order.asc(MenuItem.PROP_MENU_ORDER)));
 	}
+	
+	@SuppressWarnings("unchecked")
+	public MenuItem getLastChild(String parentId) {
+		if (parentId == null)
+			return null;
+		MenuItem parent = get(parentId);
+		if (parent == null)
+			return null;
+		List<MenuItem> items = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(MenuItem.class).add(
+						Expression.eq(MenuItem.PROP_FK_PARENT, parent))
+						.addOrder(Order.desc(MenuItem.PROP_MENU_ORDER)));
+		if (items.size() == 0)
+			return null;
+		return items.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<MenuItem> getTops(MenuTree tree) {
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(MenuItem.class).add(
+						Expression.eq(MenuItem.PROP_FK_MENU_TREE, tree)).add(
+						Expression.isNull(MenuItem.PROP_FK_PARENT)).addOrder(
+						Order.asc(MenuItem.PROP_MENU_ORDER)));
+	}
 
 	@SuppressWarnings("unchecked")
 	@Deprecated
