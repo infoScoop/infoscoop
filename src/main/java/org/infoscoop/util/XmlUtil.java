@@ -37,6 +37,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -219,7 +220,7 @@ public class XmlUtil {
 		return stringWriter.getBuffer().toString();
 	}
 	
-	public static Node string2Dom(String xml) throws SAXException{
+	public static Document string2Dom(String xml) throws SAXException{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -231,7 +232,7 @@ public class XmlUtil {
 		}
 	}
 	
-	public static Node stream2Dom(InputStream xml) {
+	public static Document stream2Dom(InputStream xml) {
 		DocumentBuilder builder;
 		try {
 			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();

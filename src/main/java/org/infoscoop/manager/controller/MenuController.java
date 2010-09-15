@@ -1,5 +1,7 @@
 package org.infoscoop.manager.controller;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +10,9 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.xpath.XPathAPI;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.MenuItemDAO;
@@ -19,10 +24,12 @@ import org.infoscoop.dao.model.GadgetInstanceUserpref;
 import org.infoscoop.dao.model.GadgetInstanceUserprefPK;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.MenuTree;
+import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.XmlUtil;
+import org.infoscoop.web.ProxyServlet;
 import org.infoscoop.widgetconf.I18NConverter;
 import org.infoscoop.widgetconf.MessageBundle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +41,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 @Controller
 public class MenuController {
+	private static Log log = LogFactory.getLog(MenuController.class);
+
 	@Autowired
 	private MenuItemDAO menuItemDAO;
 	@Autowired
@@ -137,13 +147,20 @@ public class MenuController {
 		item.setFkParent(parentItem);
 		item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
 		item.setPublish(0);
-		item.setTitle(title);
 		if (type != null && type.length() > 0) {
 			GadgetInstance gadget = new GadgetInstance();
 			item.setFkGadgetInstance(gadget);
 			item.getFkGadgetInstance().setType(type);
-			model.addAttribute("conf", getGadgetConf(type, locale));
+			Document gadgetConf = getGadgetConf(type, locale);
+			if (title == null || title.length() == 0) {
+				Node titleNode = XPathAPI.selectSingleNode(gadgetConf,
+						"/Module/ModulePrefs/@title");
+				if (titleNode != null)
+					title = titleNode.getNodeValue();
+			}
+			model.addAttribute("conf", gadgetConf);
 		}
+		item.setTitle(title);
 		model.addAttribute(item);
 	}
 
@@ -344,26 +361,57 @@ public class MenuController {
 
 	private Document getGadgetConf(String type, Locale locale) throws Exception {
 		// TODO 言語ごとにDBにキャッシュとして保存する。
-		Document conf = null;
-		if (type.startsWith("upload__")) {
+		if (type.startsWith("g_")) {
+
+			String url = type.substring(2);
+			Document doc = getRemoteGadget(url);
+			I18NConverter i18n = new I18NConverter(locale,
+					new MessageBundle.Factory.URL(-1, url).createBundles(doc));
+			// TODO It's a little dangerous.
+			String gadgetXml = i18n.replace(XmlUtil.dom2String(doc), true);
+			return XmlUtil.string2Dom(gadgetXml);
+		} else if (type.startsWith("upload__")) {
 			String realType = type.substring(8);// upload__を除く
 			Gadget gadget = GadgetDAO.newInstance().select(realType);
 			String gadgetXml = new String(gadget.getData(), "UTF-8");
-			Document gadgetDoc = (Document) XmlUtil.string2Dom(gadgetXml);
+			Document gadgetDoc = XmlUtil.string2Dom(gadgetXml);
 			I18NConverter i18n = new I18NConverter(locale,
 					new MessageBundle.Factory.Upload(0, realType)
 							.createBundles(gadgetDoc));
-			//TODO It's a little dangerous.
+			// TODO It's a little dangerous.
 			gadgetXml = i18n.replace(gadgetXml, true);
-			conf = (Document) XmlUtil.string2Dom(gadgetXml);
+			return XmlUtil.string2Dom(gadgetXml);
 		} else {
 			Element widgetConfElm = WidgetConfDAO.newInstance()
 					.getElement(type);
 			String widgetXml = XmlUtil.dom2String(widgetConfElm);
 			widgetXml = I18NUtil.resolveForXML(I18NUtil.TYPE_WIDGET, widgetXml,
 					locale);
-			conf = (Document) XmlUtil.string2Dom(widgetXml);
+			return XmlUtil.string2Dom(widgetXml);
 		}
-		return conf;
+	}
+	
+	private Document getRemoteGadget(String url) throws Exception {
+		InputStream is = null;
+		ProxyRequest proxyRequest = null;
+		try {
+			proxyRequest = new ProxyRequest(url, "XML");
+			proxyRequest.setTimeout(ProxyServlet.DEFAULT_TIMEOUT);
+			int statusCode = proxyRequest.executeGet();
+			if (statusCode != 200)
+				throw new Exception("gadget url="
+						+ proxyRequest.getProxy().getUrl() + ", statucCode="
+						+ statusCode);
+			if (log.isInfoEnabled())
+				log.info("gadget url : " + proxyRequest.getProxy().getUrl());
+
+			is = proxyRequest.getResponseBody();
+			is = new BufferedInputStream(is);
+		} finally {
+			if (proxyRequest != null)
+				proxyRequest.close();
+		}
+
+		return XmlUtil.stream2Dom(is);
 	}
 }

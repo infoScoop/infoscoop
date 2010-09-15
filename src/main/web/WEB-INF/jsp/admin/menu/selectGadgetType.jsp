@@ -15,6 +15,10 @@
 		</li>
 	</ul>
 </div>
+<p>
+	URLを指定してガジェットを追加する場合は下記にURLを入力して追加ボタンを押してください。<br/>
+	<input type="text" id="gadgetUrl"><button id="gadgetAddButton">追加</button>
+</p>
 <script type="text/javascript">
 $.each(gadgetConfs, function(key, gadgets){
 	$.each(gadgets, function(type, gadget){
@@ -36,5 +40,10 @@ $.each(gadgetConfs, function(key, gadgets){
 			return false;
 		}
 	});
+});
+$("#gadgetAddButton").button().click(function(){
+	var url = $("#gadgetUrl").val();
+	if(!url) alert("URLを指定してください。");
+	showAddItem("g_"+url, '${parentId}');
 });
 </script>
