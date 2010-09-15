@@ -70,11 +70,17 @@ public class TabTemplateStaticGadgetDAO extends HibernateDaoSupport {
 	}
 	
 
-	public TabTemplateStaticGadget getToUpdate(String containerId, TabTemplate tabTemplate) {
+	public TabTemplateStaticGadget getByContainerId(String containerId, TabTemplate tabTemplate) {
 		
 		return (TabTemplateStaticGadget) super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(TabTemplateStaticGadget.class)
 				.add(Expression.eq(TabTemplateStaticGadget.PROP_CONTAINER_ID, containerId))
 				.add(Expression.eq(TabTemplateStaticGadget.PROP_FK_TAB_TEMPLATE, tabTemplate))).get(0);
+	}
+	
+	public TabTemplateStaticGadget getByTabTemplate(TabTemplate tab){
+		return (TabTemplateStaticGadget) super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(TabTemplateStaticGadget.class)
+				.add(Expression.eq(TabTemplateStaticGadget.PROP_FK_TAB_TEMPLATE, tab))).get(0);
 	}
 }

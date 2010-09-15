@@ -91,7 +91,7 @@ public class TabController {
 			tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
 			tabTemplateDAO.save(tab);
 			model.addAttribute(tab);
-			model.addAttribute("action", "newTab");
+			model.addAttribute("action", "addTab");
 			return "tab/editTab";
 		
 	}
@@ -116,12 +116,6 @@ public class TabController {
 			Model model) throws Exception {
 		TabTemplate tab = tabTemplateDAO.get(id);
 		if(tab.getTemp() == 1){
-			Set<TabTemplateStaticGadget> sgs = 
-				tab.getTabTemplateStaticGadgets();
-			for(TabTemplateStaticGadget s: sgs){
-					tabTemplateStaticGadgetDAO.delete(s);
-					gadgetInstanceDAO.delete(s.getFkGadgetInstance());
-			}
 			tabTemplateDAO.delete(tab);
 		}
 		return "redirect:index";
@@ -180,16 +174,10 @@ public class TabController {
 			Model model)throws Exception {
 		TabTemplateStaticGadget staticGadget = null;
 		TabTemplate tab = tabTemplateDAO.get(id);
-		Set<TabTemplateStaticGadget> sgs = tab.getTabTemplateStaticGadgets();
-		//TODO containerIdで取得するのがいいかも？
-		for(TabTemplateStaticGadget sg: sgs){
-			if(sg.getContainerId().equals(containerId)){
-				staticGadget = sg;
-				sg.setTabTemplateId(id);
-				model.addAttribute(staticGadget);
-				break;
-			}
-		}
+		
+		staticGadget = tabTemplateStaticGadgetDAO.getByContainerId(containerId, tab);
+		staticGadget.setTabTemplateId(id);
+		model.addAttribute(staticGadget);
 		
 		GadgetInstance gadget = staticGadget.getFkGadgetInstance();
 		if (gadget != null) {
@@ -219,7 +207,7 @@ public class TabController {
 		String containerId = staticGadget.getContainerId();
 		if( tabTemplateStaticGadgetDAO.isEdit( tabId ) ){
 			TabTemplateStaticGadget sg = 
-				tabTemplateStaticGadgetDAO.getToUpdate(containerId, tab);
+				tabTemplateStaticGadgetDAO.getByContainerId(containerId, tab);
 			sg.setContainerId(staticGadget.getContainerId());
 			sg.setFkGadgetInstance(staticGadget.getFkGadgetInstance());
 			sg.setFkTabTemplate(staticGadget.getFkTabTemplate());
