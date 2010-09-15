@@ -566,7 +566,7 @@ function init() {
 		var tabId = IS_Portal.currentTabId.replace("tab","");
 		for (var j=0; j<static_columns.length; j++ ) {
 			var div = static_columns[j];
-			div.id = 'static_column_' + j;
+			div.id = 's_static_column_' + j;
 			div.href = hostPrefix + "/manager/tab/selectGadgetType?tabId=" + tabId + "&containerId=" + 'static_column_' + j;
 			var layoutMouseOver = function(el) {
 				el.style.backgroundColor = "#9999cc";
@@ -578,7 +578,7 @@ function init() {
 			Event.observe(div, 'mouseout', layoutMouseOut.bind(null, div), false);
 			
 			var modal = new Control.Modal(
-				'static_column_' + j,
+				's_static_column_' + j,
 				{
 				  opacity: 0.4,
 				  width: 580,
@@ -718,7 +718,7 @@ IS_Portal.widgetDropped = function( widget ) {
 IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
 
 function displayStaticGadget(widgetOpt){
-	var containerId = widgetOpt.id;
+	var containerId = "s_" + widgetOpt.id;
 	var widget = new IS_Widget(false, widgetOpt);
 	widget.panelType = "StaticPanel";
 	widget.containerId = containerId;
@@ -728,7 +728,6 @@ function displayStaticGadget(widgetOpt){
 }
 </script>
 
-<c:set var="action" value="updateTab" scope="request"/>
 <c:import url="/WEB-INF/jsp/admin/tab/_formTab.jsp"/>
 
 <div style="display:none" id='edit_layout_modal'>

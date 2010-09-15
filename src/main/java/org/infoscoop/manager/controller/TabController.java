@@ -80,7 +80,7 @@ public class TabController {
 
 	@RequestMapping
 	@Transactional
-	public void newTab(
+	public String newTab(
 			@RequestParam(value="id", required=false) String tabId,
 			Model model)throws Exception {
 		TabTemplate tab = new TabTemplate();
@@ -91,6 +91,8 @@ public class TabController {
 			tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">			<div class=\"edit_static_gadget\">edit</div>			<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
 			tabTemplateDAO.save(tab);
 			model.addAttribute(tab);
+			model.addAttribute("action", "newTab");
+			return "tab/editTab";
 		
 	}
 	
@@ -104,6 +106,7 @@ public class TabController {
 			tabCopy.setOriginalId(Integer.valueOf(id));
 			tabTemplateDAO.save(tabCopy);
 			model.addAttribute(tabCopy);
+			model.addAttribute("action", "updateTab");
 	}
 
 	@RequestMapping
