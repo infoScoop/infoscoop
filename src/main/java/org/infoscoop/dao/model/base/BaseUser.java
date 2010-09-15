@@ -17,7 +17,6 @@ public abstract class BaseUser  implements Serializable {
 	public static String REF = "User";
 	public static String PROP_NAME = "Name";
 	public static String PROP_EMAIL = "Email";
-	public static String PROP_ID = "Id";
 
 
 	// constructors
@@ -28,8 +27,8 @@ public abstract class BaseUser  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseUser (java.lang.Integer id) {
-		this.setId(id);
+	public BaseUser (java.lang.String email) {
+		this.setEmail(email);
 		initialize();
 	}
 
@@ -37,13 +36,11 @@ public abstract class BaseUser  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseUser (
-		java.lang.Integer id,
-		java.lang.String name,
-		java.lang.String email) {
+		java.lang.String email,
+		java.lang.String name) {
 
-		this.setId(id);
-		this.setName(name);
 		this.setEmail(email);
+		this.setName(name);
 		initialize();
 	}
 
@@ -54,30 +51,29 @@ public abstract class BaseUser  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.Integer id;
+	private java.lang.String email;
 
 	// fields
 	private java.lang.String name;
-	private java.lang.String email;
 
 
 
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  generator-class="sequence"
-     *  column="id"
+     *  generator-class="assigned"
+     *  column="email"
      */
-	public java.lang.Integer getId () {
-		return id;
+	public java.lang.String getEmail () {
+		return email;
 	}
 
 	/**
 	 * Set the unique identifier of this class
-	 * @param id the new ID
+	 * @param email the new ID
 	 */
-	public void setId (java.lang.Integer id) {
-		this.id = id;
+	public void setEmail (java.lang.String email) {
+		this.email = email;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -101,39 +97,22 @@ public abstract class BaseUser  implements Serializable {
 
 
 
-	/**
-	 * Return the value associated with the column: email
-	 */
-	public java.lang.String getEmail () {
-		return email;
-	}
-
-	/**
-	 * Set the value related to the column: email
-	 * @param email the email value
-	 */
-	public void setEmail (java.lang.String email) {
-		this.email = email;
-	}
-
-
-
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.dao.model.User)) return false;
 		else {
 			org.infoscoop.dao.model.User user = (org.infoscoop.dao.model.User) obj;
-			if (null == this.getId() || null == user.getId()) return false;
-			else return (this.getId().equals(user.getId()));
+			if (null == this.getEmail() || null == user.getEmail()) return false;
+			else return (this.getEmail().equals(user.getEmail()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getId()) return super.hashCode();
+			if (null == this.getEmail()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getEmail().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

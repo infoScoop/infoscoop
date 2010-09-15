@@ -10,23 +10,16 @@
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
-			name="Id"
-			type="integer"
-			column="id"
+			name="Email"
+			type="string"
+			column="email"
 		>
-			<generator class="native"/>
+			<generator class="assigned"/>
 		</id>
 
 		<property
 			name="Name"
 			column="name"
-			type="string"
-			not-null="true"
-			length="255"
-		/>
-		<property
-			name="Email"
-			column="email"
 			type="string"
 			not-null="true"
 			length="255"

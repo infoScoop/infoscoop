@@ -572,9 +572,9 @@ create index is_tab_template_personalize_gadgets_widget_id on IS_TAB_TEMPLATE_PE
 -- IS_USERS
 --
 CREATE TABLE IS_USERS (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`email` VARCHAR( 255 ) NOT NULL ,
 `name` VARCHAR( 255 ) NOT NULL ,
-`email` VARCHAR( 255 ) NOT NULL
+PRIMARY KEY ( `email` )
 ) ENGINE = InnoDB;
 
 --

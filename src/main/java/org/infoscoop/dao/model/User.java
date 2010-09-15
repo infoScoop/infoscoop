@@ -15,22 +15,20 @@ public class User extends BaseUser {
 	/**
 	 * Constructor for primary key
 	 */
-	public User (java.lang.Integer id) {
-		super(id);
+	public User (java.lang.String email) {
+		super(email);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
 	public User (
-		java.lang.Integer id,
-		java.lang.String name,
-		java.lang.String email) {
+		java.lang.String email,
+		java.lang.String name) {
 
 		super (
-			id,
-			name,
-			email);
+			email,
+			name);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

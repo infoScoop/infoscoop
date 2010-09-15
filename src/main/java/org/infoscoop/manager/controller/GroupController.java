@@ -72,8 +72,7 @@ public class GroupController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String deleteRolePrincipal( Role role,
-			Model model)
+	public String deleteRolePrincipal( Role role, Model model)
 			throws Exception {
 
 		List<RolePrincipal> list = new ArrayList<RolePrincipal>();

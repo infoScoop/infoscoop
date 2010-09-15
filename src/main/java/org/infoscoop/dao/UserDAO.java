@@ -23,12 +23,16 @@ public class UserDAO extends HibernateDaoSupport {
 		List user = UserDAO.newInstance().all();
 		System.out.println(user);
 	}
-
+/*
 	public User get(String userId) {
 		return super.getHibernateTemplate().get(User.class, new Integer(userId));
 	}
-
+*/
 	public List<User> getJson(String query) {
 		return super.getHibernateTemplate().find("from User where name like ?", query +"%");
+	}
+
+	public void save(User item){
+		super.getHibernateTemplate().saveOrUpdate(item);
 	}
 }
