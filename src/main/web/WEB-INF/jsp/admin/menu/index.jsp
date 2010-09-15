@@ -2,25 +2,26 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <tiles:insertDefinition name="base.definition" flush="true">
 	<tiles:putAttribute name="type" value="menu"/>
 	<tiles:putAttribute name="title" value="menu.title"/>
 	<tiles:putAttribute name="body" type="string">
 <p>
-	この画面では、メニューツリーを追加/編集/削除できます。<br>
-	トップに表示、サイドに表示を選択した場合のみ、そのメニューがポータル画面に表示されます。<br>
+	<spring:message code="menu.index.description" />
 </p>
-<button id="add_menu">メニューを追加</button>
+<button id="add_menu"><spring:message code="menu.index.add.menu" /></button>
 <table id="menu_list" class="tablesorter">
 	<thead>
 		<tr>
-			<th>名前</th>
-			<th width="100">トップに表示<div class="icon edit_icon" id="change_position_top"></div></th>
-			<th width="100">サイドに表示<div class="icon edit_icon" id="change_position_side"></div></th>
-			<th width="100">削除</th>
+			<th><spring:message code="menu.index.header.name" /></th>
+			<th width="100"><spring:message code="menu.index.header.top" /><div class="icon edit_icon" id="change_position_top"></div></th>
+			<th width="100"><spring:message code="menu.index.header.side" /><div class="icon edit_icon" id="change_position_side"></div></th>
+			<th width="100"><spring:message code="menu.index.header.delete" /></th>
 		</tr>
 	</thead>
 	<tbody>
+		<c:set var="display"><spring:message code="menu.index.display" /></c:set>
 		<c:forEach var="menu" items="${menus}">
 		<tr menu_id="${menu.id}">
 			<td class="title">
@@ -29,11 +30,11 @@
 				<div class="icon edit_icon">
 			</td>
 			<td class="radio_cell">
-				<span>${menu.top ? "表示" : ""}</span>
+				<span>${menu.top ? display : ""}</span>
 				<input type="radio" name="top" ${menu.top ? "checked=\"checked\"" : ""} style="display:none">
 			</td>
 			<td class="radio_cell">
-				<span>${menu.side ? "表示" : ""}</span>
+				<span>${menu.side ? display : ""}</span>
 				<input type="radio" name="side" ${menu.side ? "checked=\"checked\"" : ""} style="display:none">
 			</td>
 			<td class="icon_cell"><div class="icon delete_icon" menu_id="${menu.id}"></div></td>
@@ -41,7 +42,7 @@
 		</c:forEach>
 		<c:if test="${fn:length(menus) == 0}">
 		<tr>
-			<td colspan="4">メニューを追加してください。</td>
+			<td colspan="4"><spring:message code="menu.index.no.menu" /></td>
 		</tr>
 		</c:if>
 	</tbody>
@@ -100,7 +101,7 @@ $("#change_position_top, #change_position_side").click(function(event){
 });
 $("#menu_list .delete_icon").livequery("click", function(){
 	var deleteIcon = $(this);
-	if(confirm("削除してよろしいですか？")){
+	if(confirm("<spring:message code="menu.index.confirm.delete" />")){
 		$.post("deleteMenu", {id:deleteIcon.attr("menu_id")}, function(html){
 			deleteIcon.parents("tr:first").remove();
 			console.info(html);

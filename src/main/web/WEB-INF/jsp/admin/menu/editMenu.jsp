@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <tiles:insertDefinition name="base.definition" flush="true">
 	<tiles:putAttribute name="type" value="menu"/>
 	<tiles:putAttribute name="title" value="menu.title"/>
@@ -72,7 +73,7 @@ function showAddItem(type, parentId, title){
 function showEditItem(){
 	var selectedItem = getSelectedItem();
 	if(!selectedItem){
-		alert("不正な操作が行われました。");
+		alert("<spring:message code="menu.editMenu.invalid.operation" />");
 		return;
 	}
 	var id = selectedItem.id;
@@ -95,7 +96,7 @@ function addItemToTree(parentId, id, title, type, publish){
 		},
 		function(target){
 			target.find("a:first").append('<span onclick="showMenuCommand(event, this, \''+id+'\')" class="menu_open">▼</span>');
-			target.append('<div class="info"><span class="publish'+(publish?'">公開':' un">非公開')+'</span></div>');
+			target.append('<div class="info"><span class="publish'+(publish?'"><spring:message code="menu.editPage.publish" />':' un"><spring:message code="menu.editPage.unpublish" />')+'</span></div>');
 			var icon = getIconUrl(type);
 			$("a:first ins", target)
 				.css("display", "inline-block")
@@ -110,7 +111,7 @@ function updateItemInTree(id, title, publish){
 		titleNode.nodeValue = title;*/
 		$("#menu_tree").jstree("set_text", "#"+id, title);
 		var publishElm = $("#"+id+" .info span.publish").first();
-		publishElm.toggleClass("un", !publish).html(publish? "公開":"非公開");
+		publishElm.toggleClass("un", !publish).html(publish? "<spring:message code="menu.editPage.publish" />":"<spring:message code="menu.editPage.unpublish" />");
 	}catch(e){
 		console.error(e);
 	}
@@ -128,17 +129,19 @@ function pasteItem(a){
 	}, "json");
 }
 function deleteItem(){
-	var id = getSelectedItem().id;
-	$.post("removeItem", {id: id}, function(){
-		$("#menu_tree").jstree("remove", "#"+id);
-	});
+	if(confirm("<spring:message code="menu.editPage.confirm.delete" />")){
+		var id = getSelectedItem().id;
+		$.post("removeItem", {id: id}, function(){
+			$("#menu_tree").jstree("remove", "#"+id);
+		});
+	}
 }
 function togglePublish(){
 	var id = getSelectedItem().id;
 	$.post("togglePublish", {id: id}, function(){
 		var publishElm = $("#"+id+" .info span.publish").first();
 		var publish = publishElm.hasClass('un');//現在の反対にする
-		publishElm.toggleClass("un", !publish).html(publish? "公開":"非公開");
+		publishElm.toggleClass("un", !publish).html(publish? "<spring:message code="menu.editPage.publish" />":"<spring:message code="menu.editPage.unpublish" />");
 	});
 }
 function showMenuCommand(event, link, id){
@@ -185,7 +188,7 @@ function rebuildGadgetUserPrefs(){
 		});
 		listElm.append($.DIV({},
 			$.INPUT({type:"text"}),
-			$.INPUT({type:"button", value:"追加"})
+			$.INPUT({type:"button", value:"<spring:message code="menu.editPage.userPref.list.add" />"})
 		));
 		$("input[type=button]", listElm).button().click(function(){
 			var value = $(this).prev().val();
@@ -332,25 +335,25 @@ $(function () {
 <div id="menu">
 	<div id="menu_left">
 		<div id="menu_command">
-			<a onclick="showAddItem(false, '')">トップメニューを追加</a>
+			<a onclick="showAddItem(false, '')"><spring:message code="menu.editPage.add.top" /></a>
 		</div>
 		<div id="menu_tree">
 			
 		</div>
 	</div>
 	<div id="menu_right">
-		メニューツリーを編集する画面です。<br>
+		<spring:message code="menu.editPage.description" /><br>
 	</div>
 	<div style="clear:both"></div>
 	<div id="menu_item_command" class="menu_item_command" style="display:none">
 		<ul>
-			<li><a onclick="selectGadgetInstance(event, this)">追加</a></li>
-			<li><a onclick="showEditItem(event, this)">編集</a></li>
-			<li><a onclick="copyItem(event, this)">コピー</a></li>
-			<li><a onclick="pasteItem(event, this)" class="paste disabled">ペースト</a></li>
-			<li><a onclick="deleteItem(event, this)">削除</a></li>
-			<li><a onclick="togglePublish(event, this)">公開/非公開を切り替える</a></li>
-			<li><a onclick="togglePublish(event, this)">公開範囲を設定する</a></li>
+			<li><a onclick="selectGadgetInstance(event, this)"><spring:message code="menu.editPage.command.add" /></a></li>
+			<li><a onclick="showEditItem(event, this)"><spring:message code="menu.editPage.command.edit" /></a></li>
+			<li><a onclick="copyItem(event, this)"><spring:message code="menu.editPage.command.copy" /></a></li>
+			<li><a onclick="pasteItem(event, this)" class="paste disabled"><spring:message code="menu.editPage.command.paste" /></a></li>
+			<li><a onclick="deleteItem(event, this)"><spring:message code="menu.editPage.command.delete" /></a></li>
+			<li><a onclick="togglePublish(event, this)"><spring:message code="menu.editPage.command.publish" /></a></li>
+			<li><a onclick="togglePublish(event, this)"><spring:message code="menu.editPage.command.access" /></a></li>
 		</ul>
 	</div>
 </div>
