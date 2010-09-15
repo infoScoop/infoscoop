@@ -75,6 +75,14 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 				.add(Expression.eq(TabTemplatePersonalizeGadget.PROP_ID, siblingId))
 				.add(Expression.eq(TabTemplatePersonalizeGadget.PROP_COLUMN_NUM, columnNum))).get(0);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<TabTemplate> getByTabId(String tabId){
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(TabTemplate.class)
+				.add(Expression.eq(TabTemplate.PROP_TAB_ID, tabId))
+		);
+	}
 
 	public void delete(TabTemplate tab) {
 		super.getHibernateTemplate().delete(tab);

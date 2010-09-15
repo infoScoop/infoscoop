@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
+import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -60,4 +61,20 @@ public class TabTemplateStaticGadgetDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().delete(staticGadget);
 	}
 	
+	//staticGadgetのもってるTabIdを持っているレコードが一つだったら新規、二つだったら編集時。
+	public boolean isEdit(String tabId){
+		List<TabTemplate> tabs = TabTemplateDAO.newInstance().getByTabId(tabId);
+		if (tabs.size() > 1)
+			return true;
+		return false;
+	}
+	
+
+	public TabTemplateStaticGadget getToUpdate(String containerId, TabTemplate tabTemplate) {
+		
+		return (TabTemplateStaticGadget) super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(TabTemplateStaticGadget.class)
+				.add(Expression.eq(TabTemplateStaticGadget.PROP_CONTAINER_ID, containerId))
+				.add(Expression.eq(TabTemplateStaticGadget.PROP_FK_TAB_TEMPLATE, tabTemplate))).get(0);
+	}
 }

@@ -174,13 +174,14 @@ public class TabController {
 	@Transactional
 	public void editStaticGadget(
 			HttpServletRequest request, 
-			@RequestParam("id") String id,
+			@RequestParam("tabId") String id,
 			@RequestParam("containerId") String containerId,
 			Locale locale,
 			Model model)throws Exception {
 		TabTemplateStaticGadget staticGadget = null;
 		TabTemplate tab = tabTemplateDAO.get(id);
 		Set<TabTemplateStaticGadget> sgs = tab.getTabTemplateStaticGadgets();
+		//TODO containerIdで取得するのがいいかも？
 		for(TabTemplateStaticGadget sg: sgs){
 			if(sg.getContainerId().equals(containerId)){
 				staticGadget = sg;
@@ -213,14 +214,24 @@ public class TabController {
 			Model model)throws Exception {
 		TabTemplate tab = tabTemplateDAO.get(staticGadget.getTabTemplateId());
 		staticGadget.setFkTabTemplate(tab);
-		tabTemplateStaticGadgetDAO.save(staticGadget);
-		model.addAttribute(tab);
-		model.addAttribute("gadget", staticGadget);
 		
+		String tabId = staticGadget.getFkTabTemplate().getTabId();
+		String containerId = staticGadget.getContainerId();
+		if( tabTemplateStaticGadgetDAO.isEdit( tabId ) ){
+			TabTemplateStaticGadget sg = 
+				tabTemplateStaticGadgetDAO.getToUpdate(containerId, tab);
+			sg.setContainerId(staticGadget.getContainerId());
+			sg.setFkGadgetInstance(staticGadget.getFkGadgetInstance());
+			sg.setFkTabTemplate(staticGadget.getFkTabTemplate());
+			staticGadget = sg;
+		}
+		tabTemplateStaticGadgetDAO.save(staticGadget);
+		model.addAttribute(staticGadget);
+	
 		//This is not needed any more.
 		//TabLayoutService.getHandle().insertStaticGadget("temp", staticGadget.getFkGadgetInstance());
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public void addTab(TabTemplate tab, Model model)throws Exception {		
