@@ -60,22 +60,16 @@ public class TabTemplateStaticGadgetDAO extends HibernateDaoSupport {
 	public void delete(TabTemplateStaticGadget staticGadget) {
 		super.getHibernateTemplate().delete(staticGadget);
 	}
-	
-	//staticGadgetのもってるTabIdを持っているレコードが一つだったら新規、二つだったら編集時。
-	public boolean isEdit(String tabId){
-		List<TabTemplate> tabs = TabTemplateDAO.newInstance().getByTabId(tabId);
-		if (tabs.size() > 1)
-			return true;
-		return false;
-	}
-	
-
-	public TabTemplateStaticGadget getByContainerId(String containerId, TabTemplate tabTemplate) {
 		
-		return (TabTemplateStaticGadget) super.getHibernateTemplate().findByCriteria(
+	@SuppressWarnings("unchecked")
+	public TabTemplateStaticGadget getByContainerId(String containerId, TabTemplate tabTemplate) {
+		List<TabTemplateStaticGadget> staticGadgets = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(TabTemplateStaticGadget.class)
 				.add(Expression.eq(TabTemplateStaticGadget.PROP_CONTAINER_ID, containerId))
-				.add(Expression.eq(TabTemplateStaticGadget.PROP_FK_TAB_TEMPLATE, tabTemplate))).get(0);
+				.add(Expression.eq(TabTemplateStaticGadget.PROP_FK_TAB_TEMPLATE, tabTemplate)));
+		if(staticGadgets.size() == 1)
+			return staticGadgets.get(0);
+		return null;
 	}
 	
 	public TabTemplateStaticGadget getByTabTemplate(TabTemplate tab){

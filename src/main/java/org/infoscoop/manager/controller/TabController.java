@@ -203,11 +203,10 @@ public class TabController {
 		TabTemplate tab = tabTemplateDAO.get(staticGadget.getTabTemplateId());
 		staticGadget.setFkTabTemplate(tab);
 		
-		String tabId = staticGadget.getFkTabTemplate().getTabId();
 		String containerId = staticGadget.getContainerId();
-		if( tabTemplateStaticGadgetDAO.isEdit( tabId ) ){
-			TabTemplateStaticGadget sg = 
-				tabTemplateStaticGadgetDAO.getByContainerId(containerId, tab);
+		TabTemplateStaticGadget sg = 
+			tabTemplateStaticGadgetDAO.getByContainerId(containerId, tab);
+		if(sg != null ){
 			sg.setContainerId(staticGadget.getContainerId());
 			sg.setFkGadgetInstance(staticGadget.getFkGadgetInstance());
 			sg.setFkTabTemplate(staticGadget.getFkTabTemplate());
