@@ -120,6 +120,7 @@ public class MenuController {
 	public void showAddItem(@RequestParam("menuId") int menuId,
 			@RequestParam("id") String parentId,
 			@RequestParam(value = "type", required = false) String type,
+			@RequestParam(value = "title", required = false) String title,
 			Model model, Locale locale) throws Exception {
 		MenuTree menu = menuTreeDAO.get(menuId);
 		MenuItem parentItem = menuItemDAO.get(parentId);
@@ -136,6 +137,7 @@ public class MenuController {
 		item.setFkParent(parentItem);
 		item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
 		item.setPublish(0);
+		item.setTitle(title);
 		if (type != null && type.length() > 0) {
 			GadgetInstance gadget = new GadgetInstance();
 			item.setFkGadgetInstance(gadget);
@@ -156,7 +158,7 @@ public class MenuController {
 		if (gadget != null) {
 			String type = gadget.getType();
 			if (type != null && type.length() > 0) {
-				// lazy=trueだが、Viewに渡すために事前に取得する。何かメソッド呼ぶと事前に取得できる。
+				// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
 				item.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
 				model.addAttribute("conf", getGadgetConf(type, locale));
 			}

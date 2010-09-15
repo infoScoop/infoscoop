@@ -43,7 +43,6 @@ function selectItem(id){
 	$("#menu_tree").jstree("select_node", "#"+id);
 }
 function getSelectedItem(){
-	console.info($("#menu_tree").jstree("get_selected"));
 	return $("#menu_tree").jstree("get_selected")[0];
 }
 function selectGadgetInstance(e, a, isTop){
@@ -65,8 +64,8 @@ function selectGadgetType(){
 		$("#menu_right").html(html);
 	});
 }
-function showAddItem(type, parentId){
-	$.get("showAddItem", {menuId: menuId, id: parentId, type: type?type:""}, function(html){
+function showAddItem(type, parentId, title){
+	$.get("showAddItem", {menuId: menuId, id: parentId, type: type?type:"", title: title?title:""}, function(html){
 		$("#menu_right").html(html);
 	});
 }

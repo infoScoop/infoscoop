@@ -25,7 +25,7 @@ $.each(gadgetConfs, function(key, gadgets){
 					$.A(
 						{
 							href:"#",
-							onclick:{handler:function(){showAddItem(type, '${parentId}')}}
+							onclick:{handler:function(){showAddItem(type, '${parentId}', title)}}
 						},
 						title
 					)
