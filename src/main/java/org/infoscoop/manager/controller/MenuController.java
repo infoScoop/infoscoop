@@ -353,7 +353,8 @@ public class MenuController {
 			I18NConverter i18n = new I18NConverter(locale,
 					new MessageBundle.Factory.Upload(0, realType)
 							.createBundles(gadgetDoc));
-			gadgetXml = i18n.replace(gadgetXml);
+			//TODO It's a little dangerous.
+			gadgetXml = i18n.replace(gadgetXml, true);
 			conf = (Document) XmlUtil.string2Dom(gadgetXml);
 		} else {
 			Element widgetConfElm = WidgetConfDAO.newInstance()

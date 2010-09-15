@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.util.XmlUtil;
 
 /**
  * The class to substitute a globalization message.
@@ -76,19 +77,27 @@ public class I18NConverter {
 	}
 	
 	public String replace(String str) {
+		return replace(str, false);
+	}
+	
+	public String replace(String str, boolean isXml) {
 		if (this.replaceMap == null)
 			return str;
-		
+
 		for (Iterator it = this.replaceMap.keySet().iterator(); it.hasNext();) {
 			String key = (String) it.next();
 			String value = (String) this.replaceMap.get(key);
-			
-			str = str.replaceAll("__MSG_" + key + "__",Matcher.quoteReplacement( value ));
+			if (isXml)
+				value = XmlUtil.escapeXmlEntities(value);
+
+			str = str.replaceAll("__MSG_" + key + "__", Matcher
+					.quoteReplacement(value));
 		}
-		
-		for( BidiKey key : bidiReplaceMap.keySet() )
-			str = str.replaceAll("__BIDI_" +key +"__", bidiReplaceMap.get( key ));
-		
+
+		for (BidiKey key : bidiReplaceMap.keySet())
+			str = str.replaceAll("__BIDI_" + key + "__", bidiReplaceMap
+					.get(key));
+
 		return str;
 	}
 	
