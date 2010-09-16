@@ -6,7 +6,7 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<title><spring:message code="manager.title" /> - <spring:message code="${title}" /></title>
+		<title><spring:message code="layouts.default.title" /> - <spring:message code="${title}" /></title>
 		<script type="text/javascript" src="../../js/lib/prototype-1.6.0.3.js"></script>
 		<script src="../../js/lib/scriptaculous-js-1.8.2/effects.js"></script>
 		<script src="../../js/lib/scriptaculous-js-1.8.2/dragdrop.js"></script>
