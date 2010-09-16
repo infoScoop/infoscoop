@@ -60,8 +60,8 @@ public class TabDAO extends HibernateDaoSupport{
 		return (Tab)super.getHibernateTemplate().get(Tab.class, new TABPK(uid, tabId));
 	}
 	
-    public Collection getTabs(String uid) throws Exception{
-		Collection tabs = ( Collection ) super.getHibernateTemplate()
+    public Collection<Tab> getTabs(String uid) throws Exception{
+		Collection<Tab> tabs = ( Collection ) super.getHibernateTemplate()
 			.findByCriteria( DetachedCriteria.forClass( Tab.class )
 					.add( Expression.eq("id.Uid", uid ))
 					.addOrder( Order.asc("Order")));

@@ -458,8 +458,10 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				if(!useTab) break;
 			}
 			
-			if(!isTabView)
-			  IS_Portal.CommandBar.init();
+			//TODO: re-implement
+			
+			//if(!isTabView)
+			//  IS_Portal.CommandBar.init();
 	
 			// loadContents();
 			

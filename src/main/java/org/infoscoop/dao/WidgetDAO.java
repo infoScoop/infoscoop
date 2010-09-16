@@ -79,12 +79,17 @@ public class WidgetDAO extends HibernateDaoSupport{
 		addWidget( widget );
 	}
     public void addWidget(Widget widget){
+    	addWidget(widget, true);
+    }
+    
+    public void addWidget(Widget widget, boolean saveUserPrefs){
 //    	System.out.println("ID:"+widget.getId() );
 //    	System.out.println( widget.getUid()+","+widget.getTabid()+","+widget.getWidgetid()+","+widget.getDeletedate() );
 		widget.setCreatedate(new Date().getTime());
 		super.getHibernateTemplate().save(widget);
 		super.getHibernateTemplate().flush();
-		updateUserPrefs( widget );
+		if(saveUserPrefs)
+			updateUserPrefs( widget );
     }
     
     public List<String> getWidgetTypes(String uid){

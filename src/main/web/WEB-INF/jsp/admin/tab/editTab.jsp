@@ -186,17 +186,19 @@ IS_forbiddenURLs = {};
 
 //
 IS_Portal.currentTabId = "tab${tabTemplate.id}";
+IS_Portal.trueTabId = "tab${tabTemplate.tabId}";
 IS_Portal.deleteTempTabFlag = 1;//1-- beforeunloadを実行, 0-- beforeunloadを実行しない
 
 function prepareStaticArea(){
 	var static_columns = $$('#staticAreaContainer .static_column');
+console.log(static_columns);
 	IS_Portal.deleteTempTabFlag = 1;
 	var tabId = IS_Portal.currentTabId.replace("tab","");
-	console.log(static_columns, tabId);
 	for (var j=0; j<static_columns.length; j++ ) {
+		var containerId = IS_Portal.trueTabId + '_static_column_' + j;
 		var div = static_columns[j];
-		div.id = 'static_column_' + j;
-		div.href = hostPrefix + "/manager/tab/selectGadgetType?tabId=" + tabId + "&containerId=" + 'static_column_' + j;
+		div.id = containerId
+		div.href = hostPrefix + "/manager/tab/selectGadgetType?tabId=" + tabId + "&containerId=" + containerId;
 		var layoutMouseOver = function(el) {
 			el.style.backgroundColor = "#9999cc";
 		};
@@ -207,7 +209,7 @@ function prepareStaticArea(){
 		Event.observe(div, 'mouseout', layoutMouseOut.bind(null, div), false);
 		
 		var modal = new Control.Modal(
-			'static_column_' + j,
+			containerId,
 			{
 			  opacity: 0.4,
 			  width: 580,
@@ -223,7 +225,7 @@ function prepareStaticArea(){
 	for (var k=0; k<edit_buttons.length; k++){
 		var edit_button = edit_buttons[k];
 		edit_button.id = 'edit_button' + k;
-		edit_button.href = hostPrefix + "/manager/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + 'static_column_' + k;
+		edit_button.href = hostPrefix + "/manager/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + tabId + '_static_column_' + k;
 		var modal = new Control.Modal(
 			'edit_button' + k,
 			{
@@ -242,6 +244,7 @@ function init() {
 	Event.observe('submit_button', 'click', changeFlag, false);
 
 	prepareStaticArea();
+	$('layout').value = $("staticAreaContainer").innerHTML;
 
 	new IS_WidgetsContainer("/manager/tab/widsrv");
 	new IS_SiteAggregationMenu();
@@ -632,7 +635,8 @@ function init() {
 						};
 						var layoutClick = function(el,e) {
 							$('staticAreaContainer').innerHTML = el.innerHTML;
-							$('layout').value = el.innerHTML;
+							prepareStaticArea();
+							$('layout').value = $('staticAreaContainer').innerHTML;
 							Event.stop(e);
 							Control.Modal.close();
 						};
@@ -661,7 +665,8 @@ function init() {
 			  Event.observe( $('edit_layout_ok'), 'click', function(){
 				  var layout = $("edit_layout_textarea").value;
 				  $('staticAreaContainer').innerHTML = layout;
-				  $('layout').value = layout;
+				  prepareStaticArea();
+				  $('layout').value = $('staticAreaContainer').innerHTML;
 				  Control.Modal.close();
 			  },false);
 			  Event.observe( $('edit_layout_cancel'), 'click', function(){

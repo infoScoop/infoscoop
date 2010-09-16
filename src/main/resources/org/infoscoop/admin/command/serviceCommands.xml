@@ -84,15 +84,6 @@
 			</props>
 		</property>
 	</bean>
-	<bean id="tabLayout" class="org.infoscoop.admin.command.ServiceCommand">
-		<property name="service"><ref bean="TabLayoutService"/></property>
-		<property name="notPermittedPatterns">
-			<props>
-				<prop key="defaultPanel"></prop>
-				<prop key="*">.*</prop>
-			</props>
-		</property>
-	</bean>
 	<bean id="menu" class="org.infoscoop.admin.command.SiteAggregationServiceCommand">
 		<property name="service"><ref bean="siteAggregationMenuService"/></property>
 		<property name="notPermittedPatterns">

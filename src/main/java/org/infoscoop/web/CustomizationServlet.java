@@ -39,7 +39,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.service.PortalLayoutService;
-import org.infoscoop.service.TabLayoutService;
+import org.infoscoop.service.TabTemplateService;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
@@ -112,12 +112,12 @@ public class CustomizationServlet extends HttpServlet {
 
 	private String getCustomizationFtl( Map<String,Object> root ) throws ParserConfigurationException, Exception{
 		JSONObject layoutJson = new JSONObject();
-		Map<String, String> CustomizationMap = TabLayoutService.getHandle().getMyTabLayoutHTML();
+		Map<String, String> CustomizationMap = TabTemplateService.getHandle().getMyStaticAreaTemplate();
 
 
 		//int staticPanelCount = 0;
 		for(Iterator<Map.Entry<String, String>> ite = CustomizationMap.entrySet().iterator();ite.hasNext();){
-			Map.Entry entry = ite.next();
+			Map.Entry<String, String> entry = ite.next();
 			String key = (String)entry.getKey();
 			String value = (String)entry.getValue();
 			if( value == null )
