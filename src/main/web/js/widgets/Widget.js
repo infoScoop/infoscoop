@@ -372,7 +372,6 @@ IS_Widget.prototype.classDef = function() {
 	
 	this._setStaticWidgetHeight = function(){
 		var container = $("s_" + this.id);
-		console.log(this.id ,container);
 		if(self.elm_widgetHeader.offsetHeight || (!self.headerContent && container.offsetHeight) ){
 			var widgetHeight = parseInt(container.style.height);
 			var headerHeight = ( typeConf.Header )? self.elm_widgetHeader.offsetHeight : 0;
@@ -551,7 +550,6 @@ IS_Widget.prototype.classDef = function() {
 		}
 		
 		var container = $("s_" + this.id);
-		console.log("s_" + this.id);
 		self.isStaticHeight = !!(isStatic && container && container.style.height);
 		
 		//Instantiate implemented class only if contents type of widget is javascript
@@ -584,7 +582,6 @@ IS_Widget.prototype.classDef = function() {
 		msg.debug(this.id + " build time: " + (end - start));
 		
 		var widgetHeight = typeConf.height;
-		console.log(isStatic, self.isStaticHeight, this.content);
 		if(isStatic && self.isStaticHeight && (!this.content || !this.content.disableSetSaticWidgetHeight)){
 			if(container){
 				self._setStaticWidgetHeight();
