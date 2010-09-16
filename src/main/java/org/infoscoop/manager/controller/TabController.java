@@ -1,5 +1,7 @@
 package org.infoscoop.manager.controller;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +20,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.infoscoop.web.ProxyServlet;
 import org.infoscoop.widgetconf.MessageBundle;
 import org.infoscoop.command.XMLCommandProcessor;
 import org.infoscoop.command.util.XMLCommandUtil;
@@ -33,6 +36,7 @@ import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
 import org.infoscoop.dao.model.Widget;
+import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.service.WidgetConfService;
 import org.infoscoop.util.I18NUtil;
@@ -143,7 +147,7 @@ public class TabController {
 	
 	@RequestMapping
 	@Transactional
-	public void newStaticGadget(
+	public String newStaticGadget(
 			HttpServletRequest request, 
 			@RequestParam("type") String type,
 			@RequestParam("tabId") String tabId,
@@ -160,6 +164,7 @@ public class TabController {
 		
 		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。
 		model.addAttribute("conf", getGadgetConf(type, locale));
+		return "tab/editStaticGadget";
 	
 	}
 
@@ -168,15 +173,23 @@ public class TabController {
 	@Transactional
 	public void editStaticGadget(
 			HttpServletRequest request, 
-			@RequestParam("tabId") String id,
+			@RequestParam("tabId") String tabId,
 			@RequestParam("containerId") String containerId,
 			Locale locale,
 			Model model)throws Exception {
 		TabTemplateStaticGadget staticGadget = null;
-		TabTemplate tab = tabTemplateDAO.get(id);
+		TabTemplate tab = tabTemplateDAO.get(tabId);
 		
 		staticGadget = tabTemplateStaticGadgetDAO.getByContainerId(containerId, tab);
-		staticGadget.setTabTemplateId(id);
+		String instanceId = Integer.toString(staticGadget.getFkGadgetInstance().getId());
+		
+		staticGadget.setTabTemplateId(tabId);
+		staticGadget.setInstanceId( instanceId );
+		staticGadget.setContainerId(containerId);
+		model.addAttribute("tabId", tabId);
+		model.addAttribute("containerId", containerId);
+		model.addAttribute("instanceId", instanceId);
+		
 		model.addAttribute(staticGadget);
 		
 		GadgetInstance gadget = staticGadget.getFkGadgetInstance();
@@ -192,7 +205,46 @@ public class TabController {
 	}
 	
 	@RequestMapping
-	public void listGadgetInstances(){
+	public void listGadgetInstances(
+			HttpServletRequest request, 
+			@RequestParam("tabId") String tabId,
+			@RequestParam("containerId") String containerId,
+			Model model)throws Exception{
+		
+		GadgetInstanceDAO dao = GadgetInstanceDAO.newInstance();
+		List<GadgetInstance> gadgetInstances = dao.all();
+		model.addAttribute("instances", gadgetInstances);
+		model.addAttribute("tabId", tabId);
+		model.addAttribute("containerId", containerId);
+		
+	}
+	
+	@RequestMapping
+	@Transactional
+	public String editInstance(HttpServletRequest request, 
+			@RequestParam("tabId") String tabId,
+			@RequestParam("containerId") String containerId,
+			@RequestParam("instanceId") int instanceId,
+			Locale locale,
+			Model model) throws Exception {
+		TabTemplateStaticGadget staticGadget = null;
+		TabTemplate tab = tabTemplateDAO.get(tabId);		
+		staticGadget = tabTemplateStaticGadgetDAO.getByContainerId(containerId, tab);
+		if(staticGadget == null){
+			staticGadget = new TabTemplateStaticGadget();
+			staticGadget.setContainerId(containerId);
+			staticGadget.setFkTabTemplate(tab);
+		}
+		GadgetInstance gadget = GadgetInstanceDAO.newInstance().get(instanceId);
+		// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
+		gadget.getGadgetInstanceUserPrefs().size();
+		staticGadget.setFkGadgetInstance(gadget);
+		staticGadget.setTabTemplateId(tabId);
+		staticGadget.setInstanceId(Integer.toString(instanceId));
+		//
+		model.addAttribute(staticGadget);
+		model.addAttribute("conf", getGadgetConf(gadget.getType(),locale));
+		return "tab/editStaticGadget";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -206,17 +258,27 @@ public class TabController {
 		String containerId = staticGadget.getContainerId();
 		TabTemplateStaticGadget sg = 
 			tabTemplateStaticGadgetDAO.getByContainerId(containerId, tab);
+		if(staticGadget.getInstanceId() != ""){
+			GadgetInstance gadget = 
+				GadgetInstanceDAO.newInstance().
+					get(Integer.parseInt( staticGadget.getInstanceId() ));
+			if(gadget != null){
+				//new staticGadget& existing GadgetInstance
+				staticGadget.setFkGadgetInstance(gadget);
+				// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
+				gadget.getGadgetInstanceUserPrefs().size();
+			}
+		}
+			
+		//edit staticGadget
 		if(sg != null ){
 			sg.setContainerId(staticGadget.getContainerId());
-			sg.setFkGadgetInstance(staticGadget.getFkGadgetInstance());
 			sg.setFkTabTemplate(staticGadget.getFkTabTemplate());
 			staticGadget = sg;
 		}
+		
 		tabTemplateStaticGadgetDAO.save(staticGadget);
-		model.addAttribute("gadget",staticGadget);
-	
-		//This is not needed any more.
-		//TabLayoutService.getHandle().insertStaticGadget("temp", staticGadget.getFkGadgetInstance());
+		model.addAttribute("gadget", staticGadget);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -302,26 +364,58 @@ public class TabController {
 	
 	private Document getGadgetConf(String type, Locale locale) throws Exception {
 		// TODO 言語ごとにDBにキャッシュとして保存する。
-		Document conf = null;
-		if (type.startsWith("upload__")) {
+		if (type.startsWith("g_")) {
+
+			String url = type.substring(2);
+			Document doc = getRemoteGadget(url);
+			I18NConverter i18n = new I18NConverter(locale,
+					new MessageBundle.Factory.URL(-1, url).createBundles(doc));
+			// TODO It's a little dangerous.
+			String gadgetXml = i18n.replace(XmlUtil.dom2String(doc), true);
+			return XmlUtil.string2Dom(gadgetXml);
+		} else if (type.startsWith("upload__")) {
 			String realType = type.substring(8);// upload__を除く
 			Gadget gadget = GadgetDAO.newInstance().select(realType);
 			String gadgetXml = new String(gadget.getData(), "UTF-8");
-			Document gadgetDoc = (Document) XmlUtil.string2Dom(gadgetXml);
+			Document gadgetDoc = XmlUtil.string2Dom(gadgetXml);
 			I18NConverter i18n = new I18NConverter(locale,
 					new MessageBundle.Factory.Upload(0, realType)
 							.createBundles(gadgetDoc));
-			gadgetXml = i18n.replace(gadgetXml);
-			conf = (Document) XmlUtil.string2Dom(gadgetXml);
+			// TODO It's a little dangerous.
+			gadgetXml = i18n.replace(gadgetXml, true);
+			return XmlUtil.string2Dom(gadgetXml);
 		} else {
 			Element widgetConfElm = WidgetConfDAO.newInstance()
 					.getElement(type);
 			String widgetXml = XmlUtil.dom2String(widgetConfElm);
 			widgetXml = I18NUtil.resolveForXML(I18NUtil.TYPE_WIDGET, widgetXml,
 					locale);
-			conf = (Document) XmlUtil.string2Dom(widgetXml);
+			return XmlUtil.string2Dom(widgetXml);
 		}
-		return conf;
+	}
+	
+	private Document getRemoteGadget(String url) throws Exception {
+		InputStream is = null;
+		ProxyRequest proxyRequest = null;
+		try {
+			proxyRequest = new ProxyRequest(url, "XML");
+			proxyRequest.setTimeout(ProxyServlet.DEFAULT_TIMEOUT);
+			int statusCode = proxyRequest.executeGet();
+			if (statusCode != 200)
+				throw new Exception("gadget url="
+						+ proxyRequest.getProxy().getUrl() + ", statucCode="
+						+ statusCode);
+			if (log.isInfoEnabled())
+				log.info("gadget url : " + proxyRequest.getProxy().getUrl());
+
+			is = proxyRequest.getResponseBody();
+			is = new BufferedInputStream(is);
+		} finally {
+			if (proxyRequest != null)
+				proxyRequest.close();
+		}
+
+		return XmlUtil.stream2Dom(is);
 	}
 		/**
 	 * Copy from CommandExecutionService

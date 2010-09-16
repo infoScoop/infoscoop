@@ -8,6 +8,7 @@
 	<form:hidden path="containerId" />
 	<form:hidden path="tabTemplateId" />
 	<form:hidden path="fkGadgetInstance.type" />
+	<form:hidden path="instanceId"/>
 	<fieldset>
 		<legend>タイプ</legend>
 		<p>

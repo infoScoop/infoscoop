@@ -24,27 +24,11 @@ $("#gadget_settings select").each(function(){
 	}
 });
 
-
-
 $(function(){
 	var href_value= "selectGadgetType?tabId=${tabTemplateStaticGadget.tabTemplateId}" +
 						 "&containerId=${tabTemplateStaticGadget.containerId}";
 	$("#change_type").attr("href", href_value);
 });
-
-/*
-$("#change_type").click(function(){
-	
-	$.ajax({
-		type: "GET",
-		url: "selectGadgetType",
-		data: ({tabId: "${tabTemplateStaticGadget.tabTemplateId}", containerId: "${tabTemplateStaticGadget.containerId}"})
-		
-	});
-});
-*/
-
-
 </script>
 	</tiles:putAttribute>
 </tiles:insertDefinition>

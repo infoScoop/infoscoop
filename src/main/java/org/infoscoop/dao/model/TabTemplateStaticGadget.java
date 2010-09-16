@@ -46,6 +46,16 @@ public class TabTemplateStaticGadget extends BaseTabTemplateStaticGadget {
 		this.tabTemplateId = tabId;
 	}
 	
+	private String instanceId;
+	
+	public String getInstanceId(){
+		return this.instanceId;
+	}
+	
+	public void setInstanceId(String instanceId){
+		this.instanceId = instanceId;
+	}
+	
 	public TabTemplateStaticGadget createTemp(
 			TabTemplate tabCopy)throws CloneNotSupportedException{
 		TabTemplateStaticGadget SGClone = new TabTemplateStaticGadget();
