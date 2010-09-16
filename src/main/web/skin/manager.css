@@ -205,6 +205,11 @@ body {
 	height:20px;
 	padding:0 0.9em;
 }
+#menu #gadget_url{
+	width:200px;
+	margin:10px;
+	height:27px;
+}
 
 /*- Form --------------------------- */
 .cssform{

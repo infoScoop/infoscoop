@@ -355,7 +355,7 @@ public class MenuController {
 				.getWidgetConfsJson(locale);
 		String uploadGadgets = GadgetService.getHandle().getGadgetJson(locale,
 				3000);
-		model.addAttribute("buildin", buildinGadgets);
+		model.addAttribute("builtin", buildinGadgets);
 		model.addAttribute("upload", uploadGadgets);
 	}
 

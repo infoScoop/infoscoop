@@ -1,5 +1,5 @@
 <%@ page contentType="application/json; charset=UTF8" %>
 {
-	"buildin": ${buildin},
+	"builtin": ${builtin},
 	"upload": ${upload}
 }

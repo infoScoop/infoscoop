@@ -14,7 +14,7 @@ var staticContentURL="../..";
 var imageURL = staticContentURL + "/skin/imgs/"
 var copiedItemId, gadgetConfs, menuId = "${menuId}";
 function getGadget(type){
-	return gadgetConfs.buildin[type] || gadgetConfs.upload[type];
+	return gadgetConfs.builtin[type] || gadgetConfs.upload[type];
 }
 function getGadgetTitle(gadget){
 	if(typeof gadget == "string")

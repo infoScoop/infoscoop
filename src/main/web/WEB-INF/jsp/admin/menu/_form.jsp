@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <form:form modelAttribute="menuItem" method="post" action="${action}" class="cssform">
 	<form:hidden path="id" />
 	<c:if test="${menuItem.fkMenuTree != null}">
@@ -17,7 +18,7 @@
 	<form:hidden path="menuOrder" />
 	<c:if test="${conf != null }">
 	<fieldset>
-		<legend>タイプ</legend>
+		<legend><spring:message code="menu._form.type" /></legend>
 		<p>
 			<c:if test="${conf != null}">
 			<x:choose>
@@ -31,36 +32,41 @@
 	</fieldset>
 	</c:if>
 	<fieldset>
-		<legend>共通設定</legend>
+		<legend><spring:message code="menu._form.common" /></legend>
 		<p>
-			<form:label for="title" path="title" cssErrorClass="error">タイトル</form:label>
+			<form:label for="title" path="title" cssErrorClass="error"><spring:message code="menu._form.title" /></form:label>
 			<form:input path="title" /><form:errors path="title" />
 		</p>
 		<p>
-			<form:label for="href" path="href" cssErrorClass="error">リンク</form:label>
+			<form:label for="href" path="href" cssErrorClass="error"><spring:message code="menu._form.link" /></form:label>
 			<form:input path="href" /><form:errors path="href" />
 		</p>
 		<p>
-			<label>公開設定</label>
+			<label><spring:message code="menu._form.publish" /></label>
 			<span class="radio">
-				<form:radiobutton path="publish" value="0" label="非公開" cssErrorClass="error" />
-				<form:radiobutton path="publish" value="1" label="公開" cssErrorClass="error" />
+				<c:set var="unpublish"><spring:message code="menu._form.publish.off" /></c:set>
+				<c:set var="publish"><spring:message code="menu._form.publish.on" /></c:set>
+				<form:radiobutton path="publish" value="0" label="${unpublish}" cssErrorClass="error" />
+				<form:radiobutton path="publish" value="1" label="${publish}" cssErrorClass="error" />
 				<form:errors path="publish" />
 			</span>
 		</p>
 		<p>
-			<form:label for="alert" path="alert" cssErrorClass="error">通知方法</form:label>
+			<form:label for="alert" path="alert" cssErrorClass="error"><spring:message code="menu._form.notify" /></form:label>
+			<c:set var="notifyOff"><spring:message code="menu._form.notify.off" /></c:set>
+			<c:set var="notifyOn"><spring:message code="menu._form.notify.on" /></c:set>
+			<c:set var="notifyForce"><spring:message code="menu._form.notify.force" /></c:set>
 			<form:select path="alert">
-				<form:option value="0" label="通知しない"/>
-				<form:option value="1" label="通知する" selected="true"/>
-				<form:option value="2" label="強制的に追加する"/>
+				<form:option value="0" label="${notifyOff}"/>
+				<form:option value="1" label="${notifyOn}" selected="true"/>
+				<form:option value="2" label="${notifyForce}"/>
 			</form:select>
 			<form:errors path="alert" />
 		</p>
 	</fieldset>
 	<c:if test="${conf != null}">
 	<fieldset id="gadget_settings">
-		<legend>ガジェット設定</legend>
+		<legend><spring:message code="menu._form.gadget" /></legend>
 		<c:if test="${conf != null}">
 		<x:forEach var="userPref" select="$conf//UserPref">
 			<x:if select="$userPref/@admin_datatype or not($userPref/@datatype) or $userPref/@datatype!='hidden'">
@@ -103,8 +109,8 @@
 	</fieldset>
 	</c:if>
 	<p>
-		<input type="submit" value="作成" class="button"/>
-		<input type="reset" value="リセット" class="button" />
+		<input type="submit" value="<spring:message code="menu._form.button.create" />" class="button"/>
+		<input type="reset" value="<spring:message code="menu._form.button.reset" />" class="button" />
 	</p>
 </form:form>
 <script type="text/javascript">

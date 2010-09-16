@@ -1,16 +1,20 @@
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<h2>メニューの追加</h2>
-<h4>リンクメニューの追加</h4>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<h2><spring:message code="menu.selectGadgetInstance.title" /></h2>
+<h4><spring:message code="menu.selectGadgetInstance.add.link" /></h4>
 <p>
-	リンクメニューを追加する場合は<a href="#" onclick="showAddItem(false, '${parentId}');">こちら</a>をクリックしてください。
+	<c:set var="arg1"><a href="#" onclick="showAddItem(false, '${parentId}');"></c:set>
+	<c:set var="arg2"></a></c:set>
+	<spring:message code="menu.selectGadgetInstance.add.link.description" arguments="${arg1}\t${arg2}" argumentSeparator="\t"/>
 </p>
 <c:if test="${parentId != ''}">
-<h4>ガジェットの追加</h4>
+<h4><spring:message code="menu.selectGadgetInstance.add.gadget" /></h4>
 <p>
-	ガジェットを追加する場合は以下から追加するがジェットを選択してください。<br>
-	新しいガジェットを追加するには<a href="#" onclick="selectGadgetType();">こちら</a>をクリックしてください。
+	<c:set var="arg1"><a href="#" onclick="selectGadgetType();"></c:set>
+	<c:set var="arg2"></a></c:set>
+	<spring:message code="menu.selectGadgetInstance.add.gadget.description" arguments="${arg1}\t${arg2}" argumentSeparator="\t"/>
 </p>
 <c:choose>
 <c:when test="${fn:length(instances) > 0}">
@@ -24,8 +28,9 @@
 </c:when>
 <c:otherwise>
 <p>
-ガジェットが登録されていません。<br>
-<a href="#" onclick="selectGadgetType();">こちら</a>から新しいがジェットを登録してください。
+	<c:set var="arg1"><a href="#" onclick="selectGadgetType();"></c:set>
+	<c:set var="arg2"></a></c:set>
+	<spring:message code="menu.selectGadgetInstance.no.gadget" arguments="${arg1}\t${arg2}" argumentSeparator="\t"/>
 </p>
 </c:otherwise>
 </c:choose>
