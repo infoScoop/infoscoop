@@ -254,31 +254,38 @@ public class TabController {
 			Model model)throws Exception {
 		TabTemplate tab = tabTemplateDAO.get(staticGadget.getTabTemplateId());
 		staticGadget.setFkTabTemplate(tab);
-		
 		String containerId = staticGadget.getContainerId();
+		String instanceId = staticGadget.getInstanceId();
+		
 		TabTemplateStaticGadget sg = 
 			tabTemplateStaticGadgetDAO.getByContainerId(containerId, tab);
-		if(staticGadget.getInstanceId() != ""){
-			GadgetInstance gadget = 
-				GadgetInstanceDAO.newInstance().
-					get(Integer.parseInt( staticGadget.getInstanceId() ));
-			if(gadget != null){
-				//new staticGadget& existing GadgetInstance
-				staticGadget.setFkGadgetInstance(gadget);
-				// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
-				gadget.getGadgetInstanceUserPrefs().size();
+		
+		if(sg == null){//new
+			if(instanceId != "")	
+				setGadgetInstance(staticGadget, instanceId);
+		}else{//edit
+			if(instanceId != ""){
+				setGadgetInstance(staticGadget, instanceId);
+				sg.setContainerId(staticGadget.getContainerId());
+				sg.setFkTabTemplate(staticGadget.getFkTabTemplate());
+			}else{
+				sg.setFkGadgetInstance(staticGadget.getFkGadgetInstance());
 			}
-		}
-			
-		//edit staticGadget
-		if(sg != null ){
-			sg.setContainerId(staticGadget.getContainerId());
-			sg.setFkTabTemplate(staticGadget.getFkTabTemplate());
 			staticGadget = sg;
 		}
-		
 		tabTemplateStaticGadgetDAO.save(staticGadget);
 		model.addAttribute("gadget", staticGadget);
+	}
+	
+	private void setGadgetInstance(TabTemplateStaticGadget staticGadget, String instanceId){
+		GadgetInstance gadget = 
+			GadgetInstanceDAO.newInstance().
+				get(Integer.parseInt( instanceId ));
+		if(gadget != null){
+			staticGadget.setFkGadgetInstance(gadget);
+			// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
+			gadget.getGadgetInstanceUserPrefs().size();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
