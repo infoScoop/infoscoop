@@ -545,4 +545,24 @@
 		</property>
 	</bean>
 
+	<bean id="CommandBarService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.CommandBarService">
+				<property name="commandBarDAO">
+					<ref bean="commandBarDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
 </beans>

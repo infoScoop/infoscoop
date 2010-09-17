@@ -22,7 +22,7 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
-	<bean id="tabLayoutDAO"	class="org.infoscoop.dao.TabLayoutDAO">
+	<bean id="commandBarDAO"	class="org.infoscoop.dao.CommandBarDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>
    	 	</property>

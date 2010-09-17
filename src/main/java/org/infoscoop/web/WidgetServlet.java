@@ -132,13 +132,12 @@ public class WidgetServlet extends HttpServlet {
 				Object[] t = ( Object[] )it.next();
 				
 				Tab tab = (Tab)t[0];
-				Collection dynamicWidgets = ( Collection )t[1];
-				Collection staticWidgets = ( Collection )t[2];
+				Collection<Widget> dynamicWidgets = ( Collection )t[1];
+				Collection<Widget> staticWidgets = ( Collection )t[2];
 				
 				//Because there is the possibility that the widgetID repeats depending on the setting situation of the dynamic panel of the initial screen setting, we remove it.
 				List removeWidgetList = new ArrayList();
-				for(Iterator widgets = dynamicWidgets.iterator(); widgets.hasNext();){
-					Widget wid = (Widget)widgets.next();
+				for(Widget wid : dynamicWidgets){
 					if(dynamicPanelWidgetIds.contains(wid.getWidgetid())){
 						removeWidgetList.add(wid);
 					}

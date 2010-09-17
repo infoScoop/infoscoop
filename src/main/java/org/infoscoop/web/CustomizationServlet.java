@@ -38,6 +38,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.Portallayout;
+import org.infoscoop.service.CommandBarService;
 import org.infoscoop.service.PortalLayoutService;
 import org.infoscoop.service.TabTemplateService;
 import org.infoscoop.util.I18NUtil;
@@ -112,8 +113,10 @@ public class CustomizationServlet extends HttpServlet {
 
 	private String getCustomizationFtl( Map<String,Object> root ) throws ParserConfigurationException, Exception{
 		JSONObject layoutJson = new JSONObject();
+		
+		layoutJson.put("commandbar", applyFreemakerTemplate(root, CommandBarService.getHandle().getMyTemplate()));
+		
 		Map<String, String> CustomizationMap = TabTemplateService.getHandle().getMyStaticAreaTemplate();
-
 
 		//int staticPanelCount = 0;
 		for(Iterator<Map.Entry<String, String>> ite = CustomizationMap.entrySet().iterator();ite.hasNext();){
@@ -123,11 +126,7 @@ public class CustomizationServlet extends HttpServlet {
 			if( value == null )
 				value = "";
 
-			if("commandbar".equals(key.toLowerCase())){
-				layoutJson.put("commandbar", applyFreemakerTemplate(root, value));
-			}else {
-				layoutJson.put("staticPanel" + key, value);
-			}
+			layoutJson.put("staticPanel" + key, value);
 		}
 
 		// get the information of static layout.

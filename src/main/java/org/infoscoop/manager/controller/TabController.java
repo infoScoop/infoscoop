@@ -633,7 +633,7 @@ public class TabController {
 						+ targetColumn + "], parent:[" + parentId + "], sibling:[" + siblingId + "]";
 	        	log.info(logMsg);
 	        }
-	        if (widgetId == null || widgetId == "") {
+	        if (widgetId == null || "".endsWith(widgetId)) {
 	            String reason = "It's an unjust widgetId．widgetId:[" + widgetId + "]";
 	            this.result = XMLCommandUtil.createResultElement(uid, "processXML",
 	                    log, commandId, false, reason);

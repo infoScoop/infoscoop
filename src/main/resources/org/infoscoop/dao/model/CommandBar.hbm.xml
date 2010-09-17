@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="CommandBar"
+		table="is_command_bars"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="Id"
+			type="integer"
+			column="id"
+		>
+			<generator class="native"/>
+		</id>
+
+		<property
+			name="DisplayOrder"
+			column="display_order"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="AccessLevel"
+			column="access_level"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+	
+
+		<set name="CommandBarStaticGadgets" inverse="true">
+			<key column="fk_command_bar_id"/>
+			<one-to-many class="CommandBarStaticGadget"/>
+		</set>
+
+
+	</class>	
+</hibernate-mapping>

@@ -60,7 +60,8 @@
 					<value>org/infoscoop/dao/model/Proxyconf.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Preference.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Portallayout.hbm.xml</value>
-					<value>org/infoscoop/dao/model/Tablayout.hbm.xml</value>
+					<value>org/infoscoop/dao/model/CommandBar.hbm.xml</value>
+					<value>org/infoscoop/dao/model/CommandBarStaticGadget.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Widget.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Tab.hbm.xml</value>
 					<value>org/infoscoop/dao/model/AuthCredential.hbm.xml</value>

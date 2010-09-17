@@ -445,7 +445,8 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				if(!isTabView && !buildTargetTabIds.contains(widgetConfList[num].tabId))
 					continue;
 					
-				var isBuild = (widgetConfList[num].tabId == IS_Portal.currentTabId.substring(3))? true:false;
+				var isBuild = (widgetConfList[num].tabId == IS_Portal.currentTabId.substring(3) ||
+							   widgetConfList[num].tabId == 'commandbar')? true:false;
 				var id = "tab"+widgetConfList[num].tabId;
 				if(widgetConfList[num].staticPanel){
 					var widgets = widgetConfList[num].staticPanel;
@@ -458,10 +459,8 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				if(!useTab) break;
 			}
 			
-			//TODO: re-implement
-			
-			//if(!isTabView)
-			//  IS_Portal.CommandBar.init();
+			if(!isTabView)
+			  IS_Portal.CommandBar.init();
 	
 			// loadContents();
 			
@@ -1362,7 +1361,7 @@ IS_Portal.isMenuType = function( widget,menuItem ) {
  * @param {Object} tabId
  */
 IS_Portal.addWidget = function(widget, tabId){
-	if(!tabId) tabId = IS_Portal.currentTabId;
+	if(!tabId || 'tabcommandbar' ==  tabId) tabId = IS_Portal.currentTabId;
 	var widgetId = IS_Portal.getTrueId(widget.id);
 	
 	IS_Portal.widgetLists[tabId][widgetId] = widget;

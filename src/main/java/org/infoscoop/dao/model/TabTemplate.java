@@ -110,7 +110,7 @@ public class TabTemplate extends BaseTabTemplate {
 		for(TabTemplatePersonalizeGadget gadget : super.getTabTemplatePersonalizeGadgets()){
 			if(gadget.getSiblingId() == null)continue;
 			TabTemplatePersonalizeGadget sibling = this.getPersonalizeGadget(gadget.getSiblingId());
-			if(widgetId == sibling.getWidgetId())return gadget;
+			if(widgetId.equals(sibling.getWidgetId()))return gadget;
 		}
 		return null;
 	}

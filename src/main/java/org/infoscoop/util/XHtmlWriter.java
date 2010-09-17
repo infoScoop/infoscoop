@@ -235,10 +235,6 @@ public class XHtmlWriter extends DefaultFilter {
 		print(text.toString());
 	}
 
-	private void print(XMLString text, boolean resolveHtmlEntity) {
-		print(text.toString(), resolveHtmlEntity);
-	}
-
 	/** Prints the specified string . */
 	private void print(String s, boolean resolveHtmlEntity) {
 		String str = resolveHtmlEntity ? HtmlUtil.resolveHtmlEntities(s) : s;

@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,27 +28,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.parsers.FactoryConfigurationError;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
+import org.infoscoop.dao.model.CommandBar;
+import org.infoscoop.dao.model.CommandBarStaticGadget;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.GadgetInstanceUserpref;
 import org.infoscoop.dao.model.Preference;
 import org.infoscoop.dao.model.TABPK;
 import org.infoscoop.dao.model.Tab;
-import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.util.SpringUtil;
-import org.json.JSONArray;
 import org.w3c.dom.Element;
 
 public class TabService {
@@ -117,6 +114,19 @@ public class TabService {
 	 */
 	public Collection<Object[]> getWidgetsNode(String uid, String defaultUid) throws Exception {
 		Collection<Object[]> tabList = new ArrayList<Object[]>();
+	
+		CommandBar cmdBar = CommandBarService.getHandle().getMyCommandBar();
+		Tab commandbar = new Tab(new TABPK(uid, "commandbar"));
+		commandbar.setName("commandbar");
+		commandbar.setData("{}");
+		tabList.add(
+				new Object[]{
+						commandbar,
+						new ArrayList<Widget>(),
+						createStaticGadgetList(uid, cmdBar),
+				});
+		
+		
 		List<TabTemplate> tabTemplates = TabTemplateService.getHandle().getMyTabTemplate();
 		Collection<Tab> currentTabList = TabDAO.newInstance().getTabs(uid);
 		
@@ -204,6 +214,33 @@ public class TabService {
 		}
 		return widgets;
 	}
+
+	private List<Widget> createStaticGadgetList(String uid, CommandBar cmdBar) {
+		List<Widget> widgetList = new ArrayList<Widget>();
+		for(CommandBarStaticGadget gadget : cmdBar.getCommandBarStaticGadgets()){
+			GadgetInstance gadgetInst = gadget.getGadgetInstance();;
+			
+			Widget widget = new Widget();
+			widget.setTabid( "commandbar" );
+			widget.setDeletedate(Long.valueOf(0));
+			widget.setWidgetid(gadget.getContainerId());
+			widget.setUid( uid );
+			widget.setType(gadgetInst.getType());
+			widget.setColumn(Integer.valueOf(0));
+			widget.setTitle(gadgetInst.getTitle());
+			widget.setHref(gadgetInst.getHref());
+			
+			for(GadgetInstanceUserpref up : gadgetInst.getGadgetInstanceUserPrefs())
+				widget.setUserPref(up.getId().getName(), up.getValue());
+			widget.setIsstatic(Integer.valueOf(1));
+			
+			widgetList.add( widget );
+			//this.widgetDAO.addWidget(widget,false);
+			
+		}
+		return widgetList;
+	}
+
 
 	private List<Widget> createStaticGadgetList(String uid, TabTemplate tabTemplate) {
 		List<Widget> widgetList = new ArrayList<Widget>();
