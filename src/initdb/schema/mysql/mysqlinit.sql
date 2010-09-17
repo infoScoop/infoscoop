@@ -584,3 +584,25 @@ CREATE TABLE IS_GROUPS (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 `name` VARCHAR( 255 ) NOT NULL
 ) ENGINE = InnoDB;
+
+CREATE TABLE IS_COMMAND_BARS (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `display_order` int(11) NOT NULL,
+  `access_level` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE IS_COMMAND_BAR_STATIC_GADGETS (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `container_id` varchar(255) NOT NULL,
+  `fk_command_bar_id` int(10) unsigned NOT NULL,
+  `fk_gadget_instance_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_command_bar_id` (`fk_command_bar_id`),
+  KEY `fk_gadget_instance_id` (`fk_gadget_instance_id`)
+) ENGINE=InnoDB ;
+
+ALTER TABLE IS_COMMAND_BAR_STATIC_GADGETS
+  ADD CONSTRAINT `is_command_bar_static_gadgets_ibfk_1` FOREIGN KEY (`fk_command_bar_id`) REFERENCES IS_COMMAND_BARS (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `is_command_bar_static_gadgets_ibfk_2` FOREIGN KEY (`fk_gadget_instance_id`) REFERENCES `is_gadget_instances` (`id`) ON DELETE CASCADE;
