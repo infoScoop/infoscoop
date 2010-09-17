@@ -726,11 +726,17 @@ IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
 
 function displayStaticGadget(widgetOpt){
 	var containerId = widgetOpt.id;
+	var container = $(containerId);
+	container.id = "s_" + containerId;
 	var widget = new IS_Widget(false, widgetOpt);
 	widget.panelType = "StaticPanel";
 	widget.containerId = containerId;
 	widget.build();
-	$(containerId).appendChild(widget.elm_widget);
+	if(container.firstChild)
+		container.replaceChild(widget.elm_widget, container.firstChild);
+	else
+		container.appendChild(widget.elm_widget);
+	
 	widget.loadContents();
 }
 </script>

@@ -362,6 +362,10 @@ IS_WidgetsContainer.prototype.classDef = function() {
 						}
 						widgetConfList[tabId].tabId = id;
 					}
+					
+					buildTargetTabIds.push(id);
+
+					if("commandbar" === id)continue;
 
 					var tabName = (widgetConfList[tabId].tabName)? widgetConfList[tabId].tabName : IS_R.lb_newTab;
 					var numCol = (widgetConfList[tabId].property.numCol)? widgetConfList[tabId].property.numCol : 3;
@@ -402,7 +406,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					}
 					
 					IS_Portal.addTab( id, tabName, tabType, numCol, columnsWidth, disabledDynamicPanel, true);
-					buildTargetTabIds.push(id);
 					/*
 					if(!useTab){
 						if(widgetConfList[0].tabNumber){
