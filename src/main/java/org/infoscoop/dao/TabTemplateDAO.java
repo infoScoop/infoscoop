@@ -39,7 +39,8 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 	@SuppressWarnings("unchecked")
 	public List<TabTemplate> all() {
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(TabTemplate.class));
+				DetachedCriteria.forClass(TabTemplate.class).add(
+						Expression.eq(TabTemplate.PROP_TEMP, Integer.valueOf(0))));
 	}
 
 

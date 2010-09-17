@@ -225,7 +225,8 @@ public class TabService {
 			widget.setDeletedate(Long.valueOf(0));
 			widget.setWidgetid(gadget.getContainerId());
 			widget.setUid( uid );
-			widget.setType(gadgetInst.getType());
+			//TODO:
+			widget.setType(gadgetInst.getType().startsWith("upload_") ? "g_" + gadgetInst.getType() + "/gadget" : gadgetInst.getType() );
 			widget.setColumn(Integer.valueOf(0));
 			widget.setTitle(gadgetInst.getTitle());
 			widget.setHref(gadgetInst.getHref());
@@ -252,7 +253,8 @@ public class TabService {
 			widget.setDeletedate(Long.valueOf(0));
 			widget.setWidgetid(gadget.getContainerId());
 			widget.setUid( uid );
-			widget.setType(gadgetInst.getType());
+			//TODO:
+			widget.setType(gadgetInst.getType().startsWith("upload_") ? "g_" + gadgetInst.getType() + "/gadget" : gadgetInst.getType() );
 			widget.setColumn(Integer.valueOf(0));
 			widget.setTitle(gadgetInst.getTitle());
 			widget.setHref(gadgetInst.getHref());
@@ -278,7 +280,8 @@ public class TabService {
 			widget.setDeletedate(Long.valueOf(0));
 			widget.setWidgetid(gadget.getWidgetId());
 			widget.setUid( uid );
-			widget.setType(gadgetInst.getType());
+			//TODO:
+			widget.setType(gadgetInst.getType().startsWith("upload_") ? "g_" + gadgetInst.getType() + "/gadget" : gadgetInst.getType() );
 			widget.setColumn(gadget.getColumnNum());
 			widget.setTitle(gadgetInst.getTitle());
 			widget.setHref(gadgetInst.getHref());
