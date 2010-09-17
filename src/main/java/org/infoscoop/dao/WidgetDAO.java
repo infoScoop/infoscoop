@@ -282,12 +282,13 @@ public class WidgetDAO extends HibernateDaoSupport{
 				new Object[] { uid, tabId.toString() });
 	}
 
-	/*
-	public void deleteWidget(Widget widget, long deleteDate) {
-		widget.getId().setDeletedate(new Long(deleteDate));
-		super.getHibernateTemplate().update(widget);
+
+	public void deleteStaticWidgetByTabId(String tabId) {
+		String queryString = "delete from Widget where tabId = ? and Isstatic = 1";
+
+		super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] {  tabId});
 	}
-	*/
 
 	public int emptyWidget(String uid, String widgetId, long deleteDate) {
 		/*

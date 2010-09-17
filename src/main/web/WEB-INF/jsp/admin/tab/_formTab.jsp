@@ -16,6 +16,7 @@
 		<form:hidden path="tabId" />
 		<form:hidden path="layout"/>
 		<form:hidden path="originalId"/>
+		<form:hidden path="layoutModified"/>
 		<div id="portal-site-aggregation-menu"></div>
 		<div id="portal-tree-menu" style="float:left;width:20%;"> </div>
 		<div style="float:left;width:80%;">

@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +29,7 @@ import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
 import org.infoscoop.dao.WidgetConfDAO;
+import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.TabTemplate;
@@ -156,8 +156,8 @@ public class TabController {
 			Model model)throws Exception {
 		TabTemplateStaticGadget staticGadget = new TabTemplateStaticGadget();
 			GadgetInstance gadgetInstance = new GadgetInstance();
-			staticGadget.setFkGadgetInstance(gadgetInstance);
-			staticGadget.getFkGadgetInstance().setType(type);
+			staticGadget.setGadgetInstance(gadgetInstance);
+			staticGadget.getGadgetInstance().setType(type);
 			staticGadget.setTabTemplateId(tabId);
 			staticGadget.setContainerId(containerId);
 		model.addAttribute("tabTemplateStaticGadget", staticGadget);
@@ -181,7 +181,7 @@ public class TabController {
 		TabTemplate tab = tabTemplateDAO.get(tabId);
 		
 		staticGadget = tabTemplateStaticGadgetDAO.getByContainerId(containerId, tab);
-		String instanceId = Integer.toString(staticGadget.getFkGadgetInstance().getId());
+		String instanceId = Integer.toString(staticGadget.getGadgetInstance().getId());
 		
 		staticGadget.setTabTemplateId(tabId);
 		staticGadget.setInstanceId( instanceId );
@@ -192,7 +192,7 @@ public class TabController {
 		
 		model.addAttribute(staticGadget);
 		
-		GadgetInstance gadget = staticGadget.getFkGadgetInstance();
+		GadgetInstance gadget = staticGadget.getGadgetInstance();
 		if (gadget != null) {
 			String type = gadget.getType();
 			if (type != null && type.length() > 0) {
@@ -238,7 +238,7 @@ public class TabController {
 		GadgetInstance gadget = GadgetInstanceDAO.newInstance().get(instanceId);
 		// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
 		gadget.getGadgetInstanceUserPrefs().size();
-		staticGadget.setFkGadgetInstance(gadget);
+		staticGadget.setGadgetInstance(gadget);
 		staticGadget.setTabTemplateId(tabId);
 		staticGadget.setInstanceId(Integer.toString(instanceId));
 		//
@@ -269,11 +269,12 @@ public class TabController {
 				sg.setContainerId(staticGadget.getContainerId());
 				sg.setFkTabTemplate(staticGadget.getFkTabTemplate());
 			}else{
-				sg.setFkGadgetInstance(staticGadget.getFkGadgetInstance());
+				sg.setGadgetInstance(staticGadget.getGadgetInstance());
 			}
 			staticGadget = sg;
 		}
 		tabTemplateStaticGadgetDAO.save(staticGadget);
+		
 		model.addAttribute("gadget", staticGadget);
 	}
 	
@@ -282,7 +283,7 @@ public class TabController {
 			GadgetInstanceDAO.newInstance().
 				get(Integer.parseInt( instanceId ));
 		if(gadget != null){
-			staticGadget.setFkGadgetInstance(gadget);
+			staticGadget.setGadgetInstance(gadget);
 			// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
 			gadget.getGadgetInstanceUserPrefs().size();
 		}
@@ -298,12 +299,20 @@ public class TabController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public void updateTab(TabTemplate tab, Model model)throws Exception {		
+	public void updateTab(TabTemplate tab,
+			@RequestParam("layoutModified") String layoutModified, 
+			Model model)throws Exception {
 		TabTemplate tabOriginal = 
 			tabTemplateDAO.get(Integer.toString(tab.getOriginalId()));
 		tab.setTemp(0);
 		tabTemplateDAO.save(tab);
 		tabTemplateDAO.delete(tabOriginal);
+
+		//if(tab.isLayoutModified()){
+		if(Boolean.valueOf(layoutModified)){
+			WidgetDAO widgetDAO = WidgetDAO.newInstance();
+			widgetDAO.deleteStaticWidgetByTabId(tab.getTabId());
+		}
 		model.addAttribute(tab);
 	}
 
@@ -329,7 +338,7 @@ public class TabController {
 		model.addAttribute(tab);
 		
 		for(TabTemplateStaticGadget gadget : tab.getTabTemplateStaticGadgets())
-			gadget.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
+			gadget.getGadgetInstance().getGadgetInstanceUserPrefs().size();
 		
 		
 		Collection<TabTemplatePersonalizeGadget> firstOfColumn = new ArrayList<TabTemplatePersonalizeGadget>();

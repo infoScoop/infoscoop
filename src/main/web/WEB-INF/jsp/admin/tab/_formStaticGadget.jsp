@@ -7,7 +7,7 @@
 	<form:hidden path="id" />
 	<form:hidden path="containerId" />
 	<form:hidden path="tabTemplateId" />
-	<form:hidden path="fkGadgetInstance.type" />
+	<form:hidden path="gadgetInstance.type" />
 	<form:hidden path="instanceId"/>
 	<fieldset>
 		<legend>タイプ</legend>
@@ -16,7 +16,7 @@
 				<x:when select="$conf/widgetConfiguration/@title"><x:out select="$conf/widgetConfiguration/@title" /></x:when>
 				<x:when select="$conf/Module/ModulePrefs/@directory_title"><x:out select="$conf/Module/ModulePrefs/@directory_title" /></x:when>
 				<x:when select="$conf/Module/ModulePrefs/@title"><x:out select="$conf/Module/ModulePrefs/@title" /></x:when>
-				<x:otherwise>${tabTemplateStaticGadget.fkGadgetInstance.type}</x:otherwise>
+				<x:otherwise>${tabTemplateStaticGadget.gadgetInstance.type}</x:otherwise>
 			</x:choose>
 		</p>
 		<a id="change_type"/>Change Type</a>
@@ -24,12 +24,12 @@
 	<fieldset>
 		<legend>共通設定</legend>
 		<p>
-			<form:label for="fkGadgetInstance.title" path="fkGadgetInstance.title" cssErrorClass="error">タイトル</form:label>
-			<form:input path="fkGadgetInstance.title" /><form:errors path="fkGadgetInstance.title" />
+			<form:label for="gadgetInstance.title" path="gadgetInstance.title" cssErrorClass="error">タイトル</form:label>
+			<form:input path="gadgetInstance.title" /><form:errors path="gadgetInstance.title" />
 		</p>
 		<p>
-			<form:label for="fkGadgetInstance.href" path="fkGadgetInstance.href" cssErrorClass="error">リンク</form:label>
-			<form:input path="fkGadgetInstance.href" /><form:errors path="fkGadgetInstance.href" />
+			<form:label for="gadgetInstance.href" path="gadgetInstance.href" cssErrorClass="error">リンク</form:label>
+			<form:input path="gadgetInstance.href" /><form:errors path="gadgetInstance.href" />
 		</p>
 	</fieldset>
 	<fieldset id="gadget_settings">
@@ -49,12 +49,12 @@
 					<c:set var="name"><x:out select="$userPref/@name"/></c:set>
 					<x:choose>
 						<x:when select="$userPref/EnumValue">
-							<select name="fkGadgetInstance.userPrefs[${name}]" class="${datatype}">
+							<select name="gadgetInstance.userPrefs[${name}]" class="${datatype}">
 							<x:forEach var="enum" select="$userPref/EnumValue">
 								<c:set var="value"><x:out select="$enum/@value"/></c:set>
 								<c:set var="display_value"><x:out select="$enum/@display_value"/></c:set>
 								<c:choose>
-									<c:when test="${tabTemplateStaticGadget.fkGadgetInstance.userPrefs[name] == value}">
+									<c:when test="${tabTemplateStaticGadget.gadgetInstance.userPrefs[name] == value}">
 										<option value="${value}" selected="selected">${display_value}</option>
 									</c:when>
 									<c:otherwise>
@@ -65,7 +65,7 @@
 							</select>
 						</x:when>
 						<x:otherwise>
-							<input type="${datatype}" name="fkGadgetInstance.userPrefs[${name}]" value="${tabTemplateStaticGadget.fkGadgetInstance.userPrefs[name]}" class="${datatype}"/>
+							<input type="${datatype}" name="gadgetInstance.userPrefs[${name}]" value="${tabTemplateStaticGadget.gadgetInstance.userPrefs[name]}" class="${datatype}"/>
 						</x:otherwise>
 					</x:choose>
 				</p>

@@ -1,11 +1,10 @@
 package org.infoscoop.dao.model;
 
-import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
 import org.infoscoop.dao.model.base.BaseTabTemplateStaticGadget;
 
 
 
-public class TabTemplateStaticGadget extends BaseTabTemplateStaticGadget {
+public class TabTemplateStaticGadget extends BaseTabTemplateStaticGadget implements StaticGadget{
 	private static final long serialVersionUID = 1L;
 
 /*[CONSTRUCTOR MARKER BEGIN]*/
@@ -25,12 +24,12 @@ public class TabTemplateStaticGadget extends BaseTabTemplateStaticGadget {
 	 */
 	public TabTemplateStaticGadget (
 		java.lang.Integer id,
-		org.infoscoop.dao.model.GadgetInstance fkGadgetInstance,
+		org.infoscoop.dao.model.GadgetInstance gadgetInstance,
 		java.lang.String containerId) {
 
 		super (
 			id,
-			fkGadgetInstance,
+			gadgetInstance,
 			containerId);
 	}
 
@@ -61,7 +60,7 @@ public class TabTemplateStaticGadget extends BaseTabTemplateStaticGadget {
 		TabTemplateStaticGadget SGClone = new TabTemplateStaticGadget();
 		
 		SGClone.setContainerId(this.getContainerId());
-		SGClone.setFkGadgetInstance(this.getFkGadgetInstance());
+		SGClone.setGadgetInstance(this.getGadgetInstance());
 		SGClone.setFkTabTemplate(tabCopy);
 		
 		//TabTemplateStaticGadgetDAO.newInstance().save(SGClone);

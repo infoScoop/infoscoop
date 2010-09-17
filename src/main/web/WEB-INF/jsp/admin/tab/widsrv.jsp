@@ -15,12 +15,12 @@
 		"${gadget.containerId}":{
 			"id":"${gadget.containerId}",
 			"tabId":"${tabTemplate.id}",
-			"href":"${gadget.fkGadgetInstance.href}",
-			"title":"${gadget.fkGadgetInstance.title}",
+			"href":"${gadget.gadgetInstance.href}",
+			"title":"${gadget.gadgetInstance.title}",
 			"siblingId":"",
-			"type":"${gadget.fkGadgetInstance.gadgetType}",
+			"type":"${gadget.gadgetInstance.gadgetType}",
 			"property":{
-				<c:forEach items="${gadget.fkGadgetInstance.gadgetInstanceUserPrefs}" var="userPref" varStatus="istatus">
+				<c:forEach items="${gadget.gadgetInstance.gadgetInstanceUserPrefs}" var="userPref" varStatus="istatus">
 					"${userPref.id.name}": "${userPref.value}" <c:if test="${!istatus.last}">,</c:if>
 				</c:forEach>
 			}

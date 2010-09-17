@@ -4,7 +4,7 @@ import org.infoscoop.dao.model.base.BaseCommandBarStaticGadget;
 
 
 
-public class CommandBarStaticGadget extends BaseCommandBarStaticGadget {
+public class CommandBarStaticGadget extends BaseCommandBarStaticGadget implements StaticGadget{
 	private static final long serialVersionUID = 1L;
 
 /*[CONSTRUCTOR MARKER BEGIN]*/

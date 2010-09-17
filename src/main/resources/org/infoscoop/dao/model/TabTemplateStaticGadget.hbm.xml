@@ -25,7 +25,7 @@
 			length="255"
 		/>
 		<many-to-one cascade="save-update"
-			name="FkGadgetInstance"
+			name="GadgetInstance"
 			column="fk_gadget_instance_id"
 			class="GadgetInstance"
 			not-null="true"

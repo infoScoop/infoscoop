@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -39,6 +40,7 @@ import org.infoscoop.dao.model.CommandBarStaticGadget;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.GadgetInstanceUserpref;
 import org.infoscoop.dao.model.Preference;
+import org.infoscoop.dao.model.StaticGadget;
 import org.infoscoop.dao.model.TABPK;
 import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.TabTemplate;
@@ -149,8 +151,8 @@ public class TabService {
 				tabList.add(new Object[]{
 						staticTab,
 						this.copyPersonalizeGadgetsUserPrefs( staticTab, tabTemplate ),
-						this.copyStaticGadgetsUserPrefs( staticTab, tabTemplate )
-					});
+						this.copyStaticGadgetsUserPrefs( uid, staticTab, tabTemplate )
+						});
 			}
 			tabTemplateIds.add(tabTemplate.getTabId());
 		}
@@ -173,7 +175,7 @@ public class TabService {
 		return tabList;
 	}
 	
-	private Object copyStaticGadgetsUserPrefs(Tab tab,
+	private Object copyStaticGadgetsUserPrefs(String uid, Tab tab,
 			TabTemplate tabTemplate) {
 		List<Widget> widgets = tabDAO.getStaticWidgetList( tab );
 		Map<String, Widget> widgetMap = new HashMap<String, Widget>();
@@ -181,8 +183,12 @@ public class TabService {
 			widgetMap.put(widget.getWidgetid(), widget);
 			
 		for(TabTemplateStaticGadget gadget : tabTemplate.getTabTemplateStaticGadgets()){
-			GadgetInstance gadgetInst = gadget.getFkGadgetInstance();
+			GadgetInstance gadgetInst = gadget.getGadgetInstance();
 			Widget widget = widgetMap.get(gadget.getContainerId());
+			if(widget == null){
+				widget = convertStaticGadgetInstance2Widget(uid, gadget);
+				this.widgetDAO.addWidget(widget,false);
+			}
 			Map<String, UserPref> upMap = widget.getUserPrefs();
 			
 			for(GadgetInstanceUserpref giup : gadgetInst.getGadgetInstanceUserPrefs()){
@@ -194,6 +200,24 @@ public class TabService {
 		return widgets;
 	}
 
+	private Widget convertStaticGadgetInstance2Widget(String uid, StaticGadget gadget ){
+		GadgetInstance gadgetInst = gadget.getGadgetInstance();;
+		
+		Widget widget = new Widget();
+		widget.setTabid( "commandbar" );
+		widget.setDeletedate(Long.valueOf(0));
+		widget.setWidgetid(gadget.getContainerId());
+		widget.setUid( uid );
+		//TODO:
+		widget.setType(gadgetInst.getType().startsWith("upload_") ? "g_" + gadgetInst.getType() + "/gadget" : gadgetInst.getType() );
+		widget.setColumn(Integer.valueOf(0));
+		widget.setTitle(gadgetInst.getTitle());
+		widget.setHref(gadgetInst.getHref());
+		widget.setIsstatic(Integer.valueOf(1));
+		
+		return widget;
+	}
+	
 	private Object copyPersonalizeGadgetsUserPrefs(Tab tab,
 			TabTemplate tabTemplate) {
 		List<Widget> widgets = tabDAO.getDynamicWidgetList( tab );
@@ -220,20 +244,10 @@ public class TabService {
 		for(CommandBarStaticGadget gadget : cmdBar.getCommandBarStaticGadgets()){
 			GadgetInstance gadgetInst = gadget.getGadgetInstance();;
 			
-			Widget widget = new Widget();
-			widget.setTabid( "commandbar" );
-			widget.setDeletedate(Long.valueOf(0));
-			widget.setWidgetid(gadget.getContainerId());
-			widget.setUid( uid );
-			//TODO:
-			widget.setType(gadgetInst.getType().startsWith("upload_") ? "g_" + gadgetInst.getType() + "/gadget" : gadgetInst.getType() );
-			widget.setColumn(Integer.valueOf(0));
-			widget.setTitle(gadgetInst.getTitle());
-			widget.setHref(gadgetInst.getHref());
+			Widget widget = convertStaticGadgetInstance2Widget(uid, gadget);
 			
 			for(GadgetInstanceUserpref up : gadgetInst.getGadgetInstanceUserPrefs())
 				widget.setUserPref(up.getId().getName(), up.getValue());
-			widget.setIsstatic(Integer.valueOf(1));
 			
 			widgetList.add( widget );
 			//this.widgetDAO.addWidget(widget,false);
@@ -246,22 +260,12 @@ public class TabService {
 	private List<Widget> createStaticGadgetList(String uid, TabTemplate tabTemplate) {
 		List<Widget> widgetList = new ArrayList<Widget>();
 		for(TabTemplateStaticGadget gadget : tabTemplate.getTabTemplateStaticGadgets()){
-			GadgetInstance gadgetInst = gadget.getFkGadgetInstance();;
+			GadgetInstance gadgetInst = gadget.getGadgetInstance();;
 			
-			Widget widget = new Widget();
-			widget.setTabid( tabTemplate.getTabId() );
-			widget.setDeletedate(Long.valueOf(0));
-			widget.setWidgetid(gadget.getContainerId());
-			widget.setUid( uid );
-			//TODO:
-			widget.setType(gadgetInst.getType().startsWith("upload_") ? "g_" + gadgetInst.getType() + "/gadget" : gadgetInst.getType() );
-			widget.setColumn(Integer.valueOf(0));
-			widget.setTitle(gadgetInst.getTitle());
-			widget.setHref(gadgetInst.getHref());
+			Widget widget = convertStaticGadgetInstance2Widget(uid, gadget);
 			
 			for(GadgetInstanceUserpref up : gadgetInst.getGadgetInstanceUserPrefs())
 				widget.setUserPref(up.getId().getName(), up.getValue());
-			widget.setIsstatic(Integer.valueOf(1));
 			
 			widgetList.add( widget );
 			this.widgetDAO.addWidget(widget,false);

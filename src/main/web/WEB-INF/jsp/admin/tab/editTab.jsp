@@ -637,6 +637,8 @@ function init() {
 							$('staticAreaContainer').innerHTML = el.innerHTML;
 							prepareStaticArea();
 							$('layout').value = $('staticAreaContainer').innerHTML;
+							$('layoutModified').value = "true";
+							//TODO:remove ols static gadgets;
 							Event.stop(e);
 							Control.Modal.close();
 						};
@@ -667,6 +669,7 @@ function init() {
 				  $('staticAreaContainer').innerHTML = layout;
 				  prepareStaticArea();
 				  $('layout').value = $('staticAreaContainer').innerHTML;
+				  $('layoutModified').value = "true";
 				  Control.Modal.close();
 			  },false);
 			  Event.observe( $('edit_layout_cancel'), 'click', function(){

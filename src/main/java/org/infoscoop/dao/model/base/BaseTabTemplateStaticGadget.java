@@ -4,21 +4,21 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_tab_template_static_gadgets table.
+ * This is an object that contains data related to the IS_TAB_TEMPLATE_STATIC_GADGETS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_tab_template_static_gadgets"
+ *  table="IS_TAB_TEMPLATE_STATIC_GADGETS"
  */
 
 public abstract class BaseTabTemplateStaticGadget  implements Serializable {
 
 	public static String REF = "TabTemplateStaticGadget";
+	public static String PROP_GADGET_INSTANCE = "GadgetInstance";
 	public static String PROP_ID = "Id";
 	public static String PROP_CONTAINER_ID = "ContainerId";
 	public static String PROP_FK_TAB_TEMPLATE = "FkTabTemplate";
-	public static String PROP_FK_GADGET_INSTANCE = "FkGadgetInstance";
 
 
 	// constructors
@@ -39,11 +39,11 @@ public abstract class BaseTabTemplateStaticGadget  implements Serializable {
 	 */
 	public BaseTabTemplateStaticGadget (
 		java.lang.Integer id,
-		org.infoscoop.dao.model.GadgetInstance fkGadgetInstance,
+		org.infoscoop.dao.model.GadgetInstance gadgetInstance,
 		java.lang.String containerId) {
 
 		this.setId(id);
-		this.setFkGadgetInstance(fkGadgetInstance);
+		this.setGadgetInstance(gadgetInstance);
 		this.setContainerId(containerId);
 		initialize();
 	}
@@ -61,7 +61,7 @@ public abstract class BaseTabTemplateStaticGadget  implements Serializable {
 	private java.lang.String containerId;
 
 	// many to one
-	private org.infoscoop.dao.model.GadgetInstance fkGadgetInstance;
+	private org.infoscoop.dao.model.GadgetInstance gadgetInstance;
 	private org.infoscoop.dao.model.TabTemplate fkTabTemplate;
 
 
@@ -108,16 +108,16 @@ public abstract class BaseTabTemplateStaticGadget  implements Serializable {
 	/**
 	 * Return the value associated with the column: fk_gadget_instance_id
 	 */
-	public org.infoscoop.dao.model.GadgetInstance getFkGadgetInstance () {
-		return fkGadgetInstance;
+	public org.infoscoop.dao.model.GadgetInstance getGadgetInstance () {
+		return gadgetInstance;
 	}
 
 	/**
 	 * Set the value related to the column: fk_gadget_instance_id
-	 * @param fkGadgetInstance the fk_gadget_instance_id value
+	 * @param gadgetInstance the fk_gadget_instance_id value
 	 */
-	public void setFkGadgetInstance (org.infoscoop.dao.model.GadgetInstance fkGadgetInstance) {
-		this.fkGadgetInstance = fkGadgetInstance;
+	public void setGadgetInstance (org.infoscoop.dao.model.GadgetInstance gadgetInstance) {
+		this.gadgetInstance = gadgetInstance;
 	}
 
 

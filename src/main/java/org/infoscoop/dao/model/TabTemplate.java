@@ -12,6 +12,7 @@ import org.infoscoop.dao.model.base.BaseTabTemplate;
 
 public class TabTemplate extends BaseTabTemplate {
 	private static final long serialVersionUID = 1L;
+	private String layoutModified;
 
 /*[CONSTRUCTOR MARKER BEGIN]*/
 	public TabTemplate () {
@@ -178,5 +179,18 @@ public class TabTemplate extends BaseTabTemplate {
 		tabClone.setTabTemplateStaticGadgets(tabCloneSGs);
 		
 		return tabClone;
+	}
+
+	
+	public void setLayoutModified(String layoutModified){
+		this.layoutModified = layoutModified;
+	}
+	
+	public String getLayoutModified(){
+		return this.layoutModified;
+	}
+
+	public boolean isLayoutModified() {
+		return Boolean.valueOf(this.layoutModified);
 	}
 }
