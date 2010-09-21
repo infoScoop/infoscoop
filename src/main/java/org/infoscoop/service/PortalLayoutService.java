@@ -146,7 +146,7 @@ public class PortalLayoutService {
 		return layout.getLayout();
 	}
 
-	public List getPortalLayoutList(){
+	public List<Portallayout> getPortalLayoutList(){
 		return this.portalLayoutDAO.select();
 	}
 	

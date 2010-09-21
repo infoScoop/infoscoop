@@ -48,6 +48,8 @@ import org.infoscoop.dao.model.TabTemplateStaticGadget;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.util.SpringUtil;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Element;
 
 public class TabService {
@@ -306,7 +308,7 @@ public class TabService {
 		return widgetList;
 	}
 
-	private Tab createTabFromTabTemplate(String uid, String defaultUid, TabTemplate tabTemplate) {
+	private Tab createTabFromTabTemplate(String uid, String defaultUid, TabTemplate tabTemplate) throws JSONException {
 		Tab newTab = new Tab(new TABPK(uid, tabTemplate.getTabId()));
 		
 		//Delete StaticPanel, tabType=dynamic
@@ -316,7 +318,11 @@ public class TabService {
 		//Delete tab number
 		//TODO: Is it placed at last if order is null?
 		newTab.setOrder(null);
-		newTab.setData("{}");
+		JSONObject data = new JSONObject();
+		data.put("numCol", tabTemplate.getNumberOfColumns());
+		if(tabTemplate.getColumnWidth() != null)
+			data.put("columnsWidth", tabTemplate.getColumnWidth());
+		newTab.setData(data.toString());
 		
 		tabDAO.addTab(newTab);
 		return newTab;

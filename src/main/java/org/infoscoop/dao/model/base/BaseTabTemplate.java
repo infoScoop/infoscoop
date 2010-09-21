@@ -20,8 +20,10 @@ public abstract class BaseTabTemplate  implements Serializable {
 	public static String PROP_TAB_ID = "TabId";
 	public static String PROP_LAYOUT = "Layout";
 	public static String PROP_PUBLISHED = "Published";
+	public static String PROP_NUMBER_OF_COLUMNS = "NumberOfColumns";
 	public static String PROP_ID = "Id";
 	public static String PROP_ORIGINAL_ID = "OriginalId";
+	public static String PROP_COLUMN_WIDTH = "ColumnWidth";
 	public static String PROP_TEMP = "Temp";
 
 
@@ -72,6 +74,8 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private java.lang.Integer published;
 	private java.lang.Integer accessLevel;
 	private java.lang.String layout;
+	private java.lang.Integer numberOfColumns;
+	private java.lang.String columnWidth;
 	private java.lang.Integer temp;
 
 	// collections
@@ -205,6 +209,40 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 
 	/**
+	 * Return the value associated with the column: number_of_columns
+	 */
+	public java.lang.Integer getNumberOfColumns () {
+		return numberOfColumns;
+	}
+
+	/**
+	 * Set the value related to the column: number_of_columns
+	 * @param numberOfColumns the number_of_columns value
+	 */
+	public void setNumberOfColumns (java.lang.Integer numberOfColumns) {
+		this.numberOfColumns = numberOfColumns;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: column_width
+	 */
+	public java.lang.String getColumnWidth () {
+		return columnWidth;
+	}
+
+	/**
+	 * Set the value related to the column: column_width
+	 * @param columnWidth the column_width value
+	 */
+	public void setColumnWidth (java.lang.String columnWidth) {
+		this.columnWidth = columnWidth;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: temp
 	 */
 	public java.lang.Integer getTemp () {
@@ -236,6 +274,11 @@ public abstract class BaseTabTemplate  implements Serializable {
 		this.tabTemplatePersonalizeGadgets = tabTemplatePersonalizeGadgets;
 	}
 
+	public void addToTabTemplatePersonalizeGadgets (org.infoscoop.dao.model.TabTemplatePersonalizeGadget tabTemplatePersonalizeGadget) {
+		if (null == getTabTemplatePersonalizeGadgets()) setTabTemplatePersonalizeGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplatePersonalizeGadget>());
+		getTabTemplatePersonalizeGadgets().add(tabTemplatePersonalizeGadget);
+	}
+
 
 
 	/**
@@ -251,6 +294,11 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 */
 	public void setTabTemplateStaticGadgets (java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> tabTemplateStaticGadgets) {
 		this.tabTemplateStaticGadgets = tabTemplateStaticGadgets;
+	}
+
+	public void addToTabTemplateStaticGadgets (org.infoscoop.dao.model.TabTemplateStaticGadget tabTemplateStaticGadget) {
+		if (null == getTabTemplateStaticGadgets()) setTabTemplateStaticGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateStaticGadget>());
+		getTabTemplateStaticGadgets().add(tabTemplateStaticGadget);
 	}
 
 

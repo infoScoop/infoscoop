@@ -535,6 +535,8 @@ create table IS_TAB_TEMPLATES(
 	tab_id varchar(255) not null,
 	name varchar(255) not null,
 	layout text,
+    number_of_columns tinyint(4) NOT NULL DEFAULT '3',
+    column_width varchar(255),
 	published int not null default 0, -- 0=unpublished, 1=published
 	access_level int, -- 0=public, 1=special
 	temp int not null default 1 -- 0=data to show, 1=temporary data

@@ -56,6 +56,16 @@
 			type="string"
 		/>
 		<property
+			name="NumberOfColumns"
+			column="number_of_columns"
+			type="integer"
+		/>
+		<property
+			name="ColumnWidth"
+			column="column_width"
+			type="string"
+		/>
+		<property
 			name="Temp"
 			column="temp"
 			type="integer"

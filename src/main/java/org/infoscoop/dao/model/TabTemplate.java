@@ -12,6 +12,10 @@ import org.json.JSONObject;
 
 
 public class TabTemplate extends BaseTabTemplate {
+	public static final int TYPE_USE_BOTH_AREA = 0;
+	public static final int TYPE_STATIC_AREA_ONLY = 1;
+	public static final int TYPE_STATIC_AREA_ADJUST_HEIGHT = 2;
+	
 	private static final long serialVersionUID = 1L;
 	private String layoutModified;
 
