@@ -81,11 +81,7 @@ public class Tab extends BaseTab {
 		}
 	}
 	
-
-	public JSONObject toJSONObject( Collection dynamicWidgets,Collection staticWidgets ) throws JSONException {
-		return toJSONObject( dynamicWidgets,staticWidgets,new HashMap() );
-	}
-	public JSONObject toJSONObject( 
+	public JSONObject toJSONObject( String layout,
 			Collection dynamicWidgets,Collection staticWidgets,Map resMap ) throws JSONException{
 		
 		JSONObject json = new JSONObject();
@@ -100,6 +96,7 @@ public class Tab extends BaseTab {
 		json.put("tabType", super.getType());
 		json.put("widgetLastModified", super.getWidgetlastmodified());
 		json.put("property", getProperties());
+		json.put("staticPanelLayout", layout);
 
 		JSONObject staticPanel = new JSONObject();
 		for(Iterator it = staticWidgets.iterator(); it.hasNext(); ){

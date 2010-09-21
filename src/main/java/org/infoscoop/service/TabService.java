@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -124,6 +123,7 @@ public class TabService {
 		tabList.add(
 				new Object[]{
 						commandbar,
+						cmdBar.getLayout(),
 						new ArrayList<Widget>(),
 						createStaticGadgetList(uid, cmdBar),
 				});
@@ -144,12 +144,14 @@ public class TabService {
 				Tab tab = this.createTabFromTabTemplate(uid, defaultUid, tabTemplate);
 				tabList.add(new Object[]{
 						tab,
+						tabTemplate.getLayout(),
 						this.createPersonalizeGadgetList( uid, tabTemplate ),
 						this.createStaticGadgetList( uid, tabTemplate )
 					});
 			}else{
 				tabList.add(new Object[]{
 						staticTab,
+						tabTemplate.getLayout(),
 						this.copyPersonalizeGadgetsUserPrefs( staticTab, tabTemplate ),
 						this.copyStaticGadgetsUserPrefs( uid, staticTab, tabTemplate )
 						});
@@ -166,6 +168,7 @@ public class TabService {
 				tabList.add(
 						new Object[]{
 								tab,
+								null,
 								tabDAO.getDynamicWidgetList( tab ),
 								tabDAO.getStaticWidgetList( tab )
 						});
@@ -186,7 +189,7 @@ public class TabService {
 			GadgetInstance gadgetInst = gadget.getGadgetInstance();
 			Widget widget = widgetMap.get(gadget.getContainerId());
 			if(widget == null){
-				widget = convertStaticGadgetInstance2Widget(uid, gadget);
+				widget = convertStaticGadgetInstance2Widget(uid, tab.getTabId(), gadget);
 				this.widgetDAO.addWidget(widget,false);
 			}
 			Map<String, UserPref> upMap = widget.getUserPrefs();
@@ -200,11 +203,10 @@ public class TabService {
 		return widgets;
 	}
 
-	private Widget convertStaticGadgetInstance2Widget(String uid, StaticGadget gadget ){
-		GadgetInstance gadgetInst = gadget.getGadgetInstance();;
-		
+	private Widget convertStaticGadgetInstance2Widget(String uid, String tabId, StaticGadget gadget ){
+		GadgetInstance gadgetInst = gadget.getGadgetInstance();
 		Widget widget = new Widget();
-		widget.setTabid( "commandbar" );
+		widget.setTabid( tabId );
 		widget.setDeletedate(Long.valueOf(0));
 		widget.setWidgetid(gadget.getContainerId());
 		widget.setUid( uid );
@@ -244,7 +246,7 @@ public class TabService {
 		for(CommandBarStaticGadget gadget : cmdBar.getCommandBarStaticGadgets()){
 			GadgetInstance gadgetInst = gadget.getGadgetInstance();;
 			
-			Widget widget = convertStaticGadgetInstance2Widget(uid, gadget);
+			Widget widget = convertStaticGadgetInstance2Widget(uid, "commandbar", gadget);
 			
 			for(GadgetInstanceUserpref up : gadgetInst.getGadgetInstanceUserPrefs())
 				widget.setUserPref(up.getId().getName(), up.getValue());
@@ -262,7 +264,7 @@ public class TabService {
 		for(TabTemplateStaticGadget gadget : tabTemplate.getTabTemplateStaticGadgets()){
 			GadgetInstance gadgetInst = gadget.getGadgetInstance();;
 			
-			Widget widget = convertStaticGadgetInstance2Widget(uid, gadget);
+			Widget widget = convertStaticGadgetInstance2Widget(uid, tabTemplate.getTabId(), gadget);
 			
 			for(GadgetInstanceUserpref up : gadgetInst.getGadgetInstanceUserPrefs())
 				widget.setUserPref(up.getId().getName(), up.getValue());

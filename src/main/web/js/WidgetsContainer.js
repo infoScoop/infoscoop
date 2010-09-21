@@ -365,7 +365,11 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					
 					buildTargetTabIds.push(id);
 
-					if("commandbar" === id)continue;
+					if("commandbar" === id){
+						var command = document.getElementById("portal-command");
+						command.innerHTML = widgetConfList[tabId].staticPanelLayout;
+						continue;
+					}
 
 					var tabName = (widgetConfList[tabId].tabName)? widgetConfList[tabId].tabName : IS_R.lb_newTab;
 					var numCol = (widgetConfList[tabId].property.numCol)? widgetConfList[tabId].property.numCol : 3;
@@ -405,7 +409,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 						IS_EventDispatcher.newEvent("adjustedMessageBar");
 					}
 					
-					IS_Portal.addTab( id, tabName, tabType, numCol, columnsWidth, disabledDynamicPanel, true);
+					IS_Portal.addTab( id, tabName, tabType, widgetConfList[tabId].staticPanelLayout, numCol, columnsWidth, disabledDynamicPanel, true);
 					/*
 					if(!useTab){
 						if(widgetConfList[0].tabNumber){
@@ -451,6 +455,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				var isBuild = (widgetConfList[num].tabId == IS_Portal.currentTabId.substring(3) ||
 							   widgetConfList[num].tabId == 'commandbar')? true:false;
 				var id = "tab"+widgetConfList[num].tabId;
+
 				if(widgetConfList[num].staticPanel){
 					var widgets = widgetConfList[num].staticPanel;
 					buildStaticPanel(id, widgets, isBuild);

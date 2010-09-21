@@ -132,8 +132,9 @@ public class WidgetServlet extends HttpServlet {
 				Object[] t = ( Object[] )it.next();
 				
 				Tab tab = (Tab)t[0];
-				Collection<Widget> dynamicWidgets = ( Collection )t[1];
-				Collection<Widget> staticWidgets = ( Collection )t[2];
+				String layout = (String)t[1];
+				Collection<Widget> dynamicWidgets = ( Collection )t[2];
+				Collection<Widget> staticWidgets = ( Collection )t[3];
 				
 				//Because there is the possibility that the widgetID repeats depending on the setting situation of the dynamic panel of the initial screen setting, we remove it.
 				List removeWidgetList = new ArrayList();
@@ -149,7 +150,7 @@ public class WidgetServlet extends HttpServlet {
 				//FIXME dirty
 				WidgetDAO.newInstance().getHibernateTemplate().deleteAll( removeWidgetList );
 				
-				responseAray.put( tab.toJSONObject( dynamicWidgets,staticWidgets,resMap ));
+				responseAray.put( tab.toJSONObject( layout, dynamicWidgets,staticWidgets,resMap ));
 			}
 			
 			String jsonStr = responseAray.toString();

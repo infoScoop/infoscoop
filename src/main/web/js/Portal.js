@@ -106,8 +106,6 @@ IS_Portal.start = function() {
 	
 	IS_Portal.SearchEngines.init();
 
-	var command = document.getElementById("portal-command");
-	command.innerHTML = IS_Customization.commandbar;
 	IS_Portal.buildFontSelectDiv();
 	IS_Portal.buildGlobalSettingModal();
 	IS_Portal.Trash.initialize();

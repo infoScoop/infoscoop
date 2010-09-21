@@ -118,7 +118,7 @@ IS_Portal.getNextTabNumber = function(){
 	@param numCol Column number of the tab adding.
 	@disabledDynamicPanel disable dynamic panel.
 */
-IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disabledDynamicPanel, isInitialize){
+IS_Portal.addTab = function( idNumber, name, type, layout, numCol, columnsWidth, disabledDynamicPanel, isInitialize){
 	/**
 		For managing tab information object
 		@param id id of tab
@@ -194,7 +194,7 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
 	}
 	
 	var addTabDiv = document.getElementById("addTab");
-	var tabDiv = IS_Portal.buildTab( idNumber, name, disabledDynamicPanel);
+	var tabDiv = IS_Portal.buildTab( idNumber, name, layout, disabledDynamicPanel);
 	
 	if(useTab){
 //		var tabsContiner = addTabDiv.previousSibling;
@@ -204,7 +204,7 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
 	}
 	
 	
-	var panelDiv = IS_Portal.buildPanel( idNumber, type );
+	var panelDiv = IS_Portal.buildPanel( idNumber,  type, layout);
 	var panels = $("panels");
 	panels.appendChild( panelDiv );
 	
@@ -1285,7 +1285,7 @@ IS_Portal.endChangeTab = function(e){
 	@param panelNumber ID number of panel.
 	@param type The type of adding panel(Include static panel:static/Exclude:dynamic)
 */
-IS_Portal.buildPanel = function(panelNumber, type){
+IS_Portal.buildPanel = function(panelNumber, type, layout){
 	// Create panel
 	var panel = document.createElement("div");
 	panel.id = "panel"+panelNumber;
@@ -1317,7 +1317,7 @@ IS_Portal.buildPanel = function(panelNumber, type){
 	staticDiv.id = "static-portal-widgets"+panelNumber;
 	
 	if(type == "static"){
-		staticPanel.innerHTML = IS_Customization["staticPanel"+panelNumber];
+		staticPanel.innerHTML = layout;
 		
 		td.appendChild(staticPanel);
 	}
