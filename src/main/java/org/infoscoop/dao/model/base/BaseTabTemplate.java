@@ -21,6 +21,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	public static String PROP_LAYOUT = "Layout";
 	public static String PROP_PUBLISHED = "Published";
 	public static String PROP_NUMBER_OF_COLUMNS = "NumberOfColumns";
+	public static String PROP_AREA_TYPE = "AreaType";
 	public static String PROP_ID = "Id";
 	public static String PROP_ORIGINAL_ID = "OriginalId";
 	public static String PROP_COLUMN_WIDTH = "ColumnWidth";
@@ -70,6 +71,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	// fields
 	private java.lang.Integer originalId;
 	private java.lang.String tabId;
+	private java.lang.Integer areaType;
 	private java.lang.String name;
 	private java.lang.Integer published;
 	private java.lang.Integer accessLevel;
@@ -136,6 +138,23 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 */
 	public void setTabId (java.lang.String tabId) {
 		this.tabId = tabId;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: area_type
+	 */
+	public java.lang.Integer getAreaType () {
+		return areaType;
+	}
+
+	/**
+	 * Set the value related to the column: area_type
+	 * @param areaType the area_type value
+	 */
+	public void setAreaType (java.lang.Integer areaType) {
+		this.areaType = areaType;
 	}
 
 

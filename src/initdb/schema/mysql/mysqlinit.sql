@@ -534,6 +534,7 @@ create table IS_TAB_TEMPLATES(
 	original_id int,
 	tab_id varchar(255) not null,
 	name varchar(255) not null,
+    area_type tinyint(4) NOT NULL DEFAULT '0',
 	layout text,
     number_of_columns tinyint(4) NOT NULL DEFAULT '3',
     column_width varchar(255),

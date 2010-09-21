@@ -142,10 +142,17 @@ public class TabService {
 		Set<String> tabTemplateIds = new HashSet<String>();
 		for(TabTemplate tabTemplate: tabTemplates){
 			Tab staticTab = staticTabMap.get(tabTemplate.getTabId());
+			boolean isNewTab = false;
 			if(staticTab == null){
-				Tab tab = this.createTabFromTabTemplate(uid, defaultUid, tabTemplate);
+				staticTab = this.createTabFromTabTemplate(uid, defaultUid, tabTemplate);
+				isNewTab = true;
+			}
+			staticTab.setDisabledDynamicPanel(tabTemplate.getAreaType() != TabTemplate.TYPE_USE_BOTH_AREA );
+			staticTab.setAdjustStaticHeight(tabTemplate.getAreaType() != TabTemplate.TYPE_STATIC_AREA_ADJUST_HEIGHT );
+
+			if(isNewTab){
 				tabList.add(new Object[]{
-						tab,
+						staticTab,
 						tabTemplate.getLayout(),
 						this.createPersonalizeGadgetList( uid, tabTemplate ),
 						this.createStaticGadgetList( uid, tabTemplate )

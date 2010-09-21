@@ -30,6 +30,11 @@
 			length="255"
 		/>
 		<property
+			name="AreaType"
+			column="area_type"
+			type="integer"
+		/>
+		<property
 			name="Name"
 			column="name"
 			type="string"

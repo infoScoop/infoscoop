@@ -37,6 +37,10 @@ public class Tab extends BaseTab {
 	
 	private boolean isTrashDynamicPanelWidgets;
 
+	private boolean disabledDynamicPanel;
+
+	private boolean adjustStaticHeight;
+
 /*[CONSTRUCTOR MARKER BEGIN]*/
 	public Tab () {
 		super();
@@ -109,6 +113,8 @@ public class Tab extends BaseTab {
 				json.put("isTrashDynamicPanelWidgets", true);
 			}
 		}
+		json.put("adjustStaticHeight", this.adjustStaticHeight);
+		
 		JSONObject dynamicPanel = new JSONObject();
 		for (Iterator it = dynamicWidgets.iterator(); it.hasNext();) {
 			Widget widget = (Widget) it.next();
@@ -120,12 +126,7 @@ public class Tab extends BaseTab {
 	}
 
 	public boolean isDisabledDynamicPanel() {
-		Integer disableddynamicpanel = super.getDisableddynamicpanel();
-		return disableddynamicpanel != null && disableddynamicpanel == 1;
-	}
-
-	public void setDisabledDynamicPanelBool(boolean disableddynamicpanel) {
-		super.setDisableddynamicpanel(disableddynamicpanel ? 1 : 0);
+		return this.disabledDynamicPanel;
 	}
 
 	public boolean isTrashDynamicPanelWidgets() {
@@ -134,5 +135,13 @@ public class Tab extends BaseTab {
 
 	public void setTrashDynamicPanelWidgets(boolean isTrashDynamicPanelWidgets) {
 		this.isTrashDynamicPanelWidgets = isTrashDynamicPanelWidgets;
+	}
+
+	public void setDisabledDynamicPanel(boolean b) {
+		this.disabledDynamicPanel = b;
+	}
+
+	public void setAdjustStaticHeight(boolean b) {
+		this.adjustStaticHeight = b;
 	}
 }

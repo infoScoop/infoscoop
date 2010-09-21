@@ -39,7 +39,6 @@ public abstract class BaseTab  implements Serializable {
 	public static String PROP_DEFAULTUID = "Defaultuid";
 	public static String PROP_ID = "Id";
 	public static String PROP_WIDGETLASTMODIFIED = "Widgetlastmodified";
-	public static String PROP_DISABLEDDYNAMICPANEL = "Disableddynamicpanel";
 
 	// constructors
 	public BaseTab () {
@@ -70,7 +69,6 @@ public abstract class BaseTab  implements Serializable {
 	private java.lang.String type;
 	private java.lang.String data;
 	private java.lang.String widgetlastmodified;
-	private java.lang.Integer disableddynamicpanel;
 
 	/**
 	 * Return the unique identifier of this class
@@ -190,14 +188,6 @@ public abstract class BaseTab  implements Serializable {
 	 */
 	public void setWidgetlastmodified (java.lang.String widgetlastmodified) {
 		this.widgetlastmodified = widgetlastmodified;
-	}
-
-	public java.lang.Integer getDisableddynamicpanel() {
-		return disableddynamicpanel;
-	}
-
-	public void setDisableddynamicpanel(java.lang.Integer disableddynamicpanel) {
-		this.disableddynamicpanel = disableddynamicpanel;
 	}
 
 	public boolean equals (Object obj) {

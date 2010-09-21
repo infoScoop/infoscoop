@@ -194,7 +194,7 @@ IS_Portal.addTab = function( idNumber, name, type, layout, numCol, columnsWidth,
 	}
 	
 	var addTabDiv = document.getElementById("addTab");
-	var tabDiv = IS_Portal.buildTab( idNumber, name, layout, disabledDynamicPanel);
+	var tabDiv = IS_Portal.buildTab( idNumber, name, disabledDynamicPanel);
 	
 	if(useTab){
 //		var tabsContiner = addTabDiv.previousSibling;
