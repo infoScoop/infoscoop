@@ -2,6 +2,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.TabTemplate;
+
 
 /**
  * This is an object that contains data related to the IS_TAB_TEMPLATES table.
@@ -71,7 +73,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	// fields
 	private java.lang.Integer originalId;
 	private java.lang.String tabId;
-	private java.lang.Integer areaType;
+	private java.lang.Integer areaType = TabTemplate.TYPE_USE_BOTH_AREA;
 	private java.lang.String name;
 	private java.lang.Integer published;
 	private java.lang.Integer accessLevel;
