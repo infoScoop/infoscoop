@@ -27,6 +27,7 @@
 		}<c:if test="${!status.last}">,</c:if>
 	</c:forEach>
 	},
+	"staticPanelLayout":${ tabTemplate.escapedLayout },
 	"dynamicPanel":{
 	<c:forEach items="${gadgets}" var="gadget" varStatus="status">
 		"${gadget.widgetId}":{

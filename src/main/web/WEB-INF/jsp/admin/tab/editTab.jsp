@@ -153,7 +153,7 @@ IS_Portal = {
 <script type="text/javascript" class="source">
 IS_SidePanel.adjustPosition = function(){};
 IS_Request.CommandQueue = new IS_Request.Queue("/manager/tab/comsrv", commandQueueWait, !is_userId);
-IS_Portal.addTab = function(idNumber, name, type, numCol, columnsWidth, isInitialize, tabOrder){
+IS_Portal.addTab = function(idNumber, name, type, layout, numCol, columnsWidth, isInitialize, tabOrder){
 	var panels = $("panels");
 	var panelDiv = IS_Portal.buildPanel( idNumber, type );
 	panelDiv.style.display = "";

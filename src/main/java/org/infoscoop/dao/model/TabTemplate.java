@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.model.base.BaseTabTemplate;
+import org.json.JSONObject;
 
 
 
@@ -192,5 +193,9 @@ public class TabTemplate extends BaseTabTemplate {
 
 	public boolean isLayoutModified() {
 		return Boolean.valueOf(this.layoutModified);
+	}
+	
+	public String getEscapedLayout(){
+		return JSONObject.quote(super.getLayout());
 	}
 }
