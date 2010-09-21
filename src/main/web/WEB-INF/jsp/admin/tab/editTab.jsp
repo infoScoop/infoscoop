@@ -52,6 +52,7 @@ h2 {
 .static_column {
   border : dotted 1px gray;
 	cursor: pointer;
+	position:relative
 }
 .widget .widgetHeader {
 	background-image:url("../../skin/imgs/theme/widget_header.png");
@@ -61,6 +62,23 @@ h2 {
 	text-decoration: underline;
 	color : blue;
 	cursor: pointer;
+}
+
+.edit_static_gadget_hide{
+	
+}
+
+.edit_static_gadget_show{
+	position: absolute;top: 0px;left: 0px;
+	top:-1px;
+	left:-1px;
+	width:101%;
+	height:85px;/*must be changed*/
+	text-align:center;
+	-moz-opacity:0.7;
+	opacity:0.7;
+	filter:alpha(opacity=70);
+	background-color: #F0F0F0;
 }
 
 </style>
@@ -187,7 +205,7 @@ IS_forbiddenURLs = {};
 //
 IS_Portal.currentTabId = "tab${tabTemplate.id}";
 IS_Portal.trueTabId = "tab${tabTemplate.tabId}";
-IS_Portal.deleteTempTabFlag = 1;//1-- beforeunloadを実行, 0-- beforeunloadを実行しない
+IS_Portal.deleteTempTabFlag = 1;//1-- excute beforeunload, 0-- don't excute beforeunload
 
 function prepareStaticArea(){
 	var static_columns = $$('#staticAreaContainer .static_column');
@@ -197,19 +215,39 @@ console.log(static_columns);
 	for (var j=0; j<static_columns.length; j++ ) {
 		var containerId = IS_Portal.trueTabId + '_static_column_' + j;
 		var div = static_columns[j];
-		div.id = containerId
-		div.href = hostPrefix + "/manager/tab/selectGadgetType?tabId=" + tabId + "&containerId=" + containerId;
-		var layoutMouseOver = function(el) {
-			el.style.backgroundColor = "#9999cc";
-		};
-		var layoutMouseOut = function(el) {
-			el.style.backgroundColor = "";
-		};
-		Event.observe(div, 'mouseover', layoutMouseOver.bind(null, div),false);
-		Event.observe(div, 'mouseout', layoutMouseOut.bind(null, div), false);
+		div.id = containerId;
+
+		var edit_cover = document.createElement('div');
+		var text_edit = document.createTextNode('Edit');
+		var text_new = document.createTextNode('New');
+		edit_cover.id = "edit_div_" + j;
+		edit_cover.className = "edit_static_gadget_hide";
 		
-		var modal = new Control.Modal(
-			containerId,
+		var editLayoutMouseOver = function(parent, child) {
+				parent.appendChild(child);
+				child.className = "edit_static_gadget_show";
+		};
+		var editLayoutMouseOut = function(parent, child) {
+				child.className = "edit_static_gadget_hide";
+				parent.removeChild(child);
+		};
+		var showText = function(parent,child, containerId){
+				if($(parent).childNodes.length > 1){
+					$(child).appendChild(text_edit);
+					$(child).href = hostPrefix + "/manager/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + containerId;
+				}else{
+					$(child).appendChild(text_new);
+					$(child).href = hostPrefix + "/manager/tab/selectGadgetType?tabId=" + tabId + "&containerId=" + containerId;
+				}
+		};
+		
+		Event.observe(div, 'mouseover', editLayoutMouseOver.bind(null, div, edit_cover),false);
+		Event.observe(edit_cover, 'mouseout', editLayoutMouseOut.bind(null, div, edit_cover), false);
+		Event.observe(edit_cover, 'mouseover', showText.bind(null, div, edit_cover, containerId),false);
+		
+		var openModal = function(child){
+			var modal = new Control.Modal(
+			child.id,
 			{
 			  opacity: 0.4,
 			  width: 580,
@@ -217,26 +255,11 @@ console.log(static_columns);
 			  iframe:true// ajax is better
 			}
 			);
-		Event.observe(div, 'click', function(){this.open();}.bind(modal), false);
-	}
+		};
+		
+		Event.observe(edit_cover, 'click', openModal.bind(null,edit_cover), false);
+	}	
 	
-	//Add event to edit static gadgets
-	var edit_buttons = $$('.edit_static_gadget');
-	for (var k=0; k<edit_buttons.length; k++){
-		var edit_button = edit_buttons[k];
-		edit_button.id = 'edit_button' + k;
-		edit_button.href = hostPrefix + "/manager/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + tabId + '_static_column_' + k;
-		var modal = new Control.Modal(
-			'edit_button' + k,
-			{
-			  opacity: 0.4,
-			  width: 580,
-			  height: 440,
-			  iframe:true// ajax is better
-			}
-			);
-		Event.observe(edit_button, 'click', function(){this.open();}.bind(modal), false);
-	}
 };
 
 function init() {
@@ -677,8 +700,8 @@ function init() {
 			  },false);
 		  }
 		}
-		);
-
+	);
+	
 };
 
 function changeFlag(){
@@ -713,8 +736,6 @@ function deleteTempTabTemplate(){
 		);
 	}
 }
-
-
 
 Event.observe(window, "load", init, false);
 Event.observe(window, "beforeunload", deleteTempTabTemplate, false);
