@@ -206,7 +206,6 @@ var IS_R = {
 	"lb_summaryView": "サマリー表示",
 	"lb_noDisplayFrameBorder": "ガジェット枠を表示しない：",
 	"ms_containerLoadon404": "Error 404: location \"{0} /widsrv \" is not found.",
-	"lb_continueLink": "続き...>>",
 	"lb_clearConfigurationButton": "カスタマイズ情報の初期化",
 	"ms_infosccopInitializing": "infoScoopを初期化しています。",
 	"lb_notConfirm": "今後は確認しない",

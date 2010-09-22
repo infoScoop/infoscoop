@@ -60,7 +60,6 @@ if( isPreview == null )
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/widgetranking.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/rssreader.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/maximizerssreader.css">
-    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/information.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/ticker.css">
 	<!--end styles css-->
 
@@ -158,8 +157,6 @@ if( isPreview == null )
     <script src="<%=staticContentURL%>/js/widgets/maximize/MaximizeRssItemRender.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/maximize/MaximizeRssItemSelection.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/maximize/MaximizeRssCategory.js"></script>
-    <script src="<%=staticContentURL%>/js/widgets/information/Information.js"></script>
-    <script src="<%=staticContentURL%>/js/widgets/information/Information2.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/calendar/Calendar.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/calendar/iCalendar.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/ticker/Ticker.js"></script>

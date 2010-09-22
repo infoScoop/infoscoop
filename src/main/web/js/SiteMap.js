@@ -312,7 +312,6 @@ IS_SidePanel.prototype.classDef = function () {
 //			IS_WidgetsContainer.adjustColumnWidth();
 			IS_Portal.widgetDisplayUpdated();
 			IS_Widget.adjustDescWidth();
-			IS_Widget.Information2.adjustDescWidth();
 			if(IS_Widget.MaximizeWidget != null){
 				IS_Widget.Maximize.adjustMaximizeWidth();
 			}
@@ -363,7 +362,6 @@ IS_SidePanel.sideMenuAdjusted = function(e){
 //		IS_WidgetsContainer.adjustColumnWidth();
 		IS_Portal.widgetDisplayUpdated();
 		IS_Widget.adjustDescWidth();
-		IS_Widget.Information2.adjustDescWidth();
 		if(IS_Widget.MaximizeWidget != null){
 			IS_Widget.Maximize.adjustMaximizeWidth();
 		}

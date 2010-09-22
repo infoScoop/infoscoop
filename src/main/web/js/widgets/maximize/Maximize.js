@@ -304,7 +304,6 @@ IS_Widget.Maximize.restoreMaximizeView = function() {
 	IS_Portal.adjustIS_PortalStyle();
 	
 	IS_Widget.adjustDescWidth();
-	IS_Widget.Information2.adjustDescWidth();
 	
 	IS_Widget.WidgetHeader.adjustHeaderWidth();
 	

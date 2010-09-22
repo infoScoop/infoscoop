@@ -206,7 +206,6 @@ var IS_R = {
 	"lb_summaryView": "Summary display",
 	"lb_noDisplayFrameBorder": "No display frame border:",
 	"ms_containerLoadon404": "Error 404: location \"{0} /widsrv \" is not found.",
-	"lb_continueLink": "More...>>",
 	"lb_clearConfigurationButton": "Initialization of customized information",
 	"ms_infosccopInitializing": "Now infoScoop is initializing.",
 	"lb_notConfirm": "No further confirmation.",

@@ -206,7 +206,6 @@ var IS_R = {
 	"lb_summaryView": "表示汇总",
 	"lb_noDisplayFrameBorder": "不显示小工具的框：",
 	"ms_containerLoadon404": "Error 404: location \"{0} /widsrv \" is not found.",
-	"lb_continueLink": "继续...>>",
 	"lb_clearConfigurationButton": "自定义信息的初始化",
 	"ms_infosccopInitializing": "infoScoop在初始化。",
 	"lb_notConfirm": "今后不确认",

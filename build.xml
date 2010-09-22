@@ -209,8 +209,6 @@
 			<filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssCategory.js"/>
 			<filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssItemRender.js"/>
 			<filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssItemSelection.js"/>
-			<filelist dir="${src.main.web}/js/widgets/information" files="Information.js"/>
-			<filelist dir="${src.main.web}/js/widgets/information" files="Information2.js"/>
 			<filelist dir="${src.main.web}/js/widgets/calendar" files="Calendar.js"/>
 			<filelist dir="${src.main.web}/js/widgets/calendar" files="iCalendar.js"/>
 			<filelist dir="${src.main.web}/js/widgets/ticker" files="Ticker.js"/>
@@ -383,8 +381,6 @@
 			<filelist dir="${src.main.web}/js/widgets/rssreader" files="RssReader.js"/>
 			<filelist dir="${src.main.web}/js/widgets/rssreader" files="RssItemRender.js"/>
 			<filelist dir="${src.main.web}/js/widgets/MultiRssReader" files="MultiRssReader.js"/>
-			<filelist dir="${src.main.web}/js/widgets/information" files="Information.js"/>
-			<filelist dir="${src.main.web}/js/widgets/information" files="Information2.js"/>
 			<filelist dir="${src.main.web}/js/widgets/calendar" files="Calendar.js"/>
 			<filelist dir="${src.main.web}/js/widgets/calendar" files="iCalendar.js"/>
 			<filelist dir="${src.main.web}/js/widgets/MiniBrowser" files="MiniBrowser.js"/>

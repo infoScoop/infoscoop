@@ -57,7 +57,6 @@
     <link rel="stylesheet" type="text/css" href="../skin/widgetranking.css">
     <link rel="stylesheet" type="text/css" href="../skin/rssreader.css">
     <link rel="stylesheet" type="text/css" href="../skin/maximizerssreader.css">
-    <link rel="stylesheet" type="text/css" href="../skin/information.css">
     <link rel="stylesheet" type="text/css" href="../skin/ticker.css">
 	<!--end styles css-->
 	
@@ -114,8 +113,6 @@
 	<script src="../js/widgets/rssreader/RssReader.js"></script>
 	<script src="../js/widgets/rssreader/RssItemRender.js"></script>
 	<script src="../js/widgets/MultiRssReader/MultiRssReader.js"></script>
-    <script src="../js/widgets/information/Information.js"></script>
-    <script src="../js/widgets/information/Information2.js"></script>
     <script src="../js/widgets/calendar/Calendar.js"></script>
     <script src="../js/widgets/calendar/iCalendar.js"></script>
     <script src="../js/widgets/MiniBrowser/MiniBrowser.js"></script>
