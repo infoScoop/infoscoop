@@ -111,8 +111,6 @@
     <script src="<%=staticContentURL%>/js/widgets/maximize/MaximizeRssItemRender.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/maximize/MaximizeRssItemSelection.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/maximize/MaximizeRssCategory.js"></script>
-   <script src="<%=staticContentURL%>/js/widgets/information/Information.js"></script>
-    <script src="<%=staticContentURL%>/js/widgets/information/Information2.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/calendar/Calendar.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/calendar/iCalendar.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/schedule/schedule.js"></script>
