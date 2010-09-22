@@ -659,7 +659,8 @@ function init() {
 						var layoutClick = function(el,e) {
 							$('staticAreaContainer').innerHTML = el.innerHTML;
 							prepareStaticArea();
-							$('layout').value = $('staticAreaContainer').innerHTML;
+							//$('layout').value = $('staticAreaContainer').innerHTML;
+							replaceLayout($('staticAreaContainer').innerHTML);
 							$('layoutModified').value = "true";
 							//TODO:remove ols static gadgets;
 							Event.stop(e);
@@ -691,7 +692,8 @@ function init() {
 				  var layout = $("edit_layout_textarea").value;
 				  $('staticAreaContainer').innerHTML = layout;
 				  prepareStaticArea();
-				  $('layout').value = $('staticAreaContainer').innerHTML;
+				  //$('layout').value = $('staticAreaContainer').innerHTML;
+				  replaceLayout($('staticAreaContainer').innerHTML);
 				  $('layoutModified').value = "true";
 				  Control.Modal.close();
 			  },false);
@@ -713,6 +715,23 @@ function isTemp(flag){
 		return true;
 	else
 		return false;
+}
+
+function replaceLayout(layout){
+	 new Ajax.Request(
+		"replaceLayout",
+		{
+			"method": "post",
+			"parameters": {id: '${tabTemplate.id}','layout': layout},
+			asynchronous: false,
+			onFailure: function(request) {
+				alert('読み込みに失敗しました');
+			},
+			onException: function (request) {
+				alert('読み込み中にエラーが発生しました');
+			}
+		}
+	);
 }
 
 function deleteTempTabTemplate(){

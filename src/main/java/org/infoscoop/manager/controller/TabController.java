@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -18,9 +19,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.infoscoop.web.ProxyServlet;
-import org.infoscoop.widgetconf.MessageBundle;
 import org.infoscoop.command.XMLCommandProcessor;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.GadgetDAO;
@@ -42,7 +40,9 @@ import org.infoscoop.service.WidgetConfService;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.XmlUtil;
+import org.infoscoop.web.ProxyServlet;
 import org.infoscoop.widgetconf.I18NConverter;
+import org.infoscoop.widgetconf.MessageBundle;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -249,6 +249,18 @@ public class TabController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
+	public void replaceLayout(
+			@RequestParam("id") String id,
+			@RequestParam("layout") String layout){
+		TabTemplate tab = tabTemplateDAO.get(id);
+		tab.setLayout(layout);
+		
+		this.tabTemplateStaticGadgetDAO.deleteByTabId(Integer.valueOf(id));
+			
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
 	public void submitGadgetSettings(
 			TabTemplateStaticGadget staticGadget,
 			Model model)throws Exception {
@@ -261,8 +273,9 @@ public class TabController {
 			tabTemplateStaticGadgetDAO.getByContainerId(containerId, tab);
 		
 		if(sg == null){//new
-			if(instanceId != "")	
+			if(instanceId != ""){
 				setGadgetInstance(staticGadget, instanceId);
+			}
 		}else{//edit
 			if(instanceId != ""){
 				setGadgetInstance(staticGadget, instanceId);
@@ -299,18 +312,33 @@ public class TabController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public void updateTab(TabTemplate tab,
+	public void updateTab(TabTemplate formTab,
 			@RequestParam("layoutModified") String layoutModified, 
 			Model model)throws Exception {
 		TabTemplate tabOriginal = 
-			tabTemplateDAO.get(Integer.toString(tab.getOriginalId()));
+			tabTemplateDAO.get(Integer.toString(formTab.getOriginalId()));
+		
+		TabTemplate tab = 
+			tabTemplateDAO.get(Integer.toString(formTab.getId()));
+		tab.setName(formTab.getName());
 		tab.setTemp(0);
+		
 		tabTemplateDAO.save(tab);
+		
+		Map<String, TabTemplateStaticGadget> oldGadgetMap = new HashMap<String, TabTemplateStaticGadget>();
+		for(TabTemplateStaticGadget gadget : tab.getTabTemplateStaticGadgets())
+			oldGadgetMap.put(gadget.getContainerId(), gadget);
+
+		WidgetDAO widgetDAO = WidgetDAO.newInstance();
+		for(TabTemplateStaticGadget gadget : tabOriginal.getTabTemplateStaticGadgets()){
+			TabTemplateStaticGadget oldGadget = oldGadgetMap.get(gadget.getContainerId());
+			if(!oldGadget.getGadgetInstance().equals(gadget.getGadgetInstance()))
+				widgetDAO.deleteStaticWidgetByTabIdAndWidgetId(tab.getTabId(), gadget.getContainerId());
+		}
 		tabTemplateDAO.delete(tabOriginal);
 
 		//if(tab.isLayoutModified()){
 		if(Boolean.valueOf(layoutModified)){
-			WidgetDAO widgetDAO = WidgetDAO.newInstance();
 			widgetDAO.deleteStaticWidgetByTabId(tab.getTabId());
 		}
 		model.addAttribute(tab);

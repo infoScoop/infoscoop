@@ -290,6 +290,12 @@ public class WidgetDAO extends HibernateDaoSupport{
 				new Object[] {  tabId});
 	}
 
+	public void deleteStaticWidgetByTabIdAndWidgetId(String tabId,
+			String widgetId) {
+		String queryString = "delete from Widget where tabId = ? and widgetId = ? and Isstatic = 1";
+		super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { tabId, widgetId });
+	}
 	public int emptyWidget(String uid, String widgetId, long deleteDate) {
 		/*
 		return getJdbcTemplate().update(this.getQuery("emptyWidget"),
@@ -491,5 +497,6 @@ public class WidgetDAO extends HibernateDaoSupport{
 		for( Object widget : widgets )
 			updateUserPrefs( ( Widget )widget );
 	}
+
 
 }

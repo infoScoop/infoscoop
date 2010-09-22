@@ -77,4 +77,9 @@ public class TabTemplateStaticGadgetDAO extends HibernateDaoSupport {
 				DetachedCriteria.forClass(TabTemplateStaticGadget.class)
 				.add(Expression.eq(TabTemplateStaticGadget.PROP_FK_TAB_TEMPLATE, tab))).get(0);
 	}
+
+	public void deleteByTabId(Integer id) {
+		super.getHibernateTemplate().bulkUpdate("delete from TabTemplateStaticGadget where FkTabTemplate.id = ? ", new Object[]{id});	
+		
+	}
 }

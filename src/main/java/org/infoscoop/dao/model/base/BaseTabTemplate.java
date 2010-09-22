@@ -78,13 +78,14 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private java.lang.Integer published;
 	private java.lang.Integer accessLevel;
 	private java.lang.String layout;
-	private java.lang.Integer numberOfColumns;
+	private java.lang.Integer numberOfColumns = 3;
 	private java.lang.String columnWidth;
 	private java.lang.Integer temp;
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.TabTemplatePersonalizeGadget> tabTemplatePersonalizeGadgets;
-	private java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> tabTemplateStaticGadgets;
+	private java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> tabTemplateStaticGadgets = new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateStaticGadget>();
+	
 
 
 
@@ -318,7 +319,6 @@ public abstract class BaseTabTemplate  implements Serializable {
 	}
 
 	public void addToTabTemplateStaticGadgets (org.infoscoop.dao.model.TabTemplateStaticGadget tabTemplateStaticGadget) {
-		if (null == getTabTemplateStaticGadgets()) setTabTemplateStaticGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateStaticGadget>());
 		getTabTemplateStaticGadgets().add(tabTemplateStaticGadget);
 	}
 
