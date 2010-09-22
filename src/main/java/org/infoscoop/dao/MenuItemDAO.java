@@ -86,13 +86,13 @@ public class MenuItemDAO extends HibernateDaoSupport {
 						Expression.isNull(MenuItem.PROP_FK_PARENT)).addOrder(
 						Order.asc(MenuItem.PROP_MENU_ORDER)));
 	}
-
+	
 	@SuppressWarnings("unchecked")
-	@Deprecated
-	public List<MenuItem> getTree() {
+	public List<MenuItem> getTree(MenuTree tree) {
 		List<MenuItem> flatItems = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(MenuItem.class).addOrder(
-						Order.asc(MenuItem.PROP_MENU_ORDER)));
+				DetachedCriteria.forClass(MenuItem.class).add(
+						Expression.eq(MenuItem.PROP_FK_MENU_TREE, tree))
+						.addOrder(Order.asc(MenuItem.PROP_MENU_ORDER)));
 		return createMenuTree(flatItems, null);
 	}
 
@@ -105,13 +105,7 @@ public class MenuItemDAO extends HibernateDaoSupport {
 						Expression.eq(MenuTree.PROP_ID, menuTreeId)));
 		if (menus.size() == 0)
 			return null;
-		List<MenuItem> flatItems = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(MenuItem.class)
-						.add(
-								Expression.eq(MenuItem.PROP_FK_MENU_TREE, menus
-										.get(0))).addOrder(
-								Order.asc(MenuItem.PROP_MENU_ORDER)));
-		return createMenuTree(flatItems, null);
+		return getTree(menus.get(0));
 	}
 
 	protected static List<MenuItem> createMenuTree(
