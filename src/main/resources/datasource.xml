@@ -71,7 +71,6 @@
 					<value>org/infoscoop/dao/model/Gadget.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Logs.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Cache.hbm.xml</value>
-					<value>org/infoscoop/dao/model/Rsscache.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Portaladmins.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Session.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Forbiddenurls.hbm.xml</value>

@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.dao.RssCacheDAO;
 import org.infoscoop.dao.model.Cache;
 import org.infoscoop.service.CacheService;
 
@@ -41,7 +40,7 @@ public class CacheServlet extends HttpServlet {
 	private static final long serialVersionUID = "org.infoscoop.web.CacheServlet"
 			.hashCode();
 
-	private Log log = LogFactory.getLog(this.getClass());
+	private static Log log = LogFactory.getLog(CacheServlet.class);
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -53,7 +52,6 @@ public class CacheServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String delete = request.getParameter("delete");
-		String url = request.getParameter("url");
 
 		if (delete != null) {
 			try {
@@ -62,11 +60,8 @@ public class CacheServlet extends HttpServlet {
 				if (uid == null)//TODO:If an uid is null, MSDPortal-SessionId is not set in deleteCahce of the first time.
 					uid = request.getHeader("MSDPortal-SessionId");
 				
-				if(url == null){
-					deleteCache(uid);
-				}else{
-					deleteCacheByUrl(uid, url);
-				}
+				deleteCache(uid);
+				
 	            response.setStatus(204);
 			} catch (Exception e) {
 	        	log.error("",e);
@@ -77,18 +72,9 @@ public class CacheServlet extends HttpServlet {
 		}
 	}
 
-	private void deleteCacheByUrl(String uid, String url) {
-		RssCacheDAO.newInstance().deleteCacheByUrl(uid, url);
-
-		if(log.isInfoEnabled())
-			log.info("delete cache : uid = " + uid + ", url=" + url);
-
-	}
-
 	private void deleteCache(String uid) throws IOException {
 
 		CacheService.getHandle().deleteUserCache(uid);
-		RssCacheDAO.newInstance().deleteUserCache(uid);
 
 		if(log.isInfoEnabled())
 			log.info("delete cache : uid = " + uid);

@@ -77,11 +77,6 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
-	<bean id="rssCacheDAO" class="org.infoscoop.dao.RssCacheDAO">
-		<property name="sessionFactory">
-   	   		<ref bean="sessionFactory"/>
-   	 	</property>
-	</bean>
 	<bean id="portalAdminsDAO" class="org.infoscoop.dao.PortalAdminsDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>

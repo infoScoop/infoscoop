@@ -27,12 +27,10 @@ import java.net.URLDecoder;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.dao.RssCacheDAO;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.request.filter.rss.AtomHandler;
 import org.infoscoop.request.filter.rss.RssHandler;
@@ -66,19 +64,6 @@ public class RssFilter extends ProxyFilter {
 		request.addIgnoreHeader("X-IS-RSSMAXCOUNT");
 		request.addIgnoreHeader("X-IS-PAGESIZE");
 		
-		String pageStr = request.getRequestHeader("X-IS-PAGE");
-		if(pageStr != null){
-			int pageNum = Integer.parseInt(pageStr);
-			String uid = request.getPortalUid();
-			if(uid == null)
-				uid = request.getRequestHeader("MSDPortal-SessionId");
-			InputStream jsonStream = RssCacheDAO.newInstance().getCache(uid, request.getTargetURL(), pageNum);
-			if(jsonStream != null){
-				request.setResponseBody(jsonStream);
-				request.putResponseHeader("Content-Type", "text/plain; charset=UTF-8");
-				return 200;
-			}
-		}
 		String refresh = request.getRequestHeader("X-IS-REFRESH");
 		if(refresh != null){
 			//TODO:cache clear
@@ -183,20 +168,8 @@ public class RssFilter extends ProxyFilter {
 		
 		XMLFilter.skipEmptyLine(bis);
 
-		String pageSizeStr = request.getRequestHeader("X-IS-PAGESIZE");
-		int pageSize = -1;
-		if( pageSizeStr != null ) {
-			try {
-				pageSize = Integer.parseInt( pageSizeStr );
-			} catch( NumberFormatException ex ) {
-				log.warn("init parameter \"rssPageSize\" has illegal value");
-			}
-		}
-		//if( pageSize < 0 )
-		//	pageSize = 20;
-		
 		long start = System.currentTimeMillis();
-		RssResultBuilder resultBuilder = new RssJsonResultBuilder(pageSize);
+		RssResultBuilder resultBuilder = new RssJsonResultBuilder(-1);
 		RssHandler handler;
 		if (isAtom) {
 			handler = new AtomHandler(resultBuilder, dateTimeFormat, freshTime,
@@ -216,16 +189,7 @@ public class RssFilter extends ProxyFilter {
 				long end = System.currentTimeMillis();
 				log.debug("Rss parse duration:" + (end - start));
 			}
-			int pageCount = resultBuilder.getPageCount();
-			if(pageCount > 1){
-				String uid = request.getPortalUid();
-				if (uid == null)
-					uid = request.getRequestHeader("MSDPortal-SessionId");
-				for(int pageNum = 0; pageNum < pageCount;pageNum++){
-					RssCacheDAO.newInstance().insertCache(uid, request.getTargetURL(), pageNum, resultBuilder.getResult(pageNum));
-				}
-			}
-			
+		
 			return resultBuilder.getResult(0).getBytes("UTF-8");
 		} catch (SAXException e) {
 			log.error("Xml file at URL [ "+request.getTargetURL()+"] is failed to be analysed.[" + e.getLocalizedMessage() + "]", e);

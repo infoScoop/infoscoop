@@ -86,14 +86,6 @@ create table IS_CACHES (
 create index is_caches_uid on IS_CACHES(`UID`);
 create index is_caches_url on IS_CACHES(url_key);
 
-create table IS_RSSCACHES (
-  `UID` varchar(75) not null,
-  url_key varchar(128) not null,
-  pageNum int not null,
-  rss mediumblob,
-  primary key (`UID`, url_key, pageNum)
-) ENGINE=MyISAM;
-
 create table IS_MENUCACHES (
   `UID` varchar(75) not null,
   url_key varchar(128) not null,

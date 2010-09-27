@@ -22,8 +22,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 	var isStatic;
 	var isDroppable;
 	
-	var pageSize = is_getPropertyInt(rssPageSize, -1);
-	
 	this.initialize = function(widgetObj){
 		self = this;
 		widget = widgetObj;
@@ -90,13 +88,11 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		}
 		
 		var this_ = this;
-		this.rssContent = new IS_Widget.RssReader.RssContent( widget, pageSize,{
+		this.rssContent = new IS_Widget.RssReader.RssContent( widget, {
 				getRequestOption : function( pageNo ) {
 					this_.loadContentsOption.preLoad();
 					
 					var opt =  Object.extend({
-						
-						//requestHeaders: this_.loadContentsOption.requestHeaders.concat( ["X-IS-PAGE",pageNo ] )
 						requestHeaders: [] // nazo
 					},this_.loadContentsOption );
 					opt.requestHeaders = this_.loadContentsOption.requestHeaders.concat( ["X-IS-PAGE",pageNo ] );
@@ -288,9 +284,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		if( rssMaxCount !== undefined )
 			headers.push(["X-IS-RSSMAXCOUNT", encodeURIComponent(rssMaxCount)]);
 		
-		if( pageSize !== undefined )
-			headers.push(["X-IS-PAGESIZE", encodeURIComponent( pageSize )]);
-
 		var titleFilter = widget.getUserPref('titleFilter');
 		if(titleFilter)
 			headers.push(["X-IS-TITLEFILTER", encodeURIComponent(titleFilter)]);
@@ -391,7 +384,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		//if( !widget.latestDatetime ){
 		//	widget.latestDatetime = new Date().getTime();
 		//}
-		
 		if( rssItemLength == 0) {
 			IS_Event.unloadCache(widget.id);
 			
@@ -1210,9 +1202,8 @@ IS_Widget.RssReader.prototype.classDef = function() {
 
 IS_Widget.RssReader.RssContent = IS_Class.create();
 IS_Widget.RssReader.RssContent.prototype = {
-	initialize : function( widget, pageSize,requestContext,opt ) {
+	initialize : function( widget, requestContext,opt ) {
 		this.widget = widget;
-		this.pageSize = pageSize;
 		this.requestContext = requestContext;
 		
 		this.onLoadPageCompletedListeners = [];
@@ -1236,83 +1227,20 @@ IS_Widget.RssReader.RssContent.prototype = {
 		this.loadingPages = [];
 		this.sources = [rss.itemCount];
 		
-		this.loadPageComplete( 0,rss );
+		this.loadPageComplete( rss );
 	},
 	
 	setFilter : function( filter ) {
 		this.filter = filter;
 		this.rssItems.clear();
-		this.loadPage(0);
-		//this.handleLoadPageCompleted( 0,{ items: this.delegator.rssItems });
 	},
 	
-	loadPage : function( itemNo ) {
-		if( this.filter ) {
-			for( var i=this.sources.length-1;i>=0;i-- ) {
-				if( !this.sources[i]) {
-					itemNo = i;
-				} else {
-					break;
-				}
-			}
-		}
-		
-		var pageNo = Math.floor( itemNo /this.pageSize );
-		
+	loadPageComplete : function( page ) {
 		var rssItems = this.rssItems;
-		if( !( pageNo < this.pageCount )|| this.loadingPages[pageNo] || rssItems[itemNo] ) {
-			
-			return;
-		}
-		this.loadingPages[pageNo] = true;
 		
-		var this_ = this;
-		
-		var opt = this.requestContext.getRequestOption( pageNo );
-		AjaxRequest.invoke( opt.url,{
-			method : opt.method || "get",
-			contentType : opt.contentType, 
-			requestHeaders: opt.requestHeaders || [],
-			asynchronous : opt.asynchronous || true,
-			postBody : opt.postBody || undefined,
-			onComplete : function(response) {
-				try {
-					this_.loadPageComplete( pageNo,IS_Widget.parseRss( response ) );
-				} catch( ex ) {
-					this_.loadingPages[pageNo] = false;
-					
-					throw response.status + " - " + response.statusText + " : " + opt.url;
-				}
-			},
-			on1223	: function() {return;
-				try {
-					this_.loadPageComplete( pageNo,{
-						items : []
-					} );
-				} catch( ex ) {
-					this_.loadingPages[pageNo] = false;
-					
-					throw response.status + " - " + response.statusText + " : " + opt.url;
-				}
-			},
-			onFailure : function(response) {
-				this_.loadingPages[pageNo] = false;
-				
-				throw response.status + " - " + response.statusText + " : " + opt.url;
-			},
-			onException : function(response, e){
-				this_.loadingPages[pageNo] = false;
-				
-				throw getErrorMessage(e);
-			}
-		});
-	},
-	loadPageComplete : function( pageNo,page ) {
-		var rssItems = this.rssItems;
 		if( !this.filter ) {
-			var offset = pageNo *this.pageSize;
 			for( var i=0;i<page.items.length;i++ ) {
-				var rssItem = rssItems[ offset +i ] = page.items[i];
+				var rssItem = rssItems[ i ] = page.items[i];
 				if(this.widget.parent && page.items[i].rssUrlIndex){
 					rssItem.rssUrls = [];
 					var rssReaders = this.widget.parent.content.getRssReaders();
@@ -1323,9 +1251,8 @@ IS_Widget.RssReader.RssContent.prototype = {
 				}
 			}
 		}else{
-			var offset = pageNo *this.pageSize;
 			for( var i=0;i<page.items.length;i++ )
-				this.sources[ offset +i ] = page.items[i];
+				this.sources[ i ] = page.items[i];
 			
 			this.rssItems.pop();
 			var pageItems = page.items.findAll( function( rssItem ) {
@@ -1336,36 +1263,11 @@ IS_Widget.RssReader.RssContent.prototype = {
 				for( var i=0;i<pageItems.length;i++ ) {
 					this.rssItems.push( pageItems[i] );
 				}
-			} else if( !this.sourceIsLoadPageCompleted() ) {
-				// Load until at least one entry is found
-				// Load unintentionally in case of impossible filter
-				this.loadPage( Number.MAX_VALUE );
 			}
-			
-			if( !this.sourceIsLoadPageCompleted())
-				this.rssItems.push( null );
 		}
 		
 		for( var i=0;i<this.onLoadPageCompletedListeners.length;i++ ) 
-			this.onLoadPageCompletedListeners[i]( pageNo,page );
-		
-		this.loadingPages[pageNo] = false;
-	},
-	isLoadPageCompleted : function() {
-		for( var i=0;i<this.rssItems.length;i++ ) {
-			if( !this.rssItems[i] )
-				return false;
-		}
-		
-		return true;
-	},
-	sourceIsLoadPageCompleted: function () {
-		for( var i=0;i<this.sources.length;i++ ) {
-			if( !this.sources[i] )
-				return false;
-		}
-		
-		return true;
+			this.onLoadPageCompletedListeners[i]( 0, page );
 	}
 }
 IS_Widget.RssReader.RssContentView = IS_Class.create();
@@ -1720,27 +1622,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 			head = tail;
 			tail = buf;
 		}
-		
-		if( !this.stopAutoPageLoad ) {
-			for( var i=tail;head<=i;i-- ) {
-				if( !rssItems[i] ) {
-					//console.info("#"+i+" load from render!  "+head+" ... "+tail )
-					this.rssContent.loadPage( i );
-					tail = i -1;
-				}
-			}
-			
-			var pageSize = this.rssContent.pageSize;
-			var prevPage = Math.round( head /pageSize )*pageSize;
-			if( head -prevPage < pageSize /2 && !rssItems[prevPage]) {
-				this.rssContent.loadPage( prevPage );
-			}
-			
-			var nextPage = Math.ceil( tail /pageSize )*pageSize;
-			if( tail -nextPage > pageSize /2 && !rssItems[nextPage]) {
-				this.rssContent.loadPage( nextPage );
-			}
-		}
+
 		this.rendering = true;
 		
 		if( tail < head ) {
@@ -1814,11 +1696,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 			if( DEBUG )console.info("other");
 		}
 		if( DEBUG )console.info( this.renderingHead +" ... "+this.renderingTail +" | "+head +" ... "+tail+"/"+rssItems.length )
-		//console.info( ( !foward ? "head":"tail")+": "+renders );
-		//DEBUG =0;
-		//console.info("renderItems("+head+","+tail+")/"+rssItems.length);
-		
-		//renders += 5;
 		
 		//container.style.display = "none";
 		var fragment = document.createDocumentFragment();
