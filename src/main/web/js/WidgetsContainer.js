@@ -542,10 +542,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				})();
 			}
 			
-			//Check new messages
-			//This line should be here as IS_Portal.msgLastViewTime is needed
-			IS_Widget.Message.checkNewMsgRepeat();
-			
 			if(fixedPortalHeader) 
 				IS_Portal.adjustPanelHeight(null);
 		}catch(e){

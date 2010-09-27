@@ -414,45 +414,6 @@
 			</props>
 		</property>
 	</bean>
-	<bean id="MessageService"
-		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="target">
-			<bean
-				class="org.infoscoop.service.MessageService">
-				<property name="messageDAO">
-					<ref bean="messageDAO" />
-				</property>
-			</bean>
-		</property>
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-		<property name="transactionAttributes">
-			<props>
-				<prop key="add*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
-			</props>
-		</property>
-	</bean>
-	<bean id="SystemMessageService"
-		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="target">
-			<bean
-				class="org.infoscoop.service.SystemMessageService">
-				<property name="systemMessageDAO">
-					<ref bean="systemMessageDAO" />
-				</property>
-			</bean>
-		</property>
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-		<property name="transactionAttributes">
-			<props>
-				<prop key="getNonReadMessagesJson">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-			</props>
-		</property>
-	</bean>
 	<bean id="SessionService"
 		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="target">

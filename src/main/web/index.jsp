@@ -54,7 +54,6 @@ if( isPreview == null )
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/widget.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/groupsettingmodal.css">
 
-    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/message.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/minibrowser.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/ranking.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/widgetranking.css">
@@ -164,8 +163,6 @@ if( isPreview == null )
     <script src="<%=staticContentURL%>/js/widgets/MiniBrowser/MiniBrowser.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/MiniBrowser/FragmentMiniBrowser.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/WidgetRanking/WidgetRanking.js"></script>
-    <script src="<%=staticContentURL%>/js/widgets/Message/Message.js"></script>
-    <script src="<%=staticContentURL%>/js/widgets/Message/MaximizeMessage.js"></script>
     <!--end script-->
    	<script type="text/javascript">
 		var rsaPK = new RSAKey();

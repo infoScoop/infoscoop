@@ -648,14 +648,6 @@
   	<servlet-class>org.infoscoop.web.GadgetResourceServlet</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>MessageServlet</servlet-name>
-  	<servlet-class>org.infoscoop.web.MessageServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>SystemMessageServlet</servlet-name>
-  	<servlet-class>org.infoscoop.web.SystemMessageServlet</servlet-class>
-  </servlet>
-  <servlet>
   	<servlet-name>GadgetIconServlet</servlet-name>
   	<servlet-class>org.infoscoop.web.GadgetIconServlet</servlet-class>
   </servlet>
@@ -911,14 +903,6 @@
 	<servlet-mapping>
 		<servlet-name>WidgetRankingServlet</servlet-name>
 		<url-pattern>/widrank</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>MessageServlet</servlet-name>
-		<url-pattern>/msg</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>SystemMessageServlet</servlet-name>
-		<url-pattern>/sysmsg</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>GadgetIconServlet</servlet-name>

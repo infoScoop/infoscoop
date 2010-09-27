@@ -149,7 +149,6 @@
 	    <site id="etcWidgets_stickey" title="%{stickey_title}" type="g_upload__sticky/gadget" multi="true"/>
 	    <site id="etcWidgets_TodoList" title="%{TodoList_title}" type="g_upload__todoList/gadget" multi="true"/>
 	    <site id="etcWidgets_worldclock" title="%{worldclock_title}" type="g_upload__worldclock/gadget" multi="true"/>
-		<site id="etcWidgets_Message" title="%{Message_title}" type="Message"/>
 		<site id="etcWidgets_WidgetRanking" title="%{WidgetRanking_title}" type="WidgetRanking"/>
 	</site-top>
 </sites>

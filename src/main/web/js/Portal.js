@@ -557,9 +557,6 @@ IS_Portal.start = function() {
 		}
 	);
 	//IS_Portal.startDetectFontResized();
-	
-	if(is_userId)
-		IS_Portal.checkSystemMsg();
 }
 
 IS_Portal.getFreshDays = function(_freshDays){
@@ -2172,58 +2169,6 @@ IS_Portal.CommandBar = {
 		return (this.commandbarWidgets[itemId])? true : false;
 	}
 };
-
-IS_Portal.checkSystemMsg = function(){
-	var opt = {
-	  method:'get',
-	  asynchronous:true,
-	  onSuccess:function(req){
-		  var results = req.responseText.evalJSON();
-		  if(!results || results.length == 0) return;
-		  var systemMessageVar = $('system-message-var');
-		  
-		  if(!systemMessageVar){
-			  var msgListDiv = $('message-list');
-			  systemMessageVar = $.DIV(
-				  {
-					id:'message-newmsg'
-				  });
-			  msgListDiv.appendChild(systemMessageVar);
-		  }else{
-			  systemMessageVar.innerHTML = "";
-		  }
-		  results.each(function(msg){
-			  if(msg.resourceId){
-
-				  systemMessageVar.appendChild(
-					  $.DIV(
-						  {},
-						  $.IMG(
-							  {
-								style:'position:relative;top:2px;paddingRight:2px',
-								src:imageURL+"information.gif"
-							  }
-							  ),
-						  IS_R.getResource(IS_R[msg.resourceId], msg.replaceValues)
-						  )
-					  );
-
-			  }else{
-				  console.log("non implementation");
-			  }
-		  });
-		  $('message-bar').style.display = "";
-		  IS_EventDispatcher.newEvent("adjustedMessageBar");
-	  },
-	  onFailure: function(t) {
-		  msg.error(IS_R.getResource( IS_R.lb_getSystemMessageFailure +'{0} -- {1}',[t.status, t.statusText]));
-	  },
-	  onException: function(r, t){
-		  msg.error(IS_R.getResource( IS_R.lb_getSystemMessageFailure +'{0}',[getErrorMessage(t)]));
-	  }
-	};
-	AjaxRequest.invoke(hostPrefix + '/sysmsg', opt);
-}
 
 IS_Portal.getPortalOverlay = function() {
 	if(!IS_Portal.portalOverlay)

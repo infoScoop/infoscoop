@@ -51,7 +51,6 @@
     <link rel="stylesheet" type="text/css" href="../skin/widget.css">
     
     <link rel="stylesheet" type="text/css" href="../skin/groupsettingmodal.css">
-    <link rel="stylesheet" type="text/css" href="../skin/message.css">
     <link rel="stylesheet" type="text/css" href="../skin/minibrowser.css">
     <link rel="stylesheet" type="text/css" href="../skin/ranking.css">
     <link rel="stylesheet" type="text/css" href="../skin/widgetranking.css">
@@ -118,7 +117,6 @@
     <script src="../js/widgets/MiniBrowser/MiniBrowser.js"></script>
     <script src="../js/widgets/MiniBrowser/FragmentMiniBrowser.js"></script>
     <script src="../js/widgets/WidgetRanking/WidgetRanking.js"></script>
-    <script src="../js/widgets/Message/Message.js"></script>
 	
 	<script src="js/Admin.js"></script>
 	<script src="js/AdminDragDrop.js"></script>

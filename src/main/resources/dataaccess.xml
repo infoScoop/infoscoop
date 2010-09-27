@@ -127,16 +127,6 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
-	<bean id="messageDAO" class="org.infoscoop.dao.MessageDAO">
-		<property name="sessionFactory">
-   	   		<ref bean="sessionFactory"/>
-   	 	</property>
-	</bean>
-	<bean id="systemMessageDAO" class="org.infoscoop.dao.SystemMessageDAO">
-		<property name="sessionFactory">
-   	   		<ref bean="sessionFactory"/>
-   	 	</property>
-	</bean>
 	<bean id="accountDAO" class="org.infoscoop.dao.AccountDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>

@@ -42,7 +42,6 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.Preference;
-import org.infoscoop.dao.model.SystemMessage;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.service.SiteAggregationMenuService.ForceUpdateUserPref;
@@ -156,17 +155,17 @@ public class WidgetDAO extends HibernateDaoSupport{
 		List<Widget> widgetList = super.getHibernateTemplate()
 			.findByCriteria(DetachedCriteria.forClass(Widget.class)
 					.add(Expression.eq("Menuid", widgetId)));
-		SystemMessageDAO sysMessageDao = SystemMessageDAO.newInstance();
+		//SystemMessageDAO sysMessageDao = SystemMessageDAO.newInstance();
 		int i = 0;
 		for( Widget widget : widgetList ) {
     		String oldTitle = widget.getTitle();
 			if(title != null){
 				widget.setTitle(title);
-				if(widget.getDeletedate() == 0)
+				/*if(widget.getDeletedate() == 0)
 					sysMessageDao.insert(new SystemMessage(
 							widget.getUid(),
 							"ms_title_update_by_admin",
-							oldTitle + "," + title));
+							oldTitle + "," + title));*/
 			}
 			if(href != null)
 				widget.setHref(href);
@@ -184,7 +183,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 					widget.setUserPref(pref.getKey(), updatePref.getValue());
 					if(!updatePref.isImplied() && widget.getDeletedate() == 0){
-						if(oldValue != null){
+						/*if(oldValue != null){
 							sysMessageDao.insert(new SystemMessage(
 									widget.getUid(),
 									"ms_up_update_by_admin",
@@ -194,19 +193,19 @@ public class WidgetDAO extends HibernateDaoSupport{
 									widget.getUid(),
 									"ms_up_update_from_default_by_admin",
 									widget.getTitle() + "," + pref.getKey() + "," + updatePref.getValue()));
-						}
+						}*/
 					}
 				}
 			}
 			for(ForceUpdateUserPref removeProp : removePropNames){
 				// The special processing for gadgets is not necessary, Beacouse gadget's URL is require property.
 				widget.removeUserPref(removeProp.getName());
-				if(!removeProp.isImplied() && widget.getDeletedate() == 0){
+				/*if(!removeProp.isImplied() && widget.getDeletedate() == 0){
 					sysMessageDao.insert(new SystemMessage(
 							widget.getUid(),
 							"ms_up_revert_by_admin",
 							widget.getTitle() + "," + removeProp.getName()));
-				}
+				}*/
 
 			}
 			
