@@ -168,14 +168,6 @@ create table IS_MENUS_TEMP (
 create index is_menus_temp_lastmodified on IS_MENUS_TEMP(lastmodified);
 
 --
--- searchEngine
---
-create table IS_SEARCHENGINES (
-  temp integer not null,
-  data text not null
-) ENGINE=InnoDB;
-
---
 -- gadget
 --
 create table IS_GADGETS (

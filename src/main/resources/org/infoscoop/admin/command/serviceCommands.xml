@@ -66,15 +66,6 @@
 			</props>
 		</property>
 	</bean>
-	<bean id="searchEngine" class="org.infoscoop.admin.command.ServiceCommand">
-		<property name="service"><ref bean="searchEngineService"/></property>
-		<property name="notPermittedPatterns">
-			<props>
-				<prop key="search"></prop>
-				<prop key="*">.*</prop>
-			</props>
-		</property>
-	</bean>
 	<bean id="proxyConf" class="org.infoscoop.admin.command.ServiceCommand">
 		<property name="service"><ref bean="ProxyConfService"/></property>
 		<property name="notPermittedPatterns">

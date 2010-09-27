@@ -799,12 +799,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 			widget.widgetConf.deleteDate = deleteDate;
 		}
 		
-		if(IS_Portal.rssSearchBoxList[widget.id]){
-			if(IS_Portal.rssSearchBoxList[widget.id].parentNode){
-				IS_Portal.rssSearchBoxList[widget.id].parentNode.removeChild( IS_Portal.rssSearchBoxList[widget.id] );
-			}
-			delete IS_Portal.rssSearchBoxList[widget.id];
-		}
 	}
 	
 	/**
@@ -1300,68 +1294,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		return IS_Portal.getWidget("w_" + feedId);
 	}
 
-	this.searchBuildMenuContent = function(){
-		this.checkEnableRssSearch();
-		return IS_Widget.RssReader.searchBuildMenuContent(widget, this.disabledSearchList);
-	}
-	
-	this.searchDisable = function(){
-		IS_Widget.RssReader.searchDisable(widget);
-	}
-	
-	this.searchEnable = function(){
-		IS_Widget.RssReader.searchEnable(widget);
-	}
-	
-	this.searchApplyIconStyle = function(div){
-		div.style.display = "none";
-		if(IS_Portal.SearchEngines.isLoaded) {
-			if( this.checkEnableRssSearch() )
-			  div.style.display = "block";
-		} else {
-			IS_Portal.SearchEngines.loadConf();
-			setTimeout(this.searchApplyIconStyle.bind(this, div), 100);
-			return;
-		}
-
-		var disabledTitleList = [];
-		var rssReaders = this.getRssReaders();
-		for(var i = 0; i < rssReaders.length;i++){
-			if(!IS_Portal.SearchEngines.matchRssSearch(rssReaders[i].getUserPref("url"))){
-				disabledTitleList.push(rssReaders[i].title);
-			}
-		}
-		var msgDiv = div.getElementsByClassName("rssSearchMsg")[0];
-
-		if(disabledTitleList.length > 0) {
-			msgDiv.style.display = "block";
-			//					var msg = "※";
-			var msg = IS_R.lb_attention;
-			for(var i = 0; i < disabledTitleList.length; i++) {
-				if(i > 0) msg += ", ";
-				msg += "[" + disabledTitleList[i] + "]";
-			}
-
-			msg += IS_R.ms_notCoverage;
-			msgDiv.innerHTML = msg;
-		} else {
-			msgDiv.innerHTML = "";
-			msgDiv.style.display = "none";
-		}
-	};
-	
-	this.checkEnableRssSearch = function() {
-		var enabled = false;
-		
-		var subWidgets = IS_Portal.getSubWidgetList(widget.id,widget.tabId );
-		for (var i=0; i < subWidgets.length; i++){
-			if(IS_Portal.SearchEngines.matchRssSearch(subWidgets[i].getUserPref("url"))){
-				enabled = true;
-			}
-		}
-		return enabled;
-	};
-	
 	//Set detailed time
 	this.dateIconHandler = function (e) {
 		try{

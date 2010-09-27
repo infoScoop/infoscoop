@@ -36,8 +36,6 @@ var defaultTheme = is_getPropertyString(defaultTheme, false);
 var hostPrefix = (isTabView)? findHostURL(false).replace(/\/tab.*/, "") : findHostURL(false);
 var proxyServerURL = hostPrefix + "/proxy";
 
-var searchEngineURL = searchEngineURL || localhostPrefix+"/schsrv";
-
 IS_Customization = false;
 IS_WidgetConfiguration = [];
 IS_Portal.logoffDateTime = -1;
@@ -104,8 +102,6 @@ IS_Portal.start = function() {
 	var header = document.getElementById("portal-header");
 	header.innerHTML = IS_Customization.header;
 	
-	IS_Portal.SearchEngines.init();
-
 	IS_Portal.buildFontSelectDiv();
 	IS_Portal.buildGlobalSettingModal();
 	IS_Portal.Trash.initialize();
@@ -591,16 +587,11 @@ IS_Portal.getFreshDays = function(_freshDays){
 }
 
 IS_Portal.closeIFrame = function () {
-	if(!(Element.visible('portal-iframe') || Element.visible('search-iframe')))return;
+	if(!Element.visible('portal-iframe'))return;
 	
 	var iframeTag = $("ifrm");
 	if(iframeTag) iframeTag.src = "";
 	var divIFrame = $("portal-iframe");
-	if ( divIFrame ) {
-		divIFrame.style.display = "none";
-	}
-	
-	var divIFrame = $("search-iframe");
 	if ( divIFrame ) {
 		divIFrame.style.display = "none";
 	}
@@ -615,11 +606,6 @@ IS_Portal.closeIFrame = function () {
 	var iframeToolBar = document.getElementById("iframe-tool-bar");
 	iframeToolBar.style.display = "none";
 	
-	IS_Event.unloadCache("_search");
-	
-	//Clear iframe in IS_Portal.searchEngines
-	IS_Portal.SearchEngines.clearIFrames();
-	
 //	IS_WidgetsContainer.adjustColumnWidth();
 	IS_Widget.adjustDescWidth();
 	//Display ifame at link icon in only IE and layout is broke up if go back.
@@ -627,8 +613,6 @@ IS_Portal.closeIFrame = function () {
 	IS_Widget.Maximize.adjustMaximizeWidth();
 	IS_Widget.WidgetHeader.adjustHeaderWidth();
 	IS_Portal.adjustPanelHeight(null);
-	
-	IS_Portal.SearchEngines.clearTemp();
 	
 	//Refresh immidiately if auto refresh is worked while iframe is displayed
 	IS_Portal.refresh.resume();
@@ -763,23 +747,9 @@ IS_Portal.adjustSiteMenuHeight = function(e, siteManuObj) {
 IS_Portal.adjustIframeHeight = function(e, iframeObj) {
 	var iframe = iframeObj;
 	if(!iframe){
-		var searchResult = document.getElementById("search-result");
-		if(searchResult){
-			var searchIframes = searchResult.getElementsByTagName("iframe");
-			for ( i = 0; i < searchIframes.length; i++) {
-				var disp = getDisplay(searchIframes[i]);
-				if(disp) {
-					iframe = searchIframes[i];
-					break;
-				}
-			}
-		}
-		
-		if(!iframe){
-			var contentIframe = document.getElementById("ifrm");
-			if(contentIframe && getDisplay(contentIframe)){
-				iframe = contentIframe;
-			}
+		var contentIframe = document.getElementById("ifrm");
+		if(contentIframe && getDisplay(contentIframe)){
+			iframe = contentIframe;
 		}
 	}
 	
@@ -1010,11 +980,6 @@ IS_Portal.showIframe = function(url){
 		IS_Portal.buildIframeToolBar();
 	
 	IS_Portal.CommandBar.changeIframeView();
-	
-	var divIFrame = $("search-iframe");
-	if ( divIFrame ) {
-		divIFrame.style.display = "none";
-	}
 	
 	var divIFrame = $("portal-iframe");
 
@@ -1694,19 +1659,6 @@ IS_Portal.onFontResized = function(){
 	IS_Portal.widgetDisplayUpdated();
 }
 
-IS_Portal.rssSearchBoxList = new Object();
-/**
- * Hiding all of search boxes.
- */
-/*
-IS_Portal.hideRssSearchBox = function(){
-	for(var id in IS_Portal.rssSearchBoxList){
-		if(!(IS_Portal.rssSearchBoxList[id] instanceof Function)){
-			IS_Portal.rssSearchBoxList[id].style.display = "none";
-		}
-	}
-}
-*/
 
 /**
  * Processing at changing display position or size of widget
@@ -1715,7 +1667,6 @@ IS_Portal.widgetDisplayUpdated = function(){
 //	IS_Widget.adjustDescWidth();
 	IS_Widget.processAdjustRssDesc();
 	IS_Widget.adjustEditPanelsTextWidth();
-//	IS_Portal.hideRssSearchBox();
 }
 
 if( Browser.isSafari1 ) {

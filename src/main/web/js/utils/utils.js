@@ -1013,11 +1013,8 @@ if( Browser.isSafari1 ) {
 }
 
 function isHidePanel(){
-	if(
-		$("maximize-panel").style.display == "none" &&
-		$("portal-iframe").style.display == "none" &&
-		$("search-iframe").style.display == "none"
-		)return false;
+	if( !(Element.visible('maximize-panel') || Element.visible('portal-iframe')) )
+	  return false;
 	else
 	  return true;
 }

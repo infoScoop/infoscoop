@@ -74,7 +74,6 @@
 		<menu alt="!{lb_decreaseitem}" imgUrl="arrow_up.gif" staticDisabled="true" type="widgetRssUp"/>
 		<menu alt="!{lb_increaseitem}" imgUrl="arrow_down.gif" staticDisabled="true" type="widgetRssDown"/>
 		<menu alt="!{lb_accessStats}" imgUrl="group.gif" type="accessStats"/>
-		<menu alt="!{lb_search}" imgUrl="zoom.gif" type="search"/>
 		<menu alt="!{lb_dateDisplay}" imgUrl="display_time.gif" type="date"/>
 		<menu alt="!{lb_lineFeed}" imgUrl="display_break.gif" type="lineFeed"/>
 	</Header>

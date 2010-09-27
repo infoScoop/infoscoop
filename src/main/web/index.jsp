@@ -138,7 +138,6 @@ if( isPreview == null )
     <script src="<%=staticContentURL%>/js/SiteMap.js"></script>
     <script src="<%=staticContentURL%>/js/TreeMenu.js"></script>
     <script src="<%=staticContentURL%>/js/AddContentPane.js"></script>
-    <script src="<%=staticContentURL%>/js/search/SearchEngine.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/Widget.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/WidgetHeader.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/WidgetEdit.js"></script>
@@ -186,7 +185,6 @@ if( isPreview == null )
 			if(preference.property.theme)
 				IS_Portal.theme.currentTheme = eval( '(' + preference.property.theme + ')' );
 			IS_Portal.preference = preference.property;
-			IS_Portal.SearchEngines.searchOption = preference.property.searchOption ? eval('(' + preference.property.searchOption+ ')') : {};
 		}
 	</script>
 
@@ -278,7 +276,6 @@ if( isPreview == null )
 							<iframe id="ifrm" name="ifrm" src="./blank.html" FrameBorder="0" style="width:100%;height768px;border:none;scrolling:auto;"></iframe>
 						</div>
 						<div id="iframe-tool-bar"></div>
-						<div id="search-iframe" style="display:none;"></div>
 					</td>
 				</tr>
 			</tbody>

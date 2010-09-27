@@ -179,7 +179,6 @@
 				<iframe id="ifrm" name="ifrm" src="about:blank" FrameBorder="0" style="width:100%;height768px;border:none;scrolling:auto;"></iframe>
 			</div>
 			<div id="iframe-tool-bar"></div>
-			<div id="search-iframe" style="display:none;"></div>
 		</div>
 	</body>
 </html>

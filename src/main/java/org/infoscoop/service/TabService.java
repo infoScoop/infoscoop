@@ -200,6 +200,7 @@ public class TabService {
 			if(widget == null){
 				widget = convertStaticGadgetInstance2Widget(uid, tab.getTabId(), gadget);
 				this.widgetDAO.addWidget(widget,false);
+				widgets.add(widget);
 			}
 			Map<String, UserPref> upMap = widget.getUserPrefs();
 			

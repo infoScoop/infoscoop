@@ -618,13 +618,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			IS_EventDispatcher.newEvent("applyIconStyle", parent.id);
 		}
 		
-		if(IS_Portal.rssSearchBoxList[widget.id]){
-			if(IS_Portal.rssSearchBoxList[widget.id].parentNode){
-				IS_Portal.rssSearchBoxList[widget.id].parentNode.removeChild( IS_Portal.rssSearchBoxList[widget.id] );
-			}
-			delete IS_Portal.rssSearchBoxList[widget.id];
-		}
-		
 		if( parent ) {
 			parent.content.checkAllClose(notAddTrash);
 		}
@@ -1195,29 +1188,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		
 		IS_Portal.widgetDisplayUpdated();
 	};
-	
-	this.searchBuildMenuContent = function(){
-		return IS_Widget.RssReader.searchBuildMenuContent(widget);
-	}
-	
-	this.searchDisable = function(){
-		IS_Widget.RssReader.searchDisable(widget);
-	}
-	
-	this.searchEnable = function(){
-		IS_Widget.RssReader.searchEnable(widget);
-	}
-	
-	this.searchApplyIconStyle = function(div){
-		div.style.display = "none";
-		if(IS_Portal.SearchEngines.isLoaded) {
-			if( IS_Portal.SearchEngines.matchRssSearch( widget.getUserPref("url")) )
-			  div.style.display = "block";
-		} else {
-			IS_Portal.SearchEngines.loadConf();
-			setTimeout(this.searchApplyIconStyle.bind(this, div), 200);
-		}
-	};
 
 	this.accessStatsApplyIconStyle = function(div){
 		this.accessStatsIcon = div;
@@ -1236,88 +1206,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		IS_Widget.RssReader.showAccessStats(widget);
 		widget.headerContent.hiddenMenu.hide();
 	};
-}
-
-IS_Widget.RssReader.searchBuildMenuContent = function(widget){
-	var div = document.createElement("span");
-	div.id = widget.id + "_rssSearchBox";
-	//div.className = "rssSearchBox";
-	var input = document.createElement("input");
-	input.type = "text";
-	input.style.width = "100px";
-	div.appendChild(input);
-	var button = document.createElement("input");
-	button.type = "button";
-
-	button.value = IS_R.lb_execute;
-	div.appendChild(button);
-
-	var msgDiv = document.createElement("span");
-	msgDiv.className = "rssSearchMsg";
-	msgDiv.style.display = "none";
-	div.appendChild(msgDiv);
-	
-	function listUrl(){
-
-		var urllist = [];
-		if(widget.content.getRssReaders){
-			var rssReaders = widget.content.getRssReaders();
-			for(var i = 0; i < rssReaders.length;i++)
-			  urllist[i] = {
-				  'url':rssReaders[i].getUserPref("url"),
-				  'title':rssReaders[i].title
-				}
-		}else{
-			urllist[0] = {
-				'url':widget.getUserPref("url"),
-				'title':widget.title
-			  }
-		}
-		return urllist;
-	}
-
-	var enterKeyPressed = function(e) {
-		if(e.keyCode == Event.KEY_RETURN) {
-			var keyword = input.value;
-			IS_Portal.SearchEngines.buildSearchTabs(keyword, listUrl());
-			//div.style.display = "none";
-			widget.headerContent.hiddenMenu.hide();
-			return false;
-		}
-	};
-	Event.observe(input, "keypress", enterKeyPressed, false);
-	var buttonClicked = function() {
-		var keyword = input.value;
-		IS_Portal.SearchEngines.buildSearchTabs(keyword, listUrl());
-		//div.style.display = "none";
-		widget.headerContent.hiddenMenu.hide();
-	};
-	Event.observe(button, "click", buttonClicked, false);
-	document.body.appendChild(div);
-	IS_Portal.rssSearchBoxList[widget.id] = div;
-
-	if(widget.isLoading) IS_Widget.RssReader.searchDisable(widget);
-	else IS_Widget.RssReader.searchEnable(widget);
-	
-	return div;
-}
-	
-IS_Widget.RssReader.searchDisable = function(widget){
-	var div = IS_Portal.rssSearchBoxList[widget.id];
-	if(!div) return;
-	var inputs = Element.getElementsBySelector(div, 'input');
-	inputs.each(function(input){
-		input.disabled = true;
-	});
-}
-	
-IS_Widget.RssReader.searchEnable = function(widget){
-	var div = IS_Portal.rssSearchBoxList[widget.id];
-	if(!div) return;
-	var inputs = Element.getElementsBySelector(div, 'input');
-	inputs.each(function(input){
-		input.disabled = false;
-	});
 }
 
 IS_Widget.RssReader.RssContent = IS_Class.create();
