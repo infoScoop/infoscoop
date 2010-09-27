@@ -209,7 +209,6 @@ IS_Portal.deleteTempTabFlag = 1;//1-- excute beforeunload, 0-- don't excute befo
 
 function prepareStaticArea(){
 	var static_columns = $$('#staticAreaContainer .static_column');
-console.log(static_columns);
 	IS_Portal.deleteTempTabFlag = 1;
 	var tabId = IS_Portal.currentTabId.replace("tab","");
 	for (var j=0; j<static_columns.length; j++ ) {
@@ -218,12 +217,11 @@ console.log(static_columns);
 		div.id = containerId;
 
 		var edit_cover = document.createElement('div');
-		var text_edit = document.createTextNode('Edit');
-		var text_new = document.createTextNode('New');
 		edit_cover.id = "edit_div_" + j;
 		edit_cover.className = "edit_static_gadget_hide";
 		
 		var editLayoutMouseOver = function(parent, child) {
+				setModal(parent,child)
 				parent.appendChild(child);
 				child.className = "edit_static_gadget_show";
 		};
@@ -231,43 +229,41 @@ console.log(static_columns);
 				child.className = "edit_static_gadget_hide";
 				parent.removeChild(child);
 		};
-		var showText = function(parent,child, containerId){
-				if($(parent).childNodes.length > 1){
-					$(child).appendChild(text_edit);
-					$(child).href = hostPrefix + "/manager/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + containerId;
-				}else{
-					$(child).appendChild(text_new);
-					$(child).href = hostPrefix + "/manager/tab/selectGadgetType?tabId=" + tabId + "&containerId=" + containerId;
-				}
-		};
 		
 		Event.observe(div, 'mouseover', editLayoutMouseOver.bind(null, div, edit_cover),false);
 		Event.observe(edit_cover, 'mouseout', editLayoutMouseOut.bind(null, div, edit_cover), false);
-		Event.observe(edit_cover, 'mouseover', showText.bind(null, div, edit_cover, containerId),false);
-		
-		var openModal = function(child){
-			var modal = new Control.Modal(
-			child.id,
-			{
-			  opacity: 0.4,
-			  width: 580,
-			  height: 440,
-			  iframe:true// ajax is better
-			}
-			);
-		};
-		
-		Event.observe(edit_cover, 'click', openModal.bind(null,edit_cover), false);
-	}	
+
+		function setModal(div, edit_cover){
+			if(edit_cover.firstChild)return;
+
+			if(div.firstChild){
+				edit_cover.appendChild( document.createTextNode('Edit') );
+				edit_cover.href = hostPrefix + "/manager/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + containerId;
+			}else{
+				edit_cover.appendChild(document.createTextNode('New') );
+				edit_cover.href = hostPrefix + "/manager/tab/selectGadgetType?tabId=" + tabId + "&containerId=" + containerId;
+			};
 	
+			var modal = new Control.Modal(
+				edit_cover,
+				{
+				  opacity: 0.4,
+				  width: 580,
+				  height: 440,
+				  iframe:true// ajax is better
+				}
+			);
+		}
+	}
 };
 
 function init() {
 
 	Event.observe('submit_button', 'click', changeFlag, false);
 
-	prepareStaticArea();
 	$('layout').value = $("staticAreaContainer").innerHTML;
+
+	prepareStaticArea();
 
 	new IS_WidgetsContainer("/manager/tab/widsrv");
 	new IS_SiteAggregationMenu();
