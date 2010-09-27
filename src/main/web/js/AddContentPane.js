@@ -252,12 +252,6 @@ IS_SidePanel.buildAddContents = function() {
 			var previewItem = document.createElement("div");
 			addContents.appendChild( previewItem );
 			
-			if( Browser.isSafari1 ) {
-				// Previous contents are displayed if Fix ID is duplicated and content is error
-				if( data.isError )
-					i = (i+1) *1000;
-			}
-			
 			addPreviewWidget(i, previewItem, data );
 		}
 		

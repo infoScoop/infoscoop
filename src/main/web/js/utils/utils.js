@@ -609,16 +609,6 @@ function PullDown(opt){
 		this.elm_icon = icon;
 	}
 	
-	if( Browser.isSafari1 ) {
-		this.buildPulldown = ( function( method ) {
-			return function( pulldown ) {
-				method.apply( this,[pulldown] );
-				
-				this.elm_field.style.height = "1.4em"
-			}
-		})( this.buildPulldown );
-	}
-	
 	this.rebuildPulldownList = function() {
 		while( this.elm_list.firstChild )
 			this.elm_list.removeChild( this.elm_list.firstChild );
@@ -648,9 +638,6 @@ function PullDown(opt){
 			evtObserv( listItem, "click",
 				this_.setSelectedKey.bind( this_,entry.key ),false, opt.eventId);
 			
-			if( Browser.isSafari1 ) {
-				evtObserv( listItem,"click",function() { listItem.className = ""; },false,opt.eventId );
-			}
 		});
 	}
 	this.setSelectedKey = function( key ) {
@@ -889,10 +876,6 @@ var is_addCssRule = ( Browser.isIE )
         })(document.createElement('style')))
     ;
 
-if (Browser.isSafari1) {
-	is_addCssRule = function(){}
-}
-
 /**
  * Replace UserPref[@datatype='list'] with Array
  * @param {String} arrayStr
@@ -902,76 +885,6 @@ function is_toUserPrefArray(arrayStr){
 	for( var i=0;i<arrayData.length;i++ )
 		arrayData[i] = arrayData[i].replace(/%7C/ig, "|");
 	return arrayData;
-}
-
-if( Browser.isSafari1 ) {
-	( function() {
-		var _setFullYear = Date.prototype.setFullYear;
-		
-		Date.prototype.setFullYear = function ( year,month,date) {
-			if( month < 0 ) {
-				year--;
-				month += 12;
-			}
-			
-			return _setFullYear.apply( this,[year,month,
-				( arguments.length >= 2 ) ? date : this.getDate()
-			]);
-		};
-	})();
-	
-	
-	var _Date = Date;
-	Date = ( function() {
-		//Obfuscation prevents eval
-		//var _Date = Date;
-		
-		return function() {
-			var args = $A( arguments );
-			if( args.length == 0 ) {
-				return new _Date();
-			} else if( args.length != 1 ) {
-				if( args.length >= 2 ) {
-					if( args[1] < 0 ) {
-						args[0] = args[0] -1;
-						args[1] = args[1] +12;
-					}
-				}
-				
-				return eval("new _Date("+args.join(",")+")");
-			}
-			
-			if( args[0].getTime ) {
-				return new _Date( args[0].getTime() );
-			} else if( typeof args[0] == "string" && /\d+\/\d+\/\d+(?:\s\d+:\d+:\d+)?/.test( args[0] )) {
-				var matches;
-				
-				var dateTimeString = args[0].split(" ");
-				if( dateTimeString.length >= 1 )
-					matches = dateTimeString[0].split("/");
-				
-				if( dateTimeString.length == 2 ) {
-					matches = matches.concat( dateTimeString[1].split(":"));
-					
-					return new _Date( matches[0],matches[1] -1,matches[2],
-						matches[3],matches[4],matches[5] );
-				} else {
-					return new _Date( matches[0],matches[1] -1,matches[2]);
-				}
-			}
-			
-			var date = new _Date();
-			if( !( /\d+/.test( args[0]+"" )))
-				args[0] = _Date.parse( args[0] );
-			
-			date.setTime( parseInt( args[0] ));
-			
-			return date;
-		}
-	})();
-	
-	//for( var i in _Date )
-	//	Date[i] = _Date[i];
 }
 
 function isHidePanel(){

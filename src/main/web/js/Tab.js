@@ -69,8 +69,6 @@ IS_Portal.buildTabs = function(){
 	addA.innerHTML = IS_R.lb_addTabLink;
 	addTab.appendChild(addA);
 	var addTabWithBuildColumns = function(){
-		if( IS_Portal.isTabLoading() )
-			return;
 		
 		var addNumber = IS_Portal.getNextTabNumber();
 		var tabObj = IS_Portal.addTab( addNumber, IS_R.lb_newTab, "dynamic", 3);
@@ -859,11 +857,7 @@ IS_Portal.setTabDroppable = function(tab){
 				
 				// Call loadContents if the widget is dropped from menu(To display default)
 				var menuWidget = IS_Portal.getWidget(widget.id, tab.id);
-				if( Browser.isSafari1 ) {
-					menuWidget.onTabChangeReload = true;
-				} else {
-					if(menuWidget && menuWidget.isBuilt) menuWidget.loadContents();
-				}
+				if(menuWidget && menuWidget.isBuilt) menuWidget.loadContents();
 				
 				IS_Portal.widgetDropped( widget );
 			}else{
@@ -1176,8 +1170,6 @@ IS_Portal.deleteTab = function( deleteTab ){
 	@param changeTab Tab element to be active
 */
 IS_Portal.changeActiveTab = function( changeTab, isInitialize ){
-	if( IS_Portal.isTabLoading() )
-		return;
 	
 	//changeTab.className = "tab selectedtab";
 	var lastTabId = IS_Portal.currentTabId;
@@ -1234,36 +1226,6 @@ IS_Portal.changeActiveTab = function( changeTab, isInitialize ){
 		}
 	}
 	changePanel.delay(0.001);
-}
-
-if( Browser.isSafari1 ) {
-	IS_Portal.changeActiveTab = ( function() {
-		var changeActiveTab = IS_Portal.changeActiveTab;
-		
-		return function( changeTab ) {
-			var applyPreference = IS_Portal.tabs[changeTab.id].applyPreference;
-			if( applyPreference )
-				IS_Portal.tabs[changeTab.id].applyPreference = false;
-			
-			changeActiveTab.apply( this,$A( arguments ));
-			
-			if( applyPreference )
-				IS_Portal.applyPreference(changeTab.id, true);
-			
-			$H( IS_Portal.widgetLists[changeTab.id] ).entries().each( function( entry ) {
-				var widget = entry.value;
-				if( widget.content && widget.content.repaint ) {
-					function repaint() {
-						if( widget.elm_widget.offsetHeight == 0 )
-							setTimeout( repaint,100 );
-						
-						widget.content.repaint();
-					}
-					setTimeout( repaint,100 );
-				}
-			});
-		}
-	}).apply( IS_Portal );
 }
 
 /**
@@ -1532,9 +1494,7 @@ IS_Portal.tabDrag = function( e, dragObj ){
 				*/
 			}else{
 				// Change active status if the none active tab is clicked
-				if(!IS_Portal.isTabLoading()){
-				  IS_Portal.controlTabs.setActiveTab( dragObj );
-				}
+				IS_Portal.controlTabs.setActiveTab( dragObj );
 			}
 		}else if(!isStatic){
 			

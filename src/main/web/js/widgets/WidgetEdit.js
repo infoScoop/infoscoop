@@ -40,7 +40,7 @@ IS_Widget.WidgetEdit = function (widget) {
 		}.bind(divWidgetEditHeader), false, this.closeId);
 	}
 	
-	if( Browser.isSafari1 || Browser.isFirefox ) {
+	if( Browser.isFirefox ) {
 		// Form is unintentionally submitted; and move to unintended page
 		IS_Event.observe( widget.elm_editForm,'submit',function( e ) {
 			IS_Event.stop( e );

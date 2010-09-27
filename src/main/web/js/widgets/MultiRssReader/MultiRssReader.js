@@ -159,7 +159,7 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				IS_Portal.removeWidget(draggedWidget.id, draggedWidget.tabId);
 			}else{//widget or subWidget or Menu
 				var nextSiblingId = (widgetGhost.nextSibling) ? widgetGhost.nextSibling.id : "";
-				if( !Browser.isSafari1 ||( widgetGhost && widgetGhost.style.display != "none") ) {
+				if( widgetGhost && widgetGhost.style.display != "none" ) {
 					widgetGhost.parentNode.replaceChild(draggedWidget.elm_widget, widgetGhost);
 				} else {
 				    widgetGhost.parentNode.removeChild( widgetGhost );

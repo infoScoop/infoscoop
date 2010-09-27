@@ -198,17 +198,6 @@ IS_SidePanel.prototype.classDef = function () {
 		return tabButton;
 	}
 	
-	if( Browser.isSafari1 ) {
-		var initialize = this.initialize;
-		
-		this.initialize = function() {
-			initialize.apply( this,arguments );
-			
-			treeOpen.style.overflow = "hidden";
-			treeOpen.appendChild( IS_Widget.RssReader.RssItemRender.createTable(1,1) );
-		}
-	}
-	
 	var tabs = {};
 	function addTab( id,opt ) {
 		treeOpen.appendChild( opt.open );
@@ -265,7 +254,7 @@ IS_SidePanel.prototype.classDef = function () {
 		
 		IS_EventDispatcher.newEvent('adjustedSiteMap');
 		
-		treeOpen.style.cursor = ( !Browser.isSafari1? "col-resize" : "e-resize" );
+		treeOpen.style.cursor = "col-resize";
 		treeOpen.title = IS_R.ms_customizeWidthByDrag;
 		IS_EventDispatcher.newEvent('openSiteMap', "portal-tree-menu", null);
 	}
@@ -402,7 +391,7 @@ IS_SidePanel.Drag.dragStart = function(e) {
 		document.body.appendChild(barGhost);
 	}
 	barGhost.innerHTML = "";
-	barGhost.style.height = ( !Browser.isSafari1 ? bar.offsetHeight : bar.style.height );
+	barGhost.style.height = bar.offsetHeight;
 	barGhost.style.width = bar.offsetWidth;
 	barGhost.style.top = findPosY(bar);
 	barGhost.style.left = findPosX(bar);

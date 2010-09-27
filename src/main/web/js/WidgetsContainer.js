@@ -486,61 +486,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			setTimeout(loadContents, 1);
 			
 			if(IS_Portal.lastSaveFailed)
-
 				msg.warn(IS_R.ms_lastlogoutSavingfailure);
-			
-			if( Browser.isSafari1 ) {
-				( function() {
-					var commands = [
-						"change-fontsize","widgets-map","trash","preference"
-					].findAll( function( command ) {
-						var div = $("portal-"+command );
-						
-						return ( div && div.style.display != "none");
-					});
-					
-					function createDisableFilter( command ) {
-						var div = $("portal-"+command );
-						
-						var filter = document.createElement("div");
-						filter.id = "portal-"+command+"-disableFilter";
-						filter.style.position = "absolute";
-						filter.style.top = filter.style.left = 0;
-						filter.style.width = div.parentNode.offsetWidth;
-						filter.style.height = div.parentNode.offsetHeight;
-						
-						filter.style.opacity = "0.5";
-						filter.style.backgroundColor = "white"
-						
-						IS_Event.observe( filter,'mousedown',IS_Event.stop );
-						IS_Event.observe( filter,'mouseup',IS_Event.stop );
-						IS_Event.observe( filter,'click',IS_Event.stop )
-						
-						return filter;
-					}
-					
-					commands.each( function( command ) {
-						var div = $("portal-"+command );
-						div.style.position = "relative";
-						
-						var filter = createDisableFilter( command );
-						filter.style.display = "none"
-						
-						div.appendChild( filter );
-					});
-					
-					IS_Portal.disableCommandBar = function() {
-						commands.each( function( command ) {
-							$("portal-"+command+"-disableFilter").style.display = "block";
-						});
-					}
-					IS_Portal.enableCommandBar = function() {
-						commands.each( function( command ) {
-							$("portal-"+command+"-disableFilter").style.display = "none";
-						});
-					}
-				})();
-			}
 			
 			if(fixedPortalHeader) 
 				IS_Portal.adjustPanelHeight(null);
@@ -984,48 +930,6 @@ IS_WidgetsContainer.adjustColumns = {
 	}
 }
 
-if( Browser.isSafari1 ) {
-	IS_WidgetsContainer.adjustColumns.end = ( function(){
-		var end = IS_WidgetsContainer.adjustColumns.end;
-		
-		return function() {
-			end.apply( this,$A( arguments ));
-			
-			var total = 0;
-			var widths = {};
-			IS_Portal.tabs[IS_Portal.currentTabId].columnsWidth.each( function( columnWidth,i ){ 
-				var width = parseFloat( columnWidth.match(/(\d+(?:.\d+)?)%/)[1] );
-				if( !width || isNaN( width ))
-					return;
-				
-				widths[i] = width;
-				total += width;
-			});
-			
-			var currentTab = IS_Portal.tabs[IS_Portal.currentTabId];
-			var max = ( ( 100-( currentTab.numCol-1 ))/currentTab.numCol ) *currentTab.numCol;
-			if( total >= max -0.01 )
-				return;
-			
-			var scale = max/total;
-			
-			currentTab.columnsWidth = [];
-			var columns = $("columns"+currentTab.tabNumber ).childNodes;
-			var columnNumber = 0;
-			for(var i=0;i<columns.length;i++){
-				var column = columns[i];
-				if(column.className != "column") continue;
-				
-				var width = widths[columnNumber] *scale;
-				column.style.width = width+"%";
-				currentTab.columnsWidth.push( width );
-				
-				columnNumber++;
-			}
-		}
-	})();
-}
-
 IS_Portal.rebuilding = new Object();
 IS_WidgetsContainer.rebuildColumns = function( tabId, numCol, columnsWidth, isReset, isInitialize ) {
 	if(IS_Portal.tabs[tabId].disabledDynamicPanel
@@ -1158,7 +1062,7 @@ IS_WidgetsContainer.addWidget = function (tabId, widgetConf, isBuild, appendFunc
 		IS_Widget.addWidgetCommand(widget);
 	}
 	
-	if(tabId == IS_Portal.currentTabId || ( isBuild && !Browser.isSafari1 ) ){
+	if(tabId == IS_Portal.currentTabId || isBuild ){
 		widget.build();
 		if(appendFunc){
 			appendFunc(widget);
@@ -1536,19 +1440,4 @@ IS_Portal.removeSubWidget = function(_widget, _subWidget, tabId){
  */
 IS_Portal.isSubWidget = function(widgetId){
 	return IS_Portal.subWidgetIds.include(widgetId);
-}
-
-
-IS_Portal.isTabLoading = function(){
-	if( !Browser.isSafari1 ) 
-		return false;
-	
-	var widgetList = IS_Portal.widgetLists[IS_Portal.currentTabId];
-	for(i in widgetList){
-		if( widgetList[i].isLoading) {
-			if( Browser.isSafari1 /*|| ( !widgetList[i].isComplete && widgetList[i].panelType == "StaticPanel")*/)
-				return true;
-		}
-	}
-	return false;
 }

@@ -783,9 +783,6 @@ IS_Widget.RssReader.RssItemRender.prototype.displayInlineDesc = function( widget
 	var headerDiv = widget.parent ? widget.parent.elm_widgetHeader : widget.elm_widgetHeader;
 	if(headerDiv && headerDiv.offsetWidth > 0){
 		var offset = scrolling ? 16 : 0;
-		if( Browser.isSafari1 )
-			offset += 1;
-		
 		var browserOffset = Browser.isIE ? 2 : 1;
 		//rssDesc.style.width = (headerDiv.offsetWidth - offset - browserOffset) + "px";
 		var width = (headerDiv.offsetWidth - offset - browserOffset);
@@ -1302,12 +1299,7 @@ IS_Widget.adjustDescWidth = function() {
 	}
 	
 	function adjustDescObjWidth( obj,offset ) {
-		if( Browser.isSafari1 ) {
-			var widget = obj.widget;
-			if( widget.tabId != IS_Portal.currentTabId ) 
-				return;
-		}
-		
+
 		obj.headerDiv = obj.widget.parent? obj.widget.parent.elm_widgetHeader : obj.widget.elm_widgetHeader;
 		
 		var headerWidth = obj.headerDiv.offsetWidth;

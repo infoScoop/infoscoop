@@ -913,19 +913,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		//this.adjustHeight();
 	}
 	
-	if( Browser.isSafari1 ) {
-	    this.repaint = ( function() {
-	        var repaint = this.repaint;
-	        
-	        return function() {
-				if( !widget.elm_widgetContent.offsetHeight || !( widget.elm_widgetContent.offsetHeight > 0 ))
-	            	return;
-	            
-	            repaint.apply( this,$A( arguments ));
-	        }
-	    }).apply( this );
-	}
-	
 	this.minimize = function () {
 		widget.setUserPref("showLatestNews", false);
 		
@@ -1293,12 +1280,8 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		
 		this.scrollable = opt.scrollable || ( opt.scrollable === undefined )
 		if( this.scrollable) {
-			if( !Browser.isSafari1 ) {
-				viewport.style.overflowX = "hidden";
-				viewport.style.overflowY = "scroll";
-			} else {
-				viewport.style.overflow = "auto";
-			}
+			viewport.style.overflowX = "hidden";
+			viewport.style.overflowY = "scroll";
 		} else {
 			viewport.style.overflow = "hidden";
 		}
@@ -1395,21 +1378,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		}
 	}
 	
-	if( Browser.isSafari1 ) {
-		this.setViewportHeight = ( function() {
-			var setViewportHeight = this.setViewportHeight;
-			
-			return function( height ) {
-				if( this.scrollable && 10 < height && height < 64 ) {
-				// Scroll bar is unshown if there is no minimum height
-					height = 64;
-				}
-				
-				setViewportHeight.apply( this,[height] );
-			}
-		}).apply( this );
-	}
-	
 	this.handleScroll = function( e ) {
 		//if( this.repaintTimeout )
 		  clearTimeout( this.repaintTimeout );
@@ -1426,7 +1394,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 			this.scrolled = true;
 			
 			// Set time-out in 0.5 second after continuous scroll
-			if( Browser.isIE || Browser.isSafari1 )
+			if( Browser.isIE )
 				this.repaintTimeout = setTimeout( this.handleMouseUp.bind( this ),500 );
 		}.bind(this, y), 100);
 		/*
@@ -1523,9 +1491,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 	 * Roll up in case of less than 0 or more than contentHeight and -viewportHeight
 	 */
 	this.view = function( pos ) {
-		if( Browser.isSafari1 && !this.elm_root.offsetHeight )
-			return;
-		
 		var rssItems = this.rssContent.rssItems;
 		
 		var container = this.elm_container;

@@ -36,20 +36,6 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		
 		widget.elm_widgetBox.style.backgroundColor = "#fff";
 		
-		if( Browser.isSafari1 ) {
-			// Not be minimized if window size is changed after getting back from maximization
-			widget.turnbackMaximize = ( function() {
-				var func = widget.turnbackMaximize;
-				
-				return function() {
-					$("maximizeRssDetailTd_" +this.id).style.height =
-						$("MaximizeItemList_"+this.id ).style.height = 100;
-					
-					func.apply( widget );
-				}
-			})();
-		}
-		
 		this.buildMaximizeRssContent();
 		
 		$( widget.elm_widgetContent ).addClassName("RssReader");
@@ -121,12 +107,9 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		var dragBarTd = lrTable.firstChild.firstChild.childNodes[1];
 		dragBarTd.id = 'maximizeDragBar_'+widget.id;
 		dragBarTd.style.width = 5;
-		if( Browser.isSafari1 )
-			dragBarTd.appendChild( IS_Widget.RssReader.RssItemRender.createTable(1,1))
 		
-
 		dragBarTd.title = IS_R.ms_customizeWidthByDrag;
-		dragBarTd.style.cursor = ( !Browser.isSafari1? "col-resize" : "e-resize" );
+		dragBarTd.style.cursor = "col-resize";
 		
 		Event.observe(dragBarTd, 'mousedown', this.drag.dragStart, false,widget.id);
 		

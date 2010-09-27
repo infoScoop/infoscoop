@@ -588,12 +588,6 @@ CalendarComponent.prototype = {
 		}
 		function handleMouseOver( event ) {
 			var e = IS_Event.element( event );
-			//In case of Safari 1, text node enters e			
-			if( Browser.isSafari1 ) {
-				if( e && !e.id && e.parentNode )
-					e = e.parentNode;
-			}
-			
 			var cellDate = cellDates[e.id];
 			if( e && cellDate && !focusDate || focusDate != cellDate ) {
 				if( focusDate ) {

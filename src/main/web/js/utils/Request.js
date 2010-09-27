@@ -169,10 +169,6 @@ IS_Request.Queue = function (servName, time, disabled, checkDuplicate){
 				}
 			}
 		}
-		if( Browser.isSafari1 ) {
-			req.responseText = Browser.Safari.responseText( req.responseText );
-		}
-		
 		}catch(e){
 			msg.warn(getText(e));
 		}

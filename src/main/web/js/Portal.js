@@ -309,8 +309,6 @@ IS_Portal.start = function() {
 			
 			// subWidget in the same tab is always built
 			var currentTabId = IS_Portal.currentTabId;
-			if( Browser.isSafari1 && targetWidget.content.isTimeDisplayMode())
-				IS_Portal.currentTabId = "temp";
 			
 			widgetConf.parentId = "p_" + menuItem.parentId;
 			widget = IS_WidgetsContainer.addWidget( currentTabId, widgetConf , true, function(w){
@@ -319,9 +317,6 @@ IS_Portal.start = function() {
 			});//TODO: The way of passing sub widget.
 			
 			IS_Portal.widgetDropped( widget );
-			
-			if( Browser.isSafari1 && targetWidget.content.isTimeDisplayMode())
-				IS_Portal.currentTabId = currentTabId;
 			
 			//Send to Server
 			//IS_Widget.addWidgetCommand(widget);
@@ -610,23 +605,6 @@ IS_Portal.closeIFrame = function () {
 	IS_Portal.adjustIS_PortalStyle();
 };
 
-if( Browser.isSafari1 ) {
-	IS_Portal.closeIFrame = ( function() {
-		var closeIFrame = IS_Portal.closeIFrame;
-		
-		return function() {
-			if( IS_Portal.currentTabId.indexOf("_") != 0 || IS_Widget.MaximizeWidget )
-				return;
-			
-			IS_Portal.currentTabId = IS_Portal.currentTabId.substring(1);
-			closeIFrame.apply( this,$A( arguments ));
-			
-			IS_Portal.enableCommandBar();
-			IS_Portal.adjustCurrentTabSize();
-		}
-	})();
-}
-
 IS_Portal.goHome = function(){
 	IS_Portal.closeIFrame();
 	IS_Portal.CommandBar.changeDefaultView();
@@ -805,9 +783,6 @@ if(!isTabView){
 		}else{
 			IS_Portal.start();
 		}
-		
-		if( Browser.isSafari1 )
-		  IS_Portal.deleteCache();//TODO:Should be delted at calling index.jsp
 	});
 }
 
@@ -838,11 +813,6 @@ function windowUnload() {
 	}catch(e){
 		alert(IS_R.getResource(IS_R.ms_logofftimeSavingfailure,[getText(e)]));
 	}
-	
-	//Event.unloadCache();
-	// Cache is deleted on loading
-	if( !Browser.isSafari1 )
-		IS_Portal.deleteCache();
 	
 	for ( var id in IS_Portal.widgetLists){
 		for ( var i in IS_Portal.widgetLists[id] ) {
@@ -913,28 +883,9 @@ IS_Portal.buildIFrame = function (aTag) {
 			return;
 		}
 	}
-	if(Browser.isSafari1 && IS_Portal.isTabLoading())
-		return;
+	
 	IS_Portal.showIframe();
 };
-
-if( Browser.isSafari1 ){
-	IS_Portal.buildIFrame = ( function() {
-		var buildIFrame = IS_Portal.buildIFrame;
-		
-		return function( aTag ) {
-			if( IS_Widget.MaximizeWidget )
-				IS_Widget.MaximizeWidget.turnbackMaximize();
-			
-			buildIFrame.apply( this,[aTag]);
-			if( aTag.target != "ifrm")
-				return;
-			
-			IS_Portal.disableCommandBar();
-			IS_Portal.currentTabId = "_"+IS_Portal.currentTabId;
-		}
-	})();
-}
 
 //Trash start
 //TODO: The tarsh handling Safari should be considered as it is hard to maintain.
@@ -1100,12 +1051,8 @@ IS_Portal.Trash = new function() {
 	function emptyAllWidget(){
 		self.widgets = [];
 		
-		//FIXME
-		if( Browser.isSafari1 ) {
-			setTimeout( self.displayModal.bind( self ),100 );
-		} else {
-			self.displayModal();
-		}
+		self.displayModal();
+		
 		var cmd = new IS_Commands.EmptyAllWidgetCommand();
 		IS_Request.CommandQueue.addCommand(cmd);
 	}
@@ -1233,9 +1180,6 @@ IS_Portal.Trash = new function() {
 		if(!this.widgets)
 			this.loadTrashWidgets();
 		
-		if( Browser.isSafari1 )
-			var iframe = document.createElement("iframe");
-		
 		var widgets = this.widgets;
 		for(var i = 0; i < widgets.length; i++){
 			if(existParent(widgets[i])) continue;
@@ -1247,23 +1191,6 @@ IS_Portal.Trash = new function() {
 			var titleTd = createElm("td",[icon, widgets[i].title]);
 			
 			var contextmenuHandler = showContextMenu(widgets[i], titleTd);
-			if( Browser.isSafari1 ) {
-				
-				contextmenuHandler = ( function() {
-					var handler = contextmenuHandler;
-					
-					return function(e) {
-						IS_Event.stop(e);
-						
-						var eventObj = Object.extend( Object.extend({},e),{
-							pageX: e.pageX +findPosX( iframe ),
-							pageY: e.pageY +findPosY( iframe )
-						});
-						
-						handler.apply( this,[eventObj]);
-					}
-				})();
-			}
 			IS_Event.observe(titleTd, "contextmenu",contextmenuHandler, false, "_trash");
 			
 			tr.appendChild(titleTd);
@@ -1285,24 +1212,6 @@ IS_Portal.Trash = new function() {
 		trashBody.appendChild(createElm("tr",listTd));
 		IS_Event.observe(trashTable, "mousedown", hideContextMenu, false, "_trash");
 		//this.modal.update(trashTable);
-		if( Browser.isSafari1 ) {
-			iframe.frameborder = 0;
-			iframe.style.width = iframe.style.height = "100%";
-			
-			var content = document.createElement("div");
-			content.style.height = "100%";
-			content.appendChild( trashTable )
-			IS_Event.observe( iframe,"load",function() {
-				var doc = iframe.document || iframe.contentWindow.document;
-				
-				doc.body.innerHTML = "";
-				doc.body.appendChild( content );
-			} );
-			//FIXME blank.html may help...
-			iframe.src = "./iframe.jsp"
-			
-			trashTable = iframe;
-		}
 		
 		this.modal.setContent(trashTable);
 		
@@ -1402,9 +1311,6 @@ IS_Portal.buildFontSelectDiv = function(){
 		fontChangeDiv.appendChild(fontChangeDivDel);
 		fontChangeDiv.appendChild(fontChangeDivSta);
 		fontChangeDiv.appendChild(fontChangeDivAdd);
-		
-		if( Browser.isSafari1 )
-			return;
 		
 		setButtonActionEvent(fontChangeDivAdd, "mouseover", "outset");
 		setButtonActionEvent(fontChangeDivSta, "mouseover", "outset");
@@ -1545,17 +1451,6 @@ IS_Portal.widgetDisplayUpdated = function(){
 //	IS_Widget.adjustDescWidth();
 	IS_Widget.processAdjustRssDesc();
 	IS_Widget.adjustEditPanelsTextWidth();
-}
-
-if( Browser.isSafari1 ) {
-	IS_Portal.adjustCurrentTabSize =  function() {
-		IS_Widget.processAdjustRssDesc();
-		IS_Widget.RssReader.RssItemRender.adjustRssDesc();
-		
-		IS_Portal.adjustSiteMenuHeight();
-		IS_Portal.adjustIframeHeight();
-		IS_Portal.adjustGadgetHeight();
-	}
 }
 
 IS_Portal.windowOverlay = function(id, tag){

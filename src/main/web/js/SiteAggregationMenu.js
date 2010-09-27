@@ -204,15 +204,10 @@ IS_TreeMenu.addMenuItem = function(menuItem){
 			
 			// subWidget in the same tab is always built
 			var currentTabId = IS_Portal.currentTabId;
-			if( Browser.isSafari1 && targetWidget.content.isTimeDisplayMode())
-				IS_Portal.currentTabId = "temp";
 			widgetConf.parentId = "p_" + menuItem.parentId;
 			widget = IS_WidgetsContainer.addWidget( currentTabId, widgetConf , true, function(w){
 				w.elm_widget.className = "subWidget";
 			});//TODO: The way of passing subWidget
-			
-			if( Browser.isSafari1 && targetWidget.content.isTimeDisplayMode())
-				IS_Portal.currentTabId = currentTabId;
 			
 			IS_Portal.addSubWidget(targetWidget.id, widget.id);
 			targetWidget.content.addSubWidget(widget, nextSiblingId);
@@ -914,26 +909,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		this.overlay = iframe;
 	}
 	
-	if( Browser.isSafari1 ) {
-		// fix 327 Can not operate after displaying menu
-		this.initMenuOverlay = ( function() {
-			var initMenuOverlay = this.initMenuOverlay;
-			return function() {
-				var result = initMenuOverlay.apply( this );
-				Event.observe( document.body,"mousemove",function(e) {
-						if( !this.overlay.style.display == "none")
-							return;
-						
-						if( Element.childOf( Event.element( e ),$("container") ) )
-							return;
-						
-						this.overlay.style.display = "none";
-					}.bind( this ),true );
-				return result;
-			}
-		}).apply( this );
-	}
-
 	/**
      * Obtain mouse over handler
      * @param node li tag of Top menu
@@ -2233,37 +2208,6 @@ IS_SiteAggregationMenu.getDraggable = function(menuItem, menuIconDiv, menuItemDi
 		},
 		startDroppableElement: document.body
 	});
-}
-
-if( Browser.isSafari1 ) {
-	// The fix for the error if the menu and sitemap is dropped by clicking
-	IS_SiteAggregationMenu.getDraggable = ( function() {
-		var getDraggable = IS_SiteAggregationMenu.getDraggable;
-		
-		return function() {
-			var draggableObj = getDraggable.apply( this,$A( arguments ) );
-			var onEnd = draggableObj.options.onEnd;
-			
-			draggableObj.options.onEnd = function( draggable,e ) {
-				onEnd.apply( this,$A( arguments ) );
-				
-				var ele = draggable.element;
-				var styleObj = ele.style;
-				styleObj.top = styleObj.left = styleObj.bottom = styleObj.right = 0;
-				
-				var dummyDiv = document.createElement("div");
-				var parentNode = ele.parentNode;
-				parentNode.replaceChild( dummyDiv,ele );
-				document.createElement("div").appendChild( ele );
-				
-				setTimeout( function() {
-					parentNode.replaceChild( ele,dummyDiv )
-				},10 );
-			}
-			
-			return draggableObj;
-		}
-	})();
 }
 
 IS_SiteAggregationMenu.closeBubble = function(el) {

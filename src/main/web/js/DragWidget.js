@@ -239,8 +239,7 @@ IS_Droppables.replaceLocation = function(element,widget, x, y){
 		var subCol = widget.elm_widgetContent.firstChild;
 		var widgetGhost = IS_Draggable.ghost;
 		var scrollOffset = IS_Portal.tabs[IS_Portal.currentTabId].panel.scrollTop;//replaceLocation is called in MultiRssReader. MultiRssReader must be in the panel.
-		if( widgetGhost.parentNode != subCol ||
-			( Browser.isSafari1 && !Element.visible( widgetGhost )) ){
+		if( widgetGhost.parentNode != subCol ){
 			//Use existing logic if it goes inside MultiRssReader first time
 			for (var j=0; j<subCol.childNodes.length; j++ ) {
 				var div = subCol.childNodes[j];
@@ -268,12 +267,6 @@ IS_Droppables.replaceLocation = function(element,widget, x, y){
 				widgetGhost.subCol = subNearGhost.subCol;
 			}
 			
-			if( Browser.isSafari1 ) {
-				if( (widgetGhost.nextSibling && element.id == widgetGhost.nextSibling.id)||
-			 		(widgetGhost.previousSibling && element.id == widgetGhost.previousSibling.id)){
-					widgetGhost.style.display = "none";
-				}
-			}
 		}else{
 			//Mouse cursor must fit into the height of MultiRssReader that does not display ghost in the case of moving inside MultiRssReader
 			//Mouse is passed Multi and onHover to panel if it does not fit into.
@@ -296,8 +289,8 @@ IS_Droppables.replaceLocation = function(element,widget, x, y){
 			}
 			
 			if( subNearGhost &&
-				( !Browser.isSafari1 ||( subNearGhost.id != element.id )&&
-				( !subNearGhost.previousSibling || subNearGhost.previousSibling.id != element.id )) ){
+				( subNearGhost.id != element.id ) &&
+				( !subNearGhost.previousSibling || subNearGhost.previousSibling.id != element.id ) ){
 				widgetGhost.parentNode.insertBefore(widgetGhost, subNearGhost);
 				widgetGhost.subCol = subCol;
 			}
@@ -464,12 +457,6 @@ var IS_DroppableOptions = {
 //			console.info(["move",widgetGhost,nearGhost]);
 		}
 		
-		if( Browser.isSafari1 ) {
-			if( ( nearGhost && element.id == nearGhost.id )|| 
-				( widgetGhost.previousSibling && element.id == widgetGhost.previousSibling.id)){
-				widgetGhost.style.display = "none";
-			}
-		}
 	},
 	outHover: function(element) {
 	}
@@ -1218,73 +1205,6 @@ IS_Draggable.prototype = {
     }
     return { top: T, left: L, width: W, height: H };
   }
-}
-
-if( Browser.isSafari1 ) {
-	IS_Draggable.prototype.initialize = ( function() {
-		var initialize = IS_Draggable.prototype.initialize;
-		
-		return function() {
-			initialize.apply( this,$A( arguments ));
-			
-			this.options.scrollSensitivity = 100;
-		}
-	})();
-	
-	IS_Draggable.prototype.startDrag = ( function() {
-		var startDrag = IS_Draggable.prototype.startDrag;
-		
-		return function() {
-			startDrag.apply( this,$A( arguments ));
-			
-			Element.show( this.element );
-			Element.setOpacity( this.element,0.3 );
-			
-			var bar = $("autoScrollHoldBar");
-			if( !bar ) {
-				var bar = IS_Widget.RssReader.RssItemRender.createTable(1,1);
-				bar.id = "autoScrollHoldBar";
-				bar.style.width = 0;
-				bar.style.height = 0;
-				bar.style.top = 0;
-				bar.style.position = "absolute";
-				
-				document.body.appendChild( bar );
-			}
-			
-			bar.style.display = "";
-			bar.style.height = document.body.offsetHeight;
-		}
-	})();
-	
-	IS_Draggable.prototype.updateDrag = ( function() {
-		var updateDrag = IS_Draggable.prototype.updateDrag;
-		
-		return function() {
-			updateDrag.apply( this,$A( arguments ));
-			
-			var bar = $("autoScrollHoldBar");
-			var y = parseInt(( IS_Draggable.dummyElement.style.top+"").match(/(\d+)/)[1]) +
-				IS_Draggable.dummyElement.offsetHeight;
-			
-			if( bar.offsetHeight < y )
-				bar.style.height = y;
-		}
-	})();
-	
-	IS_Draggable.prototype.finishDrag = ( function() {
-		var finishDrag = IS_Draggable.prototype.finishDrag;
-		
-		return function() {
-			Element.setOpacity( this.element,1 );
-		  	
-			finishDrag.apply( this,$A( arguments ));
-			
-			var bar = $("autoScrollHoldBar");
-			bar.style.height = 1;
-			bar.style.display = "none"
-		}
-	})();
 }
 
 IS_Draggables.keyEvent = new function(){

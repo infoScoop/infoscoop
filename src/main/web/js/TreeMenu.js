@@ -488,21 +488,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			
 			// 200-300millsec can be lost as addListener executes new Array.
 			function getPostDragHandler(menuItemId, handler){
-				if( Browser.isSafari1 ) {
-					// Fix for display of item dropped by clicking
-					return function() {
-						var dummyDiv = menuDiv.cloneNode( true );
-						var parentNode = menuDiv.parentNode;
-						parentNode.replaceChild( dummyDiv,menuDiv );
-						postDragHandler( menuItemId );
-						
-						setTimeout( function() {
-							parentNode.replaceChild( menuDiv,dummyDiv )
-						},10 );
-					}
-				} else {
-					return function(){ postDragHandler(menuItemId, handler);};
-				}
+				return function(){ postDragHandler(menuItemId, handler);};
 			}
 			function postDragHandler(menuItemId, handler){
 				//fix 209 Sometimes the widget that can be dropped plurally is dropped to a tab can not be dropped.
@@ -542,15 +528,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			}
 			
 			function getCloseWidgetHandler(menuItemId){
-				if( Browser.isSafari1 ) {
-					return function() {
-						menuDiv.style.display = "none"
-						closeWidgetHandler( menuItemId );
-						menuDiv.style.display = "block"
-					}
-				} else {
-					return function(){ closeWidgetHandler(menuItemId);};
-				}
+				return function(){ closeWidgetHandler(menuItemId);};
 			}
 			function closeWidgetHandler(menuItemId){
 //				IS_Event.observe(itemTd, "mousedown", handler, false, "_menu");

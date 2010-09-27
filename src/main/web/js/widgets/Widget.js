@@ -1155,10 +1155,6 @@ IS_Widget.prototype.classDef = function() {
 			    timeout : contentOpt.timeout || ajaxRequestTimeout,
 			    retryCount : contentOpt.retryCount || ajaxRequestRetryCount,
 			    onSuccess: function(req, obj) {
-					if( Browser.isSafari1 ) {
-			    		if( self.isSuccess && !req.status && !req.responseText )
-			    			return this.on304( req,obj );
-			    	}
 					var _authType = req.getResponseHeader("MSDPortal-AuthType");
 					if(_authType){
 						self.iframe = false;
@@ -1473,7 +1469,6 @@ IS_Widget.prototype.classDef = function() {
 			alert(IS_R.ms_needsAuthentication);
 			return;
 		}
-		if( Browser.isSafari1 && IS_Portal.isTabLoading() )return;
 		
 		if( this.content && this.content.getRssReaders ) {
 			var rssReaders = this.content.getRssReaders();
