@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<form:form modelAttribute="tabTemplate" id="add_tab" method="post" action="${action}">
+<form:form modelAttribute="tabTemplate" id="add_tab" method="post" action="updateTab">
 	<div class="infoScoop">
 		<h1>タブ設定画面</h1>
 		<p><label>タイトル：</label><form:input path="name"/></p>
@@ -14,7 +14,6 @@
 		</p>
 		<form:hidden path="id" />
 		<form:hidden path="tabId" />
-		<form:hidden path="layout"/>
 		<form:hidden path="originalId"/>
 		<form:hidden path="layoutModified"/>
 		<div id="portal-site-aggregation-menu"></div>

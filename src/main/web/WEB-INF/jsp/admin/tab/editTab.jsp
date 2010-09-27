@@ -164,7 +164,6 @@ IS_Portal = {
 <script src="../../js/widgets/rssreader/RssItemRender.js"></script>
 <script src="../../js/widgets/calendar/Calendar.js"></script>
 <script src="../../js/widgets/calendar/iCalendar.js"></script>
-<script src="../../js/widgets/Message/Message.js"></script>
 <script src="../../js/widgets/MiniBrowser/MiniBrowser.js"></script>
 <script src="../../js/widgets/MiniBrowser/FragmentMiniBrowser.js"></script>
 
@@ -220,8 +219,8 @@ function prepareStaticArea(){
 		edit_cover.id = "edit_div_" + j;
 		edit_cover.className = "edit_static_gadget_hide";
 		
-		var editLayoutMouseOver = function(parent, child) {
-				setModal(parent,child)
+		var editLayoutMouseOver = function(parent, child,containerId) {
+				setModal(parent,child,containerId);
 				parent.appendChild(child);
 				child.className = "edit_static_gadget_show";
 		};
@@ -230,12 +229,12 @@ function prepareStaticArea(){
 				parent.removeChild(child);
 		};
 		
-		Event.observe(div, 'mouseover', editLayoutMouseOver.bind(null, div, edit_cover),false);
+		Event.observe(div, 'mouseover', editLayoutMouseOver.bind(null, div, edit_cover, containerId),false);
 		Event.observe(edit_cover, 'mouseout', editLayoutMouseOut.bind(null, div, edit_cover), false);
 
-		function setModal(div, edit_cover){
+		function setModal(div, edit_cover, containerId){
+	
 			if(edit_cover.firstChild)return;
-
 			if(div.firstChild){
 				edit_cover.appendChild( document.createTextNode('Edit') );
 				edit_cover.href = hostPrefix + "/manager/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + containerId;
@@ -260,9 +259,6 @@ function prepareStaticArea(){
 function init() {
 
 	Event.observe('submit_button', 'click', changeFlag, false);
-
-	$('layout').value = $("staticAreaContainer").innerHTML;
-
 	prepareStaticArea();
 
 	new IS_WidgetsContainer("/manager/tab/widsrv");
@@ -655,7 +651,6 @@ function init() {
 						var layoutClick = function(el,e) {
 							$('staticAreaContainer').innerHTML = el.innerHTML;
 							prepareStaticArea();
-							//$('layout').value = $('staticAreaContainer').innerHTML;
 							replaceLayout($('staticAreaContainer').innerHTML);
 							$('layoutModified').value = "true";
 							//TODO:remove ols static gadgets;
@@ -683,12 +678,10 @@ function init() {
 		  afterOpen:function(){
 			  if(initEditLayoutPanel)return;
 			  initEditLayoutPanel = true;
-			  $("edit_layout_textarea").innerHTML = $F('layout');
 			  Event.observe( $('edit_layout_ok'), 'click', function(){
 				  var layout = $("edit_layout_textarea").value;
 				  $('staticAreaContainer').innerHTML = layout;
 				  prepareStaticArea();
-				  //$('layout').value = $('staticAreaContainer').innerHTML;
 				  replaceLayout($('staticAreaContainer').innerHTML);
 				  $('layoutModified').value = "true";
 				  Control.Modal.close();

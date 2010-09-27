@@ -95,7 +95,6 @@ public class TabController {
 			tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
 			tabTemplateDAO.save(tab);
 			model.addAttribute(tab);
-			model.addAttribute("action", "addTab");
 			return "tab/editTab";
 		
 	}
@@ -110,7 +109,6 @@ public class TabController {
 			tabCopy.setOriginalId(Integer.valueOf(id));
 			tabTemplateDAO.save(tabCopy);
 			model.addAttribute(tabCopy);
-			model.addAttribute("action", "updateTab");
 	}
 
 	@RequestMapping
@@ -304,42 +302,36 @@ public class TabController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public void addTab(TabTemplate tab, Model model)throws Exception {		
-		tab.setTemp(0);
-		tabTemplateDAO.save(tab);
-		model.addAttribute(tab);
-	}
-	
-	@RequestMapping(method = RequestMethod.POST)
-	@Transactional
 	public void updateTab(TabTemplate formTab,
 			@RequestParam("layoutModified") String layoutModified, 
 			Model model)throws Exception {
-		TabTemplate tabOriginal = 
-			tabTemplateDAO.get(Integer.toString(formTab.getOriginalId()));
-		
+
 		TabTemplate tab = 
 			tabTemplateDAO.get(Integer.toString(formTab.getId()));
 		tab.setName(formTab.getName());
 		tab.setTemp(0);
 		
 		tabTemplateDAO.save(tab);
-		
-		Map<String, TabTemplateStaticGadget> oldGadgetMap = new HashMap<String, TabTemplateStaticGadget>();
-		for(TabTemplateStaticGadget gadget : tab.getTabTemplateStaticGadgets())
-			oldGadgetMap.put(gadget.getContainerId(), gadget);
 
-		WidgetDAO widgetDAO = WidgetDAO.newInstance();
-		for(TabTemplateStaticGadget gadget : tabOriginal.getTabTemplateStaticGadgets()){
-			TabTemplateStaticGadget oldGadget = oldGadgetMap.get(gadget.getContainerId());
-			if(!oldGadget.getGadgetInstance().equals(gadget.getGadgetInstance()))
-				widgetDAO.deleteStaticWidgetByTabIdAndWidgetId(tab.getTabId(), gadget.getContainerId());
-		}
-		tabTemplateDAO.delete(tabOriginal);
+		if(formTab.getOriginalId() != null){
+			TabTemplate tabOriginal = 
+				tabTemplateDAO.get(Integer.toString(formTab.getOriginalId()));
 
-		//if(tab.isLayoutModified()){
-		if(Boolean.valueOf(layoutModified)){
-			widgetDAO.deleteStaticWidgetByTabId(tab.getTabId());
+			Map<String, TabTemplateStaticGadget> oldGadgetMap = new HashMap<String, TabTemplateStaticGadget>();
+			for(TabTemplateStaticGadget gadget : tab.getTabTemplateStaticGadgets())
+				oldGadgetMap.put(gadget.getContainerId(), gadget);
+
+			WidgetDAO widgetDAO = WidgetDAO.newInstance();
+			for(TabTemplateStaticGadget gadget : tabOriginal.getTabTemplateStaticGadgets()){
+				TabTemplateStaticGadget oldGadget = oldGadgetMap.get(gadget.getContainerId());
+				if(!oldGadget.getGadgetInstance().equals(gadget.getGadgetInstance()))
+					widgetDAO.deleteStaticWidgetByTabIdAndWidgetId(tab.getTabId(), gadget.getContainerId());
+			}
+			tabTemplateDAO.delete(tabOriginal);
+			//if(tab.isLayoutModified()){
+			if(Boolean.valueOf(layoutModified)){
+				widgetDAO.deleteStaticWidgetByTabId(tab.getTabId());
+			}
 		}
 		model.addAttribute(tab);
 	}

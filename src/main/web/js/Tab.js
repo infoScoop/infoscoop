@@ -1271,19 +1271,20 @@ IS_Portal.buildPanel = function(panelNumber, type, layout){
 	tr.appendChild( td );
 	
 	// static
-	var staticPanel = document.createElement("div");
-	
-	staticPanel.id = "static-panel"+panelNumber;
-	var staticDiv = document.createElement("div");
-	staticPanel.appendChild(staticDiv);
-	staticDiv.id = "static-portal-widgets"+panelNumber;
-	
-	if(type == "static"){
-		staticPanel.innerHTML = layout;
+	if(layout){
+		var staticPanel = document.createElement("div");
 		
-		td.appendChild(staticPanel);
+		staticPanel.id = "static-panel"+panelNumber;
+		var staticDiv = document.createElement("div");
+		staticPanel.appendChild(staticDiv);
+		staticDiv.id = "static-portal-widgets"+panelNumber;
+		
+		if(type == "static"){
+			staticPanel.innerHTML = layout;
+			
+			td.appendChild(staticPanel);
+		}
 	}
-	
 	// dynamic
 	var dynamicPanel = document.createElement("div");
 	dynamicPanel.style.clear = "both";
