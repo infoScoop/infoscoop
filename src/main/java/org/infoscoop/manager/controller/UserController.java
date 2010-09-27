@@ -3,9 +3,13 @@ package org.infoscoop.manager.controller;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import org.infoscoop.dao.GroupDAO;
+import org.infoscoop.dao.RoleDAO;
 import org.infoscoop.dao.UserDAO;
 import org.infoscoop.dao.model.User;
+import org.infoscoop.dao.model.Group;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -14,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import sample.appsforyourdomain.AppsForYourDomainClient;
+
+import com.google.gdata.data.appsforyourdomain.Email;
 import com.google.gdata.data.appsforyourdomain.provisioning.UserEntry;
 import com.google.gdata.data.appsforyourdomain.provisioning.UserFeed;
 
@@ -27,13 +33,27 @@ public class UserController {
 	}
 
 	@RequestMapping(method=RequestMethod.GET)
+	@Transactional
+	public String dbCheck(Model model) throws Exception {
+		List<User> users = UserDAO.newInstance().all();
+
+		for (int i=0; i < users.size(); i++){
+			int fuga = users.get(i).getGroups().hashCode();
+			System.out.println(fuga);
+		}
+
+		return "redirect:index";
+	}
+
+	@RequestMapping(method=RequestMethod.GET)
 	public String save(Model model) throws Exception {
+
 		String adminAddress = "y_yoshida@beacon-it.co.jp";
 		String domain = "beacon-it.co.jp";
 		String password = "z1x2c3v4";
 		AppsForYourDomainClient client = new AppsForYourDomainClient(adminAddress, password, domain);
 		int size = client.retrieveAllUsers().getEntries().size();
-//		UserFeed hoge = client.retrieveAllUsers();
+//		int fuga = client.getGroupService().retrieveAllGroups().getEntries().size();
 
 		int max = 100;
 		String firstName = null;
@@ -41,6 +61,7 @@ public class UserController {
 			UserFeed users = client.retrievePageOfUsers(firstName);
 			for (UserEntry entry : users.getEntries()) {
 				User user = new User();
+//				Email hoge = entry.getEmail();
 				String name = entry.getTitle().getPlainText();
 				String mail = name + "@" + domain;
 				user.setEmail(mail);

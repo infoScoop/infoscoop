@@ -3,6 +3,7 @@ package org.infoscoop.dao;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.infoscoop.dao.model.Group;
 import org.infoscoop.dao.model.User;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -35,4 +36,5 @@ public class UserDAO extends HibernateDaoSupport {
 	public void save(User item){
 		super.getHibernateTemplate().saveOrUpdate(item);
 	}
+
 }

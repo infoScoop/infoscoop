@@ -10,6 +10,9 @@
 function sync(){
 	window.location.href = "save";
 }
+function dbCheck(){
+	window.location.href = "dbCheck";
+}
 </script>
 <link href="http://jsajax.com/jQuery/prettyLoader/css/prettyLoader.css" rel="stylesheet" type="text/css" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
@@ -52,6 +55,7 @@ $(function(){
 
 
 <div>
+	<input id="check" type="button" value="check" onclick="dbCheck()"/>
 	<input id="syncButton" type="button" value="同期" onclick="sync()"/>
 	<span id="message" style="visibility:hidden">同期しています。</span>
 	<div id="prog" style="width:250px; visibility:hidden"></div>

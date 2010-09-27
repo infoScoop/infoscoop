@@ -1,15 +1,12 @@
 package org.infoscoop.manager.controller;
 
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
-import org.infoscoop.dao.RoleDAO;
-import org.infoscoop.dao.UserDAO;
 import org.infoscoop.dao.GroupDAO;
-import org.infoscoop.dao.model.Role;
-import org.infoscoop.dao.model.RolePrincipal;
+import org.infoscoop.dao.UserDAO;
 import org.infoscoop.dao.model.User;
 import org.infoscoop.dao.model.Group;
 import org.springframework.stereotype.Controller;
@@ -19,85 +16,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
+import sample.appsforyourdomain.AppsForYourDomainClient;
+
+import com.google.gdata.data.appsforyourdomain.Email;
+import com.google.gdata.data.appsforyourdomain.provisioning.EmailListEntry;
+import com.google.gdata.data.appsforyourdomain.provisioning.EmailListFeed;
+import com.google.gdata.data.appsforyourdomain.provisioning.UserEntry;
+import com.google.gdata.data.appsforyourdomain.provisioning.UserFeed;
+
 
 @Controller
 public class GroupController {
 	@RequestMapping(method=RequestMethod.GET)
 	public void index(Model model) throws Exception {
-		List<Role> roles = RoleDAO.newInstance().all();
-		System.out.print(roles);
-		model.addAttribute("roles", roles);
+		List<Group> groups = GroupDAO.newInstance().all();
+		System.out.print(groups);
+		model.addAttribute("groups", groups);
 	}
 
 	@RequestMapping(method=RequestMethod.GET)
-	@Transactional
-	public void edit( @RequestParam(value="id", required=false) String roleId, Model model)
-			throws Exception {
-		Role role;
-		if(roleId == null){
-			role = new Role();
-		}else{
-			role = RoleDAO.newInstance().get(roleId);
-		}
-		model.addAttribute("role", role);
+	public String save(Model model) throws Exception {
 
-		List<User> users = UserDAO.newInstance().all();
-		Map<String, Object> map = new HashMap<String, Object>();
-		for(User user : users){
-			map.put("name", user.getName());
-		}
-		MappingJacksonJsonView view = new MappingJacksonJsonView();
-		view.setAttributesMap(map);
-		model.addAttribute("json", view);
-	}
+		String adminAddress = "y_yoshida@beacon-it.co.jp";
+		String domain = "beacon-it.co.jp";
+		String password = "z1x2c3v4";
+		AppsForYourDomainClient client = new AppsForYourDomainClient(adminAddress, password, domain);
 
-	@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody List<User> autocompleteUser( @RequestParam("query") String query, Model model )
-			throws Exception {
-		return UserDAO.newInstance().getJson(query);
-	}
-
-	@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody List<Group> autocompleteGroup( @RequestParam("query") String query, Model model )
-			throws Exception {
-		return GroupDAO.newInstance().getJson(query);
-	}
-
-	@RequestMapping(method=RequestMethod.GET)
-	public String delete( @RequestParam("roleId") String roleId, Model model)
-			throws Exception {
-		RoleDAO.newInstance().delete(roleId);
-		return "redirect:index";
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
-	public String deleteRolePrincipal( Role role, Model model)
-			throws Exception {
-
-		List<RolePrincipal> list = new ArrayList<RolePrincipal>();
-		for(RolePrincipal rolePrincipal : role.getRolePrincipals()){
-			if(rolePrincipal !=null && rolePrincipal.getId() != null){
-				if(rolePrincipal.getType() != null)
-					list.add(rolePrincipal);
-				else if(rolePrincipal.getType() == null)
-					role.getDeletePrincipalIdList().add(rolePrincipal.getId().toString());
+		int size = client.retrieveAllEmailLists().getEntries().size();
+		int max = 100;
+		String firstName = null;
+		for (int i = 0; i < size/max+1; i++) {
+			System.out.println("firstName ="+ firstName);
+			EmailListFeed groups = client.retrievePageOfEmailLists(firstName);
+			for (EmailListEntry entry : groups.getEntries()) {
+				String name = entry.getTitle().getPlainText();
+				Group group = new Group();
+				group.setName(name);
+				GroupDAO.newInstance().save(group);
+				firstName = name;
 			}
 		}
-		role.setRolePrincipals(list);
-		model.addAttribute("role", role);
 
-		return "group/edit";
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
-	@Transactional
-	public String save(Role role) throws Exception {
-		RoleDAO.newInstance().save(role);
-		for(String id: role.getDeletePrincipalIdList()){
-			RolePrincipal principal = RoleDAO.newInstance().getRolePrincipal(id);
-			RoleDAO.newInstance().deleteRolePrincipal(principal);
-		}
 		return "redirect:index";
 	}
 }

@@ -11,7 +11,7 @@
 		<meta attribute="sync-DAO">false</meta>
 		<id
 			name="Id"
-			type="integer"
+			type="java.lang.String"
 			column="id"
 		>
 			<generator class="native"/>
@@ -24,6 +24,12 @@
 			not-null="true"
 			length="255"
 		/>
+
+
+		<set name="Users" table="is_user_group">
+			<key column="fk_group_id"/>
+			<many-to-many class="User" column="fk_user_id"/>
+		</set>
 
 
 	</class>

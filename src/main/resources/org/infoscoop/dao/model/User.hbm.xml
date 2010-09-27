@@ -10,11 +10,11 @@
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
-			name="Email"
-			type="string"
-			column="email"
+			name="Id"
+			type="java.lang.String"
+			column="id"
 		>
-			<generator class="assigned"/>
+			<generator class="native"/>
 		</id>
 
 		<property
@@ -24,6 +24,18 @@
 			not-null="true"
 			length="255"
 		/>
+		<property
+			name="Email"
+			column="email"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+
+		<set name="Groups" table="is_user_group">
+			<key column="fk_user_id"/>
+			<many-to-many class="Group" column="fk_group_id"/>
+		</set>
 
 
 	</class>

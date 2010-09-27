@@ -17,6 +17,7 @@ public abstract class BaseUser  implements Serializable {
 	public static String REF = "User";
 	public static String PROP_NAME = "Name";
 	public static String PROP_EMAIL = "Email";
+	public static String PROP_ID = "Id";
 
 
 	// constructors
@@ -27,8 +28,8 @@ public abstract class BaseUser  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseUser (java.lang.String email) {
-		this.setEmail(email);
+	public BaseUser (java.lang.String id) {
+		this.setId(id);
 		initialize();
 	}
 
@@ -36,11 +37,13 @@ public abstract class BaseUser  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseUser (
-		java.lang.String email,
-		java.lang.String name) {
+		java.lang.String id,
+		java.lang.String name,
+		java.lang.String email) {
 
-		this.setEmail(email);
+		this.setId(id);
 		this.setName(name);
+		this.setEmail(email);
 		initialize();
 	}
 
@@ -51,29 +54,33 @@ public abstract class BaseUser  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String email;
+	private java.lang.String id;
 
 	// fields
 	private java.lang.String name;
+	private java.lang.String email;
+
+	// collections
+	private java.util.Set<org.infoscoop.dao.model.Group> groups;
 
 
 
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  generator-class="assigned"
-     *  column="email"
+     *  generator-class="native"
+     *  column="id"
      */
-	public java.lang.String getEmail () {
-		return email;
+	public java.lang.String getId () {
+		return id;
 	}
 
 	/**
 	 * Set the unique identifier of this class
-	 * @param email the new ID
+	 * @param id the new ID
 	 */
-	public void setEmail (java.lang.String email) {
-		this.email = email;
+	public void setId (java.lang.String id) {
+		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -97,22 +104,61 @@ public abstract class BaseUser  implements Serializable {
 
 
 
+	/**
+	 * Return the value associated with the column: email
+	 */
+	public java.lang.String getEmail () {
+		return email;
+	}
+
+	/**
+	 * Set the value related to the column: email
+	 * @param email the email value
+	 */
+	public void setEmail (java.lang.String email) {
+		this.email = email;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: Groups
+	 */
+	public java.util.Set<org.infoscoop.dao.model.Group> getGroups () {
+		return groups;
+	}
+
+	/**
+	 * Set the value related to the column: Groups
+	 * @param groups the Groups value
+	 */
+	public void setGroups (java.util.Set<org.infoscoop.dao.model.Group> groups) {
+		this.groups = groups;
+	}
+
+	public void addToGroups (org.infoscoop.dao.model.Group group) {
+		if (null == getGroups()) setGroups(new java.util.TreeSet<org.infoscoop.dao.model.Group>());
+		getGroups().add(group);
+	}
+
+
+
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.dao.model.User)) return false;
 		else {
 			org.infoscoop.dao.model.User user = (org.infoscoop.dao.model.User) obj;
-			if (null == this.getEmail() || null == user.getEmail()) return false;
-			else return (this.getEmail().equals(user.getEmail()));
+			if (null == this.getId() || null == user.getId()) return false;
+			else return (this.getId().equals(user.getId()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getEmail()) return super.hashCode();
+			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getEmail().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

@@ -27,7 +27,7 @@ public abstract class BaseGroup  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseGroup (java.lang.Integer id) {
+	public BaseGroup (java.lang.String id) {
 		this.setId(id);
 		initialize();
 	}
@@ -36,7 +36,7 @@ public abstract class BaseGroup  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseGroup (
-		java.lang.Integer id,
+		java.lang.String id,
 		java.lang.String name) {
 
 		this.setId(id);
@@ -51,10 +51,13 @@ public abstract class BaseGroup  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.Integer id;
+	private java.lang.String id;
 
 	// fields
 	private java.lang.String name;
+
+	// collections
+	private java.util.Set<org.infoscoop.dao.model.User> users;
 
 
 
@@ -64,7 +67,7 @@ public abstract class BaseGroup  implements Serializable {
      *  generator-class="native"
      *  column="id"
      */
-	public java.lang.Integer getId () {
+	public java.lang.String getId () {
 		return id;
 	}
 
@@ -72,7 +75,7 @@ public abstract class BaseGroup  implements Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (java.lang.Integer id) {
+	public void setId (java.lang.String id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
@@ -93,6 +96,28 @@ public abstract class BaseGroup  implements Serializable {
 	 */
 	public void setName (java.lang.String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: Users
+	 */
+	public java.util.Set<org.infoscoop.dao.model.User> getUsers () {
+		return users;
+	}
+
+	/**
+	 * Set the value related to the column: Users
+	 * @param users the Users value
+	 */
+	public void setUsers (java.util.Set<org.infoscoop.dao.model.User> users) {
+		this.users = users;
+	}
+
+	public void addToUsers (org.infoscoop.dao.model.User user) {
+		if (null == getUsers()) setUsers(new java.util.TreeSet<org.infoscoop.dao.model.User>());
+		getUsers().add(user);
 	}
 
 

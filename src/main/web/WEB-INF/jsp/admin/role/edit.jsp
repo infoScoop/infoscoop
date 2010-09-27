@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <tiles:insertDefinition name="base.definition" flush="true">
-	<tiles:putAttribute name="type" value="group"/>
-	<tiles:putAttribute name="title" value="group.title"/>
+	<tiles:putAttribute name="type" value="role"/>
+	<tiles:putAttribute name="title" value="role.title"/>
 	<tiles:putAttribute name="body" type="string">
 <script type="text/javascript" class="source">
 //
@@ -41,12 +41,14 @@ $(function () {
 					var url = 'autocompleteUser';
 				else if (type == "組織")
 					var url = 'autocompleteGroup';
-				$.post( url, params, function(data) {
+				$.post( url, params, response);
+/*				$.post( url, params, function(data) {
 					var list = [];
 					for(var i in data)
 						list.push(data[i].name);
 					response(list);
 				}, "json" );
+*/
 		}});
 	});
 });

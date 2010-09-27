@@ -509,9 +509,9 @@ create index is_tab_template_personalize_gadgets_widget_id on IS_TAB_TEMPLATE_PE
 -- IS_USERS
 --
 CREATE TABLE IS_USERS (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 `email` VARCHAR( 255 ) NOT NULL ,
-`name` VARCHAR( 255 ) NOT NULL ,
-PRIMARY KEY ( `email` )
+`name` VARCHAR( 255 ) NOT NULL
 ) ENGINE = InnoDB;
 
 --
@@ -521,6 +521,16 @@ CREATE TABLE IS_GROUPS (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 `name` VARCHAR( 255 ) NOT NULL
 ) ENGINE = InnoDB;
+
+--
+-- IS_USER_GROUP
+--
+CREATE TABLE IS_USER_GROUP (
+  `fk_user_id` bigint(20) unsigned NOT NULL,
+  `fk_group_id` bigint(20) unsigned NOT NULL,
+  KEY `fk_user_id` (`fk_user_id`),
+  KEY `fk_group_id` (`fk_group_id`)
+) ENGINE=InnoDB;
 
 CREATE TABLE IS_COMMAND_BARS (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

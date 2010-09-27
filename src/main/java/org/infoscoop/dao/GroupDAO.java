@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.infoscoop.dao.model.Group;
+import org.infoscoop.dao.model.User;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -31,4 +32,9 @@ public class GroupDAO extends HibernateDaoSupport {
 	public List<Group> getJson(String query) {
 		return super.getHibernateTemplate().find("from Group where name like ?", query +"%");
 	}
+
+	public void save(Group item){
+		super.getHibernateTemplate().saveOrUpdate(item);
+	}
+
 }

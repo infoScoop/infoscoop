@@ -15,7 +15,7 @@ public class Group extends BaseGroup {
 	/**
 	 * Constructor for primary key
 	 */
-	public Group (java.lang.Integer id) {
+	public Group (java.lang.String id) {
 		super(id);
 	}
 
@@ -23,7 +23,7 @@ public class Group extends BaseGroup {
 	 * Constructor for required fields
 	 */
 	public Group (
-		java.lang.Integer id,
+		java.lang.String id,
 		java.lang.String name) {
 
 		super (
