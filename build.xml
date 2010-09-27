@@ -18,7 +18,6 @@
 	<property name="release.home" value="${dist.home}/${archive.filename}" />
 	<property name="build.main" value="${build.home}/main" />
 	<property name="build.initdb" value="${build.home}/initdb" />
-	<property name="build.migration" value="${build.home}/migration" />
 	<property name="googleapps.src" value="${basedir}/src/googleapps/java" />
 	<property name="googleapps.web" value="${basedir}/src/googleapps/web" />
 	
@@ -690,7 +689,6 @@
     	<copy todir="${release.home}" file="${basedir}/README.ja.txt"/>
 		
 		<antcall target="initdb"/>
-		<antcall target="migration"/>
     	
 		<copy todir="${release.home}/${app.main.name}" file="${build.home}/${app.main.name}.war"/>
 		<fixcrlf srcdir="${src.remakewar}/" eol="lf" eof="remove" includes="**/*.sh" />
@@ -733,23 +731,6 @@
     		<tarfileset dir="${release.home}/tools/">
 				<include name="initdb/**"/>
 				<exclude name="initdb/*.sh"/>
-			</tarfileset>
-    	</tar>
-    </target>
-    <target name="migration">
-    	<ant antfile="${basedir}/build_migration.xml" inheritall="false"/>
-    	
-    	<mkdir dir="${release.home}/tools/migration"/>
-    	<copy todir="${release.home}/tools/migration">
-    		<fileset dir="${build.migration}"/>
-    	</copy>
-    	<tar destfile="${release.home}/tools/migration.tar.gz" compression="gzip">
-    		<tarfileset dir="${release.home}/tools/" mode="755">
-				<include name="migration/*.sh"/>
-			</tarfileset>
-    		<tarfileset dir="${release.home}/tools/">
-				<include name="migration/**"/>
-				<exclude name="migration/*.sh"/>
 			</tarfileset>
     	</tar>
     </target>

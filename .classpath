@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/web/js/gadget"/>
 	<classpathentry kind="src" path="src/main/resources"/>
-	<classpathentry kind="src" path="src/migration/java"/>
 	<classpathentry kind="src" path="src/googleapps/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/antlr-2.7.6.jar"/>
@@ -22,7 +21,6 @@
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/datedFileAppender-1.0.2.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/freemarker.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/google-collections-0.8.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/guice-1.0.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/hibernate3.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/ical4j-1.0-rc2.jar"/>
@@ -84,5 +82,15 @@
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/org.springframework.web-3.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/org.springframework.web.servlet-3.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/slf4j-log4j12-1.5.8.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/AppsForYourDomainClient.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-appsforyourdomain-1.0.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-appsforyourdomain-meta-1.0.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-client-1.0.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-client-meta-1.0.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-core-1.0.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/google-collections-1.0-rc2.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jackson-core-asl-1.5.5.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jackson-mapper-asl-1.5.5.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/google-collections-0.8.jar"/>
 	<classpathentry kind="output" path="src/main/web/WEB-INF/classes"/>
 </classpath>

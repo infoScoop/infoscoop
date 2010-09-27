@@ -1,1 +1,0 @@
-alter table ${SCHEMA_NAME}${table}${BACKUP_TABLE_SUFFIX} rename constraint ${constraint} to ${constraint}${BACKUP_TABLE_SUFFIX};

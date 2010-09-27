@@ -1,1 +1,0 @@
-rename ${SCHEMA_NAME}${sequence}${BACKUP_TABLE_SUFFIX} to ${sequence};
