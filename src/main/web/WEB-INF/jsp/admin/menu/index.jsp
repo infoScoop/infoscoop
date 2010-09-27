@@ -72,7 +72,7 @@ $("#menu_list .title .icon").livequery("click", function(event){
 		$.post("saveTitle", {id:menuId, title:title}, function(html){
 			icon.prev().hide().prev().text(title).show();
 			icon.removeClass("save_icon").addClass("edit_icon");
-			console.info(html);
+			//console.info(html);
 		});
 	}
 });
@@ -94,7 +94,7 @@ $("#change_position_top, #change_position_side").click(function(event){
 				else $(this).empty().show();
 			});
 			icon.removeClass("save_icon").addClass("edit_icon");
-			console.info(html);
+			//console.info(html);
 		});
 	}
 	event.stopPropagation();
@@ -104,7 +104,7 @@ $("#menu_list .delete_icon").livequery("click", function(){
 	if(confirm("<spring:message code="menu.index.confirm.delete" />")){
 		$.post("deleteMenu", {id:deleteIcon.attr("menu_id")}, function(html){
 			deleteIcon.parents("tr:first").remove();
-			console.info(html);
+			//console.info(html);
 		});
 	}
 });
