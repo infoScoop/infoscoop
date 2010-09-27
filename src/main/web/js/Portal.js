@@ -51,7 +51,6 @@ IS_Portal.autoRefCountList = [];
 IS_Request.CommandQueue = new IS_Request.Queue("/comsrv", commandQueueWait, !is_userId);
 IS_Request.LogCommandQueue = new IS_Request.Queue("/logsrv", logCommandQueueWait, false, true);
 IS_Portal.imageController = {};//For image thumbnail. Refer to RssItemRender.js
-IS_Portal.iframeToolBarIconsTable;
 var IS_User = new Object();
 IS_R.getResource = function(message, array){
 	if(message && array){
@@ -149,8 +148,6 @@ IS_Portal.start = function() {
 
 	IS_Portal.behindIframe.init();
 	
-	Event.observe($("ifrm"), "load", IS_Portal.iFrameOnLoad, false);
-		
 	Event.observe( document.body, 'mousedown', IS_Widget.RssReader.RssItemRender.checkHideRssDesc, false );
 	
 	var panelBody = document.body;
@@ -593,15 +590,10 @@ IS_Portal.closeIFrame = function () {
 		divIFrame.style.display = "none";
 	}
 	
-	var ifrmURL = $("portal-iframe-url");
-	ifrmURL.style.display = "none";
-	
 	var divIS_PortalWidgets = document.getElementById("panels");
 	if ( divIS_PortalWidgets) {
 		divIS_PortalWidgets.style.display="";
 	}
-	var iframeToolBar = document.getElementById("iframe-tool-bar");
-	iframeToolBar.style.display = "none";
 	
 //	IS_WidgetsContainer.adjustColumnWidth();
 	IS_Widget.adjustDescWidth();
@@ -752,11 +744,7 @@ IS_Portal.adjustIframeHeight = function(e, iframeObj) {
 	
 	if(iframe && iframe.id) {
 		try{
-//			var adjustHeight = getWindowSize(false) - findPosY(iframe) - 10;
-			var iframeToolBar = document.getElementById("iframe-tool-bar");
-			var offset = ( iframeToolBar && iframeToolBar.style.display != "none") ? iframeToolBar.offsetHeight : 0;
-			var adjustHeight = getWindowSize(false) - findPosY(iframe) - offset - 10 -(Browser.isFirefox ? 10:0);
-
+			var adjustHeight = getWindowSize(false) - findPosY(iframe) - 10 -(Browser.isFirefox ? 10:0);
 			iframe.style.height = adjustHeight + "px";
 		}catch(e){
 			msg.warn(IS_R.getResource(IS_R.ms_errorOnWindowResize,[e]));
@@ -870,95 +858,6 @@ function windowUnload() {
 	}
 }
 
-IS_Portal.currentLink = {};
-IS_Portal.iFrameOnLoad = function() {
-	var divUrl = document.getElementById("iframeUrl");
-	window.scroll(0,0);
-	try{
-		var url = window.ifrm.location.href;
-		if(url == "about:blank") return;
-		
-		divUrl.value = url;
-		if(IS_Portal.currentLink.url) {
-			try{
-				var nodeName = IS_Portal.currentLink.element.nodeName.toLowerCase();
-				if(nodeName == "a")
-					IS_Portal.currentLink.element.href = IS_Portal.currentLink.url;
-				else if(nodeName == "form")
-					IS_Portal.currentLink.element.action = IS_Portal.currentLink.url;
-			}catch(e){
-			}
-		}
-		IS_Portal.currentLink.element = null;
-		
-		if($("iframe-tool-bar").style.display == "none"){
-			$("iframe-tool-bar").style.display = "block";
-			IS_Portal.adjustIframeHeight();
-		}
-		
-		try{
-			if(IS_User.IframeOnload) IS_User.IframeOnload(divUrl.value);
-		}catch(e){}
-	}catch(e){
-//		divUrl.className = "iframeUrlError";
-		var ifrmToolBar = document.getElementById("iframe-tool-bar");
-		ifrmToolBar.style.display = "none";
-		IS_Portal.currentLink = {};
-		IS_Portal.adjustIframeHeight();
-	}
-}
-
-
-/**
- * iframeToolBar
- */
-IS_Portal.buildIframeToolBar = function() {
-	var iframeToolBar = document.getElementById("iframe-tool-bar");
-	iframeToolBar.style.display = "none";
-	
-	if( IS_Portal.iframeToolBar )
-		return;
-	
-	iframeToolBar.style.backgroundColor = "#EEEEEE";
-	
-	IS_Portal.iframeToolBar = new IS_Portal.ContentFooter({
-		id: "iframe-tool-bar",
-		isDisplay: function() {
-			return true; // ?
-		},
-		getTitle: function() {
-			try {
-				return window.ifrm.document.title;
-			} catch( ex ) {
-				msg.warn( ex );
-			}
-			
-			return "";
-		},
-		getUrl: function() {
-			try {
-				return document.getElementById("iframeUrl").value;
-			} catch( ex ) {
-				msg.warn( ex );
-			}
-			
-			return "";
-		},icons: [
-			{
-				html: '<table width="100%"><tr><td><input readOnly="readOnly" id="iframeUrl"></td></tr></table>'
-			}
-		]
-	});
-	
-	IS_Portal.iframeToolBar.displayContents();
-	
-	IS_Portal.iframeToolBar.elm_toolBar.style.width = "100%";
-	
-	iframeToolBar.appendChild( IS_Portal.iframeToolBar.elm_toolBar );
-	
-	$("iframeUrl").parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.width = "100%";
-}
-
 IS_Portal.isInlineUrl = function(url){
 	if(!url || !displayInlineHost) return false;
 	if(!url.match(/\w+:[\/]+([^\/]*)/)) return false;
@@ -972,10 +871,6 @@ IS_Portal.isInlineUrl = function(url){
 }
 
 IS_Portal.showIframe = function(url){
-	var iframeToolBar = $("iframe-tool-bar");
-	if(iframeToolBar.innerHTML == "")
-		IS_Portal.buildIframeToolBar();
-	
 	IS_Portal.CommandBar.changeIframeView();
 	
 	var divIFrame = $("portal-iframe");
@@ -1020,20 +915,6 @@ IS_Portal.buildIFrame = function (aTag) {
 	}
 	if(Browser.isSafari1 && IS_Portal.isTabLoading())
 		return;
-	
-	if(aTag && aTag.nodeName) {
-		IS_Portal.currentLink = {element:aTag};
-		
-		var nodeName = aTag.nodeName.toLowerCase();
-		if(nodeName == "a") {
-			IS_Portal.currentLink.url = aTag.href;
-//			aTag.href = proxyServerURL + "URLReplace/" + aTag.href;
-		} else if(nodeName == "form"){
-			IS_Portal.currentLink.url = aTag.action;
-//			aTag.action = proxyServerURL + "URLReplace/" + aTag.action;
-		}
-	}
-			
 	IS_Portal.showIframe();
 };
 

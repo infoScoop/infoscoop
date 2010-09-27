@@ -261,7 +261,6 @@ if( isPreview == null )
 								</tr>
 							</tbody>
 						</table>
-						<div id="portal-iframe-url"></div>
 						<div id="panels" style="display:;">
 						  <div id="tab-container"></div>
 						  <div id="maximize-panel" style="display:none;"></div>
