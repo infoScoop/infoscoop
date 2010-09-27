@@ -81,8 +81,10 @@ public class MenuTreeDAO extends HibernateDaoSupport {
 		return menus;
 	}
 	
-	public void updatePosition(MenuTree menu, String position){
+	public void updatePosition(MenuTree menu, String position) {
 		MenuPosition pos = getPosition(position);
+		if (pos == null)
+			pos = new MenuPosition(position);
 		pos.setFkMenuTree(menu);
 		super.getHibernateTemplate().saveOrUpdate(pos);
 	}
