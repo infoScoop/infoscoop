@@ -18,6 +18,7 @@
 	<property name="release.home" value="${dist.home}/${archive.filename}" />
 	<property name="build.main" value="${build.home}/main" />
 	<property name="build.initdb" value="${build.home}/initdb" />
+	<property name="build.migration" value="${build.home}/migration" />
 	<property name="googleapps.src" value="${basedir}/src/googleapps/java" />
 	<property name="googleapps.web" value="${basedir}/src/googleapps/web" />
 	
@@ -101,9 +102,6 @@
 		<copy todir="${build.main}" file="${src.main.web}/rpc_relay.html"/>
 		<copy todir="${build.main}" file="${src.main.web}/blank.html"/>
 
-
-		<copy todir="${build.main}/js/search" file="${src.main.web}/js/search/searchEngine.jsp"/>
-		
 		<copy todir="${build.main}" file="${src.main.web}/iframe.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/admin/role.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/admin/blank.html"/>
@@ -196,7 +194,6 @@
 			<filelist dir="${src.main.web}/js" files="ContentFooter.js"/>
 			<filelist dir="${src.main.web}/js" files="GlobalSetting.js"/>
 			<filelist dir="${src.main.web}/js" files="Theme.js"/>
-			<filelist dir="${src.main.web}/js/search" files="SearchEngine.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="Widget.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="WidgetHeader.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="WidgetEdit.js"/>
@@ -238,27 +235,6 @@
 			</classpath>
 		</java>
 		
-		<concat destfile="${build.main}/js/dist/Portal-SearchEngine.js.tmp" append="false" encoding="utf-8" fixlastline="true">
-			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
-			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
-			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="utils.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="ajax304.js"/>
-			<filelist dir="${src.main.web}/js/utils/ajaxpool" files="ajax.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="Request.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="domhelper.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="msg.js"/>
-			<filelist dir="${src.main.web}/js/search" files="SearchEngine.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="EventDispatcher.js"/>
-			<filelist dir="${src.main.web}/js/commands" files="UpdatePropertyCommand.js"/>
-		</concat>
-		<java jar="${yuicompressor}" fork="true">
-			<arg line="--type js --charset UTF-8 -o &quot;${build.main}/js/dist/Portal-SearchEngine-${build.version}.js&quot; &quot;${build.main}/js/dist/Portal-SearchEngine.js.tmp&quot;"/>
-			<classpath>
-				<pathelement location="${yuicompressor}"/>
-			</classpath>
-		</java>
-
 		<delete>
 			<fileset dir="${build.main}/js/dist" includes="*.tmp"/>
 		</delete>
@@ -436,9 +412,7 @@
 			</filterset>
 		</copy>
 		<!--copy todir="${build.admin}/js" file="${src.admin.web}/js/properties.js"/-->
-		<!-- Copy from main javascript -->
-		
-		<copy todir="${build.admin}/js/resources" file="${src.admin.web}/js/resources/resourceBundle.jsp"/>
+
 		<!-- Copy from main javascript -->
 		<copy todir="${build.admin}/js/lib" file="${src.main.web}/js/lib/prototype-1.6.0.3.js"/>
 		
@@ -551,13 +525,6 @@
 			match="(href=&quot;[^&quot;]+)\.css&quot;"
 			replace="\1.css?${build.timestamp}&quot;"
 			flags="mg"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.main}/js/search/searchEngine.jsp"
-			match="&lt;!--start script--&gt;.*&lt;!--end script--&gt;"
-			replace="
-&lt;script src=&quot;&lt;%=staticContentURL%&gt;/js/dist/Portal-SearchEngine-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
-			flags="s"
 			encoding="UTF-8"/>
 	</target>
 	
@@ -689,6 +656,7 @@
     	<copy todir="${release.home}" file="${basedir}/README.ja.txt"/>
 		
 		<antcall target="initdb"/>
+		<antcall target="migration"/>
     	
 		<copy todir="${release.home}/${app.main.name}" file="${build.home}/${app.main.name}.war"/>
 		<fixcrlf srcdir="${src.remakewar}/" eol="lf" eof="remove" includes="**/*.sh" />
@@ -731,6 +699,23 @@
     		<tarfileset dir="${release.home}/tools/">
 				<include name="initdb/**"/>
 				<exclude name="initdb/*.sh"/>
+			</tarfileset>
+    	</tar>
+    </target>
+    <target name="migration">
+    	<ant antfile="${basedir}/build_migration.xml" inheritall="false"/>
+    	
+    	<mkdir dir="${release.home}/tools/migration"/>
+    	<copy todir="${release.home}/tools/migration">
+    		<fileset dir="${build.migration}"/>
+    	</copy>
+    	<tar destfile="${release.home}/tools/migration.tar.gz" compression="gzip">
+    		<tarfileset dir="${release.home}/tools/" mode="755">
+				<include name="migration/*.sh"/>
+			</tarfileset>
+    		<tarfileset dir="${release.home}/tools/">
+				<include name="migration/**"/>
+				<exclude name="migration/*.sh"/>
 			</tarfileset>
     	</tar>
     </target>

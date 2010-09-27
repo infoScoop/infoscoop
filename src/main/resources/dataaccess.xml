@@ -82,11 +82,6 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
-	<bean id="keywordLogDAO" class="org.infoscoop.dao.KeywordLogDAO">
-		<property name="sessionFactory">
-   	   		<ref bean="sessionFactory"/>
-   	 	</property>
-	</bean>
 	<bean id="portalAdminsDAO" class="org.infoscoop.dao.PortalAdminsDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/initdb/importTool/src"/>
 	<classpathentry kind="src" path="src/main/web/js/gadget"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="src/googleapps/java"/>
@@ -82,6 +83,9 @@
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/org.springframework.web-3.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/org.springframework.web.servlet-3.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/slf4j-log4j12-1.5.8.jar"/>
+	<classpathentry kind="lib" path="src/initdb/importTool/lib/mysql-connector-java-5.1.12-bin.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jackson-core-asl-1.5.5.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jackson-mapper-asl-1.5.5.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/AppsForYourDomainClient.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-appsforyourdomain-1.0.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-appsforyourdomain-meta-1.0.jar"/>
@@ -89,8 +93,5 @@
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-client-meta-1.0.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-core-1.0.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/google-collections-1.0-rc2.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jackson-core-asl-1.5.5.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jackson-mapper-asl-1.5.5.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/google-collections-0.8.jar"/>
 	<classpathentry kind="output" path="src/main/web/WEB-INF/classes"/>
 </classpath>

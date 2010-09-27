@@ -702,64 +702,6 @@ IS_Commands.UpdateRssMetaRefreshCommand.prototype.toRequestString = function(){
 	}, "command");
 };
 
-/**
- * AddKeywordCommand
- */
-
-IS_Commands.AddKeywordCommand = function(keyword){
-	var keywordSep = [];
-
-/*
-	for (var i=0; i<keyword.length; i++) {
-		keyword = keyword.replace("　", " ");
-	}
-	
-	var tempArray = keyword.split(" ");
-
-	for(var i = 0; i < tempArray.length; i++){
-		if(tempArray[i].length > 0 && tempArray[i]!=" ") {keywordSep.push(tempArray[i]);}
-	}
-*/
-	
-	for (var i=0; i<keyword.length; i++) {
-		keyword = keyword.replace(/　/g, " ");
-	}
-	var tempArray = keyword.split(" ");
-	for(var i = 0; i < tempArray.length; i++){
-		if(tempArray[i].length > 0) {keywordSep.push(tempArray[i]);}
-	}
-	
-	
-
-	keywordSep.sort();
-	var keywords = "";
-	for (var i=0; i<keywordSep.length; i++) {
-		if (i==0) keywords = keywordSep[i];
-		else keywords = keywords + " " + keywordSep[i];
-	}
-	
-	this.type = "AddKeyword";
-	this.keyword = keywords;
-	this.id = keywords;
-};
-
-IS_Commands.AddKeywordCommand.prototype.parseResponse = function(docEl){
-	var attrs=docEl.attributes;
-	var status=attrs.getNamedItem("status").value;
-	if(status != "ok"){
-		var reason = attrs.getNamedItem("message").value;
-		msg.error("add keyword "+ this.id +" is failed.\n\n" + reason);
-	}
-};
-
-IS_Commands.AddKeywordCommand.prototype.toRequestString = function(){
-	return is_simpleXmlify({
-		type:this.type,
-		keyword:this.keyword,
-		id:this.id
-	}, "command");
-};
-
 function is_simpleXmlify(obj, tagname){
 	var xml="<"+tagname;
 	for (i in obj){

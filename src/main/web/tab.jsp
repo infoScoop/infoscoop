@@ -117,8 +117,6 @@
     <script src="<%=staticContentURL%>/js/widgets/schedule/groupSettingModal.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/maximize/MaximizeSchedule.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/ticker/Ticker.js"></script>
-    <script src="<%=staticContentURL%>/js/widgets/ranking/Ranking.js"></script>
-    <script src="<%=staticContentURL%>/js/widgets/ranking/RankingRender.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/MiniBrowser/MiniBrowser.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/MiniBrowser/FragmentMiniBrowser.js"></script>
     <!-- slider -->

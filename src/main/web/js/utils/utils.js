@@ -846,44 +846,6 @@ function is_processUrlContents(inputURL, func, _finallyFunc, _headers, _method){
 	AjaxRequest.invoke(url, opt);
 }
 
-function is_getURLByIFrame(inputUrl, _callback, _eventId, parameters){
-	var proxyKeywordUrl = is_getProxyUrl(inputUrl, "NoOperation");
-	
-	for(var i = 0;parameters && i < parameters.length;i += 2){
-		proxyKeywordUrl += "&" + parameters[i] + "=" + parameters[i + 1];
-	}
-
-	if(IS_Widget.MiniBrowser.isForbiddenURL(inputUrl)){
-		proxyKeywordUrl = "about:blank";
-	}
-		
-	var getTitleIFrame = $('getTitleInnerFrame');
-	if(!getTitleIFrame){
-		getTitleIFrame = document.createElement('iframe');
-		getTitleIFrame.name = 'getTitleInnerFrame';
-		getTitleIFrame.id = 'getTitleInnerFrame';
-		getTitleIFrame.src = "./blank.html";
-		if( Browser.isSafari1 ) {
-			getTitleIFrame.style.width = getTitleIFrame.style.height = 0;
-			getTitleIFrame.style.visibility = "hidden";
-		} else {
-			getTitleIFrame.style.display = 'none';
-		}
-		
-		document.body.appendChild(getTitleIFrame);
-		if(!_eventId)
-		  IS_Event.observe(getTitleIFrame, "load", _callback, false, _eventId);
-	}
-	if(_eventId)
-	  IS_Event.observe(getTitleIFrame, "load", _callback, false, _eventId);
-	var oldUrl = getTitleIFrame.src;
-	if( ( oldUrl && oldUrl != "")&& proxyKeywordUrl == oldUrl ) {
-		getTitleIFrame.contentWindow.location.reload();
-	} else {
-		getTitleIFrame.src = proxyKeywordUrl;
-	}
-}
-
 /**
  * Get lengh of string
  * Count lengh of double byte character set as two

@@ -130,22 +130,6 @@ create table IS_WIDGETCONFS (
 ) ENGINE=InnoDB;
 
 --
--- KEYWORDLOG
---
-create table IS_KEYWORDS (
-  id bigint not null auto_increment primary key,
-  `UID` varchar (150) not null,
-  type integer not null,
-  keyword varchar(500) not null,
-  `DATE` varchar (24) not null
-) ENGINE=InnoDB;
-
-create index is_keywords_uid on IS_KEYWORDS(`UID`);
-create index is_keywords_type on IS_KEYWORDS(type);
-create index is_keywords_keyword on IS_KEYWORDS(keyword);
-create index is_keywords_date on IS_KEYWORDS(`DATE`);
-
---
 -- siteAggregationMenu
 --
 create table IS_MENUS (

@@ -55,7 +55,6 @@ if( isPreview == null )
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/groupsettingmodal.css">
 
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/minibrowser.css">
-    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/ranking.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/widgetranking.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/rssreader.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/maximizerssreader.css">
@@ -158,8 +157,6 @@ if( isPreview == null )
     <script src="<%=staticContentURL%>/js/widgets/calendar/Calendar.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/calendar/iCalendar.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/ticker/Ticker.js"></script>
-    <script src="<%=staticContentURL%>/js/widgets/ranking/Ranking.js"></script>
-    <script src="<%=staticContentURL%>/js/widgets/ranking/RankingRender.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/MiniBrowser/MiniBrowser.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/MiniBrowser/FragmentMiniBrowser.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/WidgetRanking/WidgetRanking.js"></script>

@@ -29,9 +29,7 @@ public class ImportTool {
 		PORTALLAYOUT( new PortalLayoutFactory()),
 		PROPERTIES( new PropertiesFactory()),
 		PROXYCONF( new ProxyConfFactory()),
-		SEARCHENGINE( new SearchEngineFactory()),
 		SITEAGGREGATIONMENU( new SiteAggregationMenuFactory()),
-		TABLAYOUT( new TabLayoutFactory()),
 		WIDGETCONF( new WidgetConfFactory()),
 		HOLIDAYS( new HolidaysFactory()),
 		FORBIDDENURLS( new ForbiddenUrlsFactory()),
@@ -434,18 +432,6 @@ class ProxyConfFactory implements CSVBeanFactory<Proxyconf> {
 	}
 }
 
-// temp,data
-
-class SearchEngineFactory implements CSVBeanFactory<Searchengine> {
-	public Searchengine newBean( CSVField[] values ) {
-		Searchengine searchEngine = new Searchengine();
-		searchEngine.setTemp( values[0].toInt() );
-		searchEngine.setData( values[1].toString() );
-
-		return searchEngine;
-	}
-}
-
 // type,temp,data
 
 class SiteAggregationMenuFactory implements CSVBeanFactory<Siteaggregationmenu> {
@@ -457,33 +443,6 @@ class SiteAggregationMenuFactory implements CSVBeanFactory<Siteaggregationmenu> 
 	}
 }
 
-// tabId,roleOrder,role,rolename,principalType,defaultUid,widgets,layout,widgetsLastmodified,tabNumber,deleteFlag
-
-class TabLayoutFactory implements CSVBeanFactory<TabLayout> {
-	public TabLayout newBean( CSVField[] values ) {
-		TABLAYOUTPK pk = new TABLAYOUTPK();
-		pk.setTabid( values[0].toString() );
-		pk.setRoleorder( values[1].toInt() );
-		pk.setTemp( values[11].toInt() );
-
-		TabLayout tabLayout = new TabLayout( pk );
-		tabLayout.setRole( values[2].toString() );
-		tabLayout.setRolename( values[3].toString() );
-		tabLayout.setPrincipaltype( values[4].toString() );
-		tabLayout.setDefaultuid( values[5].toString() );
-		tabLayout.setWidgets( values[6].toString() );
-		tabLayout.setLayout( values[7].toString() );
-		if( "".equals( values[8].toString() ) )
-			values[8] = new CSVField("-");
-
-		tabLayout.setWidgetslastmodified( values[8].toString() );
-		tabLayout.setTabnumber( values[9].toInt() );
-		tabLayout.setDeleteflag( values[10].toInt() );
-//		tabLayout.setWorkinguid( values[12].toString() );
-
-		return tabLayout;
-	}
-}
 
 // type,data
 

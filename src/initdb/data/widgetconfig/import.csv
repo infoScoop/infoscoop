@@ -4,6 +4,5 @@
 "MiniBrowser", <LOB FILE='MiniBrowser.xml' />
 "FragmentMiniBrowser", <LOB FILE='FragmentMiniBrowser.xml' />
 "Calendar",<LOB FILE='Calendar.xml' />
-"Ranking",<LOB FILE='Ranking.xml' />
 "notAvailable",<LOB FILE='notAvailable.xml' />
 "WidgetRanking",<LOB FILE='WidgetRanking.xml' />
