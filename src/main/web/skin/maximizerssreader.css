@@ -59,10 +59,6 @@
 	/*font-size:80%;*/
 	font-size: 100%;
 }
-.infoScoop .maximize.RssReader .maximizeRssAtomPubButtons{
-	margin-left:10px;
-	display:inline;
-}
 .infoScoop .maximize.RssReader .maximizeRssDesc{
 	background-color:#eeeeee;
 	height: 100%;
@@ -80,14 +76,6 @@
 	height: 100%;
 	*/
 	overflow: auto;
-}
-.infoScoop .maximize.RssReader .maximizeToggleEditElement {
-	float: right;
-	border: 1px solid gray;
-	color: #7777CC;
-	padding: 2px;
-	font-size: 9pt;
-	-moz-border-radius: 2px;
 }
 .infoScoop .maximize.RssReader .maximizeRssTools {
 	width: 100%;
@@ -131,13 +119,6 @@
 	float:left;
 	font-size:9pt;
 	text-align:left;
-}
-
-.infoScoop .maximize.RssReader .maximizeToggleEditElement:hover {
-	background: #DDD;
-}
-.infoScoop .maximize.RssReader .maximizeToggleEditElement:visited {
-	color: #7777CC;
 }
 
 .infoScoop .maximize.RssReader .MaximizeRssReader_CreatorFilter_Autocomplete {

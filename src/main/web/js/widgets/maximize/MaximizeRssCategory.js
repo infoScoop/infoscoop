@@ -122,65 +122,6 @@ IS_Widget.MaximizeRssCategory.prototype.classDef = function() {
 	}
 	
 	this.displayContents = function(){
-		//Button to operate several things at once: Corresponds AtomPub AtomPub
-		var maximizeButtons = $("MaximizeButtons_"+widget.id );
-		if( !maximizeButtons ) {
-			var buttonsDiv = document.createElement("div");
-			buttonsDiv.id = "MaximizeButtons_"+widget.id;
-			buttonsDiv.className = "maximizeButtons";
-			maximizeButtons = buttonsDiv;
-			maximizeButtons.style.display = "none";
-			
-			if( widget.firstChild ) {
-				widget.elm_widgetMaximizeContent.insertBefore( maximizeButtons,widget.elm_widgetContent.firstChild );
-			} else {
-				widget.elm_widgetMaximizeContent.appendChild( maximizeButtons );
-			}
-		}
-		maximizeButtons.innerHTML = "";
-		IS_Event.unloadCache(widget.id);
-		
-		var rss = widget.content.rss;//widget.originalWidget.content.rss;at 2009/6/25 9:40
-		//widget.rss = rss;at 2009/6/25 9:40
-		if (rss && rss.atompub_buttons && !widget.isMulti) {
-			//var buttonsDom = dojo.dom.createDocumentFromText("<buttons>" + this.rssContent.rss.msd_buttons + "</buttons>");
-			var buttonsDom = is_createDocumentFromText(rss.atompub_buttons);
-			var buttonsElm = buttonsDom.documentElement;
-			var all = buttonsElm.getAttribute("all");
-			var each = buttonsElm.getAttribute("each");
-			widget.atomPubAll = (!all || all == "true");
-			widget.atomPubEach = (each && each == "true");
-			var buttonElms = buttonsDom.getElementsByTagName("button");
-			widget.buttonElms = buttonElms;
-			
-			if( !widget.content.rss.entriesXml )
-				widget.content.rss.entriesXml = IS_Widget.MaximizeRssReader.getEntriesXml( widget );
-			
-			if(widget.atomPubAll) {
-				for (var i = 0; i < buttonElms.length; i++) {
-					var buttonDef = IS_Widget.MaximizeRssReader.extractButtonDef( buttonElms[i] );
-					
-					var button = document.createElement("input");
-					button.type = "button";
-					button.value = buttonDef.title;
-					maximizeButtons.appendChild(button);
-					
-					IS_Event.observe(button, "click", IS_Widget.MaximizeRssReader.postAtomPub.bind(this,widget, false,buttonDef ), false, "maximize_event" + widget.id);
-				}
-				maximizeButtons.style.display = "";
-			}
-		} else {
-			maximizeButtons.style.display = "none";
-		}
-		
-		if( widget.content.rssContent && widget.content.rssContent.rssItems ) {
-			widget.content.rssContent.rssItems.each( function( rssItem ) {
-				if( rssItem ) {
-					delete rssItem.atompub_checked;
-				}
-			});
-		}
-		
 		if( this.isNoDisplayItem() )
 			return this.showNoDisplayItemError(rss);
 		
