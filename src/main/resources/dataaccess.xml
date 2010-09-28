@@ -37,16 +37,6 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
-	<bean id="siteAggregationMenuDAO" class="org.infoscoop.dao.SiteAggregationMenuDAO">
-		<property name="sessionFactory">
-   	   		<ref bean="sessionFactory"/>
-   	 	</property>
-	</bean>
-	<bean id="siteAggregationMenuTempDAO" class="org.infoscoop.dao.SiteAggregationMenuTempDAO">
-		<property name="sessionFactory">
-   	   		<ref bean="sessionFactory"/>
-   	 	</property>
-	</bean>
 	<bean id="propertiesDAO" class="org.infoscoop.dao.PropertiesDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>

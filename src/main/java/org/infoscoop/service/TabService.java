@@ -81,8 +81,8 @@ public class TabService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Object getWidgetsNodeByTabOrder(String uid, String defaultUid, int tabOrder) throws Exception {
-		ArrayList tabList = (ArrayList)getWidgetsNode(uid, defaultUid);
+	public Object getWidgetsNodeByTabOrder(String uid, int tabOrder) throws Exception {
+		ArrayList tabList = (ArrayList)getWidgetsNode(uid);
 		
 		//TODO:implement for the moment
 		Collections.sort((ArrayList)tabList, new Comparator(){
@@ -115,7 +115,7 @@ public class TabService {
 	 * @throws Exception 
 	 * @throws DBAccessException 
 	 */
-	public Collection<Object[]> getWidgetsNode(String uid, String defaultUid) throws Exception {
+	public Collection<Object[]> getWidgetsNode(String uid) throws Exception {
 		Collection<Object[]> tabList = new ArrayList<Object[]>();
 	
 		CommandBar cmdBar = CommandBarService.getHandle().getMyCommandBar();
@@ -144,7 +144,7 @@ public class TabService {
 			Tab staticTab = staticTabMap.get(tabTemplate.getTabId());
 			boolean isNewTab = false;
 			if(staticTab == null){
-				staticTab = this.createTabFromTabTemplate(uid, defaultUid, tabTemplate);
+				staticTab = this.createTabFromTabTemplate(uid, tabTemplate);
 				isNewTab = true;
 			}
 			staticTab.setDisabledDynamicPanel(tabTemplate.getAreaType() != TabTemplate.TYPE_USE_BOTH_AREA );
@@ -316,13 +316,12 @@ public class TabService {
 		return widgetList;
 	}
 
-	private Tab createTabFromTabTemplate(String uid, String defaultUid, TabTemplate tabTemplate) throws JSONException {
+	private Tab createTabFromTabTemplate(String uid, TabTemplate tabTemplate) throws JSONException {
 		Tab newTab = new Tab(new TABPK(uid, tabTemplate.getTabId()));
 		
 		//Delete StaticPanel, tabType=dynamic
 		newTab.setType("static");
 		newTab.setName(tabTemplate.getName());
-		newTab.setDefaultuid(defaultUid);
 		//Delete tab number
 		//TODO: Is it placed at last if order is null?
 		newTab.setOrder(null);
@@ -345,7 +344,6 @@ public class TabService {
 		newTab.setType("dynamic");
 		newTab.setName(staticTab.getName());
 		newTab.setData(staticTab.getData());
-		newTab.setDefaultuid(staticTab.getDefaultuid());
 		newTab.setOrder(null);
 		newTab.setData("{}");
 		

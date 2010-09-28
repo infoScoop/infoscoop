@@ -46,12 +46,6 @@
 		<property name="target">
 			<bean
 				class="org.infoscoop.service.SiteAggregationMenuService">
-				<property name="siteAggregationMenuDAO">
-					<ref bean="siteAggregationMenuDAO" />
-				</property>
-				<property name="siteAggregationMenuTempDAO">
-					<ref bean="siteAggregationMenuTempDAO" />
-				</property>
 			</bean>
 		</property>
 		<property name="transactionManager">
@@ -59,14 +53,6 @@
 		</property>
 		<property name="transactionAttributes">
 			<props>
-				<prop key="commit*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-				<prop key="add*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-				<prop key="remove*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-				<prop key="replace*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-				<prop key="getMenuTreeForEdit">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-				<prop key="*Lock">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-				<prop key="isTimeoutTemp">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
 			</props>
 		</property>

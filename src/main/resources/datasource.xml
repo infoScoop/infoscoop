@@ -54,8 +54,6 @@
 			<property name="mappingResources">
 				<list>
 					<value>org/infoscoop/dao/model/WidgetConf.hbm.xml</value>
-					<value>org/infoscoop/dao/model/Siteaggregationmenu.hbm.xml</value>
-					<value>org/infoscoop/dao/model/Siteaggregationmenu_temp.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Proxyconf.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Preference.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Portallayout.hbm.xml</value>

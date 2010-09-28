@@ -31,6 +31,10 @@ import java.io.Serializable;
 
 public abstract class BaseTab  implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static String REF = "Tab";
 	public static String PROP_TYPE = "Type";
 	public static String PROP_DATA = "Data";
@@ -62,8 +66,6 @@ public abstract class BaseTab  implements Serializable {
 	// primary key
 	private org.infoscoop.dao.model.TABPK id;
 
-	// fields
-	private java.lang.String defaultuid;
 	private java.lang.String name;
 	private java.lang.Integer order;
 	private java.lang.String type;
@@ -87,23 +89,6 @@ public abstract class BaseTab  implements Serializable {
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
-
-
-
-	/**
-	 * Return the value associated with the column: DEFAULTUID
-	 */
-	public java.lang.String getDefaultuid () {
-		return defaultuid;
-	}
-
-	/**
-	 * Set the value related to the column: DEFAULTUID
-	 * @param defaultuid the DEFAULTUID value
-	 */
-	public void setDefaultuid (java.lang.String defaultuid) {
-		this.defaultuid = defaultuid;
-	}
 
 
 

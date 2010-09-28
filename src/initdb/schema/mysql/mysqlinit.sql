@@ -12,7 +12,6 @@ create table IS_PREFERENCES (
 --
 create table IS_TABS (
   `UID` varchar(150) not null,
-  defaultUid varchar(150),
   id varchar(32) not null,
   name varchar(256),
   `ORDER` int,
@@ -120,28 +119,6 @@ create table IS_WIDGETCONFS (
   type varchar(50) CHARACTER SET latin1 not null primary key,
   data mediumtext not null
 ) ENGINE=InnoDB;
-
---
--- siteAggregationMenu
---
-create table IS_MENUS (
-  type varchar(150) CHARACTER SET latin1 null primary key,
-  data mediumtext not null
-) ENGINE=InnoDB;
-
---
--- siteAggregationMenu_temp
---
-create table IS_MENUS_TEMP (
-  type varchar(150) CHARACTER SET latin1 not null,
-  siteTopId varchar(150) CHARACTER SET latin1 not null,
-  data mediumtext not null,
-  workingUid varchar(150),
-  lastmodified timestamp not null,
-  primary key (type, siteTopId)
-) ENGINE=InnoDB;
-
-create index is_menus_temp_lastmodified on IS_MENUS_TEMP(lastmodified);
 
 --
 -- gadget

@@ -74,7 +74,7 @@ public class MenuTreeDAO extends HibernateDaoSupport {
 				DetachedCriteria.forClass(MenuPosition.class));
 		for (MenuTree menu : menus) {
 			for (MenuPosition pos : poss) {
-				if (menu.getId() == pos.getFkMenuTree().getId())
+				if (menu.equals(pos.getFkMenuTree()))
 					menu.addPosition(pos.getId());
 			}
 		}

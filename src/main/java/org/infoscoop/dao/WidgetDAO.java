@@ -37,7 +37,6 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
-import org.infoscoop.service.SiteAggregationMenuService.ForceUpdateUserPref;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -128,91 +127,6 @@ public class WidgetDAO extends HibernateDaoSupport{
     	super.getHibernateTemplate().update( widget );
 		super.getHibernateTemplate().flush();
     	updateUserPrefs( widget );
-    }
-
-    /**
-     * Update the property of the widget appointed by widgetID collectively.
-     * Please appoint only the property that you want to change,
-     * except for it, it's maintained the value before changed for the properety.
-     * @param widgetId
-     * @param setProperties, Set<String> removePropNames
-     * @throws Exception
-     */
-    public void updateWidgetProperties(final String widgetId, String title, String href, final Map<String, ForceUpdateUserPref> setProperties, Set<ForceUpdateUserPref> removePropNames) throws Exception{
-    	if (log.isInfoEnabled())
-			log.info("updateWidgetProperties : widgetId=" + widgetId
-					+ ", set properties=" + setProperties + ", remove properties:" +  removePropNames);
-    	long start = System.currentTimeMillis();
-
-		List<Widget> widgetList = super.getHibernateTemplate()
-			.findByCriteria(DetachedCriteria.forClass(Widget.class)
-					.add(Expression.eq("Menuid", widgetId)));
-		//SystemMessageDAO sysMessageDao = SystemMessageDAO.newInstance();
-		int i = 0;
-		for( Widget widget : widgetList ) {
-    		String oldTitle = widget.getTitle();
-			if(title != null){
-				widget.setTitle(title);
-				/*if(widget.getDeletedate() == 0)
-					sysMessageDao.insert(new SystemMessage(
-							widget.getUid(),
-							"ms_title_update_by_admin",
-							oldTitle + "," + title));*/
-			}
-			if(href != null)
-				widget.setHref(href);
-
-			for(Map.Entry<String, ForceUpdateUserPref> pref : setProperties.entrySet()){
-				String oldValue = null;
-				UserPref up = widget.getUserPrefs().get(pref.getKey());
-				if(up != null)oldValue = up.getValue();
-
-				ForceUpdateUserPref updatePref = pref.getValue();
-
-				if(widget.getType().startsWith("g_") &&  "url".equals(pref.getKey())){
-					widget.setType("g_" + updatePref.getValue());
-				}else{
-
-					widget.setUserPref(pref.getKey(), updatePref.getValue());
-					if(!updatePref.isImplied() && widget.getDeletedate() == 0){
-						/*if(oldValue != null){
-							sysMessageDao.insert(new SystemMessage(
-									widget.getUid(),
-									"ms_up_update_by_admin",
-									widget.getTitle() + "," + pref.getKey() + "," + oldValue + "," + updatePref.getValue()));
-						}else{
-							sysMessageDao.insert(new SystemMessage(
-									widget.getUid(),
-									"ms_up_update_from_default_by_admin",
-									widget.getTitle() + "," + pref.getKey() + "," + updatePref.getValue()));
-						}*/
-					}
-				}
-			}
-			for(ForceUpdateUserPref removeProp : removePropNames){
-				// The special processing for gadgets is not necessary, Beacouse gadget's URL is require property.
-				widget.removeUserPref(removeProp.getName());
-				/*if(!removeProp.isImplied() && widget.getDeletedate() == 0){
-					sysMessageDao.insert(new SystemMessage(
-							widget.getUid(),
-							"ms_up_revert_by_admin",
-							widget.getTitle() + "," + removeProp.getName()));
-				}*/
-
-			}
-			
-    		updateWidget( widget );
-    		if(i % 20 ==0){
-    			this.getHibernateTemplate().flush();
-    			this.getHibernateTemplate().clear();
-    		}
-    		i++;
-
-		}
-
-    	long end = System.currentTimeMillis();
-		if (log.isInfoEnabled())
-			log.info("end updateWidgetProperties : " + (end - start) + " ms");
     }
 
 	/**

@@ -12,14 +12,6 @@
 			<key-property name="Uid" column="`UID`" type="string"/>
 			<key-property name="Id"	column="ID"	type="string"/>
 		</composite-id>
-
-		<property
-			name="Defaultuid"
-			column="defaultuid"
-			type="string"
-			not-null="false"
-			length="150"
-		/>
 		<property
 			name="Name"
 			column="NAME"

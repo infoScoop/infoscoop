@@ -75,16 +75,6 @@
 			</props>
 		</property>
 	</bean>
-	<bean id="menu" class="org.infoscoop.admin.command.SiteAggregationServiceCommand">
-		<property name="service"><ref bean="siteAggregationMenuService"/></property>
-		<property name="notPermittedPatterns">
-			<props>
-				<prop key="menu"></prop>
-				<prop key="menu_tree">^addTopMenuItem|^orderLock|^removeTopMenuItem|^replaceTopOrder</prop>
-				<prop key="*">^add.*|^update.*|^remove.*|^commit.*</prop>
-			</props>
-		</property>
-	</bean>
 	<bean id="gadget" class="org.infoscoop.admin.command.GadgetServiceCommand">
 		<property name="service"><ref bean="GadgetService"/></property>
 		<property name="notPermittedPatterns">

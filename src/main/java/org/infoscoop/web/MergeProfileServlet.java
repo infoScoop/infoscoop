@@ -127,7 +127,6 @@ public class MergeProfileServlet extends HttpServlet {
 	private Tab cloneTab( String uid,Tab tab ) {
 		Tab newTab = new Tab( new TABPK( uid,tab.getId().getId() ) );
 		newTab.setData( tab.getData() );
-		newTab.setDefaultuid( tab.getDefaultuid() );
 		newTab.setName( tab.getName() );
 		newTab.setOrder( tab.getOrder() );
 		newTab.setType( tab.getType() );

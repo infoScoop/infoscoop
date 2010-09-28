@@ -88,7 +88,6 @@ public class Tab extends BaseTab {
 		
 		JSONObject json = new JSONObject();
 		json.put("uid", getUid());
-		json.put("defaultUid", super.getDefaultuid());
 		json.put("tabId", getTabId());
 		json.put("tabName",I18NUtil.replace( super.getName(), resMap ) );
 //		json.put("tabNumber", this.tabNumber);

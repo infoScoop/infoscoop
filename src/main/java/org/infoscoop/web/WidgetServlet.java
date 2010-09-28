@@ -48,18 +48,9 @@ public class WidgetServlet extends HttpServlet {
 	private static final long serialVersionUID = "org.infoscoop.web.WidgetServlet"
 			.hashCode();
 	
-	private static String defaultUid = "default";
-
 	private static Log log = LogFactory.getLog(WidgetServlet.class);
 	
-	public static String getDefaultUid() {
-		return defaultUid;
-	}
-
 	public void init(ServletConfig config) throws ServletException {
-		defaultUid = config.getInitParameter("defaultUid");
-		if(defaultUid == null) defaultUid = "default";
-		
 		super.init(config);
 	}
 
@@ -170,13 +161,13 @@ public class WidgetServlet extends HttpServlet {
 	}
 	
 	protected Collection getDisplayContents(String uid, HttpServletRequest request) throws Exception{
-		return TabService.getHandle().getWidgetsNode(uid, defaultUid);
+		return TabService.getHandle().getWidgetsNode(uid);
 	}
 	
 	protected Collection getDisplayContents(String uid, int tabOrder,
 			HttpServletRequest req) throws Exception {
 		
-		Object tabObj = TabService.getHandle().getWidgetsNodeByTabOrder(uid, getDefaultUid(), tabOrder);
+		Object tabObj = TabService.getHandle().getWidgetsNodeByTabOrder(uid, tabOrder);
 		if(tabObj == null)
 			return null;
 		
