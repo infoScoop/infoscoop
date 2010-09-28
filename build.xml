@@ -96,7 +96,6 @@
 		<copy todir="${build.main}" file="${src.main.web}/changePassword.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/selectProfile.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/logoff.jsp"/>
-		<copy todir="${build.main}" file="${src.main.web}/accessStats.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/error.jsp"/>
 		
 		<copy todir="${build.main}" file="${src.main.web}/rpc_relay.html"/>
@@ -468,18 +467,6 @@
 			encoding="UTF-8"/>
 		<replaceregexp
 			file="${build.main}/WEB-INF/classes/gadget-html.vm"
-			match="&quot;([^&quot;]+)\.js&quot;"
-			replace="&quot;\1.js?${build.timestamp}&quot;"
-			flags="mg"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.main}/accessStats.jsp"
-			match="&lt;!--start script--&gt;.*&lt;!--end script--&gt;"
-			replace="&lt;script src=&quot;&lt;%=staticContentURL%&gt;/js/dist/Portal-core-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
-			flags="s"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.main}/accessStats.jsp"
 			match="&quot;([^&quot;]+)\.js&quot;"
 			replace="&quot;\1.js?${build.timestamp}&quot;"
 			flags="mg"
