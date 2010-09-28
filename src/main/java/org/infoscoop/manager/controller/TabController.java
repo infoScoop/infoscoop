@@ -168,7 +168,7 @@ public class TabController {
 	
 	@RequestMapping
 	@Transactional
-	public void editStaticGadget(
+	public String editStaticGadget(
 			HttpServletRequest request, 
 			@RequestParam("tabId") String tabId,
 			@RequestParam("containerId") String containerId,
@@ -178,6 +178,9 @@ public class TabController {
 		TabTemplate tab = tabTemplateDAO.get(tabId);
 		
 		staticGadget = tabTemplateStaticGadgetDAO.getByContainerId(containerId, tab);
+		if(staticGadget == null){
+			return "forward:selectGadgetType";
+		}
 		String instanceId = Integer.toString(staticGadget.getGadgetInstance().getId());
 		
 		staticGadget.setTabTemplateId(tabId);
@@ -199,6 +202,7 @@ public class TabController {
 				model.addAttribute("conf", getGadgetConf(type, locale));
 			}
 		}
+		return "tab/editStaticGadget";
 	}
 	
 	@RequestMapping

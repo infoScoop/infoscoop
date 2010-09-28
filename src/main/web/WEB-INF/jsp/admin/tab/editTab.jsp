@@ -59,28 +59,20 @@ h2 {
 }
 
 .edit_static_gadget{
+	position: absolute;top: 0px;left: 0px;
 	text-decoration: underline;
 	color : blue;
 	cursor: pointer;
-}
-
-.edit_static_gadget_hide{
-	
-}
-
-.edit_static_gadget_show{
-	position: absolute;top: 0px;left: 0px;
-	top:-1px;
-	left:-1px;
-	width:101%;
-	height:85px;/*must be changed*/
 	text-align:center;
+	vertical-align:middle;
 	-moz-opacity:0.7;
 	opacity:0.7;
 	filter:alpha(opacity=70);
 	background-color: #F0F0F0;
+	z-index: 10;
+	width:100%;
+	height:100%;
 }
-
 </style>
 
 <script src="../../js/resources/resources_ja.js"></script>
@@ -217,41 +209,38 @@ function prepareStaticArea(){
 
 		var edit_cover = document.createElement('div');
 		edit_cover.id = "edit_div_" + j;
-		edit_cover.className = "edit_static_gadget_hide";
+		edit_cover.className = "edit_static_gadget";
+		edit_cover.style.display = "none";
+		edit_cover.href = hostPrefix + "/manager/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + containerId;
+		div.appendChild(edit_cover);
 		
+		var modal = new Control.Modal(
+			edit_cover,
+			{
+			  opacity: 0.4,
+			  width: 580,
+			 height: 440,
+			 iframe:true// ajax is better
+			}
+		);
+
 		var editLayoutMouseOver = function(parent, child,containerId) {
 				setModal(parent,child,containerId);
-				parent.appendChild(child);
-				child.className = "edit_static_gadget_show";
+				Element.show(child);
 		};
 		var editLayoutMouseOut = function(parent, child) {
-				child.className = "edit_static_gadget_hide";
-				parent.removeChild(child);
+				Element.hide(child);
 		};
 		
-		Event.observe(div, 'mouseover', editLayoutMouseOver.bind(null, div, edit_cover, containerId),false);
-		Event.observe(edit_cover, 'mouseout', editLayoutMouseOut.bind(null, div, edit_cover), false);
 
-		function setModal(div, edit_cover, containerId){
-	
-			if(edit_cover.firstChild)return;
-			if(div.firstChild){
-				edit_cover.appendChild( document.createTextNode('Edit') );
-				edit_cover.href = hostPrefix + "/manager/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + containerId;
+		Event.observe(div, 'mouseover', editLayoutMouseOver.bind(null, div, edit_cover, containerId),false);
+		Event.observe(div, 'mouseout', editLayoutMouseOut.bind(null, div, edit_cover), false);
+		function setModal(parent, edit_cover, containerId){
+			if(parent.id !== containerId){
+				edit_cover.innerHTML = 'Edit';
 			}else{
-				edit_cover.appendChild(document.createTextNode('New') );
-				edit_cover.href = hostPrefix + "/manager/tab/selectGadgetType?tabId=" + tabId + "&containerId=" + containerId;
-			};
-	
-			var modal = new Control.Modal(
-				edit_cover,
-				{
-				  opacity: 0.4,
-				  width: 580,
-				  height: 440,
-				  iframe:true// ajax is better
-				}
-			);
+				edit_cover.innerHTML = 'New';
+			}
 		}
 	}
 };
