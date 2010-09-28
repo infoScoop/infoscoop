@@ -1716,36 +1716,11 @@ IS_Widget.mergePreference = function(typeConfigXml, widgetsXml) {
 
 IS_Widget.contentClicked = function (url, rssUrl, title, pubDate, aTag) {
 	IS_Portal.buildIFrame(aTag);
-	IS_Widget.updateLog("0",url,rssUrl);
-	IS_Widget.updateRssMeta("0",url,rssUrl,title,pubDate);
 };
 
 IS_Widget.mergeContentClicked = function (rssItem,aTag) {
 	IS_Portal.buildIFrame(aTag);
-	for(var i=0; i<rssItem.rssUrls.length ;i++){
-		IS_Widget.updateLog("0",rssItem.link,rssItem.rssUrls[i]);
-		
-		var startDateTime = (rssItem.rssDate)? rssItem.rssDate.getTime() : "";
-		IS_Widget.updateRssMeta("0",rssItem.link,rssItem.rssUrls[i],rssItem.title,startDateTime);
-	}
-	
 };
-
-IS_Widget.updateLog = function (logType,url,rssUrl){
-	if( !url )
-		return;
-	
-	var cmd = new IS_Commands.AddLogCommand(logType, url, rssUrl);
-	IS_Request.LogCommandQueue.addCommand(cmd);
-}
-
-IS_Widget.updateRssMeta = function (contentType, url, rssUrl, title, pubDate){
-	if(!url )
-		return;
-	
-	var cmd = new IS_Commands.UpdateRssMetaCommand(contentType, url, rssUrl, title, pubDate);
-	IS_Request.LogCommandQueue.addCommand(cmd);
-}
 
 IS_Widget.parseRss = function(response) {
 	var jsonObj;

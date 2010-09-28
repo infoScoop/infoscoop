@@ -17,7 +17,6 @@
 	<bean id="EmptyWidget" singleton="false" class="org.infoscoop.command.EmptyWidget" />
 	<bean id="EmptyAllWidget" singleton="false" class="org.infoscoop.command.EmptyAllWidget" />
 	<bean id="ExecLogoffProcess" singleton="false" class="org.infoscoop.command.ExecLogoffProcess" />
-	<bean id="AddLog" singleton="false" class="org.infoscoop.command.AddLog" />
 	
 	<bean id="managerAddWidget" singleton="false" class="org.infoscoop.manager.controller.TabController.AddWidget" />
 	<bean id="managerUpdateWidgetLocation" singleton="false" class="org.infoscoop.manager.controller.TabController.UpdateWidgetLocation" />

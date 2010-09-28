@@ -2,7 +2,6 @@
 <widgetConfiguration autoRefresh="true" icon="multi-rss-reader.gif" type="MultiRssReader" title="!{lb_MultiRssReader}" backgroundColor="#FFFFFF">
 	<WidgetPref datatype="bool" display_name="!{lb_titleEdit}" name="titleEdit" value="true"/>
 	<WidgetPref datatype="string" display_name="!{lb_dateTimeFormat}" name="dateTimeFormat" value="yyyy/MM/dd HH:mm:ssZ"/>
-	<WidgetPref datatype="bool" display_name="!{lb_useAccessStat}" name="useAccessStat" value="true"/>
 	<UserPref default_value="false" display_name="!{lb_doLineFeed}" datatype="bool" name="doLineFeed"/>
 	<UserPref default_value="true" display_name="!{lb_doShowDatetime}" datatype="bool" name="showDatetime"/>
 	<UserPref default_value="3" display_name="!{lb_itemsnumDisplayName}" datatype="hidden" name="itemsnum" staticDisabled="true">
@@ -48,7 +47,6 @@
 		<menu alt="!{lb_increaseitem}" imgUrl="arrow_down.gif" staticDisabled="true" type="widgetRssDown"/>
 		<menu alt="!{lb_sortDisplay}" imgUrl="display_sort.gif" type="sort"/>
 		<menu alt="!{lb_categoryDisplay}" imgUrl="display_cat.gif" type="category"/>
-		<menu alt="!{lb_accessStats}" imgUrl="group.gif" type="accessStats"/>
 		<menu alt="!{lb_dateDisplay}" imgUrl="display_time.gif" type="date"/>
 		<menu alt="!{lb_lineFeed}" imgUrl="display_break.gif" type="lineFeed"/>
 	</Header>

@@ -511,16 +511,6 @@
 	</servlet>
 
 	<servlet>
-		<servlet-name>AccessStatsServlet</servlet-name>
-		<servlet-class>org.infoscoop.web.AccessStatsServlet</servlet-class>
-	</servlet>
-
-	<servlet>
-		<servlet-name>AccessStatsListServlet</servlet-name>
-		<servlet-class>org.infoscoop.web.AccessStatsListServlet</servlet-class>
-	</servlet>
-
-	<servlet>
 		<servlet-name>PreviewServlet</servlet-name>
 		<servlet-class>org.infoscoop.admin.web.PreviewServlet</servlet-class>
 	</servlet>
@@ -812,16 +802,6 @@
 	<servlet-mapping>
 		<servlet-name>TrashWidgetServlet</servlet-name>
 		<url-pattern>/trashwidget</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>AccessStatsServlet</servlet-name>
-		<url-pattern>/accessstats</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>AccessStatsListServlet</servlet-name>
-		<url-pattern>/accessstatslist</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

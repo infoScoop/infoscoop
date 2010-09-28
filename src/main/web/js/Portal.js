@@ -47,7 +47,6 @@ IS_Portal.freshDays = freshDays;
 IS_Portal.buildVersion = "";
 IS_Portal.lastSaveFailed = false;
 
-IS_Portal.autoRefCountList = [];
 IS_Request.CommandQueue = new IS_Request.Queue("/comsrv", commandQueueWait, !is_userId);
 IS_Request.LogCommandQueue = new IS_Request.Queue("/logsrv", logCommandQueueWait, false, true);
 IS_Portal.imageController = {};//For image thumbnail. Refer to RssItemRender.js
@@ -1772,16 +1771,6 @@ IS_Portal.buildLogout = function() {
 	if( logout.parentNode  )
 		logout.parentNode.style.width = logout.offsetWidth +"px";
 }
-
-// Log at dropping and drop processing
-/*IS_Portal.menuDropped = function( id, rssUrl, title ){
-	IS_EventDispatcher.newEvent('dropWidget', id, null);
-	
-	if(rssUrl && rssUrl.length != 0){
-		var cmd = new IS_Commands.UpdateRssMetaCommand("1", rssUrl, rssUrl, title, "");
-		IS_Request.LogCommandQueue.addCommand(cmd);
-	}
-}*/
 
 IS_Portal.widgetDropped = function( widget ) {
 	if( IS_TreeMenu.isMenuItem( widget.id ) )

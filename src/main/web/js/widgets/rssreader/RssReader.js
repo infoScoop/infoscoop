@@ -422,9 +422,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			this.displayContents();
 		}
 		self.setLatestMark();
-		
-		if(this.accessStatsIcon && widget.widgetPref.useAccessStat && /true/i.test( widget.widgetPref.useAccessStat.value ) )
-			this.accessStatsIcon.style.display = "block";
 	};
 	
 	this.handleLoadPageCompleted = function( pageNo ) {
@@ -966,29 +963,9 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		
 		this.hideErrorMsg();
 	}
-
-	this.updateRssMetaRefresh = function() {
-		var convUrl = escapeXMLEntity(widget.getUserPref("url"));
-		var autoRefreshCount = IS_Portal.autoRefCountList[convUrl];
-		if(!autoRefreshCount){
-			autoRefreshCount = 0;
-		}
-		IS_Portal.autoRefCountList[convUrl] = ++autoRefreshCount;
-		
-		var cmd = new IS_Commands.UpdateRssMetaRefreshCommand("1",widget.getUserPref("url"),widget.title);
-		IS_Request.LogCommandQueue.addCommand(cmd);
-	}
 	
 	this.autoReloadContents = function (req, obj) {
-		self.updateRssMetaRefresh();
 		this.buildRssItems(req, obj);
-	}
-	
-	this.updateLog = function(){
-		var rssUrl = widget.getUserPref("url");
-		if (rssUrl && !widget.isAuthenticationFailed() ) {
-			IS_Widget.updateLog("2", rssUrl, rssUrl);
-		}
 	}
 	
 	this.loadContentsOption = {
@@ -1025,14 +1002,12 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		onSuccess : this.autoReloadContents.bind(this),
 		on304 : function() {
 			this.stopLatestMarkRotate();
-			this.updateRssMetaRefresh();
 		}.bind( this )
 	};
 	
 	// This is called when header icon is pushed
 	this.refresh = function() {
 		widget.loadContents();
-		this.updateLog();
 	}
 	
 	this.buildEdit = function(form){
@@ -1166,24 +1141,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		this.turnBack();
 		
 		IS_Portal.widgetDisplayUpdated();
-	};
-
-	this.accessStatsApplyIconStyle = function(div){
-		this.accessStatsIcon = div;
-		
-		div.style.display = "none";
-		if( widget.isComplete ) {
-			if(widget.isSuccess && widget.widgetPref.useAccessStat && /true/i.test( widget.widgetPref.useAccessStat.value ) ) {
-				div.style.display = "block";
-			}
-		} else {
-			setTimeout( this.accessStatsApplyIconStyle.bind( this,div ),100 );
-		}
-	};
-	
-	this.accessStatsIconHandler = function(div){
-		IS_Widget.RssReader.showAccessStats(widget);
-		widget.headerContent.hiddenMenu.hide();
 	};
 }
 
@@ -1882,104 +1839,6 @@ IS_Widget.RssReader.dropGroup = new IS_DropGroup({
 		return droppables;
 	}
 });
-
-// Access statistics
-IS_Widget.RssReader.showAccessStats = function(widget){
-	var statsId = 'accessStats_' + widget.id;
-	if($(statsId)) {
-		var win = Windows.getWindow(statsId);
-		win.toFront();
-		return;
-	}
-	var win = new Window(statsId, {
-		className: "alphacube",
-
-		title: IS_R.getResource(IS_R.lb_accessStatsTitle, [widget.title]),
-		width:600,
-		height:350,
-		minimizable: false,
-		maximizable: false,
-		resizable: false,
-		showEffect: Element.show,
-		hideEffect: Element.hide,
-		destroyOnClose: true,
-		zIndex: 10000
-	});
-	win.showCenter();
-	
-	if(!/MultiRssReader/.test( widget.widgetType )) {
-		var rssUrl = widget.getUserPref("url");
-		win.setURL("accessstats?rssUrl=" + encodeURIComponent(rssUrl));
-	} else {
-		var multiAccessStatContent = document.createElement("div");
-		win.setContent( multiAccessStatContent );
-		
-		IS_Widget.RssReader.buildMultiAccessStatContent( widget,multiAccessStatContent );
-		win.setSize( multiAccessStatContent.offsetWidth +24,multiAccessStatContent.offsetHeight +16 );
-	}
-}
-
-IS_Widget.RssReader.buildMultiAccessStatContent = function( widget,root ) {
-	var statsId = 'accessStats_' + widget.id;
-	
-	var tabs = document.createElement("ul");
-	tabs.className = "accessStat_tabs tabs";
-	
-	var contents = document.createElement("div");
-	contents.className = "accessStat_tabs_content";
-	
-//	var root = document.createElement("div");
-	root.appendChild( tabs );
-	root.appendChild( contents );
-	
-	var currentTab;
-	
-	var errorUrls = widget.content.mergeRssReader.content.rss.errorUrls;
-	widget.content.getRssReaders().each( function( rssReader ) {
-		var url = rssReader.getUserPref("url");
-		if( errorUrls.contains( url ) )
-			return;
-		
-		var tab = document.createElement("li");
-		tab.id = "accessStatTab_"+rssReader.id;
-		
-		var tabAnchor = document.createElement("a");
-		tabAnchor.id = "tab_"+encodeURIComponent( url );
-		tabAnchor.href = "#"+encodeURIComponent( url );
-		tabAnchor.className = "tab";
-		tab.appendChild( tabAnchor );
-		
-		var title = document.createElement("span");
-		title.className = "title";
-		title.appendChild( document.createTextNode( rssReader.title ));
-		tabAnchor.appendChild( title );
-		
-		tabs.appendChild( tab );
-		
-		var content = document.createElement("div");
-		content.id = encodeURIComponent( url );
-		contents.appendChild( content );
-		
-		var iframe = document.createElement("iframe");
-		iframe.frameBorder = 0;
-		iframe.style.width = iframe.style.height = "100%";
-		iframe.src = "./blank.html";
-		content.appendChild( iframe );
-	});
-	
-	new Control.Tabs( tabs,{
-		beforeChange: function( old_container,new_container ){
-			Element.removeClassName( $("tab_"+old_container.id ),"selected");
-			Element.addClassName( $("tab_"+new_container.id ),"selected");
-			
-			var iframe = new_container.firstChild;
-			if( !iframe.src )
-				iframe.src = "accessstats?rssUrl=" +new_container.id;
-		}
-	})
-	
-	return root;
-}
 
 //Manage all repaint at once in resizing window and text
 //Draw again when tub is switched, if IS_Widget.RssReader.needToRepaint[tabId]is true

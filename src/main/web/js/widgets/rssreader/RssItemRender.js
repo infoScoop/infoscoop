@@ -795,18 +795,6 @@ IS_Widget.RssReader.RssItemRender.prototype.displayInlineDesc = function( widget
 	else
 		IS_Widget.RssReaderDescriptionList.push(descObj);
 
-	var startDateTime = (rssItem.rssDate)? rssItem.rssDate.getTime() : "";
-	if(rssItem.rssUrls && widget.getUserPref("displayMode") != "category"){
-		for(var i=0; i<rssItem.rssUrls.length ;i++){
-			IS_Widget.updateLog("1",rssItem.link,rssItem.rssUrls[i]);
-			IS_Widget.updateRssMeta("0",rssItem.link,rssItem.rssUrls[i],rssItem.title,startDateTime);
-		}
-	} else {
-		IS_Widget.updateLog("1",rssItem.link,widget.getUserPref("url"));
-		IS_Widget.updateRssMeta("0",rssItem.link,widget.getUserPref("url"),rssItem.title,startDateTime);
-	}
-			
-
 	this.rssDetail.firstChild.innerHTML = escapeHTMLEntity(IS_R.lb_closeLink);
 	this.rssDetail1.firstChild.innerHTML = escapeHTMLEntity(IS_R.lb_closeLink);
 	this.rssItem.displayDesc = true;
@@ -878,18 +866,6 @@ IS_Widget.RssReader.RssItemRender.prototype.hideInlineDesc = function( widget,rs
 }
 			
 IS_Widget.RssReader.RssItemRender.prototype.displayPopupDesc = function( widget,rssItem ) {
-	if(rssItem.rssUrls && widget.getUserPref("displayMode") != "category"){
-		for(var i=0; i<rssItem.rssUrls.length ;i++){
-			var startDateTime = (rssItem.rssDate)? rssItem.rssDate.getTime() : "";
-			IS_Widget.updateLog("1",rssItem.link,rssItem.rssUrls[i]);
-			IS_Widget.updateRssMeta("0",rssItem.link,rssItem.rssUrls[i],rssItem.title,startDateTime);
-		}
-	}else{
-		var startDateTime = (rssItem.rssDate)? rssItem.rssDate.getTime() : "";
-		IS_Widget.updateLog("1",rssItem.link,widget.getUserPref("url"));
-		IS_Widget.updateRssMeta("0",rssItem.link,widget.getUserPref("url"),rssItem.title,startDateTime);
-	}
-	
 	IS_Widget.RssReader.RssItemRender.hideRssDesc();
 	IS_Widget.RssReader.RssItemRender.displayedRssDescId = this.descId;
 	if( IS_Widget.RssReader.RssItemRender.adjustRssDesc() )

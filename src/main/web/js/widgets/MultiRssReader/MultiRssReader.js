@@ -369,15 +369,12 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				onSuccess : function() {
 					this.handleMergeSuccess.apply( this,$A( arguments ))
 					
-					if( this.isSuccess ) {
-						this.updateMergeLog();
-					} else {
+					if( !this.isSuccess ) {
 						this.isSuccess = true;
 					}
 				}.bind( this ),
 				on304 : function() {
 					this.handleMerge304.apply( this,$A( arguments ));
-					this.updateMergeLog();
 				}.bind( this ),
 				on10408: this.handleMergeTimeout.bind( this,option )
 			});
@@ -999,21 +996,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 	};
 	
 	this.autoReloadContents = function () {
-		var rssReaders = this.getRssReaders();
-		for(var i in rssReaders){
-//			if(rssReaders[i].widgetConf && rssReaders[i].widgetConf.isChecked){
-			if(rssReaders[i].widgetConf ){
-				var convUrl = escapeXMLEntity(rssReaders[i].getUserPref("url"));
-				var autoRefreshCount = IS_Portal.autoRefCountList[convUrl];
-				if(!autoRefreshCount){
-					autoRefreshCount = 0;
-				}
-				IS_Portal.autoRefCountList[convUrl] = ++autoRefreshCount;
-				
-				var cmd = new IS_Commands.UpdateRssMetaRefreshCommand("1",rssReaders[i].getUserPref("url"),rssReaders[i].title);
-				IS_Request.LogCommandQueue.addCommand(cmd);
-			}
-		}
 		this.loadContents( true );
 	}
 	
@@ -1103,15 +1085,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 	}
 	this.handleMerge304 = function( req,obj ) {
 		this.mergeRssReader.content.stopLatestMarkRotate();
-	}
-	this.updateMergeLog = function() {
-		var errorUrls = $H( this.mergeRssReader.content.rss.errors ||{}).keys();
-		this.getRssReaders().each( function( rssReader ) {
-			var url = rssReader.content.getUrl();
-			if( !errorUrls.contains( url ) && !rssReader.isAuthenticationFailed()) {
-				IS_Widget.updateLog("2",url,url );
-			}
-		});
 	}
 	this.handleMerge404 = function( req,obj ) {
 		if( !this.mergeRssReader.isSuccess ) {
@@ -1459,27 +1432,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				this.loadContents();
 			}
 		}
-	}
-	
-	this.accessStatsApplyIconStyle = function( div ) {
-		div.style.display = "none";
-		if( this.isTimeDisplayMode() &&
-			widget.widgetPref.useAccessStat && /true/i.test( widget.widgetPref.useAccessStat.value ) ) {
-			if( this.mergeRssReader.content && this.mergeRssReader.content.rss &&
-				this.getRssReaders().find( function( rssReader ) {
-				var errorUrls = $H(this.mergeRssReader.content.rss.errors ||{}).keys();
-				
-				return !errorUrls.contains( rssReader.getUserPref("url") );
-			}.bind( this )) ) {
-				div.style.display = "";
-			} else {
-				setTimeout( this.accessStatsApplyIconStyle.bind( this,div ),100 );
-			}
-		}
-	}
-	this.accessStatsIconHandler = function( div ) {
-		IS_Widget.RssReader.showAccessStats(widget);
-		widget.headerContent.hiddenMenu.hide();
 	}
 };
 

@@ -943,12 +943,6 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		//widget.loadContents();
 		
 		 this.loadCategoryContents(this.currentCategory);
-		
-		this._getOriginalRssReaders().collect( function( rssReader ) {
-			var url = rssReader.getUserPref("url");
-			if( url && !rssReader.isAuthenticationFailed() )
-				IS_Widget.updateLog("2",url,url );
-		});
 	}
 	
 	/**
@@ -1210,23 +1204,6 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		}else{
 			maxIframe.src = rssItem.link;
 		}
-		if(rssItem.rssUrls){
-			IS_Widget.MaximizeRssReader.mergeContentClicked(rssItem);
-		}else{
-			var startDateTime = (rssItem.rssDate)? rssItem.rssDate.getTime() : "";
-			IS_Widget.MaximizeRssReader.contentClicked(rssItem.link,feedWidget.getUserPref("url"),rssItem.title,startDateTime);
-		}
-	}
-	this.handleTitleATagClick = function(rssItem, aTag) {
-		this.iframeViewMode(aTag);
-		
-		if(rssItem.rssUrls){
-			IS_Widget.MaximizeRssReader.mergeContentClicked(rssItem,aTag);
-		} else {
-			var startDateTime = (rssItem.rssDate)? rssItem.rssDate.getTime() : "";
-			IS_Widget.MaximizeRssReader.contentClicked(
-				rssItem.link,widget.getUserPref("url"),rssItem.title,startDateTime, aTag);
-		}
 	}
 	this.clearDetail = function(){
 		var rssItem = {
@@ -1269,9 +1246,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 			} else {
 				aTag.target = "_blank";
 			}
-			IS_Event.observe( aTag, "click",
-				this.handleTitleATagClick.bind( this,rssItem,aTag ),
-						false,widget.id );
+			IS_Event.observe( aTag, "click",this.iframeViewMode.bind(this, aTag), false, widget.id );
 		} else {
 			//rsslink.innerHTML = rssTitle;
 			rsslink.appendChild(document.createTextNode(rssTitle));
@@ -1340,34 +1315,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 				}
 			}
 		}
-		
-		// Log: Save RssMeta
-		if(rssItem.rssUrls){
-			for(var i=0; i<rssItem.rssUrls.length ;i++){
-				var startDateTime = (rssItem.rssDate)? rssItem.rssDate.getTime() : "";
-				IS_Widget.updateLog("1",rssItem.link,rssItem.rssUrls[i]);
-				IS_Widget.updateRssMeta("0",rssItem.link,rssItem.rssUrls[i],rssItem.title,startDateTime);
-			}
-		}else{
-			var startDateTime = (rssItem.rssDate)? rssItem.rssDate.getTime() : "";
-			IS_Widget.updateLog("1",rssItem.link,feedWidget.getUserPref("url"));
-			IS_Widget.updateRssMeta("0",rssItem.link,feedWidget.getUserPref("url"),rssItem.title,startDateTime);
-		}
 	};
-};
-
-IS_Widget.MaximizeRssReader.contentClicked = function (url, rssUrl, title, pubDate) {
-	IS_Widget.updateLog("0",url,rssUrl);
-	IS_Widget.updateRssMeta("0",url,rssUrl,title,pubDate);
-};
-		
-IS_Widget.MaximizeRssReader.mergeContentClicked = function (rssItem) {
-	for(var i=0; i<rssItem.rssUrls.length ;i++){
-		IS_Widget.updateLog("0",rssItem.link,rssItem.rssUrls[i]);
-		
-		var startDateTime = (rssItem.rssDate)? rssItem.rssDate.getTime() : "";
-		IS_Widget.updateRssMeta("0",rssItem.link,rssItem.rssUrls[i],rssItem.title,startDateTime);
-	}
 };
 IS_Widget.MaximizeRssReader.Drag = IS_Class.create();
 IS_Widget.MaximizeRssReader.Drag.prototype.classDef = function() {

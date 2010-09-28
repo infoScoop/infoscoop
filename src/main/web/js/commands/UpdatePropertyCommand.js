@@ -515,38 +515,6 @@ IS_Commands.EmptyAllWidgetCommand.prototype.toRequestString = function(){
 };
 
 /**
- * AddLogCommand
- */
-IS_Commands.AddLogCommand = function(logType,url,rssUrl){
-	this.type = "AddLog";
-	this.logType = logType;
-	this.url = url;
-	this.rssUrl = rssUrl;
-	
-//	this.id = this.type + "_" + this.logType + "_" + this.url;
-	this.id = this.type + "_" + this.logType + "_" + this.url + "_" + this.rssUrl;
-};
-
-IS_Commands.AddLogCommand.prototype.parseResponse = function(docEl){
-	var attrs=docEl.attributes;
-	var status=attrs.getNamedItem("status").value;
-	if(status != "ok"){
-		var reason = attrs.getNamedItem("message").value;
-		msg.error("add log "+ this.id +" is failed.\n\n" + reason);
-	}
-};
-
-IS_Commands.AddLogCommand.prototype.toRequestString = function(){
-	return is_simpleXmlify({
-		type:this.type,
-		id:this.id,
-		logType:this.logType,
-		url:this.url,
-		rssUrl:this.rssUrl
-	}, "command");
-};
-
-/**
  * UpdatePreferenceCommand
  */
 IS_Commands.UpdatePreferenceCommand = function(field, value){
@@ -627,78 +595,6 @@ IS_Commands.ExecLogoffProcessCommand.prototype.toRequestString = function(){
 		type:this.type,
 		id:this.id,
 		field:this.field
-	}, "command");
-};
-
-/**
- * UpdateRssMetaCommand
- */
-IS_Commands.UpdateRssMetaCommand = function(contentType, url, rssUrl, title, pubDate){
-	/*
-	this.type = "UpdateRssMeta";
-	this.contentType = contentType;
-	this.url = url;
-	this.rssUrl = rssUrl;
-	this.title = title;
-	this.pubDate = pubDate;
-	*/
-//	this.id = this.type + "_" + this.url + "_" + this.rssUrl;
-};
-
-IS_Commands.UpdateRssMetaCommand.prototype.parseResponse = function(docEl){
-	var attrs=docEl.attributes;
-	var status=attrs.getNamedItem("status").value;
-	if(status != "ok"){
-		var reason = attrs.getNamedItem("message").value;
-		msg.error("update rssmeta "+ this.id +" is failed.\n\n" + reason);
-	}
-};
-
-IS_Commands.UpdateRssMetaCommand.prototype.toRequestString = function(){
-	return is_simpleXmlify({
-		type:this.type,
-		id:this.id,
-		contentType:this.contentType,
-		url:this.url,
-		rssUrl:this.rssUrl,
-		title:this.title,
-		pubDate:this.pubDate
-	}, "command");
-};
-
-/**
- * UpdateRssMetaRefreshCommand
- */
-IS_Commands.UpdateRssMetaRefreshCommand = function(contentType, url, title){
-	/*
-	this.type = "UpdateRssMetaRefresh";
-	this.contentType = contentType;
-	this.url = url;
-	this.title = title;
-	this.count = IS_Portal.autoRefCountList[this.url];
-	*/
-//	this.id = this.type + "_" + this.url;
-};
-
-IS_Commands.UpdateRssMetaRefreshCommand.prototype.parseResponse = function(docEl){
-	var attrs=docEl.attributes;
-	var status=attrs.getNamedItem("status").value;
-	if(status != "ok"){
-		var reason = attrs.getNamedItem("message").value;
-		msg.error("update rssmetaRefresh "+ this.id +" is failed.\n\n" + reason);
-	}
-};
-
-IS_Commands.UpdateRssMetaRefreshCommand.prototype.toRequestString = function(){
-	IS_Portal.autoRefCountList[this.url] = 0;
-	
-	return is_simpleXmlify({
-		type:this.type,
-		id:this.id,
-		contentType:this.contentType,
-		url:this.url,
-		title:this.title,
-		count:this.count
 	}, "command");
 };
 

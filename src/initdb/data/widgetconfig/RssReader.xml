@@ -2,7 +2,6 @@
 <widgetConfiguration type="RssReader" autoRefresh="true" title="!{lb_RssReader}" backgroundColor="#FFFFFF" singleton="true" icon="feed.gif">
 	<WidgetPref datatype="bool" display_name="!{lb_titleEdit}" name="titleEdit" value="true"/>
 	<WidgetPref datatype="string" display_name="!{lb_dateTimeFormat}" name="dateTimeFormat" value="yyyy/MM/dd HH:mm:ssZ"/>
-	<WidgetPref datatype="bool" display_name="!{lb_useAccessStat}" name="useAccessStat" value="true"/>
 	<!--here write to the function that generates the custom icon display on the side of the article of RSS. 
 	<WidgetPref name="rssItemCustomIcons" datatype="json">
 	<![CDATA[
@@ -73,7 +72,6 @@
 	<Header>
 		<menu alt="!{lb_decreaseitem}" imgUrl="arrow_up.gif" staticDisabled="true" type="widgetRssUp"/>
 		<menu alt="!{lb_increaseitem}" imgUrl="arrow_down.gif" staticDisabled="true" type="widgetRssDown"/>
-		<menu alt="!{lb_accessStats}" imgUrl="group.gif" type="accessStats"/>
 		<menu alt="!{lb_dateDisplay}" imgUrl="display_time.gif" type="date"/>
 		<menu alt="!{lb_lineFeed}" imgUrl="display_break.gif" type="lineFeed"/>
 	</Header>

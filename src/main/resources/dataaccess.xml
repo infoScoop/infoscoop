@@ -57,11 +57,6 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
-	<bean id="logDAO" class="org.infoscoop.dao.LogDAO">
-		<property name="sessionFactory">
-   	   		<ref bean="sessionFactory"/>
-   	 	</property>
-	</bean>
 	<bean id="cacheDAO" class="org.infoscoop.dao.CacheDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>
