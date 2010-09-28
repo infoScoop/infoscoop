@@ -171,10 +171,5 @@
 				true
 			<!--end loginAuthentication--></value>
 		</property>
-		<property name="uidIgnoreCase">
-			<value><!--start sessionCreateConfig.uidIgnoreCase-->
-				false
-			<!--end sessionCreateConfig.uidIgnoreCase--></value>
-		</property>
    </bean>
 </beans>

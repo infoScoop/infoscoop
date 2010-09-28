@@ -94,7 +94,6 @@
 		
 		<copy todir="${build.main}" file="${src.main.web}/login.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/changePassword.jsp"/>
-		<copy todir="${build.main}" file="${src.main.web}/selectProfile.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/logoff.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/error.jsp"/>
 		

@@ -581,11 +581,6 @@
 			org.infoscoop.admin.web.ServiceCommandServlet
 		</servlet-class>
 	</servlet>
-	<servlet>
-		<servlet-name>MergeProfileServlet</servlet-name>
-		<servlet-class>org.infoscoop.web.MergeProfileServlet</servlet-class>
-	</servlet>
-
   <servlet>
     <servlet-name>js</servlet-name>
     <servlet-class>org.apache.shindig.gadgets.servlet.JsServlet</servlet-class>

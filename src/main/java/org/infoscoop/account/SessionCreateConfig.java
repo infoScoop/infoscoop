@@ -40,7 +40,6 @@ public class SessionCreateConfig {
 	private Collection<PrincipalDef> principalDefs = new ArrayList<PrincipalDef>();
 
 	private boolean loginAuthentication = true;
-	private boolean uidIgnoreCase = true;
 	private String uidHeader = null;
 	private String usernameHeader = null;
 	private Map<String, String> roleHeaderMap = new HashMap<String,String>();
@@ -77,7 +76,7 @@ public class SessionCreateConfig {
 	}
 
 
-	class HeaderPrincipalDef extends PrincipalDef{
+	static class HeaderPrincipalDef extends PrincipalDef{
 
 		private String headerName;
 
@@ -99,14 +98,6 @@ public class SessionCreateConfig {
 
 	public void setLoginAuthentication(boolean loginAuthentication) {
 		this.loginAuthentication = loginAuthentication;
-	}
-
-	public boolean isUidIgnoreCase() {
-		return uidIgnoreCase;
-	}
-
-	public void setUidIgnoreCase(boolean uidIgnoreCase) {
-		this.uidIgnoreCase = uidIgnoreCase;
 	}
 
 	public String getUidHeader() {

@@ -94,28 +94,28 @@ public class SessionManagerFilter implements Filter {
 
 	private String getUidFromHeader(HttpServletRequest req){
 		String uidHeader = SessionCreateConfig.getInstance().getUidHeader();
-		boolean uidIgnoreCase = SessionCreateConfig.getInstance().isUidIgnoreCase();
-
-		String uid = null;
+		String _uid = null;
 
 		if(uidHeader != null){
-			uid = req.getHeader(uidHeader);
+			_uid = req.getHeader(uidHeader);
 
 			if(log.isDebugEnabled()){
-				log.debug("Got UID from Header : [" + uid + "]");
+				log.debug("Got UID from Header : [" + _uid + "]");
 			}
 		} else {
-			uid = req.getRemoteUser();
+			_uid = req.getRemoteUser();
 			if(log.isDebugEnabled()){
-				log.debug("Got UID from RemoteUser : [" + uid + "]");
+				log.debug("Got UID from RemoteUser : [" + _uid + "]");
 			}
 		}
-		if(uid == null){
+		if(_uid == null){
 			if(log.isInfoEnabled())
 				log.info("uidHeader is null");
 			return null;
 		}
 
+		String uid = _uid.trim().toLowerCase();
+		
 		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
 			HttpSession session = req.getSession(true);
 			String sessionUid = (String)session.getAttribute("Uid");
@@ -124,29 +124,23 @@ public class SessionManagerFilter implements Filter {
 				uid = uidParam;
 				session.setAttribute("Uid",uid );
 			}
-		}else if( uidIgnoreCase && uid != null )
-			uid = uid.toLowerCase();
-
-		return uid.trim();
+		}
+		
+		return _uid;
 	}
 
 	private String getUidFromSession(HttpServletRequest req){
 		HttpSession session = req.getSession(true);
 		String uid = (String)session.getAttribute("Uid");
-		boolean uidIgnoreCase = SessionCreateConfig.getInstance().isUidIgnoreCase();
-
+				
 		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
 			String uidParam = req.getParameter("Uid");
 			if(uid.equalsIgnoreCase(uidParam)){
-				uid = uidParam;
-				session.setAttribute("Uid",uid );
+				uid = uidParam.trim().toLowerCase();
+				session.setAttribute("Uid", uid );
 			}
-		}else if( uidIgnoreCase && uid != null ) {
-			uid = uid.toLowerCase();
-
-			session.setAttribute("Uid",uid );
 		}
-
+		
 		return uid;
 	}
 

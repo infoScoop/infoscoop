@@ -102,13 +102,8 @@ public class WidgetServlet extends HttpServlet {
 			bvObj.append("buildVersion", getServletContext().getAttribute("buildTimestamp"));
 			responseAray.put(bvObj);
 			
-			Collection widgetsList;
-			if(tabOrderStr == null)
-				widgetsList = getDisplayContents(uid, request);
-			else{
-				int tabOrder = Integer.parseInt(tabOrderStr);
-				widgetsList = getDisplayContents(uid, tabOrder, request);
-			}
+			Collection<Object[]> widgetsList = getDisplayContents(uid, request);
+			
 			
 			if (widgetsList == null || widgetsList.isEmpty()) {
 				if(log.isInfoEnabled())
@@ -119,13 +114,12 @@ public class WidgetServlet extends HttpServlet {
 			
 			Map resMap = I18NUtil.getResourceMap( I18NUtil.TYPE_LAYOUT,request.getLocale() );
 			Set dynamicPanelWidgetIds = new HashSet();
-			for(Iterator it = widgetsList.iterator(); it.hasNext();){
-				Object[] t = ( Object[] )it.next();
+			for(Object[] t : widgetsList){
 				
 				Tab tab = (Tab)t[0];
 				String layout = (String)t[1];
-				Collection<Widget> dynamicWidgets = ( Collection )t[2];
-				Collection<Widget> staticWidgets = ( Collection )t[3];
+				Collection<Widget> dynamicWidgets = ( Collection<Widget> )t[2];
+				Collection<Widget> staticWidgets = ( Collection<Widget> )t[3];
 				
 				//Because there is the possibility that the widgetID repeats depending on the setting situation of the dynamic panel of the initial screen setting, we remove it.
 				List removeWidgetList = new ArrayList();
@@ -157,24 +151,9 @@ public class WidgetServlet extends HttpServlet {
 			long end = System.currentTimeMillis();
 			log.trace("--- WidgetServlet doPost: " + (end - start));
 		}
-		long end = System.currentTimeMillis();
 	}
 	
-	protected Collection getDisplayContents(String uid, HttpServletRequest request) throws Exception{
+	protected Collection<Object[]> getDisplayContents(String uid, HttpServletRequest request) throws Exception{
 		return TabService.getHandle().getWidgetsNode(uid);
 	}
-	
-	protected Collection getDisplayContents(String uid, int tabOrder,
-			HttpServletRequest req) throws Exception {
-		
-		Object tabObj = TabService.getHandle().getWidgetsNodeByTabOrder(uid, tabOrder);
-		if(tabObj == null)
-			return null;
-		
-		List result = new ArrayList();
-		result.add(tabObj);
-		return (Collection)result;
-	}
-
-	
 }

@@ -83,9 +83,10 @@ public class AuthenticationServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		String action = ((HttpServletRequest)request).getPathInfo();
-		String uid = request.getParameter("uid");
-		if (uid != null) {
-			uid = uid.trim();
+		String uidParam = request.getParameter("uid");
+		String uid = null;
+		if (uidParam != null) {
+			uid = uidParam.trim().toLowerCase();
 		}
 		String password = request.getParameter("password");
 		if(password != null){
