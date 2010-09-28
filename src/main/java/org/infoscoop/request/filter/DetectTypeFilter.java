@@ -17,9 +17,22 @@
 
 package org.infoscoop.request.filter;
 
-import java.io.*;
-import java.util.*;
-import java.util.regex.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.CharArrayWriter;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
@@ -27,18 +40,23 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
-
-import org.apache.commons.httpclient.*;
-import org.apache.commons.logging.*;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.xml.utils.QName;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.util.JSONScript;
 import org.infoscoop.util.NoOpEntityResolver;
-import org.infoscoop.web.WidgetRankingServlet;
 import org.infoscoop.widgetconf.I18NConverter;
 import org.infoscoop.widgetconf.MessageBundle;
-import org.json.*;
-import org.xml.sax.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class DetectTypeFilter extends ProxyFilter{
@@ -309,7 +327,6 @@ public class DetectTypeFilter extends ProxyFilter{
 		
 		String link;
 		String title;
-		boolean excepted;
 		
 		public DetectHandler( DetectManager manager ) {
 			this.manager = manager;
@@ -479,9 +496,6 @@ public class DetectTypeFilter extends ProxyFilter{
 					"/rdf:RDF/channel/link",
 					"/rss/channel/link") ){
 				link = value;
-			} else if (uri.equals(WidgetRankingServlet.XMLNS)
-					&& localName.equals("excepted") && value.equals("true")) {
-				excepted = true;
 			}
 		}
 		
@@ -491,9 +505,6 @@ public class DetectTypeFilter extends ProxyFilter{
 			typeConf.put("url", request.getOriginalURL());
 			typeConf.put("title", title );
 			typeConf.put("href", link );
-			if (excepted) {
-				typeConf.put("excepted", excepted);
-			}
 			
 			return new JSONArray().put( typeConf );
 		}

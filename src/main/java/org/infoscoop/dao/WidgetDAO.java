@@ -19,34 +19,26 @@ package org.infoscoop.dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.infoscoop.dao.model.Preference;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.service.SiteAggregationMenuService.ForceUpdateUserPref;
 import org.infoscoop.util.SpringUtil;
-import org.json.JSONException;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -339,122 +331,6 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 		super.getHibernateTemplate().bulkUpdate( queryString,
 				new Object[]{ uid,tabId,new Integer( isStatic )});
-	}
-
-	public List getWidgetRanking(int maxCount, int freshDay) {
-		Session session = null;
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -1 * freshDay);
-		long lastTime = cal.getTimeInMillis();
-
-		int looseMaxCount = maxCount + 10;
-		try{
-			session = super.getSession();
-
-			Query msql = (Query) session.getNamedQuery(
-					"menuWidgetRanking");
-			List<Object[]> mr = msql.setMaxResults(looseMaxCount).list();
-
-			Query msqll = (Query) session.getNamedQuery(
-					"menuWidgetRankingLast");
-			List<Object[]> mrl = msqll.setLong("CREATEDATE", lastTime)
-					.setMaxResults(looseMaxCount).list();
-
-			mr = joinRanking(mr, mrl);
-
-			Query wsql = (Query) session.getNamedQuery(
-					"widgetRanking");
-			List<Object[]> wr = wsql.setMaxResults(looseMaxCount).list();
-
-			Query wsall = (Query) session.getNamedQuery(
-					"widgetRankingLast");
-			List<Object[]> wrl = wsall.setLong("CREATEDATE", lastTime)
-					.setMaxResults(looseMaxCount).list();
-
-			wr = joinRanking(wr, wrl);
-
-			Query usql = (Query) session.getNamedQuery(
-					"urlRanking");
-			List<Object[]> ur = usql.setMaxResults(looseMaxCount).list();
-			Query usqll = (Query) session.getNamedQuery(
-					"urlRankingLast");
-			List<Object[]> url = usqll.setLong("CREATEDATE", lastTime)
-					.setMaxResults(looseMaxCount).list();
-
-			ur = joinRanking(ur, url);
-
-			TreeSet<Object[]> ranks = new TreeSet(new Comparator<Object[]>() {
-				public int compare(Object[] o1, Object[] o2) {
-					long cntl_1 = (Long) o1[4];
-					long cntl_2 = (Long) o2[4];
-					if (cntl_1 != cntl_2)
-						return (int) (cntl_2 - cntl_1);
-					long cnt_1 = (Long) o1[3];
-					long cnt_2 = (Long) o2[3];
-					if (cnt_1 != cnt_2)
-						return (int) (cnt_2 - cnt_1);
-					return 1;
-				}
-			});
-			for (Object[] rank : mr) {
-				ranks.add(rank);
-			}
-			for (Object[] rank : wr) {
-				ranks.add(rank);
-			}
-			for (Object[] rank : ur) {
-				ranks.add(rank);
-			}
-
-			List<Object[]> ranksSub = new ArrayList();
-			int i = 0;
-			for (Object[] rank : ranks) {
-				ranksSub.add(rank);
-				if (++i > maxCount)
-					break;
-			}
-			return ranksSub;
-
-		}finally{
-			if(session != null)
-				session.close();
-		}
-	}
-
-	private List joinRanking(List l, List l10) {
-		loop10: for (Iterator<Object[]> it10 = l10.iterator(); it10.hasNext();) {
-			Object[] cols10 = it10.next();
-			for (Iterator<Object[]> it = l.iterator(); it.hasNext();) {
-				Object[] cols = it.next();
-				if (eq(cols[0],cols10[0]) &&
-					eq(cols[1],cols10[1]) &&
-					eq(cols[2],cols10[2])) {
-					cols[4] = cols10[4];
-					continue loop10;
-				}
-			}
-			//add the object that is only in a new popular list.
-			l.add(cols10);
-		}
-		return l;
-	}
-	private boolean eq( Object o1,Object o2 ) {
-		if( o1 == null )
-			return ( o1 == o2 );
-		
-		return o1.equals( o2 );
-	}
-
-	public static void main(String args[]) throws JSONException{
-		WidgetDAO widgetDAO = WidgetDAO.newInstance();
-		List<Object[]> list = widgetDAO.getWidgetRanking(20, 10);
-		for (Object[] obj : list) {
-			for (int i = 0; i < obj.length; i++) {
-				System.out.print(obj[i] + "\t");
-			}
-			System.out.println();
-		}
-
 	}
 
 	public Map<String,UserPref> getUserPrefs( String id ) {

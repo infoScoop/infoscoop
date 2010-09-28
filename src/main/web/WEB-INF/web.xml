@@ -171,10 +171,6 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/js/search/searchEngine.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
 		<url-pattern>/encsrv</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
@@ -466,13 +462,6 @@
 		</servlet-class>
 	</servlet>
 
-	<servlet>
-		<servlet-name>SearchConfServlet</servlet-name>
-		<servlet-class>
-			org.infoscoop.web.SearchConfServlet
-		</servlet-class>
-	</servlet>
-
   	<servlet>
 		<servlet-name>AuthenticationServlet</servlet-name>
 		<servlet-class>
@@ -602,23 +591,6 @@
 			org.infoscoop.admin.web.ServiceCommandServlet
 		</servlet-class>
 	</servlet>
-
-	<servlet>
-		<servlet-name>KeywordRankingServlet</servlet-name>
-		<servlet-class>
-			org.infoscoop.web.KeywordRankingServlet
-		</servlet-class>
-		<!-- The maximum value at ranking total period. -->
-		<init-param>
-			<param-name>rankingPeriod_max</param-name>
-			<param-value>60</param-value>
-		</init-param>
-		<!-- The maximum values of ranking display number. -->
-		<init-param>
-			<param-name>rankingNum_max</param-name>
-			<param-value>30</param-value>
-		</init-param>
-	</servlet>
 	<servlet>
 		<servlet-name>MergeProfileServlet</servlet-name>
 		<servlet-class>org.infoscoop.web.MergeProfileServlet</servlet-class>
@@ -637,11 +609,6 @@
   <servlet>
   	<servlet-name>upsrv</servlet-name>
     <servlet-class>org.infoscoop.web.UserPrefServlet</servlet-class>
-  </servlet>
-
-  <servlet>
-  	<servlet-name>WidgetRankingServlet</servlet-name>
-    <servlet-class>org.infoscoop.web.WidgetRankingServlet</servlet-class>
   </servlet>
   <servlet>
   	<servlet-name>GadgetResourceServlet</servlet-name>
@@ -705,11 +672,6 @@
   <servlet-mapping>
     <servlet-name>jsonproxy</servlet-name>
     <url-pattern>/jsonproxy</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-	<servlet-name>KeywordRankingServlet</servlet-name>
-	<url-pattern>/kwdsrv</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -823,11 +785,6 @@
   </servlet-mapping>
 
 	<servlet-mapping>
-		<servlet-name>SearchConfServlet</servlet-name>
-		<url-pattern>/schsrv</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
 		<servlet-name>PropertiesServlet</servlet-name>
 		<url-pattern>/prpsrv</url-pattern>
 	</servlet-mapping>
@@ -898,11 +855,6 @@
 	<servlet-mapping>
 		<servlet-name>ServiceCommandServlet</servlet-name>
 		<url-pattern>/admin/services/*</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>WidgetRankingServlet</servlet-name>
-		<url-pattern>/widrank</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>GadgetIconServlet</servlet-name>
