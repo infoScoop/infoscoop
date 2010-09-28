@@ -212,7 +212,6 @@
 			<filelist dir="${src.main.web}/js/widgets/ranking" files="RankingRender.js"/>
 			<filelist dir="${src.main.web}/js/widgets/MiniBrowser" files="MiniBrowser.js"/>
 			<filelist dir="${src.main.web}/js/widgets/MiniBrowser" files="FragmentMiniBrowser.js"/>
-			<filelist dir="${src.main.web}/js/widgets/WidgetRanking" files="WidgetRanking.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type js --charset UTF-8 -o &quot;${build.main}/js/dist/Portal-${build.version}.js&quot; &quot;${build.main}/js/dist/Portal.js.tmp&quot;"/>
@@ -277,7 +276,6 @@
 			<filelist dir="${src.main.web}/skin" files="groupsettingmodal.css"/>
 			<filelist dir="${src.main.web}/skin" files="minibrowser.css"/>
 			<filelist dir="${src.main.web}/skin" files="ranking.css"/>
-			<filelist dir="${src.main.web}/skin" files="widgetranking.css"/>
 			<filelist dir="${src.main.web}/skin" files="rssreader.css"/>
 			<filelist dir="${src.main.web}/skin" files="maximizerssreader.css"/>
 			<filelist dir="${src.main.web}/skin" files="ticker.css"/>
@@ -356,7 +354,6 @@
 			<filelist dir="${src.main.web}/js/widgets/calendar" files="iCalendar.js"/>
 			<filelist dir="${src.main.web}/js/widgets/MiniBrowser" files="MiniBrowser.js"/>
 			<filelist dir="${src.main.web}/js/widgets/MiniBrowser" files="FragmentMiniBrowser.js"/>
-			<filelist dir="${src.main.web}/js/widgets/WidgetRanking" files="WidgetRanking.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalMain.js&quot; &quot;${build.admin}/js/dist/PortalMain.js.tmp&quot;"/>
