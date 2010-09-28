@@ -199,6 +199,17 @@ public class ProxyRequest{
 		this.requestHeaders.put(name, headers);
     }
     
+	public void setRequestHeader(String name, String value) {
+		List<String> headers = this.getRequestHeaders(name);
+		if (headers == null) {
+			headers = new ArrayList<String>();
+		} else {
+			headers.clear();
+		}
+		headers.add(value);// Cannot put headers directly
+		this.requestHeaders.put(name, headers);
+	}
+    
     public Map<String, List<String>> getRequestHeaders(){
 		return this.requestHeaders;
     }
