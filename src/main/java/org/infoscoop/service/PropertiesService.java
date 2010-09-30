@@ -95,7 +95,8 @@ public class PropertiesService{
 			propertiesJson.put( prop.getId(), propJson);
 		}
 		String json = propertiesJson.toString();
-		return I18NUtil.resolve(I18NUtil.TYPE_PROPERTY, json, locale, true);
+		//return I18NUtil.resolve(I18NUtil.TYPE_PROPERTY, json, locale, true);
+		return json;
 	}
 	
 	public String getProperty( String name ) throws Exception {

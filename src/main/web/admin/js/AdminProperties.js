@@ -210,7 +210,7 @@ ISA_Properties.prototype.classDef = function() {
 		//td.style.whiteSpace = "nowrap";
 		td.style.paddingLeft = "5px";
 		td.style.fontSize = "90%";
-		td.appendChild(document.createTextNode(ISA_R["alb_desc_"+property.id]+ "　"));
+		td.appendChild(document.createTextNode(ISA_R["property_desc_"+property.id]+ "　"));
 		tr.appendChild(td);
 		
 		return tr;
@@ -232,6 +232,10 @@ ISA_Properties.prototype.classDef = function() {
 			var errorMsg = [];
 			var propertyInput = $('input_'+property.id);
 			if (property.regex || property.required || property.maxLength || property.maxBytes) {
+				if(!property.isTranslatedRegexMsg){
+					property.regexMsg = ISA_R["property_regex_"+property.regexMsg];
+					property.isTranslatedRegexMsg = true;
+				}
 				var error = IS_Validator.validate(inputValue, property);
 				if(error){
 					propertyInput.style.borderColor = "red";
