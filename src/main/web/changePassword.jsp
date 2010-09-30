@@ -20,6 +20,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@ page import="org.infoscoop.service.PortalLayoutService, org.infoscoop.util.I18NUtil" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%
 	String pageTitle = PortalLayoutService.getHandle().getPortalLayout("title");
 	pageTitle = I18NUtil.resolve(I18NUtil.TYPE_LAYOUT, pageTitle, request.getLocale());
@@ -27,7 +28,7 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<title>%{lb_changePassword}</title>
+		<title><spring:message code="lb_changePassword" /></title>
         <style>
 .header{
   font-size:14px;
@@ -42,7 +43,7 @@
 				<form id="loginform" method="post" action="authsrv/changePassword">
 				<table class="LoginForm">
 					<tr>
-						<td class="header">%{lb_changePass}</td>
+						<td class="header"><spring:message code="lb_changePass" /></td>
 					</tr>
 					<tr>
 					<td><hr/></td>
@@ -51,15 +52,15 @@
 						<td>
 							<table border="0" cellpadding="3" cellspacing="0">
 								<tr>
-									<td align="right">%{lb_userID}&nbsp;</td>
+									<td align="right"><spring:message code="lb_userID" />&nbsp;</td>
 									<td align="left"><input type="text" id="uid" name="uid"/></td>
 								</tr>
 								<tr>
-									<td align="right">%{lb_oldPassword}&nbsp;</td>
+									<td align="right"><spring:message code="lb_oldPassword" />&nbsp;</td>
 									<td align="left"><input type="password" id="password" name="password"/></td>
 								</tr>
 								<tr>
-									<td align="right">%{lb_newpass}&nbsp;</td>
+									<td align="right"><spring:message code="lb_newpass" />&nbsp;</td>
 									<td align="left"><input type="password" id="new_password" name="new_password"/></td>
 								</tr>
 							</table>
@@ -80,14 +81,14 @@ if(errorMsg != null){
 %>
 					<tr>
 						<td align="center">
-							<input type="submit" value="%{lb_change}"/>
-							<input type="reset" value="%{lb_reset}"/>
+							<input type="submit" value="<spring:message code="lb_change" />"/>
+							<input type="reset" value="<spring:message code="lb_reset" />"/>
 						</td>
 					</tr>
 					<tr>
 						<td align="center">
 							<br/>
-							<input type="button" onclick="javascript:location.href='./login.jsp';" value="%{lb_toLogin}"/>
+							<input type="button" onclick="javascript:location.href='./login.jsp';" value="<spring:message code="lb_toLogin" />"/>
 						</td>
 					</tr>
 				</table>

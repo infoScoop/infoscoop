@@ -6,8 +6,8 @@
         class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basenames">
       <list>
-        <value>i18n_adminjs</value>
-        <value>i18n_js</value>
+        <value>i18n_adminweb</value>
+        <value>i18n_web</value>
         <value>i18n_manager</value>
       </list>
     </property>

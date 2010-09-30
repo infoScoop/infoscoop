@@ -19,10 +19,11 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@ page contentType="text/html; charset=UTF8" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>%{lb_shortcutsKeyList}</title>
+<title><spring:message code="lb_shortcutsKeyList" /></title>
 <style>
 	*{font-size:12px;font-weight:normal;line-height:150%}
 	.dec_solid{border:1px solid #888;padding:2px; background-color:#FFFFFF;}
@@ -73,67 +74,67 @@ document.onkeydown = function(e) {
 </script> 
 </head>
 <body>
-<div style="font-weight:bold;">%{lb_shortcutsKeyList}</div><br>
+<div style="font-weight:bold;"><spring:message code="lb_shortcutsKeyList" /></div><br>
 <table>
 	<tr>
-		<th>%{lb_nextItem}</th>
+		<th><spring:message code="lb_nextItem" /></th>
 		<td>
 			<span class="dec_solid"><img src="../../../skin/imgs/arrow2_down.gif"></span>
 		</td>
 	</tr>
 	<tr>
-		<th>%{lb_prevItem}</th>
+		<th><spring:message code="lb_prevItem" /></th>
 		<td>
 			<span class="dec_solid"><img src="../../../skin/imgs/arrow2_up.gif"></span>
 		</td>
 	</tr>
 	<tr>
-		<th>%{lb_fullDisplay}</th>
-		<td><span class="dec_solid">enter</span> or <span class="dec_solid"><img src="../../../skin/imgs/arrow2_right.gif"></span> %{lb_maximizeShortcutsitemAndSummary}</td>
+		<th><spring:message code="lb_fullDisplay" /></th>
+		<td><span class="dec_solid">enter</span> or <span class="dec_solid"><img src="../../../skin/imgs/arrow2_right.gif"></span> <spring:message code="lb_maximizeShortcutsitemAndSummary" /></td>
 	</tr>
 	<tr>
-		<th>%{lb_summaryView}</th>
-		<td><span class="dec_solid"><img src="../../../skin/imgs/arrow2_left.gif"></span> %{lb_maximizeShortcutsItemAndFull}</td>
+		<th><spring:message code="lb_summaryView" /></th>
+		<td><span class="dec_solid"><img src="../../../skin/imgs/arrow2_left.gif"></span> <spring:message code="lb_maximizeShortcutsItemAndFull" /></td>
 	</tr>
 	<tr>
-		<th>%{lb_sendMail}</th>
+		<th><spring:message code="lb_sendMail" /></th>
 		<td>
 			<span class="dec_solid">shift + M</span>
 		</td>
 	</tr>
 	<tr>
-		<th>%{lb_refresh}</th>
+		<th><spring:message code="lb_refresh" /></th>
 		<td>
 			<span class="dec_solid">r</span> 
 		</td>
 	</tr>
 	<tr>
-		<th>%{lb_releaseMaximize}</th>
+		<th><spring:message code="lb_releaseMaximize" /></th>
 		<td>
 			<span class="dec_solid">q</span>
 		</td>
 	</tr>
 	<tr>
-		<th>%{lb_dateDisplay}</th>
+		<th><spring:message code="lb_dateDisplay" /></th>
 		<td>
 			<span class="dec_solid">t</span>
 		</td>
 	</tr>
 	<tr>
-		<th>%{lb_summaryAllView}</th>
+		<th><spring:message code="lb_summaryAllView" /></th>
 		<td>
 			<span class="dec_solid">m</span>
 		</td>
 	</tr>
 	<tr>
-		<th>%{lb_showHelp}</th>
+		<th><spring:message code="lb_showHelp" /></th>
 		<td>
 			<span class="dec_solid">h</span>
 		</td>
 	</tr>
 </table>
 <br>
-<p class="notice">%{ms_shortcutsNotice}<br>
+<p class="notice"><spring:message code="ms_shortcutsNotice" /><br>
 </p>
 </body>
 </html>

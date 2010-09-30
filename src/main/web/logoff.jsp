@@ -19,10 +19,11 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@ page contentType="text/html; charset=UTF8" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<title>%{ms_sessionTimeout}</title>
+		<title><spring:message code="ms_sessionTimeout" /></title>
 		<style type="text/css">
 .header{
   font-size:14px;
@@ -37,7 +38,7 @@
 				<form>
 				<table class="LoginForm">
 					<tr>
-						<td class="header">%{ms_sessionTimeout}</td>
+						<td class="header"><spring:message code="ms_sessionTimeout" /></td>
 					</tr>
 					<tr>
 					<td><hr/></td>
@@ -45,13 +46,13 @@
 					<tr class="form">
 						<td>
 							<p>
-								%{ms_sessionTimeoutByOtherLogin}
+								<spring:message code="ms_sessionTimeoutByOtherLogin" />
 							</p>
 						</td>
 					</tr>
 					<tr>
 						<td align="center">
-							<input type="button" value="%{lb_relogin}" onclick="location.href='index.jsp'"/>
+							<input type="button" value="<spring:message code="lb_relogin" />" onclick="location.href='index.jsp'"/>
 						</td>
 					</tr>
 				</table>

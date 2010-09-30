@@ -21,6 +21,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.infoscoop.admin.web.I18NImport" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <%
 	List errorList = (List)request.getAttribute("errorList");
@@ -57,20 +58,20 @@
 		<%
 			if(errorList.size() > 0){
 		%>
-				<div style="width:100%;">%{ams_i18nImportFailed}</div>
+				<div style="width:100%;"><spring:message code="ams_i18nImportFailed" /></div>
 				<br>
 				
 				<div style="width:100%;">
-					<div class="errorHeader" style="width:7%;">%{alb_row}</div>
-					<div class="errorHeader" style="width:30%;">%{alb_id}</div>
-					<div class="errorHeader" style="width:60%;">%{alb_message}</div>
+					<div class="errorHeader" style="width:7%;"><spring:message code="alb_row" /></div>
+					<div class="errorHeader" style="width:30%;"><spring:message code="alb_id" /></div>
+					<div class="errorHeader" style="width:60%;"><spring:message code="alb_message" /></div>
 				</div>
 		<%
 			}else{
 		%>
 				<br>
-				<div style="width:100%;"><%= countMap.get("insertCount") %>%{alb_i18nImportDataRegistered}</div>
-				<div style="width:100%;"><%= countMap.get("updateCount") %>%{alb_i18nImportDataUpdated}</div>
+				<div style="width:100%;"><%= countMap.get("insertCount") %><spring:message code="alb_i18nImportDataRegistered" /></div>
+				<div style="width:100%;"><%= countMap.get("updateCount") %><spring:message code="alb_i18nImportDataUpdated" /></div>
 				<br>
 		<%
 			}

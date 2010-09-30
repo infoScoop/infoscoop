@@ -19,6 +19,7 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
 <head>
 	<title></title>
@@ -29,7 +30,7 @@
 <% 
 String url = request.getParameter("url");
 %> 
-%{ms_forbiddenurlPage}<br>
-<a href="<%= url %>" target="_blank">%{lb_openNewWindow}</a>
+<spring:message code="ms_forbiddenurlPage" /><br>
+<a href="<%= url %>" target="_blank"><spring:message code="lb_openNewWindow" /></a>
 </body>
 </html>

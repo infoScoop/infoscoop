@@ -20,6 +20,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@ page import="org.infoscoop.account.AuthenticationService, org.infoscoop.service.PortalLayoutService, org.infoscoop.util.*" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%
 	String pageTitle = PortalLayoutService.getHandle().getPortalLayout("title");
 	pageTitle = I18NUtil.resolve(I18NUtil.TYPE_LAYOUT, pageTitle, request.getLocale());
@@ -29,7 +30,7 @@
 <%@page import="org.infoscoop.dao.PropertiesDAO"%><html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<title><%= pageTitle %> %{lb_loginTitle}</title>
+		<title><%= pageTitle %> <spring:message code="lb_loginTitle" /></title>
         <style>
 .header{
   font-size:14px;
@@ -44,7 +45,7 @@
 				<form id="loginform" method="post" action="authsrv/login">
 				<table class="LoginForm">
 					<tr>
-						<td class="header"><%= pageTitle %> %{lb_loginTitle}</td>
+						<td class="header"><%= pageTitle %> <spring:message code="lb_loginTitle" /></td>
 					</tr>
 					<tr>
 					<td><hr/></td>
@@ -53,11 +54,11 @@
 						<td>
 							<table border="0" cellpadding="3" cellspacing="0">
 								<tr>
-									<td align="right">%{lb_userID}&nbsp;</td>
+									<td align="right"><spring:message code="lb_userID" />&nbsp;</td>
 									<td align="left"><input type="text" id="uid" name="uid"/></td>
 								</tr>
 								<tr>
-									<td align="right">%{lb_password}&nbsp;</td>
+									<td align="right"><spring:message code="lb_password" />&nbsp;</td>
 									<td align="left"><input type="password" id="password" name="password"/></td>
 								</tr>
 <%
@@ -71,7 +72,7 @@ try {
 if( keepPeriod > 0 ) {
 %>
 								<tr>
-									<td colspan=2" align="right"><input type="checkbox" name="saveLoginState"><label>%{lb_saveLoginState}</label></td>
+									<td colspan=2" align="right"><input type="checkbox" name="saveLoginState"><label><spring:message code="lb_saveLoginState" /></label></td>
 								</tr>
 <%}%>
 							</table>
@@ -92,15 +93,15 @@ if(errorMsg != null){
 %>
 					<tr>
 						<td align="center">
-							<input type="submit" value="%{lb_login}"/>
-							<input type="reset" value="%{lb_reset}"/>
+							<input type="submit" value="<spring:message code="lb_login" />"/>
+							<input type="reset" value="<spring:message code="lb_reset" />"/>
 						</td>
 					</tr>
 <%if(authService != null && authService.enableChangePassword()){%>
 					<tr>
 						<td align="center">
 							<br/>
-							<input type="button" onclick="javascript:location.href='./changePassword.jsp';" value="%{lb_changePassword}"/>
+							<input type="button" onclick="javascript:location.href='./changePassword.jsp';" value="<spring:message code="lb_changePassword" />"/>
 						</td>
 					</tr>
 <%}%>

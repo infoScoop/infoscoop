@@ -80,24 +80,6 @@
 	</filter>
 
 	<filter>
-		<filter-name>I18NFilter_JS</filter-name>
-		<filter-class>org.infoscoop.web.I18NFilter</filter-class>
-		<init-param>
-			<param-name>type</param-name>
-			<param-value>TYPE_JS</param-value>
-		</init-param>
-	</filter>
-
-		<filter>
-		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<filter-class>org.infoscoop.web.I18NFilter</filter-class>
-		<init-param>
-			<param-name>type</param-name>
-			<param-value>TYPE_ADMINJS</param-value>
-		</init-param>
-	</filter>
-
-	<filter>
 		<filter-name>I18NFilter_LAYOUT</filter-name>
 		<filter-class>org.infoscoop.web.I18NFilter</filter-class>
 		<init-param>
@@ -239,60 +221,6 @@
 	<filter-mapping>
 		<filter-name>I18NFilter_LAYOUT</filter-name>
 		<url-pattern>/jssrv</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/login.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/logoff.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/changePassword.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/selectProfile.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/js/widgets/maximize/maximizeForbiddenURL.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/js/widgets/maximize/maximizeShortcuts.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/admin/index.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/admin/</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<url-pattern>/admin/index.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<url-pattern>/admin/</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<url-pattern>/admin/role.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<url-pattern>/admin/staticPanel/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<url-pattern>/admin/i18nimport</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>

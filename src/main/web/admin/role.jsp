@@ -22,9 +22,10 @@
 <%@page import="org.infoscoop.account.*"%>
 <%@page import="org.infoscoop.util.*"%>
 <%@page contentType="text/plain; charset=UTF-8" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%
 //	out.print("[");
-	out.print("{type:'UIDPrincipal',displayName:'%{alb_userPrincipal}'}");
+	out.print("{type:'UIDPrincipal',displayName:'<spring:message code="alb_userPrincipal" />'}");
 
 	for( Iterator ite=SessionCreateConfig.getInstance().getPrincipalDefs().iterator();ite.hasNext();){
 		PrincipalDef def = ( PrincipalDef )ite.next();

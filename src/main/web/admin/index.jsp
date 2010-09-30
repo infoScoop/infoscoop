@@ -22,6 +22,7 @@
 <%@ page import="org.infoscoop.util.RSAKeyManager"%>
 <%@page import="org.infoscoop.service.ForbiddenURLService" %>
 <%@page import="org.infoscoop.service.PortalAdminsService" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%
 	String uid = (String) session.getAttribute("Uid");
 	if(uid == null || uid.length() == 0) {
@@ -34,7 +35,7 @@
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Cache-Control" content="no-cache">
 
-	<title><!--start of product name-->infoScoop<!--end of product name-->%{alb_administration}</title>
+	<title><!--start of product name-->infoScoop<!--end of product name--><spring:message code="alb_administration" /></title>
 	<link rel="stylesheet" type="text/css" href="../skin/admin.css">
 	<link rel="stylesheet" type="text/css" href="../skin/admintreemenu.css">
 	
@@ -198,11 +199,11 @@
 <body class="infoScoop admin">
 	<div id="admin-leftbox">
 		<div id="admin-leftbox-title" style="float:left;cursor:pointer;" onclick="ISA_Admin.AdminTabs.setActiveTab('information');">
-			<!--start of product name-->infoScoop<!--end of product name-->%{alb_administration}
+			<!--start of product name-->infoScoop<!--end of product name--><spring:message code="alb_administration" />
 		</div>
 		<div style="clear:both"></div>
 		<div style="float:right;padding-top:5px;">
-			<img id="messageIcon" title="%{lb_messageConsole}" src="../skin/imgs/information.gif" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();">
+			<img id="messageIcon" title="<spring:message code="lb_messageConsole" />" src="../skin/imgs/information.gif" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();">
 		</div>
 		<ul id="admin-leftbox-navigator" class="tabs">
 		</ul>
