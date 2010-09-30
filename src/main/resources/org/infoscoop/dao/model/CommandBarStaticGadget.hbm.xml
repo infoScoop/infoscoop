@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="CommandBarStaticGadget"
-		table="is_command_bar_static_gadgets"
+		table="IS_COMMAND_BAR_STATIC_GADGETS"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id

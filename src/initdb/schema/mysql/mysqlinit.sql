@@ -202,26 +202,6 @@ create table IS_I18NLOCALES (
 ) ENGINE=InnoDB;
 
 --
--- tabLayout
---
-create table IS_TABLAYOUTS (
-  tabId varchar(50) CHARACTER SET latin1 not null,
-  roleOrder integer not null,
-  role text not null,
-  rolename varchar(256) not null,
-  principalType varchar(50) default 'OrganizationPrincipal',
-  defaultUid varchar (150),
-  widgets text not null,
-  layout text,
-  widgetsLastmodified varchar(24),
-  tabNumber integer,
-  deleteFlag integer not null default 0,
-  temp bit not null default 0,
-  workingUid varchar (150),
-  primary key (tabId, roleOrder, temp)
-) ENGINE=InnoDB;
-
---
 -- portalLayout
 --
 create table IS_PORTALLAYOUTS (
@@ -514,7 +494,7 @@ CREATE TABLE IS_COMMAND_BARS (
   `display_order` int(11) NOT NULL,
   `access_level` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB;
 
 
 CREATE TABLE IS_COMMAND_BAR_STATIC_GADGETS (
@@ -529,4 +509,4 @@ CREATE TABLE IS_COMMAND_BAR_STATIC_GADGETS (
 
 ALTER TABLE IS_COMMAND_BAR_STATIC_GADGETS
   ADD CONSTRAINT `is_command_bar_static_gadgets_ibfk_1` FOREIGN KEY (`fk_command_bar_id`) REFERENCES IS_COMMAND_BARS (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `is_command_bar_static_gadgets_ibfk_2` FOREIGN KEY (`fk_gadget_instance_id`) REFERENCES `is_gadget_instances` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `is_command_bar_static_gadgets_ibfk_2` FOREIGN KEY (`fk_gadget_instance_id`) REFERENCES IS_GADGET_INSTANCES (`id`) ON DELETE CASCADE

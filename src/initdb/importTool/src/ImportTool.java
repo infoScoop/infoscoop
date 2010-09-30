@@ -29,7 +29,7 @@ public class ImportTool {
 		PORTALLAYOUT( new PortalLayoutFactory()),
 		PROPERTIES( new PropertiesFactory()),
 		PROXYCONF( new ProxyConfFactory()),
-		SITEAGGREGATIONMENU( new SiteAggregationMenuFactory()),
+		//SITEAGGREGATIONMENU( new SiteAggregationMenuFactory()),
 		WIDGETCONF( new WidgetConfFactory()),
 		HOLIDAYS( new HolidaysFactory()),
 		FORBIDDENURLS( new ForbiddenUrlsFactory()),
@@ -434,6 +434,7 @@ class ProxyConfFactory implements CSVBeanFactory<Proxyconf> {
 
 // type,temp,data
 
+/*
 class SiteAggregationMenuFactory implements CSVBeanFactory<Siteaggregationmenu> {
 	public Siteaggregationmenu newBean( CSVField[] values ) {
 		Siteaggregationmenu siteAggregationMenu = new Siteaggregationmenu( values[0].toString() );
@@ -442,6 +443,7 @@ class SiteAggregationMenuFactory implements CSVBeanFactory<Siteaggregationmenu> 
 		return siteAggregationMenu;
 	}
 }
+	*/
 
 
 // type,data

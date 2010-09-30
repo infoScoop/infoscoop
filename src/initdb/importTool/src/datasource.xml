@@ -21,12 +21,9 @@
 			<property name="mappingResources">
 				<list>
 					<value>org/infoscoop/dao/model/WidgetConf.hbm.xml</value>
-					<value>org/infoscoop/dao/model/Siteaggregationmenu.hbm.xml</value>
-					<value>org/infoscoop/dao/model/Siteaggregationmenu_temp.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Proxyconf.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Preference.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Portallayout.hbm.xml</value>
-					<value>org/infoscoop/dao/model/Tablayout.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Widget.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Tab.hbm.xml</value>
 					<value>org/infoscoop/dao/model/AuthCredential.hbm.xml</value>
@@ -35,7 +32,6 @@
 					<value>org/infoscoop/dao/model/I18nlocale.hbm.xml</value>
 					<value>org/infoscoop/dao/model/I18nlastmodified.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Gadget.hbm.xml</value>
-					<value>org/infoscoop/dao/model/Logs.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Cache.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Keyword.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Portaladmins.hbm.xml</value>
