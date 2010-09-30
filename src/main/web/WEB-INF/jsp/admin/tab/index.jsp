@@ -10,6 +10,10 @@ $(function(){
 	$('#add_button').click(function(){
 		window.open("newTab", "タブ設定", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes');
 	});
+	$('a.edit_link').click(function(event){
+		window.open(this.href, "タブ設定", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes');
+		event.preventDefault();
+	});
 });
 </script>
 <div style="height:500px;">
@@ -33,7 +37,7 @@ $(function(){
 				<td>${tab.name}</td>
 				<td>${tab.published}</td>
 				<td>${tab.accessLevel}</td>
-				<td><a href="editTab?id=${tab.id}" target="_blank"><span class="edit"></a></span></td>
+				<td><a href="editTab?id=${tab.id}" class="edit_link"><span class="edit"></a></span></td>
 				<td><a href="deleteTab?id=${tab.id}"><span class="trash"></a></span></td>
 			</tr>
 </c:forEach>

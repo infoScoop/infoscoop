@@ -3,4 +3,5 @@
 タブの設定を更新しました。
 <script type="text/javascript" class="source">
 	window.opener.location.reload();
+	window.close();
 </script>
