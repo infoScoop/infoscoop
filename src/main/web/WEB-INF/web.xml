@@ -236,15 +236,6 @@
 		<url-pattern>/adminpreview/*</url-pattern>
 	</filter-mapping>
 
-	<!-- filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/js/resources/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/admin/js/resources/*</url-pattern>
-	</filter-mapping-->
-
 	<filter-mapping>
 		<filter-name>I18NFilter_LAYOUT</filter-name>
 		<url-pattern>/jssrv</url-pattern>
