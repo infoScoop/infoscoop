@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="User"
-		table="is_users"
+		table="IS_USERS"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
@@ -32,7 +32,7 @@
 			length="255"
 		/>
 
-		<set name="Groups" table="is_user_group">
+		<set name="Groups" table="IS_USER_GROUP">
 			<key column="fk_user_id"/>
 			<many-to-many class="Group" column="fk_group_id"/>
 		</set>

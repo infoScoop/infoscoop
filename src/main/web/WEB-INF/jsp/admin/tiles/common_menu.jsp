@@ -7,6 +7,5 @@
 		<li <c:if test="${type == 'tab'}">class="current"</c:if>><a href="../tab/index"><span><spring:message code="tiles.common_menu.tab" /></span></a></li>
 		<li <c:if test="${type == 'role'}">class="current"</c:if>><a href="../role/index"><span><spring:message code="tiles.common_menu.role" /></span></a></li>
 		<li <c:if test="${type == 'user'}">class="current"</c:if>><a href="../user/index"><span><spring:message code="tiles.common_menu.user" /></span></a></li>
-		<li <c:if test="${type == 'group'}">class="current"</c:if>><a href="../group/index"><span><spring:message code="tiles.common_menu.group" /></span></a></li>
 	</ul>
 </div>

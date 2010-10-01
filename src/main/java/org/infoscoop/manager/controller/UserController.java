@@ -1,25 +1,25 @@
 package org.infoscoop.manager.controller;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.infoscoop.dao.GroupDAO;
-import org.infoscoop.dao.RoleDAO;
 import org.infoscoop.dao.UserDAO;
-import org.infoscoop.dao.model.User;
 import org.infoscoop.dao.model.Group;
+import org.infoscoop.dao.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import sample.appsforyourdomain.AppsForYourDomainClient;
 
-import com.google.gdata.data.appsforyourdomain.Email;
+import com.google.gdata.data.Link;
+import com.google.gdata.data.appsforyourdomain.EmailList;
+import com.google.gdata.data.appsforyourdomain.provisioning.EmailListEntry;
+import com.google.gdata.data.appsforyourdomain.provisioning.EmailListFeed;
+import com.google.gdata.data.appsforyourdomain.provisioning.EmailListRecipientEntry;
+import com.google.gdata.data.appsforyourdomain.provisioning.EmailListRecipientFeed;
 import com.google.gdata.data.appsforyourdomain.provisioning.UserEntry;
 import com.google.gdata.data.appsforyourdomain.provisioning.UserFeed;
 
@@ -52,13 +52,15 @@ public class UserController {
 		String domain = "beacon-it.co.jp";
 		String password = "z1x2c3v4";
 		AppsForYourDomainClient client = new AppsForYourDomainClient(adminAddress, password, domain);
-		int size = client.retrieveAllUsers().getEntries().size();
-//		int fuga = client.getGroupService().retrieveAllGroups().getEntries().size();
-
-		int max = 100;
+		
 		String firstName = null;
-		for (int i = 0; i < size/max+1; i++) {
+		int size = 0;
+		int pageSize = 100;
+		Link nextLink = null;
+		UserDAO userDAO = UserDAO.newInstance();
+		do {
 			UserFeed users = client.retrievePageOfUsers(firstName);
+
 			for (UserEntry entry : users.getEntries()) {
 				User user = new User();
 //				Email hoge = entry.getEmail();
@@ -67,11 +69,44 @@ public class UserController {
 				user.setEmail(mail);
 				user.setName(name);
 				firstName = name;
-				UserDAO.newInstance().save(user);
+				userDAO.save(user);
 			}
+			nextLink = users.getNextLink();
+			pageSize = users.getEntries().size();
+			size += pageSize;
+			if(nextLink != null)size--;
+			
+		}while(nextLink != null);
+		
+		System.out.println(size);
 
-		}
-
+		int groupSize = 0;
+		firstName = null;
+		GroupDAO groupDAO = GroupDAO.newInstance();
+		do {
+			EmailListFeed groups = client.retrievePageOfEmailLists(firstName);
+			for (EmailListEntry entry : groups.getEntries()) {
+				String name = entry.getTitle().getPlainText();
+				EmailList list = entry.getEmailList();
+				Group group = new Group();
+				group.setName(name);
+				EmailListRecipientFeed recipients = client.retrieveAllRecipients(name);
+				for(EmailListRecipientEntry recipient : recipients.getEntries()){
+					String userName = recipient.getTitle().getPlainText().split("@")[0];
+					List<User> users = userDAO.getByName(userName);
+					if(!users.isEmpty())
+						group.addToUsers(users.get(0));
+					else
+						System.out.println("User " + userName + " is missing.");
+				}
+				groupDAO.save(group);
+				firstName = name;
+			}
+			nextLink = groups.getNextLink();
+			pageSize = groups.getEntries().size();
+			groupSize += pageSize;
+			if(nextLink != null)size--;
+		}while(nextLink != null);
 /*
 		URL feedUrl = new URL("http://www.google.com/m8/feeds/profiles/domain/beacon-it.co.jp/full");
 		ContactsService service = new ContactsService("Google-contactsExampleApp-3");
