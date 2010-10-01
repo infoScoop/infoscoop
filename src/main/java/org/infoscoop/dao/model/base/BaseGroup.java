@@ -116,7 +116,7 @@ public abstract class BaseGroup  implements Serializable {
 	}
 
 	public void addToUsers (org.infoscoop.dao.model.User user) {
-		if (null == getUsers()) setUsers(new java.util.TreeSet<org.infoscoop.dao.model.User>());
+		if (null == getUsers()) setUsers(new java.util.HashSet<org.infoscoop.dao.model.User>());
 		getUsers().add(user);
 	}
 
