@@ -3,6 +3,7 @@ package org.infoscoop.dao;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.Group;
 import org.infoscoop.dao.model.User;
 import org.infoscoop.util.SpringUtil;
@@ -35,6 +36,15 @@ public class GroupDAO extends HibernateDaoSupport {
 
 	public void save(Group item){
 		super.getHibernateTemplate().saveOrUpdate(item);
+	}
+
+	public Group getByName(String name) {
+		List<Group> groupList = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Group.class).add(Expression.eq( Group.PROP_NAME,name )));
+		if(groupList.isEmpty())
+			return null;
+		else
+			return groupList.get(0);
 	}
 
 }

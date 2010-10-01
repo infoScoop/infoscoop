@@ -31,9 +31,13 @@ public class UserDAO extends HibernateDaoSupport {
 		return super.getHibernateTemplate().get(User.class, new Integer(id));
 	}
 	
-	public List<User> getByName(String name){
-		return super.getHibernateTemplate().findByCriteria(
+	public User getByName(String name){
+		List<User> userList = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(User.class).add(Expression.eq( User.PROP_NAME,name )));
+		if(userList.isEmpty())
+			return null;
+		else
+			return userList.get(0);
 	}
 
 	public List<User> selectByName(String name) {

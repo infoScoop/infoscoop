@@ -27,34 +27,18 @@ import com.google.gdata.data.appsforyourdomain.provisioning.UserFeed;
 public class UserController {
 	@RequestMapping(method=RequestMethod.GET)
 	public void index(Model model) throws Exception {
-		List<User> users = UserDAO.newInstance().all();
-		System.out.print(users);
-		model.addAttribute("users", users);
 	}
 
 	@RequestMapping(method=RequestMethod.GET)
-	@Transactional
-	public String dbCheck(Model model) throws Exception {
-		List<User> users = UserDAO.newInstance().all();
-
-		for (int i=0; i < users.size(); i++){
-			int fuga = users.get(i).getGroups().hashCode();
-			System.out.println(fuga);
-		}
-
-		return "redirect:index";
-	}
-
-	@RequestMapping(method=RequestMethod.GET)
-	public String save(Model model) throws Exception {
-
+	public void sync(Model model) throws Exception {
+		
 		String adminAddress = "y_yoshida@beacon-it.co.jp";
 		String domain = "beacon-it.co.jp";
 		String password = "z1x2c3v4";
 		AppsForYourDomainClient client = new AppsForYourDomainClient(adminAddress, password, domain);
-		
+		long start = System.currentTimeMillis();
 		String firstName = null;
-		int size = 0;
+		int userCount = 0;
 		int pageSize = 100;
 		Link nextLink = null;
 		UserDAO userDAO = UserDAO.newInstance();
@@ -62,9 +46,9 @@ public class UserController {
 			UserFeed users = client.retrievePageOfUsers(firstName);
 
 			for (UserEntry entry : users.getEntries()) {
-				User user = new User();
-//				Email hoge = entry.getEmail();
 				String name = entry.getTitle().getPlainText();
+				User user = userDAO.getByName(name);
+				if(user == null)user = new User();
 				String mail = name + "@" + domain;
 				user.setEmail(mail);
 				user.setName(name);
@@ -73,14 +57,14 @@ public class UserController {
 			}
 			nextLink = users.getNextLink();
 			pageSize = users.getEntries().size();
-			size += pageSize;
-			if(nextLink != null)size--;
+			userCount += pageSize;
+			if(nextLink != null)userCount--;
 			
 		}while(nextLink != null);
 		
-		System.out.println(size);
+		model.addAttribute("userCount", userCount);
 
-		int groupSize = 0;
+		int groupCount = 0;
 		firstName = null;
 		GroupDAO groupDAO = GroupDAO.newInstance();
 		do {
@@ -88,14 +72,15 @@ public class UserController {
 			for (EmailListEntry entry : groups.getEntries()) {
 				String name = entry.getTitle().getPlainText();
 				EmailList list = entry.getEmailList();
-				Group group = new Group();
+				Group group = groupDAO.getByName(name);
+				if(group == null) group = new Group();
 				group.setName(name);
 				EmailListRecipientFeed recipients = client.retrieveAllRecipients(name);
 				for(EmailListRecipientEntry recipient : recipients.getEntries()){
 					String userName = recipient.getTitle().getPlainText().split("@")[0];
-					List<User> users = userDAO.getByName(userName);
-					if(!users.isEmpty())
-						group.addToUsers(users.get(0));
+					User user = userDAO.getByName(userName);
+					if(user != null)
+						group.addToUsers(user);
 					else
 						System.out.println("User " + userName + " is missing.");
 				}
@@ -104,9 +89,13 @@ public class UserController {
 			}
 			nextLink = groups.getNextLink();
 			pageSize = groups.getEntries().size();
-			groupSize += pageSize;
-			if(nextLink != null)size--;
+			groupCount += pageSize;
+			if(nextLink != null)userCount--;
 		}while(nextLink != null);
+		
+		model.addAttribute("groupCount", groupCount);
+		System.out.println(System.currentTimeMillis() - start);
+
 /*
 		URL feedUrl = new URL("http://www.google.com/m8/feeds/profiles/domain/beacon-it.co.jp/full");
 		ContactsService service = new ContactsService("Google-contactsExampleApp-3");
@@ -149,6 +138,5 @@ public class UserController {
 
 		}
 */
-		return "redirect:index";
 	}
 }

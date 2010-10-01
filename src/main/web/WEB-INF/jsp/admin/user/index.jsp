@@ -3,15 +3,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <tiles:insertDefinition name="base.definition" flush="true">
 	<tiles:putAttribute name="type" value="user"/>
-	<tiles:putAttribute name="title" value="user.title"/>
+	<tiles:putAttribute name="title" value="syncmaster.title"/>
 	<tiles:putAttribute name="body" type="string">
 
 <script type="text/javascript" class="source">
 function sync(){
-	window.location.href = "save";
-}
-function dbCheck(){
-	window.location.href = "dbCheck";
+	window.location.href = "sync";
 }
 </script>
 <link href="http://jsajax.com/jQuery/prettyLoader/css/prettyLoader.css" rel="stylesheet" type="text/css" />
@@ -52,32 +49,16 @@ $(function(){
 
 </script>
 
-
+<p>
+Google Appsのユーザとグループ(メーリングリスト)をinfoScoopに取り込みます。<br>
+この処理は、ユーザ数およびグループ数に応じて数分から数十分の時間がかかります。
+</p>
 
 <div>
-	<input id="check" type="button" value="check" onclick="dbCheck()"/>
 	<input id="syncButton" type="button" value="同期" onclick="sync()"/>
 	<span id="message" style="visibility:hidden">同期しています。</span>
 	<div id="prog" style="width:250px; visibility:hidden"></div>
-	<table id="tab_table" class="tab_table" cellspacing="0" cellpadding="0">
-		<thead>
-			<tr>
-				<th>名前</th>
-				<th>email</th>
-			</tr>
-		</thead>
-		<tfoot></tfoot>
-		<tbody>
-
-		<c:forEach var="user" items="${users}">
-			<tr>
-				<td>${user.name}</td>
-				<td>${user.email}</td>
-			</tr>
-		</c:forEach>
-
-		</tbody>
-	</table>
+	
 </div>
 
 	</tiles:putAttribute>
