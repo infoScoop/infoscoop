@@ -35,6 +35,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.util.SpringUtil;
@@ -62,7 +63,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 	public void addWidget( String uid,  String defaultUid,  String tabId, Widget widget,int isStatic ){
 		widget.setUid( uid );
-		widget.setDefaultuid( defaultUid );
+		widget.setFkDomainId(DomainManager.getContextDomainId());
 		widget.setTabid( tabId );
 		widget.setIsstatic( new Integer( isStatic ));
 

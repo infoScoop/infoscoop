@@ -39,9 +39,9 @@ function getIconUrl(type){
 		return imageURL + "widget_add.gif";
 	}
 }
-function selectItem(id){
+function selectItem(menuId){
 	$("#menu_tree").jstree("deselect_all");
-	$("#menu_tree").jstree("select_node", "#"+id);
+	$("#menu_tree").jstree("select_node", "#"+menuId);
 }
 function getSelectedItem(){
 	return $("#menu_tree").jstree("get_selected")[0];
@@ -77,7 +77,7 @@ function showEditItem(){
 		return;
 	}
 	var id = selectedItem.id;
-	$.get("showEditItem", {id:id}, function(html){
+	$.get("showEditItem", {menuId:id}, function(html){
 		$("#menu_right").html(html);
 	});
 }
@@ -144,8 +144,8 @@ function togglePublish(){
 		publishElm.toggleClass("un", !publish).html(publish? "<spring:message code="menu.editPage.publish" />":"<spring:message code="menu.editPage.unpublish" />");
 	});
 }
-function showMenuCommand(event, link, id){
-	selectItem(id);
+function showMenuCommand(event, link, menuId){
+	selectItem(menuId);
 	$("#menu_item_command").css("top", $(link).position().top + $(link).height());
 	$("#menu_item_command").css("left", $(link).position().left);
 	$("#menu_item_command").show();

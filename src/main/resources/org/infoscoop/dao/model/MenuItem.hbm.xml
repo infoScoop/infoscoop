@@ -11,11 +11,28 @@
 		<meta attribute="sync-DAO">false</meta>
 		<id
 			name="Id"
-			type="string"
-			column="id"
+			type="integer"
+			column="ID"
 		>
+			<generator class="native">
+				<param name="sequence">is_menu_item_id_seq</param>
+			</generator>
 		</id>
-
+		
+		<property
+			name="MenuId"
+			column="menu_id"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		
+		<property
+			name="FkDomainId"
+			column="fk_domain_id"
+			type="integer"
+		/>
+		
 		<property
 			name="Title"
 			column="title"

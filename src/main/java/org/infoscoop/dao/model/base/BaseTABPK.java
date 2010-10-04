@@ -1,20 +1,3 @@
-/* infoScoop OpenSource
- * Copyright (C) 2010 Beacon IT Inc.
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License version 3
- * as published by the Free Software Foundation.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program.  If not, see
- * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
- */
-
 package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
@@ -24,6 +7,7 @@ public abstract class BaseTABPK implements Serializable {
 
 	protected int hashCode = Integer.MIN_VALUE;
 
+	private java.lang.Integer fkDomainId;
 	private java.lang.String uid;
 	private java.lang.String id;
 
@@ -31,24 +15,43 @@ public abstract class BaseTABPK implements Serializable {
 	public BaseTABPK () {}
 	
 	public BaseTABPK (
+		java.lang.Integer fkDomainId,
 		java.lang.String uid,
 		java.lang.String id) {
 
+		this.setFkDomainId(fkDomainId);
 		this.setUid(uid);
 		this.setId(id);
 	}
 
 
 	/**
-	 * Return the value associated with the column: UID
+	 * Return the value associated with the column: fk_domain_id
+	 */
+	public java.lang.Integer getFkDomainId () {
+		return fkDomainId;
+	}
+
+	/**
+	 * Set the value related to the column: fk_domain_id
+	 * @param fkDomainId the fk_domain_id value
+	 */
+	public void setFkDomainId (java.lang.Integer fkDomainId) {
+		this.fkDomainId = fkDomainId;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: `UID`
 	 */
 	public java.lang.String getUid () {
 		return uid;
 	}
 
 	/**
-	 * Set the value related to the column: UID
-	 * @param uid the UID value
+	 * Set the value related to the column: `UID`
+	 * @param uid the `UID` value
 	 */
 	public void setUid (java.lang.String uid) {
 		this.uid = uid;
@@ -79,6 +82,14 @@ public abstract class BaseTABPK implements Serializable {
 		if (!(obj instanceof org.infoscoop.dao.model.TABPK)) return false;
 		else {
 			org.infoscoop.dao.model.TABPK mObj = (org.infoscoop.dao.model.TABPK) obj;
+			if (null != this.getFkDomainId() && null != mObj.getFkDomainId()) {
+				if (!this.getFkDomainId().equals(mObj.getFkDomainId())) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
 			if (null != this.getUid() && null != mObj.getUid()) {
 				if (!this.getUid().equals(mObj.getUid())) {
 					return false;
@@ -101,7 +112,14 @@ public abstract class BaseTABPK implements Serializable {
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
+			if (null != this.getFkDomainId()) {
+				sb.append(this.getFkDomainId().hashCode());
+				sb.append(":");
+			}
+			else {
+				return super.hashCode();
+			}
 			if (null != this.getUid()) {
 				sb.append(this.getUid().hashCode());
 				sb.append(":");

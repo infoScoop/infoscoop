@@ -23,7 +23,9 @@ public abstract class BaseMenuItem  implements Serializable {
 	public static String PROP_HREF = "Href";
 	public static String PROP_FK_GADGET_INSTANCE = "FkGadgetInstance";
 	public static String PROP_FK_PARENT = "FkParent";
+	public static String PROP_MENU_ID = "MenuId";
 	public static String PROP_TITLE = "Title";
+	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 
 
 	// constructors
@@ -34,7 +36,7 @@ public abstract class BaseMenuItem  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseMenuItem (java.lang.String id) {
+	public BaseMenuItem (java.lang.Integer id) {
 		this.setId(id);
 		initialize();
 	}
@@ -43,8 +45,9 @@ public abstract class BaseMenuItem  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseMenuItem (
-		java.lang.String id,
+		java.lang.Integer id,
 		org.infoscoop.dao.model.MenuTree fkMenuTree,
+		java.lang.String menuId,
 		java.lang.String title,
 		java.lang.Integer menuOrder,
 		java.lang.Integer publish,
@@ -52,6 +55,7 @@ public abstract class BaseMenuItem  implements Serializable {
 
 		this.setId(id);
 		this.setFkMenuTree(fkMenuTree);
+		this.setMenuId(menuId);
 		this.setTitle(title);
 		this.setMenuOrder(menuOrder);
 		this.setPublish(publish);
@@ -66,9 +70,11 @@ public abstract class BaseMenuItem  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String id;
+	private java.lang.Integer id;
 
 	// fields
+	private java.lang.String menuId;
+	private java.lang.Integer fkDomainId;
 	private java.lang.String title;
 	private java.lang.Integer menuOrder;
 	private java.lang.String href;
@@ -88,9 +94,10 @@ public abstract class BaseMenuItem  implements Serializable {
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  column="id"
+     *  generator-class="native"
+     *  column="ID"
      */
-	public java.lang.String getId () {
+	public java.lang.Integer getId () {
 		return id;
 	}
 
@@ -98,11 +105,45 @@ public abstract class BaseMenuItem  implements Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (java.lang.String id) {
+	public void setId (java.lang.Integer id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
+
+
+
+	/**
+	 * Return the value associated with the column: menu_id
+	 */
+	public java.lang.String getMenuId () {
+		return menuId;
+	}
+
+	/**
+	 * Set the value related to the column: menu_id
+	 * @param menuId the menu_id value
+	 */
+	public void setMenuId (java.lang.String menuId) {
+		this.menuId = menuId;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: fk_domain_id
+	 */
+	public java.lang.Integer getFkDomainId () {
+		return fkDomainId;
+	}
+
+	/**
+	 * Set the value related to the column: fk_domain_id
+	 * @param fkDomainId the fk_domain_id value
+	 */
+	public void setFkDomainId (java.lang.Integer fkDomainId) {
+		this.fkDomainId = fkDomainId;
+	}
 
 
 

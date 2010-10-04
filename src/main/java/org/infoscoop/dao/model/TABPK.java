@@ -26,10 +26,12 @@ public class TABPK extends BaseTABPK {
 	public TABPK () {}
 	
 	public TABPK (
+		java.lang.Integer fkDomainId,
 		java.lang.String uid,
 		java.lang.String id) {
 
 		super (
+			fkDomainId,
 			uid,
 			id);
 	}

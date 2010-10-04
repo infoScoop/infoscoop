@@ -25,7 +25,10 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Projections;
+import org.infoscoop.account.DomainManager;
+import org.infoscoop.dao.model.Domain;
 import org.infoscoop.dao.model.Preference;
+import org.infoscoop.dao.model.PreferencePK;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -55,7 +58,7 @@ public class PreferenceDAO extends HibernateDaoSupport{
      */
     public Preference select(String uid) {
     	if(uid == null)return null;
-    	return (Preference)super.getHibernateTemplate().get(Preference.class, uid);
+    	return (Preference)super.getHibernateTemplate().get(Preference.class, new PreferencePK(DomainManager.getContextDomainId(),uid));
     }
 
     /**
@@ -69,11 +72,11 @@ public class PreferenceDAO extends HibernateDaoSupport{
      */
     public void update(Preference entity) {
     	if(log.isInfoEnabled())
-        	log.info("update preference for uid: " + entity.getUid() + ".");
+        	log.info("update preference for uid: " + entity.getId().getUid() + ".");
     	
     	super.getHibernateTemplate().saveOrUpdate(entity);
     	if(log.isInfoEnabled())
-    		log.info("uid[" + entity.getUid() + "]: Save XML successfully.");
+    		log.info("uid[" + entity.getId().getUid() + "]: Save XML successfully.");
     }
 
 	/**

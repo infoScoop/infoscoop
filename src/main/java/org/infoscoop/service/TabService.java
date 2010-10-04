@@ -30,6 +30,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.TabDAO;
@@ -119,7 +120,7 @@ public class TabService {
 		Collection<Object[]> tabList = new ArrayList<Object[]>();
 	
 		CommandBar cmdBar = CommandBarService.getHandle().getMyCommandBar();
-		Tab commandbar = new Tab(new TABPK(uid, "commandbar"));
+		Tab commandbar = new Tab(new TABPK(cmdBar.getFkDomainId(), uid, "commandbar"));
 		commandbar.setName("commandbar");
 		commandbar.setData("{}");
 		tabList.add(
@@ -220,6 +221,7 @@ public class TabService {
 		widget.setDeletedate(Long.valueOf(0));
 		widget.setWidgetid(gadget.getContainerId());
 		widget.setUid( uid );
+		widget.setFkDomainId(DomainManager.getContextDomainId());
 		//TODO:
 		widget.setType(gadgetInst.getType().startsWith("upload_") ? "g_" + gadgetInst.getType() + "/gadget" : gadgetInst.getType() );
 		widget.setColumn(Integer.valueOf(0));
@@ -296,6 +298,7 @@ public class TabService {
 			widget.setDeletedate(Long.valueOf(0));
 			widget.setWidgetid(gadget.getWidgetId());
 			widget.setUid( uid );
+			widget.setFkDomainId(DomainManager.getContextDomainId());
 			//TODO:
 			widget.setType(gadgetInst.getType().startsWith("upload_") ? "g_" + gadgetInst.getType() + "/gadget" : gadgetInst.getType() );
 			widget.setColumn(gadget.getColumnNum());
@@ -317,7 +320,7 @@ public class TabService {
 	}
 
 	private Tab createTabFromTabTemplate(String uid, TabTemplate tabTemplate) throws JSONException {
-		Tab newTab = new Tab(new TABPK(uid, tabTemplate.getTabId()));
+		Tab newTab = new Tab(new TABPK(tabTemplate.getFkDomainId(), uid, tabTemplate.getTabId()));
 		
 		//Delete StaticPanel, tabType=dynamic
 		newTab.setType("static");
@@ -339,7 +342,7 @@ public class TabService {
 		// Processing of allocating tab ID again.
 		int newTabId = getNextNumber(dynamicTabIdList);
 		
-		Tab newTab = new Tab(new TABPK(staticTab.getUid(), String.valueOf(newTabId)));
+		Tab newTab = new Tab(new TABPK(staticTab.getId().getFkDomainId(), staticTab.getUid(), String.valueOf(newTabId)));
 		
 		newTab.setType("dynamic");
 		newTab.setName(staticTab.getName());

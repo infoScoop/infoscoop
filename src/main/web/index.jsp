@@ -209,29 +209,6 @@ if( isPreview == null )
 	};
     </script>
 	<%}%>
-	<%
-	String isSelectProfilePreview = request.getParameter(org.infoscoop.web.CheckDuplicateUidFilter.IS_PREVIEW);
-	String isSelectProfilePreviewUid = request.getParameter("Uid");
-    if(isSelectProfilePreview != null && "true".equalsIgnoreCase( isSelectProfilePreview ) ){
-    %>
-    <script type="text/javascript">
-    var IS_Preview = {
-        	replaceRegExp : new RegExp("(/widsrv|/customization|/mnusrv)"),
-        	cancelRegExp : new RegExp("/comsrv"),
-    		rewriteUrl: function(url){
-    			if(this.replaceRegExp.test(url)) {
-    				var newurl = url + (url.indexOf("?") > 0 ? "&" : "?") + "<%= org.infoscoop.web.CheckDuplicateUidFilter.IS_PREVIEW %>=true&Uid=<%= isSelectProfilePreviewUid%>";
-    				return newurl;
-    			} else if(this.cancelRegExp.test(url)) {
-    				return false;
-    			}
-    			return url;
-    		}
-    	};
-    </script>
-    <%
-    }
-	%>
  </head>
 
 	<body style="margin-top:0;padding-top:0;" class="infoScoop">

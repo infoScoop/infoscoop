@@ -27,7 +27,6 @@ public class SecurityController {
 	
 	private static ThreadLocal contextSubject = new ThreadLocal();
 	
-	
 	/**
 	 * get the subject persion from all registered SecurityAgent.
 	 * @param uid

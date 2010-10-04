@@ -33,6 +33,8 @@ public class CommandBar extends BaseCommandBar {
 			accessLevel);
 	}
 
+/*[CONSTRUCTOR MARKER END]*/
+
 	public Object getLayout() {
 		StringBuffer html = new StringBuffer();
 		html.append("<table cellpadding='0' cellspacing='3' width='100%'>\n  <tr>");
@@ -49,8 +51,6 @@ public class CommandBar extends BaseCommandBar {
 		html.append("  </tr>\n</table>");
 		return html.toString();
 	}
-
-/*[CONSTRUCTOR MARKER END]*/
 
 
 }

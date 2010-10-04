@@ -20,6 +20,7 @@ package org.infoscoop.command;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.model.Widget;
@@ -142,7 +143,11 @@ public class AddMultiWidget extends XMLCommandProcessor{
 	private Widget createWidget(String tabId, String parentId, String widgetId,
 			String targetColumn, String sibling, String menuId,
 			JSONObject confJson) throws JSONException {
-		Widget widget = new Widget(tabId, new Long(0), widgetId, uid);
+		Widget widget = new Widget();
+		widget.setTabid(tabId);
+		widget.setFkDomainId(DomainManager.getContextDomainId());
+		widget.setWidgetid(widgetId);
+		widget.setUid(uid);
 		if(targetColumn != null && !"".equals(targetColumn)){
 			widget.setColumn(new Integer(targetColumn));
 		}

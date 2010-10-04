@@ -1,10 +1,9 @@
 package org.infoscoop.dao.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.base.BaseMenuTree;
 
 
@@ -37,6 +36,11 @@ public class MenuTree extends BaseMenuTree {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+
+	protected void initialize (){
+		super.setFkDomainId(DomainManager.getContextDomainId());
+	}
+	
 	private List<String> positions;
 	
 	public void addPosition(String position) {

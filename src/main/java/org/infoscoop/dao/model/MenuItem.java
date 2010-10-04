@@ -3,6 +3,7 @@ package org.infoscoop.dao.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.base.BaseMenuItem;
 
 public class MenuItem extends BaseMenuItem {
@@ -16,7 +17,7 @@ public class MenuItem extends BaseMenuItem {
 	/**
 	 * Constructor for primary key
 	 */
-	public MenuItem (java.lang.String id) {
+	public MenuItem (java.lang.Integer id) {
 		super(id);
 	}
 
@@ -24,8 +25,9 @@ public class MenuItem extends BaseMenuItem {
 	 * Constructor for required fields
 	 */
 	public MenuItem (
-		java.lang.String id,
+		java.lang.Integer id,
 		org.infoscoop.dao.model.MenuTree fkMenuTree,
+		java.lang.String menuId,
 		java.lang.String title,
 		java.lang.Integer menuOrder,
 		java.lang.Integer publish,
@@ -34,6 +36,7 @@ public class MenuItem extends BaseMenuItem {
 		super (
 			id,
 			fkMenuTree,
+			menuId,
 			title,
 			menuOrder,
 			publish,
@@ -42,6 +45,10 @@ public class MenuItem extends BaseMenuItem {
 
 /*[CONSTRUCTOR MARKER END]*/
 
+	protected void initialize (){
+		super.setFkDomainId(DomainManager.getContextDomainId());
+	}
+	
 	private List<MenuItem> childItems = new ArrayList<MenuItem>();
 
 	public void setChildItems(List<MenuItem> childItems) {

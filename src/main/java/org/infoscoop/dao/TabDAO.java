@@ -31,6 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.TABPK;
 import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.Widget;
@@ -57,7 +58,8 @@ public class TabDAO extends HibernateDaoSupport{
     
     
 	public Tab getTab(String uid, String tabId) {
-		return (Tab)super.getHibernateTemplate().get(Tab.class, new TABPK(uid, tabId));
+		//TODO: get domain name from ThreadLocal
+		return (Tab)super.getHibernateTemplate().get(Tab.class, new TABPK(DomainManager.getContextDomainId(), uid, tabId));
 	}
 	
     public Collection<Tab> getTabs(String uid) throws Exception{

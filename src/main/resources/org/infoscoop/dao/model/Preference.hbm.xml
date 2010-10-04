@@ -5,12 +5,18 @@
 
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class name="Preference" table="IS_PREFERENCES">
-		<id
-			name="Uid"
-			type="string"
-			column="`UID`"
-		>
-		</id>
+		<composite-id name="Id" class="PreferencePK">
+			<key-property
+				name="FkDomainOd"
+				column="fk_domain_id"
+				type="integer"
+			/>
+			<key-property
+				name="Uid"
+				column="UID"
+				type="string"
+			/>
+		</composite-id>
 
 		<property
 			name="Data"

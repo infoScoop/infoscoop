@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -21,7 +22,8 @@ public class GadgetInstanceDAO extends HibernateDaoSupport {
 	@SuppressWarnings("unchecked")
 	public List<GadgetInstance> all() {
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(GadgetInstance.class));
+				DetachedCriteria.forClass(GadgetInstance.class).add(
+						Expression.eq(GadgetInstance.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 	}
 
 	@SuppressWarnings("unchecked")

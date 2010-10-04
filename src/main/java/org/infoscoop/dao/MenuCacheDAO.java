@@ -20,6 +20,7 @@ package org.infoscoop.dao;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.MENUCACHEPK;
 import org.infoscoop.dao.model.MenuCache;
 import org.infoscoop.util.Crypt;
@@ -49,7 +50,7 @@ public class MenuCacheDAO  extends HibernateDaoSupport {
     	String url_key = Crypt.getHash(url);
     	
     	MenuCache cache = ( MenuCache )super.getHibernateTemplate().get(
-    			MenuCache.class,new MENUCACHEPK( url_key,uid ) );
+    			MenuCache.class,new MENUCACHEPK(DomainManager.getContextDomainId(),url_key,uid ) );
     	
     	return cache;
     }

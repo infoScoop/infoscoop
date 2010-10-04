@@ -29,8 +29,6 @@ public class ImportTool {
 		PORTALLAYOUT( new PortalLayoutFactory()),
 		PROPERTIES( new PropertiesFactory()),
 		PROXYCONF( new ProxyConfFactory()),
-		//SITEAGGREGATIONMENU( new SiteAggregationMenuFactory()),
-		WIDGETCONF( new WidgetConfFactory()),
 		HOLIDAYS( new HolidaysFactory()),
 		FORBIDDENURLS( new ForbiddenUrlsFactory()),
 		GADGET( new GadgetFactory()),
@@ -47,7 +45,6 @@ public class ImportTool {
 			for( TABLES table : TABLES.values() )
 				DIRECTORY_MAP.put( table,basedir+table.name().toLowerCase());
 			DIRECTORY_MAP.put( TABLES.PROXYCONF,basedir+"proxyconfig");
-			DIRECTORY_MAP.put( TABLES.WIDGETCONF,basedir+"widgetconfig");
 			DIRECTORY_MAP.put( TABLES.I18NLOCALE,basedir+"i18nLocale");
 			DIRECTORY_MAP.put( TABLES.ACCOUNT,basedir+"accounts");
 		}
@@ -429,32 +426,6 @@ class ProxyConfFactory implements CSVBeanFactory<Proxyconf> {
 		}
 
 		return proxyConf;
-	}
-}
-
-// type,temp,data
-
-/*
-class SiteAggregationMenuFactory implements CSVBeanFactory<Siteaggregationmenu> {
-	public Siteaggregationmenu newBean( CSVField[] values ) {
-		Siteaggregationmenu siteAggregationMenu = new Siteaggregationmenu( values[0].toString() );
-		siteAggregationMenu.setData( values[1].toString() );
-
-		return siteAggregationMenu;
-	}
-}
-	*/
-
-
-// type,data
-
-class WidgetConfFactory implements CSVBeanFactory<WidgetConf> {
-	public WidgetConf newBean( CSVField[] values ) {
-		WidgetConf widgetConf = new WidgetConf();
-		widgetConf.setType( values[0].toString() );
-		widgetConf.setData( values[1].toString() );
-
-		return widgetConf;
 	}
 }
 

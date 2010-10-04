@@ -20,6 +20,12 @@
 		</id>
 
 		<property
+			name="FkDomainId"
+			column="fk_domain_id"
+			type="integer"
+		/>
+		
+		<property
 			name="Title"
 			column="title"
 			type="string"

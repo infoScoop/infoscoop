@@ -1,57 +1,37 @@
-/* infoScoop OpenSource
- * Copyright (C) 2010 Beacon IT Inc.
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License version 3
- * as published by the Free Software Foundation.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program.  If not, see
- * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
- */
-
 package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
-import org.infoscoop.dao.model.UserPref;
-
-
 
 /**
- * This is an object that contains data related to the WIDGET table.
+ * This is an object that contains data related to the IS_WIDGETS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="WIDGET"
+ *  table="IS_WIDGETS"
  */
 
 public abstract class BaseWidget  implements Serializable {
 
 	public static String REF = "Widget";
-	public static String PROP_SIBLINGID = "Siblingid";
-	public static String PROP_TYPE = "Type";
-	public static String PROP_DELETEDATE = "Deletedate";
 	public static String PROP_PARENTID = "Parentid";
-	public static String PROP_WIDGETID = "Widgetid";
-	public static String PROP_DEFAULTUID = "Defaultuid";
-	public static String PROP_TABID = "Tabid";
-	public static String PROP_IGNOREHEADER = "Ignoreheader";
-	public static String PROP_NOBORDER = "Noborder";
-	public static String PROP_HREF = "Href";
+	public static String PROP_TYPE = "Type";
 	public static String PROP_ISSTATIC = "Isstatic";
-	public static String PROP_TITLE = "Title";
-	public static String PROP_COLUMN = "Column";
-	public static String PROP_ID = "Id";
-	public static String PROP_UID = "Uid";
-	public static String PROP_MENUID = "Menuid";
+	public static String PROP_IGNOREHEADER = "Ignoreheader";
 	public static String PROP_CREATEDATE = "Createdate";
+	public static String PROP_COLUMN = "Column";
+	public static String PROP_TITLE = "Title";
+	public static String PROP_DELETEDATE = "Deletedate";
+	public static String PROP_WIDGETID = "Widgetid";
+	public static String PROP_NOBORDER = "Noborder";
+	public static String PROP_MENUID = "Menuid";
+	public static String PROP_SIBLINGID = "Siblingid";
+	public static String PROP_ID = "Id";
+	public static String PROP_HREF = "Href";
+	public static String PROP_TABID = "Tabid";
+	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
+	public static String PROP_UID = "Uid";
 
 
 	// constructors
@@ -67,6 +47,18 @@ public abstract class BaseWidget  implements Serializable {
 		initialize();
 	}
 
+	/**
+	 * Constructor for required fields
+	 */
+	public BaseWidget (
+		java.lang.String id,
+		java.lang.Long createdate) {
+
+		this.setId(id);
+		this.setCreatedate(createdate);
+		initialize();
+	}
+
 	protected void initialize () {}
 
 
@@ -79,11 +71,13 @@ public abstract class BaseWidget  implements Serializable {
 	// fields
 	private java.lang.String tabid;
 	private java.lang.Long deletedate;
+	private java.lang.Long createdate;
 	private java.lang.String widgetid;
+	private java.lang.Integer fkDomainId;
 	private java.lang.String uid;
-	private java.lang.String defaultuid;
 	private java.lang.Integer column;
 	private java.lang.String siblingid;
+	private java.lang.String menuid;
 	private java.lang.String parentid;
 	private java.lang.String href;
 	private java.lang.String title;
@@ -91,8 +85,8 @@ public abstract class BaseWidget  implements Serializable {
 	private java.lang.Integer isstatic;
 	private java.lang.Integer ignoreheader;
 	private java.lang.Integer noborder;
-	private java.lang.String menuid;
-	private java.lang.Long createdate = 0L;
+
+
 
 	/**
 	 * Return the unique identifier of this class
@@ -151,6 +145,23 @@ public abstract class BaseWidget  implements Serializable {
 
 
 	/**
+	 * Return the value associated with the column: CREATEDATE
+	 */
+	public java.lang.Long getCreatedate () {
+		return createdate;
+	}
+
+	/**
+	 * Set the value related to the column: CREATEDATE
+	 * @param createdate the CREATEDATE value
+	 */
+	public void setCreatedate (java.lang.Long createdate) {
+		this.createdate = createdate;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: WIDGETID
 	 */
 	public java.lang.String getWidgetid () {
@@ -168,6 +179,23 @@ public abstract class BaseWidget  implements Serializable {
 
 
 	/**
+	 * Return the value associated with the column: fk_domain_id
+	 */
+	public java.lang.Integer getFkDomainId () {
+		return fkDomainId;
+	}
+
+	/**
+	 * Set the value related to the column: fk_domain_id
+	 * @param fkDomainId the fk_domain_id value
+	 */
+	public void setFkDomainId (java.lang.Integer fkDomainId) {
+		this.fkDomainId = fkDomainId;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: `UID`
 	 */
 	public java.lang.String getUid () {
@@ -180,23 +208,6 @@ public abstract class BaseWidget  implements Serializable {
 	 */
 	public void setUid (java.lang.String uid) {
 		this.uid = uid;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: DEFAULTUID
-	 */
-	public java.lang.String getDefaultuid () {
-		return defaultuid;
-	}
-
-	/**
-	 * Set the value related to the column: DEFAULTUID
-	 * @param defaultuid the DEFAULTUID value
-	 */
-	public void setDefaultuid (java.lang.String defaultuid) {
-		this.defaultuid = defaultuid;
 	}
 
 
@@ -231,6 +242,23 @@ public abstract class BaseWidget  implements Serializable {
 	 */
 	public void setSiblingid (java.lang.String siblingid) {
 		this.siblingid = siblingid;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: MENUID
+	 */
+	public java.lang.String getMenuid () {
+		return menuid;
+	}
+
+	/**
+	 * Set the value related to the column: MENUID
+	 * @param menuid the MENUID value
+	 */
+	public void setMenuid (java.lang.String menuid) {
+		this.menuid = menuid;
 	}
 
 
@@ -335,45 +363,25 @@ public abstract class BaseWidget  implements Serializable {
 		this.ignoreheader = ignoreheader;
 	}
 
-	public java.lang.Integer getNoborder() {
+
+
+	/**
+	 * Return the value associated with the column: NOBORDER
+	 */
+	public java.lang.Integer getNoborder () {
 		return noborder;
 	}
 
-	public void setNoborder(java.lang.Integer noborder) {
+	/**
+	 * Set the value related to the column: NOBORDER
+	 * @param noborder the NOBORDER value
+	 */
+	public void setNoborder (java.lang.Integer noborder) {
 		this.noborder = noborder;
 	}
 
-	/**
-	 * Return the value associated with the column: MENUID
-	 */
-	public java.lang.String getMenuid () {
-		return menuid;
-	}
-
-	/**
-	 * Set the value related to the column: MENUID
-	 * @param menuid the MENUID value
-	 */
-	public void setMenuid (java.lang.String menuid) {
-		this.menuid = menuid;
-	}
 
 
-
-	/**
-	 * Return the value associated with the column: CREATEDATE
-	 */
-	public java.lang.Long getCreatedate () {
-		return createdate;
-	}
-
-	/**
-	 * Set the value related to the column: CREATEDATE
-	 * @param deletedate the CREATEDATE value
-	 */
-	public void setCreatedate (java.lang.Long createdate) {
-		this.createdate = createdate;
-	}
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;

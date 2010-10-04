@@ -2,8 +2,6 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
-import org.infoscoop.dao.model.TabTemplate;
-
 
 /**
  * This is an object that contains data related to the IS_TAB_TEMPLATES table.
@@ -28,6 +26,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	public static String PROP_ORIGINAL_ID = "OriginalId";
 	public static String PROP_COLUMN_WIDTH = "ColumnWidth";
 	public static String PROP_TEMP = "Temp";
+	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 
 
 	// constructors
@@ -71,21 +70,21 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private java.lang.Integer id;
 
 	// fields
+	private java.lang.Integer fkDomainId;
 	private java.lang.Integer originalId;
 	private java.lang.String tabId;
-	private java.lang.Integer areaType = TabTemplate.TYPE_USE_BOTH_AREA;
 	private java.lang.String name;
+	private java.lang.Integer areaType;
 	private java.lang.Integer published;
 	private java.lang.Integer accessLevel;
 	private java.lang.String layout;
-	private java.lang.Integer numberOfColumns = 3;
+	private java.lang.Integer numberOfColumns;
 	private java.lang.String columnWidth;
 	private java.lang.Integer temp;
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.TabTemplatePersonalizeGadget> tabTemplatePersonalizeGadgets;
-	private java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> tabTemplateStaticGadgets = new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateStaticGadget>();
-	
+	private java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> tabTemplateStaticGadgets;
 
 
 
@@ -108,6 +107,23 @@ public abstract class BaseTabTemplate  implements Serializable {
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
+
+
+
+	/**
+	 * Return the value associated with the column: fk_domain_id
+	 */
+	public java.lang.Integer getFkDomainId () {
+		return fkDomainId;
+	}
+
+	/**
+	 * Set the value related to the column: fk_domain_id
+	 * @param fkDomainId the fk_domain_id value
+	 */
+	public void setFkDomainId (java.lang.Integer fkDomainId) {
+		this.fkDomainId = fkDomainId;
+	}
 
 
 
@@ -146,23 +162,6 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: area_type
-	 */
-	public java.lang.Integer getAreaType () {
-		return areaType;
-	}
-
-	/**
-	 * Set the value related to the column: area_type
-	 * @param areaType the area_type value
-	 */
-	public void setAreaType (java.lang.Integer areaType) {
-		this.areaType = areaType;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: name
 	 */
 	public java.lang.String getName () {
@@ -175,6 +174,23 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 */
 	public void setName (java.lang.String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: area_type
+	 */
+	public java.lang.Integer getAreaType () {
+		return areaType;
+	}
+
+	/**
+	 * Set the value related to the column: area_type
+	 * @param areaType the area_type value
+	 */
+	public void setAreaType (java.lang.Integer areaType) {
+		this.areaType = areaType;
 	}
 
 
@@ -319,6 +335,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	}
 
 	public void addToTabTemplateStaticGadgets (org.infoscoop.dao.model.TabTemplateStaticGadget tabTemplateStaticGadget) {
+		if (null == getTabTemplateStaticGadgets()) setTabTemplateStaticGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateStaticGadget>());
 		getTabTemplateStaticGadgets().add(tabTemplateStaticGadget);
 	}
 

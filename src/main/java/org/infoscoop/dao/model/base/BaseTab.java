@@ -1,48 +1,27 @@
-/* infoScoop OpenSource
- * Copyright (C) 2010 Beacon IT Inc.
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License version 3
- * as published by the Free Software Foundation.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program.  If not, see
- * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
- */
-
 package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the TAB table.
+ * This is an object that contains data related to the IS_TABS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="TAB"
+ *  table="IS_TABS"
  */
 
 public abstract class BaseTab  implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	public static String REF = "Tab";
-	public static String PROP_TYPE = "Type";
-	public static String PROP_DATA = "Data";
-	public static String PROP_ORDER = "Order";
 	public static String PROP_NAME = "Name";
-	public static String PROP_DEFAULTUID = "Defaultuid";
-	public static String PROP_ID = "Id";
 	public static String PROP_WIDGETLASTMODIFIED = "Widgetlastmodified";
+	public static String PROP_DATA = "Data";
+	public static String PROP_TYPE = "Type";
+	public static String PROP_ORDER = "Order";
+	public static String PROP_ID = "Id";
+
 
 	// constructors
 	public BaseTab () {
@@ -66,11 +45,14 @@ public abstract class BaseTab  implements Serializable {
 	// primary key
 	private org.infoscoop.dao.model.TABPK id;
 
+	// fields
 	private java.lang.String name;
 	private java.lang.Integer order;
 	private java.lang.String type;
 	private java.lang.String data;
 	private java.lang.String widgetlastmodified;
+
+
 
 	/**
 	 * Return the unique identifier of this class
@@ -110,15 +92,15 @@ public abstract class BaseTab  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: ORDER
+	 * Return the value associated with the column: `ORDER`
 	 */
 	public java.lang.Integer getOrder () {
 		return order;
 	}
 
 	/**
-	 * Set the value related to the column: ORDER
-	 * @param order the ORDER value
+	 * Set the value related to the column: `ORDER`
+	 * @param order the `ORDER` value
 	 */
 	public void setOrder (java.lang.Integer order) {
 		this.order = order;
@@ -175,6 +157,9 @@ public abstract class BaseTab  implements Serializable {
 		this.widgetlastmodified = widgetlastmodified;
 	}
 
+
+
+
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.dao.model.Tab)) return false;
@@ -200,4 +185,6 @@ public abstract class BaseTab  implements Serializable {
 	public String toString () {
 		return super.toString();
 	}
+
+
 }

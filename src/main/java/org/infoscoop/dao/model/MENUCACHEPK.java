@@ -26,10 +26,12 @@ public class MENUCACHEPK extends BaseMENUCACHEPK {
 	public MENUCACHEPK () {}
 	
 	public MENUCACHEPK (
+		java.lang.Integer fkDomainId,
 		java.lang.String urlKey,
 		java.lang.String uid) {
 
 		super (
+			fkDomainId,
 			urlKey,
 			uid);
 	}

@@ -1,25 +1,39 @@
 --
+-- DOMAIN
+--
+CREATE TABLE IS_DOMAINS (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+--
 -- PREFERENCE
 --
 create table IS_PREFERENCES (
+  fk_domain_id int unsigned NOT NULL,
   `UID` varchar(150) not null,
   data text not null,
-  primary key (`UID`)
+  primary key (fk_domain_id, `UID`),
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --
 -- TAB
 --
 create table IS_TABS (
+  fk_domain_id int unsigned NOT NULL,
   `UID` varchar(150) not null,
   id varchar(32) not null,
+  domain varchar(150),
   name varchar(256),
   `ORDER` int,
   type varchar(128),
   data text,
   widgetLastModified varchar(32),
   disabledDynamicPanel int,
-  primary key (`UID`, id)
+  primary key (fk_domain_id, `UID`, id),
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --
@@ -28,8 +42,8 @@ create table IS_TABS (
 
 create table IS_WIDGETS (
   id bigint not null auto_increment primary key,
+  fk_domain_id int unsigned NOT NULL,
   `UID` varchar(75) not null,
-  defaultUid varchar(150),
   tabId varchar(32) not null,
   widgetId varchar(128) not null,
   `COLUMN` int,
@@ -44,7 +58,8 @@ create table IS_WIDGETS (
   noBorder int,
   createDate bigint not null default 0,
   deleteDate bigint not null default 0,
-  constraint is_widgets_unique unique (`UID`, tabid, widgetId, deleteDate)
+  constraint is_widgets_unique unique (fk_domain_id, `UID`, tabid, widgetId, deleteDate),
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 create index is_widgets_tabId on IS_WIDGETS(tabId);
@@ -85,11 +100,13 @@ create table IS_CACHES (
 create index is_caches_uid on IS_CACHES(`UID`);
 create index is_caches_url on IS_CACHES(url_key);
 
-create table IS_MENUCACHES (
-  `UID` varchar(75) not null,
-  url_key varchar(128) not null,
+CREATE TABLE IF NOT EXISTS IS_MENUCACHES (
+  fk_domain_id int unsigned NOT NULL,
+  `UID` varchar(75) NOT NULL,
+  url_key varchar(128) NOT NULL,
   menuIds blob,
-  primary key (`UID`, url_key)
+  PRIMARY KEY (`UID`,`url_key`,`fk_domain_id`),
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=MyISAM;
 
 --
@@ -364,10 +381,12 @@ CREATE TABLE IF NOT EXISTS IS_ROLE_PRINCIPALS (
 --
 CREATE TABLE IS_GADGET_INSTANCES (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	fk_domain_id int unsigned NOT NULL,
 	type VARCHAR( 255 ) NOT NULL ,
 	title VARCHAR( 255 ) NOT NULL ,
 	href VARCHAR( 1024 ),
-	INDEX (  `type` ,  `title` )
+	INDEX ( `type`, `title` ),
+	foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE = INNODB;
 
 --
@@ -385,36 +404,45 @@ create table IS_GADGET_INSTANCE_USERPREFS (
 --
 -- MENU_TREE
 --
-create table IS_MENU_TREES(
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  title varchar(255) not null
+CREATE TABLE IS_MENU_TREES (
+  id int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  fk_domain_id int unsigned NOT NULL,
+  title varchar(255) NOT NULL,
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --
 -- MENU_POSITION
 --
-create table IS_MENU_POSITIONS(
-  position varchar(10) NOT NULL PRIMARY KEY, -- top or side
-  fk_menu_tree_id int unsigned not null,
-  foreign key (fk_menu_tree_id) references IS_MENU_TREES(id) on delete cascade
+CREATE TABLE IS_MENU_POSITIONS (
+  position varchar(10) NOT NULL,
+  fk_domain_id int unsigned NOT NULL,
+  fk_menu_tree_id int unsigned NOT NULL,
+  PRIMARY KEY (`position`,`fk_domain_id`),
+  foreign key (fk_menu_tree_id) references IS_MENU_TREES(id) on delete cascade,
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --
 -- MENU_ITEM
 --
-create table IS_MENU_ITEMS(
-  id varchar(255) not null primary key,
-  title varchar(255) not null,
-  menu_order int not null default 0,
-  href varchar(255),
-  publish int not null default 0, -- 0=unpublished, 1=published
-  alert int not null default 1, -- 0=no alert, 1=alert, 2=force drop
-  fk_parent_id varchar(255),
-  fk_gadget_instance_id int unsigned,
-  fk_menu_tree_id int unsigned not null,
+CREATE TABLE IS_MENU_ITEMS (
+  id int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  menu_id varchar(255) NOT NULL,
+  fk_domain_id int unsigned NOT NULL,
+  title varchar(255) NOT NULL,
+  menu_order int(11) NOT NULL DEFAULT '0',
+  href varchar(255) DEFAULT NULL,
+  publish int(11) NOT NULL DEFAULT '0',
+  alert int(11) NOT NULL DEFAULT '1',
+  fk_parent_id int unsigned DEFAULT NULL,
+  fk_gadget_instance_id int(10) unsigned DEFAULT NULL,
+  fk_menu_tree_id int unsigned NOT NULL,
   foreign key (fk_parent_id) references IS_MENU_ITEMS(id) on delete cascade,
   foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade,
-  foreign key (fk_menu_tree_id) references IS_MENU_TREES(id) on delete cascade
+  foreign key (fk_menu_tree_id) references IS_MENU_TREES(id) on delete cascade,
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade,
+  unique (menu_id,fk_domain_id)
 ) ENGINE=InnoDB;
 
 --
@@ -422,6 +450,7 @@ create table IS_MENU_ITEMS(
 --
 create table IS_TAB_TEMPLATES(
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    fk_domain_id int unsigned NOT NULL,
 	original_id int,
 	tab_id varchar(255) not null,
 	name varchar(255) not null,
@@ -431,7 +460,8 @@ create table IS_TAB_TEMPLATES(
     column_width varchar(255),
 	published int not null default 0, -- 0=unpublished, 1=published
 	access_level int, -- 0=public, 1=special
-	temp int not null default 1 -- 0=data to show, 1=temporary data
+	temp int not null default 1, -- 0=data to show, 1=temporary data
+    foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --
@@ -489,16 +519,21 @@ CREATE TABLE IS_USER_GROUP (
   KEY `fk_group_id` (`fk_group_id`)
 ) ENGINE=InnoDB;
 
+--
+-- COMMAND_BAR
+--
 CREATE TABLE IS_COMMAND_BARS (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  fk_domain_id int unsigned NOT NULL,
   `display_order` int(11) NOT NULL,
   `access_level` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 
 CREATE TABLE IS_COMMAND_BAR_STATIC_GADGETS (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `container_id` varchar(255) NOT NULL,
   `fk_command_bar_id` int(10) unsigned NOT NULL,
   `fk_gadget_instance_id` int(10) unsigned NOT NULL,
@@ -509,4 +544,9 @@ CREATE TABLE IS_COMMAND_BAR_STATIC_GADGETS (
 
 ALTER TABLE IS_COMMAND_BAR_STATIC_GADGETS
   ADD CONSTRAINT `is_command_bar_static_gadgets_ibfk_1` FOREIGN KEY (`fk_command_bar_id`) REFERENCES IS_COMMAND_BARS (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `is_command_bar_static_gadgets_ibfk_2` FOREIGN KEY (`fk_gadget_instance_id`) REFERENCES IS_GADGET_INSTANCES (`id`) ON DELETE CASCADE
+  ADD CONSTRAINT `is_command_bar_static_gadgets_ibfk_2` FOREIGN KEY (`fk_gadget_instance_id`) REFERENCES IS_GADGET_INSTANCES (`id`) ON DELETE CASCADE;
+  
+-- DATA FOR TEST
+INSERT INTO `iscoop`.`IS_DOMAINS` (`id` ,`name`) VALUES ('1', 'infoscoop.org');
+INSERT INTO `iscoop`.`IS_COMMAND_BARS` (`id`, `fk_domain_id`, `display_order`, `access_level`) VALUES ('1', '1', '0', '');
+  

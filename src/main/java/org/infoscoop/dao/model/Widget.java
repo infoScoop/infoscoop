@@ -47,17 +47,21 @@ public class Widget extends BaseWidget {
 	public Widget (java.lang.String id) {
 		super(id);
 	}
-	
-	public Widget(String tabId, Long deleteDate, String widgetId, String uid){
-		super.setTabid(tabId);
-		super.setDeletedate(deleteDate);
-		super.setWidgetid(widgetId);
-		super.setUid(uid);
+
+	/**
+	 * Constructor for required fields
+	 */
+	public Widget (
+		java.lang.String id,
+		java.lang.Long createdate) {
+
+		super (
+			id,
+			createdate);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
 
-	
 	public JSONObject toJSONObject() throws JSONException{
 		JSONObject json = new JSONObject();
 		json.put("id", this.getWidgetid());

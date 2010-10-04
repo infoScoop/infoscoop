@@ -44,7 +44,7 @@ public class CheckSessionIdFilter implements javax.servlet.Filter {
 		String uid = (String) httpReq.getSession().getAttribute("Uid");
 		
 		//If an uid is empty, we don't check.
-		if (uid != null || !"true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))) {
+		if (uid != null ) {
 
 			try{
 				String sessionId = httpReq.getHeader("MSDPortal-SessionId");

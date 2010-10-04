@@ -4,31 +4,43 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the IS_MENUCACHES table.
+ * This is an object that contains data related to the IS_DOMAINS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="IS_MENUCACHES"
+ *  table="IS_DOMAINS"
  */
 
-public abstract class BaseMenuCache  implements Serializable {
+public abstract class BaseDomain  implements Serializable {
 
-	public static String REF = "MenuCache";
+	public static String REF = "Domain";
+	public static String PROP_NAME = "Name";
 	public static String PROP_ID = "Id";
-	public static String PROP_MENU_IDS = "MenuIds";
 
 
 	// constructors
-	public BaseMenuCache () {
+	public BaseDomain () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseMenuCache (org.infoscoop.dao.model.MENUCACHEPK id) {
+	public BaseDomain (java.lang.Integer id) {
 		this.setId(id);
+		initialize();
+	}
+
+	/**
+	 * Constructor for required fields
+	 */
+	public BaseDomain (
+		java.lang.Integer id,
+		java.lang.String name) {
+
+		this.setId(id);
+		this.setName(name);
 		initialize();
 	}
 
@@ -39,18 +51,20 @@ public abstract class BaseMenuCache  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private org.infoscoop.dao.model.MENUCACHEPK id;
+	private java.lang.Integer id;
 
 	// fields
-	private byte[] menuIds;
+	private java.lang.String name;
 
 
 
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
+     *  generator-class="native"
+     *  column="id"
      */
-	public org.infoscoop.dao.model.MENUCACHEPK getId () {
+	public java.lang.Integer getId () {
 		return id;
 	}
 
@@ -58,7 +72,7 @@ public abstract class BaseMenuCache  implements Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (org.infoscoop.dao.model.MENUCACHEPK id) {
+	public void setId (java.lang.Integer id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
@@ -67,18 +81,18 @@ public abstract class BaseMenuCache  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: MENUIDS
+	 * Return the value associated with the column: name
 	 */
-	public byte[] getMenuIds () {
-		return menuIds;
+	public java.lang.String getName () {
+		return name;
 	}
 
 	/**
-	 * Set the value related to the column: MENUIDS
-	 * @param menuIds the MENUIDS value
+	 * Set the value related to the column: name
+	 * @param name the name value
 	 */
-	public void setMenuIds (byte[] menuIds) {
-		this.menuIds = menuIds;
+	public void setName (java.lang.String name) {
+		this.name = name;
 	}
 
 
@@ -86,11 +100,11 @@ public abstract class BaseMenuCache  implements Serializable {
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof org.infoscoop.dao.model.MenuCache)) return false;
+		if (!(obj instanceof org.infoscoop.dao.model.Domain)) return false;
 		else {
-			org.infoscoop.dao.model.MenuCache menuCache = (org.infoscoop.dao.model.MenuCache) obj;
-			if (null == this.getId() || null == menuCache.getId()) return false;
-			else return (this.getId().equals(menuCache.getId()));
+			org.infoscoop.dao.model.Domain domain = (org.infoscoop.dao.model.Domain) obj;
+			if (null == this.getId() || null == domain.getId()) return false;
+			else return (this.getId().equals(domain.getId()));
 		}
 	}
 

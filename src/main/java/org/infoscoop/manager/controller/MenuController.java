@@ -129,7 +129,7 @@ public class MenuController {
 			@RequestParam(value = "title", required = false) String title,
 			Model model, Locale locale) throws Exception {
 		MenuTree menu = menuTreeDAO.get(menuId);
-		MenuItem parentItem = menuItemDAO.get(parentId);
+		MenuItem parentItem = menuItemDAO.getByMenuId(parentId);
 		MenuItem last =null;
 		if (parentId.length() > 0) {
 			last = menuItemDAO.getLastChild(parentId);
@@ -162,9 +162,9 @@ public class MenuController {
 
 	@RequestMapping
 	@Transactional
-	public void showEditItem(@RequestParam("id") String id, Model model,
+	public void showEditItem(@RequestParam("menuId") String menuId, Model model,
 			Locale locale) throws Exception {
-		MenuItem item = menuItemDAO.get(id);
+		MenuItem item = menuItemDAO.getByMenuId(menuId);
 		model.addAttribute(item);
 
 		GadgetInstance gadget = item.getFkGadgetInstance();
@@ -181,7 +181,7 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public MenuItem addItem(MenuItem item) throws Exception {
-		item.setId("m_" + new Date().getTime());
+		item.setMenuId("m_" + new Date().getTime());
 		GadgetInstance gadget = item.getFkGadgetInstance();
 		if (gadget != null) {
 			String type = gadget.getType();
@@ -190,6 +190,7 @@ public class MenuController {
 				gadget.setHref(item.getHref());
 			}
 		}
+		item.setFkParent(menuItemDAO.get(item.getFkParent().getId()));
 		menuItemDAO.save(item);
 		return item;
 	}
@@ -217,7 +218,7 @@ public class MenuController {
 		if(parentId.length() == 0)
 			throw new Exception("parentId is required.");
 		MenuItem item = new MenuItem();
-		MenuItem parentItem = menuItemDAO.get(parentId);
+		MenuItem parentItem = menuItemDAO.getByMenuId(parentId);
 		if (parentItem == null)
 			throw new Exception("A menu item which id is \"" + parentId
 					+ "\" is not found.");
@@ -244,7 +245,7 @@ public class MenuController {
 	@Transactional
 	public MenuItem togglePublish(@RequestParam("id") String id)
 			throws Exception {
-		MenuItem item = menuItemDAO.get(id);
+		MenuItem item = menuItemDAO.getByMenuId(id);
 		item.toggolePublish();
 		menuItemDAO.save(item);
 		return item;
@@ -262,9 +263,9 @@ public class MenuController {
 			@RequestParam("parentId") String parentId,
 			@RequestParam("refId") String refId,
 			@RequestParam("position") String position) throws Exception {
-		MenuItem item = menuItemDAO.get(id);
+		MenuItem item = menuItemDAO.getByMenuId(id);
 		if (parentId.length() > 0) {
-			MenuItem parentItem = menuItemDAO.get(parentId);
+			MenuItem parentItem = menuItemDAO.getByMenuId(parentId);
 			item.setFkParent(parentItem);
 		}
 		if (position.equals("last")) {
@@ -307,12 +308,11 @@ public class MenuController {
 	@Transactional
 	public MenuItem copyItem(@RequestParam("id") String id,
 			@RequestParam("parentId") String parentId) throws Exception {
-		MenuItem parentItem = menuItemDAO.get(parentId);
-		MenuItem item = menuItemDAO.get(id);
+		MenuItem parentItem = menuItemDAO.getByMenuId(parentId);
+		MenuItem item = menuItemDAO.getByMenuId(id);
 
 		MenuItem newItem = new MenuItem();
-
-		newItem.setId("m_" + new Date().getTime());
+		newItem.setMenuId("m_" + new Date().getTime());
 		newItem.setFkParent(parentItem);
 
 		newItem.setTitle(item.getTitle());

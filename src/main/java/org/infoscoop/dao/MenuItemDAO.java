@@ -26,6 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.util.SpringUtil;
@@ -40,20 +41,25 @@ public class MenuItemDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-	public MenuItem get(String id) {
+	public MenuItem getByMenuId(String menuId) {
 		List<MenuItem> items = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuItem.class).add(
-						Expression.eq(MenuItem.PROP_ID, id)));
+						Expression.eq(MenuItem.PROP_MENU_ID, menuId)).add(
+								Expression.eq(MenuItem.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 		if (items.size() == 1)
 			return items.get(0);
 		return null;
+	}
+
+	public MenuItem get(Integer id) {
+		return super.getHibernateTemplate().get(MenuItem.class, id);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<MenuItem> getByParentId(String parentId) {
 		if (parentId == null)
 			return null;
-		MenuItem parent = get(parentId);
+		MenuItem parent = getByMenuId(parentId);
 		if (parent == null)
 			return null;
 		return super.getHibernateTemplate().findByCriteria(
@@ -66,7 +72,7 @@ public class MenuItemDAO extends HibernateDaoSupport {
 	public MenuItem getLastChild(String parentId) {
 		if (parentId == null)
 			return null;
-		MenuItem parent = get(parentId);
+		MenuItem parent = getByMenuId(parentId);
 		if (parent == null)
 			return null;
 		List<MenuItem> items = super.getHibernateTemplate().findByCriteria(
@@ -109,7 +115,7 @@ public class MenuItemDAO extends HibernateDaoSupport {
 	}
 
 	protected static List<MenuItem> createMenuTree(
-			Collection<MenuItem> flatItems, String parentId) {
+			Collection<MenuItem> flatItems, Integer parentId) {
 		if (flatItems == null)
 			return null;
 		List<MenuItem> items = new ArrayList<MenuItem>();
@@ -131,7 +137,7 @@ public class MenuItemDAO extends HibernateDaoSupport {
 	}
 
 	public void delete(String id) {
-		MenuItem item = get(id);
+		MenuItem item = getByMenuId(id);
 		if (item != null)
 			super.getHibernateTemplate().delete(item);
 	}

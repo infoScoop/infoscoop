@@ -1,5 +1,6 @@
 package org.infoscoop.dao.model;
 
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.base.BaseMenuPosition;
 
 
@@ -15,7 +16,7 @@ public class MenuPosition extends BaseMenuPosition {
 	/**
 	 * Constructor for primary key
 	 */
-	public MenuPosition (java.lang.String id) {
+	public MenuPosition (org.infoscoop.dao.model.MENUPOSITIONPK id) {
 		super(id);
 	}
 
@@ -23,12 +24,16 @@ public class MenuPosition extends BaseMenuPosition {
 	 * Constructor for required fields
 	 */
 	public MenuPosition (
-		java.lang.String id,
+		org.infoscoop.dao.model.MENUPOSITIONPK id,
 		org.infoscoop.dao.model.MenuTree fkMenuTree) {
 
 		super (
 			id,
 			fkMenuTree);
+	}
+
+	public MenuPosition(String position) {
+		this(new MENUPOSITIONPK(position, DomainManager.getContextDomainId()));
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

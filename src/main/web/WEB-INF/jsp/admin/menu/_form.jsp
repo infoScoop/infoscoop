@@ -5,6 +5,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <form:form modelAttribute="menuItem" method="post" action="${action}" class="cssform">
 	<form:hidden path="id" />
+	<form:hidden path="menuId" />
 	<c:if test="${menuItem.fkMenuTree != null}">
 		<form:hidden path="fkMenuTree.id" />
 	</c:if>

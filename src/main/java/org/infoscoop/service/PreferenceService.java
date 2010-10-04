@@ -24,8 +24,10 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.model.Preference;
+import org.infoscoop.dao.model.PreferencePK;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.Xml2Json;
 import org.json.JSONObject;
@@ -62,10 +64,10 @@ public class PreferenceService{
 	 * @throws Exception
 	 */
 	public String getPreferenceJSON(String uid) throws Exception{
+		try{
 		Preference entity = preferenceDAO.select(uid);
 		if(entity == null){
-			entity = new Preference();
-			entity.setUid(uid);
+			entity = new Preference(new PreferencePK(DomainManager.getContextDomainId(), uid));
 			entity.setElement(Preference.newElement(uid));
 		}
 		
@@ -103,6 +105,7 @@ public class PreferenceService{
 			prefObj = new JSONObject();
 		}
 		return prefObj.toString();
+		}catch(Exception e){e.printStackTrace();return "{}";}
 	}
 	
 	/**

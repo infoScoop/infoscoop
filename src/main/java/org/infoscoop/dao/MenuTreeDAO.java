@@ -23,7 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
-import org.infoscoop.dao.model.MenuItem;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.MenuPosition;
 import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.util.SpringUtil;
@@ -41,7 +41,8 @@ public class MenuTreeDAO extends HibernateDaoSupport {
 	public MenuTree get(int id) {
 		List<MenuTree> menus = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuTree.class).add(
-						Expression.eq(MenuTree.PROP_ID, id)));
+						Expression.eq(MenuTree.PROP_ID, id)).add(
+						Expression.eq(MenuTree.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 		if (menus.size() == 1)
 			return menus.get(0);
 		return null;
@@ -52,7 +53,8 @@ public class MenuTreeDAO extends HibernateDaoSupport {
 		List<MenuPosition> positions = super.getHibernateTemplate()
 				.findByCriteria(
 						DetachedCriteria.forClass(MenuPosition.class).add(
-								Expression.eq(MenuPosition.PROP_ID, position)));
+								Expression.eq(MenuPosition.PROP_ID, position)).add(
+										Expression.eq(MenuPosition.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 		if (positions.size() == 1)
 			return positions.get(0);
 		return null;
@@ -68,14 +70,16 @@ public class MenuTreeDAO extends HibernateDaoSupport {
 	@SuppressWarnings("unchecked")
 	public List<MenuTree> all() {
 		List<MenuTree> menus = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(MenuTree.class));
+				DetachedCriteria.forClass(MenuTree.class).add(
+						Expression.eq(MenuTree.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 		// join
 		List<MenuPosition> poss = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(MenuPosition.class));
+				DetachedCriteria.forClass(MenuPosition.class).add(
+						Expression.eq(MenuPosition.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 		for (MenuTree menu : menus) {
 			for (MenuPosition pos : poss) {
 				if (menu.equals(pos.getFkMenuTree()))
-					menu.addPosition(pos.getId());
+					menu.addPosition(pos.getId().getId());
 			}
 		}
 		return menus;

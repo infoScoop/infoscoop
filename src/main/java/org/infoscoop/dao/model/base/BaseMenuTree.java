@@ -17,6 +17,7 @@ public abstract class BaseMenuTree  implements Serializable {
 	public static String REF = "MenuTree";
 	public static String PROP_ID = "Id";
 	public static String PROP_TITLE = "Title";
+	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 
 
 	// constructors
@@ -54,6 +55,7 @@ public abstract class BaseMenuTree  implements Serializable {
 	private java.lang.Integer id;
 
 	// fields
+	private java.lang.Integer fkDomainId;
 	private java.lang.String title;
 
 	// collections
@@ -81,6 +83,23 @@ public abstract class BaseMenuTree  implements Serializable {
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
+
+
+
+	/**
+	 * Return the value associated with the column: fk_domain_id
+	 */
+	public java.lang.Integer getFkDomainId () {
+		return fkDomainId;
+	}
+
+	/**
+	 * Set the value related to the column: fk_domain_id
+	 * @param fkDomainId the fk_domain_id value
+	 */
+	public void setFkDomainId (java.lang.Integer fkDomainId) {
+		this.fkDomainId = fkDomainId;
+	}
 
 
 

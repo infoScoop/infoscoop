@@ -45,6 +45,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.account.SessionCreateConfig;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
@@ -115,17 +116,7 @@ public class SessionManagerFilter implements Filter {
 		}
 
 		String uid = _uid.trim().toLowerCase();
-		
-		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
-			HttpSession session = req.getSession(true);
-			String sessionUid = (String)session.getAttribute("Uid");
-			String uidParam = req.getParameter("Uid");
-			if(uidParam.equalsIgnoreCase(sessionUid)){
-				uid = uidParam;
-				session.setAttribute("Uid",uid );
-			}
-		}
-		
+				
 		return _uid;
 	}
 
@@ -133,14 +124,6 @@ public class SessionManagerFilter implements Filter {
 		HttpSession session = req.getSession(true);
 		String uid = (String)session.getAttribute("Uid");
 				
-		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
-			String uidParam = req.getParameter("Uid");
-			if(uid.equalsIgnoreCase(uidParam)){
-				uid = uidParam.trim().toLowerCase();
-				session.setAttribute("Uid", uid );
-			}
-		}
-		
 		return uid;
 	}
 
@@ -232,7 +215,6 @@ public class SessionManagerFilter implements Filter {
 
 
 			Subject loginUser = (Subject)session.getAttribute(LOGINUSER_SUBJECT_ATTR_NAME);
-
 			if(loginUser == null || ( isChangeLoginUser(uid, loginUser) && !(session instanceof PreviewImpersonationFilter.PreviewHttpSession) )){
 				if( !SessionCreateConfig.getInstance().hasUidHeader() && uid != null ) {
 					AuthenticationService service= AuthenticationService.getInstance();
@@ -275,8 +257,14 @@ public class SessionManagerFilter implements Filter {
 			SecurityController.registerContextSubject(loginUser);
 
 		}
+
+		//TODO:This value is set by OpenIDFilter.
+		DomainManager.registerContextDomainId(Integer.valueOf(1));
+		
 		chain.doFilter(request, response);
 
+		//TODO:
+		DomainManager.clearContextDomainId();
 		if(log.isDebugEnabled()){
 			log.debug("Exit SessionManagerFilter　form " + httpReq.getRequestURI());
 		}

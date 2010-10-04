@@ -9,6 +9,7 @@
 		table="IS_TABS"
 	>
 		<composite-id name="Id" class="TABPK">
+			<key-property name="FkDomainId" column="fk_domain_id" type="integer"/>
 			<key-property name="Uid" column="`UID`" type="string"/>
 			<key-property name="Id"	column="ID"	type="string"/>
 		</composite-id>

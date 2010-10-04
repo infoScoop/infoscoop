@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.base.BaseGadgetInstance;
 
 
@@ -39,29 +40,16 @@ public class GadgetInstance extends BaseGadgetInstance {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
-	/*
-	private void addUserPref(String name, String value){
-		GadgetInstanceUserpref up = new GadgetInstanceUserpref(
-				new org.infoscoop.dao.model.GadgetInstanceUserprefPK(this, name));
-		up.setValue(value);
-		super.getGadgetInstanceUserPrefs().add(up);
+	
+	@Override
+	protected void initialize() {
+		// TODO Auto-generated method stub
+		super.initialize();
+		super.setFkDomainId(DomainManager.getContextDomainId());
 	}
-	*/
 	
 	Map<String, String> userPrefs ;
-	/*
-	public void setUserPrefs(Map<String, String> ups){
-		Set<GadgetInstanceUserpref> userPrefs = new HashSet<GadgetInstanceUserpref>();
-		
-		for(Map.Entry<String, String> up : ups.entrySet()){
-			GadgetInstanceUserpref giup = new GadgetInstanceUserpref(
-					new org.infoscoop.dao.model.GadgetInstanceUserprefPK(this, up.getKey()));
-			giup.setValue(up.getValue());
-			userPrefs.add(giup);
-		}
-		super.setGadgetInstanceUserPrefs(userPrefs);
-	}
-	*/
+	
 	public Map<String, String> getUserPrefs(){
 		if(this.userPrefs != null){
 			return this.userPrefs;

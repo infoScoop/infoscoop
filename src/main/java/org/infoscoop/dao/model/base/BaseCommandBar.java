@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_command_bars table.
+ * This is an object that contains data related to the IS_COMMAND_BARS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_command_bars"
+ *  table="IS_COMMAND_BARS"
  */
 
 public abstract class BaseCommandBar  implements Serializable {
@@ -18,6 +18,7 @@ public abstract class BaseCommandBar  implements Serializable {
 	public static String PROP_ACCESS_LEVEL = "AccessLevel";
 	public static String PROP_DISPLAY_ORDER = "DisplayOrder";
 	public static String PROP_ID = "Id";
+	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 
 
 	// constructors
@@ -57,6 +58,7 @@ public abstract class BaseCommandBar  implements Serializable {
 	private java.lang.Integer id;
 
 	// fields
+	private java.lang.Integer fkDomainId;
 	private java.lang.Integer displayOrder;
 	private java.lang.String accessLevel;
 
@@ -84,6 +86,23 @@ public abstract class BaseCommandBar  implements Serializable {
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
+
+
+
+	/**
+	 * Return the value associated with the column: fk_domain_id
+	 */
+	public java.lang.Integer getFkDomainId () {
+		return fkDomainId;
+	}
+
+	/**
+	 * Set the value related to the column: fk_domain_id
+	 * @param fkDomainId the fk_domain_id value
+	 */
+	public void setFkDomainId (java.lang.Integer fkDomainId) {
+		this.fkDomainId = fkDomainId;
+	}
 
 
 
@@ -134,6 +153,11 @@ public abstract class BaseCommandBar  implements Serializable {
 	 */
 	public void setCommandBarStaticGadgets (java.util.Set<org.infoscoop.dao.model.CommandBarStaticGadget> commandBarStaticGadgets) {
 		this.commandBarStaticGadgets = commandBarStaticGadgets;
+	}
+
+	public void addToCommandBarStaticGadgets (org.infoscoop.dao.model.CommandBarStaticGadget commandBarStaticGadget) {
+		if (null == getCommandBarStaticGadgets()) setCommandBarStaticGadgets(new java.util.TreeSet<org.infoscoop.dao.model.CommandBarStaticGadget>());
+		getCommandBarStaticGadgets().add(commandBarStaticGadget);
 	}
 
 

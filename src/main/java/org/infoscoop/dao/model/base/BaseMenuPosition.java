@@ -16,8 +16,8 @@ public abstract class BaseMenuPosition  implements Serializable {
 
 	public static String REF = "MenuPosition";
 	public static String PROP_FK_MENU_TREE = "FkMenuTree";
-	public static String PROP_ID = "Id";
-
+	public static String PROP_ID = "Id.Id";
+	public static String PROP_FK_DOMAIN_ID = "Id.FkDomainId";
 
 	// constructors
 	public BaseMenuPosition () {
@@ -27,7 +27,7 @@ public abstract class BaseMenuPosition  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseMenuPosition (java.lang.String id) {
+	public BaseMenuPosition (org.infoscoop.dao.model.MENUPOSITIONPK id) {
 		this.setId(id);
 		initialize();
 	}
@@ -36,7 +36,7 @@ public abstract class BaseMenuPosition  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseMenuPosition (
-		java.lang.String id,
+		org.infoscoop.dao.model.MENUPOSITIONPK id,
 		org.infoscoop.dao.model.MenuTree fkMenuTree) {
 
 		this.setId(id);
@@ -51,7 +51,7 @@ public abstract class BaseMenuPosition  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String id;
+	private org.infoscoop.dao.model.MENUPOSITIONPK id;
 
 	// many to one
 	private org.infoscoop.dao.model.MenuTree fkMenuTree;
@@ -61,9 +61,8 @@ public abstract class BaseMenuPosition  implements Serializable {
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  column="position"
      */
-	public java.lang.String getId () {
+	public org.infoscoop.dao.model.MENUPOSITIONPK getId () {
 		return id;
 	}
 
@@ -71,7 +70,7 @@ public abstract class BaseMenuPosition  implements Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (java.lang.String id) {
+	public void setId (org.infoscoop.dao.model.MENUPOSITIONPK id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}

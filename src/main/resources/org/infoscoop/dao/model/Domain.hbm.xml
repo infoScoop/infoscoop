@@ -5,8 +5,8 @@
 
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
-		name="CommandBar"
-		table="IS_COMMAND_BARS"
+		name="Domain"
+		table="IS_DOMAINS"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
@@ -16,33 +16,14 @@
 		>
 			<generator class="native"/>
 		</id>
-		<property
-			name="FkDomainId"
-			column="fk_domain_id"
-			type="integer"
-		/>
 
 		<property
-			name="DisplayOrder"
-			column="display_order"
-			type="integer"
-			not-null="true"
-			length="10"
-		/>
-		<property
-			name="AccessLevel"
-			column="access_level"
+			name="Name"
+			column="name"
 			type="string"
 			not-null="true"
 			length="255"
 		/>
 	
-
-		<set name="CommandBarStaticGadgets" inverse="true">
-			<key column="fk_command_bar_id"/>
-			<one-to-many class="CommandBarStaticGadget"/>
-		</set>
-
-
 	</class>	
 </hibernate-mapping>

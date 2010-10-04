@@ -20,6 +20,7 @@ package org.infoscoop.command;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
@@ -107,8 +108,12 @@ public class AddWidget extends XMLCommandProcessor{
     		//       		WidgetDAO.newInstance().updateWidget(uid, tabId, newNextSibling);
     	}
 
-    	Widget widget = new Widget( tabId, Long.valueOf(0), widgetId, uid);
-
+    	Widget widget = new Widget();
+		widget.setTabid(tabId);
+		widget.setFkDomainId(DomainManager.getContextDomainId());
+		widget.setWidgetid(widgetId);
+		widget.setUid(uid);
+		
     	if(targetColumn != null && !"".equals(targetColumn)){
     		widget.setColumn(new Integer(targetColumn));
     	}
