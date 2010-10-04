@@ -4,3 +4,8 @@
 "blogparts","__IS_GADGET_BASE_URL__/page_white_gear.gif"
 "worldclock","__IS_GADGET_BASE_URL__/clock-globe.gif"
 "todoList","__IS_GADGET_BASE_URL__/tick.gif"
+"Calendar","__IS_IMAGE_URL__/calendar-day.png"
+"FragmentMiniBrowser","__IS_IMAGE_URL__/minibrowser.gif"
+"MiniBrowser","__IS_IMAGE_URL__/minibrowser.gif"
+"MultiRssReader","__IS_IMAGE_URL__/multi-rss-reader.gif"
+"RssReader","__IS_IMAGE_URL__/feed.gif"

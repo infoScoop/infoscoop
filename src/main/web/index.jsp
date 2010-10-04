@@ -159,7 +159,6 @@ if( isPreview == null )
     <script src="<%=staticContentURL%>/js/widgets/ticker/Ticker.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/MiniBrowser/MiniBrowser.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/MiniBrowser/FragmentMiniBrowser.js"></script>
-    <script src="<%=staticContentURL%>/js/widgets/WidgetRanking/WidgetRanking.js"></script>
     <!--end script-->
    	<script type="text/javascript">
 		var rsaPK = new RSAKey();

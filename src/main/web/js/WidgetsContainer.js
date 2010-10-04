@@ -1097,7 +1097,7 @@ IS_WidgetsContainer.WidgetConfiguration = {
 				if(properties[i] && !(properties[i] instanceof Function)){
 					try{
 //						eval("widgetConf.property." + i  + " = escapeXMLEntity(properties[i])");
-						if( !( type.indexOf('g_') == 0 && i=='url') )
+						if( !( type.indexOf('g_http') == 0 && i=='url') )
 						  widgetConf.property[i] = properties[i];
 					}catch(e){}
 				}

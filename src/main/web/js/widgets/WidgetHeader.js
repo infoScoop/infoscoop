@@ -491,15 +491,19 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		div.title = alt;
 		if(imgUrl){
 			var url = '';
-			if(/__IS_GADGET_BASE_URL__/.test(imgUrl) && widget.gadgetType){
-				imgUrl = imgUrl.replace("__IS_GADGET_BASE_URL__", hostPrefix + '/gadget/' + widget.gadgetType)
+			if(/__IS_IMAGE_URL__/.test(imgUrl)){
+				div.src = imgUrl.replace("__IS_IMAGE_URL__", imageURL);
+			} else {
+				if(/__IS_GADGET_BASE_URL__/.test(imgUrl) && widget.gadgetType){
+					imgUrl = imgUrl.replace("__IS_GADGET_BASE_URL__", hostPrefix + '/gadget/' + widget.gadgetType)
+				}
+				if(/http[s]?:\/\//.test(imgUrl)){
+					url = imgUrl;
+				}else{
+					url = (!isCommonType(type) && widget.resourceUrl ? widget.resourceUrl : imageURL) + imgUrl;
+				}
+				div.src = url;
 			}
-			if(/http[s]?:\/\//.test(imgUrl)){
-				url = imgUrl;
-			}else{
-				url = (!isCommonType(type) && widget.resourceUrl ? widget.resourceUrl : imageURL) + imgUrl;
-			}
-			div.src = url;
 		}
 		
 

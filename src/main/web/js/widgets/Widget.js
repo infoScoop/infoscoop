@@ -84,52 +84,19 @@ IS_Widget.prototype.classDef = function() {
 			var _contentsDef = typeConf.Content;
 			var _contentsType;
 			//if(this.widgetType.indexOf("g_") == 0){
-			if(this.isGadget()){
-				switch(_contentsDef.type){
-				  case 'html':
-					_contentsType = 'htmlIframe';
-					break;
-				  case 'html-inline':
-					_contentsType = 'html';
-					break;
-				  case 'url':
-					_contentsType = 'url';
-					break;
-				  case 'javascript':
-					_contentsType = 'javascript';
-					break;
-				}
-				if(this.widgetType.match(/^g_upload__(.*)\/gadget/)){
-					this.gadgetType = RegExp.$1;
-				}
-			}else{
-				_contentsType = (_contentsDef) ? _contentsDef.type : "javascript";
-			}
-			if(_contentsType == "javascript") {
-				if(this.widgetType.match(/^g_upload__(.*)\/gadget/)){
-					this.resourceUrl = typeConf.resource_url || ('.' + '/gadget/'+this.gadgetType+'/');
-					if(typeof IS_Widget[_contentsDef.className] == "undefined"){
-						var head = $$('head')[0];
-						head.appendChild(
-							$.SCRIPT({
-							  type:'text/javascript',
-							  src:this.resourceUrl + _contentsDef.className+'.js'
-							})
-							);
-						var cssUrl =  this.resourceUrl + _contentsDef.className+'.css';
-						head.appendChild(
-							$.LINK({
-								'rel':'stylesheet',
-								'type':'text/css',
-								'href':cssUrl
-							  }));
-					}
-				}else if(typeof IS_Widget[_contentsDef.className] == "undefined"){
-					typeConf = IS_Widget.getConfiguration("notAvailable");
-					this.widgetType = "notAvailable";
-
-					msg.error(IS_R.getResource(IS_R.ms_classNotFounf, [_contentsDef.className]));
-				}
+			switch(_contentsDef.type){
+			  case 'html':
+				_contentsType = 'htmlIframe';
+				break;
+			  case 'html-inline':
+				_contentsType = 'html';
+				break;
+			  case 'url':
+				_contentsType = 'url';
+				break;
+			  case 'javascript':
+				_contentsType = 'javascript';
+				break;
 			}
 			contentsDef = _contentsDef;
 			contentsType = _contentsType;
@@ -366,8 +333,7 @@ IS_Widget.prototype.classDef = function() {
 			&& !(contentsDef && contentsDef.type == "javascript");
 	}
 	this.isUploadGadget = function() {
-		return this.widgetType.indexOf("g_upload") == 0
-			&& !(contentsDef && contentsDef.type == "javascript");
+		return !this.widgetType.match(/^g_/);
 	}
 	
 	this._setStaticWidgetHeight = function(){
@@ -935,7 +901,6 @@ IS_Widget.prototype.classDef = function() {
 					
 					self.loadHtmlIfram();
 				}else{
-
 					self.elm_widgetContent.innerHTML = IS_R.ms_invalidWidget;
 					IS_EventDispatcher.newEvent('loadComplete', self.id, null);
 				}
@@ -1815,7 +1780,8 @@ IS_Widget.getConfiguration = function( widgetType ){
 		var url = hostPrefix + "/widconf";
 		AjaxRequest.invoke(url, opt);
 	}
-	
+	if(!typeConf.type)
+		typeConf.type = widgetType;
 	return typeConf;
 }
 /* delete by endoh on 20080725.
@@ -2285,27 +2251,30 @@ IS_Widget.getIcon = function(widgetType, opt){
 			return imageURL + widConf.icon;
 		return widConf.icon;
 	}
-	var isUploadGadget = widgetType.match(/^g_upload__(.*)\/gadget/);
+	var isUploadGadget = !widgetType.match(/^g_/);
 	if(isUploadGadget){
-		var gadgetType = RegExp.$1;
-		var icon = IS_WidgetIcons[gadgetType];
+		var icon = IS_WidgetIcons[widgetType];
 		if(icon) {
 			/*
 			if(!/^http[s]?:\/\//.test(icon)){
-				return hostPrefix + '/gadget/' + gadgetType + '/' + icon;
+				return hostPrefix + '/gadget/' + widgetType + '/' + icon;
 			}
 			return icon;
 			*/
-			return icon.replace("__IS_GADGET_BASE_URL__", hostPrefix + '/gadget/' + gadgetType);
+			if(icon.indexOf("__IS_IMAGE_URL__") == 0)
+				return icon.replace("__IS_IMAGE_URL__", imageURL);
+			return icon.replace("__IS_GADGET_BASE_URL__", hostPrefix + '/gadget/' + widgetType);
 		} else if(widConf && widConf.ModulePrefs && widConf.ModulePrefs.Icon){
 			icon = widConf.ModulePrefs.Icon.content;
+			if(icon.indexOf("__IS_IMAGE_URL__") == 0)
+				return icon.replace("__IS_IMAGE_URL__", imageURL);
 			/*
 			if(/http[s]?:\/\//.test()){
 				return icon;
 			} else if(widConf.ModulePrefs.resource_url){
 				return widConf.ModulePrefs.resource_url + icon;
 			} else {
-				return hostPrefix + '/gadget/' + gadgetType + '/' + icon;
+				return hostPrefix + '/gadget/' + widgetType + '/' + icon;
 			}
 			*/
 			if(widConf.ModulePrefs.resource_url){
@@ -2315,9 +2284,8 @@ IS_Widget.getIcon = function(widgetType, opt){
 			}
 		}
 	}
-	var isGadget = widgetType == 'Gadget' || widgetType.startsWith('g_');
 	if((isUploadGadget && typeof icon == 'undefined')
-		|| (!isGadget && !widConf)){
+		|| !widConf){
 		return imageURL + 'not_available.gif';
 	}
 	if(opt){

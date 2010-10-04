@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+	<ModulePrefs title="__MSG_lb_Calendar__" autoRefresh="true" height="auto">
+		<Locale>
+			<msg name="lb_Calendar">Calendar</msg>
+			<msg name="lb_iCalSetting">iCalendar configuration</msg>
+		</Locale>
+		<Locale lang="ja">
+			<msg name="lb_Calendar">カレンダー</msg>
+			<msg name="lb_iCalSetting">iCal設定</msg>
+		</Locale>
+		<Locale lang="zh">
+			<msg name="lb_Calendar">日历</msg>
+			<msg name="lb_iCalSetting">iCalendar 设定</msg>
+		</Locale>
+		<Icon>__IS_IMAGE_URL__/calendar-day.png</Icon>
+	</ModulePrefs>
+	<!--
+		Setting Example
+		{
+		 iCals : [
+		  {
+		   url : "http://localhost/infoscoop/forecast/ical/13/63.ics",
+		   displayType : "block",
+		   color : "#F99"
+		  }
+		 ],
+		 monthlyiCals : [
+		  {
+		   url : "http://localhost/infoscoop/js/widgets/calendar/ics/monthlyCalendar.jsp?year=${year}&month=${month}",
+		   displayType : "block",
+		   color : "#9F9"
+		  }
+		 ]
+		}
+	-->
+	<WidgetPref datatype="json" display_name="__MSG_lb_iCalSetting__" name="calendarConfig">
+		<![CDATA[
+		{
+		 iCals : [],
+		 monthlyiCals : []
+		}
+		]]>
+	</WidgetPref>
+	<Header maximize="off" />
+	<Content className="Calendar" type="javascript"/>
+</Module>

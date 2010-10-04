@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+	<ModulePrefs title="__MSG_lb_Ticker__" autoRefresh="false" height="1.2em" backgroundColor="#FFF5EE">
+		<Locale>
+			<msg name="lb_Ticker">Ticker</msg>
+			<msg name="lb_dateTimeFormat">Date format</msg>
+			<msg name="lb_descDisplay">Display detail</msg>
+			<msg name="lb_displayTitle">Display title</msg>
+			<msg name="lb_displayspeed">Speed</msg>
+			<msg name="lb_doShowDatetime">Show date/time</msg>
+			<msg name="lb_reacquisitionIntervalMinute">Retry interval</msg>
+		</Locale>
+		<Locale lang="ja">
+			<msg name="lb_Ticker">ティッカー</msg>
+			<msg name="lb_dateTimeFormat">日付表示形式</msg>
+			<msg name="lb_descDisplay">詳細を表示</msg>
+			<msg name="lb_displayTitle">タイトルを表示</msg>
+			<msg name="lb_displayspeed">表示スピード</msg>
+			<msg name="lb_doShowDatetime">日付を表示する</msg>
+			<msg name="lb_reacquisitionIntervalMinute">再取得間隔（分）</msg>
+		</Locale>
+		<Locale lang="zh">
+			<msg name="lb_Ticker">电光广告牌</msg>
+			<msg name="lb_dateTimeFormat">日期表示形式</msg>
+			<msg name="lb_descDisplay">表示详细</msg>
+			<msg name="lb_displayTitle">表示标题</msg>
+			<msg name="lb_displayspeed">表示速度</msg>
+			<msg name="lb_doShowDatetime">表示日期</msg>
+			<msg name="lb_reacquisitionIntervalMinute">重试间隔</msg>
+		</Locale>
+	</ModulePrefs>
+	<WidgetPref datatype="string" display_name="__MSG_lb_dateTimeFormat__" name="dateTimeFormat" value="yyyy/MM/dd HH:mm:ss"/>
+	<UserPref default_value="" datatype="hidden" name="url" display_name="RSS URL" required="true" admin_datatype="url"/>
+	<UserPref default_value="false" display_name="__MSG_lb_doShowDatetime__" datatype="bool" name="date"/>
+	<UserPref default_value="true" display_name="__MSG_lb_displayTitle__" datatype="bool" name="title"/>
+	<UserPref default_value="false" display_name="__MSG_lb_descDisplay__" datatype="bool" name="desc"/>
+	<UserPref default_value="2" display_name="__MSG_lb_displayspeed__" datatype="radio" name="speed">
+		<EnumValue display_value="1" value="1"/>
+		<EnumValue display_value="2" value="2"/>
+		<EnumValue display_value="3" value="3"/>
+		<EnumValue display_value="4" value="4"/>
+		<EnumValue display_value="5" value="5"/>
+	</UserPref>
+	<UserPref default_value="1" display_name="__MSG_lb_reacquisitionIntervalMinute__" datatype="string" name="refreshInterval"/>
+	<Content className="Ticker" type="javascript"/>
+</Module>

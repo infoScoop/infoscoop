@@ -25,7 +25,6 @@ import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
-import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
@@ -35,8 +34,6 @@ import org.infoscoop.dao.model.TabTemplateStaticGadget;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.GadgetService;
-import org.infoscoop.service.WidgetConfService;
-import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.XmlUtil;
 import org.infoscoop.web.ProxyServlet;
@@ -393,11 +390,9 @@ public class TabController {
 	public void getGadgetConf(HttpServletRequest request, Model model)
 			throws Exception {
 		Locale locale = request.getLocale();
-		String buildinGadgets = WidgetConfService.getHandle()
-				.getWidgetConfsJson(locale);
 		String uploadGadgets = GadgetService.getHandle().getGadgetJson(locale,
 				3000);
-		model.addAttribute("buildin", buildinGadgets);
+		model.addAttribute("builtin", "{}");
 		model.addAttribute("upload", uploadGadgets);
 	}
 	
@@ -412,24 +407,16 @@ public class TabController {
 			// TODO It's a little dangerous.
 			String gadgetXml = i18n.replace(XmlUtil.dom2String(doc), true);
 			return XmlUtil.string2Dom(gadgetXml);
-		} else if (type.startsWith("upload__")) {
-			String realType = type.substring(8);// upload__を除く
-			Gadget gadget = GadgetDAO.newInstance().select(realType);
+		} else {
+			Gadget gadget = GadgetDAO.newInstance().select(type);
 			String gadgetXml = new String(gadget.getData(), "UTF-8");
 			Document gadgetDoc = XmlUtil.string2Dom(gadgetXml);
 			I18NConverter i18n = new I18NConverter(locale,
-					new MessageBundle.Factory.Upload(0, realType)
+					new MessageBundle.Factory.Upload(0, type)
 							.createBundles(gadgetDoc));
 			// TODO It's a little dangerous.
 			gadgetXml = i18n.replace(gadgetXml, true);
 			return XmlUtil.string2Dom(gadgetXml);
-		} else {
-			Element widgetConfElm = WidgetConfDAO.newInstance()
-					.getElement(type);
-			String widgetXml = XmlUtil.dom2String(widgetConfElm);
-			widgetXml = I18NUtil.resolveForXML(I18NUtil.TYPE_WIDGET, widgetXml,
-					locale);
-			return XmlUtil.string2Dom(widgetXml);
 		}
 	}
 	

@@ -57,15 +57,6 @@
 			</props>
 		</property>
 	</bean>
-	<bean id="widgetConf" class="org.infoscoop.admin.command.WidgetConfServiceCommand">
-		<property name="service"><ref bean="WidgetConfService"/></property>
-		<property name="notPermittedPatterns">
-			<props>
-				<prop key="widget"></prop>
-				<prop key="*">^update.*|^insert.*</prop>
-			</props>
-		</property>
-	</bean>
 	<bean id="proxyConf" class="org.infoscoop.admin.command.ServiceCommand">
 		<property name="service"><ref bean="ProxyConfService"/></property>
 		<property name="notPermittedPatterns">

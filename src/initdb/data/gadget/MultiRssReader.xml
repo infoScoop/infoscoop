@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+	<ModulePrefs title="__MSG_lb_MultiRssReader__" autoRefresh="true" height="auto" backgroundColor="#FFFFFF">
+		<Locale>
+			<msg name="lb_MultiRssReader">Multi-RSS Reader</msg>
+			<msg name="lb_categoryDisplay">Display by category</msg>
+			<msg name="lb_dateDisplay">Display/undisplay date desctiption</msg>
+			<msg name="lb_dateDisplayKey">Display/undisplay date desctiption(T)</msg>
+			<msg name="lb_dateTimeFormat">Date format</msg>
+			<msg name="lb_decreaseitem">Decrease item</msg>
+			<msg name="lb_detailDisplayMode">Detail display mode</msg>
+			<msg name="lb_displayModeKey">Display by time/category</msg>
+			<msg name="lb_doLineFeed">Line break</msg>
+			<msg name="lb_doShowDatetime">Show date/time</msg>
+			<msg name="lb_filterByCategory">Filter by category</msg>
+			<msg name="lb_filterByCategoryDescription">A filtering condition by category of the RSS item is specified. &lt;br/&gt;Only RSS item that is exactly the same phrase as the character string specified by the entry/category/@term attribute of ATOM or the item/category element of RSS is displayed.</msg>
+			<msg name="lb_filterByCreator">Filter by creator</msg>
+			<msg name="lb_filterByCreatorDescription">A filtering condition by author name of the RSS item is specified. &lt;br/&gt;Only a RSS item that starts by the character string specified by the author name is displayed.</msg>
+			<msg name="lb_filterByTitle">Filter by title</msg>
+			<msg name="lb_filterByTitleDescription">A filtering condition by title of the RSS item is specified. &lt;br/&gt;Only a RSS item that agrees with the condition specified by the title is displayed. &lt;br/&gt;The following descriptions can be used. &lt;br/&gt; - AND retrieval: \&quot;&quot;A B\&quot;&quot; (A and B are included)&lt;br/&gt; - OR retrieval: \&quot;&quot;A OR B\&quot;&quot; (A or B is included)&lt;br/&gt; - NOT retrieval: \&quot;&quot;-A\&quot;&quot; (A is not included )&lt;br/&gt; - Priority condition by parentheses: \&quot;&quot;(A OR B) C\&quot;&quot; (A or B is included and C is included )&lt;br/&gt;Usage example: ( Tokyo OR Osaka ) News -Society</msg>
+			<msg name="lb_helpKey">Help(H)</msg>
+			<msg name="lb_iframeview">Show all items</msg>
+			<msg name="lb_iframeviewkey">Full display(M)</msg>
+			<msg name="lb_increaseitem">Increase item</msg>
+			<msg name="lb_inline">inline</msg>
+			<msg name="lb_itemDisplayMode">Contents display mode</msg>
+			<msg name="lb_itemsnumDisplayName">items</msg>
+			<msg name="lb_lineFeed">Line break</msg>
+			<msg name="lb_newWindow">New window</msg>
+			<msg name="lb_noneScroll">none</msg>
+			<msg name="lb_openWidget">Display/Undisplay</msg>
+			<msg name="lb_popup">popup</msg>
+			<msg name="lb_portalframe">Frame in portal</msg>
+			<msg name="lb_scroll">Scroll</msg>
+			<msg name="lb_scrollMode">Scroll mode</msg>
+			<msg name="lb_sortDisplay">Display by time</msg>
+			<msg name="lb_summaryViewKey">Summary display(M)</msg>
+			<msg name="lb_targetAutoSelect">Auto detect</msg>
+			<msg name="lb_titleEdit">Title edit</msg>
+		</Locale>
+		<Locale lang="ja">
+			<msg name="lb_MultiRssReader">まとめてRSSリーダー</msg>
+			<msg name="lb_categoryDisplay">カテゴリ別表示</msg>
+			<msg name="lb_dateDisplay">詳細日時表示/非表示</msg>
+			<msg name="lb_dateDisplayKey">詳細日時表示/非表示(T)</msg>
+			<msg name="lb_dateTimeFormat">日付表示形式</msg>
+			<msg name="lb_decreaseitem">表示件数を減らす</msg>
+			<msg name="lb_detailDisplayMode">詳細表示モード</msg>
+			<msg name="lb_displayModeKey">時間順表示(time)/カテゴリ別表示(category)</msg>
+			<msg name="lb_doLineFeed">改行する</msg>
+			<msg name="lb_doShowDatetime">日付を表示する</msg>
+			<msg name="lb_filterByCategory">カテゴリで絞り込み</msg>
+			<msg name="lb_filterByCategoryDescription">RSSアイテムのカテゴリによる絞り込み条件を指定します。&lt;br/&gt;ATOM の entry/category/@term 属性またはRSSの item/category 要素が指定した文字列と完全一致するRSSアイテムのみが表示されます。</msg>
+			<msg name="lb_filterByCreator">作者で絞り込み</msg>
+			<msg name="lb_filterByCreatorDescription">RSSアイテムの作者名による絞り込み条件を指定します。&lt;br/&gt;作者名が指定した文字列で始まるRSSアイテムのみが表示されます。</msg>
+			<msg name="lb_filterByTitle">タイトルで絞り込み</msg>
+			<msg name="lb_filterByTitleDescription">RSSアイテムのタイトルによる絞り込み条件を指定します。&lt;br/&gt;タイトルが指定した条件に合致するRSSアイテムのみが表示されます。&lt;br/&gt;以下の記述が使用できます。&lt;br/&gt;・AND検索： 「A B」 （AおよびBを含む）&lt;br/&gt;・OR検索： 「A OR B」 （AまたはBを含む）&lt;br/&gt;・NOT検索： 「-A」 （Aを含まない）&lt;br/&gt;・括弧による優先条件： 「(A OR B) C」 （AまたはBを含み、かつCを含む）&lt;br/&gt;使用例： (東京 OR 大阪) ニュース -社会</msg>
+			<msg name="lb_helpKey">ヘルプ(H)</msg>
+			<msg name="lb_iframeview">全文表示</msg>
+			<msg name="lb_iframeviewkey">全文表示(M)</msg>
+			<msg name="lb_increaseitem">表示件数を増やす</msg>
+			<msg name="lb_inline">インライン</msg>
+			<msg name="lb_itemDisplayMode">コンテンツ表示モード</msg>
+			<msg name="lb_itemsnumDisplayName">件の記事を表示</msg>
+			<msg name="lb_lineFeed">改行有無</msg>
+			<msg name="lb_newWindow">新しいウィンドウ</msg>
+			<msg name="lb_noneScroll">スクロールなし</msg>
+			<msg name="lb_openWidget">表示/非表示</msg>
+			<msg name="lb_popup">ポップアップ</msg>
+			<msg name="lb_portalframe">ポータル内フレーム</msg>
+			<msg name="lb_scroll">スクロール</msg>
+			<msg name="lb_scrollMode">スクロールモード</msg>
+			<msg name="lb_sortDisplay">時間順表示</msg>
+			<msg name="lb_summaryViewKey">サマリー表示(M)</msg>
+			<msg name="lb_targetAutoSelect">自動判別</msg>
+			<msg name="lb_titleEdit">タイトル編集</msg>
+		</Locale>
+		<Locale lang="zh">
+			<msg name="lb_MultiRssReader">复合RSS阅读器</msg>
+			<msg name="lb_categoryDisplay">按分类表示</msg>
+			<msg name="lb_dateDisplay">详细日期的表示/非表示</msg>
+			<msg name="lb_dateDisplayKey">详细日期的表示/非表示(T)</msg>
+			<msg name="lb_dateTimeFormat">日期表示形式</msg>
+			<msg name="lb_decreaseitem">减少表示条数</msg>
+			<msg name="lb_detailDisplayMode">详细表示模式</msg>
+			<msg name="lb_displayModeKey">按时间顺序表示(time)/按分类表示(category)</msg>
+			<msg name="lb_doLineFeed">换行</msg>
+			<msg name="lb_doShowDatetime">表示日期</msg>
+			<msg name="lb_filterByCategory">以类别过滤</msg>
+			<msg name="lb_filterByCategoryDescription">指定RSS项的类别过滤条件。&lt;br/&gt;和指定的ATOM 的 entry/category/@term 属性或RSS的 item/category 要素的文字列完全一致RSS项将被表示</msg>
+			<msg name="lb_filterByCreator">以作者过滤</msg>
+			<msg name="lb_filterByCreatorDescription">指定RSS项的作者名的过滤条件&lt;br/&gt;只有以指定的作者名开始的RSS项被表示</msg>
+			<msg name="lb_filterByTitle">以标题过滤</msg>
+			<msg name="lb_filterByTitleDescription">指定RSS项的标题的过滤条件。&lt;br/&gt;只有和指定的标题一致的一致的RSS项被表示&lt;br/&gt;能够使用下面的描述。&lt;br/&gt;?AND搜索： 「A B」 （包含A和B）&lt;br/&gt;?OR搜索： 「A OR B」 （包含A或者B）&lt;br/&gt;?NOT搜索： 「-A」 （不包含A）&lt;br/&gt;?括号的优先条件： 「(A OR B) C」 （包含A或者B、并且包含C）&lt;br/&gt;使用例： (东京 OR 大阪) 新闻 -社会</msg>
+			<msg name="lb_helpKey">帮助(H)</msg>
+			<msg name="lb_iframeview">全文表示</msg>
+			<msg name="lb_iframeviewkey">全文表示(M)</msg>
+			<msg name="lb_increaseitem">增加表示条数</msg>
+			<msg name="lb_inline">内联</msg>
+			<msg name="lb_itemDisplayMode">内容表示模式</msg>
+			<msg name="lb_itemsnumDisplayName">表示项目</msg>
+			<msg name="lb_lineFeed">有无换行</msg>
+			<msg name="lb_newWindow">新窗口</msg>
+			<msg name="lb_noneScroll">没有滚动条</msg>
+			<msg name="lb_openWidget">表示/不表示</msg>
+			<msg name="lb_popup">弹出</msg>
+			<msg name="lb_portalframe">门户内框架</msg>
+			<msg name="lb_scroll">滚动</msg>
+			<msg name="lb_scrollMode">滚动模式</msg>
+			<msg name="lb_sortDisplay">按照时间顺序表示</msg>
+			<msg name="lb_summaryViewKey">摘要表示(M)</msg>
+			<msg name="lb_targetAutoSelect">自动识别</msg>
+			<msg name="lb_titleEdit">编辑标题</msg>
+		</Locale>
+		<Icon>__IS_IMAGE_URL__/multi-rss-reader.gif</Icon>
+	</ModulePrefs>
+	<WidgetPref datatype="bool" display_name="__MSG_lb_titleEdit__" name="titleEdit" value="true"/>
+	<WidgetPref datatype="string" display_name="__MSG_lb_dateTimeFormat__" name="dateTimeFormat" value="yyyy/MM/dd HH:mm:ssZ"/>
+	<UserPref default_value="false" display_name="__MSG_lb_doLineFeed__" datatype="bool" name="doLineFeed"/>
+	<UserPref default_value="true" display_name="__MSG_lb_doShowDatetime__" datatype="bool" name="showDatetime"/>
+	<UserPref default_value="3" display_name="__MSG_lb_itemsnumDisplayName__" datatype="hidden" name="itemsnum" staticDisabled="true">
+		<EnumValue display_value="0" value="0"/>
+		<EnumValue display_value="1" value="1"/>
+		<EnumValue display_value="2" value="2"/>
+		<EnumValue display_value="3" value="3"/>
+		<EnumValue display_value="4" value="4"/>
+		<EnumValue display_value="5" value="5"/>
+		<EnumValue display_value="6" value="6"/>
+		<EnumValue display_value="7" value="7"/>
+		<EnumValue display_value="8" value="8"/>
+		<EnumValue display_value="9" value="9"/>
+		<EnumValue display_value="10" value="10"/>
+	</UserPref>
+	<UserPref default_value="category" display_name="__MSG_lb_displayModeKey__" datatype="hidden" name="displayMode"/>
+	<UserPref default_value="false" display_name="__MSG_lb_iframeview__" datatype="hidden" name="showLatestNews"/>
+	<UserPref default_value="true" datatype="hidden" name="openWidget"/>
+	<UserPref default_value="false" datatype="hidden" name="iframeview"/>
+	<UserPref default_value="scroll" display_name="__MSG_lb_scrollMode__" datatype="enum" name="scrollMode">
+		<EnumValue display_value="__MSG_lb_noneScroll__" value="none"/>
+		<EnumValue display_value="__MSG_lb_scroll__" value="scroll"/>
+	</UserPref>
+	<UserPref default_value="inline" display_name="__MSG_lb_detailDisplayMode__" datatype="enum" name="detailDisplayMode">
+		<EnumValue display_value="__MSG_lb_inline__" value="inline"/>
+		<EnumValue display_value="__MSG_lb_popup__" value="popup"/>
+	</UserPref>
+	<UserPref default_value="auto" display_name="__MSG_lb_itemDisplayMode__" datatype="enum" name="itemDisplay">
+		<EnumValue display_value="__MSG_lb_portalframe__" value="inline"/>
+		<EnumValue display_value="__MSG_lb_newWindow__" value="newwindow"/>
+		<EnumValue display_value="__MSG_lb_targetAutoSelect__" value="auto"/>
+	</UserPref>
+	<UserPref default_value="category" display_name="__MSG_lb_displayModeKey__" datatype="hidden" name="displayMode"/>
+	<UserPref default_value="" display_name="__MSG_lb_openWidget__" datatype="hidden" name="latestDatetime"/>
+	<UserPref default_value="" datatype="string" name="titleFilter" display_name="__MSG_lb_filterByTitle__"
+		description="__MSG_lb_filterByTitleDescription__"/>
+	<UserPref default_value="" datatype="string" name="creatorFilter" display_name="__MSG_lb_filterByCreator__"
+		description="__MSG_lb_filterByCreatorDescription__"/>
+	<UserPref default_value="" datatype="string" name="categoryFilter" display_name="__MSG_lb_filterByCategory__"
+		description="__MSG_lb_filterByCategoryDescription__"/>
+	<Header>
+		<menu alt="__MSG_lb_decreaseitem__" imgUrl="__IS_IMAGE_URL__/arrow_up.gif" staticDisabled="true" type="widgetRssUp"/>
+		<menu alt="__MSG_lb_increaseitem__" imgUrl="__IS_IMAGE_URL__/arrow_down.gif" staticDisabled="true" type="widgetRssDown"/>
+		<menu alt="__MSG_lb_sortDisplay__" imgUrl="__IS_IMAGE_URL__/display_sort.gif" type="sort"/>
+		<menu alt="__MSG_lb_categoryDisplay__" imgUrl="__IS_IMAGE_URL__/display_cat.gif" type="category"/>
+		<menu alt="__MSG_lb_dateDisplay__" imgUrl="__IS_IMAGE_URL__/display_time.gif" type="date"/>
+		<menu alt="__MSG_lb_lineFeed__" imgUrl="__IS_IMAGE_URL__/display_break.gif" type="lineFeed"/>
+	</Header>
+	<Content className="MultiRssReader" type="javascript"/>
+	<Maximize>
+		<Header>
+			<icon alt="__MSG_lb_iframeviewkey__" imgUrl="__IS_IMAGE_URL__/html_gray.gif" type="iframeview_on"/>
+			<icon alt="__MSG_lb_summaryViewKey__" imgUrl="__IS_IMAGE_URL__/html_valid.gif" type="iframeview_off"/>
+			<icon alt="__MSG_lb_dateDisplayKey__" imgUrl="__IS_IMAGE_URL__/display_time.gif" type="date"/>
+			<icon alt="__MSG_lb_helpKey__" imgUrl="__IS_IMAGE_URL__/help.gif" type="showShortcuts"/>
+		</Header>
+		<Content className="MaximizeRssReader" type="javascript"/>
+	</Maximize>
+</Module>

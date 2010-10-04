@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+	<ModulePrefs title="__MSG_lb_MiniBrowser__" autoRefresh="false" height="auto">
+		<Locale>
+			<msg name="lb_MiniBrowser">MiniBrowser</msg>
+			<msg name="lb_headerLinkDisplay">Header link display</msg>
+			<msg name="lb_heightPixel">Height</msg>
+			<msg name="lb_newWindow">New window</msg>
+			<msg name="lb_openWidget">Display/Undisplay</msg>
+			<msg name="lb_portalframe">Frame in portal</msg>
+			<msg name="lb_targetAutoSelect">Auto detect</msg>
+			<msg name="lb_titleEdit">Title edit</msg>
+			<msg name="lb_webSiteURL">WebSite URL</msg>
+		</Locale>
+		<Locale lang="ja">
+			<msg name="lb_MiniBrowser">ミニブラウザ</msg>
+			<msg name="lb_headerLinkDisplay">ヘッダリンク表示先</msg>
+			<msg name="lb_heightPixel">高さ（ピクセル）</msg>
+			<msg name="lb_newWindow">新しいウィンドウ</msg>
+			<msg name="lb_openWidget">表示/非表示</msg>
+			<msg name="lb_portalframe">ポータル内フレーム</msg>
+			<msg name="lb_targetAutoSelect">自動判別</msg>
+			<msg name="lb_titleEdit">タイトル編集</msg>
+			<msg name="lb_webSiteURL">WebサイトURL</msg>
+		</Locale>
+		<Locale lang="zh">
+			<msg name="lb_MiniBrowser">迷你浏览器</msg>
+			<msg name="lb_headerLinkDisplay">表示头连接</msg>
+			<msg name="lb_heightPixel">高度</msg>
+			<msg name="lb_newWindow">新窗口</msg>
+			<msg name="lb_openWidget">表示/不表示</msg>
+			<msg name="lb_portalframe">门户内框架</msg>
+			<msg name="lb_targetAutoSelect">自动识别</msg>
+			<msg name="lb_titleEdit">编辑标题</msg>
+			<msg name="lb_webSiteURL">网站网址URL</msg>
+		</Locale>
+		<Icon>__IS_IMAGE_URL__/minibrowser.gif</Icon>
+	</ModulePrefs>
+	<WidgetPref datatype="bool" display_name="__MSG_lb_titleEdit__" name="titleEdit" value="true"/>
+	<UserPref default_value="true" display_name="__MSG_lb_openWidget__" datatype="hidden" name="openWidget"/>
+	<UserPref default_value="" display_name="__MSG_lb_webSiteURL__" datatype="hidden" name="url" admin_datatype="url"/>
+	<UserPref default_value="auto" display_name="__MSG_lb_headerLinkDisplay__" datatype="enum" name="itemDisplay">
+		<EnumValue display_value="__MSG_lb_portalframe__" value="inline"/>
+		<EnumValue display_value="__MSG_lb_newWindow__" value="newwindow"/>
+		<EnumValue display_value="__MSG_lb_targetAutoSelect__" value="auto"/>
+	</UserPref>
+	<UserPref default_value="140" display_name="__MSG_lb_heightPixel__" datatype="string" name="height"/>
+	<Header/>
+	<Content className="MiniBrowser" type="javascript"/>
+</Module>

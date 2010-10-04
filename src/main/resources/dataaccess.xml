@@ -17,11 +17,6 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
-	<bean id="widgetConfDAO" class="org.infoscoop.dao.WidgetConfDAO">
-		<property name="sessionFactory">
-   	   		<ref bean="sessionFactory"/>
-   	 	</property>
-	</bean>
 	<bean id="commandBarDAO"	class="org.infoscoop.dao.CommandBarDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>

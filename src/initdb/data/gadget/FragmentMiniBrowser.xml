@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+	<ModulePrefs title="__MSG_lb_FragmentMiniBrowser__" autoRefresh="true" height="auto">
+		<Locale>
+			<msg name="lb_FragmentMiniBrowser">FragmentMiniBrowser</msg>
+			<msg name="lb_additionalCss">Additional CSS</msg>
+			<msg name="lb_authType">Authentication Type</msg>
+			<msg name="lb_cacheLifeTimeMinute">Cache Life Time(Minute）</msg>
+			<msg name="lb_cacheSelectElement">Use Cache</msg>
+			<msg name="lb_charset">Character Set</msg>
+			<msg name="lb_heightPixel">Height</msg>
+			<msg name="lb_itemDisplayMode">Contents display mode</msg>
+			<msg name="lb_newWindow">New window</msg>
+			<msg name="lb_none">none</msg>
+			<msg name="lb_openWidget">Display/Undisplay</msg>
+			<msg name="lb_portalframe">Frame in portal</msg>
+			<msg name="lb_targetAutoSelect">Auto detect</msg>
+			<msg name="lb_titleEdit">Title edit</msg>
+			<msg name="lb_webSiteURL">WebSite URL</msg>
+		</Locale>
+		<Locale lang="ja">
+			<msg name="lb_FragmentMiniBrowser">切り取りミニブラウザ</msg>
+			<msg name="lb_additionalCss">追加CSS</msg>
+			<msg name="lb_authType">認証タイプ</msg>
+			<msg name="lb_cacheLifeTimeMinute">キャッシュ有効期間（分）</msg>
+			<msg name="lb_cacheSelectElement">選択した要素をキャッシュする</msg>
+			<msg name="lb_charset">文字セット</msg>
+			<msg name="lb_heightPixel">高さ（ピクセル）</msg>
+			<msg name="lb_itemDisplayMode">コンテンツ表示モード</msg>
+			<msg name="lb_newWindow">新しいウィンドウ</msg>
+			<msg name="lb_none">無し</msg>
+			<msg name="lb_openWidget">表示/非表示</msg>
+			<msg name="lb_portalframe">ポータル内フレーム</msg>
+			<msg name="lb_targetAutoSelect">自動判別</msg>
+			<msg name="lb_titleEdit">タイトル編集</msg>
+			<msg name="lb_webSiteURL">WebサイトURL</msg>
+		</Locale>
+		<Locale lang="zh">
+			<msg name="lb_FragmentMiniBrowser">截取迷你浏览器</msg>
+			<msg name="lb_additionalCss">追加CSS</msg>
+			<msg name="lb_authType">认证类型</msg>
+			<msg name="lb_cacheLifeTimeMinute">缓存有效期间（分）</msg>
+			<msg name="lb_cacheSelectElement">使用缓存</msg>
+			<msg name="lb_charset">编码</msg>
+			<msg name="lb_heightPixel">高度</msg>
+			<msg name="lb_itemDisplayMode">内容表示模式</msg>
+			<msg name="lb_newWindow">新窗口</msg>
+			<msg name="lb_none">没有</msg>
+			<msg name="lb_openWidget">表示/不表示</msg>
+			<msg name="lb_portalframe">门户内框架</msg>
+			<msg name="lb_targetAutoSelect">自动识别</msg>
+			<msg name="lb_titleEdit">编辑标题</msg>
+			<msg name="lb_webSiteURL">网站网址URL</msg>
+		</Locale>
+		<Icon>__IS_IMAGE_URL__/minibrowser.gif</Icon>
+	</ModulePrefs> 
+	<WidgetPref datatype="bool" display_name="__MSG_lb_titleEdit__" name="titleEdit" value="true"/>
+	<UserPref default_value="true" display_name="__MSG_lb_openWidget__" datatype="hidden" name="openWidget"/>
+	<UserPref default_value="" datatype="hidden" name="url" display_name="__MSG_lb_webSiteURL__" required="true" admin_datatype="url"/>
+	<UserPref default_value="" name="xPath" datatype="hidden" display_name="XPath" required="true" admin_datatype="xPath"/>
+		<UserPref default_value="auto" display_name="__MSG_lb_heightPixel__" datatype="string" name="height"/>
+	<UserPref default_value="UTF-8" datatype="hidden" name="charset" display_name="__MSG_lb_charset__" admin_datatype="charset"/>
+    <UserPref default_value="" datatype="hidden" name="cacheID" display_name="__MSG_lb_cacheSelectElement__" admin_datatype="cacheID"/>
+	<UserPref default_value="360" datatype="hidden" name="cacheLifeTime" display_name="__MSG_lb_cacheLifeTimeMinute__" admin_datatype="cacheLifeTime"/>
+	<UserPref default_value="auto" display_name="__MSG_lb_itemDisplayMode__" datatype="enum" name="itemDisplay">
+		<EnumValue display_value="__MSG_lb_portalframe__" value="inline"/>
+		<EnumValue display_value="__MSG_lb_newWindow__" value="newwindow"/>
+		<EnumValue display_value="__MSG_lb_targetAutoSelect__" value="auto"/>
+	</UserPref>
+	<UserPref default_value="" display_name="__MSG_lb_authType__" datatype="hidden" name="authType" admin_datatype="authType">
+		<EnumValue display_value="__MSG_lb_none__" value=""/>
+		<EnumValue display_value="basic" value="basic"/>
+		<EnumValue display_value="ntlm" value="ntlm"/>
+		<EnumValue display_value="postCredential" value="postCredential"/>
+		<EnumValue display_value="postPortalCredential" value="postPortalCredential"/>
+		<EnumValue display_value="sendPortalCredentialHeader" value="sendPortalCredentialHeader"/>
+	</UserPref>
+	<UserPref default_value="" datatype="hidden" name="additional_css" display_name="__MSG_lb_additionalCss__" admin_datatype="textarea"/>
+	<Header/>
+	<Content className="FragmentMiniBrowser" type="javascript"/>
+</Module>

@@ -53,24 +53,6 @@ import org.w3c.dom.Element;
  *
  */
 public class WidgetConfUtil {
-	public static Xml2Json createWidgetConf2Json() {
-		Xml2Json x2j = new Xml2Json();
-		x2j.addNamespaceResolver("dax",
-				"http://www.beacon-it.co.jp/schema/dax100.xsd");
-		String rootPath = "/widgetConfiguration";
-		x2j.addPathRule(rootPath, "type", true, false);
-
-		x2j.addPathRule(rootPath + "/WidgetPref", "name", true, false);
-		x2j.addPathRule(rootPath + "/WidgetPref/EnumValue", null, true, false);
-		x2j.addPathRule(rootPath + "/UserPref", "name", true, false);
-		x2j.addPathRule(rootPath + "/UserPref/EnumValue", null, true, false);
-		x2j.addPathRule(rootPath + "/Header/menu", null, true, false);
-		x2j.addPathRule(rootPath + "/Header/icon", null, true, false);
-		x2j.addPathRule(rootPath + "/Maximize/Header/icon", null,
-				true, false);
-		return x2j;
-	}
-
 	public static Xml2Json createGadget2Json() {
 		Xml2Json x2j = new Xml2Json();
 		String rootPath = "/Module";
@@ -94,32 +76,6 @@ public class WidgetConfUtil {
 		x2j.addPathRule(rootPath + "/Maximize/Header/icon", null, true, false);
 		
 		return x2j;
-	}
-	
-	public static JSONObject widgetConf2JSONObject( Element widgetConf,I18NConverter i18n, boolean useClient ) throws Exception {
-		if ( widgetConf == null )
-			return new JSONObject();
-		
-		Xml2Json xml2json = WidgetConfUtil.createWidgetConf2Json();
-		if( i18n != null )
-			xml2json.setListner( new I18NListener( i18n ));
-		
-		JSONObject json = xml2json.xml2jsonObj(widgetConf);
-		if (useClient) {
-			removeServerOnlyPref(json);
-		}
-		
-		if( json.has("WidgetPref"))
-			widgetPrefContentToValue( json.getJSONObject("WidgetPref"));
-
-		if( json.has("UserPref"))
-			userPrefContentToValue( json.getJSONObject("UserPref"));
-		
-		return json;
-	}
-	
-	public static JSONObject widgetConf2JSONObject( Element widgetConf,I18NConverter i18n ) throws Exception {
-		return widgetConf2JSONObject(widgetConf, i18n, false);
 	}
 	
 	public static JSONObject gadget2JSONObject(Element widgetConf,
