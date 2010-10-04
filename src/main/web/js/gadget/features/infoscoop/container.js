@@ -23,7 +23,9 @@ gadgets.rpc.register("set_pref",function( ifpctok ) {
 	var widget = IS_Portal.getWidget( this.mid,this.tid );
 	if( widget.authToken != this.t ) return;
 	
-	var args = $A( arguments );args.shift();
+	var length = arguments.length || 0, args = new Array(length);
+	while (length--) args[length] = arguments[length];
+	args.shift();
 	
 	widget.setUserPrefs.apply( widget,args );
 });
@@ -68,7 +70,7 @@ gadgets.rpc.register("requestNavigateTo",function( view, opt_params, opt_ownerId
 			IS_Portal.buildIFrame( aTag );
 			
 			if( aTag.target == "ifrm")
-				return $("ifrm").src = opt_params;
+				return document.getElementById("ifrm").src = opt_params;
 		}
 		
 		return window.open( opt_params );
@@ -144,7 +146,7 @@ gadgets.rpc.register("is_add_widget_to_panel",function(type, url, title, href) {
 					dropWidget(title, href);
 				}
 			}catch(e){msg.error(e)}
-			$("indicatorMini").style.visibility = "hidden";
+			document.getElementById("indicatorMini").style.visibility = "hidden";
 		};
 		is_processUrlContents(url, getTitleFunc );
 	}else{

@@ -30,16 +30,6 @@ var i18nMsgs = ${i18nMsgs.toString()};
 <script type="text/javascript">
 gadgets.Prefs.setInternal_( ${userPrefs.toString()} );
 </script>
-<!--start script-->
-<script src="${staticContentURL}/js/lib/prototype-1.6.0.3.js"></script>
-<script src="${staticContentURL}/js/utils/ajax304.js"></script>
-<script src="${staticContentURL}/js/utils/utils.js"></script>
-<script src="${staticContentURL}/js/lib/date/date.js"></script>
-<!--end script-->
-#if( $requires.has("drag"))
-<script src="${staticContentURL}/js/lib/scriptaculous-js-1.8.2/effects.js"></script>
-<script src="${staticContentURL}/js/lib/scriptaculous-js-1.8.2/dragdrop.js"></script>
-#end
 </head>
 <body dir="${dir}">
 ${content}
