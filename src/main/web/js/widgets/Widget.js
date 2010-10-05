@@ -676,7 +676,6 @@ IS_Widget.prototype.classDef = function() {
 		
 		var gadgetParams = $H( this.getGadgetParameters( url,viewType ));
 		form.action = this.gadgetProxyUrl +"?"+gadgetParams.toQueryString();
-		alert("loadHtmlIfram" + form.action);
 		var url = this.getGadgetUrl();
 		var params = {
 			filter: "GadgetView",
@@ -812,7 +811,7 @@ IS_Widget.prototype.classDef = function() {
 		}
 		
 		self.elm_widgetContent.appendChild(self.iframe);
-		alert(this.isGadget());
+		
 		if( this.isGadget() ) {
 			this.gadgetProxyUrl = this.isUploadGadget() ? proxyServerURL : this.getGadgetProxyUrl();
 			if( !this.isUploadGadget()) {
