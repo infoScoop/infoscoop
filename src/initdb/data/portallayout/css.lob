@@ -1,1 +1,125 @@
 /* Custom CSS code is described here.  */
+
+
+/** BASIC */
+body,div,pre,p,blockquote,
+form,fieldset,input,textarea,select,option,
+dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,
+table,th,td,embed,object {
+	margin: 0;
+	padding: 0;
+	font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','ＭＳ Ｐゴシック',sans-serif;
+	font-size:13px;
+}
+
+/** HEADER */
+.header{
+	background:url(skin/imgs/header/background_thin.png) repeat-x scroll 0 0;
+	height:35px;
+}
+.left{
+	text-align:left;
+	float:left;
+	width:566px;
+	height:28px;
+	margin-top:5px;
+}
+.logo{
+	margin-top:5px;
+	display:inline;
+	margin-right:10px;
+}
+.logo_img{
+	margin:0 0 0 10px;
+	height:26px;
+	border:0;
+}
+
+.launcher{
+	display:inline;
+}
+.launcher a{
+	vertical-align:super;
+}
+.launcher a:link{color:#333333;text-decoration:none;}
+.launcher a:visited{color:#333333;text-decoration:none;}
+.launcher a:hover{color:#ff3333;text-decoration:none;}
+.launcher a:active{color:#ff9900;}
+.launcher div{
+	background:;
+	height:26px;
+	width:100%;
+	text-align:center;
+}
+.launcher #home{
+	background:url(skin/imgs/header/house.gif) no-repeat;
+}
+.launcher #mail{
+	background:url(skin/imgs/header/email.gif) no-repeat;
+}
+.launcher #calendar{
+	background:url(skin/imgs/header/calendar.gif) no-repeat;
+}
+.launcher #document{
+	background:url(skin/imgs/header/page.gif) no-repeat;
+}
+.right{
+	float:right;
+	text-align:right;
+	margin-top:8px;
+}
+.search{
+	width:280px;
+	margin-top:6px;
+}
+.account{
+	padding:0 3px;
+	margin-top:10px;
+}
+.logout{
+	padding:0 3px;
+	margin-top:10px;
+}
+.search_box{
+	height:23px;
+	width:200px;
+	border-radius: 0.5em 1em;
+}
+.submit_button{
+	padding:0 0.4em;
+}
+.label{
+	padding:1px 8px 3px 19px;
+}
+.submit_button {
+	imgsborder-top: 1px solid #bbbebf;
+	background: #bdc5c9;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#bdc5c9));
+	background: -moz-linear-gradient(top, #ffffff, #bdc5c9);
+	padding:0.5px 13px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	-webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+	-moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+	box-shadow: rgba(0,0,0,1) 0 1px 0;
+	color: #4f4d4f;
+	font-size: 13px;
+	font-family: Georgia, serif;
+	text-decoration: none;
+	vertical-align: middle;
+}
+.submit_button:visited {
+color: #4f4d4f;
+}
+.submit_button:hover {
+	border-top-color: #ccc8cc;
+	background: #ccc8cc;
+	color: #0d090d;
+	text-decoration:none;
+}
+.submit_button:active {
+	border-top-color: #dfe4e8;
+	background: #dfe4e8;
+	text-decoration:none;
+}
