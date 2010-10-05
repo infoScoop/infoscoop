@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.base.BaseWidget;
 import org.infoscoop.util.StringUtil;
@@ -61,6 +62,13 @@ public class Widget extends BaseWidget {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.setFkDomainId(DomainManager.getContextDomainId());
+		this.setDeletedate(Long.valueOf(0));
+	}
 
 	public JSONObject toJSONObject() throws JSONException{
 		JSONObject json = new JSONObject();
