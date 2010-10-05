@@ -231,7 +231,7 @@ public class GadgetFilter extends ProxyFilter {
 //		String uploadType = request.getFilterParameter("uploadType");
 		String uploadType = null;
 		String url = request.getOriginalURL();
-		if (!url.matches("^http(s)://.*"))
+		if (!url.matches("^http(s)?://.*"))
 			uploadType = url;
 		
 		if( uploadType != null && !"".equals( uploadType )) {

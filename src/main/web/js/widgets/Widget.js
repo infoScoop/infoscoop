@@ -659,7 +659,7 @@ IS_Widget.prototype.classDef = function() {
 	}
 	this.getGadgetUrl = function() {
 		return ( !/^g__Maximize__/.test( this.widgetType )?
-				 this.widgetType : this.widgetType.substring( 13 ));
+				 (this.widgetType.indexOf('g_') == 0 ? this.widgetType.substring(2) : this.widgetType) : this.widgetType.substring( 13 ));
 	}
 	this.loadHtmlIfram = function( url, viewType ){
 		var form = $("postGadgetSrvForm");

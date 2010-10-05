@@ -300,7 +300,7 @@ public class WidgetConfUtil {
 
 		public GadgetContext setUrl(String url) {
 			this.url = url;
-			if (!url.matches("^http(s)://.*")) {
+			if (!url.matches("^http(s)?://.*")) {
 				uploadType = url;//url.substring(8);
 				if( uploadType.indexOf("/") >= 0 )
 					uploadType = uploadType.substring(0, uploadType.indexOf("/"));
