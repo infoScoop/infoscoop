@@ -130,14 +130,6 @@ create index is_logs_rssurl on IS_LOGS(rssurl_key);
 create index is_logs_date on IS_LOGS(`DATE`);
 
 --
--- WIDGETCONF
---
-create table IS_WIDGETCONFS (
-  type varchar(50) CHARACTER SET latin1 not null primary key,
-  data mediumtext not null
-) ENGINE=InnoDB;
-
---
 -- gadget
 --
 create table IS_GADGETS (
@@ -359,8 +351,10 @@ create table IS_OAUTH_CERTIFICATE (
 --
 CREATE TABLE IS_ROLES (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  fk_domain_id int unsigned NOT NULL,
   `name` VARCHAR( 255 ) NOT NULL ,
-  `description` TEXT NULL
+  `description` TEXT NULL,
+	foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE = InnoDB;
 
 --

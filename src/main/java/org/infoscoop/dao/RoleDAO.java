@@ -3,6 +3,8 @@ package org.infoscoop.dao;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.Role;
 import org.infoscoop.dao.model.RolePrincipal;
 import org.infoscoop.util.SpringUtil;
@@ -16,29 +18,24 @@ public class RoleDAO extends HibernateDaoSupport {
 
 	public List<Role> all() {
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(Role.class));
+				DetachedCriteria.forClass(Role.class).add(
+						Expression.eq(Role.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 	}
 
 	public void save(Role item) {
 		super.getHibernateTemplate().saveOrUpdate(item);
 	}
 
-	public static void main(String args[]){
-		SpringUtil.initContext(new String[]{"datasource.xml", "dataaccess.xml"});
-		List roles = RoleDAO.newInstance().all();
-		System.out.println(roles);
-	}
-
 	public Role get(String roleId) {
-		return super.getHibernateTemplate().get(Role.class, new Integer(roleId));
+		return super.getHibernateTemplate().get(Role.class, Integer.valueOf(roleId));
 	}
 
 	public void delete(String roleId) {
-		super.getHibernateTemplate().bulkUpdate("delete from Role where id = ?", new Object[]{new Integer(roleId)});
+		super.getHibernateTemplate().bulkUpdate("delete from Role where id = ?", new Object[]{Integer.valueOf(roleId)});
 	}
 
 	public RolePrincipal getRolePrincipal(String rolePrincipalId) {
-		return super.getHibernateTemplate().get(RolePrincipal.class, new Integer(rolePrincipalId));
+		return super.getHibernateTemplate().get(RolePrincipal.class, Integer.valueOf(rolePrincipalId));
 	}
 
 	public void deleteRolePrincipal(RolePrincipal rolePrincipal) {
