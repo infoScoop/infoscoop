@@ -190,7 +190,8 @@ public class MenuController {
 				gadget.setHref(item.getHref());
 			}
 		}
-		item.setFkParent(menuItemDAO.get(item.getFkParent().getId()));
+		if(item.getFkParent()!=null)
+			item.setFkParent(menuItemDAO.get(item.getFkParent().getId()));
 		menuItemDAO.save(item);
 		return item;
 	}
