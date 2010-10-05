@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.Group;
-import org.infoscoop.dao.model.User;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -17,21 +17,19 @@ public class GroupDAO extends HibernateDaoSupport {
 
 	public List<Group> all() {
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(Group.class));
-	}
-
-	public static void main(String args[]){
-		SpringUtil.initContext(new String[]{"datasource.xml", "dataaccess.xml"});
-		List group = GroupDAO.newInstance().all();
-		System.out.println(group);
+				DetachedCriteria.forClass(Group.class).add(
+						Expression.eq(Group.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 	}
 
 	public Group get(String groupId) {
 		return super.getHibernateTemplate().get(Group.class, new Integer(groupId));
 	}
 
-	public List<Group> getJson(String query) {
-		return super.getHibernateTemplate().find("from Group where name like ?", query +"%");
+	public List<Group> selectByName(String name) {
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Group.class).add(
+						Expression.like(Group.PROP_NAME,name)).add(
+								Expression.eq(Group.PROP_FK_DOMAIN_ID,DomainManager.getContextDomainId())));
 	}
 
 	public void save(Group item){
@@ -40,7 +38,8 @@ public class GroupDAO extends HibernateDaoSupport {
 
 	public Group getByName(String name) {
 		List<Group> groupList = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(Group.class).add(Expression.eq( Group.PROP_NAME,name )));
+				DetachedCriteria.forClass(Group.class).add(Expression.eq( Group.PROP_NAME,name )).add(
+						Expression.eq(Group.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 		if(groupList.isEmpty())
 			return null;
 		else

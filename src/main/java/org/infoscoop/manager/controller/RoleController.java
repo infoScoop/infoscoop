@@ -66,7 +66,7 @@ public class RoleController {
 	@RequestMapping(method=RequestMethod.POST)
 	public @ResponseBody ArrayList<String> autocompleteGroup( @RequestParam("query") String query, Model model )
 			throws Exception {
-		 List<Group> json = GroupDAO.newInstance().getJson(query);
+		 List<Group> json = GroupDAO.newInstance().selectByName(query);
 		 ArrayList<String> list = new ArrayList<String>();
 		 for (int i=0 ; i < json.size(); i++){
 			 list.add(json.get(i).getName());

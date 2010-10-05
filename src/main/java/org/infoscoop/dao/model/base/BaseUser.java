@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_users table.
+ * This is an object that contains data related to the IS_USERS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_users"
+ *  table="IS_USERS"
  */
 
 public abstract class BaseUser  implements Serializable {
@@ -18,6 +18,7 @@ public abstract class BaseUser  implements Serializable {
 	public static String PROP_NAME = "Name";
 	public static String PROP_EMAIL = "Email";
 	public static String PROP_ID = "Id";
+	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 
 
 	// constructors
@@ -57,6 +58,7 @@ public abstract class BaseUser  implements Serializable {
 	private java.lang.String id;
 
 	// fields
+	private java.lang.Integer fkDomainId;
 	private java.lang.String name;
 	private java.lang.String email;
 
@@ -84,6 +86,23 @@ public abstract class BaseUser  implements Serializable {
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
+
+
+
+	/**
+	 * Return the value associated with the column: fk_domain_id
+	 */
+	public java.lang.Integer getFkDomainId () {
+		return fkDomainId;
+	}
+
+	/**
+	 * Set the value related to the column: fk_domain_id
+	 * @param fkDomainId the fk_domain_id value
+	 */
+	public void setFkDomainId (java.lang.Integer fkDomainId) {
+		this.fkDomainId = fkDomainId;
+	}
 
 
 

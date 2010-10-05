@@ -1,5 +1,6 @@
 package org.infoscoop.dao.model;
 
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.base.BaseUser;
 
 
@@ -34,6 +35,12 @@ public class User extends BaseUser {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		super.setFkDomainId(DomainManager.getContextDomainId());
+	}
 
 
 }

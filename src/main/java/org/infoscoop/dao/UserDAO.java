@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
-import org.infoscoop.dao.model.Gadget;
-import org.infoscoop.dao.model.Group;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.User;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -18,13 +17,8 @@ public class UserDAO extends HibernateDaoSupport {
 
 	public List<User> all() {
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(User.class));
-	}
-
-	public static void main(String args[]){
-		SpringUtil.initContext(new String[]{"datasource.xml", "dataaccess.xml"});
-		List user = UserDAO.newInstance().all();
-		System.out.println(user);
+				DetachedCriteria.forClass(User.class).add(
+						Expression.eq(User.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 	}
 
 	public User get(String id) {
@@ -33,7 +27,8 @@ public class UserDAO extends HibernateDaoSupport {
 	
 	public User getByName(String name){
 		List<User> userList = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(User.class).add(Expression.eq( User.PROP_NAME,name )));
+				DetachedCriteria.forClass(User.class).add(Expression.eq( User.PROP_NAME,name )).add(
+						Expression.eq(User.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 		if(userList.isEmpty())
 			return null;
 		else
@@ -41,7 +36,9 @@ public class UserDAO extends HibernateDaoSupport {
 	}
 
 	public List<User> selectByName(String name) {
-		return super.getHibernateTemplate().find("from User where name like ?", name +"%");
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(User.class).add(Expression.like( User.PROP_NAME,name )).add(
+				Expression.eq(User.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 	}
 
 	public void save(User item){

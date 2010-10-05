@@ -444,14 +444,14 @@ CREATE TABLE IS_MENU_ITEMS (
 --
 create table IS_TAB_TEMPLATES(
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    fk_domain_id int unsigned NOT NULL,
+	fk_domain_id int unsigned NOT NULL,
 	original_id int,
 	tab_id varchar(255) not null,
 	name varchar(255) not null,
-    area_type tinyint(4) NOT NULL DEFAULT '0',
+	area_type tinyint(4) NOT NULL DEFAULT '0',
 	layout text,
-    number_of_columns tinyint(4) NOT NULL DEFAULT '3',
-    column_width varchar(255),
+	number_of_columns tinyint(4) NOT NULL DEFAULT '3',
+	column_width varchar(255),
 	published int not null default 0, -- 0=unpublished, 1=published
 	access_level int, -- 0=public, 1=special
 	temp int not null default 1, -- 0=data to show, 1=temporary data
@@ -490,17 +490,21 @@ create index is_tab_template_personalize_gadgets_widget_id on IS_TAB_TEMPLATE_PE
 -- IS_USERS
 --
 CREATE TABLE IS_USERS (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`email` VARCHAR( 255 ) NOT NULL ,
-`name` VARCHAR( 255 ) NOT NULL
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  fk_domain_id int unsigned NOT NULL,
+  `email` VARCHAR( 255 ) NOT NULL ,
+  `name` VARCHAR( 255 ) NOT NULL,
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE = InnoDB;
 
 --
 -- IS_GROUPS
 --
 CREATE TABLE IS_GROUPS (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`name` VARCHAR( 255 ) NOT NULL
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  fk_domain_id int unsigned NOT NULL,
+  `name` VARCHAR( 255 ) NOT NULL,
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE = InnoDB;
 
 --

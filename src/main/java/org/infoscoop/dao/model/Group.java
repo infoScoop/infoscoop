@@ -1,5 +1,6 @@
 package org.infoscoop.dao.model;
 
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.base.BaseGroup;
 
 
@@ -33,5 +34,12 @@ public class Group extends BaseGroup {
 
 /*[CONSTRUCTOR MARKER END]*/
 
+	@Override
+	protected void initialize() {
+		super.initialize();
+		super.setFkDomainId(DomainManager.getContextDomainId());
+		super.setUsers(new java.util.HashSet<org.infoscoop.dao.model.User>());
+		
+	}
 
 }
