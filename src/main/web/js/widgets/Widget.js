@@ -329,8 +329,9 @@ IS_Widget.prototype.classDef = function() {
 	}
 	
 	this.isGadget = function() {
-		return this.widgetType.indexOf("g_") == 0
-			&& !(contentsDef && contentsDef.type == "javascript");
+		//return this.widgetType.indexOf("g_") == 0
+		//	&& !(contentsDef && contentsDef.type == "javascript");
+		return !(contentsDef && contentsDef.type == "javascript");
 	}
 	this.isUploadGadget = function() {
 		return !this.widgetType.match(/^g_/);
@@ -658,7 +659,7 @@ IS_Widget.prototype.classDef = function() {
 	}
 	this.getGadgetUrl = function() {
 		return ( !/^g__Maximize__/.test( this.widgetType )?
-				 this.widgetType.substring(2) : this.widgetType.substring( 13 ));
+				 this.widgetType : this.widgetType.substring( 13 ));
 	}
 	this.loadHtmlIfram = function( url, viewType ){
 		var form = $("postGadgetSrvForm");
@@ -675,7 +676,7 @@ IS_Widget.prototype.classDef = function() {
 		
 		var gadgetParams = $H( this.getGadgetParameters( url,viewType ));
 		form.action = this.gadgetProxyUrl +"?"+gadgetParams.toQueryString();
-		
+		alert("loadHtmlIfram" + form.action);
 		var url = this.getGadgetUrl();
 		var params = {
 			filter: "GadgetView",
@@ -730,7 +731,6 @@ IS_Widget.prototype.classDef = function() {
 		}
 		
 		var parameters = self.getGadgetParameters( url,false );
-		
 		var libBase = hostPrefix+"/js/gadget/features/";
 		var features = ["core","core-io","rpc"];
 		if( typeConf.ModulePrefs && typeConf.ModulePrefs.Require ) {
@@ -812,7 +812,7 @@ IS_Widget.prototype.classDef = function() {
 		}
 		
 		self.elm_widgetContent.appendChild(self.iframe);
-		
+		alert(this.isGadget());
 		if( this.isGadget() ) {
 			this.gadgetProxyUrl = this.isUploadGadget() ? proxyServerURL : this.getGadgetProxyUrl();
 			if( !this.isUploadGadget()) {
