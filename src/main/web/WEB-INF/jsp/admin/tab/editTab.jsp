@@ -639,6 +639,7 @@ function init() {
 						};
 						var layoutClick = function(el,e) {
 							$('staticAreaContainer').innerHTML = el.innerHTML;
+							$('layout').value = el.innerHTML;
 							prepareStaticArea();
 							replaceLayout($('staticAreaContainer').innerHTML);
 							$('layoutModified').value = "true";
@@ -667,6 +668,7 @@ function init() {
 		  afterOpen:function(){
 			  if(initEditLayoutPanel)return;
 			  initEditLayoutPanel = true;
+			  $("edit_layout_textarea").value = $('layout').value;
 			  Event.observe( $('edit_layout_ok'), 'click', function(){
 				  var layout = $("edit_layout_textarea").value;
 				  $('staticAreaContainer').innerHTML = layout;
