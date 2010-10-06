@@ -203,10 +203,15 @@ public class ProxyFilterContainer {
 			//method.setURI(new URI(redirectUrl, false));
 			Header[] headers = method.getRequestHeaders();
 			method = new GetMethod(redirectUrl);
-			for( int j=0;j<headers.length;j++ ){
-				if(!headers[j].getName().equalsIgnoreCase("content-length"))
-					method.setRequestHeader( headers[j] );
+			for (int j = 0; j < headers.length; j++) {
+				String headerName = headers[j].getName();
+				if (!headerName.equalsIgnoreCase("content-length")
+						&& !headerName.equalsIgnoreCase("authorization"))
+					method.setRequestHeader(headers[j]);
 			}
+			AuthenticatorUtil.doAuthentication( client,method,request );
+			method.setRequestHeader("authorization", request
+					.getRequestHeader("Authorization"));
 			method.setFollowRedirects(false);
 			client.executeMethod(method);
 			statusCode = method.getStatusCode();

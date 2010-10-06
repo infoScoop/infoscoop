@@ -77,10 +77,11 @@ public class OAuthAuthenticator implements Authenticator {
 			}
 			
 			Map<String, String> params = this.parseRequestBody(request.getRequestBody());
-			OAuthMessage message = new OAuthMessage(method.getName(), request.getTargetURL(), params.entrySet());
+			OAuthMessage message = new OAuthMessage(method.getName(), method
+					.getURI().getURI(), params.entrySet());
 			message.addRequiredParameters(accessor);
 			String authHeader = message.getAuthorizationHeader(null);
-			request.putRequestHeader("Authorization", authHeader);
+			request.setRequestHeader("Authorization", authHeader);
 
 			// Find the non-OAuth parameters:
 		}catch (URISyntaxException e) {
