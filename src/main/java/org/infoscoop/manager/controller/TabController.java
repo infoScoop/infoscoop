@@ -246,16 +246,11 @@ public class TabController {
 		return "tab/editStaticGadget";
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping
 	@Transactional
-	public void replaceLayout(
-			@RequestParam("id") String id,
-			@RequestParam("layout") String layout){
-		TabTemplate tab = tabTemplateDAO.get(id);
-		tab.setLayout(layout);
-		
-		this.tabTemplateStaticGadgetDAO.deleteByTabId(Integer.valueOf(id));
-			
+	public void clearStaticGadgets(
+			@RequestParam("id") String id){
+		this.tabTemplateStaticGadgetDAO.deleteByTabId(Integer.valueOf(id));	
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -310,6 +305,7 @@ public class TabController {
 		TabTemplate tab = 
 			tabTemplateDAO.get(Integer.toString(formTab.getId()));
 		tab.setName(formTab.getName());
+		tab.setLayout(formTab.getLayout());
 		tab.setTemp(0);
 		
 		tabTemplateDAO.save(tab);
@@ -325,7 +321,7 @@ public class TabController {
 			WidgetDAO widgetDAO = WidgetDAO.newInstance();
 			for(TabTemplateStaticGadget gadget : tabOriginal.getTabTemplateStaticGadgets()){
 				TabTemplateStaticGadget oldGadget = oldGadgetMap.get(gadget.getContainerId());
-				if(!oldGadget.getGadgetInstance().equals(gadget.getGadgetInstance()))
+				if(oldGadget != null && !oldGadget.getGadgetInstance().equals(gadget.getGadgetInstance()))
 					widgetDAO.deleteStaticWidgetByTabIdAndWidgetId(tab.getTabId(), gadget.getContainerId());
 			}
 			tabTemplateDAO.delete(tabOriginal);

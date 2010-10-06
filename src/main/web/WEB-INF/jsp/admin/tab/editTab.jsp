@@ -639,9 +639,9 @@ function init() {
 						};
 						var layoutClick = function(el,e) {
 							$('staticAreaContainer').innerHTML = el.innerHTML;
-							$('layout').value = el.innerHTML;
 							prepareStaticArea();
-							replaceLayout($('staticAreaContainer').innerHTML);
+							clearStaticGadgets();
+							$('layout').value = $('staticAreaContainer').innerHTML;
 							$('layoutModified').value = "true";
 							//TODO:remove ols static gadgets;
 							Event.stop(e);
@@ -673,7 +673,8 @@ function init() {
 				  var layout = $("edit_layout_textarea").value;
 				  $('staticAreaContainer').innerHTML = layout;
 				  prepareStaticArea();
-				  replaceLayout($('staticAreaContainer').innerHTML);
+				  clearStaticGadgets();
+				  $('layout').value = $('staticAreaContainer').innerHTML;
 				  $('layoutModified').value = "true";
 				  Control.Modal.close();
 			  },false);
@@ -697,12 +698,12 @@ function isTemp(flag){
 		return false;
 }
 
-function replaceLayout(layout){
+function clearStaticGadgets(){
 	 new Ajax.Request(
-		"replaceLayout",
+		"clearStaticGadgets",
 		{
-			"method": "post",
-			"parameters": {id: '${tabTemplate.id}','layout': layout},
+			"method": "get",
+			"parameters": {id: '${tabTemplate.id}'},
 			asynchronous: false,
 			onFailure: function(request) {
 				alert('読み込みに失敗しました');
