@@ -80,5 +80,10 @@
 		
 		<unzip src="gadgets.zip" dest="${build.home}/initdb/data/gadget" overwrite="true"/>
 		<delete file="gadgets.zip"/>
+		
+		<concat destfile="${build.home}/initdb/data/gadget/import.csv" append="true" encoding="UTF-8" outputencoding="UTF-8" fixlastline="yes" eol="crlf">
+			<filelist dir="${build.home}/initdb/data/gadget" files="import_builtin.csv"/>
+		</concat>
+		<delete file="${build.home}/initdb/data/gadget/import_builtin.csv"/>
 	</target>
 </project>
