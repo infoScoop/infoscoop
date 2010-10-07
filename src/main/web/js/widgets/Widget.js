@@ -1606,7 +1606,7 @@ IS_Widget.prototype.classDef = function() {
 		var widgetDivList = tabPanel.getElementsByClassName('widgetBox');
 		for(i = 0; i < widgetDivList.length; i++){
 			if(this.elm_widgetBox !== widgetDivList[i])
-			  widgetDivList[i].style.height = '100%';
+			  widgetDivList[i].style.height = '';
 		}
 		
 		this.elm_widget.style.position = "";
