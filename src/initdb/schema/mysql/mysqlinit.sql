@@ -445,8 +445,8 @@ CREATE TABLE IS_MENU_ITEMS (
 create table IS_TAB_TEMPLATES(
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 	fk_domain_id int unsigned NOT NULL,
-	original_id int,
 	tab_id varchar(255) not null,
+  	order_index int not null,
 	name varchar(255) not null,
 	area_type tinyint(4) NOT NULL DEFAULT '0',
 	layout text,
@@ -455,7 +455,8 @@ create table IS_TAB_TEMPLATES(
 	published int not null default 0, -- 0=unpublished, 1=published
 	access_level int, -- 0=public, 1=special
 	temp int not null default 1, -- 0=data to show, 1=temporary data
-    foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
+	unique (fk_domain_id, tab_id, temp),
+	foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --

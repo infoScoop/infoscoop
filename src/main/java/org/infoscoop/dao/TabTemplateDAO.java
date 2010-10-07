@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.util.SpringUtil;
@@ -40,7 +41,8 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 	public List<TabTemplate> all() {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(TabTemplate.class).add(
-						Expression.eq(TabTemplate.PROP_TEMP, Integer.valueOf(0))));
+						Expression.eq(TabTemplate.PROP_TEMP, Integer.valueOf(0))).addOrder(
+								Order.asc(TabTemplate.PROP_ORDER_INDEX)));
 	}
 
 
@@ -52,6 +54,15 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 		if (items.size() == 1)
 			return items.get(0);
 		return null;
+	}
+	
+	public int getMaxOrderIndex(){
+		String queryString = "select max(OrderIndex) from TabTemplate";
+		List<Integer> result = super.getHibernateTemplate().find(queryString);
+		if(result.get(0) == null)
+			return -1;
+		else
+			return result.get(0).intValue();
 	}
 	
 	/*	
@@ -78,15 +89,20 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<TabTemplate> getByTabId(String tabId){
-		return super.getHibernateTemplate().findByCriteria(
+	public TabTemplate getByTabId(String tabId){
+		List<TabTemplate> results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(TabTemplate.class)
-				.add(Expression.eq(TabTemplate.PROP_TAB_ID, tabId))
+				.add(Expression.eq(TabTemplate.PROP_TAB_ID, tabId)).add(Expression.eq(TabTemplate.PROP_TEMP, Integer.valueOf(0)))
 		);
+		if(results.isEmpty())
+			return null;
+		else
+			return results.get(0);
 	}
 
 	public void delete(TabTemplate tab) {
 		super.getHibernateTemplate().delete(tab);
+		super.getHibernateTemplate().flush();
 	}
 
 	public void deleteParsonalizeGadget(Integer id) {

@@ -20,10 +20,10 @@ public abstract class BaseTabTemplate  implements Serializable {
 	public static String PROP_TAB_ID = "TabId";
 	public static String PROP_LAYOUT = "Layout";
 	public static String PROP_PUBLISHED = "Published";
+	public static String PROP_ORDER_INDEX = "OrderIndex";
 	public static String PROP_NUMBER_OF_COLUMNS = "NumberOfColumns";
 	public static String PROP_AREA_TYPE = "AreaType";
 	public static String PROP_ID = "Id";
-	public static String PROP_ORIGINAL_ID = "OriginalId";
 	public static String PROP_COLUMN_WIDTH = "ColumnWidth";
 	public static String PROP_TEMP = "Temp";
 	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
@@ -48,12 +48,14 @@ public abstract class BaseTabTemplate  implements Serializable {
 	public BaseTabTemplate (
 		java.lang.Integer id,
 		java.lang.String tabId,
+		java.lang.Integer orderIndex,
 		java.lang.String name,
 		java.lang.Integer published,
 		java.lang.Integer temp) {
 
 		this.setId(id);
 		this.setTabId(tabId);
+		this.setOrderIndex(orderIndex);
 		this.setName(name);
 		this.setPublished(published);
 		this.setTemp(temp);
@@ -71,8 +73,8 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 	// fields
 	private java.lang.Integer fkDomainId;
-	private java.lang.Integer originalId;
 	private java.lang.String tabId;
+	private java.lang.Integer orderIndex;
 	private java.lang.String name;
 	private java.lang.Integer areaType;
 	private java.lang.Integer published;
@@ -128,23 +130,6 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: original_id
-	 */
-	public java.lang.Integer getOriginalId () {
-		return originalId;
-	}
-
-	/**
-	 * Set the value related to the column: original_id
-	 * @param originalId the original_id value
-	 */
-	public void setOriginalId (java.lang.Integer originalId) {
-		this.originalId = originalId;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: tab_id
 	 */
 	public java.lang.String getTabId () {
@@ -157,6 +142,23 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 */
 	public void setTabId (java.lang.String tabId) {
 		this.tabId = tabId;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: order_index
+	 */
+	public java.lang.Integer getOrderIndex () {
+		return orderIndex;
+	}
+
+	/**
+	 * Set the value related to the column: order_index
+	 * @param orderIndex the order_index value
+	 */
+	public void setOrderIndex (java.lang.Integer orderIndex) {
+		this.orderIndex = orderIndex;
 	}
 
 

@@ -88,6 +88,7 @@ public class TabController {
 			tab.setTabId("t_" + new Date().getTime());
 			tab.setName("New Tab");
 			tab.setPublished(0);
+			tab.setOrderIndex(tabTemplateDAO.getMaxOrderIndex() + 1);
 			tab.setTemp(1);
 			tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
 			tabTemplateDAO.save(tab);
@@ -103,7 +104,6 @@ public class TabController {
 			Model model)throws Exception {
 			TabTemplate tab = tabTemplateDAO.get(id);
 			TabTemplate tabCopy = tab.createTemp();
-			tabCopy.setOriginalId(Integer.valueOf(id));
 			tabTemplateDAO.save(tabCopy);
 			model.addAttribute(tabCopy);
 	}
@@ -302,18 +302,13 @@ public class TabController {
 			@RequestParam("layoutModified") String layoutModified, 
 			Model model)throws Exception {
 
+		TabTemplate tabOriginal = tabTemplateDAO.getByTabId(formTab.getTabId());
+		
 		TabTemplate tab = 
 			tabTemplateDAO.get(Integer.toString(formTab.getId()));
-		tab.setName(formTab.getName());
-		tab.setLayout(formTab.getLayout());
-		tab.setTemp(0);
 		
-		tabTemplateDAO.save(tab);
-
-		if(formTab.getOriginalId() != null){
-			TabTemplate tabOriginal = 
-				tabTemplateDAO.get(Integer.toString(formTab.getOriginalId()));
-
+		if(tabOriginal != null){
+			
 			Map<String, TabTemplateStaticGadget> oldGadgetMap = new HashMap<String, TabTemplateStaticGadget>();
 			for(TabTemplateStaticGadget gadget : tab.getTabTemplateStaticGadgets())
 				oldGadgetMap.put(gadget.getContainerId(), gadget);
@@ -330,6 +325,12 @@ public class TabController {
 				widgetDAO.deleteStaticWidgetByTabId(tab.getTabId());
 			}
 		}
+		
+		tab.setName(formTab.getName());
+		tab.setLayout(formTab.getLayout());
+		tab.setTemp(0);
+		tabTemplateDAO.save(tab);
+		
 		model.addAttribute(tab);
 	}
 
@@ -471,14 +472,11 @@ public class TabController {
 			command.initialize(uid, commandEl);
 			commands[i] = command;
 		    //XMLCommandProcessor command = getCommand(context, type, resultList);
-			if (command != null) {
-				if(log.isInfoEnabled())
-					log.info("uid:[" + uid + "]: doPost: "
-							+ command.getClass().getName());
-				command.execute();
-			}else{
-				log.error("Command " + type + " is not exist.");
-			}
+			if(log.isInfoEnabled())
+				log.info("uid:[" + uid + "]: doPost: "
+						+ command.getClass().getName());
+			command.execute();
+			
 		}
 
 		StringWriter writer = new StringWriter();

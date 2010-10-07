@@ -39,6 +39,7 @@ public class TabTemplate extends BaseTabTemplate {
 	public TabTemplate (
 		java.lang.Integer id,
 		java.lang.String tabId,
+		java.lang.Integer orderIndex,
 		java.lang.String name,
 		java.lang.Integer published,
 		java.lang.Integer temp) {
@@ -46,6 +47,7 @@ public class TabTemplate extends BaseTabTemplate {
 		super (
 			id,
 			tabId,
+			orderIndex,
 			name,
 			published,
 			temp);
@@ -168,6 +170,7 @@ public class TabTemplate extends BaseTabTemplate {
 		tabClone.setLayout(this.getLayout());
 		tabClone.setAccessLevel(this.getAccessLevel());
 		tabClone.setTabId(this.getTabId());
+		tabClone.setOrderIndex(this.getOrderIndex());
 		tabClone.setTemp(Integer.valueOf(1));
 		TabTemplateDAO.newInstance().save(tabClone);
 		

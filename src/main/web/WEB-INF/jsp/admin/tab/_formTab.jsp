@@ -14,7 +14,6 @@
 		</p>
 		<form:hidden path="id" />
 		<form:hidden path="tabId" />
-		<form:hidden path="originalId"/>
 		<form:hidden path="layout" />
 		<form:hidden path="layoutModified"/>
 		<div id="portal-site-aggregation-menu"></div>
