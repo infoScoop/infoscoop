@@ -34,8 +34,9 @@ import org.infoscoop.account.IAccountManager;
 import org.infoscoop.account.PrincipalDef;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.dao.AccountDAO;
+import org.infoscoop.dao.DomainDAO;
 import org.infoscoop.dao.model.Account;
-import org.infoscoop.util.SpringUtil;
+import org.infoscoop.dao.model.Domain;
 
 /**
  * @author hr-endoh
@@ -44,13 +45,19 @@ import org.infoscoop.util.SpringUtil;
 public class SimpleAccountManager implements IAccountManager{
 
 	private AccountDAO dao;
-
+	private DomainDAO domainDao;
+	
 	public void setAccountDAO(AccountDAO dao){
 		this.dao = dao;
 	}
 
-	public IAccount getUser(String uid) throws Exception {
-		return dao.get(uid);
+	public void setDomainDAO(DomainDAO domainDao){
+		this.domainDao = domainDao;
+	}
+	
+	public IAccount getUser(String uid, String domainName) throws Exception {
+		Domain domain = this.domainDao.getByName(domainName);
+		return dao.get(uid,domain.getId());
 	}
 
 	/* (non-Javadoc)
@@ -61,11 +68,11 @@ public class SimpleAccountManager implements IAccountManager{
 		return this.dao.selectByName(name);
 	}
 
-	public void login(String userid, String password) throws AuthenticationException {
+	public void login(String userid, String password, String domain) throws AuthenticationException {
 
 		Account account;
 		try {
-			account = (Account)this.getUser(userid);
+			account = (Account)this.getUser(userid, domain);
 			if(account == null){
 				throw new AuthenticationException(userid + " is not found.");
 			}
@@ -79,8 +86,8 @@ public class SimpleAccountManager implements IAccountManager{
 		
 	}
 	
-	public Subject getSubject(String userid) throws Exception {
-		Account account = (Account)this.getUser(userid);
+	public Subject getSubject(String userid, String domainName) throws Exception {
+		Account account = (Account)this.getUser(userid, domainName);
 		if(account == null){
 			throw new AuthenticationException(userid + " is not found.");
 		}
@@ -88,6 +95,9 @@ public class SimpleAccountManager implements IAccountManager{
 		ISPrincipal p = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, account.getUid());
 		p.setDisplayName(account.getName());
 		loginUser.getPrincipals().add(p);
+		ISPrincipal domain = new ISPrincipal(ISPrincipal.DOMAIN_PRINCIPAL, account.getId().getFkDomainId().toString());
+		p.setDisplayName(domainName);
+		loginUser.getPrincipals().add(domain);
 		return loginUser;
 	}
 
@@ -113,10 +123,10 @@ public class SimpleAccountManager implements IAccountManager{
 	}
 
 	public void changePassword(String userid, String password,
-			String oldPassword) throws AuthenticationException {
+			String oldPassword, String domain) throws AuthenticationException {
 		Account account;
 		try {
-			account = (Account)this.getUser(userid);
+			account = (Account)this.getUser(userid, domain);
 			if(account == null){
 				throw new AuthenticationException(userid + " is not found.");
 			}
@@ -136,4 +146,15 @@ public class SimpleAccountManager implements IAccountManager{
 		return new ArrayList<PrincipalDef>();
 	}
 
+	public void changePassword(String userid, String password,
+			String oldPassword) throws AuthenticationException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void login(String userid, String password)
+			throws AuthenticationException {
+		// TODO Auto-generated method stub
+		
+	}
 }

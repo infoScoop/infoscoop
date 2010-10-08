@@ -45,7 +45,7 @@ public interface IAccountManager {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Subject getSubject(String userid) throws Exception;
+	public Subject getSubject(String userid, String domain) throws Exception;
 	
 	/**
 	 * @return Return true if changePassword method  is implemented.
@@ -73,5 +73,7 @@ public interface IAccountManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public IAccount getUser(String uid) throws Exception;
+	public IAccount getUser(String uid, String domain) throws Exception;
+
+	public void login(String userid, String password, String domain) throws AuthenticationException;
 }

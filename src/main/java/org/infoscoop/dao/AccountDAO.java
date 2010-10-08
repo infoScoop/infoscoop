@@ -22,6 +22,7 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.MatchMode;
+import org.infoscoop.dao.model.ACCOUNTPK;
 import org.infoscoop.dao.model.Account;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -37,8 +38,8 @@ public class AccountDAO extends HibernateDaoSupport {
 
 	}
 
-	public Account get(String uid){
-		return (Account)super.getHibernateTemplate().get(Account.class, uid);
+	public Account get(String uid, Integer fkDomainId){
+		return (Account)super.getHibernateTemplate().get(Account.class, new ACCOUNTPK(fkDomainId,uid));
 
 	}
 

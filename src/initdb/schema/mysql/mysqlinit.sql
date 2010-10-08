@@ -304,9 +304,12 @@ create table IS_ACCESSLOGS (
 -- account
 --
 create table IS_ACCOUNTS (
-  uid varchar(150) not null primary key,
-  name varchar(255),
-  password varchar(255)
+  fk_domain_id int unsigned NOT NULL,
+  uid varchar(150) NOT NULL,
+  name varchar(255) DEFAULT NULL,
+  password varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`fk_domain_id`,`uid`),
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --

@@ -41,12 +41,12 @@ public class AuthenticationService {
 		this.manager = manager;
 	}
 
-	public void login(String userid, String password) throws AuthenticationException{
-		this.manager.login(userid, password);
+	public void login(String userid, String password, String domain) throws AuthenticationException{
+		this.manager.login(userid, password, domain);
 	}
 	
-	public Subject getSubject(String userid) throws Exception{
-		return this.manager.getSubject(userid);
+	public Subject getSubject(String userid, String domainName) throws Exception{
+		return this.manager.getSubject(userid, domainName);
 	}
 
 	public boolean enableChangePassword(){

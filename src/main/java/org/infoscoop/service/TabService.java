@@ -133,7 +133,7 @@ public class TabService {
 		
 		
 		List<TabTemplate> tabTemplates = TabTemplateService.getHandle().getMyTabTemplate();
-		Collection<Tab> currentTabList = TabDAO.newInstance().getTabs(uid);
+		Collection<Tab> currentTabList = this.tabDAO.getTabs(uid);
 		
 		Map<String, Tab> staticTabMap = new HashMap<String,Tab>();
 		for(Tab tab: currentTabList)

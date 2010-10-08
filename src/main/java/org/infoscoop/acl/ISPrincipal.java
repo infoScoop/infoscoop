@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.security.Principal;
 
 public class ISPrincipal implements Principal, Serializable{
+	public static final String DOMAIN_PRINCIPAL = "DomainPrincipal";
+
 	public static String UID_PRINCIPAL = "UIDPrincipal";
 	
 	private String type;

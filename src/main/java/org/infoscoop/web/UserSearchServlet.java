@@ -100,7 +100,7 @@ public class UserSearchServlet extends HttpServlet {
 				// 2007.07.28 add koike
 				// add a search by uid
 				
-				users.add( service.getUser( uid ) );
+				users.add( service.getUser( uid, null ) );//TODO:
 			}
 		} catch( Exception e ) {
 			log.error("",e);

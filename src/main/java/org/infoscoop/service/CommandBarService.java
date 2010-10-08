@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.infoscoop.dao.CommandBarDAO;
 import org.infoscoop.dao.model.CommandBar;
-import org.infoscoop.dao.model.CommandBarStaticGadget;
 import org.infoscoop.util.SpringUtil;
 
 public class CommandBarService {

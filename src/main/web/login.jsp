@@ -61,6 +61,10 @@
 									<td align="right"><spring:message code="lb_password" />&nbsp;</td>
 									<td align="left"><input type="password" id="password" name="password"/></td>
 								</tr>
+								<tr>
+									<td align="right"><%--spring:message code="lb_domain_name" /--%>Domain Name&nbsp;</td>
+									<td align="left"><input type="text" id="domain_name" name="domain_name"/></td>
+								</tr>
 <%
 int keepPeriod = 14;
 try {

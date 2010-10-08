@@ -1,5 +1,6 @@
 package org.infoscoop.dao.model;
 
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.base.BaseCommandBar;
 
 
@@ -35,6 +36,13 @@ public class CommandBar extends BaseCommandBar {
 
 /*[CONSTRUCTOR MARKER END]*/
 
+	@Override
+	protected void initialize() {
+		// TODO Auto-generated method stub
+		super.initialize();
+		super.setFkDomainId(DomainManager.getContextDomainId());
+	}
+
 	public Object getLayout() {
 		StringBuffer html = new StringBuffer();
 		html.append("<table cellpadding='0' cellspacing='3' width='100%'>\n  <tr>");
@@ -51,6 +59,5 @@ public class CommandBar extends BaseCommandBar {
 		html.append("  </tr>\n</table>");
 		return html.toString();
 	}
-
 
 }

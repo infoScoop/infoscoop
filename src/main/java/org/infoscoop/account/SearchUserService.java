@@ -45,8 +45,8 @@ public class SearchUserService {
 	}
 
 	// add the interface of search by uid
-	public IAccount getUser(String uid) throws Exception {
-		return this.module.getUser(uid);
+	public IAccount getUser(String uid, String domainName) throws Exception {
+		return this.module.getUser(uid, domainName);
 	}
 
 	/**

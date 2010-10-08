@@ -22,6 +22,7 @@ package org.infoscoop.web;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -36,12 +37,10 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
@@ -50,8 +49,6 @@ import org.infoscoop.account.SessionCreateConfig;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.web.PreviewImpersonationFilter;
-import org.infoscoop.dao.PropertiesDAO;
-import org.infoscoop.util.RSAKeyManager;
 
 /**
  * The filter which manages the login state.
@@ -161,40 +158,6 @@ public class SessionManagerFilter implements Filter {
 				}
 			}
 			
-			if( uid == null ) {
-				Cookie[] cookies = httpReq.getCookies();
-				if( cookies != null ) {
-					for( Cookie cookie : cookies ) {
-						if( cookie.getName().equals("portal-credential")) {
-							int keepPeriod = 7;
-							try {
-								keepPeriod = Integer.parseInt( PropertiesDAO.newInstance()
-										.findProperty("loginStateKeepPeriod").getValue());
-							} catch( Exception ex ) {
-								log.warn("",ex );
-							}
-							
-							if( keepPeriod <= 0 ) {
-								Cookie credentialCookie = new Cookie("portal-credential","");
-								credentialCookie.setMaxAge( 0 );
-								credentialCookie.setPath("/");
-								httpResponse.addCookie( credentialCookie );
-								
-								log.info("clear auto login credential ["+credentialCookie.getValue()+"]");
-							} else {
-								try {
-									uid = tryAutoLogin( cookie );
-									httpReq.getSession().setAttribute("Uid",uid );
-									
-									log.info("auto login success.");
-								} catch( Exception ex ) {
-									log.info("auto login failed.",ex );
-								}
-							}
-						}
-					}
-				}
-			}
 			
 			if (uid == null && SessionCreateConfig.doLogin()
 					&& !isExcludePath(httpReq.getServletPath())) {
@@ -220,7 +183,7 @@ public class SessionManagerFilter implements Filter {
 					AuthenticationService service= AuthenticationService.getInstance();
 					try {
 						if (service != null)
-							loginUser = service.getSubject(uid);
+							loginUser = service.getSubject(uid, (String) session.getAttribute("Domain"));
 					} catch (Exception e) {
 						log.error("",e);
 					}
@@ -256,10 +219,12 @@ public class SessionManagerFilter implements Filter {
 			}
 			SecurityController.registerContextSubject(loginUser);
 
+			//TODO:This value is set by OpenIDFilter.
+			for(ISPrincipal p :loginUser.getPrincipals(ISPrincipal.class))
+				if(ISPrincipal.DOMAIN_PRINCIPAL == p.getType())
+					DomainManager.registerContextDomainId(Integer.valueOf(p.getName()));
 		}
 
-		//TODO:This value is set by OpenIDFilter.
-		DomainManager.registerContextDomainId(Integer.valueOf(1));
 		
 		chain.doFilter(request, response);
 
@@ -366,30 +331,4 @@ public class SessionManagerFilter implements Filter {
 		return false;
 	}
 
-	private String tryAutoLogin( Cookie cookie ) throws Exception {
-		String credentialStr = cookie.getValue();
-		
-		try {
-			String[] credentialPair = credentialStr.split(":");
-			String portalUid = new String(
-					Base64.decodeBase64( credentialPair[0].getBytes("UTF-8")),"UTF-8");
-			String portalPassword = RSAKeyManager.getInstance().decrypt( credentialPair[1] );
-			
-			AuthenticationService service = AuthenticationService.getInstance();
-			if (service == null)
-				throw new Exception(
-						"No bean named \"authenticationService\" is defined."
-								+ " When loginAuthentication property is true,"
-								+ " authenticationService must be defined.");
-			
-			service.login( portalUid,portalPassword );
-			
-			portalUid = portalUid.trim();
-			return portalUid;
-		} catch( Exception ex ) {
-//			log.info("Auto Login Failed by ["+credentialStr+"]");
-			
-			throw ex;
-		}
-	}
 }

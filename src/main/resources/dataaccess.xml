@@ -152,6 +152,11 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
+	<bean id="domainDAO" class="org.infoscoop.dao.DomainDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
 	<bean id="userDAO" class="org.infoscoop.dao.UserDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>

@@ -58,7 +58,6 @@ public class TabDAO extends HibernateDaoSupport{
     
     
 	public Tab getTab(String uid, String tabId) {
-		//TODO: get domain name from ThreadLocal
 		return (Tab)super.getHibernateTemplate().get(Tab.class, new TABPK(DomainManager.getContextDomainId(), uid, tabId));
 	}
 	
@@ -66,6 +65,7 @@ public class TabDAO extends HibernateDaoSupport{
 		Collection<Tab> tabs = ( Collection ) super.getHibernateTemplate()
 			.findByCriteria( DetachedCriteria.forClass( Tab.class )
 					.add( Expression.eq("id.Uid", uid ))
+					.add( Expression.eq("id.FkDomainId", DomainManager.getContextDomainId()))
 					.addOrder( Order.asc("Order")));
 		
 		return tabs;
@@ -73,24 +73,22 @@ public class TabDAO extends HibernateDaoSupport{
     public void addTab( Tab tab ){
     	super.getHibernateTemplate().save(tab);
     }
-	public void updateTab( Tab tab ) {
-//		super.getHibernateTemplate().update(tab);
-//		super.getHibernateTemplate().flush();
-	}
+    
 	public void deleteTab( Tab tab ) {
 		super.getHibernateTemplate().delete( tab );
 	}
+	
 	public void deleteTab( String uid ) {
-		String queryString = "delete from Tab where Id.Uid=?";
+		String queryString = "delete from Tab where Id.Uid = ? and Id.FkDomainId = ?";
 		
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[]{ uid });
+				new Object[]{ uid, DomainManager.getContextDomainId() });
 	}
 	public void deleteTab( String uid, Integer tabId ) {
-		String queryString = "delete from Tab where Id.Uid=? and Id.Id = ?";
+		String queryString = "delete from Tab where Id.Uid=? and Id.Id = ? and Id.FkDomainId = ?";
 		
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[]{ uid, tabId.toString() });
+				new Object[]{ uid, tabId.toString(), DomainManager.getContextDomainId() });
 	}
 	
     public void addDynamicWidget( String uid,String defaultUid,String tabId,Widget widget){
@@ -162,41 +160,41 @@ public class TabDAO extends HibernateDaoSupport{
 		return resultList;
 	}
 	private List<Widget> getWidgetList( String uid,String tabId,int type ) {
-		String query = "from Widget where Uid=? and Tabid=? and Deletedate = 0 and Isstatic = ?";
+		String query = "from Widget where Uid=? and Tabid=? and FkDomainId = ? and Deletedate = 0 and Isstatic = ?";
 		
 		return super.getHibernateTemplate().find( query,
-				new Object[] { uid,tabId,new Integer( type ) } );
+				new Object[] { uid,tabId,DomainManager.getContextDomainId(),new Integer( type ) } );
 	}
 //select * from ${schema}.widget where uid=? and tabId = ? and siblingId = ? and deleteDate = 0 and isStatic = 0
 	public Widget getWidgetBySibling( String uid,String tabId, String siblingId) {
 		String query;
 		if( !"".equals( siblingId ) ) {
-			query = "from Widget where Uid=? and Tabid=? and Siblingid=? and Deletedate = 0 and Isstatic=0";
+			query = "from Widget where Uid=? and Tabid=? and FkDomainId = ? and Siblingid=? and Deletedate = 0 and Isstatic=0";
 		} else {
-			query = "from Widget where Uid=? and Tabid=? and ( Siblingid=? or Siblingid is NULL ) and Deletedate = 0 and Isstatic=0";
+			query = "from Widget where Uid=? and Tabid=? and FkDomainId = ? and ( Siblingid=? or Siblingid is NULL ) and Deletedate = 0 and Isstatic=0";
 		}
 		
-		return findWidget( query,new Object[] { uid,tabId,siblingId });
+		return findWidget( query,new Object[] { uid,tabId,DomainManager.getContextDomainId(),siblingId });
 	}
 	public Widget getSubWidgetBySibling( String uid,String tabId,String siblingId,String parentId,String widgetId ) {
 		String query;
 		if( !"".equals( siblingId ) ) {
-			query = "from Widget where Uid=? and Tabid=? and Siblingid=? and Parentid=? and Widgetid != ? and Deletedate = 0 and Isstatic=0";
+			query = "from Widget where Uid=? and Tabid=? and FkDomainId = ? and Siblingid=? and Parentid=? and Widgetid != ? and Deletedate = 0 and Isstatic=0";
 		} else {
-			query = "from Widget where Uid=? and Tabid=? and ( Siblingid=? or Siblingid is NULL ) and Parentid=? and Widgetid != ? and Deletedate = 0 and Isstatic=0";
+			query = "from Widget where Uid=? and Tabid=? and FkDomainId = ? and ( Siblingid=? or Siblingid is NULL ) and Parentid=? and Widgetid != ? and Deletedate = 0 and Isstatic=0";
 		}
 		
-		return findWidget( query,new Object[] { uid,tabId,siblingId,parentId,widgetId });
+		return findWidget( query,new Object[] { uid,tabId,DomainManager.getContextDomainId(),siblingId,parentId,widgetId });
 	}
 	public Widget getColumnWidgetBySibling( String uid,String tabId,String siblingId,Integer column,String widgetId ) {
 		String query;
 		if( !"".equals( siblingId ) ) {
-			query = "from Widget where Uid=? and Tabid=? and Siblingid=? and Column=? and ( Parentid='' or Parentid is NULL ) and Widgetid != ? and Deletedate = 0 and Isstatic=0";
+			query = "from Widget where Uid=? and Tabid=? and FkDomainId = ? and Siblingid=? and Column=? and ( Parentid='' or Parentid is NULL ) and Widgetid != ? and Deletedate = 0 and Isstatic=0";
 		} else {
-			query = "from Widget where Uid=? and Tabid=? and ( Siblingid=? or Siblingid is NULL ) and Column=? and ( Parentid='' or Parentid is NULL ) and Widgetid != ? and Deletedate = 0 and Isstatic=0";
+			query = "from Widget where Uid=? and Tabid=? and FkDomainId = ? and ( Siblingid=? or Siblingid is NULL ) and Column=? and ( Parentid='' or Parentid is NULL ) and Widgetid != ? and Deletedate = 0 and Isstatic=0";
 		}
 		
-		return findWidget( query,new Object[] { uid,tabId,siblingId,column,widgetId });
+		return findWidget( query,new Object[] { uid,tabId,DomainManager.getContextDomainId(),siblingId,column,widgetId });
 	}
 	
 	private Widget findWidget( String queryString,Object[] params ) {

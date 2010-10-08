@@ -9,12 +9,11 @@
 		table="IS_ACCOUNTS"
 	>
 		<meta attribute="sync-DAO">false</meta>
-		<id
-			name="Uid"
-			type="string"
-			column="`UID`"
-			length="150"
+		<composite-id name="Id" class="ACCOUNTPK">
+			<key-property name="FkDomainId" column="fk_domain_id" type="integer"/>
+			<key-property	name="Uid" type="string" column="uid"	length="150"
 		/>
+		</composite-id>
 
 		<property
 			name="name"

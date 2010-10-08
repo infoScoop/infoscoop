@@ -179,7 +179,7 @@ public class LDAPAccountManager implements IAccountManager{
 		return conditionForBase;
 	}
 
-	public IAccount getUser(String uid) throws NamingException {
+	public IAccount getUser(String uid, String domainName) throws NamingException {
 		
 		SearchControls searchControls = new SearchControls();
 		searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
@@ -275,9 +275,9 @@ public class LDAPAccountManager implements IAccountManager{
 		
 	}
 
-	public void login(String userid, String password) throws AuthenticationException{
+	public void login(String userid, String password, String domainName) throws AuthenticationException{
 		try {
-			LDAPAccount user = (LDAPAccount) getUser(userid);
+			LDAPAccount user = (LDAPAccount) getUser(userid, domainName);
 			if(user == null){
 				throw new AuthenticationException(userid + " is not found.");
 			}
@@ -295,8 +295,8 @@ public class LDAPAccountManager implements IAccountManager{
 		}
 	}
 
-	public Subject getSubject(String userid) throws Exception {
-		LDAPAccount user = (LDAPAccount) getUser(userid);
+	public Subject getSubject(String userid, String domainName) throws Exception {
+		LDAPAccount user = (LDAPAccount) getUser(userid, domainName);
 		if(user == null){
 			throw new AuthenticationException(userid + " is not found.");
 		}
@@ -545,4 +545,11 @@ public class LDAPAccountManager implements IAccountManager{
 	public Collection<PrincipalDef> getPrincipalDefs() {
 		return principalDefs;
 	}
+
+	public void login(String userid, String password)
+			throws AuthenticationException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

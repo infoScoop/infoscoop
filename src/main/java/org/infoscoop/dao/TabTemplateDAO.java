@@ -24,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.util.SpringUtil;
@@ -41,7 +42,8 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 	public List<TabTemplate> all() {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(TabTemplate.class).add(
-						Expression.eq(TabTemplate.PROP_TEMP, Integer.valueOf(0))).addOrder(
+						Expression.eq(TabTemplate.PROP_TEMP, Integer.valueOf(0))).add(
+								Expression.eq(TabTemplate.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())).addOrder(
 								Order.asc(TabTemplate.PROP_ORDER_INDEX)));
 	}
 

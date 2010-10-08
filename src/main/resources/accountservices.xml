@@ -135,6 +135,9 @@
    		<property name="accountDAO">
    			<ref bean="accountDAO"/>
    		</property>
+   		<property name="domainDAO">
+   			<ref bean="domainDAO"/>
+   		</property>
    </bean>
    <bean id="searchUserService" singleton="false" class="org.infoscoop.account.SearchUserService" >
       <property name="accountManager" >
