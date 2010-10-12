@@ -1615,6 +1615,7 @@ IS_Widget.prototype.classDef = function() {
 		this.elm_widget.style.top="";
 		this.elm_widget.style.left="";
 		this.elm_widget.style.width="";
+		this.elm_widgetContent.style.height = '';
 		this.iframe.style.height=this.tempIFrameHeight;
 		
 		if( Browser.isFirefox ) {
