@@ -1532,7 +1532,8 @@ IS_Widget.prototype.classDef = function() {
 	}
 
 	this.adjustMaximizeHeight = function()  {
-		this.iframe.style.height = getWindowSize(false) - findPosY( this.elm_widgetContent ) - (Browser.isFirefox ? 10 : 14);
+		this.elm_widgetContent.style.height = this.iframe.style.height
+		  = getWindowSize(false) - findPosY( this.elm_widgetBox ) - (Browser.isFirefox ? 28 : 32);
 	}
 	
 	this.adjustMaximize = function(){
