@@ -17,13 +17,9 @@
 
 package org.infoscoop.request;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,9 +72,8 @@ public class OAuthAuthenticator implements Authenticator {
 				getRequestToken(request, accessor);
 			}
 			
-			Map<String, String> params = this.parseRequestBody(request.getRequestBody());
-			OAuthMessage message = new OAuthMessage(method.getName(), method
-					.getURI().getURI(), params.entrySet());
+			OAuthMessage message = accessor.newRequestMessage(method.getName(),
+					method.getURI().toString(), null, request.getRequestBody());
 			message.addRequiredParameters(accessor);
 			String authHeader = message.getAuthorizationHeader(null);
 			request.setRequestHeader("Authorization", authHeader);
@@ -97,30 +92,6 @@ public class OAuthAuthenticator implements Authenticator {
 	public int getCredentialType() {
 		// TODO Auto-generated method stub
 		return 3;
-	}
-	
-	private Map<String, String> parseRequestBody(InputStream requestBody) throws IOException{
-		Map<String, String> params = new HashMap<String, String>();
-		if(requestBody != null){
-			BufferedReader br = new BufferedReader(new InputStreamReader(requestBody));
-			String postBodyStr = "";
-			String s = null;
-			while( ( s = br.readLine()) != null){
-				postBodyStr += s;
-			}
-			String[] keyvalues = postBodyStr.split("&");
-			for (int i = 0; i < keyvalues.length; i++){
-				String[] keyvalue = keyvalues[i].split("=");
-				String name = URLDecoder.decode(keyvalue[0], "UTF-8")
-						.trim();
-				String value = keyvalue.length > 1 ? URLDecoder.decode(
-						keyvalue[1], "UTF-8").trim() : "";
-				params.put(name, value);
-			}
-			requestBody.reset();
-		}
-		return params;
-	
 	}
 	
 	protected OAuthConsumer newConsumer(String name, ProxyRequest.OAuthConfig oauthConfig) throws ProxyAuthenticationException{
