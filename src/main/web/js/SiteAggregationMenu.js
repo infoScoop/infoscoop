@@ -870,7 +870,15 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		titleA.title = menuItem.title;
 		if(menuItem.href){
 			titleA.href = menuItem.href;
-			if(menuItem.display == "self") {
+			
+			if(/^javascript:/i.test( menuItem.href )){
+				var aTagOnClick = function(e) {
+					eval( menuItem.href );
+					Event.stop(e);
+				}
+				IS_Event.observe(titleA, "click", aTagOnClick, false, "_menu");
+				
+			}else if(menuItem.display == "self") {
 				titleA.target = "_self";
 			} else if(menuItem.display == "newwindow"){
 				titleA.target = "_blank";

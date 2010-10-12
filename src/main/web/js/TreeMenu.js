@@ -575,7 +575,14 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			var aTag = document.createElement('a');
 			aTag.href = menuItem.href;
 			aTag.appendChild(document.createTextNode(title));
-			if(menuItem.display == "self") {
+			
+			if(/^javascript:/i.test( menuItem.href )){
+				var aTagOnClick = function(e) {
+					eval( menuItem.href );
+					Event.stop(e);
+				}
+				IS_Event.observe(aTag, "click", aTagOnClick, false, "_menu");
+			}else if(menuItem.display == "self") {
 				aTag.target = "_self";
 			} else if(menuItem.display == "newwindow"){
 				aTag.target = "_blank";
