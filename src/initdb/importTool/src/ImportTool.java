@@ -463,7 +463,7 @@ class GadgetFactory implements CSVBeanFactory<Gadget> {
 class AccountFactory implements CSVBeanFactory<Account> {
 	public Account newBean( CSVField[] values ) {
 		Account account = new Account();
-		account.setUid( values[0].toString() );
+		account.setId(new ACCOUNTPK(1, values[0].toString()));
 		account.setName( values[1].toString() );
 		account.setPasswordPlainText( values[2].toString() );
 
