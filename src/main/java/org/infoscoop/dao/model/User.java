@@ -1,11 +1,12 @@
 package org.infoscoop.dao.model;
 
 import org.infoscoop.account.DomainManager;
+import org.infoscoop.account.IAccount;
 import org.infoscoop.dao.model.base.BaseUser;
 
 
 
-public class User extends BaseUser {
+public class User extends BaseUser implements IAccount {
 	private static final long serialVersionUID = 1L;
 
 /*[CONSTRUCTOR MARKER BEGIN]*/
@@ -42,5 +43,18 @@ public class User extends BaseUser {
 		super.setFkDomainId(DomainManager.getContextDomainId());
 	}
 
+	public String getGroupName() {
+//		if (getGroups() != null && getGroups().iterator().hasNext()) {
+//			return getGroups().iterator().next().getName();
+//		}
+		return null;
+	}
 
+	public String getMail() {
+		return getEmail();
+	}
+
+	public String getUid() {
+		return getEmail();
+	}
 }

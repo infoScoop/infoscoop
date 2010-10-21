@@ -105,6 +105,7 @@ public class UserSearchServlet extends HttpServlet {
 		} catch( Exception e ) {
 			log.error("",e);
 			response.sendError(500, e.getMessage());
+			e.printStackTrace();
 		}
 		
 		if(log.isInfoEnabled())

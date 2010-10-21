@@ -131,6 +131,14 @@
          <ref bean="MSD_IDSSearchModule"/>
       </property>
    </bean-->
+   <bean id="GoogleAppsAccountManager" singleton="true" class="org.infoscoop.account.googleapps.GoogleAppsAccountManager" >
+   		<property name="userDAO">
+   			<ref bean="userDAO"/>
+   		</property>
+   		<property name="domainDAO">
+   			<ref bean="domainDAO"/>
+   		</property>
+   </bean>
    <bean id="SimpleAccountManager" singleton="true" class="org.infoscoop.account.simple.SimpleAccountManager" >
    		<property name="accountDAO">
    			<ref bean="accountDAO"/>
@@ -141,7 +149,7 @@
    </bean>
    <bean id="searchUserService" singleton="false" class="org.infoscoop.account.SearchUserService" >
       <property name="accountManager" >
-         <ref bean="SimpleAccountManager"/>
+         <ref bean="GoogleAppsAccountManager"/>
       </property>
    </bean>
    <bean id="authenticationService" singleton="false" class="org.infoscoop.account.AuthenticationService" >
