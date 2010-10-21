@@ -43,12 +43,16 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.account.AuthenticationException;
 import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.DomainManager;
 import org.infoscoop.account.SessionCreateConfig;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.web.PreviewImpersonationFilter;
+import org.infoscoop.dao.DomainDAO;
+import org.infoscoop.dao.model.Account;
+import org.infoscoop.dao.model.Domain;
 
 /**
  * The filter which manages the login state.
@@ -65,6 +69,7 @@ public class SessionManagerFilter implements Filter {
 	private static Log log = LogFactory.getLog(SessionManagerFilter.class);
 	public static String LOGINUSER_ID_ATTR_NAME = "Uid";
 	public static String LOGINUSER_NAME_ATTR_NAME = "loginUserName";
+	public static String LOGINUSER_DOMAIN_NAME_ATTR_NAME = "Domain";
 	public static String LOGINUSER_SUBJECT_ATTR_NAME = "loginUser";
 
 	private Collection excludePaths = new HashSet();
@@ -179,23 +184,32 @@ public class SessionManagerFilter implements Filter {
 
 			Subject loginUser = (Subject)session.getAttribute(LOGINUSER_SUBJECT_ATTR_NAME);
 			if(loginUser == null || ( isChangeLoginUser(uid, loginUser) && !(session instanceof PreviewImpersonationFilter.PreviewHttpSession) )){
+
 				if( !SessionCreateConfig.getInstance().hasUidHeader() && uid != null ) {
 					AuthenticationService service= AuthenticationService.getInstance();
 					try {
-						if (service != null)
+						if (service != null){
 							loginUser = service.getSubject(uid, (String) session.getAttribute("Domain"));
+							setLoginUserName(httpRequest, loginUser);
+						}
 					} catch (Exception e) {
 						log.error("",e);
 					}
 				}
-				
-				if( loginUser == null || isChangeLoginUser( uid, loginUser )) {
+				if( uid != null && ( loginUser == null || isChangeLoginUser( uid, loginUser )) ) {
 					loginUser = new Subject();
-					loginUser.getPrincipals().add(new ISPrincipal(ISPrincipal.UID_PRINCIPAL, uid));
+					ISPrincipal up = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, uid);
+					String userName = (String)session.getAttribute(LOGINUSER_NAME_ATTR_NAME);
+					up.setDisplayName(userName);
+					loginUser.getPrincipals().add(up);
+					Domain domain = DomainDAO.newInstance().getByName((String) session.getAttribute(LOGINUSER_DOMAIN_NAME_ATTR_NAME));
+					if(domain != null){
+						ISPrincipal domainPrincipal = new ISPrincipal(ISPrincipal.DOMAIN_PRINCIPAL, domain.getId().toString());
+						domainPrincipal.setDisplayName(domain.getName());
+						loginUser.getPrincipals().add(domainPrincipal);
+					}
 				}
-				
-				setLoginUserName(httpRequest, loginUser);
-				
+								
 				for(Map.Entry entry : SessionCreateConfig.getInstance().getRoleHeaderMap().entrySet()){
 					String headerName = (String)entry.getKey();
 					String roleType = (String)entry.getValue();
@@ -220,9 +234,10 @@ public class SessionManagerFilter implements Filter {
 			SecurityController.registerContextSubject(loginUser);
 
 			//TODO:This value is set by OpenIDFilter.
-			for(ISPrincipal p :loginUser.getPrincipals(ISPrincipal.class))
-				if(ISPrincipal.DOMAIN_PRINCIPAL == p.getType())
-					DomainManager.registerContextDomainId(Integer.valueOf(p.getName()));
+			if(loginUser != null)
+				for(ISPrincipal p :loginUser.getPrincipals(ISPrincipal.class))
+					if(ISPrincipal.DOMAIN_PRINCIPAL == p.getType())
+						DomainManager.registerContextDomainId(Integer.valueOf(p.getName()));
 		}
 
 		
