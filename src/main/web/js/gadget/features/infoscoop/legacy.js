@@ -71,8 +71,13 @@ function _IS_GetLoginUid() {
   @param url RSS Feed URL
   @param title RSS title
  */
-function _IS_DropRssReader(url, title, href) {
-	gadgets.rpc.call( null,"is_add_widget_to_panel",null,'RssReader',url, title, href );
+function _IS_DropRssReader(url, title, href, userPrefs) {
+	if(userPrefs){
+		userPrefs['url'] = url;
+	}else{
+		userPrefs = {url:url};
+	}	
+	gadgets.rpc.call( null,"is_add_widget_to_panel",null,'RssReader', title, href, userPrefs );
 }
 /*
   Drop Minibrowser to User Panel.
@@ -80,8 +85,13 @@ function _IS_DropRssReader(url, title, href) {
   @param url WebSite URL
   @param title WebSite title
  */
-function _IS_DropMiniBrowser(url, title, href) {
-	gadgets.rpc.call( null,"is_add_widget_to_panel",null,'MiniBrowser',url, title, href );
+function _IS_DropMiniBrowser(url, title, href, userPrefs) {
+	if(userPrefs){
+		userPrefs['url'] = url;
+	}else{
+		userPrefs = {url:url};
+	}	
+	gadgets.rpc.call( null,"is_add_widget_to_panel",null,'MiniBrowser', title, href, userPrefs );
 }
 
 /*
@@ -90,8 +100,13 @@ function _IS_DropMiniBrowser(url, title, href) {
   @param url Gadget URL
   @param title Gadget title
  */
-function _IS_DropGadget(url, title, href) {
-	gadgets.rpc.call( null,"is_add_widget_to_panel",null, 'Gadget', url, title, href );
+function _IS_DropGadget(url, title, href, userPrefs) {
+	if(userPrefs){
+		userPrefs['url'] = url;
+	}else{
+		userPrefs = {url:url};
+	}	
+	gadgets.rpc.call( null,"is_add_widget_to_panel",null, 'Gadget',  title, href, userPrefs );
 }
 /*
  * Open link in inline frame of infoScoop.

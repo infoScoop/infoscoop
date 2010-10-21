@@ -58,13 +58,19 @@ public class OAuth2LeggedAuthenticator implements Authenticator {
 			HttpMethod method, String uid, String pwd)
 			throws ProxyAuthenticationException {
 		ProxyRequest.OAuthConfig oauthConfig = request.getOauthConfig();
+		String serviceName;
+		if(oauthConfig != null)
+			serviceName = oauthConfig.serviceName;
+		else
+			serviceName = request.getRequestHeader("serviceName");
+
 		try {
-			OAuthContainerConsumer consumerConf = OAutContainerConsumerDAO.newInstance().getByServiceName(oauthConfig.serviceName);
+			OAuthContainerConsumer consumerConf = OAutContainerConsumerDAO.newInstance().getByServiceName(serviceName);
 			OAuthConsumer consumer = new OAuthConsumer(null, consumerConf.getConsumerKey(), consumerConf.getConsumerSecret(), null);
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 		     
 			method.setURI(new URI(method.getURI() + "?xoauth_requestor_id=" + request.getPortalUid()));
-			System.out.println(method.getURI());
+			
 			OAuthMessage message = accessor.newRequestMessage(
 					method.getName(),
 					method.getURI().toString(), 

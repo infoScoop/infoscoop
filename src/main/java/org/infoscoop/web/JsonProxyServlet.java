@@ -238,7 +238,7 @@ public class JsonProxyServlet extends HttpServlet {
 			proxy.setOauthConfig(oauthConfig);
 			break;
 		case TWO_LEGGED_OAUTH:
-			headers.put("authType","oauth2Leggd");
+			headers.put("authType","oauth2Legged");
 			oauthServiceName = params.get("OAUTH_SERVICE_NAME");
 			ProxyRequest.OAuthConfig oauth2leggedConfig = proxy.new OAuthConfig(oauthServiceName);
 			proxy.setOauthConfig(oauth2leggedConfig);

@@ -17,7 +17,7 @@
 </bean>
 <bean id="oauthAuthenticator" class="org.infoscoop.request.OAuthAuthenticator">
 </bean>
-<bean id="oauth2LeggdAuthenticator" class="org.infoscoop.request.OAuth2LeggedAuthenticator">
+<bean id="oauth2LeggedAuthenticator" class="org.infoscoop.request.OAuth2LeggedAuthenticator">
 </bean>
 <bean id="signedAuthenticator" class="org.infoscoop.request.SignedAuthenticator">
 </bean>

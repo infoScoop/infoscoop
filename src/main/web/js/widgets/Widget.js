@@ -1294,6 +1294,12 @@ IS_Widget.prototype.classDef = function() {
 				if(!opt.requestHeaders)opt.requestHeaders = new Array();
 				opt.requestHeaders.push("authType");
 				opt.requestHeaders.push(authType);
+			}else if (authType && authType.indexOf("oauth") >= 0){
+				opt.requestHeaders.push("authType");
+				opt.requestHeaders.push(authType);
+				var serviceName = self.getUserPref("serviceName");
+				opt.requestHeaders.push("serviceName");
+				opt.requestHeaders.push(serviceName);
 			}
 
 			if(authParameNames){
