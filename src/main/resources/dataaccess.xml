@@ -77,6 +77,11 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
+	<bean id="oauthContainerConsumerDAO" class="org.infoscoop.dao.OAutContainerConsumerDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
 	<bean id="holidaysDAO" class="org.infoscoop.dao.HolidaysDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>

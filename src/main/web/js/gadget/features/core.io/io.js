@@ -379,7 +379,7 @@ gadgets.io = function() {
       };
 
       // OAuth goodies
-      if (auth === "oauth" || auth === "signed") {
+      if (auth === "oauth" || auth === "signed" || auth === "two_legged_oauth") {
         if (gadgets.io.oauthReceivedCallbackUrl_) {
           paramData.OAUTH_RECEIVED_CALLBACK = gadgets.io.oauthReceivedCallbackUrl_;
           gadgets.io.oauthReceivedCallbackUrl_ = null;
@@ -533,5 +533,5 @@ gadgets.io.ContentType = gadgets.util.makeEnum([
 ]);
 
 gadgets.io.AuthorizationType = gadgets.util.makeEnum([
-  "NONE", "SIGNED", "OAUTH"
+  "NONE", "SIGNED", "OAUTH", "TWO_LEGGED_OAUTH"
 ]);

@@ -116,6 +116,11 @@
 			</fileset>
 		</copy>
 		
+		<mkdir dir="${build.main}/js/resources" />
+		<copy todir="${build.main}/js/resources">
+			<fileset dir="${src.main.web}/js/resources/"/>
+		</copy>
+		
 		<copy todir="${build.main}/js/utils" file="${src.main.web}/js/utils/ajax304.js"/>
 		<copy todir="${build.main}/js/utils" file="${src.main.web}/js/utils/utils.js"/>
 		
@@ -630,7 +635,6 @@
     	<copy todir="${release.home}" file="${basedir}/README.ja.txt"/>
 		
 		<antcall target="initdb"/>
-		<antcall target="migration"/>
     	
 		<copy todir="${release.home}/${app.main.name}" file="${build.home}/${app.main.name}.war"/>
 		<fixcrlf srcdir="${src.remakewar}/" eol="lf" eof="remove" includes="**/*.sh" />
@@ -676,24 +680,7 @@
 			</tarfileset>
     	</tar>
     </target>
-    <target name="migration">
-    	<ant antfile="${basedir}/build_migration.xml" inheritall="false"/>
     	
-    	<mkdir dir="${release.home}/tools/migration"/>
-    	<copy todir="${release.home}/tools/migration">
-    		<fileset dir="${build.migration}"/>
-    	</copy>
-    	<tar destfile="${release.home}/tools/migration.tar.gz" compression="gzip">
-    		<tarfileset dir="${release.home}/tools/" mode="755">
-				<include name="migration/*.sh"/>
-			</tarfileset>
-    		<tarfileset dir="${release.home}/tools/">
-				<include name="migration/**"/>
-				<exclude name="migration/*.sh"/>
-			</tarfileset>
-    	</tar>
-    </target>
-	
 	<!--build for google apps-->
 	<target name="googleapps-prepare">
 		<copy todir="${build.main}" file="${googleapps.web}/gapps_openid_login.jsp"/>
@@ -752,10 +739,6 @@
 		
 		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
 			<param name="file" value="core.io/io"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="drag/drag"/>
 		</antcall>
 		
 		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>

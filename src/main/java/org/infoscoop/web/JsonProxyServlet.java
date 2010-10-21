@@ -40,7 +40,9 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.OAutContainerConsumerDAO;
 import org.infoscoop.dao.OAuthTokenDAO;
+import org.infoscoop.dao.model.OAuthContainerConsumer;
 import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.Authenticator;
 import org.infoscoop.request.ProxyRequest;
@@ -111,6 +113,7 @@ public class JsonProxyServlet extends HttpServlet {
 		NONE,
 		SIGNED,
 		OAUTH,
+		TWO_LEGGED_OAUTH,
 		SEND_PORTAL_UID_HEADER,
 		POST_PORTAL_UID,
 		BASIC;
@@ -233,6 +236,12 @@ public class JsonProxyServlet extends HttpServlet {
 			}
 			
 			proxy.setOauthConfig(oauthConfig);
+			break;
+		case TWO_LEGGED_OAUTH:
+			headers.put("authType","oauth2Leggd");
+			oauthServiceName = params.get("OAUTH_SERVICE_NAME");
+			ProxyRequest.OAuthConfig oauth2leggedConfig = proxy.new OAuthConfig(oauthServiceName);
+			proxy.setOauthConfig(oauth2leggedConfig);
 			break;
 		case SIGNED:
 			headers.put("authType", "signed");

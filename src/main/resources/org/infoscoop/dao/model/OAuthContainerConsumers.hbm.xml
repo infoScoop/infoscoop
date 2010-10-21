@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="OAuthContainerConsumer"
+		table="is_oauth_container_consumers"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="Id"
+			type="java.lang.Long"
+			column="id"
+		>
+			<generator class="native"/>
+		</id>
+
+		<property
+			name="ServiceName"
+			column="service_name"
+			type="string"
+			not-null="true"
+			length="255"
+		/>
+		<property
+			name="ConsumerKey"
+			column="consumer_key"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="ConsumerSecret"
+			column="consumer_secret"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="SignatureMethod"
+			column="signature_method"
+			type="string"
+			not-null="false"
+			length="20"
+		/>
+
+
+	</class>	
+</hibernate-mapping>

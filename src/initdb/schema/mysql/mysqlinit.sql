@@ -341,6 +341,17 @@ create table IS_OAUTH_CONSUMERS (
 ) ENGINE=InnoDB;
 
 --
+-- OAUTH_CONTAINER_CONSUMER
+--
+create table IS_OAUTH_CONTAINER_CONSUMERS (
+  id bigint not null auto_increment primary key,
+  service_name varchar(255) not null,
+  consumer_key varchar(255),
+  consumer_secret varchar(255),
+  signature_method varchar(20)
+) ENGINE=InnoDB;
+
+--
 -- OAUTH_CERTIFICATE
 --
 create table IS_OAUTH_CERTIFICATE (
