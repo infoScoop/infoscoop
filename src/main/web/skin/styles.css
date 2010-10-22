@@ -21,11 +21,11 @@ a:visited { color:#551a8b; }
 a:active { color:#ff0000; }
 
 body{
- margin:0;
- padding:0;
- overflow-y: scroll; 
- font-size:100%;
- font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','ＭＳ Ｐゴシック',sans-serif;
+	margin:0;
+	padding:0;
+	overflow-y: scroll; 
+	font-size:100%;
+	font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','ＭＳ Ｐゴシック',sans-serif;
 }
 
 th{

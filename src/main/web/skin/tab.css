@@ -20,15 +20,14 @@
 .infoScoop #tab-container {
 	padding-top:3px;
 	padding-bottom:2px;
-	height:26px;
+	height:16px;
 }
 
 .infoScoop #tabs{
-      float:left;
-      width:100%;
-      font-size:93%;
-      line-height:normal;
-	  border-bottom:1px solid gray;
+	float:left;
+	width:100%;
+	font-size:93%;
+	line-height:normal;
 }
 
 .infoScoop #tabs .tablink,
