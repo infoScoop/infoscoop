@@ -86,11 +86,6 @@
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jackson-core-asl-1.5.5.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jackson-mapper-asl-1.5.5.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/AppsForYourDomainClient.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-appsforyourdomain-1.0.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-appsforyourdomain-meta-1.0.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-client-1.0.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-client-meta-1.0.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/gdata-core-1.0.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/google-collections-1.0-rc2.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/google-collections-0.8.jar"/>
 	<classpathentry kind="output" path="src/main/web/WEB-INF/classes"/>
 </classpath>
