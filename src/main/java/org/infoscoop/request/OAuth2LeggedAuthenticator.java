@@ -19,7 +19,6 @@ package org.infoscoop.request;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,17 +40,11 @@ import org.infoscoop.dao.model.OAuthContainerConsumer;
 public class OAuth2LeggedAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
 	
-	private static String AUTH_CALLBACK_URL = "oauthcallback";
-
 	private static Log log = LogFactory.getLog(OAuth2LeggedAuthenticator.class);
 	
 	private static Map<String, OAuthConsumer> consumers = new HashMap<String, OAuthConsumer>();
 	
 	public OAuth2LeggedAuthenticator(){
-	}
-
-	public static OAuthConsumer getConsumer(String gadgetUrl, String serviceName) {
-		return consumers.get(gadgetUrl + "\t" + serviceName);
 	}
 	
 	public void doAuthentication(HttpClient client, ProxyRequest request,
@@ -68,9 +61,11 @@ public class OAuth2LeggedAuthenticator implements Authenticator {
 			OAuthContainerConsumer consumerConf = OAutContainerConsumerDAO.newInstance().getByServiceName(serviceName);
 			OAuthConsumer consumer = new OAuthConsumer(null, consumerConf.getConsumerKey(), consumerConf.getConsumerSecret(), null);
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
-		     
-			method.setURI(new URI(method.getURI() + "?xoauth_requestor_id=" + request.getPortalUid()));
-			
+
+			method.setURI(new URI(method.getURI().getURI()
+					+ (method.getURI().getQuery() == null ? "?" : "&")
+					+ "xoauth_requestor_id=" + request.getPortalUid(), false));
+
 			OAuthMessage message = accessor.newRequestMessage(
 					method.getName(),
 					method.getURI().toString(), 
