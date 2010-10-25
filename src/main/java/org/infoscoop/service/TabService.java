@@ -149,6 +149,7 @@ public class TabService {
 				staticTab = this.createTabFromTabTemplate(uid, tabTemplate);
 				isNewTab = true;
 			}
+			staticTab.setName(tabTemplate.getName());
 			staticTab.setDisabledDynamicPanel(tabTemplate.getAreaType() != TabTemplate.TYPE_USE_BOTH_AREA );
 			staticTab.setAdjustStaticHeight(tabTemplate.getAreaType() == TabTemplate.TYPE_STATIC_AREA_ADJUST_HEIGHT );
 
