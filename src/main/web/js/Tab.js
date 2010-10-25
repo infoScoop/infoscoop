@@ -116,7 +116,7 @@ IS_Portal.getNextTabNumber = function(){
 	@param numCol Column number of the tab adding.
 	@disabledDynamicPanel disable dynamic panel.
 */
-IS_Portal.addTab = function( idNumber, name, type, layout, numCol, columnsWidth, disabledDynamicPanel, isInitialize){
+IS_Portal.addTab = function( idNumber, name, type, layout, numCol, columnsWidth, disabledDynamicPanel, adjustStaticHeight, isInitialize){
 	/**
 		For managing tab information object
 		@param id id of tab
@@ -126,7 +126,7 @@ IS_Portal.addTab = function( idNumber, name, type, layout, numCol, columnsWidth,
 		@param panel Div element of panel that correspond tab
 		@param tabNumber Number of displaying order of tab.
 	*/
-	var Tab = function(id, name, type, tab, panel, tabNumber, columnsWidth, disabledDynamicPanel){
+	var Tab = function(id, name, type, tab, panel, tabNumber, columnsWidth, disabledDynamicPanel, adjustStaticHeight){
 		this.id = id;
 		this.name = name;
 		this.type = type;
@@ -138,6 +138,7 @@ IS_Portal.addTab = function( idNumber, name, type, layout, numCol, columnsWidth,
 		if(columnsWidth)
 			this.columnsWidth = columnsWidth;
 		this.disabledDynamicPanel = disabledDynamicPanel;
+		this.adjustStaticHeight = adjustStaticHeight;
 			
 		this.refresh = function(e){
 			Element.addClassName( tab,"loading");
@@ -210,7 +211,7 @@ IS_Portal.addTab = function( idNumber, name, type, layout, numCol, columnsWidth,
 //	IS_Portal.subWidgetLists[tabDiv.id] = new Object();
 	IS_Portal.columnsObjs[tabDiv.id] = {};
 	
-	var tabObj = new Tab(tabDiv.id, name, type, tabDiv, panelDiv, IS_Portal.tabList.length, columnsWidth, disabledDynamicPanel);
+	var tabObj = new Tab(tabDiv.id, name, type, tabDiv, panelDiv, IS_Portal.tabList.length, columnsWidth, disabledDynamicPanel, adjustStaticHeight);
 	IS_Portal.tabs[tabObj.id] = tabObj;
 	
 	IS_Portal.tabList.push(tabDiv);
@@ -1195,6 +1196,8 @@ IS_Portal.changeActiveTab = function( changeTab, isInitialize ){
 	
 	IS_Widget.RssReader.RssItemRender.adjustRssDesc();
 	
+	IS_Portal.adjustStaticWidgetHeight();
+	
 	var changePanel = function(e){
 		try{
 			if(lastTabId != null){
@@ -1240,6 +1243,37 @@ IS_Portal.startChangeTab = function(e){
 IS_Portal.endChangeTab = function(e){
 	IS_Portal.endIndicator();
 	IS_EventDispatcher.newEvent("changeTab");
+}
+
+IS_Portal.adjustStaticWidgetHeight = function(){
+	var currentTab = IS_Portal.tabs[IS_Portal.currentTabId];
+	if(currentTab.type != "static")return;
+	
+	var tabNumber = IS_Portal.currentTabId.substr(3);
+	console.log(currentTab);
+	var adjustToWindowHeight = currentTab.adjustStaticHeight;
+	if(!adjustToWindowHeight)return;
+	var widgets = IS_Portal.widgetLists[IS_Portal.currentTabId];
+	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - $("tab-container").getHeight() - 36;
+	var isReady = false;
+	for(widgetId in widgets){
+		var widget = widgets[widgetId];
+		if(!widget.isBuilt)break;
+		if(widget.panelType == "StaticPanel" && widget.widgetType != 'Ticker' && widget.widgetType != 'Ranking'){
+			var height = widget.headerContent ? adjustHeight : adjustHeight + 22;
+			if(widget.widgetConf && widget.widgetConf.noBorder) height += 2;
+			if(widget.iframe)
+			  widget.iframe.style.height = height + "px";
+			widget.elm_widgetContent.style.height = height + "px";
+			widget.staticWidgetHeight =  height ;
+
+			if(widget.widgetType == 'RssReader' && widget.content.rssContentView){
+				widget.content.rssContentView.setViewportHeight( height );
+			}
+		}
+		isReady = true;
+	}
+	if(!isReady)setTimeout(IS_Portal.adjustStaticWidgetHeight,300);
 }
 
 /**

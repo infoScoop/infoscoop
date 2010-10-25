@@ -171,6 +171,7 @@ public class TabTemplate extends BaseTabTemplate {
 		tabClone.setAccessLevel(this.getAccessLevel());
 		tabClone.setTabId(this.getTabId());
 		tabClone.setOrderIndex(this.getOrderIndex());
+		tabClone.setAreaType(this.getAreaType());
 		tabClone.setTemp(Integer.valueOf(1));
 		TabTemplateDAO.newInstance().save(tabClone);
 		

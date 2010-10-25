@@ -150,7 +150,7 @@ public class TabService {
 				isNewTab = true;
 			}
 			staticTab.setDisabledDynamicPanel(tabTemplate.getAreaType() != TabTemplate.TYPE_USE_BOTH_AREA );
-			staticTab.setAdjustStaticHeight(tabTemplate.getAreaType() != TabTemplate.TYPE_STATIC_AREA_ADJUST_HEIGHT );
+			staticTab.setAdjustStaticHeight(tabTemplate.getAreaType() == TabTemplate.TYPE_STATIC_AREA_ADJUST_HEIGHT );
 
 			if(isNewTab){
 				tabList.add(new TabDetail(

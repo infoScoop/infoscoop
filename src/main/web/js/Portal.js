@@ -120,6 +120,8 @@ IS_Portal.start = function() {
 	Event.observe(window, 'resize', IS_Portal.adjustSiteMenuHeight, false);
 	Event.observe(window, 'resize', IS_Portal.adjustIframeHeight, false);
 	Event.observe(window, 'resize', IS_Portal.adjustGadgetHeight , false);
+	Event.observe(window, 'resize', IS_Portal.adjustStaticWidgetHeight, false);
+	IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustStaticWidgetHeight);
 
 
 	var messageBarDiv = $('message-bar-controles');

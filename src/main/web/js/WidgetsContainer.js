@@ -409,7 +409,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 						IS_EventDispatcher.newEvent("adjustedMessageBar");
 					}
 					
-					IS_Portal.addTab( id, tabName, tabType, widgetConfList[tabId].staticPanelLayout, numCol, columnsWidth, disabledDynamicPanel, true);
+					IS_Portal.addTab( id, tabName, tabType, widgetConfList[tabId].staticPanelLayout, numCol, columnsWidth, disabledDynamicPanel, widgetConfList[tabId].adjustStaticHeight, true);
 					/*
 					if(!useTab){
 						if(widgetConfList[0].tabNumber){
