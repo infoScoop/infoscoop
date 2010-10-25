@@ -38,7 +38,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	var maximizeIcons = [
 		{
 		  type:	"refresh",
-		  imgUrl:	"refresh.gif",
+		  imgUrl:	"refresh.png",
 
 		  alt: IS_R.lb_refresh
 		},
@@ -162,7 +162,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			if(header.refresh != 'off'){
 			  visibleIcons.push({
 				type:	"refresh",
-				imgUrl:	"refresh.gif",
+				imgUrl:	"refresh.png",
 				  
 				alt: IS_R.lb_refresh
 			  });

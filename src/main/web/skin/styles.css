@@ -86,7 +86,10 @@ fieldset {
 	vertical-align:top;
 	width:100%;
 }
-
+.infoScoop #panels .panel {
+	margin:5px 10px;
+	padding:5px;
+}
 #portal-header{
 	width: 100%;
 	margin-top:0px;

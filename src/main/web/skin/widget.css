@@ -40,8 +40,9 @@
 	*/
 	width: auto;
 	overflow:hidden;
-
-	border: 1px solid #BCBCBC;
+	-moz-border-radius:5 5 2 5px;
+	-webkit-border-radius:5 5 2 5px;
+	border-radius:5 5 2 5px;
 	background-color:#FFF;
 }
 

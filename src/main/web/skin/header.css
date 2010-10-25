@@ -47,6 +47,9 @@
 	width:100%;
 	text-align:center;
 }
+.label{
+	padding:1px 8px 3px 19px;
+}
 .right{
 	float:right;
 	text-align:right;
@@ -69,6 +72,9 @@
 .search_box{
 	height:23px;
 	width:200px;
+}
+.submit_button{
+	padding:0 0.4em;
 }
 .label{
 	padding:1px 8px 3px 19px;
