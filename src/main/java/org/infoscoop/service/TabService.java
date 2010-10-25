@@ -366,7 +366,7 @@ public class TabService {
 				
 		tabDAO.deleteTab( staticTab );
 		
-		return new Object[]{newTab, dynamicWidgets, new ArrayList<Widget>()};
+		return new Object[]{newTab, null, dynamicWidgets, new ArrayList<Widget>()};
 	}
 
 	private List<String> createDynamicTabIdList( Collection<Tab> tabList ) {
