@@ -184,6 +184,9 @@ public class TabService {
 						));
 			}
 		}
+		if (tabList.size() == 1) {
+			tabList.add(createNewDynamicTab(uid));
+		}
 		
 		return tabList;
 	}
@@ -367,6 +370,19 @@ public class TabService {
 		tabDAO.deleteTab( staticTab );
 		
 		return new TabDetail(newTab, null, dynamicWidgets, new ArrayList<Widget>());
+	}
+	
+	private TabDetail createNewDynamicTab(String uid) {
+		int newTabId = getNextNumber(new ArrayList());
+		Tab newTab = new Tab(new TABPK(DomainManager.getContextDomainId(), uid,
+				String.valueOf(newTabId)));
+		newTab.setType("dynamic");
+		newTab.setName("Home");
+		newTab.setData("{}");
+		newTab.setOrder(1);
+		tabDAO.addTab(newTab);
+		return new TabDetail(newTab, null, new ArrayList<Widget>(),
+				new ArrayList<Widget>());
 	}
 
 	private List<String> createDynamicTabIdList( Collection<Tab> tabList ) {

@@ -146,6 +146,10 @@ IS_Portal.addTab = function( idNumber, name, type, layout, numCol, columnsWidth,
 			return false;
 		}
 		this.close = function(){
+			if(IS_Portal.tabList.length == 1){
+				alert(IS_R.ms_cannotDeleteLastTab);
+				return false;
+			}
 			if( window.confirm(IS_R.getResource(IS_R.ms_deleteTabConfirm,[this.name]))){
 				IS_Portal.deleteTab(this.tab);
 			}

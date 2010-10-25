@@ -77,6 +77,7 @@ var IS_R = {
 	"ms_loadTimeout": "Request timeout occurred while loading.",
 	"lb_descLink": "Detail>>",
 	"ms_showTabByClick": "This tab is displayed when clicking.",
+	"ms_cannotDeleteLastTab": "You must have one tab at least.",
 	"ms_deleteTabConfirm": "Are you sure to delete \"{0}\" ?",
 	"lb_showAllLatestItems": "Display all of new arrivals.",
 	"ms_loadCancel": "Canceling the loading because of current loading. {0}",

@@ -77,6 +77,7 @@ var IS_R = {
 	"ms_loadTimeout": "読み込みがタイムアウトしました。",
 	"lb_descLink": "詳細>>",
 	"ms_showTabByClick": "クリックするとこのタブを表示します",
+	"ms_cannotDeleteLastTab": "タブを全て削除することはできません。",
 	"ms_deleteTabConfirm": "「{0}」を削除します。よろしいですか？",
 	"lb_showAllLatestItems": "新着をすべて表示",
 	"ms_loadCancel": "ロード中のためロードをキャンセルします。{0}",

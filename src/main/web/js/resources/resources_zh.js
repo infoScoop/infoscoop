@@ -19,7 +19,7 @@ var IS_R = {
 	"ms_dragNoMerge": "一直压下Ctrl键，RSS阅读器之间不能进行归并。",
 	"lb_add": "追加",
 	"lb_countryMX": "墨西哥",
-	"ms_closeMySiteMap": "关闭网站地图"
+	"ms_closeMySiteMap": "关闭网站地图",
 	"lb_refresh": "更新",
 	"ms_validateError": "验证检验失败。{0}",
 	"ms_getdatafailed": "没有取得数据。",
@@ -77,6 +77,7 @@ var IS_R = {
 	"ms_loadTimeout": "读取超时。",
 	"lb_descLink": "详细>>",
 	"ms_showTabByClick": "点击时表示这个标签",
+	"ms_cannotDeleteLastTab": "You must have one tab at least.",
 	"ms_deleteTabConfirm": "「删除{0}」。可以吗？",
 	"lb_showAllLatestItems": "表示新到信息",
 	"ms_loadCancel": "正在下载中，取消下载。{0}",
