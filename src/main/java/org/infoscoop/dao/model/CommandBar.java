@@ -43,7 +43,7 @@ public class CommandBar extends BaseCommandBar {
 		super.setFkDomainId(DomainManager.getContextDomainId());
 	}
 
-	public Object getLayout() {
+	public String getLayout() {
 		StringBuffer html = new StringBuffer();
 		html.append("<table cellpadding='0' cellspacing='3' width='100%'>\n  <tr>");
 		for(CommandBarStaticGadget gadget: super.getCommandBarStaticGadgets()){

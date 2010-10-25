@@ -116,20 +116,21 @@ public class TabService {
 	 * @throws Exception 
 	 * @throws DBAccessException 
 	 */
-	public Collection<Object[]> getWidgetsNode(String uid) throws Exception {
-		Collection<Object[]> tabList = new ArrayList<Object[]>();
+	public Collection<TabDetail> getWidgetsNode(String uid) throws Exception {
+		Collection<TabDetail> tabList = new ArrayList<TabDetail>();
 	
 		CommandBar cmdBar = CommandBarService.getHandle().getMyCommandBar();
 		Tab commandbar = new Tab(new TABPK(cmdBar.getFkDomainId(), uid, "commandbar"));
 		commandbar.setName("commandbar");
 		commandbar.setData("{}");
 		tabList.add(
-				new Object[]{
-						commandbar,
-						cmdBar.getLayout(),
-						new ArrayList<Widget>(),
-						createStaticGadgetList(uid, cmdBar),
-				});
+				new TabDetail(
+					commandbar,
+					cmdBar.getLayout(),
+					new ArrayList<Widget>(),
+					createStaticGadgetList(uid, cmdBar)
+				)
+			);
 		
 		
 		List<TabTemplate> tabTemplates = TabTemplateService.getHandle().getMyTabTemplate();
@@ -152,19 +153,18 @@ public class TabService {
 			staticTab.setAdjustStaticHeight(tabTemplate.getAreaType() != TabTemplate.TYPE_STATIC_AREA_ADJUST_HEIGHT );
 
 			if(isNewTab){
-				tabList.add(new Object[]{
+				tabList.add(new TabDetail(
 						staticTab,
 						tabTemplate.getLayout(),
 						this.createPersonalizeGadgetList( uid, tabTemplate ),
 						this.createStaticGadgetList( uid, tabTemplate )
-					});
+					));
 			}else{
-				tabList.add(new Object[]{
-						staticTab,
-						tabTemplate.getLayout(),
-						this.copyPersonalizeGadgetsUserPrefs( staticTab, tabTemplate ),
-						this.copyStaticGadgetsUserPrefs( uid, staticTab, tabTemplate )
-						});
+				tabList.add(new TabDetail(
+						staticTab, tabTemplate.getLayout(),
+						this.copyPersonalizeGadgetsUserPrefs(staticTab, tabTemplate),
+						this.copyStaticGadgetsUserPrefs(uid, staticTab, tabTemplate)
+					));
 			}
 			tabTemplateIds.add(tabTemplate.getTabId());
 		}
@@ -176,19 +176,19 @@ public class TabService {
 					tabList.add(convertStaticToDynamic(tab, dynamicTabIdList));
 			}else{
 				tabList.add(
-						new Object[]{
-								tab,
-								null,
-								tabDAO.getDynamicWidgetList( tab ),
-								tabDAO.getStaticWidgetList( tab )
-						});
+						new TabDetail(
+							tab,
+							null,
+							tabDAO.getDynamicWidgetList( tab ),
+							tabDAO.getStaticWidgetList( tab )
+						));
 			}
 		}
 		
 		return tabList;
 	}
 	
-	private Object copyStaticGadgetsUserPrefs(String uid, Tab tab,
+	private List<Widget> copyStaticGadgetsUserPrefs(String uid, Tab tab,
 			TabTemplate tabTemplate) {
 		List<Widget> widgets = tabDAO.getStaticWidgetList( tab );
 		Map<String, Widget> widgetMap = new HashMap<String, Widget>();
@@ -232,7 +232,7 @@ public class TabService {
 		return widget;
 	}
 	
-	private Object copyPersonalizeGadgetsUserPrefs(Tab tab,
+	private List<Widget> copyPersonalizeGadgetsUserPrefs(Tab tab,
 			TabTemplate tabTemplate) {
 		List<Widget> widgets = tabDAO.getDynamicWidgetList( tab );
 		Map<String, Widget> widgetMap = new HashMap<String, Widget>();
@@ -288,7 +288,7 @@ public class TabService {
 		return widgetList;
 	}
 
-	private Object createPersonalizeGadgetList(String uid, TabTemplate tabTemplate) {
+	private List<Widget> createPersonalizeGadgetList(String uid, TabTemplate tabTemplate) {
 		List<Widget> widgetList = new ArrayList<Widget>();
 		for(TabTemplatePersonalizeGadget gadget : tabTemplate.getTabTemplatePersonalizeGadgets()){
 			GadgetInstance gadgetInst = gadget.getFkGadgetInstance();;
@@ -338,7 +338,7 @@ public class TabService {
 		return newTab;
 	}
 	
-	private Object[] convertStaticToDynamic( Tab staticTab, List<String> dynamicTabIdList ) {
+	private TabDetail convertStaticToDynamic( Tab staticTab, List<String> dynamicTabIdList ) {
 		// Processing of allocating tab ID again.
 		int newTabId = getNextNumber(dynamicTabIdList);
 		
@@ -352,7 +352,7 @@ public class TabService {
 		
 		tabDAO.addTab(newTab);
 		
-		Collection<Widget> dynamicWidgets = tabDAO.getDynamicWidgetList(staticTab.getUid(),staticTab.getTabId() );
+		List<Widget> dynamicWidgets = tabDAO.getDynamicWidgetList(staticTab.getUid(),staticTab.getTabId() );
 		for( Widget widget : dynamicWidgets) {
 			widget.setTabid( String.valueOf( newTabId ) );
 			widget.setIsstatic( Integer.valueOf( 0 ) );
@@ -366,7 +366,7 @@ public class TabService {
 				
 		tabDAO.deleteTab( staticTab );
 		
-		return new Object[]{newTab, null, dynamicWidgets, new ArrayList<Widget>()};
+		return new TabDetail(newTab, null, dynamicWidgets, new ArrayList<Widget>());
 	}
 
 	private List<String> createDynamicTabIdList( Collection<Tab> tabList ) {
@@ -482,5 +482,36 @@ public class TabService {
 		SessionDAO.newInstance().setForceReload( uid );
 		
 		log.info("reset user data ["+uid+"]");
+	}
+	
+	public class TabDetail {
+		private Tab tab;
+		private String layout;
+		private List<Widget> staticWidgets;
+		private List<Widget> personalWidgets;
+
+		public TabDetail(Tab tab, String layout, List<Widget> personalWidgets,
+				List<Widget> staticWidgets) {
+			this.tab = tab;
+			this.layout = layout;
+			this.staticWidgets = staticWidgets;
+			this.personalWidgets = personalWidgets;
+		}
+
+		public Tab getTab() {
+			return tab;
+		}
+
+		public String getLayout() {
+			return layout;
+		}
+
+		public List<Widget> getStaticWidgets() {
+			return staticWidgets;
+		}
+
+		public List<Widget> getPersonalWidgets() {
+			return personalWidgets;
+		}
 	}
 }
