@@ -622,7 +622,6 @@ function init() {
 	}
 	IS_Droppables.add(panelBody, menuopt);
 	
-	var initSelectLayoutPanel = false;
 	new Control.Modal(
 			'select_layout_link',
 			{
@@ -630,8 +629,6 @@ function init() {
 			  width: 580,
 			  height: 440,
 				afterOpen:function(){
-					if(initSelectLayoutPanel)return;
-					initSelectLayoutPanel = true;
 					var staticLayoutList = $$('#modal_container .staticLayout');
 					for(var i = 0; i < staticLayoutList.length; i++){
 						var layoutDiv = staticLayoutList[i];
@@ -644,7 +641,8 @@ function init() {
 						var layoutClick = function(el,e) {
 							$('staticAreaContainer').innerHTML = el.innerHTML;
 							prepareStaticArea();
-							clearStaticGadgets();
+							//clearStaticGadgets();
+							reloadStaticGadgets();
 							$('layout').value = $('staticAreaContainer').innerHTML;
 							$('layoutModified').value = "true";
 							//TODO:remove ols static gadgets;
@@ -662,30 +660,28 @@ function init() {
 			}
 		);
 	
-	var initEditLayoutPanel = false;
 	new Control.Modal(
 		'edit_layout_link',
 		{
-		  opacity: 0.4,
-		  width: 580,
-		  height: 460,
-		  afterOpen:function(){
-			  if(initEditLayoutPanel)return;
-			  initEditLayoutPanel = true;
-			  $("edit_layout_textarea").value = $('layout').value;
-			  Event.observe( $('edit_layout_ok'), 'click', function(){
-				  var layout = $("edit_layout_textarea").value;
-				  $('staticAreaContainer').innerHTML = layout;
-				  prepareStaticArea();
-				  clearStaticGadgets();
-				  $('layout').value = $('staticAreaContainer').innerHTML;
-				  $('layoutModified').value = "true";
-				  Control.Modal.close();
-			  },false);
-			  Event.observe( $('edit_layout_cancel'), 'click', function(){
-				  Control.Modal.close();
-			  },false);
-		  }
+			opacity: 0.4,
+			width: 580,
+			height: 460,
+			afterOpen:function(){
+				$("edit_layout_textarea").value = $('layout').value;
+				Event.observe( $('edit_layout_ok'), 'click', function(){
+					var layout = $("edit_layout_textarea").value;
+					$('staticAreaContainer').innerHTML = layout;
+					prepareStaticArea();
+					//clearStaticGadgets();
+					reloadStaticGadgets();
+					$('layout').value = $('staticAreaContainer').innerHTML;
+					$('layoutModified').value = "true";
+					Control.Modal.close();
+				},false);
+				Event.observe( $('edit_layout_cancel'), 'click', function(){
+					Control.Modal.close();
+				},false);
+			}
 		}
 	);
 	
@@ -696,10 +692,7 @@ function changeFlag(){
 }
 
 function isTemp(flag){
-	if (flag == 1)
-		return true;
-	else
-		return false;
+	return flag == 1;
 }
 
 function clearStaticGadgets(){
@@ -755,6 +748,10 @@ IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
 function displayStaticGadget(widgetOpt){
 	var containerId = widgetOpt.id;
 	var container = $(containerId);
+	if(!container) {
+		delete IS_Portal.widgetLists[IS_Portal.currentTabId][containerId];
+		return;
+	}
 	container.id = "s_" + containerId;
 	var widget = new IS_Widget(false, widgetOpt);
 	widget.panelType = "StaticPanel";
@@ -766,6 +763,15 @@ function displayStaticGadget(widgetOpt){
 		container.appendChild(widget.elm_widget);
 	
 	widget.loadContents();
+	IS_Portal.widgetLists[IS_Portal.currentTabId][widget.id] = widget;
+}
+function reloadStaticGadgets(){
+	var widgets = IS_Portal.widgetLists[IS_Portal.currentTabId];
+	for(var id in widgets){
+		var widget = widgets[id];
+		if(widget.panelType != "StaticPanel") return;
+		displayStaticGadget(widget.widgetConf);
+	}
 }
 </script>
 
