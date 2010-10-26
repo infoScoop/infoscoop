@@ -23,19 +23,21 @@
 body.infoScoop {
 	background:#E1E1D6;
 }
-a:link{color:#363B4D}
-a:visited{color:#363B4D}
-a:hover{color:#F78A17}
-a:active{color:#F78A17}
+a{text-decoration: none;}
+a:link {color:#0000cc; }
+a:visited { color:#551a8b; }
+a:active { color:#ff0000; }
+a:hover{text-decoration: underline;}
 /** HEADER */
 .header{
 	background-color:#DBE8F9;
 	border-color:1px solid #DBE8F9;
 }
-.launcher a:link{color:#484452;text-decoration:none;}
-.launcher a:visited{color:#484452;text-decoration:none;}
-.launcher a:hover{color:#F78A17;text-decoration:none;}
-.launcher a:active{color:#F78A17;text-decoration:none;}
+.launcher a{color:#21264B;}
+.launcher a:link{}
+.launcher a:visited{}
+.launcher a:hover{text-decoration:underline;color:#FFAB2E;}
+.launcher a:active{text-decoration:underline;color:#FFAB2E;}
 .launcher #home{
 	background:url(./imgs/header/house.gif) no-repeat;
 }
@@ -87,7 +89,13 @@ a:active{color:#F78A17}
 	background: #dfe4e8;
 	text-decoration:none;
 }
-
+.account{
+	color:#444444;
+}
+.logout a:link{color:#215894;text-decoration:underline;}
+.logout a:visited{color:#215894;text-decoration:underline;}
+.logout a:hover{color:#FFAB2E;text-decoration:underline;}
+.logout a:active{color:#FFAB2E;text-decoration:underline;}
 /*Panel*/
 .infoScoop #panels .panel {
 	background-color:#FFFFFF;
@@ -95,7 +103,7 @@ a:active{color:#F78A17}
 /*Tab*/
 .infoScoop #tabs .addatab a,
 .infoScoop.admin .tabs .addatab a {
-	color:#666666;
+	color:#215894;
 }
 /*Command bar*/
 #command-bar{
@@ -107,15 +115,33 @@ a:active{color:#F78A17}
 .infoScoop .widget .widgetHeader {
 	background-color:#5A79A5;
 }
-
-.infoScoop .widget .widgetHeader a:link{color:#F4F5E7;}/*TODO://must change the color*/
-.infoScoop .widget .widgetHeader a:visited{color:#F4F5E7;}/*TODO://must change the color*/
-.infoScoop .widget .widgetHeader a:hover{color:#F4F5E7;}
-.infoScoop .widget .widgetHeader a:active{color:#F4F5E7;}
 .infoScoop .widget .widgetTitle{
-	color:#F4F5E7;
+	color:#FFFFFF;
+	font-size:80%;
 }
+.infoScoop .widget .widgetHeader a{color:#FFFFFF;}
+.infoScoop .widget .widgetHeader a:link{text-decoration:underline;}
+.infoScoop .widget .widgetHeader a:visited{text-decoration:underline;}
+.infoScoop .widget .widgetHeader a:hover{text-decoration:underline;}
+.infoScoop .widget .widgetHeader a:active{text-decoration:underline;}
+
 /**Gadget body*/
 .infoScoop .widget .widgetBox {
 	border:1px solid #5A79A5;
+}
+/**RSS Reader*/
+/***item*/
+.infoScoop .RssReader .rssItem a:link{color:#1757AB;}
+.infoScoop .RssReader .rssItem a:visited{color:#1757AB;}
+.infoScoop .RssReader .rssItem a:hover{color:#1757AB;}
+.infoScoop .RssReader .rssItem a:active{
+	color:#FFAB2E;
+	text-decoration:underline;
+}
+/***more button*/
+.infoScoop .RssReader .rssMore{
+	color:#777777;
+}
+.infoScoop .RssReader .rssMoreOver{
+	color:#FFAB2E;
 }

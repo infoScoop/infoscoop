@@ -16,9 +16,6 @@
  */
 
 @charset "UTF-8";
-a:link {color:#0000cc; }
-a:visited { color:#551a8b; }
-a:active { color:#ff0000; }
 
 body{
 	margin:0;
@@ -34,16 +31,6 @@ th{
 
 td{
  font-size:100%;
-}
-
-a
-{
-	text-decoration: none;
-}
-
-a:hover
-{
-	text-decoration: underline;
 }
 
 fieldset {

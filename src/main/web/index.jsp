@@ -60,7 +60,7 @@ if( isPreview == null )
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/maximizerssreader.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/ticker.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/header.css">
-    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/thema.css">
+    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/theme.css">
 	<!--end styles css-->
 
 	<!-- prototype-window -->
