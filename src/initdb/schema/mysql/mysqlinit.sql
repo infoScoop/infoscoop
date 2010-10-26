@@ -479,6 +479,8 @@ create table IS_TAB_TEMPLATES(
 CREATE TABLE  IS_TAB_TEMPLATE_STATIC_GADGETS (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 	container_id VARCHAR( 255 ) NOT NULL ,
+	ignoreHeader int,
+	noBorder int,
 	fk_tabtemplate_id INT UNSIGNED NOT NULL,
 	fk_gadget_instance_id INT UNSIGNED  NOT NULL,
 	foreign key (fk_tabtemplate_id) references IS_TAB_TEMPLATES(id) on delete cascade,

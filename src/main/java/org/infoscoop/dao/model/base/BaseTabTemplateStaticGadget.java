@@ -15,10 +15,12 @@ import java.io.Serializable;
 public abstract class BaseTabTemplateStaticGadget  implements Serializable {
 
 	public static String REF = "TabTemplateStaticGadget";
+	public static String PROP_IGNORE_HEADER = "IgnoreHeader";
 	public static String PROP_GADGET_INSTANCE = "GadgetInstance";
 	public static String PROP_ID = "Id";
 	public static String PROP_CONTAINER_ID = "ContainerId";
 	public static String PROP_FK_TAB_TEMPLATE = "FkTabTemplate";
+	public static String PROP_NO_BORDER = "NoBorder";
 
 
 	// constructors
@@ -59,6 +61,8 @@ public abstract class BaseTabTemplateStaticGadget  implements Serializable {
 
 	// fields
 	private java.lang.String containerId;
+	private java.lang.Integer ignoreHeader;
+	private java.lang.Integer noBorder;
 
 	// many to one
 	private org.infoscoop.dao.model.GadgetInstance gadgetInstance;
@@ -101,6 +105,40 @@ public abstract class BaseTabTemplateStaticGadget  implements Serializable {
 	 */
 	public void setContainerId (java.lang.String containerId) {
 		this.containerId = containerId;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: IGNOREHEADER
+	 */
+	public java.lang.Integer getIgnoreHeader () {
+		return ignoreHeader;
+	}
+
+	/**
+	 * Set the value related to the column: IGNOREHEADER
+	 * @param ignoreHeader the IGNOREHEADER value
+	 */
+	public void setIgnoreHeader (java.lang.Integer ignoreHeader) {
+		this.ignoreHeader = ignoreHeader;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: NOBORDER
+	 */
+	public java.lang.Integer getNoBorder () {
+		return noBorder;
+	}
+
+	/**
+	 * Set the value related to the column: NOBORDER
+	 * @param noBorder the NOBORDER value
+	 */
+	public void setNoBorder (java.lang.Integer noBorder) {
+		this.noBorder = noBorder;
 	}
 
 
@@ -164,7 +202,5 @@ public abstract class BaseTabTemplateStaticGadget  implements Serializable {
 
 	public String toString () {
 		return super.toString();
-	}
-
-
+	} 
 }

@@ -233,6 +233,9 @@ public class TabService {
 		widget.setHref(gadgetInst.getHref());
 		widget.setIsstatic(Integer.valueOf(1));
 		
+		widget.setIgnoreHeader(gadget.isIgnoreHeaderBool());
+		widget.setNoBorder(gadget.isNoBorderBool());
+		
 		return widget;
 	}
 	

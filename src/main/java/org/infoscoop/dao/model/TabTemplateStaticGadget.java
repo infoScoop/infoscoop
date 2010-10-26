@@ -60,11 +60,29 @@ public class TabTemplateStaticGadget extends BaseTabTemplateStaticGadget impleme
 		TabTemplateStaticGadget SGClone = new TabTemplateStaticGadget();
 		
 		SGClone.setContainerId(this.getContainerId());
+		SGClone.setIgnoreHeader(this.getIgnoreHeader());
+		SGClone.setNoBorder(this.getNoBorder());
 		SGClone.setGadgetInstance(this.getGadgetInstance());
 		SGClone.setFkTabTemplate(tabCopy);
 		
 		//TabTemplateStaticGadgetDAO.newInstance().save(SGClone);
 		
 		return SGClone;
+	}
+	
+	public boolean isIgnoreHeaderBool() {
+		return this.getIgnoreHeader() != null && this.getIgnoreHeader() == 1;
+	}
+
+	public boolean isNoBorderBool() {
+		return this.getNoBorder() != null && this.getNoBorder() == 1;
+	}
+
+	public void setIgnoreHeaderBool(boolean ignoreHeader) {
+		this.setIgnoreHeader(ignoreHeader ? 1 : null);
+	}
+
+	public void setNoBorderBool(boolean noBorder) {
+		this.setNoBorder(noBorder ? 1 : null);
 	}
 }

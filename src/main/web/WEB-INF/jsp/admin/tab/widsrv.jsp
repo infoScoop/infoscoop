@@ -14,6 +14,8 @@
 	<c:forEach items="${tabTemplate.tabTemplateStaticGadgets}" var="gadget" varStatus="status">
 		"${gadget.containerId}":{
 			"id":"${gadget.containerId}",
+			"ignoreHeader":${gadget.ignoreHeaderBool},
+			"noBorder":${gadget.noBorderBool},
 			"tabId":"${tabTemplate.id}",
 			"href":"${gadget.gadgetInstance.href}",
 			"title":"${gadget.gadgetInstance.title}",

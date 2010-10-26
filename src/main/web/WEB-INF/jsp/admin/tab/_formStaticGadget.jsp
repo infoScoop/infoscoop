@@ -32,6 +32,17 @@
 			<form:input path="gadgetInstance.href" /><form:errors path="gadgetInstance.href" />
 		</p>
 	</fieldset>
+	<fieldset>
+		<legend>固定エリア設定</legend>
+		<p>
+			<form:label for="ignoreHeaderBool" path="ignoreHeaderBool" cssErrorClass="error">ヘッダを表示しない</form:label>
+			<form:checkbox path="ignoreHeaderBool" /><form:errors path="ignoreHeaderBool" />
+		</p>
+		<p>
+			<form:label for="noBorderBool" path="noBorderBool" cssErrorClass="error">枠を表示しない</form:label>
+			<form:checkbox path="noBorderBool" /><form:errors path="noBorderBool" />
+		</p>
+	</fieldset>
 	<fieldset id="gadget_settings">
 		<legend>ガジェット設定</legend>
 		<x:forEach var="userPref" select="$conf//UserPref">

@@ -187,6 +187,8 @@ public class TabController {
 		model.addAttribute("tabId", tabId);
 		model.addAttribute("containerId", containerId);
 		model.addAttribute("instanceId", instanceId);
+		model.addAttribute("ignoreHeaderBool", staticGadget.isIgnoreHeaderBool());
+		model.addAttribute("noBorderBool", staticGadget.isNoBorderBool());
 		
 		model.addAttribute(staticGadget);
 		
@@ -277,8 +279,12 @@ public class TabController {
 				setGadgetInstance(staticGadget, instanceId);
 				sg.setContainerId(staticGadget.getContainerId());
 				sg.setFkTabTemplate(staticGadget.getFkTabTemplate());
+				sg.setIgnoreHeader(staticGadget.getIgnoreHeader());
+				sg.setNoBorder(staticGadget.getNoBorder());
 			}else{
 				sg.setGadgetInstance(staticGadget.getGadgetInstance());
+				sg.setIgnoreHeader(staticGadget.getIgnoreHeader());
+				sg.setNoBorder(staticGadget.getNoBorder());
 			}
 			staticGadget = sg;
 		}

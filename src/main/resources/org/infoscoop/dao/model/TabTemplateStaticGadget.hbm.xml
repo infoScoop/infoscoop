@@ -24,6 +24,20 @@
 			not-null="true"
 			length="255"
 		/>
+		<property
+			name="IgnoreHeader"
+			column="IGNOREHEADER"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
+		<property
+			name="NoBorder"
+			column="NOBORDER"
+			type="integer"
+			not-null="false"
+			length="10"
+		/>
 		<many-to-one cascade="save-update"
 			name="GadgetInstance"
 			column="fk_gadget_instance_id"

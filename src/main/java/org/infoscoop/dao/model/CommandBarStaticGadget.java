@@ -38,4 +38,10 @@ public class CommandBarStaticGadget extends BaseCommandBarStaticGadget implement
 /*[CONSTRUCTOR MARKER END]*/
 
 
+	public boolean isIgnoreHeaderBool() {
+		return false;
+	}
+	public boolean isNoBorderBool() {
+		return false;
+	}
 }
