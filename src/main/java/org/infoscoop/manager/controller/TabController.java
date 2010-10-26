@@ -246,11 +246,13 @@ public class TabController {
 		return "tab/editStaticGadget";
 	}
 
-	@RequestMapping
+	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public void clearStaticGadgets(
-			@RequestParam("id") String id){
-		this.tabTemplateStaticGadgetDAO.deleteByTabId(Integer.valueOf(id));	
+	public void clearStaticGadgets(@RequestParam("tabid") String tabId,
+			@RequestParam("widgetids") List<String> removeIds) {
+		// this.tabTemplateStaticGadgetDAO.deleteByTabId(Integer.valueOf(id));
+		this.tabTemplateStaticGadgetDAO.deleteByTabIdAndWidgetIds(Integer
+				.valueOf(tabId), removeIds);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

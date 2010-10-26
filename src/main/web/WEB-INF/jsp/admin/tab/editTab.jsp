@@ -641,10 +641,10 @@ function init() {
 						var layoutClick = function(el,e) {
 							$('staticAreaContainer').innerHTML = el.innerHTML;
 							prepareStaticArea();
-							//clearStaticGadgets();
-							reloadStaticGadgets();
 							$('layout').value = $('staticAreaContainer').innerHTML;
 							$('layoutModified').value = "true";
+							reloadStaticGadgets();
+							clearStaticGadgets();
 							//TODO:remove ols static gadgets;
 							Event.stop(e);
 							Control.Modal.close();
@@ -672,10 +672,10 @@ function init() {
 					var layout = $("edit_layout_textarea").value;
 					$('staticAreaContainer').innerHTML = layout;
 					prepareStaticArea();
-					//clearStaticGadgets();
-					reloadStaticGadgets();
 					$('layout').value = $('staticAreaContainer').innerHTML;
 					$('layoutModified').value = "true";
+					reloadStaticGadgets();
+					clearStaticGadgets();
 					Control.Modal.close();
 				},false);
 				Event.observe( $('edit_layout_cancel'), 'click', function(){
@@ -696,11 +696,17 @@ function isTemp(flag){
 }
 
 function clearStaticGadgets(){
-	 new Ajax.Request(
+	var widgets = IS_Portal.widgetLists[IS_Portal.currentTabId];
+	var removeIds = [];
+	for(var id in widgets){
+		if(!widgets[id]) removeIds.push(id);
+	};
+	if(removeIds.length == 0) return;
+	new Ajax.Request(
 		"clearStaticGadgets",
 		{
-			"method": "get",
-			"parameters": {id: '${tabTemplate.id}'},
+			"method": "post",
+			"parameters": {tabid: '${tabTemplate.id}', widgetids:removeIds},
 			asynchronous: false,
 			onFailure: function(request) {
 				alert('読み込みに失敗しました');
@@ -749,7 +755,7 @@ function displayStaticGadget(widgetOpt){
 	var containerId = widgetOpt.id;
 	var container = $(containerId);
 	if(!container) {
-		delete IS_Portal.widgetLists[IS_Portal.currentTabId][containerId];
+		IS_Portal.widgetLists[IS_Portal.currentTabId][containerId] = false;
 		return;
 	}
 	container.id = "s_" + containerId;
@@ -757,7 +763,7 @@ function displayStaticGadget(widgetOpt){
 	widget.panelType = "StaticPanel";
 	widget.containerId = containerId;
 	widget.build();
-	if(container.firstChild)
+	if(container.firstChild && container.firstChild.className == "widget")
 		container.replaceChild(widget.elm_widget, container.firstChild);
 	else
 		container.appendChild(widget.elm_widget);
