@@ -206,6 +206,11 @@ public class TabService {
 				widget = convertStaticGadgetInstance2Widget(uid, tab.getTabId(), gadget);
 				this.widgetDAO.addWidget(widget,false);
 				widgets.add(widget);
+			} else {
+				widget.setTitle(gadgetInst.getTitle());
+				widget.setTitle(gadgetInst.getHref());
+				widget.setIgnoreHeader(gadget.isIgnoreHeaderBool());
+				widget.setNoBorder(gadget.isNoBorderBool());
 			}
 			Map<String, UserPref> upMap = widget.getUserPrefs();
 			
