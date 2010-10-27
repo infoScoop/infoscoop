@@ -262,6 +262,8 @@ public class TabController {
 	public void submitGadgetSettings(
 			TabTemplateStaticGadget staticGadget,
 			Model model)throws Exception {
+		System.out.println(staticGadget.getGadgetInstance().getTitle());
+		System.out.println(staticGadget.getGadgetInstance().getUserPrefs());
 		TabTemplate tab = tabTemplateDAO.get(staticGadget.getTabTemplateId());
 		staticGadget.setFkTabTemplate(tab);
 		String containerId = staticGadget.getContainerId();
@@ -276,7 +278,7 @@ public class TabController {
 			}
 		}else{//edit
 			if(instanceId != ""){
-				setGadgetInstance(staticGadget, instanceId);
+				sg.setGadgetInstance(staticGadget.getGadgetInstance());
 				sg.setContainerId(staticGadget.getContainerId());
 				sg.setFkTabTemplate(staticGadget.getFkTabTemplate());
 				sg.setIgnoreHeader(staticGadget.getIgnoreHeader());
@@ -288,7 +290,10 @@ public class TabController {
 			}
 			staticGadget = sg;
 		}
+		System.out.println(staticGadget.getGadgetInstance().getTitle());
+		System.out.println(staticGadget.getGadgetInstance().getUserPrefs());
 		tabTemplateStaticGadgetDAO.save(staticGadget);
+		//gadgetInstanceDAO.save(staticGadget.getGadgetInstance());
 		
 		model.addAttribute("gadget", staticGadget);
 	}
