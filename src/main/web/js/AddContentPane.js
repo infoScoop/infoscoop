@@ -33,6 +33,7 @@ IS_SidePanel.buildAddContents = function() {
 	
 	var addContentsText = document.createElement("div");
 	addContentsText.appendChild( document.createTextNode( IS_R.ms_inputURL ) );
+	Element.addClassName(addContentsText, "input_url");
 	container.appendChild(addContentsText);
 
 	var inputURLBoxDiv = document.createElement("div");
@@ -63,7 +64,8 @@ IS_SidePanel.buildAddContents = function() {
 	//Google gadget：http://infoscoopdemo.beacon-it.co.jp/HelloGadget.xml
 	var exampleDiv = document.createElement("div");
 	exampleDiv.style.overflow = "hidden";
-	exampleDiv.style.color = "black";
+	//exampleDiv.style.color = "black";
+	Element.addClassName(exampleDiv, "url_example");
 	exampleDiv.appendChild( document.createTextNode(IS_R.lb_urlExample) );
 	
 	function addExample(label ,url){

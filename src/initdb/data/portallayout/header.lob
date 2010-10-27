@@ -1,7 +1,7 @@
 <div class="header">
 	<div class="left">
 		<div class="logo">
-			<a href="#" onclick=""><img class="logo_img" src="skin/imgs/header/infoscoop4g_long_h26.png" alt="infoScoop"/></a>
+			<a href="#" onclick=""><img class="logo_img" src="skin/imgs/header/infoscoop4g_logo.png" alt="infoScoop"/></a>
 		</div>
 		<div class="launcher">
 				<a href="#" ><span class="label" id="home" >ホーム</span></a>

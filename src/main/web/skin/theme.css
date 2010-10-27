@@ -57,7 +57,7 @@ a:hover{text-decoration: underline;}
 .submit_button{
 	padding:0 0.4em;
 }
-.submit_button {
+a.submit_button {
 	imgsborder-top: 1px solid #bbbebf;
 	background: #bdc5c9;
 	background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#bdc5c9));
@@ -97,8 +97,22 @@ a:hover{text-decoration: underline;}
 .logout a:hover{color:#FFAB2E;text-decoration:underline;}
 .logout a:active{color:#FFAB2E;text-decoration:underline;}
 /*Panel*/
+/**main panel*/
 .infoScoop #panels .panel {
 	background-color:#FFFFFF;
+}
+/**side panel*/
+#portal-tree-menucontainer {
+	background:transparent url(./imgs/theme/stripe.png) repeat scroll 0 0;
+}
+.SidePanel_AddContents .input_url{
+	color:#4778B8;
+}
+.SidePanel_AddContents .url_example{
+	color:#333333;
+}
+.addContentsEx{
+	background:#FFFCE0;
 }
 /*Tab*/
 .infoScoop #tabs .addatab a,
@@ -111,7 +125,7 @@ a:hover{text-decoration: underline;}
 }
 
 /*Gadgets*/
-/**Gadget header*/
+/**gadget header*/
 .infoScoop .widget .widgetHeader {
 	background-color:#5A79A5;
 }
@@ -122,10 +136,10 @@ a:hover{text-decoration: underline;}
 .infoScoop .widget .widgetHeader a{color:#FFFFFF;}
 .infoScoop .widget .widgetHeader a:link{text-decoration:underline;}
 .infoScoop .widget .widgetHeader a:visited{text-decoration:underline;}
-.infoScoop .widget .widgetHeader a:hover{text-decoration:underline;}
-.infoScoop .widget .widgetHeader a:active{text-decoration:underline;}
+.infoScoop .widget .widgetHeader a:hover{text-decoration:none;}
+.infoScoop .widget .widgetHeader a:active{text-decoration:none;}
 
-/**Gadget body*/
+/**gadget body*/
 .infoScoop .widget .widgetBox {
 	border:1px solid #5A79A5;
 }
