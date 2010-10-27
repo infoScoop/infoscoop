@@ -235,6 +235,9 @@ body.fixedPortalHeader #panels .panel{
 	position: absolute;
 /*	cursor:col-resize;*/
 }
+#siteMenuOpen #blank{
+	height:16px;
+}
 #siteMenuGhost{
 	border-left:1px solid #999999;
 	position: absolute;

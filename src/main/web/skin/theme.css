@@ -101,6 +101,9 @@ a.submit_button {
 .infoScoop #panels .panel {
 	background-color:#FFFFFF;
 }
+#siteMenuOpen #blank{
+	background:#FFF;
+}
 /**side panel*/
 #portal-tree-menucontainer {
 	background:transparent url(./imgs/theme/stripe.png) repeat scroll 0 0;

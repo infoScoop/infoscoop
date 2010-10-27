@@ -229,7 +229,7 @@ if( isPreview == null )
 							<div id="portal-my-sitemap" ></div>
 						</div>
 					</td>
-					<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
+					<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/><div id="blank"/></td>
 					<td colspan="3" valign="top" align="left">
 						<table width="100%" border="0" cellspacing="0" cellpadding="0" id="command-bar">
 							<tbody>
