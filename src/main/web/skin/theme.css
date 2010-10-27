@@ -112,7 +112,7 @@ a.submit_button {
 	color:#333333;
 }
 .addContentsEx{
-	background:#FFFCE0;
+	background:#FFFCDA;
 }
 /*Tab*/
 .infoScoop #tabs .addatab a,
@@ -158,4 +158,13 @@ a.submit_button {
 }
 .infoScoop .RssReader .rssMoreOver{
 	color:#FFAB2E;
+}
+/***fotter*/
+.infoScoop .RssReader .RssReader_itemsCountPanel {
+	color: #7777CC;
+	background-color: #E2E2E2;
+}
+.infoScoop .RssReader .RssReader_itemsCount{
+	color:#4778B8;
+	background-color: #EAEAEA;
 }

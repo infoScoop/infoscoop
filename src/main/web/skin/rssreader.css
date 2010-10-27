@@ -100,16 +100,22 @@
 .infoScoop .RssReader .RssReader_itemsCountPanel {
 	position:relative;
 	font-size: 9pt;
-	color: #7777CC;
-	background-color: #E2E2E2;
 	height:10pt;
 	overflow:hidden;
 	//padding-top: 1;
+	-moz-border-radius-bottomleft:5px;
+	-webkit-border-radius-bottomleft:5px;
+	border-radius-bottomleft:5px;
+	-moz-border-radius-bottomright:5px;
+	-webkit-border-radius-bottomright:5px;
+	border-radius-bottomright:5px;
 }
 .infoScoop .RssReader .RssReader_itemsCount{
 	position:absolute;
-	background-color: #EAEAEA;
 	right:0;
+	-moz-border-radius-bottomright:6px;
+	-webkit-border-radius-bottomright:6px;
+	border-radius-bottomright:6px;
 }
 
 .infoScoop .RssReader .RssReader_filter{

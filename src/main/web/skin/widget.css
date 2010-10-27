@@ -40,10 +40,10 @@
 	*/
 	width: auto;
 	overflow:hidden;
-	-moz-border-radius:5 5 2 5px;
-	-webkit-border-radius:5 5 2 5px;
-	border-radius:5 5 2 5px;
-	background-color:#FFF;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	background-color:#FFFFFF;
 }
 
 .infoScoop .widget .widgetShade {
