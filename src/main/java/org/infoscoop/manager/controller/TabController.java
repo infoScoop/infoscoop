@@ -262,8 +262,6 @@ public class TabController {
 	public void submitGadgetSettings(
 			TabTemplateStaticGadget staticGadget,
 			Model model)throws Exception {
-		System.out.println(staticGadget.getGadgetInstance().getTitle());
-		System.out.println(staticGadget.getGadgetInstance().getUserPrefs());
 		TabTemplate tab = tabTemplateDAO.get(staticGadget.getTabTemplateId());
 		staticGadget.setFkTabTemplate(tab);
 		String containerId = staticGadget.getContainerId();
@@ -290,8 +288,6 @@ public class TabController {
 			}
 			staticGadget = sg;
 		}
-		System.out.println(staticGadget.getGadgetInstance().getTitle());
-		System.out.println(staticGadget.getGadgetInstance().getUserPrefs());
 		tabTemplateStaticGadgetDAO.save(staticGadget);
 		//gadgetInstanceDAO.save(staticGadget.getGadgetInstance());
 		
