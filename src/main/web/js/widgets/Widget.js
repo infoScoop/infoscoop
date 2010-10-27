@@ -2290,6 +2290,9 @@ IS_Widget.getIcon = function(widgetType, opt){
 				return icon;
 			}
 		}
+	}else{
+		if(widConf.ModulePrefs.Icon)
+			return widConf.ModulePrefs.Icon.content;
 	}
 	if((isUploadGadget && typeof icon == 'undefined')
 		|| !widConf){
