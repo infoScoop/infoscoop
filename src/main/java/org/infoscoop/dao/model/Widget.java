@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
 import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.base.BaseWidget;
@@ -109,6 +108,8 @@ public class Widget extends BaseWidget {
 		json.put("deleteDate", this.getDeletedate());
 		json.put("ignoreHeader", this.isIgnoreHeader());
 		json.put("noBorder", this.isNoBorder());
+		if (this.getIconUrl() != null)
+			json.put("iconUrl", this.getIconUrl());
 		
 		return json;
 	}
@@ -198,4 +199,14 @@ public class Widget extends BaseWidget {
 			title = title.substring(0, 80);
 		super.setTitle(title);
 	}
+	
+	private String iconUrl;
+
+	public String getIconUrl() {
+		return iconUrl;
+	}
+
+	public void setIconUrl(String iconUrl) {
+		this.iconUrl = iconUrl;
+	} 
 }

@@ -18,6 +18,7 @@ public abstract class BaseGadgetInstance  implements Serializable {
 	public static String PROP_TYPE = "Type";
 	public static String PROP_ID = "Id";
 	public static String PROP_HREF = "Href";
+	public static String PROP_ICON = "Icon";
 	public static String PROP_TITLE = "Title";
 	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 
@@ -63,6 +64,7 @@ public abstract class BaseGadgetInstance  implements Serializable {
 	private java.lang.String type;
 	private java.lang.String title;
 	private java.lang.String href;
+	private java.lang.String icon;
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.GadgetInstanceUserpref> gadgetInstanceUserPrefs;
@@ -155,6 +157,23 @@ public abstract class BaseGadgetInstance  implements Serializable {
 	 */
 	public void setHref (java.lang.String href) {
 		this.href = href;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: icon
+	 */
+	public java.lang.String getIcon () {
+		return icon;
+	}
+
+	/**
+	 * Set the value related to the column: icon
+	 * @param icon the icon value
+	 */
+	public void setIcon (java.lang.String icon) {
+		this.icon = icon;
 	}
 
 

@@ -209,6 +209,7 @@ public class TabService {
 			} else {
 				widget.setTitle(gadgetInst.getTitle());
 				widget.setHref(gadgetInst.getHref());
+				widget.setIconUrl(gadgetInst.getIcon());
 				widget.setIgnoreHeader(gadget.isIgnoreHeaderBool());
 				widget.setNoBorder(gadget.isNoBorderBool());
 			}
@@ -240,6 +241,8 @@ public class TabService {
 		
 		widget.setIgnoreHeader(gadget.isIgnoreHeaderBool());
 		widget.setNoBorder(gadget.isNoBorderBool());
+		
+		widget.setIconUrl(gadgetInst.getIcon());
 		
 		return widget;
 	}
@@ -316,6 +319,9 @@ public class TabService {
 			widget.setColumn(gadget.getColumnNum());
 			widget.setTitle(gadgetInst.getTitle());
 			widget.setHref(gadgetInst.getHref());
+			
+			widget.setIconUrl(gadgetInst.getIcon());
+			
 			TabTemplatePersonalizeGadget sibling = tabTemplate.getPersonalizeGadget(gadget.getSiblingId());
 			if(sibling != null)
 				widget.setSiblingid(sibling.getWidgetId());

@@ -43,6 +43,13 @@
 			type="string"
 			length="1024"
 		/>
+		<property
+			name="Icon"
+			column="icon"
+			type="string"
+			not-null="false"
+			length="1024"
+		/>
 		
 		<set name="gadgetInstanceUserPrefs" inverse="true" cascade="save-update">
 			<key column="fk_gadget_instance_id"/>

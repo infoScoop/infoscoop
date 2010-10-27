@@ -494,7 +494,7 @@ IS_Widget.prototype.classDef = function() {
 		var divWidgetHeader = this.elm_widgetHeader;
 		var divWidgetEditHeader = this.elm_widgetEditHeader;
 		
-		var icon = IS_Widget.getIcon(this.widgetType, {defaultNull:true});
+		var icon = this.widgetConf.iconUrl || IS_Widget.getIcon(this.widgetType, {defaultNull:true});
 		if(icon){
 			var favoriteIconDiv = document.createElement("div");
 			this.elm_favoriteIcon = favoriteIconDiv;
