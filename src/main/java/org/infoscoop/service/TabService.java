@@ -208,7 +208,7 @@ public class TabService {
 				widgets.add(widget);
 			} else {
 				widget.setTitle(gadgetInst.getTitle());
-				widget.setTitle(gadgetInst.getHref());
+				widget.setHref(gadgetInst.getHref());
 				widget.setIgnoreHeader(gadget.isIgnoreHeaderBool());
 				widget.setNoBorder(gadget.isNoBorderBool());
 			}
