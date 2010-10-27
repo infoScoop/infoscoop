@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
 		name="OAuthContainerConsumer"
-		table="is_oauth_container_consumers"
+		table="IS_OAUTH_CONTAINER_CONSUMERS"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
