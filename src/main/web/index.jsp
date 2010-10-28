@@ -222,15 +222,7 @@ if( isPreview == null )
 		<table style="clear:both;" cellpadding="0" cellspacing="0" width="100%" id="portal-maincontents-table">
 			<tbody>
 				<tr>
-					<td id="siteMenu" valign="top">
-						<div id="portal-tree-menucontainer">
-							<div id="portal-tree-menu" ></div>
-							<div id="portal-rss-search" style="padding:1px;"></div>
-							<div id="portal-my-sitemap" ></div>
-						</div>
-					</td>
-					<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/><div id="blank"/></td>
-					<td colspan="3" valign="top" align="left">
+					<td colspan="5" >
 						<table width="100%" border="0" cellspacing="0" cellpadding="0" id="command-bar">
 							<tbody>
 								<tr>
@@ -239,6 +231,19 @@ if( isPreview == null )
 								</tr>
 							</tbody>
 						</table>
+					</td>
+				</tr>
+				<tr>
+					<td id="siteMenu" valign="top">
+						<div id="portal-tree-menucontainer">
+							<div id="portal-tree-menu" ></div>
+							<div id="portal-rss-search" style="padding:1px;"></div>
+							<div id="portal-my-sitemap" ></div>
+						</div>
+					</td>
+					<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
+					<td colspan="3" valign="top" align="left">
+						
 						<div id="panels" style="display:;">
 						  <div id="tab-container"></div>
 						  <div id="maximize-panel" style="display:none;"></div>

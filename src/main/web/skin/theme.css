@@ -107,6 +107,7 @@ a.submit_button {
 /**side panel*/
 #portal-tree-menucontainer {
 	background:transparent url(./imgs/theme/stripe.png) repeat scroll 0 0;
+	border-top:1px solid #E1E1D6;
 }
 /***add contents*/
 .SidePanel_AddContents .input_url{
