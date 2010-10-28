@@ -108,6 +108,7 @@ a.submit_button {
 #portal-tree-menucontainer {
 	background:transparent url(./imgs/theme/stripe.png) repeat scroll 0 0;
 }
+/***add contents*/
 .SidePanel_AddContents .input_url{
 	color:#4778B8;
 }
@@ -116,6 +117,17 @@ a.submit_button {
 }
 .addContentsEx{
 	background:#FFFCDA;
+}
+/***menu*/
+.showAll, .hideAll {
+	color:#4778B8;
+}
+/***my site map*/
+.mySiteMap .tabListItem a.label {
+	color:#4778B8;
+}
+.mySiteMap .label {
+color:#333333;
 }
 /*Tab*/
 .infoScoop #tabs .addatab a,
@@ -165,7 +177,7 @@ a.submit_button {
 /***fotter*/
 .infoScoop .RssReader .RssReader_itemsCountPanel {
 	color: #7777CC;
-	background-color: #E2E2E2;
+	background-color: #EFEFEF;
 }
 .infoScoop .RssReader .RssReader_itemsCount{
 	color:#4778B8;
