@@ -393,6 +393,7 @@ CREATE TABLE IS_GADGET_INSTANCES (
 	type VARCHAR( 255 ) NOT NULL ,
 	title VARCHAR( 255 ) NOT NULL ,
 	href VARCHAR( 1024 ),
+	icon VARCHAR( 1024 ),
 	INDEX ( `type`, `title` ),
 	foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE = INNODB;
