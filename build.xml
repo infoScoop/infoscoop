@@ -279,7 +279,7 @@
 			<filelist dir="${src.main.web}/skin" files="rssreader.css"/>
 			<filelist dir="${src.main.web}/skin" files="maximizerssreader.css"/>
 			<filelist dir="${src.main.web}/skin" files="ticker.css"/>
-			<filelist dir="${src.main.web}/skin" files="thema.css"/>
+			<filelist dir="${src.main.web}/skin" files="theme.css"/>
 			<filelist dir="${src.main.web}/skin" files="header.css"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
@@ -411,7 +411,10 @@
 			</filterset>
 		</copy>
 		<!--copy todir="${build.admin}/js" file="${src.admin.web}/js/properties.js"/-->
-
+		<mkdir dir="${build.admin}/js/resources" />
+		<copy todir="${build.admin}/js/resources">
+			<fileset dir="${src.admin.web}/js/resources/"/>
+		</copy>
 		<!-- Copy from main javascript -->
 		<copy todir="${build.admin}/js/lib" file="${src.main.web}/js/lib/prototype-1.6.0.3.js"/>
 		

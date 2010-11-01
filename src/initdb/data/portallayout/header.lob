@@ -11,15 +11,15 @@
 		</div>
 	</div>
 	<div class="right">
-		<div class="search">
+		<!--<div class="search">
 				<input class="search_box" type="text"/>
 				<a class="submit_button" href="#">検索</a>
-		</div>
+		</div>-->
 		<div class="text">
 			<span class="account">
-				<b>example@infoscoop.org</b>
+				<b>${session.getAttribute("loginUserName")}</b>
 			</span>
-			<span class="logout"><a href="#">ログアウト</a></span>
+			<span class="logout"><a href="logout">ログアウト</a></span>
 		</div>
 	</div>
 </div>

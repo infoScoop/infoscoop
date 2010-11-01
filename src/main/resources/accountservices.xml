@@ -139,14 +139,14 @@
    			<ref bean="domainDAO"/>
    		</property>
    </bean>
-   <bean id="SimpleAccountManager" singleton="true" class="org.infoscoop.account.simple.SimpleAccountManager" >
+   <!--bean id="SimpleAccountManager" singleton="true" class="org.infoscoop.account.simple.SimpleAccountManager" >
    		<property name="accountDAO">
    			<ref bean="accountDAO"/>
    		</property>
    		<property name="domainDAO">
    			<ref bean="domainDAO"/>
    		</property>
-   </bean>
+   </bean-->
    <bean id="searchUserService" singleton="false" class="org.infoscoop.account.SearchUserService" >
       <property name="accountManager" >
          <ref bean="GoogleAppsAccountManager"/>
@@ -154,7 +154,7 @@
    </bean>
    <bean id="authenticationService" singleton="false" class="org.infoscoop.account.AuthenticationService" >
       <property name="accountManager" >
-         <ref bean="SimpleAccountManager"/>
+         <ref bean="GoogleAppsAccountManager"/>
       </property>
    </bean>
    <!--end of accountAccessService-->
@@ -179,7 +179,7 @@
 		</property>
 		<property name="loginAuthentication">
 			<value><!--start loginAuthentication-->
-				true
+				false
 			<!--end loginAuthentication--></value>
 		</property>
    </bean>
