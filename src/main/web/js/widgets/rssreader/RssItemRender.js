@@ -159,6 +159,16 @@ IS_Widget.RssReader.RssItemRender.prototype.render = function ( context,rssItem,
 	
 	return this.tr;
 };
+
+
+//TODO:refactering
+var google_docs_category_icon = {
+	"http://schemas.google.com/docs/2007#folder":"folder.png",
+	"http://schemas.google.com/docs/2007#document": "document.png",
+	"http://schemas.google.com/docs/2007#spreadsheet":"spreadsheet.png",
+	"http://schemas.google.com/docs/2007#drawing":"drawing.png",
+	"http://schemas.google.com/docs/2007#presentation":"presentation.png"
+}
 IS_Widget.RssReader.RssItemRender.prototype.buildRssItemDiv = function( widget,opt,noLink ) {
 	var init = this.init;
 	
@@ -173,6 +183,18 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssItemDiv = function( widget,o
 		//Prepare title link
 		this.rssItemDiv = document.createElement("div");
 		this.rssItemDiv.className = "rssItem";
+		
+		if(rssItem.category){
+			var categories = rssItem.category;
+			for ( i = 0; i <  categories.length; i++){
+				var icon = google_docs_category_icon[categories[i]];
+				if(icon){
+					var img = document.createElement('img');
+					img.src = imageURL + '/docs/' + icon;
+					this.rssItemDiv.appendChild(img);
+				}				
+			}
+		}
 		
 		this.aTag = document.createElement('a');
 		this.rssItemDiv.appendChild(this.aTag);
