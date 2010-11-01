@@ -57,14 +57,13 @@ public class AtomHandler extends RssHandler {
 				}
 			} else if(parentTag.equals("entry")){
 				String href = attributes.getValue("href");
-				String type = attributes.getValue("type");
 				if (qName.equals("link") && href != null) {
-					if (link.equals("")
-							|| (type != null && type.equals("text/html")))
-						link = href;
 					String rel = attributes.getValue("rel");
+					if (rel == null || rel.equals("alternate"))
+						link = href;
+					String type = attributes.getValue("type");
 					if (rel != null) {
-						otherProperties.put("link_" + rel, href);
+						otherProperties.put("link_" + rel + "_" + type , href);
 					}
 				} else if (qName.equals("category")) {
 					String term = attributes.getValue("term");
