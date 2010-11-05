@@ -57,9 +57,6 @@
 	<classpathentry kind="lib" path="src/googleapps/web/WEB-INF/lib/openid4java-nodeps-0.9.6-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="src/googleapps/web/WEB-INF/lib/step2-common-1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="src/googleapps/web/WEB-INF/lib/step2-consumer-1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-0.9.5.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-consumer-0.9.5.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/openid4java-nodeps-0.9.5.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/commons-beanutils-1.8.0.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/commons-digester-2.0.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jcl-over-slf4j-1.5.8.jar"/>
