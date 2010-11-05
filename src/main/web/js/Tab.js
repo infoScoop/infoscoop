@@ -1257,16 +1257,18 @@ IS_Portal.adjustStaticWidgetHeight = function(){
 	var adjustToWindowHeight = currentTab.adjustStaticHeight;
 	if(!adjustToWindowHeight)return;
 	var widgets = IS_Portal.widgetLists[IS_Portal.currentTabId];
-	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - $("tab-container").getHeight() - 36;
 	var isReady = false;
+	var adjustHeight = false;
 	for(widgetId in widgets){
 		var widget = widgets[widgetId];
 		if(!widget.isBuilt)break;
 		if(widget.panelType == "StaticPanel" && widget.widgetType != 'Ticker' && widget.widgetType != 'Ranking'){
+			if(!adjustHeight)
+				adjustHeight = getWindowSize(false) - findPosY(widget.elm_widgetContent) -36;
 			var height = widget.headerContent ? adjustHeight : adjustHeight + 22;
 			if(widget.widgetConf && widget.widgetConf.noBorder) height += 2;
 			if(widget.iframe)
-			  widget.iframe.style.height = height + "px";
+				widget.iframe.style.height = height + "px";
 			widget.elm_widgetContent.style.height = height + "px";
 			widget.staticWidgetHeight =  height ;
 
