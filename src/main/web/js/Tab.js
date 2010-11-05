@@ -1254,7 +1254,6 @@ IS_Portal.adjustStaticWidgetHeight = function(){
 	if(currentTab.type != "static")return;
 	
 	var tabNumber = IS_Portal.currentTabId.substr(3);
-	console.log(currentTab);
 	var adjustToWindowHeight = currentTab.adjustStaticHeight;
 	if(!adjustToWindowHeight)return;
 	var widgets = IS_Portal.widgetLists[IS_Portal.currentTabId];
