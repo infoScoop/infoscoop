@@ -18,9 +18,7 @@
 IS_Widget.RssReaderDescriptionList = [];
 IS_Widget.RssReaderDescriptionWithScrollList = [];
 IS_Widget.RssReader.RssItemRender = function() {
-	this.init = true;
-	
-	
+	this.init = true;	
 };
 IS_Widget.RssReader.RssItemRender.render = function (widget, tbodyNode, rssItem, br, pubDate, itemNumber) {
 	var div = IS_Widget.RssReader.RssItemRender.getInstance().render({
@@ -155,7 +153,7 @@ IS_Widget.RssReader.RssItemRender.prototype.render = function ( context,rssItem,
 		this.rssDetail.style.display = this.rssDetail1.style.display = "";
 	}
 	
-	this.init = false;
+	//this.init = false;
 	
 	return this.tr;
 };
@@ -192,6 +190,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssItemDiv = function( widget,o
 					var img = document.createElement('img');
 					img.src = imageURL + '/docs/' + icon;
 					this.rssItemDiv.appendChild(img);
+					break;
 				}				
 			}
 		}
