@@ -163,7 +163,8 @@ public class TabService {
 			}else{
 				tabList.add(new TabDetail(
 						staticTab, tabTemplate.getLayout(),
-						this.copyPersonalizeGadgetsUserPrefs(staticTab, tabTemplate),
+						this.copyPersonalizeGadgetsUserPrefs(uid, staticTab,
+								tabTemplate),
 						this.copyStaticGadgetsUserPrefs(uid, staticTab, tabTemplate)
 					));
 			}
@@ -247,16 +248,22 @@ public class TabService {
 		return widget;
 	}
 	
-	private List<Widget> copyPersonalizeGadgetsUserPrefs(Tab tab,
+	private List<Widget> copyPersonalizeGadgetsUserPrefs(String uid, Tab tab,
 			TabTemplate tabTemplate) {
 		List<Widget> widgets = tabDAO.getDynamicWidgetList( tab );
 		Map<String, Widget> widgetMap = new HashMap<String, Widget>();
 		for(Widget widget : widgets)
 			widgetMap.put(widget.getWidgetid(), widget);
-			
+		
+		List<TabTemplatePersonalizeGadget> newGadgets = new ArrayList<TabTemplatePersonalizeGadget>();
+		
 		for(TabTemplatePersonalizeGadget gadget : tabTemplate.getTabTemplatePersonalizeGadgets()){
 			GadgetInstance gadgetInst = gadget.getFkGadgetInstance();
 			Widget widget = widgetMap.get(gadget.getWidgetId());
+			if (widget == null) {
+				newGadgets.add(gadget);
+				continue;
+			}
 			Map<String, UserPref> upMap = widget.getUserPrefs();
 			
 			for(GadgetInstanceUserpref giup : gadgetInst.getGadgetInstanceUserPrefs()){
@@ -265,6 +272,11 @@ public class TabService {
 					widget.setUserPref(giup.getId().getName(), giup.getValue());
 			}
 		}
+		
+		List<Widget> newWidgets = createPersonalizeGadgetList(uid, tabTemplate,
+				newGadgets);
+		widgets.addAll(newWidgets);
+		
 		return widgets;
 	}
 
@@ -302,39 +314,50 @@ public class TabService {
 		}
 		return widgetList;
 	}
-
-	private List<Widget> createPersonalizeGadgetList(String uid, TabTemplate tabTemplate) {
+	
+	private List<Widget> createPersonalizeGadgetList(String uid,
+			TabTemplate tabTemplate,
+			Collection<TabTemplatePersonalizeGadget> gadgets) {
 		List<Widget> widgetList = new ArrayList<Widget>();
-		for(TabTemplatePersonalizeGadget gadget : tabTemplate.getTabTemplatePersonalizeGadgets()){
-			GadgetInstance gadgetInst = gadget.getFkGadgetInstance();;
-			
+		for (TabTemplatePersonalizeGadget gadget : gadgets) {
+			GadgetInstance gadgetInst = gadget.getFkGadgetInstance();
+			;
+
 			Widget widget = new Widget();
-			widget.setTabid( tabTemplate.getTabId() );
+			widget.setTabid(tabTemplate.getTabId());
 			widget.setDeletedate(Long.valueOf(0));
 			widget.setWidgetid(gadget.getWidgetId());
-			widget.setUid( uid );
+			widget.setUid(uid);
 			widget.setFkDomainId(DomainManager.getContextDomainId());
-			//TODO:
-			widget.setType(gadgetInst.getType().startsWith("upload_") ? "g_" + gadgetInst.getType() + "/gadget" : gadgetInst.getType() );
+			// TODO:
+			widget.setType(gadgetInst.getType().startsWith("upload_") ? "g_"
+					+ gadgetInst.getType() + "/gadget" : gadgetInst.getType());
 			widget.setColumn(gadget.getColumnNum());
 			widget.setTitle(gadgetInst.getTitle());
 			widget.setHref(gadgetInst.getHref());
-			
+
 			widget.setIconUrl(gadgetInst.getIcon());
-			
-			TabTemplatePersonalizeGadget sibling = tabTemplate.getPersonalizeGadget(gadget.getSiblingId());
-			if(sibling != null)
+
+			TabTemplatePersonalizeGadget sibling = tabTemplate
+					.getPersonalizeGadget(gadget.getSiblingId());
+			if (sibling != null)
 				widget.setSiblingid(sibling.getWidgetId());
-			
-			for(GadgetInstanceUserpref up : gadgetInst.getGadgetInstanceUserPrefs())
+
+			for (GadgetInstanceUserpref up : gadgetInst
+					.getGadgetInstanceUserPrefs())
 				widget.setUserPref(up.getId().getName(), up.getValue());
 			widget.setIsstatic(Integer.valueOf(0));
-			
-			widgetList.add( widget );
-			this.widgetDAO.addWidget(widget,false);
-			
+
+			widgetList.add(widget);
+			this.widgetDAO.addWidget(widget, false);
 		}
 		return widgetList;
+	}
+
+	private List<Widget> createPersonalizeGadgetList(String uid,
+			TabTemplate tabTemplate) {
+		return createPersonalizeGadgetList(uid, tabTemplate, tabTemplate
+				.getTabTemplatePersonalizeGadgets());
 	}
 
 	private Tab createTabFromTabTemplate(String uid, TabTemplate tabTemplate) throws JSONException {

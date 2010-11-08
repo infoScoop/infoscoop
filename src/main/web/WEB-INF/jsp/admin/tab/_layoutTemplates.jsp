@@ -1,18 +1,5 @@
 <%@ page contentType="text/html; charset=UTF8" %>
 <div class="staticLayout">
-<table cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td width="75%">
-			<table cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td>
-						<div style="width: 99%; height:82px; min-height: 1px;">%{none}</div>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
 </div>
 
 <div class="staticLayout">

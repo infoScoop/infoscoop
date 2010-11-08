@@ -2291,7 +2291,7 @@ IS_Widget.getIcon = function(widgetType, opt){
 			}
 		}
 	}else{
-		if(widConf.ModulePrefs.Icon)
+		if(widConf && widConf.ModulePrefs && widConf.ModulePrefs.Icon)
 			return widConf.ModulePrefs.Icon.content;
 	}
 	if((isUploadGadget && typeof icon == 'undefined')
