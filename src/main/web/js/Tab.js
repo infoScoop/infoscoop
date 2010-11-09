@@ -40,8 +40,8 @@ IS_Portal.buildTabs = function(){
 	tabsDiv.id = "tabs";
 	//Loading all tabs
 	var tabsRefresh = document.createElement("div");
-	tabsRefresh.id = "tabsRefresh";
-	tabsRefresh.className = "tabsRefresh";
+	//tabsRefresh.id = "tabsRefresh";
+	//tabsRefresh.className = "tabsRefresh";
 	tabsRefresh.title = IS_R.ms_tabsRefresh;
 	tabsDiv.appendChild(tabsRefresh);
 	
