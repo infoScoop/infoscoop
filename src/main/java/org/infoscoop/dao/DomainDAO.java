@@ -15,6 +15,16 @@ public class DomainDAO extends HibernateDaoSupport {
 		return (DomainDAO) SpringUtil.getBean("domainDAO");
 	}
 
+	public Domain get(Integer domainId) {
+		List<Domain> results = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Domain.class).add(
+						Expression.eq(Domain.PROP_ID, domainId)));
+		if (results.isEmpty())
+			return null;
+		else
+			return results.get(0);
+	}
+
 	public Domain getByName(String domainName) {
 		List<Domain> results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Domain.class).add(

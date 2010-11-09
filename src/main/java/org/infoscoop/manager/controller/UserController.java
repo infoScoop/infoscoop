@@ -8,8 +8,11 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.account.DomainManager;
+import org.infoscoop.dao.DomainDAO;
 import org.infoscoop.dao.GroupDAO;
 import org.infoscoop.dao.UserDAO;
+import org.infoscoop.dao.model.Domain;
 import org.infoscoop.dao.model.Group;
 import org.infoscoop.dao.model.User;
 import org.json.JSONArray;
@@ -29,13 +32,15 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public void sync(Model model, HttpServletRequest request) throws Exception {
-		String domain = "infoscoop.org";
+		Integer domainId = DomainManager.getContextDomainId();
+		Domain domain = DomainDAO.newInstance().get(domainId);
+		String domainName = domain.getName();
 
 		long start = System.currentTimeMillis();
 
 		HttpClient http = new HttpClient();
 		GetMethod method = new GetMethod(
-				"http://localhost:8080/infoscoop4g/usergroup?domain=" + domain);
+				"http://localhost:8080/infoscoop4g/usergroup?domain=" + domainName);
 		http.executeMethod(method);
 		if (method.getStatusCode() >= 300) {
 			// TODO handle error
@@ -50,11 +55,14 @@ public class UserController {
 		JSONArray usersJ = json.getJSONArray("users");
 		for (int i = 0; i < usersJ.length(); i++) {
 			JSONObject userJ = usersJ.getJSONObject(i);
-			String name = userJ.getString("login");
-			User user = userDAO.getByName(name);
+			String account = userJ.getString("login");
+			String fname = userJ.getString("familyName");
+			String gname = userJ.getString("givenName");
+			String name = fname + " " + gname;
+			String mail = account + "@" + domainName;
+			User user = userDAO.getByEmail(mail, domainId);
 			if (user == null)
 				user = new User();
-			String mail = name + "@" + domain;
 			System.out.println(mail);
 			user.setEmail(mail);
 			user.setName(name);
@@ -83,12 +91,11 @@ public class UserController {
 					}
 					break;
 				}
-				String userName = memberId.split("@")[0];
-				User user = userDAO.getByName(userName);
+				User user = userDAO.getByEmail(memberId, domainId);
 				if (user != null)
 					group.addToUsers(user);
 				else
-					System.out.println("User " + userName + " is missing.");
+					System.out.println("User " + memberId.split("@")[0] + " is missing.");
 			}
 			groupDAO.save(group);
 		}
