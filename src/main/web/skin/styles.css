@@ -419,3 +419,23 @@ body.fixedPortalHeader #panels .panel{
 	margin-top: 0px;
 	padding-bottom: 2px;
 }
+/*デモ用Google Adsence*/
+#abg {
+	color:#FFFFFF;
+	font-family:arial,sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	white-space:nowrap;
+}
+.al {
+	font-family:arial,sans-serif;
+	font-size:11px;
+	line-height:14px;
+	white-space:nowrap;
+}
+.al .alt, .al a {
+	color:#000000;
+	font-weight:normal;
+	text-decoration:underline;
+	white-space:nowrap;
+}

@@ -226,7 +226,62 @@ if( isPreview == null )
 						<table width="100%" border="0" cellspacing="0" cellpadding="0" id="command-bar">
 							<tbody>
 								<tr>
-									<td><div id="portal-command"></div></td>
+									<td>
+										<!--デモ用に一時的にGoolgle Adsenceを直書き-->
+										<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="float:left;width:728px;margin:2px 0;">
+											<tbody>
+												<tr>
+													<td bgcolor="#336699" height="15" width="5">
+														<img alt="" height="1" width="1">
+													</td>
+													<td bgcolor="#336699" valign="top" width="1"><nobr>
+														<script>adu='';document.write('<a href="https://www.google.com/adsense/support/bin/request.py?contact=abg_afc&url=http://www.crowy.net/&hl=ja&client=ca-pub-0344855665929262');if(adt.length==0)document.write('&adU=+'+'&adT=no+AdLinks+found');for(i=0;i<adt.length;++i)document.write('&adU='+(adu+='+')+'&adT='+adt[i]);document.write('" target=_blank id=abg>Ads by Google</a>');</script><a href="https://www.google.com/adsense/support/bin/request.py?contact=abg_afc&amp;url=http://www.crowy.net/&amp;hl=ja&amp;client=ca-pub-0344855665929262&amp;adU=+&amp;adT=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC&amp;adU=++&amp;adT=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88&amp;adU=+++&amp;adT=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC%E6%A5%AD%E5%8B%99&amp;adU=++++&amp;adT=Gmail+Google+Docs&amp;adU=+++++&amp;adT=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E5%A4%89%E6%8F%9B" target="_blank" id="abg">Ads by Google</a></nobr>
+													</td>
+													<td bgcolor="#336699" width="5"><img alt="" height="1" width="1"></td>
+													<td>
+														<table border="0" cellpadding="0" cellspacing="0" width="100%">
+															<tbody>
+																<tr>
+																	<td align="center" width="20%">
+																		<div class="al">
+																		<a href="http://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-0344855665929262&amp;output=html&amp;h=15&amp;slotname=8427478710&amp;w=728&amp;lmt=1289264248&amp;flash=10.1.82&amp;url=http%3A%2F%2Fwww.crowy.net%2F&amp;dt=1289264249650&amp;shv=r20101027&amp;jsv=r20101102&amp;correlator=1289264249651&amp;frm=0&amp;adk=3570989519&amp;ga_vid=342019248.1288051951&amp;ga_sid=1289264234&amp;ga_hid=189257742&amp;ga_fc=1&amp;u_tz=540&amp;u_his=3&amp;u_java=1&amp;u_h=1024&amp;u_w=1280&amp;u_ah=960&amp;u_aw=1280&amp;u_cd=32&amp;u_nplug=14&amp;u_nmime=62&amp;biw=1192&amp;bih=748&amp;fu=0&amp;ifi=1&amp;dtd=251&amp;xpc=d8aMGMvJwR&amp;p=http%3A//www.crowy.net&amp;rl_rc=true&amp;adsense_enabled=true&amp;ad_type=text_image&amp;oe=utf8&amp;height=15&amp;width=728&amp;format=fp_al_lp&amp;kw_type=radlink&amp;prev_fmts=728x15_0ads_al_s&amp;rt=ChBM2JykAAmOqAqkOgZcLUseEgzlk4Hos6rkv53oqLwaCO6RlStPBp9-KAFSEwiHz7fhw5KlAhWCO6QKHeUOt0o&amp;hl=ja&amp;kw0=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC&amp;kw1=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88&amp;kw2=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC%E6%A5%AD%E5%8B%99&amp;kw3=Gmail+Google+Docs&amp;kw4=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E5%A4%89%E6%8F%9B&amp;okw=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC" onmouseover="return ss(0)" onmouseout="cs()" class="alt" target="_top">
+																			Google Apps</a>
+																		</div>
+																	</td>
+																	<td align="center" width="20%">
+																		<div class="al">
+																		<a href="http://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-0344855665929262&amp;output=html&amp;h=15&amp;slotname=8427478710&amp;w=728&amp;lmt=1289264248&amp;flash=10.1.82&amp;url=http%3A%2F%2Fwww.crowy.net%2F&amp;dt=1289264249650&amp;shv=r20101027&amp;jsv=r20101102&amp;correlator=1289264249651&amp;frm=0&amp;adk=3570989519&amp;ga_vid=342019248.1288051951&amp;ga_sid=1289264234&amp;ga_hid=189257742&amp;ga_fc=1&amp;u_tz=540&amp;u_his=3&amp;u_java=1&amp;u_h=1024&amp;u_w=1280&amp;u_ah=960&amp;u_aw=1280&amp;u_cd=32&amp;u_nplug=14&amp;u_nmime=62&amp;biw=1192&amp;bih=748&amp;fu=0&amp;ifi=1&amp;dtd=251&amp;xpc=d8aMGMvJwR&amp;p=http%3A//www.crowy.net&amp;rl_rc=true&amp;adsense_enabled=true&amp;ad_type=text_image&amp;oe=utf8&amp;height=15&amp;width=728&amp;format=fp_al_lp&amp;kw_type=radlink&amp;prev_fmts=728x15_0ads_al_s&amp;rt=ChBM2JykAAmOswqkOgZcLUseEgzjg4bjgq3jgrnjg4gaCKJcLodgMVWUKAFSEwiHz7fhw5KlAhWCO6QKHeUOt0o&amp;hl=ja&amp;kw0=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC&amp;kw1=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88&amp;kw2=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC%E6%A5%AD%E5%8B%99&amp;kw3=Gmail+Google+Docs&amp;kw4=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E5%A4%89%E6%8F%9B&amp;okw=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88" onmouseover="return ss(1)" onmouseout="cs()" class="alt" target="_top">
+																			メール</a>
+																		</div>
+																	</td>
+																	<td align="center" width="20%">
+																		<div class="al">
+																		<a href="http://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-0344855665929262&amp;output=html&amp;h=15&amp;slotname=8427478710&amp;w=728&amp;lmt=1289264248&amp;flash=10.1.82&amp;url=http%3A%2F%2Fwww.crowy.net%2F&amp;dt=1289264249650&amp;shv=r20101027&amp;jsv=r20101102&amp;correlator=1289264249651&amp;frm=0&amp;adk=3570989519&amp;ga_vid=342019248.1288051951&amp;ga_sid=1289264234&amp;ga_hid=189257742&amp;ga_fc=1&amp;u_tz=540&amp;u_his=3&amp;u_java=1&amp;u_h=1024&amp;u_w=1280&amp;u_ah=960&amp;u_aw=1280&amp;u_cd=32&amp;u_nplug=14&amp;u_nmime=62&amp;biw=1192&amp;bih=748&amp;fu=0&amp;ifi=1&amp;dtd=251&amp;xpc=d8aMGMvJwR&amp;p=http%3A//www.crowy.net&amp;rl_rc=true&amp;adsense_enabled=true&amp;ad_type=text_image&amp;oe=utf8&amp;height=15&amp;width=728&amp;format=fp_al_lp&amp;kw_type=radlink&amp;prev_fmts=728x15_0ads_al_s&amp;rt=ChBM2JykAAmOtgqkOgZcLUseEhLlk4Hos6rkv53oqLzmpa3li5kaCPDyOLwHhv7sKAFSEwiHz7fhw5KlAhWCO6QKHeUOt0o&amp;hl=ja&amp;kw0=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC&amp;kw1=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88&amp;kw2=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC%E6%A5%AD%E5%8B%99&amp;kw3=Gmail+Google+Docs&amp;kw4=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E5%A4%89%E6%8F%9B&amp;okw=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC%E6%A5%AD%E5%8B%99" onmouseover="return ss(2)" onmouseout="cs()" class="alt" target="_top">
+																			書類</a>
+																		</div>
+																	</td>
+																	<td align="center" width="20%">
+																		<div class="al">
+																		<a href="http://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-0344855665929262&amp;output=html&amp;h=15&amp;slotname=8427478710&amp;w=728&amp;lmt=1289264248&amp;flash=10.1.82&amp;url=http%3A%2F%2Fwww.crowy.net%2F&amp;dt=1289264249650&amp;shv=r20101027&amp;jsv=r20101102&amp;correlator=1289264249651&amp;frm=0&amp;adk=3570989519&amp;ga_vid=342019248.1288051951&amp;ga_sid=1289264234&amp;ga_hid=189257742&amp;ga_fc=1&amp;u_tz=540&amp;u_his=3&amp;u_java=1&amp;u_h=1024&amp;u_w=1280&amp;u_ah=960&amp;u_aw=1280&amp;u_cd=32&amp;u_nplug=14&amp;u_nmime=62&amp;biw=1192&amp;bih=748&amp;fu=0&amp;ifi=1&amp;dtd=251&amp;xpc=d8aMGMvJwR&amp;p=http%3A//www.crowy.net&amp;rl_rc=true&amp;adsense_enabled=true&amp;ad_type=text_image&amp;oe=utf8&amp;height=15&amp;width=728&amp;format=fp_al_lp&amp;kw_type=radlink&amp;prev_fmts=728x15_0ads_al_s&amp;rt=ChBM2JykAAmOuQqkOgZcLUseEhFHbWFpbCBHb29nbGUgRG9jcxoIo8YB4CUTSOEoAVITCIfPt-HDkqUCFYI7pAod5Q63Sg&amp;hl=ja&amp;kw0=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC&amp;kw1=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88&amp;kw2=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC%E6%A5%AD%E5%8B%99&amp;kw3=Gmail+Google+Docs&amp;kw4=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E5%A4%89%E6%8F%9B&amp;okw=Gmail+Google+Docs" onmouseover="return ss(3)" onmouseout="cs()" class="alt" target="_top">
+																			印刷</a>
+																			</div>
+																	</td>
+																	<td align="center" width="20%">
+																		<div class="al">
+																		<a href="http://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-0344855665929262&amp;output=html&amp;h=15&amp;slotname=8427478710&amp;w=728&amp;lmt=1289264248&amp;flash=10.1.82&amp;url=http%3A%2F%2Fwww.crowy.net%2F&amp;dt=1289264249650&amp;shv=r20101027&amp;jsv=r20101102&amp;correlator=1289264249651&amp;frm=0&amp;adk=3570989519&amp;ga_vid=342019248.1288051951&amp;ga_sid=1289264234&amp;ga_hid=189257742&amp;ga_fc=1&amp;u_tz=540&amp;u_his=3&amp;u_java=1&amp;u_h=1024&amp;u_w=1280&amp;u_ah=960&amp;u_aw=1280&amp;u_cd=32&amp;u_nplug=14&amp;u_nmime=62&amp;biw=1192&amp;bih=748&amp;fu=0&amp;ifi=1&amp;dtd=251&amp;xpc=d8aMGMvJwR&amp;p=http%3A//www.crowy.net&amp;rl_rc=true&amp;adsense_enabled=true&amp;ad_type=text_image&amp;oe=utf8&amp;height=15&amp;width=728&amp;format=fp_al_lp&amp;kw_type=radlink&amp;prev_fmts=728x15_0ads_al_s&amp;rt=ChBM2JykAAmOvAqkOgZcLUseEhLjg4bjgq3jgrnjg4jlpInmj5saCG0RsTlczcTMKAFSEwiHz7fhw5KlAhWCO6QKHeUOt0o&amp;hl=ja&amp;kw0=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC&amp;kw1=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88&amp;kw2=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC%E6%A5%AD%E5%8B%99&amp;kw3=Gmail+Google+Docs&amp;kw4=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E5%A4%89%E6%8F%9B&amp;okw=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E5%A4%89%E6%8F%9B" onmouseover="return ss(4)" onmouseout="cs()" class="alt" target="_top">
+																			電話対応</a>
+																			</div>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<!--デモ用Google Adsenceここまで-->
+										<div id="portal-command"></div>
+									</td>
 									<td width="16px"><img id="messageIcon" src="<%=staticContentURL%>/skin/imgs/information.gif" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();"/></td>
 								</tr>
 							</tbody>
