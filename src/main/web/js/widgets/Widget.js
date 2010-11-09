@@ -368,7 +368,7 @@ IS_Widget.prototype.classDef = function() {
 	
 	this.isAuthenticationFailed = function(){
 		var authType = this.getUserPref('authType');
-		if(!authType || /^(postPortalCredential|sendPortalCredentialHeader).*$/.test(authType))
+		if(!authType || /^(postPortalCredential|sendPortalCredentialHeader|oauth).*$/.test(authType))
 			return false;
 		var authCredentialId = this.getUserPref('authCredentialId');
 		return !authCredentialId;
