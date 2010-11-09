@@ -24,8 +24,6 @@ IS_Widget.MaximizeRssCategory.prototype.classDef = function() {
 	
 	var pageCount;
 	
-	var pageSize = is_getPropertyInt(rssPageSize, -1);
-	
 	this.initialize = function(widgetObj){
 		self = this;
 		widget = widgetObj;

@@ -187,8 +187,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssItemDiv = function( widget,o
 			for ( i = 0; i <  categories.length; i++){
 				var icon = google_docs_category_icon[categories[i]];
 				if(icon){
-					var img = document.createElement('img');
-					img.src = imageURL + '/docs/' + icon;
+					var img = $.IMG({src:imageURL + '/docs/' + icon, className:"rssItemIcon"});
 					this.rssItemDiv.appendChild(img);
 					break;
 				}				
@@ -1353,8 +1352,9 @@ IS_Widget.RssReader.RssItemRender.normalizeDesc = function( desc, isIntranet ) {
 	} else if( /<\/html>/i.test( desc )) {
 		desc = desc.replace(/<\/html>[\s\S]*/mi,"");
 	}
-	if(isIntranet)
+	/*if(isIntranet)
 		return desc;
 	else
-		return html_sanitize(desc, function(url){return url;},function(id){return id;});
+		return html_sanitize(desc, function(url){return url;},function(id){return id;});*/
+	return desc;
 }
