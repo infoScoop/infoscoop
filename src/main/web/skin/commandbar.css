@@ -17,6 +17,7 @@
 
 
 .infoScoop #portal-command{
+	display:none;
 }
 
 .infoScoop #portal-command .command,
@@ -248,4 +249,7 @@
 	font-size:80%;
 	text-align:right;
 	vertical-align:top;
+}
+.infoScoop #messageIcon{
+	display:none;
 }
