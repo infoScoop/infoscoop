@@ -3,9 +3,14 @@ infoScoop OpenSource 2.2.0
 
 About infoScoop OpenSource
 --------------------------
-"infoScoop OpenSource" is information portal that evolute according with personal work style.This portal provides important information for individuals from business system and huge infromation in or out of the company. It implement  free arrangement of information and fits to individual information processing skill and work style.
+"infoScoop OpenSource" is information portal that evolute according with
+ personal work style. This portal provides important information for individuals
+ from business system and huge information in or out of the company. It implement
+ free arrangement of information and fits to individual information processing
+ skill and work style.
 
-For more information, please see the infoScoop OpenSource website at http://www.infoscoop.org/.
+For more information, please see the infoScoop OpenSource web site at 
+http://www.infoscoop.org/.
 
 
 Installation Requirements
@@ -38,8 +43,9 @@ $ mysql -uroot iscoop < infoscoop-2.2.0-quickstart/init_infoscoop.sql
 
 3. Settings of database
 
-In default settings, MySQL uses the same server with default port 3306, user ID "root" and no password.
-If other settings are need to change, database settings should be changed.
+In default settings, MySQL uses the same server with default port 3306,
+user ID "root" and no password. If other settings are need to change, 
+database settings should be changed.
 Database settings can be changed in infoscoop.xml which is in the directory below.
 
 apache-tomcat-6.0.28/conf/Catalina/localhost/infoscoop.xml
@@ -49,8 +55,9 @@ Change Resource element of GlobalNamingResources element.
 ・username: user ID to connect to the database
 ・password: password to connect to the database
 ・url: url to connect to the database. 
-  When connecting to a MySQL server of an another server,change "localhost" to a proper host name.
-  Besides, If default port is not used, "3306" must be changed to proper value as well.
+  When connecting to a MySQL server of an another server,change "localhost" to 
+  a proper host name. Besides, If default port is not used, "3306" must be changed
+  to proper value as well.
 
 4. Start up infoScoop OpenSource Server
 
@@ -96,8 +103,8 @@ $ addaccount.bat(sh)
 License and Copyright
 ---------------------
 
-This code is licensed under the **GNU Lesser General Public License (LGPL) v3**. Please see
-LICENSE.txt for licensing and copyright information.
+This code is licensed under the **GNU Lesser General Public License (LGPL) v3**. 
+Please see LICENSE.txt for licensing and copyright information.
 
 
 Changes from Version 2.1.1 to 2.2.0

@@ -8,7 +8,8 @@ infoScoop OpenSourceとは
 を実現し、個人の情報処理スキルやワークスタイルに合わせた 「使いたくなる」 ポータ
 ルを実現します。
 
-詳細な説明は、以下のinfoScoop OpenSource公式サイトを参照ください。http://www.infoscoop.org/
+詳細な説明は、以下のinfoScoop OpenSource公式サイトを参照ください。
+http://www.infoscoop.org/
 
 
 前提条件
