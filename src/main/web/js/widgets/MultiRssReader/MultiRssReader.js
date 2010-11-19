@@ -1000,7 +1000,7 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 			// When Multi is promoted, empty Multi is created for a moment; then if widgetContent.innerHTML is used, system does not work properly
 //			widget.elm_widgetContent.innerHTML = IS_R.lb_noDiplayItem;
 			
-			widget.headerContent.close(false, true);
+			//widget.headerContent.close(false, true);
 			IS_EventDispatcher.newEvent('loadComplete', widget.id, null);
 		}
 	};
