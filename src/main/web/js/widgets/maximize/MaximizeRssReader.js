@@ -221,6 +221,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		filterContent.appendChild( filterForm );
 
 		var titleRow = filterForm.firstChild.childNodes[0];
+
 		titleRow.childNodes[0].style.fontSize = "9pt";
 		titleRow.childNodes[0].style.whiteSpace = "nowrap";
 		titleRow.childNodes[0].appendChild( document.createTextNode(
@@ -1161,10 +1162,10 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		
 		if(this.viewTimer) clearTimeout(this.viewTimer);
 		
-		if( isIframeView && rssItem.link.length == 0 &&( rssItem.description && rssItem.description != ""))
+		if( isIframeView && rssItem.link.length == 0 && (rssItem.link_gmailproxy_text || rssItem.description && rssItem.description != ""))
 			isIframeView = false;
-		
-		if( !isIframeView && rssItem.link.length != 0 &&!( rssItem.description && rssItem.description != "") )
+			
+		if( !isIframeView && rssItem.link.length > 0 && !rssItem.link_gmailproxy_text && !( rssItem.description && rssItem.description != "") )
 			isIframeView = true;
 		
 		/* Ignore parameter of userPref if viewType is specified in iframe viewing mode */
@@ -1291,7 +1292,24 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 				rssDescText.style.height = rssDescTextHeight;
 			}
 		}
-		rssDescText.innerHTML = IS_Widget.RssReader.RssItemRender.normalizeDesc( rssItem.description );
+		if(rssItem.description)
+			rssDescText.innerHTML = IS_Widget.RssReader.RssItemRender.normalizeDesc( rssItem.description );
+		else{
+			var opt = {
+				method: 'get',
+				asynchronous: false,
+				onSuccess:function(req, obj){
+					rssDescText.innerHTML = req.responseText;
+				}.bind(self),
+				onException:function(req, obj){
+				  alert('Retrieving summary is failed:' + obj);
+				},
+		 	  onFailure:function(req, obj){
+				  alert('Retrieving summary is failed:' + obj);
+		 	 	}
+			}
+			AjaxRequest.invoke(is_getProxyUrl(rssItem.link_gmailproxy_text, "NoOperation"), opt);
+		}
 		rssDescText.scrollTop = 0;
 		if(rssDescText) {
 			var descLinks = rssDescText.getElementsByTagName("a");

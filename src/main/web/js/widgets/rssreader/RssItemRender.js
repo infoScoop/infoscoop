@@ -147,7 +147,7 @@ IS_Widget.RssReader.RssItemRender.prototype.render = function ( context,rssItem,
 	
 	this.buildRssDesc( widget,opt );
 	
-	if( !rssItem.description || ( ""+rssItem.description.replace(/\s/,"") ).length == 0 ) {
+	if( (!rssItem.description || ( ""+rssItem.description.replace(/\s/,"") ).length == 0 ) && !rssItem.link_gmailproxy_text ) {
 		this.rssDetail.style.display = this.rssDetail1.style.display = "none";
 	} else {
 		this.rssDetail.style.display = this.rssDetail1.style.display = "";
@@ -398,7 +398,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildTitle = function( widget,opt ) 
 	this.rssDetail1.firstChild.innerHTML = IS_R.lb_descLink;
 	this.rssDetail1.id = widget.id + '_item_'+ itemNumber + '_more1';
 	
-	if(rssItem.description && rssItem.description.length > 0) {
+	if( (!rssItem.description || ( ""+rssItem.description.replace(/\s/,"") ).length == 0 ) && !rssItem.link_gmailproxy_text ) {
 //		rssDetailNobr.appendChild(document.createTextNode("description>>"));
 		this.rssDetail1.style.display = "";
 	} else {
@@ -458,7 +458,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildPubDate = function( widget,opt 
 	
 	this.rssDetail.id = widget.id + '_item_'+ itemNumber + '_more';
 	this.rssDetail.firstChild.innerHTML = IS_R.lb_descLink;
-	if(rssItem.description && rssItem.description.length > 0) {
+	if( (!rssItem.description || ( ""+rssItem.description.replace(/\s/,"") ).length == 0 ) && !rssItem.link_gmailproxy_text ) {
 //		rssDetailNobr.appendChild(document.createTextNode("description>>"));
 		
 		this.rssDetail.style.display = "";
@@ -595,7 +595,24 @@ IS_Widget.RssReader.RssItemRender.prototype.postRender = function( ctx,rssItem,i
 }
 IS_Widget.RssReader.RssItemRender.prototype.buildDesc = function( widget,rssDesc,rssItem ) {
 	var html = IS_Widget.RssReader.RssItemRender.getCategoryHtml(rssItem.category);
-	html += IS_Widget.RssReader.RssItemRender.normalizeDesc(rssItem.description, widget.content.rss.isIntranet);
+	if(rssItem.description)
+		html += IS_Widget.RssReader.RssItemRender.normalizeDesc(rssItem.description, widget.content.rss.isIntranet);
+	else{
+		var opt = {
+			method: 'get',
+			asynchronous: false,
+			onSuccess:function(req, obj){
+			  html += req.responseText;
+			}.bind(self),
+			onException:function(req, obj){
+			  alert('Retrieving summary is failed:' + obj);
+			},
+		   onFailure:function(req, obj){
+			  alert('Retrieving summary is failed:' + obj);
+		  	}
+		}
+		AjaxRequest.invoke(is_getProxyUrl(rssItem.link_gmailproxy_text, "NoOperation"), opt);
+	}
 	rssDesc.innerHTML = html;
 	var descLinks = rssDesc.getElementsByTagName("a");
 	if(descLinks) {
