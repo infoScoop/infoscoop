@@ -231,9 +231,9 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 
 .infoScoop .tabMenu {
 	position: absolute;
-	border-left: 1px solid gray;
-	border-right: 1px solid gray;
-	border-bottom: 1px solid gray;
+	border-left: 1px solid #CCCCCC;
+	border-right: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
 	background-color: white;
 	z-index:50;
 	overflow: hidden;
