@@ -22,7 +22,10 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.SocketTimeoutException;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.security.auth.Subject;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,6 +36,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.acl.ISPrincipal;
+import org.infoscoop.acl.SecurityController;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.widgetconf.WidgetConfUtil;
@@ -142,7 +147,19 @@ public class WidgetConfServlet extends HttpServlet {
 				true);
 		jsonObj = WidgetConfUtil.gadgetJSONtoPortalGadgetJSON( jsonObj );
 
-		return I18NUtil.resolve(I18NUtil.TYPE_WIDGET, jsonObj.toString(1),
+		String json = jsonObj.toString(1);
+		String domainName = null;
+		Subject loginUser = SecurityController.getContextSubject();
+		for(ISPrincipal p :loginUser.getPrincipals(ISPrincipal.class))
+			if(ISPrincipal.DOMAIN_PRINCIPAL == p.getType())
+				domainName = p.getDisplayName();
+		
+		Pattern pattern = Pattern.compile( "__IS_DOMAIN_NAME__" );
+		Matcher matcher = pattern.matcher(json);
+		if(matcher.find())
+			json = matcher.replaceAll(domainName);
+		
+		return I18NUtil.resolve(I18NUtil.TYPE_WIDGET, json,
 				locale, true);
 	}
 }
