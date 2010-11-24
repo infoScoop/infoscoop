@@ -9,15 +9,16 @@
 		<title><spring:message code="layouts.default.title" /> - <spring:message code="${title}" /></title>
 		<script type="text/javascript" src="../../js/lib/jquery.js"></script>
 		<link rel="stylesheet" type="text/css" href="../../skin/manager.css">
+		<style type="text/css">
+		body{background:#FFF;}
+		</style>
 		<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/css/smoothness/jquery-ui-1.8.4.custom.css">
 		<script type="text/javascript" src="../../js/lib/jquery-ui/jquery-ui-1.8.4.custom.min.js"></script>
 		<script type="text/javascript" src="../../js/lib/jquery.form.js"></script>
 		<script type="text/javascript" src="../../js/utils/domhelper.js"></script>
+		<script type="text/javascript" src="../../js/manager/gadget.js"></script>
 	</head>
 	<body>
-		<div class="ui-tabs ui-widget ui-widget-content ui-corner-all">
-			<tiles:insertAttribute name="header" />
-			<div id="body"><tiles:insertAttribute name="body" /></div>
-		</div>
+		<div id="body"><tiles:insertAttribute name="body" /></div>
 	</body>
 </html>

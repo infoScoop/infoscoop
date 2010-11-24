@@ -5,7 +5,7 @@
 <ul>
 <c:forEach var="item" items="${items}">
 <c:set var="hasChild" value="${fn:length(item.childItems) > 0}"/>
-<li <c:if test="${hasChild}">class="jstree-closed"</c:if> id="${item.menuId}" type="${item.fkGadgetInstance.type}">
+<li <c:if test="${hasChild}">class="jstree-closed"</c:if> id="${item.menuId}" type="${item.gadgetInstance.type}">
 	<a href="#">${item.title}<span onclick="showMenuCommand(event, this, '${item.menuId}')" class="menu_open">▼</span></a>
 	<div class="info">
 		<c:choose>

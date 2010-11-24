@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<tiles:insertDefinition name="tab_dialog.definition" flush="true">
+<tiles:insertDefinition name="dialog.definition" flush="true">
 	<tiles:putAttribute name="type" value="menu"/>
 	<tiles:putAttribute name="title" value="tab.title"/>
 	<tiles:putAttribute name="body" type="string">

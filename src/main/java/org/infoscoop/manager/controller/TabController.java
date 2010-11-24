@@ -18,6 +18,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.xpath.XPathAPI;
 import org.infoscoop.account.DomainManager;
 import org.infoscoop.command.XMLCommandProcessor;
 import org.infoscoop.command.util.XMLCommandUtil;
@@ -54,6 +55,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.AbstractView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 @Controller
@@ -150,15 +152,23 @@ public class TabController {
 			Locale locale,
 			Model model)throws Exception {
 		TabTemplateStaticGadget staticGadget = new TabTemplateStaticGadget();
-			GadgetInstance gadgetInstance = new GadgetInstance();
-			staticGadget.setGadgetInstance(gadgetInstance);
-			staticGadget.getGadgetInstance().setType(type);
-			staticGadget.setTabTemplateId(tabId);
-			staticGadget.setContainerId(containerId);
-		model.addAttribute("tabTemplateStaticGadget", staticGadget);
-		
+		GadgetInstance gadgetInstance = new GadgetInstance();
+		staticGadget.setGadgetInstance(gadgetInstance);
+		staticGadget.getGadgetInstance().setType(type);
+		staticGadget.setTabTemplateId(tabId);
+		staticGadget.setContainerId(containerId);
+
 		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。
-		model.addAttribute("conf", getGadgetConf(type, locale));
+		Document gadgetConf = getGadgetConf(type, locale);
+		Node titleNode = XPathAPI.selectSingleNode(gadgetConf,
+				"/Module/ModulePrefs/@title");
+		if (titleNode != null) {
+			String title = titleNode.getNodeValue();
+			staticGadget.getGadgetInstance().setTitle(title);
+		}
+		
+		model.addAttribute("conf", gadgetConf);
+		model.addAttribute("gadget", staticGadget);
 		return "tab/editStaticGadget";
 	
 	}
@@ -190,7 +200,7 @@ public class TabController {
 		model.addAttribute("ignoreHeaderBool", staticGadget.isIgnoreHeaderBool());
 		model.addAttribute("noBorderBool", staticGadget.isNoBorderBool());
 		
-		model.addAttribute(staticGadget);
+		model.addAttribute("gadget", staticGadget);
 		
 		GadgetInstance gadget = staticGadget.getGadgetInstance();
 		if (gadget != null) {
@@ -252,7 +262,6 @@ public class TabController {
 	@Transactional
 	public void clearStaticGadgets(@RequestParam("tabid") String tabId,
 			@RequestParam("widgetids") List<String> removeIds) {
-		// this.tabTemplateStaticGadgetDAO.deleteByTabId(Integer.valueOf(id));
 		this.tabTemplateStaticGadgetDAO.deleteByTabIdAndWidgetIds(Integer
 				.valueOf(tabId), removeIds);
 	}
@@ -317,17 +326,23 @@ public class TabController {
 			tabTemplateDAO.get(Integer.toString(formTab.getId()));
 		
 		if(tabOriginal != null){
-			
-			Map<String, TabTemplateStaticGadget> oldGadgetMap = new HashMap<String, TabTemplateStaticGadget>();
+			Map<String, TabTemplateStaticGadget> newGadgetMap = new HashMap<String, TabTemplateStaticGadget>();
 			for(TabTemplateStaticGadget gadget : tab.getTabTemplateStaticGadgets())
-				oldGadgetMap.put(gadget.getContainerId(), gadget);
-
+				newGadgetMap.put(gadget.getContainerId(), gadget);
+			
+			List<Integer> removeInstanceIds = new ArrayList<Integer>();
 			WidgetDAO widgetDAO = WidgetDAO.newInstance();
 			for(TabTemplateStaticGadget gadget : tabOriginal.getTabTemplateStaticGadgets()){
-				TabTemplateStaticGadget oldGadget = oldGadgetMap.get(gadget.getContainerId());
-				if(oldGadget != null && !oldGadget.getGadgetInstance().equals(gadget.getGadgetInstance()))
+				TabTemplateStaticGadget newGadget = newGadgetMap.get(gadget.getContainerId());
+				//remove gadget instances when gadget instance is not used.
+				if(newGadget == null || !gadget.getGadgetInstance().equals(newGadget.getGadgetInstance())){
 					widgetDAO.deleteStaticWidgetByTabIdAndWidgetId(tab.getTabId(), gadget.getContainerId());
+					removeInstanceIds.add(gadget.getGadgetInstance().getId());
+				}
 			}
+			
+			gadgetInstanceDAO.deleteByIds(removeInstanceIds);
+			
 			tabTemplateDAO.delete(tabOriginal);
 			//if(tab.isLayoutModified()){
 			if(Boolean.valueOf(layoutModified)){

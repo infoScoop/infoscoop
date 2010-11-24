@@ -4,4 +4,5 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <h2><spring:message code="menu.showEditItem.title" /></h2>
 <c:set var="action" value="updateItem" scope="request"/>
-<c:import url="/WEB-INF/jsp/admin/menu/_form.jsp"/>
+<c:set var="type" value="menu" scope="request"/>
+<c:import url="/WEB-INF/jsp/admin/gadget/_form.jsp"/>

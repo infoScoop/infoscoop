@@ -136,9 +136,8 @@ public class MenuItemDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().saveOrUpdate(item);
 	}
 
-	public void delete(String id) {
-		MenuItem item = getByMenuId(id);
-		if (item != null)
-			super.getHibernateTemplate().delete(item);
+	public void delete(Integer id) {
+		super.getHibernateTemplate().bulkUpdate(
+				"delete from MenuItem where id = ?", new Object[] { id });
 	}
 }

@@ -47,6 +47,8 @@ public class MenuController {
 	private MenuItemDAO menuItemDAO;
 	@Autowired
 	private MenuTreeDAO menuTreeDAO;
+	@Autowired
+	private GadgetInstanceDAO gadgetInstanceDAO;
 
 	@RequestMapping
 	@Transactional
@@ -109,9 +111,6 @@ public class MenuController {
 	@RequestMapping
 	public void selectGadgetInstance(@RequestParam("id") String parentId,
 			Model model) throws Exception {
-		GadgetInstanceDAO dao = GadgetInstanceDAO.newInstance();
-		List<GadgetInstance> gadgetInstances = dao.all();
-		model.addAttribute("instances", gadgetInstances);
 		model.addAttribute("parentId", parentId);
 	}
 
@@ -145,8 +144,8 @@ public class MenuController {
 		item.setPublish(0);
 		if (type != null && type.length() > 0) {
 			GadgetInstance gadget = new GadgetInstance();
-			item.setFkGadgetInstance(gadget);
-			item.getFkGadgetInstance().setType(type);
+			item.setGadgetInstance(gadget);
+			item.getGadgetInstance().setType(type);
 			Document gadgetConf = getGadgetConf(type, locale);
 			if (title == null || title.length() == 0) {
 				Node titleNode = XPathAPI.selectSingleNode(gadgetConf,
@@ -157,7 +156,7 @@ public class MenuController {
 			model.addAttribute("conf", gadgetConf);
 		}
 		item.setTitle(title);
-		model.addAttribute(item);
+		model.addAttribute("gadget", item);
 	}
 
 	@RequestMapping
@@ -165,14 +164,14 @@ public class MenuController {
 	public void showEditItem(@RequestParam("menuId") String menuId, Model model,
 			Locale locale) throws Exception {
 		MenuItem item = menuItemDAO.getByMenuId(menuId);
-		model.addAttribute(item);
+		model.addAttribute("gadget", item);
 
-		GadgetInstance gadget = item.getFkGadgetInstance();
+		GadgetInstance gadget = item.getGadgetInstance();
 		if (gadget != null) {
 			String type = gadget.getType();
 			if (type != null && type.length() > 0) {
 				// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
-				item.getFkGadgetInstance().getGadgetInstanceUserPrefs().size();
+				item.getGadgetInstance().getGadgetInstanceUserPrefs().size();
 				model.addAttribute("conf", getGadgetConf(type, locale));
 			}
 		}
@@ -182,7 +181,7 @@ public class MenuController {
 	@Transactional
 	public MenuItem addItem(MenuItem item) throws Exception {
 		item.setMenuId("m_" + new Date().getTime());
-		GadgetInstance gadget = item.getFkGadgetInstance();
+		GadgetInstance gadget = item.getGadgetInstance();
 		if (gadget != null) {
 			String type = gadget.getType();
 			if (type != null && type.length() > 0) {
@@ -199,7 +198,7 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public MenuItem updateItem(MenuItem item) throws Exception {
-		GadgetInstance gadget = item.getFkGadgetInstance();
+		GadgetInstance gadget = item.getGadgetInstance();
 		if (gadget != null) {
 			String type = gadget.getType();
 			if (type != null && type.length() > 0) {
@@ -230,7 +229,7 @@ public class MenuController {
 		GadgetInstance gadgetInstance = dao.get(instanceId);
 		// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
 		gadgetInstance.getGadgetInstanceUserPrefs().size();
-		item.setFkGadgetInstance(gadgetInstance);
+		item.setGadgetInstance(gadgetInstance);
 		item.setTitle(gadgetInstance.getTitle());
 		item.setHref(gadgetInstance.getHref());
 		item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
@@ -255,7 +254,10 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public void removeItem(@RequestParam("id") String id) throws Exception {
-		menuItemDAO.delete(id);
+		MenuItem item = menuItemDAO.getByMenuId(id);
+		if (item.getGadgetInstance() != null)
+			gadgetInstanceDAO.deleteById(item.getGadgetInstance().getId());
+		menuItemDAO.delete(item.getId());
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -322,7 +324,7 @@ public class MenuController {
 		newItem.setMenuOrder(item.getMenuOrder());
 		newItem.setPublish(item.getPublish());
 
-		GadgetInstance gadget = item.getFkGadgetInstance();
+		GadgetInstance gadget = item.getGadgetInstance();
 		GadgetInstance newGadget = new GadgetInstance();
 		newGadget.setTitle(gadget.getTitle());
 		newGadget.setType(gadget.getType());
@@ -339,7 +341,7 @@ public class MenuController {
 			}
 		}
 		newGadget.setGadgetInstanceUserPrefs(newUps);
-		newItem.setFkGadgetInstance(newGadget);
+		newItem.setGadgetInstance(newGadget);
 		menuItemDAO.save(newItem);
 		return newItem;
 	}
@@ -350,8 +352,7 @@ public class MenuController {
 		Locale locale = request.getLocale();
 		String uploadGadgets = GadgetService.getHandle().getGadgetJson(locale,
 				3000);
-		model.addAttribute("builtin", "{}");
-		model.addAttribute("upload", uploadGadgets);
+		model.addAttribute("gadgets", uploadGadgets);
 	}
 
 	private Document getGadgetConf(String type, Locale locale) throws Exception {

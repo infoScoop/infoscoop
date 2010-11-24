@@ -7,6 +7,7 @@
 	<tiles:putAttribute name="title" value="menu.title"/>
 	<tiles:putAttribute name="body" type="string">
 <script type="text/javascript" src="../../js/lib/jsTree.v.1.0rc2/jquery.jstree.js"></script>
+<script type="text/javascript" src="../../js/manager/gadget.js"></script>
 <script type="text/javascript" class="source">
 var hostPrefix = "/infoscoop";//TODO スクリプトで計算
 //TODO propertiesテーブルから取得して補正する
@@ -14,7 +15,7 @@ var staticContentURL="../..";
 var imageURL = staticContentURL + "/skin/imgs/"
 var copiedItemId, gadgetConfs, menuId = "${menuId}";
 function getGadget(type){
-	return gadgetConfs.builtin[type] || gadgetConfs.upload[type];
+	return gadgetConfs[type];
 }
 function getGadgetTitle(gadget){
 	if(typeof gadget == "string")
@@ -58,14 +59,24 @@ function selectGadgetInstance(e, a, isTop){
 		}
 	);
 }
-function selectGadgetType(){
+function selectGadgetType(e, a, isTop){
+	if(isTop)
+		$("#menu_tree").jstree("deselect_all");
 	var selectedItem = getSelectedItem();
 	var id = selectedItem ? selectedItem.id : "";
 	$.get("selectGadgetType", {id:id}, function(html){
 		$("#menu_right").html(html);
 	});
 }
-function showAddItem(type, parentId, title){
+function showAddItem(isTop, type, title, parentId){
+	if(!parentId){
+		if(isTop){
+			parentId = "";
+		}else{
+			var selectedItem = getSelectedItem();
+			parentId = selectedItem ? selectedItem.id : "";
+		}
+	}
 	$.get("showAddItem", {menuId: menuId, id: parentId, type: type?type:"", title: title?title:""}, function(html){
 		$("#menu_right").html(html);
 	});
@@ -151,107 +162,7 @@ function showMenuCommand(event, link, menuId){
 	$("#menu_item_command").show();
 	event.stopPropagation();
 }
-function rebuildGadgetUserPrefs(){
-	function replaceListForm(input){
-		input.type = "hidden";
-		var listElm = $($.DIV());
-		function createListValueElm(value){
-			return $.DIV({},
-				$.INPUT({className:"value", type:"text", value:value}),
-				$.DIV({className:"remove"}, "x")
-			)
-		}
-		function fixListValues(){
-			var values = "";
-			$("input.value", listElm).each(function(i){
-				if(i > 0) values += "|"
-				values += $(this).val();
-			});
-			$(input).val(values);
-		}
-		if(input.value != ""){
-			var values = input.value.split("|");
-			$.each(values, function(i){
-				listElm.append(createListValueElm(values[i]));
-			})
-		}
-		$("input.value", listElm).live("focus", function(){
-			$(this).toggleClass("selected", true);
-		});
-		$("input.value", listElm).live("blur", function(){
-			$(this).toggleClass("selected", false);
-			fixListValues();
-		});
-		$(".remove", listElm).live("click", function(){
-			$(this).parent().remove();
-			fixListValues();
-		});
-		listElm.append($.DIV({},
-			$.INPUT({type:"text"}),
-			$.INPUT({type:"button", value:"<spring:message code="menu.editPage.userPref.list.add" />"})
-		));
-		$("input[type=button]", listElm).button().click(function(){
-			var value = $(this).prev().val();
-			$(this).parent().before(createListValueElm(value));
-			$(this).prev().val("");
-			fixListValues();
-			return false;
-		});
-		$(input).after(listElm);
-	}
-	$("#gadget_settings input").each(function(){
-		var datatype = this.className;
-		switch(datatype){
-			case "bool":
-				this.type = "checkbox";
-				var boolFalse = $.INPUT({type:"hidden", value:"false", name:this.name});
-				$(this).after(boolFalse);
-				if(this.value == "true"){
-					this.checked = "checked";
-					boolFalse.disabled = "disabled";
-				} else {
-					this.value = "true";
-				}
-				$(this).change(function(){
-					$(this).next().attr("disabled", this.checked ? "disabled":"");
-				});
-				break;
-			case "list":
-				replaceListForm(this);
-				break;
-			case "calendar":
-				this.type = "text";
-				$(this).datepicker({dateFormat: "yy/mm/dd"});
-				break;
-			case "url":
-				break;
-			case "xml":
-			case "textarea":
-				$(this).replaceWith($.TEXTAREA(
-					{
-						name: this.name,
-						className: this.className
-					},
-					this.value)
-				);
-				break;
-			case "string":
-			default:
-				this.type = "text"
-		}
-	});
-	$("#gadget_settings select").each(function(){
-		if(this.className == "radio"){
-			var name = this.name;
-			var radioEl = $.SPAN({className:'radio'});
-			$(this).find("option").each(function(){
-				radioEl.appendChild($.INPUT({type:'radio', value:this.value, name:name, checked:this.selected?"checked":false}));
-				radioEl.appendChild($.LABEL({}, this.innerHTML));
-			});
-			$(this).replaceWith(radioEl);
-		}
-	});
-}
+
 $(function () {
 	var menuTree = $("#menu_tree").jstree({
 		"html_data" : {
@@ -320,8 +231,8 @@ $(function () {
 	$.getJSON("getGadgetConf", null, function(json, status){
 		gadgetConfs = json;
 		//TODO 以下の処理はサーバーサイドでやりたい
-		$.each(gadgetConfs.upload, function(type, gadget){
-			gadgetConfs.upload[type].type = type;
+		$.each(gadgetConfs, function(type, gadget){
+			gadgetConfs[type].type = type;
 		});
 		$("li", menuTree).each(function(){
 			var icon = getIconUrl(this.type);
@@ -335,7 +246,7 @@ $(function () {
 <div id="menu">
 	<div id="menu_left">
 		<div id="menu_command">
-			<a onclick="showAddItem(false, '')"><spring:message code="menu.editPage.add.top" /></a>
+			<a onclick="showAddItem(true)"><spring:message code="menu.editPage.add.top" /></a>
 		</div>
 		<div id="menu_tree">
 			
@@ -347,7 +258,8 @@ $(function () {
 	<div style="clear:both"></div>
 	<div id="menu_item_command" class="menu_item_command" style="display:none">
 		<ul>
-			<li><a onclick="selectGadgetInstance(event, this)"><spring:message code="menu.editPage.command.add" /></a></li>
+			<li><a onclick="showAddItem(false)"><spring:message code="menu.editPage.command.add.link" /></a></li>
+			<li><a onclick="selectGadgetType(event, this)"><spring:message code="menu.editPage.command.add.gadget" /></a></li>
 			<li><a onclick="showEditItem(event, this)"><spring:message code="menu.editPage.command.edit" /></a></li>
 			<li><a onclick="copyItem(event, this)"><spring:message code="menu.editPage.command.copy" /></a></li>
 			<li><a onclick="pasteItem(event, this)" class="paste disabled"><spring:message code="menu.editPage.command.paste" /></a></li>

@@ -17,11 +17,11 @@ public abstract class BaseMenuItem  implements Serializable {
 	public static String REF = "MenuItem";
 	public static String PROP_PUBLISH = "Publish";
 	public static String PROP_ALERT = "Alert";
+	public static String PROP_GADGET_INSTANCE = "GadgetInstance";
 	public static String PROP_FK_MENU_TREE = "FkMenuTree";
 	public static String PROP_MENU_ORDER = "MenuOrder";
 	public static String PROP_ID = "Id";
 	public static String PROP_HREF = "Href";
-	public static String PROP_FK_GADGET_INSTANCE = "FkGadgetInstance";
 	public static String PROP_FK_PARENT = "FkParent";
 	public static String PROP_MENU_ID = "MenuId";
 	public static String PROP_TITLE = "Title";
@@ -83,7 +83,7 @@ public abstract class BaseMenuItem  implements Serializable {
 
 	// many to one
 	private org.infoscoop.dao.model.MenuItem fkParent;
-	private org.infoscoop.dao.model.GadgetInstance fkGadgetInstance;
+	private org.infoscoop.dao.model.GadgetInstance gadgetInstance;
 	private org.infoscoop.dao.model.MenuTree fkMenuTree;
 
 	// collections
@@ -252,16 +252,16 @@ public abstract class BaseMenuItem  implements Serializable {
 	/**
 	 * Return the value associated with the column: fk_gadget_instance_id
 	 */
-	public org.infoscoop.dao.model.GadgetInstance getFkGadgetInstance () {
-		return fkGadgetInstance;
+	public org.infoscoop.dao.model.GadgetInstance getGadgetInstance () {
+		return gadgetInstance;
 	}
 
 	/**
 	 * Set the value related to the column: fk_gadget_instance_id
-	 * @param fkGadgetInstance the fk_gadget_instance_id value
+	 * @param gadgetInstance the fk_gadget_instance_id value
 	 */
-	public void setFkGadgetInstance (org.infoscoop.dao.model.GadgetInstance fkGadgetInstance) {
-		this.fkGadgetInstance = fkGadgetInstance;
+	public void setGadgetInstance (org.infoscoop.dao.model.GadgetInstance gadgetInstance) {
+		this.gadgetInstance = gadgetInstance;
 	}
 
 

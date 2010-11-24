@@ -62,7 +62,7 @@ public class SiteAggregationMenuService {
 		buf.append(" title=\"" + menuItem.getTitle() + "\"");
 		if(menuItem.getHref() != null)
 			buf.append(" href=\"" + menuItem.getHref() + "\"");
-		GadgetInstance gadgetInstance = menuItem.getFkGadgetInstance();
+		GadgetInstance gadgetInstance = menuItem.getGadgetInstance();
 		boolean isRemoteGadget = false;
 		if(gadgetInstance != null){
 			buf.append(" ginstid=\"" + gadgetInstance.getId() + "\"");

@@ -8,12 +8,6 @@
 </p>
 <div id="gadget_type_list">
 	<ul>
-		<li id="builtin"><span><spring:message code="menu.selectGadgetType.builtin" /></span>
-			<ul></ul>
-		</li>
-		<li id="upload"><span><spring:message code="menu.selectGadgetType.gadgets" /></span>
-			<ul></ul>
-		</li>
 	</ul>
 </div>
 <p>
@@ -21,30 +15,29 @@
 	<input type="text" id="gadget_url"><button id="gadget_add_button"><spring:message code="menu.selectGadgetType.button.add" /></button>
 </p>
 <script type="text/javascript">
-$.each(gadgetConfs, function(key, gadgets){
-	$.each(gadgets, function(type, gadget){
-		var title = getGadgetTitle(type);
-		try{
-			$("#gadget_type_list #"+key+" ul").append(
-				$.LI({},
-					$.A(
-						{
-							href:"#",
-							onclick:{handler:function(){showAddItem(type, '${parentId}', title)}}
-						},
-						title
-					)
+var gadgetListUl = $("#gadget_type_list ul");
+$.each(gadgetConfs, function(type, gadget){
+	var title = getGadgetTitle(type);
+	try{
+		gadgetListUl.append(
+			$.LI({},
+				$.A(
+					{
+						href:"#",
+						onclick:{handler:function(){showAddItem(false, type, title, '${parentId}')}}
+					},
+					title
 				)
-			);
-		}catch(e){
-			console.error(e);
-			return false;
-		}
-	});
+			)
+		);
+	}catch(e){
+		console.error(e);
+		return false;
+	}
 });
 $("#gadget_add_button").button().click(function(){
 	var url = $("#gadget_url").val();
 	if(!url) alert("<spring:message code="menu.selectGadgetType.no.url" />");
-	showAddItem("g_"+url, '${parentId}');
+	showAddItem(false, "g_"+url, "", '${parentId}');
 });
 </script>
