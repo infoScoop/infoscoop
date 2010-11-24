@@ -4,10 +4,10 @@
 			<a href="#" onclick=""><img class="logo_img" src="skin/imgs/header/infoscoop4g_logo.png" alt="infoScoop"/></a>
 		</div>
 		<div class="launcher">
-				<a href="#" ><span class="label" id="home" >ホーム</span></a>
-				<a href="#" ><span class="label" id="mail" >メール</span></a>
-				<a href="#" ><span class="label" id="calendar" >カレンダー</span></a>
-				<a href="#" ><span class="label" id="document" >ドキュメント</span></a>
+				<a href="#" onclick="IS_Portal.goHome();"><span class="label" id="home" >ホーム</span></a>
+				<a href="http://mail.google.com/a/${session.getAttribute('Domain')}/" target="_blank"><span class="label" id="mail" >メール</span></a>
+				<a href="https://www.google.com/calendar/hosted/${session.getAttribute('Domain')}/" target="_blank"><span class="label" id="calendar" >カレンダー</span></a>
+				<a href="http://docs.google.com/a/${session.getAttribute('Domain')}/" target="_blank"><span class="label" id="document" >ドキュメント</span></a>
 		</div>
 	</div>
 	<div class="right">
