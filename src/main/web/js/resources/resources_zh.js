@@ -206,7 +206,6 @@ var IS_R = {
 	"lb_containerLoginonException": "未能构成画面。自定义信息的数据可能出现不整合。请向系统管理员询问。",
 	"ms_userIdEmpty": "请输入用户名。",
 	"lb_countryES": "西班牙",
-	"ms_tabsRefresh": "更新配置在所有标签上的小工具",
 	"lb_langNO": "挪威语",
 	"ms_iCalCreateFailed": "日历的生成失败。 {0}",
 	"ms_datecreatorChangeFailed": "{0}的日期/作者的表示/非表示设定的变更失败: {1}",

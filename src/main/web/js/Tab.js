@@ -38,22 +38,6 @@ IS_Portal.buildTabs = function(){
 	var tabsContainer = $('tab-container');
 	var tabsDiv = document.createElement("div");
 	tabsDiv.id = "tabs";
-	//Loading all tabs
-	var tabsRefresh = document.createElement("div");
-	tabsRefresh.id = "tabsRefresh";
-	tabsRefresh.className = "tabsRefresh";
-	tabsRefresh.title = IS_R.ms_tabsRefresh;
-	tabsDiv.appendChild(tabsRefresh);
-	
-	Event.observe(tabsRefresh, "click",IS_Portal.buildAllTabsContents, false);
-	
-	var tabsRefreshStop = document.createElement("div");
-	tabsRefreshStop.id = "tabsRefreshStop";
-	tabsRefreshStop.title = IS_R.ms_stopRefresh;
-	tabsRefreshStop.style.display = "none";
-	tabsDiv.appendChild( tabsRefreshStop );
-	
-	Event.observe( tabsRefreshStop,"click",IS_Portal.stopLoadWidgets,false );
 	
 	var tabsUl = document.createElement("ul");
 	tabsUl.id = "tabsUl";

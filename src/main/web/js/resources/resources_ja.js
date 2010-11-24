@@ -206,7 +206,6 @@ var IS_R = {
 	"lb_containerLoginonException": "画面の構成に失敗しました。カスタマイズ情報データに不整合が発生している可能性があります。システム管理者にお問い合わせください。",
 	"ms_userIdEmpty": "ユーザIDを入力してください。",
 	"lb_countryES": "スペイン",
-	"ms_tabsRefresh": "全てのタブに配置されたガジェットを更新します",
 	"lb_langNO": "ノルウェー語",
 	"ms_iCalCreateFailed": "カレンダーの生成に失敗しました。 {0}",
 	"ms_datecreatorChangeFailed": "{0}の日付/作成者の表示/非表示設定の変更に失敗しました: {1}",

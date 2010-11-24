@@ -206,7 +206,6 @@ var IS_R = {
 	"lb_containerLoginonException": "Failed to compose screen. There might be some errors occurred at the customized information data. Contact the systems manager.",
 	"ms_userIdEmpty": "Please enter User ID.",
 	"lb_countryES": "Spain",
-	"ms_tabsRefresh": "Gadgets arranged in all tabs is renewed.",
 	"lb_langNO": "Norwegian",
 	"ms_iCalCreateFailed": "Failed to create calendar. {0}",
 	"ms_datecreatorChangeFailed": "Failed to change the Show/Hide setting of Date/Author of {0}: {1}",

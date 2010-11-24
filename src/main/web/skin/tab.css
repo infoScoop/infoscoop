@@ -36,6 +36,7 @@
 	padding:2px 2px 2px 7px;
 	font-size:83%;
 }
+/*
 .infoScoop #tabs .tabsRefresh{
 	background: url( ./imgs/refresh.gif ) no-repeat center left;
 	width:16px;
@@ -44,9 +45,8 @@
 	position:relative;
 	bottom:-3px;
 	cursor:pointer;
-	display:none;
 }
-
+*/
 .infoScoop #tabs ul {
 	margin:0;
 	padding:0;
@@ -164,6 +164,7 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 	color:#6677dd;
 }
 
+/*
 .infoScoop #tabs #tabsRefreshStop {
 	background: url( ./imgs/stopq.gif ) no-repeat center left;
 	width:16px;
@@ -173,6 +174,7 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 	bottom:-3px;
 	cursor:pointer;
 }
+*/
 /*
 .selectedtab .tabIndicator {
 	width: 13px;
