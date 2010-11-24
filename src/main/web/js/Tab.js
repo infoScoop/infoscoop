@@ -55,7 +55,7 @@ IS_Portal.buildTabs = function(){
 	var addTabWithBuildColumns = function(){
 		
 		var addNumber = IS_Portal.getNextTabNumber();
-		var tabObj = IS_Portal.addTab( addNumber, IS_R.lb_newTab, "dynamic", 3);
+		var tabObj = IS_Portal.addTab( addNumber, IS_R.lb_newTab, "dynamic", null, 3);
 
 		var tabId = tabObj.id;
 //		IS_WidgetsContainer.rebuildColumns( tabId, 3 );
@@ -214,7 +214,6 @@ IS_Portal.addTab = function( idNumber, name, type, layout, numCol, columnsWidth,
 		// Hide "Add tab" link if the tab is added by maximum.
 		addTabDiv.style.display = "none";
 	}
-	
 	IS_WidgetsContainer.rebuildColumns(tabObj.id, numCol, columnsWidth, false, isInitialize);
 	return tabObj;
 }
@@ -1480,6 +1479,7 @@ IS_Portal.tabDrag = function( e, dragObj ){
 		var insertPoint = IS_Portal.tabList[targetNumber];
 		var centerX = findPosX( insertPoint.firstChild ) + (insertPoint.firstChild.offsetWidth / 2);
 		if(centerX < mouseX){
+
 			targetNumber++;
 			if(targetNumber == IS_Portal.tabList.length){
 				insertPoint = false;
