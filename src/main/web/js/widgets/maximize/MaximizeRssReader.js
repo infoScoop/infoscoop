@@ -222,6 +222,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 
 		var titleRow = filterForm.firstChild.childNodes[0];
 
+
 		titleRow.childNodes[0].style.fontSize = "9pt";
 		titleRow.childNodes[0].style.whiteSpace = "nowrap";
 		titleRow.childNodes[0].appendChild( document.createTextNode(
@@ -1159,13 +1160,12 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		}else{
 			isIframeView = widget.getBoolUserPref("iframeview");
 		}
-		
 		if(this.viewTimer) clearTimeout(this.viewTimer);
 		
-		if( isIframeView && rssItem.link.length == 0 && (rssItem.link_gmailproxy_text || rssItem.description && rssItem.description != ""))
+		if( isIframeView && rssItem.link.length == 0 && (rssItem.link_ajaxproxy_text || rssItem.description && rssItem.description != ""))
 			isIframeView = false;
 			
-		if( !isIframeView && rssItem.link.length > 0 && !rssItem.link_gmailproxy_text && !( rssItem.description && rssItem.description != "") )
+		if( !isIframeView && rssItem.link.length > 0 && !rssItem.link_ajaxproxy_text && !( rssItem.description && rssItem.description != "") )
 			isIframeView = true;
 		
 		/* Ignore parameter of userPref if viewType is specified in iframe viewing mode */
@@ -1295,9 +1295,10 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		if(rssItem.description)
 			rssDescText.innerHTML = IS_Widget.RssReader.RssItemRender.normalizeDesc( rssItem.description );
 		else{
+			rssDescText.innerHTML = "<div class=\"rss_summary\"><img src=\"" +  imageURL + "indicator.gif\"/> Loading...</div>"; 
 			var opt = {
 				method: 'get',
-				asynchronous: false,
+				asynchronous: true,
 				onSuccess:function(req, obj){
 					rssDescText.innerHTML = req.responseText;
 				}.bind(self),
@@ -1308,7 +1309,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 				  alert('Retrieving summary is failed:' + obj);
 		 	 	}
 			}
-			AjaxRequest.invoke(is_getProxyUrl(rssItem.link_gmailproxy_text, "NoOperation"), opt);
+			AjaxRequest.invoke(is_getProxyUrl(rssItem.link_ajaxproxy_text, "NoOperation"), opt);
 		}
 		rssDescText.scrollTop = 0;
 		if(rssDescText) {
