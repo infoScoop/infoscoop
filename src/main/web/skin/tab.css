@@ -36,17 +36,7 @@
 	padding:2px 2px 2px 7px;
 	font-size:83%;
 }
-/*
-.infoScoop #tabs .tabsRefresh{
-	background: url( ./imgs/refresh.gif ) no-repeat center left;
-	width:16px;
-	height:16px;
-	float:left;
-	position:relative;
-	bottom:-3px;
-	cursor:pointer;
-}
-*/
+
 .infoScoop #tabs ul {
 	margin:0;
 	padding:0;
@@ -163,18 +153,6 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 .infoScoop.admin .tabs .addatab a {
 	color:#6677dd;
 }
-
-/*
-.infoScoop #tabs #tabsRefreshStop {
-	background: url( ./imgs/stopq.gif ) no-repeat center left;
-	width:16px;
-	height:16px;
-	float:left;
-	position:relative;
-	bottom:-3px;
-	cursor:pointer;
-}
-*/
 /*
 .selectedtab .tabIndicator {
 	width: 13px;
@@ -183,29 +161,6 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 .infoScoop #tabs .tabLoadingIcon {
 	position:relative;
 	margin-right: 4px;
-}
-.infoScoop #tabs #tabLoadStopIcon{
-	background: url( ./imgs/stopq.gif ) no-repeat center left;
-	width:16px;
-	height:16px;
-	cursor:pointer;
-}
-.infoScoop #tabs #tabLoadProgress{
-	background-color:white;
-	border:2px groove black;
-	height:1.2em;
-	position:relative;
-}
-.infoScoop #tabs #tabLoadProgressBar{
-	background-color:cyan;
-	height:1.2em;
-	position:relative;
-	margin-left:0 !important;
-}
-.infoScoop #tabs #tabLoadProgressCount{
-	position:absolute;
-	top:0;
-	right:0;
 }
 
 

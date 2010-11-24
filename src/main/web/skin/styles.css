@@ -56,12 +56,7 @@ fieldset {
 	text-align:center;
 	padding:2px;
 }
-#tabLoadProgressBar {
-	background-color: cyan;
-}
-#tabLoadProgressCount {
-	text-align: right;
-}
+
 /** message bar */
 
 #portal-iframe {
