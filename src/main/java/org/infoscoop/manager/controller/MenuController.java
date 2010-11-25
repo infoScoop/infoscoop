@@ -168,6 +168,7 @@ public class MenuController {
 			Locale locale) throws Exception {
 		MenuItem item = menuItemDAO.getByMenuId(menuId);
 		model.addAttribute("gadget", item);
+		model.addAttribute("roles", item.getRoles());
 
 		GadgetInstance gadget = item.getGadgetInstance();
 		if (gadget != null) {
@@ -412,9 +413,8 @@ public class MenuController {
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public void listRole( Model model){
+	public void selectRole( Model model){
 		List<Role> roles = RoleDAO.newInstance().all();
-		System.out.print(roles);
 		model.addAttribute("roles", roles);
 	}
 }

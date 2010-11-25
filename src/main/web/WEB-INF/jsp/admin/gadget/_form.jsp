@@ -53,6 +53,11 @@
 					<form:radiobutton path="accessLevel" value="1" label="${publish}" cssErrorClass="error" />
 					<form:radiobutton path="accessLevel" value="2" label="限定公開" cssErrorClass="error" />
 					<form:errors path="accessLevel" />
+					<div id="selected_security_role_panel">
+					<c:import url="/WEB-INF/jsp/admin/gadget/_listRole.jsp"/>
+					<c:if test="${gadget.accessLevel == 2}">
+					</c:if>
+					</div>
 					<div id="select_security_role_panel">
 					</div>
 				</span>

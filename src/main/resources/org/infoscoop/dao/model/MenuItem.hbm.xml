@@ -97,7 +97,7 @@
 			<one-to-many class="MenuItem"/>
 		</set>
 
-		<set name="Roles" table="IS_MENU_ITEM_ROLES" cascade="save-update">
+		<set name="Roles" table="IS_MENU_ITEM_ROLES" lazy="false" outer-join="true" cascade="save-update">
 			<key column="fk_menu_item_id"/>
 			<many-to-many class="Role" column="fk_role_id"/>
 		</set>

@@ -4,4 +4,4 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <c:set var="action" value="updateItem" scope="request"/>
 <c:set var="type" value="menu" scope="request"/>
-<c:import url="/WEB-INF/jsp/admin/gadget/_listRole.jsp"/>
+<c:import url="/WEB-INF/jsp/admin/gadget/_selectRole.jsp"/>

@@ -246,7 +246,7 @@ $(function () {
 	$('input[name="accessLevel"]').livequery(function(){
 		$(this).click(function(){
 			if($(this).attr('id') == 'accessLevel3' && $(this).attr('checked')){
-				$.get("listRole", {}, function(html){
+				$.get("selectRole", {}, function(html){
 					$('#select_security_role_panel').html(html);
 					$('#select_security_role_panel').show();
 
@@ -254,6 +254,20 @@ $(function () {
 			}else{
 				$('#select_security_role_panel').hide();
 			}
+		});
+	});
+
+	$('#add_role_btn').livequery(function(){
+		$(this).click(function(){
+			$('input[name="select_role_checkbox"]').each(function(){
+				if($(this).attr('checked')){
+					var selectedRoleRow = $('#role_id_' + $(this).val()).clone(true);
+					selectedRoleRow.removeAttr('id');
+					selectedRoleRow.children('td:first-child').remove();
+					selectedRoleRow.children('td:first-child').append($('<input type="hidden" name="roles.id" value="' + $(this).val() + '"/>'));
+					$('#role_list_table').children('tbody').append(selectedRoleRow);
+				}
+			});
 		});
 	});
 });
