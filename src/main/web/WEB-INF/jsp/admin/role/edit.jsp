@@ -34,7 +34,7 @@ $(function () {
 			query:   undefined
 		};
 		$('#target').autocomplete( { source:
-			function ( request, response )  {console.log(request,response);
+			function ( request, response )  {
 				params.query = request.term;
 				var type = document.getElementById("roleType").value;
 				if (type == "UIDPrincipal")
