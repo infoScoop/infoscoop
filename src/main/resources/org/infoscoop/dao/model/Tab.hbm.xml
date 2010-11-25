@@ -41,11 +41,9 @@
 			not-null="false"
 		/>
 		<property
-			name="Widgetlastmodified"
-			column="WIDGETLASTMODIFIED"
-			type="string"
-			not-null="false"
-			length="32"
+			name="TemplateTimestamp"
+			column="template_timestamp"
+			type="timestamp"
 		/>
 	</class>	
 </hibernate-mapping>

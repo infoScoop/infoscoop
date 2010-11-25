@@ -95,7 +95,6 @@ public class Tab extends BaseTab {
 		json.put("tabNumber", super.getOrder() != null ?
 				String.valueOf(super.getOrder()) : "");
 		json.put("tabType", super.getType());
-		json.put("widgetLastModified", super.getWidgetlastmodified());
 		json.put("property", getProperties());
 		json.put("staticPanelLayout", layout);
 

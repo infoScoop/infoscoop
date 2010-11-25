@@ -17,6 +17,7 @@
 
 package org.infoscoop.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;

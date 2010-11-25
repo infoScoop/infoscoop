@@ -161,13 +161,26 @@ public class TabService {
 						this.createStaticGadgetList( uid, tabTemplate )
 					));
 			}else{
-				tabList.add(new TabDetail(
-						staticTab, tabTemplate.getLayout(),
-						this.copyPersonalizeGadgetsUserPrefs(uid, staticTab,
-								tabTemplate),
-						this.copyStaticGadgetsUserPrefs(uid, staticTab, tabTemplate)
-					));
+				if (staticTab.getTemplateTimestamp() != null
+						&& tabTemplate.getUpdatedAt().compareTo(
+								staticTab.getTemplateTimestamp()) <= 0) {
+					//if tabTemplate is not changed, return tab information
+					tabList.add(new TabDetail(
+							staticTab,
+							tabTemplate.getLayout(),
+							tabDAO.getDynamicWidgetList( staticTab ),
+							tabDAO.getStaticWidgetList( staticTab )
+						));
+				}else{
+					tabList.add(new TabDetail(
+							staticTab,
+							tabTemplate.getLayout(),
+							this.copyPersonalizeGadgetsUserPrefs(uid, staticTab, tabTemplate),
+							this.copyStaticGadgetsUserPrefs(uid, staticTab, tabTemplate)
+						));
+				};
 			}
+			staticTab.setTemplateTimestamp(tabTemplate.getUpdatedAt());
 			tabTemplateIds.add(tabTemplate.getTabId());
 		}
 		

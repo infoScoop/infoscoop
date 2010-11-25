@@ -82,6 +82,11 @@
 			not-null="true"
 			length="10"
 		/>
+		<property
+			name="UpdatedAt"
+			column="updated_at"
+			type="timestamp"
+		/>
 
 		<set name="TabTemplatePersonalizeGadgets" cascade="save-update" inverse="true" lazy="false">
 			<key column="fk_tabtemplate_id"/>

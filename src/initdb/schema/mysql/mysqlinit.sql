@@ -25,13 +25,12 @@ create table IS_TABS (
   fk_domain_id int unsigned NOT NULL,
   `UID` varchar(150) not null,
   id varchar(32) not null,
-  domain varchar(150),
   name varchar(256),
   `ORDER` int,
   type varchar(128),
   data text,
-  widgetLastModified varchar(32),
   disabledDynamicPanel int,
+  template_timestamp datetime,
   primary key (fk_domain_id, `UID`, id),
   foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
@@ -470,6 +469,7 @@ create table IS_TAB_TEMPLATES(
 	published int not null default 0, -- 0=unpublished, 1=published
 	access_level int, -- 0=public, 1=special
 	temp int not null default 1, -- 0=data to show, 1=temporary data
+	updated_at TIMESTAMP,
 	unique (fk_domain_id, tab_id, temp),
 	foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;

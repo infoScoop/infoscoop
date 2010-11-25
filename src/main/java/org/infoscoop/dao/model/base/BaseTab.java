@@ -16,8 +16,8 @@ public abstract class BaseTab  implements Serializable {
 
 	public static String REF = "Tab";
 	public static String PROP_NAME = "Name";
-	public static String PROP_WIDGETLASTMODIFIED = "Widgetlastmodified";
 	public static String PROP_DATA = "Data";
+	public static String PROP_TEMPLATE_TIMESTAMP = "TemplateTimestamp";
 	public static String PROP_TYPE = "Type";
 	public static String PROP_ORDER = "Order";
 	public static String PROP_ID = "Id";
@@ -50,7 +50,7 @@ public abstract class BaseTab  implements Serializable {
 	private java.lang.Integer order;
 	private java.lang.String type;
 	private java.lang.String data;
-	private java.lang.String widgetlastmodified;
+	private java.util.Date templateTimestamp;
 
 
 
@@ -143,18 +143,18 @@ public abstract class BaseTab  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: WIDGETLASTMODIFIED
+	 * Return the value associated with the column: template_timestamp
 	 */
-	public java.lang.String getWidgetlastmodified () {
-		return widgetlastmodified;
+	public java.util.Date getTemplateTimestamp () {
+		return templateTimestamp;
 	}
 
 	/**
-	 * Set the value related to the column: WIDGETLASTMODIFIED
-	 * @param widgetlastmodified the WIDGETLASTMODIFIED value
+	 * Set the value related to the column: template_timestamp
+	 * @param templateTimestamp the template_timestamp value
 	 */
-	public void setWidgetlastmodified (java.lang.String widgetlastmodified) {
-		this.widgetlastmodified = widgetlastmodified;
+	public void setTemplateTimestamp (java.util.Date templateTimestamp) {
+		this.templateTimestamp = templateTimestamp;
 	}
 
 

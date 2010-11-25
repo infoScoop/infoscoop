@@ -16,17 +16,18 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 	public static String REF = "TabTemplate";
 	public static String PROP_ACCESS_LEVEL = "AccessLevel";
-	public static String PROP_NAME = "Name";
+	public static String PROP_UPDATED_AT = "UpdatedAt";
 	public static String PROP_TAB_ID = "TabId";
-	public static String PROP_LAYOUT = "Layout";
 	public static String PROP_PUBLISHED = "Published";
-	public static String PROP_ORDER_INDEX = "OrderIndex";
 	public static String PROP_NUMBER_OF_COLUMNS = "NumberOfColumns";
+	public static String PROP_NAME = "Name";
+	public static String PROP_LAYOUT = "Layout";
+	public static String PROP_ORDER_INDEX = "OrderIndex";
 	public static String PROP_AREA_TYPE = "AreaType";
 	public static String PROP_ID = "Id";
 	public static String PROP_COLUMN_WIDTH = "ColumnWidth";
-	public static String PROP_TEMP = "Temp";
 	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
+	public static String PROP_TEMP = "Temp";
 
 
 	// constructors
@@ -83,6 +84,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private java.lang.Integer numberOfColumns;
 	private java.lang.String columnWidth;
 	private java.lang.Integer temp;
+	private java.util.Date updatedAt;
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.TabTemplatePersonalizeGadget> tabTemplatePersonalizeGadgets;
@@ -295,6 +297,23 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 */
 	public void setTemp (java.lang.Integer temp) {
 		this.temp = temp;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: updated_at
+	 */
+	public java.util.Date getUpdatedAt () {
+		return updatedAt;
+	}
+
+	/**
+	 * Set the value related to the column: updated_at
+	 * @param updatedAt the updated_at value
+	 */
+	public void setUpdatedAt (java.util.Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 
