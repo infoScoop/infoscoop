@@ -363,7 +363,7 @@ create table IS_OAUTH_CERTIFICATE (
 -- IS_ROLES
 --
 CREATE TABLE IS_ROLES (
-  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  `id` int unsigned NOT NULL AUTO_INCREMENT primary key,
   fk_domain_id int unsigned NOT NULL,
   `name` VARCHAR( 255 ) NOT NULL ,
   `description` TEXT NULL,
@@ -374,11 +374,11 @@ CREATE TABLE IS_ROLES (
 -- IS_ROLE_PRINCIPALS
 --
 CREATE TABLE IF NOT EXISTS IS_ROLE_PRINCIPALS (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `type` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `order_index` int(11) DEFAULT NULL,
-  `fk_role_id` bigint(20) unsigned NOT NULL,
+  `fk_role_id` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`fk_role_id`) REFERENCES IS_ROLES (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -441,7 +441,7 @@ CREATE TABLE IS_MENU_ITEMS (
   title varchar(255) NOT NULL,
   menu_order int(11) NOT NULL DEFAULT '0',
   href varchar(255) DEFAULT NULL,
-  publish int(11) NOT NULL DEFAULT '0',
+  access_level int(11) NOT NULL DEFAULT '0',
   alert int(11) NOT NULL DEFAULT '1',
   fk_parent_id int unsigned DEFAULT NULL,
   fk_gadget_instance_id int(10) unsigned DEFAULT NULL,
@@ -451,6 +451,13 @@ CREATE TABLE IS_MENU_ITEMS (
   foreign key (fk_menu_tree_id) references IS_MENU_TREES(id) on delete cascade,
   foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade,
   unique (menu_id,fk_domain_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS IS_MENU_ITEM_ROLES (
+  fk_menu_item_id int unsigned NOT NULL,
+  fk_role_id int unsigned NOT NULL,
+  foreign key (fk_menu_item_id) references IS_MENU_ITEMS(id) on delete cascade,
+  foreign key (fk_role_id) references IS_ROLES(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --

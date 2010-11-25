@@ -55,8 +55,8 @@
 			length="255"
 		/>
 		<property
-			name="Publish"
-			column="publish"
+			name="AccessLevel"
+			column="access_level"
 			type="integer"
 			not-null="true"
 			length="10"
@@ -97,6 +97,9 @@
 			<one-to-many class="MenuItem"/>
 		</set>
 
-
+		<set name="Roles" table="IS_MENU_ITEM_ROLES" cascade="save-update">
+			<key column="fk_menu_item_id"/>
+			<many-to-many class="Role" column="fk_role_id"/>
+		</set>
 	</class>	
 </hibernate-mapping>

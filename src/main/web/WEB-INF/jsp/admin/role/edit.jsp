@@ -34,12 +34,12 @@ $(function () {
 			query:   undefined
 		};
 		$('#target').autocomplete( { source:
-			function ( request, response )  {
+			function ( request, response )  {console.log(request,response);
 				params.query = request.term;
 				var type = document.getElementById("roleType").value;
-				if (type == "ユーザ")
+				if (type == "UIDPrincipal")
 					var url = 'autocompleteUser';
-				else if (type == "組織")
+				else if (type == "OrganizationPrincipal")
 					var url = 'autocompleteGroup';
 				$.post( url, params, response);
 /*				$.post( url, params, function(data) {
@@ -121,7 +121,7 @@ function checkForm(){
 
 		<span>タイプ：</span>
 		<select id="roleType">
-			<option value='ユーザ'>ユーザ</option><option value='組織'>組織</option>
+			<option value='UIDPrincipal'>ユーザ</option><option value='OrganizationPrincipal'>組織</option>
 		</select>
 		<span>　　対象範囲：</span>
 		<input id="target" type="text"></input>

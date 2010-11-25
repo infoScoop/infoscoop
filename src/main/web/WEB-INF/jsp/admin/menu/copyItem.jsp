@@ -4,5 +4,5 @@
 	"parentId": "${menuItem.fkParent.id}",
 	"title": "${menuItem.title}",
 	"type": "${menuItem.gadgetInstance.type}",
-	"publish": ${menuItem.publish == 1}
+	"accessLevel": ${menuItem.accessLevel == 1}
 }

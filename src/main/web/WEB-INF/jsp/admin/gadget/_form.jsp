@@ -49,9 +49,12 @@
 				<span class="radio">
 					<c:set var="unpublish"><spring:message code="gadget._form.publish.off" /></c:set>
 					<c:set var="publish"><spring:message code="gadget._form.publish.on" /></c:set>
-					<form:radiobutton path="publish" value="0" label="${unpublish}" cssErrorClass="error" />
-					<form:radiobutton path="publish" value="1" label="${publish}" cssErrorClass="error" />
-					<form:errors path="publish" />
+					<form:radiobutton path="accessLevel" value="0" label="${unpublish}" cssErrorClass="error" />
+					<form:radiobutton path="accessLevel" value="1" label="${publish}" cssErrorClass="error" />
+					<form:radiobutton path="accessLevel" value="2" label="限定公開" cssErrorClass="error" />
+					<form:errors path="accessLevel" />
+					<div id="select_security_role_panel">
+					</div>
 				</span>
 			</p>
 			<p>

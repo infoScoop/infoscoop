@@ -15,7 +15,7 @@ import java.io.Serializable;
 public abstract class BaseMenuItem  implements Serializable {
 
 	public static String REF = "MenuItem";
-	public static String PROP_PUBLISH = "Publish";
+	public static String PROP_ACCESS_LEVEL = "AccessLevel";
 	public static String PROP_ALERT = "Alert";
 	public static String PROP_GADGET_INSTANCE = "GadgetInstance";
 	public static String PROP_FK_MENU_TREE = "FkMenuTree";
@@ -50,7 +50,7 @@ public abstract class BaseMenuItem  implements Serializable {
 		java.lang.String menuId,
 		java.lang.String title,
 		java.lang.Integer menuOrder,
-		java.lang.Integer publish,
+		java.lang.Integer accessLevel,
 		java.lang.Integer alert) {
 
 		this.setId(id);
@@ -58,7 +58,7 @@ public abstract class BaseMenuItem  implements Serializable {
 		this.setMenuId(menuId);
 		this.setTitle(title);
 		this.setMenuOrder(menuOrder);
-		this.setPublish(publish);
+		this.setAccessLevel(accessLevel);
 		this.setAlert(alert);
 		initialize();
 	}
@@ -78,7 +78,7 @@ public abstract class BaseMenuItem  implements Serializable {
 	private java.lang.String title;
 	private java.lang.Integer menuOrder;
 	private java.lang.String href;
-	private java.lang.Integer publish;
+	private java.lang.Integer accessLevel;
 	private java.lang.Integer alert;
 
 	// many to one
@@ -88,6 +88,7 @@ public abstract class BaseMenuItem  implements Serializable {
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.MenuItem> menuItems;
+	private java.util.Set<org.infoscoop.dao.model.Role> roles;
 
 
 
@@ -199,18 +200,18 @@ public abstract class BaseMenuItem  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: publish
+	 * Return the value associated with the column: access_level
 	 */
-	public java.lang.Integer getPublish () {
-		return publish;
+	public java.lang.Integer getAccessLevel () {
+		return accessLevel;
 	}
 
 	/**
-	 * Set the value related to the column: publish
-	 * @param publish the publish value
+	 * Set the value related to the column: access_level
+	 * @param accessLevel the access_level value
 	 */
-	public void setPublish (java.lang.Integer publish) {
-		this.publish = publish;
+	public void setAccessLevel (java.lang.Integer accessLevel) {
+		this.accessLevel = accessLevel;
 	}
 
 
@@ -301,6 +302,28 @@ public abstract class BaseMenuItem  implements Serializable {
 	public void addToMenuItems (org.infoscoop.dao.model.MenuItem menuItem) {
 		if (null == getMenuItems()) setMenuItems(new java.util.TreeSet<org.infoscoop.dao.model.MenuItem>());
 		getMenuItems().add(menuItem);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: Roles
+	 */
+	public java.util.Set<org.infoscoop.dao.model.Role> getRoles () {
+		return roles;
+	}
+
+	/**
+	 * Set the value related to the column: Roles
+	 * @param roles the Roles value
+	 */
+	public void setRoles (java.util.Set<org.infoscoop.dao.model.Role> roles) {
+		this.roles = roles;
+	}
+
+	public void addToRoles (org.infoscoop.dao.model.Role role) {
+		if (null == getRoles()) setRoles(new java.util.TreeSet<org.infoscoop.dao.model.Role>());
+		getRoles().add(role);
 	}
 
 

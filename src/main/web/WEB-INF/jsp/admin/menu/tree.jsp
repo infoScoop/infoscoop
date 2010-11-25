@@ -9,7 +9,7 @@
 	<a href="#">${item.title}<span onclick="showMenuCommand(event, this, '${item.menuId}')" class="menu_open">▼</span></a>
 	<div class="info">
 		<c:choose>
-			<c:when test="${item.publish == 1}"><span class="publish"><spring:message code="menu.tree.publish" /></span></c:when>
+			<c:when test="${item.accessLevel == 1}"><span class="publish"><spring:message code="menu.tree.publish" /></span></c:when>
 			<c:otherwise><span class="publish un"><spring:message code="menu.tree.unpublish" /></span></c:otherwise>
 		</c:choose>
 	</div>

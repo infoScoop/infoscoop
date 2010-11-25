@@ -18,15 +18,22 @@
 package org.infoscoop.service;
 
 import java.util.List;
+import java.util.Set;
+
+import javax.security.auth.Subject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.acl.ISPrincipal;
+import org.infoscoop.acl.SecurityController;
 import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.MenuTreeDAO;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.GadgetInstanceUserpref;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.MenuTree;
+import org.infoscoop.dao.model.Role;
+import org.infoscoop.dao.model.RolePrincipal;
 
 public class SiteAggregationMenuService {
 
@@ -55,7 +62,27 @@ public class SiteAggregationMenuService {
 	}
 	
 	private static void buildAuthorizedMenuXml(MenuItem menuItem, StringBuffer buf, boolean noAuth ) throws ClassNotFoundException{
-
+		if(!menuItem.isPublishBool())
+			return;
+		//TODO: make following block to function.
+		if(menuItem.isSpecialAccess()){
+			boolean canDisplay = false;
+			Set<Role> roles = menuItem.getRoles();
+			for(Role role: roles){
+				for(RolePrincipal p: role.getRolePrincipals()){
+					Subject loginUser = SecurityController.getContextSubject();
+					for(ISPrincipal principal : loginUser.getPrincipals(ISPrincipal.class)){
+						if(p.getType().equalsIgnoreCase(principal.getType()) && 
+								p.getName() == principal.getName()){
+							canDisplay = true;
+						}
+					}
+				}
+			}
+			if(!canDisplay)return;
+		}
+			
+		
 		String menuElName = ( menuItem.getFkParent() == null ? "site-top" : "site" );
 		buf.append("<" + menuElName);
 		buf.append(" id=\"" + menuItem.getId() + "\"");

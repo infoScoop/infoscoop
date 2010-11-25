@@ -30,7 +30,7 @@ public class MenuItem extends BaseMenuItem {
 		java.lang.String menuId,
 		java.lang.String title,
 		java.lang.Integer menuOrder,
-		java.lang.Integer publish,
+		java.lang.Integer accessLevel,
 		java.lang.Integer alert) {
 
 		super (
@@ -39,7 +39,7 @@ public class MenuItem extends BaseMenuItem {
 			menuId,
 			title,
 			menuOrder,
-			publish,
+			accessLevel,
 			alert);
 	}
 
@@ -64,14 +64,18 @@ public class MenuItem extends BaseMenuItem {
 	}
 	
 	public boolean isPublishBool() {
-		return super.getPublish() == 1;
+		return super.getAccessLevel() == 1;
 	}
 
 	public void setPublishBool(boolean publish) {
-		super.setPublish(publish ? 1 : 0);
+		super.setAccessLevel(publish ? 1 : 0);
 	}
 
 	public void toggolePublish() {
 		setPublishBool(!isPublishBool());
+	}
+
+	public boolean isSpecialAccess() {
+		return super.getAccessLevel() == 2;
 	}
 }

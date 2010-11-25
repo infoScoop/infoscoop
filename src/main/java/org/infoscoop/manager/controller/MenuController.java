@@ -13,16 +13,19 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xpath.XPathAPI;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.MenuTreeDAO;
+import org.infoscoop.dao.RoleDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.GadgetInstanceUserpref;
 import org.infoscoop.dao.model.GadgetInstanceUserprefPK;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.MenuTree;
+import org.infoscoop.dao.model.Role;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.util.XmlUtil;
@@ -50,7 +53,7 @@ public class MenuController {
 	@Autowired
 	private GadgetInstanceDAO gadgetInstanceDAO;
 
-	@RequestMapping
+	@RequestMapping(method=RequestMethod.GET)
 	@Transactional
 	public void index(Model model) throws Exception {
 		List<MenuTree> menus = menuTreeDAO.all();
@@ -141,7 +144,7 @@ public class MenuController {
 		item.setFkMenuTree(menu);
 		item.setFkParent(parentItem);
 		item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
-		item.setPublish(0);
+		item.setAccessLevel(0);
 		if (type != null && type.length() > 0) {
 			GadgetInstance gadget = new GadgetInstance();
 			item.setGadgetInstance(gadget);
@@ -197,7 +200,7 @@ public class MenuController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public MenuItem updateItem(MenuItem item) throws Exception {
+	public MenuItem updateItem(MenuItem item, @RequestParam("roles.id") String[] roleIdList) throws Exception {
 		GadgetInstance gadget = item.getGadgetInstance();
 		if (gadget != null) {
 			String type = gadget.getType();
@@ -205,6 +208,11 @@ public class MenuController {
 				gadget.setTitle(item.getTitle());
 				gadget.setHref(item.getHref());
 			}
+		}
+		//TODO: edit roles collection, and remove a role in roles collection.
+		for(int i = 0 ; i < roleIdList.length; i++){
+			Role role = RoleDAO.newInstance().get(roleIdList[i]);
+			item.addToRoles(role);
 		}
 		menuItemDAO.save(item);
 		return item;
@@ -233,7 +241,7 @@ public class MenuController {
 		item.setTitle(gadgetInstance.getTitle());
 		item.setHref(gadgetInstance.getHref());
 		item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
-		item.setPublish(0);
+		item.setAccessLevel(0);
 
 		model.addAttribute(item);
 		model.addAttribute("conf", getGadgetConf(gadgetInstance.getType(),
@@ -322,7 +330,7 @@ public class MenuController {
 		newItem.setHref(item.getHref());
 		newItem.setAlert(item.getAlert());
 		newItem.setMenuOrder(item.getMenuOrder());
-		newItem.setPublish(item.getPublish());
+		newItem.setAccessLevel(item.getAccessLevel());
 
 		GadgetInstance gadget = item.getGadgetInstance();
 		GadgetInstance newGadget = new GadgetInstance();
@@ -401,5 +409,12 @@ public class MenuController {
 		}
 
 		return XmlUtil.stream2Dom(is);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public void listRole( Model model){
+		List<Role> roles = RoleDAO.newInstance().all();
+		System.out.print(roles);
+		model.addAttribute("roles", roles);
 	}
 }

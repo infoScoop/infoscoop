@@ -8,6 +8,7 @@
 	<tiles:putAttribute name="body" type="string">
 <script type="text/javascript" src="../../js/lib/jsTree.v.1.0rc2/jquery.jstree.js"></script>
 <script type="text/javascript" src="../../js/manager/gadget.js"></script>
+<script type="text/javascript" src="../../js/lib/jquery.livequery.js"></script>
 <script type="text/javascript" class="source">
 var hostPrefix = "/infoscoop";//TODO スクリプトで計算
 //TODO propertiesテーブルから取得して補正する
@@ -97,7 +98,7 @@ function showEditInstance(instanceId, parentId){
 		$("#menu_right").html(html);
 	});
 }
-function addItemToTree(parentId, id, title, type, publish){
+function addItemToTree(parentId, id, title, type, accessLevel){
 	$("#menu_tree").jstree("create",
 		parentId ? "#"+parentId : -1,
 		"last",
@@ -107,7 +108,7 @@ function addItemToTree(parentId, id, title, type, publish){
 		},
 		function(target){
 			target.find("a:first").append('<span onclick="showMenuCommand(event, this, \''+id+'\')" class="menu_open">▼</span>');
-			target.append('<div class="info"><span class="publish'+(publish?'"><spring:message code="menu.editPage.publish" />':' un"><spring:message code="menu.editPage.unpublish" />')+'</span></div>');
+			target.append('<div class="info"><span class="publish'+(accessLevel?'"><spring:message code="menu.editPage.publish" />':' un"><spring:message code="menu.editPage.unpublish" />')+'</span></div>');
 			var icon = getIconUrl(type);
 			$("a:first ins", target)
 				.css("display", "inline-block")
@@ -116,13 +117,13 @@ function addItemToTree(parentId, id, title, type, publish){
 		true
 	);
 }
-function updateItemInTree(id, title, publish){
+function updateItemInTree(id, title, accessLevel){
 	try{
 		/*var titleNode = $("#" + id + " a").contents().filter(function() { return this.nodeType == 3; })[0];
 		titleNode.nodeValue = title;*/
 		$("#menu_tree").jstree("set_text", "#"+id, title);
 		var publishElm = $("#"+id+" .info span.publish").first();
-		publishElm.toggleClass("un", !publish).html(publish? "<spring:message code="menu.editPage.publish" />":"<spring:message code="menu.editPage.unpublish" />");
+		publishElm.toggleClass("un", !accessLevel).html(accessLevel? "<spring:message code="menu.editPage.publish" />":"<spring:message code="menu.editPage.unpublish" />");
 	}catch(e){
 		console.error(e);
 	}
@@ -136,7 +137,7 @@ function pasteItem(a){
 	if($(a).hasClass("disabled") || !copiedItemId) return;
 	var id = getSelectedItem().id;
 	$.post("copyItem", {parentId:id, id:copiedItemId}, function(data){
-		addItemToTree(data.parentId, data.id, data.title, data.type, data.publish);
+		addItemToTree(data.parentId, data.id, data.title, data.type, data.accessLevel);
 	}, "json");
 }
 function deleteItem(){
@@ -151,8 +152,8 @@ function togglePublish(){
 	var id = getSelectedItem().id;
 	$.post("togglePublish", {id: id}, function(){
 		var publishElm = $("#"+id+" .info span.publish").first();
-		var publish = publishElm.hasClass('un');//現在の反対にする
-		publishElm.toggleClass("un", !publish).html(publish? "<spring:message code="menu.editPage.publish" />":"<spring:message code="menu.editPage.unpublish" />");
+		var accessLevel = publishElm.hasClass('un');//現在の反対にする
+		publishElm.toggleClass("un", !accessLevel).html(accessLevel? "<spring:message code="menu.editPage.publish" />":"<spring:message code="menu.editPage.unpublish" />");
 	});
 }
 function showMenuCommand(event, link, menuId){
@@ -239,6 +240,20 @@ $(function () {
 			$("a ins", this).first()
 				.css("display", "inline-block")
 				.css("background", "url("+icon+")");
+		});
+	});
+
+	$('input[name="accessLevel"]').livequery(function(){
+		$(this).click(function(){
+			if($(this).attr('id') == 'accessLevel3' && $(this).attr('checked')){
+				$.get("listRole", {}, function(html){
+					$('#select_security_role_panel').html(html);
+					$('#select_security_role_panel').show();
+
+				});
+			}else{
+				$('#select_security_role_panel').hide();
+			}
 		});
 	});
 });
