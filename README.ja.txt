@@ -1,5 +1,5 @@
-infoScoop OpenSource 2.2
-========================
+infoScoop OpenSource 2.2.1
+==========================
 
 infoScoop OpenSourceとは
 ------------------------
@@ -56,6 +56,17 @@ http://www.infoscoop.org/
 
 3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
+
+バージョン2.2.0からの移行手順
+-----------------------------
+2.2.0から本バージョンに移行するには以下の手順を実行します。
+
+1. 静的コンテンツを設定している場合は、静的コンテンツを入れ替えます。
+   静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
+
+2. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
+
+
 インストール方法
 ----------------
 以下のURLを参照してください。
@@ -74,3 +85,8 @@ http://www.infoscoop.org/index.php/manual/quick-start.html
 ------------------------
 以下のURLを参照してください。
 https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.0
+
+2.2から2.2.1での変更点
+------------------------
+以下のURLを参照してください。
+https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.1

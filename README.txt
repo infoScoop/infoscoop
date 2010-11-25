@@ -65,6 +65,16 @@ To migrate from version 2.1.1 to 2.2, follow the steps below.
 
 3. Redeploy infoscoop.war to WebApplication Server.
 
+How to migrate from version 2.2.0
+---------------------------------
+To migrate from version 2.2.0 to 2.2, follow the steps below.
+
+1. if the static content URL is set, replacement of  the static content files is 
+  necessary. Replace the directory where static contents are stored currently to 
+  'infoscoop/staticContent' directory.
+
+2. Redeploy infoscoop.war to WebApplication Server.
+
 
 License and Copyright
 ---------------------
@@ -77,3 +87,8 @@ Changes from Version 2.1.1 to 2.2
 ---------------------------------
 Refer to the URL below.
 https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.0
+
+Changes from Version 2.2.0 to 2.2.1
+-----------------------------------
+Refer to the URL below.
+https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.1
