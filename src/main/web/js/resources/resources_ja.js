@@ -330,5 +330,6 @@ var IS_R = {
 	"ms_timeOut": "タイムアウトしました。",
 	"ms_noURL": "リンク先のURLがありません",
 	"ms_clearConfigurationConfirm": "追加したタブとガジェットを全て削除します、よろしいですか？\n(削除したガジェットはごみ箱に入ります)",
-	"lb_changeColumn": "列数変更"
+	"lb_changeColumn": "列数変更",
+	"lb_notAvailable": "利用できません"
 }

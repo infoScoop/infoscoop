@@ -75,10 +75,8 @@ IS_Widget.prototype.classDef = function() {
 
 		typeConf = IS_Widget.getConfiguration(this.widgetType);
 		if(!typeConf || (typeConf && typeConf.type == "notAvailable")){
-			typeConf = IS_Widget.getConfiguration("notAvailable");
-			this.widgetType = "notAvailable";
-			this.title = typeConf.title;
-
+			this.widgetType = typeConf.type;
+			this.title = typeConf.ModulePrefs.title;
 			msg.error(IS_R.getResource(IS_R.ms_configNotFound, [this.id]));
 		}else{
 			var _contentsDef = typeConf.Content;
@@ -1787,8 +1785,23 @@ IS_Widget.getConfiguration = function( widgetType ){
 		var url = hostPrefix + "/widconf";
 		AjaxRequest.invoke(url, opt);
 	}
-	if(!typeConf.type)
+	if(!typeConf){
+		typeConf = {
+			type:"notAvailable",
+			ModulePrefs:{
+				title:IS_R.lb_notAvailable
+			},
+			"Icon": {"content": "__IS_IMAGE_URL__/not_available.gif"},
+			"Header": {
+				refresh:"off",
+				minimize:"off",
+				maximize:"off"
+			}
+		};
+		IS_WidgetConfiguration[typeConf.type] = typeConf;
+	} else if(!typeConf.type) {
 		typeConf.type = widgetType;
+	}
 	return typeConf;
 }
 /* delete by endoh on 20080725.

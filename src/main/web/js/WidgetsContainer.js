@@ -507,24 +507,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			}
 		}
 	}
-	
-	function getConfiguration(response) {
-		var widgetConfs = eval("(" + response.responseText + ")");
-		for(var i in widgetConfs){
-			var typeConf = widgetConfs[i];
-			if(typeof typeConf == "function") continue;
-			if(typeConf) {
-				for(var i in typeConf.WidgetPref){
-					if(typeof typeConf.WidgetPref[i] == "function") continue;
-					var datatype = typeConf.WidgetPref[i].datatype;
-					if(datatype && datatype == "json"){
-						typeConf.WidgetPref[i].value = eval("(" + typeConf.WidgetPref[i].content + ")");
-					}
-				}
-			}
-		}
-		IS_WidgetConfiguration = widgetConfs;
-	}
 
 	function loadContents(){
 		for(id in IS_Portal.widgetLists[IS_Portal.currentTabId]){

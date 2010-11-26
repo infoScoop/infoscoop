@@ -330,5 +330,6 @@ var IS_R = {
 	"ms_timeOut": "超时。",
 	"ms_noURL": "没有链接的URL",
 	"ms_clearConfigurationConfirm": "删除所有追加的标签和小工具，可以吗？\n(删除掉的小工具进入回收站)",
-	"lb_changeColumn": "列数变更"
+	"lb_changeColumn": "列数变更",
+	"lb_notAvailable": "不能利用"
 }

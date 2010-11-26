@@ -330,5 +330,6 @@ var IS_R = {
 	"ms_timeOut": "A timeout occurred",
 	"ms_noURL": "No URL to link to.",
 	"ms_clearConfigurationConfirm": "Are you sure to delete all of added gadgets and tabs?\n (The deleted gadgets goes into trash bin).",
-	"lb_changeColumn": "Change the number of Columns"
+	"lb_changeColumn": "Change the number of Columns",
+	"lb_notAvailable": "Not available"
 }
