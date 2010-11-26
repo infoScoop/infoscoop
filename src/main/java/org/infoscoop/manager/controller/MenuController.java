@@ -201,7 +201,10 @@ public class MenuController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public MenuItem updateItem(MenuItem item, @RequestParam("roles.id") String[] roleIdList) throws Exception {
+	public MenuItem updateItem(
+			MenuItem item,
+			@RequestParam(value = "roles.id", required = false) String[] roleIdList)
+			throws Exception {
 		GadgetInstance gadget = item.getGadgetInstance();
 		if (gadget != null) {
 			String type = gadget.getType();
@@ -211,9 +214,11 @@ public class MenuController {
 			}
 		}
 		//TODO: edit roles collection, and remove a role in roles collection.
-		for(int i = 0 ; i < roleIdList.length; i++){
-			Role role = RoleDAO.newInstance().get(roleIdList[i]);
-			item.addToRoles(role);
+		if (roleIdList != null) {
+			for (int i = 0; i < roleIdList.length; i++) {
+				Role role = RoleDAO.newInstance().get(roleIdList[i]);
+				item.addToRoles(role);
+			}
 		}
 		menuItemDAO.save(item);
 		return item;
