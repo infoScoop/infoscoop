@@ -34,6 +34,7 @@ import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.dao.model.Role;
 import org.infoscoop.dao.model.RolePrincipal;
+import org.infoscoop.util.XmlUtil;
 
 public class SiteAggregationMenuService {
 
@@ -86,22 +87,26 @@ public class SiteAggregationMenuService {
 		String menuElName = ( menuItem.getFkParent() == null ? "site-top" : "site" );
 		buf.append("<" + menuElName);
 		buf.append(" id=\"" + menuItem.getId() + "\"");
-		buf.append(" title=\"" + menuItem.getTitle() + "\"");
+		buf.append(" title=\"" + XmlUtil.escapeXmlEntities(menuItem.getTitle())
+				+ "\"");
 		if(menuItem.getHref() != null)
-			buf.append(" href=\"" + menuItem.getHref() + "\"");
+			buf.append(" href=\""
+					+ XmlUtil.escapeXmlEntities(menuItem.getHref()) + "\"");
 		GadgetInstance gadgetInstance = menuItem.getGadgetInstance();
 		boolean isRemoteGadget = false;
-		if(gadgetInstance != null){
+		if (gadgetInstance != null) {
 			buf.append(" ginstid=\"" + gadgetInstance.getId() + "\"");
 			String type = gadgetInstance.getType();
-			if(type.indexOf("http") == 0 ){
+			if (type.indexOf("http") == 0) {
 				buf.append(" type=\"Gadget\"");
 				isRemoteGadget = true;
-			}else if (type.indexOf("upload_") == 0){
-				buf.append(" type=\"g_" + gadgetInstance.getType() + "/gadget\"");
-			}else
-				buf.append(" type=\"" + gadgetInstance.getType() + "\"");
+			} else if (type.indexOf("upload_") == 0) {
+				buf.append(" type=\"g_" + XmlUtil.escapeXmlEntities(type)
+						+ "/gadget\"");
+			} else
+				buf.append(" type=\"" + XmlUtil.escapeXmlEntities(type) + "\"");
 		}
+		buf.append(" alert=\"").append(menuItem.getAlert()).append("\"");
 		buf.append(">\n");
 		
 		buf.append("<properties>\n");
