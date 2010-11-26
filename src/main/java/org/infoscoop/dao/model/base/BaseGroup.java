@@ -16,6 +16,8 @@ public abstract class BaseGroup  implements Serializable {
 
 	public static String REF = "Group";
 	public static String PROP_NAME = "Name";
+	public static String PROP_DESCRIPTION = "Description";
+	public static String PROP_EMAIL = "Email";
 	public static String PROP_ID = "Id";
 	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 
@@ -38,9 +40,11 @@ public abstract class BaseGroup  implements Serializable {
 	 */
 	public BaseGroup (
 		java.lang.String id,
+		java.lang.String email,
 		java.lang.String name) {
 
 		this.setId(id);
+		this.setEmail(email);
 		this.setName(name);
 		initialize();
 	}
@@ -56,7 +60,9 @@ public abstract class BaseGroup  implements Serializable {
 
 	// fields
 	private java.lang.Integer fkDomainId;
+	private java.lang.String email;
 	private java.lang.String name;
+	private java.lang.String description;
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.User> users;
@@ -103,6 +109,23 @@ public abstract class BaseGroup  implements Serializable {
 
 
 	/**
+	 * Return the value associated with the column: email
+	 */
+	public java.lang.String getEmail () {
+		return email;
+	}
+
+	/**
+	 * Set the value related to the column: email
+	 * @param email the email value
+	 */
+	public void setEmail (java.lang.String email) {
+		this.email = email;
+	}
+
+
+
+	/**
 	 * Return the value associated with the column: name
 	 */
 	public java.lang.String getName () {
@@ -115,6 +138,23 @@ public abstract class BaseGroup  implements Serializable {
 	 */
 	public void setName (java.lang.String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: description
+	 */
+	public java.lang.String getDescription () {
+		return description;
+	}
+
+	/**
+	 * Set the value related to the column: description
+	 * @param description the description value
+	 */
+	public void setDescription (java.lang.String description) {
+		this.description = description;
 	}
 
 
@@ -135,6 +175,7 @@ public abstract class BaseGroup  implements Serializable {
 	}
 
 	public void addToUsers (org.infoscoop.dao.model.User user) {
+		if (null == getUsers()) setUsers(new java.util.TreeSet<org.infoscoop.dao.model.User>());
 		getUsers().add(user);
 	}
 

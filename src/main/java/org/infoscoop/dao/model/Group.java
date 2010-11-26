@@ -25,10 +25,12 @@ public class Group extends BaseGroup {
 	 */
 	public Group (
 		java.lang.String id,
+		java.lang.String email,
 		java.lang.String name) {
 
 		super (
 			id,
+			email,
 			name);
 	}
 

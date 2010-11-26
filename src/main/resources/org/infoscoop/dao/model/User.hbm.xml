@@ -37,6 +37,13 @@
 			not-null="true"
 			length="255"
 		/>
+		<property
+			name="Admin"
+			column="admin"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
 
 		<set name="Groups" table="IS_USER_GROUP">
 			<key column="fk_user_id"/>

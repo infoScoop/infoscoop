@@ -519,6 +519,7 @@ CREATE TABLE IS_USERS (
   fk_domain_id int unsigned NOT NULL,
   `email` VARCHAR( 255 ) NOT NULL ,
   `name` VARCHAR( 255 ) NOT NULL,
+  `admin` int(10) NOT NULL,
   foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE = InnoDB;
 
@@ -528,7 +529,9 @@ CREATE TABLE IS_USERS (
 CREATE TABLE IS_GROUPS (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
   fk_domain_id int unsigned NOT NULL,
+  `email` VARCHAR( 255 ) NOT NULL ,
   `name` VARCHAR( 255 ) NOT NULL,
+  `description` VARCHAR(255) DEFAULT NULL,
   foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE = InnoDB;
 

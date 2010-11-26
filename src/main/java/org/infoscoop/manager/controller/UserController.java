@@ -53,32 +53,49 @@ public class UserController {
 
 		UserDAO userDAO = UserDAO.newInstance();
 		JSONArray usersJ = json.getJSONArray("users");
+		int user_count = 0;
 		for (int i = 0; i < usersJ.length(); i++) {
 			JSONObject userJ = usersJ.getJSONObject(i);
 			String account = userJ.getString("login");
+			String suspended = userJ.getString("suspended");
+			String admin = userJ.getString("admin");
 			String fname = userJ.getString("familyName");
 			String gname = userJ.getString("givenName");
 			String name = fname + " " + gname;
 			String mail = account + "@" + domainName;
 			User user = userDAO.getByEmail(mail, domainId);
-			if (user == null)
-				user = new User();
-			System.out.println(mail);
-			user.setEmail(mail);
-			user.setName(name);
-			userDAO.save(user);
+			if (suspended == "false"){
+				if (user == null)
+					user = new User();
+				System.out.println(mail);
+				user.setEmail(mail);
+				user.setName(name);
+				if (admin == "true")
+					user.setAdmin(1);
+				else
+					user.setAdmin(0);
+				userDAO.save(user);
+				user_count ++;
+			} else {
+				if (user != null)
+					userDAO.delete(user);
+			}
 		}
-		model.addAttribute("userCount", usersJ.length());
+		model.addAttribute("userCount", user_count);
 
 		GroupDAO groupDAO = GroupDAO.newInstance();
 		JSONArray groupsJ = json.getJSONArray("groups");
 		for (int i = 0; i < groupsJ.length(); i++) {
 			JSONObject groupJ = groupsJ.getJSONObject(i);
-			String name = groupJ.getString("groupId");
-			Group group = groupDAO.getByName(name);
+			String email = groupJ.getString("groupId");
+			String name = groupJ.getString("groupName");
+			String description = groupJ.getString("description");
+			Group group = groupDAO.getByName(email);
 			if (group == null)
 				group = new Group();
+			group.setEmail(email);
 			group.setName(name);
+			group.setDescription(description);
 
 			JSONArray membersJ = groupJ.getJSONArray("members");
 			for (int j = 0; j < membersJ.length(); j++) {

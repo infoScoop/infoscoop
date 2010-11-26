@@ -27,12 +27,14 @@ public class User extends BaseUser implements IAccount {
 	public User (
 		java.lang.String id,
 		java.lang.String name,
-		java.lang.String email) {
+		java.lang.String email,
+		java.lang.Integer admin) {
 
 		super (
 			id,
 			name,
-			email);
+			email,
+			admin);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

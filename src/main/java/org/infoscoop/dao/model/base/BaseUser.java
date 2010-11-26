@@ -18,6 +18,7 @@ public abstract class BaseUser  implements Serializable {
 	public static String PROP_NAME = "Name";
 	public static String PROP_EMAIL = "Email";
 	public static String PROP_ID = "Id";
+	public static String PROP_ADMIN = "Admin";
 	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 
 
@@ -40,11 +41,13 @@ public abstract class BaseUser  implements Serializable {
 	public BaseUser (
 		java.lang.String id,
 		java.lang.String name,
-		java.lang.String email) {
+		java.lang.String email,
+		java.lang.Integer admin) {
 
 		this.setId(id);
 		this.setName(name);
 		this.setEmail(email);
+		this.setAdmin(admin);
 		initialize();
 	}
 
@@ -61,6 +64,7 @@ public abstract class BaseUser  implements Serializable {
 	private java.lang.Integer fkDomainId;
 	private java.lang.String name;
 	private java.lang.String email;
+	private java.lang.Integer admin;
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.Group> groups;
@@ -136,6 +140,23 @@ public abstract class BaseUser  implements Serializable {
 	 */
 	public void setEmail (java.lang.String email) {
 		this.email = email;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: admin
+	 */
+	public java.lang.Integer getAdmin () {
+		return admin;
+	}
+
+	/**
+	 * Set the value related to the column: admin
+	 * @param admin the admin value
+	 */
+	public void setAdmin (java.lang.Integer admin) {
+		this.admin = admin;
 	}
 
 

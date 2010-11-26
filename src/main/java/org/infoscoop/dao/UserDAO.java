@@ -59,5 +59,9 @@ public class UserDAO extends HibernateDaoSupport {
 	public void save(User item){
 		super.getHibernateTemplate().saveOrUpdate(item);
 	}
+	
+	public void delete(User item){
+		super.getHibernateTemplate().delete(item);
+	}
 
 }
