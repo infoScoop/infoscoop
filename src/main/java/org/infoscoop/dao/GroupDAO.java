@@ -36,9 +36,9 @@ public class GroupDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().saveOrUpdate(item);
 	}
 
-	public Group getByName(String name) {
+	public Group getByEmail(String email) {
 		List<Group> groupList = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(Group.class).add(Expression.eq( Group.PROP_NAME,name )).add(
+				DetachedCriteria.forClass(Group.class).add(Expression.eq( Group.PROP_EMAIL,email )).add(
 						Expression.eq(Group.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 		if(groupList.isEmpty())
 			return null;

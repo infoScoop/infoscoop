@@ -62,13 +62,13 @@ public class UserController {
 			String fname = userJ.getString("familyName");
 			String gname = userJ.getString("givenName");
 			String name = fname + " " + gname;
-			String mail = account + "@" + domainName;
-			User user = userDAO.getByEmail(mail, domainId);
+			String email = account + "@" + domainName;
+			User user = userDAO.getByEmail(email, domainId);
 			if (suspended == "false"){
 				if (user == null)
 					user = new User();
-				System.out.println(mail);
-				user.setEmail(mail);
+				System.out.println(email);
+				user.setEmail(email);
 				user.setName(name);
 				if (admin == "true")
 					user.setAdmin(1);
@@ -90,7 +90,7 @@ public class UserController {
 			String email = groupJ.getString("groupId");
 			String name = groupJ.getString("groupName");
 			String description = groupJ.getString("description");
-			Group group = groupDAO.getByName(email);
+			Group group = groupDAO.getByEmail(email);
 			if (group == null)
 				group = new Group();
 			group.setEmail(email);
