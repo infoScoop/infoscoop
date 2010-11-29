@@ -66,11 +66,9 @@
 				<form:label for="alert" path="alert" cssErrorClass="error"><spring:message code="gadget._form.notify" /></form:label>
 				<c:set var="notifyOff"><spring:message code="gadget._form.notify.off" /></c:set>
 				<c:set var="notifyOn"><spring:message code="gadget._form.notify.on" /></c:set>
-				<c:set var="notifyForce"><spring:message code="gadget._form.notify.force" /></c:set>
 				<form:select path="alert">
 					<form:option value="0" label="${notifyOff}"/>
 					<form:option value="1" label="${notifyOn}" selected="true"/>
-					<form:option value="2" label="${notifyForce}"/>
 				</form:select>
 				<form:errors path="alert" />
 			</p>
