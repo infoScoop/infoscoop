@@ -15,6 +15,7 @@ public class GroupDAO extends HibernateDaoSupport {
 		return (GroupDAO) SpringUtil.getContext().getBean("groupDAO");
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Group> all() {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Group.class).add(
@@ -22,9 +23,10 @@ public class GroupDAO extends HibernateDaoSupport {
 	}
 
 	public Group get(String groupId) {
-		return super.getHibernateTemplate().get(Group.class, new Integer(groupId));
+		return super.getHibernateTemplate().get(Group.class, groupId);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Group> selectByName(String name) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Group.class).add(
@@ -36,6 +38,7 @@ public class GroupDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().saveOrUpdate(item);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Group getByEmail(String email) {
 		List<Group> groupList = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Group.class).add(Expression.eq( Group.PROP_EMAIL,email )).add(
@@ -46,4 +49,10 @@ public class GroupDAO extends HibernateDaoSupport {
 			return groupList.get(0);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<String> getGroupIds() {
+		String queryString = "select distinct g.Id from Group g";
+		return super.getHibernateTemplate().find(queryString);
+	}
+	
 }
