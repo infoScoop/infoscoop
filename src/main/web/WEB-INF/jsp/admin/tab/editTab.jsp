@@ -758,15 +758,18 @@ function displayStaticGadget(widgetOpt){
 		IS_Portal.widgetLists[IS_Portal.currentTabId][containerId] = false;
 		return;
 	}
-	container.id = "s_" + containerId;
+	var realContainer = $("s_"+containerId);
+	if(realContainer) {
+		container.parentNode.removeChild(container);
+		container = realContainer;
+	}else{
+		container.id = "s_" + containerId;
+	}
 	var widget = new IS_Widget(false, widgetOpt);
 	widget.panelType = "StaticPanel";
 	widget.containerId = containerId;
 	widget.build();
-	if(container.firstChild && container.firstChild.className == "widget")
-		container.replaceChild(widget.elm_widget, container.firstChild);
-	else
-		container.appendChild(widget.elm_widget);
+	container.appendChild(widget.elm_widget);
 	
 	widget.loadContents();
 	IS_Portal.widgetLists[IS_Portal.currentTabId][widget.id] = widget;
