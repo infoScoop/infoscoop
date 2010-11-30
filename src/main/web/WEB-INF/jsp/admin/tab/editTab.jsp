@@ -719,6 +719,11 @@ function clearStaticGadgets(){
 }
 
 function deleteTempTabTemplate(){
+	try{
+		IS_Request.asynchronous = false;
+		IS_Request.CommandQueue.fireRequest();
+	}catch(e){
+	}
 	if(isTemp(IS_Portal.deleteTempTabFlag)){
 		var a = new Ajax.Request(
 			"deleteTempTab",

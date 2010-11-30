@@ -25,6 +25,6 @@
 			<h2>パーソナライズエリア</h2>
 			<div id="personarizeAreaContainer"><div id="panels"><div id="tab-container"></div></div></div>
 		</div>
-		<div style="clear:both;text-align:center;"><input id="submit_button" type="submit" name="button" /></div>
+		<div style="clear:both;text-align:center;"><input id="submit_button" type="submit" name="button" value="保存" /></div>
 	</div>
 </form:form>
