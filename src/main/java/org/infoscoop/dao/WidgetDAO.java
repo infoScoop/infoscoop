@@ -124,6 +124,15 @@ public class WidgetDAO extends HibernateDaoSupport{
 				.add( Expression.in("Widgetid",widgetIds )));
 	}
 
+	public boolean exist(String uid, String widgetId) {
+		List result = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Widget.class).add(
+						Expression.eq("Uid", uid)).add(
+						Expression.eq("Deletedate", new Long(0))).add(
+						Expression.eq("Widgetid", widgetId)));
+		return result.size() > 0;
+	}
+
     public void updateWidget( Widget widget ) {
     	super.getHibernateTemplate().update( widget );
 		super.getHibernateTemplate().flush();

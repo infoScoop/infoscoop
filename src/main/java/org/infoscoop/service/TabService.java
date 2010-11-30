@@ -333,8 +333,10 @@ public class TabService {
 			Collection<TabTemplatePersonalizeGadget> gadgets) {
 		List<Widget> widgetList = new ArrayList<Widget>();
 		for (TabTemplatePersonalizeGadget gadget : gadgets) {
+			if (widgetDAO.exist(uid, gadget.getWidgetId()))
+				continue;
+
 			GadgetInstance gadgetInst = gadget.getFkGadgetInstance();
-			;
 
 			Widget widget = new Widget();
 			widget.setTabid(tabTemplate.getTabId());
