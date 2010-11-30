@@ -20,7 +20,7 @@ $(function () {
 
 		count--;
 		cell1.innerHTML = "<span>"+ $("#roleType").val() +"</span><input name='rolePrincipals["+ count +"].type' type='hidden' value='"+ document.getElementById("roleType").value +"' />";
-		cell2.innerHTML = "<span>"+ $("#principalId").val() +"</span><input name='rolePrincipals["+ count +"].name' type='hidden' value='"+ document.getElementById("target").value +"' />";
+		cell2.innerHTML = "<span>"+ $("#target").val() +"</span><input name='rolePrincipals["+ count +"].name' type='hidden' value='"+ $("#principalId").val() +"' />";
 		cell3.innerHTML = "<span class='trash' onclick='deletePrincipal("+ count +")'></span><input name='rolePrincipals["+ count +"].id' type='hidden' value='' />";
 
 		document.getElementById("roleType").value = "ユーザ";
