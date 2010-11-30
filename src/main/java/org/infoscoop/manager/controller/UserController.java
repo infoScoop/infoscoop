@@ -11,9 +11,11 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.DomainDAO;
 import org.infoscoop.dao.GroupDAO;
+import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.dao.UserDAO;
 import org.infoscoop.dao.model.Domain;
 import org.infoscoop.dao.model.Group;
+import org.infoscoop.dao.model.Properties;
 import org.infoscoop.dao.model.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,8 +41,11 @@ public class UserController {
 		long start = System.currentTimeMillis();
 
 		HttpClient http = new HttpClient();
-		GetMethod method = new GetMethod(
-				"http://localhost:8080/infoscoop4g/usergroup?domain=" + domainName);
+		Properties property = PropertiesDAO.newInstance().findProperty("appsProxyURL");
+		String url = property.getValue();
+		if (!url.endsWith("/"))
+			url += "/";
+		GetMethod method = new GetMethod(url + "usergroup?domain=" + domainName);
 		http.executeMethod(method);
 		if (method.getStatusCode() >= 300) {
 			// TODO handle error

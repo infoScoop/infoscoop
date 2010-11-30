@@ -44,7 +44,6 @@
 			column="description"
 			type="string"
 			not-null="false"
-			length="255"
 		/>
 
 		<set name="Users" table="IS_USER_GROUP" lazy="false" outer-join="true">

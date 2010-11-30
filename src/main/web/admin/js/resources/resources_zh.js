@@ -438,6 +438,7 @@ var ISA_R = {
 	"property_desc_logCommandQueueWait": "用户操作信息送信间隔（秒0）",
 	"property_desc_displayInlineHost": "用内联框架表示的URL （如: hostname:80, hostname, hostname:8080）",
 	"property_desc_logStoragePeriod": "记录的保留期限。-1为无限期",
+	"property_desc_appsProxyURL": "URL of proxy for Google Apps"
 	"property_enum_debug":"调试",
 	"property_enum_display":"表示",
 	"property_enum_error":"错误",

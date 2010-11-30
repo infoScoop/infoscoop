@@ -531,7 +531,7 @@ CREATE TABLE IS_GROUPS (
   fk_domain_id int unsigned NOT NULL,
   `email` VARCHAR( 255 ) NOT NULL ,
   `name` VARCHAR( 255 ) NOT NULL,
-  `description` VARCHAR(255) DEFAULT NULL,
+  `description` text,
   foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE = InnoDB;
 
