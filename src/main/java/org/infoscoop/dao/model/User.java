@@ -59,4 +59,8 @@ public class User extends BaseUser implements IAccount {
 	public String getUid() {
 		return getEmail();
 	}
+
+	public boolean isAdministrator() {
+		return super.getAdmin() == 1;
+	}
 }

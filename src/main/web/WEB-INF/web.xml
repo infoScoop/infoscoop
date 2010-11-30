@@ -65,6 +65,11 @@
 	</filter>
 
 	<filter>
+		<filter-name>CheckManagerFilter</filter-name>
+		<filter-class>org.infoscoop.web.CheckAdminFilter</filter-class>
+	</filter>
+
+	<filter>
 		<filter-name>SetAdminFilter</filter-name>
 		<filter-class>org.infoscoop.admin.web.CheckAdminFilter</filter-class>
 		<init-param>
@@ -189,6 +194,11 @@
 		<url-pattern>/manager/*</url-pattern>
 	</filter-mapping>
 
+	<filter-mapping>
+		<filter-name>CheckManagerFilter</filter-name>
+		<url-pattern>/manager/*</url-pattern>
+	</filter-mapping>
+	
 	<filter-mapping>
 		<filter-name>PreviewImpersonationFilter</filter-name>
 		<url-pattern>/adminpreview/*</url-pattern>
@@ -646,6 +656,11 @@
 		<servlet-name>HttpProxy</servlet-name>
 		<url-pattern>/proxy</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>HttpProxy</servlet-name>
+		<url-pattern>/manager/proxy</url-pattern>
+	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>MultiRssServlet</servlet-name>
@@ -666,6 +681,16 @@
 		<servlet-name>WidgetConfServlet</servlet-name>
 		<url-pattern>/widconf</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>WidgetConfServlet</servlet-name>
+		<url-pattern>/manager/widconf</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>WidgetConfServlet</servlet-name>
+		<url-pattern>/manager/widconf</url-pattern>
+	</servlet-mapping>
 
     <servlet-mapping>
     	<servlet-name>StringServlet</servlet-name>
@@ -685,6 +710,11 @@
 	<servlet-mapping>
 		<servlet-name>MenuConfServlet</servlet-name>
 		<url-pattern>/mnusrv/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>MenuConfServlet</servlet-name>
+		<url-pattern>/manager/mnusrv/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

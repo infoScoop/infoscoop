@@ -22,7 +22,6 @@ package org.infoscoop.web;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -43,7 +42,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.account.AuthenticationException;
 import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.DomainManager;
 import org.infoscoop.account.SessionCreateConfig;
@@ -51,8 +49,9 @@ import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.web.PreviewImpersonationFilter;
 import org.infoscoop.dao.DomainDAO;
-import org.infoscoop.dao.model.Account;
+import org.infoscoop.dao.UserDAO;
 import org.infoscoop.dao.model.Domain;
+import org.infoscoop.dao.model.User;
 
 /**
  * The filter which manages the login state.
@@ -207,6 +206,12 @@ public class SessionManagerFilter implements Filter {
 						ISPrincipal domainPrincipal = new ISPrincipal(ISPrincipal.DOMAIN_PRINCIPAL, domain.getId().toString());
 						domainPrincipal.setDisplayName(domain.getName());
 						loginUser.getPrincipals().add(domainPrincipal);
+					}
+					User user = UserDAO.newInstance().getByEmail(uid, domain.getId());
+					if(user.isAdministrator()){
+						ISPrincipal adminPrincipal = new ISPrincipal(ISPrincipal.ADMINISTRATOR_PRINCIPAL, "admin");
+						adminPrincipal.setDisplayName("Administrator");
+						loginUser.getPrincipals().add(adminPrincipal);	
 					}
 				}
 								

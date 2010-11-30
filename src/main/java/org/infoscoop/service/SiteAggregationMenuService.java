@@ -73,7 +73,10 @@ public class SiteAggregationMenuService {
 				for(RolePrincipal p: role.getRolePrincipals()){
 					Subject loginUser = SecurityController.getContextSubject();
 					for(ISPrincipal principal : loginUser.getPrincipals(ISPrincipal.class)){
-						if(p.getType().equalsIgnoreCase(principal.getType()) && 
+						if(noAuth && ISPrincipal.ADMINISTRATOR_PRINCIPAL == principal.getType()){
+							canDisplay = true;
+							break;
+						}else if(p.getType().equalsIgnoreCase(principal.getType()) && 
 								p.getName().equalsIgnoreCase(principal.getName())){
 							canDisplay = true;
 							break;

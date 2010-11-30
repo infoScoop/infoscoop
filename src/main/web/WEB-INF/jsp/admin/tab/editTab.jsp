@@ -85,7 +85,7 @@ var staticContentURL=getInfoScoopURL();
 var ajaxRequestTimeout=15000;
 var messagePriority = 4;
 var localhostPrefix = staticContentURL;
-var hostPrefix = staticContentURL;
+var hostPrefix = staticContentURL + "/manager"
 var proxyServerURL = hostPrefix + "/proxy";
 var imageURL = staticContentURL + "/skin/imgs/";
 var maxColumnNum=10;
@@ -165,7 +165,7 @@ IS_Portal = {
 
 <script type="text/javascript" class="source">
 IS_SidePanel.adjustPosition = function(){};
-IS_Request.CommandQueue = new IS_Request.Queue("/manager/tab/comsrv", commandQueueWait, !is_userId);
+IS_Request.CommandQueue = new IS_Request.Queue("/tab/comsrv", commandQueueWait, !is_userId);
 IS_Portal.addTab = function(idNumber, name, type, layout, numCol, columnsWidth, isInitialize, tabOrder){
 	var panels = $("panels");
 	var panelDiv = IS_Portal.buildPanel( idNumber, type );
@@ -215,7 +215,7 @@ function prepareStaticArea(){
 		edit_cover.id = "edit_div_" + j;
 		edit_cover.className = "edit_static_gadget";
 		edit_cover.style.display = "none";
-		edit_cover.href = hostPrefix + "/manager/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + containerId;
+		edit_cover.href = hostPrefix + "/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + containerId;
 		div.appendChild(edit_cover);
 		
 		var modal = new Control.Modal(
@@ -254,7 +254,7 @@ function init() {
 	Event.observe('submit_button', 'click', changeFlag, false);
 	prepareStaticArea();
 
-	new IS_WidgetsContainer("/manager/tab/widsrv");
+	new IS_WidgetsContainer("/tab/widsrv");
 	new IS_SiteAggregationMenu();
 	new IS_SidePanel.SiteMap();
 
