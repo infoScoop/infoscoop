@@ -247,10 +247,15 @@ $(function () {
 		$(this).click(function(){
 			if($(this).attr('id') == 'accessLevel3' && $(this).attr('checked')){
 				$.get("selectRole", {}, function(html){
+					$('#select_role_dialog').html(html);
+					$('#select_role_dialog').dialog();
+				});
+/*
+				$.get("selectRole", {}, function(html){
 					$('#select_security_role_panel').html(html);
 					$('#select_security_role_panel').show();
-
 				});
+*/
 			}else{
 				$('#select_security_role_panel').hide();
 			}
@@ -261,11 +266,19 @@ $(function () {
 		$(this).click(function(){
 			$('input[name="select_role_checkbox"]').each(function(){
 				if($(this).attr('checked')){
-					var selectedRoleRow = $('#role_id_' + $(this).val()).clone(true);
-					selectedRoleRow.removeAttr('id');
-					selectedRoleRow.children('td:first-child').remove();
-					selectedRoleRow.children('td:first-child').append($('<input type="hidden" name="roles.id" value="' + $(this).val() + '"/>'));
-					$('#role_list_table').children('tbody').append(selectedRoleRow);
+					var roleListTbody = $('#role_list_table').children('tbody');
+					var selectedRoleRow = $('#role_id_' + $(this).val());
+					var roleRow = selectedRoleRow.clone(true);
+					roleRow.attr('id', '#selected_role_id_' + $(this).val());
+					roleRow.children('td:first-child').remove();
+					var rowSpan = roleRow.children('td:first-child').attr('rowSpan');
+					roleRow.children('td:first-child').append($('<input type="hidden" name="roles.id" value="' + $(this).val() + '"/>'));
+					roleRow.append($('<td rowSpan="'+ rowSpan + '"><span class="trash"  onclick="deleteRole()" ></td>'))
+					roleListTbody.append(roleRow);
+					for(i = 1; i < rowSpan ; i++){
+						selectedRoleRow = selectedRoleRow.next();
+						roleListTbody.append(selectedRoleRow.clone(true));
+					}
 				}
 			});
 		});
@@ -296,6 +309,8 @@ $(function () {
 			<li><a onclick="togglePublish(event, this)"><spring:message code="menu.editPage.command.publish" /></a></li>
 			<li><a onclick="togglePublish(event, this)"><spring:message code="menu.editPage.command.access" /></a></li>
 		</ul>
+	</div>
+	<div id="select_role_dialog">
 	</div>
 </div>
 	</tiles:putAttribute>

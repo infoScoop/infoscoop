@@ -5,13 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.infoscoop.dao.GroupDAO;
 import org.infoscoop.dao.RoleDAO;
 import org.infoscoop.dao.UserDAO;
-import org.infoscoop.dao.GroupDAO;
+import org.infoscoop.dao.model.Group;
 import org.infoscoop.dao.model.Role;
 import org.infoscoop.dao.model.RolePrincipal;
 import org.infoscoop.dao.model.User;
-import org.infoscoop.dao.model.Group;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -26,7 +28,6 @@ public class RoleController {
 	@RequestMapping(method=RequestMethod.GET)
 	public void index(Model model) throws Exception {
 		List<Role> roles = RoleDAO.newInstance().all();
-		System.out.print(roles);
 		model.addAttribute("roles", roles);
 	}
 
@@ -53,25 +54,31 @@ public class RoleController {
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody ArrayList<String> autocompleteUser( @RequestParam("query") String query, Model model )
+	public @ResponseBody String autocompleteUser( @RequestParam("query") String query, Model model )
 			throws Exception {
-		 List<User> json = UserDAO.newInstance().selectByName(query);
-		 ArrayList<String> list = new ArrayList<String>();
-		 for (int i=0 ; i < json.size(); i++){
-			 list.add(json.get(i).getName());
+		 List<User> userList = UserDAO.newInstance().selectByName(query);
+		 JSONArray list = new JSONArray();
+		 for (User user : userList){
+			 JSONObject userJson = new JSONObject();
+			 userJson.put("label", user.getName());
+			 userJson.put("value", user.getEmail());
+			 list.put(userJson);
 		 }
-		 return list;
+		 return list.toString();
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody ArrayList<String> autocompleteGroup( @RequestParam("query") String query, Model model )
+	public @ResponseBody String autocompleteGroup( @RequestParam("query") String query, Model model )
 			throws Exception {
-		 List<Group> json = GroupDAO.newInstance().selectByName(query);
-		 ArrayList<String> list = new ArrayList<String>();
-		 for (int i=0 ; i < json.size(); i++){
-			 list.add(json.get(i).getName());
+		 List<Group> groupList = GroupDAO.newInstance().selectByName(query);
+		 JSONArray list = new JSONArray();
+		for (Group group : groupList){
+			 JSONObject groupJson = new JSONObject();
+			 groupJson.put("label", group.getName());
+			 groupJson.put("value", group.getName());//TODO
+			 list.put(groupJson);
 		 }
-		 return list;
+		 return list.toString();
 	}
 
 	@RequestMapping(method=RequestMethod.GET)

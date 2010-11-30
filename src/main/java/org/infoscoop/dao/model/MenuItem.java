@@ -78,4 +78,8 @@ public class MenuItem extends BaseMenuItem {
 	public boolean isSpecialAccess() {
 		return super.getAccessLevel() == 2;
 	}
+
+	public boolean isPrivateBool() {
+		return (super.getAccessLevel() == 0);
+	}
 }

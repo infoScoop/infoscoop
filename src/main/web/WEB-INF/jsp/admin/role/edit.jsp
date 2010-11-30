@@ -2,6 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <tiles:insertDefinition name="base.definition" flush="true">
 	<tiles:putAttribute name="type" value="role"/>
 	<tiles:putAttribute name="title" value="role.title"/>
@@ -9,7 +10,6 @@
 <script type="text/javascript" class="source">
 //
 $(function () {
-
 	$("#addButton").click(function(){
 		var tbl = document.getElementById("table");
 		var count = tbl.rows.length;
@@ -19,8 +19,8 @@ $(function () {
 		var cell3 = row.insertCell(2);
 
 		count--;
-		cell1.innerHTML = "<span>"+ document.getElementById("roleType").value +"</span><input name='rolePrincipals["+ count +"].type' type='hidden' value='"+ document.getElementById("roleType").value +"' />";
-		cell2.innerHTML = "<span>"+ document.getElementById("target").value +"</span><input name='rolePrincipals["+ count +"].name' type='hidden' value='"+ document.getElementById("target").value +"' />";
+		cell1.innerHTML = "<span>"+ $("#roleType").val() +"</span><input name='rolePrincipals["+ count +"].type' type='hidden' value='"+ document.getElementById("roleType").value +"' />";
+		cell2.innerHTML = "<span>"+ $("#principalId").val() +"</span><input name='rolePrincipals["+ count +"].name' type='hidden' value='"+ document.getElementById("target").value +"' />";
 		cell3.innerHTML = "<span class='trash' onclick='deletePrincipal("+ count +")'></span><input name='rolePrincipals["+ count +"].id' type='hidden' value='' />";
 
 		document.getElementById("roleType").value = "ユーザ";
@@ -33,6 +33,14 @@ $(function () {
 			results: 5,
 			query:   undefined
 		};
+		var onselect = function(event, ui) {
+			if(ui.item){
+				setTimeout(function(){
+					$('#target').val(ui.item.label);
+					$('#principalId').val(ui.item.value);
+				},1);
+			}
+		}
 		$('#target').autocomplete( { source:
 			function ( request, response )  {
 				params.query = request.term;
@@ -41,15 +49,12 @@ $(function () {
 					var url = 'autocompleteUser';
 				else if (type == "OrganizationPrincipal")
 					var url = 'autocompleteGroup';
-				$.post( url, params, response);
-/*				$.post( url, params, function(data) {
-					var list = [];
-					for(var i in data)
-						list.push(data[i].name);
-					response(list);
-				}, "json" );
-*/
-		}});
+				$.post( url, params, response, 'json');
+			},
+			select: onselect,
+			change: onselect,
+			focus: onselect
+		});
 	});
 });
 
@@ -81,7 +86,7 @@ function checkForm(){
 	<h3>グループ設定画面</h3>
 	<form:form modelAttribute="role" id="add_group" method="post" action="save" onSubmit="return checkForm()" >
 		<c:set var="principalSize" value="${role.size}" />
-		<h2>グループ名： <form:input id="roleName" path="name"/></h2>
+		<p>グループ名： <form:input id="roleName" path="name"/></p>
 		<form:hidden path="id" />
 		<table id="table" class="tab_table" cellspacing="0" cellpadding="0">
 		<thead>
@@ -100,7 +105,7 @@ function checkForm(){
 		<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
 			<tr>
 				<td>
-					<span>${principal.type}</span>
+					<span><spring:message code="role.index.principal.type.${principal.type}"/></span>
 					<input name="rolePrincipals[<c:out value='${status.index}'/>].type" type="hidden" value="${principal.type}" />
 				</td>
 				<td>
@@ -115,15 +120,23 @@ function checkForm(){
 		</c:forEach>
 
 		</table>
+		<input type="submit" name="button" value="保存" />
+		<input type="button" value="キャンセル" onclick="javascript:window.location.href='index'" />
 		<br />
 		<br />
 
 
 		<span>タイプ：</span>
 		<select id="roleType">
-			<option value='UIDPrincipal'>ユーザ</option><option value='OrganizationPrincipal'>組織</option>
+			<option value='UIDPrincipal'>
+				<spring:message code="role.index.principal.type.UIDPrincipal"/>
+			</option>
+			<option value='OrganizationPrincipal'>
+				<spring:message code="role.index.principal.type.OrganizationPrincipal"/>
+			</option>
 		</select>
 		<span>　　対象範囲：</span>
+		<input id="principalId" type="hidden"></input>
 		<input id="target" type="text"></input>
 
 		<input id="addButton" type="button" value="追加" />
@@ -132,8 +145,6 @@ function checkForm(){
 		<br />
 		<br />
 
-		<input type="submit" name="button" value="保存" />
-		<input type="button" value="キャンセル" onclick="javascript:window.location.href='index'" />
 	</form:form>
 </div>
 

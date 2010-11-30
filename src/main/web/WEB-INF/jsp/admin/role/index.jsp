@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <tiles:insertDefinition name="base.definition" flush="true">
 	<tiles:putAttribute name="type" value="role"/>
 	<tiles:putAttribute name="title" value="role.title"/>
 	<tiles:putAttribute name="body" type="string">
-
 <script type="text/javascript" class="source">
 function deleteRole(roleId){
 	window.location.href = "delete?roleId=" +  roleId;
@@ -34,7 +34,7 @@ function deleteRole(roleId){
 					<c:if test="${status.index == 0}">
 	 					<td id="${role.id}" rowspan="${principalSize}">${role.name}</td>
  					</c:if>
-					<td>${principal.type}</td>
+					<td><spring:message code="role.index.principal.type.${principal.type}"/></td>
 					<td>${principal.name}</td>
 					<c:if test="${status.index == 0}">
 						<td rowspan="${principalSize}"><span class="edit"><a href="edit?id=${role.id}">編集アイコン</a></span></td>
