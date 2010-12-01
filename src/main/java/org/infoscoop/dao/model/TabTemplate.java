@@ -196,6 +196,10 @@ public class TabTemplate extends BaseTabTemplate {
 		tabClone.setTabTemplatePersonalizeGadgets(tabClonePGs);
 		tabClone.setTabTemplateStaticGadgets(tabCloneSGs);
 		
+		Set<Role> cloneRoles = new HashSet<Role>();
+		for(Role role:this.getRoles())
+			cloneRoles.add(role);
+		tabClone.setRoles(cloneRoles);
 		return tabClone;
 	}
 

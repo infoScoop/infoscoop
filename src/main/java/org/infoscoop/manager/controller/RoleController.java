@@ -32,6 +32,12 @@ public class RoleController {
 	}
 
 	@RequestMapping(method=RequestMethod.GET)
+	public void selectRole( Model model){
+		List<Role> roles = RoleDAO.newInstance().all();
+		model.addAttribute("roles", roles);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
 	@Transactional
 	public void edit( @RequestParam(value="id", required=false) String roleId, Model model)
 			throws Exception {

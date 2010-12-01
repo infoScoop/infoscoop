@@ -89,6 +89,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.TabTemplatePersonalizeGadget> tabTemplatePersonalizeGadgets;
 	private java.util.Set<org.infoscoop.dao.model.TabTemplateStaticGadget> tabTemplateStaticGadgets;
+	private java.util.Set<org.infoscoop.dao.model.Role> roles;
 
 
 
@@ -358,6 +359,28 @@ public abstract class BaseTabTemplate  implements Serializable {
 	public void addToTabTemplateStaticGadgets (org.infoscoop.dao.model.TabTemplateStaticGadget tabTemplateStaticGadget) {
 		if (null == getTabTemplateStaticGadgets()) setTabTemplateStaticGadgets(new java.util.TreeSet<org.infoscoop.dao.model.TabTemplateStaticGadget>());
 		getTabTemplateStaticGadgets().add(tabTemplateStaticGadget);
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: Roles
+	 */
+	public java.util.Set<org.infoscoop.dao.model.Role> getRoles () {
+		return roles;
+	}
+
+	/**
+	 * Set the value related to the column: Roles
+	 * @param roles the Roles value
+	 */
+	public void setRoles (java.util.Set<org.infoscoop.dao.model.Role> roles) {
+		this.roles = roles;
+	}
+
+	public void addToRoles (org.infoscoop.dao.model.Role role) {
+		if (null == getRoles()) setRoles(new java.util.TreeSet<org.infoscoop.dao.model.Role>());
+		getRoles().add(role);
 	}
 
 

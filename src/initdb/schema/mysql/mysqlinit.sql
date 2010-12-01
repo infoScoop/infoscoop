@@ -482,6 +482,16 @@ create table IS_TAB_TEMPLATES(
 ) ENGINE=InnoDB;
 
 --
+-- TAB_TEMPLATE_ROLE
+--
+CREATE TABLE IF NOT EXISTS IS_TAB_TEMPLATE_ROLES (
+  fk_tab_template_id int unsigned NOT NULL,
+  fk_role_id int unsigned NOT NULL,
+  foreign key (fk_tab_template_id) references IS_TAB_TEMPLATES(id) on delete cascade,
+  foreign key (fk_role_id) references IS_ROLES(id) on delete cascade
+) ENGINE=InnoDB;
+
+--
 -- TAB_TEMPLATE_STATIC_GADGET
 --
 CREATE TABLE  IS_TAB_TEMPLATE_STATIC_GADGETS (

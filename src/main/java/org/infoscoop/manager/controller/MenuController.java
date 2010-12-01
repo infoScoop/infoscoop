@@ -87,7 +87,7 @@ public class MenuController {
 		return menu;
 	}
 	
-	@RequestMapping
+	@RequestMapping(method = RequestMethod.GET)
 	@Transactional
 	public void editMenu(
 			@RequestParam(value = "id", required = false) Integer id,
@@ -415,11 +415,5 @@ public class MenuController {
 		}
 
 		return XmlUtil.stream2Dom(is);
-	}
-	
-	@RequestMapping(method=RequestMethod.GET)
-	public void selectRole( Model model){
-		List<Role> roles = RoleDAO.newInstance().all();
-		model.addAttribute("roles", roles);
 	}
 }

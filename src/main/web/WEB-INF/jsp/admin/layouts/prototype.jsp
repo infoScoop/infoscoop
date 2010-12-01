@@ -24,6 +24,39 @@
 			margin:5px;
 			padding:5px;
 		}
+		/*TODO: Following style is copied from mangaer.css*/
+		/*- Tab--------------------------- */
+		.tab_table {
+			border:1px solid #CCCCCC;
+			border-collapse:collapse;
+			font-size:1.3em;
+			text-align:center;
+			width:400px;
+		}
+		.tab_table tr td {
+			border:1px solid #CCCCCC;
+		}
+		.tab_table tr th {
+			background-color: #d3DADE;
+			padding: 3px;
+		}
+		.tab_table tr.rowb {
+			background-color:#EAf2FD;
+		}
+		.tab_table tr.filterColumns td {
+			padding:2px;
+		}
+		
+		.trash {
+			background: url(../../skin/imgs/trash.gif ) no-repeat;
+			font-size: 1.3em;
+			padding-left:15px;
+		}
+		.edit {
+			background: url(../../skin/imgs/edit.gif ) no-repeat;
+			font-size: 1.3em;
+			padding-left:15px;
+		}
 		</style>
 	</head>
 	<body>

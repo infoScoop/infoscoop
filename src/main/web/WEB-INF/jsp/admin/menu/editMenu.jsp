@@ -8,7 +8,6 @@
 	<tiles:putAttribute name="body" type="string">
 <script type="text/javascript" src="../../js/lib/jsTree.v.1.0rc2/jquery.jstree.js"></script>
 <script type="text/javascript" src="../../js/manager/gadget.js"></script>
-<script type="text/javascript" src="../../js/lib/jquery.livequery.js"></script>
 <script type="text/javascript" class="source">
 var hostPrefix = "/infoscoop";//TODO スクリプトで計算
 //TODO propertiesテーブルから取得して補正する
@@ -246,18 +245,12 @@ $(function () {
 	$('input[name="accessLevel"]').livequery(function(){
 		$(this).click(function(){
 			if($(this).attr('id') == 'accessLevel3' && $(this).attr('checked')){
-				$.get("selectRole", {}, function(html){
+				$.get("../role/selectRole", {}, function(html){
 					$('#select_role_dialog').html(html);
 					$('#select_role_dialog').dialog();
 				});
-/*
-				$.get("selectRole", {}, function(html){
-					$('#select_security_role_panel').html(html);
-					$('#select_security_role_panel').show();
-				});
-*/
 			}else{
-				$('#select_security_role_panel').hide();
+				$('#selected_security_role_panel').hide();
 			}
 		});
 	});

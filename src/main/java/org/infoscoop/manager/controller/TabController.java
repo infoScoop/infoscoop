@@ -24,12 +24,14 @@ import org.infoscoop.command.XMLCommandProcessor;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetInstanceDAO;
+import org.infoscoop.dao.RoleDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
+import org.infoscoop.dao.model.Role;
 import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
@@ -108,6 +110,7 @@ public class TabController {
 			TabTemplate tabCopy = tab.createTemp();
 			tabTemplateDAO.save(tabCopy);
 			model.addAttribute(tabCopy);
+			model.addAttribute("roles", tabCopy.getRoles());
 	}
 
 	@RequestMapping
@@ -317,7 +320,8 @@ public class TabController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public void updateTab(TabTemplate formTab,
-			@RequestParam("layoutModified") String layoutModified, 
+			@RequestParam("layoutModified") String layoutModified,
+			@RequestParam(value = "roles.id", required = false) String[] roleIdList, 
 			Model model)throws Exception {
 
 		TabTemplate tabOriginal = tabTemplateDAO.getByTabId(formTab.getTabId());
@@ -352,7 +356,15 @@ public class TabController {
 		
 		tab.setName(formTab.getName());
 		tab.setLayout(formTab.getLayout());
+		tab.setAccessLevel(formTab.getAccessLevel());
 		tab.setTemp(0);
+		//TODO: edit roles collection, and remove a role in roles collection.
+		if (roleIdList != null) {
+			for (int i = 0; i < roleIdList.length; i++) {
+				Role role = RoleDAO.newInstance().get(roleIdList[i]);
+				tab.addToRoles(role);
+			}
+		}
 		tabTemplateDAO.save(tab);
 		
 		model.addAttribute(tab);

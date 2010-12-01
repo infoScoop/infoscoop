@@ -13,6 +13,10 @@
 <link rel="stylesheet" type="text/css" href="../../skin/calendar.css">
 <link rel="stylesheet" type="text/css" href="../../skin/rssreader.css">
 
+<script type="text/javascript" src="../../js/lib/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/css/smoothness/jquery-ui-1.8.4.custom.css">
+<script type="text/javascript" src="../../js/lib/jquery-ui/jquery-ui-1.8.4.custom.min.js"></script>
+<script type="text/javascript" src="../../js/lib/livequery-1.1.0/jquery.livequery.js"></script>
 <style>
 h1 {
   margin:5px;
@@ -77,6 +81,8 @@ h2 {
 
 <script src="../../js/resources/resources_ja.js"></script>
 <script>
+jQuery.noConflict();
+
 function getInfoScoopURL() {
 	var currentUrl = location.href;
 	return currentUrl.replace(/\/manager\/.*/, "");
@@ -685,6 +691,39 @@ function init() {
 		}
 	);
 	
+	jQuery('input[name="accessLevel"]').click(function(){
+		if(jQuery(this).attr('id') == 'accessLevel3' && jQuery(this).attr('checked')){
+			jQuery.get("../role/selectRole", {}, function(html){
+				jQuery('#select_role_dialog').html(html);
+				jQuery('#select_role_dialog').dialog();
+			});
+			jQuery('#selected_security_role_panel').show();
+		}else{
+			jQuery('#selected_security_role_panel').hide();
+		}
+	});
+
+	jQuery('#add_role_btn').livequery(function(){
+		jQuery(this).click(function(){
+			jQuery('input[name="select_role_checkbox"]').each(function(){
+				if(jQuery(this).attr('checked')){
+					var roleListTbody = jQuery('#role_list_table').children('tbody');
+					var selectedRoleRow = jQuery('#role_id_' + jQuery(this).val());
+					var roleRow = selectedRoleRow.clone(true);
+					roleRow.attr('id', '#selected_role_id_' + jQuery(this).val());
+					roleRow.children('td:first-child').remove();
+					var rowSpan = roleRow.children('td:first-child').attr('rowSpan');
+					roleRow.children('td:first-child').append(jQuery('<input type="hidden" name="roles.id" value="' + jQuery(this).val() + '"/>'));
+					roleRow.append(jQuery('<td rowSpan="'+ rowSpan + '"><span class="trash"  onclick="deleteRole()" ></td>'))
+					roleListTbody.append(roleRow);
+					for(i = 1; i < rowSpan ; i++){
+						selectedRoleRow = selectedRoleRow.next();
+						roleListTbody.append(selectedRoleRow.clone(true));
+					}
+				}
+			});
+		});
+	});
 };
 
 function changeFlag(){
@@ -787,6 +826,7 @@ function reloadStaticGadgets(){
 		displayStaticGadget(widget.widgetConf);
 	}
 }
+
 </script>
 
 <c:import url="/WEB-INF/jsp/admin/tab/_formTab.jsp"/>
@@ -800,5 +840,7 @@ function reloadStaticGadgets(){
 	<c:import url="/WEB-INF/jsp/admin/tab/_layoutTemplates.jsp"/>
 	<div style="clear:both;text-align:center;"><input id='select_layout_cancel' type="button" value="キャンセル"/></div>
 </div>
+	<div id="select_role_dialog">
+	</div>
 	</tiles:putAttribute>
 </tiles:insertDefinition>
