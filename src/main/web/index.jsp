@@ -235,7 +235,7 @@ if( isPreview == null )
 														<img alt="" height="1" width="1">
 													</td>
 													<td bgcolor="#336699" valign="top" width="1"><nobr>
-														<script>adu='';document.write('<a href="https://www.google.com/adsense/support/bin/request.py?contact=abg_afc&url=http://www.crowy.net/&hl=ja&client=ca-pub-0344855665929262');if(adt.length==0)document.write('&adU=+'+'&adT=no+AdLinks+found');for(i=0;i<adt.length;++i)document.write('&adU='+(adu+='+')+'&adT='+adt[i]);document.write('" target=_blank id=abg>Ads by Google</a>');</script><a href="https://www.google.com/adsense/support/bin/request.py?contact=abg_afc&amp;url=http://www.crowy.net/&amp;hl=ja&amp;client=ca-pub-0344855665929262&amp;adU=+&amp;adT=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC&amp;adU=++&amp;adT=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88&amp;adU=+++&amp;adT=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC%E6%A5%AD%E5%8B%99&amp;adU=++++&amp;adT=Gmail+Google+Docs&amp;adU=+++++&amp;adT=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E5%A4%89%E6%8F%9B" target="_blank" id="abg">Ads by Google</a></nobr>
+														<a href="https://www.google.com/adsense/support/bin/request.py?contact=abg_afc&amp;url=http://www.crowy.net/&amp;hl=ja&amp;client=ca-pub-0344855665929262&amp;adU=+&amp;adT=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC&amp;adU=++&amp;adT=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88&amp;adU=+++&amp;adT=%E5%93%81%E8%B3%AA%E4%BF%9D%E8%A8%BC%E6%A5%AD%E5%8B%99&amp;adU=++++&amp;adT=Gmail+Google+Docs&amp;adU=+++++&amp;adT=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E5%A4%89%E6%8F%9B" target="_blank" id="abg">Ads by Google</a></nobr>
 													</td>
 													<td bgcolor="#336699" width="5"><img alt="" height="1" width="1"></td>
 													<td>
