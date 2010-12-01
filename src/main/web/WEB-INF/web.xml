@@ -546,6 +546,11 @@
   	<servlet-name>OAuthCertificateServlet</servlet-name>
   	<servlet-class>org.infoscoop.web.OAuthCertificateServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+  	<servlet-name>AppsGroupServlet</servlet-name>
+  	<servlet-class>org.infoscoop.web.AppsGroupServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>Setup</servlet-name>
@@ -560,6 +565,11 @@
   <servlet-mapping>
   	<servlet-name>OAuthCertificateServlet</servlet-name>
   	<url-pattern>/opensocial/certificates/public.cer</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>AppsGroupServlet</servlet-name>
+    <url-pattern>/appsgroup</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
