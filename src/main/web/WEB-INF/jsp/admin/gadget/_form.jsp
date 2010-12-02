@@ -45,22 +45,8 @@
 				<form:input path="href" /><form:errors path="href" />
 			</p>
 			<p>
-				<label><spring:message code="gadget._form.publish" /></label>
-				<span class="radio">
-					<c:set var="unpublish"><spring:message code="gadget._form.publish.off" /></c:set>
-					<c:set var="publish"><spring:message code="gadget._form.publish.on" /></c:set>
-					<form:radiobutton path="accessLevel" value="0" label="${unpublish}" cssErrorClass="error" />
-					<form:radiobutton path="accessLevel" value="1" label="${publish}" cssErrorClass="error" />
-					<form:radiobutton path="accessLevel" value="2" label="限定公開" cssErrorClass="error" />
-					<form:errors path="accessLevel" />
-					<div id="selected_security_role_panel">
-					<c:import url="/WEB-INF/jsp/admin/gadget/_listRole.jsp"/>
-					<c:if test="${gadget.accessLevel == 2}">
-					</c:if>
-					</div>
-					<div id="select_security_role_panel">
-					</div>
-				</span>
+				<form:label for="accessLevel" path="accessLevel" cssErrorClass="error"><spring:message code="gadget._form.publish" /></form:label>
+				<c:import url="/WEB-INF/jsp/admin/gadget/_listRole.jsp"/>
 			</p>
 			<p>
 				<form:label for="alert" path="alert" cssErrorClass="error"><spring:message code="gadget._form.notify" /></form:label>

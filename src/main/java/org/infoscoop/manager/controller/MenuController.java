@@ -168,7 +168,10 @@ public class MenuController {
 			Locale locale) throws Exception {
 		MenuItem item = menuItemDAO.getByMenuId(menuId);
 		model.addAttribute("gadget", item);
-		model.addAttribute("roles", item.getRoles());
+		Set<Role> roles = item.getRoles();
+		if(roles == null)
+			roles = new HashSet<Role>();
+		model.addAttribute("roles", roles);
 
 		GadgetInstance gadget = item.getGadgetInstance();
 		if (gadget != null) {

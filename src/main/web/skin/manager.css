@@ -324,3 +324,10 @@ body {
 	font-size: 1.3em;
 	padding-left:15px;
 }
+
+.add {
+	background: url(imgs/add.gif ) no-repeat;
+	font-size: 1.3em;
+	padding-left:15px;
+	cursor:pointer;
+}

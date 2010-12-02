@@ -46,13 +46,6 @@
 			column="area_type"
 			type="integer"
 		/>
-		<property
-			name="Published"
-			column="published"
-			type="integer"
-			not-null="true"
-			length="10"
-		/>
 		<!-- TODO must rename this property to fk_role_id -->
 		<property
 			name="AccessLevel"

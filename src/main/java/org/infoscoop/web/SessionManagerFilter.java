@@ -208,7 +208,7 @@ public class SessionManagerFilter implements Filter {
 						loginUser.getPrincipals().add(domainPrincipal);
 					}
 					User user = UserDAO.newInstance().getByEmail(uid, domain.getId());
-					if(user.isAdministrator()){
+					if(user != null && user.isAdministrator()){
 						ISPrincipal adminPrincipal = new ISPrincipal(ISPrincipal.ADMINISTRATOR_PRINCIPAL, "admin");
 						adminPrincipal.setDisplayName("Administrator");
 						loginUser.getPrincipals().add(adminPrincipal);	

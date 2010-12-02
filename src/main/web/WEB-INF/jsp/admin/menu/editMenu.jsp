@@ -242,40 +242,6 @@ $(function () {
 		});
 	});
 
-	$('input[name="accessLevel"]').livequery(function(){
-		$(this).click(function(){
-			if($(this).attr('id') == 'accessLevel3' && $(this).attr('checked')){
-				$.get("../role/selectRole", {}, function(html){
-					$('#select_role_dialog').html(html);
-					$('#select_role_dialog').dialog();
-				});
-			}else{
-				$('#selected_security_role_panel').hide();
-			}
-		});
-	});
-
-	$('#add_role_btn').livequery(function(){
-		$(this).click(function(){
-			$('input[name="select_role_checkbox"]').each(function(){
-				if($(this).attr('checked')){
-					var roleListTbody = $('#role_list_table').children('tbody');
-					var selectedRoleRow = $('#role_id_' + $(this).val());
-					var roleRow = selectedRoleRow.clone(true);
-					roleRow.attr('id', '#selected_role_id_' + $(this).val());
-					roleRow.children('td:first-child').remove();
-					var rowSpan = roleRow.children('td:first-child').attr('rowSpan');
-					roleRow.children('td:first-child').append($('<input type="hidden" name="roles.id" value="' + $(this).val() + '"/>'));
-					roleRow.append($('<td rowSpan="'+ rowSpan + '"><span class="trash"  onclick="deleteRole()" ></td>'))
-					roleListTbody.append(roleRow);
-					for(i = 1; i < rowSpan ; i++){
-						selectedRoleRow = selectedRoleRow.next();
-						roleListTbody.append(selectedRoleRow.clone(true));
-					}
-				}
-			});
-		});
-	});
 });
 </script>
 <div id="menu">

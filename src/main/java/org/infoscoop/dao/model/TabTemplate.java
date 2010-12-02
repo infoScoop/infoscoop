@@ -41,7 +41,6 @@ public class TabTemplate extends BaseTabTemplate {
 		java.lang.String tabId,
 		java.lang.Integer orderIndex,
 		java.lang.String name,
-		java.lang.Integer published,
 		java.lang.Integer temp) {
 
 		super (
@@ -49,7 +48,6 @@ public class TabTemplate extends BaseTabTemplate {
 			tabId,
 			orderIndex,
 			name,
-			published,
 			temp);
 	}
 
@@ -166,7 +164,6 @@ public class TabTemplate extends BaseTabTemplate {
 	public TabTemplate createTemp() throws CloneNotSupportedException{
 		TabTemplate tabClone = new TabTemplate();
 		tabClone.setName(this.getName());
-		tabClone.setPublished(this.getPublished());
 		tabClone.setLayout(this.getLayout());
 		tabClone.setAccessLevel(this.getAccessLevel());
 		tabClone.setTabId(this.getTabId());

@@ -473,8 +473,7 @@ create table IS_TAB_TEMPLATES(
 	layout text,
 	number_of_columns tinyint(4) NOT NULL DEFAULT '3',
 	column_width varchar(255),
-	published int not null default 0, -- 0=unpublished, 1=published
-	access_level int, -- 0=public, 1=special
+	access_level int not null default 0, -- 0=private, 1=public 2=special
 	temp int not null default 1, -- 0=data to show, 1=temporary data
 	updated_at TIMESTAMP,
 	unique (fk_domain_id, tab_id, temp),

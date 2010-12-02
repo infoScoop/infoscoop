@@ -15,19 +15,18 @@ import java.io.Serializable;
 public abstract class BaseTabTemplate  implements Serializable {
 
 	public static String REF = "TabTemplate";
-	public static String PROP_ACCESS_LEVEL = "AccessLevel";
 	public static String PROP_UPDATED_AT = "UpdatedAt";
-	public static String PROP_TAB_ID = "TabId";
-	public static String PROP_PUBLISHED = "Published";
-	public static String PROP_NUMBER_OF_COLUMNS = "NumberOfColumns";
+	public static String PROP_ACCESS_LEVEL = "AccessLevel";
 	public static String PROP_NAME = "Name";
+	public static String PROP_TAB_ID = "TabId";
 	public static String PROP_LAYOUT = "Layout";
 	public static String PROP_ORDER_INDEX = "OrderIndex";
+	public static String PROP_NUMBER_OF_COLUMNS = "NumberOfColumns";
 	public static String PROP_AREA_TYPE = "AreaType";
 	public static String PROP_ID = "Id";
 	public static String PROP_COLUMN_WIDTH = "ColumnWidth";
-	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 	public static String PROP_TEMP = "Temp";
+	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 
 
 	// constructors
@@ -51,14 +50,12 @@ public abstract class BaseTabTemplate  implements Serializable {
 		java.lang.String tabId,
 		java.lang.Integer orderIndex,
 		java.lang.String name,
-		java.lang.Integer published,
 		java.lang.Integer temp) {
 
 		this.setId(id);
 		this.setTabId(tabId);
 		this.setOrderIndex(orderIndex);
 		this.setName(name);
-		this.setPublished(published);
 		this.setTemp(temp);
 		initialize();
 	}
@@ -78,7 +75,6 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private java.lang.Integer orderIndex;
 	private java.lang.String name;
 	private java.lang.Integer areaType;
-	private java.lang.Integer published;
 	private java.lang.Integer accessLevel;
 	private java.lang.String layout;
 	private java.lang.Integer numberOfColumns;
@@ -196,23 +192,6 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 */
 	public void setAreaType (java.lang.Integer areaType) {
 		this.areaType = areaType;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: published
-	 */
-	public java.lang.Integer getPublished () {
-		return published;
-	}
-
-	/**
-	 * Set the value related to the column: published
-	 * @param published the published value
-	 */
-	public void setPublished (java.lang.Integer published) {
-		this.published = published;
 	}
 
 

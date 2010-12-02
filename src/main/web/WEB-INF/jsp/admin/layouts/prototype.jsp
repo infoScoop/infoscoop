@@ -51,11 +51,19 @@
 			background: url(../../skin/imgs/trash.gif ) no-repeat;
 			font-size: 1.3em;
 			padding-left:15px;
+			cursor:pointer;
 		}
 		.edit {
 			background: url(../../skin/imgs/edit.gif ) no-repeat;
 			font-size: 1.3em;
 			padding-left:15px;
+			cursor:pointer;
+		}
+		.add {
+			background: url(../../skin/imgs/add.gif ) no-repeat;
+			font-size: 1.3em;
+			padding-left:15px;
+			cursor:pointer;
 		}
 		</style>
 	</head>
