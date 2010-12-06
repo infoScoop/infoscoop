@@ -27,4 +27,4 @@
 "keyManagerExponent","system",1,"@keyManagerExponent@","hidden","",1,"",""
 "fixedPortalHeader","layout",0,"false","bool","",1,"",""
 "defaultTheme","customize",1,"{background:{image: './skin/imgs/theme/stripe.png'},widget:{ header:{ background:{image: './skin/imgs/theme/widget_header.png'} }, border:{color:'#BCBCBC',radius: '0px'}, shade:{color:'#EEE'}, subheader:{ background:{color:'#EEEEFF'} } } }","string","",0,"",""
-"appsProxyURL","system",1,"http://localhost:8080/infoscoop4g/","string","", 0,"^((?:http)|(?:https)):\/\/","typeValidURL"
+"appsServiceURL","system",1,"http://localhost:8080/infoscoop4g/","string","", 0,"^((?:http)|(?:https)):\/\/","typeValidURL"

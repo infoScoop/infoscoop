@@ -41,7 +41,7 @@ public class UserController {
 		long start = System.currentTimeMillis();
 
 		HttpClient http = new HttpClient();
-		Properties property = PropertiesDAO.newInstance().findProperty("appsProxyURL");
+		Properties property = PropertiesDAO.newInstance().findProperty("appsServiceURL");
 		String url = property.getValue();
 		if (!url.endsWith("/"))
 			url += "/";
@@ -72,7 +72,6 @@ public class UserController {
 			if (suspended == "false"){
 				if (user == null)
 					user = new User();
-				System.out.println(email);
 				user.setEmail(email);
 				user.setName(name);
 				if (admin == "true")
@@ -116,8 +115,8 @@ public class UserController {
 				User user = userDAO.getByEmail(memberId, domainId);
 				if (user != null)
 					group.addToUsers(user);
-				else
-					System.out.println("User " + memberId.split("@")[0] + " is missing.");
+				//else
+				//	System.out.println("User " + memberId.split("@")[0] + " is missing.");
 			}
 			groupDAO.save(group);
 		}
