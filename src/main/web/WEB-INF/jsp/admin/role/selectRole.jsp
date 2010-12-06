@@ -2,13 +2,13 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-	<table id="tab_table" class="tab_table" cellspacing="0" cellpadding="0">
+	<table class="tab_table" cellspacing="0" cellpadding="0" style="width:100%;">
 		<thead>
 			<tr>
-				<th>選択</th>
-				<th>ロール名前</th>
-				<th>タイプ</th>
-				<th>対象範囲</th>
+				<th><spring:message code="role.selectRole.check"/></th>
+				<th><spring:message code="role.selectRole.roleName"/></th>
+				<th><spring:message code="role.selectRole.principalType"/></th>
+				<th><spring:message code="role.selectRole.publishingRange"/></th>
 			</tr>
 		</thead>
 		<tfoot></tfoot>

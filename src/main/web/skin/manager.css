@@ -110,7 +110,7 @@ body {
 	text-align:center;
 }
 #menu_left{
-	width:40%;
+	width:35%;
 	float:left;
 }
 #menu_left a{
@@ -142,7 +142,7 @@ body {
 	padding-bottom:5px;
 }
 #menu_right{
-	width:58%;
+	width:63%;
 	overflow:auto;
 	float:left;
 	padding-left:10px;
@@ -299,7 +299,6 @@ body {
 	border-collapse:collapse;
 	font-size:1.3em;
 	text-align:center;
-	width:400px;
 }
 .tab_table tr td {
 	border:1px solid #CCCCCC;
@@ -314,6 +313,7 @@ body {
 .tab_table tr.filterColumns td {
 	padding:2px;
 }
+
 .trash {
 	background: url(imgs/trash.gif ) no-repeat;
 	font-size: 1.3em;

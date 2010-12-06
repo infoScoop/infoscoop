@@ -31,7 +31,6 @@
 			border-collapse:collapse;
 			font-size:1.3em;
 			text-align:center;
-			width:400px;
 		}
 		.tab_table tr td {
 			border:1px solid #CCCCCC;

@@ -5,15 +5,17 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <script>
 jQuery(function(){
-	jQuery('input[name="accessLevel"]').click(function(){
-	console.log((jQuery(this).attr('value') == 2 && jQuery(this).attr('checked')));
-			if(jQuery(this).attr('value') == 2 && jQuery(this).attr('checked')){
-			console.log(jQuery('#selected_security_role_panel'));
-				jQuery('#selected_security_role_panel').show();
-			}else{
-				jQuery('#selected_security_role_panel').hide();
-			}
-		});
+	function toggleSecurityRolePanel(){
+		if(jQuery(this).attr('value') == 2 && jQuery(this).attr('checked')){
+			jQuery('#selected_security_role_panel').show();
+		}else{
+			jQuery('#selected_security_role_panel').hide();
+		}
+	}
+	jQuery('input[name="accessLevel"]').click(toggleSecurityRolePanel);
+	
+	toggleSecurityRolePanel.apply(jQuery('#accessLevel3')[0]);
+	
 	jQuery('#add_role_btn').livequery(function(){
 		jQuery(this).click(function(){
 			jQuery('input[name="select_role_checkbox"]').each(function(){
@@ -40,7 +42,7 @@ jQuery(function(){
 		jQuery(this).click(function(){
 			jQuery.get("../role/selectRole", {}, function(html){
 				jQuery('#select_role_dialog').html(html);
-				jQuery('#select_role_dialog').dialog();
+				jQuery('#select_role_dialog').dialog({'title':'<spring:message code="gadget._listRole.selectRoleDialogTitle" />', 'width':480,'height':380});
 			});
 			
 		});		
@@ -60,10 +62,10 @@ jQuery(function(){
 	<table id="role_list_table" class="tab_table" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr>
-				<th>ロール名前</th>
-				<th>タイプ</th>
-				<th>対象範囲</th>
-				<th>削除</th>
+				<th><spring:message code="gadget._listRole.roleName" /></th>
+				<th><spring:message code="gadget._listRole.principalType" /></th>
+				<th><spring:message code="gadget._listRole.publishingRange" /></th>
+				<th><spring:message code="gadget._listRole.delete" /></th>
 			</tr>
 		</thead>
 		<tfoot></tfoot>
