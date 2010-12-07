@@ -29,7 +29,10 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.methods.EntityEnclosingMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.Cache;
@@ -190,7 +193,7 @@ public class ProxyFilterContainer {
 
 			Header location = method.getResponseHeader("Location");
 			String redirectUrl = location.getValue();
-
+			
 			// According to 2,068 1.1 rfc http spec, we cannot appoint the relative URL,
 			// but microsoft.com gives back the relative URL.
 			if( redirectUrl.startsWith("/")) {
@@ -199,16 +202,27 @@ public class ProxyFilterContainer {
 
 				redirectUrl = baseURI.toString();
 			}
-
+			
 			//method.setURI(new URI(redirectUrl, false));
 			Header[] headers = method.getRequestHeaders();
-			method = new GetMethod(redirectUrl);
+			if(method instanceof PostMethod){
+				method = new PostMethod(redirectUrl);
+				if(request.getRequestBody() != null){
+					request.getRequestBody().reset();
+					((EntityEnclosingMethod) method).setRequestEntity(new InputStreamRequestEntity(request.getRequestBody()));
+				}
+			}else
+				method = new GetMethod(redirectUrl);
 			for (int j = 0; j < headers.length; j++) {
 				String headerName = headers[j].getName();
 				if (!headerName.equalsIgnoreCase("content-length")
 						&& !headerName.equalsIgnoreCase("authorization"))
 					method.setRequestHeader(headers[j]);
 			}
+			Header cookie = method.getResponseHeader("Set-Cookie");
+			if(cookie != null)
+				method.setRequestHeader(cookie);
+			
 			AuthenticatorUtil.doAuthentication( client,method,request );
 			method.setRequestHeader("authorization", request
 					.getRequestHeader("Authorization"));
