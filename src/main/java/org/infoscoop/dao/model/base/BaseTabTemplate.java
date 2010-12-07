@@ -19,6 +19,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	public static String PROP_ACCESS_LEVEL = "AccessLevel";
 	public static String PROP_NAME = "Name";
 	public static String PROP_TAB_ID = "TabId";
+	public static String PROP_EDITOR = "Editor";
 	public static String PROP_LAYOUT = "Layout";
 	public static String PROP_ORDER_INDEX = "OrderIndex";
 	public static String PROP_NUMBER_OF_COLUMNS = "NumberOfColumns";
@@ -81,6 +82,9 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private java.lang.String columnWidth;
 	private java.lang.Integer temp;
 	private java.util.Date updatedAt;
+
+	// many to one
+	private org.infoscoop.dao.model.User editor;
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.TabTemplatePersonalizeGadget> tabTemplatePersonalizeGadgets;
@@ -294,6 +298,23 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 */
 	public void setUpdatedAt (java.util.Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: fk_editor_id
+	 */
+	public org.infoscoop.dao.model.User getEditor () {
+		return editor;
+	}
+
+	/**
+	 * Set the value related to the column: fk_editor_id
+	 * @param editor the fk_editor_id value
+	 */
+	public void setEditor (org.infoscoop.dao.model.User editor) {
+		this.editor = editor;
 	}
 
 

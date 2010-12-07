@@ -176,6 +176,20 @@ IS_Portal = {
 <script type="text/javascript" class="source">
 IS_SidePanel.adjustPosition = function(){};
 IS_Request.CommandQueue = new IS_Request.Queue("/tab/comsrv", commandQueueWait, !is_userId);
+IS_Request.CommandQueue.unrepeat();
+IS_Request.CommandQueue._fireRequest = IS_Request.CommandQueue.fireRequest;
+IS_Request.CommandQueue.fireRequest = function(){
+	IS_Request.CommandQueue.addCommand({
+		id: "UpdateTabTemplateTimestamp_${tabTemplate.id}",
+		toRequestString: function(){
+			return '<command type="UpdateTabTemplateTimestamp" id="'+this.id+'" tabId="${tabTemplate.id}"/>';
+		},
+		parseResponse: function(){}
+	});
+	IS_Request.CommandQueue._fireRequest();
+};
+IS_Request.CommandQueue.repeat(commandQueueWait);
+
 IS_Portal.addTab = function(idNumber, name, type, layout, numCol, columnsWidth, isInitialize, tabOrder){
 	var panels = $("panels");
 	var panelDiv = IS_Portal.buildPanel( idNumber, type );
@@ -742,7 +756,7 @@ function deleteTempTabTemplate(){
 				"parameters": "id=${tabTemplate.id}",
 				asynchronous: false,
 				onSuccess: function(request) {
-					alert('temp=1のタブを削除しました');
+					//alert('temp=1のタブを削除しました');
 				},
 				onFailure: function(request) {
 					alert('読み込みに失敗しました');

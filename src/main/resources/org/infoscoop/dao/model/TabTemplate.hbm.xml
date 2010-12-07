@@ -80,6 +80,13 @@
 			column="updated_at"
 			type="timestamp"
 		/>
+		<many-to-one
+			name="Editor"
+			column="fk_editor_id"
+			class="User"
+			not-null="false"
+		>
+		</many-to-one>
 
 		<set name="TabTemplatePersonalizeGadgets" cascade="save-update" inverse="true" lazy="false">
 			<key column="fk_tabtemplate_id"/>

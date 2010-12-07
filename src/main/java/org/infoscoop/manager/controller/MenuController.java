@@ -13,12 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xpath.XPathAPI;
-import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.MenuTreeDAO;
 import org.infoscoop.dao.RoleDAO;
+import org.infoscoop.dao.TabTemplatePersonalizeGadgetDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.GadgetInstanceUserpref;
@@ -26,6 +26,7 @@ import org.infoscoop.dao.model.GadgetInstanceUserprefPK;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.dao.model.Role;
+import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.util.XmlUtil;
@@ -52,6 +53,8 @@ public class MenuController {
 	private MenuTreeDAO menuTreeDAO;
 	@Autowired
 	private GadgetInstanceDAO gadgetInstanceDAO;
+	@Autowired
+	private TabTemplatePersonalizeGadgetDAO tabTemplatePersonalizeGadgetDAO;
 
 	@RequestMapping(method=RequestMethod.GET)
 	@Transactional
@@ -98,6 +101,12 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public void deleteMenu(@RequestParam("id") Integer id) throws Exception {
+		MenuTree tree = menuTreeDAO.get(id);
+		//remove all menu items and gadget instances which the specified menu tree contains.
+		for (MenuItem item : tree.getMenuItems()) {
+			removeGadgetInstance(item);
+		}
+		tree.setMenuItems(null);
 		menuTreeDAO.delete(id);
 	}
 
@@ -272,9 +281,23 @@ public class MenuController {
 	@Transactional
 	public void removeItem(@RequestParam("id") String id) throws Exception {
 		MenuItem item = menuItemDAO.getByMenuId(id);
-		if (item.getGadgetInstance() != null)
-			gadgetInstanceDAO.deleteById(item.getGadgetInstance().getId());
+		removeGadgetInstance(item);
 		menuItemDAO.delete(item.getId());
+	}
+	
+	/**
+	 * remove all gadget instances of the specified MenuItem's ancestors
+	 * @param item
+	 */
+	private void removeGadgetInstance(MenuItem item) {
+		if (item.getGadgetInstance() != null) {
+			gadgetInstanceDAO.deleteById(item.getGadgetInstance().getId());
+			tabTemplatePersonalizeGadgetDAO.deleteByGadgetInstanceId(item
+					.getGadgetInstance().getId());
+		}
+		for (MenuItem m : item.getChildItems()) {
+			removeGadgetInstance(m);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

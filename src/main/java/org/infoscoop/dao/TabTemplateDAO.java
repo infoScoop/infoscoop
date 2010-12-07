@@ -48,6 +48,19 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 								Order.asc(TabTemplate.PROP_ORDER_INDEX)));
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<TabTemplate> findByTabId(String tabId) {
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(TabTemplate.class).add(
+						Expression.ne(TabTemplate.PROP_TAB_ID, tabId)).add(
+						Expression
+								.ne(TabTemplate.PROP_TEMP, Integer.valueOf(1)))
+						.add(
+								Expression.eq(TabTemplate.PROP_FK_DOMAIN_ID,
+										DomainManager.getContextDomainId()))
+						.addOrder(Order.desc(TabTemplate.PROP_UPDATED_AT)));
+	}
+
 
 	@SuppressWarnings("unchecked")
 	public TabTemplate get(String id) {

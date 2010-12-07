@@ -62,7 +62,7 @@ public class TabTemplateStaticGadget extends BaseTabTemplateStaticGadget impleme
 		SGClone.setContainerId(this.getContainerId());
 		SGClone.setIgnoreHeader(this.getIgnoreHeader());
 		SGClone.setNoBorder(this.getNoBorder());
-		SGClone.setGadgetInstance(this.getGadgetInstance());
+		SGClone.setGadgetInstance(this.getGadgetInstance().copy());
 		SGClone.setFkTabTemplate(tabCopy);
 		
 		//TabTemplateStaticGadgetDAO.newInstance().save(SGClone);

@@ -24,17 +24,17 @@ import org.infoscoop.command.XMLCommandProcessor;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetInstanceDAO;
-import org.infoscoop.dao.RoleDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
+import org.infoscoop.dao.UserDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
-import org.infoscoop.dao.model.Role;
 import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
+import org.infoscoop.dao.model.User;
 import org.infoscoop.dao.model.Widget;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.GadgetService;
@@ -70,6 +70,8 @@ public class TabController {
 	private TabTemplateStaticGadgetDAO tabTemplateStaticGadgetDAO;
 	@Autowired
 	private GadgetInstanceDAO gadgetInstanceDAO;
+	@Autowired
+	private UserDAO userDAO;
 	
 	@RequestMapping
 	public void index(Model model)throws Exception {
@@ -85,31 +87,39 @@ public class TabController {
 
 	@RequestMapping
 	@Transactional
-	public String newTab(
-			@RequestParam(value="id", required=false) String tabId,
-			Model model)throws Exception {
+	public String newTab(HttpServletRequest request,
+			@RequestParam(value = "id", required = false) String tabId,
+			Model model) throws Exception {
+		String uid = (String) request.getSession().getAttribute("Uid");
 		TabTemplate tab = new TabTemplate();
-			tab.setTabId("t_" + new Date().getTime());
-			tab.setName("New Tab");
-			tab.setOrderIndex(tabTemplateDAO.getMaxOrderIndex() + 1);
-			tab.setTemp(1);
-			tab.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
-			tabTemplateDAO.save(tab);
-			model.addAttribute(tab);
-			return "tab/editTab";
-		
+		tab.setTabId("t_" + new Date().getTime());
+		tab.setName("New Tab");
+		tab.setOrderIndex(tabTemplateDAO.getMaxOrderIndex() + 1);
+		tab.setTemp(1);
+		tab.setAccessLevel(0);
+		Integer domainId = DomainManager.getContextDomainId();
+		User loginUser = userDAO.getByEmail(uid, domainId);
+		tab.setEditor(loginUser);
+		tab
+				.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
+		tabTemplateDAO.save(tab);
+		model.addAttribute(tab);
+		return "tab/editTab";
 	}
 	
 	@RequestMapping
 	@Transactional
-	public void editTab(
-			@RequestParam(value="id", required=false) String id,
-			Model model)throws Exception {
-			TabTemplate tab = tabTemplateDAO.get(id);
-			TabTemplate tabCopy = tab.createTemp();
-			tabTemplateDAO.save(tabCopy);
-			model.addAttribute(tabCopy);
-			model.addAttribute("roles", tabCopy.getRoles());
+	public void editTab(HttpServletRequest request,
+			@RequestParam(value = "id", required = false) String id, Model model)
+			throws Exception {
+		String uid = (String) request.getSession().getAttribute("Uid");
+		TabTemplate tab = tabTemplateDAO.get(id);
+		TabTemplate tabCopy = tab.createTemp();
+		Integer domainId = DomainManager.getContextDomainId();
+		User loginUser = userDAO.getByEmail(uid, domainId);
+		tabCopy.setEditor(loginUser);
+		tabTemplateDAO.save(tabCopy);
+		model.addAttribute(tabCopy);
 	}
 
 	@RequestMapping
@@ -329,7 +339,7 @@ public class TabController {
 			tabTemplateDAO.get(Integer.toString(formTab.getId()));
 		
 		if(tabOriginal != null){
-			Map<String, TabTemplateStaticGadget> newGadgetMap = new HashMap<String, TabTemplateStaticGadget>();
+			/*Map<String, TabTemplateStaticGadget> newGadgetMap = new HashMap<String, TabTemplateStaticGadget>();
 			for(TabTemplateStaticGadget gadget : tab.getTabTemplateStaticGadgets())
 				newGadgetMap.put(gadget.getContainerId(), gadget);
 			
@@ -344,10 +354,13 @@ public class TabController {
 				}
 			}
 			
-			gadgetInstanceDAO.deleteByIds(removeInstanceIds);
+			gadgetInstanceDAO.deleteByIds(removeInstanceIds);*/
 			
-			tabTemplateDAO.delete(tabOriginal);
+			//tabTemplateDAO.delete(tabOriginal);
+			tabOriginal.setTemp(2);//history
+			tabTemplateDAO.save(tabOriginal);
 			//if(tab.isLayoutModified()){
+			WidgetDAO widgetDAO = WidgetDAO.newInstance();
 			if(Boolean.valueOf(layoutModified)){
 				widgetDAO.deleteStaticWidgetByTabId(tab.getTabId());
 			}
@@ -355,16 +368,15 @@ public class TabController {
 		
 		tab.setName(formTab.getName());
 		tab.setLayout(formTab.getLayout());
-		tab.setAccessLevel(formTab.getAccessLevel());
-		tab.setTemp(0);
-		//TODO: edit roles collection, and remove a role in roles collection.
-		if (roleIdList != null) {
-			for (int i = 0; i < roleIdList.length; i++) {
-				Role role = RoleDAO.newInstance().get(roleIdList[i]);
-				tab.addToRoles(role);
-			}
-		}
+		tab.setTemp(0);//current
 		tabTemplateDAO.save(tab);
+		
+		//history max count is 30
+		List<TabTemplate> tabTemplates = tabTemplateDAO.findByTabId(formTab
+				.getTabId());
+		if (tabTemplates.size() > 30) {
+			tabTemplateDAO.delete(tabTemplates.get(0));
+		}
 		
 		model.addAttribute(tab);
 	}
@@ -940,5 +952,40 @@ public class TabController {
 			widget.setIsstatic(new Integer(0));
 			return widget;
 		}
+	}
+
+	public static class UpdateTabTemplateTimestamp extends
+			XMLCommandProcessor {
+
+		private Log log = LogFactory.getLog(this.getClass());
+
+		public UpdateTabTemplateTimestamp() {
+		}
+
+		public void execute() throws Exception {
+
+			String commandId = super.commandXml.getAttribute("id").trim();
+			String tabTemplateId = super.commandXml.getAttribute("tabId")
+					.trim();
+
+			try {
+				TabTemplateDAO tabDAO = TabTemplateDAO.newInstance();
+				TabTemplate tab = tabDAO.get(tabTemplateId);
+				tab.setUpdatedAt(new Date());
+				tabDAO.save(tab);
+			} catch (Exception e) {
+				String reason = "Failed to update tabTemplate timestamp.";
+				log.error(
+						"Failed to execute the command of UpdateTabTemplateTimestampWidget :"
+								+ tabTemplateId, e);
+				this.result = XMLCommandUtil.createResultElement(uid,
+						"processXML", log, commandId, false, reason);
+
+				throw e;
+			}
+			this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+					log, commandId, true, null);
+		}
+
 	}
 }

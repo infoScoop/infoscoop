@@ -96,4 +96,24 @@ public class GadgetInstance extends BaseGadgetInstance {
 		String type = super.getType();
 		return (type.indexOf("upload_") == 0 ? "g_" + type + "/gadget" : type);
 	}
+	
+	public GadgetInstance copy() {
+		GadgetInstance copy = new GadgetInstance();
+		copy.setFkDomainId(this.getFkDomainId());
+		copy.setGadgetInstanceUserPrefs(new HashSet<GadgetInstanceUserpref>());
+		Set<GadgetInstanceUserpref> userPrefs = this.getGadgetInstanceUserPrefs();
+		for (GadgetInstanceUserpref up : userPrefs) {
+			GadgetInstanceUserpref copyUp = new GadgetInstanceUserpref();
+			copyUp.setId(new GadgetInstanceUserprefPK(copy, up.getId()
+					.getName()));
+			copyUp.setLongValue(up.getLongValue());
+			copyUp.setValue(up.getValue());
+			copy.addTogadgetInstanceUserPrefs(copyUp);
+		}
+		copy.setHref(this.getHref());
+		copy.setIcon(this.getIcon());
+		copy.setTitle(this.getTitle());
+		copy.setType(this.getType());
+		return copy;
+	}
 }
