@@ -46,7 +46,7 @@
 			not-null="false"
 		/>
 
-		<set name="Users" table="IS_USER_GROUP" lazy="false" outer-join="true">
+		<set name="Users" table="IS_USER_GROUP" lazy="false">
 			<key column="fk_group_id"/>
 			<many-to-many class="User" column="fk_user_id"/>
 		</set>

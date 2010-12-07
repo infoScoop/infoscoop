@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.GroupDAO;
+import org.infoscoop.dao.model.Group;
 import org.infoscoop.dao.model.User;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,29 +42,35 @@ public class AppsGroupServlet extends HttpServlet {
 	
 	private static Log log = LogFactory.getLog(AppsGroupServlet.class);
 	
-	@SuppressWarnings("unchecked")
 	protected void doGet( HttpServletRequest req, HttpServletResponse resp )
-			throws IOException, ServletException {
-		List<String> groupIds = GroupDAO.newInstance().getGroupIds();
+			throws ServletException, IOException  {
+		doPost(req, resp);
+	}
+
+	protected void doPost( HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		GroupDAO groupDAO = GroupDAO.newInstance();
 		JSONArray results = new JSONArray();
-		for ( String groupId: groupIds){
-			JSONObject group = new JSONObject();
-			JSONArray UserEmails = new JSONArray();
-			String groupName = GroupDAO.newInstance().get(groupId).getName();
-			try {
-				group.put("name", groupName);
-				Set<User> Users = GroupDAO.newInstance().get(groupId).getUsers();
-				for(User user: Users){
-					UserEmails.put(user.getEmail());
+		String groupEmail = req.getParameter("groupEmail");
+		if (groupEmail == null){
+			List<Group> groups = groupDAO.all();
+			for ( Group group: groups ){
+				JSONObject jsonObj = new JSONObject();
+				try {
+					jsonObj.put("name", group.getName());
+					jsonObj.put("email", group.getEmail());
+				} catch (JSONException e) {
+					log.error("",e);
+					resp.sendError(500, e.getMessage());
+					return;
 				}
-				group.put("members", UserEmails);
-			}catch (JSONException ex) {
-				log.error("",ex);
-				resp.sendError(500, ex.getMessage());
-				ex.printStackTrace();
-				return;
+				results.put(jsonObj);
 			}
-			results.put(group);
+		}else{
+			Group group = groupDAO.getByEmail(groupEmail);
+			Set<User> users = group.getUsers();
+			for(User user: users)
+				results.put(user.getEmail());
 		}
 		resp.setContentType("application/json; charset=UTF-8");
 		Writer writer = resp.getWriter();

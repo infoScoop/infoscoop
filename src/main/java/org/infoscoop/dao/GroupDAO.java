@@ -17,9 +17,12 @@ public class GroupDAO extends HibernateDaoSupport {
 
 	@SuppressWarnings("unchecked")
 	public List<Group> all() {
-		return super.getHibernateTemplate().findByCriteria(
+		System.out.println(Group.PROP_FK_DOMAIN_ID);
+		System.out.println(DomainManager.getContextDomainId());
+		List<Group> groups = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Group.class).add(
 						Expression.eq(Group.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
+		return groups;
 	}
 
 	public Group get(String groupId) {
