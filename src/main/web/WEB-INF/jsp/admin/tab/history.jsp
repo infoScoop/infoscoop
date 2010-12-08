@@ -8,35 +8,37 @@
 	<tiles:putAttribute name="body" type="string">
 <script type="text/javascript" class="source">
 $(function(){
-	$('#add_button').button().click(function(){
-		window.open("newTab", "<spring:message code="tab.index.editTab.title" />", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes');
-	});
 	$('a.edit_link').click(function(event){
 		window.open(this.href, "<spring:message code="tab.index.editTab.title" />", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes');
 		event.preventDefault();
 	});
 	$("#tab_table").tablesorter({
-		headers: {0:{sorter:false},1:{sorter:false},2:{sorter:false},3:{sorter:false},4:{sorter:false},5:{sorter:false}}
+		headers: {
+			0:{sorter:false},
+			1:{sorter:false},
+			2:{sorter:false},
+			3:{sorter:false},
+			4:{sorter:false},
+			5:{sorter:false}
+		}
 	});
 });
 </script>
 <div style="height:500px;">
+	<a href="index">戻る</a>
+	<h2>「${currentTab.name}」の履歴一覧</h2>
 	<p>
-		この画面ではユーザに初期表示するタブを管理することができます。<br>
-		ユーザのポータル画面ではこの画面で設定したタブのうちそのユーザで参照可能なタブが表示されます。
+		タブの履歴が最大30リビジョンまで保存されています。あるリビジョンのタブを編集してカレントタブにすることができます。
 	</p>
-	<div>
-		<a href="#" id="add_button" class="button" onclick="">新しいタブを追加</a>
-	</div>
 	<table id="tab_table" class="tablesorter">
 		<thead>
 			<tr>
-				<th><spring:message code="tab.index.title" /></th>
-				<th width="100"><spring:message code="tab.index.accessLevel" /></th>
-				<th><spring:message code="tab.index.roles" /></th>
+				<th>タイトル</th>
+				<th width="130">更新日時</th>
+				<th width="100">公開設定</th>
+				<th>公開範囲</th>
 				<th width="50"><spring:message code="tab.index.edit" /></th>
 				<th width="50"><spring:message code="tab.index.delete" /></th>
-				<th width="50">履歴</th>
 			</tr>
 		</thead>
 		<tfoot></tfoot>
@@ -44,6 +46,7 @@ $(function(){
 <c:forEach var="tab" items="${tabs}">
 			<tr>
 				<td>${tab.name}</td>
+				<td>${tab.updatedAt}</td>
 				<td><spring:message code="tab.index.accessLevel${tab.accessLevel}"/></td>
 				<td>
 					<c:forEach var="role" items="${tab.roles}">
@@ -52,7 +55,6 @@ $(function(){
 				</td>
 				<td><a href="editTab?id=${tab.id}" class="edit_link"><span class="edit"></span></a></td>
 				<td><a href="deleteTab?id=${tab.id}"><span class="trash"></span></a></td>
-				<td><a href="history?id=${tab.tabId}">表示</a></td>
 			</tr>
 </c:forEach>
 		</tbody>

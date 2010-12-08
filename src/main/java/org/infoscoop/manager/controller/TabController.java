@@ -84,6 +84,17 @@ public class TabController {
 		}
 		model.addAttribute("tabs", tabsTemp0);
 	}
+	
+	@RequestMapping
+	public void history(
+			@RequestParam(value = "id", required = false) String tabId,
+			Model model) throws Exception {
+		List<TabTemplate> tabs = tabTemplateDAO.getHisotry(tabId);
+		TabTemplate currentTab = tabTemplateDAO.getByTabId(tabId);
+		tabs.add(0, currentTab);
+		model.addAttribute("tabs", tabs);
+		model.addAttribute("currentTab", currentTab);
+	}
 
 	@RequestMapping
 	@Transactional
@@ -339,27 +350,8 @@ public class TabController {
 			tabTemplateDAO.get(Integer.toString(formTab.getId()));
 		
 		if(tabOriginal != null){
-			/*Map<String, TabTemplateStaticGadget> newGadgetMap = new HashMap<String, TabTemplateStaticGadget>();
-			for(TabTemplateStaticGadget gadget : tab.getTabTemplateStaticGadgets())
-				newGadgetMap.put(gadget.getContainerId(), gadget);
-			
-			List<Integer> removeInstanceIds = new ArrayList<Integer>();
-			WidgetDAO widgetDAO = WidgetDAO.newInstance();
-			for(TabTemplateStaticGadget gadget : tabOriginal.getTabTemplateStaticGadgets()){
-				TabTemplateStaticGadget newGadget = newGadgetMap.get(gadget.getContainerId());
-				//remove gadget instances when gadget instance is not used.
-				if(newGadget == null || !gadget.getGadgetInstance().equals(newGadget.getGadgetInstance())){
-					widgetDAO.deleteStaticWidgetByTabIdAndWidgetId(tab.getTabId(), gadget.getContainerId());
-					removeInstanceIds.add(gadget.getGadgetInstance().getId());
-				}
-			}
-			
-			gadgetInstanceDAO.deleteByIds(removeInstanceIds);*/
-			
-			//tabTemplateDAO.delete(tabOriginal);
 			tabOriginal.setTemp(2);//history
 			tabTemplateDAO.save(tabOriginal);
-			//if(tab.isLayoutModified()){
 			WidgetDAO widgetDAO = WidgetDAO.newInstance();
 			if(Boolean.valueOf(layoutModified)){
 				widgetDAO.deleteStaticWidgetByTabId(tab.getTabId());
