@@ -111,6 +111,7 @@ var ajaxRequestRetryCount=2;
 var freshDays = 1;
 var rssMaxCount = 100;
 var commandQueueWait = 15;
+var gadgetProxyURL = localhostPrefix + "/gadgetsrv";
 
 IS_R['getResource'] = function(s){return s;}
 var gadgets = {'rpc':{'setRelayUrl':function(){},'setAuthToken':function(){}}};
