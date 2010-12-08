@@ -48,7 +48,7 @@ create table IS_WIDGETS (
   `COLUMN` int,
   siblingId varchar(256),
   parentId varchar(256),
-  menuId varchar(256) not null default '',
+  fk_menu_id int unsigned,
   href varchar(1024),
   title varchar(256),
   type varchar(1024),
@@ -58,7 +58,8 @@ create table IS_WIDGETS (
   createDate bigint not null default 0,
   deleteDate bigint not null default 0,
   constraint is_widgets_unique unique (fk_domain_id, `UID`, tabid, widgetId, deleteDate),
-  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade,
+  foreign key (fk_menu_id) references IS_MENU_ITEMS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 create index is_widgets_tabId on IS_WIDGETS(tabId);
