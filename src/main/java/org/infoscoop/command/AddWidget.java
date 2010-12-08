@@ -21,8 +21,10 @@ package org.infoscoop.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
+import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.Widget;
 import org.json.JSONObject;
 
@@ -117,7 +119,10 @@ public class AddWidget extends XMLCommandProcessor{
     	}
     	widget.setSiblingid(sibling);
     	widget.setParentid(parent);
-    	widget.setMenuid(menuid);
+    	
+    	MenuItem menuItem = MenuItemDAO.newInstance().get(Integer.valueOf(menuid));
+		widget.setMenuItem(menuItem);
+		
     	if(confJson.has("title"))
     		widget.setTitle(confJson.getString("title"));
     	if(confJson.has("href"))

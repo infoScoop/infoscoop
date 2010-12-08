@@ -24,7 +24,6 @@ import java.util.Map;
 import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.base.BaseWidget;
-import org.infoscoop.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,10 +52,12 @@ public class Widget extends BaseWidget {
 	 */
 	public Widget (
 		java.lang.String id,
+		org.infoscoop.dao.model.MenuItem menuItem,
 		java.lang.Long createdate) {
 
 		super (
 			id,
+			menuItem,
 			createdate);
 	}
 
@@ -78,7 +79,8 @@ public class Widget extends BaseWidget {
 		json.put("title", super.getTitle());
 		json.put("siblingId", super.getSiblingid());
 		json.put("parentId", super.getParentid());
-		json.put("menuId", super.getMenuid());
+		if(super.getMenuItem()!=null)
+			json.put("menuId", super.getMenuItem().getMenuId());
 		json.put("type", super.getType());
 
 		JSONObject userPrefsJson = new JSONObject();
@@ -190,7 +192,10 @@ public class Widget extends BaseWidget {
 	}
 
 	public String getMenuid() {
-		return StringUtil.getNullSafe( super.getMenuid() );
+		if(super.getMenuItem() != null)
+			return super.getMenuItem().getMenuId();
+		else
+			return null;
 	}
 	
 	@Override
@@ -203,7 +208,11 @@ public class Widget extends BaseWidget {
 	private String iconUrl;
 
 	public String getIconUrl() {
-		return iconUrl;
+		if(this.iconUrl != null)
+			return iconUrl;
+		else if(super.getMenuItem() != null)
+			return super.getMenuItem().getGadgetInstance().getIcon();
+		return null;
 	}
 
 	public void setIconUrl(String iconUrl) {

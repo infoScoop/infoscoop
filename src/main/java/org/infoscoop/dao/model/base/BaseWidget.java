@@ -22,10 +22,10 @@ public abstract class BaseWidget  implements Serializable {
 	public static String PROP_CREATEDATE = "Createdate";
 	public static String PROP_COLUMN = "Column";
 	public static String PROP_TITLE = "Title";
+	public static String PROP_MENU_ITEM = "MenuItem";
 	public static String PROP_DELETEDATE = "Deletedate";
 	public static String PROP_WIDGETID = "Widgetid";
 	public static String PROP_NOBORDER = "Noborder";
-	public static String PROP_MENUID = "Menuid";
 	public static String PROP_SIBLINGID = "Siblingid";
 	public static String PROP_ID = "Id";
 	public static String PROP_HREF = "Href";
@@ -52,9 +52,11 @@ public abstract class BaseWidget  implements Serializable {
 	 */
 	public BaseWidget (
 		java.lang.String id,
+		org.infoscoop.dao.model.MenuItem menuItem,
 		java.lang.Long createdate) {
 
 		this.setId(id);
+		this.setMenuItem(menuItem);
 		this.setCreatedate(createdate);
 		initialize();
 	}
@@ -77,7 +79,6 @@ public abstract class BaseWidget  implements Serializable {
 	private java.lang.String uid;
 	private java.lang.Integer column;
 	private java.lang.String siblingid;
-	private java.lang.String menuid;
 	private java.lang.String parentid;
 	private java.lang.String href;
 	private java.lang.String title;
@@ -85,6 +86,9 @@ public abstract class BaseWidget  implements Serializable {
 	private java.lang.Integer isstatic;
 	private java.lang.Integer ignoreheader;
 	private java.lang.Integer noborder;
+
+	// many to one
+	private org.infoscoop.dao.model.MenuItem menuItem;
 
 
 
@@ -247,23 +251,6 @@ public abstract class BaseWidget  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: MENUID
-	 */
-	public java.lang.String getMenuid () {
-		return menuid;
-	}
-
-	/**
-	 * Set the value related to the column: MENUID
-	 * @param menuid the MENUID value
-	 */
-	public void setMenuid (java.lang.String menuid) {
-		this.menuid = menuid;
-	}
-
-
-
-	/**
 	 * Return the value associated with the column: PARENTID
 	 */
 	public java.lang.String getParentid () {
@@ -378,6 +365,23 @@ public abstract class BaseWidget  implements Serializable {
 	 */
 	public void setNoborder (java.lang.Integer noborder) {
 		this.noborder = noborder;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: fk_menu_id
+	 */
+	public org.infoscoop.dao.model.MenuItem getMenuItem () {
+		return menuItem;
+	}
+
+	/**
+	 * Set the value related to the column: fk_menu_id
+	 * @param menuItem the fk_menu_id value
+	 */
+	public void setMenuItem (org.infoscoop.dao.model.MenuItem menuItem) {
+		this.menuItem = menuItem;
 	}
 
 

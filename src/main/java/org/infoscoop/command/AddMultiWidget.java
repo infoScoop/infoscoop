@@ -22,7 +22,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.DomainManager;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.TabDAO;
+import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.Widget;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -153,7 +155,10 @@ public class AddMultiWidget extends XMLCommandProcessor{
 		}
 		widget.setSiblingid(sibling);
 		widget.setParentid(parentId);
-		widget.setMenuid(menuId);
+		
+		MenuItem menuItem = MenuItemDAO.newInstance().getByMenuId(menuId);
+		widget.setMenuItem(menuItem);
+		
 		if(confJson.has("title"))
 			widget.setTitle(confJson.getString("title"));
 		if(confJson.has("href"))

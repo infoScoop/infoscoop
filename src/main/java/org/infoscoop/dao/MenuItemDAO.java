@@ -20,6 +20,7 @@ package org.infoscoop.dao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,7 +51,7 @@ public class MenuItemDAO extends HibernateDaoSupport {
 			return items.get(0);
 		return null;
 	}
-
+	
 	public MenuItem get(Integer id) {
 		return super.getHibernateTemplate().get(MenuItem.class, id);
 	}
