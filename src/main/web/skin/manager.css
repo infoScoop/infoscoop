@@ -233,12 +233,17 @@ body {
 	padding-left: 0;
 	color: #333;
 }
-.cssform p{
+.cssform ul{
+	padding:0;
+	list-style-type:none;	
+}
+.cssform li{
 	clear: left;
+	display:block;
 	margin: 0;
-	padding: 5px 0 8px 0;
+	padding: 5px 0;
 	padding-left: 155px; /*width of left column containing the label elements*/
-	height: 1%;
+	/*height: 1%;*/
 }
 
 .cssform label{

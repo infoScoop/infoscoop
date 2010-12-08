@@ -22,42 +22,46 @@
 		<c:if test="${conf != null }">
 		<fieldset>
 			<legend><spring:message code="gadget._form.type" /></legend>
-			<p>
-				<c:if test="${conf != null}">
-				<x:choose>
-					<x:when select="$conf/widgetConfiguration/@title"><x:out select="$conf/widgetConfiguration/@title" /></x:when>
-					<x:when select="$conf/Module/ModulePrefs/@directory_title"><x:out select="$conf/Module/ModulePrefs/@directory_title" /></x:when>
-					<x:when select="$conf/Module/ModulePrefs/@title"><x:out select="$conf/Module/ModulePrefs/@title" /></x:when>
-					<x:otherwise>${gadget.type}</x:otherwise>
-				</x:choose>
-				</c:if>
-			</p>
+			<ul>
+				<li>
+					<c:if test="${conf != null}">
+					<x:choose>
+						<x:when select="$conf/widgetConfiguration/@title"><x:out select="$conf/widgetConfiguration/@title" /></x:when>
+						<x:when select="$conf/Module/ModulePrefs/@directory_title"><x:out select="$conf/Module/ModulePrefs/@directory_title" /></x:when>
+						<x:when select="$conf/Module/ModulePrefs/@title"><x:out select="$conf/Module/ModulePrefs/@title" /></x:when>
+						<x:otherwise>${gadget.type}</x:otherwise>
+					</x:choose>
+					</c:if>
+				</li>
+			</ul>
 		</fieldset>
 		</c:if>
 		<fieldset>
 			<legend><spring:message code="gadget._form.common" /></legend>
-			<p>
-				<form:label for="title" path="title" cssErrorClass="error"><spring:message code="gadget._form.title" /></form:label>
-				<form:input path="title" /><form:errors path="title" />
-			</p>
-			<p>
-				<form:label for="href" path="href" cssErrorClass="error"><spring:message code="gadget._form.link" /></form:label>
-				<form:input path="href" /><form:errors path="href" />
-			</p>
-			<p>
-				<form:label for="accessLevel" path="accessLevel" cssErrorClass="error"><spring:message code="gadget._form.publish" /></form:label>
-				<c:import url="/WEB-INF/jsp/admin/gadget/_listRole.jsp"/>
-			</p>
-			<p>
-				<form:label for="alert" path="alert" cssErrorClass="error"><spring:message code="gadget._form.notify" /></form:label>
-				<c:set var="notifyOff"><spring:message code="gadget._form.notify.off" /></c:set>
-				<c:set var="notifyOn"><spring:message code="gadget._form.notify.on" /></c:set>
-				<form:select path="alert">
-					<form:option value="0" label="${notifyOff}"/>
-					<form:option value="1" label="${notifyOn}" selected="true"/>
-				</form:select>
-				<form:errors path="alert" />
-			</p>
+			<ul>
+				<li>
+					<form:label for="title" path="title" cssErrorClass="error"><spring:message code="gadget._form.title" /></form:label>
+					<form:input path="title" /><form:errors path="title" />
+				</li>
+				<li>
+					<form:label for="href" path="href" cssErrorClass="error"><spring:message code="gadget._form.link" /></form:label>
+					<form:input path="href" /><form:errors path="href" />
+				</li>
+				<li>
+					<form:label for="accessLevel" path="accessLevel" cssErrorClass="error"><spring:message code="gadget._form.publish" /></form:label>
+					<c:import url="/WEB-INF/jsp/admin/gadget/_listRole.jsp"/>
+				</li>
+				<li>
+					<form:label for="alert" path="alert" cssErrorClass="error"><spring:message code="gadget._form.notify" /></form:label>
+					<c:set var="notifyOff"><spring:message code="gadget._form.notify.off" /></c:set>
+					<c:set var="notifyOn"><spring:message code="gadget._form.notify.on" /></c:set>
+					<form:select path="alert">
+						<form:option value="0" label="${notifyOff}"/>
+						<form:option value="1" label="${notifyOn}" selected="true"/>
+					</form:select>
+					<form:errors path="alert" />
+				</li>
+			</ul>
 		</fieldset>
 	</c:if>
 	<c:if test="${type == 'tab'}">
@@ -67,42 +71,49 @@
 		<form:hidden path="instanceId"/>
 		<fieldset>
 			<legend>タイプ</legend>
-			<p>
-				<x:choose>
-					<x:when select="$conf/widgetConfiguration/@title"><x:out select="$conf/widgetConfiguration/@title" /></x:when>
-					<x:when select="$conf/Module/ModulePrefs/@directory_title"><x:out select="$conf/Module/ModulePrefs/@directory_title" /></x:when>
-					<x:when select="$conf/Module/ModulePrefs/@title"><x:out select="$conf/Module/ModulePrefs/@title" /></x:when>
-					<x:otherwise>${gadget.gadgetInstance.type}</x:otherwise>
-				</x:choose>
-			</p>
+			<ul>
+				<li>
+					<x:choose>
+						<x:when select="$conf/widgetConfiguration/@title"><x:out select="$conf/widgetConfiguration/@title" /></x:when>
+						<x:when select="$conf/Module/ModulePrefs/@directory_title"><x:out select="$conf/Module/ModulePrefs/@directory_title" /></x:when>
+						<x:when select="$conf/Module/ModulePrefs/@title"><x:out select="$conf/Module/ModulePrefs/@title" /></x:when>
+						<x:otherwise>${gadget.gadgetInstance.type}</x:otherwise>
+					</x:choose>
+				</li>
+			</ul>
 			<a id="change_type"/>Change Type</a>
 		</fieldset>
 		<fieldset>
 			<legend>共通設定</legend>
-			<p>
-				<form:label for="gadgetInstance.title" path="gadgetInstance.title" cssErrorClass="error">タイトル</form:label>
-				<form:input path="gadgetInstance.title" /><form:errors path="gadgetInstance.title" />
-			</p>
-			<p>
-				<form:label for="gadgetInstance.href" path="gadgetInstance.href" cssErrorClass="error">リンク</form:label>
-				<form:input path="gadgetInstance.href" /><form:errors path="gadgetInstance.href" />
-			</p>
+			<ul>
+				<li>
+					<form:label for="gadgetInstance.title" path="gadgetInstance.title" cssErrorClass="error">タイトル</form:label>
+					<form:input path="gadgetInstance.title" /><form:errors path="gadgetInstance.title" />
+				</li>
+				<li>
+					<form:label for="gadgetInstance.href" path="gadgetInstance.href" cssErrorClass="error">リンク</form:label>
+					<form:input path="gadgetInstance.href" /><form:errors path="gadgetInstance.href" />
+				</li>
+			</ul>
 		</fieldset>
 		<fieldset>
 			<legend>固定エリア設定</legend>
-			<p>
-				<form:label for="ignoreHeaderBool" path="ignoreHeaderBool" cssErrorClass="error">ヘッダを表示しない</form:label>
-				<form:checkbox path="ignoreHeaderBool" /><form:errors path="ignoreHeaderBool" />
-			</p>
-			<p>
-				<form:label for="noBorderBool" path="noBorderBool" cssErrorClass="error">枠を表示しない</form:label>
-				<form:checkbox path="noBorderBool" /><form:errors path="noBorderBool" />
-			</p>
+			<ul>
+				<li>
+					<form:label for="ignoreHeaderBool" path="ignoreHeaderBool" cssErrorClass="error">ヘッダを表示しない</form:label>
+					<form:checkbox path="ignoreHeaderBool" /><form:errors path="ignoreHeaderBool" />
+				</li>
+				<li>
+					<form:label for="noBorderBool" path="noBorderBool" cssErrorClass="error">枠を表示しない</form:label>
+					<form:checkbox path="noBorderBool" /><form:errors path="noBorderBool" />
+				</li>
+			</ul>
 		</fieldset>
 	</c:if>
 	<c:if test="${conf != null}">
 	<fieldset id="gadget_settings">
 		<legend><spring:message code="gadget._form.gadget" /></legend>
+		<ul>
 		<c:if test="${conf != null}">
 		<x:forEach var="userPref" select="$conf//UserPref">
 			<x:if select="$userPref/@admin_datatype or not($userPref/@datatype) or $userPref/@datatype!='hidden'">
@@ -114,7 +125,7 @@
 						<c:set var="datatype"><x:out select="$userPref/@datatype"/></c:set>
 					</x:otherwise>
 				</x:choose>
-				<p class="${datatype}">
+				<li class="${datatype}">
 					<label><x:out select="$userPref/@display_name"/></label>
 					<c:set var="name"><x:out select="$userPref/@name"/></c:set>
 					<x:choose>
@@ -138,16 +149,17 @@
 							<input type="${datatype}" name="gadgetInstance.userPrefs[${name}]" value="${gadget.gadgetInstance.userPrefs[name]}" class="${datatype}"/>
 						</x:otherwise>
 					</x:choose>
-				</p>
+				</li>
 			</x:if>
 		</x:forEach>
 		</c:if>
+		</ul>
 	</fieldset>
 	</c:if>
-	<p>
+	<li>
 		<input type="submit" value="<spring:message code="gadget._form.button.create" />" class="button"/>
 		<input type="reset" value="<spring:message code="gadget._form.button.reset" />" class="button" />
-	</p>
+	</li>
 </form:form>
 <script type="text/javascript">
 <c:if test="${gadget.gadgetInstance != null}">
