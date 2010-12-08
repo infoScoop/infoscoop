@@ -477,7 +477,10 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			
 			divMenuItemIcon.className = "menuItemIcon";
 			itemTd.style.cursor = "move";
-			IS_Widget.setIcon(divMenuItemIcon, menuItem.type, {multi:menuItem.multi});
+			if(menuItem.iconUrl)
+				divMenuItemIcon.style.backgroundImage = "url(" + menuItem.iconUrl + ")";
+			else
+				IS_Widget.setIcon(divMenuItemIcon, menuItem.type, {multi:menuItem.multi});
 			
 			if(IS_Portal.isChecked(menuItem) && !/true/.test(menuItem.multi)){
 				divMenuItemIcon.handler.destroy();

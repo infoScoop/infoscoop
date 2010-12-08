@@ -24,6 +24,7 @@ import org.infoscoop.command.XMLCommandProcessor;
 import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetInstanceDAO;
+import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
@@ -31,6 +32,7 @@ import org.infoscoop.dao.UserDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
+import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
@@ -927,7 +929,10 @@ public class TabController {
 			}
 			widget.setSiblingid(sibling);
 			widget.setParentid(parentId);
-			widget.setMenuid(menuId);
+			
+			MenuItem menuItem = MenuItemDAO.newInstance().get(Integer.valueOf(menuId));
+			widget.setMenuItem(menuItem);
+			
 			if(confJson.has("title"))
 				widget.setTitle(confJson.getString("title"));
 			if(confJson.has("href"))

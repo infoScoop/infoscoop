@@ -48,6 +48,10 @@
 					<form:input path="href" /><form:errors path="href" />
 				</li>
 				<li>
+					<form:label for="gadgetInstance.icon" path="gadgetInstance.icon" cssErrorClass="error">アイコン画像URL</form:label>
+					<form:input path="gadgetInstance.icon" /><form:errors path="gadgetInstance.icon" />
+				</li>
+				<li>
 					<form:label for="accessLevel" path="accessLevel" cssErrorClass="error"><spring:message code="gadget._form.publish" /></form:label>
 					<c:import url="/WEB-INF/jsp/admin/gadget/_listRole.jsp"/>
 				</li>

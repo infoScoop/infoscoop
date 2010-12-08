@@ -100,6 +100,8 @@ public class SiteAggregationMenuService {
 		boolean isRemoteGadget = false;
 		if (gadgetInstance != null) {
 			buf.append(" ginstid=\"" + gadgetInstance.getId() + "\"");
+			if(gadgetInstance.getIcon() != null)
+				buf.append(" iconUrl=\"" + gadgetInstance.getIcon() +"\"");
 			String type = gadgetInstance.getType();
 			if (type.indexOf("http") == 0) {
 				buf.append(" type=\"Gadget\"");

@@ -73,13 +73,6 @@
 			length="256"
 		/>
 		<property
-			name="Menuid"
-			column="MENUID"
-			type="string"
-			not-null="false"
-			length="256"
-		/>
-		<property
 			name="Parentid"
 			column="PARENTID"
 			type="string"
@@ -129,190 +122,14 @@
 			not-null="false"
 			length="10"
 		/>
-
+		
+		<many-to-one
+			name="MenuItem"
+			column="fk_menu_id"
+			class="MenuItem"
+			not-null="true"
+		>
+		</many-to-one>
 
 	</class>
-	<query name="menuWidgetRanking">
-		<![CDATA[
-SELECT
-        Menuid
-        ,'' AS Type
-        ,'' AS Url
-        ,COUNT(*) AS Count
-        ,0L AS Lastcount
-    FROM
-        Widget
-    WHERE
-        Isstatic = 0
-        AND Deletedate = 0
-        AND ( Menuid != '' OR Menuid IS NOT NULL )
-        AND NOT Type IN (
-            'MultiRssReader'
-        )
-    GROUP BY
-        Menuid
-    ORDER BY
-        COUNT(*) DESC
-		]]>
-	</query>
-	<query name="menuWidgetRankingLast">
-		<![CDATA[
-SELECT
-        Menuid
-        ,'' AS TYPE
-        ,'' AS Url
-        ,(
-            SELECT
-                    COUNT(*)
-                FROM
-                    Widget
-                WHERE
-                    Isstatic = 0
-                    AND Deletedate = 0
-                    AND Menuid = w.Menuid
-        ) AS COUNT
-        ,COUNT(*) AS Lastcount
-    FROM
-        Widget AS w
-    WHERE
-        Isstatic = 0
-        AND Deletedate = 0
-        AND ( Menuid != '' OR Menuid IS NOT NULL )
-        AND CreateDate > :CREATEDATE
-        AND NOT TYPE IN ('MultiRssReader')
-    GROUP BY
-        Menuid
-    ORDER BY
-        COUNT(*) DESC
-		]]>
-	</query>
-	<query name="widgetRanking">
-		<![CDATA[
-SELECT
-        '' AS Menuid
-        ,Type
-        ,'' AS Url
-        ,COUNT(*) AS Count
-        ,0L AS Lastcount
-    FROM
-        Widget
-    WHERE
-        Isstatic = 0
-        AND Deletedate = 0
-        AND ( Menuid = '' OR Menuid IS NULL )
-        AND NOT Type IN (
-            'RssReader'
-            ,'MultiRssReader'
-            ,'MiniBrowser'
-            ,'FragmentMiniBrowser'
-        )
-    GROUP BY
-        Type
-    ORDER BY
-        COUNT(*) DESC
-		]]>
-	</query>
-	<query name="widgetRankingLast">
-		<![CDATA[
-SELECT
-        '' AS Menuid
-        ,Type
-        ,'' AS Url
-        ,(
-            SELECT
-                    COUNT(*)
-                FROM
-                    Widget
-                WHERE
-                    Isstatic = 0
-                    AND Deletedate = 0
-                    AND Type = w.Type
-        ) AS Count
-        ,COUNT(*) AS Lastcount
-    FROM
-        Widget as w
-    WHERE
-        Isstatic = 0
-        AND Deletedate = 0
-        AND ( Menuid = '' OR Menuid IS NULL )
-        AND Createdate > :CREATEDATE
-        AND NOT Type IN (
-            'RssReader'
-            ,'MultiRssReader'
-            ,'MiniBrowser'
-            ,'FragmentMiniBrowser'
-        )
-    GROUP BY
-        Type
-    ORDER BY
-        COUNT(*) DESC
-		]]>
-	</query>
-	<query name="urlRanking">
-		<![CDATA[
-SELECT
-        '' AS Menuid
-        ,w.Type
-        ,u.shortValue AS Url
-        ,COUNT(*) AS Count
-        ,0L AS Lastcount
-    FROM
-        Widget as w,UserPref as u
-    WHERE
-        w.Type IN (
-            'RssReader'
-            ,'MiniBrowser'
-        )
-        AND Isstatic = 0
-        AND Deletedate = 0
-        AND ( Menuid = '' OR Menuid IS NULL )
-        AND Name = 'url'
-        AND w.Id = u.Id.WidgetId
-    GROUP BY
-        u.shortValue
-        ,w.Type
-    ORDER BY
-        COUNT(*) DESC
-		]]>
-	</query>
-	<query name="urlRankingLast">
-		<![CDATA[
-SELECT
-        '' AS Menuid
-        ,w.Type
-        ,u.shortValue AS Url
-        ,(
-            SELECT
-                    COUNT(*)
-                FROM
-                    Widget AS w2,UserPref AS u2
-                WHERE
-                    w2.Isstatic = 0
-                    AND w2.Deletedate = 0
-                    AND w2.Type = w.Type
-                    AND u2.shortValue = u.shortValue
-       				AND w2.Id = u2.Id.WidgetId
-        ) AS Count
-        ,COUNT(*) AS Lastcount
-    FROM
-        Widget AS w,UserPref AS u
-    WHERE
-        w.Type IN (
-            'RssReader'
-            ,'MiniBrowser'
-        )
-        AND Isstatic = 0
-        AND Deletedate = 0
-        AND ( Menuid = '' OR Menuid IS NULL )
-        AND Createdate > :CREATEDATE
-        AND Name = 'url'
-        AND w.Id = u.Id.WidgetId
-    GROUP BY
-        u.shortValue
-        ,w.Type
-    ORDER BY
-        COUNT(*) DESC
-
-		]]>
-	</query>
 </hibernate-mapping>
