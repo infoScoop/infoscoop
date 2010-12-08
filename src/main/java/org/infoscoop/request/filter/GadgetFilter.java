@@ -24,8 +24,8 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import javax.servlet.ServletException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -33,7 +33,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
@@ -43,7 +42,6 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.infoscoop.request.ProxyRequest;
-import org.infoscoop.service.GadgetService;
 import org.infoscoop.util.NoOpEntityResolver;
 import org.infoscoop.util.XmlUtil;
 import org.infoscoop.widgetconf.I18NConverter;
@@ -87,7 +85,7 @@ public class GadgetFilter extends ProxyFilter {
 		
 		VelocityContext context = new VelocityContext();
 		context.put("baseUrl",baseUrl );
-		context.put("content",replaceContentStr( doc,i18n,urlParameters ) );
+		context.put("content",replaceGadgetLocationUrl(baseUrl,replaceContentStr( doc,i18n,urlParameters )));
 		
 		context.put("widgetId",urlParameters.get( PARAM_MODULE_ID));
 		context.put("staticContentURL",urlParameters.get( PARAM_STATIC_CONTENT_URL ));
@@ -147,6 +145,15 @@ public class GadgetFilter extends ProxyFilter {
 		return contentStr;
 	}
 	
+	private static String replaceGadgetLocationUrl(String baseUrl, String content){
+
+		Pattern pattern = Pattern.compile( "__IS_GADGET_LOCATION_URL__" );
+		Matcher matcher = pattern.matcher(content);
+		String gadgetLocationUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/'));
+		if(matcher.find())
+			content = matcher.replaceAll(gadgetLocationUrl);
+		return content;
+	}
 	private static JSONObject getRequires( XPath xpath,Document doc ) throws XPathExpressionException,JSONException {
 		JSONObject requires = new JSONObject();
 		requires.put("core",new JSONObject());

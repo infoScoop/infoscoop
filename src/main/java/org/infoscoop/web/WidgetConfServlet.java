@@ -153,12 +153,16 @@ public class WidgetConfServlet extends HttpServlet {
 		for(ISPrincipal p :loginUser.getPrincipals(ISPrincipal.class))
 			if(ISPrincipal.DOMAIN_PRINCIPAL == p.getType())
 				domainName = p.getDisplayName();
+		Pattern patternDomeinName = Pattern.compile( "__IS_DOMAIN_NAME__" );
+		Matcher matcherDomainName = patternDomeinName.matcher(json);
+		if(matcherDomainName.find())
+			json = matcherDomainName.replaceAll(domainName);
 		
-		Pattern pattern = Pattern.compile( "__IS_DOMAIN_NAME__" );
+		Pattern pattern = Pattern.compile( "__IS_GADGET_LOCATION_URL__" );
 		Matcher matcher = pattern.matcher(json);
+		String gadgetLocationUrl = type.substring(0, type.lastIndexOf('/'));
 		if(matcher.find())
-			json = matcher.replaceAll(domainName);
-		
+			json = matcher.replaceAll(gadgetLocationUrl);
 		return I18NUtil.resolve(I18NUtil.TYPE_WIDGET, json,
 				locale, true);
 	}
