@@ -6,7 +6,7 @@
 <script>
 jQuery(function(){
 	function toggleSecurityRolePanel(){
-		if(jQuery(this).attr('value') == 2 && jQuery(this).attr('checked')){
+		if(jQuery(this).attr('value') == 1 && jQuery(this).attr('checked')){
 			jQuery('#selected_security_role_panel').show();
 		}else{
 			jQuery('#selected_security_role_panel').hide();
@@ -14,7 +14,7 @@ jQuery(function(){
 	}
 	jQuery('input[name="accessLevel"]').click(toggleSecurityRolePanel);
 	
-	toggleSecurityRolePanel.apply(jQuery('#accessLevel3')[0]);
+	toggleSecurityRolePanel.apply(jQuery('#accessLevel2')[0]);
 	
 	jQuery('#add_role_btn').livequery(function(){
 		jQuery(this).click(function(){
@@ -52,14 +52,12 @@ jQuery(function(){
 <span id="access_level_radio" class="radio" style="display:inline-block;">
 	<c:set var="unpublish"><spring:message code="gadget._listRole.accessLevel0" /></c:set>
 	<c:set var="publish"><spring:message code="gadget._listRole.accessLevel1" /></c:set>
-	<c:set var="special"><spring:message code="gadget._listRole.accessLevel2" /></c:set>
 	<div>
-		<form:radiobutton path="accessLevel" value="0" label="${unpublish}" cssErrorClass="error" />
-		<form:radiobutton path="accessLevel" value="1" label="${publish}" cssErrorClass="error" />
-		<form:radiobutton path="accessLevel" value="2" label="${special}" cssErrorClass="error" />
+		<form:radiobutton path="accessLevel" value="0" label="全体に公開" cssErrorClass="error" />
+		<form:radiobutton path="accessLevel" value="1" label="公開範囲を指定" cssErrorClass="error" />
 		<form:errors path="accessLevel" />
 	</div>
-	<div id="selected_security_role_panel" style="display:${ ( tabTemplate.accessLevel== 2 ? "":"none" )};">
+	<div id="selected_security_role_panel" style="display:${ ( accessLevel== 1 ? "":"none" )};">
 		<div id="add_role_button" class="add">追加</div>
 		<table id="role_list_table" class="tab_table" cellspacing="0" cellpadding="0">
 			<thead>

@@ -15,7 +15,7 @@ import java.io.Serializable;
 public abstract class BaseMenuItem  implements Serializable {
 
 	public static String REF = "MenuItem";
-	public static String PROP_ACCESS_LEVEL = "AccessLevel";
+	public static String PROP_PUBLISH = "Publish";
 	public static String PROP_ALERT = "Alert";
 	public static String PROP_GADGET_INSTANCE = "GadgetInstance";
 	public static String PROP_FK_MENU_TREE = "FkMenuTree";
@@ -37,8 +37,8 @@ public abstract class BaseMenuItem  implements Serializable {
 	 * Constructor for primary key
 	 */
 	public BaseMenuItem (java.lang.Integer id) {
-		this.setId(id);
 		initialize();
+		this.setId(id);
 	}
 
 	/**
@@ -50,20 +50,22 @@ public abstract class BaseMenuItem  implements Serializable {
 		java.lang.String menuId,
 		java.lang.String title,
 		java.lang.Integer menuOrder,
-		java.lang.Integer accessLevel,
+		java.lang.Integer publish,
 		java.lang.Integer alert) {
+		initialize();
 
 		this.setId(id);
 		this.setFkMenuTree(fkMenuTree);
 		this.setMenuId(menuId);
 		this.setTitle(title);
 		this.setMenuOrder(menuOrder);
-		this.setAccessLevel(accessLevel);
+		this.setPublish(publish);
 		this.setAlert(alert);
-		initialize();
 	}
 
-	protected void initialize () {}
+	protected void initialize () {
+		this.publish = 0;
+	}
 
 
 
@@ -78,7 +80,7 @@ public abstract class BaseMenuItem  implements Serializable {
 	private java.lang.String title;
 	private java.lang.Integer menuOrder;
 	private java.lang.String href;
-	private java.lang.Integer accessLevel;
+	private java.lang.Integer publish;
 	private java.lang.Integer alert;
 
 	// many to one
@@ -200,18 +202,18 @@ public abstract class BaseMenuItem  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: access_level
+	 * Return the value associated with the column: publish
 	 */
-	public java.lang.Integer getAccessLevel () {
-		return accessLevel;
+	public java.lang.Integer getPublish () {
+		return publish;
 	}
 
 	/**
-	 * Set the value related to the column: access_level
-	 * @param accessLevel the access_level value
+	 * Set the value related to the column: publish
+	 * @param publish the publish value
 	 */
-	public void setAccessLevel (java.lang.Integer accessLevel) {
-		this.accessLevel = accessLevel;
+	public void setPublish (java.lang.Integer publish) {
+		this.publish = publish;
 	}
 
 

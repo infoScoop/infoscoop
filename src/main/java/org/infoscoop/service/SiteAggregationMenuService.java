@@ -63,10 +63,10 @@ public class SiteAggregationMenuService {
 	}
 	
 	private static void buildAuthorizedMenuXml(MenuItem menuItem, StringBuffer buf, boolean noAuth ) throws ClassNotFoundException{
-		if(menuItem.isPrivateBool())
+		if(!menuItem.isPublishBool())
 			return;
 		//TODO: make following block to function.
-		if(menuItem.isSpecialAccess()){
+		if(!menuItem.getRoles().isEmpty()){
 			boolean canDisplay = false;
 			Set<Role> roles = menuItem.getRoles();
 			for(Role role: roles){

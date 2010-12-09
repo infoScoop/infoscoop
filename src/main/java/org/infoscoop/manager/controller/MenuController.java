@@ -26,7 +26,6 @@ import org.infoscoop.dao.model.GadgetInstanceUserprefPK;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.dao.model.Role;
-import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.util.XmlUtil;
@@ -153,7 +152,6 @@ public class MenuController {
 		item.setFkMenuTree(menu);
 		item.setFkParent(parentItem);
 		item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
-		item.setAccessLevel(0);
 		if (type != null && type.length() > 0) {
 			GadgetInstance gadget = new GadgetInstance();
 			item.setGadgetInstance(gadget);
@@ -259,7 +257,6 @@ public class MenuController {
 		item.setTitle(gadgetInstance.getTitle());
 		item.setHref(gadgetInstance.getHref());
 		item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
-		item.setAccessLevel(0);
 
 		model.addAttribute(item);
 		model.addAttribute("conf", getGadgetConf(gadgetInstance.getType(),
@@ -362,7 +359,7 @@ public class MenuController {
 		newItem.setHref(item.getHref());
 		newItem.setAlert(item.getAlert());
 		newItem.setMenuOrder(item.getMenuOrder());
-		newItem.setAccessLevel(item.getAccessLevel());
+		newItem.setPublish(item.getPublish());
 
 		GadgetInstance gadget = item.getGadgetInstance();
 		GadgetInstance newGadget = new GadgetInstance();
