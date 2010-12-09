@@ -127,7 +127,6 @@
 			name="MenuItem"
 			column="fk_menu_id"
 			class="MenuItem"
-			not-null="true"
 		>
 		</many-to-one>
 

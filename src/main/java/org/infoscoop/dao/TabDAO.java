@@ -113,7 +113,8 @@ public class TabDAO extends HibernateDaoSupport{
 		Set widgetIdSet = new HashSet();
 		Set<Integer> menuIds = new HashSet();
 		for( Widget widget:widgetList){
-			widget.getMenuItem().getGadgetInstance();
+			if (widget.getMenuItem() != null)
+				widget.getMenuItem().getGadgetInstance();
 			widgetIdSet.add( widget.getWidgetid());
 		}
 		
