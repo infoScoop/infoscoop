@@ -49,15 +49,15 @@
 				</li>
 				<c:if test="${conf != null}">
 				<li>
-					<form:label for="gadgetInstance.icon" path="gadgetInstance.icon" cssErrorClass="error">アイコン画像URL</form:label>
+					<form:label for="gadgetInstance.icon" path="gadgetInstance.icon" cssErrorClass="error"><spring:message code="gadget._form.iconUrl" /></form:label>
 					<form:input path="gadgetInstance.icon" /><form:errors path="gadgetInstance.icon" />
 				</li>
 				</c:if>
 				<li>
 					<form:label for="accessLevel" path="publish" cssErrorClass="error"><spring:message code="gadget._form.publish" /></form:label>
 					<span id="access_level_radio" class="radio" style="display:inline-block;">
-						<c:set var="unpublish"><spring:message code="gadget._listRole.accessLevel0" /></c:set>
-						<c:set var="publish"><spring:message code="gadget._listRole.accessLevel1" /></c:set>
+						<c:set var="unpublish"><spring:message code="gadget._form.publish.off" /></c:set>
+						<c:set var="publish"><spring:message code="gadget._form.publish.on" /></c:set>
 						<div>
 							<form:radiobutton path="publish" value="0" label="${unpublish}" cssErrorClass="error"/>
 							<form:radiobutton path="publish" value="1" label="${publish}" cssErrorClass="error" />
@@ -66,7 +66,7 @@
 					</span>
 				</li>
 				<li>
-					<form:label for="accessLevel" path="accessLevel" cssErrorClass="error"><spring:message code="gadget._form.publish" /></form:label>
+					<form:label for="accessLevel" path="accessLevel" cssErrorClass="error"><spring:message code="gadget._form.publishingRange" /></form:label>
 					<c:import url="/WEB-INF/jsp/admin/gadget/_listRole.jsp"/>
 				</li>
 				<li>

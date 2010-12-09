@@ -10,8 +10,8 @@
 		<p>
 			<form:label for="accessLevel" path="publish" cssErrorClass="error"><spring:message code="gadget._form.publish" /></form:label>
 			<span id="access_level_radio" class="radio" style="display:inline-block;">
-				<c:set var="unpublish"><spring:message code="gadget._listRole.accessLevel0" /></c:set>
-				<c:set var="publish"><spring:message code="gadget._listRole.accessLevel1" /></c:set>
+						<c:set var="unpublish"><spring:message code="gadget._form.publish.off" /></c:set>
+						<c:set var="publish"><spring:message code="gadget._form.publish.on" /></c:set>
 				<div>
 					<form:radiobutton path="publish" value="0" label="${unpublish}" cssErrorClass="error"/>
 					<form:radiobutton path="publish" value="1" label="${publish}" cssErrorClass="error" />
@@ -20,7 +20,7 @@
 			</span>
 		</p>
 		<p>
-			<label><spring:message code="tab._formTab.accessLevel" />：</label>
+			<label><spring:message code="gadget._form.publishingRange" />：</label>
 			<c:import url="/WEB-INF/jsp/admin/gadget/_listRole.jsp"/>
 		</p>
 		<form:hidden path="id" />

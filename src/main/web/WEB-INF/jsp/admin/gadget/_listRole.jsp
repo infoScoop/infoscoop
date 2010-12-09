@@ -50,11 +50,11 @@ jQuery(function(){
 });
 </script>
 <span id="access_level_radio" class="radio" style="display:inline-block;">
-	<c:set var="unpublish"><spring:message code="gadget._listRole.accessLevel0" /></c:set>
-	<c:set var="publish"><spring:message code="gadget._listRole.accessLevel1" /></c:set>
+	<c:set var="everyone"><spring:message code="gadget._listRole.access.everyone" /></c:set>
+	<c:set var="special"><spring:message code="gadget._listRole.access.special" /></c:set>
 	<div>
-		<form:radiobutton path="accessLevel" value="0" label="全体に公開" cssErrorClass="error" />
-		<form:radiobutton path="accessLevel" value="1" label="公開範囲を指定" cssErrorClass="error" />
+		<form:radiobutton path="accessLevel" value="0" label="${everyone}" cssErrorClass="error" />
+		<form:radiobutton path="accessLevel" value="1" label="${special}" cssErrorClass="error" />
 		<form:errors path="accessLevel" />
 	</div>
 	<div id="selected_security_role_panel" style="display:${ ( accessLevel== 1 ? "":"none" )};">

@@ -32,8 +32,8 @@ $(function(){
 		<thead>
 			<tr>
 				<th><spring:message code="tab.index.title" /></th>
-				<th width="100"><spring:message code="tab.index.accessLevel" /></th>
-				<th><spring:message code="tab.index.roles" /></th>
+				<th width="100"><spring:message code="tab.index.publish" /></th>
+				<th><spring:message code="tab.index.publishingRange" /></th>
 				<th width="50"><spring:message code="tab.index.edit" /></th>
 				<th width="50"><spring:message code="tab.index.delete" /></th>
 				<th width="50">履歴</th>
@@ -44,7 +44,7 @@ $(function(){
 <c:forEach var="tab" items="${tabs}">
 			<tr>
 				<td>${tab.name}</td>
-				<td><spring:message code="tab.index.accessLevel${tab.accessLevel}"/></td>
+				<td><spring:message code="tab.index.publish${tab.accessLevel}"/></td>
 				<td>
 					<c:forEach var="role" items="${tab.roles}">
 						${role.name}
@@ -52,7 +52,7 @@ $(function(){
 				</td>
 				<td><a href="editTab?id=${tab.id}" class="edit_link"><span class="edit"></span></a></td>
 				<td><a href="deleteTab?id=${tab.id}"><span class="trash"></span></a></td>
-				<td><a href="history?id=${tab.tabId}">表示</a></td>
+				<td><a href="history?id=${tab.tabId}"><spring:message code="tab.index.showHistory"/></a></td>
 			</tr>
 </c:forEach>
 		</tbody>
