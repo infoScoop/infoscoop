@@ -1,88 +1,45 @@
 --
 -- DOMAIN
 --
-CREATE TABLE IS_DOMAINS (
+CREATE TABLE `IS_DOMAINS` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 --
--- PREFERENCE
+-- IS_USERS
 --
-create table IS_PREFERENCES (
+CREATE TABLE IS_USERS (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
   fk_domain_id int unsigned NOT NULL,
-  `UID` varchar(150) not null,
-  data text not null,
-  primary key (fk_domain_id, `UID`),
+  `email` VARCHAR( 255 ) NOT NULL ,
+  `name` VARCHAR( 255 ) NOT NULL,
+  `admin` int(10) NOT NULL,
   foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
-) ENGINE=InnoDB;
+) ENGINE = InnoDB;
 
 --
--- TAB
+-- IS_GROUPS
 --
-create table IS_TABS (
+CREATE TABLE IS_GROUPS (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
   fk_domain_id int unsigned NOT NULL,
-  `UID` varchar(150) not null,
-  id varchar(32) not null,
-  name varchar(256),
-  `ORDER` int,
-  type varchar(128),
-  data text,
-  disabledDynamicPanel int,
-  template_timestamp datetime,
-  primary key (fk_domain_id, `UID`, id),
+  `email` VARCHAR( 255 ) NOT NULL ,
+  `name` VARCHAR( 255 ) NOT NULL,
+  `description` text,
   foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
+) ENGINE = InnoDB;
+
+--
+-- IS_USER_GROUP
+--
+CREATE TABLE IS_USER_GROUP (
+  `fk_user_id` bigint(20) unsigned NOT NULL,
+  `fk_group_id` bigint(20) unsigned NOT NULL,
+  KEY `fk_user_id` (`fk_user_id`),
+  KEY `fk_group_id` (`fk_group_id`)
 ) ENGINE=InnoDB;
-
---
--- WIDGET
---
-
-create table IS_WIDGETS (
-  id bigint not null auto_increment primary key,
-  fk_domain_id int unsigned NOT NULL,
-  `UID` varchar(75) not null,
-  tabId varchar(32) not null,
-  widgetId varchar(128) not null,
-  `COLUMN` int,
-  siblingId varchar(256),
-  parentId varchar(256),
-  fk_menu_id int unsigned,
-  href varchar(1024),
-  title varchar(256),
-  type varchar(1024),
-  isStatic int,
-  ignoreHeader int,
-  noBorder int,
-  createDate bigint not null default 0,
-  deleteDate bigint not null default 0,
-  constraint is_widgets_unique unique (fk_domain_id, `UID`, tabid, widgetId, deleteDate),
-  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade,
-  foreign key (fk_menu_id) references IS_MENU_ITEMS(id) on delete cascade
-) ENGINE=InnoDB;
-
-create index is_widgets_tabId on IS_WIDGETS(tabId);
-create index is_widgets_parentId on IS_WIDGETS(parentId);
-create index is_widgets_deleteDate on IS_WIDGETS(deleteDate);
-create index is_widgets_type on IS_WIDGETS(type);
-
---
--- USERPREFS
---
-
-create table IS_USERPREFS (
-	fk_widget_id bigint not null,
-	name varchar(255) not null,
-	value varchar(4000),
-	long_value text,
-	constraint is_userprefs_uq unique (fk_widget_id,name),
-	foreign key (fk_widget_id) references IS_WIDGETS(id) on delete cascade
-) ENGINE=InnoDB;
-
-create index is_userprefs_fk_widget_id on IS_USERPREFS(fk_widget_id);
-create index is_userprefs_name on IS_USERPREFS(name);
-create index is_userprefs_value on IS_USERPREFS(value);
 
 --
 -- CACHE
@@ -476,9 +433,9 @@ create table IS_TAB_TEMPLATES(
 	column_width varchar(255),
 	access_level int not null default 0, -- 0=private, 1=public 2=special
 	temp int not null default 1, -- 0=data to show, 1=temporary data, 2=history data
-	fk_editor_id int unsinged,
+	fk_editor_id int unsigned,
 	updated_at TIMESTAMP,
-	foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
+	foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade,
 	foreign key (fk_editor_id) references IS_USERS(id) on delete cascade
 ) ENGINE=InnoDB;
 
@@ -523,40 +480,6 @@ CREATE TABLE IS_TAB_TEMPLATE_PERSONALIZE_GADGETS (
 create index is_tab_template_personalize_gadgets_widget_id on IS_TAB_TEMPLATE_PERSONALIZE_GADGETS(widget_id);
 
 --
--- IS_USERS
---
-CREATE TABLE IS_USERS (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-  fk_domain_id int unsigned NOT NULL,
-  `email` VARCHAR( 255 ) NOT NULL ,
-  `name` VARCHAR( 255 ) NOT NULL,
-  `admin` int(10) NOT NULL,
-  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
-) ENGINE = InnoDB;
-
---
--- IS_GROUPS
---
-CREATE TABLE IS_GROUPS (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-  fk_domain_id int unsigned NOT NULL,
-  `email` VARCHAR( 255 ) NOT NULL ,
-  `name` VARCHAR( 255 ) NOT NULL,
-  `description` text,
-  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
-) ENGINE = InnoDB;
-
---
--- IS_USER_GROUP
---
-CREATE TABLE IS_USER_GROUP (
-  `fk_user_id` bigint(20) unsigned NOT NULL,
-  `fk_group_id` bigint(20) unsigned NOT NULL,
-  KEY `fk_user_id` (`fk_user_id`),
-  KEY `fk_group_id` (`fk_group_id`)
-) ENGINE=InnoDB;
-
---
 -- COMMAND_BAR
 --
 CREATE TABLE IS_COMMAND_BARS (
@@ -586,4 +509,80 @@ ALTER TABLE IS_COMMAND_BAR_STATIC_GADGETS
 -- DATA FOR TEST
 INSERT INTO `iscoop`.`IS_DOMAINS` (`id` ,`name`) VALUES ('1', 'infoscoop.org');
 INSERT INTO `iscoop`.`IS_COMMAND_BARS` (`id`, `fk_domain_id`, `display_order`, `access_level`) VALUES ('1', '1', '0', '');
-  
+
+--
+-- PREFERENCE
+--
+create table IS_PREFERENCES (
+  fk_domain_id int unsigned NOT NULL,
+  `UID` varchar(150) not null,
+  data text not null,
+  primary key (fk_domain_id, `UID`),
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
+) ENGINE=InnoDB;
+
+--
+-- TAB
+--
+create table IS_TABS (
+  fk_domain_id int unsigned NOT NULL,
+  `UID` varchar(150) not null,
+  id varchar(32) not null,
+  name varchar(256),
+  `ORDER` int,
+  type varchar(128),
+  data text,
+  disabledDynamicPanel int,
+  template_timestamp datetime,
+  primary key (fk_domain_id, `UID`, id),
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
+) ENGINE=InnoDB;
+
+--
+-- WIDGET
+--
+
+create table IS_WIDGETS (
+  id bigint not null auto_increment primary key,
+  fk_domain_id int unsigned NOT NULL,
+  `UID` varchar(75) not null,
+  tabId varchar(32) not null,
+  widgetId varchar(128) not null,
+  `COLUMN` int,
+  siblingId varchar(256),
+  parentId varchar(256),
+  fk_menu_id int unsigned,
+  href varchar(1024),
+  title varchar(256),
+  type varchar(1024),
+  isStatic int,
+  ignoreHeader int,
+  noBorder int,
+  createDate bigint not null default 0,
+  deleteDate bigint not null default 0,
+  constraint is_widgets_unique unique (fk_domain_id, `UID`, tabid, widgetId, deleteDate),
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade,
+  foreign key (fk_menu_id) references IS_MENU_ITEMS(id) on delete cascade
+) ENGINE=InnoDB;
+
+create index is_widgets_tabId on IS_WIDGETS(tabId);
+create index is_widgets_parentId on IS_WIDGETS(parentId);
+create index is_widgets_deleteDate on IS_WIDGETS(deleteDate);
+create index is_widgets_type on IS_WIDGETS(type);
+
+--
+-- USERPREFS
+--
+
+create table IS_USERPREFS (
+	fk_widget_id bigint not null,
+	name varchar(255) not null,
+	value varchar(4000),
+	long_value text,
+	constraint is_userprefs_uq unique (fk_widget_id,name),
+	foreign key (fk_widget_id) references IS_WIDGETS(id) on delete cascade
+) ENGINE=InnoDB;
+
+create index is_userprefs_fk_widget_id on IS_USERPREFS(fk_widget_id);
+create index is_userprefs_name on IS_USERPREFS(name);
+create index is_userprefs_value on IS_USERPREFS(value);
