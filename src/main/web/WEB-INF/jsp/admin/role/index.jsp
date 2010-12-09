@@ -13,7 +13,7 @@ function deleteRole(roleId){
 </script>
 
 <div style="height:500px;">
-	<a href="edit" id="add_button" class="button">追加</a>
+	<a href="edit" id="add_button" class="add">追加</a>
 	<table id="tab_table" class="tab_table" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr>

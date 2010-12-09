@@ -8,6 +8,18 @@
 		<h1><spring:message code="tab._formTab.title" /></h1>
 		<p><label><spring:message code="tab._formTab.tabTitle" />:</label><form:input path="name"/></p>
 		<p>
+			<form:label for="accessLevel" path="publish" cssErrorClass="error"><spring:message code="gadget._form.publish" /></form:label>
+			<span id="access_level_radio" class="radio" style="display:inline-block;">
+				<c:set var="unpublish"><spring:message code="gadget._listRole.accessLevel0" /></c:set>
+				<c:set var="publish"><spring:message code="gadget._listRole.accessLevel1" /></c:set>
+				<div>
+					<form:radiobutton path="publish" value="0" label="${unpublish}" cssErrorClass="error"/>
+					<form:radiobutton path="publish" value="1" label="${publish}" cssErrorClass="error" />
+					<form:errors path="publish" />
+				</div>
+			</span>
+		</p>
+		<p>
 			<label><spring:message code="tab._formTab.accessLevel" />：</label>
 			<c:import url="/WEB-INF/jsp/admin/gadget/_listRole.jsp"/>
 		</p>

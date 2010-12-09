@@ -165,7 +165,7 @@ public class TabTemplate extends BaseTabTemplate {
 		TabTemplate tabClone = new TabTemplate();
 		tabClone.setName(this.getName());
 		tabClone.setLayout(this.getLayout());
-		tabClone.setAccessLevel(this.getAccessLevel());
+		tabClone.setPublish(this.getPublish());
 		tabClone.setTabId(this.getTabId());
 		tabClone.setOrderIndex(this.getOrderIndex());
 		tabClone.setAreaType(this.getAreaType());
@@ -216,4 +216,12 @@ public class TabTemplate extends BaseTabTemplate {
 	public String getEscapedLayout(){
 		return JSONObject.quote(super.getLayout());
 	}
+
+	public int getAccessLevel(){
+		return (super.getRoles()== null || super.getRoles().isEmpty()) ? 0 : 1;
+	}
+
+	public void setAccessLevel(int i){
+	}
+	
 }

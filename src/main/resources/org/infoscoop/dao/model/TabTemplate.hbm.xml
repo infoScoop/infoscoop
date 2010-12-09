@@ -48,8 +48,8 @@
 		/>
 		<!-- TODO must rename this property to fk_role_id -->
 		<property
-			name="AccessLevel"
-			column="access_level"
+			name="publish"
+			column="publish"
 			type="integer"
 			length="10"
 		/>
