@@ -399,7 +399,7 @@ CREATE TABLE IS_MENU_ITEMS (
   title varchar(255) NOT NULL,
   menu_order int(11) NOT NULL DEFAULT '0',
   href varchar(255) DEFAULT NULL,
-  access_level int(11) NOT NULL DEFAULT '0',
+  publish int(11) NOT NULL DEFAULT '0',
   alert int(11) NOT NULL DEFAULT '1',
   fk_parent_id int unsigned DEFAULT NULL,
   fk_gadget_instance_id int(10) unsigned DEFAULT NULL,
@@ -431,7 +431,7 @@ create table IS_TAB_TEMPLATES(
 	layout text,
 	number_of_columns tinyint(4) NOT NULL DEFAULT '3',
 	column_width varchar(255),
-	access_level int not null default 0, -- 0=private, 1=public 2=special
+	publish int not null default 0, -- 0=private, 1=public 2=special
 	temp int not null default 1, -- 0=data to show, 1=temporary data, 2=history data
 	fk_editor_id int unsigned,
 	updated_at TIMESTAMP,
