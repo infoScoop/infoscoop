@@ -21,10 +21,7 @@
 			<property name="mappingResources">
 				<list>
 					<value>org/infoscoop/dao/model/Proxyconf.hbm.xml</value>
-					<value>org/infoscoop/dao/model/Preference.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Portallayout.hbm.xml</value>
-					<value>org/infoscoop/dao/model/Widget.hbm.xml</value>
-					<value>org/infoscoop/dao/model/Tab.hbm.xml</value>
 					<value>org/infoscoop/dao/model/AuthCredential.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Properties.hbm.xml</value>
 					<value>org/infoscoop/dao/model/I18n.hbm.xml</value>
