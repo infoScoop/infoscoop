@@ -155,9 +155,11 @@ public class AddMultiWidget extends XMLCommandProcessor{
 		}
 		widget.setSiblingid(sibling);
 		widget.setParentid(parentId);
-		
-		MenuItem menuItem = MenuItemDAO.newInstance().getByMenuId(menuId);
-		widget.setMenuItem(menuItem);
+
+		if (menuId != null && menuId.length() > 0) {
+			MenuItem menuItem = MenuItemDAO.newInstance().getByMenuId(menuId);
+			widget.setMenuItem(menuItem);
+		}
 		
 		if(confJson.has("title"))
 			widget.setTitle(confJson.getString("title"));

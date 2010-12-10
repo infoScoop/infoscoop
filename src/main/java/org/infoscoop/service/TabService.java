@@ -321,9 +321,8 @@ public class TabService {
 			for(GadgetInstanceUserpref up : gadgetInst.getGadgetInstanceUserPrefs())
 				widget.setUserPref(up.getId().getName(), up.getValue());
 			
-			widgetList.add( widget );
-			this.widgetDAO.addWidget(widget,false);
-			
+			widgetList.add(widget);
+			this.widgetDAO.addWidget(widget, true);
 		}
 		return widgetList;
 	}

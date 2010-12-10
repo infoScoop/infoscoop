@@ -973,8 +973,11 @@ public class TabController {
 			widget.setSiblingid(sibling);
 			widget.setParentid(parentId);
 			
-			MenuItem menuItem = MenuItemDAO.newInstance().get(Integer.valueOf(menuId));
-			widget.setMenuItem(menuItem);
+			if (menuId != null && menuId.length() > 0) {
+				MenuItem menuItem = MenuItemDAO.newInstance().get(
+						Integer.valueOf(menuId));
+				widget.setMenuItem(menuItem);
+			}
 			
 			if(confJson.has("title"))
 				widget.setTitle(confJson.getString("title"));
