@@ -27,6 +27,7 @@ import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabTemplateDAO;
+import org.infoscoop.dao.TabTemplatePersonalizeGadgetDAO;
 import org.infoscoop.dao.TabTemplateStaticGadgetDAO;
 import org.infoscoop.dao.UserDAO;
 import org.infoscoop.dao.WidgetDAO;
@@ -66,14 +67,17 @@ import org.w3c.dom.NodeList;
 public class TabController {
 	private static Log log = LogFactory.getLog(TabController.class);
 	
+	private static final String LAYOUT_01 = "<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td width=\"75%\"><table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td style=\"width:33%\"><div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div></td><td><div style=\"width:10px\">&nbsp;</div></td><td style=\"width:33%\"><div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div></td><td><div style=\"width:10px\">&nbsp;</div></td><td style=\"width:34%\"><div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div></td></tr></table></td></tr></table>";
+	private static final String LAYOUT_2 = "<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td style=\"width:33%\"><div class=\"static_column\" style=\"width: 99%; min-height: 1px;\"></div></td><td><div style=\"width:10px\">&nbsp;</div></td><td style=\"width:33%\"><div class=\"static_column\" style=\"width: 99%; min-height: 1px;\"></div></td><td><div style=\"width:10px\">&nbsp;</div></td><td style=\"width:34%\"><div class=\"static_column\" style=\"width: 99%; min-height: 1px;\"></div></td></tr></table>";
+	
 	@Autowired
 	private TabTemplateDAO tabTemplateDAO;
 	@Autowired
 	private TabTemplateStaticGadgetDAO tabTemplateStaticGadgetDAO;
 	@Autowired
-	private GadgetInstanceDAO gadgetInstanceDAO;
-	@Autowired
 	private UserDAO userDAO;
+	@Autowired
+	private TabTemplatePersonalizeGadgetDAO tabTemplatePersonalizeGadgetDAO; 
 	
 	@RequestMapping
 	public void index(Model model)throws Exception {
@@ -113,8 +117,7 @@ public class TabController {
 		Integer domainId = DomainManager.getContextDomainId();
 		User loginUser = userDAO.getByEmail(uid, domainId);
 		tab.setEditor(loginUser);
-		tab
-				.setLayout("<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">	<tr>		<td width=\"75%\">			<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">				<tr>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:33%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>					<td>						<div style=\"width:10px\">&nbsp;</div>					</td>					<td style=\"width:34%\">						<div class=\"static_column\" style=\"width: 99%; height:82px; min-height: 1px;\"></div>					</td>				</tr>			</table>		</td>	</tr></table>");
+		tab.setLayout(LAYOUT_01);
 		tabTemplateDAO.save(tab);
 		model.addAttribute(tab);
 		return "tab/editTab";
@@ -133,6 +136,16 @@ public class TabController {
 		tabCopy.setEditor(loginUser);
 		tabTemplateDAO.save(tabCopy);
 		model.addAttribute(tabCopy);
+	}
+	
+	@RequestMapping
+	@Transactional
+	public String editTemp(HttpServletRequest request,
+			@RequestParam(value = "id", required = false) String id, Model model)
+			throws Exception {
+		TabTemplate tab = tabTemplateDAO.get(id);
+		model.addAttribute(tab);
+		return "tab/editTab";
 	}
 
 	@RequestMapping
@@ -362,6 +375,7 @@ public class TabController {
 		
 		tab.setName(formTab.getName());
 		tab.setLayout(formTab.getLayout());
+		tab.setAreaType(formTab.getAreaType());
 		tab.setTemp(0);//current
 		tabTemplateDAO.save(tab);
 		
@@ -373,6 +387,36 @@ public class TabController {
 		}
 		
 		model.addAttribute(tab);
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
+	public String updateTemp(TabTemplate formTab,
+			@RequestParam("layoutModified") String layoutModified,
+			@RequestParam(value = "roles.id", required = false) String[] roleIdList, 
+			Model model)throws Exception {
+		TabTemplate tab = 
+			tabTemplateDAO.get(Integer.toString(formTab.getId()));
+		
+		tab.setName(formTab.getName());
+		if (tab.getAreaType() == 2 && formTab.getAreaType() < 2) {
+			tab.setLayout(LAYOUT_01);
+		} else if (formTab.getAreaType() == 2 && tab.getAreaType() < 2) {
+			tab.setLayout(LAYOUT_2);
+		} else {
+			tab.setLayout(formTab.getLayout());
+		}
+		tab.setAreaType(formTab.getAreaType());
+		tab.setTemp(1);//temp
+		tabTemplateDAO.save(tab);
+		
+		if (tab.getAreaType() != 0) {
+			// delete personalized gadgets
+			tabTemplatePersonalizeGadgetDAO.deleteByTabTemplateId(tab.getId());
+		}
+		
+		model.addAttribute(tab);
+		return "redirect:editTemp?id=" + tab.getId();
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -414,8 +458,7 @@ public class TabController {
 		for(TabTemplatePersonalizeGadget gadget : firstOfColumn){
 			addNextSibling(gadget,gadgets,gadgetMap);
 		}
-		model.addAttribute("gadgets", gadgets);	
-			
+		model.addAttribute("gadgets", gadgets);
 	}
 	
 	private void addNextSibling(TabTemplatePersonalizeGadget gadget, Collection<TabTemplatePersonalizeGadget> gadgets, Map<Integer, TabTemplatePersonalizeGadget> gadgetMap){

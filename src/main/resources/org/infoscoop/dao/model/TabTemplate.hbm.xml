@@ -85,6 +85,7 @@
 			column="fk_editor_id"
 			class="User"
 			not-null="false"
+			outer-join="true"
 		>
 		</many-to-one>
 

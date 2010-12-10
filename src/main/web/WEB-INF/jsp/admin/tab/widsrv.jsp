@@ -9,6 +9,8 @@
 	"tabNumber":"0",
 	"tabType":"static",
 	"widgetLastModified":"-",
+	"disabledDynamicPanel":${tabTemplate.areaType != 0},
+	"adjustStaticHeight":${tabTemplate.areaType == 2},
 	"property":{"numCol":"","columnsWidth":"[\"32.5%\", \"32.5%\", \"32.5%\"]"},
 	"staticPanel":{
 	<c:forEach items="${tabTemplate.tabTemplateStaticGadgets}" var="gadget" varStatus="status">

@@ -20,7 +20,6 @@ package org.infoscoop.dao;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
-import org.infoscoop.account.DomainManager;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -40,6 +39,15 @@ public class TabTemplatePersonalizeGadgetDAO extends HibernateDaoSupport {
 				.createQuery(
 						"delete from TabTemplatePersonalizeGadget where fk_gadget_instance_id=:id");
 		query.setParameter("id", gadgetInstanceId);
+		query.executeUpdate();
+	}
+
+	public void deleteByTabTemplateId(Integer tabTemplateId) {
+		Query query = super
+				.getSession()
+				.createQuery(
+						"delete from TabTemplatePersonalizeGadget where fk_tabtemplate_id=:id");
+		query.setParameter("id", tabTemplateId);
 		query.executeUpdate();
 	}
 }

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <form:form modelAttribute="tabTemplate" id="add_tab" method="post" action="updateTab">
-	<div class="infoScoop">
+	<div id="infoscoop" class="infoScoop">
 		<h1><spring:message code="tab._formTab.title" /></h1>
 		<p><label><spring:message code="tab._formTab.tabTitle" />:</label><form:input path="name"/></p>
 		<p>
@@ -23,17 +23,27 @@
 			<label><spring:message code="gadget._form.publishingRange" />：</label>
 			<c:import url="/WEB-INF/jsp/admin/gadget/_listRole.jsp"/>
 		</p>
+		<p>
+			<label>表示エリア：</label>
+			<form:select path="areaType">
+				<form:option value="0" label="固定エリアとパーソナライズエリアをどちらも表示する"/>
+				<form:option value="1" label="パーソナライズエリアを使用しない"/>
+				<form:option value="2" label="パーソナライズエリアを使用せず、固定エリアの高さをブラウザの高さに合わせて表示する"/>
+			</form:select>
+		</p>
 		<form:hidden path="id" />
 		<form:hidden path="tabId" />
 		<form:hidden path="layout" />
 		<form:hidden path="layoutModified"/>
 		<div id="portal-site-aggregation-menu"></div>
-		<div id="portal-tree-menu" style="float:left;width:20%;"> </div>
-		<div style="float:left;width:80%;">
+		<div id="portal-tree-menu" style="float:left;"> </div>
+		<div id="infoscoop-panel" style="float:left;">
 			<h2><spring:message code="tab._formTab.staticArea" /></h2>
 			<a href="#select_layout_modal" id="select_layout_link">Select Layout</a> <a href="#edit_layout_modal" id="edit_layout_link">Edit tamplate</a>
 			<div id="staticAreaContainer">${tabTemplate.layout}</div>
-			<h2><spring:message code="tab._formTab.staticArea" /></h2>
+			<c:if test="${tabTemplate.areaType == 0}">
+			<h2><spring:message code="tab._formTab.personalizedArea" /></h2>
+			</c:if>
 			<div id="personarizeAreaContainer"><div id="panels"><div id="tab-container"></div></div></div>
 		</div>
 		<div style="clear:both;text-align:center;"><input id="submit_button" type="submit" name="button" value="保存" /></div>

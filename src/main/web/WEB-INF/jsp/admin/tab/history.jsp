@@ -35,6 +35,7 @@ $(function(){
 			<tr>
 				<th>タイトル</th>
 				<th width="130">更新日時</th>
+				<th width="130">更新者</th>
 				<th width="100">公開設定</th>
 				<th>公開範囲</th>
 				<th width="50"><spring:message code="tab.index.edit" /></th>
@@ -47,7 +48,8 @@ $(function(){
 			<tr>
 				<td>${tab.name}</td>
 				<td>${tab.updatedAt}</td>
-				<td><spring:message code="tab.index.accessLevel${tab.accessLevel}"/></td>
+				<td>${tab.editor.name}</td>
+				<td><spring:message code="tab.index.publish${tab.publish}"/></td>
 				<td>
 					<c:forEach var="role" items="${tab.roles}">
 						${role.name}

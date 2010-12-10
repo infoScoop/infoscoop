@@ -42,7 +42,7 @@ h2 {
      background-color:#000;  
 }
 
-.staticLayout {
+.staticLayout, .staticLayoutAdjustHeight{
 	width: 22%;
 	float: left;
 	margin-top: 5px;
@@ -50,13 +50,16 @@ h2 {
 	padding: 5px;
 	border: solid 1px #000;
 	cursor: pointer;
-  width:120px;
-  height:194px;
+	width:120px;
+	height:194px;
 }
 .static_column {
-  border : dotted 1px gray;
+	border : dotted 1px gray;
 	cursor: pointer;
 	position:relative
+}
+.staticLayoutAdjustHeight .static_column{
+	height:182px;
 }
 .widget .widgetHeader {
 	background-image:url("../../skin/imgs/theme/widget_header.png");
@@ -80,6 +83,18 @@ h2 {
 
 #access_level_radio {
 	display:inline-block;
+}
+#infoscoop #portal-tree-menu{
+	width:0;
+}
+#infoscoop #infoscoop-panel{
+	width:100%;
+}
+#infoscoop.areaType0 #portal-tree-menu{
+	width:20%;
+}
+#infoscoop.areaType0 #infoscoop-panel{
+	width:80%;
 }
 </style>
 
@@ -191,15 +206,18 @@ IS_Request.CommandQueue.fireRequest = function(){
 };
 IS_Request.CommandQueue.repeat(commandQueueWait);
 
-IS_Portal.addTab = function(idNumber, name, type, layout, numCol, columnsWidth, isInitialize, tabOrder){
+var areaType = ${tabTemplate.areaType};
+IS_Portal.addTab = function(idNumber, name, type, layout, numCol, columnsWidth, disabledDynamicPanel, adjustStaticHeight, isInitialize){
 	var panels = $("panels");
 	var panelDiv = IS_Portal.buildPanel( idNumber, type );
 	panelDiv.style.display = "";
 	panels.appendChild( panelDiv );
 	IS_Portal.widgetLists["tab"+idNumber] = new Object();
 	IS_Portal.columnsObjs["tab"+idNumber] = {};
-	IS_Portal.tabs["tab"+idNumber] = {"numCol":0,panel:panelDiv};
+	IS_Portal.tabs["tab"+idNumber] = {"numCol":0,panel:panelDiv,type:"static",adjustStaticHeight:adjustStaticHeight};
 	IS_WidgetsContainer.rebuildColumns("tab"+idNumber, numCol, columnsWidth, false, isInitialize);
+	adjustStaticWidgetHeight();
+	prepareStaticArea();
 }
 IS_Customization = {"commandbar":"<table cellpadding=\"0\" cellspacing=\"3\" width=\"100%\">\r\n\t<tr>\r\n\t\t<td width=\"100%\"><div id=\"p_1_w_4\"><\/div><\/td>\r\n\t\t<td><div id=\"p_1_w_6\"><\/div><\/td>\r\n\t\t<td><div id=\"portal-go-home\"><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-change-fontsize\" disabledCommand=\"true\"><!--&lt;div id=\"portal-change-fontsize\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t\t<td><div id=\"portal-trash\"><\/div><\/td>\r\n\t\t<td><div id=\"portal-preference\"><div class=\"allPreference\"><\/div><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-credential-list\" disabledCommand=\"true\"><!--&lt;div id=\"portal-credential-list\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t\t<td><div id=\"portal-admin-link\"><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-logout\" disabledCommand=\"true\"><!--&lt;div id=\"portal-logout\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t<\/tr>\r\n<\/table>\r\n","staticPanel0":"<DIV>\r\n\t<DIV style=\"FLOAT: left; WIDTH: 74.5%\">\r\n\t\t<DIV style=\"HEIGHT: 178px\">\r\n\t\t\t<DIV style=\"FLOAT: left; WIDTH: 100%; HEIGHT: 100%\">\r\n\t\t\t\t<DIV id=\"p_1_w_1\" class=\"static_column\" style=\"MARGIN-LEFT: 2px; HEIGHT: 170px\"><\/DIV>\r\n\t\t\t<\/DIV>\r\n\t\t<\/DIV>\r\n\t<\/DIV>\r\n\t<DIV style=\"FLOAT: right; WIDTH: 25%; HEIGHT: 178px\">\r\n\t\t<DIV id=\"p_1_w_5\" class=\"static_column\" style=\"MARGIN-LEFT: 2px; HEIGHT: 170px\"><\/DIV>\r\n\t<\/DIV>\r\n<\/DIV>\r\n<DIV style=\"CLEAR: both; display:none;\"/>\r\n","contentFooter":[{"type":"mail"},{"type":"message"}],"css":"/* Custom CSS code is described here.  */","header":"<table width=\"100%\" height=\"53px\" cellspacing=\"0\" cellpadding=\"0\" style=\"background:url(skin/imgs/head_blue.png)\">\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td><a href=\"javascript:void(0)\" onclick=\"javascript:IS_Portal.goHome();return false;\"><img src=\"skin/imgs/infoscoop.gif\" alt=\"infoScoop\" border=\"0\" style=\"margin:0 0 0 20px;\" height=\"45\"/><\/a>\r\n\t\t\t<\/td>\r\n\t\t\t<td>\r\n\t\t\t\t<form name=\"searchForm\" onsubmit=\"javascript:IS_Portal.SearchEngines.buildSearchTabs(document.getElementById('searchTextForm').value);return false;\">\r\n\t\t\t\t<div style=\"float:right;margin-right:5px\">\r\n\t\t\t\t\t<table>\r\n\t\t\t\t\t\t<tbody>\r\n\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t<td colspan=\"2\" align=\"right\" style=\"font-size:80%;\">\r\n\t\t\t\t\t\t\t\t\tWelcome,admin-\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<\/td>\r\n\t\t\t\t\t\t\t<\/tr>\r\n\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t\t\t<input id=\"searchTextForm\" type=\"text\" style=\"width:200px;height:23px;float:left;\"/>\r\n\t\t\t\t\t\t\t\t\t<input type=\"submit\" value=\"Search\" style=\"padding:0 0.4em;\"/>\r\n\t\t\t\t\t\t\t\t\t<span id=\"editsearchoption\">Search options<\/span>\r\n\t\t\t\t\t\t\t\t<\/td>\r\n\t\t\t\t\t\t\t<\/tr>\r\n\t\t\t\t\t\t<\/tbody>\r\n\t\t\t\t\t<\/table>\r\n\t\t\t\t<\/div>\r\n\t\t\t\t<\/form>\r\n\t\t\t<\/td>\r\n\t\t<\/tr>\r\n\t<\/tbody>\r\n<\/table>","title":"infoScoop"};
 IS_Portal.CommandBar = {
@@ -274,18 +292,30 @@ function prepareStaticArea(){
 	}
 };
 
+function adjustStaticWidgetHeight(){
+	if(areaType != 2) return;
+	IS_Portal.adjustStaticWidgetHeight();
+	var columns = $$("#staticAreaContainer .static_column");
+	var windowHeight = getWindowSize(false) - findPosY($("staticAreaContainer")) - 36;
+	for(var i =0; i < columns.length; i++){
+		columns[i].style.height = windowHeight;
+	}
+}
+
 function init() {
 
 	Event.observe('submit_button', 'click', changeFlag, false);
-	prepareStaticArea();
-
-	new IS_WidgetsContainer("/tab/widsrv");
-	new IS_SiteAggregationMenu();
-	new IS_SidePanel.SiteMap();
 
 	//Holiday information
 	IS_Holiday = new IS_Widget.Calendar.iCalendar(localhostPrefix + "/holidaysrv");
 	IS_Holiday.load(false);
+
+	new IS_WidgetsContainer("/tab/widsrv");
+	if(areaType == 0) {
+		$("infoscoop").addClassName("areaType0");
+		new IS_SiteAggregationMenu();
+		new IS_SidePanel.SiteMap();
+	}
 
 	//menuItem to panel
 	var panelBody = document.body;
@@ -654,7 +684,8 @@ function init() {
 			  width: 580,
 			  height: 440,
 				afterOpen:function(){
-					var staticLayoutList = $$('#modal_container .staticLayout');
+					$("staticLayouts"+(areaType != 2 ? "AdjustHeight":"")).hide();
+					var staticLayoutList = $$('#modal_container .staticLayout' + (areaType == 2 ? "AdjustHeight":""));
 					for(var i = 0; i < staticLayoutList.length; i++){
 						var layoutDiv = staticLayoutList[i];
 						var layoutMouseOver = function(el) {
@@ -670,6 +701,7 @@ function init() {
 							$('layoutModified').value = "true";
 							reloadStaticGadgets();
 							clearStaticGadgets();
+							adjustStaticWidgetHeight();
 							//TODO:remove ols static gadgets;
 							Event.stop(e);
 							Control.Modal.close();
@@ -710,6 +742,15 @@ function init() {
 		}
 	);
 	
+	//handle areaType
+	Event.observe($("areaType"), 'change', function(){
+		if(!confirm("表示エリアを変更するにはリロードする必要があります。よろしいですか？"))
+			return;
+		changeFlag();
+		var addTabButton = $("add_tab");
+		addTabButton.action = "updateTemp";
+		addTabButton.submit();
+	});
 };
 
 function changeFlag(){
