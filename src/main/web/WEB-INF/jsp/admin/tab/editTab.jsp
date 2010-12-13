@@ -64,6 +64,9 @@ h2 {
 .widget .widgetHeader {
 	background-image:url("../../skin/imgs/theme/widget_header.png");
 }
+#portal-site-aggregation-menu{
+	margin-top:10px;
+}
 
 .edit_static_gadget{
 	position: absolute;top: 0px;left: 0px;
@@ -96,6 +99,78 @@ h2 {
 #infoscoop.areaType0 #infoscoop-panel{
 	width:80%;
 }
+
+/*- Form --------------------------- */
+// TODO: this css is contained in manager.css too.
+.cssform{
+	margin-left: 5px;
+	padding: 15px 15px 25px;
+}
+.cssform fieldset{
+	border: 1px solid #AAAAAA;
+	margin: 10px 0;
+	padding: 10px;
+}
+.cssform legend{
+	font-weight: bold;
+	font-size:1.1em;
+	_margin: 0 -7px; /* IE Win */
+}
+.cssform legend, .cssform label{
+	padding-left: 0;
+	color: #333;
+}
+.cssform ul{
+	padding:0;
+	list-style-type:none;	
+}
+.cssform li{
+	clear: left;
+	display:block;
+	margin: 0;
+	padding: 5px 0;
+	padding-left: 155px; /*width of left column containing the label elements*/
+	/*height: 1%;*/
+}
+
+.cssform label{
+	float: left;
+	margin-left: -155px; /*width of left column*/
+	width: 150px; /*width of labels. Should be smaller than left column (155px) to create some right margin*/
+	text-align:right;
+	padding-top: 2px;
+}
+
+.cssform input[type="text"]{ /*width of text boxes. IE6 does not understand this attribute*/
+	width: 180px;
+}
+.cssform input[type=text],
+.cssform input[type=password],
+.cssform input.text,
+.cssform input.title,
+.cssform textarea,
+.cssform select {
+	background-color:#fff;
+	border:1px solid #bbb;
+}
+.cssform input[type=text]:focus,
+.cssform input[type=password]:focus,
+.cssform input.text:focus,
+.cssform input.title:focus,
+.cssform textarea:focus,
+.cssform select:focus {
+	border-color:#666;
+}
+
+.cssform textarea{
+	width: 250px;
+	height: 150px;
+}
+.cssform .radio label{
+	float: none;
+	margin-left: 0;
+}
+
 </style>
 
 <script src="../../js/resources/resources_ja.js"></script>
@@ -207,14 +282,17 @@ IS_Request.CommandQueue.repeat(commandQueueWait);
 
 var areaType = ${tabTemplate.areaType};
 IS_Portal.addTab = function(idNumber, name, type, layout, numCol, columnsWidth, disabledDynamicPanel, adjustStaticHeight, isInitialize){
-	var panels = $("panels");
-	var panelDiv = IS_Portal.buildPanel( idNumber, type );
-	panelDiv.style.display = "";
-	panels.appendChild( panelDiv );
 	IS_Portal.widgetLists["tab"+idNumber] = new Object();
 	IS_Portal.columnsObjs["tab"+idNumber] = {};
-	IS_Portal.tabs["tab"+idNumber] = {"numCol":0,panel:panelDiv,type:"static",adjustStaticHeight:adjustStaticHeight};
-	IS_WidgetsContainer.rebuildColumns("tab"+idNumber, numCol, columnsWidth, false, isInitialize);
+	IS_Portal.tabs["tab"+idNumber] = {"numCol":0,type:"static",adjustStaticHeight:adjustStaticHeight};
+	if(areaType != 2){
+		var panels = $("panels");
+		var panelDiv = IS_Portal.buildPanel( idNumber, type );
+		panelDiv.style.display = "";
+		panels.appendChild( panelDiv );
+		IS_Portal.tabs["tab"+idNumber].panel = panelDiv;
+		IS_WidgetsContainer.rebuildColumns("tab"+idNumber, numCol, columnsWidth, false, isInitialize);
+	}
 	adjustStaticWidgetHeight();
 	prepareStaticArea();
 }
@@ -338,7 +416,9 @@ function adjustStaticWidgetHeight(){
 }
 
 function init() {
-	Event.observe('submit_button', 'click', changeFlag, false);
+	jQuery(".submit_button").button().click(changeFlag);
+	jQuery(".cancel_button").button().click(function(){window.close();});
+	//Event.observe('submit_button', 'click', changeFlag, false);
 
 	//Holiday information
 	IS_Holiday = new IS_Widget.Calendar.iCalendar(localhostPrefix + "/holidaysrv");
