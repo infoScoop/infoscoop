@@ -41,14 +41,14 @@ public class TabTemplate extends BaseTabTemplate {
 		java.lang.String tabId,
 		java.lang.Integer orderIndex,
 		java.lang.String name,
-		java.lang.Integer temp) {
+		java.lang.Integer status) {
 
 		super (
 			id,
 			tabId,
 			orderIndex,
 			name,
-			temp);
+			status);
 	}
 
 	/* [CONSTRUCTOR MARKER END] */
@@ -169,7 +169,7 @@ public class TabTemplate extends BaseTabTemplate {
 		tabClone.setTabId(this.getTabId());
 		tabClone.setOrderIndex(this.getOrderIndex());
 		tabClone.setAreaType(this.getAreaType());
-		tabClone.setTemp(Integer.valueOf(1));
+		tabClone.setStatus(Integer.valueOf(1));
 		TabTemplateDAO.newInstance().save(tabClone);
 		
 		Set<TabTemplatePersonalizeGadget> tabPGs =

@@ -432,7 +432,7 @@ create table IS_TAB_TEMPLATES(
 	number_of_columns tinyint(4) NOT NULL DEFAULT '3',
 	column_width varchar(255),
 	publish int not null default 0, -- 0=private, 1=public 2=special
-	temp int not null default 1, -- 0=data to show, 1=temporary data, 2=history data
+	status int not null default 1, -- 0=data to show, 1=temporary data, 2=history data
 	fk_editor_id int unsigned,
 	updated_at TIMESTAMP,
 	foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade,

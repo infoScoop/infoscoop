@@ -43,7 +43,7 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 	public List<TabTemplate> all() {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(TabTemplate.class).add(
-						Expression.eq(TabTemplate.PROP_TEMP, Integer.valueOf(0))).add(
+						Expression.eq(TabTemplate.PROP_STATUS, Integer.valueOf(0))).add(
 								Expression.eq(TabTemplate.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())).addOrder(
 								Order.asc(TabTemplate.PROP_ORDER_INDEX)));
 	}
@@ -54,7 +54,7 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 				DetachedCriteria.forClass(TabTemplate.class).add(
 						Expression.eq(TabTemplate.PROP_TAB_ID, tabId)).add(
 						Expression
-								.eq(TabTemplate.PROP_TEMP, Integer.valueOf(2)))
+								.eq(TabTemplate.PROP_STATUS, Integer.valueOf(2)))
 						.add(
 								Expression.eq(TabTemplate.PROP_FK_DOMAIN_ID,
 										DomainManager.getContextDomainId()))
@@ -67,7 +67,7 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 				DetachedCriteria.forClass(TabTemplate.class).add(
 						Expression.ne(TabTemplate.PROP_TAB_ID, tabId)).add(
 						Expression
-								.ne(TabTemplate.PROP_TEMP, Integer.valueOf(1)))
+								.ne(TabTemplate.PROP_STATUS, Integer.valueOf(1)))
 						.add(
 								Expression.eq(TabTemplate.PROP_FK_DOMAIN_ID,
 										DomainManager.getContextDomainId()))
@@ -95,7 +95,7 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 		List<TabTemplate> items = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(TabTemplate.class).add(
 						Expression.eq(TabTemplate.PROP_TAB_ID, tabId)).add(
-						Expression.eq(TabTemplate.PROP_TEMP, 1)).add(
+						Expression.eq(TabTemplate.PROP_STATUS, 1)).add(
 						Expression.eq(TabTemplate.PROP_FK_DOMAIN_ID,
 								DomainManager.getContextDomainId())));
 		return items;
@@ -163,7 +163,7 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 						DetachedCriteria.forClass(TabTemplate.class).add(
 								Expression.eq(TabTemplate.PROP_TAB_ID, tabId))
 								.add(
-										Expression.eq(TabTemplate.PROP_TEMP,
+										Expression.eq(TabTemplate.PROP_STATUS,
 												Integer.valueOf(0))).add(
 										Expression.eq(
 												TabTemplate.PROP_FK_DOMAIN_ID,

@@ -84,7 +84,7 @@ public class TabController {
 		List<TabTemplate> tabs = tabTemplateDAO.all();
 		List<TabTemplate> tabsTemp0 = new ArrayList<TabTemplate>();
 		for(TabTemplate tab: tabs){
-			if(tab.getTemp() == 0){
+			if(tab.getStatus() == 0){
 				tabsTemp0.add(tab);
 			}
 		}
@@ -112,7 +112,7 @@ public class TabController {
 		tab.setTabId("t_" + new Date().getTime());
 		tab.setName("New Tab");
 		tab.setOrderIndex(tabTemplateDAO.getMaxOrderIndex() + 1);
-		tab.setTemp(1);
+		tab.setStatus(1);
 		tab.setAccessLevel(0);
 		Integer domainId = DomainManager.getContextDomainId();
 		User loginUser = userDAO.getByEmail(uid, domainId);
@@ -178,7 +178,7 @@ public class TabController {
 			@RequestParam("id") String id,
 			Model model) throws Exception {
 		TabTemplate tab = tabTemplateDAO.get(id);
-		if(tab.getTemp() == 1){
+		if(tab.getStatus() == 1){
 			tabTemplateDAO.delete(tab);
 		}
 		return "redirect:index";
@@ -388,7 +388,7 @@ public class TabController {
 			tabTemplateDAO.get(Integer.toString(formTab.getId()));
 		
 		if(tabOriginal != null){
-			tabOriginal.setTemp(2);//history
+			tabOriginal.setStatus(2);//history
 			tabTemplateDAO.save(tabOriginal);
 			WidgetDAO widgetDAO = WidgetDAO.newInstance();
 			if(Boolean.valueOf(layoutModified)){
@@ -399,7 +399,7 @@ public class TabController {
 		tab.setName(formTab.getName());
 		tab.setLayout(formTab.getLayout());
 		tab.setAreaType(formTab.getAreaType());
-		tab.setTemp(0);//current
+		tab.setStatus(0);//current
 		tabTemplateDAO.save(tab);
 		
 		//history max count is 30
@@ -430,7 +430,7 @@ public class TabController {
 			tab.setLayout(formTab.getLayout());
 		}
 		tab.setAreaType(formTab.getAreaType());
-		tab.setTemp(1);//temp
+		tab.setStatus(1);//temp
 		tabTemplateDAO.save(tab);
 		
 		if (tab.getAreaType() != 0) {

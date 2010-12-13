@@ -21,13 +21,13 @@ public abstract class BaseTabTemplate  implements Serializable {
 	public static String PROP_EDITOR = "Editor";
 	public static String PROP_NUMBER_OF_COLUMNS = "NumberOfColumns";
 	public static String PROP_NAME = "Name";
+	public static String PROP_STATUS = "Status";
 	public static String PROP_LAYOUT = "Layout";
 	public static String PROP_ORDER_INDEX = "OrderIndex";
 	public static String PROP_AREA_TYPE = "AreaType";
 	public static String PROP_ID = "Id";
 	public static String PROP_COLUMN_WIDTH = "ColumnWidth";
 	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
-	public static String PROP_TEMP = "Temp";
 
 
 	// constructors
@@ -39,8 +39,8 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 * Constructor for primary key
 	 */
 	public BaseTabTemplate (java.lang.Integer id) {
-		initialize();
 		this.setId(id);
+		initialize();
 	}
 
 	/**
@@ -51,19 +51,17 @@ public abstract class BaseTabTemplate  implements Serializable {
 		java.lang.String tabId,
 		java.lang.Integer orderIndex,
 		java.lang.String name,
-		java.lang.Integer temp) {
+		java.lang.Integer status) {
 
-		initialize();
 		this.setId(id);
 		this.setTabId(tabId);
 		this.setOrderIndex(orderIndex);
 		this.setName(name);
-		this.setTemp(temp);
+		this.setStatus(status);
+		initialize();
 	}
 
-	protected void initialize () {
-		this.publish = 0;
-	}
+	protected void initialize () {}
 
 
 
@@ -82,7 +80,7 @@ public abstract class BaseTabTemplate  implements Serializable {
 	private java.lang.String layout;
 	private java.lang.Integer numberOfColumns;
 	private java.lang.String columnWidth;
-	private java.lang.Integer temp;
+	private java.lang.Integer status;
 	private java.util.Date updatedAt;
 
 	// many to one
@@ -203,15 +201,15 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: access_level
+	 * Return the value associated with the column: publish
 	 */
 	public java.lang.Integer getPublish () {
 		return publish;
 	}
 
 	/**
-	 * Set the value related to the column: access_level
-	 * @param publish the access_level value
+	 * Set the value related to the column: publish
+	 * @param publish the publish value
 	 */
 	public void setPublish (java.lang.Integer publish) {
 		this.publish = publish;
@@ -271,18 +269,18 @@ public abstract class BaseTabTemplate  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: temp
+	 * Return the value associated with the column: status
 	 */
-	public java.lang.Integer getTemp () {
-		return temp;
+	public java.lang.Integer getStatus () {
+		return status;
 	}
 
 	/**
-	 * Set the value related to the column: temp
-	 * @param temp the temp value
+	 * Set the value related to the column: status
+	 * @param status the status value
 	 */
-	public void setTemp (java.lang.Integer temp) {
-		this.temp = temp;
+	public void setStatus (java.lang.Integer status) {
+		this.status = status;
 	}
 
 
