@@ -18,6 +18,9 @@ $(function(){
 	$("#tab_table").tablesorter({
 		headers: {0:{sorter:false},1:{sorter:false},2:{sorter:false},3:{sorter:false},4:{sorter:false},5:{sorter:false}}
 	});
+	$('a.delete_link').click(function(event){
+		return confirm("タブを削除します。履歴も全て削除されます。\n復元することはできませんが、よろしいですか？");
+	});
 });
 </script>
 <div style="height:500px;">
@@ -55,7 +58,7 @@ $(function(){
 					</c:forEach>
 				</td>
 				<td><a href="editTab?id=${tab.id}" class="edit_link"><span class="edit"></span></a></td>
-				<td><a href="deleteTab?id=${tab.id}"><span class="trash"></span></a></td>
+				<td><a href="deleteTab?id=${tab.tabId}" class="delete_link"><span class="trash"></span></a></td>
 				<td><a href="history?id=${tab.tabId}"><spring:message code="tab.index.showHistory"/></a></td>
 			</tr>
 </c:forEach>

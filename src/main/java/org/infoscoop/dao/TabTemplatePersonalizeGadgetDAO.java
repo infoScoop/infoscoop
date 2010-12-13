@@ -50,4 +50,10 @@ public class TabTemplatePersonalizeGadgetDAO extends HibernateDaoSupport {
 		query.setParameter("id", tabTemplateId);
 		query.executeUpdate();
 	}
+
+	public void deleteById(Integer id) {
+		super.getHibernateTemplate().bulkUpdate(
+				"delete from TabTemplatePersonalizeGadget where id = ?",
+				new Object[] { id });
+	}
 }

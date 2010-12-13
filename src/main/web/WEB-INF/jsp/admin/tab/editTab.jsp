@@ -158,7 +158,6 @@ IS_Portal = {
 		add:function(){}
 	}
 }
-
 </script>
 <script src="../../js/utils/utils.js"></script>
 <script src="../../js/utils/ajax304.js"></script>
@@ -245,6 +244,42 @@ IS_Portal.currentTabId = "tab${tabTemplate.id}";
 IS_Portal.trueTabId = "tab${tabTemplate.tabId}";
 IS_Portal.deleteTempTabFlag = 1;//1-- excute beforeunload, 0-- don't excute beforeunload
 
+function deleteTempTabTemplate(){
+	try{
+		IS_Request.asynchronous = false;
+		IS_Request.CommandQueue.fireRequest();
+	}catch(e){
+	}
+	if(isTemp(IS_Portal.deleteTempTabFlag)){
+		var a = new Ajax.Request(
+			"deleteTempTab",
+			{
+				"method": "get",
+				"parameters": "id=${tabTemplate.id}",
+				asynchronous: false,
+				onSuccess: function(request) {
+					//alert('temp=1のタブを削除しました');
+				},
+				onFailure: function(request) {
+					alert('読み込みに失敗しました');
+				},
+				onException: function (request) {
+					alert('読み込み中にエラーが発生しました');
+				}
+			}
+		);
+	}
+}
+
+Event.observe(window, "beforeunload", deleteTempTabTemplate, false);
+
+var editors = ${editors};
+if(editors.length > 0){
+	if(!confirm(editors.join("/")+"がこのタブを編集中です。\n他のユーザによって修正が上書きされる恐れがありますが、編集を続けてよろしいですか？")){
+		window.close();
+	}
+}
+
 function prepareStaticArea(){
 	var static_columns = $$('#staticAreaContainer .static_column');
 	IS_Portal.deleteTempTabFlag = 1;
@@ -303,7 +338,6 @@ function adjustStaticWidgetHeight(){
 }
 
 function init() {
-
 	Event.observe('submit_button', 'click', changeFlag, false);
 
 	//Holiday information
@@ -784,35 +818,7 @@ function clearStaticGadgets(){
 	);
 }
 
-function deleteTempTabTemplate(){
-	try{
-		IS_Request.asynchronous = false;
-		IS_Request.CommandQueue.fireRequest();
-	}catch(e){
-	}
-	if(isTemp(IS_Portal.deleteTempTabFlag)){
-		var a = new Ajax.Request(
-			"deleteTempTab",
-			{
-				"method": "get",
-				"parameters": "id=${tabTemplate.id}",
-				asynchronous: false,
-				onSuccess: function(request) {
-					//alert('temp=1のタブを削除しました');
-				},
-				onFailure: function(request) {
-					alert('読み込みに失敗しました');
-				},
-				onException: function (request) {
-					alert('読み込み中にエラーが発生しました');
-				}
-			}
-		);
-	}
-}
-
 Event.observe(window, "load", init, false);
-Event.observe(window, "beforeunload", deleteTempTabTemplate, false);
 
 
 IS_Portal.widgetDropped = function( widget ) {

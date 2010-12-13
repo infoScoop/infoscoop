@@ -130,12 +130,16 @@ public class TabController {
 			throws Exception {
 		String uid = (String) request.getSession().getAttribute("Uid");
 		TabTemplate tab = tabTemplateDAO.get(id);
+		
+		JSONArray editors = getEditors(tab.getTabId());
+		
 		TabTemplate tabCopy = tab.createTemp();
 		Integer domainId = DomainManager.getContextDomainId();
 		User loginUser = userDAO.getByEmail(uid, domainId);
 		tabCopy.setEditor(loginUser);
 		tabTemplateDAO.save(tabCopy);
 		model.addAttribute(tabCopy);
+		model.addAttribute("editors", editors.toString());
 	}
 	
 	@RequestMapping
@@ -144,8 +148,28 @@ public class TabController {
 			@RequestParam(value = "id", required = false) String id, Model model)
 			throws Exception {
 		TabTemplate tab = tabTemplateDAO.get(id);
+		JSONArray editors = getEditors(tab.getTabId());
 		model.addAttribute(tab);
+		model.addAttribute("editors", editors.toString());
 		return "tab/editTab";
+	}
+	
+	/**
+	 * get users on editing 
+	 * @param tabId
+	 * @return user names
+	 */
+	private JSONArray getEditors(String tabId){
+		List<TabTemplate> tempTabs = tabTemplateDAO.getTemp(tabId);
+		JSONArray editors = new JSONArray();
+		//A user is not on editing if not updating in this 5 minutes.
+		Date fiveMinutesAgo = new Date(new Date().getTime() - 5 * 60 * 1000);
+		for (TabTemplate tab : tempTabs) {
+			if (tab.getUpdatedAt().after(fiveMinutesAgo)) {
+				editors.put(tab.getEditor().getName());
+			}
+		}
+		return editors;
 	}
 
 	@RequestMapping
@@ -164,8 +188,7 @@ public class TabController {
 	@Transactional
 	public String deleteTab(@RequestParam("id") String tabId,
 			Model model) throws Exception {
-		TabTemplate tab = tabTemplateDAO.get(tabId);
-		tabTemplateDAO.delete(tab);
+		tabTemplateDAO.deleteByTabId(tabId);
 		return "redirect:index";
 	}
 	
@@ -821,6 +844,7 @@ public class TabController {
 	        
 	        try{
 	        	TabTemplateDAO tabDAO = TabTemplateDAO.newInstance();
+	        	TabTemplatePersonalizeGadgetDAO tabTemplatePersonalizeGadgetDAO = TabTemplatePersonalizeGadgetDAO.newInstance();
 	        	TabTemplate tab = tabDAO.get(tabId);
 	        	TabTemplatePersonalizeGadget widget = tab.getPersonalizeGadgetByWidgetId(widgetId);
 	        	tab.removeTabTemplatePersonalizeGadget(widget);
@@ -836,7 +860,7 @@ public class TabController {
 	        	if(nextSibling != null){
 	        		nextSibling.setSiblingId(widget.getSiblingId());
 	        	}
-	        	tabDAO.deleteParsonalizeGadget(widget.getId());
+				tabTemplatePersonalizeGadgetDAO.deleteById(widget.getId());
 	        		        	
 	        } catch (Exception e) {			
 	            String reason = "Failed to delete the widget.";

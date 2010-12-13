@@ -78,17 +78,35 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 	@SuppressWarnings("unchecked")
 	public TabTemplate get(String id) {
 		List<TabTemplate> items = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(TabTemplate.class).add(
-						Expression.eq(TabTemplate.PROP_ID, Integer.valueOf(id))));
+				DetachedCriteria.forClass(TabTemplate.class)
+						.add(
+								Expression.eq(TabTemplate.PROP_ID, Integer
+										.valueOf(id))).add(
+								Expression.eq(TabTemplate.PROP_FK_DOMAIN_ID,
+										DomainManager.getContextDomainId())));
 		if (items.size() == 1)
 			return items.get(0);
 		return null;
 	}
-	
-	public int getMaxOrderIndex(){
-		String queryString = "select max(OrderIndex) from TabTemplate";
-		List<Integer> result = super.getHibernateTemplate().find(queryString);
-		if(result.get(0) == null)
+
+
+	@SuppressWarnings("unchecked")
+	public List<TabTemplate> getTemp(String tabId) {
+		List<TabTemplate> items = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(TabTemplate.class).add(
+						Expression.eq(TabTemplate.PROP_TAB_ID, tabId)).add(
+						Expression.eq(TabTemplate.PROP_TEMP, 1)).add(
+						Expression.eq(TabTemplate.PROP_FK_DOMAIN_ID,
+								DomainManager.getContextDomainId())));
+		return items;
+	}
+
+	@SuppressWarnings("unchecked")
+	public int getMaxOrderIndex() {
+		String queryString = "select max(OrderIndex) from TabTemplate where fk_domain_id = ?";
+		List<Integer> result = super.getHibernateTemplate().find(queryString,
+				DomainManager.getContextDomainId());
+		if (result.get(0) == null)
 			return -1;
 		else
 			return result.get(0).intValue();
@@ -109,21 +127,49 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 
 	public TabTemplatePersonalizeGadget getColumnWidgetBySibling(String tabId,
 			String siblingId, Integer columnNum) {
-		
-		return (TabTemplatePersonalizeGadget) super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(TabTemplatePersonalizeGadget.class)
-				.add(Expression.eq(TabTemplatePersonalizeGadget.PROP_FK_TAB_TEMPLATE, tabId))
-				.add(Expression.eq(TabTemplatePersonalizeGadget.PROP_ID, siblingId))
-				.add(Expression.eq(TabTemplatePersonalizeGadget.PROP_COLUMN_NUM, columnNum))).get(0);
+
+		return (TabTemplatePersonalizeGadget) super
+				.getHibernateTemplate()
+				.findByCriteria(
+						DetachedCriteria
+								.forClass(TabTemplatePersonalizeGadget.class)
+								.add(
+										Expression
+												.eq(
+														TabTemplatePersonalizeGadget.PROP_FK_TAB_TEMPLATE,
+														tabId))
+								.add(
+										Expression
+												.eq(
+														TabTemplatePersonalizeGadget.PROP_ID,
+														siblingId))
+								.add(
+										Expression
+												.eq(
+														TabTemplatePersonalizeGadget.PROP_COLUMN_NUM,
+														columnNum)).add(
+										Expression.eq(
+												TabTemplate.PROP_FK_DOMAIN_ID,
+												DomainManager
+														.getContextDomainId())))
+				.get(0);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public TabTemplate getByTabId(String tabId){
-		List<TabTemplate> results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(TabTemplate.class)
-				.add(Expression.eq(TabTemplate.PROP_TAB_ID, tabId)).add(Expression.eq(TabTemplate.PROP_TEMP, Integer.valueOf(0)))
-		);
-		if(results.isEmpty())
+	public TabTemplate getByTabId(String tabId) {
+		List<TabTemplate> results = super
+				.getHibernateTemplate()
+				.findByCriteria(
+						DetachedCriteria.forClass(TabTemplate.class).add(
+								Expression.eq(TabTemplate.PROP_TAB_ID, tabId))
+								.add(
+										Expression.eq(TabTemplate.PROP_TEMP,
+												Integer.valueOf(0))).add(
+										Expression.eq(
+												TabTemplate.PROP_FK_DOMAIN_ID,
+												DomainManager
+														.getContextDomainId())));
+		if (results.isEmpty())
 			return null;
 		else
 			return results.get(0);
@@ -133,9 +179,11 @@ public class TabTemplateDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().delete(tab);
 		super.getHibernateTemplate().flush();
 	}
-
-	public void deleteParsonalizeGadget(Integer id) {
-		super.getHibernateTemplate().bulkUpdate("delete from TabTemplatePersonalizeGadget where id = ?", new Object[]{id});
+	
+	public void deleteByTabId(String tabId) {
+		super.getHibernateTemplate().bulkUpdate(
+				"delete from TabTemplate where tab_id = ? and fk_domain_id = ?",
+				new Object[] { tabId, DomainManager.getContextDomainId() });
 	}
 
 }
