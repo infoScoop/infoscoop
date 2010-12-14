@@ -64,10 +64,11 @@ function addRole(roleId){
 	var selectedRoleRow = jQuery('#role_id_' + roleId);
 	var roleRow = selectedRoleRow.clone(true);
 	roleRow.attr('id', 'selected_role_id_' + roleId);
+	roleRow.removeAttr('class');
 	roleRow.children('td:first-child').remove();
 	var rowSpan = roleRow.children('td:first-child').attr('rowSpan');
 	roleRow.children('td:first-child').append(jQuery('<input type="hidden" name="roles.id" value="' + roleId + '"/>'));
-	roleRow.append(jQuery('<td rowSpan="'+ rowSpan + '" class="deletetd"><span class="trash" onclick="deleteRole()" ></td>'))
+	roleRow.append(jQuery('<td rowSpan="'+ rowSpan + '" class="deletetd"><span class="trash" onclick="deleteRole(this)" ></td>'))
 	roleListTbody.append(roleRow);
 	for(i = 1; i < rowSpan ; i++){
 		selectedRoleRow = selectedRoleRow.next();

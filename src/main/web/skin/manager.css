@@ -302,11 +302,12 @@ body {
 .tab_table {
 	border:1px solid #CCCCCC;
 	border-collapse:collapse;
-	font-size:1.3em;
+	font-size:1.1em;
 	text-align:center;
 }
 .tab_table tr td {
 	border:1px solid #CCCCCC;
+	padding: 3px;
 }
 .tab_table tr th {
 	background-color: #d3DADE;

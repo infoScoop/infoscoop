@@ -123,6 +123,7 @@ table.display {
 	 * If you want that effect I'd suggest setting a border-top/left on th/td's and 
 	 * then filling in the gaps with other borders.
 	 */
+	font-size:1em;
 }
 
 table.display thead th {
@@ -218,7 +219,8 @@ table.display tr.even.gradeU {
 
 
 tr.odd {
-	background-color: #E2E4FF;
+	/*background-color: #E2E4FF;*/
+	background-color: #E6EEEE;
 }
 
 tr.even {
@@ -327,7 +329,8 @@ table.display tr.odd.row_selected td {
  */
 /* For the standard odd/even */
 tr.odd td.sorting_1 {
-	background-color: #D3D6FF;
+	/*background-color: #D3D6FF;*/
+	background-color: #E0E3E3;
 }
 
 tr.odd td.sorting_2 {
@@ -339,7 +342,8 @@ tr.odd td.sorting_3 {
 }
 
 tr.even td.sorting_1 {
-	background-color: #EAEBFF;
+	/*background-color: #EAEBFF;*/
+	background-color: #EFF6F6;
 }
 
 tr.even td.sorting_2 {
