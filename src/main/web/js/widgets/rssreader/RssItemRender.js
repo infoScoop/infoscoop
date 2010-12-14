@@ -256,7 +256,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssItemDiv = function( widget,o
 //		aTag.innerHTML = rssTitle;
 		this.aTag.appendChild(document.createTextNode(this.rssTitle));
 		this.aTag.title = this.rssTitle;
-		if(rssItem.Atom_unread)
+		if(rssItem.gmail_unread)
 			this.aTag.style.fontWeight = "bold";
 			
 		if( itemDisplay == "newwindow" )
