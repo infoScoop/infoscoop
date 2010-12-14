@@ -217,11 +217,8 @@ public class TabTemplate extends BaseTabTemplate {
 		return JSONObject.quote(super.getLayout());
 	}
 
-	public int getAccessLevel(){
-		return (super.getRoles()== null || super.getRoles().isEmpty()) ? 0 : 1;
-	}
-
-	public void setAccessLevel(int i){
+	public boolean getPublishBool(){
+		return super.getPublish() == 1;
 	}
 	
 }

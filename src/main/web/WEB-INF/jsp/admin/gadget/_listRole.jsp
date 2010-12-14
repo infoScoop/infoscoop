@@ -53,11 +53,10 @@ jQuery(function(){
 	<c:set var="everyone"><spring:message code="gadget._listRole.access.everyone" /></c:set>
 	<c:set var="special"><spring:message code="gadget._listRole.access.special" /></c:set>
 	<div>
-		<form:radiobutton path="accessLevel" value="0" label="${everyone}" cssErrorClass="error" />
-		<form:radiobutton path="accessLevel" value="1" label="${special}" cssErrorClass="error" />
-		<form:errors path="accessLevel" />
+		<lablel for="accessLevelEvryone"><input type="radio" name="accessLevel" value="0"/>${everyone}</label>
+		<lablel for="accessLevelSpecial"><input type="radio" name="accessLevel" value="1"/>${special}</label>
 	</div>
-	<div id="selected_security_role_panel" style="display:${ ( accessLevel== 1 ? "":"none" )};">
+	<div id="selected_security_role_panel" style="display:${ ( publish== 1 ? "":"none" )};">
 		<input type="button" id="add_role_button" value="編集"/>
 		<table id="role_list_table" class="tab_table" cellspacing="0" cellpadding="0">
 			<thead>
@@ -70,7 +69,7 @@ jQuery(function(){
 			<tfoot></tfoot>
 			<tbody>
 
-			<c:forEach var="role" items="${roles}" varStatus="s">	
+			<c:forEach var="role" items="${roles}" varStatus="s">
 				<c:set var="principalSize" value="${role.size}" />
 				<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
 					<tr id="role_id_${role.id}">

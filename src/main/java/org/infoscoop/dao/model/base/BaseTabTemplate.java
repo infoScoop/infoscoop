@@ -39,8 +39,8 @@ public abstract class BaseTabTemplate  implements Serializable {
 	 * Constructor for primary key
 	 */
 	public BaseTabTemplate (java.lang.Integer id) {
-		this.setId(id);
 		initialize();
+		this.setId(id);
 	}
 
 	/**
@@ -52,16 +52,18 @@ public abstract class BaseTabTemplate  implements Serializable {
 		java.lang.Integer orderIndex,
 		java.lang.String name,
 		java.lang.Integer status) {
+		initialize();
 
 		this.setId(id);
 		this.setTabId(tabId);
 		this.setOrderIndex(orderIndex);
 		this.setName(name);
 		this.setStatus(status);
-		initialize();
 	}
 
-	protected void initialize () {}
+	protected void initialize () {
+		this.publish = Integer.valueOf(0);
+	}
 
 
 

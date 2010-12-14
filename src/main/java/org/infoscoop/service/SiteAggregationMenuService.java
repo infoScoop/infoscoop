@@ -34,6 +34,7 @@ import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.dao.model.Role;
 import org.infoscoop.dao.model.RolePrincipal;
+import org.infoscoop.util.RoleUtil;
 import org.infoscoop.util.XmlUtil;
 
 public class SiteAggregationMenuService {
@@ -67,24 +68,8 @@ public class SiteAggregationMenuService {
 			return;
 		//TODO: make following block to function.
 		if(!menuItem.getRoles().isEmpty()){
-			boolean canDisplay = false;
-			Set<Role> roles = menuItem.getRoles();
-			for(Role role: roles){
-				for(RolePrincipal p: role.getRolePrincipals()){
-					Subject loginUser = SecurityController.getContextSubject();
-					for(ISPrincipal principal : loginUser.getPrincipals(ISPrincipal.class)){
-						if(noAuth && ISPrincipal.ADMINISTRATOR_PRINCIPAL == principal.getType()){
-							canDisplay = true;
-							break;
-						}else if(p.getType().equalsIgnoreCase(principal.getType()) && 
-								p.getName().equalsIgnoreCase(principal.getName())){
-							canDisplay = true;
-							break;
-						}
-					}
-				}
-			}
-			if(!canDisplay)return;
+			Set<Role> roles = menuItem.getRoles();			
+			if(!RoleUtil.isAccessible(noAuth, roles))return;
 		}
 			
 		

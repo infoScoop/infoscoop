@@ -25,6 +25,7 @@ import org.infoscoop.command.util.XMLCommandUtil;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetInstanceDAO;
 import org.infoscoop.dao.MenuItemDAO;
+import org.infoscoop.dao.RoleDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.TabTemplatePersonalizeGadgetDAO;
@@ -34,6 +35,7 @@ import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.MenuItem;
+import org.infoscoop.dao.model.Role;
 import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.dao.model.TabTemplatePersonalizeGadget;
 import org.infoscoop.dao.model.TabTemplateStaticGadget;
@@ -113,7 +115,6 @@ public class TabController {
 		tab.setName("New Tab");
 		tab.setOrderIndex(tabTemplateDAO.getMaxOrderIndex() + 1);
 		tab.setStatus(1);
-		tab.setAccessLevel(0);
 		Integer domainId = DomainManager.getContextDomainId();
 		User loginUser = userDAO.getByEmail(uid, domainId);
 		tab.setEditor(loginUser);
@@ -400,6 +401,14 @@ public class TabController {
 		tab.setLayout(formTab.getLayout());
 		tab.setAreaType(formTab.getAreaType());
 		tab.setStatus(0);//current
+		tab.setPublish(formTab.getPublish());
+		//TODO: edit roles collection, and remove a role in roles collection.
+		if (roleIdList != null) {
+			for (int i = 0; i < roleIdList.length; i++) {
+				Role role = RoleDAO.newInstance().get(roleIdList[i]);
+				tab.addToRoles(role);
+			}
+		}
 		tabTemplateDAO.save(tab);
 		
 		//history max count is 30
