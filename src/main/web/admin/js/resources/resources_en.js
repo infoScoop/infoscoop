@@ -438,7 +438,7 @@ var ISA_R = {
 	"property_desc_logCommandQueueWait": "User operation log transmission interval(second)",
 	"property_desc_displayInlineHost": "URL displayed in inline frame(eg. hostname:80,hostname,hostname:8080)",
 	"property_desc_logStoragePeriod": "Storage period of log and access log. Set -1 for unlimited duration",
-	"property_desc_appsServiceURL": "URL of servlet for Google Apps"
+	"property_desc_appsServiceURL": "URL of service for Google Apps"
 	"property_enum_debug":"Debug",
 	"property_enum_display":"Display",
 	"property_enum_error":"Error",

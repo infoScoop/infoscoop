@@ -438,7 +438,7 @@ var ISA_R = {
 	"property_desc_logCommandQueueWait": "ユーザ操作情報送信間隔（秒）",
 	"property_desc_displayInlineHost": "インラインフレームで表示するURL（例: hostname:80, hostname, hostname:8080）",
 	"property_desc_logStoragePeriod": "ログの保存期間。-1で無期限",
-	"property_desc_appsServiceURL": "Google Apps用サーブレットのURL",
+	"property_desc_appsServiceURL": "Google Apps用サービスのURL",
 	"property_enum_debug":"デバッグ",
 	"property_enum_display":"表示",
 	"property_enum_error":"エラー",
