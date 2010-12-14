@@ -161,11 +161,15 @@ public class TabService {
 						this.createStaticGadgetList( uid, tabTemplate )
 					));
 			}else{
+				boolean isChanged = staticTab.getTemplateTimestamp() != null
+						&& tabTemplate.getUpdatedAt().compareTo(
+								staticTab.getTemplateTimestamp()) > 0;
 				tabList.add(new TabDetail(
 						staticTab,
 						tabTemplate.getLayout(),
 						this.copyPersonalizeGadgetsUserPrefs(uid, staticTab, tabTemplate),
-						this.copyStaticGadgetsUserPrefs(uid, staticTab, tabTemplate)
+						this.copyStaticGadgetsUserPrefs(uid, staticTab, tabTemplate),
+						isChanged
 					));
 			}
 			staticTab.setTemplateTimestamp(tabTemplate.getUpdatedAt());
@@ -545,6 +549,7 @@ public class TabService {
 		private String layout;
 		private List<Widget> staticWidgets;
 		private List<Widget> personalWidgets;
+		private boolean isChanged;
 
 		public TabDetail(Tab tab, String layout, List<Widget> personalWidgets,
 				List<Widget> staticWidgets) {
@@ -552,6 +557,12 @@ public class TabService {
 			this.layout = layout;
 			this.staticWidgets = staticWidgets;
 			this.personalWidgets = personalWidgets;
+		}
+		
+		public TabDetail(Tab tab, String layout, List<Widget> personalWidgets,
+				List<Widget> staticWidgets, boolean isChanged) {
+			this(tab, layout, personalWidgets, staticWidgets);
+			this.isChanged = isChanged;
 		}
 
 		public Tab getTab() {
@@ -568,6 +579,10 @@ public class TabService {
 
 		public List<Widget> getPersonalWidgets() {
 			return personalWidgets;
+		}
+
+		public boolean isChanged() {
+			return isChanged;
 		}
 	}
 }

@@ -135,7 +135,11 @@ public class WidgetServlet extends HttpServlet {
 				//FIXME dirty
 				WidgetDAO.newInstance().getHibernateTemplate().deleteAll( removeWidgetList );
 				
-				responseAray.put( tab.toJSONObject( layout, dynamicWidgets,staticWidgets,resMap ));
+				JSONObject tabJson = tab.toJSONObject(layout, dynamicWidgets,
+						staticWidgets, resMap);
+				if (t.isChanged())
+					tabJson.put("isChanged", t.isChanged());
+				responseAray.put(tabJson);
 			}
 			
 			String jsonStr = responseAray.toString();

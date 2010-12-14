@@ -99,6 +99,7 @@ var IS_R = {
 	"lb_noDiplayItem": "There is no information to display.",
 	"lb_gadget": "Gadget",
 	"ms_changeToFixedTab": "The tab '{0}' was changed to fixed tab. All gadgets in the personalized area were put into the trash box.",
+	"ms_staticTabIsChanged": "The tab'{0}' was updated.",
 	"ms_showWidgetByClick": "This gadget is displayed when clicking.",
 	"lb_countryIE": "Ireland",
 	"ms_inputCredential": "Please input Credential.",

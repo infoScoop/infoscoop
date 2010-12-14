@@ -99,6 +99,7 @@ var IS_R = {
 	"lb_noDiplayItem": "没有表示的信息。",
 	"lb_gadget": "小工具",
 	"ms_changeToFixedTab": "标签'{0}'被变更成为固定标签。 所有的个性化领域的小工具被收集到了回收站。",
+	"ms_staticTabIsChanged": "The tab'{0}' was updated.",
 	"ms_showWidgetByClick": "点击表示这个小工具",
 	"lb_countryIE": "爱尔兰",
 	"ms_inputCredential": "请输入认证信息。",

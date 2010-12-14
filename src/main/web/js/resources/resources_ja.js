@@ -99,6 +99,7 @@ var IS_R = {
 	"lb_noDiplayItem": "表示する情報がありません。",
 	"lb_gadget": "ガジェット",
 	"ms_changeToFixedTab": "タブ「{0}」が固定タブに変更されました。パーソナライズエリアのガジェットは全てゴミ箱に入りました。",
+	"ms_staticTabIsChanged": "タブ「{0}」が更新されました。",
 	"ms_showWidgetByClick": "クリックするとこのガジェットを表示します",
 	"lb_countryIE": "アイルランド",
 	"ms_inputCredential": "認証情報を入力してください。",

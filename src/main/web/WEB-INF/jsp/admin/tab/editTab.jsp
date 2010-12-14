@@ -288,8 +288,8 @@ IS_Portal.addTab = function(idNumber, name, type, layout, numCol, columnsWidth, 
 	IS_Portal.widgetLists["tab"+idNumber] = new Object();
 	IS_Portal.columnsObjs["tab"+idNumber] = {};
 	IS_Portal.tabs["tab"+idNumber] = {"numCol":0,type:"static",adjustStaticHeight:adjustStaticHeight};
-	if(areaType != 2){
-		var panels = $("panels");
+	var panels = $("panels");
+	if(panels){
 		var panelDiv = IS_Portal.buildPanel( idNumber, type );
 		panelDiv.style.display = "";
 		panels.appendChild( panelDiv );

@@ -392,21 +392,12 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					
 					var disabledDynamicPanel = widgetConfList[tabId].disabledDynamicPanel;
 					if(widgetConfList[tabId].isTrashDynamicPanelWidgets){
-						var msgListDiv = $('message-list');
-						msgListDiv.appendChild(
-							$.DIV(
-								{id:'message-newmsg'},
-								$.IMG(
-									{
-										style:'position:relative;top:2px;paddingRight:2px',
-										src:imageURL+"information.gif"
-									}
-								),
-								IS_R.getResource(IS_R.ms_changeToFixedTab, [tabName])
-							)
-						);
-						$('message-bar').style.display = "";
-						IS_EventDispatcher.newEvent("adjustedMessageBar");
+						IS_Portal.addMsg(IS_R.getResource(IS_R.ms_changeToFixedTab, [tabName]));
+						IS_Portal.showMsgBar();
+					}
+					if(widgetConfList[tabId].isChanged){
+						IS_Portal.addMsg(IS_R.getResource(IS_R.ms_staticTabIsChanged, [tabName]));
+						IS_Portal.showMsgBar();
 					}
 					
 					IS_Portal.addTab( id, tabName, tabType, widgetConfList[tabId].staticPanelLayout, numCol, columnsWidth, disabledDynamicPanel, widgetConfList[tabId].adjustStaticHeight, true);
@@ -419,6 +410,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					*/
 				}
 			}
+			IS_Portal.adjustMsgBar();
 			
 			if( useTab ) {
 				IS_Portal.controlTabs = new Control.Tabs("tabs",{

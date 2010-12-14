@@ -1529,6 +1529,28 @@ IS_Portal._adjustGadgetHeight = function( gadget,swap ){
 	});
 }
 
+IS_Portal.addMsg = function(msg){
+	var msgListDiv = $('message-list');
+	msgListDiv.appendChild(
+		$.DIV(
+			{id:'message-newmsg'},
+			$.IMG(
+				{
+					style:'position:relative;top:2px;paddingRight:2px',
+					src:imageURL+"information.gif"
+				}
+			),
+			msg
+		)
+	);
+}
+IS_Portal.showMsgBar = function(){
+	$('message-bar').style.display = "";
+}
+IS_Portal.adjustMsgBar = function(){
+	IS_EventDispatcher.newEvent("adjustedMessageBar");
+}
+
 IS_Portal.moreMsgBar = function() {
 	$('message-list-more').show();
 	$('message-list-more-btn').hide();
