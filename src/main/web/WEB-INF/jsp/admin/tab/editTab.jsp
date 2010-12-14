@@ -229,6 +229,7 @@ IS_Portal = {
 	unDisplayMsgBar: function(){},
 	adjustPanelHeight: function(){},
 	adjustIframeHeight: function(){},
+	adjustMsgBar: function(){},
 	deleteCacheByUrl:function(){},
 	endIndicator: function(){},
 	widgetDisplayUpdated: function(){},
