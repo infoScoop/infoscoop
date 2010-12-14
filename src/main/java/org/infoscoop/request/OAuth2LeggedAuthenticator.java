@@ -62,7 +62,7 @@ public class OAuth2LeggedAuthenticator implements Authenticator {
 			OAuthConsumer consumer = new OAuthConsumer(null, consumerConf.getConsumerKey(), consumerConf.getConsumerSecret(), null);
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 
-			if(method.getURI().toString().indexOf("xoauth_requestor_id") == -1){
+			if(method.getURI().getQuery().indexOf("xoauth_requestor_id=") == -1){
 				method.setURI(new URI(method.getURI().getURI()
 						+ (method.getURI().getQuery() == null ? "?" : "&")
 						+ "xoauth_requestor_id=" + request.getPortalUid(), false));
