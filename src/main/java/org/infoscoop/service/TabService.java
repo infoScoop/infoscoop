@@ -161,24 +161,12 @@ public class TabService {
 						this.createStaticGadgetList( uid, tabTemplate )
 					));
 			}else{
-				if (staticTab.getTemplateTimestamp() != null
-						&& tabTemplate.getUpdatedAt().compareTo(
-								staticTab.getTemplateTimestamp()) <= 0) {
-					//if tabTemplate is not changed, return tab information
-					tabList.add(new TabDetail(
-							staticTab,
-							tabTemplate.getLayout(),
-							tabDAO.getDynamicWidgetList( staticTab ),
-							tabDAO.getStaticWidgetList( staticTab )
-						));
-				}else{
-					tabList.add(new TabDetail(
-							staticTab,
-							tabTemplate.getLayout(),
-							this.copyPersonalizeGadgetsUserPrefs(uid, staticTab, tabTemplate),
-							this.copyStaticGadgetsUserPrefs(uid, staticTab, tabTemplate)
-						));
-				};
+				tabList.add(new TabDetail(
+						staticTab,
+						tabTemplate.getLayout(),
+						this.copyPersonalizeGadgetsUserPrefs(uid, staticTab, tabTemplate),
+						this.copyStaticGadgetsUserPrefs(uid, staticTab, tabTemplate)
+					));
 			}
 			staticTab.setTemplateTimestamp(tabTemplate.getUpdatedAt());
 			tabTemplateIds.add(tabTemplate.getTabId());
@@ -322,7 +310,7 @@ public class TabService {
 				widget.setUserPref(up.getId().getName(), up.getValue());
 			
 			widgetList.add(widget);
-			this.widgetDAO.addWidget(widget, true);
+			this.widgetDAO.addWidget(widget, false);
 		}
 		return widgetList;
 	}
