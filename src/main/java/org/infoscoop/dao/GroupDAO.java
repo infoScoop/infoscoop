@@ -31,7 +31,7 @@ public class GroupDAO extends HibernateDaoSupport {
 	public List<Group> selectByName(String name) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Group.class).add(
-						Expression.like(Group.PROP_NAME,name)).add(
+						Expression.like(Group.PROP_NAME,name+"%")).add(
 								Expression.eq(Group.PROP_FK_DOMAIN_ID,DomainManager.getContextDomainId())));
 	}
 

@@ -17,6 +17,9 @@
 <link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/css/smoothness/jquery-ui-1.8.4.custom.css">
 <script type="text/javascript" src="../../js/lib/jquery-ui/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript" src="../../js/lib/livequery-1.1.0/jquery.livequery.js"></script>
+<link rel="stylesheet" type="text/css" href="../../js/lib/DataTables-1.7.4/css/demo_page.cs">
+<link rel="stylesheet" type="text/css" href="../../js/lib/DataTables-1.7.4/css/demo_table.css">
+<script src="../../js/lib/DataTables-1.7.4/js/jquery.dataTables.min.js"></script>
 <style>
 h1 {
   margin:5px;

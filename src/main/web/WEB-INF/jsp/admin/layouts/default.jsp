@@ -16,6 +16,9 @@
 		<script type="text/javascript" src="../../js/utils/domhelper.js"></script>
 		<link rel="stylesheet" type="text/css" href="../../js/lib/tablesorter/themes/blue/style.css">
 		<script type="text/javascript" src="../../js/lib/tablesorter/jquery.tablesorter.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../js/lib/DataTables-1.7.4/css/demo_page.cs">
+		<link rel="stylesheet" type="text/css" href="../../js/lib/DataTables-1.7.4/css/demo_table.css">
+		<script src="../../js/lib/DataTables-1.7.4/js/jquery.dataTables.min.js"></script>
 	</head>
 	<body>
 		<div id="header"><tiles:insertAttribute name="header" /></div>

@@ -241,8 +241,8 @@ $(function () {
 				.css("background", "url("+icon+")");
 		});
 	});
-
 });
+
 </script>
 <div id="menu">
 	<div id="menu_left">
