@@ -223,7 +223,6 @@ public class MenuController {
 				gadget.setHref(item.getHref());
 			}
 		}
-		//TODO: edit roles collection, and remove a role in roles collection.
 		if (roleIdList != null) {
 			for (int i = 0; i < roleIdList.length; i++) {
 				Role role = RoleDAO.newInstance().get(roleIdList[i]);

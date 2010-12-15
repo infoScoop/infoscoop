@@ -75,7 +75,9 @@ public class MenuItem extends BaseMenuItem {
 		return (super.getRoles()== null || super.getRoles().isEmpty()) ? 0 : 1;
 	}
 
-	public void setAccessLevel(int i){
+	public void setAccessLevel(String accessLevel){
+		if(Integer.parseInt(accessLevel) == 0)
+			super.getRoles().clear();
 	}
 	
 	public void toggolePublish() {

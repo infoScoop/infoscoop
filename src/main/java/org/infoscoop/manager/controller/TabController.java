@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -141,6 +143,11 @@ public class TabController {
 		tabTemplateDAO.save(tabCopy);
 		model.addAttribute(tabCopy);
 		model.addAttribute("editors", editors.toString());
+
+		Set<Role> roles = tab.getRoles();
+		if(roles == null)
+			roles = new HashSet<Role>();
+		model.addAttribute("roles", roles);
 	}
 	
 	@RequestMapping
@@ -402,7 +409,7 @@ public class TabController {
 		tab.setAreaType(formTab.getAreaType());
 		tab.setStatus(0);//current
 		tab.setPublish(formTab.getPublish());
-		//TODO: edit roles collection, and remove a role in roles collection.
+		tab.setAccessLevel(Integer.toString(formTab.getAccessLevel()));
 		if (roleIdList != null) {
 			for (int i = 0; i < roleIdList.length; i++) {
 				Role role = RoleDAO.newInstance().get(roleIdList[i]);

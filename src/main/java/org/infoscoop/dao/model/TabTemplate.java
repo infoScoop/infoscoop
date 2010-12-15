@@ -220,5 +220,13 @@ public class TabTemplate extends BaseTabTemplate {
 	public boolean getPublishBool(){
 		return super.getPublish() == 1;
 	}
-	
+
+	public int getAccessLevel(){
+		return (super.getRoles()== null || super.getRoles().isEmpty()) ? 0 : 1;
+	}
+
+	public void setAccessLevel(String accessLevel){
+		if(Integer.parseInt(accessLevel) == 0)
+			super.getRoles().clear();
+	}
 }

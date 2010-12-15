@@ -10,6 +10,7 @@ jQuery(function(){
 			jQuery('#selected_security_role_panel').show();
 		}else{
 			jQuery('#selected_security_role_panel').hide();
+			jQuery('#role_list_table tbody').children('tr').remove();
 		}
 	}
 	jQuery('input[name="accessLevel"]').click(toggleSecurityRolePanel);
@@ -53,8 +54,8 @@ jQuery(function(){
 	<c:set var="everyone"><spring:message code="gadget._listRole.access.everyone" /></c:set>
 	<c:set var="special"><spring:message code="gadget._listRole.access.special" /></c:set>
 	<div>
-		<lablel for="accessLevelEvryone"><input type="radio" name="accessLevel" value="0"/>${everyone}</label>
-		<lablel for="accessLevelSpecial"><input type="radio" name="accessLevel" value="1"/>${special}</label>
+		<form:radiobutton path="accessLevel" value="0" label="${everyone}" cssErrorClass="error" />
+		<form:radiobutton path="accessLevel" value="1" label="${special}" cssErrorClass="error" />
 	</div>
 	<div id="selected_security_role_panel" style="display:${ ( publish== 1 ? "":"none" )};">
 		<input type="button" id="add_role_button" value="編集"/>
