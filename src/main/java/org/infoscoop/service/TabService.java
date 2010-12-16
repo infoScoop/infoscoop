@@ -508,6 +508,8 @@ public class TabService {
 			
 			widget.setTabid( tab.getTabId());
 		}
+		
+		widgetDAO.getHibernateTemplate().flush();
 
 		widgetDAO.emptyWidgets( uid,tab.getTabId(),1 );
 		widgetDAO.getHibernateTemplate().saveOrUpdateAll( widgets );
