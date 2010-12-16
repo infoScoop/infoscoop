@@ -47,6 +47,8 @@ import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.XmlUtil;
+import org.infoscoop.util.spring.TextView;
+import org.infoscoop.util.spring.XmlView;
 import org.infoscoop.web.ProxyServlet;
 import org.infoscoop.widgetconf.I18NConverter;
 import org.infoscoop.widgetconf.MessageBundle;
@@ -459,6 +461,20 @@ public class TabController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Transactional	
+	public TextView sort(@RequestParam("tabId") String[] tabIds, Model model) {
+		int order = 0;
+		for(String tabId : tabIds){
+			TabTemplate tab = tabTemplateDAO.get(tabId);
+			tab.setOrderIndex(order++);
+			tabTemplateDAO.save(tab);
+		}
+		TextView view = new TextView();
+		view.setResponseBody("success to sort tabs");
+		return view;
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public XmlView comsrv(HttpServletRequest request) throws Exception{
 		String uid = (String) request.getSession().getAttribute("Uid");
@@ -615,31 +631,8 @@ public class TabController {
 		}
 		writer.write("</responses>");
 		XmlView view = new XmlView();
-		view.setXmlString(writer.toString());
+		view.setResponseBody(writer.toString());
 		return view;
-	}
-	
-	public static class XmlView extends AbstractView{
-
-		private String xmlString;
-		
-		void setXmlString(String xmlStr){
-			this.xmlString = xmlStr;
-		}
-		
-		public String getContentType(){
-			return "text/xml; charset=UTF-8" ;
-		}
-
-		@Override
-		protected void renderMergedOutputModel(Map<String, Object> map,
-				HttpServletRequest request, HttpServletResponse response)
-				throws Exception {
-					        
-			response.setContentType( "text/xml; charset=UTF-8" );
-			response.getWriter().write( xmlString );
-		}
-		
 	}
 	
 	public static class AddWidget extends XMLCommandProcessor{

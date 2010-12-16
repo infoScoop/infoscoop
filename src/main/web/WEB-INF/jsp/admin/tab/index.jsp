@@ -16,7 +16,31 @@ $(function(){
 		event.preventDefault();
 	});
 	$("#tab_table").tablesorter({
-		headers: {0:{sorter:false},1:{sorter:false},2:{sorter:false},3:{sorter:false},4:{sorter:false},5:{sorter:false}}
+		headers: {
+			0:{sorter:false},
+			1:{sorter:false},
+			2:{sorter:false},
+			3:{sorter:false},
+			4:{sorter:false},
+			5:{sorter:false},
+			6:{sorter:false},
+			7:{sorter:false}
+		}
+	});
+	$("#tab_table tbody").sortable({
+		axis:"y",
+		update:function(event, ui){
+			$.ajax({
+				url: "sort",
+				type:"POST",
+				data: $("#tab_table tbody").sortable("serialize", {key:"tabId"}),
+				success: function(data, status, xhr){
+				},
+				error: function(xhr, status, e){
+					//TODO: handle error
+				}
+			});
+		}
 	});
 	$('a.delete_link').click(function(event){
 		return confirm("タブを削除します。履歴も全て削除されます。\n復元することはできませんが、よろしいですか？");
@@ -47,7 +71,7 @@ $(function(){
 		<tfoot></tfoot>
 		<tbody>
 <c:forEach var="tab" items="${tabs}">
-			<tr>
+			<tr id="tabId_${tab.id}">
 				<td>${tab.name}</td>
 				<td>${tab.updatedAt}</td>
 				<td>${tab.editor.name}</td>
