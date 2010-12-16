@@ -406,7 +406,8 @@ function prepareStaticArea(){
 				edit_cover.innerHTML = 'New';
 			}
 		}
-	}
+	};
+	$('layout').value = $('staticAreaContainer').innerHTML;
 };
 
 function adjustStaticWidgetHeight(){
@@ -815,7 +816,6 @@ function init() {
 						var layoutClick = function(el,e) {
 							$('staticAreaContainer').innerHTML = el.innerHTML;
 							prepareStaticArea();
-							$('layout').value = $('staticAreaContainer').innerHTML;
 							$('layoutModified').value = "true";
 							reloadStaticGadgets();
 							clearStaticGadgets();
@@ -847,7 +847,6 @@ function init() {
 					var layout = $("edit_layout_textarea").value;
 					$('staticAreaContainer').innerHTML = layout;
 					prepareStaticArea();
-					$('layout').value = $('staticAreaContainer').innerHTML;
 					$('layoutModified').value = "true";
 					reloadStaticGadgets();
 					clearStaticGadgets();
