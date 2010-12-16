@@ -90,7 +90,7 @@ if( isPreview == null )
 			country : "<%=request.getLocale().getCountry() %>",
 			japaneseOnly : false
 		};
-		var is_userId = <%=uid != null ? "\"" + uid + "\"" : "null" %>;
+		var is_userId = <%=uid != null ? "\"" + uid.replace("\\", "\\\\") + "\"" : "null" %>;
 		var is_userName = <%=userName != null ?  "\"" + userName + "\"" : "null" %>;
 		var is_isAdministrator = <%=isAdmin != null ? isAdmin.booleanValue() : false%>;
 		//dojo.require("dojo.dom");
