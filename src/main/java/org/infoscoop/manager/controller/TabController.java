@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -63,7 +62,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.view.AbstractView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -125,6 +123,7 @@ public class TabController {
 		tab.setLayout(LAYOUT_01);
 		tabTemplateDAO.save(tab);
 		model.addAttribute(tab);
+		model.addAttribute("editors", "{}");
 		return "tab/editTab";
 	}
 	
