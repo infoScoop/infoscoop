@@ -2,6 +2,9 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
+
 
 /**
  * This is an object that contains data related to the IS_MENU_ITEMS table.
@@ -77,6 +80,9 @@ public abstract class BaseMenuItem  implements Serializable {
 	// fields
 	private java.lang.String menuId;
 	private java.lang.Integer fkDomainId;
+	
+	@NotNull
+	@Size(min=1,max=80) 
 	private java.lang.String title;
 	private java.lang.Integer menuOrder;
 	private java.lang.String href;

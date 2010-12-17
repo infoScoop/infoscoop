@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,11 +37,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import com.sun.org.apache.xerces.internal.util.IntStack;
 
 @Controller
 public class MenuController {
@@ -134,7 +138,7 @@ public class MenuController {
 	@RequestMapping
 	@Transactional
 	public void showAddItem(@RequestParam("menuId") int menuId,
-			@RequestParam("id") String parentId,
+			@RequestParam(value = "id") String parentId,
 			@RequestParam(value = "type", required = false) String type,
 			@RequestParam(value = "title", required = false) String title,
 			Model model, Locale locale) throws Exception {
@@ -166,29 +170,24 @@ public class MenuController {
 			model.addAttribute("conf", gadgetConf);
 		}
 		item.setTitle(title);
-		model.addAttribute("gadget", item);
+		model.addAttribute(item);
 	}
 
 	@RequestMapping
 	@Transactional
-	public void showEditItem(@RequestParam("menuId") String menuId, Model model,
+	public void showEditItem(
+			@RequestParam("menuId") String menuId, 
+			Model model,
 			Locale locale) throws Exception {
 		MenuItem item = menuItemDAO.getByMenuId(menuId);
-		model.addAttribute("gadget", item);
+		model.addAttribute(item);
 		Set<Role> roles = item.getRoles();
 		if(roles == null)
 			roles = new HashSet<Role>();
 		model.addAttribute("roles", roles);
 
-		GadgetInstance gadget = item.getGadgetInstance();
-		if (gadget != null) {
-			String type = gadget.getType();
-			if (type != null && type.length() > 0) {
-				// lazy=true, but get userprefs ahead of time. Can get ahead with calling any method.
-				item.getGadgetInstance().getGadgetInstanceUserPrefs().size();
-				model.addAttribute("conf", getGadgetConf(type, locale));
-			}
-		}
+		if(item.getGadgetInstance() != null)
+			model.addAttribute("conf", getGadgetConf(item.getGadgetInstance(), locale));
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -211,10 +210,19 @@ public class MenuController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public MenuItem updateItem(
-			MenuItem item,
-			@RequestParam(value = "roles.id", required = false) String[] roleIdList)
+	public String updateItem(
+			@Valid MenuItem item,
+			BindingResult result,
+			@RequestParam(value = "roles.id", required = false) String[] roleIdList,
+			Locale locale,
+			Model model)
 			throws Exception {
+		if(result.hasErrors()){
+			model.addAttribute(item);
+			if(item.getGadgetInstance() != null)
+				model.addAttribute("conf", getGadgetConf(item.getGadgetInstance(), locale));
+			return "menu/showEditItem";
+		}
 		GadgetInstance gadget = item.getGadgetInstance();
 		if (gadget != null) {
 			String type = gadget.getType();
@@ -230,7 +238,7 @@ public class MenuController {
 			}
 		}
 		menuItemDAO.save(item);
-		return item;
+		return "menu/updateItem";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -258,7 +266,7 @@ public class MenuController {
 		item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
 
 		model.addAttribute(item);
-		model.addAttribute("conf", getGadgetConf(gadgetInstance.getType(),
+		model.addAttribute("conf", getGadgetConf(gadgetInstance,
 				locale));
 		return "menu/showAddItem";
 	}
@@ -391,7 +399,15 @@ public class MenuController {
 		model.addAttribute("gadgets", uploadGadgets);
 	}
 
-	private Document getGadgetConf(String type, Locale locale) throws Exception {
+	private Document getGadgetConf(GadgetInstance gadget, Locale locale) throws Exception {
+		String type = gadget.getType();
+		if (type != null && type.length() > 0) {
+			gadget.getGadgetInstanceUserPrefs().size();
+		}
+		return getGadgetConf(gadget.getType(), locale);
+	}
+	
+	private Document getGadgetConf(String type, Locale locale) throws Exception {	
 		// TODO 言語ごとにDBにキャッシュとして保存する。
 		if (type.startsWith("g_")) {
 

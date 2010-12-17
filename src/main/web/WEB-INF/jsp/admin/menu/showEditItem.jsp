@@ -5,4 +5,13 @@
 <h2><spring:message code="menu.showEditItem.title" /></h2>
 <c:set var="action" value="updateItem" scope="request"/>
 <c:set var="type" value="menu" scope="request"/>
-<c:import url="/WEB-INF/jsp/admin/gadget/_form.jsp"/>
+<form:form modelAttribute="menuItem" method="post" action="${action}" class="cssform">
+	<form:hidden path="fkMenuTree.id" />
+	<form:hidden path="fkParent.id" />
+	<c:import url="/WEB-INF/jsp/admin/gadget/_form.jsp"/>
+</form:form>
+<script>
+$("#menuItem").ajaxForm(function(html){
+	$("#menu_right").html(html);
+});
+</script>

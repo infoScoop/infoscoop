@@ -3,17 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<form:form modelAttribute="gadget" method="post" action="${action}" class="cssform">
 	<form:hidden path="id" />
 	<c:if test="${type == 'menu'}">
 		<form:hidden path="id" />
 		<form:hidden path="menuId" />
-		<c:if test="${gadget.fkMenuTree != null}">
-			<form:hidden path="fkMenuTree.id" />
-		</c:if>
-		<c:if test="${gadget.fkParent != null}">
-			<form:hidden path="fkParent.id" />
-		</c:if>
 		<c:if test="${conf != null}">
 			<form:hidden path="gadgetInstance.id" />
 			<form:hidden path="gadgetInstance.type" />
@@ -40,12 +33,12 @@
 			<legend><spring:message code="gadget._form.common" /></legend>
 			<ul>
 				<li>
-					<form:label for="title" path="title" cssErrorClass="error"><spring:message code="gadget._form.title" /></form:label>
-					<form:input path="title" /><form:errors path="title" />
+					<form:label for="title" path="title"><spring:message code="gadget._form.title" /></form:label>
+					<form:input path="title" /><form:errors path="title" cssClass="error"/>
 				</li>
 				<li>
-					<form:label for="href" path="href" cssErrorClass="error"><spring:message code="gadget._form.link" /></form:label>
-					<form:input path="href" /><form:errors path="href" />
+					<form:label for="href" path="href" ><spring:message code="gadget._form.link" /></form:label>
+					<form:input path="href" /><form:errors path="href" cssClass="error"/>
 				</li>
 				<c:if test="${conf != null}">
 				<li>
@@ -105,12 +98,12 @@
 			<legend>共通設定</legend>
 			<ul>
 				<li>
-					<form:label for="gadgetInstance.title" path="gadgetInstance.title" cssErrorClass="error">タイトル</form:label>
-					<form:input path="gadgetInstance.title" /><form:errors path="gadgetInstance.title" />
+					<form:label for="gadgetInstance.title" path="gadgetInstance.title">タイトル</form:label>
+					<form:input path="gadgetInstance.title" /><form:errors path="gadgetInstance.title" cssClass="error"/>
 				</li>
 				<li>
 					<form:label for="gadgetInstance.href" path="gadgetInstance.href" cssErrorClass="error">リンク</form:label>
-					<form:input path="gadgetInstance.href" /><form:errors path="gadgetInstance.href" />
+					<form:input path="gadgetInstance.href" /><form:errors path="gadgetInstance.href" cssClass="error" />
 				</li>
 			</ul>
 		</fieldset>
@@ -165,6 +158,9 @@
 						</x:when>
 						<x:otherwise>
 							<input type="${datatype}" name="gadgetInstance.userPrefs[${name}]" value="${gadget.gadgetInstance.userPrefs[name]}" class="${datatype}"/>
+							<c:if test="${name == 'url'}">
+								<input type="button" id="get_title_from_content" value="コンテンツからタイトルを取得"/>
+							</c:if>
 						</x:otherwise>
 					</x:choose>
 				</li>
@@ -178,15 +174,25 @@
 		<input type="submit" value="<spring:message code="gadget._form.button.create" />" class="button"/>
 		<input type="reset" value="<spring:message code="gadget._form.button.reset" />" class="button" />
 	</li>
-</form:form>
 <script type="text/javascript">
 <c:if test="${gadget.gadgetInstance != null}">
 rebuildGadgetUserPrefs();
 </c:if>
-<c:if test="${type == 'menu'}">
-$("#gadget").ajaxForm(function(html){
-	$("#menu_right").html(html);
-});
-</c:if>
 $("#gadget input.button").button();
+$("#get_title_from_content").click(function(){
+	var url = $("input[name='gadgetInstance.userPrefs[url]']").val();
+	var url = "../../proxy?url=" + encodeURIComponent(url) + "&filter=Detect";
+	$.get(url, function(dataList){
+		var title = dataList[0].directoryTitle || dataList[0].title || "";
+		title = (""+title).substring(0,80);
+		
+		var href = dataList[0].href || "";
+		if( href.length > 256 )
+		  href = is_getTruncatedString( href,1024 );
+		$('#title').val(title);
+		$('#gadgetInstance\\.title').val(title);
+		$('#href').val(href);
+		$('#gadgetInstance\\.href').val(href);
+	}, 'json');
+});
 </script>

@@ -2,6 +2,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import javax.validation.Valid;
+
 
 /**
  * This is an object that contains data related to the IS_TAB_TEMPLATE_STATIC_GADGETS table.
@@ -65,6 +67,7 @@ public abstract class BaseTabTemplateStaticGadget  implements Serializable {
 	private java.lang.Integer noBorder;
 
 	// many to one
+	@Valid 
 	private org.infoscoop.dao.model.GadgetInstance gadgetInstance;
 	private org.infoscoop.dao.model.TabTemplate fkTabTemplate;
 

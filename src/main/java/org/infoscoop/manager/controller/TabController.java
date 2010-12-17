@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -59,6 +60,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -238,16 +240,16 @@ public class TabController {
 		}
 		
 		model.addAttribute("conf", gadgetConf);
-		model.addAttribute("gadget", staticGadget);
+		model.addAttribute(staticGadget);
 		return "tab/editStaticGadget";
 	
 	}
 
 	
-	@RequestMapping
+	@RequestMapping(value="/tab/editStaticGadget")
 	@Transactional
 	public String editStaticGadget(
-			HttpServletRequest request, 
+			HttpServletRequest request,
 			@RequestParam("tabId") String tabId,
 			@RequestParam("containerId") String containerId,
 			Locale locale,
@@ -270,17 +272,11 @@ public class TabController {
 		model.addAttribute("ignoreHeaderBool", staticGadget.isIgnoreHeaderBool());
 		model.addAttribute("noBorderBool", staticGadget.isNoBorderBool());
 		
-		model.addAttribute("gadget", staticGadget);
+		model.addAttribute(staticGadget);
 		
 		GadgetInstance gadget = staticGadget.getGadgetInstance();
 		if (gadget != null) {
-			String type = gadget.getType();
-			if (type != null && type.length() > 0) {
-				// lazy=trueだが、Viewに渡すために事前に取得する。何かメソッド呼ぶと事前に取得できる。
-				gadget.getGadgetInstanceUserPrefs().size();
-				//viewで使えるようconf
-				model.addAttribute("conf", getGadgetConf(type, locale));
-			}
+			model.addAttribute("conf", getGadgetConf(gadget, locale));
 		}
 		return "tab/editStaticGadget";
 	}
@@ -335,12 +331,23 @@ public class TabController {
 		this.tabTemplateStaticGadgetDAO.deleteByTabIdAndWidgetIds(Integer
 				.valueOf(tabId), removeIds);
 	}
-	
+		
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public void submitGadgetSettings(
-			TabTemplateStaticGadget staticGadget,
+	public String submitGadgetSettings(
+			@Valid TabTemplateStaticGadget staticGadget,
+			BindingResult result,
+			Locale locale,
 			Model model)throws Exception {
+		if(result.hasErrors()){
+			GadgetInstance gadget = staticGadget.getGadgetInstance();
+			if (gadget != null) {
+				model.addAttribute("conf", getGadgetConf(gadget, locale));
+			}
+			model.addAttribute("gadget", staticGadget);
+			return "tab/editStaticGadget";
+		}
+		
 		TabTemplate tab = tabTemplateDAO.get(staticGadget.getTabTemplateId());
 		staticGadget.setFkTabTemplate(tab);
 		String containerId = staticGadget.getContainerId();
@@ -371,6 +378,7 @@ public class TabController {
 		//gadgetInstanceDAO.save(staticGadget.getGadgetInstance());
 		
 		model.addAttribute("gadget", staticGadget);
+		return "tab/submitGadgetSettings";
 	}
 	
 	private void setGadgetInstance(TabTemplateStaticGadget staticGadget, String instanceId){
@@ -530,6 +538,14 @@ public class TabController {
 				3000);
 		model.addAttribute("builtin", "{}");
 		model.addAttribute("upload", uploadGadgets);
+	}
+
+	private Document getGadgetConf(GadgetInstance gadget, Locale locale) throws Exception {
+		String type = gadget.getType();
+		if (type != null && type.length() > 0) {
+			gadget.getGadgetInstanceUserPrefs().size();
+		}
+		return getGadgetConf(gadget.getType(), locale);
 	}
 	
 	private Document getGadgetConf(String type, Locale locale) throws Exception {

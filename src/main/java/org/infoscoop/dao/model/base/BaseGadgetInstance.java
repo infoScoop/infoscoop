@@ -2,6 +2,10 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 
 /**
  * This is an object that contains data related to the IS_GADGET_INSTANCES table.
@@ -62,7 +66,10 @@ public abstract class BaseGadgetInstance  implements Serializable {
 	// fields
 	private java.lang.Integer fkDomainId;
 	private java.lang.String type;
+	@NotNull
+	@Size(min=1,max=80) 
 	private java.lang.String title;
+	@Pattern(regexp="http(s)?://.*")
 	private java.lang.String href;
 	private java.lang.String icon;
 
@@ -194,8 +201,10 @@ public abstract class BaseGadgetInstance  implements Serializable {
 	}
 
 	public void addTogadgetInstanceUserPrefs (org.infoscoop.dao.model.GadgetInstanceUserpref gadgetInstanceUserpref) {
-		if (null == getGadgetInstanceUserPrefs()) setGadgetInstanceUserPrefs(new java.util.TreeSet<org.infoscoop.dao.model.GadgetInstanceUserpref>());
-		getGadgetInstanceUserPrefs().add(gadgetInstanceUserpref);
+		if(gadgetInstanceUserpref.getValue() != null && gadgetInstanceUserpref.getValue().length() > 0){
+			if (null == getGadgetInstanceUserPrefs()) setGadgetInstanceUserPrefs(new java.util.TreeSet<org.infoscoop.dao.model.GadgetInstanceUserpref>());
+			getGadgetInstanceUserPrefs().add(gadgetInstanceUserpref);
+		}
 	}
 
 

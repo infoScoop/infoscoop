@@ -10,7 +10,9 @@
 <c:set var="action" value="submitGadgetSettings" scope="request"/>
 <c:set var="type" value="tab" scope="request"/>
 <h2>ガジェットの追加</h2>
+<form:form modelAttribute="tabTemplateStaticGadget" method="post" action="${action}" class="cssform">
 <c:import url="/WEB-INF/jsp/admin/gadget/_form.jsp"/>
+</form:form>
 <script type="text/javascript">
 $("#gadget_settings input").each(function(){
 	//TODO ここでdatatypeに従ってinputタグを変換
