@@ -71,16 +71,23 @@ jQuery(function(){
 			<tbody>
 
 			<c:forEach var="role" items="${roles}" varStatus="s">
-				<c:set var="principalSize" value="${role.size}" />
-				<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
-					<tr id="role_id_${role.id}">
-						<c:if test="${status.index == 0}">
-							<td id="${role.id}" rowspan="${principalSize}"><input type="hidden" name="roles.id" value="${role.id}"/>${role.name}</td>
-						</c:if>
-						<td><spring:message code="role.index.principal.type.${principal.type}"/></td>
-						<td>${principal.name}</td>
-					</tr>
-				</c:forEach>
+				<tr id="role_id_${role.id}">
+					<td id="${role.id}"><input type="hidden" name="roles.id" value="${role.id}"/>${role.name}</td>
+					<td>
+						<ul style="padding:0;margin:0;list-style-type:none;">
+							<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
+								<li style="${ (status.first ? "": "border-top:1px solid #CCC;") }"><spring:message code="role.index.principal.type.${principal.type}"/></li>
+							</c:forEach>
+							</ul>
+					</td>
+					<td>
+						<ul style="padding:0;margin:0;list-style-type:none;">
+							<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
+								<li style="${ (status.first ? "": "border-top:1px solid #CCC;") }">${principal.name}</li>
+							</c:forEach>
+						</ul>
+					</td>
+				</tr>
 			</c:forEach>
 
 			</tbody>
