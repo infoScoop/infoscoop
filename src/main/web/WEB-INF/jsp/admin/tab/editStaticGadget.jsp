@@ -9,6 +9,7 @@
 	<tiles:putAttribute name="body" type="string">
 <c:set var="action" value="submitGadgetSettings" scope="request"/>
 <c:set var="type" value="tab" scope="request"/>
+<c:set var="gadget" value="${tabTemplateStaticGadget}" scope="request"/>
 <h2>ガジェットの追加</h2>
 <form:form modelAttribute="tabTemplateStaticGadget" method="post" action="${action}" class="cssform">
 <c:import url="/WEB-INF/jsp/admin/gadget/_form.jsp"/>

@@ -69,7 +69,7 @@ public abstract class BaseGadgetInstance  implements Serializable {
 	@NotNull
 	@Size(min=1,max=80) 
 	private java.lang.String title;
-	@Pattern(regexp="http(s)?://.*")
+	@Pattern(regexp="^$|^http(s)?://.*$")
 	private java.lang.String href;
 	private java.lang.String icon;
 
