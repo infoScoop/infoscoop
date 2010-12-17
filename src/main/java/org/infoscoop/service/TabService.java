@@ -182,12 +182,14 @@ public class TabService {
 				if(!tabTemplateIds.contains(tab.getTabId()))
 					tabList.add(convertStaticToDynamic(tab, dynamicTabIdList));
 			}else{
+				List<Widget> dynamicWidgetList = tabDAO.getDynamicWidgetList( tab );
+				this.copyGadgetInstanceUserPrefs(dynamicWidgetList);
 				tabList.add(
 						new TabDetail(
 							tab,
 							null,
-							tabDAO.getDynamicWidgetList( tab ),
-							tabDAO.getStaticWidgetList( tab )
+							dynamicWidgetList,
+							new ArrayList<Widget>()
 						));
 			}
 		}
@@ -198,6 +200,19 @@ public class TabService {
 		return tabList;
 	}
 	
+	private void copyGadgetInstanceUserPrefs(List<Widget> dynamicWidgetList) {
+		for(Widget widget : dynamicWidgetList){
+			if(widget.getType().startsWith("g_"))continue;
+			Map<String, UserPref> userprefs = widget.getUserPrefs();
+			for(GadgetInstanceUserpref giup : widget.getMenuItem().getGadgetInstance().getGadgetInstanceUserPrefs()){
+				String name = giup.getId().getName();
+				if(!userprefs.containsKey(name)){
+					widget.setUserPref(name, giup.getValue());
+				}
+			}
+		}
+	}
+
 	private List<Widget> copyStaticGadgetsUserPrefs(String uid, Tab tab,
 			TabTemplate tabTemplate) {
 		List<Widget> widgets = tabDAO.getStaticWidgetList( tab );
