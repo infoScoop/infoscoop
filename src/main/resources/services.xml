@@ -405,6 +405,9 @@
 				<property name="oauthCertificateDAO">
 					<ref bean="oauthCertificateDAO" />
 				</property>
+				<property name="oauthContainerConsumerDAO">
+					<ref bean="oauthContainerConsumerDAO" />
+				</property>
 			</bean>
 		</property>
 		<property name="transactionManager">

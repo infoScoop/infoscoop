@@ -10,6 +10,10 @@ ISA_Authentication = {
 							  $.SPAN({className:"title"},ISA_R.alb_oauthConsumerSettings))
 							),
 					 $.LI({},
+						  $.A({id:"two_legged_oauth_consumer_tab",href:"#two_legged_oauth_consumer", className:"tab"},
+							  $.SPAN({className:"title"},ISA_R.alb_oauthTwoLeggedConsumerSettings))
+							),
+					 $.LI({},
 						  $.A({id:"oauth_container_tab",href:"#oauth_container", className:"tab"},
 							  $.SPAN({className:"title"},ISA_R.alb_oauthContainerCertificate))
 							)
@@ -20,6 +24,7 @@ ISA_Authentication = {
 		container.appendChild(
 			$.DIV({style:"clear:both;padding:5px;"},
 				  $.DIV({id:"oauth_consumer" }),
+				  $.DIV({id:"two_legged_oauth_consumer"}),
 				  $.DIV({id:"oauth_container"})));
 		
 		this.controlTabs = new Control.Tabs("oauth_setting_tabs", {
@@ -29,6 +34,7 @@ ISA_Authentication = {
 			}.bind(this)
 		});
 		this._displayConsumer();
+		this._displayTwoLeggedConsumer();
 		this._displayContainerCert();
 
 		this.currentModal = new Control.Modal( false, {
@@ -39,7 +45,6 @@ ISA_Authentication = {
 	},
 	
 	_addConsumerSetting:function(){
-		
 		var authenticationContentTable = $("authentication_contentTable");
 		authenticationContentTable.firstChild.appendChild(
 			this._createRow({'gadget_url':'http://','service_name':'','consumer_key':'','consumer_secret':'','signature_method':'HMAC-SHA1'}, new Date().getTime())
@@ -194,7 +199,7 @@ ISA_Authentication = {
 		container.appendChild(controlDiv);
 		
 		var addButton = ISA_Admin.createIconButton(ISA_R.alb_add, ISA_R.alb_add, "add.gif", "left");
-		addButton.style.textAlign = "left"
+		addButton.style.textAlign = "left";
 		
 		IS_Event.observe(addButton, "click", this._addConsumerSetting.bind(this), false, "_adminAuthentication");
 		
@@ -275,6 +280,171 @@ ISA_Authentication = {
 		return tr;
 	},
 
+
+	_addTwoLeggedConsumerSetting:function(){
+		var authenticationContentTable = $("two_legged_authentication_contentTable");
+		authenticationContentTable.firstChild.appendChild(
+			this._createTwoLeggedRow({'service_name':'','signature_method':'HMAC-SHA1','consumer_key':'','consumer_secret':''}, new Date().getTime())
+			);
+	},
+	
+	_saveTwoLeggedConsumerList:function(){
+		var trList = $("two_legged_authentication_contentTable").getElementsByTagName('tr');
+
+		var consumerList = [];
+		for(var i = 1; i < trList.length; i++){
+			var tr = trList[i];
+			if(this._validateServiceName(i, tr.id))return;
+			var serviceName = $F(tr.id + '_service_name');
+			var consumerKey = $F(tr.id + '_consumer_key');
+			var consumerSecret = $F(tr.id + '_consumer_secret');
+			var signatureMethod = $F(tr.id + '_signature_method');
+			if(signatureMethod == 'HMAC-SHA1'){
+				if(this._validateConsumerKey(i, tr.id))return;
+				if(this._validateConsumerSecret(i, tr.id))return;
+			}
+			consumerList.push({
+				serviceName:serviceName,
+				consumerKey:consumerKey,
+				consumerSecret:consumerSecret,
+				signatureMethod:signatureMethod
+			})
+		}
+
+		var url = findHostURL() + "/services/authentication/saveTwoLeggedOAuthConsumerList";
+		var opt = {
+			method: 'post' ,
+			contentType: "application/json",
+			asynchronous:true,
+			postBody: Object.toJSON([Object.toJSON(consumerList)]),
+			onSuccess: function( resp ) {
+				ISA_Admin.isUpdated = false;
+				this.currentModal.update(ISA_R.ams_changeUpdated);
+				setTimeout( function() {
+					this.currentModal.close();
+				}.bind( this ),500 );
+				
+				this._displayTwoLeggedConsumer();
+			}.bind( this ),
+			onFailure: function(r, t) {
+				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				msg.error(ISA_R.ams_failedToUpdateOAuthSettings + t.status + " - " + t.statusText);
+			},
+			onException: function(r,t){
+				alert(ISA_R.ams_failedToUpdateOAuthSettings);
+				msg.error(ISA_R.ams_failedToUpdateOAuthSettings + getErrorMessage(t));
+			},
+			onComplete: function(){
+				this.currentModal.close();
+			}.bind(this)
+		};
+		this.currentModal.open();
+		AjaxRequest.invoke(url, opt);
+		
+	},
+	
+	
+	_displayTwoLeggedConsumer: function(){
+		var url = findHostURL() + "/services/authentication/getTwoLeggedOAuthConsumerListJson";
+		var opt = {
+			method: 'post' ,
+			contentType: "application/json",
+			asynchronous:true,
+			onSuccess: function( resp ) {
+				ISA_Admin.isUpdated = false;
+				this._renderTwoLeggedConsumer(eval( resp.responseText ));
+			}.bind( this ),
+			onFailure: function(r, t) {
+				alert(ISA_R.ams_failedToGetOAuthSettings);
+				msg.error(ISA_R.ams_failedToGetOAuthSettings + t.status + " - " + t.statusText);
+			},
+			onException: function(r,t){
+				alert(ISA_R.ams_failedToGetOAuthSettings);
+				msg.error(ISA_R.ams_failedToGetOAuthSettings + getErrorMessage(t));
+			},
+			onComplete: function(){
+				this.currentModal.close();
+			}.bind(this)
+		};
+		AjaxRequest.invoke(url, opt);
+	},
+	
+	_renderTwoLeggedHeader: function(container){
+		var controlDiv = document.createElement("div");
+		controlDiv.style.textAlign = "right";
+		
+		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
+		controlDiv.appendChild(commitDiv);
+		IS_Event.observe(commitDiv, "click", this._saveTwoLeggedConsumerList.bind(this), false, "_adminAuthenticationTwoLeggedOAuth");
+		
+		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
+		controlDiv.appendChild(refreshDiv);
+		IS_Event.observe(refreshDiv, "click", this._displayTwoLeggedConsumer.bind(this), false, "_adminAuthenticationTwoLeggedOAuth");
+		
+		container.appendChild(controlDiv);
+		
+		var addButton = ISA_Admin.createIconButton(ISA_R.alb_add, ISA_R.alb_add, "add.gif", "left");
+		addButton.style.textAlign = "left";
+		
+		IS_Event.observe(addButton, "click", this._addTwoLeggedConsumerSetting.bind(this), false, "_adminAuthenticationTwoLeggedOAuth");
+		
+		container.appendChild(addButton);
+	},
+	
+	
+	_renderTwoLeggedConsumer: function(twoLeggedOauthConsumerList){	
+		IS_Event.unloadCache("_adminAuthenticationTwoLeggedOAuth");
+		
+		var container = document.getElementById("two_legged_oauth_consumer");
+		while(container.firstChild)
+		  container.removeChild( container.firstChild );
+		
+		this._renderTwoLeggedHeader( container );
+		
+		var table = ISA_Admin.buildTableHeader(
+			[ ISA_R.alb_oauthServiceName, ISA_R.alb_oauthSignatureAlgorithm, ISA_R.alb_oauthConsumerKey, ISA_R.alb_oauthConsumerSecret, ISA_R.alb_delete],
+			[ '25%', "10%", "30%", "30%", "5%"]
+			);
+		table.id = "two_legged_authentication_contentTable";
+		table.className = "proxyConfigList";
+		table.style.tableLayout = "fixed"
+		//TODO:Function for generating table needs to be arranged
+		table.style.borderLeft = "1px solid #EEEEEE";
+		table.style.width = "100%";
+		
+		container.appendChild( table );
+		
+		var tbody = table.firstChild;
+		var this_ = this;
+		twoLeggedOauthConsumerList.each( function( two_legged_consumer, index ) {
+			tbody.appendChild( this._createTwoLeggedRow( two_legged_consumer, index ));
+			this._displayConsumerKeySecret('two_legged_oauth_consumer_setting_' + index);
+		}.bind(this));
+	},
+	
+	_createTwoLeggedRow: function( two_legged_consumer, index ){
+		var elementId = 'two_legged_oauth_consumer_setting_' + index;
+		var deleteIcon = ISA_Admin.createIconButton("", ISA_R.alb_delete, "trash.gif");
+		var tr = $.TR({id:elementId },
+					$.TD({}, this._createTextbox(elementId + '_service_name', two_legged_consumer['service_name']) ),
+					$.TD({},
+						 $.SELECT(
+							 {id: elementId + '_signature_method',
+							   onchange:{handler:this._displayConsumerKeySecret.bind(this, elementId),
+								 value:two_legged_consumer['signature_method']}
+							 },
+							 $.OPTION({value:'HMAC-SHA1', selected: ('HMAC-SHA1' == two_legged_consumer['signature_method']) }, 'HMAC-SHA1'),
+							 $.OPTION({value:'RSA-SHA1', selected: ('RSA-SHA1' == two_legged_consumer['signature_method'])}, 'RSA-SHA1')
+							   )),
+					$.TD({}, this._createTextbox(elementId + '_consumer_key', two_legged_consumer['consumer_key'] ) ),
+					$.TD({}, this._createTextbox(elementId + '_consumer_secret', two_legged_consumer['consumer_secret'] ) ),
+					$.TD({style:"textAlign:center;"}, deleteIcon )
+			   );
+		IS_Event.observe( deleteIcon,"click",function(tr, delObj){ tr.parentNode.removeChild(tr);}.bind(this, tr, {serviceName:two_legged_consumer['service_name']}),true,"_adminAuthenticationTwoLeggedOAuth" );
+		return tr;
+	},
+	
+	
 	_saveContainerCert:function(){
 		var consumerKey = $F('oauth_container_consumer_key');
 		if(this._validateContainerConsumerKey(consumerKey))return;

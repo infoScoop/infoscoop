@@ -135,6 +135,7 @@ var ISA_R = {
 	"alb_roleNameColon": "Role name:",
 	"ams_duplicatedID": "Duplicated ID can not be registered.",
 	"alb_oauthConsumerSettings": "OAuth consumer settings",
+	"alb_oauthTwoLeggedConsumerSettings": "2-legged OAuth consumer settings",
 	"alb_defaultProxy": "Default proxy",
 	"alb_alertSettingsColon": "Alert settings:",
 	"alb_user": "User",

@@ -135,6 +135,7 @@ var ISA_R = {
 	"alb_roleNameColon": "ロール名：",
 	"ams_duplicatedID": "重複したIDは登録できません。",
 	"alb_oauthConsumerSettings": "OAuthコンシューマー設定",
+	"alb_oauthTwoLeggedConsumerSettings": "2-legged OAuthコンシューマー設定",/////
 	"alb_defaultProxy": "デフォルトプロキシ",
 	"alb_alertSettingsColon": "アラート設定：",
 	"alb_user": "ユーザ",

@@ -135,6 +135,7 @@ var ISA_R = {
 	"alb_roleNameColon": "角色名:",
 	"ams_duplicatedID": "不能登录重复的ID。",
 	"alb_oauthConsumerSettings": "OAuth consumer设定",
+	"alb_oauthTwoLeggedConsumerSettings": "2-legged OAuth consumer设定",
 	"alb_defaultProxy": "默认代理服务器",
 	"alb_alertSettingsColon": "警报设定：",
 	"alb_user": "用户",

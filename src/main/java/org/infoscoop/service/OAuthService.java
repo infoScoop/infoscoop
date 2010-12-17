@@ -8,9 +8,11 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.OAuthTokenDAO;
+import org.infoscoop.dao.OAutContainerConsumerDAO;
 import org.infoscoop.dao.model.OAUTH_CONSUMER_PK;
 import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.dao.model.OAuthCertificate;
+import org.infoscoop.dao.model.OAuthContainerConsumer;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
@@ -25,7 +27,9 @@ public class OAuthService {
 	private OAuthTokenDAO oauthTokenDAO;
 
 	private OAuthCertificateDAO oauthCertificateDAO;
-
+	
+	private OAutContainerConsumerDAO oauthContainerConsumerDAO;
+	
 	public static OAuthService getHandle() {
 		return (OAuthService) SpringUtil.getBean("OAuthService");
 	}
@@ -45,8 +49,12 @@ public class OAuthService {
 		this.oauthCertificateDAO = oauthCertificateDAO;
 	}
 	
+	public void setOauthContainerConsumerDAO(OAutContainerConsumerDAO oauthContainerConsumerDAO){
+		this.oauthContainerConsumerDAO = oauthContainerConsumerDAO;
+	}
+	
 	private String buildJsonArray(List<OAuthConsumerProp> consumerPropList) throws JSONException{
-		JSONArray cunsumerList = new JSONArray();
+		JSONArray consumerList = new JSONArray();
 		for(OAuthConsumerProp prop: consumerPropList){
 			JSONObject obj = new JSONObject();
 			obj.put("service_name", prop.getServiceName());
@@ -55,14 +63,52 @@ public class OAuthService {
 			obj.put("consumer_secret", prop.getConsumerSecret());
 			//obj.put("private_key", prop.getPrivateKey());
 			obj.put("signature_method", prop.getSignatureMethod());
-			cunsumerList.put(obj);
+			consumerList.put(obj);
 		}
-		return cunsumerList.toString();
+		return consumerList.toString();
 	}
 	public String getOAuthConsumerListJson() throws Exception{
 		return buildJsonArray( this.oauthConsumerDAO.getConsumers() );
 	}
 
+
+	private String buildTwoLeggedJsonArray(List<OAuthContainerConsumer> consumerPropList) throws JSONException{
+		JSONArray consumerList = new JSONArray();
+		for(OAuthContainerConsumer prop: consumerPropList){
+			JSONObject obj = new JSONObject();
+			obj.put("service_name", prop.getServiceName());
+			obj.put("consumer_key", prop.getConsumerKey());
+			obj.put("consumer_secret", prop.getConsumerSecret());
+			obj.put("signature_method", prop.getSignatureMethod());
+			consumerList.put(obj);
+		}
+		return consumerList.toString();
+	}
+	
+	public String getTwoLeggedOAuthConsumerListJson() throws Exception{
+		return buildTwoLeggedJsonArray( this.oauthContainerConsumerDAO.all() );
+	}
+	
+	public void saveTwoLeggedOAuthConsumerList(String saveArray) throws Exception{
+		this.oauthContainerConsumerDAO.deleteAll();
+		
+		JSONArray consumerJsonList = new JSONArray(saveArray);
+
+		List<OAuthContainerConsumer> consumers = new ArrayList<OAuthContainerConsumer>();
+		for(int i = 0; i < consumerJsonList.length();i++){
+			JSONObject obj = consumerJsonList.getJSONObject(i);
+			OAuthContainerConsumer consumer = new OAuthContainerConsumer();
+			consumer.setServiceName(obj.getString("serviceName"));
+			consumer.setConsumerKey(obj.getString("consumerKey"));
+			consumer.setConsumerSecret(obj.getString("consumerSecret"));
+			consumer.setSignatureMethod(obj.getString("signatureMethod"));
+			consumers.add(consumer);
+		}
+
+		this.oauthContainerConsumerDAO.saveConsumers(consumers);
+	}
+
+	
 	public String getGetConsumerListJsonByUrl(String url) throws Exception{
 		return buildJsonArray( this.oauthConsumerDAO.getConsumersByUrl(url) );
 	}
@@ -113,4 +159,5 @@ public class OAuthService {
 		cert.setCertificate(certificate);
 		this.oauthCertificateDAO.save(cert);
 	}
+		
 }
