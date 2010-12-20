@@ -194,10 +194,10 @@
 		<url-pattern>/manager/*</url-pattern>
 	</filter-mapping>
 
-	<!--filter-mapping>
+	<filter-mapping>
 		<filter-name>CheckManagerFilter</filter-name>
 		<url-pattern>/manager/*</url-pattern>
-	</filter-mapping-->
+	</filter-mapping>
 	
 	<filter-mapping>
 		<filter-name>PreviewImpersonationFilter</filter-name>
