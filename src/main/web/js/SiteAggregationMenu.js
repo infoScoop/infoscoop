@@ -1238,7 +1238,10 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			
 			divMenuIcon.className = "menuItemIcon";
 			menuLi.style.cursor = "move";
-			IS_Widget.setIcon(divMenuIcon, menuItem.type, {multi:menuItem.multi});
+			if(menuItem.iconUrl)
+				divMenuIcon.style.backgroundImage = "url(" + menuItem.iconUrl + ")";
+			else
+				IS_Widget.setIcon(divMenuIcon, menuItem.type, {multi:menuItem.multi});
 			
 			if(IS_Portal.isChecked(menuItem) && !/true/.test(menuItem.multi)){
 				handler.destroy();
@@ -1630,6 +1633,7 @@ IS_SiteAggregationMenu.getMultiDropDraggable = function(dragElement, menuItem, h
 			},
 			/*onStart: function(draggble, e){
 				var element = draggble.element;
+
 				
 //				IS_Droppables.findWizPos(element);
 				
