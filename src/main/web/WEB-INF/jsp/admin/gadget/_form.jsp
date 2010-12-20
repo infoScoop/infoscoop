@@ -139,25 +139,33 @@
 				<li class="${datatype}">
 					<label><x:out select="$userPref/@display_name"/></label>
 					<c:set var="name"><x:out select="$userPref/@name"/></c:set>
+					<c:choose>
+						<c:when test="${gadget.gadgetInstance.userPrefs[name] != null}">
+							<c:set var="value">${gadget.gadgetInstance.userPrefs[name]}</c:set>
+						</c:when>
+						<c:otherwise>
+							<c:set var="value"><x:out select="$userPref/@default_value"/></c:set>
+						</c:otherwise>
+					</c:choose>
 					<x:choose>
 						<x:when select="$userPref/EnumValue">
 							<select name="gadgetInstance.userPrefs[${name}]" class="${datatype}">
 							<x:forEach var="enum" select="$userPref/EnumValue">
-								<c:set var="value"><x:out select="$enum/@value"/></c:set>
+								<c:set var="enum_value"><x:out select="$enum/@value"/></c:set>
 								<c:set var="display_value"><x:out select="$enum/@display_value"/></c:set>
 								<c:choose>
-									<c:when test="${gadget.gadgetInstance.userPrefs[name] == value}">
-										<option value="${value}" selected="selected">${display_value}</option>
+									<c:when test="${value == enum_value}">
+										<option value="${enum_value}" selected="selected">${display_value}</option>
 									</c:when>
 									<c:otherwise>
-										<option value="${value}">${display_value}</option>
+										<option value="${enum_value}">${display_value}</option>
 									</c:otherwise>
 								</c:choose>
 							</x:forEach>
 							</select>
 						</x:when>
 						<x:otherwise>
-							<input type="${datatype}" name="gadgetInstance.userPrefs[${name}]" value="${gadget.gadgetInstance.userPrefs[name]}" class="${datatype}"/>
+							<input type="${datatype}" name="gadgetInstance.userPrefs[${name}]" value="${value}" class="${datatype}"/>
 							<c:if test="${name == 'url'}">
 								<input type="button" id="get_title_from_content" value="コンテンツからタイトルを取得"/>
 							</c:if>
