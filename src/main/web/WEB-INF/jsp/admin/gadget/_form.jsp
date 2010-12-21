@@ -1,4 +1,4 @@
-q<%@ page contentType="text/html; charset=UTF8" %>
+<%@ page contentType="text/html; charset=UTF8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
@@ -191,6 +191,7 @@ q<%@ page contentType="text/html; charset=UTF8" %>
 rebuildGadgetUserPrefs();
 </c:if>
 $("#gadget input.button").button();
+$("#get_title_from_content").button();
 $("#get_title_from_content").click(function(){
 	var url = $("input[name='gadgetInstance.userPrefs[url]']").val();
 	var url = "../../proxy?url=" + encodeURIComponent(url) + "&filter=Detect";
@@ -207,4 +208,6 @@ $("#get_title_from_content").click(function(){
 		$('#gadgetInstance\\.href').val(href);
 	}, 'json');
 });
+$('input[type="submit"]').button();
+$('input[type="reset"]').button();
 </script>
