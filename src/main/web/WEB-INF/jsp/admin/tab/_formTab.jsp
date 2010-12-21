@@ -56,6 +56,23 @@
 			<c:if test="${tabTemplate.areaType == 0}">
 			<fieldset>
 				<legend><spring:message code="tab._formTab.personalizedArea" /></legend>
+				<ul>
+					<li>
+						<label>カラム数：</label>
+						<form:select path="numberOfColumns">
+							<form:option value="1" label="1"/>
+							<form:option value="2" label="2"/>
+							<form:option value="3" label="3"/>
+							<form:option value="4" label="4"/>
+							<form:option value="5" label="5"/>
+							<form:option value="6" label="6"/>
+							<form:option value="7" label="7"/>
+							<form:option value="8" label="8"/>
+							<form:option value="9" label="9"/>
+							<form:option value="10" label="10"/>
+						</form:select>
+					</li>
+				</ul>
 				<div id="personarizeAreaContainer"><div id="panels"><div id="tab-container"></div></div></div>
 			</fieldset>
 			</c:if>

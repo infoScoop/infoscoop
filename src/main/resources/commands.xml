@@ -21,5 +21,6 @@
 	<bean id="managerAddWidget" singleton="false" class="org.infoscoop.manager.controller.TabController.AddWidget" />
 	<bean id="managerUpdateWidgetLocation" singleton="false" class="org.infoscoop.manager.controller.TabController.UpdateWidgetLocation" />
 	<bean id="managerRemoveWidget" singleton="false" class="org.infoscoop.manager.controller.TabController.RemoveWidget" />
+	<bean id="managerUpdateTabPreference" singleton="false" class="org.infoscoop.manager.controller.TabController.UpdateTabPreference" />
 	<bean id="managerUpdateTabTemplateTimestamp" singleton="false" class="org.infoscoop.manager.controller.TabController.UpdateTabTemplateTimestamp" />
 </beans>

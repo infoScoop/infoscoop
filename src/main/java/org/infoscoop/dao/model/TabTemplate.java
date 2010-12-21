@@ -170,6 +170,8 @@ public class TabTemplate extends BaseTabTemplate {
 		tabClone.setOrderIndex(this.getOrderIndex());
 		tabClone.setAreaType(this.getAreaType());
 		tabClone.setStatus(Integer.valueOf(1));
+		tabClone.setNumberOfColumns(this.getNumberOfColumns());
+		tabClone.setColumnWidth(this.getColumnWidth());
 		TabTemplateDAO.newInstance().save(tabClone);
 		
 		Set<TabTemplatePersonalizeGadget> tabPGs =
@@ -211,10 +213,6 @@ public class TabTemplate extends BaseTabTemplate {
 
 	public boolean isLayoutModified() {
 		return Boolean.valueOf(this.layoutModified);
-	}
-	
-	public String getEscapedLayout(){
-		return JSONObject.quote(super.getLayout());
 	}
 
 	public boolean getPublishBool(){

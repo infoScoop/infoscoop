@@ -152,6 +152,10 @@ public class TabService {
 			staticTab.setName(tabTemplate.getName());
 			staticTab.setDisabledDynamicPanel(tabTemplate.getAreaType() != TabTemplate.TYPE_USE_BOTH_AREA );
 			staticTab.setAdjustStaticHeight(tabTemplate.getAreaType() == TabTemplate.TYPE_STATIC_AREA_ADJUST_HEIGHT );
+			JSONObject data = new JSONObject();
+			data.put("numCol", tabTemplate.getNumberOfColumns());
+			data.put("columnsWidth", tabTemplate.getColumnWidth());
+			staticTab.setData(data.toString());
 
 			if(isNewTab){
 				tabList.add(new TabDetail(

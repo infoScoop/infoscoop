@@ -44,7 +44,19 @@ h2 {
 #modal_overlay {  
      background-color:#000;  
 }
-
+.adjustBarOver {
+    background: url("../../skin/imgs/line.gif") repeat-y scroll center top transparent;
+    cursor: e-resize;
+    float: left;
+    height: 150px;
+    width: 1%;
+}
+.adjustBarOut {
+    cursor: e-resize;
+    float: left;
+    height: 150px;
+    width: 1%;
+}
 .staticLayout, .staticLayoutAdjustHeight{
 	width: 22%;
 	float: left;
@@ -229,6 +241,7 @@ IS_Portal = {
 	unDisplayMsgBar: function(){},
 	adjustPanelHeight: function(){},
 	adjustIframeHeight: function(){},
+	adjustGadgetHeight: function(){},
 	adjustMsgBar: function(){},
 	deleteCacheByUrl:function(){},
 	endIndicator: function(){},
@@ -867,6 +880,10 @@ function init() {
 		var addTabButton = $("add_tab");
 		addTabButton.action = "updateTemp";
 		addTabButton.submit();
+	});
+	
+	jQuery("#numberOfColumns").change(function(){
+		IS_WidgetsContainer.rebuildColumns(IS_Portal.currentTabId, parseInt(jQuery(this).val()));
 	});
 };
 

@@ -15,14 +15,17 @@ public class TextView extends AbstractView {
 	}
 
 	public String getContentType() {
-		return "text/plain; charset=UTF-8";
+		String contentType = super.getContentType();
+		if(contentType == null)
+			return "text/plain; charset=UTF-8";
+		return contentType;
 	}
 
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> map,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		response.setContentType("text/plain; charset=UTF-8");
+		response.setContentType(super.getContentType());
 		response.getWriter().write(body);
 	}
 }

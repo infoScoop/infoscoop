@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -64,6 +66,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -405,6 +408,7 @@ public class TabController {
 			tabTemplateDAO.get(Integer.toString(formTab.getId()));
 		
 		if(tabOriginal != null){
+			tab.setOrderIndex(tabOriginal.getOrderIndex());//copy order from current to temp
 			tabOriginal.setStatus(2);//history
 			tabTemplateDAO.save(tabOriginal);
 			WidgetDAO widgetDAO = WidgetDAO.newInstance();
@@ -417,6 +421,7 @@ public class TabController {
 		tab.setLayout(formTab.getLayout());
 		tab.setAreaType(formTab.getAreaType());
 		tab.setStatus(0);//current
+		tab.setNumberOfColumns(formTab.getNumberOfColumns());
 		tab.setPublish(formTab.getPublish());
 		tab.setAccessLevel(Integer.toString(formTab.getAccessLevel()));
 		if (roleIdList != null) {
@@ -456,6 +461,7 @@ public class TabController {
 		}
 		tab.setAreaType(formTab.getAreaType());
 		tab.setStatus(1);//temp
+		tab.setNumberOfColumns(formTab.getNumberOfColumns());
 		tabTemplateDAO.save(tab);
 		
 		if (tab.getAreaType() != 0) {
@@ -468,17 +474,16 @@ public class TabController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	@Transactional	
-	public TextView sort(@RequestParam("tabId") String[] tabIds, Model model) {
+	@Transactional
+	public @ResponseBody
+	String sort(@RequestParam("tabId") String[] tabIds, Model model) {
 		int order = 0;
-		for(String tabId : tabIds){
+		for (String tabId : tabIds) {
 			TabTemplate tab = tabTemplateDAO.get(tabId);
 			tab.setOrderIndex(order++);
 			tabTemplateDAO.save(tab);
 		}
-		TextView view = new TextView();
-		view.setResponseBody("success to sort tabs");
-		return view;
+		return "success to sort tabs";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -493,10 +498,9 @@ public class TabController {
 	
 	@RequestMapping
 	@Transactional
-	public void widsrv(
-			HttpServletRequest request, 
-			@RequestParam("tabId") String tabId, 
-			Model model){
+	public TextView widsrv(HttpServletRequest request,
+			@RequestParam("tabId") String tabId, Model model)
+			throws JSONException {
 		TabTemplate tab = tabTemplateDAO.get(tabId);
 		String uid = (String) request.getSession().getAttribute("Uid");
 		model.addAttribute("uid", uid);
@@ -521,6 +525,67 @@ public class TabController {
 			addNextSibling(gadget,gadgets,gadgetMap);
 		}
 		model.addAttribute("gadgets", gadgets);
+		
+		JSONArray tabsJson = new JSONArray();
+		JSONObject tabJson = new JSONObject();
+		tabsJson.put(tabJson);
+		tabJson.put("uid", uid);
+		tabJson.put("defaultUid", "default");
+		tabJson.put("tabId", tab.getId());
+		tabJson.put("tabName",tab.getName());
+		tabJson.put("tabNumber", "0");
+		tabJson.put("tabType","static");
+		tabJson.put("widgetLastModified", "-");
+		tabJson.put("disabledDynamicPanel", tab.getAreaType() != 0);
+		tabJson.put("adjustStaticHeight", tab.getAreaType() == 2);
+		JSONObject propertyJson = new JSONObject();
+		propertyJson.put("numCol", tab.getNumberOfColumns());
+		propertyJson.put("columnsWidth", tab.getColumnWidth());
+		tabJson.put("property", propertyJson);
+		JSONObject staticJson = new JSONObject();
+		tabJson.put("staticPanel", staticJson);
+		for(TabTemplateStaticGadget gadget : tab.getTabTemplateStaticGadgets()){
+			JSONObject gadgetJson = new JSONObject();
+			staticJson.put(gadget.getContainerId(), gadgetJson);
+			gadgetJson.put("id", gadget.getContainerId());
+			gadgetJson.put("ignoreHeader", gadget.isIgnoreHeaderBool());
+			gadgetJson.put("noBorder", gadget.isNoBorderBool());
+			gadgetJson.put("tabId", tab.getId());
+			gadgetJson.put("href", gadget.getGadgetInstance().getHref());
+			gadgetJson.put("title", gadget.getGadgetInstance().getTitle());
+			gadgetJson.put("siblingId", "");
+			gadgetJson.put("type", gadget.getGadgetInstance().getGadgetType());
+			gadgetJson.put("iconUrl", gadget.getGadgetInstance().getIcon());
+			JSONObject gadgetPropertyJson = new JSONObject();
+			for(Entry<String, String> userPref : gadget.getGadgetInstance().getUserPrefs().entrySet()){
+				gadgetPropertyJson.put(userPref.getKey(), userPref.getValue());
+			}
+			gadgetJson.put("property", gadgetPropertyJson);
+		}
+		tabJson.put("staticPanelLayout", tab.getLayout());
+		JSONObject dynamicJson = new JSONObject();
+		tabJson.put("dynamicPanel", dynamicJson);
+		for(TabTemplatePersonalizeGadget gadget : gadgets){
+			JSONObject gadgetJson = new JSONObject();
+			dynamicJson.put(gadget.getWidgetId(), gadgetJson);
+			gadgetJson.put("id", gadget.getWidgetId());
+			gadgetJson.put("column", gadget.getColumnNum());
+			gadgetJson.put("tabId", tab.getId());
+			gadgetJson.put("href", gadget.getFkGadgetInstance().getHref());
+			gadgetJson.put("title", gadget.getFkGadgetInstance().getTitle());
+			gadgetJson.put("siblingId", "");
+			gadgetJson.put("type", gadget.getFkGadgetInstance().getGadgetType());
+			gadgetJson.put("iconUrl", gadget.getFkGadgetInstance().getIcon());
+			JSONObject gadgetPropertyJson = new JSONObject();
+			for(Entry<String, String> userPref : gadget.getFkGadgetInstance().getUserPrefs().entrySet()){
+				gadgetPropertyJson.put(userPref.getKey(), userPref.getValue());
+			}
+			gadgetJson.put("property", gadgetPropertyJson);
+		}
+		TextView view = new TextView();
+		view.setResponseBody(tabsJson.toString());
+		view.setContentType("application/json; charset=UTF-8");
+		return view;
 	}
 	
 	private void addNextSibling(TabTemplatePersonalizeGadget gadget, Collection<TabTemplatePersonalizeGadget> gadgets, Map<Integer, TabTemplatePersonalizeGadget> gadgetMap){
@@ -1043,6 +1108,43 @@ public class TabController {
 			widget.setIsstatic(new Integer(0));
 			return widget;
 		}
+	}
+
+	public static class UpdateTabPreference extends XMLCommandProcessor {
+
+		private Log log = LogFactory.getLog(this.getClass());
+
+		public UpdateTabPreference() {
+		}
+
+		public void execute() throws Exception {
+			String commandId = super.commandXml.getAttribute("id").trim();
+			String tabTemplateId = super.commandXml.getAttribute("tabId")
+					.trim();
+			String field = super.commandXml.getAttribute("field");
+			String value = super.commandXml.getAttribute("value");
+			if (!field.equals("columnsWidth"))
+				return;
+
+			try {
+				TabTemplateDAO tabDAO = TabTemplateDAO.newInstance();
+				TabTemplate tab = tabDAO.get(tabTemplateId);
+				tab.setColumnWidth(value);
+				tabDAO.save(tab);
+			} catch (Exception e) {
+				String reason = "Failed to update tabTemplate column width.";
+				log.error(
+						"Failed to execute the command of UpdateTabPreference :"
+								+ tabTemplateId, e);
+				this.result = XMLCommandUtil.createResultElement(uid,
+						"processXML", log, commandId, false, reason);
+
+				throw e;
+			}
+			this.result = XMLCommandUtil.createResultElement(uid, "processXML",
+					log, commandId, true, null);
+		}
+
 	}
 
 	public static class UpdateTabTemplateTimestamp extends
