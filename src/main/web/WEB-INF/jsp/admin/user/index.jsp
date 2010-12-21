@@ -12,14 +12,13 @@ function sync(){
 }
 </script>
 <link href="http://jsajax.com/jQuery/prettyLoader/css/prettyLoader.css" rel="stylesheet" type="text/css" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="http://jsajax.com/jQuery/prettyLoader/js/jquery.prettyLoader.js"></script>
 <script type="text/javascript">
 
 $(function(){
 	$.prettyLoader({ loader: 'http://jsajax.com/jQuery/prettyLoader/images/prettyLoader/ajax-loader.gif' });
 
-	$("#syncButton").click(function(){
+	$("#syncButton").button().click(function(){
 		$.prettyLoader.show();
 		$("#message").css("visibility","visible");
 	});
