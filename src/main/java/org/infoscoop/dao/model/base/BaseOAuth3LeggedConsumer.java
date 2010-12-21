@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the IS_OAUTH_CONSUMERS table.
+ * This is an object that contains data related to the IS_OAUTH_3Legged_CONSUMERS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="IS_OAUTH_CONSUMERS"
+ *  table="IS_OAUTH_3Legged_CONSUMERS"
  */
 
-public abstract class BaseOAuthConsumerProp  implements Serializable {
+public abstract class BaseOAuth3LeggedConsumer  implements Serializable {
 
-	public static String REF = "OAuthConsumerProp";
+	public static String REF = "OAuth3LeggedConsumer";
 	public static String PROP_SERVICE_NAME = "ServiceName";
 	public static String PROP_SIGNATURE_METHOD = "SignatureMethod";
 	public static String PROP_GADGET_URL_KEY = "GadgetUrlKey";
@@ -26,14 +26,14 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 
 
 	// constructors
-	public BaseOAuthConsumerProp () {
+	public BaseOAuth3LeggedConsumer () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseOAuthConsumerProp (java.lang.Long id) {
+	public BaseOAuth3LeggedConsumer (java.lang.Long id) {
 		this.setId(id);
 		initialize();
 	}
@@ -41,7 +41,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	/**
 	 * Constructor for required fields
 	 */
-	public BaseOAuthConsumerProp (
+	public BaseOAuth3LeggedConsumer (
 		java.lang.Long id,
 		java.lang.String gadgetUrl,
 		java.lang.String gadgetUrlKey,
@@ -79,8 +79,8 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  generator-class="sequence"
-     *  column="id"
+     *  generator-class="native"
+     *  column="ID"
      */
 	public java.lang.Long getId () {
 		return id;
@@ -220,11 +220,11 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof org.infoscoop.dao.model.OAuthConsumerProp)) return false;
+		if (!(obj instanceof org.infoscoop.dao.model.OAuth3LeggedConsumer)) return false;
 		else {
-			org.infoscoop.dao.model.OAuthConsumerProp oAuthConsumerProp = (org.infoscoop.dao.model.OAuthConsumerProp) obj;
-			if (null == this.getId() || null == oAuthConsumerProp.getId()) return false;
-			else return (this.getId().equals(oAuthConsumerProp.getId()));
+			org.infoscoop.dao.model.OAuth3LeggedConsumer oAuth3LeggedConsumer = (org.infoscoop.dao.model.OAuth3LeggedConsumer) obj;
+			if (null == this.getId() || null == oAuth3LeggedConsumer.getId()) return false;
+			else return (this.getId().equals(oAuth3LeggedConsumer.getId()));
 		}
 	}
 

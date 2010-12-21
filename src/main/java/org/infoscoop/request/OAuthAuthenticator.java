@@ -45,9 +45,9 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.OAuthCertificateDAO;
-import org.infoscoop.dao.OAuthConsumerDAO;
+import org.infoscoop.dao.OAuth3LeggedConsumerDAO;
 import org.infoscoop.dao.model.OAuthCertificate;
-import org.infoscoop.dao.model.OAuthConsumerProp;
+import org.infoscoop.dao.model.OAuth3LeggedConsumer;
 import org.infoscoop.request.ProxyRequest.OAuthConfig;
 import org.infoscoop.service.OAuthService;
 
@@ -105,7 +105,7 @@ public class OAuthAuthenticator implements Authenticator {
 					oauthConfig.userAuthorizationURL,
 					oauthConfig.accessTokenURL);
 		
-		OAuthConsumerProp consumerProp = OAuthConsumerDAO.newInstance()
+		OAuth3LeggedConsumer consumerProp = OAuth3LeggedConsumerDAO.newInstance()
 				.getConsumer(oauthConfig.getGadgetUrl(), name);
 		if(consumerProp == null)
 			throw new ProxyAuthenticationException("Consumer key and secret is not set for " + oauthConfig.getGadgetUrl());

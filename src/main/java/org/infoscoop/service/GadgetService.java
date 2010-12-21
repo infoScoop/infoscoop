@@ -35,10 +35,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.xpath.XPathAPI;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetIconDAO;
-import org.infoscoop.dao.OAuthConsumerDAO;
+import org.infoscoop.dao.OAuth3LeggedConsumerDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Gadget;
-import org.infoscoop.dao.model.OAuthConsumerProp;
+import org.infoscoop.dao.model.OAuth3LeggedConsumer;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.NoOpEntityResolver;
 import org.infoscoop.util.SpringUtil;
@@ -94,7 +94,7 @@ public class GadgetService {
 	
 	private GadgetDAO gadgetDAO;
 	private GadgetIconDAO gadgetIconDAO;
-	private OAuthConsumerDAO oauthConsumerDAO;
+	private OAuth3LeggedConsumerDAO oauth3LeggedConsumerDAO;
 	
 	public static GadgetService getHandle() {
 		return (GadgetService) SpringUtil.getBean("GadgetService");
@@ -112,8 +112,8 @@ public class GadgetService {
 		this.gadgetIconDAO = gadgetIconDAO;
 	}
 
-	public void setOauthConsumerDAO(OAuthConsumerDAO oauthConsumerDAO) {
-		this.oauthConsumerDAO = oauthConsumerDAO;
+	public void setOauth3LeggedConsumerDAO(OAuth3LeggedConsumerDAO oauth3LeggedConsumerDAO) {
+		this.oauth3LeggedConsumerDAO = oauth3LeggedConsumerDAO;
 	}
 	public String getGadgetConfsJson( String uid, Locale locale) throws Exception{
 		try {
@@ -350,14 +350,14 @@ public class GadgetService {
 				String gadgetUrl = "upload__" + type + "/gadget";
 				for(int i = 0; i < authServiceArray.length(); i++){
 					JSONObject obj = authServiceArray.getJSONObject(i);
-					OAuthConsumerProp consumer = new OAuthConsumerProp();
+					OAuth3LeggedConsumer consumer = new OAuth3LeggedConsumer();
 					consumer.setServiceName(obj.getString("serviceName"));
 					consumer.setGadgetUrl(gadgetUrl);
 					consumer.setConsumerKey(obj.getString("consumerKey"));
 					consumer.setConsumerSecret(obj.getString("consumerSecret"));
 					consumer.setSignatureMethod(obj.getString("signatureMethod"));
 					consumer.setIsUpload(Integer.valueOf(1));
-					oauthConsumerDAO.save(consumer);
+					oauth3LeggedConsumerDAO.save(consumer);
 				}
 			}
 		} catch (Exception e) {

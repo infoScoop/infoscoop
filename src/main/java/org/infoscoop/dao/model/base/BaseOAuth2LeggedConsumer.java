@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the is_oauth_container_consumers table.
+ * This is an object that contains data related to the is_oauth_2legged_consumers table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="is_oauth_container_consumers"
+ *  table="is_oauth_2legged_consumers"
  */
 
-public abstract class BaseOAuthContainerConsumer  implements Serializable {
+public abstract class BaseOAuth2LeggedConsumer  implements Serializable {
 
-	public static String REF = "OAuthContainerConsumer";
+	public static String REF = "OAuth2LeggedConsumer";
 	public static String PROP_SERVICE_NAME = "ServiceName";
 	public static String PROP_SIGNATURE_METHOD = "SignatureMethod";
 	public static String PROP_CONSUMER_SECRET = "ConsumerSecret";
@@ -23,14 +23,14 @@ public abstract class BaseOAuthContainerConsumer  implements Serializable {
 
 
 	// constructors
-	public BaseOAuthContainerConsumer () {
+	public BaseOAuth2LeggedConsumer () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseOAuthContainerConsumer (java.lang.Long id) {
+	public BaseOAuth2LeggedConsumer (java.lang.Long id) {
 		this.setId(id);
 		initialize();
 	}
@@ -38,7 +38,7 @@ public abstract class BaseOAuthContainerConsumer  implements Serializable {
 	/**
 	 * Constructor for required fields
 	 */
-	public BaseOAuthContainerConsumer (
+	public BaseOAuth2LeggedConsumer (
 		java.lang.Long id,
 		java.lang.String serviceName) {
 
@@ -157,11 +157,11 @@ public abstract class BaseOAuthContainerConsumer  implements Serializable {
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof org.infoscoop.dao.model.OAuthContainerConsumer)) return false;
+		if (!(obj instanceof org.infoscoop.dao.model.OAuth2LeggedConsumer)) return false;
 		else {
-			org.infoscoop.dao.model.OAuthContainerConsumer oAuthContainerConsumer = (org.infoscoop.dao.model.OAuthContainerConsumer) obj;
-			if (null == this.getId() || null == oAuthContainerConsumer.getId()) return false;
-			else return (this.getId().equals(oAuthContainerConsumer.getId()));
+			org.infoscoop.dao.model.OAuth2LeggedConsumer oAuth2LeggedConsumer = (org.infoscoop.dao.model.OAuth2LeggedConsumer) obj;
+			if (null == this.getId() || null == oAuth2LeggedConsumer.getId()) return false;
+			else return (this.getId().equals(oAuth2LeggedConsumer.getId()));
 		}
 	}
 

@@ -284,9 +284,9 @@ create table IS_OAUTH_TOKENS (
 ) ENGINE=InnoDB;
 
 --
--- OAUTH_CONSUMER
+-- OAUTH_3LEGGED_CONSUMER
 --
-create table IS_OAUTH_CONSUMERS (
+create table IS_OAUTH_3LEGGED_CONSUMERS (
   id bigint not null auto_increment primary key,
   gadget_url varchar(1024) not null,
   gadget_url_key varchar(255) not null,
@@ -298,9 +298,9 @@ create table IS_OAUTH_CONSUMERS (
 ) ENGINE=InnoDB;
 
 --
--- OAUTH_CONTAINER_CONSUMER
+-- OAUTH_2LEGGED_CONSUMER
 --
-create table IS_OAUTH_CONTAINER_CONSUMERS (
+create table IS_OAUTH_2LEGGED_CONSUMERS (
   id bigint not null auto_increment primary key,
   service_name varchar(255) not null,
   consumer_key varchar(255),

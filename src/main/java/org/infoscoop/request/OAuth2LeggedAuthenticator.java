@@ -34,8 +34,8 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.dao.OAutContainerConsumerDAO;
-import org.infoscoop.dao.model.OAuthContainerConsumer;
+import org.infoscoop.dao.OAuth2LeggedConsumerDAO;
+import org.infoscoop.dao.model.OAuth2LeggedConsumer;
 
 public class OAuth2LeggedAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
@@ -58,7 +58,7 @@ public class OAuth2LeggedAuthenticator implements Authenticator {
 			serviceName = request.getRequestHeader("serviceName");
 
 		try {
-			OAuthContainerConsumer consumerConf = OAutContainerConsumerDAO.newInstance().getByServiceName(serviceName);
+			OAuth2LeggedConsumer consumerConf = OAuth2LeggedConsumerDAO.newInstance().getByServiceName(serviceName);
 			OAuthConsumer consumer = new OAuthConsumer(null, consumerConf.getConsumerKey(), consumerConf.getConsumerSecret(), null);
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 

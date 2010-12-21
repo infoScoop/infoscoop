@@ -77,7 +77,7 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
-	<bean id="oauthContainerConsumerDAO" class="org.infoscoop.dao.OAutContainerConsumerDAO">
+	<bean id="oauth2LeggedConsumerDAO" class="org.infoscoop.dao.OAuth2LeggedConsumerDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>
    	 	</property>
@@ -117,7 +117,7 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
-	<bean id="oauthConsumerDAO" class="org.infoscoop.dao.OAuthConsumerDAO">
+	<bean id="oauth3LeggedConsumerDAO" class="org.infoscoop.dao.OAuth3LeggedConsumerDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>
    	 	</property>

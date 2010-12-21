@@ -78,9 +78,9 @@
 					<value>org/infoscoop/dao/model/Account.hbm.xml</value>
 					<value>org/infoscoop/dao/model/GadgetIcon.hbm.xml</value>
 					<value>org/infoscoop/dao/model/OAuthToken.hbm.xml</value>
-					<value>org/infoscoop/dao/model/OAuthConsumer.hbm.xml</value>
+					<value>org/infoscoop/dao/model/OAuth3LeggedConsumer.hbm.xml</value>
 					<value>org/infoscoop/dao/model/OAuthCertificate.hbm.xml</value>
-					<value>org/infoscoop/dao/model/OAuthContainerConsumers.hbm.xml</value>
+					<value>org/infoscoop/dao/model/OAuth2LeggedConsumers.hbm.xml</value>
 					<value>org/infoscoop/dao/model/MenuTree.hbm.xml</value>
 					<value>org/infoscoop/dao/model/MenuPosition.hbm.xml</value>
 					<value>org/infoscoop/dao/model/MenuItem.hbm.xml</value>

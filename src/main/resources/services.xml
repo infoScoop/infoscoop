@@ -264,8 +264,8 @@
 				<property name="gadgetIconDAO">
 					<ref bean="gadgetIconDAO" />
 				</property>
-				<property name="oauthConsumerDAO">
-					<ref bean="oauthConsumerDAO" />
+				<property name="oauth3LeggedConsumerDAO">
+					<ref bean="oauth3LeggedConsumerDAO" />
 				</property>
 			</bean>
 		</property>
@@ -396,8 +396,8 @@
 		<property name="target">
 			<bean
 				class="org.infoscoop.service.OAuthService">
-				<property name="oauthConsumerDAO">
-					<ref bean="oauthConsumerDAO" />
+				<property name="oauth3LeggedConsumerDAO">
+					<ref bean="oauth3LeggedConsumerDAO" />
 				</property>
 				<property name="oauthTokenDAO">
 					<ref bean="oauthTokenDAO" />
@@ -405,8 +405,8 @@
 				<property name="oauthCertificateDAO">
 					<ref bean="oauthCertificateDAO" />
 				</property>
-				<property name="oauthContainerConsumerDAO">
-					<ref bean="oauthContainerConsumerDAO" />
+				<property name="oauth2LeggedConsumerDAO">
+					<ref bean="oauth2LeggedConsumerDAO" />
 				</property>
 			</bean>
 		</property>

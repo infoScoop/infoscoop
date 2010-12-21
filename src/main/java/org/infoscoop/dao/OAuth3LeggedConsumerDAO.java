@@ -24,41 +24,41 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
-import org.infoscoop.dao.model.OAuthConsumerProp;
+import org.infoscoop.dao.model.OAuth3LeggedConsumer;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-public class OAuthConsumerDAO extends HibernateDaoSupport {
+public class OAuth3LeggedConsumerDAO extends HibernateDaoSupport {
 
-	private static Log log = LogFactory.getLog(OAuthConsumerDAO.class);
+	private static Log log = LogFactory.getLog(OAuth3LeggedConsumerDAO.class);
 
-	public static OAuthConsumerDAO newInstance() {
-		return (OAuthConsumerDAO) SpringUtil.getContext().getBean(
-				"oauthConsumerDAO");
+	public static OAuth3LeggedConsumerDAO newInstance() {
+		return (OAuth3LeggedConsumerDAO) SpringUtil.getContext().getBean(
+				"oauth3LeggedConsumerDAO");
 	}
 
 	@SuppressWarnings("unchecked")
-	public OAuthConsumerProp getConsumer(String gadgetUrl, String serviceName) {
+	public OAuth3LeggedConsumer getConsumer(String gadgetUrl, String serviceName) {
 		if (gadgetUrl == null || serviceName == null) {
 			throw new RuntimeException("gadgetUrl and serviceName must be set.");
 		}
 		String gadgetUrlKey = Crypt.getHash(gadgetUrl);
 		Iterator results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthConsumerProp.class).add(
-						Expression.eq(OAuthConsumerProp.PROP_GADGET_URL_KEY,
+				DetachedCriteria.forClass(OAuth3LeggedConsumer.class).add(
+						Expression.eq(OAuth3LeggedConsumer.PROP_GADGET_URL_KEY,
 								gadgetUrlKey)).add(
-						Expression.eq(OAuthConsumerProp.PROP_SERVICE_NAME,
+						Expression.eq(OAuth3LeggedConsumer.PROP_SERVICE_NAME,
 								serviceName)))
 				.iterator();
 		if (results.hasNext()) {
-			return (OAuthConsumerProp) results.next();
+			return (OAuth3LeggedConsumer) results.next();
 		}
 		return null;
 	}
 
-	public void save(OAuthConsumerProp consumer) {
-		OAuthConsumerProp newConsumer = getConsumer(consumer.getGadgetUrl(),
+	public void save(OAuth3LeggedConsumer consumer) {
+		OAuth3LeggedConsumer newConsumer = getConsumer(consumer.getGadgetUrl(),
 				consumer.getServiceName());
 		if (newConsumer == null) {
 			super.getHibernateTemplate().save(consumer);
@@ -75,14 +75,14 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 				.getHash("http://localhost/oauth_test/twit_oauth2.xml"));
 	}
 
-	public List<OAuthConsumerProp> getConsumers() {
+	public List<OAuth3LeggedConsumer> getConsumers() {
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthConsumerProp.class).add(
-						Expression.eq(OAuthConsumerProp.PROP_IS_UPLOAD, 0)));
+				DetachedCriteria.forClass(OAuth3LeggedConsumer.class).add(
+						Expression.eq(OAuth3LeggedConsumer.PROP_IS_UPLOAD, 0)));
 	}
 
-	public void saveConsumers(List<OAuthConsumerProp> consumers) {
-		for(OAuthConsumerProp consumer: consumers)
+	public void saveConsumers(List<OAuth3LeggedConsumer> consumers) {
+		for(OAuth3LeggedConsumer consumer: consumers)
 			this.save(consumer);
 	}
 	
@@ -94,11 +94,11 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().delete(this.getConsumer(gadgetUrl, serviceName));
 	}
 
-	public List<OAuthConsumerProp> getConsumersByUrl(String gadgetUrl) {
+	public List<OAuth3LeggedConsumer> getConsumersByUrl(String gadgetUrl) {
 		String gadgetUrlKey = Crypt.getHash(gadgetUrl);
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthConsumerProp.class).add(
-						Expression.eq(OAuthConsumerProp.PROP_GADGET_URL_KEY,
+				DetachedCriteria.forClass(OAuth3LeggedConsumer.class).add(
+						Expression.eq(OAuth3LeggedConsumer.PROP_GADGET_URL_KEY,
 								gadgetUrlKey)));
 	}
 }

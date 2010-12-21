@@ -1,28 +1,28 @@
 package org.infoscoop.dao.model;
 
-import org.infoscoop.dao.model.base.BaseOAuthContainerConsumer;
+import org.infoscoop.dao.model.base.BaseOAuth2LeggedConsumer;
 
 
 
-public class OAuthContainerConsumer extends BaseOAuthContainerConsumer {
+public class OAuth2LeggedConsumer extends BaseOAuth2LeggedConsumer {
 	private static final long serialVersionUID = 1L;
 
 /*[CONSTRUCTOR MARKER BEGIN]*/
-	public OAuthContainerConsumer () {
+	public OAuth2LeggedConsumer () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public OAuthContainerConsumer (java.lang.Long id) {
+	public OAuth2LeggedConsumer (java.lang.Long id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public OAuthContainerConsumer (
+	public OAuth2LeggedConsumer (
 		java.lang.Long id,
 		java.lang.String serviceName) {
 
