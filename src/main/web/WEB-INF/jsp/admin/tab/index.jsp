@@ -29,6 +29,7 @@ $(function(){
 	});
 	$("#tab_table tbody").sortable({
 		axis:"y",
+		handle:".sort_handle",
 		update:function(event, ui){
 			$.ajax({
 				url: "sort",
@@ -58,6 +59,7 @@ $(function(){
 	<table id="tab_table" class="tablesorter">
 		<thead>
 			<tr>
+				<th width="18">&nbsp;</th>
 				<th><spring:message code="tab.index.title" /></th>
 				<th width="130">更新日時</th>
 				<th width="130">更新者</th>
@@ -72,6 +74,7 @@ $(function(){
 		<tbody>
 <c:forEach var="tab" items="${tabs}">
 			<tr id="tabId_${tab.id}">
+				<td align="center"><div class="sort_handle" title="ドラッグして順番変更"></div></td>
 				<td>${tab.name}</td>
 				<td>${tab.updatedAt}</td>
 				<td>${tab.editor.name}</td>

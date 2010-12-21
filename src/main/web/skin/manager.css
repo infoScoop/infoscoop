@@ -319,6 +319,9 @@ body {
 .tab_table tr.filterColumns td {
 	padding:2px;
 }
+#tab_table .sort_handle{
+	background:
+}
 
 .trash {
 	background: url(imgs/trash.gif ) no-repeat;
@@ -336,4 +339,11 @@ body {
 	font-size: 1.3em;
 	padding-left:15px;
 	cursor:pointer;
+}
+
+.sort_handle{
+	background: url(imgs/drag.gif ) no-repeat;
+	cursor:move;
+	width:16px;
+	height:16px;
 }
