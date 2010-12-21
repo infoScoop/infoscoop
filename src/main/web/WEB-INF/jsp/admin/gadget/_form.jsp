@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF8" %>
+q<%@ page contentType="text/html; charset=UTF8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
@@ -104,6 +104,10 @@
 				<li>
 					<form:label for="gadgetInstance.href" path="gadgetInstance.href" cssErrorClass="error">リンク</form:label>
 					<form:input path="gadgetInstance.href" /><form:errors path="gadgetInstance.href" cssClass="error" />
+				</li>
+				<li>
+					<form:label for="gadgetInstance.icon" path="gadgetInstance.icon" cssErrorClass="error"><spring:message code="gadget._form.iconUrl" /></form:label>
+					<form:input path="gadgetInstance.icon" /><form:errors path="gadgetInstance.icon" />
 				</li>
 			</ul>
 		</fieldset>

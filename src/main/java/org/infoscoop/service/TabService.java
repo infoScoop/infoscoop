@@ -204,12 +204,15 @@ public class TabService {
 		for(Widget widget : dynamicWidgetList){
 			if(widget.getType().startsWith("g_"))continue;
 			Map<String, UserPref> userprefs = widget.getUserPrefs();
-			for(GadgetInstanceUserpref giup : widget.getMenuItem().getGadgetInstance().getGadgetInstanceUserPrefs()){
+			GadgetInstance gadgetInstance = widget.getMenuItem().getGadgetInstance();
+			for(GadgetInstanceUserpref giup : gadgetInstance.getGadgetInstanceUserPrefs()){
 				String name = giup.getId().getName();
 				if(!userprefs.containsKey(name)){
 					widget.setUserPref(name, giup.getValue());
 				}
 			}
+			widget.setIconUrl(gadgetInstance.getIcon());
+			
 		}
 	}
 

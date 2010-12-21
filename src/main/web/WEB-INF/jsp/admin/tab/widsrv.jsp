@@ -23,6 +23,7 @@
 			"title":"${gadget.gadgetInstance.title}",
 			"siblingId":"",
 			"type":"${gadget.gadgetInstance.gadgetType}",
+			"iconUrl":"${gadget.gadgetInstance.icon}",
 			"property":{
 				<c:forEach items="${gadget.gadgetInstance.gadgetInstanceUserPrefs}" var="userPref" varStatus="istatus">
 					"${userPref.id.name}": "${userPref.value}" <c:if test="${!istatus.last}">,</c:if>
@@ -42,6 +43,7 @@
 			"title":"${gadget.fkGadgetInstance.title}",
 			"siblingId":"",
 			"type":"${gadget.fkGadgetInstance.gadgetType}",
+			"iconUrl":"${gadget.fkGadgetInstance.icon}",
 			"property":{
 				<c:forEach items="${gadget.fkGadgetInstance.gadgetInstanceUserPrefs}" var="userPref" varStatus="istatus">
 					"${userPref.id.name}": "${userPref.value}" <c:if test="${!istatus.last}">,</c:if>
