@@ -10,7 +10,7 @@
 						<tbody>
 							<tr>
 								<td colspan="2" align="right" style="font-size:80%;">
-									<#if session.getAttribute("Uid")??>%{lb_welcome}${session.getAttribute("Uid")}%{lb_san}
+									<#if session.getAttribute("Uid")??>%{lb_welcome}${session.getAttribute("loginUserName")}%{lb_san}
 									<#else><a href="login.jsp">%{lb_login}</a>
 									</#if>
 								</td>
