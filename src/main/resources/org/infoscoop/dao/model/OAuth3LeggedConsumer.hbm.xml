@@ -5,8 +5,8 @@
 
 <hibernate-mapping package="org.infoscoop.dao.model">
 	<class
-		name="OAuthConsumerProp"
-		table="IS_OAUTH_CONSUMERS"
+		name="OAuth3LeggedConsumer"
+		table="IS_OAUTH_3Legged_CONSUMERS"
 	>
 		<meta attribute="sync-DAO">false</meta>
 		<id
