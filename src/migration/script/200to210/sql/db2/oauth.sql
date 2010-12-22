@@ -1,7 +1,7 @@
 --
 -- OAUTH_TOKEN
 --
-create table is_oauth_tokens (
+create table ${SCHEMA_NAME}is_oauth_tokens (
   uid varchar(150) not null,
   gadget_url varchar(1024) not null,
   gadget_url_key varchar(255) not null,
@@ -15,7 +15,7 @@ create table is_oauth_tokens (
 --
 -- OAUTH_CONSUMER
 --
-create table is_oauth_consumers (
+create table ${SCHEMA_NAME}is_oauth_consumers (
   id integer not null generated always as identity (start with 1, increment by 1, no cache) primary key,
   gadget_url varchar(1024) not null,
   gadget_url_key varchar(255) not null,
@@ -29,7 +29,7 @@ create table is_oauth_consumers (
 --
 -- OAUTH_CERTIFICATE
 --
-create table is_oauth_certificate (
+create table ${SCHEMA_NAME}is_oauth_certificate (
   consumer_key varchar(255) not null primary key,
   private_key clob,
   certificate clob

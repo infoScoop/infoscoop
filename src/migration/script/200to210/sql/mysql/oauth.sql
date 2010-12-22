@@ -1,7 +1,7 @@
 --
 -- OAUTH_TOKEN
 --
-create table IS_OAUTH_TOKENS (
+create table ${SCHEMA_NAME}IS_OAUTH_TOKENS (
   `UID` varchar(150) not null,
   gadget_url varchar(1024) not null,
   gadget_url_key varchar(255) not null,
@@ -15,7 +15,7 @@ create table IS_OAUTH_TOKENS (
 --
 -- OAUTH_CONSUMER
 --
-create table IS_OAUTH_CONSUMERS (
+create table ${SCHEMA_NAME}IS_OAUTH_CONSUMERS (
   id bigint not null auto_increment primary key,
   gadget_url varchar(1024) not null,
   gadget_url_key varchar(255) not null,
@@ -29,7 +29,7 @@ create table IS_OAUTH_CONSUMERS (
 --
 -- OAUTH_CERTIFICATE
 --
-create table IS_OAUTH_CERTIFICATE (
+create table ${SCHEMA_NAME}IS_OAUTH_CERTIFICATE (
   consumer_key varchar(255) not null primary key,
   private_key text,
   certificate text
