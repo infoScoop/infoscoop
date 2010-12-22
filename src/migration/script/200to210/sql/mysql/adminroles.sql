@@ -1,6 +1,6 @@
 alter table ${SCHEMA_NAME}IS_ADMINROLES rename to IS_ADMINROLES${BACKUP_TABLE_SUFFIX};
 
-create table IS_ADMINROLES (
+create table ${SCHEMA_NAME}IS_ADMINROLES (
   id bigint not null auto_increment primary key,
   roleid varchar(255) not null,
   name varchar(256) NOT NULL,

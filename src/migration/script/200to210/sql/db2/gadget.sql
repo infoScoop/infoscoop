@@ -14,9 +14,9 @@ create table ${SCHEMA_NAME}is_gadgets (
   constraint is_gadgets_unique unique (type,path,name)
 ) compress yes;
 
-create index is_gadgets_type on ${SCHEMA_NAME}is_gadgets(type);
-create index is_gadgets_path on ${SCHEMA_NAME}is_gadgets(path);
-create index is_gadgets_name on ${SCHEMA_NAME}is_gadgets(name);
+create index ${SCHEMA_NAME}is_gadgets_type on ${SCHEMA_NAME}is_gadgets(type);
+create index ${SCHEMA_NAME}is_gadgets_path on ${SCHEMA_NAME}is_gadgets(path);
+create index ${SCHEMA_NAME}is_gadgets_name on ${SCHEMA_NAME}is_gadgets(name);
 
 insert into ${SCHEMA_NAME}is_gadgets(type, path, name, data, lastmodified)
   select type, path, name, data, lastmodified
