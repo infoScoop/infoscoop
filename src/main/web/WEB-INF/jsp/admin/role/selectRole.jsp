@@ -68,7 +68,7 @@ function addRole(roleId){
 	roleRow.removeAttr('class');
 	roleRow.children('td:first-child').remove();
 	roleRow.children('td:first-child').append(jQuery('<input type="hidden" name="roles.id" value="' + roleId + '"/>'));
-	roleRow.append(jQuery('<td class="deletetd"><span class="trash" onclick="deleteRole(this)" ></td>'))
+	roleRow.append(jQuery('<td class="deletetd"><div class="trash icon" onclick="deleteRole(this)" ></div></td>'))
 	roleListTbody.append(roleRow);
 }
 
@@ -93,7 +93,7 @@ jQuery('#role_list_table tbody tr').each(function(){
 	var roleTr = jQuery(this).clone(true);
 	var roleTrId = roleTr.attr('id');
 	roleTr.attr('id', 'selected_role_id_' + roleTrId.replace("role_id_",""));
-	roleTr.append('<td class="deletetd"><span class="trash" onclick="deleteRole(this);" ></td>');
+	roleTr.append('<td class="deletetd"><div class="trash icon" onclick="deleteRole(this);"></div></td>');
 	jQuery('#role_edit_table_body').append(roleTr);
 });
 </script>

@@ -10,11 +10,18 @@
 function deleteRole(roleId){
 	window.location.href = "delete?roleId=" +  roleId;
 }
+$(function () {
+	$("#add_button").button();
+});
 </script>
 
 <div style="height:500px;">
-	<a href="edit" id="add_button" class="add">追加</a>
-	<table id="tab_table" class="tab_table" cellspacing="0" cellpadding="0">
+	<p>
+		メニューやタブの公開範囲を限定する場合にこの画面で作成した役割グループを割り当てます。<br>
+		役割グループにはGoogle Appsのユーザ/グループを追加することができます。
+	</p>
+	<a href="edit" id="add_button"><div class="add label_icon">追加</div></a>
+	<table class="tablesorter">
 		<thead>
 			<tr>
 				<th>名前</th>
@@ -37,8 +44,8 @@ function deleteRole(roleId){
 					<td><spring:message code="role.index.principal.type.${principal.type}"/></td>
 					<td>${principal.name}</td>
 					<c:if test="${status.index == 0}">
-						<td rowspan="${principalSize}"><span class="edit"><a href="edit?id=${role.id}">編集アイコン</a></span></td>
-						<td rowspan="${principalSize}"><span class="trash"  onclick="deleteRole('${role.id}')" ></span></td>
+						<td rowspan="${principalSize}"><a href="edit?id=${role.id}"><div class="edit icon" title="編集"></div></a></td>
+						<td rowspan="${principalSize}"><div class="trash icon"  onclick="deleteRole('${role.id}')" ></div></td>
  					</c:if>
 				</tr>
 			</c:forEach>

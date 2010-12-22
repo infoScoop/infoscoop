@@ -8,23 +8,36 @@
 	<tiles:putAttribute name="title" value="role.title"/>
 	<tiles:putAttribute name="body" type="string">
 <script type="text/javascript" class="source">
-//
 $(function () {
-	$("#addButton").click(function(){
-		var tbl = document.getElementById("table");
-		var count = tbl.rows.length;
-		var row = tbl.insertRow(count);
-		var cell1 = row.insertCell(0);
-		var cell2 = row.insertCell(1);
-		var cell3 = row.insertCell(2);
+	$("#add_button").button().click(function(){
+		$("#search_dialog").slideToggle("fast");
+		return false;
+	});
+	$("#add_user").click(function(){
+		var count = $("#table tbody tr").length;
+		$('<tr/>')
+			.append($('<td/>')
+				.append($('<span/>').text($("#roleType option:selected").text()))
+				.append($('<input type="hidden"/>')
+					.attr("name","rolePrincipals["+count+"].type")
+					.val($('#roleType').val())
+				)
+			).append($('<td/>')
+				.append($('<span/>').text($("#target").val()))
+				.append($('<input type="hidden"/>')
+					.attr("name","rolePrincipals["+count+"].name")
+					.val($('#principalId').val())
+				)
+			).append($('<td align="center"/>')
+				.append($('<div class="trash icon" onclick="deletePrincipal('+count+')"/>'))
+				.append($('<input type="hidden" value=""/>')
+					.attr("name","rolePrincipals["+count+"].id")
+				)
+			)
+			.appendTo($("#table tbody"));
 
-		count--;
-		cell1.innerHTML = "<span>"+ $("#roleType").val() +"</span><input name='rolePrincipals["+ count +"].type' type='hidden' value='"+ document.getElementById("roleType").value +"' />";
-		cell2.innerHTML = "<span>"+ $("#target").val() +"</span><input name='rolePrincipals["+ count +"].name' type='hidden' value='"+ $("#principalId").val() +"' />";
-		cell3.innerHTML = "<span class='trash' onclick='deletePrincipal("+ count +")'></span><input name='rolePrincipals["+ count +"].id' type='hidden' value='' />";
-
-		document.getElementById("roleType").value = "ユーザ";
-		document.getElementById("target").value = "";
+		$("#roleType").val("ユーザ");
+		$("#target").val("");
 	});
 
 	$(function() {
@@ -44,7 +57,7 @@ $(function () {
 		$('#target').autocomplete( { source:
 			function ( request, response )  {
 				params.query = request.term;
-				var type = document.getElementById("roleType").value;
+				var type = $("#roleType").val();
 				if (type == "UIDPrincipal")
 					var url = 'autocompleteUser';
 				else if (type == "OrganizationPrincipal")
@@ -56,23 +69,25 @@ $(function () {
 			focus: onselect
 		});
 	});
+	
+	$("#add_group :submit, #add_group :button").button();
 });
 
 function deletePrincipal(index){
-	$(document.forms[0]['rolePrincipals[' + index + '].id']).name="deletePrincipalId";
-	$(document.forms[0]['rolePrincipals[' + index + '].name']).remove();
-	$(document.forms[0]['rolePrincipals[' + index + '].type']).remove();
-	document.forms[0].action = 'deleteRolePrincipal';
-	document.forms[0].submit();
-	//window.location.href = "deleteRolePrincipal?rolePrincipalId="+ rolePrincipalId +"&roleId="+ roleId;
+	var form = document.forms[0];
+	$(form['rolePrincipals[' + index + '].id']).name="deletePrincipalId";
+	$(form['rolePrincipals[' + index + '].name']).remove();
+	$(form['rolePrincipals[' + index + '].type']).remove();
+	form.action = 'deleteRolePrincipal';
+	form.submit();
 };
 
 function checkForm(){
-	if(document.getElementById("roleName").value == ""){
+	if($("#roleName").val() == ""){
 		alert('グループ名を入力してください');
-		document.getElementById("roleName").focus();
+		$("#roleName").focus();
 		return false;
-	} else if(document.getElementById("table").rows.length == 1){
+	} else if($("#table tbody tr").length == 0){
 		alert("\"ユーザ\" または \"組織\"を追加してください。");
 		document.getElementById("target").focus();
 		return false;
@@ -81,69 +96,88 @@ function checkForm(){
 
 
 </script>
-
+<style type="text/css">
+	#search_dialog{
+		border-radius:10px;
+		-webkit-border-radius:10px;
+		-moz-border-radius:10px;
+		border:1px solid #AAA;
+		margin:5px 0;
+		padding:10px;
+	}
+	#add_user{
+		padding:1px 10px;
+	}
+</style>
 <div>
-	<h3>グループ設定画面</h3>
-	<form:form modelAttribute="role" id="add_group" method="post" action="save" onSubmit="return checkForm()" >
-		<c:set var="principalSize" value="${role.size}" />
-		<p>グループ名： <form:input id="roleName" path="name"/></p>
+	<p>役割グループの詳細設定を行います。Google Appsのユーザ/グループを役割グループに割り当てることができます。</p>
+	<form:form modelAttribute="role" id="add_group" method="post" action="save" onSubmit="return checkForm()" class="cssform">
 		<form:hidden path="id" />
-		<table id="table" class="tab_table" cellspacing="0" cellpadding="0">
-		<thead>
-			<tr>
-				<th>タイプ</th>
-				<th>対象範囲</th>
-				<th>削除</th>
-			</tr>
-		</thead>
-		<tfoot></tfoot>
-		<tbody>
-		<c:forEach var="principalId" items="${role.deletePrincipalIdList}" varStatus="status">
-			<input name="deletePrincipalIdList[<c:out value='${status.index}'/>]" type="hidden" value="${principalId}" />
-		</c:forEach>
+		<c:set var="principalSize" value="${role.size}" />
+		<fieldset>
+			<legend>グループ設定画面</legend>
+			<ul>
+				<li>
+					<label>グループ名：</label>
+					<form:input id="roleName" path="name"/>
+				</li>
+				<li>
+					<label>ユーザ/グループ：</label>
+			<button id="add_button"><div class="add label_icon">ユーザ/グループ追加</div></button>
 
-		<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
-			<tr>
-				<td>
-					<span><spring:message code="role.index.principal.type.${principal.type}"/></span>
-					<input name="rolePrincipals[<c:out value='${status.index}'/>].type" type="hidden" value="${principal.type}" />
-				</td>
-				<td>
-					<span>${principal.name}</span>
-					<input name="rolePrincipals[<c:out value='${status.index}'/>].name" type="hidden" value="${principal.name}" />
-				</td>
-				<td>
-					<span class="trash"  onclick="deletePrincipal(${status.index})"></span>
-					<input name="rolePrincipals[<c:out value='${status.index}'/>].id" type="hidden" value="${principal.id}" />
-				</td>
-			</tr>
-		</c:forEach>
+		<div id="search_dialog" style="display:none">
+			<p>
+				タイプを選択し、名前に追加したいユーザ/グループ名を入力してください<br>
+				対象範囲はインクリメンタルサーチが可能ですので、頭文字を入力すれば対象のユーザ/グループ名をリストから選択することができます。
+			</p>
+			<span>タイプ：</span>
+			<select id="roleType">
+				<option value='UIDPrincipal'>
+					<spring:message code="role.index.principal.type.UIDPrincipal"/>
+				</option>
+				<option value='OrganizationPrincipal'>
+					<spring:message code="role.index.principal.type.OrganizationPrincipal"/>
+				</option>
+			</select>
+			<span style="margin-left:10px;">名前：</span>
+			<input id="principalId" type="hidden"></input>
+			<input id="target" type="text"></input>
+			<input type="button" id="add_user" value="追加">
+		</div>
+			<table id="table" class="tablesorter">
+				<thead>
+					<tr>
+						<th>タイプ</th>
+						<th>対象範囲</th>
+						<th width="40">削除</th>
+					</tr>
+				</thead>
+				<tfoot></tfoot>
+				<tbody>
+				<c:forEach var="principalId" items="${role.deletePrincipalIdList}" varStatus="status">
+					<input name="deletePrincipalIdList[<c:out value='${status.index}'/>]" type="hidden" value="${principalId}" />
+				</c:forEach>
 
-		</table>
-		<input type="submit" name="button" value="保存" />
-		<input type="button" value="キャンセル" onclick="javascript:window.location.href='index'" />
-		<br />
-		<br />
-
-
-		<span>タイプ：</span>
-		<select id="roleType">
-			<option value='UIDPrincipal'>
-				<spring:message code="role.index.principal.type.UIDPrincipal"/>
-			</option>
-			<option value='OrganizationPrincipal'>
-				<spring:message code="role.index.principal.type.OrganizationPrincipal"/>
-			</option>
-		</select>
-		<span>　　対象範囲：</span>
-		<input id="principalId" type="hidden"></input>
-		<input id="target" type="text"></input>
-
-		<input id="addButton" type="button" value="追加" />
-
-		<br />
-		<br />
-		<br />
+				<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
+					<tr>
+						<td>
+							<span><spring:message code="role.index.principal.type.${principal.type}"/></span>
+							<input name="rolePrincipals[<c:out value='${status.index}'/>].type" type="hidden" value="${principal.type}" />
+						</td>
+						<td>
+							<span>${principal.name}</span>
+							<input name="rolePrincipals[<c:out value='${status.index}'/>].name" type="hidden" value="${principal.name}" />
+						</td>
+						<td align="center">
+							<div class="trash icon" onclick="deletePrincipal(${status.index})"></div>
+							<input name="rolePrincipals[<c:out value='${status.index}'/>].id" type="hidden" value="${principal.id}" />
+						</td>
+					</tr>
+				</c:forEach>
+				</tbody>
+			</table>
+			<input type="submit" name="button" value="保存" />
+			<input type="button" value="キャンセル" onclick="javascript:window.location.href='index'" />
 
 	</form:form>
 </div>

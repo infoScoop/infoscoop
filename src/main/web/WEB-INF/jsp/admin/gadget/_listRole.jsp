@@ -28,7 +28,7 @@ jQuery(function(){
 					roleRow.children('td:first-child').remove();
 					var rowSpan = roleRow.children('td:first-child').attr('rowSpan');
 					roleRow.children('td:first-child').append(jQuery('<input type="hidden" name="roles.id" value="' + jQuery(this).val() + '"/>'));
-					roleRow.append(jQuery('<td rowSpan="'+ rowSpan + '"><span class="trash"  onclick="deleteRole()" ></td>'))
+					roleRow.append(jQuery('<td rowSpan="'+ rowSpan + '"><div class="trash icon" onclick="deleteRole()" ></div></td>'))
 					roleListTbody.append(roleRow);
 					for(i = 1; i < rowSpan ; i++){
 						selectedRoleRow = selectedRoleRow.next();

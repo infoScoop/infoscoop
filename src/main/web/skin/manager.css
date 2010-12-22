@@ -322,28 +322,26 @@ body {
 #tab_table .sort_handle{
 	background:
 }
-
 .trash {
-	background: url(imgs/trash.gif ) no-repeat;
-	font-size: 1.3em;
-	padding-left:15px;
+	background: url(imgs/trash.gif ) no-repeat center left;
 }
 .edit {
-	background: url(imgs/edit.gif ) no-repeat;
-	font-size: 1.3em;
-	padding-left:15px;
+	background: url(imgs/edit.gif ) no-repeat center left;
 }
-
 .add {
-	background: url(imgs/add.gif ) no-repeat;
-	font-size: 1.3em;
-	padding-left:15px;
-	cursor:pointer;
+	background: url(imgs/add.gif ) no-repeat center left;
 }
-
 .sort_handle{
-	background: url(imgs/drag.gif ) no-repeat;
+	background: url(imgs/drag.gif ) no-repeat center left;
 	cursor:move;
+}
+.icon{
 	width:16px;
 	height:16px;
+	cursor:pointer;
+}
+.label_icon{
+	width:auto;
+	padding-left:18px;
+	font-size: 12px;
 }

@@ -110,7 +110,7 @@ public class RoleController {
 		role.setRolePrincipals(list);
 		model.addAttribute("role", role);
 
-		return "group/edit";
+		return "role/edit";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

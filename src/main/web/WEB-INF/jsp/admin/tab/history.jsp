@@ -55,8 +55,8 @@ $(function(){
 						${role.name}
 					</c:forEach>
 				</td>
-				<td><a href="editTab?id=${tab.id}" class="edit_link"><span class="edit"></span></a></td>
-				<td><a href="deleteTab?id=${tab.id}"><span class="trash"></span></a></td>
+				<td><a href="editTab?id=${tab.id}" class="edit_link"><div class="edit icon" title="このリビジョンを元に編集"></div></a></td>
+				<td><a href="deleteTab?id=${tab.id}"><div class="trash icon"></div></a></td>
 			</tr>
 </c:forEach>
 		</tbody>

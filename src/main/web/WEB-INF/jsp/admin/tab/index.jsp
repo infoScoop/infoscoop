@@ -74,7 +74,7 @@ $(function(){
 		<tbody>
 <c:forEach var="tab" items="${tabs}">
 			<tr id="tabId_${tab.id}">
-				<td align="center"><div class="sort_handle" title="ドラッグして順番変更"></div></td>
+				<td align="center"><div class="sort_handle icon" title="ドラッグして順番変更"></div></td>
 				<td>${tab.name}</td>
 				<td>${tab.updatedAt}</td>
 				<td>${tab.editor.name}</td>
@@ -84,8 +84,8 @@ $(function(){
 						${role.name}
 					</c:forEach>
 				</td>
-				<td><a href="editTab?id=${tab.id}" class="edit_link"><span class="edit"></span></a></td>
-				<td><a href="deleteTab?id=${tab.tabId}" class="delete_link"><span class="trash"></span></a></td>
+				<td><a href="editTab?id=${tab.id}" class="edit_link"><div class="edit icon" title="編集"></div></a></td>
+				<td><a href="deleteTab?id=${tab.tabId}" class="delete_link"><div class="trash icon" title="削除"></div></a></td>
 				<td><a href="history?id=${tab.tabId}"><spring:message code="tab.index.showHistory"/></a></td>
 			</tr>
 </c:forEach>
