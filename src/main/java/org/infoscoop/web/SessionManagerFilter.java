@@ -49,9 +49,10 @@ import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.web.PreviewImpersonationFilter;
 import org.infoscoop.dao.DomainDAO;
-import org.infoscoop.dao.UserDAO;
 import org.infoscoop.dao.model.Domain;
+import org.infoscoop.dao.model.Group;
 import org.infoscoop.dao.model.User;
+import org.infoscoop.service.UserService;
 
 /**
  * The filter which manages the login state.
@@ -183,7 +184,6 @@ public class SessionManagerFilter implements Filter {
 
 			Subject loginUser = (Subject)session.getAttribute(LOGINUSER_SUBJECT_ATTR_NAME);
 			if(loginUser == null || ( isChangeLoginUser(uid, loginUser) && !(session instanceof PreviewImpersonationFilter.PreviewHttpSession) )){
-
 				if( !SessionCreateConfig.getInstance().hasUidHeader() && uid != null ) {
 					AuthenticationService service= AuthenticationService.getInstance();
 					try {
@@ -207,11 +207,20 @@ public class SessionManagerFilter implements Filter {
 						domainPrincipal.setDisplayName(domain.getName());
 						loginUser.getPrincipals().add(domainPrincipal);
 					}
-					User user = UserDAO.newInstance().getByEmail(uid, domain.getId());
+					User user = UserService.getHandle().getUser(uid,
+							domain.getId());
 					if(user != null && user.isAdministrator()){
 						ISPrincipal adminPrincipal = new ISPrincipal(ISPrincipal.ADMINISTRATOR_PRINCIPAL, "admin");
 						adminPrincipal.setDisplayName("Administrator");
 						loginUser.getPrincipals().add(adminPrincipal);	
+					}
+					Set<Group> groups = user.getGroups();
+					for (Group group : groups) {
+						ISPrincipal groupPrincipal = new ISPrincipal(
+								ISPrincipal.ORGANIZATION_PRINCIPAL, group
+										.getEmail());
+						groupPrincipal.setDisplayName(group.getName());
+						loginUser.getPrincipals().add(groupPrincipal);
 					}
 				}
 								

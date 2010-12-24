@@ -48,7 +48,7 @@ public class UserDAO extends HibernateDaoSupport {
 	public User getByEmail(String email, int domainId) {
 		List<User> userList = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(User.class).add(
-						Expression.like(User.PROP_EMAIL, email)).add(
+						Expression.eq(User.PROP_EMAIL, email)).add(
 						Expression.eq(User.PROP_FK_DOMAIN_ID, domainId)));
 		if (userList.isEmpty())
 			return null;
