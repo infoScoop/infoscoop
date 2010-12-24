@@ -78,7 +78,7 @@ jQuery(function(){
 							<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
 								<li style="${ (status.first ? "": "border-top:1px solid #CCC;") }"><spring:message code="role.index.principal.type.${principal.type}"/></li>
 							</c:forEach>
-							</ul>
+						</ul>
 					</td>
 					<td>
 						<ul style="padding:0;margin:0;list-style-type:none;">

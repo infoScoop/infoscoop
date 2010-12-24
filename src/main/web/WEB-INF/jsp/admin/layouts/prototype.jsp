@@ -64,6 +64,11 @@
 			padding-left:15px;
 			cursor:pointer;
 		}
+		.icon{
+			width:16px;
+			height:16px;
+			cursor:pointer;
+		}
 		</style>
 	</head>
 	<body>

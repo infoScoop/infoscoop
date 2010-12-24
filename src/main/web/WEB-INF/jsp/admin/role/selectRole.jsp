@@ -35,7 +35,7 @@
 	 				<td><input type="button" onclick="addRole('${role.id}');" value="追加"/></td>
 	 				<td id="${role.id}">${role.name}</td>
  					<td>
-						<ul style="padding:0;margin:0;list-style-type:none;">
+						<ul>
 						<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
 							<li style="${ (status.first ? "": "border-top:1px solid #CCC;") }"><spring:message code="role.index.principal.type.${principal.type}"/></li>
 						</c:forEach>

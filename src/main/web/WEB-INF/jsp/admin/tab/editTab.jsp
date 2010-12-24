@@ -186,6 +186,17 @@ h2 {
 	margin-left: 0;
 }
 
+/*- Security group list  --------------------------- */
+#role_list_table ul, #role_edit_table ul, #selectRoleTable ul{
+	padding:0;
+	margin:0;
+	list-style-type:none;
+}
+
+#role_list_table li, #role_edit_table li, #selectRoleTable li{
+	padding:2;
+}
+
 </style>
 
 <script src="../../js/resources/resources_ja.js"></script>
