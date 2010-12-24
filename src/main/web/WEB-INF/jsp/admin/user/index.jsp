@@ -6,11 +6,6 @@
 	<tiles:putAttribute name="title" value="syncmaster.title"/>
 	<tiles:putAttribute name="body" type="string">
 
-<script type="text/javascript" class="source">
-function sync(){
-	window.location.href = "sync";
-}
-</script>
 <link href="http://jsajax.com/jQuery/prettyLoader/css/prettyLoader.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="http://jsajax.com/jQuery/prettyLoader/js/jquery.prettyLoader.js"></script>
 <script type="text/javascript">
@@ -21,30 +16,12 @@ $(function(){
 	$("#syncButton").button().click(function(){
 		$.prettyLoader.show();
 		$("#message").css("visibility","visible");
+		$("#message").html('<img src="../../skin/imgs/ajax-loader.gif"/>同期しています。');
+		$.get('sync', function(data){
+			$("#message").html(data);
+		});
 	});
 });
-
-
-/*
-var n;
-function start(){
-  n++;
-  $("#prog").progressbar("value",n*10);
-  if (n==10){
-    clearInterval(a);
-  }
-}
-$(function(){
-  $("#prog").progressbar();
-  $("#addButton").click(function(){
-    $("#message").css("visibility","visible");
-    n=0;
-    $("#prog").progressbar("value",0);
-    $("#prog").css("visibility","visible");
-    a = setInterval("start()",500);
-  });
-});
-*/
 
 </script>
 
@@ -54,8 +31,8 @@ Google Appsのユーザとグループ(メーリングリスト)をinfoScoopに�
 </p>
 
 <div>
-	<input id="syncButton" type="button" value="同期" onclick="sync()"/>
-	<span id="message" style="visibility:hidden">同期しています。</span>
+	<input id="syncButton" type="button" value="同期"/>
+	<span id="message" style="visibility:hidden"></span>
 	<div id="prog" style="width:250px; visibility:hidden"></div>
 	
 </div>
