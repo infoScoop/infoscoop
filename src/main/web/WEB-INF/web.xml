@@ -298,6 +298,16 @@
 		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+  
+	<servlet>
+		<servlet-name>MiniBrowserIframe</servlet-name>
+		<jsp-file>/iframe.jsp</jsp-file>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>MiniBrowserBlank</servlet-name>
+		<jsp-file>/blank.html</jsp-file>
+	</servlet>
 	
 	<servlet>
 		<servlet-name>Setup</servlet-name>
@@ -560,6 +570,16 @@
   <servlet-mapping>
     <servlet-name>AdminDispatcher</servlet-name>
     <url-pattern>/manager/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>MiniBrowserIframe</servlet-name>
+    <url-pattern>/manager/iframe.jsp</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>MiniBrowserBlank</servlet-name>
+    <url-pattern>/manager/blank.html</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
