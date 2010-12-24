@@ -8,7 +8,8 @@
 	<tiles:putAttribute name="body" type="string">
 <script type="text/javascript" class="source">
 function deleteRole(roleId){
-	window.location.href = "delete?roleId=" +  roleId;
+	if(confirm('削除してよろしいですか？'))
+		window.location.href = "delete?roleId=" +  roleId;
 }
 $(function () {
 	$("#add_button").button();
@@ -37,9 +38,9 @@ $(function () {
 		<c:forEach var="role" items="${roles}">
 			<c:set var="principalSize" value="${role.size}" />
 			<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
-				<tr id="${role.id}">
+				<tr>
 					<c:if test="${status.index == 0}">
-	 					<td id="${role.id}" rowspan="${principalSize}">${role.name}</td>
+	 					<td rowspan="${principalSize}">${role.name}</td>
  					</c:if>
 					<td><spring:message code="role.index.principal.type.${principal.type}"/></td>
 					<td>${principal.name}</td>
