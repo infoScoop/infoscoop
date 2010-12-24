@@ -90,9 +90,9 @@
 						<x:when select="$conf/Module/ModulePrefs/@title"><x:out select="$conf/Module/ModulePrefs/@title" /></x:when>
 						<x:otherwise>${gadget.gadgetInstance.type}</x:otherwise>
 					</x:choose>
+					<a id="change_type"/>変更</a>
 				</li>
 			</ul>
-			<a id="change_type"/>Change Type</a>
 		</fieldset>
 		<fieldset>
 			<legend>共通設定</legend>
@@ -210,4 +210,5 @@ $("#get_title_from_content").click(function(){
 });
 $('input[type="submit"]').button();
 $('input[type="reset"]').button();
+$('#change_type').button();
 </script>
