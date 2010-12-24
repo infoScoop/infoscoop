@@ -103,12 +103,13 @@ h2 {
 	display:inline-block;
 }
 #infoscoop #portal-tree-menu{
-	width:0;
+	display:none;
 }
 #infoscoop #infoscoop-panel{
 	width:100%;
 }
 #infoscoop.areaType0 #portal-tree-menu{
+	display:block;
 	width:20%;
 }
 #infoscoop.areaType0 #infoscoop-panel{
