@@ -21,19 +21,19 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the PORTALLAYOUT table.
+ * This is an object that contains data related to the IS_PORTALLAYOUTS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="PORTALLAYOUT"
+ *  table="IS_PORTALLAYOUTS"
  */
 
 public abstract class BasePortallayout  implements Serializable {
 
 	public static String REF = "Portallayout";
-	public static String PROP_NAME = "Name";
 	public static String PROP_LAYOUT = "Layout";
+	public static String PROP_ID = "Id";
 
 
 	// constructors
@@ -44,8 +44,8 @@ public abstract class BasePortallayout  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BasePortallayout (java.lang.String name) {
-		this.setName(name);
+	public BasePortallayout (org.infoscoop.dao.model.PortallayoutsPK id) {
+		this.setId(id);
 		initialize();
 	}
 
@@ -53,10 +53,10 @@ public abstract class BasePortallayout  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BasePortallayout (
-		java.lang.String name,
+		org.infoscoop.dao.model.PortallayoutsPK id,
 		java.lang.String layout) {
 
-		this.setName(name);
+		this.setId(id);
 		this.setLayout(layout);
 		initialize();
 	}
@@ -68,7 +68,7 @@ public abstract class BasePortallayout  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String name;
+	private org.infoscoop.dao.model.PortallayoutsPK id;
 
 	// fields
 	private java.lang.String layout;
@@ -78,19 +78,17 @@ public abstract class BasePortallayout  implements Serializable {
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  generator-class="sequence"
-     *  column="NAME"
      */
-	public java.lang.String getName () {
-		return name;
+	public org.infoscoop.dao.model.PortallayoutsPK getId () {
+		return id;
 	}
 
 	/**
 	 * Set the unique identifier of this class
-	 * @param name the new ID
+	 * @param id the new ID
 	 */
-	public void setName (java.lang.String name) {
-		this.name = name;
+	public void setId (org.infoscoop.dao.model.PortallayoutsPK id) {
+		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -98,15 +96,15 @@ public abstract class BasePortallayout  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: LAYOUT
+	 * Return the value associated with the column: layout
 	 */
 	public java.lang.String getLayout () {
 		return layout;
 	}
 
 	/**
-	 * Set the value related to the column: LAYOUT
-	 * @param layout the LAYOUT value
+	 * Set the value related to the column: layout
+	 * @param layout the layout value
 	 */
 	public void setLayout (java.lang.String layout) {
 		this.layout = layout;
@@ -120,16 +118,16 @@ public abstract class BasePortallayout  implements Serializable {
 		if (!(obj instanceof org.infoscoop.dao.model.Portallayout)) return false;
 		else {
 			org.infoscoop.dao.model.Portallayout portallayout = (org.infoscoop.dao.model.Portallayout) obj;
-			if (null == this.getName() || null == portallayout.getName()) return false;
-			else return (this.getName().equals(portallayout.getName()));
+			if (null == this.getId() || null == portallayout.getId()) return false;
+			else return (this.getId().equals(portallayout.getId()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getName()) return super.hashCode();
+			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getName().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

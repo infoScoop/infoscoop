@@ -32,7 +32,7 @@ public class Portallayout extends BasePortallayout {
 	/**
 	 * Constructor for primary key
 	 */
-	public Portallayout (java.lang.String id) {
+	public Portallayout (org.infoscoop.dao.model.PortallayoutsPK id) {
 		super(id);
 	}
 
@@ -40,7 +40,7 @@ public class Portallayout extends BasePortallayout {
 	 * Constructor for required fields
 	 */
 	public Portallayout (
-		java.lang.String id,
+		org.infoscoop.dao.model.PortallayoutsPK id,
 		java.lang.String layout) {
 
 		super (

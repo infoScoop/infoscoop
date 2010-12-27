@@ -8,18 +8,29 @@
 		name="Portallayout"
 		table="IS_PORTALLAYOUTS"
 	>
-		<id
-			name="name"
-			type="string"
-			column="NAME"
-		>
-			<generator class="assigned"/>
-		</id>
+		<meta attribute="sync-DAO">false</meta>
+		<composite-id name="Id" class="PortallayoutsPK">
+			<key-property
+				name="Name"
+				column="name"
+				type="string"
+			/>
+			<key-property
+				name="Lang"
+				column="lang"
+				type="string"
+			/>
+			<key-property
+				name="Country"
+				column="country"
+				type="string"
+			/>
+		</composite-id>
 
 		<property
 			name="Layout"
-			column="LAYOUT"
-			type="text"
+			column="layout"
+			type="string"
 			not-null="true"
 		/>
 

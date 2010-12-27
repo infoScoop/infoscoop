@@ -23,6 +23,10 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
+import org.infoscoop.dao.model.PortallayoutsPK;
+import org.infoscoop.dao.model.OAuth3LeggedConsumer;
 import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -68,6 +72,15 @@ public class PortalLayoutDAO extends HibernateDaoSupport{
 
 		if(log.isInfoEnabled())
 				log.info("param[]: update successfully.");
+	}
+	
+
+	public Portallayout getById(String name, String country, String lang){
+		PortallayoutsPK id = new PortallayoutsPK();
+		id.setName(name);
+		id.setCountry(country);
+		id.setLang(lang);
+		return super.getHibernateTemplate().get(Portallayout.class, id);
 	}
 	
 }

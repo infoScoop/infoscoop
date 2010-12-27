@@ -5,8 +5,7 @@ ISA_I18N.i18nLocales = null;//List of local currently used in DB. Update if any 
 ISA_I18N.types = {
 	"menu" : ISA_R.alb_menu,
 	"search" : ISA_R.alb_searchForm,
-	"widget" : ISA_R.alb_widget,
-	"layout" : ISA_R.alb_otherLayout
+	"widget" : ISA_R.alb_widget
 };
 
 var queryString = document.location.search;

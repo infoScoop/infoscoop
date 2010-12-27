@@ -22,9 +22,11 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -39,7 +41,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.service.PortalLayoutService;
-import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -92,11 +93,11 @@ public class CustomizationServlet extends HttpServlet {
 			root.put("request", request);
 			root.put("session", request.getSession());
 
-			String customFtl = getCustomizationFtl( root );
-
+			String customFtl = getCustomizationFtl( root , request.getLocale());
+			/*
 			customFtl = I18NUtil.resolve(I18NUtil.TYPE_LAYOUT,
 					customFtl, request.getLocale());
-
+			*/
 			writer.write( customFtl );
 		} catch (Exception e){
 			log.error("--- unexpected error occurred.", e);
@@ -109,7 +110,7 @@ public class CustomizationServlet extends HttpServlet {
 
 	}
 
-	private String getCustomizationFtl( Map<String,Object> root ) throws ParserConfigurationException, Exception{
+	private String getCustomizationFtl( Map<String,Object> root, Locale locale ) throws ParserConfigurationException, Exception{
 		JSONObject layoutJson = new JSONObject();
 		
 		// get the information of static layout.
@@ -117,17 +118,47 @@ public class CustomizationServlet extends HttpServlet {
 		List<Portallayout> layoutList = service.getPortalLayoutList();
 		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
-		for(Iterator<Portallayout> layoutIt = layoutList.iterator();layoutIt.hasNext();){
-			Portallayout portalLayout = layoutIt.next();
-
-			String name = portalLayout.getName();
+		String 	country = locale.getCountry();
+		if(country == null || country == "")
+			country = "ALL";
+		
+		String lang = locale.getLanguage();
+		if(lang == null || lang == "")
+			country = "ALL";
+		
+		Map<String,Map<String, Portallayout>> map = new HashMap<String,Map<String, Portallayout>>();
+		for(Portallayout portalLayout :layoutList){
+			String name = portalLayout.getId().getName();
 			if(name.equals("javascript"))
-				continue;
+					continue; 
+			
+			Map<String, Portallayout> langCountryLayoutMap = map.get(name);
+			if(langCountryLayoutMap == null){
+				langCountryLayoutMap = new HashMap<String, Portallayout>();
+				map.put(name, langCountryLayoutMap);
+			}
+			String portalLayoutCountry = portalLayout.getId().getCountry();
+			String portalLayoutLang = portalLayout.getId().getLang();
+									
+			String portalLayoutMapKey = portalLayoutCountry + "_" + portalLayoutLang;
+			langCountryLayoutMap.put(portalLayoutMapKey, portalLayout);
+		}
 
+		for(String name: map.keySet()){
 			String layout;
+			Map<String, Portallayout> layouts = map.get(name);
+			
+			Portallayout selected_layout = layouts.get(country + "_" + lang);
+			if(selected_layout == null)
+				selected_layout = layouts.get("ALL_" + lang);
+			if(selected_layout == null)
+				selected_layout = layouts.get(country + "_ALL");
+			if(selected_layout == null)
+				selected_layout = layouts.get("ALL_ALL");
+			
 			boolean isIframeToolBar = name.toLowerCase().equals("contentfooter");
 			if(isIframeToolBar){
-				String tempLayout = "<temp>" + portalLayout.getLayout() + "</temp>";
+				String tempLayout = "<temp>" + selected_layout.getLayout() + "</temp>";
 				Document ifdoc = db.parse(new ByteArrayInputStream(tempLayout.getBytes("UTF-8")));
 				Element ifroot = ifdoc.getDocumentElement();
 				NodeList icons = ifroot.getElementsByTagName("icon");
@@ -152,7 +183,7 @@ public class CustomizationServlet extends HttpServlet {
 				}
 				layout = iconsJson.toString();
 			}else {
-				layout = portalLayout.getLayout();
+				layout = selected_layout.getLayout();
 				if( layout == null )
 					layout = "";
 			}

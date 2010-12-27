@@ -19,6 +19,7 @@ package org.infoscoop.web;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -65,9 +66,15 @@ public class PortalLayoutServlet extends HttpServlet {
 		Writer out = response.getWriter();
 		
 		try {
-			
+			Locale locale = request.getLocale();
+			String country = locale.getCountry();
+			String lang = locale.getLanguage();
 			PortalLayoutService service = (PortalLayoutService)SpringUtil.getBean("PortalLayoutService");
-			String js = service.getPortalLayout(type);
+			String js = service.getPortalLayout(type, country, lang);
+			if(js == null)
+				js = service.getPortalLayout(type, "ALL", lang);
+			if(js == null)
+				js = service.getPortalLayout(type, "ALL", "ALL");
 			
 			out.write(js);
 		} catch (Exception e){
