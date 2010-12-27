@@ -180,6 +180,10 @@
 		</x:forEach>
 		</c:if>
 		</ul>
+		<div style="text-align:center;">
+			<sapn><form:checkbox path="applyToUsersGadgets" cssClass="bool" />
+			ユーザが追加済みのガジェットにも設定を適用する</span>
+		</div>
 	</fieldset>
 	</c:if>
 	<li>

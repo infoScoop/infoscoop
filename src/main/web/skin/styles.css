@@ -70,7 +70,8 @@ fieldset {
 }
 .infoScoop #panels .panel {
 	margin:5px 10px;
-	padding:5px;
+	//margin: 0px 10px;
+	padding:10px;
 }
 #portal-header{
 	width: 100%;
@@ -89,7 +90,6 @@ body.fixedPortalHeader #panels .panel{
 
 .column {
 	float:left;
-	margin-top: 5px;
 }
 
 .adjustBarOver {

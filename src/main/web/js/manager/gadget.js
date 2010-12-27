@@ -50,6 +50,8 @@ function rebuildGadgetUserPrefs(){
 		$(input).after(listElm);
 	}
 	$("#gadget_settings input").each(function(){
+		if(this.type == 'hidden')return;
+		
 		var datatype = this.className;
 		switch(datatype){
 			case "bool":

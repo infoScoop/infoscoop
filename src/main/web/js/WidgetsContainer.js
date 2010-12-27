@@ -632,7 +632,7 @@ IS_WidgetsContainer.adjustColumnWidth = function( tabId, columnsWidth, isInitial
 //			columns[i].style.width = Math.floor(width/IS_Portal.tabs[adjustTabId].numCol) + "px";
 			
 			if(isClear){
-				var _coefficient = (Browser.isSafari) ? 100 : 99.5;
+				var _coefficient = Browser.isSafari ? 100 : 99.5;
 				// '(numCol-1)%' is used in 'adjustBar'
 				var width = ((_coefficient - (numCol-1))/numCol) + "%";
 				columns[i].style.width = width;

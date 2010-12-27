@@ -1279,7 +1279,7 @@ IS_Portal.buildPanel = function(panelNumber, type, layout){
 	
 	var table = document.createElement("table");
 	panel.appendChild(table);
-	table.style.width = "100%";
+	table.style.width = Browser.isIE ? "96%" : "100%";
 	table.style.cellpadding = "0";
 	table.style.cellspacing = "0";
 //	table.style.tableLayout = "fixed";
@@ -1299,6 +1299,7 @@ IS_Portal.buildPanel = function(panelNumber, type, layout){
 		staticPanel.id = "static-panel"+panelNumber;
 		var staticDiv = document.createElement("div");
 		staticPanel.appendChild(staticDiv);
+		staticPanel.style.marginBottom = '10px';
 		staticDiv.id = "static-portal-widgets"+panelNumber;
 		
 		if(type == "static"){
@@ -1309,8 +1310,6 @@ IS_Portal.buildPanel = function(panelNumber, type, layout){
 	}
 	// dynamic
 	var dynamicPanel = document.createElement("div");
-	dynamicPanel.style.clear = "both";
-	td.appendChild(dynamicPanel);
 	dynamicPanel.id = "dynamic-panel"+panelNumber;
 	var dynamicDiv = document.createElement("div");
 	dynamicPanel.appendChild(dynamicDiv);
@@ -1320,6 +1319,8 @@ IS_Portal.buildPanel = function(panelNumber, type, layout){
 	columns.id = "columns"+panelNumber;
 	dynamicDiv.appendChild(columns);
 	
+	td.appendChild(dynamicPanel);
+
 	return panel;
 }
 
