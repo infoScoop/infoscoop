@@ -31,9 +31,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.dao.I18NLocaleDAO;
 import org.infoscoop.dao.PortalLayoutDAO;
-import org.infoscoop.dao.model.I18nlocale;
 import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.XmlUtil;

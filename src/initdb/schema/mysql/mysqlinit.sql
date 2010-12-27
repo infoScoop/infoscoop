@@ -172,9 +172,9 @@ create table IS_I18NLOCALES (
 --
 create table IS_PORTALLAYOUTS (
   name varchar(50) NOT NULL,
-  layout text NOT NULL,
   country varchar(5) NOT NULL DEFAULT 'ALL',
   lang varchar(5) NOT NULL DEFAULT 'ALL',
+  layout text NOT NULL,
   PRIMARY KEY (name, country, lang)
 ) ENGINE=InnoDB;
 
