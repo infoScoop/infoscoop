@@ -122,6 +122,18 @@
 			not-null="false"
 			length="10"
 		/>
+		<property
+			name="MenuUpdated"
+			column="menu_updated"
+			type="integer"
+		/>
+		
+		<property
+			name="FkMenuId"
+			column="fk_menu_id"
+			type="integer"
+			insert="false" update="false"
+		/>
 		
 		<many-to-one
 			name="MenuItem"

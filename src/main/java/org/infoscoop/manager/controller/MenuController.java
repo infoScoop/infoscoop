@@ -20,6 +20,7 @@ import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.MenuTreeDAO;
 import org.infoscoop.dao.RoleDAO;
 import org.infoscoop.dao.TabTemplatePersonalizeGadgetDAO;
+import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.GadgetInstanceUserpref;
@@ -238,6 +239,8 @@ public class MenuController {
 			}
 		}
 		menuItemDAO.save(item);
+		if(item.isApplyToUsersGadgets())
+			WidgetDAO.newInstance().markMenuItemUpdated(item.getId());
 		return "menu/updateItem";
 	}
 

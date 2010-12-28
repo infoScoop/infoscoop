@@ -65,7 +65,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 		widget.setUid( uid );
 		widget.setFkDomainId(DomainManager.getContextDomainId());
 		widget.setTabid( tabId );
-		widget.setIsstatic( new Integer( isStatic ));
+		widget.setIsstatic( Integer.valueOf( isStatic ));
 
 		addWidget( widget );
 	}
@@ -80,7 +80,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 		super.getHibernateTemplate().save(widget);
 		super.getHibernateTemplate().flush();
 		if(saveUserPrefs)
-			updateUserPrefs( widget );
+			saveUserPrefs( widget );
     }
     
     public List<String> getWidgetTypes(String uid){
@@ -120,7 +120,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 		return super.getHibernateTemplate().findByCriteria( DetachedCriteria.forClass( Widget.class )
 				.add( Expression.eq("Uid",uid ))
-				.add( Expression.eq("Deletedate",new Long( 0 )))
+				.add( Expression.eq("Deletedate",Long.valueOf( 0 )))
 				.add( Expression.in("Widgetid",widgetIds )));
 	}
 
@@ -128,7 +128,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 		List result = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Widget.class).add(
 						Expression.eq("Uid", uid)).add(
-						Expression.eq("Deletedate", new Long(0))).add(
+						Expression.eq("Deletedate", Long.valueOf(0))).add(
 						Expression.eq("Widgetid", widgetId)));
 		return result.size() > 0;
 	}
@@ -165,7 +165,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 		String updateQuery = "update Widget set Deletedate = ?,Tabid = '' where Uid = ? and Tabid = ? and (Widgetid = ? or Parentid = ?) and Deletedate = 0";
 		return super.getHibernateTemplate().bulkUpdate(
 				updateQuery,
-				new Object[]{ new Long(deleteDate), uid, tabId, widgetId, widgetId });
+				new Object[]{ Long.valueOf(deleteDate), uid, tabId, widgetId, widgetId });
 	}
 
 	public void deleteWidget( String uid ) {
@@ -219,7 +219,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 		String updateQuery = "delete from Widget where Uid = ? and (Widgetid = ? or Parentid = ?) and Deletedate = ?";
 		return super.getHibernateTemplate().bulkUpdate(
 				updateQuery,
-				new Object[]{uid, widgetId,widgetId, new Long(deleteDate)});
+				new Object[]{uid, widgetId,widgetId, Long.valueOf(deleteDate)});
 
 	}
 
@@ -234,7 +234,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 		String updateQuery = "delete from Widget where Uid = ? and (Widgetid = ? or Parentid = ?) and Tabid = ? and Deletedate = ?";
 		return super.getHibernateTemplate().bulkUpdate(
 				updateQuery,
-				new Object[]{uid, widgetId,widgetId, tabId, new Long(deleteDate)});
+				new Object[]{uid, widgetId,widgetId, tabId, Long.valueOf(deleteDate)});
 
 	}
 	/*
@@ -254,7 +254,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 		String queryString = "delete from Widget where Uid=? and TabId=? and Isstatic=?";
 
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[]{ uid,tabId,new Integer( isStatic )});
+				new Object[]{ uid,tabId, Integer.valueOf( isStatic )});
 	}
 
 	public Map<String,UserPref> getUserPrefs( String id ) {
@@ -267,6 +267,15 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 		return userPrefs;
 	}
+	public void saveUserPrefs( Widget widget ) {
+		
+		Map<String,UserPref> userPrefs = widget.getUserPrefs();
+		for( UserPref userPref  : userPrefs.values()) {
+			userPref.getId().setWidgetId( widget.getId());
+			super.getHibernateTemplate().saveOrUpdate( userPref );
+		}
+	}
+	
 	public void updateUserPrefs( Widget widget ) {
 		List<UserPref> c1 = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass( UserPref.class )
@@ -280,10 +289,12 @@ public class WidgetDAO extends HibernateDaoSupport{
 		keySet.addAll( current.keySet() );
 
 		for( String key : keySet ) {
-			if( !userPrefs.containsKey( key )) {
+			UserPref newPref = userPrefs.get( key );
+			if(newPref == null) {
 				super.getHibernateTemplate().delete( current.get( key ));
 			} else {
-				UserPref userPref = userPrefs.get( key );
+				UserPref userPref = current.get( key );
+				userPref.setValue(newPref.getValue());
 				if( userPref.getId().getWidgetId() == null )
 					userPref.getId().setWidgetId( widget.getId());
 
@@ -292,9 +303,14 @@ public class WidgetDAO extends HibernateDaoSupport{
 		}
 		super.getHibernateTemplate().flush();
 	}
+	
 	public void updateUserPrefs( Collection<?> widgets ) {
 		for( Object widget : widgets )
 			updateUserPrefs( ( Widget )widget );
+	}
+
+	public void markMenuItemUpdated(Integer id) {
+		super.getHibernateTemplate().bulkUpdate("update Widget w set w.MenuUpdated = 1 where w.FkMenuId = ?", id);
 	}
 
 

@@ -554,6 +554,7 @@ create table IS_WIDGETS (
   siblingId varchar(256),
   parentId varchar(256),
   fk_menu_id int unsigned,
+  menu_updated int not null default 0,
   href varchar(1024),
   title varchar(256),
   type varchar(1024),

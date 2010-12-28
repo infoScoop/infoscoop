@@ -52,12 +52,10 @@ public class Widget extends BaseWidget {
 	 */
 	public Widget (
 		java.lang.String id,
-		org.infoscoop.dao.model.MenuItem menuItem,
 		java.lang.Long createdate) {
 
 		super (
 			id,
-			menuItem,
 			createdate);
 	}
 
@@ -217,5 +215,9 @@ public class Widget extends BaseWidget {
 
 	public void setIconUrl(String iconUrl) {
 		this.iconUrl = iconUrl;
+	}
+
+	public boolean isMenuUpdatedBoolean() {
+		return (super.getMenuUpdated() == 1);
 	} 
 }

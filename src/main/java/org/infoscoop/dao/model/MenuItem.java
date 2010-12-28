@@ -83,5 +83,15 @@ public class MenuItem extends BaseMenuItem {
 	public void toggolePublish() {
 		setPublishBool(!isPublishBool());
 	}
+	
+	private boolean applyToUsersGadgets = false;
+
+	public boolean isApplyToUsersGadgets() {
+		return applyToUsersGadgets;
+	}
+
+	public void setApplyToUsersGadgets(boolean applyToUsersGadgets) {
+		this.applyToUsersGadgets = applyToUsersGadgets;
+	}
 
 }

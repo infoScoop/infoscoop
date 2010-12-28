@@ -39,6 +39,7 @@ import org.infoscoop.dao.model.CommandBar;
 import org.infoscoop.dao.model.CommandBarStaticGadget;
 import org.infoscoop.dao.model.GadgetInstance;
 import org.infoscoop.dao.model.GadgetInstanceUserpref;
+import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.Preference;
 import org.infoscoop.dao.model.StaticGadget;
 import org.infoscoop.dao.model.TABPK;
@@ -168,10 +169,13 @@ public class TabService {
 				boolean isChanged = staticTab.getTemplateTimestamp() != null
 						&& tabTemplate.getUpdatedAt().compareTo(
 								staticTab.getTemplateTimestamp()) > 0;
+
+				List<Widget> dynamicWidgetList = tabDAO.getDynamicWidgetList( staticTab );
+				this.updateWidgetUserPrefs(dynamicWidgetList);
 				tabList.add(new TabDetail(
 						staticTab,
 						tabTemplate.getLayout(),
-						this.copyPersonalizeGadgetsUserPrefs(uid, staticTab, tabTemplate),
+						dynamicWidgetList,
 						this.copyStaticGadgetsUserPrefs(uid, staticTab, tabTemplate),
 						isChanged
 					));
@@ -187,7 +191,7 @@ public class TabService {
 					tabList.add(convertStaticToDynamic(tab, dynamicTabIdList));
 			}else{
 				List<Widget> dynamicWidgetList = tabDAO.getDynamicWidgetList( tab );
-				this.copyGadgetInstanceUserPrefs(dynamicWidgetList);
+				this.updateWidgetUserPrefs(dynamicWidgetList);
 				tabList.add(
 						new TabDetail(
 							tab,
@@ -204,19 +208,23 @@ public class TabService {
 		return tabList;
 	}
 	
-	private void copyGadgetInstanceUserPrefs(List<Widget> dynamicWidgetList) {
+	private void updateWidgetUserPrefs(List<Widget> dynamicWidgetList) {
 		for(Widget widget : dynamicWidgetList){
 			if(widget.getType().startsWith("g_"))continue;
-			Map<String, UserPref> userprefs = widget.getUserPrefs();
-			GadgetInstance gadgetInstance = widget.getMenuItem().getGadgetInstance();
-			for(GadgetInstanceUserpref giup : gadgetInstance.getGadgetInstanceUserPrefs()){
-				String name = giup.getId().getName();
-				if(!userprefs.containsKey(name)){
+			if(widget.isMenuUpdatedBoolean()){
+				widget.getUserPrefs().clear();
+				MenuItem menuItem = widget.getMenuItem();
+				widget.setTitle(menuItem.getTitle());
+				widget.setHref(menuItem.getHref());
+				GadgetInstance gadgetInstance = menuItem.getGadgetInstance();
+				for(GadgetInstanceUserpref giup : gadgetInstance.getGadgetInstanceUserPrefs()){
+					String name = giup.getId().getName();
 					widget.setUserPref(name, giup.getValue());
 				}
+				widget.setIconUrl(gadgetInstance.getIcon());
+				this.widgetDAO.updateWidget(widget);
+				
 			}
-			widget.setIconUrl(gadgetInstance.getIcon());
-			
 		}
 	}
 
@@ -275,38 +283,6 @@ public class TabService {
 		return widget;
 	}
 	
-	private List<Widget> copyPersonalizeGadgetsUserPrefs(String uid, Tab tab,
-			TabTemplate tabTemplate) {
-		List<Widget> widgets = tabDAO.getDynamicWidgetList( tab );
-		Map<String, Widget> widgetMap = new HashMap<String, Widget>();
-		for(Widget widget : widgets)
-			widgetMap.put(widget.getWidgetid(), widget);
-		
-		List<TabTemplatePersonalizeGadget> newGadgets = new ArrayList<TabTemplatePersonalizeGadget>();
-		
-		for(TabTemplatePersonalizeGadget gadget : tabTemplate.getTabTemplatePersonalizeGadgets()){
-			GadgetInstance gadgetInst = gadget.getFkGadgetInstance();
-			Widget widget = widgetMap.get(gadget.getWidgetId());
-			if (widget == null) {
-				newGadgets.add(gadget);
-				continue;
-			}
-			Map<String, UserPref> upMap = widget.getUserPrefs();
-			
-			for(GadgetInstanceUserpref giup : gadgetInst.getGadgetInstanceUserPrefs()){
-				UserPref up = upMap.get(giup.getId().getName());
-				if(up == null)
-					widget.setUserPref(giup.getId().getName(), giup.getValue());
-			}
-		}
-		
-		List<Widget> newWidgets = createPersonalizeGadgetList(uid, tabTemplate,
-				newGadgets);
-		widgets.addAll(newWidgets);
-		
-		return widgets;
-	}
-
 	private List<Widget> createStaticGadgetList(String uid, CommandBar cmdBar) {
 		List<Widget> widgetList = new ArrayList<Widget>();
 		for(CommandBarStaticGadget gadget : cmdBar.getCommandBarStaticGadgets()){
@@ -377,7 +353,7 @@ public class TabService {
 			widget.setIsstatic(Integer.valueOf(0));
 
 			widgetList.add(widget);
-			this.widgetDAO.addWidget(widget, false);
+			this.widgetDAO.addWidget(widget, true);
 		}
 		return widgetList;
 	}

@@ -25,9 +25,11 @@ public abstract class BaseWidget  implements Serializable {
 	public static String PROP_MENU_ITEM = "MenuItem";
 	public static String PROP_DELETEDATE = "Deletedate";
 	public static String PROP_WIDGETID = "Widgetid";
+	public static String PROP_FK_MENU_ID = "FkMenuId";
 	public static String PROP_NOBORDER = "Noborder";
 	public static String PROP_SIBLINGID = "Siblingid";
 	public static String PROP_ID = "Id";
+	public static String PROP_MENU_UPDATED = "MenuUpdated";
 	public static String PROP_HREF = "Href";
 	public static String PROP_TABID = "Tabid";
 	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
@@ -52,16 +54,16 @@ public abstract class BaseWidget  implements Serializable {
 	 */
 	public BaseWidget (
 		java.lang.String id,
-		org.infoscoop.dao.model.MenuItem menuItem,
 		java.lang.Long createdate) {
 
 		this.setId(id);
-		this.setMenuItem(menuItem);
 		this.setCreatedate(createdate);
 		initialize();
 	}
 
-	protected void initialize () {}
+	protected void initialize () {
+		this.setMenuUpdated(0);
+	}
 
 
 
@@ -86,6 +88,8 @@ public abstract class BaseWidget  implements Serializable {
 	private java.lang.Integer isstatic;
 	private java.lang.Integer ignoreheader;
 	private java.lang.Integer noborder;
+	private java.lang.Integer menuUpdated;
+	private java.lang.Integer fkMenuId;
 
 	// many to one
 	private org.infoscoop.dao.model.MenuItem menuItem;
@@ -365,6 +369,40 @@ public abstract class BaseWidget  implements Serializable {
 	 */
 	public void setNoborder (java.lang.Integer noborder) {
 		this.noborder = noborder;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: menu_updated
+	 */
+	public java.lang.Integer getMenuUpdated () {
+		return menuUpdated;
+	}
+
+	/**
+	 * Set the value related to the column: menu_updated
+	 * @param menuUpdated the menu_updated value
+	 */
+	public void setMenuUpdated (java.lang.Integer menuUpdated) {
+		this.menuUpdated = menuUpdated;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: fk_menu_id
+	 */
+	public java.lang.Integer getFkMenuId () {
+		return fkMenuId;
+	}
+
+	/**
+	 * Set the value related to the column: fk_menu_id
+	 * @param fkMenuId the fk_menu_id value
+	 */
+	public void setFkMenuId (java.lang.Integer fkMenuId) {
+		this.fkMenuId = fkMenuId;
 	}
 
 
