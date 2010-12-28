@@ -417,6 +417,8 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		if(menuItem.depth > 0){
 			for(var i = 0; i < menuItem.depth; i++){
 				var depthTd = document.createElement('td');
+				console.info(parents);
+				console.info(i);
 				if(parents[i].isLast  ){
 					depthTd.className = 'ygtvblankdepthcell';
 				}else{

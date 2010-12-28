@@ -78,7 +78,7 @@ public class SiteAggregationMenuService {
 			if(!RoleUtil.isAccessible(noAuth, roles))return;
 		}
 		
-		buf.append("<site-top id=\"" + menuTree.getId() + "\"");
+		buf.append("<site-top id=\"tree_" + menuTree.getId() + "\"");
 		buf.append(" title=\"" + XmlUtil.escapeXmlEntities(menuTree.getTitle())
 				+ "\"");
 		if(menuTree.getHref() != null)
