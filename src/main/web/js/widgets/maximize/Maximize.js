@@ -238,7 +238,7 @@ IS_Widget.Maximize.getMaximizeConfiguration = function( widgetConf ) {
 	if( maximizeHeader.refresh != 'off'){
 		maximizeHeader.icon.push({
 		  type:	"refresh",
-		  imgUrl:	"refresh.gif",
+		  imgUrl:	"refresh.png",
 			
 		  alt: IS_R.lb_refreshKey
 		});

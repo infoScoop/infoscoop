@@ -232,7 +232,7 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 }
 
 .infoScoop .tabMenu .refresh {
-	background: url( ./imgs/refresh.gif ) no-repeat center left;
+	background: url( ./imgs/refresh.png ) no-repeat center left;
 }
 .infoScoop .tabMenu .close {
 	background: url( ./imgs/trash.gif ) no-repeat center left;
