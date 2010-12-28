@@ -1374,9 +1374,9 @@ IS_Widget.RssReader.RssItemRender.normalizeDesc = function( desc, isIntranet ) {
 	} else if( /<\/html>/i.test( desc )) {
 		desc = desc.replace(/<\/html>[\s\S]*/mi,"");
 	}
-	/*if(isIntranet)
+	if(isIntranet)
 		return desc;
 	else
-		return html_sanitize(desc, function(url){return url;},function(id){return id;});*/
+		return html_sanitize(desc, function(url){return url;},function(id){return id;});
 	return desc;
 }
