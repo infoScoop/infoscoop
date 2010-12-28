@@ -141,7 +141,6 @@ h2 {
 	list-style-type:none;	
 }
 .cssform li{
-	clear: left;
 	display:block;
 	margin: 0;
 	padding: 5px 0;
