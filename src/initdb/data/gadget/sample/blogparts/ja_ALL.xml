@@ -1,0 +1,10 @@
+<messagebundle>  
+  <msg name="title">ブログパーツ</msg>
+  <msg name="snippet">HTML ソース</msg>
+  <msg name="itemDisplay">コンテンツ表示モード</msg>
+  <msg name="itemDisplay-inline">ポータル内フレーム</msg>
+  <msg name="itemDisplay-newWindow">新しいウィンドウ</msg>
+  <msg name="itemDisplay-auto">自動判別</msg>
+  <msg name="height">高さ(ピクセル)</msg>
+  <msg name="height-description"><![CDATA[ガジェットの高さを指定します。<br/>空、0未満の数値、もしくは数値以外の値を設定した場合はガジェットの高さは自動調整されます。]]></msg>
+</messagebundle>

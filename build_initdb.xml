@@ -75,15 +75,11 @@
 	</target>
 	
 	<target name="download-gadgets">
-		<get src="${gadgets.url}"
-			dest="gadgets.zip" verbose="true" usetimestamp="true" />
-		
-		<unzip src="gadgets.zip" dest="${build.home}/initdb/data/gadget" overwrite="true"/>
-		<delete file="gadgets.zip"/>
-		
 		<concat destfile="${build.home}/initdb/data/gadget/import.csv" append="true" encoding="UTF-8" outputencoding="UTF-8" fixlastline="yes" eol="crlf">
-			<filelist dir="${build.home}/initdb/data/gadget" files="import_builtin.csv"/>
+			<filelist dir="${build.home}/initdb/data/gadget/builtin" files="import_builtin.csv"/>
+			<filelist dir="${build.home}/initdb/data/gadget/sample" files="import_sample.csv"/>
 		</concat>
-		<delete file="${build.home}/initdb/data/gadget/import_builtin.csv"/>
+		<delete file="${build.home}/initdb/data/gadget/builtin/import_builtin.csv"/>
+		<delete file="${build.home}/initdb/data/gadget/sample/import_sample.csv"/>
 	</target>
 </project>

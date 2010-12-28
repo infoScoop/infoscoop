@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Module>
+	<ModulePrefs title="__MSG_title__" height="0">
+		<Require feature="setprefs"/>
+		<Require feature="dynamic-height"/>
+		<Require feature="settitle"/>
+		<Locale messages="ALL_ALL.xml" />
+		<Locale lang="ja" messages="ja_ALL.xml"/>
+		<Locale lang="zh" messages="zh_ALL.xml"/>
+		<Icon>__IS_GADGET_BASE_URL__/clock.gif</Icon>
+	</ModulePrefs>
+
+	<UserPref required="true" name="title" datatype="string" display_name="__MSG_uptitle__"/>
+	<UserPref name="method" datatype="enum" display_name="__MSG_method__" default_value="alert">
+		<EnumValue display_value="__MSG_alert__" value="alert"/>
+		<EnumValue display_value="__MSG_shake__" value="shake"/>
+		<EnumValue display_value="__MSG_nothing__" value="nothing"/>
+	</UserPref>
+	<UserPref required="true" name="ymd" datatype="calendar" default_value="" display_name="__MSG_ymd__"/>
+	<UserPref required="true" name="hour" datatype="string" default_value="" display_name="__MSG_hour__"/>
+	<UserPref required="true" name="minute" datatype="string" default_value="" display_name="__MSG_minute__"/>
+
+	<Header maximize="off" refresh="off"/>
+
+	<Content type="html" view="home"><![CDATA[
+<style type="text/css">
+*,body {
+	margin: 0;
+	padding: 0;
+}
+
+#small,#title,#time {
+	text-align: center;
+}
+#small {
+	font-size: 80%;
+}
+
+#title {
+	word-break: break-all;
+}
+
+#title .message {
+	margin: 0.5em 0;
+}
+#title .error {
+	font-size: 10.5pt;
+	color: red;
+}
+
+#time {
+	font-weight: bold;
+	font-size: 150%;
+}
+
+body.alarmed {
+	background-color: #FFFF00;
+}
+
+</style>
+
+<div id="small"></div>
+<div id="title"></div>
+<div id="time"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js"></script>
+<script type="text/javascript">is_loadScript("__IS_GADGET_BASE_URL__/alarm.js")</script>
+	]]></Content>
+</Module>

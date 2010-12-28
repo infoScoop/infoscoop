@@ -1,0 +1,14 @@
+<messagebundle>  
+  <msg name="title">TODO List</msg>
+  <msg name="set_title">Title</msg>
+  <msg name="priority_high">High</msg>
+  <msg name="priority_normal">Normal</msg>
+  <msg name="priority_low">Low</msg>
+  <msg name="add">Add</msg>
+  <msg name="delete">Delete</msg>
+  <msg name="todoList">todo</msg>
+  <msg name="titleEdit">Title Edit</msg>
+  <msg name="fontSize">Font Size</msg>
+  <msg name="fontSize_normal">Normal</msg>
+  <msg name="fontSize_large">Large</msg>
+</messagebundle>

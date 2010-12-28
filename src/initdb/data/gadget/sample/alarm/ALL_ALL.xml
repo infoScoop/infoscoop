@@ -1,0 +1,19 @@
+<messagebundle>  
+  <msg name="title">Alarm</msg>
+  <msg name="alarm_of">Alarm of ${title}</msg>
+  <msg name="message_invalidate">An illegal value was input. Please set again.</msg>
+  <msg name="message_alert">It is time of the "${title}"</msg>
+  <msg name="message_displayTime">${day} day&amp;nbsp;&amp;nbsp;${hour}:${minute}:${second}</msg>
+  <msg name="message_countdown">until time to ${title}</msg>
+  <msg name="message_xday">in "${date}"</msg>
+  <msg name="uptitle">Title</msg>
+  <msg name="method">Information type</msg>
+  <msg name="alert">Alert</msg>
+  <msg name="shake">Swing</msg>
+  <msg name="nothing">None</msg>
+  <msg name="ymd">Date</msg>
+  <msg name="hour">Hours</msg>
+  <msg name="minute">Minutes</msg>
+  <msg name="hour_error">[Hours] Please input the integer from 0 to 23</msg>
+  <msg name="minute_error">[Minutes] Please input the integer from 0 to 59</msg>
+</messagebundle>

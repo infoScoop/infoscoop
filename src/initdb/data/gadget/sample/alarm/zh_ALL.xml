@@ -1,0 +1,19 @@
+<messagebundle>
+  <msg name="title">报警</msg>
+  <msg name="alarm_of">${title}的报警</msg>
+  <msg name="message_invalidate">不正当的值被输入了。请重新设定。</msg>
+  <msg name="message_alert">到「${title}」的时间。</msg>
+  <msg name="message_displayTime">${day}天&amp;nbsp;&amp;nbsp;${hour}:${minute}:${second}</msg>
+  <msg name="message_countdown">到「${title}」还有</msg>
+  <msg name="message_xday">「${date}」的</msg>
+  <msg name="uptitle">标题</msg>
+  <msg name="method">通知方法</msg>
+  <msg name="alert">警报</msg>
+  <msg name="shake">摇浏览器</msg>
+  <msg name="nothing">什么也不做</msg>
+  <msg name="ymd">年月日</msg>
+  <msg name="hour">时</msg>
+  <msg name="minute">分</msg>
+  <msg name="hour_error">[时] 请输入从0到23的整数(半角)</msg>
+  <msg name="minute_error">[分] 请输入从0到59的整数(半角)</msg>
+</messagebundle>

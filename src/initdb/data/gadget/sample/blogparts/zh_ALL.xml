@@ -1,0 +1,10 @@
+<messagebundle>
+  <msg name="title">博客的零部件</msg>
+  <msg name="snippet">HTML 源代码</msg>
+  <msg name="itemDisplay">内容表示方式</msg>
+  <msg name="itemDisplay-inline">门户内框</msg>
+  <msg name="itemDisplay-newWindow">打开新窗口</msg>
+  <msg name="itemDisplay-auto">自动检测</msg>
+  <msg name="height">高度（像素）</msg>
+  <msg name="height-description"><![CDATA[指定小工具的高度。<br/>设定为空或不满0的数值，以及数值以外的值空的小工具的高度自动被调整。]]></msg>
+</messagebundle>

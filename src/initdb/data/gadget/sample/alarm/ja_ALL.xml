@@ -1,0 +1,19 @@
+<messagebundle>  
+  <msg name="title">アラーム</msg>
+  <msg name="alarm_of">${title}のアラーム</msg>
+  <msg name="message_invalidate">不正な値が入力されました。設定し直して下さい。</msg>
+  <msg name="message_alert">「${title}」の時間です。</msg>
+  <msg name="message_displayTime">${day}日&amp;nbsp;&amp;nbsp;${hour}:${minute}:${second}</msg>
+  <msg name="message_countdown">「${title}」まで、あと</msg>
+  <msg name="message_xday">「${date}」の</msg>
+  <msg name="uptitle">タイトル</msg>
+  <msg name="method">お知らせ方法</msg>
+  <msg name="alert">アラート</msg>
+  <msg name="shake">ブラウザを揺らす</msg>
+  <msg name="nothing">何もしない</msg>
+  <msg name="ymd">年月日</msg>
+  <msg name="hour">時</msg>
+  <msg name="minute">分</msg>
+  <msg name="hour_error">[時] 0から23までの整数(半角)を入力してください</msg>
+  <msg name="minute_error">[分] 0から59までの整数(半角)を入力してください</msg>
+</messagebundle>

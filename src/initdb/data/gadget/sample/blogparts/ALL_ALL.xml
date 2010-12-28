@@ -1,0 +1,10 @@
+<messagebundle>  
+  <msg name="title">Blogparts</msg>
+  <msg name="snippet">HTML Source</msg>
+  <msg name="itemDisplay">Content display mode</msg>
+  <msg name="itemDisplay-inline">Frame in portal</msg>
+  <msg name="itemDisplay-newWindow">new window</msg>
+  <msg name="itemDisplay-auto">auto detect</msg>
+  <msg name="height">Height(pixel)</msg>
+  <msg name="height-description"><![CDATA[The height of the gadget is specified. < br/>When the values other than the numerical value and the empty value and the numerical value of less than 0 are set, do the self adjustment of the height of the gadget. ]]></msg>
+</messagebundle>

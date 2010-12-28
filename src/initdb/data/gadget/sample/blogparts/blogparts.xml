@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Module>
+	<ModulePrefs title="__MSG_title__" scroll="yes">
+		<Require feature="dynamic-height"/>
+		<Locale messages="ALL_ALL.xml" />
+		<Locale lang="ja" messages="ja_ALL.xml"/>
+		<Locale lang="zh" messages="zh_ALL.xml"/>
+		<Icon>__IS_GADGET_BASE_URL__/page_white_gear.gif</Icon>
+	</ModulePrefs>
+	<UserPref default_value="auto" display_name="__MSG_itemDisplay__" datatype="enum" name="itemDisplay">
+		<EnumValue display_value="__MSG_itemDisplay-inline__" value="inline"/>
+		<EnumValue display_value="__MSG_itemDisplay-newWindow__" value="newwindow"/>
+		<EnumValue display_value="__MSG_itemDisplay-auto__" value="auto"/>
+	</UserPref>
+	<UserPref default_value="auto" datatype="string" name="height" display_name="__MSG_height__"
+		description="__MSG_height-description__"/>
+	<UserPref admin_datatype="xml" datatype="hidden" name="snippet" display_name="__MSG_snippet__"/>
+	<Header maximize="off"/>
+	<Content type="html" view="home"><![CDATA[
+__UP_snippet__
+
+<script src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js"></script>
+<script type="text/javascript">
+function main() {
+	var prefs = new gadgets.Prefs();
+
+	var height = prefs.getInt("height");
+	gadgets.window.adjustHeight( ( height > 0 ? height : undefined ) );
+
+	var itemDisplay = prefs.getString("itemDisplay");
+	var target;
+	switch(itemDisplay){
+		case "newwindow":
+			target = "_blank";break;
+		case "inline":
+			target = "ifrm";break;
+		default:
+			target = "";break;
+	}
+	var listener = function() {
+		try {
+			this.target = target;
+			if( !this.href )
+				this.href = this.action;
+
+			if( itemDisplay != "newwindow")
+				parent.IS_Portal.buildIFrame( this );
+		} catch( ex ) {
+			gadgets.warn( ex );
+		}
+	};
+
+	var anchors = document.getElementsByTagName("a");
+	for( var i=0;i<anchors.length;i++ ) {
+		var anchor = anchors[i];
+		anchor.target = "_blank";
+		Event.observe( anchor,"click",listener );
+	}
+
+	var forms = document.getElementsByTagName("form");
+	for( var i=0;i<forms.length;i++ ) {
+		var form = forms[i];
+		form.target = "_blank";
+		Event.observe( form,"submit",listener );
+	}
+}
+
+gadgets.util.registerOnLoadHandler( main );
+</script>
+	]]></Content>
+</Module>

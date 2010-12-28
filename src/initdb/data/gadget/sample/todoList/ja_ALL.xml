@@ -1,0 +1,14 @@
+<messagebundle>  
+  <msg name="title">TODO リスト</msg>
+  <msg name="set_title">タイトル</msg>
+  <msg name="priority_high">高</msg>
+  <msg name="priority_normal">中</msg>
+  <msg name="priority_low">低</msg>
+  <msg name="add">追加</msg>
+  <msg name="delete">削除</msg>
+  <msg name="todoList">todo</msg>
+  <msg name="titleEdit">タイトル編集</msg>
+  <msg name="fontSize">フォントサイズ</msg>
+  <msg name="fontSize_normal">通常</msg>
+  <msg name="fontSize_large">大きい</msg>
+</messagebundle>

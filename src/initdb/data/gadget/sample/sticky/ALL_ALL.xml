@@ -1,0 +1,17 @@
+<messagebundle>  
+  <msg name="title">Sticky</msg>
+  <msg name="set_title">Title</msg>
+  <msg name="fontSize">Font Size</msg>
+  <msg name="bgColor">Background Color</msg>
+  <msg name="fgColor">Text Color</msg>
+  <msg name="yellow">yellow</msg>
+  <msg name="blue">blue</msg>
+  <msg name="white">white</msg>
+  <msg name="gray">gray</msg>
+  <msg name="pink">pink</msg>
+  <msg name="green">green</msg>
+  <msg name="black">black</msg>
+  <msg name="orange">orange</msg>
+  <msg name="sticky_data_default">click to input</msg>
+  <msg name="titleEdit">Title Edit</msg>
+</messagebundle>

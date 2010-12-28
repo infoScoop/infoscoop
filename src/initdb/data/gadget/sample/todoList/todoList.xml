@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Module>
+	<ModulePrefs title="__MSG_title__" height="0">
+		<Require feature="setprefs"/>
+		<Require feature="dynamic-height"/>
+		<Locale messages="ALL_ALL.xml" />
+		<Locale lang="ja" messages="ja_ALL.xml"/>
+		<Locale lang="zh" messages="zh_ALL.xml"/>
+		<Icon>__IS_GADGET_BASE_URL__/tick.gif</Icon>
+	</ModulePrefs>
+
+	<WidgetPref datatype="bool" display_name="__MSG_titleEdit__" name="titleEdit" value="true"/>
+
+	<UserPref name="fontSize" datatype="enum" display_name="__MSG_fontSize__" default_value="normal">
+		<EnumValue value="normal" display_value="__MSG_fontSize_normal__"/>
+		<EnumValue value="large" display_value="__MSG_fontSize_large__"/>
+	</UserPref>
+	<UserPref datatype="hidden" name="todoList" display_name="__MSG_todoList__" default_value=""/>
+	<Header refresh="off" maximize="off"/>
+	<Content type="html" view="home"><![CDATA[
+<style>
+/* todoList */
+body.large {
+	font-size: 125%;
+}
+.todoAddTable, .todoAddTableTd, .todoAddTextBox{
+	width:100%;
+}
+
+.todoListTable {
+	width: 100%;
+/*	table-layout: fixed;*/
+	background-color: #ffffff;
+	font-size: 85%;
+}
+
+.todoItemOdd {
+	cursor: move;
+	font-family: Helvetica, Arial, sans-serif;
+	background-color: #dbdcde;
+}
+
+.todoItemEven {
+	cursor: move;
+	font-family: Helvetica, Arial, sans-serif;
+	background-color: #ffffff;
+}
+
+.todoItemOddMark {
+	cursor: move;
+	font-family: Helvetica, Arial, sans-serif;
+
+	background-color: #ccddd5;
+}
+
+.todoItemEvenMark {
+	cursor: move;
+	font-family: Helvetica, Arial, sans-serif;
+
+	background-color: #ccddd5;
+}
+
+.todoFloatItem {
+	position:absolute;
+	z-index:900;
+	filter:alpha(opacity=70);
+	-moz-opacity:0.7;
+	opacity:0.7;
+}
+
+.todoPriorityTd {
+	width: 1.5em;
+}
+.todoPriority {
+	text-align: center;
+	cursor: pointer;
+	color: #4c4c4c;
+	font-size: 90%;
+}
+
+.todoTextTd {
+	width: 100%;
+	overflow: hidden;
+}
+.todoTextDiv {
+	cursor: move;
+	overflow: hidden;
+	width: 100%;
+	word-break: break-all;
+}
+.todoText {
+	text-align: left;
+	cursor: default;
+}
+.todoTextEdit {
+	width: 100%;
+}
+
+.todoCheckTd {
+	text-align: center;
+/*	width: 1.2em;*/
+	width: 20px;
+}
+.todoCheck {
+	cursor: pointer;
+}
+
+.todoDeleteTd {
+/*	width: 1.2em;*/
+	width: 20px;
+}
+.todoDelete {
+	float: center;
+	cursor: pointer;
+	margin-top:2px;
+	margin-bottom:1px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js"></script>
+<script type="text/javascript">
+is_gadgetBaseUrl = "__IS_GADGET_BASE_URL__";
+</script>
+<script type="text/javascript">is_loadScript("__IS_GADGET_BASE_URL__/todoList.js")</script>
+	]]></Content>
+</Module>

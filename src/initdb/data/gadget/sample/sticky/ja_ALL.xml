@@ -1,0 +1,17 @@
+<messagebundle>  
+  <msg name="title">付箋紙</msg>
+  <msg name="set_title">タイトル</msg>
+  <msg name="fontSize">フォントサイズ</msg>
+  <msg name="bgColor">背景色</msg>
+  <msg name="fgColor">文字色</msg>
+  <msg name="yellow">黄色</msg>
+  <msg name="blue">青色</msg>
+  <msg name="white">白色</msg>
+  <msg name="gray">灰色</msg>
+  <msg name="pink">桃色</msg>
+  <msg name="green">緑色</msg>
+  <msg name="black">黒色</msg>
+  <msg name="orange">オレンジ</msg>
+  <msg name="sticky_data_default">クリックで入力</msg>
+  <msg name="titleEdit">タイトル編集</msg>
+</messagebundle>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Module>
+	<ModulePrefs title="__MSG_title__" height="0">
+		<Require feature="setprefs"/>
+		<Require feature="dynamic-height"/>
+		<Locale messages="ALL_ALL.xml" />
+		<Locale lang="ja" messages="ja_ALL.xml"/>
+		<Locale lang="zh" messages="zh_ALL.xml"/>
+		<Icon>__IS_GADGET_BASE_URL__/note.gif</Icon>
+	</ModulePrefs>
+	
+	<WidgetPref datatype="bool" display_name="__MSG_titleEdit__" name="titleEdit" value="true"/>
+	
+	<UserPref name="sticky_data" datatype="hidden" default_value="__MSG_sticky_data_default__"/>
+	<UserPref name="fontSize" datatype="string" display_name="__MSG_fontSize__" default_value="12"/>
+	<UserPref name="bgColor" datatype="enum" display_name="__MSG_bgColor__" default_value="#ffffcc">
+		<EnumValue display_value="__MSG_yellow__" value="#ffffcc"/>
+		<EnumValue display_value="__MSG_blue__" value="#e5ecf9"/>
+		<EnumValue display_value="__MSG_white__" value="#FFFFFF"/>
+		<EnumValue display_value="__MSG_gray__" value="#CDCDCD"/>
+		<EnumValue display_value="__MSG_pink__" value="pink"/>
+	</UserPref>
+	
+	<UserPref name="fgColor" datatype="enum" display_name="__MSG_fgColor__" default_value="black">
+		<EnumValue display_value="__MSG_black__" value="black"/>
+		<EnumValue display_value="__MSG_blue__" value="blue"/>
+		<EnumValue display_value="__MSG_green__" value="green"/>
+		<EnumValue display_value="__MSG_gray__" value="#CDCDCD"/>
+		<EnumValue display_value="__MSG_orange__" value="orange"/>
+	</UserPref>
+	
+	<Header maximize="off" refresh="off"/>
+	
+	<Content type="html" view="home"><![CDATA[
+<style type="text/css">
+*,body {
+	margin: 0;
+	padding: 0;
+}
+
+#editor {
+	width:	100%;
+	line-height: 12px;
+	line-height: __UP_fontSize__px;
+	border: none;
+	padding-right: 5px;
+	padding-left: 5px;
+	overflow:	hidden;
+	font-family: "courier";
+	letter-spacing: 0;
+	color:	__UP_fgColor__;
+	font-size: 12px;
+	font-size: __UP_fontSize__px;
+}
+#content,#editor {
+	background-color:	__UP_bgColor__;
+}
+
+</style>
+
+<div id="content">
+	<textarea id="editor"></textarea>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js"></script>
+<script type="text/javascript">is_loadScript("__IS_GADGET_BASE_URL__/sticky.js")</script>
+	]]></Content>
+</Module>

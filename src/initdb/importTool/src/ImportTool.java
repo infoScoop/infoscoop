@@ -365,7 +365,7 @@ class PortalAdminsFactory implements CSVBeanFactory<Portaladmins> {
 class PortalLayoutFactory implements CSVBeanFactory<Portallayout> {
 	public Portallayout newBean( CSVField[] values ) {
 		Portallayout portalLayout = new Portallayout();
-		portalLayout.setName( values[0].toString() );
+		//portalLayout.setName( values[0].toString() );
 		portalLayout.setLayout( values[1].toString() );
 
 		return portalLayout;

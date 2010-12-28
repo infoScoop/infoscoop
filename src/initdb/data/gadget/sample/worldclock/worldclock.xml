@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Module>
+	<ModulePrefs title="__MSG_title__">
+		<Require feature="dynamic-height"/>
+		<Locale messages="ALL_ALL.xml" />
+		<Locale lang="ja" messages="ja_ALL.xml"/>
+		<Locale lang="zh" messages="zh_ALL.xml"/>
+		<Icon>__IS_GADGET_BASE_URL__/clock-globe.gif</Icon>
+	</ModulePrefs>
+	<WidgetPref datatype="string" display_name="__MSG_lb_contentLink__" name="contentLink" value=""/>
+
+	<Header maximize="off" refresh="off"/>
+
+	<Content type="html" view="home"><![CDATA[
+<style type="text/css"><!--
+body{
+	margin:0;
+}
+#worldclock{
+	border:1px #eef;
+	padding:5px;
+	font-family:arial;
+	font-size:10pt;
+	font-weight:bold;
+	text-align:center;
+}
+.country{
+	font-family:san-serif;
+	font-size:8pt;
+	color:gray;
+}
+.date{
+	font-family:san-serif;
+	font-size:8pt;
+	color:gray;
+}
+.hide{
+	display:none;
+}
+.show{
+	display:inline;
+}
+--></style>
+<div id="worldclock">
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js"></script>
+<script type="text/javascript">
+	var baseURL = "__IS_GADGET_BASE_URL__";
+	is_loadScript("__IS_GADGET_BASE_URL__/worldclock.js");
+</script>
+	]]></Content>
+</Module>

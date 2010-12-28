@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Module>
+	<ModulePrefs title="__MSG_title__">
+		<Require feature="dynamic-height"/>
+		<Locale messages="ALL_ALL.xml" />
+		<Locale lang="ja" messages="ja_ALL.xml"/>
+		<Locale lang="zh" messages="zh_ALL.xml"/>
+		<Icon>__IS_GADGET_BASE_URL__/calculator.gif</Icon>
+	</ModulePrefs>
+
+	<Header maximize="off" refresh="off"/>
+
+	<Content type="html" view="home"><![CDATA[
+<style type="text/css">
+*,body {
+	margin: auto;
+	padding: auto;
+
+	font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','ＭＳ Ｐゴシック',sans-serif;
+}
+#root {
+	table-layout:fixed;
+	width:100%;
+}
+#table {
+	width:	160px;
+	margin:	5px 3px;
+	background-color:	#e8e8e8;
+	border-collapse: collapse;
+	border:	1px solid #777777;
+	border-bottom:	2px solid#555555;
+	border-right:	2px solid#777777;
+	text-align:	center;
+}
+#display {
+	float:	right;
+	width:	95%;
+	margin:	4px 1px;
+	background-color:#FFFFFF;
+	border:solid gray 1px;
+	cursor: pointer;
+	text-align:right;
+	ime-mode: disabled;
+}
+#operation {
+	width:	1em;
+	vertical-align:	top;
+	font-size:	12px;
+}
+.btn {
+	text-align:center;
+}
+.btn input {
+	width: 2.2em;
+}
+</style>
+
+<table id="root" cellSpacing="0" cellPadding="0">
+<tr>
+<td>
+<center>
+<table id="table">
+	<tr>
+		<td colspan="4">
+			<table style="width:100%">
+				<tr>
+					<td style="width:90%">
+						<input type="text" readonly value="0" id="display"/>
+					</td><td style="width:90%">
+						<div id="operation"> </div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	<tr>
+		<td colspan="3"></td>
+		<!--td style="text-align:center;"><input type="button" value="AC" id="allClear"/></td-->
+		<!--td style="text-align:center;"><input type="button" value="C" id="clear"/></td-->
+		<td class="btn"><input type="button" value="AC" id="allClear"/></td>
+	</tr><tr>
+		<td class="btn"><input type="button" value="7" id="num7"/></td>
+		<td class="btn"><input type="button" value="8" id="num8"/></td>
+		<td class="btn"><input type="button" value="9" id="num9"/></td>
+		<td class="btn"><input type="button" value="+" id="add"/></td>
+	</tr><tr>
+		<td class="btn"><input type="button" value="4" id="num4"/></td>
+		<td class="btn"><input type="button" value="5" id="num5"/></td>
+		<td class="btn"><input type="button" value="6" id="num6"/></td>
+		<td class="btn"><input type="button" value="-" id="subtract"/></td>
+	</tr>
+	<tr>
+		<td class="btn"><input type="button" value="1" id="num1"/></td>
+		<td class="btn"><input type="button" value="2" id="num2"/></td>
+		<td class="btn"><input type="button" value="3" id="num3"/></td>
+		<td class="btn"><input type="button" value="*" id="multiply"/></td>
+	</tr><tr>
+		<td class="btn"><input type="button" value="." id="dot"/></td>
+		<td class="btn"><input type="button" value="0" id="num0"/></td>
+		<td class="btn"><input type="button" value="=" id="equal"/></td>
+		<td class="btn"><input type="button" value="/" id="divide"/></td>
+	</tr>
+</table>
+</center>
+</td>
+</tr>
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js"></script>
+<script type="text/javascript">is_loadScript("__IS_GADGET_BASE_URL__/calc.js")</script>
+	]]></Content>
+</Module>

@@ -1,0 +1,17 @@
+<messagebundle>
+  <msg name="title">贴</msg>
+  <msg name="set_title">标题</msg>
+  <msg name="fontSize">字体大小</msg>
+  <msg name="bgColor">背景颜色</msg>
+  <msg name="fgColor">文字颜色</msg>
+  <msg name="yellow">黄色</msg>
+  <msg name="blue">蓝色</msg>
+  <msg name="white">白色</msg>
+  <msg name="gray">灰色</msg>
+  <msg name="pink">粉色</msg>
+  <msg name="green">绿色</msg>
+  <msg name="black">黑色</msg>
+  <msg name="orange">橘子色</msg>
+  <msg name="sticky_data_default">点击后输入</msg>
+  <msg name="titleEdit">编辑标题</msg>
+</messagebundle>
