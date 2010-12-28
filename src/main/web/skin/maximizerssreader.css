@@ -66,6 +66,7 @@
 	margin:4px 4px 4px 4px;
 	padding: 4px 4px 4px 4px;
 /*	overflow: auto;*/
+	overflow: auto;
 }
 .infoScoop .maximize.RssReader .maximizeRssDescText{
 	border: 0;
@@ -75,7 +76,6 @@
 	width: 100%;
 	height: 100%;
 	*/
-	overflow: auto;
 }
 .infoScoop .maximize.RssReader .maximizeRssTools {
 	width: 100%;

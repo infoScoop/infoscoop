@@ -1002,7 +1002,9 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 	this.adjustMaximizeHeight = function() {
 		this.lazyAdjusting = false;
 		
-		var maximizeHeight = getWindowSize(false) -findPosY( widget.elm_widget ) -65;
+		var maximizeHeight = getWindowHeight() - findPosY( widget.elm_widgetContent ) - 2;
+		if(parseInt(widget.elm_widgetContent.style.height) == (maximizeHeight + 2) )return;
+		
 		var rssDetailTd = $("maximizeRssDetailTd_" +widget.id);
 		if( !rssDetailTd )
 			return;
@@ -1012,7 +1014,6 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		var itemListDiv = $("MaximizeItemList_"+widget.id );
 		
 		var toolbarHeight = self.toolBarContent.elm_toolBar.offsetHeight;
-		
 		try{
 			var detailTdDisplay = rssDetailTd.style.display;
 			if( Browser.isFirefox )
@@ -1040,14 +1041,16 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 				  this.currentCategory.maximizeRender.rssContentView.setViewportHeight(itemListHeight);
 			}
 			
-			var detailHeight = getWindowSize(false) -findPosY( widget.elm_widget ) -65
-				-( Browser.isIE ? 20:0 ) -toolbarHeight;
+			var detailHeight = maximizeHeight - 48 - toolbarHeight;
 			
 			rssDetailTd.style.height = detailHeight;
 			if( Browser.isFirefox )
 				rssDetailTable.style.display = detailTdDisplay;
 			
-			widget.elm_widget.style.height = maximizeHeight;
+			var rssDesc = $("maximizeRssDesc_"+widget.id );
+			rssDesc.style.height = ( maximizeHeight - 140 );
+			
+			widget.elm_widgetContent.style.height = maximizeHeight;
 		}catch(e){
 
 			msg.warn( IS_R.getResource( IS_R.ms_errorOnWindowResize,[e]));
@@ -1060,31 +1063,17 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		if(contents) {	// fix #844
 			try{
 				var adjustWidth = getWindowSize(true) - findPosX(contents) - 32;
-				contents.style.width = adjustWidth + "px";
 				
 				// for desc
 				var maximizeDetailTd = $("maximizeRssDetailTd_"+widget.id );
 				var maximizeRssDescDiv = $("maximizeRssDetail_"+widget.id );
 				if(maximizeRssDescDiv && maximizeDetailTd ){
-					maximizeRssDescDiv.style.width = 0;
-					
-					var rssDescText = $("maximizeRssDescText_"+widget.id );
+					//var rssDescText = $("maximizeRssDescText_"+widget.id );
 					var rssDesc = $("maximizeRssDesc_"+widget.id );
-					var reView = false;
-					if(rssDesc.style.display != "none"){
-						rssDescText.style.display = "none";
-						reView = true;
-					}
 					var descWidth = maximizeDetailTd.offsetWidth;
-					maximizeRssDescDiv.style.width = descWidth;
-					if(reView){
-						if(rssDesc.offsetWidth > 0){
-							// Specify width of rssDescText
-							rssDescText.style.width = rssDesc.offsetWidth - 8;
-							rssDescText.style.height = rssDesc.offsetHeight - 16;
-						}
-						rssDescText.style.display = "block";
-					}
+					// Specify width of rssDescText
+					rssDesc.style.width = (adjustWidth * 0.66);
+					
 				}
 			}catch(e){
 
