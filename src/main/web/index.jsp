@@ -39,6 +39,7 @@ if( isPreview == null )
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-Control" content="no-cache">
     <meta http-equiv="Expires" content="Thu, 01 Dec 1994 16:00:00 GMT">
+	<meta http-equiv="X-UA-Compatible" content="IE=8">
 	<title></title>
 	<!--start styles css-->
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/styles.css">

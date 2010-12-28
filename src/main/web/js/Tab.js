@@ -1277,21 +1277,6 @@ IS_Portal.buildPanel = function(panelNumber, type, layout){
 	panel.style.display = "none";
 	panel.style.clear = "both";
 	
-	var table = document.createElement("table");
-	panel.appendChild(table);
-	table.style.width = Browser.isIE ? "96%" : "100%";
-	table.style.cellpadding = "0";
-	table.style.cellspacing = "0";
-//	table.style.tableLayout = "fixed";
-	var tbody = document.createElement("tbody");
-	table.appendChild(tbody);
-	
-	var tr = document.createElement("tr");
-	tbody.appendChild( tr );
-	var td = document.createElement("td");
-	td.style.width = "100%";
-	tr.appendChild( td );
-	
 	// static
 	if(layout){
 		var staticPanel = document.createElement("div");
@@ -1305,7 +1290,7 @@ IS_Portal.buildPanel = function(panelNumber, type, layout){
 		if(type == "static"){
 			staticPanel.innerHTML = layout;
 			
-			td.appendChild(staticPanel);
+			panel.appendChild(staticPanel);
 		}
 	}
 	// dynamic
@@ -1319,7 +1304,11 @@ IS_Portal.buildPanel = function(panelNumber, type, layout){
 	columns.id = "columns"+panelNumber;
 	dynamicDiv.appendChild(columns);
 	
-	td.appendChild(dynamicPanel);
+	panel.appendChild(dynamicPanel);
+
+	var keepHeightDiv = document.createElement("div");
+	keepHeightDiv.style.clear = 'both';
+	panel.appendChild(keepHeightDiv);
 
 	return panel;
 }
