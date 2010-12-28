@@ -2,9 +2,6 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Size;
-import javax.validation.constraints.NotNull;
-
 
 /**
  * This is an object that contains data related to the IS_MENU_ITEMS table.
@@ -26,7 +23,6 @@ public abstract class BaseMenuItem  implements Serializable {
 	public static String PROP_ID = "Id";
 	public static String PROP_HREF = "Href";
 	public static String PROP_FK_PARENT = "FkParent";
-	public static String PROP_MENU_ID = "MenuId";
 	public static String PROP_TITLE = "Title";
 	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 
@@ -40,8 +36,8 @@ public abstract class BaseMenuItem  implements Serializable {
 	 * Constructor for primary key
 	 */
 	public BaseMenuItem (java.lang.Integer id) {
-		initialize();
 		this.setId(id);
+		initialize();
 	}
 
 	/**
@@ -50,25 +46,21 @@ public abstract class BaseMenuItem  implements Serializable {
 	public BaseMenuItem (
 		java.lang.Integer id,
 		org.infoscoop.dao.model.MenuTree fkMenuTree,
-		java.lang.String menuId,
 		java.lang.String title,
 		java.lang.Integer menuOrder,
 		java.lang.Integer publish,
 		java.lang.Integer alert) {
-		initialize();
 
 		this.setId(id);
 		this.setFkMenuTree(fkMenuTree);
-		this.setMenuId(menuId);
 		this.setTitle(title);
 		this.setMenuOrder(menuOrder);
 		this.setPublish(publish);
 		this.setAlert(alert);
+		initialize();
 	}
 
-	protected void initialize () {
-		this.publish = 0;
-	}
+	protected void initialize () {}
 
 
 
@@ -78,11 +70,7 @@ public abstract class BaseMenuItem  implements Serializable {
 	private java.lang.Integer id;
 
 	// fields
-	private java.lang.String menuId;
 	private java.lang.Integer fkDomainId;
-	
-	@NotNull
-	@Size(min=1,max=80) 
 	private java.lang.String title;
 	private java.lang.Integer menuOrder;
 	private java.lang.String href;
@@ -119,23 +107,6 @@ public abstract class BaseMenuItem  implements Serializable {
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
-
-
-
-	/**
-	 * Return the value associated with the column: menu_id
-	 */
-	public java.lang.String getMenuId () {
-		return menuId;
-	}
-
-	/**
-	 * Set the value related to the column: menu_id
-	 * @param menuId the menu_id value
-	 */
-	public void setMenuId (java.lang.String menuId) {
-		this.menuId = menuId;
-	}
 
 
 

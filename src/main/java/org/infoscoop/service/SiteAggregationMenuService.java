@@ -44,15 +44,21 @@ public class SiteAggregationMenuService {
 	public String getMenuTreeXml(String menuType, boolean ignoreAccessControl)
 			throws Exception {
 		try {
-			MenuTree tree = MenuTreeDAO.newInstance().getByPosition(
-					menuType.equals("topmenu") ? "top" : "side");
-			List<MenuItem> items = MenuItemDAO.newInstance().getTree(tree);
+			List<MenuTree> trees = null;
+			if(menuType.equals("topmenu"))
+				trees = MenuTreeDAO.newInstance().getTopMenus();
+			else
+				trees = MenuTreeDAO.newInstance().getSideMenus();
 
+			for (MenuTree tree : trees) {
+				tree.setChildItems();
+			}
+			
 			StringBuffer buf = new StringBuffer();
 			buf.append("<sites>\n");
 
-			for (MenuItem item : items) {
-				buildAuthorizedMenuXml(item, buf, ignoreAccessControl);
+			for(MenuTree tree : trees){
+				buildAuthorizedMenuXml(tree, buf, ignoreAccessControl);
 			}
 			buf.append("</sites>");
 
@@ -61,6 +67,29 @@ public class SiteAggregationMenuService {
 			log.error("Unexpected error occurred.", e);
 			throw e;
 		}
+	}
+	
+	private static void buildAuthorizedMenuXml(MenuTree menuTree, StringBuffer buf, boolean noAuth ) throws ClassNotFoundException{
+		if(menuTree.getPublish() == 0)
+			return;
+		//TODO: make following block to function.
+		if(!menuTree.getRoles().isEmpty()){
+			Set<Role> roles = menuTree.getRoles();			
+			if(!RoleUtil.isAccessible(noAuth, roles))return;
+		}
+		
+		buf.append("<site-top id=\"" + menuTree.getId() + "\"");
+		buf.append(" title=\"" + XmlUtil.escapeXmlEntities(menuTree.getTitle())
+				+ "\"");
+		if(menuTree.getHref() != null)
+			buf.append(" href=\""
+					+ XmlUtil.escapeXmlEntities(menuTree.getHref()) + "\"");
+		buf.append(" alert=\"").append(menuTree.getAlert()).append("\"");
+		buf.append(">\n");
+		for(MenuItem item: menuTree.getChildItems())
+			buildAuthorizedMenuXml(item, buf, noAuth );
+		
+		buf.append("</site-top>\n");
 	}
 	
 	private static void buildAuthorizedMenuXml(MenuItem menuItem, StringBuffer buf, boolean noAuth ) throws ClassNotFoundException{
@@ -73,9 +102,7 @@ public class SiteAggregationMenuService {
 		}
 			
 		
-		String menuElName = ( menuItem.getFkParent() == null ? "site-top" : "site" );
-		buf.append("<" + menuElName);
-		buf.append(" id=\"" + menuItem.getId() + "\"");
+		buf.append("<site id=\"" + menuItem.getId() + "\"");
 		buf.append(" title=\"" + XmlUtil.escapeXmlEntities(menuItem.getTitle())
 				+ "\"");
 		if(menuItem.getHref() != null)
@@ -116,7 +143,7 @@ public class SiteAggregationMenuService {
 		for(MenuItem item: menuItem.getChildItems())
 			buildAuthorizedMenuXml(item, buf, noAuth );
 		
-		buf.append("</").append(menuElName).append(">\n");
+		buf.append("</site>\n");
 		
 	}
 	

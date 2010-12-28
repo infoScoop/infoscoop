@@ -6,7 +6,6 @@
 	<form:hidden path="id" />
 	<c:if test="${type == 'menu'}">
 		<form:hidden path="id" />
-		<form:hidden path="menuId" />
 		<c:if test="${conf != null}">
 			<form:hidden path="gadgetInstance.id" />
 			<form:hidden path="gadgetInstance.type" />

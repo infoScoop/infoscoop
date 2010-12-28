@@ -20,14 +20,6 @@
 		</id>
 		
 		<property
-			name="MenuId"
-			column="menu_id"
-			type="string"
-			not-null="true"
-			length="255"
-		/>
-		
-		<property
 			name="FkDomainId"
 			column="fk_domain_id"
 			type="integer"

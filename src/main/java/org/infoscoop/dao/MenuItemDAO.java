@@ -40,44 +40,37 @@ public class MenuItemDAO extends HibernateDaoSupport {
 	public static MenuItemDAO newInstance() {
 		return (MenuItemDAO) SpringUtil.getContext().getBean("menuItemDAO");
 	}
-
-	@SuppressWarnings("unchecked")
-	public MenuItem getByMenuId(String menuId) {
-		List<MenuItem> items = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(MenuItem.class).add(
-						Expression.eq(MenuItem.PROP_MENU_ID, menuId)).add(
-								Expression.eq(MenuItem.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
-		if (items.size() == 1)
-			return items.get(0);
-		return null;
-	}
 	
 	public MenuItem get(Integer id) {
 		return super.getHibernateTemplate().get(MenuItem.class, id);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<MenuItem> getByParentId(String parentId) {
+	public List<MenuItem> getByParentId(Integer parentId) {
 		if (parentId == null)
 			return null;
-		MenuItem parent = getByMenuId(parentId);
+		MenuItem parent = get(parentId);
 		if (parent == null)
 			return null;
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuItem.class).add(
+						Expression.eq(MenuItem.PROP_FK_DOMAIN_ID, DomainManager
+								.getContextDomainId())).add(
 						Expression.eq(MenuItem.PROP_FK_PARENT, parent))
 						.addOrder(Order.asc(MenuItem.PROP_MENU_ORDER)));
 	}
 	
 	@SuppressWarnings("unchecked")
-	public MenuItem getLastChild(String parentId) {
+	public MenuItem getLastChild(Integer parentId) {
 		if (parentId == null)
 			return null;
-		MenuItem parent = getByMenuId(parentId);
+		MenuItem parent = get(parentId);
 		if (parent == null)
 			return null;
 		List<MenuItem> items = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuItem.class).add(
+						Expression.eq(MenuItem.PROP_FK_DOMAIN_ID, DomainManager
+								.getContextDomainId())).add(
 						Expression.eq(MenuItem.PROP_FK_PARENT, parent))
 						.addOrder(Order.desc(MenuItem.PROP_MENU_ORDER)));
 		if (items.size() == 0)
@@ -89,33 +82,27 @@ public class MenuItemDAO extends HibernateDaoSupport {
 	public List<MenuItem> getTops(MenuTree tree) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuItem.class).add(
+						Expression.eq(MenuItem.PROP_FK_DOMAIN_ID, DomainManager
+								.getContextDomainId())).add(
 						Expression.eq(MenuItem.PROP_FK_MENU_TREE, tree)).add(
 						Expression.isNull(MenuItem.PROP_FK_PARENT)).addOrder(
 						Order.asc(MenuItem.PROP_MENU_ORDER)));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<MenuItem> getTree(MenuTree tree) {
 		List<MenuItem> flatItems = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuItem.class).add(
 						Expression.eq(MenuItem.PROP_FK_MENU_TREE, tree))
 						.addOrder(Order.asc(MenuItem.PROP_MENU_ORDER)));
+		return createMenuTree(flatItems);
+	}
+	
+	private static List<MenuItem> createMenuTree(Collection<MenuItem> flatItems) {
 		return createMenuTree(flatItems, null);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<MenuItem> getTree(Integer menuTreeId) {
-		if (menuTreeId == null)
-			return null;
-		List<MenuTree> menus = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(MenuTree.class).add(
-						Expression.eq(MenuTree.PROP_ID, menuTreeId)));
-		if (menus.size() == 0)
-			return null;
-		return getTree(menus.get(0));
-	}
-
-	protected static List<MenuItem> createMenuTree(
+	private static List<MenuItem> createMenuTree(
 			Collection<MenuItem> flatItems, Integer parentId) {
 		if (flatItems == null)
 			return null;
@@ -139,7 +126,27 @@ public class MenuItemDAO extends HibernateDaoSupport {
 
 	public void delete(Integer id) {
 		super.getHibernateTemplate().bulkUpdate(
-				"delete from MenuItem where id = ?", new Object[] { id });
+				"delete from MenuItem where id = ? and fk_domain_id = ?",
+				new Object[] { id, DomainManager.getContextDomainId() });
+	}
+	
+	@SuppressWarnings("unchecked")
+	public int getMaxOrder(Integer parentId) {
+		List<Integer> result = null;
+		if (parentId != null) {
+			String queryString = "select max(MenuOrder) from MenuItem where fk_domain_id = ? and fk_parent_id = ?";
+			result = super.getHibernateTemplate().find(queryString,
+					DomainManager.getContextDomainId(), parentId);
+		} else {
+			String queryString = "select max(MenuOrder) from MenuItem where fk_domain_id = ? and fk_parent_id is Null";
+			result = super.getHibernateTemplate().find(queryString,
+					DomainManager.getContextDomainId());
+		}
+		System.out.println(result.get(0));
+		if (result.get(0) == null)
+			return -1;
+		else
+			return result.get(0).intValue();
 	}
 
 	public MenuItem getByGadgetInstanceId(Integer id) {

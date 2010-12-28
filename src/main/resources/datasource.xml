@@ -82,7 +82,6 @@
 					<value>org/infoscoop/dao/model/OAuthCertificate.hbm.xml</value>
 					<value>org/infoscoop/dao/model/OAuth2LeggedConsumers.hbm.xml</value>
 					<value>org/infoscoop/dao/model/MenuTree.hbm.xml</value>
-					<value>org/infoscoop/dao/model/MenuPosition.hbm.xml</value>
 					<value>org/infoscoop/dao/model/MenuItem.hbm.xml</value>
 					<value>org/infoscoop/dao/model/TabTemplate.hbm.xml</value>
 					<value>org/infoscoop/dao/model/TabTemplateStaticGadget.hbm.xml</value>

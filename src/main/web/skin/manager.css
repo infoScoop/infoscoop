@@ -90,22 +90,6 @@ body {
 }
 
 /*- Menu --------------------------- */
-#menu_list .icon{
-	width:16px;
-	height:16px;
-	cursor:pointer;
-	display:inline-block;
-	vertical-align:bottom;
-}
-#menu_list .icon.edit_icon{
-	background-image:url(imgs/edit.gif);
-}
-#menu_list .icon.save_icon{
-	background-image:url(imgs/database_save.gif);
-}
-#menu_list .icon.delete_icon{
-	background-image:url(imgs/trash.gif);
-}
 #menu_list td.icon_cell, #menu_list td.radio_cell{
 	text-align:center;
 }
@@ -173,6 +157,9 @@ body {
 	line-height: 17px;
 	display:block;
 	text-decoration:none;
+}
+#menu_item_command.top .child_only{
+	display:none;
 }
 #menu_item_command a:hover{
 	padding:0 5px;
@@ -331,8 +318,10 @@ body {
 .tab_table tr.filterColumns td {
 	padding:2px;
 }
-#tab_table .sort_handle{
-	background:
+.icon{
+	width:16px;
+	height:16px;
+	cursor:pointer;
 }
 .trash {
 	background: url(imgs/trash.gif ) no-repeat center left;
@@ -343,14 +332,12 @@ body {
 .add {
 	background: url(imgs/add.gif ) no-repeat center left;
 }
+.save{
+	background: url(imgs/database_save.gif) no-repeat center left;
+}
 .sort_handle{
 	background: url(imgs/drag.gif ) no-repeat center left;
 	cursor:move;
-}
-.icon{
-	width:16px;
-	height:16px;
-	cursor:pointer;
 }
 .label_icon{
 	width:auto;

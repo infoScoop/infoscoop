@@ -27,7 +27,6 @@ public class MenuItem extends BaseMenuItem {
 	public MenuItem (
 		java.lang.Integer id,
 		org.infoscoop.dao.model.MenuTree fkMenuTree,
-		java.lang.String menuId,
 		java.lang.String title,
 		java.lang.Integer menuOrder,
 		java.lang.Integer publish,
@@ -36,7 +35,6 @@ public class MenuItem extends BaseMenuItem {
 		super (
 			id,
 			fkMenuTree,
-			menuId,
 			title,
 			menuOrder,
 			publish,

@@ -24,7 +24,7 @@
 			column="fk_domain_id"
 			type="integer"
 		/>
-		
+
 		<property
 			name="Title"
 			column="title"
@@ -32,18 +32,79 @@
 			not-null="true"
 			length="255"
 		/>
-	
-
-		<set name="MenuPositions" inverse="true" cascade="save-update">
-			<key column="fk_menu_tree_id"/>
-			<one-to-many class="MenuPosition"/>
-		</set>
+		<property
+			name="Description"
+			column="description"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="OrderIndex"
+			column="order_index"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="Href"
+			column="href"
+			type="string"
+			not-null="false"
+			length="255"
+		/>
+		<property
+			name="Publish"
+			column="publish"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="Alert"
+			column="alert"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="Country"
+			column="country"
+			type="string"
+			not-null="true"
+			length="5"
+		/>
+		<property
+			name="Lang"
+			column="lang"
+			type="string"
+			not-null="true"
+			length="5"
+		/>
+		<property
+			name="Top"
+			column="top"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
+		<property
+			name="Side"
+			column="side"
+			type="integer"
+			not-null="true"
+			length="10"
+		/>
 
 		<set name="MenuItems" inverse="true" cascade="all">
 			<key column="fk_menu_tree_id"/>
 			<one-to-many class="MenuItem"/>
 		</set>
 
+		<set name="Roles" table="IS_MENU_TREE_ROLES" lazy="false" cascade="save-update">
+			<key column="fk_menu_tree_id"/>
+			<many-to-many class="Role" column="fk_role_id"/>
+		</set>
 
 	</class>	
 </hibernate-mapping>

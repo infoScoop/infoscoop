@@ -77,8 +77,6 @@ public class Widget extends BaseWidget {
 		json.put("title", super.getTitle());
 		json.put("siblingId", super.getSiblingid());
 		json.put("parentId", super.getParentid());
-		if(super.getMenuItem()!=null)
-			json.put("menuId", super.getMenuItem().getMenuId());
 		json.put("type", super.getType());
 
 		JSONObject userPrefsJson = new JSONObject();
@@ -187,13 +185,6 @@ public class Widget extends BaseWidget {
 				throw new RuntimeException( ex );
 			}
 		}
-	}
-
-	public String getMenuid() {
-		if(super.getMenuItem() != null)
-			return super.getMenuItem().getMenuId();
-		else
-			return null;
 	}
 	
 	@Override

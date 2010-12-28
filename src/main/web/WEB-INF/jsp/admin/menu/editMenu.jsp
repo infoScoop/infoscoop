@@ -44,14 +44,22 @@ function selectItem(menuId){
 	$("#menu_tree").jstree("deselect_all");
 	$("#menu_tree").jstree("select_node", "#"+menuId);
 }
+function domId2DBId(id){
+	return id.replace(/^menuId_/, "");
+}
 function getSelectedItem(){
 	return $("#menu_tree").jstree("get_selected")[0];
+}
+function getSelectedItemId(selectedItem){
+	if(!selectedItem)
+		return "";
+	return domId2DBId(selectedItem.id);
 }
 function selectGadgetInstance(e, a, isTop){
 	if(isTop)
 		$("#menu_tree").jstree("deselect_all");
 	var selectedItem = getSelectedItem(),
-		id = selectedItem ? selectedItem.id : "";
+		id = getSelectedItemId(selectedItem);
 	$.get("selectGadgetInstance", {
 			id:id
 		}, function(html){
@@ -59,11 +67,9 @@ function selectGadgetInstance(e, a, isTop){
 		}
 	);
 }
-function selectGadgetType(e, a, isTop){
-	if(isTop)
-		$("#menu_tree").jstree("deselect_all");
+function selectGadgetType(){
 	var selectedItem = getSelectedItem();
-	var id = selectedItem ? selectedItem.id : "";
+	var id = getSelectedItemId(selectedItem);
 	$.get("selectGadgetType", {id:id}, function(html){
 		$("#menu_right").html(html);
 	});
@@ -74,7 +80,7 @@ function showAddItem(isTop, type, title, parentId){
 			parentId = "";
 		}else{
 			var selectedItem = getSelectedItem();
-			parentId = selectedItem ? selectedItem.id : "";
+			parentId = getSelectedItemId(selectedItem);
 		}
 	}
 	$.get("showAddItem", {menuId: menuId, id: parentId, type: type?type:"", title: title?title:""}, function(html){
@@ -87,7 +93,7 @@ function showEditItem(){
 		alert("<spring:message code="menu.editMenu.invalid.operation" />");
 		return;
 	}
-	var id = selectedItem.id;
+	var id = getSelectedItemId(selectedItem);
 	$.get("showEditItem", {menuId:id}, function(html){
 		$("#menu_right").html(html);
 	});
@@ -99,14 +105,14 @@ function showEditInstance(instanceId, parentId){
 }
 function addItemToTree(parentId, id, title, type, accessLevel){
 	$("#menu_tree").jstree("create",
-		parentId ? "#"+parentId : -1,
+		parentId ? "#menuId_"+parentId : "#menuId_",
 		"last",
 		{
-			attr : { id : id},
+			attr : { id : "menuId_"+id},
 			data : title
 		},
 		function(target){
-			target.find("a:first").append('<span onclick="showMenuCommand(event, this, \''+id+'\')" class="menu_open">▼</span>');
+			target.find("a:first").append('<span onclick="showMenuCommand(event, this, \'menuId_'+id+'\')" class="menu_open">▼</span>');
 			target.append('<div class="info"><span class="publish'+(accessLevel?'"><spring:message code="menu.editPage.publish" />':' un"><spring:message code="menu.editPage.unpublish" />')+'</span></div>');
 			var icon = getIconUrl(type);
 			$("a:first ins", target)
@@ -120,8 +126,8 @@ function updateItemInTree(id, title, accessLevel){
 	try{
 		/*var titleNode = $("#" + id + " a").contents().filter(function() { return this.nodeType == 3; })[0];
 		titleNode.nodeValue = title;*/
-		$("#menu_tree").jstree("set_text", "#"+id, title);
-		var publishElm = $("#"+id+" .info span.publish").first();
+		$("#menu_tree").jstree("set_text", "#menuId_"+id, title);
+		var publishElm = $("#menuId_"+id+" .info span.publish").first();
 		publishElm.toggleClass("un", !accessLevel).html(accessLevel? "<spring:message code="menu.editPage.publish" />":"<spring:message code="menu.editPage.unpublish" />");
 	}catch(e){
 		console.error(e);
@@ -129,37 +135,39 @@ function updateItemInTree(id, title, accessLevel){
 }
 function copyItem(e, a){
 	$("#menu_item_command .paste").removeClass("disabled");
-	copiedItemId = getSelectedItem().id;
+	copiedItemId = getSelectedItemId(getSelectedItem());
 	e.stopPropagation();
 }
 function pasteItem(a){
 	if($(a).hasClass("disabled") || !copiedItemId) return;
-	var id = getSelectedItem().id;
+	var id = getSelectedItemId(getSelectedItem());
 	$.post("copyItem", {parentId:id, id:copiedItemId}, function(data){
 		addItemToTree(data.parentId, data.id, data.title, data.type, data.accessLevel);
 	}, "json");
 }
 function deleteItem(){
 	if(confirm("<spring:message code="menu.editPage.confirm.delete" />")){
-		var id = getSelectedItem().id;
+		var id = getSelectedItemId(getSelectedItem());
 		$.post("removeItem", {id: id}, function(){
-			$("#menu_tree").jstree("remove", "#"+id);
+			$("#menu_tree").jstree("remove", "#menuId_"+id);
 		});
 	}
 }
 function togglePublish(){
-	var id = getSelectedItem().id;
+	var id = getSelectedItemId(getSelectedItem());
 	$.post("togglePublish", {id: id}, function(){
-		var publishElm = $("#"+id+" .info span.publish").first();
+		var publishElm = $("#menuId_"+id+" .info span.publish").first();
 		var accessLevel = publishElm.hasClass('un');//現在の反対にする
 		publishElm.toggleClass("un", !accessLevel).html(accessLevel? "<spring:message code="menu.editPage.publish" />":"<spring:message code="menu.editPage.unpublish" />");
 	});
 }
-function showMenuCommand(event, link, menuId){
+function showMenuCommand(event, link, menuId, isTop){
 	selectItem(menuId);
-	$("#menu_item_command").css("top", $(link).position().top + $(link).height());
-	$("#menu_item_command").css("left", $(link).position().left);
-	$("#menu_item_command").show();
+	$("#menu_item_command")
+		.toggleClass("top", !!isTop)
+		.css("top", $(link).position().top + $(link).height())
+		.css("left", $(link).position().left)
+		.show();
 	event.stopPropagation();
 }
 
@@ -177,6 +185,7 @@ $(function () {
 			"select_limit" : 1
 		},
 		"core" : {
+			"initially_open" : [ "menuId_" ],
 			"animation" : 100
 		},
 		"crrm" : {
@@ -198,15 +207,26 @@ $(function () {
 	});
 	menuTree.bind("move_node.jstree", function(event, data){
 		var node = data.rslt.o,
-			parentNode = data.inst._get_parent(node);
+			nodeId = domId2DBId(node.attr("id")),
+			parentNode = data.inst._get_parent(node),
 			refNode = data.rslt.r,
+			refId = refNode ? refNode.attr("id") : "",
 			position = data.rslt.p;//last, after, before
+		var ids = [];
+		node.siblings().each(function(){
+			if(this.id == refId && position == "before")
+				ids.push(nodeId);
+			ids.push(domId2DBId(this.id));
+			if(this.id == refId && position == "after")
+				ids.push(nodeId);
+		});
+		if(position == "last")
+			ids.push(nodeId);
 		$.post("moveItem",
 			{
-				id: node.attr("id"),
-				parentId: parentNode.attr ? parentNode.attr("id") : "",
-				refId: refNode ? refNode.attr("id") : "",
-				position: position
+				id: nodeId,
+				sibling: ids,
+				parentId: parentNode.attr ? domId2DBId(parentNode.attr("id")) : ""
 			},
 			function(response){
 			}
@@ -246,9 +266,11 @@ $(function () {
 </script>
 <div id="menu">
 	<div id="menu_left">
+		<!--
 		<div id="menu_command">
 			<a onclick="showAddItem(true)"><spring:message code="menu.editPage.add.top" /></a>
 		</div>
+		-->
 		<div id="menu_tree">
 			
 		</div>
@@ -260,13 +282,13 @@ $(function () {
 	<div id="menu_item_command" class="menu_item_command" style="display:none">
 		<ul>
 			<li><a onclick="showAddItem(false)"><spring:message code="menu.editPage.command.add.link" /></a></li>
-			<li><a onclick="selectGadgetType(event, this)"><spring:message code="menu.editPage.command.add.gadget" /></a></li>
-			<li><a onclick="showEditItem(event, this)"><spring:message code="menu.editPage.command.edit" /></a></li>
-			<li><a onclick="copyItem(event, this)"><spring:message code="menu.editPage.command.copy" /></a></li>
-			<li><a onclick="pasteItem(event, this)" class="paste disabled"><spring:message code="menu.editPage.command.paste" /></a></li>
-			<li><a onclick="deleteItem(event, this)"><spring:message code="menu.editPage.command.delete" /></a></li>
-			<li><a onclick="togglePublish(event, this)"><spring:message code="menu.editPage.command.publish" /></a></li>
-			<li><a onclick="togglePublish(event, this)"><spring:message code="menu.editPage.command.access" /></a></li>
+			<li><a onclick="selectGadgetType()"><spring:message code="menu.editPage.command.add.gadget" /></a></li>
+			<li class="child_only"><a onclick="showEditItem(event, this)"><spring:message code="menu.editPage.command.edit" /></a></li>
+			<li class="child_only"><a onclick="copyItem(event, this)"><spring:message code="menu.editPage.command.copy" /></a></li>
+			<li class="child_only"><a onclick="pasteItem(event, this)" class="paste disabled"><spring:message code="menu.editPage.command.paste" /></a></li>
+			<li class="child_only"><a onclick="deleteItem(event, this)"><spring:message code="menu.editPage.command.delete" /></a></li>
+			<li class="child_only"><a onclick="togglePublish(event, this)"><spring:message code="menu.editPage.command.publish" /></a></li>
+			<!--li><a onclick=""><spring:message code="menu.editPage.command.access" /></a></li-->
 		</ul>
 	</div>
 	<div id="select_role_dialog">

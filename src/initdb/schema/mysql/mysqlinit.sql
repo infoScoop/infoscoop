@@ -376,19 +376,26 @@ CREATE TABLE IS_MENU_TREES (
   id int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
   fk_domain_id int unsigned NOT NULL,
   title varchar(255) NOT NULL,
+  description varchar(255),
+  order_index int not null,
+  href varchar(255) DEFAULT NULL,
+  publish int(11) NOT NULL DEFAULT '0',
+  alert int(11) NOT NULL DEFAULT '1',
+  top int(11) NOT NULL DEFAULT '0',
+  side int(11) NOT NULL DEFAULT '0',
+  country varchar(5) CHARACTER SET latin1 not null,
+  lang varchar(5) CHARACTER SET latin1 not null,
   foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
+create index is_menu_trees_order_index on IS_MENU_TREES(order_index);
+create index is_menu_trees_top on IS_MENU_TREES(top);
+create index is_menu_trees_side on IS_MENU_TREES(side);
 
---
--- MENU_POSITION
---
-CREATE TABLE IS_MENU_POSITIONS (
-  position varchar(10) NOT NULL,
-  fk_domain_id int unsigned NOT NULL,
+CREATE TABLE IF NOT EXISTS IS_MENU_TREE_ROLES (
   fk_menu_tree_id int unsigned NOT NULL,
-  PRIMARY KEY (`position`,`fk_domain_id`),
+  fk_role_id int unsigned NOT NULL,
   foreign key (fk_menu_tree_id) references IS_MENU_TREES(id) on delete cascade,
-  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
+  foreign key (fk_role_id) references IS_ROLES(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --
@@ -396,7 +403,6 @@ CREATE TABLE IS_MENU_POSITIONS (
 --
 CREATE TABLE IS_MENU_ITEMS (
   id int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  menu_id varchar(255) NOT NULL,
   fk_domain_id int unsigned NOT NULL,
   title varchar(255) NOT NULL,
   menu_order int(11) NOT NULL DEFAULT '0',
@@ -410,8 +416,8 @@ CREATE TABLE IS_MENU_ITEMS (
   foreign key (fk_gadget_instance_id) references IS_GADGET_INSTANCES(id) on delete cascade,
   foreign key (fk_menu_tree_id) references IS_MENU_TREES(id) on delete cascade,
   foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade,
-  unique (menu_id,fk_domain_id)
 ) ENGINE=InnoDB;
+create index is_menu_items_menu_order on IS_MENU_TREES(menu_order);
 
 CREATE TABLE IF NOT EXISTS IS_MENU_ITEM_ROLES (
   fk_menu_item_id int unsigned NOT NULL,

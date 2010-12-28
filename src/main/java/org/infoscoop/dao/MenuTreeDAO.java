@@ -23,8 +23,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.infoscoop.account.DomainManager;
-import org.infoscoop.dao.model.MenuPosition;
 import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -47,52 +47,48 @@ public class MenuTreeDAO extends HibernateDaoSupport {
 			return menus.get(0);
 		return null;
 	}
-
+	
 	@SuppressWarnings("unchecked")
-	private MenuPosition getPosition(String position) {
-		List<MenuPosition> positions = super.getHibernateTemplate()
-				.findByCriteria(
-						DetachedCriteria.forClass(MenuPosition.class).add(
-								Expression.eq(MenuPosition.PROP_ID, position)).add(
-										Expression.eq(MenuPosition.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
-		if (positions.size() == 1)
-			return positions.get(0);
-		return null;
+	public List<MenuTree> getTopMenus() {
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(MenuTree.class).add(
+						Expression.eq(MenuTree.PROP_FK_DOMAIN_ID, DomainManager
+								.getContextDomainId())).add(
+						Expression.eq(MenuTree.PROP_TOP, 1)).addOrder(
+						Order.asc(MenuTree.PROP_ORDER_INDEX)));
 	}
 	
-	public MenuTree getByPosition(String position) {
-		MenuPosition pos = getPosition(position);
-		if (pos != null)
-			return pos.getFkMenuTree();
-		return null;
+	@SuppressWarnings("unchecked")
+	public List<MenuTree> getSideMenus() {
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(MenuTree.class).add(
+						Expression.eq(MenuTree.PROP_FK_DOMAIN_ID, DomainManager
+								.getContextDomainId())).add(
+						Expression.eq(MenuTree.PROP_SIDE, 1)).addOrder(
+						Order.asc(MenuTree.PROP_ORDER_INDEX)));
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<MenuTree> all() {
 		List<MenuTree> menus = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(MenuTree.class).add(
-						Expression.eq(MenuTree.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
-		// join
-		List<MenuPosition> poss = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(MenuPosition.class).add(
-						Expression.eq(MenuPosition.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
-		for (MenuTree menu : menus) {
-			for (MenuPosition pos : poss) {
-				if (menu.equals(pos.getFkMenuTree()))
-					menu.addPosition(pos.getId().getId());
-			}
-		}
+						Expression.eq(MenuTree.PROP_FK_DOMAIN_ID, DomainManager
+								.getContextDomainId())).addOrder(
+						Order.asc(MenuTree.PROP_ORDER_INDEX)));
 		return menus;
 	}
 	
-	public void updatePosition(MenuTree menu, String position) {
-		MenuPosition pos = getPosition(position);
-		if (pos == null)
-			pos = new MenuPosition(position);
-		pos.setFkMenuTree(menu);
-		super.getHibernateTemplate().saveOrUpdate(pos);
+	@SuppressWarnings("unchecked")
+	public int getMaxOrderIndex() {
+		String queryString = "select max(OrderIndex) from MenuTree where fk_domain_id = ?";
+		List<Integer> result = super.getHibernateTemplate().find(queryString,
+				DomainManager.getContextDomainId());
+		if (result.get(0) == null)
+			return -1;
+		else
+			return result.get(0).intValue();
 	}
-
+	
 	public void save(MenuTree menu) {
 		super.getHibernateTemplate().saveOrUpdate(menu);
 	}

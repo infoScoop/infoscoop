@@ -14,30 +14,43 @@
 <table id="menu_list" class="tablesorter">
 	<thead>
 		<tr>
+			<th width="18">&nbsp;</th>
 			<th><spring:message code="menu.index.header.name" /></th>
-			<th width="100"><spring:message code="menu.index.header.top" /><div class="icon edit_icon" id="change_position_top"></div></th>
-			<th width="100"><spring:message code="menu.index.header.side" /><div class="icon edit_icon" id="change_position_side"></div></th>
-			<th width="100"><spring:message code="menu.index.header.delete" /></th>
+			<th>説明</th>
+			<th>公開</th>
+			<th>公開範囲</th>
+			<th width="100"><spring:message code="menu.index.header.top" /></th>
+			<th width="100"><spring:message code="menu.index.header.side" /></th>
+			<th width="50"><spring:message code="tab.index.edit" /></th>
+			<th width="50"><spring:message code="menu.index.header.delete" /></th>
 		</tr>
 	</thead>
 	<tbody>
 		<c:set var="display"><spring:message code="menu.index.display" /></c:set>
 		<c:forEach var="menu" items="${menus}">
-		<tr menu_id="${menu.id}">
+		<tr id="menuId_${menu.id}">
+			<td align="center"><div class="sort_handle icon" title="ドラッグして順番変更"></div></td>
 			<td class="title">
 				<a href="editMenu?id=${menu.id}">${menu.title}</a>
 				<input type="text" value="${menu.title}" style="display:none">
-				<div class="icon edit_icon">
+			</td>
+			<td class="title">
+				${menu.description}
+			</td>
+			<td><spring:message code="tab.index.publish${menu.publish}"/></td>
+			<td>
+				<c:forEach var="role" items="${menu.roles}">
+					${role.name}
+				</c:forEach>
 			</td>
 			<td class="radio_cell">
-				<span>${menu.top ? display : ""}</span>
-				<input type="radio" name="top" ${menu.top ? "checked=\"checked\"" : ""} style="display:none">
+				<span>${menu.topPos ? display : ""}</span>
 			</td>
 			<td class="radio_cell">
-				<span>${menu.side ? display : ""}</span>
-				<input type="radio" name="side" ${menu.side ? "checked=\"checked\"" : ""} style="display:none">
+				<span>${menu.sidePos ? display : ""}</span>
 			</td>
-			<td class="icon_cell"><div class="icon delete_icon" menu_id="${menu.id}"></div></td>
+			<td class="icon_cell"><a href="showEditTree?id=${menu.id}" class="edit_link"><div class="edit icon" title="編集"></div></a></td>
+			<td class="icon_cell"><div class="icon trash" menu_id="${menu.id}"></div></td>
 		</tr>
 		</c:forEach>
 		<c:if test="${fn:length(menus) == 0}">
@@ -49,75 +62,40 @@
 </table>
 <script type="text/javascript">
 $("#add_menu").button().click(function(){
-	$.post("newMenu", {}, function(html){
-		var tbody = $("#menu_list tbody");
-		//if a count of menu trees is 0, a message should be deleted.
-		if(!$("tr:first", tbody).attr("menu_id"))
-			tbody.empty();
-		tbody.append(html);
-	});
+	location.href = "showEditTree";
 });
 $("#menu_list").tablesorter({
-	headers: {1:{sorter:false},2:{sorter:false},3:{sorter:false}}
-});
-$("#menu_list .title .icon").livequery("click", function(event){
-	var icon = $(this);
-	if(icon.hasClass("edit_icon")){
-		icon.prev().show().focus().prev().hide();
-		icon.removeClass("edit_icon").addClass("save_icon");
-		event.stopPropagation();
-	} else {
-		var title = icon.prev().val();
-		var menuId = icon.parents("tr:first").attr("menu_id");
-		$.post("saveTitle", {id:menuId, title:title}, function(html){
-			icon.prev().hide().prev().text(title).show();
-			icon.removeClass("save_icon").addClass("edit_icon");
-			//console.info(html);
-		});
+	headers: {
+		0:{sorter:false},
+		1:{sorter:false},
+		2:{sorter:false},
+		3:{sorter:false},
+		4:{sorter:false},
+		5:{sorter:false},
+		6:{sorter:false},
+		7:{sorter:false}
 	}
 });
-$("#menu_list input").livequery("click", function(event){
-	event.stopPropagation();
-});
-$("#change_position_top, #change_position_side").click(function(event){
-	var name = this.id === "change_position_top" ? "top" : "side",
-		icon = $(this),
-		radios = $("#menu_list td.radio_cell input[name="+name+"]");
-	if(icon.hasClass("edit_icon")){
-		radios.show().prev().hide();
-		icon.removeClass("edit_icon").addClass("save_icon");
-	} else {
-		var menuId = radios.filter(":radio:checked").parents("tr:first").attr("menu_id");
-		$.post("changePosition", {id:menuId, position:name}, function(html){
-			radios.hide().prev().each(function(){
-				if($(this).parents("tr:first").attr("menu_id") === menuId) $(this).text("表示").show();
-				else $(this).empty().show();
-			});
-			icon.removeClass("save_icon").addClass("edit_icon");
-			//console.info(html);
-		});
-	}
-	event.stopPropagation();
-});
-$("#menu_list .delete_icon").livequery("click", function(){
-	var deleteIcon = $(this);
+$("#menu_list .trash").livequery("click", function(){
 	if(confirm("<spring:message code="menu.index.confirm.delete" />")){
-		$.post("deleteMenu", {id:deleteIcon.attr("menu_id")}, function(html){
-			deleteIcon.parents("tr:first").remove();
-			//console.info(html);
-		});
+		location.href = "deleteMenu?id="+$(this).attr("menu_id");
 	}
 });
-$(document.body).click(function(){
-	$("#menu_list .title a").each(function(){
-		var a = $(this);
-		a.show().next().hide().val(a.text());
-	});
-	$("#menu_list td.radio_cell span").each(function(){
-		var span = $(this);
-		span.show().next().hide().attr("checked", span.text() ? "checked":null);
-	});
-	$("#menu_list .icon.save_icon").removeClass("save_icon").addClass("edit_icon");
+$("#menu_list tbody").sortable({
+	axis:"y",
+	handle:".sort_handle",
+	update:function(event, ui){
+		$.ajax({
+			url: "sort",
+			type:"POST",
+			data: $("#menu_list tbody").sortable("serialize", {key:"menuId"}),
+			success: function(data, status, xhr){
+			},
+			error: function(xhr, status, e){
+				//TODO: handle error
+			}
+		});
+	}
 });
 </script>
 	</tiles:putAttribute>

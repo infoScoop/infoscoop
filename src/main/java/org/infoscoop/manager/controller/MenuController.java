@@ -28,6 +28,7 @@ import org.infoscoop.dao.model.GadgetInstanceUserprefPK;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.dao.model.Role;
+import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.util.XmlUtil;
@@ -42,10 +43,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import com.sun.org.apache.xerces.internal.util.IntStack;
 
 @Controller
 public class MenuController {
@@ -76,24 +76,6 @@ public class MenuController {
 		model.addAttribute("menu", menu);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
-	@Transactional
-	public MenuTree changePosition(@RequestParam("id") Integer id,
-			@RequestParam("position") String position) throws Exception {
-		MenuTree menu = menuTreeDAO.get(id);
-		menuTreeDAO.updatePosition(menu, position);
-		return menu;
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
-	@Transactional
-	public MenuTree saveTitle(@RequestParam("id") Integer id,
-			@RequestParam("title") String title) throws Exception {
-		MenuTree menu = menuTreeDAO.get(id);
-		menu.setTitle(title);
-		return menu;
-	}
-	
 	@RequestMapping(method = RequestMethod.GET)
 	@Transactional
 	public void editMenu(
@@ -102,9 +84,9 @@ public class MenuController {
 		model.addAttribute("menuId", id);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping
 	@Transactional
-	public void deleteMenu(@RequestParam("id") Integer id) throws Exception {
+	public String deleteMenu(@RequestParam("id") Integer id) throws Exception {
 		MenuTree tree = menuTreeDAO.get(id);
 		//remove all menu items and gadget instances which the specified menu tree contains.
 		for (MenuItem item : tree.getMenuItems()) {
@@ -112,6 +94,7 @@ public class MenuController {
 		}
 		tree.setMenuItems(null);
 		menuTreeDAO.delete(id);
+		return "redirect:index";
 	}
 
 	@RequestMapping
@@ -120,8 +103,9 @@ public class MenuController {
 			Model model) throws Exception {
 		if (id == null)
 			return;
-		List<MenuItem> items = menuItemDAO.getTree(id);
-		model.addAttribute("items", items);
+		MenuTree tree = menuTreeDAO.get(id);
+		tree.setChildItems();
+		model.addAttribute("tree", tree);
 	}
 
 	@RequestMapping
@@ -139,24 +123,19 @@ public class MenuController {
 	@RequestMapping
 	@Transactional
 	public void showAddItem(@RequestParam("menuId") int menuId,
-			@RequestParam(value = "id") String parentId,
+			@RequestParam(value = "id", required = false) Integer parentId,
 			@RequestParam(value = "type", required = false) String type,
 			@RequestParam(value = "title", required = false) String title,
 			Model model, Locale locale) throws Exception {
 		MenuTree menu = menuTreeDAO.get(menuId);
-		MenuItem parentItem = menuItemDAO.getByMenuId(parentId);
-		MenuItem last =null;
-		if (parentId.length() > 0) {
-			last = menuItemDAO.getLastChild(parentId);
-		} else {
-			List<MenuItem> tops = menuItemDAO.getTops(menu);
-			if (tops != null && tops.size() > 0)
-				last = tops.get(tops.size() - 1);
-		}
 		MenuItem item = new MenuItem();
 		item.setFkMenuTree(menu);
-		item.setFkParent(parentItem);
-		item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
+		if (parentId != null) {
+			MenuItem parentItem = menuItemDAO.get(parentId);
+			item.setFkParent(parentItem);
+		}
+		item.setPublish(0);
+		item.setMenuOrder(menuItemDAO.getMaxOrder(parentId) + 1);
 		if (type != null && type.length() > 0) {
 			GadgetInstance gadget = new GadgetInstance();
 			item.setGadgetInstance(gadget);
@@ -177,10 +156,10 @@ public class MenuController {
 	@RequestMapping
 	@Transactional
 	public void showEditItem(
-			@RequestParam("menuId") String menuId, 
+			@RequestParam("menuId") Integer menuId, 
 			Model model,
 			Locale locale) throws Exception {
-		MenuItem item = menuItemDAO.getByMenuId(menuId);
+		MenuItem item = menuItemDAO.get(menuId);
 		model.addAttribute(item);
 		Set<Role> roles = item.getRoles();
 		if(roles == null)
@@ -194,7 +173,6 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public MenuItem addItem(MenuItem item) throws Exception {
-		item.setMenuId("m_" + new Date().getTime());
 		GadgetInstance gadget = item.getGadgetInstance();
 		if (gadget != null) {
 			String type = gadget.getType();
@@ -247,12 +225,10 @@ public class MenuController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public String showEditInstance(@RequestParam("instanceId") int instanceId,
-			@RequestParam("id") String parentId, Locale locale, Model model)
+			@RequestParam("id") Integer parentId, Locale locale, Model model)
 			throws Exception {
-		if(parentId.length() == 0)
-			throw new Exception("parentId is required.");
 		MenuItem item = new MenuItem();
-		MenuItem parentItem = menuItemDAO.getByMenuId(parentId);
+		MenuItem parentItem = menuItemDAO.get(parentId);
 		if (parentItem == null)
 			throw new Exception("A menu item which id is \"" + parentId
 					+ "\" is not found.");
@@ -273,12 +249,71 @@ public class MenuController {
 				locale));
 		return "menu/showAddItem";
 	}
+	
+	@RequestMapping
+	@Transactional
+	public void showEditTree(
+			@RequestParam(value = "id", required = false) Integer id,
+			Model model) throws Exception {
+		MenuTree tree = null;
+		if (id == null) {
+			tree = new MenuTree();
+			tree.setPublish(0);
+			tree.setOrderIndex(-1);//last
+		} else {
+			tree = menuTreeDAO.get(id);
+		}
+		model.addAttribute(tree);
+		Set<Role> roles = tree.getRoles();
+		if(roles == null)
+			roles = new HashSet<Role>();
+		model.addAttribute("roles", roles);
+	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public MenuItem togglePublish(@RequestParam("id") String id)
+	public String updateTree(
+			@Valid MenuTree tree,
+			BindingResult result,
+			@RequestParam(value = "roles.id", required = false) String[] roleIdList,
+			Locale locale,
+			Model model)
 			throws Exception {
-		MenuItem item = menuItemDAO.getByMenuId(id);
+		if(result.hasErrors()){
+			model.addAttribute(tree);
+			return "menu/showEditTree";
+		}
+		if (roleIdList != null) {
+			for (int i = 0; i < roleIdList.length; i++) {
+				Role role = RoleDAO.newInstance().get(roleIdList[i]);
+				tree.addToRoles(role);
+			}
+		}
+		if(tree.getOrderIndex() == -1){
+			tree.setOrderIndex(menuTreeDAO.getMaxOrderIndex() + 1);
+		}
+		menuTreeDAO.save(tree);
+		return "redirect:index";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
+	public @ResponseBody
+	String sort(@RequestParam("menuId") String[] menuIds, Model model) {
+		int order = 0;
+		for (String menuId : menuIds) {
+			MenuTree tree = menuTreeDAO.get(Integer.parseInt(menuId));
+			tree.setOrderIndex(order++);
+			menuTreeDAO.save(tree);
+		}
+		return "success to sort Menu trees";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	@Transactional
+	public MenuItem togglePublish(@RequestParam("id") Integer id)
+			throws Exception {
+		MenuItem item = menuItemDAO.get(id);
 		item.toggolePublish();
 		menuItemDAO.save(item);
 		return item;
@@ -286,8 +321,8 @@ public class MenuController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public void removeItem(@RequestParam("id") String id) throws Exception {
-		MenuItem item = menuItemDAO.getByMenuId(id);
+	public void removeItem(@RequestParam("id") Integer id) throws Exception {
+		MenuItem item = menuItemDAO.get(id);
 		removeGadgetInstance(item);
 		menuItemDAO.delete(item.getId());
 	}
@@ -309,67 +344,49 @@ public class MenuController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public MenuItem moveItem(@RequestParam("id") String id,
-			@RequestParam("parentId") String parentId,
-			@RequestParam("refId") String refId,
-			@RequestParam("position") String position) throws Exception {
-		MenuItem item = menuItemDAO.getByMenuId(id);
-		if (parentId.length() > 0) {
-			MenuItem parentItem = menuItemDAO.getByMenuId(parentId);
+	public MenuItem moveItem(@RequestParam("id") Integer id,
+			@RequestParam("sibling[]") Integer[] siblings,
+			@RequestParam(value = "parentId", required = false) Integer parentId)
+			throws Exception {
+		MenuItem item = menuItemDAO.get(id);
+		if (parentId != null) {
+			MenuItem parentItem = menuItemDAO.get(parentId);
 			item.setFkParent(parentItem);
-		}
-		if (position.equals("last")) {
-			MenuItem last = menuItemDAO.getLastChild(parentId);
-			item.setMenuOrder(last != null ? last.getMenuOrder() + 1 : 0);
-			menuItemDAO.save(item);
 		} else {
-			//loop all sibling items and renumber them.
-			List<MenuItem> siblings = parentId.length() > 0 ? menuItemDAO
-					.getByParentId(parentId) : menuItemDAO.getTops(item
-					.getFkMenuTree());
-			int nextOrder = 0;
-			if (siblings != null) {
-				for (MenuItem sibling : siblings) {
-					if (sibling.getId().equals(refId)) {
-						if (position.equals("before")) {
-							item.setMenuOrder(nextOrder);
-							sibling.setMenuOrder(++nextOrder);
-							menuItemDAO.save(item);
-							menuItemDAO.save(sibling);
-						} else {
-							sibling.setMenuOrder(nextOrder);
-							item.setMenuOrder(++nextOrder);
-							menuItemDAO.save(sibling);
-							menuItemDAO.save(item);
-						}
-						nextOrder++;
-					} else if (!sibling.getId().equals(id)) {
-						sibling.setMenuOrder(nextOrder);
-						menuItemDAO.save(sibling);
-						nextOrder++;
-					}
-				}
-			}
+			item.setFkParent(null);
+		}
+		int order = 0;
+		for(Integer siblingId : siblings){
+			MenuItem siblingItem = menuItemDAO.get(siblingId);
+			siblingItem.setMenuOrder(order++);
+			menuItemDAO.save(siblingItem);
 		}
 		return item;
 	}
 
+	/**
+	 * 
+	 * @param id copied menu item
+	 * @param parentId parent menu item which above item is copied to.
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public MenuItem copyItem(@RequestParam("id") String id,
-			@RequestParam("parentId") String parentId) throws Exception {
-		MenuItem parentItem = menuItemDAO.getByMenuId(parentId);
-		MenuItem item = menuItemDAO.getByMenuId(id);
+	public MenuItem copyItem(@RequestParam("id") Integer id,
+			@RequestParam("parentId") Integer parentId) throws Exception {
+		MenuItem parentItem = menuItemDAO.get(parentId);
+		MenuItem item = menuItemDAO.get(id);
 
 		MenuItem newItem = new MenuItem();
-		newItem.setMenuId("m_" + new Date().getTime());
 		newItem.setFkParent(parentItem);
 
 		newItem.setTitle(item.getTitle());
 		newItem.setHref(item.getHref());
 		newItem.setAlert(item.getAlert());
-		newItem.setMenuOrder(item.getMenuOrder());
+		newItem.setMenuOrder(menuItemDAO.getMaxOrder(parentId) + 1);
 		newItem.setPublish(item.getPublish());
+		newItem.setFkMenuTree(item.getFkMenuTree());
 
 		GadgetInstance gadget = item.getGadgetInstance();
 		GadgetInstance newGadget = new GadgetInstance();
