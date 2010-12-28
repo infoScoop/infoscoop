@@ -125,25 +125,29 @@ function checkForm(){
 					<label>ユーザ/グループ：</label>
 			<button id="add_button"><div class="add label_icon">ユーザ/グループ追加</div></button>
 
-		<div id="search_dialog" style="display:none">
-			<p>
-				タイプを選択し、名前に追加したいユーザ/グループ名を入力してください<br>
-				対象範囲はインクリメンタルサーチが可能ですので、頭文字を入力すれば対象のユーザ/グループ名をリストから選択することができます。
-			</p>
-			<span>タイプ：</span>
-			<select id="roleType">
-				<option value='UIDPrincipal'>
-					<spring:message code="role.index.principal.type.UIDPrincipal"/>
-				</option>
-				<option value='OrganizationPrincipal'>
-					<spring:message code="role.index.principal.type.OrganizationPrincipal"/>
-				</option>
-			</select>
-			<span style="margin-left:10px;">名前：</span>
-			<input id="principalId" type="hidden"></input>
-			<input id="target" type="text"></input>
-			<input type="button" id="add_user" value="追加">
-		</div>
+			<div id="search_dialog" style="display:none">
+				<p>
+					タイプを選択し、名前に追加したいユーザ/グループ名を入力してください<br>
+					対象範囲はインクリメンタルサーチが可能ですので、頭文字を入力すれば対象のユーザ/グループ名をリストから選択することができます。
+				</p>
+				<span>タイプ：</span>
+				<select id="roleType">
+					<option value='UIDPrincipal'>
+						<spring:message code="role.index.principal.type.UIDPrincipal"/>
+					</option>
+					<option value='OrganizationPrincipal'>
+						<spring:message code="role.index.principal.type.OrganizationPrincipal"/>
+					</option>
+				</select>
+				<span style="margin-left:10px;">名前：</span>
+				<input id="principalId" type="hidden"></input>
+				<input id="target" type="text"></input>
+				<input type="button" id="add_user" value="追加">
+			</div>
+			
+			<c:forEach var="principalId" items="${role.deletePrincipalIdList}" varStatus="status">
+				<input name="deletePrincipalIdList[<c:out value='${status.index}'/>]" type="hidden" value="${principalId}" />
+			</c:forEach>
 			<table id="table" class="tablesorter">
 				<thead>
 					<tr>
@@ -154,9 +158,6 @@ function checkForm(){
 				</thead>
 				<tfoot></tfoot>
 				<tbody>
-				<c:forEach var="principalId" items="${role.deletePrincipalIdList}" varStatus="status">
-					<input name="deletePrincipalIdList[<c:out value='${status.index}'/>]" type="hidden" value="${principalId}" />
-				</c:forEach>
 
 				<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
 					<tr>
