@@ -17,4 +17,14 @@
 $("#menuItem").ajaxForm(function(html){
 	$("#menu_right").html(html);
 });
+$("input[type='cancel']").click(function(){
+	<c:if test="${conf != null}">
+	$.get("selectGadgetType", {id:'${ menuItem.fkParent.id }'}, function(html){
+		$("#menu_right").html(html);
+	});
+	</c:if>
+	<c:if test="${conf == null}">
+	$("#menu_right").html("<spring:message code="menu.editPage.description" /><br>");
+	</c:if>
+});
 </script>

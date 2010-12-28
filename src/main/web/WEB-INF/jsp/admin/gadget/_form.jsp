@@ -187,7 +187,7 @@
 	</c:if>
 	<li>
 		<input type="submit" value="<spring:message code="gadget._form.button.create" />" class="button"/>
-		<input type="reset" value="<spring:message code="gadget._form.button.reset" />" class="button" />
+		<input type="cancel" value="キャンセル" class="button" />
 	</li>
 <script type="text/javascript">
 <c:if test="${gadget.gadgetInstance != null}">
@@ -212,6 +212,6 @@ $("#get_title_from_content").click(function(){
 	}, 'json');
 });
 $('input[type="submit"]').button();
-$('input[type="reset"]').button();
+$('input[type="cancel"]').button();
 $('#change_type').button();
 </script>
