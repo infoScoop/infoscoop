@@ -63,7 +63,6 @@ public class MenuConfServlet extends HttpServlet {
 			res.setHeader("Content-Type", "application/javascript; charset=UTF-8");
 			OutputStream w = res.getOutputStream();
 			String resStr = service.getMenuTreeXml(menuType, ignoreAccessControl);
-			System.out.println(resStr);
 			byte[] resBytes = MakeMenuFilter.process(new ByteArrayInputStream(resStr.getBytes("UTF-8")), menuType, menuType, (Locale)req.getLocales().nextElement(), false);
 			w.write(resBytes);
 			w.flush();
