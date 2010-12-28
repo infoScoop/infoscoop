@@ -475,20 +475,20 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			var returnToMenuFunc = IS_SiteAggregationMenu.getReturnToMenuFuncHandler( divMenuItemIcon, menuItem.id, handler );
 			var displayTabName = IS_SiteAggregationMenu.getDisplayTabNameHandler( divMenuItemIcon, menuItem.id, handler, returnToMenuFunc, "_sidemenu" );
 			
-			divMenuItemIcon.className = "menuItemIcon";
+			divMenuItemIcon.className = "menuItemIcon menuTreeItemIcon";
 			itemTd.style.cursor = "move";
 			if(menuItem.iconUrl)
 				divMenuItemIcon.style.backgroundImage = "url(" + menuItem.iconUrl + ")";
 			else
 				IS_Widget.setIcon(divMenuItemIcon, menuItem.type, {multi:menuItem.multi});
-			
+			/*
 			if(IS_Portal.isChecked(menuItem) && !/true/.test(menuItem.multi)){
 				divMenuItemIcon.handler.destroy();
 				Element.addClassName(divMenuItemIcon, 'menuItemIcon_dropped');
 				IS_Event.observe(divMenuItemIcon, 'mouseover', displayTabName, false, "_sidemenu");
 				itemTd.style.cursor = "default";
 			}
-			
+			*/
 			// 200-300millsec can be lost as addListener executes new Array.
 			function getPostDragHandler(menuItemId, handler){
 				return function(){ postDragHandler(menuItemId, handler);};
@@ -518,7 +518,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				
 				IS_Event.observe(divMenuItemIcon, 'mouseover', displayTabName, false, "_sidemenu");
 			};
-			IS_EventDispatcher.addListener('dropWidget', menuItem.id, getPostDragHandler(menuItem.id), true);
+			//IS_EventDispatcher.addListener('dropWidget', menuItem.id, getPostDragHandler(menuItem.id), true);
 			if( menuItem.properties && menuItem.properties.url ) {
 				var url = menuItem.properties.url;
 				IS_EventDispatcher.addListener( IS_Widget.DROP_URL,url,( function( menuItem,handler ) {
@@ -552,7 +552,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				divMenuItemIcon.title = "";
 				IS_Event.stopObserving(divMenuItemIcon, 'mouseover', displayTabName, false, "_menu");
 			}
-			IS_EventDispatcher.addListener('closeWidget', menuItem.id, getCloseWidgetHandler(menuItem.id, handler), true);
+			//IS_EventDispatcher.addListener('closeWidget', menuItem.id, getCloseWidgetHandler(menuItem.id, handler), true);
 			if( menuItem.properties && menuItem.properties.url ) {
 				var url = menuItem.properties.url;
 				IS_EventDispatcher.addListener( IS_Widget.CLOSE_URL,url,( function( menuItem,handler ) {
@@ -572,6 +572,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		var divMenuTitle = document.createElement("div");
 		divMenuTitle.id = "t_" + menuItem.id;
 		divMenuTitle.className = "treeMenuTitle";
+		divMenuTitle.style.marginLeft = menuItem.type ? '22px' : '2px';
 		
 		var title = menuItem.directoryTitle || menuItem.title;
 		if (menuItem.href && !menuItem.linkDisabled) {
@@ -604,7 +605,10 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			divMenuTitle.appendChild(document.createTextNode(title));
 		}
 		divMenuTitle.title = title;
-		
+		divMenuItem.appendChild(divMenuTitle);
+		divMenuItem.style.width = "100%";
+		itemTd.appendChild(divMenuItem);
+		/*
 		if ( Browser.isIE ) {
 			divMenuItem.appendChild(divMenuTitle);
 			divMenuItem.style.width = "100%";
@@ -626,6 +630,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			divMenuItem.appendChild(menuItemTable);
 		}
 		itemTd.appendChild(divMenuItem);
+		*/
 		
 		if(hasChilds){
 			var childList = menuItem.children;

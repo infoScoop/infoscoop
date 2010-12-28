@@ -603,6 +603,7 @@ IS_Portal.goHome = function(){
 }
 
 //TODO:This code depend to MultiRssReader.
+/*
 IS_Portal.isChecked = function(menuItem){
 	isChecked = false;
 	
@@ -634,6 +635,7 @@ IS_Portal.isChecked = function(menuItem){
 	}
 	return isChecked;
 }
+*/
 
 /**
  * Search and return Widget existing in portal by MenuID(no w_)
@@ -688,6 +690,7 @@ IS_Portal.adjustPanelHeight = function(e){
 	var panels = $("panels");
 	if(!panels.visible) return;
 	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - $("tab-container").getHeight() - 5;
+	alert(adjustHeight);
 	if(Browser.isIE) adjustHeight -= 3;
 	if(IS_Portal.tabs[IS_Portal.currentTabId])
 		IS_Portal.tabs[IS_Portal.currentTabId].panel.style.height = adjustHeight + "px";

@@ -130,7 +130,7 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 	COLOR: #5286BB;
 }
 
-.menuItem div{
+.topMenuItem{
 	height:16px;
 }
 
@@ -169,6 +169,7 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 
 .menuItemIcon {
 	float:left;
+	display:inline-block;
 	background: top left no-repeat;
 	width:16px;
 	height: 16px;

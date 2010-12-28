@@ -113,27 +113,12 @@ public class WidgetServlet extends HttpServlet {
 			}
 			
 			Map resMap = I18NUtil.getResourceMap( I18NUtil.TYPE_LAYOUT,request.getLocale() );
-			Set dynamicPanelWidgetIds = new HashSet();
 			for(TabDetail t : widgetsList){
 				
 				Tab tab = t.getTab();
 				String layout = t.getLayout();
 				Collection<Widget> dynamicWidgets = t.getPersonalWidgets();
 				Collection<Widget> staticWidgets = t.getStaticWidgets();
-				
-				//Because there is the possibility that the widgetID repeats depending on the setting situation of the dynamic panel of the initial screen setting, we remove it.
-				List removeWidgetList = new ArrayList();
-				for(Widget wid : dynamicWidgets){
-					if(dynamicPanelWidgetIds.contains(wid.getWidgetid())){
-						removeWidgetList.add(wid);
-					}
-					if(!"MultiRssReader".equals(wid.getType())){
-						dynamicPanelWidgetIds.add(wid.getWidgetid());
-					}
-				}
-				
-				//FIXME dirty
-				WidgetDAO.newInstance().getHibernateTemplate().deleteAll( removeWidgetList );
 				
 				JSONObject tabJson = tab.toJSONObject(layout, dynamicWidgets,
 						staticWidgets, resMap);

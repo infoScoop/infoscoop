@@ -31,6 +31,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.DomainManager;
+import org.infoscoop.dao.MenuItemDAO;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.TabDAO;
@@ -352,8 +353,9 @@ public class TabService {
 				widget.setUserPref(up.getId().getName(), up.getValue());
 			widget.setIsstatic(Integer.valueOf(0));
 
-			widgetList.add(widget);
+			widget.setMenuItem(MenuItemDAO.newInstance().getByGadgetInstanceId(gadgetInst.getId()));
 			this.widgetDAO.addWidget(widget, true);
+			widgetList.add(widget);
 		}
 		return widgetList;
 	}

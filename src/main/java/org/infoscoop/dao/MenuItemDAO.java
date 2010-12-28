@@ -141,4 +141,10 @@ public class MenuItemDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().bulkUpdate(
 				"delete from MenuItem where id = ?", new Object[] { id });
 	}
+
+	public MenuItem getByGadgetInstanceId(Integer id) {
+		String query = "from MenuItem where GadgetInstance.id = ?";
+		List<MenuItem> results = super.getHibernateTemplate().find(query, id);
+		return results.get(0);
+	}
 }

@@ -1176,7 +1176,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		var divMenuItem = document.createElement("div");
 		//TODO:mc_
 		divMenuItem.id = "mc_" + menuItem.id;
-	
+		divMenuItem.className = "topMenuItem";
 		var divMenuIcon = document.createElement("div");
 		//TODO:mi_
 		divMenuIcon.id = "mi_" + menuItem.id;
@@ -1242,13 +1242,14 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 				divMenuIcon.style.backgroundImage = "url(" + menuItem.iconUrl + ")";
 			else
 				IS_Widget.setIcon(divMenuIcon, menuItem.type, {multi:menuItem.multi});
-			
+			/*
 			if(IS_Portal.isChecked(menuItem) && !/true/.test(menuItem.multi)){
 				handler.destroy();
 				Element.addClassName(divMenuIcon, 'menuItemIcon_dropped');
 				IS_Event.observe(divMenuIcon, 'mouseover', displayTabName, false, "_menu");
 				menuLi.style.cursor = "default";
 			}
+			*/
 
 			//The time of 200 to 300millsec is lost because addListener execute new Array
 			function getPostDragHandler(menuItemId, handler){
@@ -1275,7 +1276,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 
 				menuLi.style.cursor = "default";
 			}
-			IS_EventDispatcher.addListener('dropWidget', menuItem.id, getPostDragHandler(menuItem.id,handler), true);
+			//IS_EventDispatcher.addListener('dropWidget', menuItem.id, getPostDragHandler(menuItem.id,handler), true);
 			if( menuItem.properties && menuItem.properties.url ) {
 				var url = menuItem.properties.url;
 				IS_EventDispatcher.addListener( IS_Widget.DROP_URL,url,( function( menuItem,handler ) {
@@ -2063,37 +2064,14 @@ IS_SiteAggregationMenu.refreshMenu = function  () {
 
 IS_SiteAggregationMenu.draggable = false;
 IS_SiteAggregationMenu.tempReaders = {};
-/*
-IS_SiteAggregationMenu.menuDragInit = function(menuItem, menuIconDiv, menuItemDiv, isMultiMenu, isTree){
-//	return function(e){ menuItemDragStart(e, menuItem, menuIconDiv, menuItemDiv); };
-	
-	menuItem.menuIconDiv = menuIconDiv;
-	menuItem.menuItemDiv = menuItemDiv;
-	
-	var dragObject = new Object();
-	for(var i in menuItem){
-		dragObject[i] = menuItem[i];
-	}
-	dragObject.menuIconDiv = menuIconDiv;
-	dragObject.menuItemDiv = menuItemDiv;
-	dragObject.isMultiMenu = isMultiMenu;
-	
-	if(isTree){
-		dragObject.isTree = true;
-	}
-	
-	var drag = new IS_DragWidget(dragObject, "menu");
-	return drag.start;
-};
-*/
 
 IS_SiteAggregationMenu.getConfigurationFromMenuItem = function(menuItem, columnNum){
 	var w_id;
-	if(/true/i.test(menuItem.multi)){
+	//if(/true/i.test(menuItem.multi)){
 		w_id = "w_" + (new Date()).getTime();
-	}else{
-		w_id = "w_" + menuItem.id;
-	}
+	//}else{
+	//	w_id = "w_" + menuItem.id;
+	//}
 	var widgetConf;
 	widgetConf = IS_WidgetsContainer.WidgetConfiguration.getConfigurationJSONObject(
 		menuItem.type, w_id, columnNum, menuItem.title, menuItem.href, menuItem.properties);
