@@ -22,6 +22,9 @@ $(function(){
 			5:{sorter:false}
 		}
 	});
+	$('a.delete_link').click(function(event){
+		return confirm("この履歴を削除します。よろしいですか？");
+	});
 });
 </script>
 <div style="height:500px;">
@@ -56,7 +59,7 @@ $(function(){
 					</c:forEach>
 				</td>
 				<td><a href="editTab?id=${tab.id}" class="edit_link"><div class="edit icon" title="このリビジョンを元に編集"></div></a></td>
-				<td><a href="deleteTab?id=${tab.id}"><div class="trash icon"></div></a></td>
+				<td><a href="deleteHistory?id=${tab.id}" class="delete_link"><div class="trash icon"></div></a></td>
 			</tr>
 </c:forEach>
 		</tbody>

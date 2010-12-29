@@ -207,6 +207,15 @@ public class TabController {
 	}
 	
 	@RequestMapping
+	@Transactional
+	public String deleteHistory(@RequestParam("id") String id, Model model)
+			throws Exception {
+		TabTemplate tab = tabTemplateDAO.get(id);
+		tabTemplateDAO.delete(tab);
+		return "redirect:history?id=" + tab.getTabId();
+	}
+	
+	@RequestMapping
 	public void selectGadgetType(
 			HttpServletRequest request, 
 			@RequestParam("tabId") String tabId,
