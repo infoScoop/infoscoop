@@ -116,6 +116,7 @@
 	</ModulePrefs>
 	<WidgetPref datatype="bool" display_name="__MSG_lb_titleEdit__" name="titleEdit" value="true"/>
 	<WidgetPref datatype="string" display_name="__MSG_lb_dateTimeFormat__" name="dateTimeFormat" value="yyyy/MM/dd HH:mm:ssZ"/>
+	<UserPref default_value="" datatype="hidden" name="url" display_name="RSS URL" required="true" admin_datatype="url"/>
 	<UserPref default_value="false" display_name="__MSG_lb_doLineFeed__" datatype="bool" name="doLineFeed"/>
 	<UserPref default_value="true" display_name="__MSG_lb_doShowDatetime__" datatype="bool" name="showDatetime"/>
 	<UserPref default_value="3" display_name="__MSG_lb_itemsnumDisplayName__" datatype="hidden" name="itemsnum" staticDisabled="true">
