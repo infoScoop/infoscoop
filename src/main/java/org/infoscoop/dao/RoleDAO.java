@@ -1,5 +1,7 @@
 package org.infoscoop.dao;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -40,6 +42,18 @@ public class RoleDAO extends HibernateDaoSupport {
 
 	public void deleteRolePrincipal(RolePrincipal rolePrincipal) {
 		super.getHibernateTemplate().delete(rolePrincipal);
+	}
+	
+	public void deleteRolePrincipal(Collection<RolePrincipal> rolePrincipals) {
+		String query = "delete from RolePrincipal where id in (";
+		Collection<Integer> principalIds = new HashSet<Integer>();
+		for(RolePrincipal p : rolePrincipals){
+			principalIds.add(p.getId());
+			query += "?,";
+		}
+		query = query.substring(0, query.length()-1) + ")";
+		
+		super.getHibernateTemplate().bulkUpdate(query, principalIds.toArray());
 	}
 
 	public void updatePrindipcal(RolePrincipal rolePrincipal) {

@@ -9,12 +9,14 @@
 	<tiles:putAttribute name="body" type="string">
 <script type="text/javascript" class="source">
 $(function () {
+	var count = $("#table tbody tr").length;
 	$("#add_button").button().click(function(){
 		$("#search_dialog").slideToggle("fast");
 		return false;
 	});
 	$("#add_user").click(function(){
-		var count = $("#table tbody tr").length;
+		//var count = $("#table tbody tr").length;
+		count++;
 		$('<tr/>')
 			.append($('<td/>')
 				.append($('<span/>').text($("#roleType option:selected").text()))
@@ -74,12 +76,7 @@ $(function () {
 });
 
 function deletePrincipal(index){
-	var form = document.forms[0];
-	$(form['rolePrincipals[' + index + '].id']).name="deletePrincipalId";
-	$(form['rolePrincipals[' + index + '].name']).remove();
-	$(form['rolePrincipals[' + index + '].type']).remove();
-	form.action = 'deleteRolePrincipal';
-	form.submit();
+	$('#principalTr'+index).remove();
 };
 
 function checkForm(){
@@ -160,7 +157,7 @@ function checkForm(){
 				<tbody>
 
 				<c:forEach var="principal" items="${role.rolePrincipals}" varStatus="status">
-					<tr>
+					<tr id="principalTr${status.index}">
 						<td>
 							<span><spring:message code="role.index.principal.type.${principal.type}"/></span>
 							<input name="rolePrincipals[<c:out value='${status.index}'/>].type" type="hidden" value="${principal.type}" />

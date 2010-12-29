@@ -2,8 +2,10 @@ package org.infoscoop.manager.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.infoscoop.dao.GroupDAO;
 import org.infoscoop.dao.RoleDAO;
@@ -88,6 +90,7 @@ public class RoleController {
 	}
 
 	@RequestMapping(method=RequestMethod.GET)
+	@Transactional
 	public String delete( @RequestParam("roleId") String roleId, Model model)
 			throws Exception {
 		RoleDAO.newInstance().delete(roleId);
@@ -95,32 +98,36 @@ public class RoleController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String deleteRolePrincipal( Role role, Model model)
-			throws Exception {
-
-		List<RolePrincipal> list = new ArrayList<RolePrincipal>();
-		for(RolePrincipal rolePrincipal : role.getRolePrincipals()){
-			if(rolePrincipal !=null && rolePrincipal.getId() != null){
-				if(rolePrincipal.getType() != null)
-					list.add(rolePrincipal);
-				else if(rolePrincipal.getType() == null)
-					role.getDeletePrincipalIdList().add(rolePrincipal.getId().toString());
-			}
-		}
-		role.setRolePrincipals(list);
-		model.addAttribute("role", role);
-
-		return "role/edit";
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public String save(Role role) throws Exception {
-		RoleDAO.newInstance().save(role);
-		for(String id: role.getDeletePrincipalIdList()){
-			RolePrincipal principal = RoleDAO.newInstance().getRolePrincipal(id);
-			RoleDAO.newInstance().deleteRolePrincipal(principal);
+		Role oldRole = RoleDAO.newInstance().get(role.getId().toString());
+		
+		oldRole.setName(role.getName());
+		oldRole.setDescription(role.getDescription());
+		
+		//add
+		Set<Integer> newPrincipalIds = new HashSet<Integer>();
+		for(RolePrincipal principal : role.getRolePrincipals()){
+			if(principal.getType() != null){
+				if(principal.getId() == null){
+					principal.setFkRole(oldRole);
+					oldRole.getRolePrincipals().add(principal);
+				}else
+					newPrincipalIds.add(principal.getId());
+			}
 		}
+		
+		//delete
+		HashSet<RolePrincipal> deletePrincipals = new HashSet<RolePrincipal>();
+		for(RolePrincipal principal: oldRole.getRolePrincipals()){
+			if(principal.getId() != null && !newPrincipalIds.contains(principal.getId()))
+				deletePrincipals.add(principal);
+		}
+		if(!deletePrincipals.isEmpty()){
+			oldRole.getRolePrincipals().removeAll(deletePrincipals);
+			RoleDAO.newInstance().deleteRolePrincipal(deletePrincipals);
+		}
+		RoleDAO.newInstance().save(oldRole);
 		return "redirect:index";
 	}
 }
