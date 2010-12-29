@@ -293,11 +293,14 @@ public class WidgetDAO extends HibernateDaoSupport{
 			if(newPref == null) {
 				super.getHibernateTemplate().delete( current.get( key ));
 			} else {
-				UserPref userPref = current.get( key );
-				userPref.setValue(newPref.getValue());
-				if( userPref.getId().getWidgetId() == null )
-					userPref.getId().setWidgetId( widget.getId());
-
+				UserPref userPref = current.get(key);
+				if (userPref == null) {// new user pref
+					userPref = userPrefs.get(key);
+				} else {// already existing user pref (for Hibernate)
+					userPref.setValue(newPref.getValue());
+					if (userPref.getId().getWidgetId() == null)
+						userPref.getId().setWidgetId(widget.getId());
+				}
 				super.getHibernateTemplate().saveOrUpdate( userPref );
 			}
 		}
