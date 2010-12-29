@@ -6,9 +6,11 @@
 	<tiles:putAttribute name="type" value="tab"/>
 	<tiles:putAttribute name="title" value="tab.title"/>
 	<tiles:putAttribute name="body" type="string">
+<link rel="stylesheet" type="text/css" href="../../skin/styles.css">
 <link rel="stylesheet" type="text/css" href="../../skin/siteaggregationmenu.css">
 <link rel="stylesheet" type="text/css" href="../../skin/treemenu.css">
 <link rel="stylesheet" type="text/css" href="../../skin/widget.css">
+<link rel="stylesheet" type="text/css" href="../../skin/theme.css">
 
 <link rel="stylesheet" type="text/css" href="../../skin/calendar.css">
 <link rel="stylesheet" type="text/css" href="../../skin/rssreader.css">
@@ -21,41 +23,11 @@
 <link rel="stylesheet" type="text/css" href="../../js/lib/DataTables-1.7.4/css/demo_table.css">
 <script src="../../js/lib/DataTables-1.7.4/js/jquery.dataTables.min.js"></script>
 <style>
-h1 {
-  margin:5px;
+body{
+	font-size:11px !important;
 }
-h2 {
-  margin:10px 5px 2px 5px;
-}
-.column {
-	float:left;
-}
-#modal_container {  
-     padding:5px;  
-     background-color:#fff;  
-     border:1px solid #666;  
-     overflow:auto;  
-     font-family:"Lucida Grande",Verdana;  
-     font-size:12px;  
-     color:#333;  
-     text-align:left;  
-} 
-
-#modal_overlay {  
-     background-color:#000;  
-}
-.adjustBarOver {
-    background: url("../../skin/imgs/line.gif") repeat-y scroll center top transparent;
-    cursor: e-resize;
-    float: left;
-    height: 150px;
-    width: 1%;
-}
-.adjustBarOut {
-    cursor: e-resize;
-    float: left;
-    height: 150px;
-    width: 1%;
+#staticAreaContainer{
+	margin: 10px 0;
 }
 .staticLayout, .staticLayoutAdjustHeight{
 	width: 22%;
@@ -76,13 +48,6 @@ h2 {
 .staticLayoutAdjustHeight .static_column{
 	height:182px;
 }
-.widget .widgetHeader {
-	background-image:url("../../skin/imgs/theme/widget_header.png");
-}
-#portal-site-aggregation-menu{
-	margin-top:10px;
-}
-
 .edit_static_gadget{
 	position: absolute;top: 0px;left: 0px;
 	text-decoration: underline;
@@ -202,6 +167,7 @@ h2 {
 <script src="../../js/resources/resources_ja.js"></script>
 <script>
 jQuery.noConflict();
+$j = jQuery;
 
 function getInfoScoopURL() {
 	var currentUrl = location.href;
@@ -445,6 +411,7 @@ function adjustStaticWidgetHeight(){
 }
 
 function init() {
+	document.body.className = "infoScoop";
 	jQuery(".submit_button").button().click(changeFlag);
 	jQuery(".cancel_button").button().click(function(){window.close();});
 	//Event.observe('submit_button', 'click', changeFlag, false);
@@ -501,43 +468,11 @@ function init() {
 				
 			}
 		}
-		var staticWidget = null;
-		var static_columns = $$('.static_column');
-		for (var j=0; j<static_columns.length; j++ ) {
-			var div = static_columns[j];
-			if (div == widgetGhost) {
-				continue;
-			}
-			
-			var left = findPosX(div);
-			var top = findPosY(div) - scrollOffset;
-			
-			var tmp = Math.sqrt(Math.pow(x-left,2)+ Math.pow(y-top,2));
-			if (isNaN(tmp)) {
-				continue;
-			}
-			
-			if ( tmp < min ) {
-				min = tmp;
-				staticWidget = div;
-				staticWidget.col = col;
-			}
-			
-		}
 		
 		if (nearGhost != null && widgetGhost.nextSibling != nearGhost) {
 			widgetGhost.style.display = "block";
 			nearGhost.parentNode.insertBefore(widgetGhost,nearGhost);
 			widgetGhost.col = nearGhost.col;
-		}else if(staticWidget){
-			if(this.staticWidget)this.staticWidget.style.backgroundColor = "#FFFFFF";
-			staticWidget.style.backgroundColor = "#F0F0F0";
-			this.staticWidget = staticWidget;
-			widgetGhost.style.display = "none";
-		}else if(this.staticWidget){
-			this.staticWidget.style.backgroundColor = "#FFFFFF";
-			widgetGhost.style.display = "block";
-			this.staticWidget = null;
 		}
 	  },
 	  onDrop : function(element, lastActiveElement, widget, event) {
@@ -549,12 +484,6 @@ function init() {
 			widgetGhost.col.replaceChild(element, widgetGhost);
 		} else {
 		    widgetGhost.col.removeChild( widgetGhost );
-		}
-		if(this.staticWidget){
-			if(this.staticWidget.firstChild)
-			  this.staticWidget.replaceChild(element, this.staticWidget.firstChild);
-			else
-			  this.staticWidget.appendChild(element);
 		}
 		element.style.position = "";
 
@@ -771,117 +700,68 @@ function init() {
 				
 			}
 		}
-		
-		var staticWidget = null;
-		var static_columns = $$('.static_column');
-		for (var j=0; j<static_columns.length; j++ ) {
-			var div = static_columns[j];
-			if (div == widgetGhost) {
-				continue;
-			}
-			
-			var left = findPosX(div);
-			var top = findPosY(div) - scrollOffset;
-			
-			var tmp = Math.sqrt(Math.pow(x-left,2)+ Math.pow(y-top,2));
-			if (isNaN(tmp)) {
-				continue;
-			}
-			
-			if ( tmp < min ) {
-				min = tmp;
-				staticWidget = div;
-				staticWidget.col = col;
-			}
-			
-		}
-		/*
 		if (nearGhost != null && widgetGhost.nextSibling != nearGhost) {
+			widgetGhost.style.height = 20;
 			widgetGhost.style.display = "block";
 			nearGhost.parentNode.insertBefore(widgetGhost,nearGhost);
 			widgetGhost.col = nearGhost.col;
 		}
-		*/
-		if (nearGhost != null && widgetGhost.nextSibling != nearGhost) {
-			widgetGhost.style.display = "block";
-			nearGhost.parentNode.insertBefore(widgetGhost,nearGhost);
-			widgetGhost.col = nearGhost.col;
-		}else if(staticWidget){
-			if(this.staticWidget)this.staticWidget.style.backgroundColor = "#FFFFFF";
-			staticWidget.style.backgroundColor = "#F0F0F0";
-			this.staticWidget = staticWidget;
-			widgetGhost.style.display = "none";
-		}else if(this.staticWidget){
-			this.staticWidget.style.backgroundColor = "#FFFFFF";
-			widgetGhost.style.display = "block";
-			this.staticWidget = null;
-		}
-
 	}
 	IS_Droppables.add(panelBody, menuopt);
 	
-	new Control.Modal(
-			'select_layout_link',
-			{
-			  opacity: 0.4,
-			  width: 580,
-			  height: 440,
-				afterOpen:function(){
-					$("staticLayouts"+(areaType != 2 ? "AdjustHeight":"")).hide();
-					var staticLayoutList = $$('#modal_container .staticLayout' + (areaType == 2 ? "AdjustHeight":""));
-					for(var i = 0; i < staticLayoutList.length; i++){
-						var layoutDiv = staticLayoutList[i];
-						var layoutMouseOver = function(el) {
-							el.style.backgroundColor = "#9999cc";
-						};
-						var layoutMouseOut = function(el) {
-							el.style.backgroundColor = "";
-						};
-						var layoutClick = function(el,e) {
-							$('staticAreaContainer').innerHTML = el.innerHTML;
-							prepareStaticArea();
-							$('layoutModified').value = "true";
-							reloadStaticGadgets();
-							clearStaticGadgets();
-							adjustStaticWidgetHeight();
-							//TODO:remove ols static gadgets;
-							Event.stop(e);
-							Control.Modal.close();
-						};
-						Event.observe(layoutDiv, 'mouseover', layoutMouseOver.bind(null, layoutDiv),false);
-						Event.observe(layoutDiv, 'mouseout', layoutMouseOut.bind(null, layoutDiv), false);
-						Event.observe(layoutDiv, 'click', layoutClick.bind(null, layoutDiv), false);
-					}
-					Event.observe( $('select_layout_cancel'), 'click', function(){
-						Control.Modal.close();
-					},false);
-				}
+	$j("#select_layout_link").button().click(function(){
+		$j("#select_layout_modal").dialog({
+			modal:true,
+			width:600,
+			height:500,
+			open: function(){
+				var dialog = $j(this);
+				if(dialog.data("init")) return;
+				$j("#staticLayouts"+(areaType != 2 ? "AdjustHeight":"")).hide();
+				$j("#select_layout_modal .staticLayout"+(areaType == 2 ? "AdjustHeight":""))
+					.mouseover(function(){$j(this).css("background-color","#9999cc")})
+					.mouseout(function(){$j(this).css("background-color","")})
+					.click(function(){
+						$j("#staticAreaContainer").html($j(this).html());
+						prepareStaticArea();
+						$j('#layoutModified').val("true");
+						reloadStaticGadgets();
+						clearStaticGadgets();
+						adjustStaticWidgetHeight();
+						dialog.dialog("close");
+					});
+				$j("#select_layout_cancel").click(function(){
+					dialog.dialog("close");
+				});
+				dialog.data("init", true);
 			}
-		);
+		});
+	});
 	
-	new Control.Modal(
-		'edit_layout_link',
-		{
-			opacity: 0.4,
-			width: 580,
-			height: 460,
-			afterOpen:function(){
-				$("edit_layout_textarea").value = $('layout').value;
-				Event.observe( $('edit_layout_ok'), 'click', function(){
-					var layout = $("edit_layout_textarea").value;
-					$('staticAreaContainer').innerHTML = layout;
+	$j("#edit_layout_link").button().click(function(){
+		$j("#edit_layout_modal").dialog({
+			modal:true,
+			width:580,
+			height:400,
+			open:function(){
+				$j("#edit_layout_textarea").val($j("#layout").val());
+				$j("#edit_layout_ok").click(function(){
+					$j('#staticAreaContainer').html($j("#edit_layout_textarea").val());
 					prepareStaticArea();
-					$('layoutModified').value = "true";
+					$j('#layoutModified').val("true");
 					reloadStaticGadgets();
 					clearStaticGadgets();
-					Control.Modal.close();
-				},false);
-				Event.observe( $('edit_layout_cancel'), 'click', function(){
-					Control.Modal.close();
-				},false);
+					dialog.dialog("close");
+				});
+				var dialog = $j(this);
+				if(dialog.data("init")) return;
+				$j("#edit_layout_cancel").click(function(){
+					dialog.dialog("close");
+				});
+				dialog.data("init", true);
 			}
-		}
-	);
+		});
+	});
 	
 	//handle areaType
 	Event.observe($("areaType"), 'change', function(){

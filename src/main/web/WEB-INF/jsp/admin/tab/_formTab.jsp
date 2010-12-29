@@ -38,7 +38,10 @@
 				</li>
 			</ul>
 		</fieldset>
-		<div style="clear:both;text-align:center;"><input class="submit_button" type="submit" name="button" value="保存" /><input class="cancel_button" type="button" name="button" value="キャンセル" /></div>
+		<div style="clear:both;text-align:center;margin-bottom:10px;">
+			<input class="submit_button" type="submit" name="button" value="保存" />
+			<input class="cancel_button" type="button" name="button" value="キャンセル" />
+		</div>
 		<form:hidden path="id" />
 		<form:hidden path="tabId" />
 		<form:hidden path="layout" />
@@ -50,7 +53,8 @@
 		<div id="infoscoop-panel" style="float:left;">
 			<fieldset>
 				<legend><spring:message code="tab._formTab.staticArea" /></legend>
-				<a href="#select_layout_modal" id="select_layout_link">レイアウトの選択</a> <a href="#edit_layout_modal" id="edit_layout_link">レイアウトの高度な編集</a>
+				<input id="select_layout_link" type="button" value="レイアウトの選択">
+				<input id="edit_layout_link" type="button" value="レイアウトの高度な編集">
 				<div id="staticAreaContainer">${tabTemplate.layout}</div>
 			</fieldset>
 			<c:if test="${tabTemplate.areaType == 0}">
