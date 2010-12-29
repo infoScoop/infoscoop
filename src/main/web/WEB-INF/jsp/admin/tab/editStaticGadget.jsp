@@ -10,30 +10,18 @@
 <c:set var="action" value="submitGadgetSettings" scope="request"/>
 <c:set var="type" value="tab" scope="request"/>
 <c:set var="gadget" value="${tabTemplateStaticGadget}" scope="request"/>
-<h2>ガジェットの追加</h2>
 <form:form modelAttribute="tabTemplateStaticGadget" method="post" action="${action}" class="cssform">
 <c:import url="/WEB-INF/jsp/admin/gadget/_form.jsp"/>
 </form:form>
 <script type="text/javascript">
-$("#gadget_settings input").each(function(){
-	//TODO ここでdatatypeに従ってinputタグを変換
-});
-$("#gadget_settings select").each(function(){
-	if(this.className == "radio"){
-		var name = this.name;
-		var radioEl = $.SPAN({className:'radio'});
-		$(this).find("option").each(function(){
-			radioEl.appendChild($.INPUT({type:'radio', value:this.value, name:name, checked:this.selected?"checked":false}));
-			radioEl.appendChild($.LABEL({}, this.innerHTML));
-		});
-		$(this).replaceWith(radioEl);
-	}
-});
 
 $(function(){
 	var href_value= "selectGadgetType?tabId=${gadget.tabTemplateId}" +
 						 "&containerId=${gadget.containerId}";
 	$("#change_type").attr("href", href_value);
+	$("input[type='cancel']").click(function(){
+		parent.$j("#static_gadget_modal").dialog("close");
+	});
 });
 </script>
 	</tiles:putAttribute>

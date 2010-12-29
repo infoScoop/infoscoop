@@ -16,5 +16,5 @@ parent.displayStaticGadget(
 		 }
 	});
 
-parent.Control.Modal.close();
+parent.$j("#static_gadget_modal").dialog("close");
 </script>

@@ -353,51 +353,50 @@ if(editors.length > 0){
 }
 
 function prepareStaticArea(){
-	var static_columns = $$('#staticAreaContainer .static_column');
 	IS_Portal.deleteTempTabFlag = 1;
 	var tabId = IS_Portal.currentTabId.replace("tab","");
-	for (var j=0; j<static_columns.length; j++ ) {
+	$j('#staticAreaContainer .static_column').each(function(j){
 		var containerId = IS_Portal.trueTabId + '_static_column_' + j;
-		var div = static_columns[j];
-		div.id = containerId;
-
-		var edit_cover = document.createElement('div');
-		edit_cover.id = "edit_div_" + j;
-		edit_cover.className = "edit_static_gadget";
-		edit_cover.style.display = "none";
-		edit_cover.href = hostPrefix + "/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + containerId;
-		div.appendChild(edit_cover);
-		
-		var modal = new Control.Modal(
-			edit_cover,
-			{
-			  opacity: 0.4,
-			  width: 580,
-			 height: 440,
-			 iframe:true// ajax is better
-			}
-		);
-
-		var editLayoutMouseOver = function(parent, child,containerId) {
-				setModal(parent,child,containerId);
-				Element.show(child);
-		};
-		var editLayoutMouseOut = function(parent, child) {
-				Element.hide(child);
-		};
-		
-
-		Event.observe(div, 'mouseover', editLayoutMouseOver.bind(null, div, edit_cover, containerId),false);
-		Event.observe(div, 'mouseout', editLayoutMouseOut.bind(null, div, edit_cover), false);
-		function setModal(parent, edit_cover, containerId){
-			if(parent.id !== containerId){
-				edit_cover.innerHTML = 'Edit';
-			}else{
-				edit_cover.innerHTML = 'New';
-			}
-		}
-	};
-	$('layout').value = $('staticAreaContainer').innerHTML;
+		div = $j(this).attr("id", containerId).data("containerId", containerId);
+		var edit_cover = $j('<div/>')
+			.attr("id", "edit_div_" + j)
+			.addClass("edit_static_gadget")
+			.hide()
+			.click(function(){
+				var staticGadgetModal = $j("#static_gadget_modal");
+				if(staticGadgetModal.length == 0){
+					staticGadgetModal = $j('<iframe id="static_gadget_modal"/>')
+						.css({width:"600px", height:"480px", border:"none"})
+						.dialog({
+							modal:true,
+							width:600,
+							height:480,
+							resizable:false,
+							draggable:false,
+							autoOpen:false,
+							open:function(){
+								$j(this).width(590);
+							}
+						});
+				}
+				staticGadgetModal
+					.attr("src", hostPrefix + "/tab/editStaticGadget?tabId=" + tabId + "&containerId=" + containerId)
+					.dialog("option", "title", "ガジェットの編集")
+					.dialog("open");
+			})
+			.appendTo(div);
+		div
+			.mouseover(function(){
+				var $this = $j(this);
+				edit_cover
+					.text(($this.attr("id") == $this.data("containerId")) ? "New" : "Edit")
+					.show();
+			})
+			.mouseout(function(){
+				edit_cover.hide();
+			});
+	});
+	$j("#layout").val($j("#staticAreaContainer").html());
 };
 
 function adjustStaticWidgetHeight(){
