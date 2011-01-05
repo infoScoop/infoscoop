@@ -214,7 +214,7 @@ if( isPreview == null )
 	<%}%>
  </head>
 
-	<body style="margin-top:0;padding-top:0;" class="infoScoop">
+	<body style="margin-top:0;padding-top:0;vertical-align:top;" class="infoScoop">
 		<div id="portal-header"></div>
 		<div id="portal-body">
 		<div id="error-msg-bar" style="display:none;"></div>
