@@ -149,7 +149,7 @@ public class SiteAggregationMenuService {
 	
 	private static void setElement2Buf(GadgetInstanceUserpref userPref, StringBuffer buf){
 		buf.append("<property name=\"" + userPref.getId().getName() + "\">");
-		buf.append(userPref.getValue());
+		buf.append(XmlUtil.escapeXmlEntities(userPref.getValue())); 
 		buf.append("</property>");
 	}
 	
