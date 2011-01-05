@@ -9,7 +9,7 @@
 				<a href="https://www.google.com/calendar/hosted/${session.getAttribute('Domain')}/" target="_blank"><span class="label" id="calendar" >カレンダー</span></a>
 				<a href="http://docs.google.com/a/${session.getAttribute('Domain')}/" target="_blank"><span class="label" id="document" >ドキュメント</span></a>
 				<#if (isadmin?string == "true")>
-					<a href="./manager/menu/index" target="_blank"><span class="label" id="manager" >管理画面</span></a>
+					<a href="./manager/menu/index" target="_blank"><span class="label" id="admin" >管理画面</span></a>
 				</#if>
 		</div>
 	</div>

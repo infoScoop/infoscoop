@@ -50,6 +50,9 @@ a:hover{text-decoration: underline;}
 .launcher #document{
 	background:url(./imgs/header/page.gif) no-repeat;
 }
+.launcher #admin{
+	background:url(./imgs/header/user_suit.png) no-repeat;
+}
 .search_box{
 	/*border:2px solid #DEEDF7;*/
 }
