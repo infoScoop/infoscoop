@@ -22,13 +22,12 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.security.auth.Subject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +38,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.acl.ISAdminPrincipal;
 import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.service.PortalLayoutService;
 import org.infoscoop.util.SpringUtil;
@@ -92,6 +92,7 @@ public class CustomizationServlet extends HttpServlet {
 			Map<String, Object> root = new HashMap<String, Object>();
 			root.put("request", request);
 			root.put("session", request.getSession());
+			root.put("isadmin", !((Subject) request.getSession().getAttribute("loginUser")).getPrincipals(ISAdminPrincipal.class).isEmpty());
 
 			String customFtl = getCustomizationFtl( root , request.getLocale());
 			/*

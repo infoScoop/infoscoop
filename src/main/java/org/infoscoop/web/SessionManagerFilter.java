@@ -22,6 +22,7 @@ package org.infoscoop.web;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -45,6 +46,7 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.DomainManager;
 import org.infoscoop.account.SessionCreateConfig;
+import org.infoscoop.acl.ISAdminPrincipal;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.web.PreviewImpersonationFilter;
@@ -188,8 +190,25 @@ public class SessionManagerFilter implements Filter {
 					AuthenticationService service= AuthenticationService.getInstance();
 					try {
 						if (service != null){
-							loginUser = service.getSubject(uid, (String) session.getAttribute("Domain"));
+							String domainName = (String) session.getAttribute(LOGINUSER_DOMAIN_NAME_ATTR_NAME);
+							loginUser = service.getSubject(uid, domainName);
 							setLoginUserName(httpRequest, loginUser);
+							Domain domain = DomainDAO.newInstance().getByName(domainName);
+							User user = UserService.getHandle().getUser(uid,
+									domain.getId());
+							if(user != null && user.isAdministrator()){
+								Principal adminPrincipal = new ISAdminPrincipal();
+								loginUser.getPrincipals().add(adminPrincipal);	
+							}
+
+							Set<Group> groups = user.getGroups();
+							for (Group group : groups) {
+								ISPrincipal groupPrincipal = new ISPrincipal(
+										ISPrincipal.ORGANIZATION_PRINCIPAL, group
+												.getEmail());
+								groupPrincipal.setDisplayName(group.getName());
+								loginUser.getPrincipals().add(groupPrincipal);
+							}
 						}
 					} catch (Exception e) {
 						log.error("",e);
@@ -207,13 +226,14 @@ public class SessionManagerFilter implements Filter {
 						domainPrincipal.setDisplayName(domain.getName());
 						loginUser.getPrincipals().add(domainPrincipal);
 					}
+					/*
 					User user = UserService.getHandle().getUser(uid,
 							domain.getId());
 					if(user != null && user.isAdministrator()){
-						ISPrincipal adminPrincipal = new ISPrincipal(ISPrincipal.ADMINISTRATOR_PRINCIPAL, "admin");
-						adminPrincipal.setDisplayName("Administrator");
+						Principal adminPrincipal = new ISAdminPrincipal();
 						loginUser.getPrincipals().add(adminPrincipal);	
 					}
+					
 					Set<Group> groups = user.getGroups();
 					for (Group group : groups) {
 						ISPrincipal groupPrincipal = new ISPrincipal(
@@ -222,6 +242,8 @@ public class SessionManagerFilter implements Filter {
 						groupPrincipal.setDisplayName(group.getName());
 						loginUser.getPrincipals().add(groupPrincipal);
 					}
+					
+					*/
 				}
 								
 				for(Map.Entry entry : SessionCreateConfig.getInstance().getRoleHeaderMap().entrySet()){

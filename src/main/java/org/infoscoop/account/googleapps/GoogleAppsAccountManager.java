@@ -33,6 +33,7 @@ import org.infoscoop.dao.DomainDAO;
 import org.infoscoop.dao.UserDAO;
 import org.infoscoop.dao.model.Account;
 import org.infoscoop.dao.model.Domain;
+import org.infoscoop.dao.model.User;
 
 /**
  * @author a-kimura
@@ -68,7 +69,7 @@ public class GoogleAppsAccountManager implements IAccountManager{
 	}
 	
 	public Subject getSubject(String userid, String domainName) throws Exception {
-		Account account = (Account)this.getUser(userid, domainName);
+		IAccount account = (IAccount)this.getUser(userid, domainName);
 		if(account == null){
 			throw new AuthenticationException(userid + " is not found.");
 		}
@@ -76,8 +77,8 @@ public class GoogleAppsAccountManager implements IAccountManager{
 		ISPrincipal p = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, account.getUid());
 		p.setDisplayName(account.getName());
 		loginUser.getPrincipals().add(p);
-		ISPrincipal domain = new ISPrincipal(ISPrincipal.DOMAIN_PRINCIPAL, account.getId().getFkDomainId().toString());
-		p.setDisplayName(domainName);
+		ISPrincipal domain = new ISPrincipal(ISPrincipal.DOMAIN_PRINCIPAL,((User)account).getFkDomainId().toString());
+		domain.setDisplayName(domainName);
 		loginUser.getPrincipals().add(domain);
 		return loginUser;
 	}

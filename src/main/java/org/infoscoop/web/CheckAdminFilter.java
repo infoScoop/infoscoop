@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
+import org.infoscoop.acl.ISAdminPrincipal;
 import org.infoscoop.acl.ISPrincipal;
 
 
@@ -49,17 +50,10 @@ public class CheckAdminFilter implements Filter {
 		HttpServletResponse httpRes = (HttpServletResponse)response;
 		Subject loginUser = (Subject) httpReq.getSession().getAttribute(SessionManagerFilter.LOGINUSER_SUBJECT_ATTR_NAME);
 		
-		boolean isAdmin = false;
-		for(ISPrincipal p :loginUser.getPrincipals(ISPrincipal.class)){
-			if(ISPrincipal.ADMINISTRATOR_PRINCIPAL.equals(p.getType())){
-				isAdmin = true;
-				break;
-			}
-		}
-		if (isAdmin) {
-			filterChain.doFilter(new ManagerRequestWrapper(httpReq), response);
-		} else {
+		if (loginUser.getPrincipals(ISAdminPrincipal.class).isEmpty()) {
 			httpRes.sendError(403, "You are not administrator.");
+		} else {
+			filterChain.doFilter(new ManagerRequestWrapper(httpReq), response);
 		}
 	}
 
