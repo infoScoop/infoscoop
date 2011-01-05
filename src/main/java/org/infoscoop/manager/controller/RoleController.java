@@ -83,7 +83,7 @@ public class RoleController {
 		for (Group group : groupList){
 			 JSONObject groupJson = new JSONObject();
 			 groupJson.put("label", group.getName());
-			 groupJson.put("value", group.getName());//TODO
+			 groupJson.put("value", group.getEmail());
 			 list.put(groupJson);
 		 }
 		 return list.toString();
@@ -100,7 +100,11 @@ public class RoleController {
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
 	public String save(Role role) throws Exception {
-		Role oldRole = RoleDAO.newInstance().get(role.getId().toString());
+		Role oldRole;
+		if(role.getId() != null)
+			oldRole = RoleDAO.newInstance().get(role.getId().toString());
+		else
+			oldRole = new Role();
 		
 		oldRole.setName(role.getName());
 		oldRole.setDescription(role.getDescription());

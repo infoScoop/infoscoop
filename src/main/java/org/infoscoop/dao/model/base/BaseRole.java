@@ -46,7 +46,9 @@ public abstract class BaseRole  implements Serializable {
 		initialize();
 	}
 
-	protected void initialize () {}
+	protected void initialize () {
+		if (null == getRolePrincipals()) setRolePrincipals(new java.util.ArrayList<org.infoscoop.dao.model.RolePrincipal>());
+	}
 
 
 
@@ -154,7 +156,6 @@ public abstract class BaseRole  implements Serializable {
 	}
 
 	public void addToRolePrincipals (org.infoscoop.dao.model.RolePrincipal rolePrincipal) {
-		if (null == getRolePrincipals()) setRolePrincipals(new java.util.ArrayList<org.infoscoop.dao.model.RolePrincipal>());
 		getRolePrincipals().add(rolePrincipal);
 	}
 
