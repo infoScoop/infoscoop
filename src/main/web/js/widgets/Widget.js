@@ -801,7 +801,7 @@ IS_Widget.prototype.classDef = function() {
 			
 			this.setStaticIframeHeight();
 		} else if( typeConf.height ) {
-			var iframeHeight = parseInt(typeConf.height) + 10;
+			var iframeHeight = (typeof(typeConf.height) == 'number' ? parseInt(typeConf.height) : 200) + 10;
 			if( iframeHeight < 1 )
 				iframeHeight = 1;
 			self.iframe.style.height = iframeHeight;
@@ -835,7 +835,6 @@ IS_Widget.prototype.classDef = function() {
 			
 			return setTimeout( this.setStaticIframeHeight.bind( this ),100 );
 		}
-		
 		if(Browser.isIE )this.staticWidgetHeight -=2;//Modify calculation error of Box model
 		self.iframe.style.height = this.staticWidgetHeight;
 		self.elm_widgetContent.style.height = "auto";

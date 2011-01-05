@@ -113,10 +113,10 @@ function findPosY(obj) {
 function getWindowSize(flag) {
   var offset = 0;
   if( typeof( window.innerWidth ) == 'number' ) {
-    offset = window["inner" + ((flag)? "Width" : "Height")];
+	  offset = window["inner" + ((flag)? "Width" : "Height")];
   } else if( document.documentElement &&
-      ( document.body.offsetWidth || document.body.offsetHeight ) ) {
-    offset = document.body["offset" + ((flag)? "Width" : "Height")];
+      ( document.documentElement.offsetWidth || document.documentElement.offsetHeight ) ) {
+    offset = document.documentElement["offset" + ((flag)? "Width" : "Height")];
   }
 
   return offset;
