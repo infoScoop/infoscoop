@@ -37,7 +37,7 @@ $(function () {
 			<li>
 				<label>メニュー表示場所</label>
 				<span class="radio" style="display:inline-block;">
-				<form:checkbox path="topPos" label="トップに表示"/><form:errors path="top" cssClass="error"/>
+				<!--<form:checkbox path="topPos" label="トップに表示"/><form:errors path="top" cssClass="error"/>-->
 				<form:checkbox path="sidePos" label="サイドに表示"/><form:errors path="side" cssClass="error"/>
 			</li>
 			<li>
