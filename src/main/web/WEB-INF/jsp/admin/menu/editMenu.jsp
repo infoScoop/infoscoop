@@ -35,7 +35,7 @@ function getIconUrl(type){
 		else if(gadget.ModulePrefs.Icon.content)
 			var icon = gadget.ModulePrefs.Icon.content;
 			var realType = type.replace("upload__","");
-			return icon.replace("__IS_GADGET_BASE_URL__", hostPrefix + '/gadget/' + realType);
+			return icon.replace("__IS_GADGET_BASE_URL__", hostPrefix + '/gadget/' + realType).replace("__IS_IMAGE_URL__", imageURL);
 	}catch(e){
 		return imageURL + "widget_add.gif";
 	}

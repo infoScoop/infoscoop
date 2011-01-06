@@ -198,7 +198,7 @@ rebuildGadgetUserPrefs();
 $("#gadget input.button").button();
 $("#get_title_from_content").button();
 $("#get_title_from_content").click(function(){
-	var url = $("input[name='gadgetInstance.userPrefs[url]']").val();
+	var url = $("#gadget_settings input.url").val();
 	var url = "../../proxy?url=" + encodeURIComponent(url) + "&filter=Detect";
 	$.get(url, function(dataList){
 		var title = dataList[0].directoryTitle || dataList[0].title || "";
