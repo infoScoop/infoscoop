@@ -89,6 +89,25 @@ body {
 	padding-bottom:3px;
 }
 
+/*- Home --------------------------- */
+#home{
+	color:#333333;
+}
+#middle{
+	width:100%;
+}
+#middle #left{
+	float:left;
+	width:49%;
+}
+#middle #right{
+	float:right;
+	width:50%;
+}
+#bottom{
+	clear:both;
+	padding-top:1px;
+}
 /*- Menu --------------------------- */
 #menu_list td.icon_cell, #menu_list td.radio_cell{
 	text-align:center;
