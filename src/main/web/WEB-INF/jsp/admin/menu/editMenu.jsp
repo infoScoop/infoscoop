@@ -14,6 +14,23 @@ var hostPrefix = "/infoscoop";//TODO スクリプトで計算
 var staticContentURL="../..";
 var imageURL = staticContentURL + "/skin/imgs/"
 var copiedItemId, gadgetConfs, menuId = "${menuId}";
+function $loadContent(url, data, callback){
+	$("#menu_right").html('<div class="loading_bar">');
+	$.ajax({
+		url:url,
+		data:data,
+		type:"POST",
+		success: function(data, status, xhr){
+			if(callback)
+				callback(data, status, xhr);
+			else
+				$("#menu_right").html(data);
+		},
+		error: function(){
+			$("#menu_right").html('<div class="error">エラーが発生しました。</div>');
+		}
+	});
+}
 function getGadget(type){
 	return gadgetConfs[type];
 }
@@ -60,19 +77,12 @@ function selectGadgetInstance(e, a, isTop){
 		$("#menu_tree").jstree("deselect_all");
 	var selectedItem = getSelectedItem(),
 		id = getSelectedItemId(selectedItem);
-	$.get("selectGadgetInstance", {
-			id:id
-		}, function(html){
-			$("#menu_right").html(html);
-		}
-	);
+	$loadContent("selectGadgetInstance", {id:id});
 }
 function selectGadgetType(){
 	var selectedItem = getSelectedItem();
 	var id = getSelectedItemId(selectedItem);
-	$.get("selectGadgetType", {id:id}, function(html){
-		$("#menu_right").html(html);
-	});
+	$loadContent("selectGadgetType", {id:id});
 }
 function showAddItem(isTop, type, title, parentId){
 	if(!parentId){
@@ -83,9 +93,7 @@ function showAddItem(isTop, type, title, parentId){
 			parentId = getSelectedItemId(selectedItem);
 		}
 	}
-	$.get("showAddItem", {menuId: menuId, id: parentId, type: type?type:"", title: title?title:""}, function(html){
-		$("#menu_right").html(html);
-	});
+	$loadContent("showAddItem", {menuId: menuId, id: parentId, type: type?type:"", title: title?title:""});
 }
 function showEditItem(){
 	var selectedItem = getSelectedItem();
@@ -94,14 +102,10 @@ function showEditItem(){
 		return;
 	}
 	var id = getSelectedItemId(selectedItem);
-	$.get("showEditItem", {menuId:id}, function(html){
-		$("#menu_right").html(html);
-	});
+	$loadContent("showEditItem", {menuId:id});
 }
 function showEditInstance(instanceId, parentId){
-	$.post("showEditInstance", {instanceId:instanceId, id:parentId}, function(html){
-		$("#menu_right").html(html);
-	});
+	$loadContent("showEditInstance", {instanceId:instanceId, id:parentId});
 }
 function addItemToTree(parentId, id, title, type, accessLevel){
 	$("#menu_tree").jstree("create",
@@ -135,32 +139,35 @@ function updateItemInTree(id, title, accessLevel){
 }
 function copyItem(e, a){
 	$("#menu_item_command .paste").removeClass("disabled");
-	copiedItemId = getSelectedItemId(getSelectedItem());
-	if (!e) var e = window.event;
-	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
+	var item = getSelectedItem();
+	copiedItemId = getSelectedItemId(item);
+	var title = $("#menu_tree").jstree("get_text", item);
+	$("#menu_right").html('<div class="success">「'+title+'」をコピーしました。</div>');
 }
 function pasteItem(a){
 	if($(a).hasClass("disabled") || !copiedItemId) return;
 	var id = getSelectedItemId(getSelectedItem());
-	$.post("copyItem", {parentId:id, id:copiedItemId}, function(data){
+	$loadContent("copyItem", {parentId:id, id:copiedItemId}, function(data){
 		addItemToTree(data.parentId, data.id, data.title, data.type, data.accessLevel);
-	}, "json");
+		$("#menu_right").html('<div class="success">「'+data.title+'」をコピーしました。</div>');
+	});
 }
 function deleteItem(){
 	if(confirm("<spring:message code="menu.editPage.confirm.delete" />")){
 		var id = getSelectedItemId(getSelectedItem());
-		$.post("removeItem", {id: id}, function(){
+		$loadContent("removeItem", {id: id}, function(html){
 			$("#menu_tree").jstree("remove", "#menuId_"+id);
+			$("#menu_right").html(html);
 		});
 	}
 }
 function togglePublish(){
 	var id = getSelectedItemId(getSelectedItem());
-	$.post("togglePublish", {id: id}, function(){
+	$loadContent("togglePublish", {id: id}, function(html){
 		var publishElm = $("#menuId_"+id+" .info span.publish").first();
 		var accessLevel = publishElm.hasClass('un');//現在の反対にする
 		publishElm.toggleClass("un", !accessLevel).html(accessLevel? "<spring:message code="menu.editPage.publish" />":"<spring:message code="menu.editPage.unpublish" />");
+		$("#menu_right").html(html);
 	});
 }
 function showMenuCommand(e, link, menuId, isTop){
@@ -227,13 +234,11 @@ $(function () {
 		});
 		if(position == "last")
 			ids.push(nodeId);
-		$.post("moveItem",
+		$loadContent("moveItem",
 			{
 				id: nodeId,
 				sibling: ids,
 				parentId: parentNode.attr ? domId2DBId(parentNode.attr("id")) : ""
-			},
-			function(response){
 			}
 		);
 	});

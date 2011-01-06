@@ -320,6 +320,11 @@ body {
 .tab_table tr.filterColumns td {
 	padding:2px;
 }
+.loading_bar{
+	background: url(imgs/ajax-loading-bar.gif) no-repeat center center;
+	width:100%;
+	height:100%;
+}
 .icon{
 	width:16px;
 	height:16px;

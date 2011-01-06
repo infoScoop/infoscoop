@@ -1,2 +1,2 @@
 <%@ page contentType="text/html; charset=UTF8" %>
-削除しました。
+<div class="success">削除しました。</div>

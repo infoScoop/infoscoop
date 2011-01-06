@@ -321,10 +321,11 @@ public class MenuController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public void removeItem(@RequestParam("id") Integer id) throws Exception {
+	public MenuItem removeItem(@RequestParam("id") Integer id) throws Exception {
 		MenuItem item = menuItemDAO.get(id);
 		removeGadgetInstance(item);
 		menuItemDAO.delete(item.getId());
+		return item;
 	}
 	
 	/**
