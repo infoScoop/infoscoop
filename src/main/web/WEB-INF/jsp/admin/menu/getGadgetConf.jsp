@@ -1,2 +1,2 @@
-<%@ page contentType="application/json; charset=UTF8" %>
+<%@ page contentType="application/json; charset=UTF-8" %>
 ${gadgets}

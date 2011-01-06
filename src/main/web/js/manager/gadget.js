@@ -3,12 +3,11 @@
  */
 function rebuildGadgetUserPrefs(){
 	function replaceListForm(input){
-		input.type = "hidden";
 		var listElm = $($.DIV());
 		function createListValueElm(value){
-			return $.DIV({},
+			return $.DIV({style:"clear:left;"},
 				$.INPUT({className:"value", type:"text", value:value}),
-				$.DIV({className:"remove"}, "x")
+						 $.DIV({className:"remove"}, "x")
 			)
 		}
 		function fixListValues(){
@@ -36,7 +35,7 @@ function rebuildGadgetUserPrefs(){
 			$(this).parent().remove();
 			fixListValues();
 		});
-		listElm.append($.DIV({},
+		listElm.append($.DIV({style:"clear:left;"},
 			$.INPUT({type:"text"}),
 			$.INPUT({type:"button", value:"追加"})
 		));
@@ -50,12 +49,10 @@ function rebuildGadgetUserPrefs(){
 		$(input).after(listElm);
 	}
 	$("#gadget_settings input").each(function(){
-		if(this.type == 'hidden')return;
-		
+		try{
 		var datatype = this.className;
 		switch(datatype){
 			case "bool":
-				this.type = "checkbox";
 				var boolFalse = $.INPUT({type:"hidden", value:"false", name:this.name});
 				$(this).after(boolFalse);
 				if(this.value == "true"){
@@ -72,7 +69,6 @@ function rebuildGadgetUserPrefs(){
 				replaceListForm(this);
 				break;
 			case "calendar":
-				this.type = "text";
 				$(this).datepicker({dateFormat: "yy/mm/dd"});
 				break;
 			case "url":
@@ -89,8 +85,8 @@ function rebuildGadgetUserPrefs(){
 				break;
 			case "string":
 			default:
-				this.type = "text"
 		}
+		}catch(e){alert(datatype);};
 	});
 	$("#gadget_settings select").each(function(){
 		if(this.className == "radio"){

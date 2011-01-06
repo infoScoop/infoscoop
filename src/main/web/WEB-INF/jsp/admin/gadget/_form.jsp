@@ -168,7 +168,7 @@
 							</select>
 						</x:when>
 						<x:otherwise>
-							<input type="${datatype}" name="gadgetInstance.userPrefs[${name}]" value="${value}" class="${datatype}"/>
+							<input type="${ ( datatype == 'bool' ? 'checkbox' : datatype == 'list' ? 'hidden' : datatype) }" name="gadgetInstance.userPrefs[${name}]" value="${value}" class="${datatype}"/>
 							<c:if test="${name == 'url'}">
 								<input type="button" id="get_title_from_content" value="コンテンツからタイトルを取得"/>
 							</c:if>
@@ -187,10 +187,10 @@
 		</c:if>
 	</fieldset>
 	</c:if>
-	<li>
+	<center>
 		<input type="submit" value="<spring:message code="gadget._form.button.create" />" class="button"/>
-		<input type="cancel" value="キャンセル" class="button" />
-	</li>
+		<input id="cancel" value="キャンセル" class="button" />
+	</center>
 <script type="text/javascript">
 <c:if test="${gadget.gadgetInstance != null}">
 rebuildGadgetUserPrefs();
@@ -214,6 +214,6 @@ $("#get_title_from_content").click(function(){
 	}, 'json');
 });
 $('input[type="submit"]').button();
-$('input[type="cancel"]').button();
+$('input#cancel').button();
 $('#change_type').button();
 </script>

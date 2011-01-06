@@ -148,7 +148,9 @@ body{
 }
 .cssform .radio label{
 	float: none;
+	width: auto;
 	margin-left: 0;
+	text-align:left;
 }
 
 /*- Security group list  --------------------------- */

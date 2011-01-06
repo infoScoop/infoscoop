@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF8" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
@@ -136,7 +136,9 @@ function updateItemInTree(id, title, accessLevel){
 function copyItem(e, a){
 	$("#menu_item_command .paste").removeClass("disabled");
 	copiedItemId = getSelectedItemId(getSelectedItem());
-	e.stopPropagation();
+	if (!e) var e = window.event;
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
 }
 function pasteItem(a){
 	if($(a).hasClass("disabled") || !copiedItemId) return;
@@ -161,14 +163,17 @@ function togglePublish(){
 		publishElm.toggleClass("un", !accessLevel).html(accessLevel? "<spring:message code="menu.editPage.publish" />":"<spring:message code="menu.editPage.unpublish" />");
 	});
 }
-function showMenuCommand(event, link, menuId, isTop){
+function showMenuCommand(e, link, menuId, isTop){
 	selectItem(menuId);
 	$("#menu_item_command")
 		.toggleClass("top", !!isTop)
 		.css("top", $(link).position().top + $(link).height())
 		.css("left", $(link).position().left)
 		.show();
-	event.stopPropagation();
+	if (!e) var e = window.event;
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
+
 }
 
 $(function () {
@@ -248,7 +253,7 @@ $(function () {
 	
 	
 	//ガジェット設定を読み込む
-	$.getJSON("getGadgetConf", null, function(json, status){
+	$.post("getGadgetConf", null, function(json){
 		gadgetConfs = json;
 		//TODO 以下の処理はサーバーサイドでやりたい
 		$.each(gadgetConfs, function(type, gadget){
