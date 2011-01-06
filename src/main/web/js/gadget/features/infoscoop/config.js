@@ -252,6 +252,71 @@ var msg = ( function(){
 	};
 })();
 
+var IS_Class = {
+	create: function() {
+		return function() {
+			if(this.classDef) {
+				this.classDef.prototype = this;
+				var instance = new this.classDef();
+				instance.initialize.apply(instance, arguments);
+				return instance;
+			}
+			this.initialize.apply(this, arguments);
+			return this;
+		}
+	},
+	extend: function(superClass) {
+		var subClass = function() {
+			var tempClassDef = function(){};
+			for(var i in this){
+				if(i != "initialize")
+					tempClassDef.prototype[i] = this[i];
+			}
+			var instance = new tempClassDef();
+			if(superClass.prototype.classDef) {
+				superClass.prototype.classDef.apply(instance);
+			}
+			var superClassDef = superClass.prototype.classDef ? superClass.prototype.classDef : function(){};
+			for(var i in superClass.prototype) {
+				if(i != "classDef") {
+					superClassDef.prototype[i] = superClass.prototype[i];
+				}
+			}
+			var superInstance = new superClassDef();
+			instance._super = {};
+			for(var i in superInstance) {
+				(function(){
+					var funcName = i;
+					instance._super[i] = function() {
+						superInstance[funcName].apply(instance, arguments);
+					}
+				})();
+			}
+			if(superInstance.initialize) {
+				if(!instance.initialize)
+					instance.initialize = superInstance.initialize;
+				instance.initialize.apply(instance, arguments);
+			}
+			if(this.classDef)
+				this.classDef.apply(instance);
+			if(this.initialize)
+				instance.initialize = this.initialize;
+			instance.initialize.apply(instance, arguments);
+			return instance;
+		}
+		for(var i in superClass.prototype) {
+			if(i != "classDef") {
+				subClass.prototype[i] = superClass.prototype[i];
+			}
+		}
+		for(var i in superClass){
+			if(i != 'prototype')
+				subClass[i] = Object.clone(superClass[i]);
+		}
+		return subClass;
+	}
+}
+
 function is_loadScript( src ) {
 	var head = document.getElementsByTagName("head")[0];
 	var script = document.createElement("script");

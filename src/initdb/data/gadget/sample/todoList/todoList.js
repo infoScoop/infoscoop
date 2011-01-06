@@ -1,10 +1,12 @@
+Browser = {'isIE' : window.ActiveXObject ? true : false};
+
 TodoList = IS_Class.create();
 TodoList.prototype.classDef = function() {
 	var self = this;
 	
 	var prefs = new gadgets.Prefs();
 	prefs.setDontEscape_();
-	var imageURL = "./skin/default/imgs/"
+	var imageURL = "./skin/default/imgs/";
 	
 //	var priorityList = new Array('hegh','normal','low');
 	var priorityList = [
@@ -31,7 +33,6 @@ TodoList.prototype.classDef = function() {
 		
 		if( prefs.getString("fontSize") == "large")
 			$( document.body ).addClassName("large");
-		
 		buildContents();
 	}
 	
@@ -169,8 +170,7 @@ TodoList.prototype.classDef = function() {
 		// Create delete button
 		newItem.appendChild( makeDeleteButton(id) );
 		
-		if( !Browser.isSafari1 )
-			Event.observe( newItem, 'mousedown', self.dragTodoItem.bind(self, newItem), false, newItem.id);
+		Event.observe( newItem, 'mousedown', self.dragTodoItem.bind(self, newItem), false, newItem.id);
 		
 		//self.setDragTodoItem(newItem);
 		
@@ -189,29 +189,6 @@ TodoList.prototype.classDef = function() {
 		return newItem;
 	}
 	
-	if( Browser.isSafari1 ) {
-		this.makeItem = ( function() {
-			var makeItem = this.makeItem;
-			
-			return function() {
-				var newItem = makeItem.apply( this,$A( arguments ));
-				
-				Event.observe( newItem,'mousedown',function( e ) {
-					var source = Event.element( e );
-					
-					//  This judgment works with Safari1 as TextNode becomes main event
-					//  and does not work in the other browser
-					if( source.tagName && ["INPUT","SELECT","IMG"].indexOf( source.tagName ) < 0 ) {
-						Event.stop( e );
-						
-						this.dragTodoItem( newItem,e );
-					}
-				}.bindAsEventListener( this ),true,newItem.id );
-				
-				return newItem;
-			}
-		}).apply( this );
-	}
 	
 	// Create node of priority part
 	function makePriorityText(id, priority){
@@ -352,10 +329,9 @@ TodoList.prototype.classDef = function() {
 			}
 			selectNode.appendChild( opt );
 		}
-		if( !Browser.isSafari1 )
-			Event.observe( selectNode, 'mousedown', function(e){
-				if(e && e.stopPropagation)e.stopPropagation();
-			}, false, priorityNode.id);
+		Event.observe( selectNode, 'mousedown', function(e){
+			if(e && e.stopPropagation)e.stopPropagation();
+		}, false, priorityNode.id);
 		Event.observe( selectNode, 'change', this.selectedPriority.bind(this, selectNode), false, priorityNode.id);
 		Event.observe( selectNode, 'blur', this.selectedPriority.bind(this, selectNode), false, priorityNode.id);
 		
@@ -487,9 +463,6 @@ TodoList.prototype.classDef = function() {
 		var itemNode = $( itemId );
 		var itemNumber = this.getItemNumberFromId( itemId );
 		
-		if( Browser.isSafari1 )
-			checkBox.checked = ( itemNode.name != 'checked');
-		
 		var check = checkBox.checked;
 		if(check){
 			if(-1 < itemNumber){
@@ -508,15 +481,6 @@ TodoList.prototype.classDef = function() {
 		var textId = checkBox.id.replace("check","text");
 		var textNode = $( textId );
 		this.changeTextChecked( textNode, checkBox.checked );
-	}
-	
-	if( Browser.isSafari1 ) {
-		var func = this.checkBoxOnClicked;
-		this.checkBoxOnClicked = function( checkBox ) {
-			checkBox.style.display = "none";
-			func.apply( this,[checkBox]);
-			checkBox.style.display = "";
-		}
 	}
 	
 	// Switch check mode of TODO text: checked or uncheked 
@@ -687,35 +651,19 @@ TodoList.prototype.classDef = function() {
 			textTd.innerHTML = itemNode.childNodes[1].innerHTML;
 			dummyItem.appendChild( textTd );
 			
-			if( !Browser.isSafari1 ) {
-				checkTd.innerHTML = itemNode.childNodes[2].innerHTML;
-			} else {
-				textTd.firstChild.style.width = itemNode.childNodes[1].offsetWidth;
-				textTd.firstChild.style.height = itemNode.childNodes[1].offsetHeight;
-				
-				var check = document.createElement("input");
-				check.type = "checkbox";
-				check.checked = ( itemNode.name == "checked");
-				checkTd.appendChild( check );
-			}
+			checkTd.innerHTML = itemNode.childNodes[2].innerHTML;
 			
 			dummyItem.appendChild( checkTd );
 			deleteTd.innerHTML = itemNode.childNodes[3].innerHTML;
 			dummyItem.appendChild( deleteTd );
-			
 		}
 		
 		function makeFloatItem(){
-			if( Browser.isSafari1 ) {
-				var item = document.createElement("div");
-				document.body.replaceChild( item,self.floatItem );
-				self.floatItem = item;
-			}
 			
 			self.floatItem.style.display = "block";
 			self.floatItem.className = 'todoFloatItem';
 			self.floatItem.style.width = itemNode.offsetWidth;
-			var element = ( !Browser.isSafari1? itemNode : itemNode.firstChild );
+			var element = itemNode ;
 			var scr = Position.realOffset( element );
 			self.floatItem.style.top = findPosY( element ) -scr[1];
 			self.floatItem.style.left = findPosX( element ) -scr[0];
@@ -734,7 +682,7 @@ TodoList.prototype.classDef = function() {
 			
 			var mouseX = Event.pointerX(e);
 			var mouseY = Event.pointerY(e);
-			var element = ( !Browser.isSafari1? itemNode : itemNode.firstChild );
+			var element =itemNode;
 			var scr = Position.realOffset( element );
 			var itemLeft = findPosX( element ) -scr[0];
 			var itemTop = findPosY( element ) -scr[1];
@@ -773,7 +721,7 @@ TodoList.prototype.classDef = function() {
 			var items = list.childNodes;
 			var insertNumber = -1;
 			for(var i=0; i<items.length; i++){
-				var item = ( !Browser.isSafari1 ? items[i] : items[i].firstChild );
+				var item = items[i];
 				var scr = Position.realOffset( item );
 				
 				var top = findPosY( item ) -scr[1];
