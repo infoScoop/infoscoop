@@ -318,35 +318,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 	function displayWidgets(response) {
 		try{
 			var widgetConfList = eval("(" + response.responseText + ")");
-
-			var sortFunc = function( a, b ){
-				if( (a.tabType && (a.tabType=="static"))
-					&& !(b.tabType && (b.tabType=="static")) ) return -1;
-				if( !(a.tabType && (a.tabType=="static"))
-					&& (b.tabType && (b.tabType=="static")) ) return 1;
-	
-				// Show them in order of displayed number if tabType has the same value
-				if(a.tabNumber && !b.tabNumber) return -1;
-				if(!a.tabNumber && b.tabNumber) return 1;
-				/*
-				if(typeof a.tabNumber != "undefined" && typeof b.tabNumber == "undefined") return -1;
-				if(typeof a.tabNumber == "undefined" && typeof b.tabNumber != "undefined") return -1;
-				*/
-				
-				if(a.tabNumber && b.tabNumber){
-	//			if(typeof a.tabNumber != "undefined" && typeof b.tabNumber != "undefined"){
-					if(parseInt(a.tabNumber) < parseInt(b.tabNumber)) return -1;
-					if(parseInt(b.tabNumber) < parseInt(a.tabNumber)) return 1;
-				}
-	
-				// Show them in order of ID if there is no displayed number
-				if(!b.tabId) return -1;
-				if(!a.tabId) return 1;
-				if(parseInt(a.tabId) <= parseInt(b.tabId) ) return -1;
-				if(parseInt(b.tabId) < parseInt(a.tabId) ) return 1;
-			}
-			widgetConfList.sort( sortFunc );
-			
 			var tabOrder = -1;
 			var buildTargetTabIds = [];
 			for(var tabId = 0; tabId < widgetConfList.length; tabId++){
