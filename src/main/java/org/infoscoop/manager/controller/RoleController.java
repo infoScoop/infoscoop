@@ -68,8 +68,8 @@ public class RoleController {
 		 JSONArray list = new JSONArray();
 		 for (User user : userList){
 			 JSONObject userJson = new JSONObject();
-			 userJson.put("label", user.getName());
-			 userJson.put("value", user.getEmail());
+			 userJson.put("value", user.getName());
+			 userJson.put("mail", user.getEmail());
 			 list.put(userJson);
 		 }
 		 return list.toString();
@@ -82,8 +82,8 @@ public class RoleController {
 		 JSONArray list = new JSONArray();
 		for (Group group : groupList){
 			 JSONObject groupJson = new JSONObject();
-			 groupJson.put("label", group.getName());
-			 groupJson.put("value", group.getEmail());
+			 groupJson.put("value", group.getName());
+			 groupJson.put("mail", group.getEmail());
 			 list.put(groupJson);
 		 }
 		 return list.toString();

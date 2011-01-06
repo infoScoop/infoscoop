@@ -14,10 +14,14 @@ $(function () {
 		$("#search_dialog").slideToggle("fast");
 		return false;
 	});
-	$("#add_user").click(function(){
+	function addUser(){
+		var principalId = $('#principalId').val();
+		if(!principalId) {
+			return;
+		}
 		//var count = $("#table tbody tr").length;
 		count++;
-		$('<tr/>')
+		$('<tr id="principalTr'+count+'"/>')
 			.append($('<td/>')
 				.append($('<span/>').text($("#roleType option:selected").text()))
 				.append($('<input type="hidden"/>')
@@ -25,10 +29,10 @@ $(function () {
 					.val($('#roleType').val())
 				)
 			).append($('<td/>')
-				.append($('<span/>').text($("#target").val()))
+				.append($('<span/>').text(principalId))
 				.append($('<input type="hidden"/>')
 					.attr("name","rolePrincipals["+count+"].name")
-					.val($('#principalId').val())
+					.val(principalId)
 				)
 			).append($('<td align="center"/>')
 				.append($('<div class="trash icon" onclick="deletePrincipal('+count+')"/>'))
@@ -38,9 +42,10 @@ $(function () {
 			)
 			.appendTo($("#table tbody"));
 
-		$("#roleType").val("ユーザ");
+		//$("#roleType").val("UIDPrincipal");
 		$("#target").val("");
-	});
+		$("#principalId").val("");
+	}
 
 	$(function() {
 		var params = {
@@ -49,11 +54,12 @@ $(function () {
 			query:   undefined
 		};
 		var onselect = function(event, ui) {
+			onchange(event, ui);
+			setTimeout(addUser, 100);//ui.item.value is set several milliseconds later
+		}
+		var onchange = function(event, ui){
 			if(ui.item){
-				setTimeout(function(){
-					$('#target').val(ui.item.label);
-					$('#principalId').val(ui.item.value);
-				},1);
+				$('#principalId').val(ui.item.mail);
 			}
 		}
 		$('#target').autocomplete( { source:
@@ -67,8 +73,8 @@ $(function () {
 				$.post( url, params, response, 'json');
 			},
 			select: onselect,
-			change: onselect,
-			focus: onselect
+			change: onchange,
+			focus: onchange
 		});
 	});
 	
@@ -137,9 +143,8 @@ function checkForm(){
 					</option>
 				</select>
 				<span style="margin-left:10px;">名前：</span>
-				<input id="principalId" type="hidden"></input>
-				<input id="target" type="text"></input>
-				<input type="button" id="add_user" value="追加">
+				<input id="principalId" type="hidden">
+				<input id="target" type="text">
 			</div>
 			
 			<c:forEach var="principalId" items="${role.deletePrincipalIdList}" varStatus="status">
