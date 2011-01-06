@@ -12,7 +12,7 @@
 	<mvc:annotation-driven/>
 	
 	<!-- /manager/でアクセスしたときのルーティング -->
-	<mvc:view-controller path="/" view-name="redirect:/manager/menu/index"/>
+	<mvc:view-controller path="/" view-name="redirect:/manager/home/index"/>
 	
 	<!-- それ以外はコントローラ名/メソッド名で自動ルーティング -->
 	<context:component-scan base-package="org.infoscoop.manager.controller" />
