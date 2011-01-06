@@ -84,7 +84,7 @@ public class TabDAO extends HibernateDaoSupport{
 		super.getHibernateTemplate().bulkUpdate( queryString,
 				new Object[]{ uid, DomainManager.getContextDomainId() });
 	}
-	public void deleteTab( String uid, Integer tabId ) {
+	public void deleteTab( String uid, String tabId ) {
 		String queryString = "delete from Tab where Id.Uid=? and Id.Id = ? and Id.FkDomainId = ?";
 		
 		super.getHibernateTemplate().bulkUpdate( queryString,

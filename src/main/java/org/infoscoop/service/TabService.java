@@ -521,7 +521,7 @@ public class TabService {
 		clearConfigurations(uid, null);
 	}
 	
-	public void clearConfigurations( String uid, Integer tabId ) throws Exception{
+	public void clearConfigurations( String uid, String tabId ) throws Exception{
 		if( uid == null )
 			return;
 		

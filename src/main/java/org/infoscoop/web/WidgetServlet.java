@@ -73,9 +73,9 @@ public class WidgetServlet extends HttpServlet {
 		String tabIdParam = request.getParameter("tabId");
 		if("true".equalsIgnoreCase( resetStr )) {
 			try{
-				Integer tabId = null;
+				String tabId = null;
 				if(tabIdParam != null)
-					tabId = Integer.valueOf(tabIdParam.trim().replace("tab", ""));
+					tabId = tabIdParam.trim().replace("tab", "");
 					
 				TabService.getHandle().clearConfigurations( uid, tabId );
 			}catch (Exception e) {

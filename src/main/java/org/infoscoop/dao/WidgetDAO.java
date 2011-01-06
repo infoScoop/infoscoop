@@ -183,7 +183,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 	}
 
 
-	public void deleteWidget( String uid, Integer tabId ) {
+	public void deleteWidget( String uid, String tabId ) {
 		long deleteDate = new Date().getTime();
 
 		String queryString = "update Widget set Deletedate = ? where Uid = ? and tabId = ? and deleteDate = 0 and Isstatic = 0";
