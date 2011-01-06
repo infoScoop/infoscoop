@@ -441,8 +441,11 @@ IS_Widget.prototype.classDef = function() {
 	   	divWidgetContent.innerHTML = "Loading...";
 	   	
 	   	this.elm_widgetContent.className += " "+( function( widget ) {
-	   		if( !widget.isGadget())
+	   		if( !widget.isGadget()){
+	   			if(contentsDef.className)
+	   				return contentsDef.className;
 	   			return widget.widgetType;
+	   		}
 	   		
 	   		return "";
 	   	})( this.originalWidget ? this.originalWidget : this );
