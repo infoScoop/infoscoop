@@ -140,7 +140,7 @@ public class TabController {
 		String uid = (String) request.getSession().getAttribute("Uid");
 		TabTemplate tab = tabTemplateDAO.get(id);
 		
-		JSONArray editors = getEditors(tab.getTabId());
+		JSONArray editors = getEditors(tab.getTabId(), uid);
 		
 		TabTemplate tabCopy = tab.createTemp();
 		Integer domainId = DomainManager.getContextDomainId();
@@ -160,8 +160,9 @@ public class TabController {
 	public String editTemp(HttpServletRequest request,
 			@RequestParam(value = "id", required = false) String id, Model model)
 			throws Exception {
+		String uid = (String) request.getSession().getAttribute("Uid");
 		TabTemplate tab = tabTemplateDAO.get(id);
-		JSONArray editors = getEditors(tab.getTabId());
+		JSONArray editors = getEditors(tab.getTabId(), uid);
 		model.addAttribute(tab);
 		model.addAttribute("editors", editors.toString());
 		return "tab/editTab";
@@ -172,13 +173,15 @@ public class TabController {
 	 * @param tabId
 	 * @return user names
 	 */
-	private JSONArray getEditors(String tabId){
+	private JSONArray getEditors(String tabId, String uid){
 		List<TabTemplate> tempTabs = tabTemplateDAO.getTemp(tabId);
 		JSONArray editors = new JSONArray();
 		//A user is not on editing if not updating in this 5 minutes.
 		Date fiveMinutesAgo = new Date(new Date().getTime() - 5 * 60 * 1000);
 		for (TabTemplate tab : tempTabs) {
 			if (tab.getUpdatedAt().after(fiveMinutesAgo)) {
+				if (tab.getEditor().getEmail().equals(uid))
+					continue;
 				editors.put(tab.getEditor().getName());
 			}
 		}
