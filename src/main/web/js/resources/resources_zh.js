@@ -332,5 +332,6 @@ var IS_R = {
 	"ms_noURL": "没有链接的URL",
 	"ms_clearConfigurationConfirm": "删除所有追加的标签和小工具，可以吗？\n(删除掉的小工具进入回收站)",
 	"lb_changeColumn": "列数变更",
-	"lb_notAvailable": "不能利用"
+	"lb_notAvailable": "不能利用",
+	"ms_notSupportBrowser": "This browser is not support for infoScoop. Please use Chrome 5 later, Firefox 3.5 later, Internet Explorer 8.0 later."
 }

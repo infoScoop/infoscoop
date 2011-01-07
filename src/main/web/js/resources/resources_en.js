@@ -332,5 +332,6 @@ var IS_R = {
 	"ms_noURL": "No URL to link to.",
 	"ms_clearConfigurationConfirm": "Are you sure to delete all of added gadgets and tabs?\n (The deleted gadgets goes into trash bin).",
 	"lb_changeColumn": "Change the number of Columns",
-	"lb_notAvailable": "Not available"
+	"lb_notAvailable": "Not available",
+	"ms_notSupportBrowser": "This browser is not support for infoScoop. Please use Chrome 5 later, Firefox 3.5 later, Internet Explorer 8.0 later."
 }

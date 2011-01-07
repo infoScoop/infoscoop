@@ -332,5 +332,6 @@ var IS_R = {
 	"ms_noURL": "リンク先のURLがありません",
 	"ms_clearConfigurationConfirm": "追加したタブとガジェットを全て削除します、よろしいですか？\n(削除したガジェットはごみ箱に入ります)",
 	"lb_changeColumn": "列数変更",
-	"lb_notAvailable": "利用できません"
+	"lb_notAvailable": "利用できません",
+	"ms_notSupportBrowser": "このブラウザはサポート対象外です。\nChrome 5以上、Firefox 3.5以上、Internet Explorer 8.0以上をご利用ください。"
 }

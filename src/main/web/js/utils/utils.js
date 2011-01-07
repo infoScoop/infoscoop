@@ -201,7 +201,29 @@ getColonTag = function(node, tag, name) {
 	return (Browser.isIE) ? node.getElementsByTagName(tag+":"+name)[0] : node.getElementsByTagName(name)[0];
 }
 
-var Browser = new Object();
+var Browser = new (function(){
+	var rwebkit = /(webkit)[ \/]([\w.]+)/,
+		ropera = /(opera)(?:.*version)?[ \/]([\w.]+)/,
+		rmsie = /(msie) ([\w.]+)/,
+		rfirefox = /(firefox)[ \/]([\w.]+)/,
+		rmozilla = /(mozilla)(?:.*? rv:([\w.]+))?/,
+		ua = navigator.userAgent.toLowerCase();
+	var match = rwebkit.exec( ua ) ||
+		ropera.exec( ua ) ||
+		rmsie.exec( ua ) ||
+		ua.indexOf("compatible") < 0 && rfirefox.exec( ua ) ||
+		ua.indexOf("compatible") < 0 && rmozilla.exec( ua ) ||
+		[];
+	this.browser = match[1] || "";
+	this.version = match[2] || "";
+	
+	this.support = this.browser == "msie" && parseInt(this.version) >= 8 ||
+		this.browser == "webkit" && parseInt(this.version) >= 533 ||
+		this.browser == "firefox" && parseFloat(this.version) >= 3.5;
+	if(!this.support){
+		alert(IS_R.ms_notSupportBrowser);
+	}
+})();
 
 Browser.isMozilla = (typeof document.implementation != 'undefined') && (typeof document.implementation.createDocument != 'undefined') && (typeof HTMLDocument!='undefined');
 Browser.isIE = window.ActiveXObject ? true : false;
