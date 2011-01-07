@@ -1,7 +1,4 @@
-,"Calendar","/","Calendar.xml",<LOB FILE='builtin/Calendar.xml' />
-,"FragmentMiniBrowser","/","FragmentMiniBrowser.xml",<LOB FILE='builtin/FragmentMiniBrowser.xml' />
 ,"MiniBrowser","/","MiniBrowser.xml",<LOB FILE='builtin/MiniBrowser.xml' />
 ,"MultiRssReader","/","MultiRssReader.xml",<LOB FILE='builtin/MultiRssReader.xml' />
 ,"RssReader","/","RssReader.xml",<LOB FILE='builtin/RssReader.xml' />
-,"Ticker","/","Ticker.xml",<LOB FILE='builtin/Ticker.xml' />
 ,"GoogleRssReader","/","GoogleRssReader.xml",<LOB FILE='builtin/GoogleRssReader.xml' />
