@@ -957,8 +957,7 @@ IS_Portal.setTabDroppable = function(tab){
 							if(!rssReaders[i]) continue;
 							menuId = IS_Portal.getTrueId(rssReaders[i].id, rssReaders[i].type).substring(2);
 							
-							if(!IS_Portal.isChecked(menuId))
-								IS_Portal.widgetDropped( rssReaders[i] );
+							IS_Portal.widgetDropped( rssReaders[i] );
 						}
 					}
 				}

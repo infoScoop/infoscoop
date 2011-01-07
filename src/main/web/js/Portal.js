@@ -467,8 +467,7 @@ IS_Portal.start = function() {
 					for(var i = 0; i < rssReaders.length; i++){
 						//if(widget.content.isDisplay(rssReaders[i])){
 							menuId = IS_Portal.getTrueId(rssReaders[i].id, rssReaders[i].widgetType).substring(2);
-							if(!IS_Portal.isChecked(menuId))
-								IS_Portal.widgetDropped( rssReaders[i] );
+							IS_Portal.widgetDropped( rssReaders[i] );
 						//}
 					}
 				}else{
@@ -690,7 +689,6 @@ IS_Portal.adjustPanelHeight = function(e){
 	var panels = $("panels");
 	if(!panels.visible) return;
 	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - $("tab-container").getHeight() - 5;
-	alert(adjustHeight);
 	if(Browser.isIE) adjustHeight -= 3;
 	if(IS_Portal.tabs[IS_Portal.currentTabId])
 		IS_Portal.tabs[IS_Portal.currentTabId].panel.style.height = adjustHeight + "px";

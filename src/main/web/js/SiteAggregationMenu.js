@@ -329,11 +329,6 @@ IS_TreeMenu.prototype = {
 						  addWidgetButton.value = IS_R.lb_add;
 						  newMenuItemMsgSpan.appendChild(addWidgetButton);
 						  var addMenuItemFunc = function(menuItem){
-							if( IS_Portal.isChecked(menuItem) ){
-								  this.disabled = true;
-								  this.value = IS_R.lb_added;
-								  return;
-							}
 							IS_TreeMenu.addMenuItem(menuItem);
 							this.disabled = true;
 							this.value = IS_R.lb_added;
@@ -1842,28 +1837,15 @@ IS_SiteAggregationMenu.createMultiDropConf = function(element, lastActiveElement
 		if(feedNode.type){
 			if(/RssReader/.test( feedNode.type )) {
 				//The feed or merge that is not checked is child
-				var check = ( modalOption == MergeMode.merge )|| !IS_Portal.isChecked( feedNode );
 				var addConf = true;
 				var isRelated = true;
 				var isChecked = true;
 				var preCheck = check;
 				
-				if( check ) {
-					IS_Widget.deleteWidget(feedNode.id, false, false, true);
-					
-					preCheck = check;
-					isRelated = check && !/^RssReader/.test( feedNode.type );
-				}else if (modalOption != MergeMode.merge){
-					// The checked items 
-					isChecked = false;
-					
-					// None cooperative menu is not necessary to be added to FEED
-					var tempFeed = existsItemList[feedNode.id];
-					if(tempFeed && tempFeed.widgetConf)
-						addConf = (tempFeed.widgetConf.property.relationalId == trueId);
-					
-					isRelated = addConf;
-				}
+				IS_Widget.deleteWidget(feedNode.id, false, false, true);
+				
+				preCheck = check;
+				isRelated = check && !/^RssReader/.test( feedNode.type );
 				
 				if(addConf){
 					var feedConf = IS_WidgetsContainer.WidgetConfiguration.getFeedConfigurationJSONObject(

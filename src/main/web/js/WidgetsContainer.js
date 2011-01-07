@@ -154,9 +154,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					//var children = menuItem.children;
 					var empty = true;
 					var lastChild;
-					children.findAll( function( child ) {
-						return !IS_Portal.isChecked( child );
-					}).each( function( child ) {
+					children.each( function( child ) {
 						var subWidgetConf = IS_WidgetsContainer.WidgetConfiguration.getFeedConfigurationJSONObject(
 							"RssReader", "w_" + child.id, child.title, child.href, "false", child.properties);
 						subWidgetConf.parentId = widgetConf.id;
