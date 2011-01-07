@@ -17,6 +17,7 @@ public abstract class BaseTabTemplatePersonalizeGadget  implements Serializable 
 	public static String REF = "TabTemplatePersonalizeGadget";
 	public static String PROP_WIDGET_ID = "WidgetId";
 	public static String PROP_SIBLING_ID = "SiblingId";
+	public static String PROP_SIBLING = "Sibling";
 	public static String PROP_ID = "Id";
 	public static String PROP_FK_TAB_TEMPLATE = "FkTabTemplate";
 	public static String PROP_FK_GADGET_INSTANCE = "FkGadgetInstance";
@@ -70,6 +71,7 @@ public abstract class BaseTabTemplatePersonalizeGadget  implements Serializable 
 
 	// many to one
 	private org.infoscoop.dao.model.GadgetInstance fkGadgetInstance;
+	private org.infoscoop.dao.model.TabTemplatePersonalizeGadget sibling;
 	private org.infoscoop.dao.model.TabTemplate fkTabTemplate;
 
 
@@ -160,6 +162,25 @@ public abstract class BaseTabTemplatePersonalizeGadget  implements Serializable 
 	 */
 	public void setFkGadgetInstance (org.infoscoop.dao.model.GadgetInstance fkGadgetInstance) {
 		this.fkGadgetInstance = fkGadgetInstance;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: sibling_id
+	 */
+	public org.infoscoop.dao.model.TabTemplatePersonalizeGadget getSibling () {
+		return sibling;
+	}
+
+	/**
+	 * Set the value related to the column: sibling_id
+	 * @param sibling the sibling_id value
+	 */
+	public void setSibling (org.infoscoop.dao.model.TabTemplatePersonalizeGadget sibling) {
+		this.sibling = sibling;
+		if(sibling!=null)
+			this.siblingId = sibling.getId();
 	}
 
 

@@ -2,13 +2,14 @@ package org.infoscoop.dao.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.TabTemplateDAO;
 import org.infoscoop.dao.model.base.BaseTabTemplate;
-import org.json.JSONObject;
 
 
 
@@ -178,19 +179,27 @@ public class TabTemplate extends BaseTabTemplate {
 				this.getTabTemplatePersonalizeGadgets();
 		Set<TabTemplatePersonalizeGadget> tabClonePGs = 
 				new HashSet<TabTemplatePersonalizeGadget>();
+		
+		Map<Integer, TabTemplatePersonalizeGadget> oldNewMap = new HashMap<Integer, TabTemplatePersonalizeGadget>();
 		for(TabTemplatePersonalizeGadget pg: tabPGs){
-			tabClonePGs.add(pg.createTemp(tabClone));
+			TabTemplatePersonalizeGadget clonePg = pg.createTemp(tabClone);
+			oldNewMap.put(pg.getId(), clonePg);
+			tabClonePGs.add(clonePg);
 		}
+
 		
-		
-		
+		for(TabTemplatePersonalizeGadget clonedPg: tabClonePGs){
+			TabTemplatePersonalizeGadget newSibling = oldNewMap.get(clonedPg.getSiblingId());
+			if(newSibling!=null)
+				clonedPg.setSibling(newSibling);
+		}
+				
 		Set<TabTemplateStaticGadget> tabSGs 
 			= this.getTabTemplateStaticGadgets();
 		Set<TabTemplateStaticGadget> tabCloneSGs = new HashSet<TabTemplateStaticGadget>();
 		for(TabTemplateStaticGadget sg: tabSGs){
 			tabCloneSGs.add(sg.createTemp(tabClone));
 		}
-		
 		
 		tabClone.setTabTemplatePersonalizeGadgets(tabClonePGs);
 		tabClone.setTabTemplateStaticGadgets(tabCloneSGs);

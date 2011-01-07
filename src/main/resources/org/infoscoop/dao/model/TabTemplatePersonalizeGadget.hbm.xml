@@ -44,8 +44,15 @@
 			column="sibling_id"
 			type="integer"
 			not-null="false"
+			insert="false" update="false"
 		>
 		</property>
+		<many-to-one
+			name="Sibling"
+			column="sibling_id"
+			class="TabTemplatePersonalizeGadget"
+		>
+		</many-to-one>
 		<!-- property
 			name="ParentId"
 			column="parent_id"

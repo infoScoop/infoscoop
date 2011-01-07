@@ -146,7 +146,6 @@ public class TabController {
 		Integer domainId = DomainManager.getContextDomainId();
 		User loginUser = userDAO.getByEmail(uid, domainId);
 		tabCopy.setEditor(loginUser);
-		tabTemplateDAO.save(tabCopy);
 		model.addAttribute(tabCopy);
 		model.addAttribute("editors", editors.toString());
 
@@ -582,7 +581,7 @@ public class TabController {
 			gadgetJson.put("tabId", tab.getId());
 			gadgetJson.put("href", gadget.getFkGadgetInstance().getHref());
 			gadgetJson.put("title", gadget.getFkGadgetInstance().getTitle());
-			gadgetJson.put("siblingId", "");
+			gadgetJson.put("siblingId",gadget.getSiblingId());
 			gadgetJson.put("type", gadget.getFkGadgetInstance().getGadgetType());
 			gadgetJson.put("iconUrl", gadget.getFkGadgetInstance().getIcon());
 			JSONObject gadgetPropertyJson = new JSONObject();
@@ -779,7 +778,7 @@ public class TabController {
 	        	}
 	        	
 	        	if(nextSibling != null){
-	        		gadget.setSiblingId( nextSibling.getId() );
+	        		gadget.setSibling( nextSibling );
 	        		log.info("Replace siblingId of [" + gadget.getSiblingId() + "] to " + widgetId );
 	 //       		WidgetDAO.newInstance().updateWidget(uid, tabId, newNextSibling);
 	        	}
@@ -880,7 +879,7 @@ public class TabController {
 	        
 	        TabTemplatePersonalizeGadget oldNextSibling = tab.getPersonalizeGadgetBySibling( gadget.getWidgetId());            	
 	        if(oldNextSibling != null){
-	        	oldNextSibling.setSiblingId(gadget.getSiblingId());
+	        	oldNextSibling.setSibling(gadget.getSibling());
 	        }
 
 	        TabTemplatePersonalizeGadget newNextSibling;
@@ -891,13 +890,13 @@ public class TabController {
 			}
 	        
 	        if(newNextSibling != null){
-	        	newNextSibling.setSiblingId(gadget.getId());
+	        	newNextSibling.setSibling(gadget);
 	        	log.info("Replace siblingId of [" + newNextSibling.getId() + "] to " + gadget.getId());
 	        }
 	        
 	        TabTemplatePersonalizeGadget sibling = tab.getPersonalizeGadgetByWidgetId(siblingId);
 	        if(sibling != null)
-	        	gadget.setSiblingId(sibling.getId());
+	        	gadget.setSibling(sibling);
 	      
 	        try{
 	        	gadget.setColumnNum(new Integer(targetColumn));
@@ -956,7 +955,7 @@ public class TabController {
 	        	//TODO:check whether the widget is null or not;
 	        	TabTemplatePersonalizeGadget nextSibling = tab.getNextSibling(widgetId);
 	        	if(nextSibling != null){
-	        		nextSibling.setSiblingId(widget.getSiblingId());
+	        		nextSibling.setSibling(widget.getSibling());
 	        	}
 				tabTemplatePersonalizeGadgetDAO.deleteById(widget.getId());
 	        		        	

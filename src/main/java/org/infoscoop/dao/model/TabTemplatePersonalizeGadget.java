@@ -46,7 +46,7 @@ public class TabTemplatePersonalizeGadget extends BaseTabTemplatePersonalizeGadg
 		personalizeGadgetClone.setColumnNum(this.getColumnNum());
 		personalizeGadgetClone.setFkGadgetInstance(this.getFkGadgetInstance());
 		personalizeGadgetClone.setFkTabTemplate(this.getFkTabTemplate());
-		personalizeGadgetClone.setSiblingId(this.getSiblingId());
+		personalizeGadgetClone.setSibling(this.getSibling());
 		personalizeGadgetClone.setWidgetId(this.getWidgetId());
 		personalizeGadgetClone.setFkTabTemplate(tabTemplate);
 		return personalizeGadgetClone;
