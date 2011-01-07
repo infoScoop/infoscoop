@@ -48,6 +48,7 @@
 	text-align:center;
 }
 .label{
+	display:inline-block;
 	padding:1px 8px 3px 19px;
 }
 .right{
