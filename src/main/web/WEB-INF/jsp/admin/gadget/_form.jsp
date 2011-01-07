@@ -189,7 +189,7 @@
 	</c:if>
 	<center>
 		<input type="submit" value="<spring:message code="gadget._form.button.create" />" class="button"/>
-		<input id="cancel" value="キャンセル" class="button" />
+		<input type="button" id="cancel" value="キャンセル" class="button" />
 	</center>
 <script type="text/javascript">
 <c:if test="${gadget.gadgetInstance != null}">

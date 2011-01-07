@@ -17,7 +17,7 @@
 $("#menuItem").ajaxForm(function(html){
 	$("#menu_right").html(html);
 });
-$("input[type='cancel']").click(function(){
+$("input#cancel").click(function(){
 	<c:if test="${conf != null}">
 	$.get("selectGadgetType", {id:'${ menuItem.fkParent.id }'}, function(html){
 		$("#menu_right").html(html);

@@ -19,7 +19,7 @@ $(function(){
 	var href_value= "selectGadgetType?tabId=${gadget.tabTemplateId}" +
 						 "&containerId=${gadget.containerId}";
 	$("#change_type").attr("href", href_value);
-	$("input[type='cancel']").click(function(){
+	$("input#cancel").click(function(){
 		parent.$j("#static_gadget_modal").dialog("close");
 	});
 });

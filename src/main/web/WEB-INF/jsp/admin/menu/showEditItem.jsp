@@ -17,7 +17,7 @@
 $("#menuItem").ajaxForm(function(html){
 	$("#menu_right").html(html);
 });
-$("input[type='cancel']").click(function(){
+$("input#cancel").click(function(){
 	$("#menu_right").html("<spring:message code="menu.editPage.description" /><br>");
 });
 </script>

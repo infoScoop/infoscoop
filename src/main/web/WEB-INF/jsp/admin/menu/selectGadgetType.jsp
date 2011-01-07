@@ -44,7 +44,7 @@
 	<spring:message code="menu.selectGadgetType.inputURL" /><br/>
 	<input type="text" style="width:300px" id="gadget_url"><button id="gadget_add_button"><spring:message code="menu.selectGadgetType.button.add" /></button>
 </fieldset>
-<center><input type="cancel" value="キャンセル" class="button" /></center>
+<center><input id="cancel" type="button" value="キャンセル" class="button" /></center>
 </div>
 
 <script type="text/javascript">
@@ -73,9 +73,7 @@ $("#gadget_add_button").button().click(function(){
 	if(!url) alert("<spring:message code="menu.selectGadgetType.no.url" />");
 	showAddItem(false, "g_"+url, "", '${parentId}');
 });
-$("input[type='cancel']").click(function(){
+$("input#cancel").button().click(function(){
 	$("#menu_right").html("<spring:message code="menu.editPage.description" /><br>");
 });
-
-$('input[type="cancel"]').button();
 </script>
