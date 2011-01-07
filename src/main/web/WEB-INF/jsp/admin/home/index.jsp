@@ -48,7 +48,7 @@
 		設定方法については<a href="http://tiny.cc/infoscoop4g-faq#h.r9g1b7hf5ig1" target="_blank">こちら</a>をご参照ください。</div>
 
 		<h2>FAQ</h2>
-		<div>infoScoop for Google Apps管理画面について、よくある質問を<a href="http://tiny.cc/infoscoop4g-faq target="_blank"">FAQ</a>にまとめました。<br />
+		<div>infoScoop for Google Apps管理画面について、よくある質問を<a href="http://tiny.cc/infoscoop4g-faq" target="_blank">FAQ</a>にまとめました。<br />
 		<a href="http://tiny.cc/infoscoop4g-faq" target="_blank">こちら</a>をご参照ください。</div>
 	</div>
 <div>
