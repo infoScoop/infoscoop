@@ -2,7 +2,7 @@
 <Module>
 	<ModulePrefs title="__MSG_lb_RssReader__" autoRefresh="true" height="auto" backgroundColor="#FFFFFF">
 		<Locale>
-			<msg name="lb_RssReader">Google RSS Reader</msg>
+			<msg name="lb_RssReader">Google RSS Reader(Lab)</msg>
 			<msg name="lb_authType">Authentication Type</msg>
 			<msg name="lb_dateDisplay">Display/undisplay date desctiption</msg>
 			<msg name="lb_dateDisplayKey">Display/undisplay date desctiption(T)</msg>
@@ -52,7 +52,7 @@
 			<msg name="lb_titleEdit">Title edit</msg>
 		</Locale>
 		<Locale lang="ja">
-			<msg name="lb_RssReader">Google RSSリーダー</msg>
+			<msg name="lb_RssReader">Google RSSリーダー(試験中)</msg>
 			<msg name="lb_authType">認証タイプ</msg>
 			<msg name="lb_dateDisplay">詳細日時表示/非表示</msg>
 			<msg name="lb_dateDisplayKey">詳細日時表示/非表示(T)</msg>

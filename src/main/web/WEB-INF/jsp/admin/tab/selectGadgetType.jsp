@@ -13,7 +13,9 @@
 <div id="gadgetTypeList">
 	<ul>
 		<c:forEach var="conf" items="${gadgetConfs}">
+			<c:if test="${conf.type != 'MultiRssReader'}">
 			<li><a href="newStaticGadget?tabId=${tabId}&containerId=${containerId}&type=${conf.type}">${conf.title}</a></li>
+			</c:if>
 		</c:forEach>
 	</ul>
 

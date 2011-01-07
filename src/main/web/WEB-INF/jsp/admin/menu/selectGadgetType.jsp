@@ -50,6 +50,7 @@
 <script type="text/javascript">
 var gadgetListUl = $("#gadget_type_list ul");
 $.each(gadgetConfs, function(type, gadget){
+	if(type == "MultiRssReader") return;
 	var title = getGadgetTitle(type);
 	try{
 		gadgetListUl.append(
