@@ -38,7 +38,12 @@ body {
 	padding:30px 0 0 30px;
 	color:#FFF;
 }
-
+#help{
+	position:absolute;
+	right:6px;
+	top:63px;
+}
+#help a{color:#FFF;}
 /*- Menu Tabs--------------------------- */
 #tabs {
 	height: 32px;
@@ -107,6 +112,9 @@ body {
 #bottom{
 	clear:both;
 	padding-top:1px;
+}
+#bottom .title{
+	font-weight:bolder;
 }
 /*- Menu --------------------------- */
 #menu_list td.icon_cell, #menu_list td.radio_cell{
