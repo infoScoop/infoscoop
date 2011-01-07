@@ -6,7 +6,7 @@
 <c:forEach var="item" items="${items}">
 <c:set var="hasChild" value="${fn:length(item.childItems) > 0}"/>
 <li <c:if test="${hasChild}">class="jstree-closed"</c:if> id="menuId_${item.id}" type="${item.gadgetInstance.type}">
-	<a href="#">${item.title}<span onclick="showMenuCommand(event, this, 'menuId_${item.id}')" class="menu_open">▼</span></a>
+	<a href="#">${item.title}<span onclick="showMenuCommand(event, this, 'menuId_${item.id}')" class="menu_open" title="<spring:message code="menu.editPage.open.menu" />">▼</span></a>
 	<div class="info">
 		<c:choose>
 			<c:when test="${item.publish == 1}"><span class="publish"><spring:message code="menu.tree.publish" /></span></c:when>

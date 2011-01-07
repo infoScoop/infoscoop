@@ -31,7 +31,7 @@
 		<tr id="menuId_${menu.id}">
 			<td align="center"><div class="sort_handle icon" title="ドラッグして順番変更"></div></td>
 			<td class="title">
-				<a href="editMenu?id=${menu.id}">${menu.title}</a>
+				<a href="editMenu?id=${menu.id}" title="メニューツリーを編集">${menu.title}</a>
 				<input type="text" value="${menu.title}" style="display:none">
 			</td>
 			<td class="title">
@@ -52,7 +52,7 @@
 				<span>${menu.sidePos ? display : ""}</span>
 			</td>
 			<td class="icon_cell"><a href="showEditTree?id=${menu.id}" class="edit_link"><div class="edit icon" title="編集"></div></a></td>
-			<td class="icon_cell"><div class="icon trash" menu_id="${menu.id}"></div></td>
+			<td class="icon_cell"><div class="icon trash" menu_id="${menu.id}" title="削除"></div></td>
 		</tr>
 		</c:forEach>
 		<c:if test="${fn:length(menus) == 0}">

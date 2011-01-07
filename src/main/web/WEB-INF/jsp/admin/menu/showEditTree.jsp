@@ -12,6 +12,7 @@ $(function () {
 	$("#menuTree :submit, #menuTree :button").button();
 });
 </script>
+<div class="footprint"><a href="./index">メニュー一覧に戻る</a></div>
 <p>メニューツリーを編集します。</p>
 <c:set var="type" value="menu" scope="request"/>
 <form:form modelAttribute="menuTree" method="post" action="updateTree" class="cssform">

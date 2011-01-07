@@ -116,7 +116,7 @@ function addItemToTree(parentId, id, title, type, accessLevel){
 			data : title
 		},
 		function(target){
-			target.find("a:first").append('<span onclick="showMenuCommand(event, this, \'menuId_'+id+'\')" class="menu_open">▼</span>');
+			target.find("a:first").append('<span onclick="showMenuCommand(event, this, \'menuId_'+id+'\')" class="menu_open" title="<spring:message code="menu.editPage.open.menu" />">▼</span>');
 			target.append('<div class="info"><span class="publish'+(accessLevel?'"><spring:message code="menu.editPage.publish" />':' un"><spring:message code="menu.editPage.unpublish" />')+'</span></div>');
 			var icon = getIconUrl(type);
 			$("a:first ins", target)
@@ -274,6 +274,7 @@ $(function () {
 });
 
 </script>
+<div class="footprint"><a href="./index">メニュー一覧に戻る</a></div>
 <div id="menu">
 	<div id="menu_left">
 		<!--

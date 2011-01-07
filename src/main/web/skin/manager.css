@@ -117,6 +117,9 @@ body {
 	font-weight:bolder;
 }
 /*- Menu --------------------------- */
+.footprint{
+	margin-bottom:3px;
+}
 #menu_list td.icon_cell, #menu_list td.radio_cell{
 	text-align:center;
 }

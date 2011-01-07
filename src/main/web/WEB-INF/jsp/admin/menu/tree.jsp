@@ -5,7 +5,7 @@
 <ul>
 <c:set var="hasChild" value="${fn:length(tree.childItems) > 0}"/>
 <li <c:if test="${hasChild}">class="jstree-closed"</c:if> id="menuId_">
-	<a href="#">${tree.title}<span onclick="showMenuCommand(event, this, 'menuId_', true)" class="menu_open">▼</span></a>
+	<a href="#">${tree.title}<span onclick="showMenuCommand(event, this, 'menuId_', true)" class="menu_open" title="<spring:message code="menu.editPage.open.menu" />">▼</span></a>
 	<div class="info">
 		<c:choose>
 			<c:when test="${tree.publish == 1}"><span class="publish"><spring:message code="menu.tree.publish" /></span></c:when>
