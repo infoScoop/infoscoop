@@ -69,9 +69,9 @@ public abstract class BaseHOLIDAYSPK implements Serializable {
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof org.infoscoop.dao.model.I18NPK)) return false;
+		if (!(obj instanceof org.infoscoop.dao.model.HOLIDAYSPK)) return false;
 		else {
-			org.infoscoop.dao.model.I18NPK mObj = (org.infoscoop.dao.model.I18NPK) obj;
+			org.infoscoop.dao.model.HOLIDAYSPK mObj = (org.infoscoop.dao.model.HOLIDAYSPK) obj;
 			if (null != this.getCountry() && null != mObj.getCountry()) {
 				if (!this.getCountry().equals(mObj.getCountry())) {
 					return false;

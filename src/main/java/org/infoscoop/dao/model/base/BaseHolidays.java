@@ -126,7 +126,7 @@ public abstract class BaseHolidays  implements Serializable {
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof org.infoscoop.dao.model.I18n)) return false;
+		if (!(obj instanceof org.infoscoop.dao.model.Holidays)) return false;
 		else {
 			org.infoscoop.dao.model.Holidays holidays = (org.infoscoop.dao.model.Holidays) obj;
 			if (null == this.getId() || null == holidays.getId()) return false;

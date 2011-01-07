@@ -89,7 +89,7 @@ public abstract class BaseForbiddenurls  implements Serializable {
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof org.infoscoop.dao.model.Portaladmins)) return false;
+		if (!(obj instanceof org.infoscoop.dao.model.Forbiddenurls)) return false;
 		else {
 			org.infoscoop.dao.model.Forbiddenurls forbiddenurls = (org.infoscoop.dao.model.Forbiddenurls) obj;
 			if (null == this.getId() || null == forbiddenurls.getId()) return false;
