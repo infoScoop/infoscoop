@@ -1,55 +1,39 @@
-/* infoScoop OpenSource
- * Copyright (C) 2010 Beacon IT Inc.
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License version 3
- * as published by the Free Software Foundation.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program.  If not, see
- * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
- */
-
 package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the AUTHCREDENTIAL table.
+ * This is an object that contains data related to the IS_AUTHCREDENTIALS table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="AUTHCREDENTIAL"
+ *  table="IS_AUTHCREDENTIALS"
  */
 
-public abstract class BaseAuthcredential  implements Serializable {
+public abstract class BaseAuthCredential  implements Serializable {
 
-	public static String REF = "Authcredential";
-	public static String PROP_AUTHUID = "Authuid";
-	public static String PROP_SYSNUM = "Sysnum";
-	public static String PROP_AUTHPASSWD = "Authpasswd";
-	public static String PROP_AUTHDOMAIN = "Authdomain";
-	public static String PROP_AUTHTYPE = "Authtype";
+	public static String REF = "AuthCredential";
+	public static String PROP_SYS_NUM = "SysNum";
+	public static String PROP_AUTH_PASSWD = "authPasswd";
 	public static String PROP_ID = "Id";
+	public static String PROP_AUTH_UID = "AuthUid";
+	public static String PROP_AUTH_DOMAIN = "AuthDomain";
+	public static String PROP_AUTH_TYPE = "AuthType";
 	public static String PROP_UID = "Uid";
+	public static String PROP_FK_DOMAIN_ID = "FkDomainId";
 
 
 	// constructors
-	public BaseAuthcredential () {
+	public BaseAuthCredential () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseAuthcredential (java.lang.Long id) {
+	public BaseAuthCredential (java.lang.Long id) {
 		this.setId(id);
 		initialize();
 	}
@@ -57,26 +41,22 @@ public abstract class BaseAuthcredential  implements Serializable {
 	/**
 	 * Constructor for required fields
 	 */
-	public BaseAuthcredential (
+	public BaseAuthCredential (
 		java.lang.Long id,
+		java.lang.Integer fkDomainId,
 		java.lang.String uid,
-		java.lang.Integer sysnum,
-		java.lang.String authtype,
-		java.lang.String authuid,
-		java.lang.String authpasswd) {
+		java.lang.String authType,
+		java.lang.String authUid) {
 
 		this.setId(id);
+		this.setFkDomainId(fkDomainId);
 		this.setUid(uid);
-		this.setSysNum(sysnum);
-		this.setAuthType(authtype);
-		this.setAuthUid(authuid);
-		this.setAuthPasswd(authpasswd);
+		this.setAuthType(authType);
+		this.setAuthUid(authUid);
 		initialize();
 	}
 
-	protected void initialize () {
-		sysNum = new Integer(0);
-	}
+	protected void initialize () {}
 
 
 
@@ -86,6 +66,7 @@ public abstract class BaseAuthcredential  implements Serializable {
 	private java.lang.Long id;
 
 	// fields
+	private java.lang.Integer fkDomainId;
 	private java.lang.String uid;
 	private java.lang.Integer sysNum;
 	private java.lang.String authType;
@@ -93,10 +74,12 @@ public abstract class BaseAuthcredential  implements Serializable {
 	private java.lang.String authUid;
 	private java.lang.String authPasswd;
 
+
+
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  generator-class="sequence"
+     *  generator-class="native"
      *  column="ID"
      */
 	public java.lang.Long getId () {
@@ -116,34 +99,54 @@ public abstract class BaseAuthcredential  implements Serializable {
 
 
 	/**
-	 * Return the value associated with the column: UID
+	 * Return the value associated with the column: fk_domain_id
+	 */
+	public java.lang.Integer getFkDomainId () {
+		return fkDomainId;
+	}
+
+	/**
+	 * Set the value related to the column: fk_domain_id
+	 * @param fkDomainId the fk_domain_id value
+	 */
+	public void setFkDomainId (java.lang.Integer fkDomainId) {
+		this.fkDomainId = fkDomainId;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: `UID`
 	 */
 	public java.lang.String getUid () {
 		return uid;
 	}
 
 	/**
-	 * Set the value related to the column: UID
-	 * @param uid the UID value
+	 * Set the value related to the column: `UID`
+	 * @param uid the `UID` value
 	 */
 	public void setUid (java.lang.String uid) {
 		this.uid = uid;
 	}
 
 
+
 	/**
-	 * @return
+	 * Return the value associated with the column: SYSNUM
 	 */
-	public java.lang.Integer getSysNum() {
+	public java.lang.Integer getSysNum () {
 		return sysNum;
 	}
 
 	/**
-	 * @param sysNum
+	 * Set the value related to the column: SYSNUM
+	 * @param sysNum the SYSNUM value
 	 */
-	public void setSysNum(java.lang.Integer sysNum) {
+	public void setSysNum (java.lang.Integer sysNum) {
 		this.sysNum = sysNum;
 	}
+
 
 
 	/**
@@ -155,10 +158,10 @@ public abstract class BaseAuthcredential  implements Serializable {
 
 	/**
 	 * Set the value related to the column: AUTHTYPE
-	 * @param authtype the AUTHTYPE value
+	 * @param authType the AUTHTYPE value
 	 */
-	public void setAuthType (java.lang.String authtype) {
-		this.authType = authtype;
+	public void setAuthType (java.lang.String authType) {
+		this.authType = authType;
 	}
 
 
@@ -172,10 +175,10 @@ public abstract class BaseAuthcredential  implements Serializable {
 
 	/**
 	 * Set the value related to the column: AUTHDOMAIN
-	 * @param authdomain the AUTHDOMAIN value
+	 * @param authDomain the AUTHDOMAIN value
 	 */
-	public void setAuthDomain (java.lang.String authdomain) {
-		this.authDomain = authdomain;
+	public void setAuthDomain (java.lang.String authDomain) {
+		this.authDomain = authDomain;
 	}
 
 
@@ -189,10 +192,10 @@ public abstract class BaseAuthcredential  implements Serializable {
 
 	/**
 	 * Set the value related to the column: AUTHUID
-	 * @param authuid the AUTHUID value
+	 * @param authUid the AUTHUID value
 	 */
-	public void setAuthUid (java.lang.String authuid) {
-		this.authUid = authuid;
+	public void setAuthUid (java.lang.String authUid) {
+		this.authUid = authUid;
 	}
 
 
@@ -206,20 +209,22 @@ public abstract class BaseAuthcredential  implements Serializable {
 
 	/**
 	 * Set the value related to the column: AUTHPASSWD
-	 * @param authpasswd the AUTHPASSWD value
+	 * @param authPasswd the AUTHPASSWD value
 	 */
-	public void setAuthPasswd (java.lang.String authpasswd) {
-		this.authPasswd = authpasswd;
+	public void setAuthPasswd (java.lang.String authPasswd) {
+		this.authPasswd = authPasswd;
 	}
+
+
 
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.dao.model.AuthCredential)) return false;
 		else {
-			org.infoscoop.dao.model.AuthCredential authcredential = (org.infoscoop.dao.model.AuthCredential) obj;
-			if (null == this.getId() || null == authcredential.getId()) return false;
-			else return (this.getId().equals(authcredential.getId()));
+			org.infoscoop.dao.model.AuthCredential authCredential = (org.infoscoop.dao.model.AuthCredential) obj;
+			if (null == this.getId() || null == authCredential.getId()) return false;
+			else return (this.getId().equals(authCredential.getId()));
 		}
 	}
 

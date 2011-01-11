@@ -12,6 +12,7 @@
 
 
 		<composite-id name="Id" class="OAUTH_TOKEN_PK">
+			<key-property name="FkDomainId" column="fk_domain_id" type="integer"/>
 			<key-property name="Uid" column="`UID`" type="string"/>
 			<key-property name="GadgetUrlKey" column="gadget_url_key" type="string"/>
 			<key-property name="ServiceName" column="service_name" type="string"/>

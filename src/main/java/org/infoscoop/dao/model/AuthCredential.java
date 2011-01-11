@@ -18,14 +18,14 @@
 package org.infoscoop.dao.model;
 
 
-import org.infoscoop.dao.model.base.BaseAuthcredential;
+import org.infoscoop.dao.model.base.BaseAuthCredential;
 import org.infoscoop.util.StringUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
 
-public class AuthCredential extends BaseAuthcredential {
+public class AuthCredential extends BaseAuthCredential {
 	private static final long serialVersionUID = 1L;
 	public static final Integer LOGIN_AUTH_CREDENTIAL = new Integer(-1);
 	public static final Integer COMMON_AUTH_CREDENTIAL = new Integer(0);
@@ -47,21 +47,25 @@ public class AuthCredential extends BaseAuthcredential {
 	 */
 	public AuthCredential (
 		java.lang.Long id,
+		java.lang.Integer fkDomainId,
 		java.lang.String uid,
-		java.lang.Integer sysNum,
-		java.lang.String authtype,
-		java.lang.String authuid,
-		java.lang.String authpasswd) {
+		java.lang.String authType,
+		java.lang.String authUid) {
 
 		super (
 			id,
+			fkDomainId,
 			uid,
-			sysNum,
-			authtype,
-			authuid,
-			authpasswd);
+			authType,
+			authUid);
 	}
 
+/*[CONSTRUCTOR MARKER END]*/
+
+	public String getAuthPasswd() {
+		return StringUtil.getNullSafe( super.getAuthPasswd() );
+	}
+	
 	public Object toJSON() throws JSONException {
 		JSONObject json = new JSONObject();
 		json.put("id", this.getId());
@@ -73,11 +77,5 @@ public class AuthCredential extends BaseAuthcredential {
 			json.put("authDomain", this.getAuthDomain());
 		}
 		return json;
-	}
-
-/*[CONSTRUCTOR MARKER END]*/
-
-	public String getAuthPasswd() {
-		return StringUtil.getNullSafe( super.getAuthPasswd() );
 	}
 }

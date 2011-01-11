@@ -24,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.OAUTH_TOKEN_PK;
 import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.util.Crypt;
@@ -48,6 +49,7 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 		String gadgetUrlKey = Crypt.getHash(gadgetUrl);
 		Iterator results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthToken.class).add(
+						Expression.eq("Id.FkDomainId", DomainManager.getContextDomainId())).add(
 						Expression.eq("Id.Uid", uid)).add(
 						Expression.eq("Id.GadgetUrlKey", gadgetUrlKey)).add(
 						Expression.eq("Id.ServiceName", serviceName)))
@@ -63,6 +65,7 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 		String gadgetUrlKey = Crypt.getHash(gadgetUrl);
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthToken.class).add(
+						Expression.eq("Id.FkDomainId", DomainManager.getContextDomainId())).add(
 						Expression.eq("Id.Uid", uid)).add(
 						Expression.eq("Id.GadgetUrlKey", gadgetUrlKey)));
 	}
@@ -73,7 +76,7 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 		OAuthToken token = getAccessToken(uid, gadgetUrl, serviceName);
 		if (token == null) {
 			String gadgetUrlKey = Crypt.getHash(gadgetUrl);
-			token = new OAuthToken(new OAUTH_TOKEN_PK(uid, gadgetUrlKey,
+			token = new OAuthToken(new OAUTH_TOKEN_PK(DomainManager.getContextDomainId(), uid, gadgetUrlKey,
 					serviceName));
 			token.setGadgetUrl(gadgetUrl);
 		}

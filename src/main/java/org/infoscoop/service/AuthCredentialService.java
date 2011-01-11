@@ -168,6 +168,7 @@ public class AuthCredentialService {
 		c.setAuthUid(authUid);
 		c.setAuthPasswd(authPasswd);
 		c.setAuthDomain(authDomain);
+		c.setSysNum(AuthCredential.COMMON_AUTH_CREDENTIAL);
 
 		return authCredentialDAO.add(c).toString();
 	}

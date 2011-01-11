@@ -7,6 +7,7 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 
 	protected int hashCode = Integer.MIN_VALUE;
 
+	private java.lang.Integer fkDomainId;
 	private java.lang.String uid;
 	private java.lang.String gadgetUrlKey;
 	private java.lang.String serviceName;
@@ -15,14 +16,33 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 	public BaseOAUTH_TOKEN_PK () {}
 	
 	public BaseOAUTH_TOKEN_PK (
+		java.lang.Integer fkDomainId,
 		java.lang.String uid,
 		java.lang.String gadgetUrlKey,
 		java.lang.String serviceName) {
 
+		this.setFkDomainId(fkDomainId);
 		this.setUid(uid);
 		this.setGadgetUrlKey(gadgetUrlKey);
 		this.setServiceName(serviceName);
 	}
+
+
+	/**
+	 * Return the value associated with the column: fk_domain_id
+	 */
+	public java.lang.Integer getFkDomainId () {
+		return fkDomainId;
+	}
+
+	/**
+	 * Set the value related to the column: fk_domain_id
+	 * @param fkDomainId the fk_domain_id value
+	 */
+	public void setFkDomainId (java.lang.Integer fkDomainId) {
+		this.fkDomainId = fkDomainId;
+	}
+
 
 
 	/**
@@ -82,6 +102,14 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 		if (!(obj instanceof org.infoscoop.dao.model.OAUTH_TOKEN_PK)) return false;
 		else {
 			org.infoscoop.dao.model.OAUTH_TOKEN_PK mObj = (org.infoscoop.dao.model.OAUTH_TOKEN_PK) obj;
+			if (null != this.getFkDomainId() && null != mObj.getFkDomainId()) {
+				if (!this.getFkDomainId().equals(mObj.getFkDomainId())) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
 			if (null != this.getUid() && null != mObj.getUid()) {
 				if (!this.getUid().equals(mObj.getUid())) {
 					return false;
@@ -113,6 +141,13 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			StringBuilder sb = new StringBuilder();
+			if (null != this.getFkDomainId()) {
+				sb.append(this.getFkDomainId().hashCode());
+				sb.append(":");
+			}
+			else {
+				return super.hashCode();
+			}
 			if (null != this.getUid()) {
 				sb.append(this.getUid().hashCode());
 				sb.append(":");

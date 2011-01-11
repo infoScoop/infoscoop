@@ -23,6 +23,7 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.model.AuthCredential;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -40,9 +41,10 @@ public class AuthCredentialDAO extends HibernateDaoSupport{
 		List results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(AuthCredential.class).add(
 						Expression.conjunction()
-						.add(Expression.eq("Uid", uid))
-						.add(Expression.eq("AuthType", authType))
-						.add(Expression.eq("AuthUid", authUid))
+						.add(Expression.eq(AuthCredential.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId()))
+						.add(Expression.eq(AuthCredential.PROP_AUTH_UID, uid))
+						.add(Expression.eq(AuthCredential.PROP_AUTH_TYPE, authType))
+						.add(Expression.eq(AuthCredential.PROP_AUTH_UID, authUid))
 						)
 						);	
 		if(results.isEmpty()){
@@ -56,8 +58,9 @@ public class AuthCredentialDAO extends HibernateDaoSupport{
 		List results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(AuthCredential.class).add(
 						Expression.conjunction()
-						.add(Expression.eq("Uid", uid))
-						.add(Expression.eq("SysNum", sysNum))
+						.add(Expression.eq(AuthCredential.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId()))
+						.add(Expression.eq(AuthCredential.PROP_UID, uid))
+						.add(Expression.eq(AuthCredential.PROP_SYS_NUM, sysNum))
 						)
 						);	
 		if(results.isEmpty()){
@@ -68,16 +71,22 @@ public class AuthCredentialDAO extends HibernateDaoSupport{
 	}
 	
 	public Long add(AuthCredential c){
+		c.setFkDomainId(DomainManager.getContextDomainId());
 		return (Long)super.getHibernateTemplate().save(c);
 	}
 
 	public void update(AuthCredential c){
+		c.setFkDomainId(DomainManager.getContextDomainId());
 		super.getHibernateTemplate().update(c);	
 	}
 	
 	public List select(String uid){
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(AuthCredential.class).add(Expression.eq("Uid", uid)).addOrder(Order.asc("SysNum")).addOrder(Order.asc("id"))
+				DetachedCriteria.forClass(AuthCredential.class)
+				.add(Expression.eq(AuthCredential.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId()))
+				.add(Expression.eq(AuthCredential.PROP_UID, uid))
+				.addOrder(Order.asc(AuthCredential.PROP_SYS_NUM))
+				.addOrder(Order.asc(AuthCredential.PROP_ID))
 		);
 	}
 	
