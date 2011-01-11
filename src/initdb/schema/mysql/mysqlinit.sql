@@ -228,12 +228,14 @@ create table IS_FORBIDDENURLS (
 --
 create table IS_AUTHCREDENTIALS (
   id bigint not null auto_increment primary key,
+  fk_domain_id int unsigned NOT NULL,
   `UID` varchar(300) not null,
   sysNum integer default 0 not null,
   authType varchar(16) not null,
   authDomain varchar(64),
   authUid varchar(300) not null,
-  authPasswd varchar(512)
+  authPasswd varchar(512),
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 create index is_authCredentials_uid on IS_AUTHCREDENTIALS(`UID`);
@@ -275,6 +277,7 @@ create table IS_ACCOUNTS (
 -- OAUTH_TOKEN
 --
 create table IS_OAUTH_TOKENS (
+  fk_domain_id int unsigned NOT NULL,
   `UID` varchar(150) not null,
   gadget_url varchar(1024) not null,
   gadget_url_key varchar(255) not null,
@@ -282,7 +285,8 @@ create table IS_OAUTH_TOKENS (
   request_token varchar(255),
   access_token varchar(255),
   token_secret varchar(255) not null,
-  primary key (`UID`, gadget_url_key, service_name)
+  primary key (`UID`, gadget_url_key, service_name),
+  foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE=InnoDB;
 
 --
