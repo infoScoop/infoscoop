@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
+	<bean id="DomainManageService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.DomainManageService">
+				<property name="commandBarDAO">
+					<ref bean="commandBarDAO" />
+				</property>
+				<property name="menuTreeDAO">
+					<ref bean="menuTreeDAO" />
+				</property>
+				<property name="menuItemDAO">
+					<ref bean="menuItemDAO" />
+				</property>
+				<property name="tabTemplateDAO">
+					<ref bean="tabTemplateDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="new*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
 	<bean id="CommandExecutionService"
 		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="target">

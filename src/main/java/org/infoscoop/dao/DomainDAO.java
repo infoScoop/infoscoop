@@ -35,11 +35,14 @@ public class DomainDAO extends HibernateDaoSupport {
 		else
 			return results.get(0);
 	}
+
+	public void save(Domain domain) {
+		super.getHibernateTemplate().save(domain);
+	}
 	
 	public static void main(String args[]){
 		SpringUtil.initContext(new String[]{"datasource.xml","dataaccess.xml"});
 		System.out.println(DomainDAO.newInstance().getByName("infoscoop.org"));
 		
 	}
-
 }

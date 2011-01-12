@@ -19,4 +19,8 @@ public class CommandBarDAO extends HibernateDaoSupport {
 				DetachedCriteria.forClass(CommandBar.class).add(
 						Expression.eq(CommandBar.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
 	}
+
+	public void save(CommandBar cmd) {
+		super.getHibernateTemplate().save(cmd);
+	}
 }
