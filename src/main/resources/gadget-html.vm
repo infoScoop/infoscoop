@@ -26,7 +26,7 @@ window.onerror = function( message,fileName,lineNumber ) {
 var features = ${requires.toString()};
 var i18nMsgs = ${i18nMsgs.toString()};
 --></script>
-<script src="./js/gadget/features/#foreach( $require in $requires.keys())#if($velocityCount > 1):#end${require}#end.js"></script>
+<script src="./jssrv/gadget/features/#foreach( $require in $requires.keys())#if($velocityCount > 1):#end${require}#end.js"></script>
 <script type="text/javascript">
 gadgets.Prefs.setInternal_( ${userPrefs.toString()} );
 </script>

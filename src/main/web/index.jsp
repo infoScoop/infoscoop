@@ -71,7 +71,7 @@ if( isPreview == null )
 
     <script src="js/resources/resources_<%=request.getLocale().getLanguage() %>.js"></script>
 
-    <script src="js/gadget/features/core:rpc:pubsub:infoscoop.js?c=1"></script>
+    <script src="jssrv/gadget/features/core:rpc:pubsub:infoscoop.js?c=1"></script>
 	<%
 		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_ID_ATTR_NAME
 		String uid = (String) session.getAttribute("Uid");

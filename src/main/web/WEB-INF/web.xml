@@ -230,11 +230,6 @@
 	</filter-mapping>
 
 	<filter-mapping>
-		<filter-name>I18NFilter_LAYOUT</filter-name>
-		<url-pattern>/jssrv</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
 		<filter-name>SetAdminFilter</filter-name>
 		<url-pattern>/index.jsp</url-pattern>
 	</filter-mapping>
@@ -524,8 +519,14 @@
 			org.infoscoop.admin.web.ServiceCommandServlet
 		</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>DomainManageServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.DomainManageServlet
+		</servlet-class>
+	</servlet>
   <servlet>
-    <servlet-name>js</servlet-name>
+    <servlet-name>jssrv</servlet-name>
     <servlet-class>org.apache.shindig.gadgets.servlet.JsServlet</servlet-class>
   </servlet>
 
@@ -618,8 +619,8 @@
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>js</servlet-name>
-    <url-pattern>/js/gadget/features/*</url-pattern>
+    <servlet-name>jssrv</servlet-name>
+    <url-pattern>/jssrv/gadget/features/*</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -790,6 +791,11 @@
 	<servlet-mapping>
 		<servlet-name>PreviewServlet</servlet-name>
 		<url-pattern>/adminpreview</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>DomainManageServlet</servlet-name>
+		<url-pattern>/admin/domainmanage</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
