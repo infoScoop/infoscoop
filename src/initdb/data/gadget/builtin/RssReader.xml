@@ -194,7 +194,7 @@
 		<EnumValue display_value="__MSG_lb_noneScroll__" value="none"/>
 		<EnumValue display_value="__MSG_lb_scroll__" value="scroll"/>
 	</UserPref>
-	<UserPref default_value="inline" display_name="__MSG_lb_detailDisplayMode__" datatype="enum" name="detailDisplayMode">
+	<UserPref default_value="popup" display_name="__MSG_lb_detailDisplayMode__" datatype="enum" name="detailDisplayMode">
 		<EnumValue display_value="__MSG_lb_inline__" value="inline"/>
 		<EnumValue display_value="__MSG_lb_popup__" value="popup"/>
 	</UserPref>
