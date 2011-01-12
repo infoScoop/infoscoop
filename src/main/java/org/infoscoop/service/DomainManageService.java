@@ -54,8 +54,13 @@ public class DomainManageService {
 		Domain orgDomain = DomainDAO.newInstance().getByName(TEMPLATE_DOMAIN_NAME);
 		DomainManager.registerContextDomainId(orgDomain.getId());
 		
+		Domain newDomain = DomainDAO.newInstance().getByName(domain);
+		if (newDomain != null) {
+			throw new RuntimeException("The domain \"" + domain
+					+ "\" already exists.");
+		}
 		
-		Domain newDomain = new Domain();
+		newDomain = new Domain();
 		newDomain.setName(domain);
 		DomainDAO.newInstance().save(newDomain);
 		
@@ -126,8 +131,8 @@ public class DomainManageService {
 				newMenuItem.setFkDomainId(newDomain.getId());
 				newMenuItem.setAlert(menuItem.getAlert());
 				newMenuItem.setFkMenuTree(newMenuTree);
-				if(newMenuItem.getGadgetInstance() != null){
-					GadgetInstance gi = newMenuItem.getGadgetInstance().copy();
+				if(menuItem.getGadgetInstance() != null){
+					GadgetInstance gi = menuItem.getGadgetInstance().copy();
 					gi.setFkDomainId(newDomain.getId());
 					newMenuItem.setGadgetInstance(gi);
 				}
@@ -149,7 +154,11 @@ public class DomainManageService {
 		newMenuItem.setFkDomainId(newDomain.getId());
 		newMenuItem.setAlert(menuItem.getAlert());
 		newMenuItem.setFkParent(parent);
-		newMenuItem.setGadgetInstance(newMenuItem.getGadgetInstance().copy());
+		if(menuItem.getGadgetInstance() != null){
+			GadgetInstance gi = menuItem.getGadgetInstance().copy();
+			gi.setFkDomainId(newDomain.getId());
+			newMenuItem.setGadgetInstance(gi);
+		}
 		newMenuItem.setMenuOrder(menuItem.getMenuOrder());
 		newMenuItem.setPublish(menuItem.getPublish());
 		menuItemDAO.save(newMenuItem);
