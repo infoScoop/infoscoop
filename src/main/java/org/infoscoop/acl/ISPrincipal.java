@@ -55,7 +55,7 @@ public class ISPrincipal implements Principal, Serializable{
 
 	public boolean equals(Object obj) {
 		if(obj == null)return false;
-		if(obj instanceof ISPrincipal)return false;
+		if(!(obj instanceof ISPrincipal))return false;
 		
 		ISPrincipal p = (ISPrincipal)obj;
 		boolean isNameEquals = false;
