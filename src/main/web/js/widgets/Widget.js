@@ -102,6 +102,9 @@ IS_Widget.prototype.classDef = function() {
 				if(this.widgetType.match(/^g_upload__(.*)\/gadget/)){
 					this.gadgetType = RegExp.$1;
 				}
+				else if(this.widgetType.match(/^g__Maximize__upload__(.*)\/gadget/)){
+					this.gadgetType = RegExp.$1;
+				}
 			}else{
 				_contentsType = (_contentsDef) ? _contentsDef.type : "javascript";
 			}
