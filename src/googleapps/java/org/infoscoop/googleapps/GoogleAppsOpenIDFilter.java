@@ -118,6 +118,10 @@ public class GoogleAppsOpenIDFilter implements Filter {
 
 		String actionName = request.getServletPath();
 		String uid = (String) session.getAttribute("Uid");
+		if (uid != null && "/openid_login".equalsIgnoreCase(actionName)) {
+			response.sendRedirect(".");
+			return;
+		}
 		if (uid == null) {
 			UserInfo user = (UserInfo) session.getAttribute("user");
 			if (user != null) {
