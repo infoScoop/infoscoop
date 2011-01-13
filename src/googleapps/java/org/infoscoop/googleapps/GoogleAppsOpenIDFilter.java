@@ -158,6 +158,8 @@ public class GoogleAppsOpenIDFilter implements Filter {
 					response.sendRedirect(authReq.getDestinationUrl(true));
 				} catch (OpenIDException e) {
 					log.error(e.getMessage(), e);
+					String loginUrl = host_url + "/gapps_openid_login.jsp";
+					response.sendRedirect(loginUrl);
 				}
 				return;
 			} else if ("/openid_consumer_return".equalsIgnoreCase(actionName)) {
@@ -184,6 +186,8 @@ public class GoogleAppsOpenIDFilter implements Filter {
         			}
 				} catch (IOException e) {
 					log.error(e.getMessage(), e);
+					String loginUrl = host_url + "/gapps_openid_login.jsp";
+					response.sendRedirect(loginUrl);
 				}
 				return;
 			}
