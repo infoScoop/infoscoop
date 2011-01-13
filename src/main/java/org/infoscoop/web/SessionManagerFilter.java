@@ -41,6 +41,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
@@ -51,8 +54,10 @@ import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.web.PreviewImpersonationFilter;
 import org.infoscoop.dao.DomainDAO;
+import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.dao.model.Domain;
 import org.infoscoop.dao.model.Group;
+import org.infoscoop.dao.model.Properties;
 import org.infoscoop.dao.model.User;
 import org.infoscoop.service.UserService;
 
@@ -137,6 +142,12 @@ public class SessionManagerFilter implements Filter {
 		if(log.isDebugEnabled()){
 			log.debug("Enter SessionManagerFilter form " + httpReq.getRequestURI());
 		}
+		
+		String[] requestURI = httpReq.getRequestURI().split("/");
+		if(requestURI.length > 0 && "notready.jsp".equals(requestURI[requestURI.length-1])){
+			chain.doFilter(request, response);
+			return;
+		}
 
 		if (request instanceof javax.servlet.http.HttpServletRequest) {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -186,66 +197,60 @@ public class SessionManagerFilter implements Filter {
 
 			Subject loginUser = (Subject)session.getAttribute(LOGINUSER_SUBJECT_ATTR_NAME);
 			if(loginUser == null || ( isChangeLoginUser(uid, loginUser) && !(session instanceof PreviewImpersonationFilter.PreviewHttpSession) )){
-				if( !SessionCreateConfig.getInstance().hasUidHeader() && uid != null ) {
-					AuthenticationService service= AuthenticationService.getInstance();
+				AuthenticationService service= AuthenticationService.getInstance();
+				try {
+					if (service != null){
+						String domainName = (String) session.getAttribute(LOGINUSER_DOMAIN_NAME_ATTR_NAME);
+						loginUser = service.getSubject(uid, domainName);
+						setLoginUserName(httpRequest, loginUser);
+						Domain domain = DomainDAO.newInstance().getByName(domainName);
+						User user = UserService.getHandle().getUser(uid,
+								domain.getId());
+						if( (user != null && user.isAdministrator())){
+							Principal adminPrincipal = new ISAdminPrincipal();
+							loginUser.getPrincipals().add(adminPrincipal);
+						}
+						Set<Group> groups = user.getGroups();
+						for (Group group : groups) {
+							ISPrincipal groupPrincipal = new ISPrincipal(
+									ISPrincipal.ORGANIZATION_PRINCIPAL, group
+									.getEmail());
+							groupPrincipal.setDisplayName(group.getName());
+							loginUser.getPrincipals().add(groupPrincipal);
+						}
+					}
+				} catch (Exception e) {
+					log.error("",e);
 					try {
-						if (service != null){
-							String domainName = (String) session.getAttribute(LOGINUSER_DOMAIN_NAME_ATTR_NAME);
-							loginUser = service.getSubject(uid, domainName);
-							setLoginUserName(httpRequest, loginUser);
-							Domain domain = DomainDAO.newInstance().getByName(domainName);
-							User user = UserService.getHandle().getUser(uid,
-									domain.getId());
-							if(user != null && user.isAdministrator()){
-								Principal adminPrincipal = new ISAdminPrincipal();
-								loginUser.getPrincipals().add(adminPrincipal);	
+						if( isAppsAdmin(uid) ){
+							loginUser = new Subject();
+							ISPrincipal up = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, uid);
+							String userName = (String)session.getAttribute(LOGINUSER_NAME_ATTR_NAME);
+							up.setDisplayName(userName);
+							loginUser.getPrincipals().add(up);
+
+							Principal adminPrincipal = new ISAdminPrincipal();
+							loginUser.getPrincipals().add(adminPrincipal);
+
+							Domain domain = DomainDAO.newInstance().getByName((String) session.getAttribute(LOGINUSER_DOMAIN_NAME_ATTR_NAME));
+							if(domain != null){
+								ISPrincipal domainPrincipal = new ISPrincipal(ISPrincipal.DOMAIN_PRINCIPAL, domain.getId().toString());
+								domainPrincipal.setDisplayName(domain.getName());
+								loginUser.getPrincipals().add(domainPrincipal);
 							}
 
-							Set<Group> groups = user.getGroups();
-							for (Group group : groups) {
-								ISPrincipal groupPrincipal = new ISPrincipal(
-										ISPrincipal.ORGANIZATION_PRINCIPAL, group
-												.getEmail());
-								groupPrincipal.setDisplayName(group.getName());
-								loginUser.getPrincipals().add(groupPrincipal);
-							}
+							session.setAttribute(LOGINUSER_SUBJECT_ATTR_NAME, loginUser);
+							httpResponse.sendRedirect("manager/user/index.jsp");
+							return;
+						}else{
+							httpResponse.sendRedirect("notready.jsp");
+							return;
 						}
-					} catch (Exception e) {
-						log.error("",e);
+					} catch (Exception e1) {
+						log.error("",e1);
 					}
 				}
-				if( uid != null && ( loginUser == null || isChangeLoginUser( uid, loginUser )) ) {
-					loginUser = new Subject();
-					ISPrincipal up = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, uid);
-					String userName = (String)session.getAttribute(LOGINUSER_NAME_ATTR_NAME);
-					up.setDisplayName(userName);
-					loginUser.getPrincipals().add(up);
-					Domain domain = DomainDAO.newInstance().getByName((String) session.getAttribute(LOGINUSER_DOMAIN_NAME_ATTR_NAME));
-					if(domain != null){
-						ISPrincipal domainPrincipal = new ISPrincipal(ISPrincipal.DOMAIN_PRINCIPAL, domain.getId().toString());
-						domainPrincipal.setDisplayName(domain.getName());
-						loginUser.getPrincipals().add(domainPrincipal);
-					}
-					/*
-					User user = UserService.getHandle().getUser(uid,
-							domain.getId());
-					if(user != null && user.isAdministrator()){
-						Principal adminPrincipal = new ISAdminPrincipal();
-						loginUser.getPrincipals().add(adminPrincipal);	
-					}
-					
-					Set<Group> groups = user.getGroups();
-					for (Group group : groups) {
-						ISPrincipal groupPrincipal = new ISPrincipal(
-								ISPrincipal.ORGANIZATION_PRINCIPAL, group
-										.getEmail());
-						groupPrincipal.setDisplayName(group.getName());
-						loginUser.getPrincipals().add(groupPrincipal);
-					}
-					
-					*/
-				}
-								
+
 				for(Map.Entry entry : SessionCreateConfig.getInstance().getRoleHeaderMap().entrySet()){
 					String headerName = (String)entry.getKey();
 					String roleType = (String)entry.getValue();
@@ -274,6 +279,7 @@ public class SessionManagerFilter implements Filter {
 				for(ISPrincipal p :loginUser.getPrincipals(ISPrincipal.class))
 					if(ISPrincipal.DOMAIN_PRINCIPAL == p.getType())
 						DomainManager.registerContextDomainId(Integer.valueOf(p.getName()));
+			
 		}
 
 		
@@ -382,4 +388,22 @@ public class SessionManagerFilter implements Filter {
 		return false;
 	}
 
+	private boolean isAppsAdmin(String uid) throws Exception{
+		HttpClient http = new HttpClient();
+		Properties property = PropertiesDAO.newInstance().findProperty("appsServiceURL");
+		String url = property.getValue();
+		if (!url.endsWith("/"))
+			url += "/";
+		GetMethod method = new GetMethod(url + "checkadmin?u=" + uid);
+		http.executeMethod(method);
+		if (method.getStatusCode() >= 300) {
+			// TODO handle error
+			throw new Exception("Failed to check administrator. "
+					+ method.getStatusCode() + " - " + method.getStatusText());
+		}
+
+		String response = method.getResponseBodyAsString();
+		
+		return Boolean.valueOf(response);
+	}
 }

@@ -1,4 +1,4 @@
-package org.infoscoop.web;
+package org.infoscoop.admin.web;
 
 import java.io.IOException;
 

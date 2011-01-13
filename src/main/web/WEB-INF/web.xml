@@ -522,7 +522,7 @@
 	<servlet>
 		<servlet-name>DomainManageServlet</servlet-name>
 		<servlet-class>
-			org.infoscoop.web.DomainManageServlet
+			org.infoscoop.admin.web.DomainManageServlet
 		</servlet-class>
 	</servlet>
   <servlet>
