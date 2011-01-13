@@ -101,7 +101,11 @@ public class WidgetConfService {
 					Document gadgetDoc = builder.parse(new ByteArrayInputStream(gadget.getData()));
 					JSONObject gadgetJson = WidgetConfUtil.gadget2JSONObject( gadgetDoc.getDocumentElement(), context.getI18NConveter(locale, gadgetDoc),
 							true);
-					json.put("g_upload__" + gadget.getType() + "/gadget",WidgetConfUtil.gadgetJSONtoPortalGadgetJSON(gadgetJson) );
+					
+					String gadgetType = "g_upload__" + gadget.getType() + "/gadget";
+					gadgetJson = WidgetConfUtil.gadgetJSONtoPortalGadgetJSON(gadgetJson);
+					gadgetJson.put("type", gadgetType);
+					json.put(gadgetType, gadgetJson);
 				}
 			}
 			return I18NUtil.resolve(I18NUtil.TYPE_WIDGET, json.toString(1),
