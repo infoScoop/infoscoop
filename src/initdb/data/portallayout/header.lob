@@ -20,7 +20,7 @@
 		</div>-->
 		<div class="text">
 			<span class="account">
-				<b>${session.getAttribute('loginUserName')}</b>
+				<b>${session.getAttribute('Uid')}</b>
 			</span>
 			<span class="logout"><a href="logout">ログアウト</a></span>
 		</div>
