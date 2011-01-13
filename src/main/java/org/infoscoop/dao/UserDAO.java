@@ -40,8 +40,12 @@ public class UserDAO extends HibernateDaoSupport {
 	@SuppressWarnings("unchecked")
 	public List<User> selectByName(String name) {
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(User.class).add(Expression.like( User.PROP_NAME,name +"%")).add(
-				Expression.eq(User.PROP_FK_DOMAIN_ID, DomainManager.getContextDomainId())));
+				DetachedCriteria.forClass(User.class).add(
+						Expression.or(Expression.like(User.PROP_NAME, name
+								+ "%"), Expression.like(User.PROP_EMAIL, name
+								+ "%"))).add(
+						Expression.eq(User.PROP_FK_DOMAIN_ID, DomainManager
+								.getContextDomainId())));
 	}
 
 	@SuppressWarnings("unchecked")
