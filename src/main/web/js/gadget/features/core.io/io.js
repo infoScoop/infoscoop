@@ -227,7 +227,7 @@ gadgets.io = function() {
           null, processResponseFunction, realUrl, callback, params, xhr);
     }
     if (paramData !== null) {
-      xhr.setRequestHeader('Content-Type', opt_contentType || 'application/x-www-form-urlencoded');
+      xhr.setRequestHeader('Content-Type', opt_contentType || 'application/x-www-form-urlencoded; charset=UTF-8');
       xhr.send(paramData);
     } else {
       xhr.send(null);
