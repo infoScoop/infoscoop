@@ -91,7 +91,7 @@ function checkForm(){
 		$("#roleName").focus();
 		return false;
 	} else if($("#table tbody tr").length == 0){
-		alert("\"ユーザ\" または \"組織\"を追加してください。");
+		alert("\"ユーザ\" または \"グループ\"を追加してください。");
 		document.getElementById("target").focus();
 		return false;
 	}

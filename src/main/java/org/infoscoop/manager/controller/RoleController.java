@@ -14,6 +14,7 @@ import org.infoscoop.dao.model.Group;
 import org.infoscoop.dao.model.Role;
 import org.infoscoop.dao.model.RolePrincipal;
 import org.infoscoop.dao.model.User;
+import org.infoscoop.util.spring.TextView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -61,32 +62,38 @@ public class RoleController {
 		model.addAttribute("json", view);
 	}
 
-	@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody String autocompleteUser( @RequestParam("query") String query, Model model )
-			throws Exception {
-		 List<User> userList = UserDAO.newInstance().selectByName(query);
-		 JSONArray list = new JSONArray();
-		 for (User user : userList){
-			 JSONObject userJson = new JSONObject();
-			 userJson.put("value", user.getName());
-			 userJson.put("mail", user.getEmail());
-			 list.put(userJson);
-		 }
-		 return list.toString();
+	@RequestMapping(method = RequestMethod.POST)
+	public TextView autocompleteUser(@RequestParam("query") String query,
+			Model model) throws Exception {
+		List<User> userList = UserDAO.newInstance().selectByName(query);
+		JSONArray list = new JSONArray();
+		for (User user : userList) {
+			JSONObject userJson = new JSONObject();
+			userJson.put("value", user.getName());
+			userJson.put("mail", user.getEmail());
+			list.put(userJson);
+		}
+		TextView view = new TextView();
+		view.setResponseBody(list.toString());
+		view.setContentType("application/json; charset=UTF-8");
+		return view;
 	}
 
-	@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody String autocompleteGroup( @RequestParam("query") String query, Model model )
-			throws Exception {
-		 List<Group> groupList = GroupDAO.newInstance().selectByName(query);
-		 JSONArray list = new JSONArray();
-		for (Group group : groupList){
-			 JSONObject groupJson = new JSONObject();
-			 groupJson.put("value", group.getName());
-			 groupJson.put("mail", group.getEmail());
-			 list.put(groupJson);
-		 }
-		 return list.toString();
+	@RequestMapping(method = RequestMethod.POST)
+	public TextView autocompleteGroup(@RequestParam("query") String query,
+			Model model) throws Exception {
+		List<Group> groupList = GroupDAO.newInstance().selectByName(query);
+		JSONArray list = new JSONArray();
+		for (Group group : groupList) {
+			JSONObject groupJson = new JSONObject();
+			groupJson.put("value", group.getName());
+			groupJson.put("mail", group.getEmail());
+			list.put(groupJson);
+		}
+		TextView view = new TextView();
+		view.setResponseBody(list.toString());
+		view.setContentType("application/json; charset=UTF-8");
+		return view;
 	}
 
 	@RequestMapping(method=RequestMethod.GET)
