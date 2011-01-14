@@ -18,6 +18,8 @@ CREATE TABLE IS_USERS (
   `admin` int(10) NOT NULL,
   foreign key (fk_domain_id) references IS_DOMAINS(id) on delete cascade
 ) ENGINE = InnoDB;
+create index is_users_email on IS_USERS(`email`);
+create index is_users_name on IS_USERS(`name`);
 
 --
 -- IS_GROUPS
