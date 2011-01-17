@@ -2,13 +2,13 @@ package org.infoscoop.manager.controller;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
@@ -28,13 +28,14 @@ import org.infoscoop.dao.model.GadgetInstanceUserprefPK;
 import org.infoscoop.dao.model.MenuItem;
 import org.infoscoop.dao.model.MenuTree;
 import org.infoscoop.dao.model.Role;
-import org.infoscoop.dao.model.TabTemplate;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.GadgetService;
 import org.infoscoop.util.XmlUtil;
+import org.infoscoop.util.spring.TextView;
 import org.infoscoop.web.ProxyServlet;
 import org.infoscoop.widgetconf.I18NConverter;
 import org.infoscoop.widgetconf.MessageBundle;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -374,8 +375,9 @@ public class MenuController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public MenuItem copyItem(@RequestParam("id") Integer id,
-			@RequestParam("parentId") Integer parentId) throws Exception {
+	public TextView copyItem(@RequestParam("id") Integer id,
+			@RequestParam("parentId") Integer parentId,
+			HttpServletResponse response) throws Exception {
 		MenuItem parentItem = menuItemDAO.get(parentId);
 		MenuItem item = menuItemDAO.get(id);
 
@@ -408,7 +410,18 @@ public class MenuController {
 		newGadget.setGadgetInstanceUserPrefs(newUps);
 		newItem.setGadgetInstance(newGadget);
 		menuItemDAO.save(newItem);
-		return newItem;
+				
+		JSONObject menuItemJson = new JSONObject();
+		menuItemJson.put("id", newItem.getId());
+		menuItemJson.put("parentId", newItem.getFkParent().getId());
+		menuItemJson.put("title", newItem.getTitle());
+		menuItemJson.put("type", newItem.getGadgetInstance().getType());
+		menuItemJson.put("accessLevel", newItem.getAccessLevel()==1);
+		
+		TextView view = new TextView();
+		view.setResponseBody(menuItemJson.toString());
+		view.setContentType("application/json; charset=UTF-8");
+		return view;
 	}
 
 	@RequestMapping

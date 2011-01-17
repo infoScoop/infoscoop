@@ -26,7 +26,7 @@ function $loadContent(url, data, callback){
 			else
 				$("#menu_right").html(data);
 		},
-		error: function(){
+		error: function(data, status, xhr){
 			$("#menu_right").html('<div class="error">エラーが発生しました。</div>');
 		}
 	});
@@ -147,7 +147,14 @@ function copyItem(e, a){
 function pasteItem(a){
 	if($(a).hasClass("disabled") || !copiedItemId) return;
 	var id = getSelectedItemId(getSelectedItem());
+/*
 	$loadContent("copyItem", {parentId:id, id:copiedItemId}, function(data){
+		addItemToTree(data.parentId, data.id, data.title, data.type, data.accessLevel);
+		$("#menu_right").html('<div class="success">「'+data.title+'」をコピーしました。</div>');
+	});
+*/
+	$.post("copyItem",  {parentId:id, id:copiedItemId}, function(data){
+		alert(data.title);
 		addItemToTree(data.parentId, data.id, data.title, data.type, data.accessLevel);
 		$("#menu_right").html('<div class="success">「'+data.title+'」をコピーしました。</div>');
 	});
