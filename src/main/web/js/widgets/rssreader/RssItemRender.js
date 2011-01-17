@@ -606,7 +606,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildDesc = function( widget,rssDesc
 			method: 'get',
 			asynchronous: true,
 			onSuccess:function(rssDesc, req, obj){
-				var rssDescSummary = rssDesc.getElementsByClassName('rss_summary')[0];
+				var rssDescSummary = rssDesc.getElementsByTagName('div')[0];
 				rssDescSummary.innerHTML = req.responseText;
 			}.bind(self, rssDesc),
 			onException:function(req, obj){
