@@ -322,11 +322,16 @@ public class MenuController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public MenuItem removeItem(@RequestParam("id") Integer id) throws Exception {
+	public TextView removeItem(@RequestParam("id") Integer id,
+			HttpServletResponse response) throws Exception {
 		MenuItem item = menuItemDAO.get(id);
 		removeGadgetInstance(item);
 		menuItemDAO.delete(item.getId());
-		return item;
+		response.setContentType("text/html; charset=UTF-8");
+		TextView view = new TextView();
+		view.setResponseBody("<div class=\"success\">「"+item.getTitle()+"」を削除しました。</div>");
+		view.setContentType("text/html; charset=UTF-8");
+		return view;
 	}
 	
 	/**
