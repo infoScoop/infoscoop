@@ -168,7 +168,7 @@
 							</select>
 						</x:when>
 						<x:otherwise>
-							<input type="${ ( datatype == 'bool' ? 'checkbox' : datatype == 'list' ? 'hidden' : datatype) }" name="gadgetInstance.userPrefs[${name}]" value="${value}" class="${datatype}"/>
+							<input type="${ ( datatype == 'bool' ? 'checkbox' : datatype == 'list' ? 'hidden' : datatype) }" name="gadgetInstance.userPrefs[${name}]" value="<c:out value="${value}"/>" class="${datatype}"/>
 							<c:if test="${name == 'url'}">
 								<input type="button" id="get_title_from_content" value="コンテンツからタイトルを取得"/>
 							</c:if>
