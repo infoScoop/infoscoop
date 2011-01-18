@@ -144,7 +144,7 @@ public class SessionManagerFilter implements Filter {
 		}
 		
 		String[] requestURI = httpReq.getRequestURI().split("/");
-		if(requestURI.length > 0 && "notready.jsp".equals(requestURI[requestURI.length-1])){
+		if(httpReq.getRequestURI().indexOf(httpReq.getContextPath() + "/admin") == 0 || requestURI.length > 0 && "notready.jsp".equals(requestURI[requestURI.length-1])){
 			chain.doFilter(request, response);
 			return;
 		}
