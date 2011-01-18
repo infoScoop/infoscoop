@@ -274,8 +274,8 @@ $(function () {
 			var classes = $(this).attr('class').split(' ');
 			for(i = 0; i < classes.length; i++){
 				if(classes[i].indexOf('type-') == 0){
-					alert(classes[i].split('-')[1]);
-					var icon = getIconUrl(classes[i].split('-')[1]);
+					var typeClass = classes[i];
+					var icon = getIconUrl(typeClass.substring(typeClass.indexOf('-')+1));
 					$("a ins", this).first()
 						.css("display", "inline-block")
 						.css("background", "url("+icon+")");
