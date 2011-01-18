@@ -193,7 +193,7 @@ $(function () {
 	var menuTree = $("#menu_tree").jstree({
 		"html_data" : {
 			"ajax" : {
-				"url" : "tree?id="+menuId
+				"url" : "tree?id="+menuId+"&time="+new Date().getTime()//TODO
 			}
 		},
 		"themes" : {
