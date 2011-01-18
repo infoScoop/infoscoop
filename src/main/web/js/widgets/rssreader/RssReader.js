@@ -113,7 +113,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		var opt = {
 //			accept : ["widget", "subWidget"],
 			accept : function(element, widgetType, classNames){
-				if (widget.tabId != IS_Portal.currentTabId) {
+				/*if (widget.tabId != IS_Portal.currentTabId) {
 					return false;
 				}else {
 					return (classNames.detect(function(v){
@@ -123,7 +123,8 @@ IS_Widget.RssReader.prototype.classDef = function() {
 					!IS_Draggables.keyEvent.isPressing.ctrl &&
 					!widget.parent &&
 					( element.id && ( element.id != widget.id )));
-				}
+				}*/
+				return false;
 			},
 			onHover: function(element, dropElement, dragMode, point) {
 				if(!this.targetWidget)
