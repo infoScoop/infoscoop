@@ -32,10 +32,3 @@
 ,"worldclock","/","ALL_ALL.xml",<LOB FILE='sample/worldclock/ALL_ALL.xml' />
 ,"worldclock","/","ja_ALL.xml",<LOB FILE='sample/worldclock/ja_ALL.xml' />
 ,"worldclock","/","zh_ALL.xml",<LOB FILE='sample/worldclock/zh_ALL.xml' />
-,"todoList","/","todoList.xml",<LOB FILE='sample/todoList/todoList.xml' />
-,"todoList","/","todoList.js",<LOB FILE='sample/todoList/todoList.js' />
-,"todoList","/","tick.gif",<LOB FILE='sample/todoList/tick.gif' />
-,"todoList","/imgs","trash.gif",<LOB FILE='sample/todoList/imgs/trash.gif' />
-,"todoList","/","ALL_ALL.xml",<LOB FILE='sample/todoList/ALL_ALL.xml' />
-,"todoList","/","ja_ALL.xml",<LOB FILE='sample/todoList/ja_ALL.xml' />
-,"todoList","/","zh_ALL.xml",<LOB FILE='sample/todoList/zh_ALL.xml' />
