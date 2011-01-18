@@ -47,7 +47,7 @@
 		<form:hidden path="layout" />
 		<form:hidden path="layoutModified"/>
 		<c:if test="${tabTemplate.areaType == 0}">
-		<div id="portal-site-aggregation-menu"></div>
+		<div id="portal-site-aggregation-menu" style="display:none"></div>
 		</c:if>
 		<div id="portal-tree-menu" style="float:left;"> </div>
 		<div id="infoscoop-panel" style="float:left;">
