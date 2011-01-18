@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF8" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <tr menu_id="${menu.id}">
 	<td class="title">
 		<a href="editMenu?id=${menu.id}">${menu.title}</a>

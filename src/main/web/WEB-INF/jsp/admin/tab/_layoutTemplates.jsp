@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF8" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <div id="staticLayouts">
 <div class="staticLayout">
 </div>

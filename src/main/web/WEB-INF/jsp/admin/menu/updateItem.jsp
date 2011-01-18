@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF8" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="success">「${menuItem.title}」を更新しました。</div>
 <script type="text/javascript">
