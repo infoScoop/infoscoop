@@ -608,6 +608,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildDesc = function( widget,rssDesc
 			onSuccess:function(rssDesc, req, obj){
 				var rssDescSummary = rssDesc.getElementsByTagName('div')[0];
 				rssDescSummary.innerHTML = req.responseText;
+				IS_Widget.RssReader.RssItemRender.adjustRssDesc();
 			}.bind(self, rssDesc),
 			onException:function(req, obj){
 			  alert('Retrieving summary is failed:' + obj);
