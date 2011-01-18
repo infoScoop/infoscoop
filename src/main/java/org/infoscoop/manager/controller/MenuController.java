@@ -351,7 +351,7 @@ public class MenuController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional
-	public MenuItem moveItem(@RequestParam("id") Integer id,
+	public TextView moveItem(@RequestParam("id") Integer id,
 			@RequestParam("sibling[]") Integer[] siblings,
 			@RequestParam(value = "parentId", required = false) Integer parentId)
 			throws Exception {
@@ -368,7 +368,10 @@ public class MenuController {
 			siblingItem.setMenuOrder(order++);
 			menuItemDAO.save(siblingItem);
 		}
-		return item;
+		TextView view = new TextView();
+		view.setResponseBody("<div class=\"success\">「 "+ item.getTitle() + "」を移動しました。</div>");
+		view.setContentType("html/text; charset=UTF-8");
+		return view;
 	}
 
 	/**
