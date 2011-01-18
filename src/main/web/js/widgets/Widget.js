@@ -557,7 +557,6 @@ IS_Widget.prototype.classDef = function() {
 		}else if(widgetHeight && widgetHeight != "200"){
 			if( parseInt( widgetHeight ) < 1 )
 				widgetHeight = 1;
-			
 			divWidgetContent.style.height = widgetHeight;
 		}
 		
@@ -804,7 +803,7 @@ IS_Widget.prototype.classDef = function() {
 			
 			this.setStaticIframeHeight();
 		} else if( typeConf.height ) {
-			var iframeHeight = (typeof(typeConf.height) == 'number' ? parseInt(typeConf.height) : 200) + 10;
+			var iframeHeight = isNaN(parseInt(typeConf.height)) ? 210 : parseInt(typeConf.height)+10;
 			if( iframeHeight < 1 )
 				iframeHeight = 1;
 			self.iframe.style.height = iframeHeight;
@@ -864,8 +863,9 @@ IS_Widget.prototype.classDef = function() {
 				this.headerContent.turnBack();
 			
 			this.elm_widgetContent.style.display = "block";
-			if( this.isGadget() && !self.isStaticHeight)
+			if( this.isGadget() && !self.isStaticHeight){
 				this.elm_widgetContent.style.height = "auto";
+			}
 			
 			IS_EventDispatcher.newEvent('loadComplete', self.id, null);
 			
