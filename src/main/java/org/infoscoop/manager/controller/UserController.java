@@ -37,6 +37,7 @@ public class UserController {
 		Integer domainId = DomainManager.getContextDomainId();
 		Domain domain = DomainDAO.newInstance().get(domainId);
 		String domainName = domain.getName();
+		String uid = (String) request.getSession().getAttribute("Uid");
 
 		long start = System.currentTimeMillis();
 
@@ -45,7 +46,8 @@ public class UserController {
 		String url = property.getValue();
 		if (!url.endsWith("/"))
 			url += "/";
-		GetMethod method = new GetMethod(url + "usergroup?domain=" + domainName);
+		GetMethod method = new GetMethod(url + "usergroup?domain=" + domainName
+				+ "&u=" + uid);
 		http.executeMethod(method);
 		if (method.getStatusCode() >= 300) {
 			// TODO handle error
