@@ -271,10 +271,16 @@ $(function () {
 			gadgetConfs[type].type = type;
 		});
 		$("li", menuTree).each(function(){
-			var icon = getIconUrl(this.type);
-			$("a ins", this).first()
-				.css("display", "inline-block")
-				.css("background", "url("+icon+")");
+			var classes = $(this).attr('class').split(' ');
+			for(i = 0; i < classes.length; i++){
+				if(classes[i].indexOf('type-') == 0){
+					alert(classes[i].split('-')[1]);
+					var icon = getIconUrl(classes[i].split('-')[1]);
+					$("a ins", this).first()
+						.css("display", "inline-block")
+						.css("background", "url("+icon+")");
+				}
+			}
 		});
 	});
 });
