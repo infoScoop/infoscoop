@@ -148,9 +148,16 @@ color:#333333;
 .infoScoop .widget .widgetHeader {
 	background-color:#5A79A5;
 }
+.infoScoop .widget .subwidget .widgetHeader {
+	background-color:#DBE8F9;
+}
 .infoScoop .widget .widgetTitle{
 	color:#FFFFFF;
 	font-size:80%;
+}
+.infoScoop .widget .subwidget .widgetTitle,
+.infoScoop .widget .subwidget .widgetTitle a{
+	color:#666;
 }
 .infoScoop .widget .widgetHeader a{color:#FFFFFF;}
 .infoScoop .widget .widgetHeader a:link{text-decoration:underline;}
@@ -162,6 +169,7 @@ color:#333333;
 .infoScoop .widget .widgetBox {
 	border:1px solid #5A79A5;
 }
+.infoScoop .widget .subwidget .widgetBox{border:none;}
 /**RSS Reader*/
 /***item*/
 .infoScoop .RssReader .rssItem a:link{color:#1757AB;}

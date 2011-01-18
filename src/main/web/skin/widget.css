@@ -83,6 +83,9 @@
 .infoScoop .widgetContent {
 	width:100%;
 	overflow:hidden;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
 }
 
 
