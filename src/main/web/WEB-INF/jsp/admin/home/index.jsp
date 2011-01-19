@@ -42,14 +42,14 @@
 	</div>
 	<br />
 	<div id="bottom">
-		<h2>Google Apps用ガジェットの使い方</h2>
+		<h2><a href="http://tiny.cc/infoscoop4g-faq#h.r9g1b7hf5ig1" target="_blank">Google Apps用ガジェットの使い方</a></h2>
 		<div>infoScoopのポータル画面で初期配置されているGoogle Apps用ガジェットのほとんどは、Google Apps側で設定を行うことなくそのままお使いいただけます。<br />
 		ただし、お知らせガジェットとリンク集ガジェットは使用前に別途設定が必要です。<br />
-		設定方法については<a href="http://tiny.cc/infoscoop4g-faq#h.r9g1b7hf5ig1" target="_blank">こちら</a>をご参照ください。</div>
+		設定方法についてはこちらをご参照ください。</div>
 
-		<h2>FAQ</h2>
-		<div>infoScoop for Google Apps管理画面について、よくある質問を<a href="http://tiny.cc/infoscoop4g-faq" target="_blank">FAQ</a>にまとめました。<br />
-		<a href="http://tiny.cc/infoscoop4g-faq" target="_blank">こちら</a>をご参照ください。</div>
+		<h2><a href="http://tiny.cc/infoscoop4g-faq" target="_blank">FAQ</a></h2>
+		<div>infoScoop for Google Apps管理画面について、よくある質問をFAQにまとめました。<br />
+		こちらをご参照ください。</div>
 	</div>
 <div>
 	</tiles:putAttribute>
