@@ -201,7 +201,8 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		var menuOpt = {}
 		menuOpt = Object.extend(menuOpt, opt);
 		menuOpt.accept = function(element, widgetType, classNames){
-			if (widget.tabId != IS_Portal.currentTabId) {
+			return false;
+			/*if (widget.tabId != IS_Portal.currentTabId) {
 				return false;
 			}else {
 				return (classNames.detect(function(v){
@@ -212,7 +213,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 				IS_Draggables.activeDraggable &&
 				!IS_Draggables.activeDraggable.options.syncId &&
 				!widget.parent);
-			}
+			}*/
 		}
 		this.droppableOption.onMenuDrop = function(element, lastActiveElement, menuItem, event, modalOption){
 			var widgetGhost = IS_Draggable.ghost;
