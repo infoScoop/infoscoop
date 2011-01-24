@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
@@ -33,7 +34,10 @@ public class UserController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public void sync(Model model, HttpServletRequest request) throws Exception {
+	public void sync(Model model,
+			@RequestParam(value = "acl", required = false) boolean acl,
+			HttpServletRequest request) throws Exception {
+		log.info("UserController.sync is called.");
 		Integer domainId = DomainManager.getContextDomainId();
 		Domain domain = DomainDAO.newInstance().get(domainId);
 		String domainName = domain.getName();
@@ -58,6 +62,7 @@ public class UserController {
 		String response = method.getResponseBodyAsString();
 		JSONObject json = new JSONObject(response);
 
+		log.info("start to insert users.");
 		UserDAO userDAO = UserDAO.newInstance();
 		JSONArray usersJ = json.getJSONArray("users");
 		int user_count = 0;
@@ -81,6 +86,7 @@ public class UserController {
 				else
 					user.setAdmin(0);
 				userDAO.save(user);
+				log.info(user.getEmail() + " is saved.");
 				user_count ++;
 			} else {
 				if (user != null)
@@ -89,6 +95,7 @@ public class UserController {
 		}
 		model.addAttribute("userCount", user_count);
 
+		log.info("start to insert groups.");
 		GroupDAO groupDAO = GroupDAO.newInstance();
 		JSONArray groupsJ = json.getJSONArray("groups");
 		for (int i = 0; i < groupsJ.length(); i++) {
@@ -121,6 +128,7 @@ public class UserController {
 				//	System.out.println("User " + memberId.split("@")[0] + " is missing.");
 			}
 			groupDAO.save(group);
+			log.info(group.getEmail() + " is saved.");
 		}
 		model.addAttribute("groupCount", groupsJ.length());
 
@@ -128,5 +136,17 @@ public class UserController {
 		log.info(usersJ.length() + " users and " + groupsJ.length()
 				+ " groups have been synchronized. It took " + time
 				+ " millisecond.");
+		
+		// create and share special docs.
+		method = new GetMethod(url + "usergroup?domain=" + domainName + "&u="
+				+ uid + "&mode=docs" + (acl ? "&acl=true" : ""));
+		http.executeMethod(method);
+		if (method.getStatusCode() >= 300) {
+			// TODO handle error
+			throw new Exception("Failed to create and share special docs."
+					+ method.getStatusCode() + " - " + method.getStatusText());
+		}
+		log.info("The special docs have been created"
+				+ (acl ? " and shared." : "."));
 	}
 }
