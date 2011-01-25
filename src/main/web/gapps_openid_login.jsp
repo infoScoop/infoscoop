@@ -30,6 +30,15 @@
 		$(function(){
 			$("#domain_field").placeholder();
 			$("#submit").button();
+			$(form).submit(function(){
+				if($('input[name="hd"]').val().match(/^.*\@.*$/)){
+					alert('Emailアドレスではなくドメインのみを指定してください。');
+					return false;
+				}else if(!$('input[name="hd"]').val().match(/^.*\.[a-zA-Z]*$/)){
+					alert('正しいドメイン名を指定してください。');
+					return false;
+				}
+			})
 		});
 	</script>
 <style type="text/css">
@@ -60,7 +69,7 @@ body{
 	background: #FFFFFF;
 	border: 1px solid #B5E2F0;
 	color: #414B56;
-	margin-top:10px;
+	margin-top:20px;
 }
 #main-header{
 	text-align:center;
@@ -68,17 +77,25 @@ body{
 
 }
 #form{
-	text-align:center;
-	margin:50px;
+	text-align:left;
+	width:420px;
+	margin-top:40px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:30px;
+}
+#ex_domain{
+	text-align:left;
 }
 #headline{
 	font-size:2.2em;
 }
 #main-desc{
+	text-align:left;
 }
 #description{
 	line-height:1.3em;
-	margin:0px 100px 50px;
+	margin:0px 80px 50px;
 }
 </style>
 <script type="text/javascript">
@@ -95,25 +112,28 @@ body{
 
 </script>
 </head>
-<body style="background:#D8F0F7;font-size:13px;">
+<body style="background:#D8F0F7;font-size:13px;text-align:center;">
 <%
 	if (request.getParameter("logout")!=null){
 		session.removeAttribute("user");
 		session.removeAttribute("Uid");
 	}
 %>
-	<div id="inside" style="color:#414B56;margin:auto;width:950px;">
+	<div id="inside" style="color:#414B56;margin-left:auto;margin-right:auto;width:860px;">
 		<div id="header" style="text-align:center;">
 			<img src="http://www.infoscoop4g.com/_/rsrc/1288869308415/config/customLogo.gif?revision=3" />
 		</div>
-		<div id="main"">
+		<div id="main">
 			<div id="main-header">
 				<p id="headline">infoScoop for Google AppsでGoogle Appsをもっと快適に</p>
 			</div>
 			<div id="form">
 				<form method="POST" action="openid_login">
-					<input type="text" name="hd" placeholder="Google Appsのドメインを入力してください" title="Google Appsのドメインを入力してください" id="domain_field" value=""/>
-					<input id="submit" type="submit" value="ログイン"/>
+					<div>
+						<input type="text" name="hd" placeholder="Google Appsのドメインを入力してください" title="Google Appsのドメインを入力してください" id="domain_field" value=""/>
+						<input id="submit" type="submit" value="ログイン"/>
+					</div>
+					<div style="padding:4px;color:#999;font-size:18px;">例：infoscoop.org</div>
 				</form>
 			</div>
 			<div id="main-desc">
