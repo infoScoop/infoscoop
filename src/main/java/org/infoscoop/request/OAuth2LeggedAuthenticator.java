@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
@@ -44,6 +46,8 @@ public class OAuth2LeggedAuthenticator implements Authenticator {
 	
 	private static Map<String, OAuthConsumer> consumers = new HashMap<String, OAuthConsumer>();
 	
+	private static Pattern hasXOAuthRequestorId = Pattern.compile("([?&]xoauth_requestor_id=)[^&]+(&|$)");
+	
 	public OAuth2LeggedAuthenticator(){
 	}
 	
@@ -62,11 +66,21 @@ public class OAuth2LeggedAuthenticator implements Authenticator {
 			OAuthConsumer consumer = new OAuthConsumer(null, consumerConf.getConsumerKey(), consumerConf.getConsumerSecret(), null);
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 
-			if(method.getURI().getQuery().indexOf("xoauth_requestor_id=") == -1){
+			Matcher matcher = hasXOAuthRequestorId.matcher(method.getURI()
+					.getURI());
+			if (matcher.find()) {
+				StringBuffer newUrl = new StringBuffer();
+				matcher.appendReplacement(newUrl, matcher.group(1)
+						+ request.getPortalUid() + matcher.group(2));
+				matcher.appendTail(newUrl);
+				method.setURI(new URI(newUrl.toString(), false));
+			} else {
 				method.setURI(new URI(method.getURI().getURI()
 						+ (method.getURI().getQuery() == null ? "?" : "&")
-						+ "xoauth_requestor_id=" + request.getPortalUid(), false));
+						+ "xoauth_requestor_id=" + request.getPortalUid(),
+						false));
 			}
+			
 			OAuthMessage message = accessor.newRequestMessage(
 					method.getName(),
 					method.getURI().toString(), 
