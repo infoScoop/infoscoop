@@ -212,8 +212,11 @@
 		<EnumValue display_value="basic" value="basic"/>
 		<EnumValue display_value="ntlm" value="ntlm"/>
 		<EnumValue display_value="postCredential" value="postCredential"/>
+		<EnumValue display_value="signed" value="signed"/>
+		<!--
 		<EnumValue display_value="postPortalCredential" value="postPortalCredential"/>
 		<EnumValue display_value="sendPortalCredentialHeader" value="sendPortalCredentialHeader"/>
+		-->
 	</UserPref>
 	<UserPref default_value="" datatype="string" name="titleFilter" display_name="__MSG_lb_filterByTitle__"
 		description="__MSG_lb_filterByTitleDescription__"/>

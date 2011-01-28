@@ -366,7 +366,7 @@ IS_Widget.prototype.classDef = function() {
 	
 	this.isAuthenticationFailed = function(){
 		var authType = this.getUserPref('authType');
-		if(!authType || /^(postPortalCredential|sendPortalCredentialHeader|oauth).*$/.test(authType))
+		if(!authType || /^(postPortalCredential|sendPortalCredentialHeader|oauth|signed).*$/.test(authType))
 			return false;
 		var authCredentialId = this.getUserPref('authCredentialId');
 		return !authCredentialId;
@@ -1300,6 +1300,9 @@ IS_Widget.prototype.classDef = function() {
 				var serviceName = self.getUserPref("serviceName");
 				opt.requestHeaders.push("serviceName");
 				opt.requestHeaders.push(serviceName);
+			}else if(authType && authType == "signed"){
+				opt.requestHeaders.push("authType");
+				opt.requestHeaders.push(authType);
 			}
 
 			if(authParameNames){
