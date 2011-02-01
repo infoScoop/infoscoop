@@ -72,18 +72,18 @@ public class OAuth2LeggedAuthenticator implements Authenticator {
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 
 			Matcher matcher = hasXOAuthRequestorId.matcher(method.getURI()
-					.getURI());
+					.toString());
 			if (matcher.find()) {
 				StringBuffer newUrl = new StringBuffer();
 				matcher.appendReplacement(newUrl, matcher.group(1)
 						+ request.getPortalUid() + matcher.group(2));
 				matcher.appendTail(newUrl);
-				method.setURI(new URI(newUrl.toString(), false));
+				method.setURI(new URI(newUrl.toString(), true));
 			} else {
-				method.setURI(new URI(method.getURI().getURI()
+				method.setURI(new URI(method.getURI().toString()
 						+ (method.getURI().getQuery() == null ? "?" : "&")
 						+ "xoauth_requestor_id=" + request.getPortalUid(),
-						false));
+						true));
 			}
 
 			Map<String, String> parameters = null;
