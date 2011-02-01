@@ -17,8 +17,12 @@
 
 package org.infoscoop.request;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -38,6 +42,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.OAuth2LeggedConsumerDAO;
 import org.infoscoop.dao.model.OAuth2LeggedConsumer;
+import org.infoscoop.util.RequestUtil;
 
 public class OAuth2LeggedAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
@@ -80,12 +85,21 @@ public class OAuth2LeggedAuthenticator implements Authenticator {
 						+ "xoauth_requestor_id=" + request.getPortalUid(),
 						false));
 			}
+
+			Map<String, String> parameters = null;
+			String contentType = request.getRequestHeader("Content-Type");
+			if (contentType != null
+					&& contentType
+							.startsWith("application/x-www-form-urlencoded")
+					&& method.getName().equals("POST")) {
+				String charset = RequestUtil.getCharset(contentType);
+				parameters = RequestUtil.parseRequestBody(request
+						.getRequestBody(), charset);
+			}
 			
-			OAuthMessage message = accessor.newRequestMessage(
-					method.getName(),
-					method.getURI().toString(), 
-					null, 
-					request.getRequestBody());
+			OAuthMessage message = accessor.newRequestMessage(method.getName(),
+					method.getURI().toString(), parameters != null ? parameters
+							.entrySet() : null);
 			String authHeader = message.getAuthorizationHeader(null);
 			request.setRequestHeader("Authorization", authHeader);
 			// Find the non-OAuth parameters:

@@ -17,8 +17,15 @@
 
 package org.infoscoop.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
@@ -317,4 +324,33 @@ public final class RequestUtil {
 		return null;
 	}
 
+	/**
+	 * parse request body with the "application/x-www-form-urlencoded" content-type.
+	 * @param requestBody
+	 * @return 
+	 * @throws IOException
+	 */
+	public static Map<String, String> parseRequestBody(InputStream requestBody, String charset)
+			throws IOException {
+		if (charset == null)
+			charset = "UTF-8";
+		Map<String, String> params = new HashMap<String, String>();
+		if (requestBody != null) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					requestBody));
+			String postBodyStr = "";
+			String s = null;
+			while ((s = br.readLine()) != null) {
+				postBodyStr += URLDecoder.decode(s, "UTF-8");
+			}
+			String[] keyvalues = postBodyStr.split("&");
+			for (int i = 0; i < keyvalues.length; i++) {
+				String[] keyvalue = keyvalues[i].split("=");
+				params.put(keyvalue[0].trim(), keyvalue[1].trim());
+			}
+			requestBody.reset();
+		}
+		return params;
+
+	}
 }

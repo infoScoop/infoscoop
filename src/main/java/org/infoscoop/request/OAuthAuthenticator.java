@@ -17,17 +17,16 @@
 
 package org.infoscoop.request;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.security.GeneralSecurityException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.crypto.Mac;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
@@ -37,19 +36,21 @@ import net.oauth.OAuthMessage;
 import net.oauth.OAuthServiceProvider;
 import net.oauth.client.OAuthClient;
 import net.oauth.client.httpclient3.HttpClient3;
-import net.oauth.signature.OAuthSignatureMethod;
 import net.oauth.signature.RSA_SHA1;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.OAuth3LeggedConsumerDAO;
-import org.infoscoop.dao.model.OAuthCertificate;
+import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.model.OAuth3LeggedConsumer;
+import org.infoscoop.dao.model.OAuthCertificate;
 import org.infoscoop.request.ProxyRequest.OAuthConfig;
 import org.infoscoop.service.OAuthService;
+import org.infoscoop.util.RequestUtil;
 
 public class OAuthAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
@@ -77,9 +78,21 @@ public class OAuthAuthenticator implements Authenticator {
 			if (accessor.accessToken == null) {
 				getRequestToken(request, accessor);
 			}
-			
+
+			Map<String, String> parameters = null;
+			String contentType = request.getRequestHeader("Content-Type");
+			if (contentType != null
+					&& contentType
+							.startsWith("application/x-www-form-urlencoded")
+					&& method.getName().equals("POST")) {
+				// TODO analyze charset
+				String charset = RequestUtil.getCharset(contentType);
+				parameters = RequestUtil.parseRequestBody(request
+						.getRequestBody(), charset);
+			}
 			OAuthMessage message = accessor.newRequestMessage(method.getName(),
-					method.getURI().toString(), null, request.getRequestBody());
+					method.getURI().toString(), parameters != null ? parameters
+							.entrySet() : null);
 			String authHeader = message.getAuthorizationHeader(null);
 			request.setRequestHeader("Authorization", authHeader);
 			// Find the non-OAuth parameters:
