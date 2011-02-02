@@ -40,13 +40,10 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.dao.OAuth2LeggedConsumerDAO;
 import org.infoscoop.dao.OAuthTokenDAO;
-import org.infoscoop.dao.model.OAuth2LeggedConsumer;
 import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.Authenticator;
 import org.infoscoop.request.ProxyRequest;
-import org.infoscoop.request.filter.DetectTypeFilter;
 import org.infoscoop.service.OAuthService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -295,7 +292,7 @@ public class JsonProxyServlet extends HttpServlet {
 
 		int status = httpMethod.invokeProxyRequest( proxy );
 		
-		String bodyStr = getResponseBodyAsStringWithAutoDetect( proxy );
+		String bodyStr = proxy.getResponseBodyAsStringWithAutoDetect();
 
 		urlJson.put("body",bodyStr);
 
@@ -325,23 +322,7 @@ public class JsonProxyServlet extends HttpServlet {
 		}
 		return json;
 	}
-
-	private String getResponseBodyAsStringWithAutoDetect( ProxyRequest proxy ) throws Exception {
-		byte[] body = ProxyRequest.stream2Bytes( proxy.getResponseBody());
-		
-		String contentType = null;
-		List<String> contentTypes = proxy.getResponseHeaders("Content-Type");
-		if( contentTypes.size() > 0 )
-			contentType = contentTypes.get( contentTypes.size() -1 );
-		
-		String encoding = DetectTypeFilter.getContentTypeCharset( contentType );
-//		if( encoding == null )
-//			encoding = DetectTypeFilter.findEncoding( new ByteArrayInputStream( body ) );
-		if( encoding == null )
-			encoding = "UTF-8";
-		
-		return new String( body,encoding );
-	}
+	
 	private Map<String,String> extractHeadersParam( String headerData ) throws UnsupportedEncodingException {
 		Map<String,String> headers = new HashMap<String,String>();
 	    if( headerData != null && headerData.length() > 0 ) {

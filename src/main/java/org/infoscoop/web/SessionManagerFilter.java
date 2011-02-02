@@ -59,6 +59,7 @@ import org.infoscoop.dao.model.Domain;
 import org.infoscoop.dao.model.Group;
 import org.infoscoop.dao.model.Properties;
 import org.infoscoop.dao.model.User;
+import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.UserService;
 
 /**
@@ -144,7 +145,12 @@ public class SessionManagerFilter implements Filter {
 		}
 		
 		String[] requestURI = httpReq.getRequestURI().split("/");
-		if(httpReq.getRequestURI().indexOf(httpReq.getContextPath() + "/admin") == 0 || requestURI.length > 0 && "notready.jsp".equals(requestURI[requestURI.length-1])){
+		if (httpReq.getRequestURI()
+				.indexOf(httpReq.getContextPath() + "/admin") == 0
+				|| httpReq.getRequestURI().indexOf(
+						httpReq.getContextPath() + "/gapps_openid_login.jsp") == 0
+				|| requestURI.length > 0
+				&& "notready.jsp".equals(requestURI[requestURI.length - 1])) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -222,7 +228,7 @@ public class SessionManagerFilter implements Filter {
 				} catch (Exception e) {
 					log.error("",e);
 					try {
-						if( isAppsAdmin(uid) ){
+						if( isAppsAdmin(uid, httpRequest) ){
 							loginUser = new Subject();
 							ISPrincipal up = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, uid);
 							String userName = (String)session.getAttribute(LOGINUSER_NAME_ATTR_NAME);
@@ -388,22 +394,40 @@ public class SessionManagerFilter implements Filter {
 		return false;
 	}
 
-	private boolean isAppsAdmin(String uid) throws Exception{
+	private boolean isAppsAdmin(String uid, HttpServletRequest request) throws Exception{
 		HttpClient http = new HttpClient();
 		Properties property = PropertiesDAO.newInstance().findProperty("appsServiceURL");
 		String url = property.getValue();
 		if (!url.endsWith("/"))
 			url += "/";
-		GetMethod method = new GetMethod(url + "checkadmin?u=" + uid);
-		http.executeMethod(method);
-		if (method.getStatusCode() >= 300) {
-			// TODO handle error
-			throw new Exception("Failed to check administrator. "
-					+ method.getStatusCode() + " - " + method.getStatusText());
-		}
-
-		String response = method.getResponseBodyAsString();
-		
+		String response = singedRequest(url + "checkadmin", request);
 		return Boolean.valueOf(response);
+	}
+	
+	private String singedRequest(String url, HttpServletRequest request)
+			throws Exception {
+		ProxyRequest proxyRequest = null;
+		try {
+			proxyRequest = new ProxyRequest(url, "NoOperation");
+			proxyRequest.setLocales(request.getLocales());
+			proxyRequest.setPortalUid((String) request.getSession()
+					.getAttribute("Uid"));
+			proxyRequest.setTimeout(ProxyServlet.DEFAULT_TIMEOUT);
+			proxyRequest.putRequestHeader("authType", "signed");
+
+			int statusCode = proxyRequest.executeGet();
+
+			if (statusCode != 200)
+				throw new Exception("url=" + proxyRequest.getProxy().getUrl()
+						+ ", statucCode=" + statusCode);
+
+			if (log.isInfoEnabled())
+				log.info("gadget url : " + proxyRequest.getProxy().getUrl());
+
+			return proxyRequest.getResponseBodyAsStringWithAutoDetect();
+		} finally {
+			if (proxyRequest != null)
+				proxyRequest.close();
+		}
 	}
 }

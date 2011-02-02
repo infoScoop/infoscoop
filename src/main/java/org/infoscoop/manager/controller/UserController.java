@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.DomainManager;
@@ -17,6 +15,8 @@ import org.infoscoop.dao.model.Domain;
 import org.infoscoop.dao.model.Group;
 import org.infoscoop.dao.model.Properties;
 import org.infoscoop.dao.model.User;
+import org.infoscoop.request.ProxyRequest;
+import org.infoscoop.web.ProxyServlet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -41,25 +41,15 @@ public class UserController {
 		Integer domainId = DomainManager.getContextDomainId();
 		Domain domain = DomainDAO.newInstance().get(domainId);
 		String domainName = domain.getName();
-		String uid = (String) request.getSession().getAttribute("Uid");
 
 		long start = System.currentTimeMillis();
 
-		HttpClient http = new HttpClient();
 		Properties property = PropertiesDAO.newInstance().findProperty("appsServiceURL");
 		String url = property.getValue();
 		if (!url.endsWith("/"))
 			url += "/";
-		GetMethod method = new GetMethod(url + "usergroup?domain=" + domainName
-				+ "&u=" + uid);
-		http.executeMethod(method);
-		if (method.getStatusCode() >= 300) {
-			// TODO handle error
-			throw new Exception("Failed to retrieve users and groups. "
-					+ method.getStatusCode() + " - " + method.getStatusText());
-		}
-
-		String response = method.getResponseBodyAsString();
+		
+		String response = singedRequest(url + "usergroup", request);
 		JSONObject json = new JSONObject(response);
 
 		log.info("start to insert users.");
@@ -138,15 +128,37 @@ public class UserController {
 				+ " millisecond.");
 		
 		// create and share special docs.
-		method = new GetMethod(url + "usergroup?domain=" + domainName + "&u="
-				+ uid + "&mode=docs" + (acl ? "&acl=true" : ""));
-		http.executeMethod(method);
-		if (method.getStatusCode() >= 300) {
-			// TODO handle error
-			throw new Exception("Failed to create and share special docs."
-					+ method.getStatusCode() + " - " + method.getStatusText());
-		}
+		singedRequest(url + "usergroup?mode=docs" + (acl ? "&acl=true" : ""),
+				request);
+		
 		log.info("The special docs have been created"
 				+ (acl ? " and shared." : "."));
+	}
+	
+	private String singedRequest(String url, HttpServletRequest request)
+			throws Exception {
+		ProxyRequest proxyRequest = null;
+		try {
+			proxyRequest = new ProxyRequest(url, "NoOperation");
+			proxyRequest.setLocales(request.getLocales());
+			proxyRequest.setPortalUid((String) request.getSession()
+					.getAttribute("Uid"));
+			proxyRequest.setTimeout(ProxyServlet.DEFAULT_TIMEOUT);
+			proxyRequest.putRequestHeader("authType", "signed");
+
+			int statusCode = proxyRequest.executeGet();
+
+			if (statusCode != 200)
+				throw new Exception("url=" + proxyRequest.getProxy().getUrl()
+						+ ", statucCode=" + statusCode);
+
+			if (log.isInfoEnabled())
+				log.info("gadget url : " + proxyRequest.getProxy().getUrl());
+
+			return proxyRequest.getResponseBodyAsStringWithAutoDetect();
+		} finally {
+			if (proxyRequest != null)
+				proxyRequest.close();
+		}
 	}
 }

@@ -59,6 +59,8 @@ public class SecurityController {
 	 */
 	public static ISPrincipal getPrincipalByType(String type){
 		Subject loginUser = SecurityController.getContextSubject();
+		if (loginUser == null)
+			return null;
 		Collection principals = loginUser.getPrincipals(ISPrincipal.class);
 		
 		for(Iterator it = principals.iterator(); it.hasNext();){

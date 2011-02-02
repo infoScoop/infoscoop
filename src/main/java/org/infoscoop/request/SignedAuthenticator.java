@@ -39,6 +39,7 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.model.OAuthCertificate;
@@ -65,8 +66,11 @@ public class SignedAuthenticator implements Authenticator {
 			String targetUrlPath = analyzeUrl(request.getTargetURL(),
 					optionParams);
 
-			String userId = SecurityController.getPrincipalByType(
-					"UIDPrincipal").getName();
+			ISPrincipal p = SecurityController
+					.getPrincipalByType("UIDPrincipal");
+			String userId = p != null && p.getName() != null ? p.getName()
+					: request.getPortalUid();
+
 			optionParams.put("opensocial_viewer_id", userId);
 			optionParams.put("opensocial_owner_id", userId);
 			optionParams.put("opensocial_app_url", request

@@ -61,6 +61,7 @@ import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.request.filter.DetectTypeFilter;
 import org.infoscoop.request.filter.ProxyFilterContainer;
 import org.infoscoop.request.proxy.Proxy;
 import org.infoscoop.request.proxy.ProxyConfig;
@@ -797,6 +798,21 @@ public class ProxyRequest{
 			log.error("", e);
 		}
 		return returnStream.toByteArray();
+	}
+
+	public String getResponseBodyAsStringWithAutoDetect() throws Exception {
+		byte[] body = ProxyRequest.stream2Bytes(this.responseBody);
+
+		String contentType = null;
+		List<String> contentTypes = this.getResponseHeaders("Content-Type");
+		if (contentTypes.size() > 0)
+			contentType = contentTypes.get(contentTypes.size() - 1);
+
+		String encoding = DetectTypeFilter.getContentTypeCharset(contentType);
+		if (encoding == null)
+			encoding = "UTF-8";
+
+		return new String(body, encoding);
 	}
 	
     public OAuthConfig getOauthConfig() {
