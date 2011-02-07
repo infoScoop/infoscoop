@@ -601,7 +601,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildDesc = function( widget,rssDesc
 	if(rssItem.description)
 		html += IS_Widget.RssReader.RssItemRender.normalizeDesc(rssItem.description, widget.content.rss.isIntranet);
 	else{
-		html += "<div class=\"rss_summary\"><img src=\"" +  imageURL + "indicator.gif\"/> Loading...</div>"; 
+		html += "<div class=\"rss_summary\"><img src=\"" +  imageURL + "indicator.gif\"/> Loading...</div>";
 		var opt = {
 			method: 'get',
 			asynchronous: true,
@@ -616,6 +616,17 @@ IS_Widget.RssReader.RssItemRender.prototype.buildDesc = function( widget,rssDesc
 		   onFailure:function(req, obj){
 			  alert('Retrieving summary is failed:' + obj);
 		  	}
+		}
+		var authType;
+		var _authType = widget.getUserPref("authType");
+		if(_authType){
+			authType = _authType.split(' ')[0];
+			//authParameNames = _authType.split(' ')[1]; //TODO:
+		}
+		if(authType){
+			opt.requestHeaders = [];
+			opt.requestHeaders.push("authType");
+			opt.requestHeaders.push(authType);
 		}
 		AjaxRequest.invoke(is_getProxyUrl(rssItem.link_ajaxproxy_text, "NoOperation"), opt);
 	}

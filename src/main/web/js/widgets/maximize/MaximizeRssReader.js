@@ -1298,6 +1298,17 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 				  alert('Retrieving summary is failed:' + obj);
 		 	 	}
 			}
+			var authType;
+			var _authType = widget.getUserPref("authType");
+			if(_authType){
+				authType = _authType.split(' ')[0];
+				//authParameNames = _authType.split(' ')[1]; //TODO:
+			}
+			if(authType){
+				opt.requestHeaders = [];
+				opt.requestHeaders.push("authType");
+				opt.requestHeaders.push(authType);
+			}
 			AjaxRequest.invoke(is_getProxyUrl(rssItem.link_ajaxproxy_text, "NoOperation"), opt);
 		}
 		rssDescText.scrollTop = 0;
