@@ -245,6 +245,7 @@ public class TabService {
 				widgets.add(widget);
 			} else {
 				widget.setTitle(gadgetInst.getTitle());
+				widget.setType(gadgetInst.getType());
 				widget.setHref(gadgetInst.getHref());
 				widget.setIconUrl(gadgetInst.getIcon());
 				widget.setIgnoreHeader(gadget.isIgnoreHeaderBool());
