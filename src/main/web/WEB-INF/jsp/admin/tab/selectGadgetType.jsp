@@ -7,6 +7,10 @@
 	<tiles:putAttribute name="type" value="menu"/>
 	<tiles:putAttribute name="title" value="tab.title"/>
 	<tiles:putAttribute name="body" type="string">
+	
+<c:if test="${error_message != null}">
+	<div class="error">${error_message}</div>
+</c:if>
 <p>
 	<spring:message code="tab.selectGadgetType.selectType" />
 </p>

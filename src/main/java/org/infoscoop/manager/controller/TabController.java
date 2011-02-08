@@ -59,6 +59,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -245,7 +246,16 @@ public class TabController {
 		staticGadget.setContainerId(containerId);
 
 		//TODO 国際化処理して言語ごとにDBにキャッシュとして保存する。そしてそれを取得する。
-		Document gadgetConf = getGadgetConf(type, locale);
+		Document gadgetConf = null;
+		try{
+			gadgetConf = getGadgetConf(type, locale);
+		}catch(Exception e){
+			model.addAttribute("tabId", tabId);
+			model.addAttribute("containerId", containerId);
+			model.addAttribute("gadgetConfs", GadgetService.getHandle().getGadgetConfs(request.getLocale()));
+			model.addAttribute("error_message", e.getMessage());
+			return "tab/selectGadgetType";
+		}
 		Node titleNode = XPathAPI.selectSingleNode(gadgetConf,
 				"/Module/ModulePrefs/@title");
 		if (titleNode != null) {
@@ -629,7 +639,7 @@ public class TabController {
 		if (type.startsWith("g_")) {
 
 			String url = type.substring(2);
-			Document doc = getRemoteGadget(url);
+			Document doc = getRemoteGadget(url,locale);
 			I18NConverter i18n = new I18NConverter(locale,
 					new MessageBundle.Factory.URL(-1, url).createBundles(doc));
 			// TODO It's a little dangerous.
@@ -648,17 +658,17 @@ public class TabController {
 		}
 	}
 	
-	private Document getRemoteGadget(String url) throws Exception {
+	private Document getRemoteGadget(String url, Locale locale) throws Exception {
 		InputStream is = null;
 		ProxyRequest proxyRequest = null;
 		try {
 			proxyRequest = new ProxyRequest(url, "XML");
 			proxyRequest.setTimeout(ProxyServlet.DEFAULT_TIMEOUT);
 			int statusCode = proxyRequest.executeGet();
-			if (statusCode != 200)
-				throw new Exception("gadget url="
-						+ proxyRequest.getProxy().getUrl() + ", statucCode="
-						+ statusCode);
+			if (statusCode != 200){
+				ResourceBundleMessageSource rb = (ResourceBundleMessageSource)SpringUtil.getBean("messageSource");
+				throw new Exception(rb.getMessage("tab.newStaticGadget.retrieve_gadget_failed", new Object[]{proxyRequest.getProxy().getUrl(), statusCode}, locale));
+			}
 			if (log.isInfoEnabled())
 				log.info("gadget url : " + proxyRequest.getProxy().getUrl());
 
