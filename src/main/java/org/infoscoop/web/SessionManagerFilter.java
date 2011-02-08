@@ -246,7 +246,7 @@ public class SessionManagerFilter implements Filter {
 							}
 
 							session.setAttribute(LOGINUSER_SUBJECT_ATTR_NAME, loginUser);
-							httpResponse.sendRedirect("manager/user/index.jsp");
+							httpResponse.sendRedirect("manager/user/setup");
 							return;
 						}else{
 							httpResponse.sendRedirect("notready.jsp");

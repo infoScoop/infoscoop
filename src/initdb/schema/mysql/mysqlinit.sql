@@ -37,10 +37,10 @@ CREATE TABLE IS_GROUPS (
 -- IS_USER_GROUP
 --
 CREATE TABLE IS_USER_GROUP (
-  `fk_user_id` bigint(20) unsigned NOT NULL,
-  `fk_group_id` bigint(20) unsigned NOT NULL,
-  KEY `fk_user_id` (`fk_user_id`),
-  KEY `fk_group_id` (`fk_group_id`)
+  `fk_user_id` int unsigned NOT NULL,
+  `fk_group_id` int unsigned NOT NULL,
+  foreign key (`fk_user_id`) references IS_USERS(`id`) on delete cascade,
+  foreign key (`fk_group_id`) references IS_GROUPS(`id`) on delete cascade
 ) ENGINE=InnoDB;
 
 --

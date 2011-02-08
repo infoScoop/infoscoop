@@ -2,6 +2,8 @@ package org.infoscoop.service;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.DomainManager;
 import org.infoscoop.dao.CommandBarDAO;
 import org.infoscoop.dao.DomainDAO;
@@ -21,6 +23,7 @@ import org.infoscoop.util.SpringUtil;
 import org.springframework.transaction.annotation.Transactional;
 
 public class DomainManageService {
+	private static Log log = LogFactory.getLog(DomainManageService.class);
 
 	//private static final String ORIGINAL_DOMAIN = "test.infoscoop4g.com";
 	private static final String TEMPLATE_DOMAIN_NAME = "DOMAIN_TEMPLATE";
@@ -50,14 +53,14 @@ public class DomainManageService {
 	}
 
 	@Transactional
-	public void newDomain(String domain) throws CloneNotSupportedException{
+	public Domain newDomain(String domain) throws CloneNotSupportedException{
 		Domain orgDomain = DomainDAO.newInstance().getByName(TEMPLATE_DOMAIN_NAME);
 		DomainManager.registerContextDomainId(orgDomain.getId());
 		
 		Domain newDomain = DomainDAO.newInstance().getByName(domain);
 		if (newDomain != null) {
-			throw new RuntimeException("The domain \"" + domain
-					+ "\" already exists.");
+			log.warn("The domain \"" + domain + "\" already exists.");
+			return null;
 		}
 		
 		newDomain = new Domain();
@@ -69,6 +72,7 @@ public class DomainManageService {
 		copyTabTemplates(newDomain);
 		
 		copyMenuTree(newDomain);
+		return newDomain;
 	}
 
 	

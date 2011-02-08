@@ -519,12 +519,6 @@
 			org.infoscoop.admin.web.ServiceCommandServlet
 		</servlet-class>
 	</servlet>
-	<servlet>
-		<servlet-name>DomainManageServlet</servlet-name>
-		<servlet-class>
-			org.infoscoop.admin.web.DomainManageServlet
-		</servlet-class>
-	</servlet>
   <servlet>
     <servlet-name>jssrv</servlet-name>
     <servlet-class>org.apache.shindig.gadgets.servlet.JsServlet</servlet-class>
@@ -791,11 +785,6 @@
 	<servlet-mapping>
 		<servlet-name>PreviewServlet</servlet-name>
 		<url-pattern>/adminpreview</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>DomainManageServlet</servlet-name>
-		<url-pattern>/admin/domainmanage</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
