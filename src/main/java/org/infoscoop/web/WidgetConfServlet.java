@@ -158,11 +158,9 @@ public class WidgetConfServlet extends HttpServlet {
 		if(matcherDomainName.find())
 			json = matcherDomainName.replaceAll(domainName);
 		
-		Pattern pattern = Pattern.compile( "__IS_GADGET_LOCATION_URL__" );
-		Matcher matcher = pattern.matcher(json);
 		String gadgetLocationUrl = type.substring(0, type.lastIndexOf('/'));
-		if(matcher.find())
-			json = matcher.replaceAll(gadgetLocationUrl);
+		json = WidgetConfUtil.replaceGadgetLocationUrl(json, gadgetLocationUrl);
+		
 		return I18NUtil.resolve(I18NUtil.TYPE_WIDGET, json,
 				locale, true);
 	}

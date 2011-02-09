@@ -125,7 +125,11 @@ public abstract class MessageBundle implements Comparable<MessageBundle> {
 			
 			if( locale.hasAttribute("messages")) {
 				String url = locale.getAttribute("messages");
-				
+				if(this instanceof URL){
+					String baseUrl = ((URL)this).baseUrl;
+					String gadgetLocationUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/'));
+					url = WidgetConfUtil.replaceGadgetLocationUrl(url, gadgetLocationUrl);
+				}
 				return createBundle( new Locale( lang,country ),direction,url );
 			} else {
 				Map<String,String> messages = EmbedMessageBundle.parseMessages( locale );

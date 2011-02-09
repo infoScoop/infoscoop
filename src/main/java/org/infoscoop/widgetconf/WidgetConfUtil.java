@@ -422,5 +422,14 @@ public class WidgetConfUtil {
 
 			return new ByteArrayInputStream(gadget);
 		}
+		
+	}
+
+	public static String replaceGadgetLocationUrl(String json, String gadgetLocationUrl){
+		Pattern pattern = Pattern.compile( "__IS_GADGET_LOCATION_URL__" );
+		Matcher matcher = pattern.matcher(json);
+		if(matcher.find())
+			json = matcher.replaceAll(gadgetLocationUrl);
+		return json;
 	}
 }
