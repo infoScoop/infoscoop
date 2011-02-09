@@ -599,6 +599,10 @@
 
   <servlet-mapping>
   	<servlet-name>GadgetResourceServlet</servlet-name>
+  	<url-pattern>/manager/gadget/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>GadgetResourceServlet</servlet-name>
   	<url-pattern>/gadget/*</url-pattern>
   </servlet-mapping>
 
@@ -615,6 +619,11 @@
   <servlet-mapping>
     <servlet-name>jssrv</servlet-name>
     <url-pattern>/jssrv/gadget/features/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>jssrv</servlet-name>
+    <url-pattern>/manager/jssrv/gadget/features/*</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
