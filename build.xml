@@ -19,8 +19,6 @@
 	<property name="build.main" value="${build.home}/main" />
 	<property name="build.initdb" value="${build.home}/initdb" />
 	<property name="build.migration" value="${build.home}/migration" />
-	<property name="googleapps.src" value="${basedir}/src/googleapps/java" />
-	<property name="googleapps.web" value="${basedir}/src/googleapps/web" />
 	
 	<!-- admin properties -->
 	<property name="src.admin.web" value="${src.main.web}/admin" />
@@ -103,7 +101,10 @@
 		<copy todir="${build.main}" file="${src.main.web}/iframe.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/admin/role.jsp"/>
 		<copy todir="${build.main}" file="${src.main.web}/admin/blank.html"/>
-		
+
+		<copy todir="${build.main}" file="${src.main.web}/favicon.ico"/>
+		<copy todir="${build.main}" file="${src.main.web}/gapps_openid_login.jsp"/>
+		<copy todir="${build.main}" file="${src.main.web}/notready.jsp"/>
 		<!-- copy javascript without compress -->
 		<copy todir="${build.main}/js/lib">
 			<fileset dir="${src.main.web}/js/lib" />
@@ -156,63 +157,62 @@
 	<target name="compress-main" depends="prepare-main">
 
 		<concat destfile="${build.main}/js/dist/Portal.js.tmp" append="false" encoding="utf-8" fixlastline="true">
-			<!--filelist dir="${src.main.web}/js/lib/prototype-1.5.0" files="prototype.js"/-->
-			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
-			<!--filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="slider.js"/-->
-			<!--filelist dir="${src.main.web}/js/utils" files="ajax304.js"/-->
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="controls.js"/>
-			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
-			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
-			<filelist dir="${src.main.web}/js/lib/rsa/" files="jsbn.js"/>
-			<filelist dir="${src.main.web}/js/lib/rsa/" files="prng4.js"/>
-			<filelist dir="${src.main.web}/js/lib/rsa/" files="rng.js"/>
-			<filelist dir="${src.main.web}/js/lib/rsa/" files="rsa.js"/>
-			<filelist dir="${src.main.web}/js/lib" files="extras-array.js"/>
-			<filelist dir="${src.main.web}/js/lib" files="html-sanitizer-minified.js"/>
-			<!--filelist dir="${src.main.web}/js/utils" files="utils.js"/-->
-			<filelist dir="${src.main.web}/js/utils/ajaxpool" files="ajax.js"/>
-			<!--filelist dir="${src.main.web}/js" files="properties.js"/-->
-			<filelist dir="${src.main.web}/js/utils" files="Request.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="msg.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="Validator.js"/>
-			<filelist dir="${src.main.web}/js" files="Portal.js"/>
-			<filelist dir="${src.main.web}/js" files="DragWidget.js"/>
-			<!--filelist dir="${src.main.web}/js/lib" files="xpath.js"/-->
-			<filelist dir="${src.main.web}/js/utils" files="CalendarInput.js"/>
-			<filelist dir="${src.main.web}/js/lib/prototype-window-1.3/" files="window.js"/>
-			<!--filelist dir="${src.main.web}/js/lib/prototype-window-1.3/" files="window_ext.js"/-->
-			<filelist dir="${src.main.web}/js/commands" files="UpdatePropertyCommand.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="EventDispatcher.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="groupSettingModal.js"/>
-			<filelist dir="${src.main.web}/js" files="Tab.js"/>
-			<filelist dir="${src.main.web}/js" files="WidgetsMap.js"/>
-			<filelist dir="${src.main.web}/js" files="WidgetsContainer.js"/>
-			<filelist dir="${src.main.web}/js" files="AutoReload.js"/>
-			<filelist dir="${src.main.web}/js" files="SiteAggregationMenu.js"/>
-			<filelist dir="${src.main.web}/js" files="SiteMap.js"/>
-			<filelist dir="${src.main.web}/js" files="TreeMenu.js"/>
-			<filelist dir="${src.main.web}/js" files="AddContentPane.js"/>
-			<filelist dir="${src.main.web}/js" files="ContentFooter.js"/>
-			<filelist dir="${src.main.web}/js" files="GlobalSetting.js"/>
-			<filelist dir="${src.main.web}/js" files="Theme.js"/>
-			<filelist dir="${src.main.web}/js/widgets" files="Widget.js"/>
-			<filelist dir="${src.main.web}/js/widgets" files="WidgetHeader.js"/>
-			<filelist dir="${src.main.web}/js/widgets" files="WidgetEdit.js"/>
-			<filelist dir="${src.main.web}/js/widgets/maximize" files="Maximize.js"/>
-			<filelist dir="${src.main.web}/js/widgets/rssreader" files="RssReader.js"/>
-			<filelist dir="${src.main.web}/js/widgets/rssreader" files="RssItemRender.js"/>
-			<filelist dir="${src.main.web}/js/widgets/MultiRssReader" files="MultiRssReader.js"/>
-			<filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssReader.js"/>
-			<filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssCategory.js"/>
-			<filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssItemRender.js"/>
-			<filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssItemSelection.js"/>
-			<filelist dir="${src.main.web}/js/widgets/calendar" files="Calendar.js"/>
-			<filelist dir="${src.main.web}/js/widgets/calendar" files="iCalendar.js"/>
-			<filelist dir="${src.main.web}/js/widgets/ticker" files="Ticker.js"/>
-			<filelist dir="${src.main.web}/js/widgets/MiniBrowser" files="MiniBrowser.js"/>
-			<filelist dir="${src.main.web}/js/widgets/MiniBrowser" files="FragmentMiniBrowser.js"/>
+		    <filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
+		    <filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
+		    <filelist dir="${src.main.web}/js/utils" files="ajax304.js"/>
+		    <filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
+		    <filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
+		    <filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="controls.js"/>
+		    <filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui" files="livepipe.js"/>
+		    <filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui" files="tabs.js"/>
+		    <filelist dir="${src.main.web}/js/lib/date" files="date.js"/>
+		    <filelist dir="${src.main.web}/js/lib/rsa" files="jsbn.js"/>
+		    <filelist dir="${src.main.web}/js/lib/rsa" files="prng4.js"/>
+		    <filelist dir="${src.main.web}/js/lib/rsa" files="rng.js"/>
+		    <filelist dir="${src.main.web}/js/lib/rsa" files="rsa.js"/>
+		    <filelist dir="${src.main.web}/js/lib" files="extras-array.js"/>
+		    <filelist dir="${src.main.web}/js/lib" files="html-sanitizer-minified.js"/>
+		    <filelist dir="${src.main.web}/js/utils" files="utils.js"/>
+		    <filelist dir="${src.main.web}/js/utils" files="domhelper.js"/>
+		    <filelist dir="${src.main.web}/js/utils/ajaxpool" files="ajax.js"/>
+		    <filelist dir="${src.main.web}/js/utils" files="Request.js"/>
+		    <filelist dir="${src.main.web}/js/utils" files="msg.js"/>
+		    <filelist dir="${src.main.web}/js" files="Portal.js"/>
+		    <filelist dir="${src.main.web}/js" files="DragWidget.js"/>
+		    <filelist dir="${src.main.web}/js/utils" files="CalendarInput.js"/>
+		    <filelist dir="${src.main.web}/js/commands" files="UpdatePropertyCommand.js"/>
+		    <filelist dir="${src.main.web}/js/utils" files="EventDispatcher.js"/>
+		    <filelist dir="${src.main.web}/js/utils" files="Validator.js"/>
+		    <filelist dir="${src.main.web}/js/utils" files="groupSettingModal.js"/>
+		    <filelist dir="${src.main.web}/js" files="Tab.js"/>
+		    <filelist dir="${src.main.web}/js" files="WidgetsMap.js"/>
+		    <filelist dir="${src.main.web}/js" files="WidgetsContainer.js"/>
+		    <filelist dir="${src.main.web}/js" files="AutoReload.js"/>
+		    <filelist dir="${src.main.web}/js" files="SiteAggregationMenu.js"/>
+		    <filelist dir="${src.main.web}/js" files="SiteMap.js"/>
+		    <filelist dir="${src.main.web}/js" files="TreeMenu.js"/>
+		    <filelist dir="${src.main.web}/js" files="AddContentPane.js"/>
+		    <filelist dir="${src.main.web}/js/widgets" files="Widget.js"/>
+		    <filelist dir="${src.main.web}/js/widgets" files="WidgetHeader.js"/>
+		    <filelist dir="${src.main.web}/js/widgets" files="WidgetEdit.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/maximize" files="Maximize.js"/>
+		    <filelist dir="${src.main.web}/js" files="ContentFooter.js"/>
+		    <filelist dir="${src.main.web}/js" files="GlobalSetting.js"/>
+		    <filelist dir="${src.main.web}/js" files="Theme.js"/>
+			<filelist dir="${src.main.web}/js/lib/prototype-window-1.3" files="window.js"/>
+			<filelist dir="${src.main.web}/js/lib/prototype-window-1.3" files="window_ext.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/rssreader" files="RssReader.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/rssreader" files="RssItemRender.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/MultiRssReader" files="MultiRssReader.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssReader.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssItemRender.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssItemSelection.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/maximize" files="MaximizeRssCategory.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/calendar" files="Calendar.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/calendar" files="iCalendar.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/ticker" files="Ticker.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/MiniBrowser" files="MiniBrowser.js"/>
+		    <filelist dir="${src.main.web}/js/widgets/MiniBrowser" files="FragmentMiniBrowser.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type js --charset UTF-8 -o &quot;${build.main}/js/dist/Portal-${build.version}.js&quot; &quot;${build.main}/js/dist/Portal.js.tmp&quot;"/>
@@ -264,23 +264,24 @@
 		</move>
 		<concat destfile="${build.main}/skin/styles.css.tmp" append="false" encoding="utf-8" fixlastline="true">
 			<filelist dir="${src.main.web}/skin" files="styles.css"/>
-			<filelist dir="${src.main.web}/skin" files="calendar.css"/>
-			<filelist dir="${src.main.web}/skin" files="calendarinput.css"/>
-			<filelist dir="${src.main.web}/skin" files="commandbar.css"/>
-			<filelist dir="${src.main.web}/skin" files="mysitemap.css"/>
-			<filelist dir="${src.main.web}/skin" files="pulldown.css"/>
 			<filelist dir="${src.main.web}/skin" files="siteaggregationmenu.css"/>
-			<filelist dir="${src.main.web}/skin" files="pulldown.css"/>
-			<filelist dir="${src.main.web}/skin" files="tab.css"/>
 			<filelist dir="${src.main.web}/skin" files="treemenu.css"/>
+			<filelist dir="${src.main.web}/skin" files="calendar.css"/>
+			<filelist dir="${src.main.web}/skin" files="pulldown.css"/>
+			<filelist dir="${src.main.web}/skin" files="calendarinput.css"/>
+			<filelist dir="${src.main.web}/skin" files="mySiteMap.css"/>
+			<filelist dir="${src.main.web}/skin" files="treemenu.css"/>
+			<filelist dir="${src.main.web}/skin" files="commandbar.css"/>
+			<filelist dir="${src.main.web}/skin" files="tab.css"/>
 			<filelist dir="${src.main.web}/skin" files="widget.css"/>
 			<filelist dir="${src.main.web}/skin" files="groupsettingmodal.css"/>
 			<filelist dir="${src.main.web}/skin" files="minibrowser.css"/>
+			<filelist dir="${src.main.web}/skin" files="widgetranking.css"/>
 			<filelist dir="${src.main.web}/skin" files="rssreader.css"/>
 			<filelist dir="${src.main.web}/skin" files="maximizerssreader.css"/>
 			<filelist dir="${src.main.web}/skin" files="ticker.css"/>
-			<filelist dir="${src.main.web}/skin" files="theme.css"/>
 			<filelist dir="${src.main.web}/skin" files="header.css"/>
+			<filelist dir="${src.main.web}/skin" files="theme.css"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type css --charset UTF-8 -o &quot;${build.main}/skin/styles.css&quot; &quot;${build.main}/skin/styles.css.tmp&quot;"/>
@@ -447,7 +448,6 @@
 				<path refid="compile.classpath" />
 			</classpath>
 		</javac>
-
 	</target>
 	
 	<target name="dist-main" depends="compile-main,copy-webresouces,replaceTag-main" description="Create binary distribution">
@@ -494,14 +494,14 @@
 			encoding="UTF-8"/>
 		<replaceregexp
 			file="${build.main}/index.jsp"
-			match="&quot;([^&quot;]+)\.js&quot;"
-			replace="&quot;\1.js?${build.timestamp}&quot;"
+			match="&quot;([^&quot;]+)\.js(\?[^&quot;]*)&quot;"
+			replace="&quot;\1.js\2&amp;${build.timestamp}&quot;"
 			flags="mg"
 			encoding="UTF-8"/>
 		<replaceregexp
 			file="${build.main}/index.jsp"
-			match="&quot;([^&quot;]+)\.js(\?.*)&quot;"
-			replace="&quot;\1.js\2&amp;${build.timestamp}&quot;"
+			match="&quot;([^&quot;]+)\.js&quot;"
+			replace="&quot;\1.js?${build.timestamp}&quot;"
 			flags="mg"
 			encoding="UTF-8"/>
 		<replaceregexp
@@ -685,37 +685,6 @@
 			</tarfileset>
     	</tar>
     </target>
-    	
-	<!--build for google apps-->
-	<target name="googleapps-prepare">
-		<copy todir="${build.main}" file="${googleapps.web}/gapps_openid_login.jsp"/>
-		<delete>
-			<fileset dir="${build.main}/WEB-INF/lib">
-				<include name="openid4java-*.jar"/>
-			</fileset>
-		</delete>
-		<copy todir="${build.main}/WEB-INF/lib">
-			<fileset dir="${googleapps.web}/WEB-INF/lib">
-				<include name="**/*.jar"/>
-			</fileset>
-		</copy>
-		
-		<!--
-		<copy todir="${build.main}/WEB-INF/classes" encoding="UTF-8">
-			<fileset dir="${googleapps.resources}">
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
-		-->
-		
-		<javac srcdir="${googleapps.src}" encoding="utf-8" destdir="${build.main}/WEB-INF/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
-			<classpath>
-				<path refid="compile.build.classpath" />
-			</classpath>
-		</javac>
-	</target>
-	<target name="googleapps-dist" depends="dist-main,googleapps-prepare,admin,build-war,dist">
-	</target>
     
 	<target name="optimize-gadget-features">
 		<delete>
