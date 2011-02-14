@@ -70,7 +70,12 @@ if( isPreview == null )
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/prototype-window-1.3/themes/alphacube.css">
     <link rel="stylesheet" type="text/css" href="portallayout?type=css">
 
-    <script src="js/resources/resources_<%=request.getLocale().getLanguage() %>.js"></script>
+	<%
+		String lang = request.getLocale().getLanguage();
+		if(!lang.equals("ja") && !lang.equals("en"))
+			lang = "en";
+	%>
+    <script src="js/resources/resources_<%=lang%>.js"></script>
 
     <script src="jssrv/gadget/features/core:rpc:pubsub:infoscoop.js?c=1"></script>
 	<%
