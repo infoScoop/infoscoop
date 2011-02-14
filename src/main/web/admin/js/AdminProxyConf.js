@@ -686,9 +686,11 @@ ISA_ProxyConf.prototype.classDef = function() {
 		// intranet
 		configTr.appendChild(
 			$.TD({style:"textAlign:center;width:40px;"},
-				 $.SPAN({},$.INPUT({type:'checkbox',defaultChecked:/true/.test(caseConfigItem.intranet) ,onchange:{handler:function(){
+				 $.SPAN({},$.INPUT({type:'checkbox',defaultChecked:/true/.test(caseConfigItem.intranet) ,onchange:{handler:function(e){
+					var targetElement = (Browser.isIE)? e.srcElement : this;
+					
 					ISA_Admin.isUpdated = true;
-					ISA_ProxyConf.updateProxyConfAttr( caseConfigItem, "intranet", ""+this.checked );
+					ISA_ProxyConf.updateProxyConfAttr( caseConfigItem, "intranet", ""+targetElement.checked );
 				 }}}))
 				   )
 			);
