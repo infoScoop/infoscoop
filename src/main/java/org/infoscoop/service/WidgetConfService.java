@@ -70,6 +70,9 @@ public class WidgetConfService {
 			List<String> widgetTypes = new ArrayList<String>();
 			List<String> gadgetTypes = new ArrayList<String>();
 			for(String type : useTypes){
+				if(type == null)
+					type = "";
+				
 				if(type.indexOf("g_") == 0){
 					if(type.indexOf("g_upload") == 0)
 						gadgetTypes.add(type.substring(10).split("/")[0] + ".xml");
