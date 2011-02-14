@@ -2243,7 +2243,7 @@ IS_Widget.RssReader.buildMultiAccessStatContent = function( widget,root ) {
 			Element.addClassName( $("tab_"+new_container.id ),"selected");
 			
 			var iframe = new_container.firstChild;
-			if( !iframe.src )
+			if( !iframe.src || /\/blank.html$/.test(iframe.src))
 				iframe.src = "accessstats?rssUrl=" +new_container.id;
 		}
 	})
