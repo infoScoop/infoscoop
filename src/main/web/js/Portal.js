@@ -95,6 +95,8 @@ IS_Portal.start = function() {
 
 	var header = document.getElementById("portal-header");
 	header.innerHTML = IS_Customization.header;
+	if(IS_Customization.header.length == 0)
+		header.style.display = "none";
 	
 	IS_Portal.SearchEngines.init();
 
