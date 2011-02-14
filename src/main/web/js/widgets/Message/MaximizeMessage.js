@@ -255,12 +255,14 @@ IS_Widget.MaximizeMessage.prototype.classDef = function() {
 				Class:className,
 				href:'javascript:void(0)',
 				onclick:{
-					handler:function(uid, userName){
+					handler:function(uid, userName, e){
 
 						self.loadMsgList(listUrl.user(uid), IS_R.getResource( IS_R.lb_messageOf,[userName]), true);
 						if(self.label)
 							self.label.className = '';
 						self.label = null;
+						
+						Event.stop(e);
 					}.bind(self, uid, userName),
 					id:eventId
 				}
