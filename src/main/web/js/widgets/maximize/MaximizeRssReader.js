@@ -799,7 +799,10 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		rssToggleEditElementButton.style.display = "none";
 		dateTd.insertBefore( rssToggleEditElementButton,dateTd.firstChild );
 		
-		Event.observe( rssToggleEditElementButton,"click",toggleEditElement,false,widget.id );
+		Event.observe( rssToggleEditElementButton,"click",function(e){
+			toggleEditElement(e);
+			Event.stop(e);
+		},false,widget.id );
 	}
 	function toggleEditElement( toSummary ) {
 		var rssToggleEditElementButton = $("maximizeRssToggleEditElementButton_" +widget.id );
