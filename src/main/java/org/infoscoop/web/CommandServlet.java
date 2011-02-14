@@ -95,13 +95,14 @@ public class CommandServlet extends HttpServlet {
 				}else{
 					// a flag of failed
 					Preference entity = PreferenceDAO.newInstance().select(uid);
-					Node prefNode = entity.getElement();
-					boolean isChanged = PreferenceService.updateProperty((Element)prefNode, "failed", "true");
-					if(isChanged){
-			       		entity.setElement((Element)prefNode);
-			       		PreferenceService.getHandle().update(entity);
-					}
-					
+					if(entity != null){	// When guest user login, this entity is null.
+						Node prefNode = entity.getElement();
+						boolean isChanged = PreferenceService.updateProperty((Element)prefNode, "failed", "true");
+						if(isChanged){
+				       		entity.setElement((Element)prefNode);
+				       		PreferenceService.getHandle().update(entity);
+						}
+					};
 					String errMsg = "A server module was revised. The customized information is not stored.";
 					resultList.add(new CommandResult("", "warn", errMsg));
 				}

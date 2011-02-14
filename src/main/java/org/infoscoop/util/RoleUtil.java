@@ -71,9 +71,9 @@ public class RoleUtil {
 			try {
 				Pattern pattern = Pattern.compile(regx);
 				for(ISPrincipal p: principals){
-					Matcher matcher = pattern.matcher(p.getName());
 					if (type.equals(p.getType()) 
 							&& p.getName() != null){
+						Matcher matcher = pattern.matcher(p.getName());
 						retVal = matcher2List(matcher);
 						if(retVal != null)
 							break;
