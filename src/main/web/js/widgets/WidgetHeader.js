@@ -750,7 +750,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 
 	this.changeTurnbkIcon = function(){
 		var openWidget = widget.getBoolUserPref("openWidget");
-		console.log("chageTurnbkIcon:"+ openWidget);
+		//console.log("chageTurnbkIcon:"+ openWidget);
 		var divTurnBack = $("hi_" + widget.id + "_turnBack");
 		if(divTurnBack){
 			if( !openWidget ){
@@ -778,7 +778,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	this.minimize = function( e ){
 		if( e ) Event.stop( e );
 		
-		console.log("call minimize");
+		//console.log("call minimize");
 		var openWidget = widget.getBoolUserPref("openWidget");
 		if( !openWidget )
 			return;
@@ -788,7 +788,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		this.changeTurnbkIcon();
 		
 		if(widget.content && widget.content.minimizeIconHandler){
-			console.log("call content function");
+			//console.log("call content function");
 			widget.content.minimizeIconHandler(e);
 		} else {
 			widget.elm_widgetContent.style.display = "none";
@@ -806,7 +806,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		this.changeTurnbkIcon();
 		
 		if(widget.content && widget.content.turnBackIconHandler){
-			console.log("call content turnback function");
+			//console.log("call content turnback function");
 			widget.content.turnBackIconHandler(e);
 		} else {
 			widget.elm_widgetContent.style.display = "block";
