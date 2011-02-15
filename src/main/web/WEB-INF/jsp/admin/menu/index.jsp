@@ -20,7 +20,7 @@
 			<th>公開</th>
 			<th>公開範囲</th>
 			<!--<th width="100"><spring:message code="menu.index.header.top" /></th>-->
-			<th width="100"><spring:message code="menu.index.header.side" /></th>
+			<!--<th width="100"><spring:message code="menu.index.header.side" /></th>-->
 			<th width="50"><spring:message code="tab.index.edit" /></th>
 			<th width="50"><spring:message code="menu.index.header.delete" /></th>
 		</tr>
@@ -48,9 +48,11 @@
 				<span>${menu.topPos ? display : ""}</span>
 			</td>
 			-->
+			<!--
 			<td class="radio_cell">
 				<span>${menu.sidePos ? display : ""}</span>
 			</td>
+			-->
 			<td class="icon_cell"><a href="showEditTree?id=${menu.id}" class="edit_link"><div class="edit icon" title="編集"></div></a></td>
 			<td class="icon_cell"><div class="icon trash" menu_id="${menu.id}" title="削除"></div></td>
 		</tr>

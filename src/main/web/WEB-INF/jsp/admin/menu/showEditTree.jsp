@@ -36,11 +36,16 @@ $(function () {
 				<form:textarea path="description" /><form:errors path="description" cssClass="error"/>
 			</li>
 			<li>
+				<!--
 				<label>メニュー表示場所</label>
 				<span class="radio" style="display:inline-block;">
+				-->
 				<!--<form:checkbox path="topPos" label="トップに表示"/><form:errors path="top" cssClass="error"/>-->
 				<form:hidden path="topPos" value="1"/>
+				<!--
 				<form:checkbox path="sidePos" label="サイドに表示"/><form:errors path="side" cssClass="error"/>
+				-->
+				<form:hidden path="sidePos" value="1"/>
 			</li>
 			<li>
 				<form:label for="accessLevel" path="publish" cssErrorClass="error"><spring:message code="gadget._form.publish" /></form:label>
