@@ -435,8 +435,10 @@ public class SearchEngineService {
 						break;
 					}
 				}
-				if (!isPermitted)
-					AdminServiceUtil.removeSelf(searchEl);
+				if (!isPermitted){
+					AdminServiceUtil.removeSelf(searchEl); // searchEngines.getLength() is reduced.
+					i--;
+				}
 			}
 		}
 	}
