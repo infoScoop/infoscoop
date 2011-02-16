@@ -202,7 +202,7 @@ if( isPreview == null )
     	replaceRegExp : new RegExp("(/widsrv|/customization|/mnusrv)"),
     	cancelRegExp : new RegExp("/comsrv|/mnuchksrv"),
 		rewriteUrl: function(url){
-			if(this.replaceRegExp.test(url)) {
+			if(this.replaceRegExp.test(url) && !/\/adminpreview/.test(url)) {
 				var newurl = url.replace(this.replaceRegExp, "/adminpreview$1");
 				<%
 				for(int i = 0; i < principalParams.size(); i++){
