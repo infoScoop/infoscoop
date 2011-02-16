@@ -94,12 +94,13 @@ public class WidgetDAO extends HibernateDaoSupport{
 		return result;
     }
     
-	public int getWidgetCountByType(final String type) {
+	public int getWidgetCountByType(final String uid, final String type) {
 		return (Integer) super.getHibernateTemplate().execute(
 				new HibernateCallback() {
 					public Object doInHibernate(org.hibernate.Session session)
 							throws HibernateException, SQLException {
 						Criteria crit = session.createCriteria(Widget.class);
+						crit.add(Restrictions.eq(Widget.PROP_UID, uid));
 						crit.add(Restrictions.eq(Widget.PROP_TYPE, type));
 						crit.add(Restrictions.eq(Widget.PROP_DELETEDATE, 0L));
 						crit.setProjection(Projections.rowCount());

@@ -107,7 +107,7 @@ public class RemoveWidget extends XMLCommandProcessor {
 						gadgetUrl);
 				if (tokens.size() > 0) {
 					int count = widgetDAO
-							.getWidgetCountByType(widget.getType());
+							.getWidgetCountByType(uid, widget.getType());
 					if (count == 0)
 						oauthTokenDAO.deleteOAuthToken(tokens);
 				}
