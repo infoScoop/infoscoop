@@ -194,7 +194,8 @@ ISA_SearchEngine.prototype.classDef = function() {
 				String( replaceUndefinedValue(searchEngine.id, "") ),
 				replaceUndefinedValue(searchEngine.title, ""),
 				replaceUndefinedValue(searchEngine.retrieveUrl, ""),
-				replaceUndefinedValue(searchEngine.encoding, "")]),
+				replaceUndefinedValue(searchEngine.encoding, ""),
+				replaceUndefinedValue(searchEngine.defaultSelected, true)]),
 			asynchronous:true,
 			onSuccess: function(response){},
 			onFailure: function(t) {

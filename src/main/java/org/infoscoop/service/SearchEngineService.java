@@ -58,7 +58,7 @@ public class SearchEngineService {
 	 * @throws Exception
 	 */
 	public synchronized String addSearchEngine(String parent, String id,
-			String title, String retrieveUrl, String encoding) throws Exception {
+			String title, String retrieveUrl, String encoding, boolean defaultSelected) throws Exception {
 		if (log.isInfoEnabled()) {
 			log.info("addSearchEngine: id=" + id + ", title=" + title
 				+ ", retrieveUrl=" + retrieveUrl + ", encoding="
@@ -84,6 +84,7 @@ public class SearchEngineService {
 		element.setAttribute("id", id);
 		element.setAttribute("title", title);
 		element.setAttribute("retrieveUrl", retrieveUrl);
+		element.setAttribute("defaultSelected", String.valueOf(defaultSelected));
 		if (encoding != null && encoding.length() > 0)
 			element.setAttribute("encoding", encoding);
 		
