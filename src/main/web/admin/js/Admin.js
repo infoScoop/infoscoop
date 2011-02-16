@@ -794,8 +794,8 @@ ISA_Admin.checkUpdated = function() {
 		if( !confirm(ISA_R.ams_confirmChangeLost) ) {
 			return false;
 		}
-		IS_EventDispatcher.newEvent("deleteTemp","");
 	}
+	IS_EventDispatcher.newEvent("deleteTemp","");
 	this.isUpdated = false;
 	return true;
 };
