@@ -780,7 +780,12 @@ IS_Portal.processLoadWidget = function() {
 		IS_Portal.loadStartTabIds[widget.tabId] = true;
 		IS_EventDispatcher.newEvent("tabLoadStart", widget.tabId);
 	}
-	setTimeout( widget.loadContents.bind( widget),10 );
+	
+	if (!IS_Portal.tabs[widget.tabId]) {
+		loadCompleteListener(widget);
+	}else{
+		setTimeout(widget.loadContents.bind(widget), 10);
+	}
 	
 	var loadingLimit = 4;
 	if( IS_Portal.loadingWidgetCount < loadingLimit )
