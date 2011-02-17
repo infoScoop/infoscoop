@@ -123,6 +123,8 @@ IS_Widget.Calendar.iCalendar.prototype.classDef = function() {
 	 */
 	this.load = function(_opt) {
 		_opt = _opt || {};
+		
+		var asynchronous;
 		if(typeof _opt.asynchronous == "undefined"){
 			asynchronous = true;
 		}
