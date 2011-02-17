@@ -919,6 +919,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		this.initFilter(this.currentCategory);
 		
 		if(rssReaders.length > 2){
+			$('maximizeCategoryCombobox').show();
 			$('maximizeCategoryCombobox').style.width = "";
 			IS_Event.unloadCache(widget.id +"_category_pulldown");
 			$('maximizeCategoryCombobox').innerHTML = "";
@@ -928,6 +929,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 			this.buildCategoryComboBox($('maximizeCategoryCombobox'), categoryNo);
 		}else{
 			$('maximizeCategoryCombobox').style.width = 0;
+			$('maximizeCategoryCombobox').hide();
 		}
 		
 		this.updateFilterState();
