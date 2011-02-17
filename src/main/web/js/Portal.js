@@ -36,7 +36,7 @@ var defaultTheme = is_getPropertyString(defaultTheme, false);
 var hostPrefix = (isTabView)? findHostURL(false).replace(/\/tab.*/, "") : findHostURL(false);
 var proxyServerURL = hostPrefix + "/proxy";
 
-var searchEngineURL = searchEngineURL || localhostPrefix+"/schsrv";
+var searchEngineURL = searchEngineURL ? is_getProxyUrl( searchEngineURL, "NoOperation") : hostPrefix+"/schsrv";
 
 IS_Customization = false;
 IS_WidgetConfiguration = [];

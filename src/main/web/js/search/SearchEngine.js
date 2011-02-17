@@ -837,7 +837,7 @@ IS_Portal.SearchEngines = {
 	},
 	
 	_loadConfig : function( isSync ) {
-		var url = is_getProxyUrl( searchEngineURL, "NoOperation");
+		var url = searchEngineURL;
 		var opt = {
 			method: 'get' ,
 			asynchronous:isSync,
