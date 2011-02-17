@@ -851,6 +851,13 @@ Event.observe(window, 'beforeunload',  windowBeforeUnload );
 
 function windowBeforeUnload() {
 	IS_Request.asynchronous = false;
+
+	try{
+		IS_Portal.processLogoff();
+	}catch(e){
+		alert(IS_R.getResource(IS_R.ms_logofftimeSavingfailure,[getText(e)]));
+	}
+
 	try{
 		IS_Request.LogCommandQueue.fireRequest();
 	}catch(e){}
@@ -869,11 +876,13 @@ function windowUnload() {
 	IS_Request.asynchronous = false;
 
 	//Send to Server
+	/*
 	try{
 		IS_Portal.processLogoff();
 	}catch(e){
 		alert(IS_R.getResource(IS_R.ms_logofftimeSavingfailure,[getText(e)]));
 	}
+	*/
 	
 	//Event.unloadCache();
 	// Cache is deleted on loading
