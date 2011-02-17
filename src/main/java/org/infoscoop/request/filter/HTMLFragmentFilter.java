@@ -61,6 +61,8 @@ public class HTMLFragmentFilter extends ProxyFilter {
 	private static final Log log = LogFactory.getLog(HTMLFragmentFilter.class);
 	
 	protected int preProcess(HttpClient client, HttpMethod method, ProxyRequest request) {
+		request.addIgnoreHeader("if-none-match");
+		
 		String cacheURL = request.getRequestHeader("fragment-chacheID");
 		String cacheLifeTimeStr = request.getRequestHeader("fragment-cacheLifeTime");
 		int cacheLifeTime = 60;//360 is set by default in script
@@ -177,7 +179,8 @@ public class HTMLFragmentFilter extends ProxyFilter {
 			if (cacheURL != null && cacheURL.length() > 0) {
 				Map headerMap = request.getResponseHeaders();
 				try {
-					String cacheId = CacheService.getHandle().insertUpdateCache(cacheURL, new ByteArrayInputStream(fragmentBytes), headerMap);
+//					String cacheId = CacheService.getHandle().insertUpdateCache(cacheURL, new ByteArrayInputStream(fragmentBytes), headerMap);
+					String cacheId = CacheService.getHandle().insertUpdateCache(CacheService.PUBLIC_CACHE_USERID, cacheURL, new ByteArrayInputStream(fragmentBytes), headerMap);
 					if(log.isInfoEnabled())
 						log.info("save cache: url=" + cacheURL + ", cacheId=" + cacheId);
 					request.putResponseHeader("MSDPortal-Cache-ID", cacheId);
