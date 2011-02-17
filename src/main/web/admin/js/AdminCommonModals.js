@@ -86,6 +86,7 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 		buttonDiv.style.textAlign = "center";
 		
 		if (options.displayOK) {
+			/*
 			if( menuItem.isDelete && menuItem.type ){
 				buttonDiv.appendChild(
 					$.DIV({},
@@ -98,6 +99,7 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 							)
 					);
 			}
+			*/
 			var elementInput = document.createElement("input");
 			elementInput.className = "modal_button";
 			elementInput.type = "button";
