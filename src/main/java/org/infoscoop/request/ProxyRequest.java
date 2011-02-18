@@ -640,6 +640,7 @@ public class ProxyRequest{
 				if(nameValue.length != 2)continue;
 				if("JSESSIONID".equals(nameValue[0].trim())){
 					this.targetJSessionId = nameValue[1].trim();
+					return;
 				}
 			}
 		}
