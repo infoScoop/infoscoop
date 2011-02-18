@@ -124,10 +124,11 @@ IS_Widget.Calendar.iCalendar.prototype.classDef = function() {
 	this.load = function(_opt) {
 		_opt = _opt || {};
 		
-		var asynchronous;
-		if(typeof _opt.asynchronous == "undefined"){
+		var asynchronous = _opt.asynchronous;
+		if(typeof asynchronous == "undefined"){
 			asynchronous = true;
 		}
+			
 		var requestUrl = this.url;
 		var headers = [];
 		if (this.authHeaders) {
