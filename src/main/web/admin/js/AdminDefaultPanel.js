@@ -438,8 +438,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			onSuccess: function(response){
 			},
 			onFailure: function(t) {
-				var errMsg = IS_R.ms_clearConfigurationFailed+
-					t.responseText && typeof t.responseText == "string" ? t.responseText.substr(0, 100) : "";
+				var errMsg = IS_R.ms_clearConfigurationFailed+ "\n" +
+					((t.responseText && typeof t.responseText == "string") ? t.responseText.substr(0, 100) : "");
 				alert( errMsg );
 				msg.error( errMsg );
 			},
