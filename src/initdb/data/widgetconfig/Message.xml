@@ -10,7 +10,7 @@
 ]
 	]]>
 	</WidgetPref>[
-	<WidgetPref datatype="bool" display_name="!{lb_broadcastAdminOnly}" name="broadcastAdminOnly" default_value="false" />
+	<WidgetPref datatype="bool" display_name="!{lb_broadcastAdminOnly}" name="broadcastAdminOnly" value="false" />
 	<UserPref default_value=""  datatype="hidden" name="userList"/>
 	<UserPref default_value=""  datatype="hidden" name="groupCloseStatus"/>
 	<Header>
