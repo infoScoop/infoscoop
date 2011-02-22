@@ -797,7 +797,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	this.turnBack = function( e ){
 		if( e ) Event.stop( e );
 		
-		console.log("call turnback");
+		//console.log("call turnback");
 		if( widget.getBoolUserPref("openWidget") )
 			return;
 		
