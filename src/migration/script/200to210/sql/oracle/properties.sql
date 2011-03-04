@@ -13,4 +13,4 @@ create table ${SCHEMA_NAME}is_properties (
   regexMsg varchar(1024 BYTE )
 );
 
-create index is_properties_advanced on ${SCHEMA_NAME}is_properties(advanced);
+create index ${SCHEMA_NAME}is_properties_advanced on ${SCHEMA_NAME}is_properties(advanced);
