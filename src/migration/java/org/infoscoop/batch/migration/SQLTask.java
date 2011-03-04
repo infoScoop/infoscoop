@@ -32,7 +32,7 @@ public class SQLTask extends Task {
 		return context;
 	}
 	
-	private static Connection connection;
+	private Connection connection = null;
 	
 	boolean quiet = false;
 	public void setQuiet( boolean quiet ) {
@@ -74,11 +74,9 @@ public class SQLTask extends Task {
 	
 	public void execute() throws BuildException {
 		try {
-			if( connection == null ) {
-				synchronized( SQLTask.class ) {
-					if( connection == null )
-						connection = (( DataSource )getContext().getBean("dataSource")).getConnection();
-				}
+			synchronized( SQLTask.class ) {
+				if( connection == null )
+					connection = (( DataSource )getContext().getBean("dataSource")).getConnection();
 			}
 			
 			try {
@@ -103,7 +101,7 @@ public class SQLTask extends Task {
 				
 				throw new BuildException( ex );
 			} finally {
-//				connection.close();
+				connection.close();
 			}
 			
 			log("success.");
@@ -137,7 +135,7 @@ public class SQLTask extends Task {
 	@Override
 	protected void finalize() throws Throwable {
 		try {
-			if( connection != null ) {
+			if( connection != null && !connection.isClosed() ) {
 				synchronized( SQLTask.class ) {
 					connection.close();
 					connection = null;
