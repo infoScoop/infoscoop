@@ -288,8 +288,14 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		  }
 		};
 		if(menuItem.serviceAuthType){
+			var serviceAuthType = menuItem.serviceAuthType.split(' ')[0];
 			opt.requestHeaders.push("authType");
-			opt.requestHeaders.push(menuItem.serviceAuthType);
+			opt.requestHeaders.push(serviceAuthType);
+			var serviceUidParamName = menuItem.serviceAuthType.split(' ')[1];
+			if(serviceUidParamName){
+				opt.requestHeaders.push("_authUidParamName");
+				opt.requestHeaders.push(decodeURIComponent(serviceUidParamName));
+			}
 		}
 		
 		function displayServiceMenu() {
