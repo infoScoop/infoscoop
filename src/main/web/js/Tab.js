@@ -728,7 +728,8 @@ IS_Portal.getWidget2TabDroppableOpt = function(tab){
 				
 				if( widget.isGadget() ) {
 					widget.tabId = tab.id;
-					gadgets.rpc.call( widget.iframe.name,"tabChanged",false,widget.tabId );
+					if(widget.iframe)
+						gadgets.rpc.call( widget.iframe.name,"tabChanged",false,widget.tabId );
 					widget.onTabChangeReload = true;
 				}
 				
