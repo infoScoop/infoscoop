@@ -803,6 +803,7 @@ IS_Portal.deleteCache = function() {
 		method: 'get' ,
 		asynchronous:false,
 		onSuccess: function(req){},
+		on1223: function(req){},
 		onFailure: function(t) {
 			msg.warn(IS_R.getResource(IS_R.ms_cacheDeleteFailure,[t.status,t.statusText]));
 		}
@@ -816,6 +817,7 @@ IS_Portal.deleteCacheByUrl = function(url) {
 		postBody: "delete=&url=" + encodeURIComponent(url),
 		asynchronous:true,
 		onSuccess: function(req){},
+		on1223: function(req){},
 		onFailure: function(t) {
 			msg.warn(IS_R.getResource(IS_R.ms_cacheDeleteFailure,[t.status,t.statusText]));
 		}
