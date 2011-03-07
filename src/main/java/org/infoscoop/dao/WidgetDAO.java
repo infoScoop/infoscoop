@@ -243,7 +243,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 		if(log.isInfoEnabled())
 			log.info("deleteWidget:uid=" + uid +",tabId=" + tabId + ",widgetId=" + widgetId + ",deleteDate=" + deleteDate);
 
-		String updateQuery = "update Widget set Deletedate = ?,Tabid = '' where Uid = ? and Tabid = ? and (Widgetid = ? or Parentid = ?) and Deletedate = 0";
+		String updateQuery = "update Widget set Deletedate = ?,Tabid = '-1' where Uid = ? and Tabid = ? and (Widgetid = ? or Parentid = ?) and Deletedate = 0";
 		return super.getHibernateTemplate().bulkUpdate(
 				updateQuery,
 				new Object[]{ new Long(deleteDate), uid, tabId, widgetId, widgetId });
