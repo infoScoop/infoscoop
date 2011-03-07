@@ -537,7 +537,6 @@ IS_Portal.SearchEngines = {
 			if(searchSiteCheckBoxList[i].checked){
 				selectSiteList.push(searchId);
 				var args = this._searchEngineConfs[searchId];
-				console.log(searchId,args);
 				if(!searchEngine)
 				    searchEngine = new IS_SearchEngine(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8],args[9]) ;
 				newSearchEngines.push(searchEngine);
