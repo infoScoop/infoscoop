@@ -371,7 +371,12 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				
 				var aTagOnclick = function(e){
 					var itemDisplay = widget.getUserPref("itemDisplay");
-					if (itemDisplay == 'newwindow') {
+
+					if(/^javascript:/i.test( widget.title_url )){
+						eval( widget.title_url );
+						Event.stop(e);
+					}
+					else if (itemDisplay == 'newwindow') {
 						aTag.target = "_blank";
 					} else {
 						if(itemDisplay == "inline")
