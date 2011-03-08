@@ -687,6 +687,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			indicatorIcon.style.display = "none";
 		}else{
 			createMenuRefreshIcon();
+			refreshIcon.style.display = "block";
 			indicatorIcon.style.display = "none";
 		}
 	}
