@@ -1,5 +1,7 @@
 package org.infoscoop.batch.migration.v200to210;
 
+import java.util.Date;
+
 import org.infoscoop.batch.migration.CSVBeanFactory;
 import org.infoscoop.batch.migration.CSVField;
 import org.infoscoop.dao.model.Gadget;
@@ -11,7 +13,7 @@ public class GadgetFactory implements CSVBeanFactory {
 		gadget.setPath( values[2].toString() );
 		gadget.setName( values[3].toString() );
 		gadget.setData( values[4].getBytes() );
-		
+		gadget.setLastmodified(new Date());
 		return gadget;
 	}
 }

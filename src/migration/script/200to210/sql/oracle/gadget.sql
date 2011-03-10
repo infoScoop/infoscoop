@@ -15,13 +15,13 @@ create table ${SCHEMA_NAME}is_gadgets (
   constraint is_gadgets_unique unique (type,path,name)
 );
 
-create index is_gadgets_type on ${SCHEMA_NAME}is_gadgets(type);
-create index is_gadgets_path on ${SCHEMA_NAME}is_gadgets(path);
-create index is_gadgets_name on ${SCHEMA_NAME}is_gadgets(name);
+create index ${SCHEMA_NAME}is_gadgets_type on ${SCHEMA_NAME}is_gadgets(type);
+create index ${SCHEMA_NAME}is_gadgets_path on ${SCHEMA_NAME}is_gadgets(path);
+create index ${SCHEMA_NAME}is_gadgets_name on ${SCHEMA_NAME}is_gadgets(name);
 
 create sequence ${SCHEMA_NAME}is_gadgets_id_seq;
 
-insert into ${SCHEMA_NAME}is_gadgets(type, path, name, data, lastmodified)
-  select type, path, name, data, lastmodified
+insert into ${SCHEMA_NAME}is_gadgets(id,type, path, name, data, lastmodified)
+  select ${SCHEMA_NAME}is_gadgets_id_seq.NEXTVAL - 1,type, path, name, data, lastmodified
   from ${SCHEMA_NAME}is_gadgets${BACKUP_TABLE_SUFFIX}
-  where type not in('sticky','alarm','calc','blogparts','worldclock','todoList');
+  where type not in('sticky','alarm','calc','blogparts','worldclock','todoList','schedule','groupschedule');
