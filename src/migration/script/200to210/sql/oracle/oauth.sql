@@ -16,7 +16,7 @@ create table ${SCHEMA_NAME}is_oauth_tokens (
 -- OAUTH_CONSUMER
 --
 create sequence ${SCHEMA_NAME}is_oauth_consumers_id_seq;
-create table is_oauth_consumers (
+create table ${SCHEMA_NAME}is_oauth_consumers (
   id number(18) not null primary key,
   gadget_url varchar(1024 BYTE) not null,
   gadget_url_key varchar(255 BYTE) not null,
