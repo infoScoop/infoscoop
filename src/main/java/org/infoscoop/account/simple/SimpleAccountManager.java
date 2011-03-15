@@ -35,7 +35,6 @@ import org.infoscoop.account.PrincipalDef;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.dao.AccountDAO;
 import org.infoscoop.dao.model.Account;
-import org.infoscoop.util.SpringUtil;
 
 /**
  * @author hr-endoh
@@ -81,9 +80,8 @@ public class SimpleAccountManager implements IAccountManager{
 	
 	public Subject getSubject(String userid) throws Exception {
 		Account account = (Account)this.getUser(userid);
-		if(account == null){
-			throw new AuthenticationException(userid + " is not found.");
-		}
+		if(account == null) return null;
+		
 		Subject loginUser = new Subject();
 		ISPrincipal p = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, account.getUid());
 		p.setDisplayName(account.getName());
