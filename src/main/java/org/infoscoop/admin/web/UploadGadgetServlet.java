@@ -238,18 +238,9 @@ public class UploadGadgetServlet extends HttpServlet {
 					"ams_gadgetResourceUploadFileNotFound");
 		
 		// check the file(for IE)
-		try {
-			BufferedReader br =  new BufferedReader(
-					new InputStreamReader( info.fileItem.getInputStream() ));
-			if( br.readLine() == null )
-				throw new GadgetResourceException("The uplaod file is not found or the file is empty.",
-						"ams_gadgetResourceUploadFileNotFoundOrEmpty");
-		} catch( IOException ex ) {
-			log.error("",ex );
-			
+		if(info.fileItem.getSize()==0)
 			throw new GadgetResourceException("The upload file is not found or the file is empty.",
-					"ams_gadgetResourceUploadFileNotFoundOrEmpty");
-		}
+						"ams_gadgetResourceUploadFileNotFoundOrEmpty");
 
 		if( !info.isModuleMode() ) {
 			if( info.type == null || info.path == null || info.name == null )
