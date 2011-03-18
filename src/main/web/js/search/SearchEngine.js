@@ -373,10 +373,12 @@ IS_Portal.SearchEngines = {
 			);
 
 		var configs = this._searchEngineConfigEls;
-		for(var i = 0; i < configs.length;i++){
-			var searchId = configs[i].getAttribute("id");
-			var title = configs[i].getAttribute("title");
-			selectsearchsitediv.appendChild($.DIV({},$.INPUT({id:'searchEnableOption' + searchId, type:'checkbox', value:searchId }),title));
+		if(configs){
+			for(var i = 0; i < configs.length;i++){
+				var searchId = configs[i].getAttribute("id");
+				var title = configs[i].getAttribute("title");
+				selectsearchsitediv.appendChild($.DIV({},$.INPUT({id:'searchEnableOption' + searchId, type:'checkbox', value:searchId }),title));
+			}
 		}
 		searchTd.appendChild(searchoption);
 
@@ -410,10 +412,12 @@ IS_Portal.SearchEngines = {
 		var displaySearchResultsOnNewWindow = $('displaySearchResultsOnNewWindow');
 		displaySearchResultsOnNewWindow.defaultChecked = displaySearchResultsOnNewWindow.checked = this.searchOption.displayNewWindow;
 		var configs = this._searchEngineConfigEls;
-		for(var i = 0; i < configs.length;i++){
-			var searchId = configs[i].getAttribute("id");
-			var searchOption = $('searchEnableOption' + searchId);
-			searchOption.defaultChecked = searchOption.checked = this._selectedList.include(searchId);
+		if(configs){
+			for(var i = 0; i < configs.length;i++){
+				var searchId = configs[i].getAttribute("id");
+				var searchOption = $('searchEnableOption' + searchId);
+				searchOption.defaultChecked = searchOption.checked = this._selectedList.include(searchId);
+			}
 		}
 		var searchOptionSpan = $('searchoption');
 		Element.show(searchOptionSpan);
