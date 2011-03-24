@@ -46,7 +46,7 @@ public class WidgetConfConvertTask implements HibernateBeansTask.BeanTask2 {
 				
 				int length = widPrefs.getLength();
 				for(int i=0;i<length;i++){
-					Element widPref = (Element)widPrefs.item(length);
+					Element widPref = (Element)widPrefs.item(i);
 					if(widPref.getAttribute("name").equalsIgnoreCase("broadcastAdminOnly")){
 						String value = widPref.getAttribute("default_value");
 						if(value != null && !"".equals(value)){
