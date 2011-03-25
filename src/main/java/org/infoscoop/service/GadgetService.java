@@ -124,7 +124,7 @@ public class GadgetService {
 			Gadget gadget = gadgetList.get(i);
 			try {
 				//TODO:enocoding
-				Document gadgetDoc = ( Document )XmlUtil.string2Dom( new String( gadget.getData(),"UTF-8") );
+				Document gadgetDoc = ( Document )XmlUtil.string2DomWithBomCode( new String( gadget.getData(),"UTF-8") );
 				Element gadgetEl = gadgetDoc.getDocumentElement();
 				String type = gadget.getType();
 				

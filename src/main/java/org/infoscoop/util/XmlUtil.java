@@ -23,6 +23,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -229,6 +231,15 @@ public class XmlUtil {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static Node string2DomWithBomCode(String xml) throws SAXException{
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		//Xml with BOM code
+		Matcher junkMatcher = (Pattern.compile("^([\\W]+)<")).matcher( xml.trim() );
+		xml = junkMatcher.replaceFirst("<");
+		
+		return string2Dom(xml);
 	}
 	
 	public static Node stream2Dom(InputStream xml) {
