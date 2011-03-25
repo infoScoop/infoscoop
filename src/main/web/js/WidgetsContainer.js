@@ -548,6 +548,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 		}finally{
 			//refs#3864 stop indicator anyway when widgets are end of load.
 			IS_Portal.endIndicator();
+			IS_Portal.tabs[IS_Portal.currentTabId].isBuilt = true;
 		}
 	}
 	

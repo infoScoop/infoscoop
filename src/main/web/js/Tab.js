@@ -1185,7 +1185,7 @@ IS_Portal.changeActiveTab = function( changeTab, isInitialize ){
 	
 	// check apply preference
 	if(IS_Portal.tabs[changeTab.id].applyPreference)
-		IS_Portal.applyPreference(changeTab.id, true);
+		IS_Portal.applyPreference(changeTab.id, true,true);
 	
 	IS_Portal.startChangeTab();
 	
