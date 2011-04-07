@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.2.1
+infoScoop OpenSource 2.2.2
 ==========================
 
 infoScoop OpenSourceとは
@@ -15,16 +15,16 @@ http://www.infoscoop.org/
 -----------------------------
 2.1.0から本バージョンに移行するには以下の手順を実行します。
 
-1. データベース内のガジェットを置き換え、国際化リソースを追加します。
+1. データベースの内容を更新します。
 
-  (1). SQL実行ツールを開きます。
-  (2). 以下のSQLコマンドを実行します。
-     > delete from IS_GADGETS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
-     > delete from IS_GADGET_ICONS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
-  (3). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
-  (4). 適切なJDBCドライバーをlibディレクトリにコピーします。
-  (5). 以下のコマンドを実行します。
-     >import.sh(bat) GADGET GADGETICON I18N
+  (1)tools/initdb/data/widgetconfigディレクトリのimport.csvを11行削除し、下記のように1行だけになるよう編集します。
+       
+       "Message",<LOB FILE='Message.xml' />
+       
+  (2). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
+  (3). 適切なJDBCドライバーをlibディレクトリにコピーします。
+  (4). 以下のコマンドを実行します。
+     >import.sh(bat) GADGET GADGETICON I18N WIDGETCONF
 
   ※上記手順を実行すると、以下のガジェットの設定が初期化されます。
     * calc
@@ -33,8 +33,9 @@ http://www.infoscoop.org/
     * blogparts
     * sticky
     * worldclock
+    * message
 
-2. 静的コンテンツを設定している場合は、静的コンテンツを入れ替えます。
+2. staticContentUrlプロパティを設定している場合は、静的コンテンツを入れ替えます。
   静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
 
 3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
@@ -44,34 +45,49 @@ http://www.infoscoop.org/
 2.1.1およびそれ以降のパッチバージョン(バージョン番号の3桁目)から本バージョンに
 移行するには以下の手順を実行します。
 
-1. データベースに本バージョンで追加された機能の国際化リソースを追加します。
+1. データベースの内容を更新します。
 
-  (1). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
-  (2). 適切なJDBCドライバーをlibディレクトリにコピーします。
-  (3). 以下のコマンドを実行します。
-     >import.sh(bat) I18N
+  (1)tools/initdb/data/widgetconfigディレクトリのimport.csvを11行削除し、下記のように1行だけになるよう編集します。
+       
+       "Message",<LOB FILE='Message.xml' />
+       
+  (2). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
+  (3). 適切なJDBCドライバーをlibディレクトリにコピーします。
+  (4). 以下のコマンドを実行します。
+     >import.sh(bat) I18N WIDGETCONF
+     
+     ※上記手順を実行すると、メッセージガジェットの設定が初期化されます。
 
-2. 静的コンテンツを設定している場合は、静的コンテンツを入れ替えます。
+2. staticContentUrlプロパティを設定している場合は、静的コンテンツを入れ替えます。
   静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
 
 3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
-
-バージョン2.2.0からの移行手順
+バージョン2.2.0またはバージョン2.2.1からの移行手順
 -----------------------------
-2.2.0から本バージョンに移行するには以下の手順を実行します。
+2.2.0または2.2.1から本バージョンに移行するには以下の手順を実行します。
 
-1. 静的コンテンツを設定している場合は、静的コンテンツを入れ替えます。
+1. staticContentUrlプロパティを設定している場合は、静的コンテンツを入れ替えます。
    静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
 
-2. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
+2. データベースの内容を更新します。
+  (1)tools/initdb/data/widgetconfigディレクトリのimport.csvを11行削除し、下記のように1行だけになるよう編集します。
+       
+       "Message",<LOB FILE='Message.xml' />
+       
+  (2). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
+  (3). 適切なJDBCドライバーをlibディレクトリにコピーします。
+  (4). 以下のコマンドを実行します。
+     >import.sh(bat) I18N WIDGETCONF
+     
+     ※上記手順を実行すると、メッセージガジェットの設定が初期化されます。
 
+3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
 インストール方法
 ----------------
 以下のURLを参照してください。
-http://www.infoscoop.org/index.php/manual/quick-start.html
-
+http://www.infoscoop.org/index.php/ja/manual/installation-guide.html
 
 ライセンス・著作権
 ------------------
@@ -90,3 +106,8 @@ https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.0
 ------------------------
 以下のURLを参照してください。
 https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.1
+
+2.2.1から2.2.2での変更点
+------------------------
+以下のURLを参照してください。
+https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.2
