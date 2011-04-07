@@ -746,7 +746,7 @@
 			</tarfileset>
     	</tar>
     </target>
-    <target name="migration">
+    <target name="migration"  if="withMigration">
     	<ant antfile="${basedir}/build_migration.xml" inheritall="false"/>
     	
     	<mkdir dir="${release.home}/tools/migration"/>
