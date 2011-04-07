@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.2
+infoScoop OpenSource 2.2.2
 ========================
 
 About infoScoop OpenSource
@@ -23,16 +23,16 @@ How to migrate from version 2.1.0
 ---------------------------------
 To migrate from version 2.1.0 to 2.2, follow the steps below.
 
-1. Replace gadget files in the repository database and update i18n resources.
+1. Update repository database.
 
-  (1). Open SQL executable tool.
-  (2). Execute following SQL command.
-     > delete from IS_GADGETS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
-     > delete from IS_GADGET_ICONS where type in ('calc','blogparts','todoList','alarm','sticky','worldclock')
-  (3). Open command pronpt, change directory to tools/initdb
-  (4). Copy the suitable JDBC Driver to lib dir.
-  (5). Execute following command:
-     >import.sh(bat) GADGET GADGETICON I18N
+  (1)Open import.csv file in tools/initdb/data/widgetconfig and delete 11 lines to edit as below.
+       
+       "Message",<LOB FILE='Message.xml' />
+       
+  (2). Open command pronpt, change directory to tools/initdb
+  (3). Copy the suitable JDBC Driver to lib dir.
+  (4). Execute following command:
+     >import.sh(bat) GADGET GADGETICON I18N WIDGETCONF
 
   [Warning]Executing steps above, following gadgets settings is initialized:
     * calc
@@ -41,8 +41,9 @@ To migrate from version 2.1.0 to 2.2, follow the steps below.
     * blogparts
     * sticky
     * worldclock
+    * message
 
-2. if the static content URL is set, replacement of the static content files is
+2. If the staticContentUrl property is set, replacement of the static content files is
   necessary. Replace the directory where static contents are stored currently to 
   'infoscoop/staticContent' directory.
 
@@ -52,28 +53,43 @@ How to migrate from version 2.1.1
 ---------------------------------
 To migrate from version 2.1.1 to 2.2, follow the steps below.
 
-1. Replace gadget files in the repository database and update i18n resources.
+1. Update repository database.
 
-  (1). Open command prompt, change directory to tools/initdb
-  (2). Copy the suitable JDBC Driver to lib dir.
-  (3). Execute following command:
-     >import.sh(bat) I18N
+  (1)Open import.csv file in tools/initdb/data/widgetconfig and delete 11 lines to edit as below.
+       
+       "Message",<LOB FILE='Message.xml' />
+       
+  (2). Open command prompt, change directory to tools/initdb
+  (3). Copy the suitable JDBC Driver to lib dir.
+  (4). Execute following command:
+     >import.sh(bat) I18N WIDGETCONF
 
-2. if the static content URL is set, replacement of  the static content files is 
+2. If the staticContentUrl property is set, replacement of the static content files is
   necessary. Replace the directory where static contents are stored currently to 
   'infoscoop/staticContent' directory.
 
 3. Redeploy infoscoop.war to WebApplication Server.
 
-How to migrate from version 2.2.0
+How to migrate from version 2.2.0 or version 2.2.1
 ---------------------------------
-To migrate from version 2.2.0 to 2.2, follow the steps below.
+To migrate from version 2.2.0 or 2.2.1 to 2.2, follow the steps below.
 
 1. if the static content URL is set, replacement of  the static content files is 
   necessary. Replace the directory where static contents are stored currently to 
   'infoscoop/staticContent' directory.
 
-2. Redeploy infoscoop.war to WebApplication Server.
+2. Update repository database.
+
+  (1)Open import.csv file in tools/initdb/data/widgetconfig and delete 11 lines to edit as below.
+       
+       "Message",<LOB FILE='Message.xml' />
+       
+  (2). Open command prompt, change directory to tools/initdb
+  (3). Copy the suitable JDBC Driver to lib dir.
+  (4). Execute following command:
+     >import.sh(bat) I18N WIDGETCONF
+
+3. Redeploy infoscoop.war to WebApplication Server.
 
 
 License and Copyright
@@ -92,3 +108,8 @@ Changes from Version 2.2.0 to 2.2.1
 -----------------------------------
 Refer to the URL below.
 https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.1
+
+Changes from Version 2.2.1 to 2.2.2
+-----------------------------------
+Refer to the URL below.
+https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.2
