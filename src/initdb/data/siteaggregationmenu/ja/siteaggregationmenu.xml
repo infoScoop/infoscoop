@@ -53,11 +53,6 @@
 	    		<property name="url">http://sports.goo.ne.jp/atom/index.xml</property>
 	    	</properties>
 	    </site>
-	    <site id="news_suponiti" title="スポニチワールドサッカープラス" href="http://wsp.sponichi.co.jp/" type="MultiRssReader">
-	    	<properties>
-	    		<property name="url">http://wsp.sponichi.co.jp/column/index.xml</property>
-	    	</properties>
-	    </site>
 	    <site id="news_nikkansports" title="nikkansports.com" href="http://www.nikkansports.com/sports/top-sports.html" type="MultiRssReader">
 	    	<properties>
 	    		<property name="url">http://www.nikkansports.com/sports/index.rdf</property>
@@ -79,7 +74,7 @@
 	    	</properties>
 	    </site>
 	</site-top>
-	
+
 	<site-top id="etcWidgets" title="%{etc_widgets}">
 	    <site id="etcWidgets_alarm" title="%{alarm_title}" type="g_upload__alarm/gadget" multi="true"/>
 	    <site id="etcWidgets_calculator" title="%{calculator_title}" type="g_upload__calc/gadget" multi="true"/>
