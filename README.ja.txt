@@ -8,7 +8,7 @@ infoScoop OpenSourceとは
 を実現し、個人の情報処理スキルやワークスタイルに合わせた 「使いたくなる」 ポータ
 ルを実現します。
 
-詳細な説明は、以下のinfoScoop OpenSource公式サイトを参照ください。
+詳細な説明は、以下のinfoScoop OpenSource公式サイトをご参照ください。
 http://www.infoscoop.org/
 
 バージョン2.1.0からの移行手順
@@ -17,10 +17,11 @@ http://www.infoscoop.org/
 
 1. データベースの内容を更新します。
 
-  (1)tools/initdb/data/widgetconfigディレクトリのimport.csvを11行削除し、下記のように1行だけになるよう編集します。
-       
+  (1)tools/initdb/data/widgetconfigディレクトリのimport.csvを11行削除し、下記の
+     ように1行だけになるよう編集します。
+
        "Message",<LOB FILE='Message.xml' />
-       
+
   (2). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
   (3). 適切なJDBCドライバーをlibディレクトリにコピーします。
   (4). 以下のコマンドを実行します。
@@ -35,8 +36,9 @@ http://www.infoscoop.org/
     * worldclock
     * message
 
-2. staticContentUrlプロパティを設定している場合は、静的コンテンツを入れ替えます。
-  静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
+2. staticContentUrlプロパティを設定している場合は静的コンテンツを入れ替えます。
+  静的コンテンツを配置しているディレクトリ以下をinfoscoop/staticContent以下のコ
+  ンテンツに置換します。
 
 3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
@@ -47,39 +49,43 @@ http://www.infoscoop.org/
 
 1. データベースの内容を更新します。
 
-  (1)tools/initdb/data/widgetconfigディレクトリのimport.csvを11行削除し、下記のように1行だけになるよう編集します。
-       
+  (1)tools/initdb/data/widgetconfigディレクトリのimport.csvを11行削除し、下記の
+     ように1行だけになるよう編集します。
+
        "Message",<LOB FILE='Message.xml' />
-       
+
   (2). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
   (3). 適切なJDBCドライバーをlibディレクトリにコピーします。
   (4). 以下のコマンドを実行します。
      >import.sh(bat) I18N WIDGETCONF
-     
+
      ※上記手順を実行すると、メッセージガジェットの設定が初期化されます。
 
-2. staticContentUrlプロパティを設定している場合は、静的コンテンツを入れ替えます。
-  静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
+2. staticContentUrlプロパティを設定している場合は静的コンテンツを入れ替えます。
+  静的コンテンツを配置しているディレクトリ以下をinfoscoop/staticContent以下のコ
+  ンテンツに置換します。
 
 3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
 バージョン2.2.0またはバージョン2.2.1からの移行手順
------------------------------
+--------------------------------------------------
 2.2.0または2.2.1から本バージョンに移行するには以下の手順を実行します。
 
-1. staticContentUrlプロパティを設定している場合は、静的コンテンツを入れ替えます。
-   静的コンテンツを配置しているディレクトリをinfoscoop/staticContentで入れ替えてください。
+1. staticContentUrlプロパティを設定している場合は静的コンテンツを入れ替えます。
+  静的コンテンツを配置しているディレクトリ以下をinfoscoop/staticContent以下のコ
+  ンテンツに置換します。
 
 2. データベースの内容を更新します。
-  (1)tools/initdb/data/widgetconfigディレクトリのimport.csvを11行削除し、下記のように1行だけになるよう編集します。
-       
+  (1)tools/initdb/data/widgetconfigディレクトリのimport.csvを11行削除し、下記の
+     ように1行だけになるよう編集します。
+
        "Message",<LOB FILE='Message.xml' />
-       
+
   (2). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
   (3). 適切なJDBCドライバーをlibディレクトリにコピーします。
   (4). 以下のコマンドを実行します。
      >import.sh(bat) I18N WIDGETCONF
-     
+
      ※上記手順を実行すると、メッセージガジェットの設定が初期化されます。
 
 3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
