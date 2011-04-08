@@ -3,6 +3,7 @@
 	<property file="build.properties"/>
 	<property name="basedir" value="." />
 	<property name="build.home" value="${basedir}/build" />
+    <property name="build.work" value="${build.home}/work" />
 	<property name="dist.home" value="${basedir}/dist" />
 	<property name="src.home" value="${basedir}/src" />
 	<property name="src.qs" value="${src.home}/quickstart" />
@@ -20,11 +21,14 @@
 	</target>
 
 	<target name="quickstart" depends="clean">
+	    <!--
     	<ant antfile="${basedir}/build.xml"/>
 		<ant antfile="${basedir}/build_initdb.xml"/>
+		-->
+
     	<mkdir dir="${qs.home}" />
 		<copy todir="${qs.home}/initdb">
-			<fileset dir="${build.home}/initdb" />
+			<fileset dir="${build.work}/initdb" />
 			<fileset dir="${src.qs}" includes="addaccount.*" />
 		</copy>
 		<copy todir="${qs.home}">
@@ -42,7 +46,7 @@
 		<unzip src="${src.qs}/apache-tomcat-6.0.28.zip" dest="${qs.home}" />
 		<delete dir="${qs.tomcat.webapps}/docs" />
 		<delete dir="${qs.tomcat.webapps}/examples" />
-		<copy todir="${qs.tomcat.webapps}" file="${build.home}/infoscoop.war" />
+		<copy todir="${qs.tomcat.webapps}" file="${build.work}/infoscoop.war" />
 		<fixcrlf srcdir="${qs.home}" eol="lf" eof="remove" includes="**/*.sh" />
 		<copy todir="${qs.home}/apache-tomcat-6.0.28/lib">
 			<fileset dir="${src.qs.tomcat}/lib" />
@@ -53,10 +57,10 @@
 		<copy todir="${qs.home}/apache-tomcat-6.0.28/conf/Catalina/localhost"
 		      file="${src.qs.tomcat}/context/infoscoop.xml" />
 	</target>
-	
+
 	<target name="archive-quickstart" >
 		<zip compress="true" destfile="${dist.home}/${qs.file.name}.zip" basedir="${qs.build}"/>
-    	<tar destfile="${dist.home}/${qs.file.name}.tar.gz" compression="gzip">
+    	<tar destfile="${dist.home}/${qs.file.name}.tar.gz" compression="gzip" longfile="gnu">
     		<tarfileset dir="${qs.build}" mode="755">
 				<include name="**/*.sh"/>
 			</tarfileset>
@@ -68,5 +72,5 @@
 			</tarfileset>
     	</tar>
 	</target>
-			
+
 </project>
