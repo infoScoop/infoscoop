@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.2.1
+infoScoop OpenSource 2.2.2
 ==========================
 
 infoScoop OpenSourceとは
@@ -13,7 +13,7 @@ http://www.infoscoop.org/
 
 
 前提条件
-----------------
+--------
 infoScoop OpenSourceのセットアップを行う前に、以下の準備が必要です。
 
 ・JDK 5.0
@@ -22,7 +22,7 @@ infoScoop OpenSourceのセットアップを行う前に、以下の準備が必
 
 セットアップ方法
 ----------------
-infoscoop-2.2.1-quickstart.zip(tar.gz)を解凍し以下の手順を実行してください。
+infoscoop-2.2.2-quickstart.zip(tar.gz)を解凍し以下の手順を実行してください。
 
 1. リポジトリデータベースの作成
 
@@ -37,7 +37,7 @@ mysql>exit
 
 以下のコマンドを実行し、作成したデータベースに初期データを投入します。
 
-$ mysql -uroot iscoop < infoscoop-2.2.1-quickstart/init_infoscoop.ja.sql
+$ mysql -uroot iscoop < infoscoop-2.2.2-quickstart/init_infoscoop.ja.sql
 
 * init_infoscoop.sql を選択した場合はメニュー等のサンプル設定が英語になります。
 
@@ -84,7 +84,7 @@ http://<ホスト名>:8080/infoscoop/
 
 以下のファイルを編集します。
 
-infoscoop-2.2.1-quickstart/initdb/data/accounts/import.csv
+infoscoop-2.2.2-quickstart/initdb/data/accounts/import.csv
 
 <ユーザID>,<ユーザ名>,<パスワード> の形式でユーザを追加します。
 
@@ -92,7 +92,7 @@ infoscoop-2.2.1-quickstart/initdb/data/accounts/import.csv
 
 initdbディレクトリに移動し、addaccount.bat(sh)を実行します。
 
-$ cd infoscoop-2.2.1-quickstart/initdb
+$ cd infoscoop-2.2.2-quickstart/initdb
 $ addaccount.bat(sh)
 
 
@@ -112,3 +112,8 @@ https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.0
 ------------------------
 以下のURLを参照してください。
 https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.1
+
+2.2.1から2.2.2での変更点
+------------------------
+以下のURLを参照してください。
+https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.2
