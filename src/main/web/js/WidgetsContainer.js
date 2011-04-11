@@ -424,7 +424,9 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			}
 
 			//Holiday information
-			IS_Holiday = new IS_Widget.Calendar.iCalendar(localhostPrefix + "/holidaysrv");
+//			IS_Holiday = new IS_Widget.Calendar.iCalendar(localhostPrefix + "/holidaysrv");
+			IS_Holiday = new IS_Widget.Calendar.iCalendar(hostPrefix + "/holidaysrv");
+			IS_Holiday.noProxy = true;
 			IS_Holiday.load({asynchronous:false});
 			freshDays = IS_Portal.getFreshDays(IS_Portal.freshDays);
 			//IS_Portal.freshDays = freshDays;

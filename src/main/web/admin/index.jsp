@@ -147,7 +147,8 @@
 	<!--end script-->
 	
 	<script>
-		IS_Holiday = new IS_Widget.Calendar.iCalendar(localhostPrefix + "/holidaysrv");
+		IS_Holiday = new IS_Widget.Calendar.iCalendar(hostPrefix + "/holidaysrv");
+		IS_Holiday.noProxy = true;
 		IS_Holiday.load(false);
 	</script>
    	<script type="text/javascript">
