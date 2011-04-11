@@ -43,10 +43,11 @@ IS_Widget.Ranking.RankingRender.prototype.classDef = function() {
 		return text;
 	}
 	
-	this.initialize = function(urlStr, title, bodyEl, widgetObj, idx){
+	this.initialize = function(urlStr, title, bodyEl, widgetObj, idx, noProxy){
 		widget = widgetObj;
 		this.url = urlStr;
 		this.title = title;
+		this.noProxy = noProxy;
 		cacheId = widget.id + "_" + idx;
 		body = bodyEl;
 		body.innerHTML = "Loading...";
@@ -287,6 +288,11 @@ IS_Widget.Ranking.RankingRender.prototype.classDef = function() {
 			}
 		};	
 		
-		AjaxRequest.invoke(is_getProxyUrl(self.url, "RssReader"), opt);
+		var requestURL = is_getProxyUrl(self.url, "RssReader");
+		if (this.noProxy) {
+			opt.requestHeaders = ["X-IS-NOPROXY", "true"];
+			requestURL = self.url;
+		}
+		AjaxRequest.invoke(requestURL, opt);
 	};
 };

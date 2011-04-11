@@ -72,6 +72,7 @@ IS_Widget.Ranking.prototype.classDef = function() {
 		for(var i = 0; i < urls.length; i++) {
 			var url = urls[i].getAttribute("url");
 			var title = urls[i].getAttribute("title");
+			var noProxy = (urls[i].getAttribute("noProxy") === "true");
 			tabsTr.appendChild(this.buildSpaceTab("1%"));
 			tabsTr.appendChild(this.buildTabHeader(title, i, (i == currentTabIdx), tabWidth));
 			var body = document.createElement("div");
@@ -80,7 +81,7 @@ IS_Widget.Ranking.prototype.classDef = function() {
 				body.style.display = "none";
 			body.id = widget.id + "_" + i;
 			bodyDiv.appendChild(body);
-			rankings.push(new IS_Widget.Ranking.RankingRender(url, title, body, widget, i));
+			rankings.push(new IS_Widget.Ranking.RankingRender(url, title, body, widget, i, noProxy));
 		}
 			
 		tabsTr.appendChild(this.buildSpaceTab());

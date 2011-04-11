@@ -19,12 +19,13 @@ package org.infoscoop.web;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -36,13 +37,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.CacheDAO;
 import org.infoscoop.dao.KeywordLogDAO;
 import org.infoscoop.dao.model.Cache;
+import org.infoscoop.request.ProxyRequest;
+import org.infoscoop.request.filter.RssFilter;
 import org.infoscoop.util.DateUtility;
 import org.infoscoop.util.XmlUtil;
 
@@ -83,11 +85,10 @@ public class KeywordRankingServlet extends HttpServlet {
 			log.info("uid:[" + uid + "]: doPost");
 		}
 		
-		response.setContentType("text/xml; charset=UTF-8");
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache");
 		
-		Writer out = response.getWriter();
+		OutputStream out = null;
 		
 		int rankingPeriod;
 		int rankingNum;
@@ -163,7 +164,31 @@ public class KeywordRankingServlet extends HttpServlet {
 					insertRss("keywordRanking", rss);
 			}
 			
-			out.write(rss);
+			boolean noProxy = false;
+			Enumeration headers = request.getHeaderNames();
+			while(headers.hasMoreElements()){
+				String headerName = (String)headers.nextElement();
+				if(headerName.equalsIgnoreCase("X-IS-NOPROXY")){
+					noProxy = true;
+					break;
+				}
+			}
+			
+			byte[] resByte;
+			if(noProxy){
+				response.setContentType("text/plain; charset=UTF-8");
+				String requestURL = request.getRequestURL() != null ? request.getRequestURL().toString() : "";
+				ProxyRequest proxyRequest = new ProxyRequest(requestURL, "RSSReader");
+				proxyRequest.setPortalUid((String)request.getSession().getAttribute("Uid"));
+				
+				resByte = RssFilter.process(proxyRequest, new ByteArrayInputStream(rss.getBytes("UTF-8")));
+			}else{
+				response.setContentType("text/xml; charset=UTF-8");
+				resByte = rss.getBytes("UTF-8");
+			}
+			
+			out = response.getOutputStream();
+			out.write(resByte);
 		} catch (Exception e){
 			log.error("--- unexpected error occurred.", e);
 			response.sendError(500);
