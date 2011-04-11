@@ -83,7 +83,7 @@ public class CalendarFilter extends ProxyFilter{
 		
 	}
 
-	private byte[] process(String aContentType, String startDateStr, String endDateStr, InputStream responseStream) throws IOException {
+	public byte[] process(String aContentType, String startDateStr, String endDateStr, InputStream responseStream) throws IOException {
 		
 		String charset = null;
 		String contentType = null;
