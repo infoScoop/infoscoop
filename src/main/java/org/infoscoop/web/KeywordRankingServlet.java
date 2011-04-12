@@ -193,8 +193,10 @@ public class KeywordRankingServlet extends HttpServlet {
 			log.error("--- unexpected error occurred.", e);
 			response.sendError(500);
 		}  finally{
-			out.flush();
-			out.close();
+			if(out != null){
+				out.flush();
+				out.close();
+			}
 		}
 	}
 	
