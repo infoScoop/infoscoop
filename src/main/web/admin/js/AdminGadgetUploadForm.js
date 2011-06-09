@@ -88,7 +88,7 @@ ISA_GadgetUpload.buildForm = function( opt ) {
 	var form = document.createElement("form");
 	form.method = "POST";
 	form.encoding = "multipart/form-data";
-	form.action = "uploadgadget";
+	form.action = adminHostPrefix + "/uploadgadget";
 	form.target = "upLoadDummyFrame";
 	
 	var fileInput = document.createElement("input");
@@ -167,7 +167,7 @@ ISA_GadgetResource.prototype = {
 		this.resources = r.resources;
 	},
 	get: function( opt ) {
-		var url = findHostURL() + "/services/gadgetResource/selectResource";
+		var url = adminHostPrefix + "/services/gadgetResource/selectResource";
 		
 		AjaxRequest.invoke( url, Object.extend( opt || {},{
 			method: 'post' ,
@@ -177,7 +177,7 @@ ISA_GadgetResource.prototype = {
 		}) );
 	},
 	create: function( opt ) {
-		var url = findHostURL() + "/services/gadgetResource/insertResource";
+		var url = adminHostPrefix + "/services/gadgetResource/insertResource";
 		
 		AjaxRequest.invoke( url,Object.extend( opt || {},{
 			method: 'post' ,
@@ -187,7 +187,7 @@ ISA_GadgetResource.prototype = {
 		}) );
 	},
 	update: function( data,opt ) {
-		var url = findHostURL() + "/services/gadgetResource/updateTextResource";
+		var url = adminHostPrefix + "/services/gadgetResource/updateTextResource";
 		
 		AjaxRequest.invoke( url, Object.extend( opt || {},{
 			method: 'post' ,
@@ -197,7 +197,7 @@ ISA_GadgetResource.prototype = {
 		}));
 	},
 	remove: function( opt ) {
-		var url = findHostURL() + "/services/gadgetResource/deleteResource";
+		var url = adminHostPrefix + "/services/gadgetResource/deleteResource";
 		
 		AjaxRequest.invoke( url, Object.extend( opt || {},{
 			method: 'post' ,
@@ -238,7 +238,7 @@ ISA_GadgetResource.prototype = {
 	}
 }
 ISA_GadgetResource.list = function( type,opt ) {
-	var url = findHostURL() + "/services/gadgetResource/getResourceListJson";
+	var url = adminHostPrefix + "/services/gadgetResource/getResourceListJson";
 	
 	AjaxRequest.invoke(url, Object.extend( opt || {},{
 		method: 'post' ,
@@ -288,7 +288,7 @@ ISA_GadgetResources.prototype = {
 		layout.setStyle({ textAlign: "right"});
 		var link = document.createElement("a");
 		link.className = "button download";
-		link.href = "uploadgadget?"+$H({
+		link.href = adminHostPrefix + "/uploadgadget?"+$H({
 			type: this.type
 		}).toQueryString();
 		link.title = ISA_R.alb_gadgetResourcesZipDownloadDescription;

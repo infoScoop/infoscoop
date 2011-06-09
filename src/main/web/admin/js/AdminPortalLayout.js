@@ -277,7 +277,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 	}
 	
 	this.updatePortalLayout = function(portalLayouts) {
-		var url = findHostURL() + "/services/portalLayout/updatePortalLayout";
+		var url = adminHostPrefix + "/services/portalLayout/updatePortalLayout";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -305,7 +305,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 	}
 	
 	this.build = function() {
-		var url = findHostURL() + "/services/portalLayout/getPortalLayoutJson";
+		var url = adminHostPrefix + "/services/portalLayout/getPortalLayoutJson";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,

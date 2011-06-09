@@ -104,7 +104,7 @@ ISA_SiteAggregationMenu.setWidgetConf = function(_widgetConfList, isAddMulti) {
 		}
 	}
 	
-	var url = findHostURL() + "/services/gadget/getGadgetJson";
+	var url = adminHostPrefix + "/services/gadget/getGadgetJson";
 	var opt = {
 	  method: 'get' ,
 	  asynchronous:true,
@@ -346,7 +346,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 	
 	this.changeOrderEditMode = function(isForce){
 		// Request
-		var url = findHostURL() + "/services/menu/orderLock";
+		var url = adminHostPrefix + "/services/menu/orderLock";
 		var opt = {
 			method: 'post',
 			contentType: "application/json",
@@ -440,7 +440,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 			new ISA_CommonModals.EditorForm(
 				addSiteTop,
 				function(menuItem){
-					var url = findHostURL() + "/services/menu/addTopMenuItem";
+					var url = adminHostPrefix + "/services/menu/addTopMenuItem";
 					var newMenuItem = ISA_SiteAggregationMenu.getUpdMenuItem(menuItem, self.menuType);
 					newMenuItem.add = true;
 					var allertSetting = $F('allertSetting');
@@ -675,7 +675,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		var currentTopUrl = ISA_Properties.propertiesList["displayTopMenu"].value;
 		var currentSideUrl = ISA_Properties.propertiesList["displaySideMenu"].value;
 
-		var url = findHostURL() + "/services/menu/commitMenu";
+		var url = adminHostPrefix + "/services/menu/commitMenu";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/x-www-form-urlencoded",
@@ -910,7 +910,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 	}
 	
 	this.build = function() {
-		var url = findHostURL() + "/services/menu/getMenuTree";
+		var url = adminHostPrefix + "/services/menu/getMenuTree";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -968,7 +968,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 	
 	function getTreeAdminUsers(){
 		ISA_SiteAggregationMenu.menuTreeAdminUsers = [];
-		var url = findHostURL() + "/services/menu/getMenuTreeAdminUsers";
+		var url = adminHostPrefix + "/services/menu/getMenuTreeAdminUsers";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,
@@ -1001,7 +1001,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 	}
 	
 	function getWidgetConf() {
-		var url = findHostURL() + "/services/widgetConf/getWidgetConfJson";
+		var url = adminHostPrefix + "/services/widgetConf/getWidgetConfJson";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,
@@ -1033,7 +1033,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 };
 
 ISA_SiteAggregationMenu.removeTemp = function(){
-	var url = findHostURL() + "/services/menu/removeTempMenu";
+	var url = adminHostPrefix + "/services/menu/removeTempMenu";
 	var opt = {
 		method: 'delete' ,
 		asynchronous: false,
@@ -1407,7 +1407,7 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 			editTitleTd.appendChild(editDiv);
 			
 			var editorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
-				var url = findHostURL() + "/services/menu/updateMenuItem";
+				var url = adminHostPrefix + "/services/menu/updateMenuItem";
 				var newMenuItem = ISA_SiteAggregationMenu.getUpdMenuItem(menuItem, menuObj.menuType);
 				if (menuItem.serviceURL && !newMenuItem.serviceURL) {
 					alert(ISA_R.ams_externalServiceDataNotDelete);
@@ -1485,7 +1485,7 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 				
 				var deleteEditorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
 					
-					var url = findHostURL() + "/services/menu/"
+					var url = adminHostPrefix + "/services/menu/"
 						+ ((menuItem.parentId)? "removeMenuItem" : "removeTopMenuItem");
 					var opt = {
 						method: 'post',
@@ -1535,7 +1535,7 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 			
 			var parentMenuItem = menuItem;
 			var addEditorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
-				var url = findHostURL() + "/services/menu/addMenuItem";
+				var url = adminHostPrefix + "/services/menu/addMenuItem";
 				var newMenuItem = ISA_SiteAggregationMenu.getUpdMenuItem(menuItem, menuObj.menuType);
 				newMenuItem.add = true;
 				
@@ -1641,7 +1641,7 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 		oldSiteTop.parentNode.replaceChild(loadingDiv, oldSiteTop);
 		
 		// Request
-		var url = findHostURL() + "/services/menu/menuLock";
+		var url = adminHostPrefix + "/services/menu/menuLock";
 		var opt = {
 			method: 'post',
 			contentType: "application/json",

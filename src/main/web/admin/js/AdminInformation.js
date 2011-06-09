@@ -20,7 +20,8 @@ ISA_Information.prototype.classDef = function() {
 			container.removeChild(container.firstChild);
 
 		var self = this;
-		var url = findHostURL() + "/services/information/getUserCountListJSON";
+		console.log(adminHostPrefix);
+		var url = adminHostPrefix + "/services/information/getUserCountListJSON";
 		var opt = {
 			method: 'get',
 			asynchronous:true,

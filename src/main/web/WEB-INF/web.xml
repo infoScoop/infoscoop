@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
-
-<web-app>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>@APP.MAIN.NAME@</display-name>
 
 	<context-param>
@@ -19,7 +18,7 @@
 		<param-name>guice-modules</param-name>
 		<param-value>org.apache.shindig.common.PropertiesModule:</param-value>
 	</context-param>
-	
+
 	<context-param>
    		<param-name>contextConfigLocation</param-name>
     	<param-value>/WEB-INF/classes/datasource.xml
@@ -41,7 +40,7 @@
 
 	<!--CustomizeSSOFilter-->
 	<!--CustomizeSetRoleHeaderFilter-->
-	
+
 	<filter>
 		<filter-name>SessionManagerFilter</filter-name>
 		<filter-class>org.infoscoop.web.SessionManagerFilter</filter-class>
@@ -145,7 +144,7 @@
 	</filter-->
 
 	<!--CustomizeSSOFilterMapping-->
-	
+
 	<!--CustomizeSetRoleHeaderFilterMapping-->
 
 	<filter-mapping>
@@ -202,7 +201,7 @@
 		<filter-name>SetCharacterEncodingFilter</filter-name>
 		<url-pattern>/authsrv/login</url-pattern>
 	</filter-mapping>
-	
+
 	<filter-mapping>
 		<filter-name>PreviewImpersonationFilter</filter-name>
 		<url-pattern>/adminpreview/*</url-pattern>
@@ -222,7 +221,7 @@
 
 	<filter-mapping>
 		<filter-name>CheckAdminFilter</filter-name>
-		<url-pattern>/admin/*</url-pattern>
+		<url-pattern>/manager/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
@@ -275,20 +274,12 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/admin/index.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/admin/</url-pattern>
+		<url-pattern>/manager/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
 		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<url-pattern>/admin/index.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<url-pattern>/admin/</url-pattern>
+		<url-pattern>/manager/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>I18NFilter_ADMINJS</filter-name>
@@ -348,9 +339,9 @@
 	</servlet>
 
 	<servlet>
-		<servlet-name>HttpProxy</servlet-name>
-		<display-name>Http Proxy</display-name>
 		<description>A proxy for Http requests</description>
+		<display-name>Http Proxy</display-name>
+		<servlet-name>HttpProxy</servlet-name>
 		<servlet-class>
 			org.infoscoop.web.ProxyServlet
 		</servlet-class>
@@ -359,7 +350,15 @@
 			<param-value>60000</param-value>
 		</init-param>
 	</servlet>
-	
+
+	<servlet>
+		<servlet-name>AdminDispatcher</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
 	<servlet>
 		<servlet-name>NewSessionIdServlet</servlet-name>
 		<servlet-class>
@@ -556,7 +555,7 @@
 			org.infoscoop.web.ProxyCredentialManageServlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<servlet-name>OAuthCallbackServlet</servlet-name>
 		<servlet-class>
@@ -663,6 +662,11 @@
   </servlet-mapping>
 
   <servlet-mapping>
+    <servlet-name>AdminDispatcher</servlet-name>
+    <url-pattern>/manager/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
   	<servlet-name>AddonServlet</servlet-name>
   	<url-pattern>/addon/*</url-pattern>
   </servlet-mapping>
@@ -746,7 +750,7 @@
 		<servlet-name>OAuthCallbackServlet</servlet-name>
 		<url-pattern>/oauthcallback</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>AuthenticationServlet</servlet-name>
 		<url-pattern>/logout</url-pattern>

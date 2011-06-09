@@ -659,7 +659,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 	
 	this.updatePortalAdmins = function(sendData) {
 		controlModal.open();
-		var url = findHostURL() + "/services/portalAdmins/updatePortalAdmins";
+		var url = adminHostPrefix + "/services/portalAdmins/updatePortalAdmins";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -687,7 +687,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 	}
 	
 	this.build = function() {
-		var url = findHostURL() + "/services/portalAdmins/getPortalAdminsJson";
+		var url = adminHostPrefix + "/services/portalAdmins/getPortalAdminsJson";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,

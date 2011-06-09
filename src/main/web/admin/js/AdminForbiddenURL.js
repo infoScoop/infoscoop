@@ -133,7 +133,7 @@ ISA_PortalForbiddenURL.prototype = {
 			overlayCloseOnClick: false
 		});
 		
-		var url = findHostURL() + "/services/forbiddenUrls/updateForbiddenURLs";
+		var url = adminHostPrefix + "/services/forbiddenUrls/updateForbiddenURLs";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -176,7 +176,7 @@ ISA_PortalForbiddenURL.prototype = {
 		loadingMessage.style.cssFloat = "left";
 		container.appendChild(loadingMessage);
 		
-		var url = findHostURL() + "/services/forbiddenUrls/getForbiddenURLsJSON";
+		var url = adminHostPrefix + "/services/forbiddenUrls/getForbiddenURLsJSON";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,

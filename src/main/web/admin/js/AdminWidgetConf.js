@@ -331,7 +331,7 @@ ISA_WidgetConf.prototype.classDef = function() {
 		if( !confirm( ISA_R.ams_deleteGadgetConfirm ))
 			return;
 		
-		var url = findHostURL() + "/services/gadget/deleteGadget";
+		var url = adminHostPrefix + "/services/gadget/deleteGadget";
 		var opt = {
 		  method: 'post',
 		  contentType: "application/json",
@@ -443,7 +443,7 @@ ISA_WidgetConf.prototype.classDef = function() {
 	}
 	
 	this.buildWidgetConfs = function() {
-		var url = findHostURL() + "/services/widgetConf/getWidgetConfJson";
+		var url = adminHostPrefix + "/services/widgetConf/getWidgetConfJson";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,
@@ -477,7 +477,7 @@ ISA_WidgetConf.prototype.classDef = function() {
 	}
 	
 	this.buildGadgetConfs = function( callback ) {
-		var url = findHostURL() + "/services/gadget/getGadgetJson";
+		var url = adminHostPrefix + "/services/gadget/getGadgetJson";
 		var opt = {
 		  method: 'get' ,
 		  asynchronous:true,

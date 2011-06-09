@@ -174,7 +174,7 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 			editConfNode.appendChild( oauthFieldSet );
 		}
 		
-		var url = findHostURL() + "/services/authentication/getGetConsumerListJsonByUrl";
+		var url = adminHostPrefix + "/services/authentication/getGetConsumerListJsonByUrl";
 		var opt = {
 		  method: 'post',
 		  contentType: "application/json",
@@ -1020,7 +1020,7 @@ ISA_WidgetConf.EditWidgetConf.validate = function(conf, prefix, pref, value){
 }
 
 ISA_WidgetConf.EditWidgetConf.requestSaveConf = function(type, conf, oauthServiceList, onSuccess, onError){
-	var url = findHostURL() + "/services/" + ( (conf.ModulePrefs) ? "gadget/updateGadget" :  "widgetConf/updateWidgetConf");
+	var url = adminHostPrefix + "/services/" + ( (conf.ModulePrefs) ? "gadget/updateGadget" :  "widgetConf/updateWidgetConf");
 	var opt = {
 		method: 'post' ,
 		contentType: "application/json",

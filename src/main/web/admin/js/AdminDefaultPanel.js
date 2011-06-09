@@ -2,7 +2,7 @@ var ISA_DefaultPanel = IS_Class.create();
 IS_EventDispatcher.addListener("deleteTemp", "", function(all){
 	if(all || ISA_DefaultPanel.defaultPanel){
 		// Deleting Temp data
-		var url = findHostURL() + "/services/tabLayout/deleteTemp";
+		var url = adminHostPrefix + "/services/tabLayout/deleteTemp";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -352,7 +352,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		controlModal.open();
 
-		var url = findHostURL() + "/services/tabLayout/commitDefaultPanel";
+		var url = adminHostPrefix + "/services/tabLayout/commitDefaultPanel";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -429,7 +429,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		modal.open();
 	}
 	this._resetUserCustomization = function( uid ) {
-		var url = findHostURL() + "/services/tab/clearConfigurations";
+		var url = adminHostPrefix + "/services/tab/clearConfigurations";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -2440,7 +2440,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		var editorFormObj = new ISA_CommonModals.EditorForm(
 			editImgSpan,
 			function( widgetObj ){
-				//var url = findHostURL() + "/adminserv/" + ( (widgetObj.instId) ? "updateWidgetInst" : "insertWidgetInst" );
+				//var url = adminHostPrefix + "/adminserv/" + ( (widgetObj.instId) ? "updateWidgetInst" : "insertWidgetInst" );
 
 				var widgetType = ISA_CommonModals.EditorForm.getSelectType();
 				if(!widgetType || !widgetObj.menuItem){
@@ -2926,7 +2926,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		//controlModal.open();
 
-		var url = findHostURL() + "/services/tabLayout/updateDefaultPanel";
+		var url = adminHostPrefix + "/services/tabLayout/updateDefaultPanel";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -2961,7 +2961,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		return true;
 	}
 	this.removeDefaultPanel = function(tabId) {
-		var url = findHostURL() + "/services/tabLayout/removeDefaultPanel";
+		var url = adminHostPrefix + "/services/tabLayout/removeDefaultPanel";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -2983,7 +2983,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	this.build = function() {
 
 		function getWidgetConf() {
-			var url = findHostURL() + "/services/widgetConf/getWidgetConfJson";
+			var url = adminHostPrefix + "/services/widgetConf/getWidgetConfJson";
 			var opt = {
 				method: 'get' ,
 				asynchronous:true,
@@ -3017,7 +3017,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		}
 
 		function getTabIdListJson(){
-			var url = findHostURL() + "/services/tabLayout/getTabIdListJson";
+			var url = adminHostPrefix + "/services/tabLayout/getTabIdListJson";
 			var opt = {
 				method: 'get' ,
 				asynchronous:true,
@@ -3052,7 +3052,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			AjaxRequest.invoke(url, opt);
 		}
 
-		var url = findHostURL() + "/services/tabLayout/getLockingUid";
+		var url = adminHostPrefix + "/services/tabLayout/getLockingUid";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,
@@ -3090,7 +3090,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	};
 
 	this.getDefaultPanelJSONByTabId = function(tabId,callback ){
-		var url = findHostURL() + "/services/tabLayout/getDefaultPanelJson";
+		var url = adminHostPrefix + "/services/tabLayout/getDefaultPanelJson";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",

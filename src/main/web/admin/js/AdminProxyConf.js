@@ -109,7 +109,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 	}
 
 	function commitProxyConfig(currentModal) {
-		var url = findHostURL() + "/services/proxyConf/commitProxyConf";
+		var url = adminHostPrefix + "/services/proxyConf/commitProxyConf";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,
@@ -135,7 +135,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 	}
 
 	function addProxyConfig(proxyConf) {
-		var url = findHostURL() + "/services/proxyConf/addProxyConf";
+		var url = adminHostPrefix + "/services/proxyConf/addProxyConf";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -402,7 +402,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 		}
 		configTd.appendChild(useProxyCheckBox);
 		var submitProxyAuthForm = function(form, caseConfigItem){
-			var url = findHostURL() + "/services/proxyConf/updateProxyConf";
+			var url = adminHostPrefix + "/services/proxyConf/updateProxyConf";
 			var opt = {
 			  method: 'post' ,
 			  contentType: "application/json",
@@ -519,7 +519,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 				$("hst_"+ caseConfigItem.id).style.cursor = "default";
 				$("prt_" + caseConfigItem.id).style.cursor = "default";
 				
-				var url = findHostURL() + "/services/proxyConf/updateProxyConf";
+				var url = adminHostPrefix + "/services/proxyConf/updateProxyConf";
 				var opt = {
 				  method: 'post' ,
 				  contentType: "application/json",
@@ -712,7 +712,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 			var cacheElement = document.getElementsByName("cacheCheckbox_" + caseConfigItem.id)[0];
 			var cacheLifeTime = cacheElement.checked ? "10":"";
 			
-			var url = findHostURL() + "/services/proxyConf/updateProxyConf";
+			var url = adminHostPrefix + "/services/proxyConf/updateProxyConf";
 			var opt = {
 				method: 'post' ,
 				contentType: "application/json",
@@ -811,7 +811,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 	}
 
 	this.build = function() {
-		var url = findHostURL() + "/services/proxyConf/getProxyConfJson";
+		var url = adminHostPrefix + "/services/proxyConf/getProxyConfJson";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,
@@ -845,7 +845,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 	};
 
 	this.removeProxyConf = function( proxyConf) {
-		var url = findHostURL() + "/services/proxyConf/removeProxyConf";
+		var url = adminHostPrefix + "/services/proxyConf/removeProxyConf";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -876,7 +876,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 	}
 };
 ISA_ProxyConf.updateProxyConfAttr = function( caseConfigItem,attrName,attrValue ) {
-	var url = findHostURL() + "/services/proxyConf/updateProxyConf";
+	var url = adminHostPrefix + "/services/proxyConf/updateProxyConf";
 	var opt = {
 		method: 'post',
 		contentType: "application/json",
@@ -901,7 +901,7 @@ ISA_ProxyConf.updateProxyConfAttr = function( caseConfigItem,attrName,attrValue 
 	AjaxRequest.invoke(url, opt);
 }
 ISA_ProxyConf.updateProxyConfHeaders = function( proxyConf ) {
-	var url = findHostURL() + "/services/proxyConf/updateProxyConfHeaders";
+	var url = adminHostPrefix + "/services/proxyConf/updateProxyConfHeaders";
 	var opt = {
 		method: 'post' ,
 		contentType: "application/json",

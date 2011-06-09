@@ -34,6 +34,7 @@ body {margin : 0 ;padding : 0 ;/* font-family : osaka, arial ; */}
 }
 
 #admin-leftbox #admin-leftbox-title {
+	color:#FFF;
 	font-size : 18px ;
 	_font-size : x-medium;
 	text-decoration : none ;
@@ -78,9 +79,6 @@ body {margin : 0 ;padding : 0 ;/* font-family : osaka, arial ; */}
 	word-break: keep-all;
 	
 	cursor: pointer;
-}
-#admin-leftbox-navigator #tab_information {
-	display: none;
 }
 
 a{text-decoration: none;}
@@ -666,4 +664,14 @@ color:#000000;
 #oauthContainerCertForm p.note {
 	padding-left:150px;
 	font-size:90%;
+}
+
+/*- Footer --------------------------- */
+#footer{
+	padding:5px;
+	background-color:#336699;
+	color:#FFF;
+	font-size: 0.9em;
+	text-align: center;
+	padding-bottom:3px;
 }

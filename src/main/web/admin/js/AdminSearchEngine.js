@@ -158,7 +158,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 			},10);
 			return;
 		}
-		var url = findHostURL() + "/services/searchEngine/commitSearch";
+		var url = adminHostPrefix + "/services/searchEngine/commitSearch";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,
@@ -184,7 +184,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 	}
 
 	function insertSearchEngine(searchEngine) {
-		var url = findHostURL() + "/services/searchEngine/addSearchEngine";
+		var url = adminHostPrefix + "/services/searchEngine/addSearchEngine";
 		
 		var opt = {
 			method: 'post' ,
@@ -622,7 +622,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 	}
 
 	this.build = function() {
-		var url = findHostURL() + "/services/searchEngine/getSearchEngineJson";
+		var url = adminHostPrefix + "/services/searchEngine/getSearchEngineJson";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,
@@ -656,7 +656,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 	};
 
 	this.removeSearchEngine = function( searchEngine) {
-		var url = findHostURL() + "/services/searchEngine/removeSearchEngine";
+		var url = adminHostPrefix + "/services/searchEngine/removeSearchEngine";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -688,7 +688,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 ISA_SearchEngine.updateSearchEngineItem = function(id, name, value){
 	var updateData = {};
 	updateData[name] = value;
-	var url = findHostURL() + "/services/searchEngine/updateSearchEngineItem";
+	var url = adminHostPrefix + "/services/searchEngine/updateSearchEngineItem";
 	var opt = {
 	  method: 'post' ,
 	  contentType: "application/json",
@@ -710,7 +710,7 @@ ISA_SearchEngine.updateSearchEngineItem = function(id, name, value){
 }
 
 ISA_SearchEngine.updateSearchConfAttr = function(name, value){
-	var url = findHostURL() + "/services/searchEngine/updateSearchEngineAttr";
+	var url = adminHostPrefix + "/services/searchEngine/updateSearchEngineAttr";
 	var opt = {
 	  method: 'post' ,
 	  contentType: "application/json",
@@ -788,7 +788,7 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 			]);
 		}
 
-		var url = findHostURL() + "/services/searchEngine/updateSearchEngineItem";
+		var url = adminHostPrefix + "/services/searchEngine/updateSearchEngineItem";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",

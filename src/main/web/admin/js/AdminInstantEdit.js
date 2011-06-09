@@ -44,7 +44,7 @@ ISA_InstantEdit.prototype.commitValue = function(value) {
 		}
 	}
 	
-	var url = findHostURL() + "/services/" + this.service+"/"+this.command;
+	var url = adminHostPrefix + "/services/" + this.service+"/"+this.command;
 	var args = [value];
 	if( this.args && this.args instanceof Function ) {
 		args = this.args( value );

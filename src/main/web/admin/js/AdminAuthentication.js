@@ -72,7 +72,7 @@ ISA_Authentication = {
 			})
 		}
 
-		var url = findHostURL() + "/services/authentication/saveOAuthConsumerList";
+		var url = adminHostPrefix + "/services/authentication/saveOAuthConsumerList";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -154,7 +154,7 @@ ISA_Authentication = {
 	},
 	
 	_displayConsumer: function(){
-		var url = findHostURL() + "/services/authentication/getOAuthConsumerListJson";
+		var url = adminHostPrefix + "/services/authentication/getOAuthConsumerListJson";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -281,7 +281,7 @@ ISA_Authentication = {
 		var privateKey = $F('oauth_container_private_key');
 		var certificate = $F('oauth_container_certificate');
 		
-		var url = findHostURL() + "/services/authentication/saveContainerCertificate";
+		var url = adminHostPrefix + "/services/authentication/saveContainerCertificate";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -324,7 +324,7 @@ ISA_Authentication = {
 	},
 
 	_displayContainerCert: function(){
-		var url = findHostURL() + "/services/authentication/getContainerCertificateJson";
+		var url = adminHostPrefix + "/services/authentication/getContainerCertificateJson";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",

@@ -142,8 +142,9 @@ msg.Message.prototype.buildMessage=function(){
 	return "<div id='div_message_" + this.id + "' style='border-bottom:dashed 1px gray'><img src='" + this.icon +  "'/> " +  formatDate(this.date, "HH:mm:ss") + " : " + this.message + "</div>";
 }
 
-msg.showPopupDialog= function(e){
-	this.popupWindow = window.open("messageConsole.html", "messageWindow", "width=400, height=400, scrollbars=yes, status=no");
+msg.showPopupDialog= function(basePath){
+	var url = (basePath)? basePath + "/messageConsole.html" : messageConsole.html;
+	this.popupWindow = window.open(url, "messageWindow", "width=400, height=400, scrollbars=yes, status=no");
 	this.popupWindow.focus();
 }
 

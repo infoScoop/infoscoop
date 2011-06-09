@@ -259,7 +259,7 @@ ISA_Properties.prototype.classDef = function() {
 	this.updateProperties = function(modal) {
 		modal.open();
 		
-		var url = findHostURL() + "/services/properties/updateProperties";
+		var url = adminHostPrefix + "/services/properties/updateProperties";
 		var properties = {};
 		for(var id in ISA_Properties.propertiesList) {
 			if( (ISA_Properties.propertiesList[id] instanceof Function) )
@@ -302,7 +302,7 @@ ISA_Properties.prototype.classDef = function() {
 	}
 	
 	this.build = function() {
-		var url = findHostURL() + "/services/properties/getPropertiesJson";
+		var url = adminHostPrefix + "/services/properties/getPropertiesJson";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,

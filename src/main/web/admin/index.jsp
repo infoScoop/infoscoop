@@ -23,6 +23,9 @@
 <%@page import="org.infoscoop.service.ForbiddenURLService" %>
 <%@page import="org.infoscoop.service.PortalAdminsService" %>
 <%
+	if(true)	// DEBUG
+	response.sendRedirect("../manager/");
+
 	String uid = (String) session.getAttribute("Uid");
 	if(uid == null || uid.length() == 0) {
 		response.sendRedirect("./login.jsp");

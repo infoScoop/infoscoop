@@ -102,7 +102,7 @@ ISA_I18N.prototype.classDef = function() {
 	};
 	
 	this.build = function() {
-		var url = findHostURL() + "/services/i18n/getLocales";
+		var url = adminHostPrefix + "/services/i18n/getLocales";
 		var opt = {
 			method: 'get',
 			asynchronous:true,
@@ -214,9 +214,9 @@ ISA_I18N.prototype.classDef = function() {
 				linkTd.className = "i18nLinkTd";
 				var exportLink = buildLink(linkTd, ISA_R.alb_export);
 				if( type != "holiday") {
-					exportLink.href = "i18nexport?type=" + type + "&country=" + country + "&lang=" + lang;
+					exportLink.href = adminHostPrefix + "/i18nexport?type=" + type + "&country=" + country + "&lang=" + lang;
 				} else {
-					exportLink.href = "services/holidays/downloadHoliday?country=" +country + "&lang=" + lang;
+					exportLink.href = adminHostPrefix + "/services/holidays/downloadHoliday?country=" +country + "&lang=" + lang;
 				}
 				
 				buildLink(linkTd, ISA_R.alb_import, self.showCSVImportForm.bind(this, localeModal, type, country, lang));
@@ -303,9 +303,9 @@ ISA_I18N.prototype.classDef = function() {
 		}
 		
 		if( type != "holiday") {
-			form.action = "i18nimport?type=" + type + "&country=" + country + "&lang=" + lang;
+			form.action = adminHostPrefix + "/i18nimport?type=" + type + "&country=" + country + "&lang=" + lang;
 		} else {
-			form.action = "services/holidays/uploadHoliday?country=" + country + "&lang=" + lang;
+			form.action = adminHostPrefix + "/services/holidays/uploadHoliday?country=" + country + "&lang=" + lang;
 		}
 		
 		fileForm.style.height = "25px"
@@ -469,7 +469,7 @@ ISA_I18N.prototype.classDef = function() {
 		if( type == "holiday")
 			return ISA_Holidays.insertHoliday( lang,country );
 		
-		var url = findHostURL() + "/services/i18n/insertI18nLocale";
+		var url = adminHostPrefix + "/services/i18n/insertI18nLocale";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -498,7 +498,7 @@ ISA_I18N.prototype.classDef = function() {
 		if( type == "holiday")
 			return ISA_Holidays.deleteHoliday( lang,country );
 		
-		var url = findHostURL() + "/services/i18n/removeI18nLocale";
+		var url = adminHostPrefix + "/services/i18n/removeI18nLocale";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -525,7 +525,7 @@ ISA_I18N.prototype.classDef = function() {
 
 ISA_Holidays = Class.create();
 ISA_Holidays.fetchLocales = function( callback ) {
-	var url = findHostURL() + "/services/holidays/getHolidayLocalesJSON";
+	var url = adminHostPrefix + "/services/holidays/getHolidayLocalesJSON";
 	var opt = {
 		method: 'get',
 		asynchronous: true,
@@ -551,7 +551,7 @@ ISA_Holidays.fetchLocales = function( callback ) {
 	AjaxRequest.invoke(url, opt);
 }
 ISA_Holidays.insertHoliday = function( lang,country ) {
-	var url = findHostURL() + "/services/holidays/updateHoliday";
+	var url = adminHostPrefix + "/services/holidays/updateHoliday";
 	var opt = {
 		method: 'post' ,
 		contentType: "application/json",
@@ -577,7 +577,7 @@ ISA_Holidays.insertHoliday = function( lang,country ) {
 	AjaxRequest.invoke(url, opt);
 }
 ISA_Holidays.deleteHoliday = function( lang,country ) {
-	var url = findHostURL() + "/services/holidays/deleteHoliday";
+	var url = adminHostPrefix + "/services/holidays/deleteHoliday";
 	var opt = {
 		method: 'post' ,
 		contentType: "application/json",

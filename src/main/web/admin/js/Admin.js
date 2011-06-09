@@ -38,8 +38,7 @@ var IS_DroppableOptions = {};
 
 var freshDays = 1;
 
-var adminHostPrefix = (typeof hostPrefix != "undefined") ? hostPrefix : findHostURL(false);
-var hostPrefix = adminHostPrefix.substring(0, adminHostPrefix.lastIndexOf("/"));
+var adminHostPrefix = hostPrefix + "/admin";
 var portalSSLURL = hostPrefix;
 //var searchEngineURL = hostPrefix + "/schsrv";
 var proxyServerURL = hostPrefix + "/proxy";
@@ -123,7 +122,7 @@ window.onload = function() {
 	ISA_Admin.buildAdminTabs();
 };
 
-window.onunload = function() {
+var windowBeforeUnload = function() {
 	ISA_Admin.clearAdminCache();
 	IS_Event.unloadAllCache();
 	IS_EventDispatcher.newEvent("deleteTemp","",true);
@@ -132,10 +131,12 @@ window.onunload = function() {
 	}
 };
 
+Event.observe(window, 'beforeunload',  windowBeforeUnload );
+
 ISA_loadProperties = function(_callback){
 	
 	var container = document.getElementById("properties");
-	var url = findHostURL() + "/services/properties/getPropertiesJson";
+	var url = adminHostPrefix + "/services/properties/getPropertiesJson";
 	var opt = {
 	  method: 'get' ,
 	  asynchronous:true,
@@ -577,7 +578,7 @@ var ISA_Principals = {
 	
   get: function(){
 	  if(this.principalObjs) return this.principalObjs;
-	var url = findHostURL() + "/role.jsp";
+	var url = adminHostPrefix + "/role.jsp";
 	var opt = {
 	  method: 'get' ,
 	  asynchronous:false,
