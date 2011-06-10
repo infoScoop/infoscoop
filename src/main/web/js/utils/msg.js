@@ -143,7 +143,7 @@ msg.Message.prototype.buildMessage=function(){
 }
 
 msg.showPopupDialog= function(basePath){
-	var url = (basePath)? basePath + "/messageConsole.html" : messageConsole.html;
+	var url = (basePath)? basePath + "/messageConsole.html" : "messageConsole.html";
 	this.popupWindow = window.open(url, "messageWindow", "width=400, height=400, scrollbars=yes, status=no");
 	this.popupWindow.focus();
 }
