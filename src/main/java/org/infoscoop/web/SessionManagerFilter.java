@@ -1,15 +1,15 @@
 /* infoScoop OpenSource
  * Copyright (C) 2010 Beacon IT Inc.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3
  * as published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
@@ -164,11 +164,11 @@ public class SessionManagerFilter implements Filter {
 		if (request instanceof javax.servlet.http.HttpServletRequest) {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpServletResponse httpResponse = (HttpServletResponse)response;
-			
+
 			String uid = null;
 			if(SessionCreateConfig.doLogin()){
 				uid = getUidFromSession(httpReq);
-				
+
 				if(redirectPaths.contains(httpReq.getServletPath())){
 					httpResponse.addCookie(new Cookie("redirect_path", httpReq.getServletPath()));
 				}
@@ -190,7 +190,7 @@ public class SessionManagerFilter implements Filter {
 					addUidToSession(uid, request);
 				}
 			}
-			
+
 			if( uid == null ) {
 				Cookie[] cookies = httpReq.getCookies();
 				if( cookies != null ) {
@@ -203,19 +203,19 @@ public class SessionManagerFilter implements Filter {
 							} catch( Exception ex ) {
 								log.warn("",ex );
 							}
-							
+
 							if( keepPeriod <= 0 ) {
 								Cookie credentialCookie = new Cookie("portal-credential","");
 								credentialCookie.setMaxAge( 0 );
 								credentialCookie.setPath("/");
 								httpResponse.addCookie( credentialCookie );
-								
+
 								log.info("clear auto login credential ["+credentialCookie.getValue()+"]");
 							} else {
 								try {
 									uid = tryAutoLogin( cookie );
 									httpReq.getSession().setAttribute("Uid",uid );
-									
+
 									log.info("auto login success.");
 								} catch( Exception ex ) {
 									log.info("auto login failed.",ex );
@@ -225,16 +225,16 @@ public class SessionManagerFilter implements Filter {
 					}
 				}
 			}
-			
+
 			if( uid == null && SessionCreateConfig.doLogin() && !isExcludePath(httpReq.getServletPath())) {
 				String requestUri = httpReq.getRequestURI();
-				String loginUrl = requestUri.lastIndexOf("/admin/") > 0 ?
+				String loginUrl = requestUri.lastIndexOf("/manager/") > 0 ?
 					requestUri.substring( 0,requestUri.lastIndexOf("/"))+"/../login.jsp" : "login.jsp";
-				
+
 				httpResponse.sendRedirect(loginUrl);
 				return;
 			}
-			
+
 			if(log.isInfoEnabled())log.info("### Access from user " + uid + " to " + httpReq.getRequestURL() );
 
 			// fix #42
@@ -254,14 +254,14 @@ public class SessionManagerFilter implements Filter {
 						log.error("",e);
 					}
 				}
-				
+
 				if( loginUser == null || isChangeLoginUser( uid, loginUser )) {
 					loginUser = new Subject();
 					loginUser.getPrincipals().add(new ISPrincipal(ISPrincipal.UID_PRINCIPAL, uid));
 				}
-				
+
 				setLoginUserName(httpRequest, loginUser);
-				
+
 				for(Map.Entry entry : SessionCreateConfig.getInstance().getRoleHeaderMap().entrySet()){
 					String headerName = (String)entry.getKey();
 					String roleType = (String)entry.getValue();
@@ -279,7 +279,7 @@ public class SessionManagerFilter implements Filter {
 							log.error("",e);
 						}
 					}
-					
+
 				}
 				session.setAttribute(LOGINUSER_SUBJECT_ATTR_NAME, loginUser);
 			}
@@ -305,10 +305,10 @@ public class SessionManagerFilter implements Filter {
 		String usernameHeader = SessionCreateConfig.getInstance().getUsernameHeader();
 		if(usernameHeader != null)
 			loginUserName = httpRequest.getHeader(usernameHeader);
-		
+
 		if(loginUserName == null)
 			loginUserName = getUserNameFromSubject(loginUser);
-		
+
 		httpRequest.getSession().setAttribute(LOGINUSER_NAME_ATTR_NAME, (loginUserName != null) ? loginUserName : "");
 	}
 
@@ -391,27 +391,27 @@ public class SessionManagerFilter implements Filter {
 
 	private String tryAutoLogin( Cookie cookie ) throws Exception {
 		String credentialStr = cookie.getValue();
-		
+
 		try {
 			String[] credentialPair = credentialStr.split(":");
 			String portalUid = new String(
 					Base64.decodeBase64( credentialPair[0].getBytes("UTF-8")),"UTF-8");
 			String portalPassword = RSAKeyManager.getInstance().decrypt( credentialPair[1] );
-			
+
 			AuthenticationService service = AuthenticationService.getInstance();
 			if (service == null)
 				throw new Exception(
 						"No bean named \"authenticationService\" is defined."
 								+ " When loginAuthentication property is true,"
 								+ " authenticationService must be defined.");
-			
+
 			service.login( portalUid,portalPassword );
-			
+
 			portalUid = portalUid.trim();
 			return portalUid;
 		} catch( Exception ex ) {
 //			log.info("Auto Login Failed by ["+credentialStr+"]");
-			
+
 			throw ex;
 		}
 	}
