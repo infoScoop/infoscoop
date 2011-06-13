@@ -78,8 +78,7 @@ public class SignedAuthenticator implements Authenticator {
 			optionParams.put("xoauth_signature_publickey", PUBLIC_KEY_NAME);
 			optionParams.put("xoauth_public_key", PUBLIC_KEY_NAME);
 
-			OAuthMessage message = new OAuthMessage(method.getName(), targetUrlPath,
-					optionParams.entrySet());
+			OAuthMessage message = new OAuthMessage(method.getName(), targetUrlPath, optionParams.entrySet());
 			message.addRequiredParameters(accessor);
 			List<Map.Entry<String, String>> authParams = message
 					.getParameters();
