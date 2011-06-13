@@ -1,15 +1,15 @@
 /* infoScoop OpenSource
  * Copyright (C) 2010 Beacon IT Inc.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3
  * as published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
@@ -78,7 +78,7 @@ public class SignedAuthenticator implements Authenticator {
 			optionParams.put("xoauth_signature_publickey", PUBLIC_KEY_NAME);
 			optionParams.put("xoauth_public_key", PUBLIC_KEY_NAME);
 
-			OAuthMessage message = new OAuthMessage("GET", targetUrlPath,
+			OAuthMessage message = new OAuthMessage(method.getName(), targetUrlPath,
 					optionParams.entrySet());
 			message.addRequiredParameters(accessor);
 			List<Map.Entry<String, String>> authParams = message
@@ -106,7 +106,7 @@ public class SignedAuthenticator implements Authenticator {
 				.getConsumerKey(), null, serviceProvider);
 		consumer.setProperty("oauth_signature_method", "RSA-SHA1");
 		consumer.setProperty(RSA_SHA1.PRIVATE_KEY, certificate.getPrivateKey());
-		
+
 		return consumer;
 	}
 
