@@ -139,7 +139,6 @@
 		<script src="../../admin/js/AdminInformation.js"></script>
 		<script src="../../admin/js/AdminAuthentication.js"></script>
 		<!--end script-->
-<script src="../../skin/test.js"></script>
 		
 	    <script src="../../js/lib/jquery-1.6.1.min.js"></script>
 		<script>
@@ -165,6 +164,11 @@
 		$jq(function(){
 			$jq("#messageIcon").click(function(){
 				msg.showPopupDialog(adminHostPrefix);
+			});
+			$jq("#admin-leftbox-navigator .tab").click(function(){
+				if(!ISA_Admin.checkUpdated()){
+					return false;
+				}
 			});
 		});
 	</script>
