@@ -4,10 +4,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<tiles:insertDefinition name="base.definition" flush="true">
+<tiles:insertDefinition name="administrator.side.definition" flush="true">
 	<tiles:putAttribute name="type" value="administrator"/>
 	<tiles:putAttribute name="title" value="alb_admin"/>
-	<tiles:putAttribute name="body" type="string">
+	<tiles:putAttribute name="side_body" type="string">
 
 <div id="portalAdmin"></div>
 

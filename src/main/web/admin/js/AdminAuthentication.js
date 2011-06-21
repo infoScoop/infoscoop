@@ -2,24 +2,27 @@ ISA_Authentication = {
 	build: function(){
 		
 		var container = document.getElementById("authentication");
+		var sideBar = document.getElementById("authentication-side-bar");
 		var tabUl =
-		  $.DIV({id:"tabContainer"},
-				$.UL({id:"oauth_setting_tabs", className:"subsection_tabs tabs"},
-					 $.LI({},
-						  $.A({id:"oauth_consumer_tab",href:"#oauth_consumer", className:"tab"},
-							  $.SPAN({className:"title"},ISA_R.alb_oauthConsumerSettings))
+		  $.DIV({id:"admin-side", className:"side-bar"},
+				$.UL({id:"oauth_setting_tabs", className:"tab"},
+					 $.LI({id:"oauth_consumer_tab",className:"tab"},
+						  $.A({href:"#oauth_consumer", className:""},
+//							  $.SPAN({className:""},ISA_R.alb_oauthConsumerSettings))
+							//TODO 国際化リソースの修正
+							  $.SPAN({className:""},"コンシューマー設定"))
 							),
-					 $.LI({},
-						  $.A({id:"oauth_container_tab",href:"#oauth_container", className:"tab"},
-							  $.SPAN({className:"title"},ISA_R.alb_oauthContainerCertificate))
+					 $.LI({id:"oauth_container_tab",className:"tab"},
+						  $.A({href:"#oauth_container", className:""},
+							  $.SPAN({className:""},ISA_R.alb_oauthContainerCertificate))
 							)
 					   )
 				  );
-		container.appendChild(tabUl);
+		sideBar.appendChild(tabUl);
 
 		container.appendChild(
 			$.DIV({style:"clear:both;padding:5px;"},
-				  $.DIV({id:"oauth_consumer" }),
+				  $.DIV({id:"oauth_consumer"}),
 				  $.DIV({id:"oauth_container"})));
 		
 		this.controlTabs = new Control.Tabs("oauth_setting_tabs", {
@@ -182,6 +185,7 @@ ISA_Authentication = {
 	_renderHeader: function(container){
 		var controlDiv = document.createElement("div");
 		controlDiv.style.textAlign = "right";
+		controlDiv.className= "refreshAll";
 		
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		controlDiv.appendChild(commitDiv);
@@ -212,11 +216,11 @@ ISA_Authentication = {
 		
 		var table = ISA_Admin.buildTableHeader(
 			[ ISA_R.alb_gadgetUrl, ISA_R.alb_oauthServiceName, ISA_R.alb_oauthSignatureAlgorithm, ISA_R.alb_oauthConsumerKey, ISA_R.alb_oauthConsumerSecret, ISA_R.alb_delete],
-			[ '30%', '10%', "10%", "20%", "25%", "5%"]
+			[ '25%', '10%', "15%", "20%", "25%", "5%"]
 			);
 		table.id = "authentication_contentTable";
 		table.className = "proxyConfigList";
-		table.style.tableLayout = "fixed"
+		table.style.tableLayout = "fixed";
 		//TODO:Function for generating table needs to be arranged
 		table.style.borderLeft = "1px solid #EEEEEE";
 		table.style.width = "100%";

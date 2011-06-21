@@ -192,8 +192,8 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		container = $( !isTreeAdminUser ? "menu":"menuTree");
 		
 		var refreshAllDiv = document.createElement("div");
-		refreshAllDiv.id = "refreshAll";
-		$(refreshAllDiv).setStyle({clear:"both", width:"98%", whiteSpace:"nowrap"});
+		refreshAllDiv.className = "refreshAll";
+		//$(refreshAllDiv).setStyle({clear:"both", width:"98%", whiteSpace:"nowrap"});
 		
 		var changeMenuDiv = document.createElement("div");
 		changeMenuDiv.id = "changeMenu";

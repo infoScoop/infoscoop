@@ -146,6 +146,18 @@
 			jQuery.noConflict();
 			$jq = jQuery;
 		</script>
+		<script>
+		$jq(function(){
+			$jq("#messageIcon").click(function(){
+				msg.showPopupDialog(adminHostPrefix);
+			});
+			$jq("#admin-leftbox-navigator .tab").click(function(){
+				if(!ISA_Admin.checkUpdated()){
+					return false;
+				}
+			});
+		});
+		</script>
 	</head>
 		<body class="infoScoop admin">
 		<div id="admin-menu-navigator"></div>
@@ -157,24 +169,3 @@
 			<tiles:insertAttribute name="menu" />
 		</div>
 		<div id="properties"></div>
-		<div id="admin-body" >
-			<tiles:insertAttribute name="body" />
-		</div>
-<!-- 		<div id="admin-footer"> -->
-<%-- 			<tiles:insertAttribute name="footer" /> --%>
-<!-- 		</div> -->
-	</body>
-	
-	<script>
-		$jq(function(){
-			$jq("#messageIcon").click(function(){
-				msg.showPopupDialog(adminHostPrefix);
-			});
-			$jq("#admin-leftbox-navigator .tab").click(function(){
-				if(!ISA_Admin.checkUpdated()){
-					return false;
-				}
-			});
-		});
-	</script>
-</html>

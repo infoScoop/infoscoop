@@ -8,7 +8,7 @@
 %>
 
 	<!-- TODO 権限制御とタブの動的生成 -->
-	<ul class="tabs" id="admin-leftbox-navigator">
+	<ul class="tabs" >
 
 		<li>
 			<a href="../home/index" class="tab <c:if test="${type == 'home'}">active</c:if>" id="tab_information"><span>%{alb_home}</span></a>
@@ -20,7 +20,7 @@
 		</li>
 		<%} else if( adminService.isPermitted("menu_tree") ){%>
 		<li>
-			<a href="../menutree/index" class="tab <c:if test="${type == 'menu'}">active</c:if>" id="tab_menu"><span>%{alb_menu}</span></a>
+			<a href="../menutree/index" class="admin-tabs <c:if test="${type == 'menu'}">active</c:if>" id="tab_menu"><span>%{alb_menu}</span></a>
 		</li>
 		<%}%>
 		
@@ -38,7 +38,8 @@
 		
 		<%if( adminService.isPermitted("defaultPanel") || adminService.isPermitted("portalLayout") ){%>
 		<li>
-			<a href="../defaultpanel/index" class="tab <c:if test="${type == 'defaultPanel'}">active</c:if>" id="tab_defaultPanel"><span>%{alb_defaultPanel}</span></a>
+			<a href="../defaultpanel/index" class="tab <c:if test="${type == 'defaultPanel_tabs' || type == 'defaultPanel_commandBar' || type == 'defaultPanel_portalLayout'}">active</c:if>" id="tab_defaultPanel"><span>%{alb_defaultPanel}</span></a>
+			
 		</li>
 		<%}%>
 		
@@ -77,5 +78,5 @@
 			<a href="../authentication/index" class="tab <c:if test="${type == 'authentication'}">active</c:if>" id="tab_authentication"><span>OAuth</span></a>
 		</li>
 		<%}%>
-	</ul>
+	</ul>	
 	<div style="clear:both"></div>

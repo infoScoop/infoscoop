@@ -4,16 +4,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<tiles:insertDefinition name="authentication.side.definition" flush="true">
-	<tiles:putAttribute name="type" value="authentication"/>
-	<tiles:putAttribute name="title" value="OAuth"/>
+<tiles:insertDefinition name="defaultpanel.side.definition" flush="true">
+<%-- 	<tiles:putAttribute name="type" value="defaultPanel"/> --%>
+	<tiles:putAttribute name="type" value="defaultPanel_portalLayout" />
+	<tiles:putAttribute name="title" value="alb_defaultPanel"/>
 	<tiles:putAttribute name="side_body" type="string">
 
-<div id="authentication"></div>
+<div id="portalLayout"></div>
 
 <script>
 	$jq(function(){
-		ISA_Authentication.build();
+		ISA_PortalLayout.portalLayout = new ISA_PortalLayout();
+		ISA_PortalLayout.portalLayout.build();
 	});
 </script>
 	</tiles:putAttribute>

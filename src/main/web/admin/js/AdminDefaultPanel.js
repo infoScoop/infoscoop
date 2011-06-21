@@ -318,8 +318,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		container.replaceChild(this.panelTabsContainer.tabContainer, loadingMessage);
 
 		var previewDivWrap = document.createElement("div");
-		previewDivWrap.style.clear = "both";
-		previewDivWrap.style.width = "98%";
+		previewDivWrap.className = "refreshAll";
+//		previewDivWrap.style.clear = "both";
+//		previewDivWrap.style.width = "98%";
 
 		container.insertBefore(previewDivWrap, this.panelTabsContainer.tabContainer);
 		var previewDiv = ISA_Admin.createIconButton(ISA_R.alb_previewTop, ISA_R.alb_previewTop, "minibrowser.gif", "right");
@@ -337,6 +338,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			ISA_R.alb_clearConfigurationDesc,
 			"database_refresh.gif","right");
 		previewDivWrap.appendChild( resetDiv );
+		//container.appendChild(previewDivWrap);
 		IS_Event.observe( resetDiv,"click",this.resetUserCustomization.bind( this ),false,"_adminPanel");
 		this.tab = new Control.Tabs("panelTabs",{
 			defaultTab: "tab_"+commandBarTabId,
@@ -464,12 +466,12 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		this.panelTabsContainer = null;
 
 		var tabsDiv = document.createElement("div");
+		tabsDiv.id = "tabsDiv";
 		tabsDiv.style.clear = "both";
-
 		var tabsUl = document.createElement("ul");
 		tabsUl.id = "panelTabs";
 		tabsUl.className = "tabs";
-
+		//TODO コマンドバーi=0は別に処理する
 		for(var i=0; i<this.tabIdList.length; i++){
 			tabsUl.appendChild(this.buildTab(this.tabIdList[i]));
 		}

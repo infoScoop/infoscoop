@@ -65,11 +65,11 @@ ISA_I18N.prototype.classDef = function() {
 		i18nBody = document.createElement("div");
 		i18nBody.style.clear = "both";
 		
-		var titleDiv = document.createElement("div");
-		titleDiv.id = "i18nTitle";
-		titleDiv.className = "i18nTitle";
-		titleDiv.appendChild(document.createTextNode(ISA_R.alb_i18n));
-		i18nBody.appendChild(titleDiv);
+//		var titleDiv = document.createElement("div");
+//		titleDiv.id = "i18nTitle";
+//		titleDiv.className = "i18nTitle";
+//		titleDiv.appendChild(document.createTextNode(ISA_R.alb_i18n));
+//		i18nBody.appendChild(titleDiv);
 		
 		var i18nField = document.createElement("fieldset");
 		i18nField.className = "i18nCategoryField";

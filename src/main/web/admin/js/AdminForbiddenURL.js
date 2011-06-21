@@ -34,9 +34,11 @@ ISA_PortalForbiddenURL.prototype = {
 		tr.lastChild.appendChild( urlInput );
 		
 		tr.appendChild(document.createElement("td"))
-		var removeForbiddenURLButton = ISA_Admin.createIconButton("", ISA_R.alb_delete, "trash.gif");
+		var removeForbiddenURLButton = ISA_Admin.createIconButton("", ISA_R.alb_delete, "trash.gif");var deleteImg = document.createElement("img");
+//		removeForbiddenURLButton.src = imageURL + "trash.gif";
+//		removeForbiddenURLButton.style.cursor = "pointer";
 		removeForbiddenURLButton.id = "removeForbiddenURLButton_" + urlId;
-		removeForbiddenURLButton.style.textAlign = "center"
+		removeForbiddenURLButton.style.textAlign = "center";
 		tr.lastChild.appendChild(removeForbiddenURLButton);
 		
 		return tr;
@@ -108,7 +110,7 @@ ISA_PortalForbiddenURL.prototype = {
 	removeForbiddenURL: function( event ) {
 		var source = Event.element( event );
 		while( source && source.className != "iconButton")
-			source = source.parentNode
+			source = source.parentNode;
 		
 		if( !source || source.id.indexOf("removeForbiddenURLButton_") != 0 ) return;
 		ISA_Admin.isUpdated = true;
@@ -234,7 +236,8 @@ ISA_PortalForbiddenURL.prototype = {
 	},
 	displayHeader: function(container){
 		var controlDiv = document.createElement("div");
-		controlDiv.style.textAlign = "right";
+		controlDiv.className ='refreshAll';
+		//controlDiv.style.textAlign = "right";
 		
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		controlDiv.appendChild(commitDiv);
@@ -246,10 +249,10 @@ ISA_PortalForbiddenURL.prototype = {
 		
 		container.appendChild(controlDiv);
 		
-		var titleDiv = document.createElement("div");
-		titleDiv.className = "proxyTitle";
-		titleDiv.appendChild(document.createTextNode(ISA_R.alb_forbiddenURLsettings));
-		container.appendChild(titleDiv);
+//		var titleDiv = document.createElement("div");
+//		titleDiv.className = "proxyTitle";
+//		titleDiv.appendChild(document.createTextNode(ISA_R.alb_forbiddenURLsettings));
+//		container.appendChild(titleDiv);
 		
 		var addButton = ISA_Admin.createIconButton(ISA_R.alb_add, ISA_R.alb_add, "add.gif", "left");
 		addButton.style.textAlign = "left"

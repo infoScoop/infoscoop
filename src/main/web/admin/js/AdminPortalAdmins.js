@@ -83,27 +83,37 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		
 		var tabContainer = document.createElement("div");
 		tabContainer.id = "tabContainer";
-		
+		tabContainer.className= "side-bar";
+		var sideBar = document.getElementById("administrator-side-bar");
 		var tabsUl = document.createElement("ul");
+		tabsUl.className = "side-bar";
 		var tabLiAdmins = document.createElement("li");
 		var tabLiAdminsA = document.createElement("a");
 		var tabLiRoles = document.createElement("li");
 		var tabLiRolesA = document.createElement("a");
 		
 		tabsUl.id = "adminsTab";
-		tabsUl.className = "subsection_tabs tabs";
+		//tabsUl.className = "subsection_tabs tabs";
+		tabsUl.className = "subsection_tabs";
+		
+		tabLiAdmins.className="tab";
+		tabLiAdmins.id = "tab_admins";
 		
 		tabLiAdminsA.href = "#admins";
-		tabLiAdminsA.className = "tab";;
-		tabLiAdminsA.id = "tab_admins";
+//		tabLiAdminsA.className = "tab";
+//		tabLiAdminsA.id = "tab_admins";
 		tabLiAdminsASpan = document.createElement("span");
 		tabLiAdminsASpan.className = "title";
 		tabLiAdminsASpan.appendChild(document.createTextNode(ISA_R.alb_adminSettings));
 		tabLiAdminsA.appendChild( tabLiAdminsASpan );
 		
+		tabLiRoles.className= "tab";
+		tabLiRoles.id = "tab_roles";
+		
 		tabLiRolesA.href = "#roles";
-		tabLiRolesA.className = "tab";
-		tabLiRolesA.id = "tab_roles";
+//		tabLiRolesA.className = "tab";
+//		tabLiRolesA.className = "side-bar";
+//		tabLiRolesA.id = "tab_roles";
 		tabLiRolesASpan = document.createElement("span");
 		tabLiRolesASpan.className = "title";
 		tabLiRolesASpan.appendChild(document.createTextNode(ISA_R.alb_roleSettings));
@@ -122,7 +132,8 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		adminsPanel.appendChild(self.buildPortalAdmins(portalAdminsList));
 		rolesPanel.appendChild(self.buildAdminRole());
 		
-		tabContainer.appendChild(tabsUl);
+		sideBar.appendChild(tabsUl);
+		//tabContainer.appendChild(tabsUl);
 		tabContainer.appendChild(adminsPanel);
 		tabContainer.appendChild(rolesPanel);
 		portalAdminsDiv.appendChild(tabContainer);

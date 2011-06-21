@@ -44,8 +44,8 @@ ISA_Properties.prototype.classDef = function() {
 		propertiesDiv.style.clear = "both";
 		
 		var refreshAllDiv = document.createElement("div");
-		refreshAllDiv.id = "refreshAll";
-		refreshAllDiv.style.textAlign = "right";
+		refreshAllDiv.className = "refreshAll";
+		//refreshAllDiv.style.textAlign = "right";
 		//refreshAllDiv.style.width = "80%";
 		
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
@@ -79,10 +79,10 @@ ISA_Properties.prototype.classDef = function() {
 			});
 		}, false, "_adminProperties");
 		
-		var titleDiv = document.createElement("div");
-		titleDiv.id = "propertiesTitle";
-		titleDiv.className = "propertiesTitle";
-		titleDiv.appendChild(document.createTextNode(ISA_R.alb_propertiesList));
+//		var titleDiv = document.createElement("div");
+//		titleDiv.id = "propertiesTitle";
+//		titleDiv.className = "propertiesTitle";
+//		titleDiv.appendChild(document.createTextNode(ISA_R.alb_propertiesList));
 		
 		var advancedMsg = document.createElement("div");
 		advancedMsg.className = "advancedProperty";
@@ -90,7 +90,7 @@ ISA_Properties.prototype.classDef = function() {
 		advancedMsg.innerHTML = ISA_R.alb_advancedSettingsMessage;
 		
 		propertiesDiv.appendChild(refreshAllDiv);
-		propertiesDiv.appendChild(titleDiv);
+//		propertiesDiv.appendChild(titleDiv);
 		propertiesDiv.appendChild(advancedMsg);
 		propertiesDiv.appendChild(self.buildProperties());
 		

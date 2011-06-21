@@ -37,7 +37,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 		proxyConfigDiv.style.width = "1000px";
 
 		var refreshAllDiv = document.createElement("div");
-		refreshAllDiv.id = "refreshAll";
+		refreshAllDiv.className = "refreshAll";
 		refreshAllDiv.style.textAlign = "right";
 		refreshAllDiv.style.width = "1000px";
 
@@ -64,10 +64,10 @@ ISA_ProxyConf.prototype.classDef = function() {
 			ISA_Admin.TabBuilders.proxy.build();
 		}, false, "_adminProxy");
 
-		var titleDiv1 = document.createElement("div");
-		titleDiv1.id = "proxyCaseTitle";
-		titleDiv1.className = "proxyTitle";
-		titleDiv1.appendChild(document.createTextNode(ISA_R.alb_proxyAndURLSettings));
+//		var titleDiv1 = document.createElement("div");
+//		titleDiv1.id = "proxyCaseTitle";
+//		titleDiv1.className = "proxyTitle";
+//		titleDiv1.appendChild(document.createTextNode(ISA_R.alb_proxyAndURLSettings));
 
 		var titleDiv2 = document.createElement("div");
 		titleDiv2.id = "proxyDefaultTitle";
@@ -80,7 +80,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 		var lineHr = document.createElement("hr");
 		lineDiv.appendChild(lineHr);
 		proxyConfigDiv.appendChild(refreshAllDiv);
-		proxyConfigDiv.appendChild(titleDiv1);
+//		proxyConfigDiv.appendChild(titleDiv1);
 		proxyConfigDiv.appendChild(self.buildTableControl());
 		proxyConfigDiv.appendChild(self.buildTableHeader());
 

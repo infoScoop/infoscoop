@@ -6,6 +6,7 @@ ISA_Information.prototype.classDef = function() {
 	
 	this.initialize = function() {
 		container = document.getElementById("information");
+		container2 = document.getElementById("version");
 
 		loadingMessage = document.createElement('div');
 		loadingMessage.innerHTML = "Loading...";
@@ -20,6 +21,7 @@ ISA_Information.prototype.classDef = function() {
 			container.removeChild(container.firstChild);
 
 		var self = this;
+		console.log(adminHostPrefix);
 		var url = adminHostPrefix + "/services/information/getUserCountListJSON";
 		var opt = {
 			method: 'get',
@@ -61,15 +63,17 @@ ISA_Information.prototype.classDef = function() {
 		var totalUsersCount = json["totalUsersCount"];
 		var todayAccessCount = json["todayAccessCount"];
 		
-		this.displayHeader();
+		//this.displayHeader();
 		
 		var dummy = document.createElement("div");
-		dummy.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>'+ISA_R.alb_userInformation+'</td></tr><tbody></table>';
+
+		//dummy.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>'+ISA_R.alb_userInformation+'</td></tr><tbody></table>';
+		dummy.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>' + ISA_R.alb_statisticsInformation + '</td></tr><tbody></table>';
 		var table = dummy.firstChild;
 		
 		container.appendChild( table );
 		table.className = "proxyConfigList";
-		table.style.width = "40%";
+		//table.style.width = "40%";
 		
 		var tbody = table.firstChild;
 		
@@ -89,22 +93,60 @@ ISA_Information.prototype.classDef = function() {
 			row.appendChild(row_valueTd);
 			return row;
 		}
+		this.displayVersionInfo();
+
+	}
+	
+	this.displayVersionInfo = function() {
+
+		var dummy2 = document.createElement("div");
+		//dummy.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>'+ISA_R.alb_userInformation+'</td></tr><tbody></table>';
+		dummy2.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>' + 'バージョン情報' + '</td></tr><tbody></table>';
+		var table = dummy2.firstChild;
+		
+		container2.appendChild( table );
+		table.className = "proxyConfigList";
+		//table.style.width = "40%";
+		
+		var tbody = table.firstChild;
+		
+		//TODO build情報の取得
+		var productName='infoScoop Cloud Edition';
+		var versionNum='2.3.0.0';
+		var releaseDate='2011年9月30日';
+		
+		tbody.appendChild( createUserCountRow('製品名', productName) );
+		tbody.appendChild( createUserCountRow('バージョン', versionNum) );
+		tbody.appendChild( createUserCountRow('リリース日付', releaseDate) );
+		
+		function createUserCountRow(title, value){
+	 		var row = document.createElement("tr");
+			var row_titleTd = document.createElement("td");
+			var row_valueTd = document.createElement("td");
+			row_titleTd.innerHTML = title;
+			row_valueTd.innerHTML = value;
+			row_valueTd.style.textAlign = "right";
+			
+			row.appendChild(row_titleTd);
+			row.appendChild(row_valueTd);
+			return row;
+		}
 	}
 	
 	this.displayHeader = function(){
 		var controlDiv = document.createElement("div");
 		controlDiv.style.textAlign = "right";
 		
-		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
-		controlDiv.appendChild(refreshDiv);
-		IS_Event.observe(refreshDiv, "click", this.build.bind(this), false, "_adminInfo");
+//		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
+//		controlDiv.appendChild(refreshDiv);
+//		IS_Event.observe(refreshDiv, "click", this.build.bind(this), false, "_adminInfo");
 		
 		container.appendChild(controlDiv);
 		
-		var titleDiv = document.createElement("div");
-		titleDiv.className = "proxyTitle";
-		titleDiv.appendChild(document.createTextNode(ISA_R.alb_statisticsInformation));
-		container.appendChild(titleDiv);
+//		var titleDiv = document.createElement("div");
+//		titleDiv.className = "proxyTitle";
+//		titleDiv.appendChild(document.createTextNode(ISA_R.alb_statisticsInformation));
+//		container.appendChild(titleDiv);
 	}
 
 }

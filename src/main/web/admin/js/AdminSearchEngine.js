@@ -264,6 +264,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		var engineDiv = document.createElement("div");
 		engineDiv.id = "row_" + defaultSearchItem.id;
 		//engineDiv.className = "rowSearchEngine";
+		//engineDiv.className = "proxyConfigList";
 		engineDiv.className = "proxyConfigList";
 
 		var engineTable = document.createElement("table");

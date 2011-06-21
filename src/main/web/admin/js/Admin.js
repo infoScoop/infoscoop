@@ -169,26 +169,30 @@ ISA_loadProperties = function(_callback){
 }
 
 ISA_Admin.createIconButton = function(text, title, imgName, floatValue) {
-	var div = document.createElement("div");
-	div.className = "iconButton";
+	//var div = document.createElement("div");
+	var button = document.createElement("button");
+	button.className = "iconButton";
+	//div.type = "button";
 	if(floatValue) {
 		if(Browser.isIE)
-			div.style.styleFloat = floatValue;
+			button.style.styleFloat = floatValue;
 		else
-			div.style.cssFloat = floatValue;
+			button.style.cssFloat = floatValue;
 	}
-	div.title = title;
+	button.title = title;
 	var img = document.createElement("img");
 	img.src = imageURL + imgName;
 	img.style.position = "relative";
 	img.style.top = "2px";
-	var anc = document.createElement("a");
-	anc.appendChild(document.createTextNode(text));
-	anc.className = "button";
-	anc.href = "#";
-	div.appendChild(img);
-	div.appendChild(anc);
-	return div;
+	img.style.margin = "0 5 0 0";
+//	var anc = document.createElement("a");
+//	anc.appendChild(document.createTextNode(text));
+//	anc.className = "button";
+//	anc.href = "#";
+	button.appendChild(img);
+	button.appendChild(document.createTextNode(text));
+//	button.appendChild(anc);
+	return button;
 };
 
 ISA_Admin.createBaseRadio = function(name, isChecked, isDisabled) {
@@ -350,6 +354,7 @@ ISA_Admin.buildTableHeader = function(labels, widths){
 	var configTr;
 	configTr = document.createElement("tr");
 	configTr.id = "proxyConfigHeader";
+	//configTr.className = "configHeader";
 	configTbody.appendChild(configTr);
 
 	var configTh;

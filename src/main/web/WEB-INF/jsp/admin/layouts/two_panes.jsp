@@ -47,6 +47,9 @@
 	    <link rel="stylesheet" type="text/css" href="../../skin/maximizerssreader.css">
 	    <link rel="stylesheet" type="text/css" href="../../skin/information.css">
 	    <link rel="stylesheet" type="text/css" href="../../skin/ticker.css">
+	    <style>
+	    body{overflow :hidden;}
+	    </style>
 		<!--end styles css-->
 
 		<script>
@@ -157,8 +160,11 @@
 			<tiles:insertAttribute name="menu" />
 		</div>
 		<div id="properties"></div>
-		<div id="admin-body" >
-			<tiles:insertAttribute name="body" />
+		<div id="admin-side" >
+				<tiles:insertAttribute name="side_bar"/>
+		</div>
+		<div id="admin-side-body">
+			<tiles:insertAttribute name="side_body" />
 		</div>
 <!-- 		<div id="admin-footer"> -->
 <%-- 			<tiles:insertAttribute name="footer" /> --%>

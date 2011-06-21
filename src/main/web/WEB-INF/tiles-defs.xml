@@ -9,6 +9,42 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/jsp/admin/tiles/footer.jsp" />
 	</definition>
+
+<!-- 	<definition name="side_bar.definition" template="/WEB-INF/jsp/admin/layouts/two_columns.jsp"> -->
+<!-- 		<put-attribute name="side_bar" value="/WEB-INF/jsp/admin/tiles/blank.jsp" /> -->
+<!-- 		<put-attribute name="side_body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" /> -->
+<!-- 	</definition> -->
+<!-- 	<definition name="side.definition" extends="base.definition"> -->
+<!-- 		<put-attribute name="body" value="side_bar.definition" /> -->
+<!-- 	</definition> -->
+<!-- 	<definition name="authentication.side.definition" extends="side_bar.definition"> -->
+<!-- 		<put-attribute name="side_bar" value="/WEB-INF/jsp/admin/authentication/side_menu.jsp" /> -->
+<!-- 	</definition> -->
+<!-- 	<definition name="administrator.side.definition" extends="side_bar.definition"> -->
+<!-- 		<put-attribute name="side_bar" value="/WEB-INF/jsp/admin/administrator/side_menu.jsp" /> -->
+<!-- 	</definition> -->
+<!-- 	<definition name="defaultpanel.side.definition" extends="side_bar.definition"> -->
+<!-- 		<put-attribute name="side_bar" value="/WEB-INF/jsp/admin/defaultpanel/side_menu.jsp" /> -->
+<!-- 	</definition> -->
+
+
+	<definition name="side.definition" template="/WEB-INF/jsp/admin/layouts/two_panes.jsp">
+		<put-attribute name="header" value="/WEB-INF/jsp/admin/tiles/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/admin/tiles/common_menu.jsp" />
+		<put-attribute name="side_bar" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
+		<put-attribute name="side_body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/admin/tiles/footer.jsp" />
+	</definition>
+	<definition name="authentication.side.definition" extends="side.definition">
+		<put-attribute name="side_bar" value="/WEB-INF/jsp/admin/authentication/side_menu.jsp" />
+	</definition>
+	<definition name="administrator.side.definition" extends="side.definition">
+		<put-attribute name="side_bar" value="/WEB-INF/jsp/admin/administrator/side_menu.jsp" />
+	</definition>
+	<definition name="defaultpanel.side.definition" extends="side.definition">
+		<put-attribute name="side_bar" value="/WEB-INF/jsp/admin/defaultpanel/side_menu.jsp" />
+	</definition>
+
 	<definition name="setup.definition" template="/WEB-INF/jsp/admin/layouts/setup.jsp">
 		<put-attribute name="header" value="/WEB-INF/jsp/admin/tiles/setup_header.jsp" />
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
