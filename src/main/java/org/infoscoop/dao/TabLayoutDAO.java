@@ -1,15 +1,15 @@
 /* infoScoop OpenSource
  * Copyright (C) 2010 Beacon IT Inc.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3
  * as published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.logging.Log;
@@ -51,8 +50,21 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	}
 
 	/**
+	 * Get unique record.
+	 *
+	 * @param tabId
+	 * @param roleOrder
+	 * @param temp
+	 * @return
+	 * @throws Exception
+	 */
+	public TabLayout selectByPK(String tabId, Integer roleOrder, Integer temp) throws Exception {
+		return super.getHibernateTemplate().get(TabLayout.class, new TABLAYOUTPK(tabId, roleOrder, temp));
+	}
+
+	/**
 	 * Get the temporary data of the tab ID that you appointed.
-	 * 
+	 *
 	 * @param tabId
 	 * @return
 	 * @throws Exception
@@ -63,7 +75,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 	/**
 	 * Get the data.
-	 * 
+	 *
 	 * @param tabId
 	 * @return
 	 * @throws Exception
@@ -78,7 +90,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 	/**
 	 * Get the data of the temp flag which you appointed.
-	 * 
+	 *
 	 * @param temp
 	 * @return List<TabLayout>
 	 */
@@ -91,7 +103,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 	/**
 	 * Get the tab ID data of temporary.
-	 * 
+	 *
 	 * @return List Map tabId,tabNumber
 	 * @throws DataResourceException
 	 */
@@ -128,7 +140,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 		return result;
 	}
-	
+
 	public String selectLockingUid() {
 		String queryString = "SELECT distinct Workinguid FROM TabLayout WHERE id.Temp = ?";
 		HibernateTemplate template = super.getHibernateTemplate();
@@ -141,7 +153,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 	/**
 	 * Insert the data.
-	 * 
+	 *
 	 * @param tabLayout
 	 */
 	public void insert(TabLayout tabLayout) {
@@ -153,7 +165,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 	/**
 	 * Insert the data.
-	 * 
+	 *
 	 * @param dataMap
 	 */
 	public void insert(Map dataMap) {
@@ -195,7 +207,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 	/**
 	 * Update the data of the last update day of the tab.
-	 * 
+	 *
 	 * @param res
 	 * @param tabId
 	 * @throws DataResourceException
@@ -223,7 +235,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 	/**
 	 * Update the delete flag of the temporary data.
-	 * 
+	 *
 	 * @param res
 	 * @param tabId
 	 * @param deleteFlag
@@ -249,7 +261,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 	/**
 	 * Update the tab of the temporary data.
-	 * 
+	 *
 	 * @param res
 	 * @param tabId
 	 * @throws DataResourceException
@@ -265,7 +277,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 	/**
 	 * Delete all the data of the temp flag which you appointed.
-	 * 
+	 *
 	 * @param temp
 	 */
 	public void deleteByTemp(Integer temp) {
@@ -330,7 +342,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 
 	/**
 	 * Return the MultiHashMap includes all the recoeds in tablayout table.
-	 * 
+	 *
 	 * @param resource
 	 * @return MultiHashMap
 	 *         <UL>

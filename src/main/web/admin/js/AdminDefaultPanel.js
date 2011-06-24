@@ -338,7 +338,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			ISA_R.alb_clearConfigurationDesc,
 			"database_refresh.gif","right");
 		previewDivWrap.appendChild( resetDiv );
-		//container.appendChild(previewDivWrap);
 		IS_Event.observe( resetDiv,"click",this.resetUserCustomization.bind( this ),false,"_adminPanel");
 		this.tab = new Control.Tabs("panelTabs",{
 			defaultTab: "tab_"+commandBarTabId,
@@ -471,7 +470,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		var tabsUl = document.createElement("ul");
 		tabsUl.id = "panelTabs";
 		tabsUl.className = "tabs";
-		//TODO コマンドバーi=0は別に処理する
+
 		for(var i=0; i<this.tabIdList.length; i++){
 			tabsUl.appendChild(this.buildTab(this.tabIdList[i]));
 		}
@@ -603,6 +602,14 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	*/
 	this.changeTab = function(activeTabId, addTab) {
 		if(!self.updatePanel()) return true;
+
+		if(self.editRoleWin && !self.editRoleWin.closed){
+			if(!confirm(ISA_R.ams_confirmCloseEditRoleWin)){
+				return true;
+			}else{
+				self.editRoleWin.close();
+			}
+		}
 		
 		var link = $("panelTab_"+activeTabId );
 		if( !link || link.hasClassName("selected"))
@@ -824,7 +831,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			// Added at last
 			roleParent.appendChild(self.buildRole(jsonObject));
 			// Change display to the permission added at the last minute
-			self.editRole(jsonObject);
+//			self.editRole(jsonObject);
 			self.isUpdated = true;
 			ISA_Admin.isUpdated = true;
 		};
@@ -1081,7 +1088,26 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		editImg.style.cursor = "pointer";
 		editImg.title = ISA_R.alb_editing;
 		editTd.appendChild(editImg);
-		IS_Event.observe(editImg, "click", this.editRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
+		
+		// for debug
+		/*
+		var editImg2 = document.createElement("img");
+		editImg2.src = imageURL + "edit.gif";
+		editImg2.style.cursor = "pointer";
+		editImg2.title = ISA_R.alb_editing;
+		editTd.appendChild(editImg2);
+		IS_Event.observe(editImg2, "click", this.editRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
+		*/
+
+		IS_Event.observe(editImg, "click", function(jsonRole){
+			this.displayRoleId = jsonRole.id;
+			this.displayRoleOrder = jsonRole.roleOrder;
+			
+			if(!self.updatePanel())
+				return;
+			
+			this.editRoleWin = window.open("editRole?id=" + jsonRole.id, "editRoleWin", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes');
+		}.bind(this, jsonRole));
 
 		var deleteTd = document.createElement("td");
 		//deleteTd.className = "panelRoleTd";
@@ -1101,7 +1127,12 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		return roleDiv;
 	}
-
+	
+	Event.observe(window, 'unload', function(e){
+		if(this.editRoleWin)
+			this.editRoleWin.close();
+	}.bind(this));
+	
 	/**
 		Edit permission
 	*/
@@ -1997,7 +2028,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		Creating Static widget list
 	*/
 	this.buildStaticWidgetsList = function(layout, staticJson) {
-		console.log("bbbb");
 		if(!this.staticContainer) return;
 
 		while( this.editStaticDiv.firstChild )
@@ -2016,7 +2046,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		buttonDiv.appendChild(selectButton);
 		buttonDiv.appendChild(document.createTextNode("　"));
 
-		console.log(this.displayRoleJsons[this.displayRoleId]);
 		if('useStaticOnly_adjustHeight' != this.displayRoleJsons[this.displayRoleId].panelUsage){
 			// Editting HTML button
 			var htmlButton = document.createElement("input");
@@ -2894,6 +2923,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 			// It need to cast if it is Numeber
 			roleJson.roleOrder = roleOrder++;
+			this.displayRoleJsons[i].roleOrder = roleJson.roleOrder;
 			roleJson.principalType = String( roleJson.principalType ); // null is needed to be entered as characters
 			roleJson.id = String( roleJson.id );
 			roleJson.tabId = String( roleJson.tabId );

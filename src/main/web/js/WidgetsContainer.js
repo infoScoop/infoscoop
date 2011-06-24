@@ -25,7 +25,7 @@ IS_Portal.loadWidgetQueue = {};
 IS_Portal.loadingWidgetCount = 0;
 var IS_WidgetsContainer = IS_Class.create();
 IS_WidgetsContainer.prototype.classDef = function() {
-	this.initialize = function() {
+	this.initialize = function(srvName) {
 		var opt = {
 		    method: 'get' ,
 		    asynchronous:true,
@@ -61,7 +61,10 @@ IS_WidgetsContainer.prototype.classDef = function() {
 		        IS_WidgetsContainer.loadFailed = true;
 		    }
 		};
-		var srvName = "widsrv" + ( (typeof displayTabOrder != "undefined") ? "?tabOrder=" + displayTabOrder : "" );
+
+		if(typeof srvName == "undefined"){
+			var srvName = "widsrv" + ( (typeof displayTabOrder != "undefined") ? "?tabOrder=" + displayTabOrder : "" );
+		}
 		AjaxRequest.invoke(hostPrefix + "/" + srvName, opt);
 	}
 	
@@ -402,7 +405,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					IS_Portal.addTab( id, tabName, tabType, numCol, columnsWidth, disabledDynamicPanel, true);
 					buildTargetTabIds.push(id);
 					
-					if(!useTab){
+					if(!useTab && IS_Portal.tabList.length > 0){
 						if(widgetConfList[0].tabNumber){
 							IS_Portal.tabs["tab0"].tabNumber = widgetConfList[0].tabNumber;
 						}
@@ -543,7 +546,8 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			
 			//Check new messages
 			//This line should be here as IS_Portal.msgLastViewTime is needed
-			IS_Widget.Message.checkNewMsgRepeat();
+			if(IS_Widget.Message)
+				IS_Widget.Message.checkNewMsgRepeat();
 			
 			if(fixedPortalHeader) 
 				IS_Portal.adjustPanelHeight(null);

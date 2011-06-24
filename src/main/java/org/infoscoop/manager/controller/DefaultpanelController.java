@@ -17,9 +17,20 @@
 
 package org.infoscoop.manager.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.infoscoop.acl.SecurityController;
+import org.infoscoop.dao.model.Tab;
+import org.infoscoop.dao.model.TabLayout;
+import org.infoscoop.service.TabLayoutService;
+import org.infoscoop.util.spring.TextView;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class DefaultpanelController implements ControllerInterface{
@@ -27,7 +38,36 @@ public class DefaultpanelController implements ControllerInterface{
 	public void index() throws Exception {
 	}
 
+	@RequestMapping(method=RequestMethod.GET)
+	public void editRole() throws Exception {
+	}
+
 	public String getRoleName() {
 		return "defaultPanel";
+	}
+
+//	@Transactional
+	@RequestMapping
+	public TextView widsrv(HttpServletRequest request,
+			@RequestParam("tabId") String tabId,
+			@RequestParam("roleOrder") Integer roleOrder, Model model)
+			throws Exception {
+		TabLayoutService service = TabLayoutService.getHandle();
+		String uid = SecurityController.getPrincipalByType("UIDPrincipal").getName();
+
+		JSONArray tabsJson = new JSONArray();
+
+		JSONObject bvObj = new JSONObject();
+		bvObj.append("buildVersion", "");
+
+		JSONObject tabJson = service.getTabJson(uid, tabId, roleOrder, TabLayout.TEMP_TRUE);
+
+		tabsJson.put(bvObj);
+		tabsJson.put(tabJson);
+
+		TextView view = new TextView();
+		view.setResponseBody(tabsJson.toString());
+		view.setContentType("application/json; charset=UTF-8");
+		return view;
 	}
 }

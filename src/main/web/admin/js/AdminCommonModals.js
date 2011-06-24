@@ -67,7 +67,7 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 		this.currentModal = new Control.Modal(
 			editorElement,
 			{
-			  contents: "",
+			  contents: "<div/>",
 			  opacity: 0.2,
 			  containerClassName:"adminTreeMenu",
 			  afterClose:this.hideWidgetEditorForm.bind(this)

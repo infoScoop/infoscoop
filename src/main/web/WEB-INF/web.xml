@@ -662,6 +662,16 @@
   </servlet-mapping>
 
   <servlet-mapping>
+  	<servlet-name>GadgetResourceServlet</servlet-name>
+  	<url-pattern>/manager/defaultpanel/gadget/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+  	<servlet-name>GadgetResourceServlet</servlet-name>
+  	<url-pattern>/manager/menu/gadget/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
     <servlet-name>AdminDispatcher</servlet-name>
     <url-pattern>/manager/*</url-pattern>
   </servlet-mapping>

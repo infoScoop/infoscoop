@@ -1,0 +1,183 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
+body{
+	font-size:11px !important;
+}
+#staticAreaContainer{
+	margin: 10px 0;
+}
+.staticLayout, .staticLayoutAdjustHeight{
+	width: 22%;
+	float: left;
+	margin-top: 5px;
+	margin-left: 5px;
+	padding: 5px;
+	border: solid 1px #000;
+	cursor: pointer;
+	width:120px;
+	height:194px;
+}
+.static_column {
+	border : dotted 1px gray;
+	cursor: pointer;
+	position:relative
+}
+.staticLayoutAdjustHeight .static_column{
+	height:182px;
+}
+.edit_static_gadget{
+	position: absolute;top: 0px;left: 0px;
+	text-decoration: underline;
+	color : blue;
+	cursor: pointer;
+	text-align:center;
+	vertical-align:middle;
+	-moz-opacity:0.7;
+	opacity:0.7;
+	filter:alpha(opacity=70);
+	background-color: #F0F0F0;
+	z-index: 10;
+	width:100%;
+	height:100%;
+}
+
+#access_level_radio {
+	display:inline-block;
+}
+#infoscoop #portal-tree-menu{
+	display:none;
+}
+#infoscoop #infoscoop-panel{
+	width:100%;
+}
+#infoscoop.areaType0 #portal-tree-menu{
+	display:block;
+	width:20%;
+}
+#infoscoop.areaType0 #infoscoop-panel{
+	width:80%;
+}
+
+/*- Form --------------------------- */
+// TODO: this css is contained in manager.css too.
+.cssform{
+	margin-left: 5px;
+	padding: 15px 15px 25px;
+}
+.cssform fieldset{
+	border: 1px solid #AAAAAA;
+	margin: 10px 0;
+	padding: 10px;
+}
+.cssform legend{
+	font-weight: bold;
+	font-size:1.1em;
+	_margin: 0 -7px; /* IE Win */
+}
+.cssform legend, .cssform label{
+	padding-left: 0;
+	color: #333;
+}
+.cssform ul{
+	padding:0;
+	list-style-type:none;	
+}
+.cssform li{
+	display:block;
+	margin: 0;
+	padding: 5px 0;
+	padding-left: 155px; /*width of left column containing the label elements*/
+	/*height: 1%;*/
+}
+
+.cssform label{
+	float: left;
+	margin-left: -155px; /*width of left column*/
+	width: 150px; /*width of labels. Should be smaller than left column (155px) to create some right margin*/
+	text-align:right;
+	padding-top: 2px;
+}
+
+.cssform input[type="text"]{ /*width of text boxes. IE6 does not understand this attribute*/
+	width: 180px;
+}
+.cssform input[type=text],
+.cssform input[type=password],
+.cssform input.text,
+.cssform input.title,
+.cssform textarea,
+.cssform select {
+	background-color:#fff;
+	border:1px solid #bbb;
+}
+.cssform input[type=text]:focus,
+.cssform input[type=password]:focus,
+.cssform input.text:focus,
+.cssform input.title:focus,
+.cssform textarea:focus,
+.cssform select:focus {
+	border-color:#666;
+}
+
+.cssform textarea{
+	width: 250px;
+	height: 150px;
+}
+.cssform .radio label{
+	float: none;
+	width: auto;
+	margin-left: 0;
+	text-align:left;
+}
+
+/* default theme */ 
+.infoScoop .widget .widgetHeader {
+    background-image: url("../skin/imgs/theme/widget_header.png");
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.infoScoop .subWidget .widgetHeader {
+    background-color: #EEEEFF;
+    background-image: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+/* disable tab-container */
+#tab-container {
+	display:none;
+}
+
+/* disable multidrop */
+#portal-site-aggregation-menu .menufolderfeedTitle, #portal-site-aggregation-menu .menufolderfeed {
+	visibility: hidden;
+}
+#portal-tree-menu .menufolderfeedTitle, #portal-tree-menu .menufolderfeed {
+	display: none;
+}
+
+/* disable menuRefresh icon */
+.menuRefresh {
+	width: 1px;
+	height: 1px;
+	position: absolute;
+	top: -9999;
+	left: -9999;
+	display: none;
+}

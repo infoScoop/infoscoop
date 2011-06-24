@@ -1349,9 +1349,9 @@ IS_Portal.buildPanel = function(panelNumber, type){
 	staticPanel.appendChild(staticDiv);
 	staticDiv.id = "static-portal-widgets"+panelNumber;
 	
-	if(type == "static"){
+	var staticPanelLayout = IS_Customization["staticPanel"+panelNumber];
+	if(type == "static" && staticPanelLayout && staticPanelLayout.layout){
 		staticPanel.innerHTML = IS_Customization["staticPanel"+panelNumber].layout;
-		
 		td.appendChild(staticPanel);
 	}
 	

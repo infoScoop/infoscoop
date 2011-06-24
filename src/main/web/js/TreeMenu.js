@@ -1,15 +1,15 @@
 /* infoScoop OpenSource
  * Copyright (C) 2010 Beacon IT Inc.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3
  * as published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
@@ -27,14 +27,14 @@ if( displaySideMenu ) {
 		//var alertSetting = is_getPropertyInt(sideMenuAlertSetting, 1);
 		//IS_TreeMenu.alertSettings[sideMenuURL] =  ( alertSetting < 3 ) ? alertSetting : 1;
 	}
-	
+
 	IS_SidePanel.setMenu = function(url,a,b,c){
 		IS_TreeMenu.types.sidemenu.setMenu( url,a,b,c,true );
 	}
 	IS_SidePanel.setServiceMenu = function(url, a, c, b){
 		return IS_TreeMenu.types.sidemenu.setMenu( url, a,b,c,false );
 	}
-	
+
 	IS_SidePanel.SiteMap.menuItemList = IS_TreeMenu.types.sidemenu.menuItemList;
 	IS_SidePanel.SiteMap.topMenuIdList = IS_TreeMenu.types.sidemenu.topMenuIdList;
 	IS_SidePanel.SiteMap.menuItemTreeMap = IS_TreeMenu.types.sidemenu.menuItemTreeMap;
@@ -44,7 +44,7 @@ if( displaySideMenu ) {
 }
 
 IS_SidePanel.SiteMap.prototype.classDef = function () {
-	
+
 	var container = document.getElementById("portal-tree-menu");
 	var openedMenuSet = [];
 	var level = [];
@@ -55,53 +55,53 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 	var hideAll;
 	var content;
 	var loadingMessage;
-	
+
 	function replaceContent(element){
 		content.innerHTML = "";
 		content.appendChild(element);
 	}
-		
-	this.initialize = function(synchronous) {
+
+	this.initialize = function(synchronous, ignoreAC) {
 		if(!container) return;
-		
+
 		// fix #305
 		//container.innerHTML = "";
-		
+
 		if(!displaySideMenu) {
 			container.style.display = "none";
 			return;
 		}
-		
+
 		if(!IS_SidePanel.SiteMap.isInitialize) {
 			refreshButton = document.createElement("div");
 			refreshButton.className = "menuRefresh";
 			container.appendChild( refreshButton );
 			Event.observe(refreshButton,'click',IS_SidePanel.SiteMap.refreshTreeMenu,false,"_sidemenu" );
-			
+
 			showAll = document.createElement("div");
 			showAll.className = "showAll";
 			showAll.appendChild(document.createTextNode(IS_R.lb_deployAll));
-			
+
 			hideAll = document.createElement("div");
 			hideAll.className = "hideAll";
 			hideAll.appendChild(document.createTextNode(IS_R.lb_closeAll));
 			hideAll.style.display = "none";
-			
+
 			container.appendChild(showAll);
 			container.appendChild(hideAll);
-			
+
 			Event.observe(showAll, 'click', function() { attachShowHideEventHandler(true, content.firstChild ); },false,"_sidemenu");
 			Event.observe(hideAll, 'click', function() { attachShowHideEventHandler(false, content.firstChild ); },false,"_sidemenu");
-			
+
 			content = document.createElement("div");
 			container.appendChild(content);
-		
+
 			loadingMessage = document.createElement('div');
 			loadingMessage.innerHTML = "Loading...";
 			loadingMessage.style.clear = "both";
 			loadingMessage.style.cssFloat = "left";
 			content.appendChild(loadingMessage);
-			
+
 			IS_SidePanel.SiteMap.elements = {
 				refreshButton : refreshButton,
 				showAll: showAll,
@@ -109,7 +109,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				content: content,
 				loadingMessage: loadingMessage
 			}
-			
+
 			IS_SidePanel.SiteMap.isInitialize = true;
 		} else {
 			refreshButton = IS_SidePanel.SiteMap.elements.refreshButton;
@@ -118,7 +118,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			content = IS_SidePanel.SiteMap.elements.content;
 			loadingMessage = IS_SidePanel.SiteMap.elements.loadingMessage;
 		}
-		
+
 		function buildErrorMessage(msg){
 			var errorMessageDiv = document.createElement('div');
 			errorMessageDiv.style.fontSize = '90%';
@@ -128,7 +128,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			errorMessageDiv.innerHTML = msg;
 			return errorMessageDiv;
 		}
-		
+
 		var opt = {
 		  asynchronous:!synchronous,
 		  includeServiceMenu: synchronous,
@@ -150,7 +150,10 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			  	replaceContent(buildErrorMessage(IS_R.ms_menuLoadonFailure));
 		  }
 		}
-		
+
+		if(ignoreAC)
+			opt.requestHeaders = ["Ignore-Access-Control", "true"];
+
 		if( !IS_TreeMenu.types.sidemenu.isSuccess ) {
 			if( !IS_TreeMenu.types.sidemenu.loadMenu( opt ) ) {
 				//Loading
@@ -163,11 +166,11 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			displayMenu();
 		}
 	}
-	
+
 	function displayMenu() {
 		//var start = new Date();
 		//var startTime = start.getSeconds() * 1000 + start.getMilliseconds();
-		
+
 		var treeMenuDiv = document.createElement("div");
 		treeMenuDiv.style.clear = "both";
 
@@ -178,22 +181,22 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			var menuItem = IS_TreeMenu.types.sidemenu.menuItemList[IS_TreeMenu.types.sidemenu.topMenuIdList[i]];
 			menuItem.depth = 0;
 			if( i == IS_TreeMenu.types.sidemenu.topMenuIdList.length -1) menuItem.isLast = true;
-			
+
 			if( menuItem.serviceURL ) {
 				menuTop.appendChild( getMenuService( menuItem ) );
 			} else {
 				menuTop.appendChild(buildMenuTree(menuItem));
 			}
 		}
-	
+
 		treeMenuDiv.appendChild(menuTop);
-			
+
 		//container.replaceChild(treeMenuDiv,loadingMessage);
 		replaceContent(treeMenuDiv);
-		
+
 		//if( refreshMenu )
 		//	Event.observe(refreshButton,'click',IS_SidePanel.SiteMap.refreshTreeMenu,false,"_sidemenu" )
-		
+
 		var div = document.createElement("div");
 		div.style.visibility = "hidden";
 		div.style.width = "100px";
@@ -204,10 +207,10 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		//msg.debug("Tree init duration: " + (endTime - startTime));
 		IS_SidePanel.SiteMap.isSuccess = true;
 	}
-	
+
 	function attachShowHideEventHandler( doShow, treeMenuDiv ) {
 		if( !IS_TreeMenu.types.sidemenu.isSuccess ) return;
-		
+
 		treeMenuDiv.style.display = 'none';
 		treeMenuDiv.parentNode.appendChild(loadingMessage);
 		var execAllShowHide = function(){
@@ -230,20 +233,20 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			}
 			loadingMessage.parentNode.removeChild(loadingMessage);
 			treeMenuDiv.style.display = 'block';
-			
+
 			IS_SidePanel.adjustPosition();
 		}
 		setTimeout(execAllShowHide,1);
 	}
-	
+
 
 	/**
 	 * Copy From SiteAggregationMenu.getMenuService
-	 * 
+	 *
 	 * Get external menu service
 	 * @param menuItem Top menu object
 	 */
-	
+
 	// The content is changed to error message if the external service can not be loaded.
 	function getMenuService(menuItem) {
 		IS_TreeMenu.alertSettings[menuItem.serviceURL] = (typeof menuItem.alert != 'undefined') ? menuItem.alert : 1;
@@ -261,28 +264,28 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		  on404: function(t) {
 			  var topLi = $("menuService_topLi_"+menuItem.id);
 			  if( !topLi ) return;
-			  
+
 			  topLi.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+
 			  	IS_R.ms_menuNotFound + "</span>";
 		  },
 		  on10408: function( req,obj ) {
 			  var topLi = $("menuService_topLi_"+menuItem.id);
 			  if( !topLi ) return;
-			  
+
 			  topLi.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>" +
 			  	IS_R.ms_menuLoadon10408 + "</span>";
 		  },
 		  onFailure: function(t) {
 			  var topLi = $("menuService_topLi_"+menuItem.id);
 			  if( !topLi ) return;
-			  
+
 			  topLi.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+
 			  	IS_R.ms_menuLoadonFailure + "</span>";
 		  },
 		  onException: function(r, t){
 			  var topLi = $("menuService_topLi_"+menuItem.id);
 			  if( !topLi ) return;
-			  
+
 			  topLi.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>" +
 			  	IS_R.ms_menuLoadonFailure + "</span>";
 		  }
@@ -297,16 +300,16 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				opt.requestHeaders.push(decodeURIComponent(serviceUidParamName));
 			}
 		}
-		
+
 		function displayServiceMenu() {
 			var topLi = $("menuService_topLi_"+menuItem.id);
 			if( !topLi ) return;
-			
+
 			var tempMenuItem = menuItem;
 			var menuTopItems = menuItem.menuTopItems;
 			var topContainer =  topLi.parentNode;
 			if( !topContainer ) return;
-			
+
 			for(var i=0;i<menuTopItems.length;i++){
 				var menuTopItem = menuTopItems[i];
 				menuTopItem.isLast = tempMenuItem.isLast;
@@ -315,18 +318,18 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				topContainer.insertBefore(newTopLi, topLi);
 			}
 			topContainer.removeChild(topLi);
-			
+
 			var index = IS_TreeMenu.types.sidemenu.topMenuIdList.indexOf(menuItem.id);
 			if( index < 0 )
 				return;
-			
+
 			var args = [index, 1];
 			for(var i=0;i<menuTopItems.length;i++)
 				args.push(menuTopItems[i].id);
-			
+
 			menuItem.owner.topMenuIdList.splice.apply( menuItem.owner.topMenuIdList, args);
 		}
-		
+
 		if( !menuItem.isSuccess ) {
 			if( !menuItem.loadServiceMenu( opt )) {
 				IS_EventDispatcher.addListener("loadMenuComplete",menuItem.serviceURL,function() {
@@ -336,10 +339,10 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		} else {
 			setTimeout( displayServiceMenu,10 );
 		}
-		
+
 		return topLi;
 	}
-	
+
 	function buildMenuTree(menuItem){
 		var li =  makeMenu(menuItem);
 		var childList = menuItem.children;
@@ -347,27 +350,27 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			var childrenDiv = document.createElement('div');
 			childrenDiv.id = "tg_" + menuItem.id;
 			childrenDiv.className = 'ygtvchildren';
-			
+
 			for(var j = 0; j < childList.length;j++){
 				var child = childList[j];
 				if( j == childList.length - 1 ) child.isLast = true;
 				child.isChildrenBuildSiteMap = false;
 			}
-			
+
 			li.appendChild(childrenDiv);
 		}
 		return li;
 	}
-	
-	
+
+
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-	
+
 	function buildMenuTreeChild(menuItem){
 		var childList = menuItem.children;
 		if(childList){
 			var childrenDiv = document.createElement('div');
 			childrenDiv.className = 'ygtvchildren';
-			
+
 			for(var j = 0; j < childList.length;j++){
 				var child = childList[j];
 				child.depth = menuItem.depth + 1;
@@ -376,7 +379,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			return childrenDiv;
 		}
 	}
-	
+
 	function buildMenuTreeAll(menuItem){
 		var menuDiv =  makeMenu(menuItem);
 		var childList = menuItem.children;
@@ -391,11 +394,11 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		}
 		return menuDiv;
 	}
-	
+
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-	
-	
-	
+
+
+
 	/**
      * Create menu item of sitemap
      * t_: Prefix of ID of menu Box
@@ -438,17 +441,17 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		lineTd.id = "i_" + menuItem.id;
 		var lineDiv = document.createElement('div');
 		lineDiv.className = 'ygtvspacer';
-		
+
 		var hasChilds = false;
 		lineTd.appendChild(lineDiv);
 		menuTr.appendChild(lineTd);
-		
+
 		//var menuLi = document.createElement("li");
 
 		var itemTd = document.createElement('td');
 		itemTd.style.width = "100%";
 		menuTr.appendChild(itemTd);
-		
+
 		var divMenuItem = document.createElement("div");
 		divMenuItem.id = "tc_" + menuItem.id;
 		if ( menuItem.children.length > 0) {
@@ -473,25 +476,25 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			var handler = IS_SiteAggregationMenu.getDraggable(menuItem, divMenuItemIcon, divMenuItem,
 				false,false,container.parentNode.parentNode );
 			divMenuItemIcon.handler = handler;
-			
+
 			IS_Event.observe(itemTd, "mousedown", function(e){
 				Event.stop(e);
-			}, false, "_sidemenu");	
+			}, false, "_sidemenu");
 
 			var returnToMenuFunc = IS_SiteAggregationMenu.getReturnToMenuFuncHandler( divMenuItemIcon, menuItem.id, handler );
 			var displayTabName = IS_SiteAggregationMenu.getDisplayTabNameHandler( divMenuItemIcon, menuItem.id, handler, returnToMenuFunc, "_sidemenu" );
-			
+
 			divMenuItemIcon.className = "menuItemIcon";
 			itemTd.style.cursor = "move";
 			IS_Widget.setIcon(divMenuItemIcon, menuItem.type, {multi:menuItem.multi});
-			
+
 			if(IS_Portal.isChecked(menuItem) && !/true/.test(menuItem.multi)){
 				divMenuItemIcon.handler.destroy();
 				Element.addClassName(divMenuItemIcon, 'menuItemIcon_dropped');
 				IS_Event.observe(divMenuItemIcon, 'mouseover', displayTabName, false, "_sidemenu");
 				itemTd.style.cursor = "default";
 			}
-			
+
 			// 200-300millsec can be lost as addListener executes new Array.
 			function getPostDragHandler(menuItemId, handler){
 				if( Browser.isSafari1 ) {
@@ -501,7 +504,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 						var parentNode = menuDiv.parentNode;
 						parentNode.replaceChild( dummyDiv,menuDiv );
 						postDragHandler( menuItemId );
-						
+
 						setTimeout( function() {
 							parentNode.replaceChild( menuDiv,dummyDiv )
 						},10 );
@@ -514,16 +517,16 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				//fix 209 Sometimes the widget that can be dropped plurally is dropped to a tab can not be dropped.
 				if( /true/i.test( menuItem.multi ) )
 					return;
-				
+
 //				Event.stopObserving(itemTd, "mousedown", handler, false);
 				divMenuItemIcon.handler.destroy();
 				//$("ti_" + menuItemId).className = (/MultiRssReader/.test(menuItem.type)) ? "menuItemIcon_multi_rss_gray" : "menuItemIcon_rss_gray";
 
 				Element.addClassName(divMenuItemIcon, 'menuItemIcon_dropped');
-				
+
 //				divMenuItemIcon.className = (/MultiRssReader/.test(menuItem.type)) ? "menuItemIcon_multi_rss_gray" : "menuItemIcon_rss_gray";
 				itemTd.style.cursor = "default";
-				
+
 				var divMenuItemParent = divMenuItem.parentNode;
 				var divMenuItemNextSibling = divMenuItem.nextSibling;
 				divMenuItemParent.removeChild( divMenuItem );
@@ -532,7 +535,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				} else {
 					divMenuItemParent.appendChild( divMenuItem );
 				}
-				
+
 				IS_Event.observe(divMenuItemIcon, 'mouseover', displayTabName, false, "_sidemenu");
 			};
 			IS_EventDispatcher.addListener('dropWidget', menuItem.id, getPostDragHandler(menuItem.id), true);
@@ -541,12 +544,12 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				IS_EventDispatcher.addListener( IS_Widget.DROP_URL,url,( function( menuItem,handler ) {
 						return function( widget ) {
 							if( !IS_Portal.isMenuType( widget,menuItem )) return;
-							
+
 							postDragHandler(menuItem.id, handler);
 						}
 					})( menuItem,handler ) );
 			}
-			
+
 			function getCloseWidgetHandler(menuItemId){
 				if( Browser.isSafari1 ) {
 					return function() {
@@ -566,14 +569,14 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				*/
 				divMenuItemIcon.handler = IS_SiteAggregationMenu.getDraggable(menuItem, divMenuItemIcon, divMenuItem,
 					false,false,container.parentNode.parentNode );
-				
+
 				//$("ti_" + menuItemId).className = (/MultiRssReader/.test(menuItem.type))? "menuItemIcon_multi_rss" : "menuItemIcon_rss";
 
 				Element.removeClassName(divMenuItemIcon, 'menuItemIcon_dropped');
-				
+
 //				divMenuItemIcon.className = (/MultiRssReader/.test(menuItem.type))? "menuItemIcon_multi_rss" : "menuItemIcon_rss";
 				itemTd.style.cursor = "move";
-				
+
 				divMenuItemIcon.title = "";
 				IS_Event.stopObserving(divMenuItemIcon, 'mouseover', displayTabName, false, "_menu");
 			}
@@ -583,7 +586,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				IS_EventDispatcher.addListener( IS_Widget.CLOSE_URL,url,( function( menuItem,handler ) {
 						return function( widget ) {
 							if( !IS_Portal.isMenuType( widget,menuItem )) return;
-							
+
 							closeWidgetHandler(menuItem.id, handler);
 						}
 					})( menuItem,handler ) );
@@ -591,19 +594,19 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		}else{
 			divMenuItemIcon.className = "treemenuItemIcon_blank";
 		}
-		
+
 		divMenuItem.appendChild(divMenuItemIcon);
-		
+
 		var divMenuTitle = document.createElement("div");
 		divMenuTitle.id = "t_" + menuItem.id;
 		divMenuTitle.className = "treeMenuTitle";
-		
+
 		var title = menuItem.directoryTitle || menuItem.title;
 		if (menuItem.href && !menuItem.linkDisabled) {
 			var aTag = document.createElement('a');
 			aTag.href = menuItem.href;
 			aTag.appendChild(document.createTextNode(title));
-			
+
 			if(/^javascript:/i.test( menuItem.href )){
 				var aTagOnClick = function(e) {
 					eval( menuItem.href );
@@ -629,7 +632,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			divMenuTitle.appendChild(document.createTextNode(title));
 		}
 		divMenuTitle.title = title;
-		
+
 		if ( Browser.isIE ) {
 			divMenuItem.appendChild(divMenuTitle);
 			divMenuItem.style.width = "100%";
@@ -645,13 +648,13 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			var tr = document.createElement("tr");
 			var td = document.createElement("td");
 			td.appendChild(divMenuTitle);
-			
+
 			tr.appendChild(td);
 			menuItemTable.appendChild(tr);
 			divMenuItem.appendChild(menuItemTable);
 		}
 		itemTd.appendChild(divMenuItem);
-		
+
 		if(hasChilds){
 			var childList = menuItem.children;
 			var hasWidget = false;
@@ -662,58 +665,58 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 					break;
 				}
 			}
-			
+
 			if(hasWidget){
 				var folderFeedContainer = document.createElement("div");
-				
+
 //				if(Browser.isIE) // The item is set in wrong position in IE if it is not in between BRs
 //					folderFeedContainer.appendChild(document.createElement("br"));
-				
+
 				folderFeedContainer.className = "multiDropHandle";
 				folderFeedContainer.style.display = "none";
-				
+
 				var headerTable = document.createElement("table");
 				headerTable.cellSpacing = 0;
 				headerTable.cellPadding = 0;
 				headerTable.style.width = "100%";
-				
+
 				if(Browser.isIE) headerTable.style.marginBottom = "2px";
-				
+
 				var headerTbody = document.createElement("tbody");
 				var headerTr = document.createElement("tr");
 				var closeTd = document.createElement("td");
 				headerTable.appendChild(headerTbody);
 				headerTbody.appendChild(headerTr);
 				folderFeedContainer.appendChild(headerTable);
-				
+
 				var folderIconTd = document.createElement("td");
 				folderIconTd.className = "menufolderfeed";
-				
-				var folderIcon = document.createElement("img"); 
+
+				var folderIcon = document.createElement("img");
 				folderIcon.src = imageURL + "drop_all.gif";
 				folderIconTd.appendChild(folderIcon);
-				
+
 				var folderFeedTitleTd = document.createElement("td");
 				folderFeedTitleTd.className = "menufolderfeed";
 				folderFeedTitleTd.style.width = "100%";
-				var folderFeedTitle = document.createElement("div"); 
-				
+				var folderFeedTitle = document.createElement("div");
+
 				folderFeedTitle.className = "menufolderfeedTitle";
 				folderFeedTitle.innerHTML = IS_R.lb_dropAll;
 				folderFeedTitleTd.appendChild(folderFeedTitle);
-				
+
 				headerTr.appendChild(folderIconTd);
 				headerTr.appendChild(folderFeedTitleTd);
 //				var dragHandler = IS_SiteAggregationMenu.menuDragInit(menuItem, folderFeedContainer, folderFeedContainer, true, true);
 				IS_SiteAggregationMenu.getMultiDropDraggable(folderFeedContainer, menuItem);
-				
+
 				itemTd.appendChild(folderFeedContainer);
 //				IS_Event.observe(folderFeedContainer,"mousedown", dragHandler, false, "_menu");
 				/*
 				IS_Event.observe(itemTd,"mouseover", getTreeOverHandler(folderFeedContainer, lineTd), false, "_sidemenu");
 				IS_Event.observe(itemTd,"mouseout", getTreeOutHandler(folderFeedContainer), false, "_sidemenu");
 				*/
-				
+
 				IS_Event.observe(itemTd,"mouseover", function(){
 					clearTimeout(folderFeedContainer.overTimeout);
 					clearTimeout(folderFeedContainer.outTimeout);
@@ -722,7 +725,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 						delayDisplay.call(itemTd, folderFeedContainer);
 					}
 				}.bind(itemTd), false, "_sidemenu");
-				
+
 				IS_Event.observe(itemTd,"mouseout", function(){
 					clearTimeout(folderFeedContainer.overTimeout);
 					clearTimeout(folderFeedContainer.outTimeout);
@@ -730,7 +733,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 						delayDisplayNone.call(itemTd, folderFeedContainer);
 					}
 				}, false, "_sidemenu");
-				
+
 				function delayDisplay( div ){
 					div.overTimeout = setTimeout(function(){
 						div.style.display = "";
@@ -743,36 +746,36 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 				}
 			}
 		}
-		
+
 		return menuDiv;
 	}
-	
+
 	function getClickHandler(icon, menuItem){
 		return function(e){ subMenuOpenClose(e, icon, menuItem);} ;
 	}
-	
+
 	function subMenuOpenClose(e, icon, menuItem) {
 		var el = window.event ? icon : e ? e.currentTarget : null;
-		
+
 		if (!el) return;
-		
+
 		if(el.className == 'ygtvtp' || el.className == 'ygtvlp'){
 			subMenuOpen(el, menuItem);
 		}else{
 			subMenuClose(el);
 		}
-		
+
 	}
-	
+
 	function subMenuOpen(el, menuItem){
 		if(el.className == "ygtvtm" || el.className == 'ygtvlm') return;
-		
+
 		if(el.className == 'ygtvtp'){
 			el.className = 'ygtvtm';
 		}else{
 			el.className = 'ygtvlm';
 		}
-		
+
 		var menuDiv = el.parentNode.parentNode.parentNode.parentNode;
 
 		if (!menuItem.isChildrenBuildSiteMap) {
@@ -780,7 +783,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			menuDiv.appendChild(childUl);
 			menuItem.isChildrenBuildSiteMap = true;
 		}
-		
+
 		for (var i = 0; i < menuDiv.childNodes.length; i++) {
 			var node = menuDiv.childNodes[i];
 			if (node.nodeName.toLowerCase() == 'div') {
@@ -789,17 +792,17 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		}
 		IS_SidePanel.adjustPosition();
 	}
-	
+
 	function subMenuClose(el){
 		if(el.className == 'ygtvtp' || el.className == 'ygtvlp') return;
-		
+
 		if(el.className == 'ygtvtm'){
 			el.className = "ygtvtp";
 		}else{
 			el.className = 'ygtvlp';
 		}
 		var menuDiv = el.parentNode.parentNode.parentNode.parentNode;
-		
+
 		for (var i = 0; i < menuDiv.childNodes.length; i++) {
 			var node = menuDiv.childNodes[i];
 			if (node.nodeName.toLowerCase() == 'div') {
@@ -807,7 +810,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			}
 		}
 	}
-	
+
 };
 
 IS_SidePanel.SiteMap.refreshTreeMenu = function() {
