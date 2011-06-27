@@ -4,6 +4,7 @@
 			 "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
 	<definition name="base.definition" template="/WEB-INF/jsp/admin/layouts/default.jsp">
+		<put-attribute name="page_head" value="/WEB-INF/jsp/admin/tiles/page_head.jsp" />
 		<put-attribute name="header" value="/WEB-INF/jsp/admin/tiles/header.jsp" />
 		<put-attribute name="menu" value="/WEB-INF/jsp/admin/tiles/common_menu.jsp" />
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />
@@ -11,6 +12,7 @@
 	</definition>
 
 	<definition name="side.definition" template="/WEB-INF/jsp/admin/layouts/two_panes.jsp">
+		<put-attribute name="page_head" value="/WEB-INF/jsp/admin/tiles/page_head.jsp" />
 		<put-attribute name="header" value="/WEB-INF/jsp/admin/tiles/header.jsp" />
 		<put-attribute name="menu" value="/WEB-INF/jsp/admin/tiles/common_menu.jsp" />
 		<put-attribute name="side_bar" value="/WEB-INF/jsp/admin/tiles/blank.jsp" />

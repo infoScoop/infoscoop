@@ -623,6 +623,10 @@ background-color:#FFFFFF;
 color:#000000;
 }
 
+.updateRaw .proxyConfigList td{
+	background-color:#ffffcc;
+}
+
 .dynamicPanelWidgetList{
 /*background-color:#FFFFFF;*/
 /*color:#000000;*/

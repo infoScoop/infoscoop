@@ -183,7 +183,11 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			if( i == IS_TreeMenu.types.sidemenu.topMenuIdList.length -1) menuItem.isLast = true;
 
 			if( menuItem.serviceURL ) {
-				menuTop.appendChild( getMenuService( menuItem ) );
+				if(IS_SiteAggregationMenu.ignoreService){
+//					IS_EventDispatcher.newEvent("loadMenuComplete",menuItem.serviceURL );
+				}else{
+					menuTop.appendChild( getMenuService( menuItem ) );
+				}
 			} else {
 				menuTop.appendChild(buildMenuTree(menuItem));
 			}

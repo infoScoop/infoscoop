@@ -62,15 +62,15 @@ body{
 #infoscoop #portal-tree-menu{
 	display:none;
 }
-#infoscoop #infoscoop-panel{
+#infoscoop #portal-maincontents-table{
 	width:100%;
 }
 #infoscoop.areaType0 #portal-tree-menu{
 	display:block;
 	width:20%;
 }
-#infoscoop.areaType0 #infoscoop-panel{
-	width:80%;
+#infoscoop.areaType0 #portal-maincontents-table{
+	width:77%;
 }
 
 /*- Form --------------------------- */
@@ -157,6 +157,11 @@ body{
     background-image: none;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+
+/* disable static widget icons */
+.static_column .widgetHeader .rightHeader{
+	visibility:hidden;
 }
 
 /* disable tab-container */

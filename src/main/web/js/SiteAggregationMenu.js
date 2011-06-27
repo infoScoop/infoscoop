@@ -627,7 +627,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 						IS_EventDispatcher.newEvent("loadMenuComplete","topmenu");
 					},false,true );
 				}
-
 				displayMenu( response );
 			},
 		    on404: function(t) {
@@ -739,7 +738,11 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			var menuItem = IS_SiteAggregationMenu.menuItemList[IS_SiteAggregationMenu.topMenuIdList[i]];
 			var topLi;
 			if(menuItem.serviceURL){
-				topLi = getMenuService(menuItem);
+				if(IS_SiteAggregationMenu.ignoreService){
+					IS_EventDispatcher.newEvent("loadMenuComplete",menuItem.serviceURL );
+				}else{
+					topLi = getMenuService(menuItem);
+				}
 			}else{
 				topLi = createTopMenu(menuItem);
 			}
@@ -761,7 +764,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		if(Browser.isIE)
 //			Event.observe(document, "click", IS_SiteAggregationMenu.closeMenu, true);
 			Event.observe("portal-maincontents-table", "click", IS_SiteAggregationMenu.closeMenu, true);
-
 	}
 
 	/**

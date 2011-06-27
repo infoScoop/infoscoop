@@ -2,20 +2,11 @@
 <%@ page contentType="text/html; charset=UTF-8" errorPage="/jspError.jsp" %>
 <%@ page import="org.infoscoop.util.RSAKeyManager"%>
 <%@ page import="org.infoscoop.service.ForbiddenURLService" %>
-<%@ page import="org.infoscoop.service.PortalAdminsService" %>
-
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 	String uid = (String) session.getAttribute("Uid");
-	if(uid == null || uid.length() == 0) {
-		response.sendRedirect("./login.jsp");
-	}
 %>
-<tiles:useAttribute name="title"/>
-<tiles:useAttribute name="type" scope="request"/>
-<html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta http-equiv="Pragma" content="no-cache">
@@ -145,27 +136,22 @@
 		<script>
 			jQuery.noConflict();
 			$jq = jQuery;
-		</script>
-		<script>
-		$jq(function(){
-			$jq("#messageIcon").click(function(){
-				msg.showPopupDialog(adminHostPrefix);
+
+			var rsaPK = new RSAKey();
+			rsaPK.setPublic("<%= RSAKeyManager.getInstance().getModulus() %>", "<%= RSAKeyManager.getInstance().getPublicExponent() %>");
+			
+			IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
+			IS_WidgetIcons = <jsp:include page="/gadgeticon" flush="true" />;
+
+			$jq(function(){
+				$jq("#messageIcon").click(function(){
+					msg.showPopupDialog(adminHostPrefix);
+				});
+				$jq("#admin-tabs .tab").click(function(){
+					if(!ISA_Admin.checkUpdated()){
+						return false;
+					}
+				});
 			});
-			$jq("#admin-leftbox-navigator .tab").click(function(){
-				if(!ISA_Admin.checkUpdated()){
-					return false;
-				}
-			});
-		});
 		</script>
 	</head>
-		<body class="infoScoop admin">
-		<div id="admin-menu-navigator"></div>
-		
-		<div id="admin-header">
-			<tiles:insertAttribute name="header" />
-		</div>
-		<div id="admin-tabs">
-			<tiles:insertAttribute name="menu" />
-		</div>
-		<div id="properties"></div>

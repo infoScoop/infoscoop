@@ -41,6 +41,7 @@ import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.dao.model.Widget;
+import org.infoscoop.util.Crypt;
 import org.infoscoop.util.RoleUtil;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.XmlUtil;
@@ -406,7 +407,7 @@ public class TabLayoutService {
 			value = new JSONObject();
 //			value.put("id", Tablayout.getId().getTabid() + "_" + Tablayout.getRole());	// tabId+role can not be unique
 //			value.put("id", tablayout.getId().getTabid() + "_" + tablayout.getId().getRoleorder() + "_" + tablayout.getRole());	// fix #174
-			value.put("id", UUID.randomUUID());	// fix #174
+			value.put("id", Crypt.getHash(tablayout.getId().getTabid() + "_" + tablayout.getId().getRoleorder() + "_" + tablayout.getRole()));	// fix #174
 			value.put("tabId", tablayout.getId().getTabid());
 			value.put("tabName", tablayout.getTabName());
 			value.put("columnsWidth", tablayout.getColumnsWidth());

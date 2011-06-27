@@ -86,7 +86,7 @@
 		</table>
 		<div id="portal-tree-menu" style="float:left;"> </div>
 
-		<div id="infoscoop-panel" style="float:left;">
+		<div id="portal-maincontents-table" style="float:left;">
 			<div id="fixedArea" class="ui-widget ui-widget-content ui-corner-all" style="padding:3px;">
 				<div class="ui-widget-header ui-corner-all ui-helper-clearfix" style="padding:5px;font-size:1.1em;">
 					<span>%{alb_fixedArea}</span>

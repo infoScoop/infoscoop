@@ -218,7 +218,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			}
 		}
 		
-		if(!widget.originalWidget && hiddenIcons && hiddenIcons.length > 0){
+		if(!header.disableMenu && (!widget.originalWidget && hiddenIcons && hiddenIcons.length > 0)){
 			//showToolsButton
 			var div =  this.createIconDiv("showTools", "", "show_hidden_icons.gif", "block");
 			$(div).setStyle({"float":"left"});
@@ -458,7 +458,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	this.createIconDiv = function(type, alt, imgUrl, disp) {
 		var isCommon = isCommonType(type);
 		if( !isCommon && !hasIconHandler( type ) && !widget.isGadget() ){
-			console.log("omit:" + type);
 			return null;
 		}
 		

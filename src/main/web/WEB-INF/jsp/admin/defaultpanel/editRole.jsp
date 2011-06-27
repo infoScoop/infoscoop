@@ -34,10 +34,6 @@
 
 	<title>infoscoop %{alb_administration} - %{alb_defaultPanel}</title>
 
-
-	<link rel="stylesheet" type="text/css" href="../../skin/admin.css">
-	<link rel="stylesheet" type="text/css" href="../../skin/admintreemenu.css">
-
 	<!--start styles css-->
 	<link rel="stylesheet" type="text/css" href="../../skin/styles.css">
 	<link rel="stylesheet" type="text/css" href="../../skin/siteaggregationmenu.css">
@@ -110,7 +106,37 @@
 		isItemDragging: false,
 		columnsObjs: {},
 		rssSearchBoxList: {},
-		isChecked: function(){return false},
+		isChecked: function(menuItem){
+			var isChecked = false;
+			
+			for(var tabId in IS_Portal.widgetLists){
+				var widgetList = IS_Portal.widgetLists[tabId];
+				for(var i in widgetList){
+					if(!widgetList[i] || !widgetList[i].id) continue;
+					
+					if (/MultiRssReader/.test(widgetList[i].widgetType)) {
+						if(!widgetList[i].isBuilt){
+							// Judge subWidget by refering inside the feed if not build yet.
+							var feed = widgetList[i].widgetConf.feed;
+							for(var j in feed){
+								var check = (feed[j].id && (feed[j].id.substring(2) == menuItem.id)
+										&& (feed[j].property.relationalId != IS_Portal.getTrueId(widgetList[i].id) || feed[j].isChecked));
+								if(/true/i.test(check)){
+									isChecked = true;
+									break;
+								}
+							}
+						}
+					}else{
+						if(widgetList[i].id.substring(2) == menuItem.id){
+							isChecked = true;
+							break;
+						}
+					}
+				}
+			}
+			return isChecked;
+		},
 		showDragOverlay: function(){},
 		hideDragOverlay: function() {},
 		displayMsgBar: function(){},
@@ -130,8 +156,54 @@
 	ISA_DefaultPanel = opener.ISA_DefaultPanel;
 	IS_Validator = opener.IS_Validator;
 	ISA_Admin = opener.ISA_Admin;
+	
+	ISA_Admin.createBaseRadio = function(name, isChecked, isDisabled) {
+		var radio = document.createElement("input");
+		radio.type = "radio";
+		radio.name = name;
+		if(isChecked)
+			radio.checked = String(isChecked);
+		if(isDisabled)
+			radio.disabled = String(isDisabled);
+		
+		if(Browser.isIE) {
+			var inputElement = "";
+			inputElement += "<";
+			inputElement += "input type='radio' name='" + name + "'";
+			if(isChecked)
+				inputElement += " checked";
+			if(isDisabled)
+				inputElement += " disabled";
+			inputElement += ">";
+			radio = document.createElement(inputElement);
+		}
+		return radio;
+	};
+
+	ISA_Admin.createBaseCheckBox = function(name, isChecked, isDisabled) {
+		var checkbox = document.createElement("input");
+		checkbox.type = "checkbox";
+		checkbox.name = name;
+		if(isChecked)
+			checkbox.checked = String(isChecked);
+		if(isDisabled)
+			checkbox.disabled = String(isDisabled);
+		
+		if(Browser.isIE) {
+			var inputElement = "";
+			inputElement += "<";
+			inputElement += "input type='checkbox' name='" + name + "'";
+			if(isChecked)
+				inputElement += " checked";
+			if(isDisabled)
+				inputElement += " disabled";
+			inputElement += ">";
+			checkbox = document.createElement(inputElement);
+		}
+		return checkbox;
+	};
+	
 	ISA_SiteAggregationMenu = opener.ISA_SiteAggregationMenu;
-	var msg = opener.msg;
 	
 	</script>
 	
@@ -196,6 +268,8 @@
 		addCommand: function(){}
 	}
 	
+	var msg = opener.msg;
+	
 	// override 
 	IS_Portal.addTab = function(idNumber, name, type, numCol, columnsWidth, disabledDynamicPanel, isInitialize){
 		IS_Portal.widgetLists["tab"+idNumber] = new Object();
@@ -223,6 +297,20 @@
 		
 		if(widget.widgetConf.parentId)
 			widget.draggable = false;
+		
+		var widgetConf  = IS_WidgetConfiguration[widget.widgetType];
+		if(widgetConf && widgetConf.Header){
+			widgetConf.Header.icon = [{
+    			"alt": "close",
+			    "imgUrl": "x.gif",
+			    "staticDisabled": "true",
+			    "type": "close"
+   			}];
+   			widgetConf.Header.refresh = "off";
+   			widgetConf.Header.minimize = "off";
+   			widgetConf.Header.maximize = "off";
+   			widgetConf.Header.disableMenu = true;
+		}
 		IS_EventDispatcher.addListener("closeWidget", widget.id.substring(2), saveDynamicPanel, true);
 	}
 	
@@ -310,8 +398,7 @@
 					Control.Modal.container.hide();
 				}
 				
-				openerPanel.isUpdated = true;
-				ISA_Admin.isUpdated = true;
+				updateParam();
 			},{
 				menuFieldSetLegend:ISA_R.alb_widgetHeaderSettings,
 				setDefaultValue: false,
@@ -362,89 +449,19 @@
 		IS_Portal.currentTabId = "tab" + jsonRole.tabId;
 		IS_Portal.trueTabId = "tab" + jsonRole.tabId;
 		
-		//hide userprefs
-		
-		
-		//create princapalType
-		/*
-		var selectPrincipal = document.createElement("select");
-		selectPrincipal.id = selectPrincipal.name = "principalType";
-		*/
 		var principalMap = ISA_Principals.get();
 		var principalLength = principalMap.length;
 
 		for(var i = 0; i < principalLength; i++) {
-			/*
-			var opt = document.createElement("option");
-			opt.value = principalMap[i].type;
-			opt.innerHTML = principalMap[i].displayName;
-			selectPrincipal.appendChild( opt );
-			*/
 			if(principalMap[i].type == jsonRole.principalType){
 				$jq("#principalTypeDiv").text(principalMap[i].displayName);
 				break;
 			}
 		}
-//		$jq("#principalTypeDiv").append($jq(selectPrincipal));
 		
 		//init params
 		$jq("#roleName").text(jsonRole.roleName);
 		$jq("#role").text(jsonRole.role);
-		/*
-		$jq("#roleName").val(jsonRole.roleName)
-			.change(function(e){
-				var nowText = ISA_Admin.trim( this.value );
-				if(nowText.length == 0) {
-					this.value = $jq(this).data("beforeNameText");
-					this.focus();
-					return false;
-				}
-				var error = IS_Validator.validate(nowText, {maxBytes:256, label:ISA_R.alb_roleName});
-				if(error){
-					alert(error);
-					this.select();
-					return false;
-				}
-				openerPanel.setNewValue("roleName", nowText);
-				var roleEl = opener.document.getElementById("tab_"+openerPanel.displayTabId+"_role_" + openerPanel.displayRoleOrder);
-				var roleNameDiv = roleEl.getElementsByTagName('td')[1];
-				roleNameDiv.firstChild.innerHTML = nowText;
-			})
-			.focus(function (e){
-				$jq(this).data("beforeNameText", this.value);
-			});
-		
-		$jq("#principalType").val(jsonRole.principalType)
-			.change(function (e){
-				openerPanel.setNewValue("principalType", this.value);
-				var roleEl = opener.document.getElementById("tab_"+openerPanel.displayTabId+"_role_" + openerPanel.displayRoleOrder);
-				var roleTypeDiv = roleEl.getElementsByTagName('select')[0];
-				roleTypeDiv.value = this.value;
-			});
-		
-		$jq("#role").val(jsonRole.role)
-			.change(function(e){
-				var nowText = ISA_Admin.trim( this.value );
-				if(nowText.length == 0) {
-					this.value = $jq(this).data("beforeNameText");
-					this.focus();
-					return false;
-				}
-				var error = IS_Validator.validate(nowText, {format:'regexp', label:ISA_R.alb_regularExpression});
-				if(error){
-					alert(error);
-					this.select();
-					return false;
-				}
-				openerPanel.setNewValue("role", this.value);
-				var roleEl = opener.document.getElementById("tab_"+openerPanel.displayTabId+"_role_" + openerPanel.displayRoleOrder);
-				var roleNameDiv = roleEl.getElementsByTagName('td')[3];
-				roleNameDiv.firstChild.innerHTML = this.value;
-			})
-			.focus(function(e){
-				$jq(this).data("beforeNameText", this.value);
-			});
-		*/
 		
 		$jq("#tabName").val(jsonRole.tabName)
 			.change(function(e){
@@ -493,8 +510,7 @@
 				jsonRole.columnsWidth = Object.toJSON(colArray);
 				openerPanel.setColumnsArray(jsonRole);
 				
-				openerPanel.isUpdated = true;
-				ISA_Admin.isUpdated = true;
+				updateParam();
 			});
 		
 		//set static container
@@ -509,8 +525,10 @@
 		IS_Holiday.load(false);
 
 		if(areaType == 0) {
-			$("infoscoop").addClassName("areaType0");
+			$jq("#infoscoop").addClass("areaType0");
 			$("customizedArea").show();
+			
+			IS_SiteAggregationMenu.ignoreService = true;
 			new IS_SiteAggregationMenu(true, true, true);
 			new IS_SidePanel.SiteMap(true, true, true);
 		}
@@ -814,12 +832,12 @@
 						.click(function(){
 							if(!confirm(ISA_R.alb_destroyOldSettings))
 								return;
-							jsonRole.layout = setIdentifier($jq(this).html());
+							var newNode = setIdentifier($jq(this).clone(true));
+							jsonRole.layout = newNode.html();
 							$jq("#staticAreaContainer").html(jsonRole.layout);
 							prepareStaticArea();
 							
-							openerPanel.isUpdated = true;
-							ISA_Admin.isUpdated = true;
+							updateParam();
 							
 							reloadStaticGadgets();
 							adjustStaticWidgetHeight();
@@ -845,8 +863,7 @@
 						$jq('#staticAreaContainer').html(layout);
 						prepareStaticArea();
 						
-						openerPanel.isUpdated = true;
-						ISA_Admin.isUpdated = true;
+						updateParam();
 
 						reloadStaticGadgets();
 						dialog.dialog("close");
@@ -889,7 +906,8 @@
 		});
 	};
 	
-	function setIdentifier(html){
+	function setIdentifier(htmlEl){
+		/*
 		var datetime = new Date().getTime();
 		var idPrefix = "p_" + datetime + "_w_";
 		//Give id attribute to HTML
@@ -908,10 +926,18 @@
 		if(!newhtml) newhtml = html;
 		
 		return newhtml;
-	}
-	
-	function isTemp(flag){
-		return flag == 1;
+		*/
+		htmlEl = $jq(htmlEl);
+		$jq(".static_column", htmlEl).each(function(idx, el){
+			el = $jq(el);
+			if(!el.attr("id")){
+				var datetime = new Date().getTime();
+				var idPrefix = "p_" + datetime + "_w_";
+				
+				el.attr("id", idPrefix + idx);
+			}
+		});
+		return htmlEl;
 	}
 
 	IS_Portal.widgetDropped = function( widget ) {
@@ -1020,8 +1046,7 @@
 		});
 		
 		jsonRole.dynamicPanel = newDynamicPanel;
-		openerPanel.isUpdated = true;
-		ISA_Admin.isUpdated = true;
+		updateParam();
 	}
 
 	$jq(function(){
@@ -1036,10 +1061,17 @@
 	}
 	Event.observe(window, 'beforeunload', updatePanel);
 	
+	function updateParam(){
+		openerPanel.isUpdated = true;
+		ISA_Admin.isUpdated = true;
+		
+		ISA_DefaultPanel.updateRaws.push("tab_"+openerPanel.displayTabId+"_role_" + openerPanel.displayRoleOrder);
+		openerPanel.updateRawStyle();
+	}
 	</script>
 </head>
 
-<body class="infoScoop">
+<body>
 
 <c:import url="/WEB-INF/jsp/admin/defaultpanel/_formTab.jsp"/>
 

@@ -361,7 +361,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			onSuccess: function(response){
 				controlModal.update(ISA_R.ams_changeUpdated);
 				ISA_Admin.isUpdated = false;
-			},
+				ISA_DefaultPanel.updateRaws = [];
+				this.updateRawStyle();
+			}.bind(this),
 			onFailure: function(t) {
 				var errormsg = t.responseText && typeof t.responseText == "string" ? t.responseText.substr(0, 100) : "";
 				alert(ISA_R.ams_failedToSaveTop+'\n' + errormsg);
@@ -769,6 +771,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		}
 
 		this.addSortableEvent();
+		
+		this.updateRawStyle();
 	}
 
 	/**
@@ -1106,7 +1110,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			if(!self.updatePanel())
 				return;
 			
-			this.editRoleWin = window.open("editRole?id=" + jsonRole.id, "editRoleWin", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes');
+			this.editRoleWin = window.open("editRole?id=" + jsonRole.id, "editRoleWin", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes, resizable=yes');
 		}.bind(this, jsonRole));
 
 		var deleteTd = document.createElement("td");
@@ -2880,6 +2884,19 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		}
 		this.isUpdated = true;
 		ISA_Admin.isUpdated = true;
+		ISA_DefaultPanel.updateRaws.push("tab_"+this.displayTabId+"_role_" + this.displayRoleOrder);
+		
+		this.updateRawStyle();
+	}
+
+	this.updateRawStyle = function(){
+		$jq("#tab_" + this.displayTabId+"_roleGroup>div").each(function(idx, div){
+			if(ISA_DefaultPanel.updateRaws.contains(div.id)){
+				$jq(div).addClass("updateRaw");
+			}else{
+				$jq(div).removeClass("updateRaw");
+			}
+		})
 	}
 
 	/**
@@ -3175,3 +3192,5 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		return $("td_"+commandItemId);
 	}
 };
+
+ISA_DefaultPanel.updateRaws = [];
