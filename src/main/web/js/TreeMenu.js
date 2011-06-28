@@ -61,7 +61,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		content.appendChild(element);
 	}
 
-	this.initialize = function(synchronous, ignoreAC) {
+	this.initialize = function(synchronous) {
 		if(!container) return;
 
 		// fix #305
@@ -151,7 +151,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		  }
 		}
 
-		if(ignoreAC)
+		if(IS_SiteAggregationMenu.isAdminMode)
 			opt.requestHeaders = ["Ignore-Access-Control", "true"];
 
 		if( !IS_TreeMenu.types.sidemenu.isSuccess ) {

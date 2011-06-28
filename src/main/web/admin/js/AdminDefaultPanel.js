@@ -1110,6 +1110,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			if(!self.updatePanel())
 				return;
 			
+			this.editRoleWin = null;
 			this.editRoleWin = window.open("editRole?id=" + jsonRole.id, "editRoleWin", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes, resizable=yes');
 		}.bind(this, jsonRole));
 
@@ -2868,9 +2869,15 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				displayRole.layout = newValue;
 				break;
 			case "staticpanel":
+				if(typeof newValue == "string"){
+					newValue = eval("(" + newValue + ")");
+				}
 				displayRole.staticPanel = newValue;
 				break;
 			case "dynamicpanel":
+				if(typeof newValue == "string"){
+					newValue = eval("(" + newValue + ")");
+				}
 				displayRole.dynamicPanel = newValue;
 				break;
 			case "disableddynamicpanel":
@@ -2884,7 +2891,10 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		}
 		this.isUpdated = true;
 		ISA_Admin.isUpdated = true;
-		ISA_DefaultPanel.updateRaws.push("tab_"+this.displayTabId+"_role_" + this.displayRoleOrder);
+		
+		var rid = "tab_"+this.displayTabId+"_role_" + this.displayRoleOrder;
+		if(!ISA_DefaultPanel.updateRaws.contains(rid))
+			ISA_DefaultPanel.updateRaws.push(rid);
 		
 		this.updateRawStyle();
 	}

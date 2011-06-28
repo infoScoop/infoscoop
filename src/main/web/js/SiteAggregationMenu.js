@@ -364,7 +364,9 @@ IS_TreeMenu.prototype = {
 			msg.error("Check menu failed: "+getErrorMessage(e) );
 		  }
 		}
-		AjaxRequest.invoke(hostPrefix + "/mnuchksrv?url=" + encodeURIComponent(url) , option);
+		
+		if(!IS_SiteAggregationMenu.isAdminMode)
+			AjaxRequest.invoke(hostPrefix + "/mnuchksrv?url=" + encodeURIComponent(url) , option);
 		return b.collect( function( topMenuId ) {
 			return this_.menuItemList[ topMenuId ];
 		});
@@ -583,15 +585,13 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 	var level = [];
 	var self = this;
 
-	this.initialize = function(synchronous, ignoreAC) {
+	this.initialize = function(synchronous) {
 		if(!container) return;
 
 		if(!displayTopMenu){
 			container.style.display = "none";
 			return;
 		}
-
-		this.ignoreAC = ignoreAC;
 
 		Event.observe(window, "resize",  IS_SiteAggregationMenu.resetMenu, false);
 		IS_EventDispatcher.addListener("loadMenuComplete","topmenu",function() {
@@ -677,7 +677,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		IS_EventDispatcher.addListener("loadMenuComplete",IS_TreeMenu.types.topmenu.type,handleLoadComplete,false,true );
 		IS_TreeMenu.types.topmenu.loading = true;
 
-		if(this.ignoreAC){
+		if(IS_SiteAggregationMenu.isAdminMode){
 			opt.requestHeaders.push("Ignore-Access-Control");
 			opt.requestHeaders.push("true");
 		}
