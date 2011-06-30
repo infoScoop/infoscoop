@@ -39,11 +39,10 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		var searchEngineDiv = document.createElement("div");
 		searchEngineDiv.style.clear = "both";
+		searchEngineDiv.style.width = "100%";
 
 		var refreshAllDiv = document.createElement("div");
-		refreshAllDiv.id = "refreshAll";
-		refreshAllDiv.style.textAlign = "right";
-		refreshAllDiv.style.width = "920px";
+		refreshAllDiv.className = "refreshAll";
 	
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		refreshAllDiv.appendChild(commitDiv);
@@ -70,12 +69,16 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		searchEngineDiv.appendChild(refreshAllDiv);
 
-		var searchEngineFieldSet = document.createElement("fieldset");
-		searchEngineFieldSet.style.padding = "7px";
-		searchEngineFieldSet.style.marginBottom = "10px";
-		searchEngineFieldSet.style.clear = "both";
-		searchEngineFieldSet.style.width = "920px";
-		var label = document.createElement("legend");
+//		var searchEngineFieldSet = document.createElement("fieldset");
+//		searchEngineFieldSet.style.padding = "7px";
+//		searchEngineFieldSet.style.marginBottom = "10px";
+//		searchEngineFieldSet.style.clear = "both";
+//		searchEngineFieldSet.style.width = "90%";
+//		var label = document.createElement("legend");
+		var searchEngineFieldSet = document.createElement("div");
+		searchEngineFieldSet.className = "configSet";
+		var label = document.createElement("p");
+		label.className = "configSetHeader"
 		label.innerHTML = ISA_R.alb_serchSiteSetting;
 		searchEngineFieldSet.appendChild( label );
 
@@ -88,6 +91,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		// DefaultSearch build
 		var defaultSearchDiv = document.createElement("div");
 		defaultSearchDiv.id = "defaultSearchEngineList";
+		defaultSearchDiv.className = "configList";
 		for(i in ISA_SearchEngine.defaultSearchList){
 			if( !(ISA_SearchEngine.defaultSearchList[i] instanceof Function) )
 			  defaultSearchDiv.appendChild(self.buildDefaultSearchList(ISA_SearchEngine.defaultSearchList[i]));
@@ -95,29 +99,34 @@ ISA_SearchEngine.prototype.classDef = function() {
 		searchEngineFieldSet.appendChild(defaultSearchDiv);
 		searchEngineDiv.appendChild(searchEngineFieldSet);
 
-		var searchEngineFieldSet = document.createElement("fieldset");
-		searchEngineFieldSet.style.padding = "7px";
-		searchEngineFieldSet.style.marginBottom = "10px";
-		searchEngineFieldSet.style.width = "920px";
-		var label = document.createElement("legend");
-		label.innerHTML = ISA_R.alb_insiteSearchSettings;
-		searchEngineFieldSet.appendChild( label );
-		searchEngineFieldSet.appendChild(self.buildRssSearchEngine());
-		searchEngineFieldSet.appendChild(ISA_Admin.buildTableHeader(
+//		var searchEngineFieldSet2 = document.createElement("fieldset");
+//		searchEngineFieldSet2.style.padding = "7px";
+//		searchEngineFieldSet2.style.marginBottom = "10px";
+//		searchEngineFieldSet2.style.width = "920px";
+//		var label = document.createElement("legend");
+		var searchEngineFieldSet2 = document.createElement("div");
+		searchEngineFieldSet2.className = "configSet";
+		var label2 = document.createElement("p");
+		label2.className = "configSetHeader"
+		label2.innerHTML = ISA_R.alb_insiteSearchSettings;
+		searchEngineFieldSet2.appendChild( label2 );
+		searchEngineFieldSet2.appendChild(self.buildRssSearchEngine());
+		searchEngineFieldSet2.appendChild(ISA_Admin.buildTableHeader(
 			[ISA_R.alb_rssPattern,ISA_R.alb_searchAdress,ISA_R.alb_encoding,ISA_R.alb_numberOfItems,ISA_R.alb_publicSettings,ISA_R.alb_delete],
 			['260px', '280px', '100px', '40px', '80px', '40px']
 			));
 		
 		var rssSearchDiv = document.createElement("div");
 		rssSearchDiv.id = "rssSearchEngineList";
+		rssSearchDiv.className = "configList";
 
 		// RssSearch build
 		for(i in ISA_SearchEngine.rssSearchList){
 			if( !(ISA_SearchEngine.rssSearchList[i] instanceof Function) )
 			  rssSearchDiv.appendChild(self.buildRssSearchList(ISA_SearchEngine.rssSearchList[i]));
 		}
-		searchEngineFieldSet.appendChild(rssSearchDiv);
-		searchEngineDiv.appendChild(searchEngineFieldSet);
+		searchEngineFieldSet2.appendChild(rssSearchDiv);
+		searchEngineDiv.appendChild(searchEngineFieldSet2);
 		
 		container.replaceChild(searchEngineDiv,loadingMessage);
 
@@ -126,20 +135,34 @@ ISA_SearchEngine.prototype.classDef = function() {
 		new ISA_DragDrop.SearchEngineDragDrop("rssSearchEngineList");
 		
 		
+//		searchEngineDiv.appendChild(
+//			$.FIELDSET({style:"width:920px;padding:7px;"},
+//					   $.LEGEND({},ISA_R.alb_searchOptionDefaultSettings),
+//					   $.DIV({},
+//							 $.INPUT({type:"checkbox", defaultChecked: ISA_SearchEngine.newwindow,
+//							   onchange:{handler:function(e){
+//								   var checkbox = Event.element(e);
+//								   ISA_SearchEngine.updateSearchConfAttr('newwindow', '' + checkbox.checked);
+//							   }
+//							 }}),
+//							 ISA_R.alb_searchResultsOnNewWindow
+//						 )
+//					)
+//			);
 		searchEngineDiv.appendChild(
-			$.FIELDSET({style:"width:920px;padding:7px;"},
-					   $.LEGEND({},ISA_R.alb_searchOptionDefaultSettings),
-					   $.DIV({},
-							 $.INPUT({type:"checkbox", defaultChecked: ISA_SearchEngine.newwindow,
-							   onchange:{handler:function(e){
-								   var checkbox = Event.element(e);
-								   ISA_SearchEngine.updateSearchConfAttr('newwindow', '' + checkbox.checked);
-							   }
-							 }}),
-							 ISA_R.alb_searchResultsOnNewWindow
-						 )
-					)
-			);
+				$.DIV({className: "configSet"},
+						   $.P({className:"configSetHeader"},ISA_R.alb_searchOptionDefaultSettings),
+						   $.DIV({id: "searchDefaultOption"},
+								 $.INPUT({type:"checkbox", defaultChecked: ISA_SearchEngine.newwindow,
+								   onchange:{handler:function(e){
+									   var checkbox = Event.element(e);
+									   ISA_SearchEngine.updateSearchConfAttr('newwindow', '' + checkbox.checked);
+								   }
+								 }}),
+								 ISA_R.alb_searchResultsOnNewWindow
+							 )
+						)
+				);
 	}
 
 	function commitSearchEngine(currentModal) {
@@ -214,6 +237,8 @@ ISA_SearchEngine.prototype.classDef = function() {
 		var defaultSearchEngineDiv = document.createElement("div");
 		defaultSearchEngineDiv.id = "defaultSearchEngine";
 		defaultSearchEngineDiv.style.width = '900px';
+		defaultSearchEngineDiv.style.height = 'auto';
+		defaultSearchEngineDiv.style.clear = 'both';
 
 		var addDefaultDiv = ISA_Admin.createIconButton(ISA_R.alb_add, ISA_R.alb_add, "add.gif", "left");
 		addDefaultDiv.id = "addDefault";
@@ -238,6 +263,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		annotateDiv.style.cssFloat = "right";
 		annotateDiv.style.styleFloat = "right";
 		annotateDiv.style.textAlign = "right";
+		annotateDiv.style.margin ="10px";
 		var font = document.createElement("font");
 		font.size = "-1";
 		font.color = "#ff0000";
@@ -449,6 +475,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		annotateDiv.style.cssFloat = "right";
 		annotateDiv.style.styleFloat = "right";
 		annotateDiv.style.textAlign = "right";
+		annotateDiv.style.margin ="10px";
 		var font = document.createElement("font");
 		font.size = "-1";
 		font.color = "#ff0000";

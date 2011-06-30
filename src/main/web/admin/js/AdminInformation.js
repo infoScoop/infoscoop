@@ -73,7 +73,7 @@ ISA_Information.prototype.classDef = function() {
 		
 		container.appendChild( table );
 		table.className = "proxyConfigList";
-		//table.style.width = "40%";
+		table.style.width = "80%";
 		
 		var tbody = table.firstChild;
 		
@@ -101,16 +101,17 @@ ISA_Information.prototype.classDef = function() {
 
 		var dummy2 = document.createElement("div");
 		//dummy.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>'+ISA_R.alb_userInformation+'</td></tr><tbody></table>';
+		//TODO i18n
 		dummy2.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>' + 'バージョン情報' + '</td></tr><tbody></table>';
 		var table = dummy2.firstChild;
 		
 		container2.appendChild( table );
 		table.className = "proxyConfigList";
-		//table.style.width = "40%";
+		table.style.width = "80%";
 		
 		var tbody = table.firstChild;
 		
-		//TODO build情報の取得
+		//TODO i18n and retriev version info when build
 		var productName='infoScoop Cloud Edition';
 		var versionNum='2.3.0.0';
 		var releaseDate='2011年9月30日';

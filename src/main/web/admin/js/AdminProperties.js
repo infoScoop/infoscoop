@@ -100,13 +100,19 @@ ISA_Properties.prototype.classDef = function() {
 	this.buildProperties = function() {
 		var propertiesDiv = document.createElement("div");
 		propertiesDiv.id = "properties";
-		//propertiesDiv.style.width = "80%";
+		propertiesDiv.style.width = "90%";
 		
 		var categoryTables = {};
 		// PropertiesList build
 		CATEGORY_LIST.each(function(category){
-			var categoryElm = document.createElement("fieldSet");
-			var categoryLabel = document.createElement("legend");
+//			var categoryElm = document.createElement("fieldSet");
+//			categoryElm.style.width = "100%";
+//			var categoryLabel = document.createElement("legend");
+			var categoryElm = document.createElement("div");
+			categoryElm.className = "configSet";
+//			categoryElm.style.width = "100%";
+			var categoryLabel = document.createElement("p");
+			categoryLabel.className = "configSetHeader";
 			categoryLabel.appendChild(document.createTextNode(category.value));
 			categoryElm.appendChild(categoryLabel);
 
@@ -115,7 +121,7 @@ ISA_Properties.prototype.classDef = function() {
 			propertiesTable.cellSpacing = "1";
 			propertiesTable.cellPadding = "1";
 			propertiesTable.className = "propertiesGroup";
-			propertiesTable.style.width = "100%";
+//			propertiesTable.style.width = "98%";
 
 			var propertiesTbody = document.createElement("tbody");
 			propertiesTbody.id = "propertiesTbody";

@@ -9,7 +9,7 @@ ISA_Authentication = {
 					 $.LI({id:"oauth_consumer_tab",className:"tab"},
 						  $.A({href:"#oauth_consumer", className:""},
 //							  $.SPAN({className:""},ISA_R.alb_oauthConsumerSettings))
-							//TODO 国際化リソースの修正
+							//TODO i18n
 							  $.SPAN({className:""},"コンシューマー設定"))
 							),
 					 $.LI({id:"oauth_container_tab",className:"tab"},

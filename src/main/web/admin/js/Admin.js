@@ -170,7 +170,7 @@ ISA_loadProperties = function(_callback){
 
 ISA_Admin.createIconButton = function(text, title, imgName, floatValue) {
 	//var div = document.createElement("div");
-	var button = document.createElement("button");
+	var button = document.createElement("a");
 	button.className = "iconButton";
 	//div.type = "button";
 	if(floatValue) {
@@ -189,6 +189,7 @@ ISA_Admin.createIconButton = function(text, title, imgName, floatValue) {
 //	anc.appendChild(document.createTextNode(text));
 //	anc.className = "button";
 //	anc.href = "#";
+	button.href = "#";
 	button.appendChild(img);
 	button.appendChild(document.createTextNode(text));
 //	button.appendChild(anc);
@@ -342,11 +343,8 @@ ISA_Admin.stopIndicator = function() {
 ISA_Admin.buildTableHeader = function(labels, widths){
 	
 	var configTable = document.createElement("table");
-	//configTable.id = "proxyConfigHeader";
-	configTable.style.clear = "both";
+	configTable.className ="configHeader";
 	configTable.width = "900";
-	configTable.style.tableLayout = "fixed";
-	configTable.style.emptyCells = "show";
 	configTable.cellSpacing = "0";
 	configTable.cellPadding = "0";
 	var configTbody = document.createElement("tbody");
@@ -361,7 +359,7 @@ ISA_Admin.buildTableHeader = function(labels, widths){
 	var configTd;
 	for(var i = 0; i < labels.length; i++){
 		configTh = document.createElement("td");
-		configTh.style.whiteSpace = "nowrap";
+//		configTh.style.whiteSpace = "nowrap";
 		if(widths && widths[i])
 		  configTh.style.width = widths[i];
 		configTh.appendChild(document.createTextNode(labels[i]));

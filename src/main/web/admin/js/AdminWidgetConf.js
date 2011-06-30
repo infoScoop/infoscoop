@@ -55,35 +55,63 @@ ISA_WidgetConf.prototype.classDef = function() {
 		var editWidgetsTr = document.createElement("tr");
 		tbody.appendChild( editWidgetsTr );
 		var editWidgetsTd = document.createElement("td");
-		editWidgetsTd.style.width = "25%";
+		editWidgetsTd.style.width = "280px";
 		editWidgetsTd.style.verticalAlign = "top";
+		
+		/**
+			Tabs for gadget widget list
+		*/
+		var gadgetListTab = document.createElement("div");
+		gadgetListTab.className = "gadgetListTab";
+		var gadgetListA = document.createElement("a");
+		gadgetListA.id = "gadgetList";
+		gadgetListA.className = "gadgetListTabAselected";
+		gadgetListA.href = "javascript:void(0)";
+		gadgetListA.setAttribute("onclick","switchGadgetList(id)");
+		gadgetListA.innerHTML = ISA_R.alb_gadgetsList;
+		gadgetListTab.appendChild(gadgetListA);
 
-		var widgetListFieldSet = document.createElement("fieldset");
-		widgetListFieldSet.style.marginBottom = "10px";
-		var widgetListLabel = document.createElement("legend");
-		widgetListLabel.innerHTML = ISA_R.ams_widgetList;
-		widgetListFieldSet.appendChild( widgetListLabel );
+		var widgetListA = document.createElement("a");
+		widgetListA.id = "widgetList";
+		widgetListA.className ="gadgetListTabA";
+		widgetListA.href = "javascript:void(0)";
+		widgetListA.setAttribute("onclick","switchGadgetList(id)");
+		widgetListA.innerHTML = ISA_R.ams_widgetList;
+		gadgetListTab.appendChild(widgetListA);
+		editWidgetsTd.appendChild(gadgetListTab);
+
+//		var widgetListFieldSet = document.createElement("fieldset");
+//		widgetListFieldSet.style.marginBottom = "10px";
+//		var widgetListLabel = document.createElement("legend");
+//		widgetListLabel.innerHTML = ISA_R.ams_widgetList;
+//		widgetListFieldSet.appendChild( widgetListLabel );
 	
 		this.widgetConfPanel = document.createElement("div");
-		this.widgetConfPanel.style.height = "100%";
-		widgetListFieldSet.appendChild(this.widgetConfPanel)
-		editWidgetsTd.appendChild(widgetListFieldSet);
-
+		this.widgetConfPanel.id = "widgetList_div";
+		this.widgetConfPanel.className ="gadgetListDiv";
+		this.widgetConfPanel.style.display = "none";
+//		widgetListFieldSet.appendChild(this.widgetConfPanel)
+//		editWidgetsTd.appendChild(widgetListFieldSet);
+		editWidgetsTd.appendChild(this.widgetConfPanel);
 		
-		var gadgetListFieldSet = document.createElement("fieldset");
-		var gadgetListLabel = document.createElement("legend");
-		gadgetListLabel.innerHTML = ISA_R.alb_gadgetsList;
-		gadgetListFieldSet.appendChild( gadgetListLabel );
+		
+//		var gadgetListFieldSet = document.createElement("fieldset");
+//		var gadgetListLabel = document.createElement("legend");
+//		gadgetListLabel.innerHTML = ISA_R.alb_gadgetsList;
+//		gadgetListFieldSet.appendChild( gadgetListLabel );
 		
 		this.gadgetPanel = document.createElement("div");
+		this.gadgetPanel.id = "gadgetList_div";
+		this.gadgetPanel.className ="gadgetListDiv";
 		this.gadgetPanel.style.height = "100%";
 		this.gadgetPanel.style.paddingTop = "2px";
-		gadgetListFieldSet.appendChild(this.gadgetPanel);
-		editWidgetsTd.appendChild(gadgetListFieldSet);
+//		gadgetListFieldSet.appendChild(this.gadgetPanel);
+//		editWidgetsTd.appendChild(gadgetListFieldSet);
+		editWidgetsTd.appendChild(this.gadgetPanel);
 
 		editWidgetsTr.appendChild( editWidgetsTd );
 		var displayEditTd = document.createElement("td");
-		displayEditTd.style.width = "75%";
+//		displayEditTd.style.width = "75%";
 		displayEditTd.style.verticalAlign = "top";
 		displayEditTd.appendChild( self._buildEditWidgetPanel() );
 		editWidgetsTr.appendChild( displayEditTd );
@@ -91,8 +119,7 @@ ISA_WidgetConf.prototype.classDef = function() {
 		displayEditTd.appendChild( self._buildGadgetUploadPanel() );
 		
 		return containerDiv;
-	}
-	
+	};
 	
 	function sortConf(a, b){
 		if( !b.type ) return -1;

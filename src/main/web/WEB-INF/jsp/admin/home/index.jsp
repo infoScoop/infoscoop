@@ -1,3 +1,21 @@
+<%--
+# infoScoop OpenSource
+# Copyright (C) 2010 Beacon IT Inc.
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License version 3
+# as published by the Free Software Foundation.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public
+# License along with this program. If not, see
+# <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>;.
+--%>
+
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.infoscoop.service.PortalAdminsService" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
@@ -13,10 +31,9 @@
 	<tiles:putAttribute name="title" value="alb_home" />
 	<tiles:putAttribute name="body" type="string">
 <div id="home-menus">
-	<p id="home-menus-title" class="proxyTitle">管理メニュー</p>
-	<div class="home-menus-column">
-		<!-- 各メニュー -->
-<!-- 		TODO 権限管理 -->
+	<p id="home-menus-title" class="homeTitle">管理メニュー</p>
+		<!-- Menus -->
+<!-- 		TODO ACL control & i18n -->
 <%-- 		<%if(adminService.isPermitted("menu") || adminService.isPermitted("menu_tree")){%> --%>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
@@ -56,7 +73,7 @@
 				<a href="../defaultpanel/index"><img src="../../skin/imgs/home_icons/mycomputer.gif"></a>
 			</div>
 			<div class="home-menu-content">
-<!-- 			TODO ロールによってリンク先のindexを変える -->
+<!-- 			TODO change href link according to ACL -->
 				<a href="../defaultpanel/index" class="home-menu-header">初期画面</a>
 				<p class="home-menu-definition">画面の共通設定とユーザが初めてログインした際に表示する画面構成を設定します。</p>
 			</div>
@@ -65,7 +82,7 @@
 <%-- 		<%if( adminService.isPermitted("i18n") ){%> --%>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
-				<a href="../i18n/index"><img src="../../skin/imgs/home_icons/package_network.gif"></a>
+				<a href="../i18n/index"><img src="../../skin/imgs/home_icons/i18n.gif"></a>
 			</div>
 			<div class="home-menu-content">
 				<a href="../i18n/index" class="home-menu-header">国際化</a>
@@ -73,8 +90,6 @@
 			</div>
 		</div>
 <%-- 		<%}%> --%>
-	</div>
-	<div class="home-menus-column">
 <%-- 		<%if( adminService.isPermitted("properties") ){%> --%>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
@@ -89,7 +104,7 @@
 <%-- 		<%if( adminService.isPermitted("proxy") ){%> --%>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
-				<a href="../proxy/index"><img src="../../skin/imgs/home_icons/network.gif"></a>
+				<a href="../proxy/index"><img src="../../skin/imgs/home_icons/network_local.png"></a>
 			</div>
 			<div class="home-menu-content">
 				<a href="../proxy/index" class="home-menu-header">プロキシ</a>
@@ -130,24 +145,21 @@
 			</div>
 		</div>
 <%-- 		<%}%> --%>
-	</div>
-	<p id="home-menus-title" class="proxyTitle" class="home-menu-header">infoScoop 情報</p>
-	<div class="home-menus-column">
+
+	<p id="home-menus-title" class="homeTitle">infoScoop 情報</p>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
 				<img src="../../skin/imgs/home_icons/goto.gif">
 			</div>
 			<div id="information"></div>
 		</div>
-	</div>
-	<div class="home-menus-column">
+
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
 				<img src="../../skin/imgs/home_icons/info.gif">
 			</div>
 			<div id="version"></div>
 		</div>
-	</div>
 </div>
 		<script>
 			/*

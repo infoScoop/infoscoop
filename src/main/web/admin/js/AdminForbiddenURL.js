@@ -216,15 +216,16 @@ ISA_PortalForbiddenURL.prototype = {
 		
 		var table = ISA_Admin.buildTableHeader(
 			[ISA_R.alb_URLregularExpression, ISA_R.alb_delete],
-			['95%', '5%']
+			['85%', '5%']
 			);
 		table.id = "forbiddenURL_contentTable";
 		container.appendChild( table );
 		table.className = "proxyConfigList";
-		table.style.tableLayout = "fixed"
+		table.style.tableLayout = "fixed";
+		table.style.clear ="both";
 		//TODO:Function for generating table needs to be arranged
 		table.style.borderLeft = "1px solid #EEEEEE";
-		table.style.width = "100%";
+		table.style.width = "90%";
 		
 		var tbody = table.firstChild;
 		var this_ = this;

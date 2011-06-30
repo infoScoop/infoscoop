@@ -48,9 +48,9 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		portalAdminsDiv.style.clear = "both";
 		
 		var refreshAllDiv = document.createElement("div");
-		refreshAllDiv.id = "refreshAll";
-		refreshAllDiv.style.textAlign = "right";
-		refreshAllDiv.style.width = "100%";
+		refreshAllDiv.className = "refreshAll";
+//		refreshAllDiv.style.textAlign = "right";
+//		refreshAllDiv.style.width = "100%";
 		
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		refreshAllDiv.appendChild(commitDiv);
@@ -83,7 +83,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		
 		var tabContainer = document.createElement("div");
 		tabContainer.id = "tabContainer";
-		tabContainer.className= "side-bar";
+		//tabContainer.className= "side-bar";
 		var sideBar = document.getElementById("administrator-side-bar");
 		var tabsUl = document.createElement("ul");
 		tabsUl.className = "side-bar";
@@ -152,8 +152,15 @@ ISA_PortalAdmins.prototype.classDef = function() {
 	}
 	
 	this.buildAdminRole = function(){
-		var rolesField = document.createElement("fieldSet");
-		var rolesLabel = document.createElement("legend");
+//		var rolesField = document.createElement("fieldSet");
+//		var rolesLabel = document.createElement("legend");
+//		rolesLabel.innerHTML = ISA_R.alb_roleSettings;
+//		rolesField.appendChild(rolesLabel);
+		
+		var rolesField = document.createElement("div");
+		rolesField.className= "configSet";
+		var rolesLabel = document.createElement("p");
+		rolesLabel.className = "configSetHeader";
 		rolesLabel.innerHTML = ISA_R.alb_roleSettings;
 		rolesField.appendChild(rolesLabel);
 		
@@ -183,7 +190,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		rolesTable.cellSpacing = "1";
 		rolesTable.cellPadding = "1";
 		rolesTable.className = "portalAdminsGroup";
-		rolesTable.style.width = "100%";
+		rolesTable.style.width = "900px";
 
 		var rolesTbody = document.createElement("tbody");
 		rolesTbody.id = "rolesTbody";
@@ -243,7 +250,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		var td;
 		td = document.createElement("td");
 		td.className = "adminRoles";
-		$(td).setStyle({whiteSpace:"nowrap",paddingLeft:"5px"});
+		$(td).setStyle({whiteSpace:"nowrap",padding:"5px"});
 		var roleTitleInput = document.createElement("input");
 		roleTitleInput.className = "portalAdminInput";
 		roleTitleInput.type = "text";
@@ -422,8 +429,15 @@ ISA_PortalAdmins.prototype.classDef = function() {
 	}
 	
 	this.buildPortalAdmins = function(portalAdminsList) {
-		var portalAdminsField = document.createElement("fieldSet");
-		var portalAdminsLabel = document.createElement("legend");
+//		var portalAdminsField = document.createElement("fieldSet");
+//		var portalAdminsLabel = document.createElement("legend");
+//		portalAdminsLabel.innerHTML = ISA_R.alb_adminSettings;
+//		portalAdminsField.appendChild(portalAdminsLabel);
+		
+		var portalAdminsField = document.createElement("div");
+		portalAdminsField.className ="configSet";
+		var portalAdminsLabel = document.createElement("p");
+		portalAdminsLabel.className = "configSetHeader";
 		portalAdminsLabel.innerHTML = ISA_R.alb_adminSettings;
 		portalAdminsField.appendChild(portalAdminsLabel);
 		
@@ -448,7 +462,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		portalAdminsTable.cellSpacing = "1";
 		portalAdminsTable.cellPadding = "1";
 		portalAdminsTable.className = "portalAdminsGroup";
-		portalAdminsTable.style.width = "100%";
+		portalAdminsTable.style.width = "900px";
 
 		var portalAdminsTbody = document.createElement("tbody");
 		portalAdminsTbody.id = "portalAdminsTbody";
@@ -503,7 +517,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		var td;
 		td = document.createElement("td");
 		td.className = "portalAdmins";
-		$(td).setStyle({whiteSpace:"nowrap",paddingLeft:"5px"});
+		$(td).setStyle({whiteSpace:"nowrap",padding:"5px"});
 		var portalAdminValueInput = document.createElement("input");
 		portalAdminValueInput.className = "portalAdminInput";
 		portalAdminValueInput.type = "text";

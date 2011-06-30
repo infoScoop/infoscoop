@@ -17,15 +17,19 @@
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@page import="org.infoscoop.service.ForbiddenURLService" %>
+<%@page import="org.infoscoop.service.PortalAdminsService" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <tiles:insertDefinition name="base.definition" flush="true">
+<%-- <tiles:insertDefinition name="gadget.side.definition" flush="true"> --%>
 	<tiles:putAttribute name="type" value="gadget"/>
 	<tiles:putAttribute name="title" value="alb_widget"/>
 	<tiles:putAttribute name="body" type="string">
+<%-- 	<tiles:putAttribute name="side_body" type="string"> --%>
 
 <div id="widgetConf"></div>
 <iframe id="upLoadDummyFrame" name="upLoadDummyFrame"></iframe>
@@ -38,6 +42,24 @@
 		ISA_WidgetConf.widgetConf = new ISA_WidgetConf();
 		ISA_WidgetConf.widgetConf.build();
 	});
+	
+	function switchGadgetList(id){
+		var gadgetListTab = document.getElementById('gadgetList');
+		var widgetListTab = document.getElementById('widgetList');
+		var gadgetList = document.getElementById('gadgetList_div');
+		var widgetList = document.getElementById('widgetList_div');
+		if(id == 'gadgetList'){
+			gadgetList.style.display = 'block';
+			gadgetListTab.className ='gadgetListTabAselected';
+			widgetList.style.display = 'none';
+			widgetListTab.className = 'gadgetListTabA';
+		}if(id == 'widgetList'){
+			gadgetList.style.display = 'none';
+			gadgetListTab.className = 'gadgetListTabA';
+			widgetList.style.display = 'block';
+			widgetListTab.className = 'gadgetListTabAselected';
+		}
+	};
 </script>
 	</tiles:putAttribute>
 </tiles:insertDefinition>

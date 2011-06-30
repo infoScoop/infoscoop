@@ -71,11 +71,11 @@ ISA_I18N.prototype.classDef = function() {
 //		titleDiv.appendChild(document.createTextNode(ISA_R.alb_i18n));
 //		i18nBody.appendChild(titleDiv);
 		
-		var i18nField = document.createElement("fieldset");
+		var i18nField = document.createElement("div");
 		i18nField.className = "i18nCategoryField";
 		i18nBody.appendChild( i18nField );
 		
-		var messageTitielDiv = document.createElement("legend");
+		var messageTitielDiv = document.createElement("p");
 		messageTitielDiv.className = "i18nCategoryTitle";
 		messageTitielDiv.appendChild( document.createTextNode(ISA_R.alb_messageSettings));
 		i18nField.appendChild( messageTitielDiv );
@@ -84,11 +84,11 @@ ISA_I18N.prototype.classDef = function() {
 		i18nDiv.className = "i18nCategory";
 		i18nField.appendChild(i18nDiv);
 		
-		var holidayField = document.createElement("fieldset");
+		var holidayField = document.createElement("div");
 		holidayField.className = "i18nCategoryField";
 		i18nBody.appendChild( holidayField );
 		
-		var holidayTitleDiv = document.createElement("legend");
+		var holidayTitleDiv = document.createElement("p");
 		holidayTitleDiv.className = "i18nCategoryTitle";
 		holidayTitleDiv.appendChild( document.createTextNode(ISA_R.alb_holidaySettings));
 		holidayField.appendChild( holidayTitleDiv );
