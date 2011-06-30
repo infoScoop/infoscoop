@@ -436,10 +436,12 @@ ISA_ProxyConf.prototype.classDef = function() {
 		};
 
 		var showProxyAuthEdit = function(caseConfigItem){
-			var proxyAuthFormDiv = document.createElement('fieldSet');
+			var proxyAuthFormDiv = document.createElement('div');
+			proxyAuthFormDiv.className = "modalConfigSet";
 			proxyAuthFormDiv.id = "proxyAuthFormDiv";
 			proxyAuthFormDiv.style.textAlign = 'center';
-			var proxyAuthFormLegend = document.createElement('legend');
+			var proxyAuthFormLegend = document.createElement('p');
+			proxyAuthFormLegend.className = "modalConfigSetHeader";
 			proxyAuthFormLegend.appendChild(document.createTextNode(ISA_R.alb_proxyAuthSettings));
 			proxyAuthFormDiv.appendChild(proxyAuthFormLegend);
 			var proxyAuthForm = document.createElement("form");
@@ -1095,10 +1097,19 @@ ISA_ProxyConf.HeaderConfigPane.prototype = {
 		listStyleImage: "none",
 		listStylePosition: "outside",
 		listStyleType: "none",
-		margin: 0,
+		margin: 3,
 		padding: 0
 	},
+	lastLiStyle: {
+		padding: 0,
+		margin: 0,
+		width: "15em",
+		clear: "both"
+	},
 	buildHeadersCategoryPane: function( headers,category,defaultChecked ) {
+		var div = document.createElement("div");
+		div.style.width = "100%";
+		div.style.height = "auto";
 		var ul = $( document.createElement("ul"));
 		ul.setStyle( this.categoryStyle );
 
@@ -1113,20 +1124,25 @@ ISA_ProxyConf.HeaderConfigPane.prototype = {
 			
 			if(!(header.toLowerCase()=="cookie")){
 				var li = $( document.createElement("li"));
-				li.setStyle( this.headerStyle );
+				if(i == headerNames.length-1){
+					li.setStyle(this.lastLiStyle);
+				}else{
+					li.setStyle( this.headerStyle );
+				}
 				ul.appendChild( li );
 				var checkBox = this.buildHeaderCheck( li,header,checked,false );
+				
 			}
-			
-
 		}
-
-		return this.wrapFieldSet( category.name,ul );
+		div.appendChild(ul);
+		return this.wrapFieldSet( category.name,div );
 	},
 	wrapFieldSet: function( text,contents ) {
-		var fieldSet = document.createElement("fieldset");
+		var fieldSet = document.createElement("div");
+		fieldSet.className = "modalConfigSet";
 
-		var legend = document.createElement("legend");
+		var legend = document.createElement("p");
+		legend.className = "modalConfigSetHeader";
 		legend.appendChild( document.createTextNode( text ));
 		fieldSet.appendChild( legend );
 

@@ -162,12 +162,12 @@
 		</div>
 </div>
 		<script>
-			/*
+			
 			$jq(function() {
 				ISA_PortalAdmins.information = new ISA_Information();
 				ISA_PortalAdmins.information.build();
 			});
-			*/
+			
 		</script>
 	</tiles:putAttribute>
 </tiles:insertDefinition>

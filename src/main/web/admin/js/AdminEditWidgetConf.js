@@ -4,9 +4,11 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 	var isExistEditPref = false;
 	
 	// Add edit of WidgetPref
-	var editWidgetPref = document.createElement("fieldset");
+	var editWidgetPref = document.createElement("div");
+	editWidgetPref.className = "configSet";
 	editWidgetPref.style.marginBottom = "10px";
-	var editLabel = document.createElement("legend");
+	var editLabel = document.createElement("p");
+	editLabel.className = "configSetHeader"
 	editWidgetPref.appendChild( editLabel );
 	editLabel.innerHTML = ISA_R.alb_editWidgetSettings;
 	
@@ -99,9 +101,11 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 	
 	// Adding edit of UserPref
 	var existUserPrefs = false;
-	var editUserPref = document.createElement("fieldset");
-	editUserPref.style.marginBottom = "10px";
-	var editLabel = document.createElement("legend");
+	var editUserPref = document.createElement("div");
+	editUserPref.className = "configSet";
+	//editUserPref.style.marginBottom = "10px";
+	var editLabel = document.createElement("p");
+	editLabel.className = "configSetHeader";
 	editUserPref.appendChild( editLabel );
 	editLabel.innerHTML = ISA_R.alb_editUserSettings;
 	
@@ -133,7 +137,7 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 		isExistEditPref = true;
 			
 		var serviceList = conf.ModulePrefs.OAuth.Service;
-		var oauthFieldSet = $.FIELDSET({}, $.LEGEND({},ISA_R.alb_oauthConsumerSettings));
+		var oauthFieldSet = $.DIV({className:"configSet"}, $.P({className: "configSetHeader"},ISA_R.alb_oauthConsumerSettings));
 
 		for(var i = 0; i < serviceList.length; i++){
 			var serviceName = serviceList[i].name;

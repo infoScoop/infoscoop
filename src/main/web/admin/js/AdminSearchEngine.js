@@ -1005,6 +1005,7 @@ ISA_SearchEngine.EditorForm.makeCountEditForm = function(searchEngine){
 	/* Create outer box*/
 	var contentTable = document.createElement("table");
 	contentTable.style.width = "100%";
+	contentTable.style.margin ="5px";
 	contentTable.setAttribute("cellpadding","0");
 	contentTable.setAttribute("cellspacing","0");
 
@@ -1042,8 +1043,8 @@ ISA_SearchEngine.EditorForm.makeCountEditForm = function(searchEngine){
 	contentDiv.appendChild(editorFormTable);
 	
 	
-	return $.FIELDSET({},
-		$.LEGEND({}, ISA_R.alb_numberOfItems),
+	return $.DIV({className:"modalConfigSet"},
+		$.P({className:"modalConfigSetHeader"}, ISA_R.alb_numberOfItems),
 		contentTable
 	);
 }

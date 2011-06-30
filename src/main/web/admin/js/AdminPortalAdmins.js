@@ -351,8 +351,10 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		}
 		
 		var container = document.createElement("div");
-		var roleEditField = document.createElement("fieldSet");
-		var roleEditLabel = document.createElement("legend");
+		var roleEditField = document.createElement("div");
+		roleEditField.className = "modalConfigSet";
+		var roleEditLabel = document.createElement("p");
+		roleEditLabel.className = "modalConfigSetHeader";
 		roleEditLabel.innerHTML = ISA_R.alb_editRole;
 		roleEditField.appendChild(roleEditLabel);
 		container.appendChild(roleEditField);
@@ -361,10 +363,12 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		
 		var authDivListDiv = document.createElement("div");
 		var checkboxList = [];
+		var count = 0;
 		ISA_PortalAdmins.portalPermissionTypeInfo.each(function(permissionInfo){
-			var authDiv = createCheckBoxSet(myPermissionList.contains(permissionInfo.key), permissionInfo.value, permissionInfo.key);
+			var authDiv = createCheckBoxSet(myPermissionList.contains(permissionInfo.key), permissionInfo.value, permissionInfo.key, count);
 			checkboxList.push(authDiv.firstChild);
 			authDivListDiv.appendChild(authDiv);
+			count++;
 		});
 		roleEditField.appendChild(authDivListDiv);
 		
@@ -408,9 +412,13 @@ ISA_PortalAdmins.prototype.classDef = function() {
 			return button;
 		}
 		
-		function createCheckBoxSet(checked, label, value){
+		function createCheckBoxSet(checked, label, value, count){
 			var authDiv = document.createElement("div");
-			$(authDiv).setStyle({width:'100px', 'float' :'left',whiteSpace:'nowrap'});
+			if(count == ISA_PortalAdmins.portalPermissionTypeInfo.values().length-1){
+				$(authDiv).setStyle({width:'100px', 'clear' :'both',whiteSpace:'nowrap'});
+			}else{
+				$(authDiv).setStyle({width:'100px', 'float' :'left',whiteSpace:'nowrap'});
+			}
 			
 			var authName = document.createElement("label");
 			var authCheck = document.createElement("input");

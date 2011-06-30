@@ -699,17 +699,39 @@ a.gadgetListTabA:visited, a.gadgetListTabAselected:visited{
 	padding: 3px 0 3px 0;
 	background-color: #999999;
 	text-indent: 0.5em;
-/* 	background: url(./imgs/configSetHeader_bg.jpg) repeat; */
+	background: url(./imgs/configSetHeader_bg.jpg) repeat;
+	background-position: bottom;
 	width: 100%;
-/* 	_width: 920px; */
-/* 	-webkit-border-radius: 3px; */
-/* 	-moz-border-radius: 3px; */
 }
 
 .configList{
 	margin: 0 0 10px 0;
 }
 
+.modalConfigSet{
+	margin: 10px;
+	border: 1px solid #666666;
+	width: 90%;
+	height: auto;
+	clear: both;
+	padding: 0px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+.modalConfigSetHeader{
+	margin: 0px;
+	border-bottom: 1px solid #666666;
+	padding: 3px 0 3px 0;
+	background-color: #999999;
+	text-indent: 0.5em;
+	background: url(./imgs/configSetHeader_bg.jpg) repeat;
+	background-position: bottom;
+	width: 100%;
+}
+
+.configList{
+	margin: 0 0 10px 0;
+}
 /* configuration set END------------------- */
 #proxyConfigHeader {
 	/*background-image:url(imgs/skin_light_header.png);*/

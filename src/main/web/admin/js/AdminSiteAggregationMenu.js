@@ -1401,9 +1401,10 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 		var editImg;
 		
 		if (menuItem.isEditMode) {
-			editDiv = ISA_Admin.createIconButton(ISA_R.alb_edit, ISA_R.alb_editMenu, "edit.gif");
-			editDiv.id = "upd_" + menuItem.id;
-			editDiv.style.margin = "0";
+			editDiv = $.DIV({id: "upd_" + menuItem.id, style:"margin:2;cursor: pointer;"}, 
+					$.IMG({src:"../../skin/imgs/edit.gif"}),
+					$.SPAN({className: ""}), ISA_R.alb_edit
+					);
 			editTitleTd.appendChild(editDiv);
 			
 			var editorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
@@ -1478,12 +1479,13 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 			
 			// Only super-user can remove site-top
 			if ((ISA_SiteAggregationMenu.isTreeAdminUser && menuItem.parentId) || !ISA_SiteAggregationMenu.isTreeAdminUser) {
-				editDiv = ISA_Admin.createIconButton(ISA_R.alb_delete, ISA_R.alb_deleteMenu, "delete.gif");
-				editDiv.id = "del_" + menuItem.id;
-				editDiv.style.margin = "0";
-				editTitleTd.appendChild(editDiv);
+				deleteDiv = $.DIV({id: "del_" + menuItem.id, style:"margin:2;cursor: pointer;"}, 
+						$.IMG({src:"../../skin/imgs/delete.gif"}),
+						$.SPAN({className: "", alt:ISA_R.alb_deleteMenu}), ISA_R.alb_delete
+						);
+				editTitleTd.appendChild(deleteDiv);
 				
-				var deleteEditorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
+				var deleteEditorFormObj = new ISA_CommonModals.EditorForm(deleteDiv, function(menuItem){
 					
 					var url = adminHostPrefix + "/services/menu/"
 						+ ((menuItem.parentId)? "removeMenuItem" : "removeTopMenuItem");
@@ -1525,16 +1527,24 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 				}, false, "_adminMenu");
 			}
 			
-			editDiv = ISA_Admin.createIconButton(ISA_R.alb_add, ISA_R.alb_addMenu, "add.gif");
-			editDiv.id = "ins_" + menuItem.id;
-			this.addEditDiv = editDiv;
-			editDiv.style.margin = "0";
+//			editDiv = ISA_Admin.createIconButton(ISA_R.alb_add, ISA_R.alb_addMenu, "add.gif");
+//			editDiv.id = "ins_" + menuItem.id;
+//			this.addEditDiv = editDiv;
+//			editDiv.style.margin = "0";
+//			if (menuItem.serviceURL) 
+//				editDiv.style.display = "none";
+//			editTitleTd.appendChild(editDiv);
+			//TODO add mouseover tooltip text
+			addDiv = $.DIV({id: "ins_" + menuItem.id, style:"margin:2;cursor: pointer;"}, 
+					$.IMG({src:"../../skin/imgs/add.gif"}),
+					$.SPAN({className: ""}), ISA_R.alb_add
+					);
 			if (menuItem.serviceURL) 
-				editDiv.style.display = "none";
-			editTitleTd.appendChild(editDiv);
+				addDiv.style.display = "none";
+			editTitleTd.appendChild(addDiv);
 			
 			var parentMenuItem = menuItem;
-			var addEditorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
+			var addEditorFormObj = new ISA_CommonModals.EditorForm(addDiv, function(menuItem){
 				var url = adminHostPrefix + "/services/menu/addMenuItem";
 				var newMenuItem = ISA_SiteAggregationMenu.getUpdMenuItem(menuItem, menuObj.menuType);
 				newMenuItem.add = true;
@@ -1595,20 +1605,24 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 			}, false, "_adminMenu");
 		}else{
 			if (!menuItem.parentId) {
-				editDiv = ISA_Admin.createIconButton(ISA_R.alb_lockAndEdit, ISA_R.alb_lockAndEdit, "edit.gif");
-				editDiv.id = "lockedit_" + menuItem.id;
-				editDiv.style.margin = "0";
+				//lock and edit menu
+				editDiv = $.DIV({id: "lockedit_" + menuItem.id, style:"margin:2;cursor: pointer;"}, 
+						$.IMG({src:"../../skin/imgs/edit.gif"}),
+						$.SPAN({className: ""}), ISA_R.alb_lockAndEdit
+						);
 				editTitleTd.appendChild(editDiv);
 				
 				IS_Event.observe(editDiv, 'click', changeEditMode.bind(this, menuObj, menuItem, false), false, "_adminMenu");
 			}
 			
-			editDiv = ISA_Admin.createIconButton(IS_R.lb_ref, IS_R.lb_ref, "ref.gif");
-			editDiv.id = "ref_" + menuItem.id;
-			editDiv.style.margin = "0";
-			editTitleTd.appendChild(editDiv);
+			//reference menu
+			refDiv = $.DIV({id: "ref_" + menuItem.id, style:"margin:2;cursor: pointer;"}, 
+					$.IMG({src:"../../skin/imgs/ref.gif"}),
+					$.SPAN({className: ""}), IS_R.lb_ref
+					);
+			editTitleTd.appendChild(refDiv);
 			
-			var refEditorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){}, Object.extend({
+			var refEditorFormObj = new ISA_CommonModals.EditorForm(refDiv, function(menuItem){}, Object.extend({
 				formDisabled: true,
 				displayAlertFieldSet: true,
 				displayOK: false
@@ -1616,7 +1630,7 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 				menuFieldSetLegend: ISA_R.alb_settingMenuLink,
 				displayMenuTreeAdminsFieldSet: true
 			} : {}));
-			IS_Event.observe(editDiv, 'click', function(){
+			IS_Event.observe(refDiv, 'click', function(){
 				refEditorFormObj.showEditorForm(menuItem);
 			}, false, "_adminMenu");
 		}
