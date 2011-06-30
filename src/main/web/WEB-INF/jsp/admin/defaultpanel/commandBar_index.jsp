@@ -15,7 +15,7 @@
 
 <script>
 	$jq(function(){
-		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
+		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel(true);
 		IS_SiteAggregationMenu.init();
 		ISA_loadProperties(ISA_DefaultPanel.defaultPanel.build);
 	});

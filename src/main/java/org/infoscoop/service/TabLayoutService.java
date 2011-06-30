@@ -461,6 +461,10 @@ public class TabLayoutService {
 		for(Iterator ite = list.iterator(); ite.hasNext();){
 			Object[] obj = (Object[])ite.next();
 			String tabId = (String) obj[0];
+
+			if("commandbar".equals(tabId))
+				continue;
+
 			Integer tabNum = (Integer)obj[1];
 
 			tabIdList.put(tabId);

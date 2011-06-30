@@ -272,7 +272,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		this.addSortableEventCommand();
 	}
 
-	this.initialize = function() {
+	this.initialize = function(isCommandBar) {
+		this.isCommandBar = isCommandBar;
 		//
 		controlModal = new Control.Modal(
 			false,
@@ -340,7 +341,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		previewDivWrap.appendChild( resetDiv );
 		IS_Event.observe( resetDiv,"click",this.resetUserCustomization.bind( this ),false,"_adminPanel");
 		this.tab = new Control.Tabs("panelTabs",{
-			defaultTab: "tab_"+commandBarTabId,
+			defaultTab: "tab_" + self.tabIdList[0],
 			beforeChange: function( old_container,container ) {
 				if(self.changeTab( container.id.substring(4),false ))
 				throw $break;
@@ -493,7 +494,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			var jsonObject = {
 				id : String( datetime ),
 				tabId : "",
-			  tabName : ISA_R.alb_newTab,
+				tabName : ISA_R.alb_newTab,
 				columnsWidth : "",
 				principalType : null,
 				role : defaultRoleRegex,
@@ -651,7 +652,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			displayDeleteImgSpan.appendChild(deleteImg);
 		}
 		//
-		if(targetTabId != this.displayTabId){
+		if(String(targetTabId) != String(this.displayTabId)){
 			targetTabDiv.className = "tab";
 //			IS_Event.observe(targetTabDiv, "click", this.changeTab.bind(this, targetTabId), false, ["_adminPanelTab","_adminPanel"]);
 		}else{
@@ -706,7 +707,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			}
 			tabTitleSpan.firstChild.nodeValue = tabName;
 		})
-		this.tab.setActiveTab("tab_"+commandBarTabId );
+		this.tab.setActiveTab("tab_"+self.tabIdList[0] );
 		ISA_Admin.isUpdated = true;
 	}
 
@@ -1102,17 +1103,20 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		editTd.appendChild(editImg2);
 		IS_Event.observe(editImg2, "click", this.editRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
 		*/
-
-		IS_Event.observe(editImg, "click", function(jsonRole){
-			this.displayRoleId = jsonRole.id;
-			this.displayRoleOrder = jsonRole.roleOrder;
-			
-			if(!self.updatePanel())
-				return;
-			
-			this.editRoleWin = null;
-			this.editRoleWin = window.open("editRole?id=" + jsonRole.id, "editRoleWin", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes, resizable=yes');
-		}.bind(this, jsonRole));
+		if(this.isCommandBar){
+			IS_Event.observe(editImg, "click", this.editRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
+		}else{
+			IS_Event.observe(editImg, "click", function(jsonRole){
+				this.displayRoleId = jsonRole.id;
+				this.displayRoleOrder = jsonRole.roleOrder;
+				
+				if(!self.updatePanel())
+					return;
+				
+				this.editRoleWin = null;
+				this.editRoleWin = window.open("editRole?id=" + jsonRole.id, "editRoleWin", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes, resizable=yes');
+			}.bind(this, jsonRole));
+		}
 
 		var deleteTd = document.createElement("td");
 		//deleteTd.className = "panelRoleTd";
@@ -3081,9 +3085,14 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				method: 'get' ,
 				asynchronous:true,
 				onSuccess: function(response){
-					var array = eval(response.responseText);
-					self.tabIdList = array[0];
-					self.tabNumberJson = array[1];
+					if(self.isCommandBar){
+						self.tabIdList = [commandBarTabId];
+						self.tabNumberJson = {"commandbar":{}};
+					}else{
+						var array = eval(response.responseText);
+						self.tabIdList = array[0];
+						self.tabNumberJson = array[1];
+					}
 					getWidgetConf();
 				},
 				on404: function(t) {

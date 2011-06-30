@@ -42,6 +42,14 @@ public class DefaultpanelController implements ControllerInterface{
 	public void editRole() throws Exception {
 	}
 
+	@RequestMapping(method=RequestMethod.GET)
+	public void commandBar_index() throws Exception {
+	}
+
+	@RequestMapping(method=RequestMethod.GET)
+	public void portalLayout_index() throws Exception {
+	}
+
 	public String getRoleName() {
 		return "defaultPanel";
 	}
