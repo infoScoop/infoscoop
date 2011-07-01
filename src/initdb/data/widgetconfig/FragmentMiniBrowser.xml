@@ -20,6 +20,7 @@
 		<EnumValue display_value="postCredential" value="postCredential"/>
 		<EnumValue display_value="postPortalCredential" value="postPortalCredential"/>
 		<EnumValue display_value="sendPortalCredentialHeader" value="sendPortalCredentialHeader"/>
+		<EnumValue display_value="signed" value="signed"/>
 	</UserPref>
 	<UserPref default_value="" datatype="hidden" name="additional_css" display_name="!{lb_additionalCss}" admin_datatype="textarea"/>
 	<Header/>

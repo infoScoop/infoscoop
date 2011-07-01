@@ -1334,7 +1334,7 @@ IS_Widget.prototype.classDef = function() {
 			
 			if(authType && authType.indexOf("post") == 0)
 				opt.method = 'post';
-			if(authType && authType.indexOf("PortalCredential") >= 0){
+			if(authType && (authType.indexOf("PortalCredential") >= 0 || authType.indexOf("sign") >= 0)){
 				if(!opt.requestHeaders)opt.requestHeaders = new Array();
 				opt.requestHeaders.push("authType");
 				opt.requestHeaders.push(authType);

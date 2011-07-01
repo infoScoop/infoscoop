@@ -63,6 +63,7 @@
 		<EnumValue display_value="postCredential" value="postCredential"/>
 		<EnumValue display_value="postPortalCredential" value="postPortalCredential"/>
 		<EnumValue display_value="sendPortalCredentialHeader" value="sendPortalCredentialHeader"/>
+		<EnumValue display_value="signed" value="signed"/>
 	</UserPref>
 	<UserPref default_value="" datatype="string" name="titleFilter" display_name="!{lb_filterByTitle}"
 		description="!{lb_filterByTitleDescription}"/>
