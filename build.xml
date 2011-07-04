@@ -33,6 +33,7 @@
 	<!-- admin properties -->
 	<property name="src.admin.web" value="${src.main.web}/admin" />
 	<property name="build.admin" value="${build.main}/admin" />
+	<property name="build.admin.jsp" value="${build.main}/WEB-INF/jsp/admin" />
 	<!-- other properties -->
 	<property name="compile.debug" value="true" />
 	<property name="compile.deprecation" value="false" />
@@ -429,6 +430,7 @@
 			<fileset dir="${src.main.web}/skin">
 				<include name="admin.css"/>
 				<include name="admintreemenu.css"/>
+				<include name="editrole.css"/>
 			</fileset>
 		</copy>
 
@@ -490,7 +492,7 @@
 			<filelist dir="${src.main.web}/js/widgets/Message" files="Message.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
-			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalMain.js&quot; &quot;${build.admin}/js/dist/PortalMain.js.tmp&quot;"/>
+			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalMain-${build.version}.js&quot; &quot;${build.admin}/js/dist/PortalMain.js.tmp&quot;"/>
 			<classpath>
 				<pathelement location="${yuicompressor}"/>
 			</classpath>
@@ -520,11 +522,72 @@
 			<filelist dir="${src.admin.web}/js" files="AdminAuthentication.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
-			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalAdmin.js&quot; &quot;${build.admin}/js/dist/PortalAdmin.js.tmp&quot;"/>
+			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalAdmin-${build.version}.js&quot; &quot;${build.admin}/js/dist/PortalAdmin.js.tmp&quot;"/>
 			<classpath>
 				<pathelement location="${yuicompressor}"/>
 			</classpath>
 		</java>
+		<concat destfile="${build.main}/js/dist/PortalAdmin-EditRole.js.tmp" append="false" encoding="utf-8" fixlastline="true">
+			<!-- lib -->
+			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
+			<filelist dir="${src.main.web}/js/lib/date" files="date.js"/>
+			<filelist dir="${src.main.web}/js/lib/rsa" files="jsbn.js"/>
+			<filelist dir="${src.main.web}/js/lib/rsa" files="prng4.js"/>
+			<filelist dir="${src.main.web}/js/lib/rsa" files="rng.js"/>
+			<filelist dir="${src.main.web}/js/lib/rsa" files="rsa.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="extras-array.js"/>
+			<!-- From main utils javascript -->
+			<filelist dir="${src.main.web}/js/utils" files="utils.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="domhelper.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="msg.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="EventDispatcher.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="ajaxpool/ajax.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="ajax304.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="CalendarInput.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="Request.js"/>
+			<filelist dir="${src.main.web}/js/utils" files="groupSettingModal.js"/>
+			<!-- From main javascript -->
+			<filelist dir="${src.main.web}/js/commands" files="UpdatePropertyCommand.js"/>
+			<filelist dir="${src.main.web}/js" files="Tab.js"/>
+			<filelist dir="${src.main.web}/js" files="WidgetsContainer.js"/>
+			<filelist dir="${src.main.web}/js" files="DragWidget.js"/>
+			<filelist dir="${src.main.web}/js/widgets" files="Widget.js"/>
+			<filelist dir="${src.main.web}/js/widgets" files="WidgetHeader.js"/>
+			<filelist dir="${src.main.web}/js/widgets" files="WidgetEdit.js"/>
+			<filelist dir="${src.main.web}/js" files="SiteAggregationMenu.js"/>
+			<filelist dir="${src.main.web}/js" files="SiteMap.js"/>
+			<filelist dir="${src.main.web}/js" files="TreeMenu.js"/>
+			<filelist dir="${src.main.web}/js/widgets/rssreader" files="RssReader.js"/> 
+			<filelist dir="${src.main.web}/js/widgets/MultiRssReader" files="MultiRssReader.js"/> 
+			<filelist dir="${src.main.web}/js/widgets/rssreader" files="RssItemRender.js"/>
+			<filelist dir="${src.main.web}/js/widgets/calendar" files="Calendar.js"/>
+			<filelist dir="${src.main.web}/js/widgets/calendar" files="iCalendar.js"/>
+			<filelist dir="${src.main.web}/js/widgets/MiniBrowser" files="MiniBrowser.js"/>
+			<filelist dir="${src.main.web}/js/widgets/MiniBrowser" files="FragmentMiniBrowser.js"/>
+			<filelist dir="${src.main.web}/js/widgets/information" files="Information.js"/>
+			<filelist dir="${src.main.web}/js/widgets/information" files="Information2.js"/>
+			<filelist dir="${src.main.web}/js/widgets/ticker" files="Ticker.js"/>
+			<filelist dir="${src.main.web}/js/widgets/ranking" files="Ranking.js"/>
+			<filelist dir="${src.main.web}/js/widgets/ranking" files="RankingRender.js"/>
+			<filelist dir="${src.main.web}/js/widgets/WidgetRanking" files="WidgetRanking.js"/>
+			<filelist dir="${src.main.web}/js/widgets/Message" files="Message.js"/>
+			<!-- From admin javascript -->
+			<filelist dir="${src.admin.web}/js" files="AdminWidgetConf.js"/>
+			<filelist dir="${src.admin.web}/js" files="AdminEditWidgetConf.js"/>
+			<filelist dir="${src.admin.web}/js" files="AdminCommonModals.js"/>
+			<filelist dir="${src.admin.web}/js" files="AdminEditRole.js"/>
+		</concat>
+		<java jar="${yuicompressor}" fork="true">
+			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalAdmin-EditRole-${build.version}.js&quot; &quot;${build.main}/js/dist/PortalAdmin-EditRole.js.tmp&quot;"/>
+			<classpath>
+				<pathelement location="${yuicompressor}"/>
+			</classpath>
+		</java>
+
+		
 		<delete>
 			<fileset dir="${build.admin}/js/dist" includes="*.tmp"/>
 		</delete>
@@ -656,39 +719,78 @@
 
 	<target name="replaceTag-admin" description="Replace admin script tag">
 		<replaceregexp
-			file="${build.admin}/index.jsp"
+			file="${build.admin.jsp}/tiles/page_head.jsp"
 			match="&lt;!--start of product name--&gt;.*&lt;!--end of product name--&gt;"
 			replace="${product.name}"
 			flags="g"
 			encoding="UTF-8"/>
 		<replaceregexp
-			file="${build.admin}/index.jsp"
+			file="${build.admin.jsp}/tiles/page_head.jsp"
 			match="&lt;!--start script--&gt;.*&lt;!--end script--&gt;"
 			replace="
-&lt;script src=&quot;js/dist/PortalMain.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;&#x0D;&#x0A;
-&lt;script src=&quot;js/dist/PortalAdmin.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
+&lt;script src=&quot;../../admin/js/dist/PortalMain-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;&#x0D;&#x0A;
+&lt;script src=&quot;../../admin/js/dist/PortalAdmin-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
 			flags="s"
 			encoding="UTF-8"/>
 		<replaceregexp
-			file="${build.admin}/index.jsp"
+			file="${build.admin.jsp}/tiles/page_head.jsp"
 			match="&quot;([^&quot;]+)\.js&quot;"
 			replace="&quot;\1.js?${build.timestamp}&quot;"
 			flags="mg"
 			encoding="UTF-8"/>
 		<replaceregexp
-			file="${build.admin}/index.jsp"
+			file="${build.admin.jsp}/tiles/page_head.jsp"
 			match="&lt;!--start styles css--&gt;.*&lt;!--end styles css--&gt;"
-			replace="&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../skin/styles.css&quot;&gt;"
+			replace="&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../../skin/styles.css&quot;&gt;"
 			flags="s"
 			encoding="UTF-8"/>
 		<replaceregexp
-			file="${build.admin}/index.jsp"
+			file="${build.admin.jsp}/tiles/page_head.jsp"
 			match="&quot;([^&quot;]+)\.js&quot;"
 			replace="&quot;\1.js?${build.timestamp}&quot;"
 			flags="mg"
 			encoding="UTF-8"/>
 		<replaceregexp
-			file="${build.admin}/index.jsp"
+			file="${build.admin.jsp}/tiles/page_head.jsp"
+			match="(href=&quot;[^&quot;]+)\.css&quot;"
+			replace="\1.css?${build.timestamp}&quot;"
+			flags="mg"
+			encoding="UTF-8"/>
+
+
+		<replaceregexp
+			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
+			match="&lt;!--start of product name--&gt;.*&lt;!--end of product name--&gt;"
+			replace="${product.name}"
+			flags="g"
+			encoding="UTF-8"/>
+		<replaceregexp
+			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
+			match="&lt;!--start script--&gt;.*&lt;!--end script--&gt;"
+			replace="
+&lt;script src=&quot;&lt;%=staticContentURL%&gt;/admin/js/dist/PortalAdmin-EditRole-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
+			flags="s"
+			encoding="UTF-8"/>
+		<replaceregexp
+			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
+			match="&quot;([^&quot;]+)\.js&quot;"
+			replace="&quot;\1.js?${build.timestamp}&quot;"
+			flags="mg"
+			encoding="UTF-8"/>
+		<replaceregexp
+			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
+			match="&lt;!--start styles css--&gt;.*&lt;!--end styles css--&gt;"
+			replace="&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../../skin/styles.css&quot;&gt;"
+			flags="s"
+			encoding="UTF-8"/>
+		<replaceregexp
+			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
+			match="&quot;([^&quot;]+)\.js&quot;"
+			replace="&quot;\1.js?${build.timestamp}&quot;"
+			flags="mg"
+			encoding="UTF-8"/>
+		<replaceregexp
+			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
 			match="(href=&quot;[^&quot;]+)\.css&quot;"
 			replace="\1.css?${build.timestamp}&quot;"
 			flags="mg"

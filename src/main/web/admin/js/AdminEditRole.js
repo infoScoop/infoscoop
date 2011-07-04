@@ -3,6 +3,52 @@ var openerPanel = ISA_DefaultPanel.defaultPanel;
 var areaType = 0;
 var jsonRole;
 
+ISA_Admin.createBaseRadio = function(name, isChecked, isDisabled) {
+	var radio = document.createElement("input");
+	radio.type = "radio";
+	radio.name = name;
+	if(isChecked)
+		radio.checked = String(isChecked);
+	if(isDisabled)
+		radio.disabled = String(isDisabled);
+	
+	if(Browser.isIE) {
+		var inputElement = "";
+		inputElement += "<";
+		inputElement += "input type='radio' name='" + name + "'";
+		if(isChecked)
+			inputElement += " checked";
+		if(isDisabled)
+			inputElement += " disabled";
+		inputElement += ">";
+		radio = document.createElement(inputElement);
+	}
+	return radio;
+};
+
+ISA_Admin.createBaseCheckBox = function(name, isChecked, isDisabled) {
+	var checkbox = document.createElement("input");
+	checkbox.type = "checkbox";
+	checkbox.name = name;
+	if(isChecked)
+		checkbox.checked = String(isChecked);
+	if(isDisabled)
+		checkbox.disabled = String(isDisabled);
+	
+	if(Browser.isIE) {
+		var inputElement = "";
+		inputElement += "<";
+		inputElement += "input type='checkbox' name='" + name + "'";
+		if(isChecked)
+			inputElement += " checked";
+		if(isDisabled)
+			inputElement += " disabled";
+		inputElement += ">";
+		checkbox = document.createElement(inputElement);
+	}
+	return checkbox;
+};
+
 IS_SidePanel.adjustPosition = function(){};
 IS_Request.CommandQueue = {
 	addCommand: function(){}
@@ -52,6 +98,39 @@ IS_Portal.addWidget = function(widget, tabId){
 		widgetConf.Header.disableMenu = true;
 	}
 	IS_EventDispatcher.addListener("closeWidget", widget.id.substring(2), saveDynamicPanel, true);
+}
+
+// override
+IS_Portal.isChecked = function(menuItem){
+	var isChecked = false;
+	
+	for(var tabId in IS_Portal.widgetLists){
+		var widgetList = IS_Portal.widgetLists[tabId];
+		for(var i in widgetList){
+			if(!widgetList[i] || !widgetList[i].id) continue;
+			
+			if (/MultiRssReader/.test(widgetList[i].widgetType)) {
+				if(!widgetList[i].isBuilt){
+					// Judge subWidget by refering inside the feed if not build yet.
+					var feed = widgetList[i].widgetConf.feed;
+					for(var j in feed){
+						var check = (feed[j].id && (feed[j].id.substring(2) == menuItem.id)
+								&& (feed[j].property.relationalId != IS_Portal.getTrueId(widgetList[i].id) || feed[j].isChecked));
+						if(/true/i.test(check)){
+							isChecked = true;
+							break;
+						}
+					}
+				}
+			}else{
+				if(widgetList[i].id.substring(2) == menuItem.id){
+					isChecked = true;
+					break;
+				}
+			}
+		}
+	}
+	return isChecked;
 }
 
 // override
