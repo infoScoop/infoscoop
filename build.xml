@@ -931,10 +931,6 @@
 				<pathelement location="${yuicompressor}"/>
 			</classpath>
 		</java>
-
-		<delete>
-			<fileset file="${dir}/${file}.js"/>
-		</delete>
 	</target>
 
 
