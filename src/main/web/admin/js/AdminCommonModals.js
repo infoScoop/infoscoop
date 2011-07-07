@@ -207,6 +207,10 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 			editorFormFieldDiv.id = 'editorFormFieldDiv';
 			self.loadEditorForm(editorFormFieldDiv);
 			self.currentModal.update(editorFormFieldDiv);
+//			
+//			var editPanel = document.getElementById('treeMenuEditPanel');
+//			editPanel.appendChild(editorFormFieldDiv);
+			
 					
 //			if(ISA_CommonModals.EditorForm.previewWidget){ // May not be necessary
 //				ISA_CommonModals.EditorForm.loadPreviewWidget();
@@ -532,7 +536,9 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 	
 	var contentSubDiv = document.createElement("div");
 	var editorFormSubTable = document.createElement("table");
-	editorFormSubTable.style.width = "100%";
+	editorFormSubTable.className = "modalConfigSetContent";
+//	editorFormSubTable.style.width = "100%";
+//	editorFormSubTable.style.margin = "5px";
 	contentSubDiv.appendChild(editorFormSubTable);
 	var editorFormSubTbody = document.createElement("tbody");
 	editorFormSubTable.appendChild(editorFormSubTbody);
@@ -979,7 +985,8 @@ ISA_CommonModals.EditorForm.makeMenuAlertEditFieldSet = function(disabled, menuI
 	menuItemFieldSet.appendChild(menuItemFieldSetLegend);
 	
 	menuItemFieldSet.appendChild(
-		document.createTextNode(ISA_R.alb_informNewMenu)
+//		document.createTextNode(ISA_R.alb_informNewMenu)
+		$.P({className:"modalConfigSetContent"}, ISA_R.alb_informNewMenu )
 		);
 	
 	/* Create main */
@@ -1057,7 +1064,8 @@ ISA_CommonModals.EditorForm.makeMenuUpdateSettingFieldSet = function(disabled, m
 	menuItemFieldSet.appendChild(menuItemFieldSetLegend);
 
 	var forceUpdatePropertyDiv = document.createElement('div');
-	forceUpdatePropertyDiv.style.paddingTop = '3px';
+	forceUpdatePropertyDiv.className = "modalConfigSetContent";
+//	forceUpdatePropertyDiv.style.paddingTop = '3px';
 	forceUpdatePropertyDiv.appendChild(document.createTextNode(ISA_R.alb_forcedUpdatePrefsMessage));
 
 	var properties = [];
@@ -1157,7 +1165,8 @@ ISA_CommonModals.EditorForm.makeMenuItemEditFieldSet = function(disabled, menuIt
 	
 	/* Create main */
 	var editorFormTable = document.createElement("table");
-	editorFormTable.style.width = "100%";
+	editorFormTable.className = "modalConfigSetContent";
+//	editorFormTable.style.width = "100%";
 	var editorFormTbody = document.createElement("tbody");
 	editorFormTable.appendChild(editorFormTbody);
 	
@@ -1402,6 +1411,7 @@ ISA_CommonModals.EditorForm.makeMenuTreeAdminsFieldSet = function(disabled, menu
 	fieldSet.appendChild(fieldSetLegend);
 	
 	var content = document.createElement("div");
+	content.className = "modalConfigSetContent";
 	var formField = document.createElement("div");
 	var valueField = document.createElement("div");
 	valueField.style.padding = "10px";
@@ -1519,6 +1529,7 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 	
 	function makePublicCheckBox(){
 		var publicDiv = document.createElement("div");
+		publicDiv.className = "modalConfigSetContent";
 		publicDiv.appendChild(document.createTextNode(ISA_R.alb_pulic));
 		
 		var elementInput = document.createElement("input");

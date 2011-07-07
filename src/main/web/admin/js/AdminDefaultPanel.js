@@ -472,7 +472,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		tabsDiv.style.clear = "both";
 		var tabsUl = document.createElement("ul");
 		tabsUl.id = "panelTabs";
-		tabsUl.className = "tabs";
+		tabsUl.className = "tabs-ui";
 
 		for(var i=0; i<this.tabIdList.length; i++){
 			tabsUl.appendChild(this.buildTab(this.tabIdList[i]));
@@ -482,8 +482,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		addTabDiv.noWrap = "-1";
 		addTabDiv.className = "addatab";
 		addTabDiv.id = "addTabDiv";
-		var addA = document.createElement("a");
-		addA.innerHTML = ISA_R.alb_addTab;
+		var addA = ISA_Admin.createIconButton(ISA_R.alb_addTab, ISA_R.alb_addTab, "add.gif", "left");
+		addA.removeAttribute('href');
+		addA.style.margin = "0 0 3px 0";
 		addTabDiv.appendChild(addA);
 		tabsUl.appendChild(addTabDiv);
 		var addTabHandler = function(e) {
@@ -576,7 +577,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		var tabAnchor = document.createElement("a");
 		tabAnchor.id = "panelTab_" + tabId;
-		tabAnchor.className = "tab";
+		tabAnchor.className = "tab-ui";
 		tabAnchor.href = "#tab_"+tabId;
 		
 		var tabTitleSpan = document.createElement("span");
@@ -646,6 +647,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			displayDeleteImgSpan = document.createElement("span");
 			var deleteImg = document.createElement("img");
 			deleteImg.src = imageURL+"x.gif";
+			deleteImg.width = 14;
+			deleteImg.height = 14;
 			deleteImg.style.verticalAlign = 'middle';
 			deleteImg.style.cursor = 'pointer';
 			deleteImg.title = ISA_R.ams_deleteThisTab;
@@ -653,10 +656,11 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		}
 		//
 		if(String(targetTabId) != String(this.displayTabId)){
-			targetTabDiv.className = "tab";
+			targetTabDiv.className = "tab-ui";
 //			IS_Event.observe(targetTabDiv, "click", this.changeTab.bind(this, targetTabId), false, ["_adminPanelTab","_adminPanel"]);
 		}else{
-			targetTabDiv.className = "tab selected";
+//			targetTabDiv.className = "tab-ui selected";
+			targetTabDiv.className = "tab-ui active";
 			// The tab can diplay delete button or not.
 			var isIgnored = false;
 			for(var i = 0; i < ignoreTabIdList.length; i++) {
@@ -721,9 +725,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		var refreshAllDiv = document.createElement("div");
 		refreshAllDiv.id = "refreshAll";
-		refreshAllDiv.style.textAlign = "right";
+		refreshAllDiv.style.textAlign = "left";
 		refreshAllDiv.style.width = "100%";
-		defaultPanelDiv.appendChild(refreshAllDiv);
+		//defaultPanelDiv.appendChild(refreshAllDiv);
 
 		var dummyDiv = document.createElement("div");
 		dummyDiv.style.clear = "both";
@@ -731,13 +735,16 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		var backDiv = ISA_Admin.createIconButton(ISA_R.alb_backToList, ISA_R.alb_backToList, "back.gif", "right");
 		backDiv.id = "tab_"+this.displayTabId+"_backListPanel";
+		backDiv.style.float = "left";
 		backDiv.style.display = "none";
+		
 		refreshAllDiv.appendChild(backDiv);
 		IS_Event.observe(backDiv, 'click', self.backToList.bind(self, true), ["_adminPanelTab","_adminPanel"]);
 
 		var defaultPanelTable = document.createElement("table");
 		defaultPanelTable.id = "panelTabContentsTable";
 		defaultPanelTable.style.width = "100%";
+		defaultPanelTable.style.borderTop = "gray 1px solid";
 		defaultPanelDiv.appendChild(defaultPanelTable);
 
 		var defaultPanelTbody = document.createElement("tbody");
@@ -754,7 +761,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		defaultPanelTr.appendChild(defaultPanelTdLeft);
 
 		var roleListDiv = self.buildRoleList();
-
+		defaultPanelTdLeft.appendChild(refreshAllDiv);
 		defaultPanelTdLeft.appendChild(roleListDiv);
 
 		var roleEditDiv = document.createElement("div");
@@ -929,6 +936,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			{
 				tag: 'div',
 				handle: 'handle',
+				//className: 'configListDiv',
 				onChange: function(div){
 					draggingDivId = div.id;
 				},
@@ -969,14 +977,16 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		var roleDiv = document.createElement("div");
 		roleDiv.id = "tab_"+this.displayTabId+"_role_" + jsonRole.roleOrder;
 		roleDiv.roleId = jsonRole.id;
+		roleDiv.className = "configTableDiv";
 
 		var table = document.createElement("table");
-		table.className = "proxyConfigList";
+		table.className = "configTableHeader";
 		table.cellPadding = "0";
 		table.cellSpacing = "0";
 		table.border = "0";
 		table.style.width = "900px";
 		table.style.tableLayout = "fixed";
+		table.style.margin = "0";
 		roleDiv.appendChild(table);
 
 		var tbody = document.createElement("tbody");
@@ -987,7 +997,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		tbody.appendChild(tr);
 
 		var sortableTd = document.createElement("td");
-		//sortableTd.className = "panelRoleTd";
+		sortableTd.className = "configTableTd";
 		sortableTd.style.width = "40px";
 		sortableTd.style.textAlign = 'center';
 //		if(jsonRole.id != this.displayTabId + "_" + defaultRoleRegex){
@@ -1012,8 +1022,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		tr.appendChild(sortableTd);
 
 		var roleNameTd = document.createElement("td");
-		//roleNameTd.className = "panelRoleTd";
+		roleNameTd.className = "configTableTd";
 		roleNameTd.style.width = "175px";
+		roleNameTd.style.textAlign = "left";
 		tr.appendChild(roleNameTd);
 		var textDiv1 = document.createElement("div");
 		roleNameTd.appendChild(textDiv1);
@@ -1031,6 +1042,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			IS_Event.observe(textDiv1, 'click', clickTextHandler, false, ["_adminPanelTab","_adminPanel"]);
 
 		var roleTypeTd = document.createElement("td");
+		roleTypeTd.className = "configTableTd";
 		roleTypeTd.style.width = "85px";
 
 		if(jsonRole.defaultUid != defaultDefaultUid){
@@ -1065,8 +1077,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		tr.appendChild(roleTypeTd);
 
 		var roleTd = document.createElement("td");
-		//roleTd.className = "panelRoleTd";
+		roleTd.className = "configTableTd";
 		roleTd.style.width = "350px";
+		roleTd.style.textAlign = "left";
 		tr.appendChild(roleTd);
 		var textDiv2 = document.createElement("div");
 		roleTd.appendChild(textDiv2);
@@ -1084,7 +1097,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			IS_Event.observe(textDiv2, 'click', clickTextHandler, false, ["_adminPanelTab","_adminPanel"]);
 
 		var editTd = document.createElement("td");
-		//editTd.className = "panelRoleTd";
+		editTd.className = "configTableTd";
 		editTd.style.width = "40px";
 		editTd.style.textAlign = "center";
 		tr.appendChild(editTd);
@@ -1119,7 +1132,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		}
 
 		var deleteTd = document.createElement("td");
-		//deleteTd.className = "panelRoleTd";
+		deleteTd.className = "configTableTd";
 		deleteTd.style.width = "40px";
 		deleteTd.style.textAlign = "center";
 		tr.appendChild(deleteTd);
@@ -1423,8 +1436,10 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				);
 		}
 
-		var labelSetStaticDiv = document.createElement("fieldset");
-		var labelSetStaticLegend = document.createElement("legend");
+		var labelSetStaticDiv = document.createElement("div");
+		labelSetStaticDiv.className = "configSet";
+		var labelSetStaticLegend = document.createElement("p");
+		labelSetStaticLegend.className = "configSetHeader";
 		labelSetStaticLegend.appendChild(document.createTextNode(ISA_R.alb_fixedArea));
 		labelSetStaticDiv.appendChild(labelSetStaticLegend);
 		editAreaDiv.appendChild(labelSetStaticDiv);
@@ -1439,8 +1454,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		if("commandbar" != self.displayTabId){
 			editAreaDiv.appendChild(document.createElement("br"));
 
-			var labelSetDynamicDiv = $.FIELDSET({id:'tab_'+self.displayTabId+'_personalizedAreaFieldSet'},
-												$.LEGEND({},ISA_R.alb_customizedArea));
+			var labelSetDynamicDiv = $.DIV({id:'tab_'+self.displayTabId+'_personalizedAreaFieldSet', className: "modalConfigSet"},
+												$.P({className: "modalConfigSetHeader"},ISA_R.alb_customizedArea));
 			editAreaDiv.appendChild(labelSetDynamicDiv);
 			
 			var editDynamicDiv = document.createElement("div");

@@ -162,6 +162,7 @@ ISA_I18N.prototype.classDef = function() {
 		}
 		
 		var table = document.createElement("table");
+		//table.className = "configTable";
 		var tbody = document.createElement("tbody");
 		table.appendChild(tbody);
 		
@@ -170,10 +171,13 @@ ISA_I18N.prototype.classDef = function() {
 		for(var type in types) {
 			if(typeof types[type] == "function") continue;
 			var headerTr = document.createElement("tr");
-			headerTr.id = "proxyConfigHeader";
+			//headerTr.className = "configTableHeader";
 			var headerTd = document.createElement("td");
+			headerTd.className = "configTableHeaderTd";
+			headerTd.style.bordeTop = "1px solid #666";
+			headerTd.style.padding = "5px";
 			headerTd.colSpan = 3;
-			headerTd.style.textAlign = "left";
+//			headerTd.style.textAlign = "left";
 			var headerLeft = document.createElement("div");
 			headerLeft.style.cssFloat = "left";
 			headerLeft.style.styleFloat = "left";
@@ -204,9 +208,12 @@ ISA_I18N.prototype.classDef = function() {
 				var country = locales[i].country;
 				var lang = locales[i].lang;
 				var localesTr = document.createElement("tr");
-				localesTr.className = "proxyConfigList";
+				//localesTr.className = "proxyConfigList";
 				var localeTd = document.createElement("td");
+				localeTd.style.padding = "3px";
 				localeTd.style.width = "100px";
+				localeTd.style.height = "20px";
+				
 				//localeTd.style.textAlign = "right";
 				localeTd.appendChild(document.createTextNode(country + "_" + lang));
 				localesTr.appendChild(localeTd);
@@ -225,6 +232,7 @@ ISA_I18N.prototype.classDef = function() {
 				fileForm.type = "file";
 				
 				var deleteTd = document.createElement("td");
+				
 				if (!ISA_I18N.isDefaultLocale(country, lang)) {
 					var deleteImg = document.createElement("img");
 					deleteImg.src = imageURL + "trash.gif";
@@ -242,7 +250,11 @@ ISA_I18N.prototype.classDef = function() {
 				}else{
 					deleteTd.innerHTML ="&nbsp;";
 				}
-				
+				if(i != locales.length-1){
+					localeTd.style.borderBottom = "1px dashed #666";
+					linkTd.style.borderBottom = "1px dashed #666";
+					deleteTd.style.borderBottom = "1px dashed #666";
+				}
 				localesTr.appendChild(linkTd);
 				localesTr.appendChild(deleteTd);
 				

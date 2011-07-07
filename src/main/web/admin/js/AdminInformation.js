@@ -68,12 +68,14 @@ ISA_Information.prototype.classDef = function() {
 		var dummy = document.createElement("div");
 
 		//dummy.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>'+ISA_R.alb_userInformation+'</td></tr><tbody></table>';
-		dummy.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>' + ISA_R.alb_statisticsInformation + '</td></tr><tbody></table>';
+		dummy.innerHTML = '<table class="configTableHeader"><tbody><tr><td class="configTableHeaderTd" colspan=2>' + ISA_R.alb_statisticsInformation + '</td></tr><tbody></table>';
 		var table = dummy.firstChild;
-		
+		//table.className = "configTableHeader";
+		table.className = "configTable";
+		table.style.display = "inline";
+		table.cellSpacing = "0";
+		table.cellPadding = "0";
 		container.appendChild( table );
-		table.className = "proxyConfigList";
-		table.style.width = "80%";
 		
 		var tbody = table.firstChild;
 		
@@ -84,10 +86,17 @@ ISA_Information.prototype.classDef = function() {
 		function createUserCountRow(title, value){
 	 		var row = document.createElement("tr");
 			var row_titleTd = document.createElement("td");
+			row_titleTd.className = 'configTableTd';
+			row_titleTd.style.width = '240px';
+			row_titleTd.style.textAlign = 'left';
+			row_titleTd.style.padding = '3 0 3 0.5em';
 			var row_valueTd = document.createElement("td");
+			row_valueTd.className = 'configTableTd';
+			row_valueTd.style.width = '60px';
 			row_titleTd.innerHTML = title;
 			row_valueTd.innerHTML = value;
 			row_valueTd.style.textAlign = "right";
+			row_valueTd.style.padding = "0 0.5em 0 0";
 			
 			row.appendChild(row_titleTd);
 			row.appendChild(row_valueTd);
@@ -102,12 +111,15 @@ ISA_Information.prototype.classDef = function() {
 		var dummy2 = document.createElement("div");
 		//dummy.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>'+ISA_R.alb_userInformation+'</td></tr><tbody></table>';
 		//TODO i18n
-		dummy2.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>' + 'バージョン情報' + '</td></tr><tbody></table>';
+		dummy2.innerHTML = '<table class="configTableHeader"><tbody><tr><td class="configTableHeaderTd" colspan=2>' + 'バージョン情報' + '</td></tr><tbody></table>';
 		var table = dummy2.firstChild;
-		
+		//table.className = "configTableHeader";
+		table.className = "configTable";
+		table.width = "325px";
+		table.style.display = "inline";
+		table.cellSpacing = "0";
+		table.cellPadding = "0";
 		container2.appendChild( table );
-		table.className = "proxyConfigList";
-		table.style.width = "80%";
 		
 		var tbody = table.firstChild;
 		
@@ -123,10 +135,17 @@ ISA_Information.prototype.classDef = function() {
 		function createUserCountRow(title, value){
 	 		var row = document.createElement("tr");
 			var row_titleTd = document.createElement("td");
+			row_titleTd.className = 'configTableTd';
+			row_titleTd.style.width = '150px';
+			row_titleTd.style.textAlign = 'left';
+			row_titleTd.style.padding = '3 0 3 0.5em';
 			var row_valueTd = document.createElement("td");
+			row_valueTd.className = 'configTableTd';
+			row_valueTd.style.width = '150px';
 			row_titleTd.innerHTML = title;
 			row_valueTd.innerHTML = value;
 			row_valueTd.style.textAlign = "right";
+			row_valueTd.style.padding = "0 0.5em 0 0";
 			
 			row.appendChild(row_titleTd);
 			row.appendChild(row_valueTd);

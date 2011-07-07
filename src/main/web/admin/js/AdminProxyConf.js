@@ -94,6 +94,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		defaultListDiv = document.createElement("div");
 		defaultListDiv.id = "defaultProxyConfigList";
+		defaultListDiv.style.width = "900px";
 		for(var i in ISA_ProxyConf.defaultConf){
 			if( !(ISA_ProxyConf.defaultConf[i] instanceof Function) )
 				defaultListDiv.appendChild(self.buildCaseProxyConfigList(ISA_ProxyConf.defaultConf[i], true));
@@ -167,11 +168,12 @@ ISA_ProxyConf.prototype.classDef = function() {
 	this.buildTableHeader = function(){
 
 		var caseConfigTable = document.createElement("table");
-		caseConfigTable.id = "proxyConfigHeader";
-		caseConfigTable.style.clear = "both";
-		caseConfigTable.width = "1000px";
+//		caseConfigTable.id = "proxyConfigHeader";
+		caseConfigTable.className = "configTableHeader";
+//		caseConfigTable.style.clear = "both";
 		caseConfigTable.cellSpacing = "0";
 		caseConfigTable.cellPadding = "0";
+//		caseConfigTable.style.width = "900px";
 		var caseConfigTbody = document.createElement("tbody");
 		caseConfigTable.appendChild(caseConfigTbody);
 		var caseConfigTr;
@@ -184,86 +186,99 @@ ISA_ProxyConf.prototype.classDef = function() {
 		var caseConfigTd;
 
 		caseConfigTh = document.createElement("td");
+		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.rowSpan = 2;
-		caseConfigTh.style.whiteSpace = "nowrap";
-		caseConfigTh.style.width = "300px";
+//		caseConfigTh.style.whiteSpace = "nowrap";
+		caseConfigTh.style.width = "200px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_adressPattern));
 		caseConfigTr.appendChild(caseConfigTh);
 
 		caseConfigTh = document.createElement("td");
+		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.colSpan = 4;
-		caseConfigTh.style.whiteSpace = "nowrap";
-		caseConfigTh.style.width = "210px";
+//		caseConfigTh.style.whiteSpace = "nowrap";
+		caseConfigTh.style.width = "230px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_proxy));
 		caseConfigTr.appendChild(caseConfigTh);
 
 		caseConfigTh = document.createElement("td");
-		caseConfigTh.style.width = "35px";
-		caseConfigTh.style.whiteSpace = "nowrap";
+		caseConfigTh.className = "configTableHeaderTd";
+		caseConfigTh.style.width = "50px";
+//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_enable));
 		caseConfigTr2.appendChild(caseConfigTh);
 
 		caseConfigTh = document.createElement("td");
-		caseConfigTh.style.whiteSpace = "nowrap";
-		caseConfigTh.style.width = "100px";
+		caseConfigTh.className = "configTableHeaderTd";
+//		caseConfigTh.style.whiteSpace = "nowrap";
+		caseConfigTh.style.width = "80px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_host));
 		caseConfigTr2.appendChild(caseConfigTh);
 
 		caseConfigTh = document.createElement("td");
-		caseConfigTh.style.whiteSpace = "nowrap";
-		caseConfigTh.style.width = "40px";
+		caseConfigTh.className = "configTableHeaderTd";
+//		caseConfigTh.style.whiteSpace = "nowrap";
+		caseConfigTh.style.width = "50px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_port));
 		caseConfigTr2.appendChild(caseConfigTh);
 
 		caseConfigTh = document.createElement("td");
-		caseConfigTh.style.whiteSpace = "nowrap";
-		caseConfigTh.style.width = "35px";
+		caseConfigTh.className = "configTableHeaderTd";
+//		caseConfigTh.style.whiteSpace = "nowrap";
+		caseConfigTh.style.width = "50px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_authentication));
 		caseConfigTr2.appendChild(caseConfigTh);
 
 		caseConfigTh = document.createElement("td");
+		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.rowSpan = 2;
-		caseConfigTh.style.whiteSpace = "nowrap";
-		caseConfigTh.style.width = "280px";
+//		caseConfigTh.style.whiteSpace = "nowrap";
+		caseConfigTh.style.width = "220px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_substitutionURL));
 		caseConfigTr.appendChild(caseConfigTh);
 
 		caseConfigTh = document.createElement("td");
+		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.rowSpan = 2;
 //		caseConfigTh.style.whiteSpace = "nowrap";
-		caseConfigTh.style.width = "40px";
+		caseConfigTh.style.width = "50px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_headerTransmission));
 		caseConfigTr.appendChild(caseConfigTh);
 		
 		caseConfigTh = document.createElement("td");
+		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.rowSpan = 2;
-		caseConfigTh.style.width = "40px";
+		caseConfigTh.style.width = "50px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_intranet));
 		caseConfigTr.appendChild(caseConfigTh);
 		
 		caseConfigTh = document.createElement("td");
+		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.colSpan = 2;
-		caseConfigTh.style.whiteSpace = "nowrap";
-		caseConfigTh.style.width = "90px";
+//		caseConfigTh.style.whiteSpace = "nowrap";
+		caseConfigTh.style.width = "120px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_cacheSeetings));
 		caseConfigTr.appendChild(caseConfigTh);
 		
 		caseConfigTh = document.createElement("td");
-		caseConfigTh.style.width = "35px";
-		caseConfigTh.style.whiteSpace = "nowrap";
+		caseConfigTh.className = "configTableHeaderTd";
+		caseConfigTh.style.width = "50px";
+//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_enable));
 		caseConfigTr2.appendChild(caseConfigTh);
 		
 		caseConfigTh = document.createElement("td");
-		caseConfigTh.style.whiteSpace = "nowrap";
-		caseConfigTh.style.width = "55px";
+		caseConfigTh.className = "configTableHeaderTd";
+//		caseConfigTh.style.whiteSpace = "nowrap";
+		caseConfigTh.style.width = "70px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_durationMinute));
 		caseConfigTr2.appendChild(caseConfigTh);
 
 		caseConfigTh = document.createElement("td");
+		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.rowSpan = 2;
-		caseConfigTh.style.whiteSpace = "nowrap";
-		caseConfigTh.style.width = "35px";
+//		caseConfigTh.style.whiteSpace = "nowrap";
+		caseConfigTh.style.width = "50px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_delete));
 		caseConfigTr.appendChild(caseConfigTh);
 		return caseConfigTable;
@@ -328,27 +343,31 @@ ISA_ProxyConf.prototype.classDef = function() {
 		caseConfigItem.elementName = isDefault ?  "default" : "case";
 		var configDiv = document.createElement("div");
 		configDiv.id = "row_" + caseConfigItem.id;
-		configDiv.className = "proxyConfigList";
+		configDiv.className = "configTableDiv";
 
 		var configTable = document.createElement("table");
+//		configTable.className = "configTable";
+		configTable.className = "configTableHeader";
 		configTable.id = caseConfigItem.id;
-		configTable.width = "1000px";
+		configTable.width = "900px";
 		configTable.style.tableLayout = "fixed";
 		configTable.cellSpacing = "0";
 		configTable.cellPadding = "0";
+		configTable.style.margin = "0";
 		configDiv.appendChild(configTable);
 
 		var configTbody = document.createElement("tbody");
 		configTable.appendChild(configTbody);
 
 		var configTr = document.createElement("tr");
-		configTr.style.height = "20px";
+		//configTr.style.height = "20px";
 		configTbody.appendChild(configTr);
 		var configTd;
 		var contentDiv;
 
 		// Icon for dragging
 		configTd = document.createElement("td");
+		configTd.className = "configTableTd"
 		configTd.style.width = "20px";
 		contentDiv = document.createElement("div");
 		if(!isDefault){
@@ -367,11 +386,12 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		// Address Pattern
 		configTd = document.createElement("td");
-		configTd.style.width = "251px";
+		configTd.className = "configTableTd"
+		configTd.style.width = "179";
 		configTr.appendChild(configTd);
 		contentDiv = document.createElement("div");
 		contentDiv.className = "contentsProxyConfig";
-		contentDiv.style.width="100%";
+		contentDiv.style.width="95%";
 		contentDiv.id = "url_" + caseConfigItem.id;
 		if(!isDefault){
 			contentDiv.appendChild(document.createTextNode(replaceUndefinedValue(caseConfigItem.pattern, "　", true)));
@@ -386,10 +406,11 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		// Type
 		configTd = document.createElement("td");
-		configTd.style.width = "35px";
+		configTd.className = "configTableTd"
+		configTd.style.width = "50px";
 		configTd.style.textAlign = "center";
 		contentDiv = document.createElement("div");
-		contentDiv.className = "contentsProxyConfig";
+		//contentDiv.className = "contentsProxyConfig";
 		contentDiv.id = "typ_" + caseConfigItem.id;
 		var useProxyCheckBox = ISA_Admin.createBaseCheckBox(
 			"typeCheckbox_" + caseConfigItem.id,	
@@ -582,10 +603,11 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		// Host
 		configTd = document.createElement("td");
-		configTd.style.width = "100px";
+		configTd.className = "configTableTd"
+		configTd.style.width = "80px";
 		configTr.appendChild(configTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "100%";
+		contentDiv.style.width = "95%";
 		contentDiv.className = "contentsProxyConfig";
 		contentDiv.id = "hst_" + caseConfigItem.id;
 		contentDiv.appendChild(document.createTextNode(replaceUndefinedValue(caseConfigItem.host, "　", true)));
@@ -600,10 +622,11 @@ ISA_ProxyConf.prototype.classDef = function() {
 		configTd.appendChild(contentDiv);
 		// Port
 		configTd = document.createElement("td");
-		configTd.style.width = "41px";
+		configTd.className = "configTableTd";
+		configTd.style.width = "50px";
 		configTr.appendChild(configTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "100%";
+		contentDiv.style.width = "95%";
 		contentDiv.className = "contentsProxyConfig";
 		contentDiv.id = "prt_" + caseConfigItem.id;
 		contentDiv.appendChild(document.createTextNode(replaceUndefinedValue(caseConfigItem.port, "　", true)));
@@ -619,7 +642,8 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		// Authentication
 		configTd = document.createElement("td");
-		configTd.style.width = "35px";
+		configTd.className = "configTableTd"
+		configTd.style.width = "50px";
 		configTd.style.textAlign = "center";
 		configTr.appendChild(configTd);
 		var editIconSpan = document.createElement('span');
@@ -646,10 +670,12 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		// Replacement
 		configTd = document.createElement("td");
-		configTd.style.width = "249px";
+		configTd.className = "configTableTd";
+		configTd.style.width = "220px";
+		
 		configTr.appendChild(configTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "100%";
+		contentDiv.style.width = "95%";
 		contentDiv.className = "contentsProxyConfig";
 		contentDiv.id = "rep_" + caseConfigItem.id;
 		if(!isDefault){
@@ -667,8 +693,9 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		// Header
 		configTd = document.createElement("td");
+		configTd.className = "configTableTd";
 		configTd.style.textAlign = "center";
-		configTd.style.width = "40px";
+		configTd.style.width = "50px";
 		configTr.appendChild(configTd);
 
 		var headersIconSpan = document.createElement('span');
@@ -687,7 +714,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		// intranet
 		configTr.appendChild(
-			$.TD({style:"textAlign:center;width:40px;"},
+			$.TD({className:"configTableTd",style:"textAlign:center;width:50px;"},
 				 $.SPAN({},$.INPUT({type:'checkbox',defaultChecked:/true/.test(caseConfigItem.intranet) ,onchange:{handler:function(e){
 					var targetElement = (Browser.isIE)? e.srcElement : this;
 					
@@ -699,7 +726,8 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		//Cache settings
 		configTd = document.createElement("td");
-		configTd.style.width = "35px";
+		configTd.className = "configTableTd";
+		configTd.style.width = "50px";
 		configTd.style.textAlign = "center";
 		configTr.appendChild(configTd);
 		contentDiv = document.createElement("div");
@@ -742,7 +770,8 @@ ISA_ProxyConf.prototype.classDef = function() {
 		IS_Event.observe(useCacheCheckBox, 'click', cacheClick.bind(this), false, "_adminProxy");
 
 		configTd = document.createElement("td");
-		configTd.style.width = "60px";
+		configTd.className = "configTableTd"
+		configTd.style.width = "70px";
 		configTd.id = "cacheDurationTd_" + caseConfigItem.id;
 		configTr.appendChild(configTd);
 		
@@ -752,7 +781,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 			
 			contentDiv = document.createElement("div");
 			contentDiv.style.height = "100%";
-			contentDiv.style.width = "100%";
+			contentDiv.style.width = "95%";
 			contentDiv.className = "contentsProxyConfig";
 			contentDiv.id = "cacheDuration_" + caseConfigItem.id;
 			configTd.appendChild(contentDiv);
@@ -784,8 +813,9 @@ ISA_ProxyConf.prototype.classDef = function() {
 		
 		// Delete icon
 		configTd = document.createElement("td");
+		configTd.className = "configTableTd"
 		configTd.style.textAlign = "center";
-		configTd.style.width = "35px";
+		configTd.style.width = "50px";
 		configTr.appendChild(configTd);
 		contentDiv = document.createElement("div");
 		if(!isDefault){

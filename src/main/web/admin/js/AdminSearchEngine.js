@@ -91,7 +91,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		// DefaultSearch build
 		var defaultSearchDiv = document.createElement("div");
 		defaultSearchDiv.id = "defaultSearchEngineList";
-		defaultSearchDiv.className = "configList";
+		defaultSearchDiv.className = "configTableDiv";
 		for(i in ISA_SearchEngine.defaultSearchList){
 			if( !(ISA_SearchEngine.defaultSearchList[i] instanceof Function) )
 			  defaultSearchDiv.appendChild(self.buildDefaultSearchList(ISA_SearchEngine.defaultSearchList[i]));
@@ -118,7 +118,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		
 		var rssSearchDiv = document.createElement("div");
 		rssSearchDiv.id = "rssSearchEngineList";
-		rssSearchDiv.className = "configList";
+		rssSearchDiv.className = "configTableDiv";
 
 		// RssSearch build
 		for(i in ISA_SearchEngine.rssSearchList){
@@ -159,7 +159,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 									   ISA_SearchEngine.updateSearchConfAttr('newwindow', '' + checkbox.checked);
 								   }
 								 }}),
-								 ISA_R.alb_searchResultsOnNewWindow
+								 $.SPAN({style:"font-size:12px"}, ISA_R.alb_searchResultsOnNewWindow)
 							 )
 						)
 				);
@@ -291,14 +291,16 @@ ISA_SearchEngine.prototype.classDef = function() {
 		engineDiv.id = "row_" + defaultSearchItem.id;
 		//engineDiv.className = "rowSearchEngine";
 		//engineDiv.className = "proxyConfigList";
-		engineDiv.className = "proxyConfigList";
+		engineDiv.className = "configTableList";
+		engineDiv.style.width = "900px";
 
 		var engineTable = document.createElement("table");
 		engineTable.id = defaultSearchItem.id;
-		engineTable.width = "900px";
-		engineTable.style.tableLayout = "fixed";
+		engineTable.className = "configTableHeader";
+		engineTable.style.width ="900px";
 		engineTable.cellSpacing = "0";
 		engineTable.cellPadding = "0";
+		engineTable.style.margin = "0";
 		engineDiv.appendChild(engineTable);
 
 		var engineTbody = document.createElement("tbody");
@@ -313,6 +315,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// Icon for Drag
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "20px";
 		engineTr.appendChild(engineTd);
 		contentDiv = document.createElement("div");
@@ -327,10 +330,12 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// Title
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "200px";
+		engineTd.style.textAlign = "left";
 		engineTr.appendChild(engineTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "100%";
+		contentDiv.style.width = "95%";
 		contentDiv.className = "contentsSearchEngine";
 		contentDiv.id = "ttl_" + defaultSearchItem.id;
 		contentDiv.appendChild(document.createTextNode(replaceUndefinedValue(defaultSearchItem.title, "　", true)));
@@ -339,15 +344,17 @@ ISA_SearchEngine.prototype.classDef = function() {
 			ISA_Admin.isUpdated = true;
 			return [ defaultSearchItem.id, {
 				title: value
-			}]
+			}];
 		}, 128,{ required: true,label: ISA_R.alb_title });	// Enable input by clicking
 
 		// Address for search
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "320px";
+		engineTd.style.textAlign = "left";
 		engineTr.appendChild(engineTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "100%";
+		contentDiv.style.width = "95%";
 		contentDiv.className = "contentsSearchEngine";
 		contentDiv.id = "url_" + defaultSearchItem.id;
 		contentDiv.appendChild(document.createTextNode(replaceUndefinedValue(defaultSearchItem.retrieveUrl, "　", true)));
@@ -361,10 +368,12 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// Encoding
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "100px";
+		engineTd.style.textAlign = "left";
 		engineTr.appendChild(engineTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "100%";
+		contentDiv.style.width = "95%";
 		contentDiv.className = "contentsSearchEngine";
 		contentDiv.id = "enc_" + defaultSearchItem.id;
 		contentDiv.appendChild(document.createTextNode(replaceUndefinedValue(defaultSearchItem.encoding, "　", true)));
@@ -378,6 +387,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// Number of items
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "40px";
 		engineTd.style.textAlign = "center";
 		engineTr.appendChild(engineTd);
@@ -395,6 +405,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// Access Control Setting
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "80px";
 		engineTd.style.textAlign = "center";
 		engineTr.appendChild(engineTd);
@@ -416,7 +427,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// 
 		engineTr.appendChild(
-			$.TD({style:"width:40px;textAlign:center;"}, $.INPUT({className:'defaultSelectedCheckbox',type:'checkbox', defaultChecked:defaultSearchItem.defaultSelected,
+			$.TD({className: "configTableTd",style:"width: 40px; text-align: center;"}, $.INPUT({className:'defaultSelectedCheckbox', type:'checkbox', defaultChecked:defaultSearchItem.defaultSelected,
 			  onchange:{handler:function(e){
 				  ISA_SearchEngine.updateSearchEngineItem(defaultSearchItem.id, 'defaultSelected', ''+Event.element(e).checked);
 			  }
@@ -425,6 +436,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		
 		// "Delete" icon
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "40px";
 		engineTd.style.textAlign = "center";
 		engineTr.appendChild(engineTd);
@@ -501,14 +513,16 @@ ISA_SearchEngine.prototype.classDef = function() {
 		var engineDiv = document.createElement("div");
 		engineDiv.id = "row_" + rssSearchItem.id;
 		//engineDiv.className = "rowSearchEngine";
-		engineDiv.className = "proxyConfigList";
+		engineDiv.className = "configTableList";
 
 		var engineTable = document.createElement("table");
+		engineTable.className = "configTableHeader";
 		engineTable.id = rssSearchItem.id;
 		engineTable.width = "900px";
 		engineTable.style.tableLayout = "fixed";
 		engineTable.cellSpacing = "0";
 		engineTable.cellPadding = "0";
+		engineTable.style.margin = "0";
 		engineDiv.appendChild(engineTable);
 
 		var engineTbody = document.createElement("tbody");
@@ -523,6 +537,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// Icon for Drag
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "20px";
 		engineTr.appendChild(engineTd);
 		contentDiv = document.createElement("div");
@@ -537,10 +552,12 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// RSS Pattern
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "240px";
+		engineTd.style.textAlign = "left";
 		engineTr.appendChild(engineTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "100%";
+		contentDiv.style.width = "95%";
 		contentDiv.className = "contentsSearchEngine";
 		contentDiv.id = "ttl_" + rssSearchItem.id;
 		contentDiv.appendChild(document.createTextNode(replaceUndefinedValue(rssSearchItem.rssPattern, "　", true)));
@@ -554,10 +571,12 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// Address for search
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "280px";
+		engineTd.style.textAlign = "left";
 		engineTr.appendChild(engineTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "100%";
+		contentDiv.style.width = "95%";
 		contentDiv.className = "contentsSearchEngine";
 		contentDiv.id = "url_" + rssSearchItem.id;
 		contentDiv.appendChild(document.createTextNode(replaceUndefinedValue(rssSearchItem.retrieveUrl, "　", true)));
@@ -571,10 +590,12 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// Encoding
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "100px";
+		engineTd.style.textAlign = "left";
 		engineTr.appendChild(engineTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "100%";
+		contentDiv.style.width = "95%";
 		contentDiv.className = "contentsSearchEngine";
 		contentDiv.id = "enc_" + rssSearchItem.id;
 		contentDiv.appendChild(document.createTextNode(replaceUndefinedValue(rssSearchItem.encoding, "　", true)));
@@ -588,6 +609,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// Number of items
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "40px";
 		engineTd.style.textAlign = "center";
 		engineTr.appendChild(engineTd);
@@ -606,6 +628,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// Access Control Setting
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "80px";
 		engineTd.style.textAlign = "center";
 		engineTr.appendChild(engineTd);
@@ -627,6 +650,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// "Delete" icon
 		engineTd = document.createElement("td");
+		engineTd.className = "configTableTd";
 		engineTd.style.width = "40px";
 		engineTd.style.textAlign = "center";
 		engineTr.appendChild(engineTd);

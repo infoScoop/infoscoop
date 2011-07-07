@@ -21,6 +21,7 @@
 body {margin : 0px ;padding : 0px ;width: 100%}
 body {margin : 0 ;padding : 0 ;/* font-family : osaka, arial ; */}
 img {border: 0px;}
+a { outline: none; }
 /*- Header --------------------------- */
 #admin-header {
 	min-width: 990px;
@@ -104,6 +105,7 @@ img {border: 0px;}
 	border-style: none;
 	margin-top:0;
 	height: 30px;
+	font-weight: bold;
 }
 
 #admin-tabs li a.tab.active:hover {
@@ -220,6 +222,58 @@ img {border: 0px;}
 
 /*- Side Bar END---------------------------*/
 
+/* Control.Tab ----------------------------*/
+
+.tabs-ui {
+	width:100%;
+	margin:0 5 0 5;
+	padding:0;
+}
+.tabs-ui ul {
+	margin:0;
+	padding:0;
+	list-style:none;
+	border-bottom: #000 solid 1px;
+}
+
+.tabs-ui li {
+	display:inline;
+/* 	position: relative; */
+	float: left;
+	height: auto;
+}
+.tabs-ui .tab-ui {
+	position: relative;
+	float: left;
+	margin: 0 5px 0 0px;
+	border-bottom: none;
+	text-decoration: none !important;
+	outline: none;
+	top: 0;
+	background-color: #e6e6e6;
+	height: auto;
+}
+.tabs-ui .tab-ui.active{
+/* 	top: 1; */
+/* 	border-bottom: solid 1px gray; */
+	background-color: #cbeaf8;
+}
+.tabs-ui .tab-ui .title {
+	position: static !important;
+	float: left;
+	color: #000;
+	padding:0.5em 1.5em 10px 1.5em;
+	white-space: nowrap;
+	word-break: keep-all;
+	font-size: 14px;
+	cursor: pointer;
+}
+.tabs-ui .tab-ui.active .title {
+	color: #000;
+	font-weight: bold;
+}
+/* Control.Tab END ----------------------------*/
+
 a{text-decoration: none;}
 a:link {color:#0000cc;}
 a:visited { color:#551a8b;}
@@ -227,7 +281,8 @@ a:active { color:#ff0000;}
 a:hover{text-decoration: underline;}
 
 a.iconButton{
-	background: url(imgs/button_bg.jpg);
+/* 	background: url(imgs/button_bg.jpg); */
+	background: url(imgs/iconButton_bg.gif);
 	font-size:14px;
 	cursor:pointer;
 	margin:7px;
@@ -262,12 +317,43 @@ a.iconButton:visited{
 	color: #000000;
 }
 
+/* Menu screen ------------------- */
 .treemenuNavigator{
 	border-width: 1px;
 	border-style: solid;
 	border-color: black;
 	background-color: #eeeeee;
+	z-index: 2000;
 }
+
+.menuContext{
+	margin: 2px;
+	cursor: pointer;
+}
+
+a.menuContextA:link{
+	color: #000;
+	text-decoration: none;
+}
+a.menuContextA:visited{
+	color: #000000;
+	text-decoration: none;
+}
+
+a.menuContextA_edit:link{
+	color: 0000ff;
+	text-decoration: none;
+}
+a.menuContextA_edit:visited{
+	color: 0000ff;
+	text-decoration: none;
+}
+
+/* a.menuContextA:hover{ */
+/* 	text-decoration: none; */
+/* 	background-color: #cbeaf8; */
+/* } */
+
 .button:link { color:#000;}
 .button:visited { color:#000;}
 .button:active { color:#000;}
@@ -324,8 +410,10 @@ a.iconButton:visited{
 	clear:both;
 	border-bottom: 1px solid #cccccc;
 	margin: 0 0 10px 10px;
+	padding-left: 0.5em;
+	
 }
-/* i18n -------------------------- */
+/* i18n screen-------------------------- */
 .i18nCategoryField {
 	margin: 10px;
 	border: 1px solid #666666;
@@ -342,7 +430,7 @@ a.iconButton:visited{
 	height: auto;
 	border-bottom: 1px solid #666666;
 	padding: 3px;
-	background-color: #999999;
+	background-color: #cccccc;
 /* 	background: url(./imgs/configSetHeader_bg.jpg) repeat; */
 	width: 314px;
 	_width: 320px;
@@ -352,13 +440,15 @@ a.iconButton:visited{
 }
 
 .i18nCategory {
-	margin: 10px;
+	margin: 5px;
+	border-collapse: collapse;
+	border:1px solid #666666;
 }
 
 .i18nLinkTd {
 	text-align: center !important;
 }
-/* i18n END -------------------------- */
+/* i18n screen END -------------------------- */
 .contentsSearchEngine, .contentsProxyConfig, .contentsDefaultPanel {
 	overflow: hidden;
 	word-break: break-all;
@@ -367,9 +457,27 @@ a.iconButton:visited{
 }
 
 .propertiesGroup, .portalAdminsGroup {
+	border-collapse: collapse;
 	margin: 5px;
 	width: 98%;
 	clear:both;
+	border: 1px solid #666666;
+	tableLayout : fixed;
+	emptyCells : show;
+	background-color: #ffffff;
+}
+
+.roleSelectTd{
+	padding: 3px;
+}
+
+.headerPortalAdmins{
+	padding: 3px;
+	whiteSpace :nowrap;
+}
+
+.headerProperties{
+	padding: 3px;
 }
 
 .propertiesGroup .string input {
@@ -554,66 +662,52 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 	font-style: bold;
 }
 
-/* gadget widghet list tabs -------------  */
+/* gadget widget list tabs -------------  */
 .gadgetListDiv{
 	height: 100%;
 	margin: 0px;
-	padding: 3px;
+	padding: 5px;
 	background-color: #cbeaf8;
-	border: 1px solid #000;
+/* 	border: 1px solid #666; */
+	clear: both;
 }
 
 .gadgetListTab{
 /* 	border: 1px solid red; */
 	width: 100%;
-	height: 20px;
+	height: auto;
 	font-size: 14px;
 	margin: 0px;
 	padding: 0px;
+	z-index: 1000;
 }
 
 a.gadgetListTabA{
 	height:100%;
 	color: #000000;
 	white-space:nowrap;
-	border-top: 1px solid #000;
-	border-left: 1px solid #000;
-	border-right: 1px solid #000;
-	boreder-bottom: 0px;
-	boreder-bottom: 0px;
-	padding: 5px 3px 4px 3px;
-	text-decoration: none;
-	margin: 3px 3px 0px 5px;	
-	background-color: #e6e6e6;
-}
-
-a.gadgetListTabAselected{
-	height:100%;
-	font-weight: bold;
-	color: #000000;
-	white-space:nowrap;
-	border-top: 1px solid #000;
-	border-left: 1px solid #000;
-	border-right: 1px solid #000;
-	boreder-bottom: 0px;
+	boreder: 0px;
 	padding: 8px 3px 5px 3px;
 	text-decoration: none;
-	margin: 3px 3px 0px 5px;	
+	cursor: pointer;
+}
+
+a.gadgetListTabA.active{
 	background-color: #cbeaf8;
-	border-bottom: 0px;
+	font-weight: bold;
 }
 
-a.gadgetListTabA:link, a.gadgetListTabAselected:link{
+a.gadgetListTabA:link{
 	color: #000000;
 	text-decoration: none;
 }
 
-a.gadgetListTabA:hover, a.gadgetListTabAselected:hover{
+a.gadgetListTabA:hover{
 	color: #000000;
 	text-decoration: none;
 }
 
-a.gadgetListTabA:visited, a.gadgetListTabAselected:visited{
+a.gadgetListTabA:visited{
 	color: #000000;
 	text-decoration: none;
 }
@@ -684,12 +778,12 @@ a.gadgetListTabA:visited, a.gadgetListTabAselected:visited{
 
 /* configuration set ------------------- */
 .configSet{
-	margin: 10px;
+	margin: 0 10px 10px 10px;
 	border: 1px solid #666666;
 	width: 100%;
 	height: auto;
 	clear: both;
-	padding: 0px;
+	padding: 0px 0px 5px 0px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 }
@@ -697,9 +791,9 @@ a.gadgetListTabA:visited, a.gadgetListTabAselected:visited{
 	margin: 0px;
 	border-bottom: 1px solid #666666;
 	padding: 3px 0 3px 0;
-	background-color: #999999;
+	background-color: #cccccc;
 	text-indent: 0.5em;
-	background: url(./imgs/configSetHeader_bg.jpg) repeat;
+/* 	background: url(./imgs/configSetHeader_bg.jpg) repeat; */
 	background-position: bottom;
 	width: 100%;
 }
@@ -709,12 +803,12 @@ a.gadgetListTabA:visited, a.gadgetListTabAselected:visited{
 }
 
 .modalConfigSet{
-	margin: 10px;
+	margin: 0 10px 10px 10px;
 	border: 1px solid #666666;
 	width: 90%;
 	height: auto;
 	clear: both;
-	padding: 0px;
+	padding: 0px 0px 5px 0px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 }
@@ -722,81 +816,85 @@ a.gadgetListTabA:visited, a.gadgetListTabAselected:visited{
 	margin: 0px;
 	border-bottom: 1px solid #666666;
 	padding: 3px 0 3px 0;
-	background-color: #999999;
+	background-color: #cccccc;
 	text-indent: 0.5em;
 	background: url(./imgs/configSetHeader_bg.jpg) repeat;
 	background-position: bottom;
 	width: 100%;
 }
 
-.configList{
-	margin: 0 0 10px 0;
-}
-/* configuration set END------------------- */
-#proxyConfigHeader {
-	/*background-image:url(imgs/skin_light_header.png);*/
-	margin: 10px 10px 0px 10px;
-	background-color:#eeeeee;
+.modalConfigSetContent{
+	margin: 5px;
+	width: 100%;
+	height: auto;
 }
 
-.configHeader{
-/* 	background-color: #4d4d4d; */
+/* configuration set END------------------- */
+
+/* configuration table -------------------- */
+table.configTableHeader{
 	clear : both;
-	margin: 10 10px 0px 10px;
-	background-color:#eeeeee;
+	margin: 10px 10px 0px 10px;
+/* 	background-color:#666666; */
 	height: auto;
 	tableLayout : fixed;
 	emptyCells : show;
-/* 	float: left; */
+	border-collapse: collapse; 
 }
 
-td.configHeader{
+
+td.configTableHeaderTd{
 	background-color:#eeeeee;
 	border:1px solid;
-	padding:2px;
-	border-color:#FDFDFD #93AFBA #93AFBA #FDFDFD;
-	font-family:Tahoma;
-	font-size:12px;
-	font-weight:bold;
-	color:#055A78;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-color: #666666;
+	font-size:14px;
+/* 	font-weight:bold; */
+	color: #000;
 	vertical-align:middle;
 	text-align:center;
 }
 
-#proxyConfigHeader td{
-background-color:#eeeeee;
-border:1px solid;
-padding:2px;
-border-color:#FDFDFD #93AFBA #93AFBA #FDFDFD;
-font-family:Tahoma;
-font-size:12px;
-font-weight:bold;
-color:#055A78;
-vertical-align:middle;
-text-align:center;
+div.configListDiv{/*  not in use? */
+	margin: 0 0 10px 0;
 }
 
-.proxyConfigList{
+div.configTableDiv{
 /* 	width: 400; */
+	width: 900;
 	height: auto;
 	margin: 0px 10px 0px 10px;
 /* 	float: left; */
+/* 	background-color: #666666; */
+}.
+
+table.configTable{
+	margin: 0px;
+	clear: both;
+	width : 900px;
+	tableLayout : fixed;
+	emptyCells : show;
+	border-collapse: collapse; 
 }
 
-.proxyConfigList td{
-border:1px solid;
-border-color:#FDFDFD #93AFBA #93AFBA #FDFDFD;
-background-color:transparent;
-font-family:Tahoma;
-font-size:12px;
-word-break:break-all; 
-text-align:left;
-background-color:#FFFFFF;
-color:#000000;
+td.configTableTd{
+	background-color:#ffffff;
+	border:1px solid;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-color: #666666;
+	font-size:14px;
+/* 	font-weight:bold; */
+	color: #000;
+	vertical-align:middle;
+	text-align:center;
 }
+/* configuration table END-------------------- */
 
 #searchDefaultOption{
 	padding: 5px;
+	font-size: 12px;
 }
 
 .updateRaw .proxyConfigList td{
@@ -936,46 +1034,46 @@ color:#000000;
 	margin-right: 5px;
 }
 
-/** for livepipe.js Control.Tabs **/
-#tabContainer ul.subsection_tabs{
-	list-style:none;
-	margin:40px 0 5px 0;
-	padding:0;
-	clear:both;
-	border-top: 1px solid #ffffff;
-	float: left;
-}
+* for livepipe.js Control.Tabs *
+/* #tabContainer ul.subsection_tabs{ */
+/* 	list-style:none; */
+/* 	margin:40px 0 5px 0; */
+/* 	padding:0; */
+/* 	clear:both; */
+/* 	border-top: 1px solid #ffffff; */
+/* 	float: left; */
+/* } */
 
-#tabContainer ul.subsection_tabs li.tab{
-	float:left;
-	margin-right:7px;
-	text-align:center
-	white-space:nowrap;
-	width:100px;
-}
+/* #tabContainer ul.subsection_tabs li.tab{ */
+/* 	float:left; */
+/* 	margin-right:7px; */
+/* 	text-align:center */
+/* 	white-space:nowrap; */
+/* 	width:100px; */
+/* } */
 
-#tabContainer ul.subsection_tabs li.tab a{
-	display:block;
-	height:20px;
-	padding:0 6px 0 6px;
-	background-color:#fff;
-	color:#666;
-	font-weight:bold;
-	text-decoration:none;
-}
+/* #tabContainer ul.subsection_tabs li.tab a{ */
+/* 	display:block; */
+/* 	height:20px; */
+/* 	padding:0 6px 0 6px; */
+/* 	background-color:#fff; */
+/* 	color:#666; */
+/* 	font-weight:bold; */
+/* 	text-decoration:none; */
+/* } */
 
-#tabContainer ul.subsection_tabs li.tab a:hover{
-	color:#666
-}
+/* #tabContainer ul.subsection_tabs li.tab a:hover{ */
+/* 	color:#666 */
+/* } */
 
-#tabContainer ul.subsection_tabs li.tab a.active{
-	background-color:#ddd
-}
+/* #tabContainer ul.subsection_tabs li.tab a.active{ */
+/* 	background-color:#ddd */
+/* } */
 
-#admins,#roles {
-	clear: both;
-	margin-top: 10px;
-}
+/* #admins,#roles { */
+/* 	clear: both; */
+/* 	margin-top: 10px; */
+/* } */
 
 /**
  * OAuth Container Certification form
@@ -1096,6 +1194,7 @@ a.home-menu-header:hover{
 	text-decoration: none;
 }
 
+
 a.home-menu-header:visited {
  	color: #000000;
 }
@@ -1117,4 +1216,16 @@ a.home-menu-header:visited {
 
 #command-bar{
 	
+}
+
+#siteaggregationmenu_treeMenu{
+	float: left;
+	width: 300px;
+/* 	height: 100%; */
+}
+
+#treeMenuEditPanel{
+	margin-left: 310px;
+/* 	height: 100%; */
+/* 	background-color: #eeeeee; */
 }

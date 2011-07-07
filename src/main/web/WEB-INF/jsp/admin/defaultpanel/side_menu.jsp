@@ -27,7 +27,7 @@
 <div id="defaultPanel-side-bar" class="side-bar">
 <ul >
 <%if( adminService.isPermitted("defaultPanel") ){%>
-<!-- TODO 国際化 -->
+<!-- TODO i18n -->
 	<li class="tab <c:if test="${type == 'defaultPanel_tabs'}">selected</c:if>"><a href="../defaultpanel/index"><span>タブ</span></a></li>
 	<li class="tab <c:if test="${type == 'defaultPanel_commandBar'}">selected</c:if>"><a href="../defaultpanel/commandBar_index"><span>コマンドバー</span></a></li>
 <%}%>

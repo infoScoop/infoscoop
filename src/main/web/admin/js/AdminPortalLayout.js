@@ -45,7 +45,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 		var portalLayoutDiv = document.createElement("div");
 		
 		var refreshAllDiv = document.createElement("div");
-		refreshAllDiv.id = "refreshAll";
+		refreshAllDiv.className = "refreshAll";
 		refreshAllDiv.style.textAlign = "right";
 		
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
@@ -94,13 +94,13 @@ ISA_PortalLayout.prototype.classDef = function() {
 		
 		var portalLayoutsTdLeft = document.createElement("td");
 		portalLayoutsTdLeft.id = "layoutListTd";
-		portalLayoutsTdLeft.style.width = "30%";
+		portalLayoutsTdLeft.style.width = "200px";
 		portalLayoutsTdLeft.style.verticalAlign = "top";
 		portalLayoutsTr.appendChild(portalLayoutsTdLeft);
 		
 		var portalLayoutsTdRight = document.createElement("td");
 		portalLayoutsTdRight.id = "layoutEditTd";
-		portalLayoutsTdRight.style.width = "70%";
+//		portalLayoutsTdRight.style.width = "70%";
 		portalLayoutsTdRight.style.verticalAlign = "top";
 		portalLayoutsTr.appendChild(portalLayoutsTdRight);
 		
@@ -223,10 +223,12 @@ ISA_PortalLayout.prototype.classDef = function() {
 		
 		var editLayoutDiv = document.createElement("div");
 		
-		var fieldset = document.createElement("fieldset");
+		var fieldset = document.createElement("div");
+		fieldset.className = "modalConfigSet";
 		editLayoutDiv.appendChild(fieldset);
 		
-		var legend = document.createElement("legend");
+		var legend = document.createElement("p");
+		legend.className = "modalConfigSetHeader";
 		fieldset.appendChild(legend);
 		legend.appendChild(document.createTextNode(ISA_R.alb_editSettings));
 		
@@ -237,12 +239,14 @@ ISA_PortalLayout.prototype.classDef = function() {
 		switch (String(layoutName).toLowerCase()) {
 			case "title":
 				editLayoutTextarea = document.createElement("input");
-				editLayoutTextarea.style.width = "100%";
+				editLayoutTextarea.style.width = "99%";
+				editLayoutTextarea.style.margin = "5px";
 				break;
 			default:
 				editLayoutTextarea = document.createElement("textarea");
 				editLayoutTextarea.rows = "20";
-				editLayoutTextarea.style.width = "100%";
+				editLayoutTextarea.style.width = "99%";
+				editLayoutTextarea.style.margin = "5px";
 				editLayoutTextarea.setAttribute('wrap', 'off');
 				break;
 		}

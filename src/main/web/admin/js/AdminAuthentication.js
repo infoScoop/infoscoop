@@ -219,11 +219,11 @@ ISA_Authentication = {
 			[ '25%', '10%', "15%", "20%", "25%", "5%"]
 			);
 		table.id = "authentication_contentTable";
-		table.className = "proxyConfigList";
-		table.style.tableLayout = "fixed";
+		table.cellPadding = "0";
+		table.cellSpacing = "0";
+		table.className = "configTableHeader";
 		//TODO:Function for generating table needs to be arranged
-		table.style.borderLeft = "1px solid #EEEEEE";
-		table.style.width = "100%";
+		//table.style.borderLeft = "1px solid #EEEEEE";
 		
 		container.appendChild( table );
 		
@@ -237,7 +237,7 @@ ISA_Authentication = {
 	},
 	
 	_createTextbox: function(id, value){
-		return $.INPUT({id: id, value: value, className:'portalAdminInput',style:"width:100%;",
+		return $.INPUT({id: id, value: value, className:'portalAdminInput',style:"width:95%;",
 		  onchange:{handler: function(){ ISA_Admin.isUpdated = true; }}
 		});
 	},
@@ -258,11 +258,12 @@ ISA_Authentication = {
 	
 	_createRow: function( consumer, index ){
 		var elementId = 'oauth_consumer_setting_' + index;
-		var deleteIcon = ISA_Admin.createIconButton("", ISA_R.alb_delete, "trash.gif");
+//		var deleteIcon = ISA_Admin.createIconButton("", ISA_R.alb_delete, "trash.gif");
+		var deleteIcon = $.IMG({src:"../../skin/imgs/trash.gif", title:ISA_R.alb_delete, style:'cursor:pointer'});
 		var tr = $.TR({id:elementId },
-					$.TD({}, this._createTextbox(elementId + '_gadget_url', consumer['gadget_url']) ),
-					$.TD({}, this._createTextbox(elementId + '_service_name', consumer['service_name']) ),
-					$.TD({},
+					$.TD({className:"configTableTd"}, this._createTextbox(elementId + '_gadget_url', consumer['gadget_url']) ),
+					$.TD({className:"configTableTd"}, this._createTextbox(elementId + '_service_name', consumer['service_name']) ),
+					$.TD({className:"configTableTd"},
 						 $.SELECT(
 							 {id: elementId + '_signature_method',
 							   onchange:{handler:this._displayConsumerKeySecret.bind(this, elementId),
@@ -271,9 +272,9 @@ ISA_Authentication = {
 							 $.OPTION({value:'HMAC-SHA1', selected: ('HMAC-SHA1' == consumer['signature_method']) }, 'HMAC-SHA1'),
 							 $.OPTION({value:'RSA-SHA1', selected: ('RSA-SHA1' == consumer['signature_method'])}, 'RSA-SHA1')
 							   )),
-					$.TD({}, this._createTextbox(elementId + '_consumer_key', consumer['consumer_key'] ) ),
-					$.TD({}, this._createTextbox(elementId + '_consumer_secret', consumer['consumer_secret'] ) ),
-					$.TD({style:"textAlign:center;"}, deleteIcon )
+					$.TD({className:"configTableTd"}, this._createTextbox(elementId + '_consumer_key', consumer['consumer_key'] ) ),
+					$.TD({className:"configTableTd"}, this._createTextbox(elementId + '_consumer_secret', consumer['consumer_secret'] ) ),
+					$.TD({className:"configTableTd", style:"textAlign:center;"}, deleteIcon )
 			   );
 		IS_Event.observe( deleteIcon,"click",function(tr, delObj){ tr.parentNode.removeChild(tr);}.bind(this, tr, {gadgetUrl:consumer['gadget_url'],serviceName:consumer['service_name']}),true,"_adminAuthentication" );
 		return tr;

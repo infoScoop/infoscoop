@@ -187,8 +187,8 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		
 		var rolesTable = document.createElement("table");
 		rolesTable.border = "1";
-		rolesTable.cellSpacing = "1";
-		rolesTable.cellPadding = "1";
+		rolesTable.cellSpacing = "0";
+		rolesTable.cellPadding = "0";
 		rolesTable.className = "portalAdminsGroup";
 		rolesTable.style.width = "900px";
 
@@ -202,8 +202,6 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		var roleNameTd;
 		roleNameTd = document.createElement("td");
 		roleNameTd.className = "headerPortalAdmins";
-		roleNameTd.style.whiteSpace = "nowrap";
-		roleNameTd.style.width = "30%";
 		roleNameTd.appendChild(document.createTextNode(ISA_R.alb_roleName2));
 		roleHeaderTr.appendChild(roleNameTd);
 
@@ -467,8 +465,8 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		
 		var portalAdminsTable = document.createElement("table");
 		portalAdminsTable.border = "1";
-		portalAdminsTable.cellSpacing = "1";
-		portalAdminsTable.cellPadding = "1";
+		portalAdminsTable.cellSpacing = "0";
+		portalAdminsTable.cellPadding = "0";
 		portalAdminsTable.className = "portalAdminsGroup";
 		portalAdminsTable.style.width = "900px";
 

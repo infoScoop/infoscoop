@@ -27,18 +27,29 @@ ISA_PortalForbiddenURL.prototype = {
 		tr.forbiddenURL_ID = urlId;
 		
 		tr.appendChild(document.createElement("td"))
-		tr.lastChild.style.padding = "0.2em";
+		tr.lastChild.style.padding = "3px";
 		var urlInput = this.createUrlInput(forbiddenUrl);
 //		urlInput.style.border = "none";
 //		urlInput.style.padding = 2;
+		tr.lastChild.className = "configTableTd";
 		tr.lastChild.appendChild( urlInput );
 		
-		tr.appendChild(document.createElement("td"))
-		var removeForbiddenURLButton = ISA_Admin.createIconButton("", ISA_R.alb_delete, "trash.gif");var deleteImg = document.createElement("img");
+		tr.appendChild(document.createElement("td"));
+//		var removeForbiddenURLButton = ISA_Admin.createIconButton("", ISA_R.alb_delete, "trash.gif");
+		var removeForbiddenURLButton =
+			$.IMG({
+				id:"removeForbiddenURLButton_" + urlId,
+				className: "deleteButton",
+				src:"../../skin/imgs/trash.gif", 
+				title:ISA_R.alb_delete,
+				style: "cursor: pointer;"});
 //		removeForbiddenURLButton.src = imageURL + "trash.gif";
 //		removeForbiddenURLButton.style.cursor = "pointer";
-		removeForbiddenURLButton.id = "removeForbiddenURLButton_" + urlId;
-		removeForbiddenURLButton.style.textAlign = "center";
+//		removeForbiddenURLButton.id = "removeForbiddenURLButton_" + urlId;
+//		removeForbiddenURLButton.style.textAlign = "center";
+		tr.lastChild.className = "configTableTd";
+		tr.lastChild.style.padding = "3px";
+		tr.lastChild.style.textAlign = 'center';
 		tr.lastChild.appendChild(removeForbiddenURLButton);
 		
 		return tr;
@@ -109,7 +120,7 @@ ISA_PortalForbiddenURL.prototype = {
 	},
 	removeForbiddenURL: function( event ) {
 		var source = Event.element( event );
-		while( source && source.className != "iconButton")
+		while( source && source.className != "deleteButton")
 			source = source.parentNode;
 		
 		if( !source || source.id.indexOf("removeForbiddenURLButton_") != 0 ) return;
@@ -220,7 +231,8 @@ ISA_PortalForbiddenURL.prototype = {
 			);
 		table.id = "forbiddenURL_contentTable";
 		container.appendChild( table );
-		table.className = "proxyConfigList";
+//		table.className = "configTable";
+		table.className = "configTableHeader";
 		table.style.tableLayout = "fixed";
 		table.style.clear ="both";
 		//TODO:Function for generating table needs to be arranged

@@ -118,8 +118,8 @@ ISA_Properties.prototype.classDef = function() {
 
 			var propertiesTable = document.createElement("table");
 			propertiesTable.border = "1";
-			propertiesTable.cellSpacing = "1";
-			propertiesTable.cellPadding = "1";
+			propertiesTable.cellSpacing = "0";
+			propertiesTable.cellPadding = "0";
 			propertiesTable.className = "propertiesGroup";
 //			propertiesTable.style.width = "98%";
 
@@ -135,6 +135,7 @@ ISA_Properties.prototype.classDef = function() {
 			propertiesTd.className = "headerProperties";
 			propertiesTd.style.whiteSpace = "nowrap";
 			propertiesTd.style.width = "30%";
+			propertiesTd.style.padding = "5px";
 			propertiesTd.appendChild(document.createTextNode(ISA_R.alb_porpety));
 			propertiesTr.appendChild(propertiesTd);
 
@@ -142,6 +143,7 @@ ISA_Properties.prototype.classDef = function() {
 			propertiesTd.className = "headerProperties";
 			propertiesTd.style.whiteSpace = "nowrap";
 			propertiesTd.style.width = "30%";
+			propertiesTd.style.padding = "5px";
 			propertiesTd.appendChild(document.createTextNode(ISA_R.alb_value));
 			propertiesTr.appendChild(propertiesTd);
 
@@ -149,6 +151,7 @@ ISA_Properties.prototype.classDef = function() {
 			propertiesTd.className = "headerProperties";
 			propertiesTd.style.whiteSpace = "nowrap";
 			propertiesTd.style.width = "40%";
+			propertiesTd.style.padding = "5px";
 			propertiesTd.appendChild(document.createTextNode(ISA_R.alb_description));
 			propertiesTr.appendChild(propertiesTd);
 
@@ -183,14 +186,14 @@ ISA_Properties.prototype.classDef = function() {
 		var td;
 		td = document.createElement("td");
 		td.style.whiteSpace = "nowrap";
-		td.style.paddingLeft = "5px";
+		td.style.padding = "3px";
 		
 		td.appendChild(document.createTextNode(ISA_Admin.replaceUndefinedValue(property.id)));
 		tr.appendChild(td);
 		
 		td = document.createElement("td");
 		td.style.whiteSpace = "nowrap";
-		td.style.paddingLeft = "5px";
+		td.style.padding = "3px";
 		
 		var prefConf = property;
 		prefConf.name = property.id;
@@ -214,7 +217,7 @@ ISA_Properties.prototype.classDef = function() {
 		
 		td = document.createElement("td");
 		//td.style.whiteSpace = "nowrap";
-		td.style.paddingLeft = "5px";
+		td.style.padding = "3px";
 		td.style.fontSize = "90%";
 		td.appendChild(document.createTextNode(ISA_R["alb_desc_"+property.id]+ "　"));
 		tr.appendChild(td);

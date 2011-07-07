@@ -155,7 +155,7 @@ ISA_InstantEdit.prototype.heightEl = function() {
 };
 
 ISA_InstantEdit.prototype.highLight = function(span) {
-	span.parentNode.style.border = "2px solid #d1fdcd";
+//	span.parentNode.style.border = "2px solid #d1fdcd";
 	span.parentNode.style.padding = "0";
 	span.style.border = "1px solid #54ce43";
 };

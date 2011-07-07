@@ -7,10 +7,12 @@ ISA_Admin.buildInputBundleForm = function( type,isaWidgetConf ) {
 	var inputBundleForm = document.createElement("div");
 	inputBundleForm.className = "gadgetResources";
 	
-	var uploadFieldSet = document.createElement("fieldset");
+	var uploadFieldSet = document.createElement("div");
+	uploadFieldSet.className = "configSet"
 	inputBundleForm.appendChild( uploadFieldSet)
 	
-	var uploadFieldSetLabel = document.createElement("legend");
+	var uploadFieldSetLabel = document.createElement("p");
+	uploadFieldSetLabel.className = "configSetHeader";
 	uploadFieldSetLabel.innerHTML = ISA_R.alb_uploadGadget;
 	uploadFieldSet.appendChild( uploadFieldSetLabel );
 	
@@ -53,14 +55,17 @@ ISA_Admin.buildInputBundleForm = function( type,isaWidgetConf ) {
 	} ));
 	
 	if( type ) {
-		var resourcesFieldSet = document.createElement("fieldset");
+		var resourcesFieldSet = document.createElement("div");
+		resourcesFieldSet.className = "configSet";
 		inputBundleForm.appendChild( resourcesFieldSet );
 		
-		var resourcesFieldSetLabel = document.createElement("legend");
+		var resourcesFieldSetLabel = document.createElement("p");
+		resourcesFieldSetLabel.className = "configSetHeader";
 		resourcesFieldSetLabel.innerHTML = ISA_R.alb_gadgetResources;
 		resourcesFieldSet.appendChild( resourcesFieldSetLabel );
 		
 		var gadgetResourcesContainer = document.createElement("div");
+		gadgetResourcesContainer.style.margin = "3px";
 		resourcesFieldSet.appendChild( gadgetResourcesContainer );
 		
 		new ISA_GadgetResources( type,isaWidgetConf,eventId ).load( gadgetResourcesContainer );
@@ -90,6 +95,7 @@ ISA_GadgetUpload.buildForm = function( opt ) {
 	form.encoding = "multipart/form-data";
 	form.action = adminHostPrefix + "/uploadgadget";
 	form.target = "upLoadDummyFrame";
+	form.style.margin = "0.25em";
 	
 	var fileInput = document.createElement("input");
 	fileInput.type = "file";

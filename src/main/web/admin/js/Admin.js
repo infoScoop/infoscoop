@@ -343,22 +343,23 @@ ISA_Admin.stopIndicator = function() {
 ISA_Admin.buildTableHeader = function(labels, widths){
 	
 	var configTable = document.createElement("table");
-	configTable.className ="configHeader";
-	configTable.width = "900";
+	configTable.className ="configTableHeader";
+	configTable.width = "900px";
 	configTable.cellSpacing = "0";
 	configTable.cellPadding = "0";
 	var configTbody = document.createElement("tbody");
 	configTable.appendChild(configTbody);
+	
 	var configTr;
 	configTr = document.createElement("tr");
-	configTr.id = "proxyConfigHeader";
-	//configTr.className = "configHeader";
+//	configTr.id = "proxyConfigHeader";
 	configTbody.appendChild(configTr);
 
 	var configTh;
 	var configTd;
 	for(var i = 0; i < labels.length; i++){
 		configTh = document.createElement("td");
+		configTh.className = "configTableHeaderTd";
 //		configTh.style.whiteSpace = "nowrap";
 		if(widths && widths[i])
 		  configTh.style.width = widths[i];

@@ -153,7 +153,9 @@ height:20px;
 .ygtvitem {  } 
 
 /* the style of the div around each node's collection of children */
-.ygtvchildren { }  
+.ygtvchildren {
+/* 	margin-left: 10px; */
+}
 
 /* html .ygtvchildren { height:2%; }  */
 

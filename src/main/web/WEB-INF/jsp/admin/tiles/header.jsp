@@ -23,5 +23,5 @@
 		<!--start of product name-->infoScoop<!--end of product name-->%{alb_administration}
 	</a>
 	<div id="admin-message-icon">
-		<img id="messageIcon" title="%{lb_messageConsole}" src="../../skin/imgs/information.gif" style="cursor:pointer;">
+		<img id="messageIcon" title="%{lb_messageConsole}" src="../../skin/imgs/information2.gif" style="cursor:pointer;">
 	</div>

@@ -33,7 +33,6 @@
 
 <div id="widgetConf"></div>
 <iframe id="upLoadDummyFrame" name="upLoadDummyFrame"></iframe>
-
 <script>
 	$jq(function(){
 		if(ISA_WidgetConf.widgetConf.uploadData){
@@ -41,25 +40,8 @@
 		}
 		ISA_WidgetConf.widgetConf = new ISA_WidgetConf();
 		ISA_WidgetConf.widgetConf.build();
+		new Control.Tabs("gadgetListTab");
 	});
-	
-	function switchGadgetList(id){
-		var gadgetListTab = document.getElementById('gadgetList');
-		var widgetListTab = document.getElementById('widgetList');
-		var gadgetList = document.getElementById('gadgetList_div');
-		var widgetList = document.getElementById('widgetList_div');
-		if(id == 'gadgetList'){
-			gadgetList.style.display = 'block';
-			gadgetListTab.className ='gadgetListTabAselected';
-			widgetList.style.display = 'none';
-			widgetListTab.className = 'gadgetListTabA';
-		}if(id == 'widgetList'){
-			gadgetList.style.display = 'none';
-			gadgetListTab.className = 'gadgetListTabA';
-			widgetList.style.display = 'block';
-			widgetListTab.className = 'gadgetListTabAselected';
-		}
-	};
 </script>
 	</tiles:putAttribute>
 </tiles:insertDefinition>
