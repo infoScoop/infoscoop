@@ -148,9 +148,12 @@
 					msg.showPopupDialog(adminHostPrefix);
 				});
 				$jq("#admin-tabs .tab").click(function(){
-					if(!ISA_Admin.checkUpdated()){
+					if(!ISA_Admin.checkUpdated())
 						return false;
-					}
+				});
+				$jq("#admin-side .tab").click(function(){
+					if(!ISA_Admin.checkUpdated())
+						return false;
 				});
 			});
 		</script>

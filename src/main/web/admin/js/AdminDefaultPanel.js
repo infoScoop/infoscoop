@@ -844,6 +844,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			roleParent.appendChild(self.buildRole(jsonObject));
 			// Change display to the permission added at the last minute
 //			self.editRole(jsonObject);
+			
+			self.addSortableEvent();
+			
 			self.isUpdated = true;
 			ISA_Admin.isUpdated = true;
 		};
@@ -871,9 +874,11 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				// Update to public object
 				defaultRoleJson.disabledDefault = checkbox.checked;
 				if(checkbox.checked)
-				  Element.hide("tab_"+self.displayTabId+'_role_' + defaultRoleJson.roleOrder);
+//				  Element.hide("tab_"+self.displayTabId+'_role_' + defaultRoleJson.roleOrder);
+				  Element.hide("tab_"+self.displayTabId+'_role_' + defaultRoleJson.id);
 				else
-				  Element.show("tab_"+self.displayTabId+'_role_' + defaultRoleJson.roleOrder);
+//				  Element.show("tab_"+self.displayTabId+'_role_' + defaultRoleJson.roleOrder);
+				  Element.show("tab_"+self.displayTabId+'_role_' + defaultRoleJson.id);
 				this.isUpdated = true;
 				ISA_Admin.isUpdated = true;
 			}.bind(this, disableDefaultCheckbox, defaultRoleJson), false, ["_adminPanelTab","_adminPanel"]);
@@ -953,7 +958,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 					}
 					for(var i in oldJsons) {
 						if( !(oldJsons[i] instanceof Function) ){
-							var divId = divIdPrefix + oldJsons[i].roleOrder;
+//							var divId = divIdPrefix + oldJsons[i].roleOrder;
+							var divId = divIdPrefix + oldJsons[i].id;
 							if( siblingDivId && divId == draggingDivId)continue;
 							newJsons[i] = oldJsons[i];
 							if( siblingDivId && divId == siblingDivId){
@@ -975,7 +981,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		jsonRole = this.setColumnsArray(jsonRole);
 
 		var roleDiv = document.createElement("div");
-		roleDiv.id = "tab_"+this.displayTabId+"_role_" + jsonRole.roleOrder;
+//		roleDiv.id = "tab_"+this.displayTabId+"_role_" + jsonRole.roleOrder;
+		roleDiv.id = "tab_"+this.displayTabId+"_role_" + jsonRole.id;
 		roleDiv.roleId = jsonRole.id;
 		roleDiv.className = "configTableDiv";
 
@@ -1014,7 +1021,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			}
 			sortableImg.style.width = 16;
 			sortableImg.style.height = 16;
-			sortableImg.style.cursor = "pointer";
+			sortableImg.style.cursor = "move";
 			sortableImg.title = ISA_R.alb_changingOrder;
 
 			sortableTd.appendChild( sortableImg );
@@ -1242,7 +1249,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		// Update public object 
 		delete this.displayRoleJsons[jsonRole.id];
 		// Delete itself
-		var deleteElement = document.getElementById("tab_"+this.displayTabId+"_role_" + jsonRole.roleOrder);
+//		var deleteElement = document.getElementById("tab_"+this.displayTabId+"_role_" + jsonRole.roleOrder);
+		var deleteElement = document.getElementById("tab_"+this.displayTabId+"_role_" + jsonRole.id);
 		if(deleteElement && deleteElement.parentNode)
 			deleteElement.parentNode.removeChild(deleteElement);
 		// Initialize permission ID currently displayed
@@ -1287,7 +1295,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 								return false;
 							}
 							self.setNewValue("roleName", nowText);
-							var roleNameDiv = $("tab_"+self.displayTabId+"_role_" + self.displayRoleOrder).getElementsByTagName('td')[1];
+//							var roleNameDiv = $("tab_"+self.displayTabId+"_role_" + self.displayRoleOrder).getElementsByTagName('td')[1];
+							var roleNameDiv = $("tab_"+self.displayTabId+"_role_" + self.displayRoleId).getElementsByTagName('td')[1];
 							roleNameDiv.firstChild.innerHTML = nowText;
 						 },
 						 false,
@@ -1322,7 +1331,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 						 'change',
 						 function (e){
 							self.setNewValue("principalType", selectPrincipal.value);
-							var roleTypeDiv = $("tab_"+self.displayTabId+"_role_" + self.displayRoleOrder).getElementsByTagName('select')[0];
+//							var roleTypeDiv = $("tab_"+self.displayTabId+"_role_" + self.displayRoleOrder).getElementsByTagName('select')[0];
+							var roleTypeDiv = $("tab_"+self.displayTabId+"_role_" + self.displayRoleId).getElementsByTagName('select')[0];
 							roleTypeDiv.value = selectPrincipal.value;
 						 },
 						 false,
@@ -1354,7 +1364,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 								return false;
 							}
 							self.setNewValue("role", editRoleInput.value);
-							var roleNameDiv = $("tab_"+self.displayTabId+"_role_" + self.displayRoleOrder).getElementsByTagName('td')[3];
+//							var roleNameDiv = $("tab_"+self.displayTabId+"_role_" + self.displayRoleOrder).getElementsByTagName('td')[3];
+							var roleNameDiv = $("tab_"+self.displayTabId+"_role_" + self.displayRoleId).getElementsByTagName('td')[3];
 							roleNameDiv.firstChild.innerHTML = editRoleInput.value;
 						 },
 						 false,
@@ -2911,7 +2922,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		this.isUpdated = true;
 		ISA_Admin.isUpdated = true;
 		
-		var rid = "tab_"+this.displayTabId+"_role_" + this.displayRoleOrder;
+//		var rid = "tab_"+this.displayTabId+"_role_" + this.displayRoleOrder;
+		var rid = "tab_"+this.displayTabId+"_role_" + this.displayRoleId;
 		if(!ISA_DefaultPanel.updateRaws.contains(rid))
 			ISA_DefaultPanel.updateRaws.push(rid);
 		
@@ -2967,7 +2979,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				errorMessages.push(error);
 			}
 
-			// It need to cast if it is Numeber
+			// It need to cast if it is Number
 			roleJson.roleOrder = roleOrder++;
 			this.displayRoleJsons[i].roleOrder = roleJson.roleOrder;
 			roleJson.principalType = String( roleJson.principalType ); // null is needed to be entered as characters

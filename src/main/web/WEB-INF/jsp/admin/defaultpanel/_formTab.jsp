@@ -97,9 +97,10 @@
 					<input id="edit_layout_link" type="button" value="%{alb_editHTML}">
 					<div id="staticAreaContainer">&nbsp;</div>
 				</div>
+				<div style="clear:both;"></div>
 			</div>
-
-			<div id="customizedArea" class="ui-widget ui-widget-content ui-corner-all" style="display:none;margin-top:10px;padding:3px;">
+			
+			<div id="customizedArea" class="ui-widget ui-widget-content ui-corner-all" style="display:none;">
 				<div class="ui-widget-header ui-corner-all ui-helper-clearfix" style="padding:5px;font-size:1.1em;">
 					<span>%{alb_customizedArea}</span>
 				</div>

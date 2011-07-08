@@ -897,7 +897,7 @@ td.configTableTd{
 	font-size: 12px;
 }
 
-.updateRaw .proxyConfigList td{
+.updateRaw .configTableHeader td{
 	background-color:#ffffcc;
 }
 

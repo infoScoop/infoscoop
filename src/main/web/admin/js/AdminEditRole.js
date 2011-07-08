@@ -332,7 +332,7 @@ function init() {
 			openerPanel.isUpdated = true;
 			ISA_Admin.isUpdated = true;
 			
-			ISA_DefaultPanel.updateRaws.push("tab_"+openerPanel.displayTabId+"_role_" + openerPanel.displayRoleOrder);
+			ISA_DefaultPanel.updateRaws.push("tab_"+openerPanel.displayTabId+"_role_" + openerPanel.displayRoleId);
 			openerPanel.updateRawStyle();
 		});
 	
@@ -642,10 +642,11 @@ function init() {
 	
 	$jq("#select_layout_link").click(function(){
 		$jq("#staticLayouts"+(areaType != 2 ? "AdjustHeight":"")).hide();
+		
 		$jq("#select_layout_modal").dialog({
 			modal:true,
-			width:"600px",
-			height:"500px",
+			width: 600,
+			height: 500,
 			open: function(){
 				var dialog = $jq(this);
 				if(dialog.data("init")) return;
@@ -656,7 +657,6 @@ function init() {
 						if(!confirm(ISA_R.alb_destroyOldSettings))
 							return;
 						var newNode = setIdentifier($jq(this).clone(true));
-//							jsonRole.layout = newNode.html();
 						openerPanel.setNewValue("layout", newNode.html(), jsonRole.id);
 						
 						$jq("#staticAreaContainer").html(jsonRole.layout);
@@ -677,14 +677,13 @@ function init() {
 	$jq("#edit_layout_link").click(function(){
 		$jq("#edit_layout_modal").dialog({
 			modal:true,
-			width:"580px",
-			height:"400px",
+			width: 580,
+			height: 400,
 			open:function(){
 				$jq("#edit_layout_textarea").val(jsonRole.layout);
 				$jq("#edit_layout_ok").click(function(){
-//						jsonRole.layout = $jq("#edit_layout_textarea").val();
 					openerPanel.setNewValue("layout", $jq("#edit_layout_textarea").val(), jsonRole.id);
-					$jq('#staticAreaContainer').html(layout);
+					$jq('#staticAreaContainer').html(jsonRole.layout);
 					prepareStaticArea();
 					
 					reloadStaticGadgets();

@@ -392,7 +392,7 @@ ISA_DragDrop.SiteAggregationMenu.prototype.classDef = function() {
 	}
 
 	function replaceTopSort(id, siblingId) {
-		var url = findHostURL() + "/services/menu/replaceTopOrder";
+		var url = adminHostPrefix + "/services/menu/replaceTopOrder";
 		
 		var menuItem = ISA_SiteAggregationMenu.menuItemList[id];
 		
@@ -431,7 +431,7 @@ ISA_DragDrop.SiteAggregationMenu.prototype.classDef = function() {
 			return;
 		}
 		
-		var url = findHostURL() + "/services/menu/replaceOrder";
+		var url = adminHostPrefix + "/services/menu/replaceOrder";
 		
 		var menuItem = ISA_SiteAggregationMenu.menuItemList[id];
 		var parentMenuItem = ISA_SiteAggregationMenu.menuItemList[parentId];
@@ -553,7 +553,7 @@ ISA_DragDrop.SearchEngineDragDrop.prototype.classDef = function() {
 	}
 	
 	function replaceSort(id, siblingid) {
-		var url = findHostURL() + "/services/searchEngine/replaceSort";
+		var url = adminHostPrefix + "/services/searchEngine/replaceSort";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -622,7 +622,7 @@ ISA_DragDrop.ProxyConfigDragDrop.prototype.classDef = function() {
 	}
 	
 	function replaceSort(id, siblingid) {
-		var url = findHostURL() + "/services/proxyConf/replaceSort";
+		var url = adminHostPrefix + "/services/proxyConf/replaceSort";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",

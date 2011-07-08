@@ -28,12 +28,12 @@
 <ul >
 <%if( adminService.isPermitted("defaultPanel") ){%>
 <!-- TODO i18n -->
-	<li class="tab <c:if test="${type == 'defaultPanel_tabs'}">selected</c:if>"><a href="../defaultpanel/index"><span>タブ</span></a></li>
-	<li class="tab <c:if test="${type == 'defaultPanel_commandBar'}">selected</c:if>"><a href="../defaultpanel/commandBar_index"><span>コマンドバー</span></a></li>
+	<li class="tab <c:if test="${type == 'defaultPanel_tabs'}">selected</c:if>"><a href="../defaultpanel/index"><span>%{alb_tab}</span></a></li>
+	<li class="tab <c:if test="${type == 'defaultPanel_commandBar'}">selected</c:if>"><a href="../defaultpanel/commandBar_index"><span>%{alb_commandBar}</span></a></li>
 <%}%>
 <%if( adminService.isPermitted("portalLayout") ){%>
 	<li class="tab <c:if test="${type == 'defaultPanel_portalLayout'}">selected</c:if>">
-		<a href="../defaultpanel/portalLayout_index"><span>%{alb_portalLayout}</span></a>
+		<a href="../defaultpanel/portalLayout_index"><span>%{alb_otherLayout}</span></a>
 	</li>
 <%}%>
 

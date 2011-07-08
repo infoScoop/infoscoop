@@ -252,6 +252,13 @@
 		<filter-name>I18NFilter_JS</filter-name>
 		<url-pattern>/login.jsp</url-pattern>
 	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/mobile.jsp</url-pattern>
+	</filter-mapping>
+
+
 	<filter-mapping>
 		<filter-name>I18NFilter_JS</filter-name>
 		<url-pattern>/logoff.jsp</url-pattern>
@@ -284,10 +291,6 @@
 	<filter-mapping>
 		<filter-name>I18NFilter_ADMINJS</filter-name>
 		<url-pattern>/admin/role.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<url-pattern>/admin/staticPanel/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>I18NFilter_ADMINJS</filter-name>

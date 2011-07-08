@@ -37,7 +37,9 @@
 	<meta http-equiv="Cache-Control" content="no-cache">
 
 	<title>infoscoop %{alb_administration} - %{alb_defaultPanel}</title>
-
+	
+	<link rel="stylesheet" type="text/css" href="../../skin/admin.css">
+	
 	<!--start styles css-->
     <link rel="stylesheet" type="text/css" href="../../skin/styles.css">
     <link rel="stylesheet" type="text/css" href="../../skin/siteaggregationmenu.css">
