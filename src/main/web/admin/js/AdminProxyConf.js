@@ -36,6 +36,8 @@ ISA_ProxyConf.prototype.classDef = function() {
 		var proxyConfigDiv = document.createElement("div");
 		proxyConfigDiv.style.width = "1000px";
 
+		container.replaceChild(proxyConfigDiv,loadingMessage);
+		
 		var refreshAllDiv = document.createElement("div");
 		refreshAllDiv.className = "refreshAll";
 		refreshAllDiv.style.textAlign = "right";
@@ -94,7 +96,8 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		defaultListDiv = document.createElement("div");
 		defaultListDiv.id = "defaultProxyConfigList";
-		defaultListDiv.style.width = "900px";
+//		defaultListDiv.style.width = "900px";
+		defaultListDiv.style.width = $("proxyConfigHeader").offsetWidth;
 		for(var i in ISA_ProxyConf.defaultConf){
 			if( !(ISA_ProxyConf.defaultConf[i] instanceof Function) )
 				defaultListDiv.appendChild(self.buildCaseProxyConfigList(ISA_ProxyConf.defaultConf[i], true));
@@ -103,7 +106,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		proxyConfigDiv.appendChild(document.createElement("br"));
 
-		container.replaceChild(proxyConfigDiv,loadingMessage);
+//		container.replaceChild(proxyConfigDiv,loadingMessage);
 
 		// Drag&Drop
 		this.dnd = new ISA_DragDrop.ProxyConfigDragDrop("caseProxyConfigList");
@@ -168,7 +171,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 	this.buildTableHeader = function(){
 
 		var caseConfigTable = document.createElement("table");
-//		caseConfigTable.id = "proxyConfigHeader";
+		caseConfigTable.id = "proxyConfigHeader";
 		caseConfigTable.className = "configTableHeader";
 //		caseConfigTable.style.clear = "both";
 		caseConfigTable.cellSpacing = "0";
@@ -349,7 +352,8 @@ ISA_ProxyConf.prototype.classDef = function() {
 //		configTable.className = "configTable";
 		configTable.className = "configTableHeader";
 		configTable.id = caseConfigItem.id;
-		configTable.width = "900px";
+//		configTable.width = "900px";
+		configTable.style.width = $("proxyConfigHeader").offsetWidth;
 		configTable.style.tableLayout = "fixed";
 		configTable.cellSpacing = "0";
 		configTable.cellPadding = "0";
