@@ -622,7 +622,12 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 .editConfListTr, .panelRoleTr, .portalLayoutTr {
 	background-color: #ffffff;
 }
-.selectedEditConf .editConfListTr, .panelRoleSelected .panelRoleTr, .portalLayoutSelected .portalLayoutTr {
+
+.selectEditConf {
+	background-color: #eeffff;
+}
+
+.selectedEditConf, .panelRoleSelected .panelRoleTr, .portalLayoutSelected .portalLayoutTr {
 	background-color: #cbeaf8;
 	font-weight: bold;
 }
@@ -648,6 +653,7 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 }
 .editConfListTitleText {
 	/*cursor: pointer;*/
+	margin-left: 8px;
 }
 
 .editWidgetsTd{
@@ -664,12 +670,15 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 
 /* gadget widget list tabs -------------  */
 .gadgetListDiv{
-	height: 100%;
-	margin: 0px;
-	padding: 5px;
-	background-color: #cbeaf8;
-/* 	border: 1px solid #666; */
+	margin: 0px 0px 0px;
 	clear: both;
+}
+
+.gadgetListDiv div{
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+	cursor: pointer;
 }
 
 .gadgetListTab{
