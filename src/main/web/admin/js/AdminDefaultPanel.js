@@ -735,7 +735,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		var backDiv = ISA_Admin.createIconButton(ISA_R.alb_backToList, ISA_R.alb_backToList, "back.gif", "right");
 		backDiv.id = "tab_"+this.displayTabId+"_backListPanel";
-		backDiv.style.float = "left";
+		$(backDiv).setStyle({"float":"left"});
 		backDiv.style.display = "none";
 		
 		refreshAllDiv.appendChild(backDiv);
