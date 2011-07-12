@@ -486,7 +486,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		addA.removeAttribute('href');
 		addA.style.margin = "0 0 3px 0";
 		addTabDiv.appendChild(addA);
-		tabsUl.appendChild(addTabDiv);
+		if(!this.isCommandBar){
+			tabsUl.appendChild(addTabDiv);
+		}
 		var addTabHandler = function(e) {
 			//Commiting update
 			self.updatePanel( true );

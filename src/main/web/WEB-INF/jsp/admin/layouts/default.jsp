@@ -40,9 +40,10 @@
 		<div id="admin-tabs">
 			<tiles:insertAttribute name="menu" />
 		</div>
-		<div id="properties"></div>
 		<div id="admin-body" >
+			<div id="properties"></div>
 			<tiles:insertAttribute name="body" />
+			
 		</div>
 	</body>
 </html>

@@ -23,7 +23,6 @@
 
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <tiles:insertDefinition name="defaultpanel.side.definition" flush="true">
-<%-- 	<tiles:putAttribute name="type" value="defaultPanel"/> --%>
 	<tiles:putAttribute name="type" value="defaultPanel_commandBar" />
 	<tiles:putAttribute name="title" value="alb_defaultPanel"/>
 	<tiles:putAttribute name="side_body" type="string">

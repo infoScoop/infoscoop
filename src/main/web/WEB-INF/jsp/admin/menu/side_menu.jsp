@@ -17,11 +17,26 @@
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
-	<a id="admin-header-title" style="float:left;cursor:pointer;" href="../home/index">
-		<!--start of product name-->infoScoop<!--end of product name-->%{alb_administration}
-	</a>
-<!-- 	<div id="admin-message-icon"> -->
-<!-- 		<img id="messageIcon" title="%{lb_messageConsole}" src="../../skin/imgs/information2.gif" style="cursor:pointer;"> -->
-<!-- 	</div> -->
+<div id="menu-side-bar" class="side-bar" >
+</div>
+
+<script>
+	var switchTab = function(id){
+		function buildFunc(){
+			ISA_SiteAggregationMenu.treeMenu = new ISA_SiteAggregationMenu(id, false);
+			ISA_SiteAggregationMenu.treeMenu.build();
+		}
+		var topmenuTab = document.getElementById("topmenu");
+		var sidemenuTab = document.getElementById("sidemenu");
+		if(id == "topmenu"){
+			topmenuTab.className = "";
+			topmenuTab.className = "sideBarTab-ui active";
+			sidemenuTab.classname = "sideBarTab-ui";
+		}else{
+			sidemenuTab.className = "";
+			sidemenuTab.className = "sideBarTab-ui active";
+			topmenuTab.className = "sideBarTab-ui";
+		}
+	}
+</script>

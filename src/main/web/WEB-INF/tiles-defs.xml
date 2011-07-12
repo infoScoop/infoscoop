@@ -28,5 +28,8 @@
 	<definition name="defaultpanel.side.definition" extends="side.definition">
 		<put-attribute name="side_bar" value="/WEB-INF/jsp/admin/defaultpanel/side_menu.jsp" />
 	</definition>
+	<definition name="menu.side.definition" extends="side.definition">
+		<put-attribute name="side_bar" value="/WEB-INF/jsp/admin/menu/side_menu.jsp" />
+	</definition>
 
 </tiles-definitions>

@@ -199,6 +199,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		changeMenuDiv.id = "changeMenu";
 		$(changeMenuDiv).setStyle({'textAlign':'left', 'float':'left'});
 		var menuSelect = document.createElement('select');
+		menuSelect.id = "menuSelect";
 		var topmenuOption = document.createElement('option');
 		topmenuOption.value = "topmenu";
 		topmenuOption.appendChild(document.createTextNode(ISA_R.alb_topmenu));
@@ -207,7 +208,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		sidemenuOption.value = "sidemenu";
 		sidemenuOption.appendChild(document.createTextNode(ISA_R.alb_sideMenu));
 		menuSelect.appendChild(sidemenuOption);
-		
+
 		if(this.menuType == "topmenu"){
 			topmenuOption.selected = true;
 		}else{
@@ -225,6 +226,51 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		changeMenuDiv.appendChild(menuSelect);
 		refreshAllDiv.appendChild(changeMenuDiv);
 		
+		//TODO switch top and side menus at side menu
+		var topmenuA = $.A({id:"topmenu", href:"#", className:"sideBarTab-ui", title:"topmenu"},
+						$.SPAN({className:"title", id:"topmenu"},ISA_R.alb_topmenu));
+		var sidemenuA = $.A({id:"sidemenu", href:"#", className:"sideBarTab-ui", title:"sidemenu"},
+						$.SPAN({className:"title", id:"sidemenu"},ISA_R.alb_sideMenu));
+		
+		var changeMenuDiv =
+			$.DIV({id:"menu-side", className:"side-bar"},
+					$.UL({id:"menu-tree-tabs"},
+						 $.LI({},
+								 topmenuA)
+								),
+						 $.LI({},
+								 sidemenuA
+								)
+						);
+
+		IS_Event.observe(topmenuA, 'click', function(){
+			if(!self.checkUpdated()) return;
+			ISA_Admin.clearAdminCache();
+	        //TODO:unnecessary to make yourself new from the first
+			ISA_SiteAggregationMenu.treeMenu = new ISA_SiteAggregationMenu(topmenuA.id, ISA_SiteAggregationMenu.isTreeAdminUser);
+			ISA_SiteAggregationMenu.treeMenu.build();
+		}, false, "_adminPanel");
+		
+		IS_Event.observe(sidemenuA, 'click', function(){
+			if(!self.checkUpdated()) return;
+			ISA_Admin.clearAdminCache();
+	        //TODO:unnecessary to make yourself new from the first
+			ISA_SiteAggregationMenu.treeMenu = new ISA_SiteAggregationMenu(sidemenuA.id, ISA_SiteAggregationMenu.isTreeAdminUser);
+			ISA_SiteAggregationMenu.treeMenu.build();
+		}, false, "_adminPanel");
+
+		var menuSideBar = document.getElementById('menu-side-bar');
+		if(menuSideBar.hasChildNodes()){
+			menuSideBar.removeChild(menuSideBar.firstChild);
+		}
+		menuSideBar.appendChild(changeMenuDiv);
+		
+		if(this.menuType == "topmenu"){
+			document.getElementById("topmenu").className = "sideBarTab-ui active";
+		}else{
+			document.getElementById("sidemenu").className = "sideBarTab-ui active";
+		}
+
 		// Preview the whole
 		var previewDiv = ISA_Admin.createIconButton(ISA_R.alb_previewTop, ISA_R.alb_previewTop, "minibrowser.gif", "right");
 		if(ISA_SiteAggregationMenu.isTreeAdminUser)
@@ -414,11 +460,9 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 	this.displayMenu = function() {
 		var treeMenuDiv = document.createElement("div");
 		treeMenuDiv.id = 'siteaggregationmenu_treeMenu';
-//		treeMenuDiv.style.width = '300px';
-//		treeMenuDiv.style.float = 'left';
 		if(this.disableMenu) treeMenuDiv.className = "menu_disable";
 		
-		//var menuHeader = ISA_Admin.buildTableHeader([ISA_R.alb_title, ISA_R.alb_link], ['400px', '500px']);
+//		var menuHeader = ISA_Admin.buildTableHeader([ISA_R.alb_title, ISA_R.alb_link], ['400px', '500px']);
 		var menuHeader = $.DIV({className: "homeTitle"},ISA_R.alb_menuTree);
 		treeMenuDiv.appendChild(menuHeader);
 
@@ -435,12 +479,6 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 
 		treeMenuDiv.appendChild(menuTop);
 		container.replaceChild(treeMenuDiv,loadingMessage);
-		
-		//TODO add a panel for editing
-//		var treeMenuEditPanel = $.DIV({id: 'treeMenuEditPanel', className:''},
-//				'To edit a menu item, right-click on Menu Tree.' //TODO i18n
-//			);
-//		container.appendChild(treeMenuEditPanel);
 		
 		// Set the handler to control menu, here
 		IS_Event.observe(showAll, 'click', function() { attachShowHideEventHandler(true, treeMenuDiv); }, "_adminMenu");

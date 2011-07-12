@@ -34,14 +34,14 @@ ISA_ProxyConf.prototype.classDef = function() {
 	this.displayProxyConfig = function() {
 
 		var proxyConfigDiv = document.createElement("div");
-		proxyConfigDiv.style.width = "1000px";
+//		proxyConfigDiv.style.width = "1000px";
 
 		container.replaceChild(proxyConfigDiv,loadingMessage);
 		
 		var refreshAllDiv = document.createElement("div");
 		refreshAllDiv.className = "refreshAll";
-		refreshAllDiv.style.textAlign = "right";
-		refreshAllDiv.style.width = "1000px";
+//		refreshAllDiv.style.textAlign = "right";
+//		refreshAllDiv.style.width = "1000px";
 
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		refreshAllDiv.appendChild(commitDiv);

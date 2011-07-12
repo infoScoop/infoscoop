@@ -34,15 +34,14 @@
 		<div id="admin-tabs">
 			<tiles:insertAttribute name="menu" />
 		</div>
-		<div id="properties"></div>
-		<div id="admin-side" >
-				<tiles:insertAttribute name="side_bar"/>
+		<div id="admin-body">
+			<div id="admin-side" >
+					<tiles:insertAttribute name="side_bar"/>
+			</div>
+			<div id="admin-side-body">
+				<div id="properties"></div>
+				<tiles:insertAttribute name="side_body" />
+			</div>
 		</div>
-		<div id="admin-side-body">
-			<tiles:insertAttribute name="side_body" />
-		</div>
-<!-- 		<div id="admin-footer"> -->
-<%-- 			<tiles:insertAttribute name="footer" /> --%>
-<!-- 		</div> -->
 	</body>
 </html>

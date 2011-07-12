@@ -86,7 +86,6 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		//tabContainer.className= "side-bar";
 		var sideBar = document.getElementById("administrator-side-bar");
 		var tabsUl = document.createElement("ul");
-		tabsUl.className = "side-bar";
 		var tabLiAdmins = document.createElement("li");
 		var tabLiAdminsA = document.createElement("a");
 		var tabLiRoles = document.createElement("li");
@@ -94,24 +93,24 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		
 		tabsUl.id = "adminsTab";
 		//tabsUl.className = "subsection_tabs tabs";
-		tabsUl.className = "subsection_tabs";
+		tabsUl.className = "subsection_tabs ";
 		
-		tabLiAdmins.className="tab";
+//		tabLiAdmins.className="tab";
 		tabLiAdmins.id = "tab_admins";
 		
 		tabLiAdminsA.href = "#admins";
-//		tabLiAdminsA.className = "tab";
+		tabLiAdminsA.className = "sideBarTab-ui";
 //		tabLiAdminsA.id = "tab_admins";
 		tabLiAdminsASpan = document.createElement("span");
 		tabLiAdminsASpan.className = "title";
 		tabLiAdminsASpan.appendChild(document.createTextNode(ISA_R.alb_adminSettings));
 		tabLiAdminsA.appendChild( tabLiAdminsASpan );
 		
-		tabLiRoles.className= "tab";
+//		tabLiRoles.className= "tab";
 		tabLiRoles.id = "tab_roles";
 		
 		tabLiRolesA.href = "#roles";
-//		tabLiRolesA.className = "tab";
+		tabLiRolesA.className = "sideBarTab-ui";
 //		tabLiRolesA.className = "side-bar";
 //		tabLiRolesA.id = "tab_roles";
 		tabLiRolesASpan = document.createElement("span");

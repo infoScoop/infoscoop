@@ -27,7 +27,7 @@
 	<tiles:putAttribute name="title" value="alb_properties"/>
 	<tiles:putAttribute name="body" type="string">
 
-<div id="properties"></div>
+<!-- <div id="properties"></div> -->
 
 <script>
 	$jq(function(){

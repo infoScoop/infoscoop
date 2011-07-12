@@ -18,20 +18,23 @@
 	margin: 0;
 	padding: 0;
 }
-body {margin : 0px ;padding : 0px ;width: 100%}
+body {
+	background-color: #e6e6e6;
+}
 body {margin : 0 ;padding : 0 ;/* font-family : osaka, arial ; */}
 img {border: 0px;}
 a { outline: none; }
 /*- Header --------------------------- */
 #admin-header {
-	min-width: 990px;
+/* 	min-width: 990px; */
 	background-color : #336699 ;
 	background: url(imgs/header_bg.jpg);
 	height: 45px;
 	color : #ffffff ;
-	margin : 0;
+	margin : 0 10px 0 10px;
 	padding : 5px 0px 0px 10px;
 	float: none;
+/* 	border-left: 1px solid #cccccc; */
 }
 
 #admin-header-title {
@@ -46,26 +49,27 @@ a { outline: none; }
 
 #admin-message-icon{
 	float:right;
-	padding-top: 12px;
-	padding-right: 10px;
+	margin-top: 6px;
+	margin-right: 20px;
 }
 /*- Common Tab Menu ---------------------------*/
 #admin-tabs {
 	font-size: 16px;
 	_font-size: small;
 	height: 30px;
-	width: 100%;
-	margin : 0 ;
+/* 	width: 100%; */
+	margin : 0 10px 5px 10px;
 	padding : 0;
 	background-color: #4d4d4d;
 	white-space:nowrap;
-/* 	border-bottom: 2px solid #ffffff;  */
+/* 	border-left: 1px solid #cccccc;  */
 }
 
 #admin-tabs ul{
-	width: 1000px;
+/* 	width: 100%; */
 	padding-top : 0px ;
-	margin-left: 0px;
+	padding-left: 10px;
+	margin:0;
 /* 	width: auto; */
 	display: block;
 	white-space:nowrap;
@@ -100,7 +104,9 @@ a { outline: none; }
 
 }
 #admin-tabs li a.tab.active {
-	background-color:#cbeaf8;
+/* 	background-color:#cbeaf8; 
+	color: #000000;*/
+	background-color:#e6e6e6; 
 	color: #000000;
 	border-style: none;
 	margin-top:0;
@@ -121,6 +127,34 @@ a { outline: none; }
 	cursor: pointer;
 }
 /*- Common Tab Menu END ---------------------------*/
+#admin-body {
+	background-color: #ffffff;
+/* 	width: 100%; */
+/* 	width: 990px; */
+	height: 100%;
+/* 	border : 1px solid #cccccc ; */
+/* 	border-left: 1px solid #cccccc; */
+/* 	border-bottom: none; */
+/* 	float: left;  */
+	clear: both;
+	margin : 0px 10px 0px 10px;
+	padding: 0px;
+}
+
+#admin-side-body {
+/* 	width: 900px; */
+	width: 83%;
+	background-color: #ffffff;
+/* 	position:absolute; */
+/* 	top: 85px; */
+/* 	left: 170px; */
+	height: 100%;
+	float: left;
+/* 	clear: both; */
+/* 	border : 1px solid #cccccc ; */
+	margin : 0px;
+/* 	padding-top: 5px; */
+}
 
 .refreshAll{
 	width: 100%;
@@ -132,93 +166,97 @@ a { outline: none; }
 	white-space:nowrap;
 }
 
-#admin-body {
-	width: 990px;
-	height: 100%;
-	border : 0px solid #fff ;
-	float: left; 
-	margin : 0px 5px 0px 5px;
-	padding-top: 5px;
-}
-
-#admin-side-body {
-	position:absolute;
-	top: 80px;
-	left: 155px;
-	height: 100%;
-	border : 0px solid #fff ;
-	margin : 0px 5px 0px 0px;
-	padding-top: 5px;
-}
-
 /*- Side Bar ---------------------------*/
 #admin-side{
 	background-color: #e6e6e6;
-	width: 150px;
+	margin: 0px 0px 0px 0px;
+/* 	width: 160px; */
+	width: 15%;
 	float: left;
 	height: 100%;
 	font-size : 14px ;
-	_font-size : x-small ;
+	_font-size : x-small;
 }
 
 #admin-side ul{
-	margin: 20px 0 0 0;
+	margin: 40px 0 0 0;
 	padding: 0px;
-	border-top: 1px solid #ffffff;
+/* 	border: 1px solid #ffffff; */
+	border-bottom: none;
 	width: 100%;
 }
 
 #admin-side li{
 	list-style: none;
-	margin: 0px;
-	padding: 8px 0 0 10px;
+	margin: 0px 0 10 0;
+/* 	padding: 8px 0 0 10px; */
 	white-space:nowrap;
 	height: 32px;
-	border-bottom:solid 1px #ffffff;
+/* 	border:solid 1px #ffffff; */
+	border-right: none;
 	list-style-type:none;
 	list-style-position:outside;
 }
 
-#admin-side a {
-	text-decoration : none ;
-	margin: 0px;
-	padding: 0px 10px 0px 10px;
-	border : none ;
-	line-height : 180% ;
+.sideBarTabs-ui {
+	width:100%;
+	margin:0 5 0 5;
+	padding:0;
+}
+ul.sideBarTabs-ui {
+	margin:40 0;
+	padding:0;
+	list-style:none;
+	border-bottom: #666666 solid 1px;
+	width: 100%;
+}
+
+li.sideBarTabs-ui{
+	display:inline;
+/* 	position: relative; */
+	float: left;
+	height: auto;
+	width: 100%;
+}
+a.sideBarTab-ui {
+	position: relative;
+	float: left;
+	margin: 0px 0px 10px 0px;
+	border: solid 1px #ffffff;
+	border-right: none;
+	text-decoration: none !important;
+	outline: none;
+	top: 0;
+	height: auto;
+	width: 100%;
 	color: #000000;
-	border-bottom: none;
-	height: 35px;
 }
-
-#admin-side li.tab:hover {
-	background-color: #ffffff;
-/* 	border-right: solid 5px #cbeaf8; */
-	cursor: pointer;
-
+a.sideBarTab-ui:visited {
+/* 	color: #000000; */
 }
-#admin-side li.tab.selected {
-	font-weight: bold;
+a.sideBarTab-ui:hover {
 	background-color:#cbeaf8;
+}
+a.sideBarTab-ui.active{
+	font-weight: bold;
+	background-color: #ffffff;
 	color: #000000;
-	border-style: none;
-	margin-top:0;
-	border-bottom:solid 1px #ffffff;
 }
-
-#admin-side li.tab.selected:hover {
-	color:#000000;
-	cursor: default;
-	
+a.sideBarTab-ui.active:hover{
+	font-weight: bold;
+	background-color: #ffffff;
+	color: #000000;
 }
-
-#admin-side li.tab span {
+span.title {
 	position: static !important;
 	float: left;
+	color: #000;
+	padding:1em 0 1em 0.5em;
 	white-space: nowrap;
 	word-break: keep-all;
+	font-size: 14px;
 	cursor: pointer;
 }
-
 
 /*- Side Bar END---------------------------*/
 
@@ -258,6 +296,13 @@ a { outline: none; }
 /* 	border-bottom: solid 1px gray; */
 	background-color: #cbeaf8;
 }
+
+.tabs-ui .tab-ui.active:hover{
+/* 	top: 1; */
+/* 	border-bottom: solid 1px gray; */
+	background-color: #cbeaf8;
+}
+
 .tabs-ui .tab-ui .title {
 	position: static !important;
 	float: left;
@@ -272,6 +317,9 @@ a { outline: none; }
 	color: #000;
 	font-weight: bold;
 }
+
+
+
 /* Control.Tab END ----------------------------*/
 
 a{text-decoration: none;}
@@ -702,7 +750,7 @@ a.gadgetListTabA{
 }
 
 a.gadgetListTabA.active{
-	background-color: #cbeaf8;
+/* 	background-color: #cbeaf8; */
 	font-weight: bold;
 }
 
@@ -782,6 +830,7 @@ a.gadgetListTabA:visited{
 
 #portalLayouts{
 	clear:both;
+	margin-left: 10px;
 	//clear:none;
 }
 
@@ -789,7 +838,7 @@ a.gadgetListTabA:visited{
 .configSet{
 	margin: 0 10px 10px 10px;
 	border: 1px solid #666666;
-	width: 100%;
+	width: 98%;
 	height: auto;
 	clear: both;
 	padding: 0px 0px 5px 0px;
@@ -827,16 +876,18 @@ a.gadgetListTabA:visited{
 	padding: 3px 0 3px 0;
 	background-color: #cccccc;
 	text-indent: 0.5em;
-	background: url(./imgs/configSetHeader_bg.jpg) repeat;
+	background-color: #cccccc;
+/* 	background: url(./imgs/configSetHeader_bg.jpg) repeat; */
 	background-position: bottom;
 	width: 100%;
 }
 
-.modalConfigSetContent{
+.modalConfigSetContent, .configSetContent{
 	margin: 5px;
 	width: 100%;
 	height: auto;
 }
+
 
 /* configuration set END------------------- */
 
@@ -1087,24 +1138,15 @@ td.configTableTd{
 /**
  * OAuth Container Certification form
  */
+
+#oauth_container{
+	background-color: #ffffff;
+	height: auto;
+}
 #oauthContainerCertForm {
 	clear:both;
 	padding:10px 20px;
-	width:600px;
-}
-
-#oauthContainerCertForm ul{
-	list-style:none;
-	font-family:Tahoma;
-	color:#055A78;
-	margin:0;
-	padding:0;
-}
-
-#oauthContainerCertForm li{
-	padding:6px;
-	background:#eeeeee;
-	margin-bottom:1px;
+	width:900px;
 }
 
 #oauthContainerCertForm label {
@@ -1113,23 +1155,24 @@ td.configTableTd{
 	text-align:right;
 	margin-right:7px;
 	line-height:23px;
+	background:#ffffff;
 }
 
 #oauthContainerCertForm input,
 #oauthContainerCertForm textarea {
 	padding:4px;
 	border:1px solid #999999;
-	width:340px;
+	width:550px;
 }
 
 #oauthContainerCertForm textarea {
-	width:380px;
+	width:550px;
 	height:200px;
 }
 
 #oauthContainerCertForm p.note {
-	padding-left:150px;
-	font-size:90%;
+	padding:10px;
+	font-size:12px;
 }
 
 /*- Footer --------------------------- */
@@ -1148,7 +1191,7 @@ td.configTableTd{
 
 /*- Home screen --------------------------*/
 #home-menus{
-	margin: 30px;
+	padding: 30px;
 	min-width: 940px;
 }
 
@@ -1230,6 +1273,7 @@ a.home-menu-header:visited {
 #siteaggregationmenu_treeMenu{
 	float: left;
 	width: 300px;
+	margin: 10px;
 /* 	height: 100%; */
 }
 

@@ -1,34 +1,31 @@
 ISA_Authentication = {
 	build: function(){
-		
 		var container = document.getElementById("authentication");
 		var sideBar = document.getElementById("authentication-side-bar");
 		var tabUl =
-		  $.DIV({id:"admin-side", className:"side-bar"},
-				$.UL({id:"oauth_setting_tabs", className:"tab"},
-					 $.LI({id:"oauth_consumer_tab",className:"tab"},
-						  $.A({href:"#oauth_consumer", className:""},
-//							  $.SPAN({className:""},ISA_R.alb_oauthConsumerSettings))
-							//TODO i18n
-							  $.SPAN({className:""},"コンシューマー設定"))
-							),
-					 $.LI({id:"oauth_container_tab",className:"tab"},
-						  $.A({href:"#oauth_container", className:""},
-							  $.SPAN({className:""},ISA_R.alb_oauthContainerCertificate))
-							)
-					   )
-				  );
+			$.UL({id:"oauth_setting_tabs"},
+				$.LI({id:"oauth_consumer_tab",className:"", style:"width:100%;"},
+					$.A({href:"#oauth_consumer", className:"sideBarTab-ui"},
+							$.SPAN({className:"title"},ISA_R.alb_oauthConsumerSettings))
+						),
+				$.LI({id:"oauth_container_tab",className:"", style:"width:100%;"},
+					$.A({href:"#oauth_container", className:"sideBarTab-ui"},
+						$.SPAN({className:"title"},ISA_R.alb_oauthContainerCertificate))
+						)
+				);
 		sideBar.appendChild(tabUl);
 
 		container.appendChild(
-			$.DIV({style:"clear:both;padding:5px;"},
+			$.DIV({style:"clear:both;"},
 				  $.DIV({id:"oauth_consumer"}),
-				  $.DIV({id:"oauth_container"})));
+				  $.DIV({id:"oauth_container"})
+				)
+			);
 		
 		this.controlTabs = new Control.Tabs("oauth_setting_tabs", {
 			beforeChange: function(old_container, new_container){
-				Element.removeClassName(old_container.id + "_tab","selected");
-				Element.addClassName(new_container.id+ "_tab", "selected");
+				Element.removeClassName(old_container.id + "_tab","selected active");
+				Element.addClassName(new_container.id+ "_tab", "selected active");
 			}.bind(this)
 		});
 		this._displayConsumer();
@@ -383,23 +380,35 @@ ISA_Authentication = {
 		certificateNote.innerHTML = ISA_R.getResource(ISA_R.ams_oauthCertificateNote, [publicKeyUrl, publicKeyUrl]);
 		var forms = $.DIV(
 			{id:'oauthContainerCertForm'},
-			$.UL({},
-				 $.LI({},
-					  $.LABEL({}, ISA_R.alb_oauthConsumerKey),
-					  $.INPUT({id:'oauth_container_consumer_key',value:certificate.consumerKey}),
-					  consumerKeyNote
-						),
-				 $.LI({},
-					  $.LABEL({}, ISA_R.alb_oauthPrivateKey),
-					  $.TEXTAREA({id:'oauth_container_private_key',value:certificate.privateKey}),
-					  privateKeyNote
-						),
-				 $.LI({},
-					  $.LABEL({}, ISA_R.alb_oauthCertificate),
-					  $.TEXTAREA({id:'oauth_container_certificate',value:certificate.certificate}),
-					  certificateNote
-						)
-			) );
+			$.DIV({className:"configSet"}, 
+				$.P({className:"configSetHeader"},ISA_R.alb_oauthConsumerKey),
+				consumerKeyNote,
+				$.INPUT({id:'oauth_container_consumer_key', className:"configSetContent",value:certificate.consumerKey})),
+			$.DIV({className:"configSet"}, 
+				$.P({className:"configSetHeader"},ISA_R.alb_oauthPrivateKey),
+				privateKeyNote, 
+				$.TEXTAREA({id:'oauth_container_private_key', className:"configSetContent", value:certificate.privateKey})),
+			$.DIV({className:"configSet"}, 
+				$.P({className:"configSetHeader"},ISA_R.alb_oauthCertificate),
+				  certificateNote, 
+				$.TEXTAREA({id:'oauth_container_certificate', className:"configSetContent",value:certificate.certificate}))
+//			$.UL({},
+//				 $.LI({},
+//					  $.LABEL({}, ISA_R.alb_oauthConsumerKey),
+//					  $.INPUT({id:'oauth_container_consumer_key',value:certificate.consumerKey}),
+//					  consumerKeyNote
+//						),
+//				 $.LI({},
+//					  $.LABEL({}, ISA_R.alb_oauthPrivateKey),
+//					  $.TEXTAREA({id:'oauth_container_private_key',value:certificate.privateKey}),
+//					  privateKeyNote
+//						),
+//				 $.LI({},
+//					  $.LABEL({}, ISA_R.alb_oauthCertificate),
+//					  $.TEXTAREA({id:'oauth_container_certificate',value:certificate.certificate}),
+//					  certificateNote
+//						)
+			);
 		
 		container.appendChild( forms );
 	}

@@ -100,7 +100,7 @@ ISA_Properties.prototype.classDef = function() {
 	this.buildProperties = function() {
 		var propertiesDiv = document.createElement("div");
 		propertiesDiv.id = "properties";
-		propertiesDiv.style.width = "90%";
+//		propertiesDiv.style.width = "90%";
 		
 		var categoryTables = {};
 		// PropertiesList build
