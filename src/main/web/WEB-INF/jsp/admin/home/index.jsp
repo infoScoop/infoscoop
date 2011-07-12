@@ -31,7 +31,7 @@
 	<tiles:putAttribute name="title" value="alb_home" />
 	<tiles:putAttribute name="body" type="string">
 <div id="home-menus">
-	<p id="home-menus-title" class="homeTitle">管理メニュー</p>
+	<p id="home-menus-title" class="homeTitle">%{alb_adminMenu}</p>
 		<!-- Menus -->
 <!-- 		TODO ACL control & i18n -->
 <%-- 		<%if(adminService.isPermitted("menu") || adminService.isPermitted("menu_tree")){%> --%>
@@ -40,8 +40,8 @@
 				<a href="../menu/index" class="home-menu-icon-link"><img src="../../skin/imgs/home_icons/kmenuedit.gif"></a>
 			</div>
 			<div class="home-menu-content">
-				<a href="../menu/index" class="home-menu-header">メニュー</a>
-				<p class="home-menu-definition">トップメニューとサイドメニューをエクスプローラ風の操作で設定します。</p>
+				<a href="../menu/index" class="home-menu-header">%{alb_menu}</a>
+				<p class="home-menu-definition">%{alb_menuDescription}</p>
 			</div>
 		</div>
 <%-- 		<%}%> --%>
@@ -51,8 +51,8 @@
 				<a href="../search/index"><img src="../../skin/imgs/home_icons/search.gif"></a>
 			</div>
 			<div class="home-menu-content">
-				<a href="../search/index" class="home-menu-header">検索フォーム</a>
-				<p class="home-menu-definition">検索フォームから検索する際の検索サイトの登録、設定します。</p>
+				<a href="../search/index" class="home-menu-header">%{alb_searchForm}</a>
+				<p class="home-menu-definition">%{alb_searchFormDescription}</p>
 			</div>
 		</div>
 <%-- 		<%}%> --%>
@@ -62,8 +62,8 @@
 				<a href="../gadget/index"><img src="../../skin/imgs/home_icons/kpersonalizer.gif"></a>
 			</div>
 			<div class="home-menu-content">
-				<a href="../gadget/index" class="home-menu-header">ガジェット</a>
-				<p class="home-menu-definition">組み込みガジェットの管理、新規ガジェットの追加・編集・削除を行います。</p>
+				<a href="../gadget/index" class="home-menu-header">%{alb_widget}</a>
+				<p class="home-menu-definition">%{alb_widgetDescription}</p>
 			</div>
 		</div>
 <%-- 		<%}%> --%>
@@ -74,8 +74,8 @@
 			</div>
 			<div class="home-menu-content">
 <!-- 			TODO change href link according to ACL -->
-				<a href="../defaultpanel/index" class="home-menu-header">初期画面</a>
-				<p class="home-menu-definition">画面の共通設定とユーザが初めてログインした際に表示する画面構成を設定します。</p>
+				<a href="../defaultpanel/index" class="home-menu-header">%{alb_defaultPanel}</a>
+				<p class="home-menu-definition">%{alb_defaultPanelDesription}</p>
 			</div>
 		</div>
 <%-- 		<%}%> --%>
@@ -85,8 +85,8 @@
 				<a href="../i18n/index"><img src="../../skin/imgs/home_icons/i18n.gif"></a>
 			</div>
 			<div class="home-menu-content">
-				<a href="../i18n/index" class="home-menu-header">国際化</a>
-				<p class="home-menu-definition">infoScoopに表示されるコンポーネントを国際化します。</p>
+				<a href="../i18n/index" class="home-menu-header">%{alb_i18n}</a>
+				<p class="home-menu-definition">%{alb_i18nDescription}</p>
 			</div>
 		</div>
 <%-- 		<%}%> --%>
@@ -96,8 +96,8 @@
 				<a href="../properties/index"><img src="../../skin/imgs/home_icons/advancedsettings.gif"></a>
 			</div>
 			<div class="home-menu-content">
-				<a href="../properties/index" class="home-menu-header">プロパティ</a>
-				<p class="home-menu-definition">各種システムプロパティの説明と各プロパティを設定します。</p>
+				<a href="../properties/index" class="home-menu-header">%{alb_properties}</a>
+				<p class="home-menu-definition">%{alb_propertiesDescription}</p>
 			</div>
 		</div>
 <%-- 		<%}%> --%>
@@ -107,8 +107,8 @@
 				<a href="../proxy/index"><img src="../../skin/imgs/home_icons/network_local.png"></a>
 			</div>
 			<div class="home-menu-content">
-				<a href="../proxy/index" class="home-menu-header">プロキシ</a>
-				<p class="home-menu-definition">Ajaxプロキシを設定します。</p>
+				<a href="../proxy/index" class="home-menu-header">%{alb_proxy}</a>
+				<p class="home-menu-definition">%{alb_proxyDescription}</p>
 			</div>
 		</div>
 <%-- 		<%}%> --%>
@@ -118,8 +118,8 @@
 				<a href="../administrator/index"><img src="../../skin/imgs/home_icons/kdmconfig.gif"></a>
 			</div>
 			<div class="home-menu-content">
-				<a href="../administrator/index" class="home-menu-header">管理者</a>
-				<p class="home-menu-definition">管理画面にアクセスできるユーザと管理ロールを設定します。</p>
+				<a href="../administrator/index" class="home-menu-header">%{alb_admin}</a>
+				<p class="home-menu-definition">%{alb_adminDescription}</p>
 			</div>
 		</div>
 <%-- 		<%}%> --%>
@@ -129,8 +129,8 @@
 				<a href="../forbiddenurl/index"><img src="../../skin/imgs/home_icons/cnrdelete-all.gif"></a>
 			</div>
 			<div class="home-menu-content">
-				<a href="../forbiddenurl/index" class="home-menu-header">禁止URL</a>
-				<p class="home-menu-definition">ミニブラウザウィジェットなどポータル内に表示されるインナーフレームへの表示を制限するWebサイトを登録します。</p>
+				<a href="../forbiddenurl/index" class="home-menu-header">%{alb_forbiddenURL}</a>
+				<p class="home-menu-definition">%{alb_forbiddenURLDescription}</p>
 			</div>
 		</div>
 <%-- 		<%}%> --%>
@@ -141,12 +141,12 @@
 			</div>
 			<div class="home-menu-content">
 				<a href="../authentication/index" class="home-menu-header">OAuth</a>
-				<p class="home-menu-definition">OAuth及びOAuth関連仕様についての設定します。</p>
+				<p class="home-menu-definition">%{alb_OAuthDescription}</p>
 			</div>
 		</div>
 <%-- 		<%}%> --%>
 
-	<p id="home-menus-title" class="homeTitle">infoScoop 情報</p>
+	<p id="home-menus-title" class="homeTitle">%{alb_infoscoopInfo}infoScoop 情報</p>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
 				<img src="../../skin/imgs/home_icons/goto.gif">

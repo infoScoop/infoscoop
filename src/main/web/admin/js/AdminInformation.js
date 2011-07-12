@@ -110,8 +110,7 @@ ISA_Information.prototype.classDef = function() {
 
 		var dummy2 = document.createElement("div");
 		//dummy.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>'+ISA_R.alb_userInformation+'</td></tr><tbody></table>';
-		//TODO i18n
-		dummy2.innerHTML = '<table class="configTableHeader"><tbody><tr><td class="configTableHeaderTd" colspan=2>' + 'バージョン情報' + '</td></tr><tbody></table>';
+		dummy2.innerHTML = '<table class="configTableHeader"><tbody><tr><td class="configTableHeaderTd" colspan=2>' + ISA_R.alb_versionInformation + '</td></tr><tbody></table>';
 		var table = dummy2.firstChild;
 		//table.className = "configTableHeader";
 		table.className = "configTable";
@@ -128,9 +127,9 @@ ISA_Information.prototype.classDef = function() {
 		var versionNum='2.3.0.0';
 		var releaseDate='2011年9月30日';
 		
-		tbody.appendChild( createUserCountRow('製品名', productName) );
-		tbody.appendChild( createUserCountRow('バージョン', versionNum) );
-		tbody.appendChild( createUserCountRow('リリース日付', releaseDate) );
+		tbody.appendChild( createUserCountRow(ISA_R.alb_productName, productName) );
+		tbody.appendChild( createUserCountRow(ISA_R.alb_versionNum, versionNum) );
+		tbody.appendChild( createUserCountRow(ISA_R.alb_releaseDate, releaseDate) );
 		
 		function createUserCountRow(title, value){
 	 		var row = document.createElement("tr");
