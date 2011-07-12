@@ -527,7 +527,7 @@
 				<pathelement location="${yuicompressor}"/>
 			</classpath>
 		</java>
-		<concat destfile="${build.main}/js/dist/PortalAdmin-EditRole.js.tmp" append="false" encoding="utf-8" fixlastline="true">
+		<concat destfile="${build.admin}/js/dist/PortalAdmin-EditRole.js.tmp" append="false" encoding="utf-8" fixlastline="true">
 			<!-- lib -->
 			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
 			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
@@ -581,7 +581,7 @@
 			<filelist dir="${src.admin.web}/js" files="AdminEditRole.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
-			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalAdmin-EditRole-${build.version}.js&quot; &quot;${build.main}/js/dist/PortalAdmin-EditRole.js.tmp&quot;"/>
+			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalAdmin-EditRole-${build.version}.js&quot; &quot;${build.admin}/js/dist/PortalAdmin-EditRole.js.tmp&quot;"/>
 			<classpath>
 				<pathelement location="${yuicompressor}"/>
 			</classpath>
