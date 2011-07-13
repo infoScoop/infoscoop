@@ -30,19 +30,23 @@
 
 <div id="defaultPanel"></div>
 
-<div id='select_layout_modal' title="%{alb_selectLayout}">
-	<c:import url="/WEB-INF/jsp/admin/defaultpanel/_layoutTemplates.jsp"/>
-	<div style="clear:both;text-align:center;">
-		<input id='select_layout_cancel' type="button" value="%{alb_cancel}"/>
-	</div>
+<div style="margin:10px">
+{%alb_defalutPanelMessage}
 </div>
 
+<!-- <div id='select_layout_modal' title="%{alb_selectLayout}"> -->
+<%-- 	<c:import url="/WEB-INF/jsp/admin/defaultpanel/_layoutTemplates.jsp"/> --%>
+<!-- 	<div style="clear:both;text-align:center;"> -->
+<!-- 		<input id='select_layout_cancel' type="button" value="%{alb_cancel}"/> -->
+<!-- 	</div> -->
+<!-- </div> -->
+
 <script>
-	$jq(function(){
-		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
-		IS_SiteAggregationMenu.init();
-		ISA_loadProperties(ISA_DefaultPanel.defaultPanel.build);
-	});
+// 	$jq(function(){
+// 		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
+// 		IS_SiteAggregationMenu.init();
+// 		ISA_loadProperties(ISA_DefaultPanel.defaultPanel.build);
+// 	});
 </script>
 	</tiles:putAttribute>
 </tiles:insertDefinition>

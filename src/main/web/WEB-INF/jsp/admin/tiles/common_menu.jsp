@@ -56,7 +56,7 @@
 		
 		<%if( adminService.isPermitted("defaultPanel") || adminService.isPermitted("portalLayout") ){%>
 		<li>
-			<a href="../defaultpanel/index" class="tab <c:if test="${type == 'defaultPanel_tabs' || type == 'defaultPanel_commandBar' || type == 'defaultPanel_portalLayout'}">active</c:if>" id="tab_defaultPanel"><span>%{alb_defaultPanel}</span></a>
+			<a href="../defaultpanel/index" class="tab <c:if test="${type == 'defaultPanel_tabs' || type == 'defaultPanel_commandBar' || type == 'defaultPanel_portalLayout'}">active</c:if>" id="tab_defaultPanel"><span>%{alb_generalLayout}</span></a>
 			
 		</li>
 		<%}%>

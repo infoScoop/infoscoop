@@ -341,7 +341,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		previewDivWrap.appendChild( resetDiv );
 		IS_Event.observe( resetDiv,"click",this.resetUserCustomization.bind( this ),false,"_adminPanel");
 		this.tab = new Control.Tabs("panelTabs",{
-			defaultTab: "tab_" + self.tabIdList[0],
+			//defaultTab: "tab_" + self.tabIdList[0],
+			defaultTab: "tab_"+commandBarTabId,
 			beforeChange: function( old_container,container ) {
 				if(self.changeTab( container.id.substring(4),false ))
 				throw $break;
@@ -486,9 +487,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		addA.removeAttribute('href');
 		addA.style.margin = "0 0 3px 0";
 		addTabDiv.appendChild(addA);
-		if(!this.isCommandBar){
-			tabsUl.appendChild(addTabDiv);
-		}
+		tabsUl.appendChild(addTabDiv);
 		var addTabHandler = function(e) {
 			//Commiting update
 			self.updatePanel( true );
@@ -713,7 +712,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			}
 			tabTitleSpan.firstChild.nodeValue = tabName;
 		})
-		this.tab.setActiveTab("tab_"+self.tabIdList[0] );
+		//this.tab.setActiveTab("tab_"+self.tabIdList[0] );
+		this.tab.setActiveTab("tab_"+commandBarTabId );
 		ISA_Admin.isUpdated = true;
 	}
 
@@ -1125,7 +1125,17 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		editTd.appendChild(editImg2);
 		IS_Event.observe(editImg2, "click", this.editRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
 		*/
-		if(this.isCommandBar){
+		IS_Event.observe(editImg, "click", function(jsonRole){
+			this.displayRoleId = jsonRole.id;
+			this.displayRoleOrder = jsonRole.roleOrder;
+			
+			if(!self.updatePanel())
+				return;
+			
+			this.editRoleWin = null;
+			this.editRoleWin = window.open("editRole?id=" + jsonRole.id, "editRoleWin", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes, resizable=yes');
+		}.bind(this, jsonRole));
+/*		if(this.isCommandBar){
 			IS_Event.observe(editImg, "click", this.editRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
 		}else{
 			IS_Event.observe(editImg, "click", function(jsonRole){
@@ -1138,7 +1148,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				this.editRoleWin = null;
 				this.editRoleWin = window.open("editRole?id=" + jsonRole.id, "editRoleWin", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes, resizable=yes');
 			}.bind(this, jsonRole));
-		}
+		}*/
 
 		var deleteTd = document.createElement("td");
 		deleteTd.className = "configTableTd";

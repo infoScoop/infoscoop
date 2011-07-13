@@ -28,10 +28,7 @@
 <ul>
 <%if( adminService.isPermitted("defaultPanel") ){%>
 	<li>
-		<a href="../defaultpanel/index" class="sideBarTab-ui <c:if test="${type == 'defaultPanel_tabs'}">active</c:if>"><span class="title">%{alb_tab}</span></a>
-	</li>
-	<li>
-		<a href="../defaultpanel/commandBar_index" class="sideBarTab-ui <c:if test="${type == 'defaultPanel_commandBar'}">active</c:if>"><span class="title">%{alb_commandBar}</span></a>
+		<a href="../defaultpanel/commandBar_index" class="sideBarTab-ui <c:if test="${type == 'defaultPanel_commandBar'}">active</c:if>"><span class="title">%{alb_defaultPanel}</span></a>
 	</li>
 <%}%>
 <%if( adminService.isPermitted("portalLayout") ){%>

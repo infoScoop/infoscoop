@@ -32,7 +32,7 @@
 
 <script>
 	$jq(function(){
-		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel(true);
+		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
 		IS_SiteAggregationMenu.init();
 		ISA_loadProperties(ISA_DefaultPanel.defaultPanel.build);
 	});

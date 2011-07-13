@@ -17,28 +17,26 @@
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@page import="org.infoscoop.service.PortalAdminsService" %>
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<tiles:insertDefinition name="menu.side.definition" flush="true">
-	<tiles:putAttribute name="type" value="menu"/>
-	<tiles:putAttribute name="title" value="alb_menu"/>
-	<tiles:putAttribute name="side_body" type="string">
-
-<div id="menu"></div>
-<div id="menuTree"></div>
+<div id="menu-side-bar" class="side-bar" >
+</div>
 
 <script>
-	$jq(function(){
+	var switchTab = function(id){
 		function buildFunc(){
-			ISA_SiteAggregationMenu.treeMenu = new ISA_SiteAggregationMenu("topmenu", true);
+			ISA_SiteAggregationMenu.treeMenu = new ISA_SiteAggregationMenu(id, false);
 			ISA_SiteAggregationMenu.treeMenu.build();
 		}
-		ISA_loadProperties(buildFunc);
-	});
+		var topmenuTab = document.getElementById("topmenu");
+		var sidemenuTab = document.getElementById("sidemenu");
+		if(id == "topmenu"){
+			topmenuTab.className = "";
+			topmenuTab.className = "sideBarTab-ui active";
+			sidemenuTab.classname = "sideBarTab-ui";
+		}else{
+			sidemenuTab.className = "";
+			sidemenuTab.className = "sideBarTab-ui active";
+			topmenuTab.className = "sideBarTab-ui";
+		}
+	}
 </script>
-	</tiles:putAttribute>
-</tiles:insertDefinition>

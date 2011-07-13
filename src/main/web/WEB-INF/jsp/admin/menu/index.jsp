@@ -24,7 +24,6 @@
 
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <tiles:insertDefinition name="menu.side.definition" flush="true">
-<%-- <tiles:insertDefinition name="menu.side.definition" flush="true"> --%>
 	<tiles:putAttribute name="type" value="menu"/>
 	<tiles:putAttribute name="title" value="alb_menu"/>
 	<tiles:putAttribute name="side_body" type="string">

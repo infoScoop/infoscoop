@@ -195,38 +195,38 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		refreshAllDiv.className = "refreshAll";
 		//$(refreshAllDiv).setStyle({clear:"both", width:"98%", whiteSpace:"nowrap"});
 		
-		var changeMenuDiv = document.createElement("div");
-		changeMenuDiv.id = "changeMenu";
-		$(changeMenuDiv).setStyle({'textAlign':'left', 'float':'left'});
-		var menuSelect = document.createElement('select');
-		menuSelect.id = "menuSelect";
-		var topmenuOption = document.createElement('option');
-		topmenuOption.value = "topmenu";
-		topmenuOption.appendChild(document.createTextNode(ISA_R.alb_topmenu));
-		menuSelect.appendChild(topmenuOption);
-		var sidemenuOption = document.createElement('option');
-		sidemenuOption.value = "sidemenu";
-		sidemenuOption.appendChild(document.createTextNode(ISA_R.alb_sideMenu));
-		menuSelect.appendChild(sidemenuOption);
-
-		if(this.menuType == "topmenu"){
-			topmenuOption.selected = true;
-		}else{
-			sidemenuOption.selected = true;
-		}
-		IS_Event.observe(menuSelect, 'change', function(){
-			if(!self.checkUpdated()) return;
-
-			ISA_Admin.clearAdminCache();
-            //TODO:unnecessary to make yourself new from the first
-			ISA_SiteAggregationMenu.treeMenu = new ISA_SiteAggregationMenu(menuSelect.value, ISA_SiteAggregationMenu.isTreeAdminUser);
-			ISA_SiteAggregationMenu.treeMenu.build();
-			
-		}, false, "_adminPanel");
-		changeMenuDiv.appendChild(menuSelect);
-		refreshAllDiv.appendChild(changeMenuDiv);
+//		var changeMenuDiv = document.createElement("div");
+//		changeMenuDiv.id = "changeMenu";
+//		$(changeMenuDiv).setStyle({'textAlign':'left', 'float':'left'});
+//		var menuSelect = document.createElement('select');
+//		menuSelect.id = "menuSelect";
+//		var topmenuOption = document.createElement('option');
+//		topmenuOption.value = "topmenu";
+//		topmenuOption.appendChild(document.createTextNode(ISA_R.alb_topmenu));
+//		menuSelect.appendChild(topmenuOption);
+//		var sidemenuOption = document.createElement('option');
+//		sidemenuOption.value = "sidemenu";
+//		sidemenuOption.appendChild(document.createTextNode(ISA_R.alb_sideMenu));
+//		menuSelect.appendChild(sidemenuOption);
+//
+//		if(this.menuType == "topmenu"){
+//			topmenuOption.selected = true;
+//		}else{
+//			sidemenuOption.selected = true;
+//		}
+//		IS_Event.observe(menuSelect, 'change', function(){
+//			if(!self.checkUpdated()) return;
+//
+//			ISA_Admin.clearAdminCache();
+//            //TODO:unnecessary to make yourself new from the first
+//			ISA_SiteAggregationMenu.treeMenu = new ISA_SiteAggregationMenu(menuSelect.value, ISA_SiteAggregationMenu.isTreeAdminUser);
+//			ISA_SiteAggregationMenu.treeMenu.build();
+//			
+//		}, false, "_adminPanel");
+//		changeMenuDiv.appendChild(menuSelect);
+//		refreshAllDiv.appendChild(changeMenuDiv);
 		
-		//TODO switch top and side menus at side menu
+		//switch top and side menus at side menu
 		var topmenuA = $.A({id:"topmenu", href:"#", className:"sideBarTab-ui", title:"topmenu"},
 						$.SPAN({className:"title", id:"topmenu"},ISA_R.alb_topmenu));
 		var sidemenuA = $.A({id:"sidemenu", href:"#", className:"sideBarTab-ui", title:"sidemenu"},
@@ -463,7 +463,11 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		if(this.disableMenu) treeMenuDiv.className = "menu_disable";
 		
 //		var menuHeader = ISA_Admin.buildTableHeader([ISA_R.alb_title, ISA_R.alb_link], ['400px', '500px']);
-		var menuHeader = $.DIV({className: "homeTitle"},ISA_R.alb_menuTree);
+		if(this.menuType == "topmenu"){
+			var menuHeader = $.DIV({className: "homeTitle"},ISA_R.alb_topmenu);
+		}else{
+			var menuHeader = $.DIV({className: "homeTitle"},ISA_R.alb_sideMenu);
+		}
 		treeMenuDiv.appendChild(menuHeader);
 
 		var menuTop = document.createElement('div');

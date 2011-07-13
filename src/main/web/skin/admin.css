@@ -31,7 +31,8 @@ a { outline: none; }
 	background: url(imgs/header_bg.jpg);
 	height: 45px;
 	color : #ffffff ;
-	margin : 0 10px 0 10px;
+/* 	margin : 0 10px 0 10px; */
+	margin: 0px;
 	padding : 5px 0px 0px 10px;
 	float: none;
 /* 	border-left: 1px solid #cccccc; */
@@ -58,17 +59,18 @@ a { outline: none; }
 	_font-size: small;
 	height: 30px;
 /* 	width: 100%; */
-	margin : 0 10px 5px 10px;
+/* 	margin : 0 10px 5px 10px; */
+	margin : 0 0 5px 0;
 	padding : 0;
 	background-color: #4d4d4d;
 	white-space:nowrap;
-/* 	border-left: 1px solid #cccccc;  */
+/* 	border-left: 1px solid #cccccc; */
 }
 
 #admin-tabs ul{
 /* 	width: 100%; */
-	padding-top : 0px ;
-	padding-left: 10px;
+/* 	padding-top : 0px ; */
+	margin-left: 10px;
 	margin:0;
 /* 	width: auto; */
 	display: block;
@@ -131,7 +133,8 @@ a { outline: none; }
 	background-color: #ffffff;
 /* 	width: 100%; */
 /* 	width: 990px; */
-	height: 100%;
+	height: 90%;
+/* 	height: auto; */
 /* 	border : 1px solid #cccccc ; */
 /* 	border-left: 1px solid #cccccc; */
 /* 	border-bottom: none; */
@@ -139,16 +142,18 @@ a { outline: none; }
 	clear: both;
 	margin : 0px 10px 0px 10px;
 	padding: 0px;
+/* 	padding- bottom: 5px; */
 }
 
 #admin-side-body {
 /* 	width: 900px; */
-	width: 83%;
-	background-color: #ffffff;
+	width: 84%;
+/* 	background-color: #ffffff; */
 /* 	position:absolute; */
 /* 	top: 85px; */
 /* 	left: 170px; */
-	height: 100%;
+/* 	height: 100%; */
+	height: auto;
 	float: left;
 /* 	clear: both; */
 /* 	border : 1px solid #cccccc ; */
@@ -283,7 +288,7 @@ span.title {
 .tabs-ui .tab-ui {
 	position: relative;
 	float: left;
-	margin: 0 5px 0 0px;
+	margin: 0px 5px 0px 0px;
 	border-bottom: none;
 	text-decoration: none !important;
 	outline: none;
@@ -317,9 +322,6 @@ span.title {
 	color: #000;
 	font-weight: bold;
 }
-
-
-
 /* Control.Tab END ----------------------------*/
 
 a{text-decoration: none;}
@@ -534,6 +536,7 @@ a.menuContextA_edit:visited{
 
 .advancedProperty {
 	color: #FF0000;
+	margin: 10px;
 }
 
 .portalAdminInput {
@@ -1175,7 +1178,7 @@ td.configTableTd{
 	font-size:12px;
 }
 
-/*- Footer --------------------------- */
+/*- Footer not in use--------------------------- */
 #admin-footer{
 	position: relative;
 	top: 100%;
@@ -1206,6 +1209,7 @@ td.configTableTd{
 	width: 32px;
 	height: 100px;
 	float: left;
+/* 	display: inline; */
 	padding-right: 10px;
 	background-color: #ffffff;
 }
@@ -1217,8 +1221,8 @@ a.home-menu-icon-link{
 
 .home-menu-content{
 	float: left;
-	display: inline;
-	width: 320px;
+/* 	display: inline; */
+	width: 310px;
 	height: 100px;
 }
 
@@ -1281,4 +1285,8 @@ a.home-menu-header:visited {
 	margin-left: 310px;
 /* 	height: 100%; */
 /* 	background-color: #eeeeee; */
+}
+#properties{
+	background-color: #ffffff;
+	padding-bottom: 5px;
 }
