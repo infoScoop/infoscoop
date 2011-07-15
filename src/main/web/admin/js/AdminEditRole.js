@@ -153,11 +153,72 @@ IS_Portal.SearchEngines = {
 	matchRssSearch : function(){return false;},
 	loadConf : function(){}
 };
-// mock for behindIframe
+
 IS_Portal.behindIframe = {
-	show:function(){},
-	hide:function(){}
-}
+	init:function(){
+		//if(!Browser.isIE)return;
+		this.behindIframe = $(document.createElement('iframe'));
+		this.behindIframe.border = 0;
+		this.behindIframe.style.margin = 0;
+		this.behindIframe.style.padding = 0;
+		this.behindIframe.id = "is_portal_behind_iframe";
+		this.behindIframe.frameBorder = 0;
+		this.behindIframe.style.position = "absolute";
+		this.behindIframe.src = "./blank.html";
+		document.getElementsByTagName('body')[0].appendChild(this.behindIframe);
+		this.behindIframe.hide();
+	},
+	
+	show:function(element){
+		//if(!Browser.isIE)return;
+		Position.prepare();
+		var pos = Position.cumulativeOffset(element);
+		this.behindIframe.style.top = pos[1] + "px";
+		this.behindIframe.style.left = pos[0] + "px";
+		this.behindIframe.style.width = element.offsetWidth;
+		this.behindIframe.style.height = element.offsetHeight;
+		if(element.style.zIndex)
+			this.behindIframe.style.zIndex = element.style.zIndex -1;
+		else
+			this.behindIframe.style.zIndex = 0;
+		this.behindIframe.show();
+		
+		this.current = element;
+	},
+	
+	hide:function(){
+		//if(!Browser.isIE)return;
+		this.behindIframe.style.left = 0 + "px";
+		this.behindIframe.style.top = 0 + "px";
+		this.behindIframe.style.width = 0;
+		this.behindIframe.style.height = 0;
+		this.behindIframe.hide();
+	}
+};
+
+IS_Portal.setMouseMoveTimer;
+IS_Portal.setMouseMoveEvent = function(){
+	if(IS_Portal.setMouseMoveTimer) clearTimeout(IS_Portal.setMouseMoveTimer);
+	var execFunc = function(){
+		IS_Portal.unsetMouseMoveEvent();
+		
+		var portalTable = $("portal-maincontents-table");
+		IS_Event.observe(portalTable, 'mousemove', function(){
+			IS_Portal.closeIS_PortalObjects();
+			IS_Portal.unsetMouseMoveEvent();
+		}, false, "_portalclose");
+	};
+	IS_Portal.setMouseMoveTimer = setTimeout(execFunc, 100);
+};
+
+IS_Portal.unsetMouseMoveEvent = function(){
+	IS_Event.unloadCache("_portalclose");
+};
+
+IS_Portal.closeIS_PortalObjects = function(){
+	if(Browser.isIE) IS_SiteAggregationMenu.closeMenu();
+};
+
 IS_forbiddenURLs = {};
 
 // mock for msgbar
@@ -262,6 +323,8 @@ function adjustStaticWidgetHeight(){
 }
 
 function init() {
+	IS_Portal.behindIframe.init();
+	
 	areaType = jsonRole.disabledDynamicPanel ? 1 : 0;
 	areaType = jsonRole.adjustToWindowHeight ? 2 : areaType;
 	
@@ -343,7 +406,7 @@ function init() {
 //		$jq(".cancel_button").click(function(){window.close();});
 
 	//Holiday information
-	IS_Holiday = new IS_Widget.Calendar.iCalendar(localhostPrefix + "/holidaysrv");
+	IS_Holiday = new IS_Widget.Calendar.iCalendar(hostPrefix + "/holidaysrv");
 	IS_Holiday.noProxy = true;
 	IS_Holiday.load(false);
 
@@ -351,7 +414,7 @@ function init() {
 		$jq("#infoscoop").addClass("areaType0");
 		$("customizedArea").show();
 		
-		IS_SiteAggregationMenu.isAdminMode = true;
+		IS_SiteAggregationMenu.isAdminMode = IS_SiteAggregationMenu.ignoreService = true;
 		new IS_SiteAggregationMenu(true);
 		new IS_SidePanel.SiteMap(true);
 	}
@@ -645,9 +708,11 @@ function init() {
 		
 		$jq("#select_layout_modal").dialog({
 			modal:true,
-			width: 600,
-			height: 500,
+			width: (Browser.isIE)? "600px" : 600,
+			height: (Browser.isIE)? "500px" : 500,
 			open: function(){
+				IS_Portal.behindIframe.show(this.parentNode);
+				
 				var dialog = $jq(this);
 				if(dialog.data("init")) return;
 				$jq("#select_layout_modal .staticLayout"+(areaType == 2 ? "AdjustHeight":""))
@@ -670,6 +735,9 @@ function init() {
 					dialog.dialog("close");
 				});
 				dialog.data("init", true);
+			},
+			close:function(){
+				IS_Portal.behindIframe.hide();
 			}
 		});
 	});
@@ -677,9 +745,11 @@ function init() {
 	$jq("#edit_layout_link").click(function(){
 		$jq("#edit_layout_modal").dialog({
 			modal:true,
-			width: 580,
-			height: 400,
+			width: (Browser.isIE)? "580px" : 580,
+			height: (Browser.isIE)? "400px" : 400,
 			open:function(){
+				IS_Portal.behindIframe.show(this.parentNode);
+				
 				$jq("#edit_layout_textarea").val(jsonRole.layout);
 				$jq("#edit_layout_ok").click(function(){
 					openerPanel.setNewValue("layout", $jq("#edit_layout_textarea").val(), jsonRole.id);
@@ -695,6 +765,9 @@ function init() {
 					dialog.dialog("close");
 				});
 				dialog.data("init", true);
+			},
+			close:function(){
+				IS_Portal.behindIframe.hide();
 			}
 		});
 	});

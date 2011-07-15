@@ -100,7 +100,6 @@
 		widgetRefreshInterval = 36000;
 		gadgetProxyURL = localhostPrefix + "/gadgetsrv";
 		
-		IS_R['getResource'] = function(s){return s;}
 		var displayTabOrder = "0";
 		IS_Portal = {
 			tabs: {},
@@ -122,8 +121,12 @@
 			Trash:{
 				add:function(){}
 			},
-			getFreshDays:function(){}
-		}
+			getFreshDays:function(){},
+			buildIFrame:function(aTag){
+				aTag.target = "_blank";
+				return;
+			}
+		};
 		
 		IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
 		IS_WidgetIcons = <jsp:include page="/gadgeticon" flush="true" />;

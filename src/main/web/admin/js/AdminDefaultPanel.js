@@ -272,9 +272,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		this.addSortableEventCommand();
 	}
 
-	this.initialize = function(isCommandBar) {
-		this.isCommandBar = isCommandBar;
-		//
+	this.initialize = function() {
 		controlModal = new Control.Modal(
 			false,
 			{
@@ -1125,17 +1123,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		editTd.appendChild(editImg2);
 		IS_Event.observe(editImg2, "click", this.editRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
 		*/
-		IS_Event.observe(editImg, "click", function(jsonRole){
-			this.displayRoleId = jsonRole.id;
-			this.displayRoleOrder = jsonRole.roleOrder;
-			
-			if(!self.updatePanel())
-				return;
-			
-			this.editRoleWin = null;
-			this.editRoleWin = window.open("editRole?id=" + jsonRole.id, "editRoleWin", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes, resizable=yes');
-		}.bind(this, jsonRole));
-/*		if(this.isCommandBar){
+		if(self.displayTabId == commandBarTabId){
 			IS_Event.observe(editImg, "click", this.editRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
 		}else{
 			IS_Event.observe(editImg, "click", function(jsonRole){
@@ -1148,7 +1136,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				this.editRoleWin = null;
 				this.editRoleWin = window.open("editRole?id=" + jsonRole.id, "editRoleWin", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes, resizable=yes');
 			}.bind(this, jsonRole));
-		}*/
+		}
 
 		var deleteTd = document.createElement("td");
 		deleteTd.className = "configTableTd";
@@ -3124,14 +3112,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				method: 'get' ,
 				asynchronous:true,
 				onSuccess: function(response){
-					if(self.isCommandBar){
-						self.tabIdList = [commandBarTabId];
-						self.tabNumberJson = {"commandbar":{}};
-					}else{
-						var array = eval(response.responseText);
-						self.tabIdList = array[0];
-						self.tabNumberJson = array[1];
-					}
+					var array = eval(response.responseText);
+					self.tabIdList = array[0];
+					self.tabNumberJson = array[1];
 					getWidgetConf();
 				},
 				on404: function(t) {

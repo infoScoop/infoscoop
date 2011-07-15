@@ -93,9 +93,11 @@
 				</div>
 
 				<div style="padding:5px;">
-					<input id="select_layout_link" type="button" value="%{alb_selectLayout}">
-					<input id="edit_layout_link" type="button" value="%{alb_editHTML}">
-					<div id="staticAreaContainer">&nbsp;</div>
+					<div style="width:100%">
+						<input id="select_layout_link" type="button" value="%{alb_selectLayout}">
+						<input id="edit_layout_link" type="button" value="%{alb_editHTML}">
+						<div id="staticAreaContainer">&nbsp;</div>
+					</div>
 				</div>
 				<div style="clear:both;"></div>
 			</div>

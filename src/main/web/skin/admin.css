@@ -19,7 +19,7 @@
 	padding: 0;
 }
 body {
-	background-color: #e6e6e6;
+	background-color: #eee;
 }
 body {margin : 0 ;padding : 0 ;/* font-family : osaka, arial ; */}
 img {border: 0px;}
@@ -80,7 +80,7 @@ a { outline: none; }
 #admin-tabs li{
 	list-style: none;
 	float:left;
-	margin: 0px;
+	margin: 0px 0px 1px 0px;
 /* 	display: inline; */
 	white-space:nowrap;
 	height: 30px;
@@ -108,7 +108,7 @@ a { outline: none; }
 #admin-tabs li a.tab.active {
 /* 	background-color:#cbeaf8; 
 	color: #000000;*/
-	background-color:#e6e6e6; 
+	background-color:#eee; 
 	color: #000000;
 	border-style: none;
 	margin-top:0;
@@ -173,7 +173,7 @@ a { outline: none; }
 
 /*- Side Bar ---------------------------*/
 #admin-side{
-	background-color: #e6e6e6;
+	background-color: #eee;
 	margin: 0px 0px 0px 0px;
 /* 	width: 160px; */
 	width: 15%;
@@ -293,7 +293,7 @@ span.title {
 	text-decoration: none !important;
 	outline: none;
 	top: 0;
-	background-color: #e6e6e6;
+	background-color: #eee;
 	height: auto;
 }
 .tabs-ui .tab-ui.active{
@@ -368,12 +368,31 @@ a.iconButton:visited{
 }
 
 /* Menu screen ------------------- */
+#admin-menu-navigator .floatMenu{
+	position: absolute;
+	z-index: 1000;
+}
+
+
 .treemenuNavigator{
 	border-width: 1px;
 	border-style: solid;
 	border-color: black;
 	background-color: #eeeeee;
-	z-index: 2000;
+}
+
+.treemenuNavigator .iconButton{
+	display:block;
+	background:none;
+	border-radius: 0;
+	border: none;
+}
+
+.treemenuNavigator a.iconButton:hover {
+	text-decoration: none;
+	border: none;
+	color:#ff0000;
+	text-decoration: underline;
 }
 
 .menuContext{
@@ -449,7 +468,7 @@ a.menuContextA_edit:visited{
 	margin-bottom:-1px;
 	border-top:0px solid #fff;
 	
-	/* //�ｽﾅのコ�ｽ�ｽ�ｽ�ｽ�ｽg�ｽ�ｽIE�ｽﾌみに適�ｽp�ｽ�ｽ�ｽ�ｽ�ｽ */
+	/* //�ｿｽ�ｽｽ�ｾ�縺ｮ繧ｳ�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽg�ｿｽ�ｽｽ�ｿｽ�ｽｽIE�ｿｽ�ｽｽ�ｾ後∩縺ｫ驕ｩ�ｿｽ�ｽｽp�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽ */
 //	margin-bottom:0px;
 }
 
@@ -1275,6 +1294,7 @@ a.home-menu-header:visited {
 }
 
 #siteaggregationmenu_treeMenu{
+	clear: both;
 	float: left;
 	width: 300px;
 	margin: 10px;
