@@ -151,7 +151,7 @@
 				<img src="../../skin/imgs/home_icons/info.gif">
 			</div>
 			<div id="version">
-				<table class="configTableHeader" cellspacing="0" cellpadding="0" style="display:inline;">
+				<table class="configTableHeader" cellspacing="0" cellpadding="0" style="display:inline; margin-left: 0px;">
 					<tbody>
 						<tr>
 							<td class="configTableHeaderTd" colspan=2>%{alb_versionInformation}</td>

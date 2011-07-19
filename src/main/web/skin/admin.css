@@ -227,7 +227,7 @@ a.sideBarTab-ui {
 	position: relative;
 	float: left;
 	margin: 0px 0px 10px 0px;
-	border: solid 1px #ffffff;
+/* 	border: solid 1px #ffffff; */
 	border-right: none;
 	text-decoration: none !important;
 	outline: none;
@@ -478,7 +478,7 @@ a.menuContextA_edit:visited{
 	font-weight: bolder;
 	clear:both;
 	border-bottom: 1px solid #cccccc;
-	margin: 0 0 10px 10px;
+	margin: 0 10px 10px 10px;
 	padding-left: 0.5em;
 	
 }
@@ -523,11 +523,13 @@ a.menuContextA_edit:visited{
 	word-break: break-all;
 	font-size : 13px ;
 	_font-size : x-small ;
+	margin-left:2px;
 }
 
 .propertiesGroup, .portalAdminsGroup {
 	border-collapse: collapse;
-	margin: 5px;
+	margin: 0px 0px 15px 15px;
+	padding: 5px;
 	width: 98%;
 	clear:both;
 	border: 1px solid #666666;
@@ -543,10 +545,12 @@ a.menuContextA_edit:visited{
 .headerPortalAdmins{
 	padding: 3px;
 	whiteSpace :nowrap;
+	font-weight: bold;
 }
 
 .headerProperties{
 	padding: 3px;
+	font-weight: bold;
 }
 
 .propertiesGroup .string input {
@@ -876,6 +880,7 @@ a.gadgetListTabA:visited{
 /* 	background: url(./imgs/configSetHeader_bg.jpg) repeat; */
 	background-position: bottom;
 	width: 100%;
+	font-weight: bold;
 }
 
 .configList{
@@ -883,9 +888,10 @@ a.gadgetListTabA:visited{
 }
 
 .modalConfigSet{
+	float: center;
 	margin: 0 10px 10px 10px;
 	border: 1px solid #666666;
-	width: 90%;
+	width: 98%;
 	height: auto;
 	clear: both;
 	padding: 0px 0px 5px 0px;
@@ -902,6 +908,7 @@ a.gadgetListTabA:visited{
 /* 	background: url(./imgs/configSetHeader_bg.jpg) repeat; */
 	background-position: bottom;
 	width: 100%;
+	font-weight: bold;
 }
 
 .modalConfigSetContent, .configSetContent{
@@ -916,7 +923,7 @@ a.gadgetListTabA:visited{
 /* configuration table -------------------- */
 table.configTableHeader{
 	clear : both;
-	margin: 10px 10px 0px 0px;
+	margin: 10px 10px 0px 10px;
 /* 	background-color:#666666; */
 	height: auto;
 	tableLayout : fixed;
@@ -932,10 +939,11 @@ td.configTableHeaderTd{
 	padding-bottom: 3px;
 	border-color: #666666;
 	font-size:14px;
-/* 	font-weight:bold; */
+	font-weight:bold;
 	color: #000;
 	vertical-align:middle;
 	text-align:center;
+	word-wrap: none;
 }
 
 div.configListDiv{/*  not in use? */
@@ -966,6 +974,7 @@ td.configTableTd{
 	padding-top: 3px;
 	padding-bottom: 3px;
 	border-color: #666666;
+	border-top:none;
 	font-size:14px;
 /* 	font-weight:bold; */
 	color: #000;
@@ -1310,3 +1319,31 @@ a.home-menu-header:visited {
 	background-color: #ffffff;
 	padding-bottom: 5px;
 }
+
+#gadgetAcc .accHeader ul { 
+	list-style:none;
+} 
+#gadgetAcc #gadgetListLabel{
+	font-weight: bold;
+	padding: 5px 0;
+	background-color: #CCCCCC; 
+/* 	background:#cccccc url(imgs/collapse_up.gif) no-repeat 95% 50%; */
+	border: 1px solid #000;
+	cursor: pointer;
+}
+
+.closed{
+	background:#cccccc url(imgs/collapse.gif) no-repeat 95% 50%;
+}
+
+.opened{
+	background:#cccccc url(imgs/collapse_up.gif) no-repeat 95% 50%;
+}
+
+#gadgetAcc #gadgetListLabel a, #widgetListLabel a{
+	margin-left: 10px;
+}
+#gadgetAcc li { 
+	list-style-type: none; 
+	background-color: #FFF; 
+} 

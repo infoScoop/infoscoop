@@ -400,6 +400,7 @@ ISA_I18N.prototype.classDef = function() {
 		div.appendChild(closeDiv);
 		
 		var table = document.createElement("table");
+		table.className = "configTableHeader";
 		div.appendChild(table);
 		var caption = document.createElement("caption");
 		caption.innerHTML = ISA_R.alb_addLocale;
@@ -409,12 +410,17 @@ ISA_I18N.prototype.classDef = function() {
 		
 		function createColumn(rows, isHeader){
 			var tr = document.createElement("tr");
-			if(isHeader)
-				tr.id = "proxyConfigHeader";
-			else
-				tr.className = "proxyConfigList";
+//			if(isHeader)
+//				tr.id = "configTableHeader";
+//			else
+//				tr.className = "proxyConfigList";
 			for(var i=0;i<rows.length;i++){
 				var td = document.createElement("td");
+				if(isHeader){
+					td.className = "configTableHeaderTd";
+				}else{
+					td.className = "configTableTd";
+				}
 				if(typeof rows[i] == "string"){
 					td.innerHTML = rows[i];
 				} else {
@@ -429,6 +435,7 @@ ISA_I18N.prototype.classDef = function() {
 		
 		function createSelect(options){
 			var select = document.createElement("select");
+			select.style.margin = "3px";
 			for(var i in options){
 			if(typeof options[i] == "function") continue;
 				var option = document.createElement("option");
@@ -444,6 +451,7 @@ ISA_I18N.prototype.classDef = function() {
 		var button = document.createElement("input");
 		button.type = "button";
 		button.value = ISA_R.alb_add;
+		button.style.margin = "3px";
 		IS_Event.observe(button, "click", function(){
 			var country = selectCountry.value;
 			var lang = selectLang.value;

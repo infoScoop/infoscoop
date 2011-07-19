@@ -98,7 +98,7 @@
 		<%}%>
 		<li style="float: right;">
 			<div id="admin-message-icon">
-				<img id="messageIcon" title="%{lb_messageConsole}" src="../../skin/imgs/information2.gif" style="cursor:pointer;">
+				<img id="messageIcon" title="%{lb_messageConsole}" src="../../skin/imgs/information3.gif" style="cursor:pointer;">
 			</div>
 		</li>
 		

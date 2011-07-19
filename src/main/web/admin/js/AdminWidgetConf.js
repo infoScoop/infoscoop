@@ -77,6 +77,7 @@ ISA_WidgetConf.prototype.classDef = function() {
 		
 		var gadgetListLabel1 = document.createElement("div");
 		gadgetListLabel1.id = "gadgetListLabel";
+		gadgetListLabel1.className = "opened";
 		
 		var gadgetListLabelText1 = document.createElement("a");
 		gadgetListLabelText1.appendChild(document.createTextNode(ISA_R.alb_gadgetsList));
@@ -94,6 +95,7 @@ ISA_WidgetConf.prototype.classDef = function() {
 		
 		var gadgetListLabel2 = document.createElement("div");
 		gadgetListLabel2.id = "gadgetListLabel";
+		gadgetListLabel2.className = "closed";
 		Element.setStyle(gadgetListLabel2, { 
 			top: -1,
 			position: "relative"
@@ -492,7 +494,12 @@ ISA_WidgetConf.prototype.classDef = function() {
 		$jq("#gadgetAcc .accHeader").each(function(idx, li){
 			$jq(li).click(function(){
 				$jq(".accContent", $jq(this)).toggle();
-//				$jq("div", $jq(this)).slideToggle();
+				var accContent = $jq(".accContent", $jq(this));
+				if(accContent.is(":visible")){
+					$jq("#gadgetListLabel", $jq(this)).removeClass("closed").addClass("opened");
+				}else {
+					$jq("#gadgetListLabel", $jq(this)).removeClass("opened").addClass("closed");
+				}
 			});
 		}); 
 	}

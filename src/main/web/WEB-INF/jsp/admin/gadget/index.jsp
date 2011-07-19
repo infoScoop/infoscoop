@@ -32,23 +32,24 @@
 <%-- 	<tiles:putAttribute name="side_body" type="string"> --%>
 
 <style>
-	#gadgetAcc .accHeader ul { 
-		list-style:none;
-	} 
-	#gadgetAcc #gadgetListLabel {
-		font-weight: bold;
-		padding: 5px 0;
-		background-color: #CCCCCC; 
-		border: 1px solid #000;
-		cursor: pointer;
-	}
-	#gadgetAcc #gadgetListLabel a{
-		margin-left: 10px;
-	}
-	#gadgetAcc li { 
-		list-style-type: disc; 
-		background-color: #FFF; 
-	} 
+/* 	#gadgetAcc .accHeader ul {  */
+/* 		list-style:none; */
+/* 	}  */
+/* 	#gadgetAcc #gadgetListLabel { */
+/* 		font-weight: bold; */
+/* 		padding: 5px 0; */
+/* 		background-color: #CCCCCC;  */
+/* 		background:url(); */
+/* 		border: 1px solid #000; */
+/* 		cursor: pointer; */
+/* 	} */
+/* 	#gadgetAcc #gadgetListLabel a{ */
+/* 		margin-left: 10px; */
+/* 	} */
+/* 	#gadgetAcc li {  */
+/* 		list-style-type: disc;  */
+/* 		background-color: #FFF;  */
+/* 	}  */
 </style>
 
 <div id="widgetConf"></div>

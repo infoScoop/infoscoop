@@ -109,10 +109,10 @@ ISA_Properties.prototype.classDef = function() {
 //			categoryElm.style.width = "100%";
 //			var categoryLabel = document.createElement("legend");
 			var categoryElm = document.createElement("div");
-			categoryElm.className = "configSet";
+//			categoryElm.className = "configSet";
 //			categoryElm.style.width = "100%";
 			var categoryLabel = document.createElement("p");
-			categoryLabel.className = "configSetHeader";
+			categoryLabel.className = "homeTitle";
 			categoryLabel.appendChild(document.createTextNode(category.value));
 			categoryElm.appendChild(categoryLabel);
 

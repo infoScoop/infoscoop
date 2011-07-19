@@ -86,7 +86,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		searchEngineFieldSet.appendChild(self.buildDefaultSearchEngine());
 		searchEngineFieldSet.appendChild(ISA_Admin.buildTableHeader(
 			[ISA_R.alb_title,ISA_R.alb_searchAdress,ISA_R.alb_encoding,ISA_R.alb_numberOfItems,ISA_R.alb_publicSettings,ISA_R.alb_selectSiteExecutingByDefault,ISA_R.alb_delete],
-			['220px', '320px', '100px', '40px', '80px', '40px', '40px'] //Sum = 840px
+			['180px', '320px', '100px', '40px', '80px', '80px', '40px'] //Sum = 840px
 			));
 		// DefaultSearch build
 		var defaultSearchDiv = document.createElement("div");
@@ -271,6 +271,8 @@ ISA_SearchEngine.prototype.classDef = function() {
 		annotateDiv.appendChild(font);
 
 		defaultSearchEngineDiv.appendChild(addDefaultDiv);
+		//defaultSearchEngineDiv.appendChild($.P({className: "", style:"margin:10px;"}, ISA_R.alb_clickToEditMessage));
+		defaultSearchEngineDiv.appendChild($.DIV({className: "", style:"float:left;margin:10px"}, "各セルをクリックすると値を編集できます。"));
 		defaultSearchEngineDiv.appendChild(annotateDiv);
 
 		return defaultSearchEngineDiv;
@@ -331,7 +333,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		// Title
 		engineTd = document.createElement("td");
 		engineTd.className = "configTableTd";
-		engineTd.style.width = "200px";
+		engineTd.style.width = "159px";
 		engineTd.style.textAlign = "left";
 		engineTr.appendChild(engineTd);
 		contentDiv = document.createElement("div");
@@ -427,7 +429,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		// 
 		engineTr.appendChild(
-			$.TD({className: "configTableTd",style:"width: 40px; text-align: center;"}, $.INPUT({className:'defaultSelectedCheckbox', type:'checkbox', defaultChecked:defaultSearchItem.defaultSelected,
+			$.TD({className: "configTableTd",style:"width: 80px; text-align: center;"}, $.INPUT({className:'defaultSelectedCheckbox', type:'checkbox', defaultChecked:defaultSearchItem.defaultSelected,
 			  onchange:{handler:function(e){
 				  ISA_SearchEngine.updateSearchEngineItem(defaultSearchItem.id, 'defaultSelected', ''+Event.element(e).checked);
 			  }
@@ -553,7 +555,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		// RSS Pattern
 		engineTd = document.createElement("td");
 		engineTd.className = "configTableTd";
-		engineTd.style.width = "240px";
+		engineTd.style.width = "239px";
 		engineTd.style.textAlign = "left";
 		engineTr.appendChild(engineTd);
 		contentDiv = document.createElement("div");
