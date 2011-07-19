@@ -795,6 +795,15 @@
 			replace="\1.css?${build.timestamp}&quot;"
 			flags="mg"
 			encoding="UTF-8"/>
+		<replace 
+			file="${build.admin.jsp}/home/home.jsp">
+			<replacefilter 
+				token="@PRODUCT.NAME@" 
+				value="${product.name}"/>
+			<replacefilter 
+				token="@BUILD.VERSION@" 
+				value="${build.version}"/>
+		</replace>
 
 		<antcall target="replaceTag-admin-suitefront"/>
 	</target>

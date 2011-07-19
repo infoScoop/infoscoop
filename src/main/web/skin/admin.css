@@ -916,7 +916,7 @@ a.gadgetListTabA:visited{
 /* configuration table -------------------- */
 table.configTableHeader{
 	clear : both;
-	margin: 10px 10px 0px 10px;
+	margin: 10px 10px 0px 0px;
 /* 	background-color:#666666; */
 	height: auto;
 	tableLayout : fixed;

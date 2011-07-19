@@ -150,7 +150,31 @@
 			<div class="home-menu-icon">
 				<img src="../../skin/imgs/home_icons/info.gif">
 			</div>
-			<div id="version"></div>
+			<div id="version">
+				<table class="configTableHeader" cellspacing="0" cellpadding="0" style="display:inline;">
+					<tbody>
+						<tr>
+							<td class="configTableHeaderTd" colspan=2>%{alb_versionInformation}</td>
+						</tr>
+						<tr>
+							<td class="configTableTd" width="150px" style="padding: 3 0 3 0.5em; text-align:left;">
+								%{alb_productName}
+							</td>
+							<td class="configTableTd" width="150px" style="padding:0 0.5em 0 0; text-align:right;">
+								@PRODUCT.NAME@
+							</td>
+						</tr>
+						<tr>
+							<td class="configTableTd" width="150px" style="padding: 3 0 3 0.5em; text-align:left;">
+								%{alb_versionNum}
+							</td>
+							<td class="configTableTd" width="150px" style="padding:0 0.5em 0 0; text-align:right;">
+								@BUILD.VERSION@
+							</td>
+						</tr>
+					<tbody>
+				</table>
+			</div>
 		</div>
 </div>
 <script>
