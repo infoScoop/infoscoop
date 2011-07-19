@@ -20,7 +20,6 @@ package org.infoscoop.manager.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.infoscoop.acl.SecurityController;
-import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.service.TabLayoutService;
 import org.infoscoop.util.spring.TextView;
@@ -40,10 +39,6 @@ public class DefaultpanelController implements ControllerInterface{
 
 	@RequestMapping(method=RequestMethod.GET)
 	public void editRole() throws Exception {
-	}
-
-	@RequestMapping(method=RequestMethod.GET)
-	public void commandBar_index() throws Exception {
 	}
 
 	@RequestMapping(method=RequestMethod.GET)

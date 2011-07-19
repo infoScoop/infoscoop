@@ -17,7 +17,7 @@
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@page import="org.infoscoop.service.PortalAdminsService" %>
+<%@ page import="org.infoscoop.service.PortalAdminsService" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
@@ -38,7 +38,7 @@
 		</li>
 		<%} else if( adminService.isPermitted("menu_tree") ){%>
 		<li>
-			<a href="../menutree/index" class="admin-tabs <c:if test="${type == 'menu'}">active</c:if>" id="tab_menu"><span>%{alb_menu}</span></a>
+			<a href="../menutree/index" class="tab <c:if test="${type == 'menu'}">active</c:if>" id="tab_menu"><span>%{alb_menu}</span></a>
 		</li>
 		<%}%>
 		
@@ -56,7 +56,7 @@
 		
 		<%if( adminService.isPermitted("defaultPanel") || adminService.isPermitted("portalLayout") ){%>
 		<li>
-			<a href="../defaultpanel/index" class="tab <c:if test="${type == 'defaultPanel_tabs' || type == 'defaultPanel_commandBar' || type == 'defaultPanel_portalLayout'}">active</c:if>" id="tab_defaultPanel"><span>%{alb_generalLayout}</span></a>
+			<a href="../generallayout/index" class="tab <c:if test="${type == 'generallayout'}">active</c:if>" id="tab_defaultPanel"><span>%{alb_generalLayout}</span></a>
 			
 		</li>
 		<%}%>

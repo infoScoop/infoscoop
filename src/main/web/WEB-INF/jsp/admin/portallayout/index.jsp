@@ -23,18 +23,17 @@
 
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <tiles:insertDefinition name="defaultpanel.side.definition" flush="true">
-	<tiles:putAttribute name="type" value="defaultPanel_commandBar" />
-	<tiles:putAttribute name="title" value="alb_defaultPanel"/>
+<%-- 	<tiles:putAttribute name="type" value="defaultPanel"/> --%>
+	<tiles:putAttribute name="type" value="generallayout" />
+	<tiles:putAttribute name="title" value="alb_otherLayout"/>
 	<tiles:putAttribute name="side_body" type="string">
 
-<!-- <div id="command-bar"></div> -->
-<div id="defaultPanel"></div>
+<div id="portalLayout"></div>
 
 <script>
 	$jq(function(){
-		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
-		IS_SiteAggregationMenu.init();
-		ISA_loadProperties(ISA_DefaultPanel.defaultPanel.build);
+		ISA_PortalLayout.portalLayout = new ISA_PortalLayout();
+		ISA_PortalLayout.portalLayout.build();
 	});
 </script>
 	</tiles:putAttribute>

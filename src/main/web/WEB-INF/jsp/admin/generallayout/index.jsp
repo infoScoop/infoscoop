@@ -24,17 +24,15 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <tiles:insertDefinition name="defaultpanel.side.definition" flush="true">
 <%-- 	<tiles:putAttribute name="type" value="defaultPanel"/> --%>
-	<tiles:putAttribute name="type" value="defaultPanel_portalLayout" />
-	<tiles:putAttribute name="title" value="alb_defaultPanel"/>
+	<tiles:putAttribute name="type" value="generallayout" />
+	<tiles:putAttribute name="title" value="alb_generalLayout"/>
 	<tiles:putAttribute name="side_body" type="string">
 
-<div id="portalLayout"></div>
+<div id="defaultPanel"></div>
 
-<script>
-	$jq(function(){
-		ISA_PortalLayout.portalLayout = new ISA_PortalLayout();
-		ISA_PortalLayout.portalLayout.build();
-	});
-</script>
+<div style="margin:10px">
+{%alb_defalutPanelMessage}
+</div>
+
 	</tiles:putAttribute>
 </tiles:insertDefinition>

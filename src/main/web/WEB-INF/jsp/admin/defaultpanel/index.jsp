@@ -23,30 +23,19 @@
 
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <tiles:insertDefinition name="defaultpanel.side.definition" flush="true">
-<%-- 	<tiles:putAttribute name="type" value="defaultPanel"/> --%>
-	<tiles:putAttribute name="type" value="defaultPanel_tabs" />
+	<tiles:putAttribute name="type" value="generallayout" />
 	<tiles:putAttribute name="title" value="alb_defaultPanel"/>
 	<tiles:putAttribute name="side_body" type="string">
 
+<!-- <div id="command-bar"></div> -->
 <div id="defaultPanel"></div>
 
-<div style="margin:10px">
-{%alb_defalutPanelMessage}
-</div>
-
-<!-- <div id='select_layout_modal' title="%{alb_selectLayout}"> -->
-<%-- 	<c:import url="/WEB-INF/jsp/admin/defaultpanel/_layoutTemplates.jsp"/> --%>
-<!-- 	<div style="clear:both;text-align:center;"> -->
-<!-- 		<input id='select_layout_cancel' type="button" value="%{alb_cancel}"/> -->
-<!-- 	</div> -->
-<!-- </div> -->
-
 <script>
-// 	$jq(function(){
-// 		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
-// 		IS_SiteAggregationMenu.init();
-// 		ISA_loadProperties(ISA_DefaultPanel.defaultPanel.build);
-// 	});
+	$jq(function(){
+		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
+		IS_SiteAggregationMenu.init();
+		ISA_loadProperties(ISA_DefaultPanel.defaultPanel.build);
+	});
 </script>
 	</tiles:putAttribute>
 </tiles:insertDefinition>
