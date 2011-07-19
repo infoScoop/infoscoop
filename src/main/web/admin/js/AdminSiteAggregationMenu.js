@@ -258,7 +258,12 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 			
 			this.editSitetopIdList = [];
 			ISA_SiteAggregationMenu.removeTemp();
-			ISA_Admin.TabBuilders.menu.build(this.menuType, ISA_SiteAggregationMenu.isTreeAdminUser);
+			var buildMenu = function(){
+				ISA_SiteAggregationMenu.treeMenu = new ISA_SiteAggregationMenu(
+					this.menuType, ISA_SiteAggregationMenu.isTreeAdminUser);
+				ISA_SiteAggregationMenu.treeMenu.build();
+			}.bind(this);
+			ISA_loadProperties(buildMenu);
 		}.bind(this);
 		IS_Event.observe(refreshDiv, 'click', refreshAClick.bind(this), false, "_adminMenu");
 		
