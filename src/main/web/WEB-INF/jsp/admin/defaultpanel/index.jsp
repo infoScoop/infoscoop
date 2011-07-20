@@ -30,6 +30,13 @@
 <!-- <div id="command-bar"></div> -->
 <div id="defaultPanel"></div>
 
+<div id='select_layout_modal' title="%{alb_selectLayout}" style="display:none;">
+	<c:import url="/WEB-INF/jsp/admin/defaultpanel/_layoutTemplates.jsp"/>
+	<div style="clear:both;text-align:center;">
+		<input id='select_layout_cancel' type="button" value="%{alb_cancel}"/>
+	</div>
+</div>
+
 <script>
 	$jq(function(){
 		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
