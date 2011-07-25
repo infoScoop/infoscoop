@@ -31,7 +31,7 @@
 <div id="defaultPanel"></div>
 
 <div style="margin:10px">
-{%alb_defalutPanelMessage}
+{%alb_defaultPanelMessage}
 </div>
 
 	</tiles:putAttribute>
