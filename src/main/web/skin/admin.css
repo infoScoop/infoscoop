@@ -1263,7 +1263,7 @@ a.home-menu-icon-link{
 	display: block;
 }
 
-a.home-menu-header{
+a.home-menu-header:link{
 	font-size : 14px ;
 	_font-size : small ;
 	text-decoration : none ;
@@ -1281,6 +1281,7 @@ a.home-menu-header:hover{
 
 a.home-menu-header:visited {
  	color: #000000;
+	font-weight: bold;
 }
 
 .home-menu-definition {
