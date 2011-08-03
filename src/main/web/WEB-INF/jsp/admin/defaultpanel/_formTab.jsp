@@ -21,7 +21,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/xml" prefix="x" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<form id="editRole" method="post" action="/" class="cssform">
+<form id="editRole" method="post" action="/" class="cssform" onsubmit="return false;">
 	<div id="infoscoop" class="infoScoop">
 
 		<div class="ui-widget ui-widget-content ui-corner-all" style="margin-top:10px;padding:3px;">
@@ -58,7 +58,7 @@
 					</li>
 					<li>
 						<label>%{alb_tabName}:</label>
-						<input id="tabName" name="tabName"/>
+						<input id="tabName" name="tabName" maxlength="80"/>
 					</li>
 					<li>
 						<label>%{alb_selectDisplayArea}</label>
