@@ -504,11 +504,9 @@ ISA_previewFormModal = {
 		previewA.style.cursor = "pointer";
 		previewDiv.appendChild(previewA);
 		var previewClick = function(e) {
-			var path = findHostURL(false);
-			path = path.substring(0, path.lastIndexOf("/"));
 			
 			var isFirst = true;
-			var url = path + "/adminpreview";
+			var url = hostPrefix + "/adminpreview";
 			var principalValues = document.getElementsByClassName("panelPrincipalValue", $("panelPreviewFormInputWrap"));
 			var principalNames = document.getElementsByClassName("panelPrincipalName", $("panelPreviewFormInputWrap"));
 			for(var i = 0, n = principalValues.length; i < n; i++) {
