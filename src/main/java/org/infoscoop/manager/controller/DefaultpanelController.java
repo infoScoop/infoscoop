@@ -38,6 +38,14 @@ public class DefaultpanelController implements ControllerInterface{
 	}
 
 	@RequestMapping(method=RequestMethod.GET)
+	public void iframe() throws Exception {
+	}
+
+	@RequestMapping(method=RequestMethod.GET)
+	public void blank() throws Exception {
+	}
+
+	@RequestMapping(method=RequestMethod.GET)
 	public void editRole() throws Exception {
 	}
 

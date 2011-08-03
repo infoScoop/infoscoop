@@ -78,7 +78,7 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 		}
 		var url = widget.replaceUserPref(widget.getUserPref("url"));
 		var iframeSrc = widget.iframe.src;
-		var pattern = new RegExp("(("+hostPrefix+"(/admin)?)|\\.)/blank\\.html");
+		var pattern = new RegExp("(("+hostPrefix+"(/manager/.*)?)|\\.)/blank\\.html");
 		if(!pattern.test(iframeSrc)){
 			widget.iframe.contentWindow.location.reload( true );
 		}else{
