@@ -185,8 +185,10 @@
 	<script src="../../js/widgets/WidgetRanking/WidgetRanking.js"></script>
 	<script src="../../js/widgets/Message/Message.js"></script>
 	<!-- From admin javascript -->
+	<script src="../../admin/js/lib/popupmenu.js"></script>
 	<script src="../../admin/js/AdminWidgetConf.js"></script>
 	<script src="../../admin/js/AdminEditWidgetConf.js"></script>
+	<script src="../../admin/js/AdminHTMLFragment.js"></script>
 	<script src="../../admin/js/AdminCommonModals.js"></script>
 	<script src="../../admin/js/AdminEditRole.js"></script>
 	<!--end script-->
