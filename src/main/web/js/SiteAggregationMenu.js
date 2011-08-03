@@ -2441,6 +2441,7 @@ IS_SiteAggregationMenu.Scroller.prototype.classDef = function() {
 		button.style.width = "100%";
 		button.style.fontSize = "80%";
 
+		IS_Event.observe(button, "click", function(e){Event.stop(e);}, false, "_menu");
 		IS_Event.observe(button, "mousedown", mouseDownHandler, false, "_menu");
 		IS_Event.observe(button, "mouseup", clearTimer, false, "_menu");
 		IS_Event.observe(button, "blur", clearTimer, false, "_menu");
@@ -2500,6 +2501,7 @@ IS_SiteAggregationMenu.Scroller.prototype.classDef = function() {
 		button.style.width = "100%";
 		button.style.fontSize = "80%";
 
+		IS_Event.observe(button, "click", function(e){Event.stop(e);}, false, "_menu");
 		IS_Event.observe(button, "mousedown", mouseDownHandler, false, "_menu");
 		IS_Event.observe(button, "mouseup", clearTimer, false, "_menu");
 		IS_Event.observe(button, "blur", clearTimer, false, "_menu");
