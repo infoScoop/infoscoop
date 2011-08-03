@@ -46,15 +46,15 @@
 					-->
 					<li>
 						<label>%{alb_roleName}:</label>
-						<div id="roleName"></div>
+						<span id="roleName">&nbsp;</span>
 					</li>
 					<li>
 						<label>%{alb_subject}:</label>
-						<div id="principalTypeDiv"></div>
+						<span id="principalTypeDiv">&nbsp;</span>
 					</li>
 					<li>
 						<label>%{alb_regularExpression}:</label>
-						<div id="role"></div>
+						<span id="role">&nbsp;</span>
 					</li>
 					<li>
 						<label>%{alb_tabName}:</label>
