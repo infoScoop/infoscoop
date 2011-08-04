@@ -575,8 +575,10 @@
 			<filelist dir="${src.main.web}/js/widgets/WidgetRanking" files="WidgetRanking.js"/>
 			<filelist dir="${src.main.web}/js/widgets/Message" files="Message.js"/>
 			<!-- From admin javascript -->
+			<filelist dir="${src.admin.web}/js/lib" files="popupmenu.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminWidgetConf.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminEditWidgetConf.js"/>
+			<filelist dir="${src.admin.web}/js" files="AdminHTMLFragment.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminCommonModals.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminEditRole.js"/>
 		</concat>
