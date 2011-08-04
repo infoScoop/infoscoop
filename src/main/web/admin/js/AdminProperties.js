@@ -68,7 +68,8 @@ ISA_Properties.prototype.classDef = function() {
 				return;
 			
 			ISA_Admin.isUpdate = false;
-			ISA_Admin.TabBuilders.properties.build();
+			ISA_Properties.properties = new ISA_Properties();
+			ISA_Properties.properties.build();
 		}, false, "_adminProperties");
 		
 		var advancedDiv = ISA_Admin.createIconButton(ISA_R.alb_advancedSettings, ISA_R.alb_advancedSettings, "wrench.gif", "right");

@@ -68,7 +68,11 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
 		refreshAllDiv.appendChild(refreshDiv);
 		IS_Event.observe( refreshDiv , 'click', function() {
-			ISA_Admin.AdminTabs.setActiveTab("portalAdmin")
+			if( !ISA_Admin.checkUpdated() )
+				return;
+			
+			ISA_PortalAdmins.portalAdmins = new ISA_PortalAdmins();
+			ISA_PortalAdmins.portalAdmins.build();
 		}, false, "_adminAdmins");
 		
 		/*
@@ -90,6 +94,9 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		var tabLiAdminsA = document.createElement("a");
 		var tabLiRoles = document.createElement("li");
 		var tabLiRolesA = document.createElement("a");
+		
+		if($("adminsTab"))
+			$("adminsTab").remove();
 		
 		tabsUl.id = "adminsTab";
 		//tabsUl.className = "subsection_tabs tabs";
@@ -701,7 +708,8 @@ ISA_PortalAdmins.prototype.classDef = function() {
 			onFailure: function(t) {
 				alert(ISA_R.ams_failedUpdateAdmin+'\n' + t.responseText);
 				msg.error(ISA_R.ams_failedUpdateAdmin + t.status + " - " + t.statusText + "-" + t.responseText);
-				ISA_Admin.TabBuilders.portalAdmin.build();
+				ISA_PortalAdmins.portalAdmins = new ISA_PortalAdmins();
+				ISA_PortalAdmins.portalAdmins.build();
 			},
 			onException: function(r, t){
 				alert(ISA_R.ams_failedUpdateAdmin);

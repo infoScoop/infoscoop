@@ -59,7 +59,8 @@ ISA_PortalLayout.prototype.classDef = function() {
 				return;
 			
 			ISA_Admin.isUpdate = false;
-			ISA_Admin.TabBuilders.portalLayout.build()
+			ISA_PortalLayout.portalLayout = new ISA_PortalLayout();
+			ISA_PortalLayout.portalLayout.build();
 		}, false, "_adminPortal");
 		
 		portalLayoutDiv.appendChild(refreshAllDiv);

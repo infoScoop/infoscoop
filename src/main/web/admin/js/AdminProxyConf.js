@@ -63,7 +63,8 @@ ISA_ProxyConf.prototype.classDef = function() {
 				return;
 			
 			ISA_Admin.isUpdated = false;
-			ISA_Admin.TabBuilders.proxy.build();
+			ISA_ProxyConf.proxyConf = new ISA_ProxyConf();
+			ISA_ProxyConf.proxyConf.build();
 		}, false, "_adminProxy");
 
 //		var titleDiv1 = document.createElement("div");
