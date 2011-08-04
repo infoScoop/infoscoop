@@ -1202,6 +1202,7 @@ ISA_SiteAggregationMenu.addMenuTree = function(menuObj, newMenuItem, menuItem){
 ISA_SiteAggregationMenu.updateMenuTree = function(newMenuItem, menuItem){
 	newMenuItem.depth = menuItem.depth;
 	$('t_' + menuItem.id).innerHTML = escapeHTMLEntity(newMenuItem.directoryTitle || newMenuItem.title);
+	/*
 	var hrefTag = $('tl_' + menuItem.id);
 	if(!hrefTag){
 		hrefTag = document.createElement('a');
@@ -1211,6 +1212,7 @@ ISA_SiteAggregationMenu.updateMenuTree = function(newMenuItem, menuItem){
 	}
 	hrefTag.href = newMenuItem.href;
 	hrefTag.innerHTML = newMenuItem.href;
+	*/
 	
 	//Disapprove of changing types
 	//Likely to be changed to a state where you can drop sevral
