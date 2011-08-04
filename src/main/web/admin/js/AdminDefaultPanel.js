@@ -2822,6 +2822,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			// Turn back to the previous value if empty is entered
 			if(nowText.length == 0) {
 				beforeElement.nodeValue = beforeText;
+				nowText = beforeText;
 			} else {
 				beforeElement.nodeValue = nowText;
 			}
@@ -2924,7 +2925,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		
 //		var rid = "tab_"+this.displayTabId+"_role_" + this.displayRoleOrder;
 		var rid = "tab_"+this.displayTabId+"_role_" + this.displayRoleId;
-		if(!ISA_DefaultPanel.updateRaws.contains(rid))
+		if(!ISA_DefaultPanel.updateRaws.contains(rid) && newValue)
 			ISA_DefaultPanel.updateRaws.push(rid);
 		
 		this.updateRawStyle();
