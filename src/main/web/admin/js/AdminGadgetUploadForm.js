@@ -157,11 +157,10 @@ ISA_GadgetUpload.error = function( message ) {
 		}
 		
 		message = msgs.join("\n");
+		alert( message );
 	} catch( ex ) {
 		alert( ISA_R.ams_gadgetResourceUploadFailed+": "+message );
 	}
-	
-	alert( message );
 	msg.error( message )
 }
 ISA_GadgetResource = Class.create();
