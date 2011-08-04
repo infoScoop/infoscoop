@@ -96,11 +96,9 @@
 			<a href="../authentication/index" class="tab <c:if test="${type == 'authentication'}">active</c:if>" id="tab_authentication"><span>OAuth</span></a>
 		</li>
 		<%}%>
-		<li style="float: right;">
-			<div id="admin-message-icon">
-				<img id="messageIcon" title="%{lb_messageConsole}" src="../../skin/imgs/information3.gif" style="cursor:pointer;">
-			</div>
+		<li>
+			<img id="admin-message-icon" title="%{lb_messageConsole}" src="../../skin/imgs/information3.gif" style="cursor:pointer;">
 		</li>
 		
-	</ul>	
+	</ul>
 	<div style="clear:both"></div>

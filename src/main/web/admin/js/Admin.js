@@ -490,6 +490,7 @@ ISA_previewFormModal = {
 		
 		var messageLabel = document.createElement("div");
 		messageLabel.style.clear = "both";
+		messageLabel.style.marginBottom = "5px";
 		messageLabel.appendChild(document.createTextNode(ISA_R.alb_selectPermissionLevel));
 		formDiv.appendChild(document.createElement("br"));
 		formDiv.appendChild(messageLabel);
@@ -541,9 +542,10 @@ ISA_previewFormModal = {
 		return editAreaDiv;
 	},
 	buildInput: function() {
+		var editDiv = document.createElement("div");
+		editDiv.style.marginTop = "8px";
 		var inputDiv = document.createElement("div");
-		
-		// 
+		inputDiv.style.marginTop = "5px";
 		var selectPrincipal = document.createElement("select");
 		selectPrincipal.className = "panelPrincipalName";
 		var principalMap = ISA_Principals.get();
@@ -563,8 +565,8 @@ ISA_previewFormModal = {
 		editRoleInput.type = "text";
 		editRoleInput.size = 30;
 		inputDiv.appendChild(editRoleInput);
-		
-		return inputDiv;
+		editDiv.appendChild(inputDiv);
+		return editDiv;
 	},
 	hide: function() {
 		Control.Modal.close();

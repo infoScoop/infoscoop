@@ -19,23 +19,18 @@
 	padding: 0;
 }
 body {
-	background-color: #eee;
+	background: url(imgs/header_bg.gif) repeat-x #fff !important;
 }
-body {margin : 0 ;padding : 0 ;/* font-family : osaka, arial ; */}
 img {border: 0px;}
 a { outline: none; }
+
 /*- Header --------------------------- */
 #admin-header {
-/* 	min-width: 990px; */
-	background-color : #336699 ;
-	background: url(imgs/header_bg.jpg);
 	height: 45px;
 	color : #ffffff ;
-/* 	margin : 0 10px 0 10px; */
-	margin: 0px;
-	padding : 5px 0px 0px 10px;
+/* 	margin: 0px; */
+/* 	padding : 5px 0px 0px 10px; */
 	float: none;
-/* 	border-left: 1px solid #cccccc; */
 }
 
 #admin-header-title {
@@ -43,36 +38,29 @@ a { outline: none; }
 	color:#FFF;
 	_font-size : x-medium;
 	text-decoration : none ;
-	padding-top : 5px ;
+	margin : 8px 0 0 10px;
 	font-weight : bold ;
 	border : none ;
-}
-
-#admin-message-icon{
-	float:right;
-	margin-top: 6px;
-	margin-right: 20px;
 }
 /*- Common Tab Menu ---------------------------*/
 #admin-tabs {
 	font-size: 16px;
 	_font-size: small;
 	height: 30px;
-/* 	width: 100%; */
-/* 	margin : 0 10px 5px 10px; */
-	margin : 0 0 5px 0;
+	position: absolute;
+	top: 50px;
+	width: 100%;
+	margin : 0px;
 	padding : 0;
 	background-color: #4d4d4d;
 	white-space:nowrap;
-/* 	border-left: 1px solid #cccccc; */
+	border-bottom: 10px solid #eee;
 }
 
 #admin-tabs ul{
-/* 	width: 100%; */
-/* 	padding-top : 0px ; */
+	width: 1000px;
 	margin-left: 10px;
 	margin:0;
-/* 	width: auto; */
 	display: block;
 	white-space:nowrap;
 }
@@ -80,8 +68,7 @@ a { outline: none; }
 #admin-tabs li{
 	list-style: none;
 	float:left;
-	margin: 0px 0px 1px 0px;
-/* 	display: inline; */
+	margin: 0px 0px 0px 0px;
 	white-space:nowrap;
 	height: 30px;
 }
@@ -101,13 +88,10 @@ a { outline: none; }
 }
 
 #admin-tabs li a.tab:hover {
-/* 	background-color:#f33222; */
 	color:#cbeaf8;
 
 }
 #admin-tabs li a.tab.active {
-/* 	background-color:#cbeaf8; 
-	color: #000000;*/
 	background-color:#eee; 
 	color: #000000;
 	border-style: none;
@@ -128,57 +112,42 @@ a { outline: none; }
 	word-break: keep-all;
 	cursor: pointer;
 }
+
+#admin-message-icon{
+	cursor:pointer;
+	margin-top:5px;
+	margin-left:10px;
+}
 /*- Common Tab Menu END ---------------------------*/
 #admin-body {
+	position: absolute;
+	top: 90px;
 	background-color: #ffffff;
-/* 	width: 100%; */
-/* 	width: 990px; */
-	height: 90%;
-/* 	height: auto; */
-/* 	border : 1px solid #cccccc ; */
-/* 	border-left: 1px solid #cccccc; */
-/* 	border-bottom: none; */
-/* 	float: left;  */
-	clear: both;
-	margin : 0px 10px 0px 10px;
+	width: 1100px;
+	margin : 0px;
 	padding: 0px;
-/* 	padding- bottom: 5px; */
 }
 
 #admin-side-body {
-/* 	width: 900px; */
-	width: 84%;
-/* 	background-color: #ffffff; */
-/* 	position:absolute; */
-/* 	top: 85px; */
-/* 	left: 170px; */
-/* 	height: 100%; */
-	height: auto;
-	float: left;
-/* 	clear: both; */
-/* 	border : 1px solid #cccccc ; */
-	margin : 0px;
-/* 	padding-top: 5px; */
+	width: 930px;
+	float: right;
+	background-color: #ffffff;
 }
 
 .refreshAll{
-	width: 100%;
 	height: 40px;
 	text-align: right;
-/* 	display: block; */
 	clear: both;
-/* 	padding-bottom: 5px; */
 	white-space:nowrap;
 }
 
 /*- Side Bar ---------------------------*/
 #admin-side{
 	background-color: #eee;
-	margin: 0px 0px 0px 0px;
-/* 	width: 160px; */
-	width: 15%;
+	margin: 0px;
+	width: 160px;
+	height: 600px;
 	float: left;
-	height: 100%;
 	font-size : 14px ;
 	_font-size : x-small;
 }
@@ -186,7 +155,6 @@ a { outline: none; }
 #admin-side ul{
 	margin: 40px 0 0 0;
 	padding: 0px;
-/* 	border: 1px solid #ffffff; */
 	border-bottom: none;
 	width: 100%;
 }
@@ -194,10 +162,8 @@ a { outline: none; }
 #admin-side li{
 	list-style: none;
 	margin: 0px 0 10 0;
-/* 	padding: 8px 0 0 10px; */
 	white-space:nowrap;
 	height: 32px;
-/* 	border:solid 1px #ffffff; */
 	border-right: none;
 	list-style-type:none;
 	list-style-position:outside;
@@ -218,7 +184,6 @@ ul.sideBarTabs-ui {
 
 li.sideBarTabs-ui{
 	display:inline;
-/* 	position: relative; */
 	float: left;
 	height: auto;
 	width: 100%;
@@ -227,7 +192,6 @@ a.sideBarTab-ui {
 	position: relative;
 	float: left;
 	margin: 0px 0px 10px 0px;
-/* 	border: solid 1px #ffffff; */
 	border-right: none;
 	text-decoration: none !important;
 	outline: none;
@@ -237,7 +201,7 @@ a.sideBarTab-ui {
 	color: #000000;
 }
 a.sideBarTab-ui:visited {
-/* 	color: #000000; */
+	color: #000000;
 }
 a.sideBarTab-ui:hover {
 	background-color:#cbeaf8;
@@ -332,6 +296,7 @@ a:hover{text-decoration: underline;}
 
 a.iconButton{
 /* 	background: url(imgs/button_bg.jpg); */
+	height: 20px;
 	background: url(imgs/iconButton_bg.gif);
 	font-size:14px;
 	cursor:pointer;
@@ -862,9 +827,10 @@ a.gadgetListTabA:visited{
 
 /* configuration set ------------------- */
 .configSet{
-	margin: 0 10px 10px 10px;
+	margin: 0 0px 10px 10px;
 	border: 1px solid #666666;
-	width: 98%;
+	width: 100%;
+/* 	width: 920px; */
 	height: auto;
 	clear: both;
 	padding: 0px 0px 5px 0px;

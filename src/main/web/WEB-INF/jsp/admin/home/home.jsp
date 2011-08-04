@@ -24,7 +24,7 @@
 	boolean isTreeAdminUser = !adminService.isPermitted("menu") && adminService.isPermitted("menu_tree");
 %>
 <div id="home-menus">
-	<p id="home-menus-title" class="homeTitle">%{alb_adminMenu}</p>
+	<p id="" class="homeTitle">%{alb_adminMenu}</p>
 		<!-- Menus -->
 		<%if(adminService.isPermitted("menu") || adminService.isPermitted("menutree")){%>
 		<div id="" class="home-menu-box">
@@ -138,18 +138,21 @@
 		</div>
 		<%}%>
 
-	<p id="home-menus-title" class="homeTitle">%{alb_infoscoopInfo}</p>
+	<p id="" class="homeTitle">%{alb_infoscoopInfo}</p>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
 				<img src="../../skin/imgs/home_icons/goto.gif">
 			</div>
-			<div id="information"></div>
+			<div class="home-menu-content">
+				<div id="information"></div>
+			</div>
 		</div>
 
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
 				<img src="../../skin/imgs/home_icons/info.gif">
 			</div>
+			<div class="home-menu-content">
 			<div id="version">
 				<table class="configTableHeader" cellspacing="0" cellpadding="0" style="display:inline; margin-left: 0px;">
 					<tbody>
@@ -174,6 +177,7 @@
 						</tr>
 					<tbody>
 				</table>
+			</div>
 			</div>
 		</div>
 </div>
