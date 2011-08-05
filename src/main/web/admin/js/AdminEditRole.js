@@ -420,7 +420,7 @@ function init() {
 		new IS_SiteAggregationMenu(true);
 		new IS_SidePanel.SiteMap(true);
 	}
-	new IS_WidgetsContainer("/manager/defaultpanel/widsrv?tabId=" + jsonRole.tabId + "&roleOrder=" + jsonRole.roleOrder);
+	new IS_WidgetsContainer("manager/defaultpanel/widsrv?tabId=" + jsonRole.tabId + "&roleOrder=" + jsonRole.roleOrder);
 
 	//menuItem to panel
 	var panelBody = document.body;
