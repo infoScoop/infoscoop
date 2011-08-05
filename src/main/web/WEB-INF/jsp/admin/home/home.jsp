@@ -96,7 +96,7 @@
 		<%if( adminService.isPermitted("proxy") ){%>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
-				<a href="../proxy/index"><img src="../../skin/imgs/home_icons/network_local.png"></a>
+				<a href="../proxy/index"><img src="../../skin/imgs/home_icons/network_local.gif"></a>
 			</div>
 			<div class="home-menu-content">
 				<a href="../proxy/index" class="home-menu-header">%{alb_proxy}</a>

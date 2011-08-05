@@ -97,7 +97,7 @@
 		</li>
 		<%}%>
 		<li>
-			<img id="admin-message-icon" title="%{lb_messageConsole}" src="../../skin/imgs/information3.gif" style="cursor:pointer;">
+			<img id="admin-message-icon" title="%{lb_messageConsole}" src="../../skin/imgs/information3.gif" />
 		</li>
 		
 	</ul>
