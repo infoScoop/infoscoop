@@ -196,8 +196,10 @@ ISA_Admin.createIconButton = function(text, title, imgName, floatValue) {
 	return button;
 };
 
-ISA_Admin.createBaseRadio = function(name, isChecked, isDisabled) {
-	var radio = document.createElement("input");
+ISA_Admin.createBaseRadio = function(name, isChecked, isDisabled, d) {
+	var doc = d ? d : document;
+	
+	var radio = doc.createElement("input");
 	radio.type = "radio";
 	radio.name = name;
 	if(isChecked)
@@ -214,13 +216,15 @@ ISA_Admin.createBaseRadio = function(name, isChecked, isDisabled) {
 		if(isDisabled)
 			inputElement += " disabled";
 		inputElement += ">";
-		radio = document.createElement(inputElement);
+		radio = doc.createElement(inputElement);
 	}
 	return radio;
 };
 
-ISA_Admin.createBaseCheckBox = function(name, isChecked, isDisabled) {
-	var checkbox = document.createElement("input");
+ISA_Admin.createBaseCheckBox = function(name, isChecked, isDisabled, d) {
+	var doc = d ? d : document;
+	
+	var checkbox = doc.createElement("input");
 	checkbox.type = "checkbox";
 	checkbox.name = name;
 	if(isChecked)
@@ -237,7 +241,7 @@ ISA_Admin.createBaseCheckBox = function(name, isChecked, isDisabled) {
 		if(isDisabled)
 			inputElement += " disabled";
 		inputElement += ">";
-		checkbox = document.createElement(inputElement);
+		checkbox = doc.createElement(inputElement);
 	}
 	return checkbox;
 };

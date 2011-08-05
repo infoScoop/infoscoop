@@ -551,7 +551,7 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 		subTr.appendChild(subTd);
 		subTd = document.createElement("td");
 		subTd.style.width = "70%";
-		var checkbox =ISA_Admin.createBaseCheckBox("ignoreHeader", menuItem.ignoreHeader);
+		var checkbox =ISA_Admin.createBaseCheckBox("ignoreHeader", menuItem.ignoreHeader, false, document);
 		checkbox.id = "ignoreHeaderCheckbox";
 		subTd.appendChild(checkbox);
 		subTr.appendChild(subTd);
@@ -566,7 +566,7 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 		subTr.appendChild(subTd);
 		subTd = document.createElement("td");
 		subTd.style.width = "70%";
-		var checkbox =ISA_Admin.createBaseCheckBox("noBorder", menuItem.noBorder);
+		var checkbox =ISA_Admin.createBaseCheckBox("noBorder", menuItem.noBorder, false, document);
 		checkbox.id = "noBorderCheckbox";
 		subTd.appendChild(checkbox);
 		subTr.appendChild(subTd);

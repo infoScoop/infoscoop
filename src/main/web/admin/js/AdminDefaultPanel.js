@@ -169,12 +169,12 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				dialogTable.addRow(ISA_R.alb_linkUrl, editURLInput);
 
 				var windowTargetDiv = document.createElement('div');
-				var newWindowRadio = ISA_Admin.createBaseRadio("panelAddCommandBarTarget", isNewwindow);
+				var newWindowRadio = ISA_Admin.createBaseRadio("panelAddCommandBarTarget", isNewwindow, false, document);
 				newWindowRadio.id = "panelAddCommandBarNewwindow";
 				windowTargetDiv.appendChild(newWindowRadio);
 				windowTargetDiv.appendChild(document.createTextNode(ISA_R.alb_newWindow));
 
-				var iFrameRadio = ISA_Admin.createBaseRadio("panelAddCommandBarTarget", isIframe);
+				var iFrameRadio = ISA_Admin.createBaseRadio("panelAddCommandBarTarget", isIframe, false, document);
 				iFrameRadio.id = "panelAddCommandBarIFrame";
 				windowTargetDiv.appendChild(iFrameRadio);
 				windowTargetDiv.appendChild(document.createTextNode(ISA_R.alb_portalframe));
@@ -1751,7 +1751,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			if(disabledDiv && disabledDiv.getAttribute("disabledCommand")){
 				checkedCheckBox = false;
 			}
-			var checkBox = ISA_Admin.createBaseCheckBox("", checkedCheckBox, false);
+			var checkBox = ISA_Admin.createBaseCheckBox("", checkedCheckBox, false, document);
 			contentDiv.appendChild(checkBox);
 			var clickCheckHandler = function(e) {
 				if(commandBarItem.togglableConfirm && !commandBarItem.togglableConfirm(checkBox)){

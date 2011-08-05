@@ -3,52 +3,6 @@ var openerPanel = ISA_DefaultPanel.defaultPanel;
 var areaType = 0;
 var jsonRole;
 
-ISA_Admin.createBaseRadio = function(name, isChecked, isDisabled) {
-	var radio = document.createElement("input");
-	radio.type = "radio";
-	radio.name = name;
-	if(isChecked)
-		radio.checked = String(isChecked);
-	if(isDisabled)
-		radio.disabled = String(isDisabled);
-	
-	if(Browser.isIE) {
-		var inputElement = "";
-		inputElement += "<";
-		inputElement += "input type='radio' name='" + name + "'";
-		if(isChecked)
-			inputElement += " checked";
-		if(isDisabled)
-			inputElement += " disabled";
-		inputElement += ">";
-		radio = document.createElement(inputElement);
-	}
-	return radio;
-};
-
-ISA_Admin.createBaseCheckBox = function(name, isChecked, isDisabled) {
-	var checkbox = document.createElement("input");
-	checkbox.type = "checkbox";
-	checkbox.name = name;
-	if(isChecked)
-		checkbox.checked = String(isChecked);
-	if(isDisabled)
-		checkbox.disabled = String(isDisabled);
-	
-	if(Browser.isIE) {
-		var inputElement = "";
-		inputElement += "<";
-		inputElement += "input type='checkbox' name='" + name + "'";
-		if(isChecked)
-			inputElement += " checked";
-		if(isDisabled)
-			inputElement += " disabled";
-		inputElement += ">";
-		checkbox = document.createElement(inputElement);
-	}
-	return checkbox;
-};
-
 IS_SidePanel.adjustPosition = function(){};
 IS_Request.CommandQueue = {
 	addCommand: function(){}
