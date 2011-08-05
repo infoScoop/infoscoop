@@ -357,7 +357,7 @@ IS_Widget.MiniBrowser.validateUserPref = {
 			required: true,
 			regex: '^(([1-9][0-9]*)|([1-9]))$',
 
-			regexMsg: IS_R.ms_gtZeroNum
+			regexMsg: IS_R.ms_gtOneNum
 		});
 	},
 	url:function(value){

@@ -256,6 +256,8 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 			ISA_Admin.isUpdated = false;
 			self.isUpdated = false;
 			
+			ISA_Admin.clearAdminCache();
+			
 			this.editSitetopIdList = [];
 			ISA_SiteAggregationMenu.removeTemp();
 			var buildMenu = function(){

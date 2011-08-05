@@ -727,6 +727,8 @@ function init() {
 						openerPanel.setNewValue("layout", newNode.html(), jsonRole.id);
 						
 						$jq("#staticAreaContainer").html(jsonRole.layout);
+						
+						jsonRole.staticPanel = {};
 						prepareStaticArea();
 						
 						reloadStaticGadgets();

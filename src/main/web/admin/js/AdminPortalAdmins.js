@@ -669,7 +669,9 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		
 		var roleIndex = 0;
 		var isSuccess = true;
-		inputs.each(function(input){
+		
+		for(var i=0;i<inputs.length;i++){
+			var input = inputs[i];
 			var name = input.value;
 			roleIndex++;
 			if(name.length == 0) {
@@ -677,6 +679,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 				isSuccess = false;
 				this.controlTabs.setActiveTab("roles");
 				input.select();
+				return;
 			}else{
 				var error = IS_Validator.validate(name, {maxBytes:256, label:ISA_R.alb_roleName2});
 				if(error){
@@ -684,10 +687,11 @@ ISA_PortalAdmins.prototype.classDef = function() {
 					isSuccess = false;
 					this.controlTabs.setActiveTab("roles");
 					input.select();
+					return;
 				}
 			}
 			this.getRole(input.id).name = name;
-		}.bind(this));
+		};
 		if(!isSuccess) return;
 		
 		// Update to DB

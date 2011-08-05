@@ -433,7 +433,6 @@ a.menuContextA_edit:visited{
 	margin-bottom:-1px;
 	border-top:0px solid #fff;
 	
-	/* //�ｿｽ�ｽｽ�ｾ�縺ｮ繧ｳ�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽg�ｿｽ�ｽｽ�ｿｽ�ｽｽIE�ｿｽ�ｽｽ�ｾ後∩縺ｫ驕ｩ�ｿｽ�ｽｽp�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽ�ｿｽ�ｽｽ */
 //	margin-bottom:0px;
 }
 
@@ -879,10 +878,13 @@ a.gadgetListTabA:visited{
 
 .modalConfigSetContent, .configSetContent{
 	margin: 5px;
-	width: 100%;
+	width: 99%;
 	height: auto;
 }
 
+:root *> .modalConfigSetContent {
+	width: 100%;
+}
 
 /* configuration set END------------------- */
 
@@ -1313,4 +1315,23 @@ a.home-menu-header:visited {
 #gadgetAcc li { 
 	list-style-type: none; 
 	background-color: #FFF; 
-} 
+}
+
+/* default theme */ 
+.infoScoop .widget .widgetHeader {
+    background-image: url("../skin/imgs/theme/widget_header.png");
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.infoScoop .subWidget .widgetHeader {
+    background-color: #EEEEFF;
+    background-image: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+/* preview widget */
+#widgetPreviewContainer .widget{
+	width: 95%;
+}

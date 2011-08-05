@@ -288,7 +288,7 @@ IS_Widget.FragmentMiniBrowser.validateUserPref = Object.extend(IS_Widget.Fragmen
 			label: IS_Widget.getDisplayName('FragmentMiniBrowser', 'cacheLifeTime'),
 			regex: '^(([1-9][0-9]*)|([1-9]))$',
 
-			regexMsg: IS_R.ms_gtZeroNum
+			regexMsg: IS_R.ms_gtOneNum
 		});
 	},
 	xPath:function(value){

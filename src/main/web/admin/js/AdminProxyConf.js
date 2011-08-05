@@ -1367,13 +1367,17 @@ ISA_ProxyConf.HeaderConfigPane.prototype = {
 
 		li.appendChild( icon );
 	},
-	removeHeader: function( header ) {
+	removeHeader: function( header, e ) {
+		if(e) Event.stop(e);
+		
 		var c = $("proxyConf_headers_"+header.toLowerCase() );
 		if( !c )  return;
 
 		c.parentNode.parentNode.removeChild( c.parentNode );
 	},
-	removeSendingCookie: function( cookie ) {
+	removeSendingCookie: function( cookie, e ) {
+		if(e) Event.stop(e);
+		
 		var c = $("sending_cookiename_"+cookie.toLowerCase() );
 		if( !c )  return;
 
