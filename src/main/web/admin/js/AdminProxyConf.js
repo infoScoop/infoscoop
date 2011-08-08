@@ -537,8 +537,8 @@ ISA_ProxyConf.prototype.classDef = function() {
 								contents: showProxyAuthEdit.bind(this, caseConfigItem),
 								opacity: 0.5,
 								position: 'relative',
-								width: '300',
-								height:'200'
+								width: '300px',
+								height:'180'
 							  }
 							  );
 				contentDiv.parentNode.style.backgroundColor= '#ffffff';
@@ -665,7 +665,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 								opacity: 0.5,
 								position: 'relative',
 								width: '300',
-								height: '200'
+								height: '180'
 							  }
 							  );
 		}else{

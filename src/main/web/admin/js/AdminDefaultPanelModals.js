@@ -37,8 +37,10 @@ ISA_DefaultPanel.CommandItemEditor.prototype.classDef = function() {
 	this.buildEditorWindow = function(form){
 		var editorDiv = document.createElement("div");
 		commandItem.title;
-		var editorFieldSet = document.createElement("fieldset");
-		var editorFieldSetLegend = document.createElement("legend");
+		var editorFieldSet = document.createElement("div");
+		editorDiv.className = "modalConfigSet";
+		var editorFieldSetLegend = document.createElement("p");
+		editorFieldSetLegend.className = "modalConfigSetHeader";
 		editorFieldSetLegend.appendChild(document.createTextNode(ISA_R.getResource(ISA_R.alb_settingOf,[commandItem.title])));
 		editorFieldSet.appendChild(editorFieldSetLegend);
 		editorFieldSet.appendChild(form);
