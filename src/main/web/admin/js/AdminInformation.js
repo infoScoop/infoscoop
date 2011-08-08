@@ -3,7 +3,7 @@ var ISA_Information = IS_Class.create();
 ISA_Information.prototype.classDef = function() {
 	var container;
 	var loadingMessage;
-	
+
 	this.initialize = function() {
 		container = document.getElementById("information");
 		container2 = document.getElementById("version");
@@ -13,15 +13,14 @@ ISA_Information.prototype.classDef = function() {
 		loadingMessage.style.clear = "both";
 		loadingMessage.style.cssFloat = "left";
 		container.appendChild(loadingMessage);
-		
+
 	};
-	
+
 	this.build = function() {
 		while (container.hasChildNodes())
 			container.removeChild(container.firstChild);
 
 		var self = this;
-		console.log(adminHostPrefix);
 		var url = adminHostPrefix + "/services/information/getUserCountListJSON";
 		var opt = {
 			method: 'get',
@@ -56,15 +55,15 @@ ISA_Information.prototype.classDef = function() {
 
 	this.display = function(response) {
 		IS_Event.unloadCache("_adminInfo");
-		
+
 		var json = eval("(" + response.responseText + ")");
-		
+
 		var activeUsersCount = json["activeUsersCount"];
 		var totalUsersCount = json["totalUsersCount"];
 		var todayAccessCount = json["todayAccessCount"];
-		
+
 		//this.displayHeader();
-		
+
 		var dummy = document.createElement("div");
 
 		//dummy.innerHTML = '<table><tbody><tr id="proxyConfigHeader"><td colspan=2>'+ISA_R.alb_userInformation+'</td></tr><tbody></table>';
@@ -76,13 +75,13 @@ ISA_Information.prototype.classDef = function() {
 		table.cellSpacing = "0";
 		table.cellPadding = "0";
 		container.appendChild( table );
-		
+
 		var tbody = table.firstChild;
-		
+
 		tbody.appendChild( createUserCountRow(ISA_R.alb_activeUserNumber, activeUsersCount) );
 		tbody.appendChild( createUserCountRow(ISA_R.alb_accessedUsersToday, todayAccessCount) );
 		tbody.appendChild( createUserCountRow(ISA_R.alb_totalUsersNumber, totalUsersCount) );
-		
+
 		function createUserCountRow(title, value){
 	 		var row = document.createElement("tr");
 			var row_titleTd = document.createElement("td");
@@ -97,7 +96,7 @@ ISA_Information.prototype.classDef = function() {
 			row_valueTd.innerHTML = value;
 			row_valueTd.style.textAlign = "right";
 			row_valueTd.style.padding = "0 0.5em 0 0";
-			
+
 			row.appendChild(row_titleTd);
 			row.appendChild(row_valueTd);
 			return row;
@@ -105,17 +104,17 @@ ISA_Information.prototype.classDef = function() {
 		//this.displayVersionInfo();
 
 	};
-	
+
 	this.displayHeader = function(){
 		var controlDiv = document.createElement("div");
 		controlDiv.style.textAlign = "right";
-		
+
 //		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
 //		controlDiv.appendChild(refreshDiv);
 //		IS_Event.observe(refreshDiv, "click", this.build.bind(this), false, "_adminInfo");
-		
+
 		container.appendChild(controlDiv);
-		
+
 //		var titleDiv = document.createElement("div");
 //		titleDiv.className = "proxyTitle";
 //		titleDiv.appendChild(document.createTextNode(ISA_R.alb_statisticsInformation));
