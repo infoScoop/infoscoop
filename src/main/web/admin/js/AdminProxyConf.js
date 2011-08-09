@@ -537,7 +537,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 								contents: showProxyAuthEdit.bind(this, caseConfigItem),
 								opacity: 0.5,
 								position: 'relative',
-								width: '300px',
+								width: '300',
 								height:'180'
 							  }
 							  );
