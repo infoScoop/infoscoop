@@ -142,7 +142,6 @@
         <copy todir="${install_image.home}/${app.main.name}/Customization" file="${src.main.web}/login.jsp"/>
         <copy todir="${install_image.home}/${app.main.name}/Customization" file="${src.main.web}/openid_login.jsp.sample"/>
         <copy todir="${install_image.home}/${app.main.name}/Customization" file="${src.main.web}/changePassword.jsp"/>
-        <copy todir="${install_image.home}/${app.main.name}/Customization/WEB-INF" file="${src.main.web}/WEB-INF/weblogic10.xml" />
         <copy todir="${install_image.home}/${app.main.name}/Customization/WEB-INF/conf" file="${src.main.web}/WEB-INF/conf/log4j.xml" />
         <copy todir="${install_image.home}/${app.main.name}/Customization/WEB-INF/conf" overwrite="true" failonerror="false" file="${customize.dir}/web/WEB-INF/conf/log4j.xml"/>
         <copy todir="${install_image.home}/${app.main.name}/Customization/WEB-INF/conf" overwrite="true" failonerror="false" file="${customize.dir2}/web/WEB-INF/conf/log4j.xml"/>

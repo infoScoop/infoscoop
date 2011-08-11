@@ -1,7 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/90" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/weblogic-web-app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <container-descriptor>
     <filter-dispatched-requests-enabled>false</filter-dispatched-requests-enabled>
+	<prefer-application-packages>
+		<package-name>antlr.*</package-name>
+		<package-name>javax.xml.parsers.*</package-name>
+		<package-name>org.apache.*</package-name>
+		<package-name>javax.xml.transform.*</package-name>
+	</prefer-application-packages>
   </container-descriptor>
 
   <charset-params>
