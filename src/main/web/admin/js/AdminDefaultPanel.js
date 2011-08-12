@@ -12,7 +12,7 @@ IS_EventDispatcher.addListener("deleteTemp", "", function(all){
 			},
 			onFailure: function(t) {
 				var errormsg = t.responseText && typeof t.responseText == "string" ? t.responseText.substr(0, 100) : "";
-				msg.error(ISA_R.ams_failedDeleteEdittingData + errormsg);
+				msg.info(ISA_R.ams_failedDeleteEdittingData + errormsg);
 			},
 			onException: function(r, t){
 				msg.error(ISA_R.ams_failedDeleteEdittingData + getErrorMessage(t));
