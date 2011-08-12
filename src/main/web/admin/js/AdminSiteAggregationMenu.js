@@ -129,6 +129,11 @@ ISA_SiteAggregationMenu.setWidgetConf = function(_widgetConfList, isAddMulti) {
 	AjaxRequest.invoke(url, opt);
 }
 
+//Holiday information
+IS_Holiday = new IS_Widget.Calendar.iCalendar(hostPrefix + "/holidaysrv");
+IS_Holiday.noProxy = true;
+IS_Holiday.load(false);
+
 ISA_SiteAggregationMenu.prototype.classDef = function() {
 	var self = this;
 	var container;
