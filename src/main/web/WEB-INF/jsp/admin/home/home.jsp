@@ -21,18 +21,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 	PortalAdminsService adminService = PortalAdminsService.getHandle();
-	boolean isTreeAdminUser = !adminService.isPermitted("menu") && adminService.isPermitted("menu_tree");
 %>
 <div id="home-menus">
 	<p id="" class="homeTitle">%{alb_adminMenu}</p>
 		<!-- Menus -->
-		<%if(adminService.isPermitted("menu") || adminService.isPermitted("menutree")){%>
+		<%if(adminService.isPermitted("menu") || adminService.isPermitted("menu_tree")){%>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
-				<a href="../menu/index" class="home-menu-icon-link"><img src="../../skin/imgs/home_icons/kmenuedit.gif"></a>
+				<a href="../menu<%= adminService.isPermitted("menu_tree")? "tree" : "" %>/index" class="home-menu-icon-link"><img src="../../skin/imgs/home_icons/kmenuedit.gif"></a>
 			</div>
 			<div class="home-menu-content">
-				<a href="../menu/index" class="home-menu-header">%{alb_menu}</a>
+				<a href="../menu<%= adminService.isPermitted("menu_tree")? "tree" : "" %>/index" class="home-menu-header">%{alb_menu}</a>
 				<p class="home-menu-definition">%{alb_menuDescription}</p>
 			</div>
 		</div>
@@ -65,8 +64,7 @@
 				<a href="../defaultpanel/index"><img src="../../skin/imgs/home_icons/mycomputer.gif"></a>
 			</div>
 			<div class="home-menu-content">
-<!-- 			TODO change href link according to ACL -->
-				<a href="../defaultpanel/index" class="home-menu-header">%{alb_generalLayout}</a>
+				<a href="../generallayout/index" class="home-menu-header">%{alb_generalLayout}</a>
 				<p class="home-menu-definition">%{alb_defaultPanelDesription}</p>
 			</div>
 		</div>
