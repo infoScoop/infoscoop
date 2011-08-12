@@ -6,7 +6,7 @@ IS_EventDispatcher.addListener("deleteTemp", "", function(all){
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
-			asynchronous:true,
+			asynchronous:false,
 			onSuccess: function(response){
 				msg.info(ISA_R.ams_deleteEdittingMenuData);
 			},
