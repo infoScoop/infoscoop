@@ -1082,7 +1082,7 @@
 "adminjs","alb_forbiddenURLDescription","ALL","ja","ミニブラウザウィジェットなどポータル内に表示されるインナーフレームへの表示を制限するWebサイトを登録します。"
 "adminjs","alb_forbiddenURLDescription","ALL","zh","建立一个网站，限制了内框将在??网站和微型??器小部件?示?示。"
 "adminjs","alb_OAuthDescription","ALL","ALL","Configure OAuth and related settings."
-"adminjs","alb_OAuthDescription","ALL","ja","OAuth及びOAuth関連仕様についての設定します。"
+"adminjs","alb_OAuthDescription","ALL","ja","OAuth及びOAuth関連仕様について設定します。"
 "adminjs","alb_OAuthDescription","ALL","zh","置注册和搜索网站"
 "adminjs","alb_infoscoopInfo","ALL","ALL","infoScoop Information"
 "adminjs","alb_infoscoopInfo","ALL","ja","infoScoop 情報"
