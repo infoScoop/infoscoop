@@ -17,6 +17,10 @@
 
 package org.infoscoop.request;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -42,6 +46,7 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.model.OAuthCertificate;
+import org.infoscoop.util.RequestUtil;
 
 public class SignedAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
@@ -78,13 +83,26 @@ public class SignedAuthenticator implements Authenticator {
 			optionParams.put("xoauth_signature_publickey", PUBLIC_KEY_NAME);
 			optionParams.put("xoauth_public_key", PUBLIC_KEY_NAME);
 
+			Map<String, String> postParams = new HashMap<String, String>();
+			String contentType = request.getRequestHeader("Content-Type");
+			if (contentType != null
+					&& contentType
+							.startsWith("application/x-www-form-urlencoded")
+					&& method.getName().equalsIgnoreCase("POST")) {
+				
+				String charset = RequestUtil.getCharset(contentType);
+				postParams = parseRequestBody(request.getRequestBody(), charset);
+				optionParams.putAll(postParams);
+			}
+			
 			OAuthMessage message = new OAuthMessage(method.getName(), targetUrlPath, optionParams.entrySet());
 			message.addRequiredParameters(accessor);
 			List<Map.Entry<String, String>> authParams = message
 					.getParameters();
-			List<NameValuePair> queryParams = buildQueryParams(authParams);
+			List<NameValuePair> queryParams = buildQueryParams(authParams, postParams);
 			method.setQueryString((NameValuePair[]) queryParams
 					.toArray(new NameValuePair[0]));
+			
 		} catch (Exception e) {
 			throw new ProxyAuthenticationException(e);
 		}
@@ -153,11 +171,42 @@ public class SignedAuthenticator implements Authenticator {
 	}
 
 	private List<NameValuePair> buildQueryParams(
-			List<Map.Entry<String, String>> authParams) {
+			List<Map.Entry<String, String>> authParams, Map<String, String> postParams) {
+		
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		for (Map.Entry<String, String> entry : authParams) {
+			if(postParams.keySet().contains(entry.getKey())){
+				postParams.remove(entry.getKey());
+				continue;
+			}
+			
 			params.add(new NameValuePair(entry.getKey(), entry.getValue()));
 		}
 		return params;
+	}
+	
+	// TODO: Move this to common utility class.
+	private static Map<String, String> parseRequestBody(InputStream requestBody, String charset)
+			throws IOException {
+		if (charset == null)
+			charset = "UTF-8";
+		Map<String, String> params = new HashMap<String, String>();
+		if (requestBody != null) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					requestBody));
+			String postBodyStr = "";
+			String s = null;
+			while ((s = br.readLine()) != null) {
+				postBodyStr += s;
+			}
+			String[] keyvalues = postBodyStr.split("&");
+			for (int i = 0; i < keyvalues.length; i++) {
+				String[] keyvalue = keyvalues[i].split("=");
+				params.put(keyvalue[0].trim(), URLDecoder.decode(keyvalue[1].trim(), charset));
+			}
+			requestBody.reset();
+		}
+		return params;
+
 	}
 }
