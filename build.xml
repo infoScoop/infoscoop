@@ -769,7 +769,7 @@
 			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
 			match="&lt;!--start script--&gt;.*&lt;!--end script--&gt;"
 			replace="
-&lt;script src=&quot;&lt;%=staticContentURL%&gt;/admin/js/dist/PortalAdmin-EditRole-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
+&lt;script src=&quot;../../admin/js/dist/PortalAdmin-EditRole-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
 			flags="s"
 			encoding="UTF-8"/>
 		<replaceregexp
