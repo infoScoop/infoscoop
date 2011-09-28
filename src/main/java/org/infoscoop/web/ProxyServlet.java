@@ -332,10 +332,9 @@ public class ProxyServlet extends HttpServlet{
 			long elapsedtime = new Date().getTime() - lastDeleteCachesTime;
 			if(elapsedtime > 86400000){
 				log.info("Delete old public caches.");
-				CacheService.getHandle().deleteOldPublicCaches();
 				lastDeleteCachesTime = new Date().getTime();
+				CacheService.getHandle().deleteOldPublicCaches();
 			}
-			
 		} catch (Exception e) {
 			
 			log.error("Failed to get the URL. "

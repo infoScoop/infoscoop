@@ -102,12 +102,12 @@ public class CacheService {
 	}
 	
 	public void deleteOldPublicCaches(){
-		List list = cacheDAO.getCaches(PUBLIC_CACHE_USERID);
+		List list = cacheDAO.getColumnsTimestamp(PUBLIC_CACHE_USERID);
 		long currentTime = new Date().getTime();
 		for(java.util.Iterator it= list.iterator();it.hasNext();){
-			Cache cache = (Cache)it.next();
-			if( currentTime - cache.getTimestamp().getTime() > 86400000 ){
-				cacheDAO.deleteCacheById(cache.getId());
+			Object[] cache = (Object[])it.next();
+			if( currentTime - ((Date)cache[1]).getTime() > 86400000 ){
+				cacheDAO.deleteCacheById((String)cache[0]);
 			}
 		}
 	}
