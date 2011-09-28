@@ -176,11 +176,10 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @throws DBAccessException
 	 */
 	public void deleteCacheById(String id){
-		Cache cache = ( Cache )super.getHibernateTemplate().get( Cache.class,id );
-		if( cache == null )
-			return;
+		String queryString = "delete from Cache where Id = ?";
 		
-		super.getHibernateTemplate().delete( cache );
+		super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { id });
 	}
 
 	/**
@@ -209,7 +208,7 @@ public class CacheDAO extends HibernateDaoSupport {
 	}
 
 	/**
-	 * Get the DOM object of the cash of appointed URL.
+	 * Get the DOM object of the cache of appointed URL.
 	 * @param uid
 	 * @param url
 	 * @return
@@ -227,9 +226,8 @@ public class CacheDAO extends HibernateDaoSupport {
 	}
 	
 	/**
-	 * Get all  of is_caches .
+	 * Get all of is_caches .
 	 * @param uid
-	 * @param url
 	 * @return
 	 */
 	public List getCaches(String uid){
@@ -242,4 +240,17 @@ public class CacheDAO extends HibernateDaoSupport {
 		
 	}
 	
+	/**
+	 * Get list of caches include id and timestamp.
+	 * @param uid
+	 * @return 
+	 */
+	public List getColumnsTimestamp(String uid){
+		String queryString = "select Id, Timestamp from Cache where Uid = ?";
+		List results = super.getHibernateTemplate()
+				.find( queryString, new Object[]{uid} );
+		
+		return results;
+		
+	}
 }
