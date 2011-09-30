@@ -121,7 +121,9 @@
 			Trash:{
 				add:function(){}
 			},
-			getFreshDays:function(){},
+			getFreshDays:function(){
+				return 1;
+			},
 			buildIFrame:function(aTag){
 				aTag.target = "_blank";
 				return;
