@@ -119,8 +119,6 @@ ISA_Admin.clearAdminCache = function() {
 }
 
 var windowBeforeUnload = function(e) {
-	ISA_Admin.clearAdminCache();
-	IS_Event.unloadAllCache();
 	IS_EventDispatcher.newEvent("deleteTemp","",true);
 	if(ISA_WidgetConf.widgetConf.uploadData){
 		ISA_WidgetConf.widgetConf.requestDeleteGadget(ISA_WidgetConf.widgetConf.uploadData.id);
@@ -128,6 +126,10 @@ var windowBeforeUnload = function(e) {
 };
 
 Event.observe(window, 'beforeunload',  windowBeforeUnload );
+Event.observe(window, 'unload', function(){
+	ISA_Admin.clearAdminCache();
+	IS_Event.unloadAllCache();
+});
 
 ISA_loadProperties = function(_callback){
 	
