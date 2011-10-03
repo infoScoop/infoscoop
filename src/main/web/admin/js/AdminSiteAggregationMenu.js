@@ -1081,7 +1081,7 @@ ISA_SiteAggregationMenu.getUpdMenuItem = function(menuItem, menuType){
 			menuItem.directoryTitle = title;
 		} else {
 			menuItem.title = title;
-			delete menuItem.directoryTitle;
+			is_deleteProperty(menuItem.directoryTitle);
 		}
 	}
 	
@@ -1268,7 +1268,7 @@ ISA_SiteAggregationMenu.removeMenuTree = function(removeItem){
 		if(childList){
 			for(var j = 0; j < childList.length;j++){
 				if(childList[j] == removeItem.id){
-					delete ISA_SiteAggregationMenu.menuItemList[childList[j]];
+					is_deleteProperty(ISA_SiteAggregationMenu.menuItemList[childList[j]]);
 					childList.splice(j,1);
 					ISA_SiteAggregationMenu.menuItemTreeMap[removeItem.parentId] = null;
 					ISA_SiteAggregationMenu.menuItemTreeMap[removeItem.parentId] = childList;

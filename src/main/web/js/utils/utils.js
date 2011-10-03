@@ -1170,3 +1170,12 @@ if( !Object.hasOwnProperty ) {
 		return ( this[property] && !this.constructor.prototype[property] );
 	}
 }
+
+// for IE9 bug (undefined properties cannot be deleted in a children window)
+function is_deleteProperty(prop){
+	if(Object.isUndefined(prop)){
+		return false;
+	}else{
+		delete prop;
+	}
+}
