@@ -201,14 +201,14 @@ function prepareStaticArea(){
 			widgetJSON.type = ISA_CommonModals.EditorForm.getSelectType();
 			widgetJSON.properties = ISA_CommonModals.EditorForm.getProperty(widgetJSON);
 			widgetJSON.ignoreHeader = ISA_CommonModals.EditorForm.isIgnoreHeader();
-			if(!widgetJSON.ignoreHeader) is_deleteProperty(widgetJSON.ignoreHeader);
+			if(!widgetJSON.ignoreHeader) delete widgetJSON.ignoreHeader;
 			widgetJSON.noBorder = ISA_CommonModals.EditorForm.isNoBorder();
-			if(!widgetJSON.noBorder) is_deleteProperty(widgetJSON.noBorder);
+			if(!widgetJSON.noBorder) delete widgetJSON.noBorder;
 
 			widgetJSON.title = ISA_Admin.trim($("formTitle").value);
 			widgetJSON.href =  $("formHref").value;
 
-			is_deleteProperty(jsonRole.staticPanel[oldId]);
+			delete jsonRole.staticPanel[oldId];
 			jsonRole.staticPanel[widgetJSON.id] = widgetJSON;
 			openerPanel.setNewValue("staticpanel", Object.toJSON(jsonRole.staticPanel), jsonRole.id);
 			
@@ -853,7 +853,7 @@ function _saveDynamicPanel(){
 					childrenList.push(subWidgets[i].id.substring(2));
 				}
 				widgetJSON.properties.children = Object.toJSON(childrenList);
-				is_deleteProperty(widgetJSON.properties.url);
+				delete widgetJSON.properties.url;
 			}
 			
 			if(menuItem.title){
@@ -869,8 +869,8 @@ function _saveDynamicPanel(){
 			widgetJSON.href = ("MiniBrowser" == widgetJSON.type) ? 
 				widgetJSON.properties.url : (menuItem.href) ? menuItem.href : "";
 
-			is_deleteProperty(widgetJSON.properties.title);
-			is_deleteProperty(widgetJSON.properties.href);
+			delete widgetJSON.properties.title;
+			delete widgetJSON.properties.href;
 			
 			newDynamicPanel[widgetJSON.id] = widgetJSON
 		});

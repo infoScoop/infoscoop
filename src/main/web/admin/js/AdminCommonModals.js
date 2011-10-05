@@ -349,7 +349,7 @@ ISA_CommonModals.EditorForm.getProperty = function(menuItem){
 			if(value != null){
 				alert("not use block!");
 				if(!widgetPref.isDefault){
-					is_deleteProperty(properties[userPref.name]);
+					delete properties[userPref.name];
 				}else{
 					properties[widgetPref.name] = value;
 				}
@@ -363,10 +363,8 @@ ISA_CommonModals.EditorForm.getProperty = function(menuItem){
 			var userPref = userPrefList[id];
 			var value = ISA_WidgetConf.getFormValue( 'UP', userPref );
 			if(value != null){
-				//if(userPref.isDefault && properties[userPref.name]){
 				if(userPref.isDefault){
-					is_deleteProperty(properties[userPref.nema]);
-					//delete properties[userPref.name];
+					delete properties[userPref.name];
 				}else{
 					properties[userPref.name] = value;
 				}
