@@ -1,4 +1,4 @@
-infoScoop OpenSource 2.2.2
+infoScoop OpenSource 2.2.3
 ==========================
 
 About infoScoop OpenSource
@@ -23,7 +23,7 @@ These are requirements that needs before the setup of infoScoop OpenSource.
 
 How to Setup
 ------------
-Unzip infoscoop-2.2.2-quickstart.zip(tar.gz) and follow the steps below.
+Unzip infoscoop-2.2.3-quickstart.zip(tar.gz) and follow the steps below.
 
 1. Create Repository Database
 
@@ -37,7 +37,7 @@ mysql>exit
 
 Execute the following commands which inserts initial data to the created database.
 
-$ mysql -uroot iscoop < infoscoop-2.2.2-quickstart/init_infoscoop.sql
+$ mysql -uroot iscoop < infoscoop-2.2.3-quickstart/init_infoscoop.sql
 
 * Choose 'init_info_infoscoop.ja.sql' file, if you want Japanese sample settings.
 
@@ -86,7 +86,7 @@ How to Add Users
 
 Edit the following file.
 
-infoscoop-2.2.2-quickstart/initdb/data/accounts/import.csv
+infoscoop-2.2.3-quickstart/initdb/data/accounts/import.csv
 
 Add new users with the following format.
 
@@ -96,7 +96,7 @@ Add new users with the following format.
 
 Move to 'initdb' directory, and execute 'addaccount.bat(sh)' file.
 
-$ cd infoscoop-2.2.2-quickstart/initdb
+$ cd infoscoop-2.2.3-quickstart/initdb
 $ addaccount.bat(sh)
 
 
@@ -121,3 +121,8 @@ Changes from Version 2.2.1 to 2.2.2
 -----------------------------------
 Refer to the URL below.
 https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.2
+
+Changes from Version 2.2.2 to 2.2.3
+-----------------------------------
+Refer to the URL below.
+https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=2.2.3
