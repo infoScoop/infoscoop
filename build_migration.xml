@@ -96,7 +96,7 @@
 	</target>
 
 	<target name="compile" depends="prepare,compile-infoscoop">
-		<javac srcdir="${src.migration.java}" destdir="${build.migration}/classes" debug="true">
+		<javac srcdir="${src.migration.java}" destdir="${build.migration}/classes" debug="true" source="${compile.level}" target="${compile.level}">
 			<classpath>
 				<fileset dir="${build.migration}/lib" includes="*.jar" />
 			</classpath>
@@ -109,7 +109,7 @@
 	</target>
 	<target name="compile-infoscoop">
 		<mkdir dir="${build.migration}/infoscoop"/>
-		<javac srcdir="${src.main.java}" encoding="utf-8" destdir="${build.migration}/infoscoop">
+		<javac srcdir="${src.main.java}" encoding="utf-8" destdir="${build.migration}/infoscoop" source="${compile.level}" target="${compile.level}">
 			<classpath>
 				<fileset dir="${basedir}/lib" includes="*.jar" />
 				<fileset dir="${src.main.web}/WEB-INF/lib" includes="*.jar" />

@@ -26,7 +26,7 @@
 				<include name="*.hbm.xml"/>
 			</fileset>
 		</copy>
-		<javac srcdir="${main.java}" encoding="utf-8" destdir="${build.work}/initdb/infoscoop">
+		<javac srcdir="${main.java}" encoding="utf-8" destdir="${build.work}/initdb/infoscoop" source="${compile.level}" target="${compile.level}">
 			<classpath>
 				<fileset dir="${basedir}/lib" includes="*.jar" />
 				<fileset dir="${main.web}/WEB-INF/lib" includes="*.jar" />
@@ -52,7 +52,7 @@
 			<fileset dir="${initdb.home}/importTool/lib" includes="*.jar"/>
 		</copy>
 
-		<javac srcdir="${initdb.home}/importTool/src" encoding="utf-8" destdir="${build.work}/initdb/bin" debug="true">
+		<javac srcdir="${initdb.home}/importTool/src" encoding="utf-8" destdir="${build.work}/initdb/bin" debug="true" source="${compile.level}" target="${compile.level}">
 			<classpath>
 				<fileset dir="${build.work}/initdb/lib" includes="*.jar" />
 			</classpath>

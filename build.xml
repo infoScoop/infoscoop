@@ -35,6 +35,7 @@
 	<property name="build.admin" value="${build.main}/admin" />
 	<property name="build.admin.jsp" value="${build.main}/WEB-INF/jsp/admin" />
 	<!-- other properties -->
+	<property name="compile.level" value="1.5" />
 	<property name="compile.debug" value="true" />
 	<property name="compile.deprecation" value="false" />
 	<property name="compile.optimize" value="true" />
@@ -637,7 +638,7 @@
             </fileset>
         </copy>
 
-		<javac srcdir="${src.main}" encoding="utf-8" destdir="${build.main}/WEB-INF/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+		<javac srcdir="${src.main}" encoding="utf-8" destdir="${build.main}/WEB-INF/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" source="${compile.level}" target="${compile.level}">
 			<classpath>
 				<path refid="compile.classpath" />
 			</classpath>
@@ -825,7 +826,9 @@
 	</target>
 
     <target name="initdb">
-    	<ant antfile="${basedir}/build_initdb.xml"/>
+    	<ant antfile="${basedir}/build_initdb.xml">
+			<property name="compile.level" value="${compile.level}"/>
+    	</ant>
 
         <mkdir dir="${install_image.home}/tools/initdb" />
         <copy todir="${install_image.home}/tools/initdb">
@@ -834,7 +837,9 @@
     </target>
 
     <target name="migration"  if="withMigration">
-    	<ant antfile="${basedir}/build_migration.xml" inheritall="false"/>
+    	<ant antfile="${basedir}/build_migration.xml" inheritall="false">
+			<property name="compile.level" value="${compile.level}"/>
+    	</ant>
 
     	<mkdir dir="${install_image.home}/tools/migration"/>
     	<copy todir="${install_image.home}/tools/migration">
@@ -966,7 +971,7 @@
         </copy>
         -->
 
-        <javac srcdir="${googleapps.src}" encoding="utf-8" destdir="${build.main}/WEB-INF/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+        <javac srcdir="${googleapps.src}" encoding="utf-8" destdir="${build.main}/WEB-INF/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" source="${compile.level}" target="${compile.level}">
             <classpath>
                 <path refid="compile.build.classpath" />
             </classpath>
