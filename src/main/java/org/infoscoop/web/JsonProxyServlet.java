@@ -43,6 +43,7 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.Authenticator;
+import org.infoscoop.request.OAuthAuthenticator;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.request.filter.DetectTypeFilter;
 import org.infoscoop.service.OAuthService;

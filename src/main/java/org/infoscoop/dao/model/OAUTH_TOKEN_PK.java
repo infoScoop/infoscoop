@@ -10,13 +10,11 @@ public class OAUTH_TOKEN_PK extends BaseOAUTH_TOKEN_PK {
 	
 	public OAUTH_TOKEN_PK (
 		java.lang.String uid,
-		java.lang.String gadgetUrlKey,
-		java.lang.String serviceName) {
+		java.lang.String fkOAuthId) {
 
 		super (
 			uid,
-			gadgetUrlKey,
-			serviceName);
+			fkOAuthId);
 	}
 /*[CONSTRUCTOR MARKER END]*/
 

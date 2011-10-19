@@ -17,16 +17,19 @@
 
 package org.infoscoop.dao;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.OAUTH_TOKEN_PK;
+import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.dao.model.OAuthToken;
-import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -39,43 +42,64 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-	public OAuthToken getAccessToken(String uid, String gadgetUrl,
-			String serviceName) {
+	public OAuthToken getAccessToken(String uid, String gadgetUrl, String serviceName) {
 		if (uid == null || gadgetUrl == null || serviceName == null) {
 			throw new RuntimeException(
 					"uid, gadgetUrl and serviceName must be set.");
 		}
-		String gadgetUrlKey = Crypt.getHash(gadgetUrl);
+		//String gadgetUrlKey = Crypt.getHash(gadgetUrl);
 		Iterator results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthToken.class).add(
-						Expression.eq("Id.Uid", uid)).add(
-						Expression.eq("Id.GadgetUrlKey", gadgetUrlKey)).add(
-						Expression.eq("Id.ServiceName", serviceName)))
+				DetachedCriteria.forClass(OAuthConsumerProp.class,"ocp")
+				.createAlias("OAuthGadgetUrl", "ogu", CriteriaSpecification.LEFT_JOIN)
+				.createAlias("OAuthToken", "ot", CriteriaSpecification.LEFT_JOIN)
+				.add(Restrictions.conjunction()
+					.add(Restrictions.eq("ot.Id.Uid", uid))
+					.add(Restrictions.eq("ocp.ServiceName", serviceName))
+					.add(Restrictions.eq("ogu.GadgetUrl", gadgetUrl))))
 				.iterator();
+		
 		if (results.hasNext()) {
-			return (OAuthToken) results.next();
+			OAuthConsumerProp o = (OAuthConsumerProp)results.next();
+			Set<OAuthToken> s = o.getOAuthToken();
+			Iterator i = s.iterator();
+			if(i.hasNext())
+				return (OAuthToken)i.next();
 		}
 		return null;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<OAuthToken> getAccessTokens(String uid, String gadgetUrl) {
-		String gadgetUrlKey = Crypt.getHash(gadgetUrl);
-		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthToken.class).add(
-						Expression.eq("Id.Uid", uid)).add(
-						Expression.eq("Id.GadgetUrlKey", gadgetUrlKey)));
+		if (uid == null || gadgetUrl == null) {
+			throw new RuntimeException(
+					"uid and gadgetUrl must be set.");
+		}
+		Iterator<OAuthConsumerProp> results = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(OAuthConsumerProp.class,"ocp")
+				.createAlias("OAuthGadgetUrl", "ogu", CriteriaSpecification.LEFT_JOIN)
+				.createAlias("OAuthToken", "ot", CriteriaSpecification.LEFT_JOIN)
+				.add(Restrictions.conjunction()
+					.add(Restrictions.eq("ot.Id.Uid", uid))
+					.add(Restrictions.eq("ogu.GadgetUrl", gadgetUrl))))
+				.iterator();
+		
+		if (results.hasNext()) {
+			OAuthConsumerProp o = (OAuthConsumerProp)results.next();
+			List l = new ArrayList();
+			l.addAll(o.getOAuthToken());
+			return  l;
+		}
+		return null;
 	}
-
+	
 	public void saveAccessToken(String uid, String gadgetUrl,
 			String serviceName, String requestToken, String accessToken,
 			String tokenSecret) {
 		OAuthToken token = getAccessToken(uid, gadgetUrl, serviceName);
 		if (token == null) {
-			String gadgetUrlKey = Crypt.getHash(gadgetUrl);
-			token = new OAuthToken(new OAUTH_TOKEN_PK(uid, gadgetUrlKey,
-					serviceName));
-			token.setGadgetUrl(gadgetUrl);
+			OAuthConsumerProp oauthConsumer = OAuthConsumerDAO.newInstance().getConsumer(gadgetUrl, serviceName);
+			oauthConsumer.getId();
+			token = new OAuthToken(new OAUTH_TOKEN_PK(uid, oauthConsumer.getId()));
 		}
 		token.setRequestToken(requestToken);
 		token.setAccessToken(accessToken);

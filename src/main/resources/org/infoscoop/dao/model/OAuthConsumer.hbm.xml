@@ -11,28 +11,10 @@
 		<meta attribute="sync-DAO">false</meta>
 		<id
 			name="Id"
-			type="java.lang.Long"
+			type="string"
 			column="ID"
 		>
-			<generator class="native">
-				<param name="sequence">is_oauth_consumers_id_seq</param>
-			</generator>
 		</id>
-
-		<property
-			name="GadgetUrl"
-			column="gadget_url"
-			type="string"
-			not-null="true"
-			length="1024"
-		/>
-		<property
-			name="GadgetUrlKey"
-			column="gadget_url_key"
-			type="string"
-			not-null="true"
-			length="255"
-		/>
 		<property
 			name="ServiceName"
 			column="service_name"
@@ -59,14 +41,30 @@
 			column="signature_method"
 			type="string"
 			not-null="false"
-			length="10"
+			length="20"
 		/>
+		<property
+			name="Description"
+			column="description"
+			type="string"
+		/>		
 		<property
 			name="IsUpload"
 			column="is_upload"
 			type="integer"
 			not-null="true"
 		/>
-
+		<set name="OAuthGadgetUrl" lazy="true" inverse="true">  
+            <key>  
+                <column name="fk_oauth_id" not-null="true" />  
+            </key>  
+            <one-to-many class="OAuthGadgetUrl" />  
+        </set>
+        <set name="OAuthToken" lazy="true" inverse="true">  
+            <key>  
+                <column name="fk_oauth_id" not-null="true" />  
+            </key>
+            <one-to-many class="OAuthToken" />  
+        </set>
 	</class>	
 </hibernate-mapping>

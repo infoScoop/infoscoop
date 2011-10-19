@@ -31,10 +31,6 @@ import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetIconDAO;
 import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.model.Gadget;
-import org.infoscoop.dao.model.OAUTH_CONSUMER_PK;
-import org.infoscoop.dao.model.OAuthConsumerProp;
-import org.infoscoop.request.filter.XMLFilter;
-import org.infoscoop.util.Crypt;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.NoOpEntityResolver;
 import org.infoscoop.util.SpringUtil;
@@ -42,7 +38,6 @@ import org.infoscoop.util.XmlUtil;
 import org.infoscoop.widgetconf.I18NConverter;
 import org.infoscoop.widgetconf.MessageBundle;
 import org.infoscoop.widgetconf.WidgetConfUtil;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
@@ -70,10 +65,6 @@ public class GadgetService {
 	
 	public void setGadgetIconDAO(GadgetIconDAO gadgetIconDAO) {
 		this.gadgetIconDAO = gadgetIconDAO;
-	}
-
-	public void setOauthConsumerDAO(OAuthConsumerDAO oauthConsumerDAO) {
-		this.oauthConsumerDAO = oauthConsumerDAO;
 	}
 	
 	public byte[] selectGadget( String type ) {
@@ -222,22 +213,6 @@ public class GadgetService {
 				WidgetConfService.updateWidgetPrefNode( gadgetDoc,gadgetEl,json.getJSONObject("WidgetPref"));
 			
 			gadgetDAO.update(type,"/",type+".xml", XmlUtil.dom2String(gadgetDoc).getBytes("UTF-8"));
-			
-			if(!"false".equals(authServiceList)){
-				JSONArray authServiceArray = new JSONArray(authServiceList);
-				String gadgetUrl = "upload__" + type + "/gadget";
-				for(int i = 0; i < authServiceArray.length(); i++){
-					JSONObject obj = authServiceArray.getJSONObject(i);
-					OAuthConsumerProp consumer = new OAuthConsumerProp();
-					consumer.setServiceName(obj.getString("serviceName"));
-					consumer.setGadgetUrl(gadgetUrl);
-					consumer.setConsumerKey(obj.getString("consumerKey"));
-					consumer.setConsumerSecret(obj.getString("consumerSecret"));
-					consumer.setSignatureMethod(obj.getString("signatureMethod"));
-					consumer.setIsUpload(Integer.valueOf(1));
-					oauthConsumerDAO.save(consumer);
-				}
-			}
 		} catch (Exception e) {
 			log.error("update of widet configuration \"" + type + "\" failed.",
 					e);

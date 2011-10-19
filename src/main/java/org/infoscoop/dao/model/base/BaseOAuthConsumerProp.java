@@ -17,8 +17,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	public static String REF = "OAuthConsumerProp";
 	public static String PROP_SERVICE_NAME = "ServiceName";
 	public static String PROP_SIGNATURE_METHOD = "SignatureMethod";
-	public static String PROP_GADGET_URL_KEY = "GadgetUrlKey";
-	public static String PROP_GADGET_URL = "GadgetUrl";
+	public static String PROP_DESCRIPTION = "Description";
 	public static String PROP_CONSUMER_SECRET = "ConsumerSecret";
 	public static String PROP_ID = "Id";
 	public static String PROP_IS_UPLOAD = "IsUpload";
@@ -33,7 +32,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseOAuthConsumerProp (java.lang.Long id) {
+	public BaseOAuthConsumerProp (java.lang.String id) {
 		this.setId(id);
 		initialize();
 	}
@@ -42,15 +41,11 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseOAuthConsumerProp (
-		java.lang.Long id,
-		java.lang.String gadgetUrl,
-		java.lang.String gadgetUrlKey,
+		java.lang.String id,
 		java.lang.String serviceName,
 		java.lang.Integer isUpload) {
 
 		this.setId(id);
-		this.setGadgetUrl(gadgetUrl);
-		this.setGadgetUrlKey(gadgetUrlKey);
 		this.setServiceName(serviceName);
 		this.setIsUpload(isUpload);
 		initialize();
@@ -63,26 +58,25 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.Long id;
+	private java.lang.String id;
 
 	// fields
-	private java.lang.String gadgetUrl;
-	private java.lang.String gadgetUrlKey;
 	private java.lang.String serviceName;
 	private java.lang.String consumerKey;
 	private java.lang.String consumerSecret;
 	private java.lang.String signatureMethod;
+	private java.lang.String description;
 	private java.lang.Integer isUpload;
 
-
+	private java.util.Set<org.infoscoop.dao.model.OAuthGadgetUrl> OAuthGadgetUrl;
+	private java.util.Set<org.infoscoop.dao.model.OAuthToken> OAuthToken;
 
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  generator-class="sequence"
      *  column="id"
      */
-	public java.lang.Long getId () {
+	public java.lang.String getId () {
 		return id;
 	}
 
@@ -90,44 +84,9 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (java.lang.Long id) {
+	public void setId (java.lang.String id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
-	}
-
-
-
-
-	/**
-	 * Return the value associated with the column: gadget_url
-	 */
-	public java.lang.String getGadgetUrl () {
-		return gadgetUrl;
-	}
-
-	/**
-	 * Set the value related to the column: gadget_url
-	 * @param gadgetUrl the gadget_url value
-	 */
-	public void setGadgetUrl (java.lang.String gadgetUrl) {
-		this.gadgetUrl = gadgetUrl;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: gadget_url_key
-	 */
-	public java.lang.String getGadgetUrlKey () {
-		return gadgetUrlKey;
-	}
-
-	/**
-	 * Set the value related to the column: gadget_url_key
-	 * @param gadgetUrlKey the gadget_url_key value
-	 */
-	public void setGadgetUrlKey (java.lang.String gadgetUrlKey) {
-		this.gadgetUrlKey = gadgetUrlKey;
 	}
 
 
@@ -198,7 +157,13 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 		this.signatureMethod = signatureMethod;
 	}
 
+	public java.lang.String getDescription() {
+		return description;
+	}
 
+	public void setDescription(java.lang.String description) {
+		this.description = description;
+	}
 
 	/**
 	 * Return the value associated with the column: is_upload
@@ -206,7 +171,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	public java.lang.Integer getIsUpload () {
 		return isUpload;
 	}
-
+	
 	/**
 	 * Set the value related to the column: is_upload
 	 * @param isUpload the is_upload value
@@ -215,9 +180,24 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 		this.isUpload = isUpload;
 	}
 
+	
+	
+    public void setOAuthGadgetUrl(java.util.Set<org.infoscoop.dao.model.OAuthGadgetUrl> OAuthGadgetUrl) {  
+        this.OAuthGadgetUrl = OAuthGadgetUrl;  
+    }  
+       
+    public java.util.Set<org.infoscoop.dao.model.OAuthGadgetUrl> getOAuthGadgetUrl() {  
+        return OAuthGadgetUrl;  
+    }  
 
-
-
+    public void setOAuthToken(java.util.Set<org.infoscoop.dao.model.OAuthToken> OAuthToken) {  
+        this.OAuthToken = OAuthToken;  
+    }  
+       
+    public java.util.Set<org.infoscoop.dao.model.OAuthToken> getOAuthToken() {  
+        return OAuthToken;  
+    }  
+    
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.dao.model.OAuthConsumerProp)) return false;

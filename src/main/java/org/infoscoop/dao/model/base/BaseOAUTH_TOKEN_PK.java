@@ -8,20 +8,17 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 	protected int hashCode = Integer.MIN_VALUE;
 
 	private java.lang.String uid;
-	private java.lang.String gadgetUrlKey;
-	private java.lang.String serviceName;
+	private java.lang.String fkOAuthId;
 
 
 	public BaseOAUTH_TOKEN_PK () {}
 	
 	public BaseOAUTH_TOKEN_PK (
 		java.lang.String uid,
-		java.lang.String gadgetUrlKey,
-		java.lang.String serviceName) {
+		java.lang.String fkOAuthId) {
 
 		this.setUid(uid);
-		this.setGadgetUrlKey(gadgetUrlKey);
-		this.setServiceName(serviceName);
+		this.setFkOAuthId(fkOAuthId);
 	}
 
 
@@ -45,35 +42,17 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 	/**
 	 * Return the value associated with the column: gadget_url_key
 	 */
-	public java.lang.String getGadgetUrlKey () {
-		return gadgetUrlKey;
+	public java.lang.String getFkOAuthId () {
+		return fkOAuthId;
 	}
 
 	/**
 	 * Set the value related to the column: gadget_url_key
 	 * @param gadgetUrlKey the gadget_url_key value
 	 */
-	public void setGadgetUrlKey (java.lang.String gadgetUrlKey) {
-		this.gadgetUrlKey = gadgetUrlKey;
+	public void setFkOAuthId (java.lang.String fkOAuthId) {
+		this.fkOAuthId = fkOAuthId;
 	}
-
-
-
-	/**
-	 * Return the value associated with the column: service_name
-	 */
-	public java.lang.String getServiceName () {
-		return serviceName;
-	}
-
-	/**
-	 * Set the value related to the column: service_name
-	 * @param serviceName the service_name value
-	 */
-	public void setServiceName (java.lang.String serviceName) {
-		this.serviceName = serviceName;
-	}
-
 
 
 
@@ -90,16 +69,9 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 			else {
 				return false;
 			}
-			if (null != this.getGadgetUrlKey() && null != mObj.getGadgetUrlKey()) {
-				if (!this.getGadgetUrlKey().equals(mObj.getGadgetUrlKey())) {
-					return false;
-				}
-			}
-			else {
-				return false;
-			}
-			if (null != this.getServiceName() && null != mObj.getServiceName()) {
-				if (!this.getServiceName().equals(mObj.getServiceName())) {
+
+			if (null != this.getFkOAuthId() && null != mObj.getFkOAuthId()) {
+				if (!this.getFkOAuthId().equals(mObj.getFkOAuthId())) {
 					return false;
 				}
 			}
@@ -120,15 +92,8 @@ public abstract class BaseOAUTH_TOKEN_PK implements Serializable {
 			else {
 				return super.hashCode();
 			}
-			if (null != this.getGadgetUrlKey()) {
-				sb.append(this.getGadgetUrlKey().hashCode());
-				sb.append(":");
-			}
-			else {
-				return super.hashCode();
-			}
-			if (null != this.getServiceName()) {
-				sb.append(this.getServiceName().hashCode());
+			if (null != this.getFkOAuthId()) {
+				sb.append(this.getFkOAuthId().hashCode());
 				sb.append(":");
 			}
 			else {

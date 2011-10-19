@@ -16,13 +16,20 @@ import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
 import net.oauth.OAuthMessage;
 import net.oauth.OAuthProblemException;
+import net.oauth.OAuthServiceProvider;
 import net.oauth.server.OAuthServlet;
+import net.oauth.signature.RSA_SHA1;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.OAuthCertificateDAO;
+import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.OAuthTokenDAO;
+import org.infoscoop.dao.model.OAuthCertificate;
+import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.OAuthAuthenticator;
+import org.infoscoop.request.ProxyAuthenticationException;
 import org.infoscoop.service.OAuthService;
 
 public class OAuthCallbackServlet extends HttpServlet {
@@ -47,7 +54,6 @@ public class OAuthCallbackServlet extends HttpServlet {
 			final OAuthMessage requestMessage = OAuthServlet.getMessage(
 					request, null);
 			OAuthConsumer consumer = OAuthAuthenticator.getConsumer(gadgetUrl, consumerName);
-			
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 			OAuthToken token = OAuthTokenDAO.newInstance().getAccessToken(uid,
 					gadgetUrl, consumerName);

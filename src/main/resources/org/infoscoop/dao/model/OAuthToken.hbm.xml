@@ -13,18 +13,9 @@
 
 		<composite-id name="Id" class="OAUTH_TOKEN_PK">
 			<key-property name="Uid" column="`UID`" type="string"/>
-			<key-property name="GadgetUrlKey" column="gadget_url_key" type="string"/>
-			<key-property name="ServiceName" column="service_name" type="string"/>
+			<key-property name="FkOAuthId" column="fk_oauth_id" type="string"/>
 		</composite-id>
-		
-		<property
-			name="gadgetUrl"
-			column="gadget_url"
-			type="string"
-			not-null="true"
-			length="1024"
-		/>
-		
+				
 		<property
 			name="requestToken"
 			column="request_token"

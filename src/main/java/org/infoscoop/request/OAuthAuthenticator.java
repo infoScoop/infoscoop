@@ -65,6 +65,7 @@ public class OAuthAuthenticator implements Authenticator {
 	}
 
 	public static OAuthConsumer getConsumer(String gadgetUrl, String serviceName) {
+		Map<String, OAuthConsumer> tmp = consumers;
 		return consumers.get(gadgetUrl + "\t" + serviceName);
 	}
 	
@@ -118,8 +119,7 @@ public class OAuthAuthenticator implements Authenticator {
 					oauthConfig.userAuthorizationURL,
 					oauthConfig.accessTokenURL);
 		
-		OAuthConsumerProp consumerProp = OAuthConsumerDAO.newInstance()
-				.getConsumer(oauthConfig.getGadgetUrl(), name);
+		OAuthConsumerProp consumerProp = OAuthConsumerDAO.newInstance().getConsumer(oauthConfig.getGadgetUrl(), name);
 		if(consumerProp == null)
 			throw new ProxyAuthenticationException("Consumer key and secret is not set for " + oauthConfig.getGadgetUrl());
 		OAuthCertificate certificate = OAuthCertificateDAO.newInstance().get();
@@ -150,7 +150,7 @@ public class OAuthAuthenticator implements Authenticator {
 			consumer.setProperty(RSA_SHA1.PRIVATE_KEY, certificate.getPrivateKey());
 		}
 		
-		consumers.put(consumerProp.getGadgetUrl() + "\t" + name, consumer);
+		consumers.put(oauthConfig.getGadgetUrl() + "\t" + name, consumer);
 		return consumer;
 	}
 
