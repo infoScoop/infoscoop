@@ -43,7 +43,6 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.Authenticator;
-import org.infoscoop.request.OAuthAuthenticator;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.request.filter.DetectTypeFilter;
 import org.infoscoop.service.OAuthService;
@@ -145,8 +144,6 @@ public class JsonProxyServlet extends HttpServlet {
 			for( Enumeration values=req.getHeaders( name );values.hasMoreElements(); ) {
 				String value = ( String )values.nextElement();
 				vlist.add( value );
-				
-//				System.out.println(name+":\t"+value );
 			}
 		}
 		
@@ -183,8 +180,6 @@ public class JsonProxyServlet extends HttpServlet {
 	}
 	private JSONObject invokeJSONProxyRequest( HttpSession session, String uid,Map<String,String> params,Map<String,List<String>> rheaders ) throws Exception {
 		AuthType authz = AuthType.as( params.get("authz") );
-//		String container = params.get("container");
-//		String gadget = params.get("gadget");
 		
 		HttpMethods httpMethod = HttpMethods.as( params.get("httpMethod"));
 		String url = params.get("url");
