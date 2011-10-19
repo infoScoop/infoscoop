@@ -20,7 +20,6 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	public static String PROP_DESCRIPTION = "Description";
 	public static String PROP_CONSUMER_SECRET = "ConsumerSecret";
 	public static String PROP_ID = "Id";
-	public static String PROP_IS_UPLOAD = "IsUpload";
 	public static String PROP_CONSUMER_KEY = "ConsumerKey";
 
 
@@ -42,12 +41,10 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	 */
 	public BaseOAuthConsumerProp (
 		java.lang.String id,
-		java.lang.String serviceName,
-		java.lang.Integer isUpload) {
+		java.lang.String serviceName) {
 
 		this.setId(id);
 		this.setServiceName(serviceName);
-		this.setIsUpload(isUpload);
 		initialize();
 	}
 
@@ -66,7 +63,6 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	private java.lang.String consumerSecret;
 	private java.lang.String signatureMethod;
 	private java.lang.String description;
-	private java.lang.Integer isUpload;
 
 	private java.util.Set<org.infoscoop.dao.model.OAuthGadgetUrl> OAuthGadgetUrl;
 	private java.util.Set<org.infoscoop.dao.model.OAuthToken> OAuthToken;
@@ -164,23 +160,6 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	public void setDescription(java.lang.String description) {
 		this.description = description;
 	}
-
-	/**
-	 * Return the value associated with the column: is_upload
-	 */
-	public java.lang.Integer getIsUpload () {
-		return isUpload;
-	}
-	
-	/**
-	 * Set the value related to the column: is_upload
-	 * @param isUpload the is_upload value
-	 */
-	public void setIsUpload (java.lang.Integer isUpload) {
-		this.isUpload = isUpload;
-	}
-
-	
 	
     public void setOAuthGadgetUrl(java.util.Set<org.infoscoop.dao.model.OAuthGadgetUrl> OAuthGadgetUrl) {  
         this.OAuthGadgetUrl = OAuthGadgetUrl;  

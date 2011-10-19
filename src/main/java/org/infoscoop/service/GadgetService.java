@@ -49,7 +49,6 @@ public class GadgetService {
 	
 	private GadgetDAO gadgetDAO;
 	private GadgetIconDAO gadgetIconDAO;
-	private OAuthConsumerDAO oauthConsumerDAO;
 	
 	public static GadgetService getHandle() {
 		return (GadgetService) SpringUtil.getBean("GadgetService");

@@ -24,13 +24,11 @@ public class OAuthConsumerProp extends BaseOAuthConsumerProp {
 	 */
 	public OAuthConsumerProp (
 		java.lang.String id,
-		java.lang.String serviceName,
-		java.lang.Integer isUpload) {
+		java.lang.String serviceName) {
 
 		super (
 			id,
-			serviceName,
-			isUpload);
+			serviceName);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

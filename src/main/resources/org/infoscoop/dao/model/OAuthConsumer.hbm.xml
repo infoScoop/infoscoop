@@ -47,12 +47,6 @@
 			name="Description"
 			column="description"
 			type="string"
-		/>		
-		<property
-			name="IsUpload"
-			column="is_upload"
-			type="integer"
-			not-null="true"
 		/>
 		<set name="OAuthGadgetUrl" lazy="true" inverse="true">  
             <key>  

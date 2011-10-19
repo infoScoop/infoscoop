@@ -70,7 +70,6 @@ public class OAuthService {
 				obj.put("gadget_url", gadgetUrlList);
 				obj.put("consumer_key", prop.getConsumerKey());
 				obj.put("consumer_secret", prop.getConsumerSecret());
-				//obj.put("private_key", prop.getPrivateKey());
 				obj.put("signature_method", prop.getSignatureMethod());
 				obj.put("description", prop.getDescription());
 				cunsumerList.put(obj);
@@ -113,7 +112,6 @@ public class OAuthService {
 			}
 			
 			consumer.setOAuthGadgetUrl(gadgetUrlSet);
-			consumer.setIsUpload(0);
 			consumers.add(consumer);
 		}
 		if(idList.isEmpty())

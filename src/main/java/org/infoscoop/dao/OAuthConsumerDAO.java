@@ -64,13 +64,13 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 		if (gadgetUrl == null || serviceName == null) {
 			throw new RuntimeException("gadgetUrl and serviceName must be set.");
 		}
-
+		
 		Iterator results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthConsumerProp.class,"ocp").createAlias(
 						"OAuthGadgetUrl", "ogu", CriteriaSpecification.LEFT_JOIN)
 						.add(Restrictions.conjunction()
 							.add(Restrictions.eq("ocp.ServiceName", serviceName))
-							.add(Restrictions.eq("ogu.GadgetUrl", gadgetUrl))))
+							.add(Restrictions.eq("ogu.GadgetUrlKey", Crypt.getHash(gadgetUrl)))))
 				.iterator();
 		
 		if (results.hasNext()) {
@@ -88,7 +88,7 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 								Restrictions.conjunction()
 								.add(Restrictions.ne("ocp.Id", id))
 								.add(Restrictions.eq("ocp.ServiceName", serviceName))
-								.add(Restrictions.eq("ogu.GadgetUrl", gadgetUrl))))
+								.add(Restrictions.eq("ogu.GadgetUrlKey", Crypt.getHash(gadgetUrl)))))
 				.iterator();
 		
 		if(results.hasNext()){

@@ -28,9 +28,9 @@ public class OAuthGadgetUrlDAO extends HibernateDaoSupport{
 		}
 
 		Iterator results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthGadgetUrl.class).add(
-						Expression.eq(OAuthGadgetUrl.PROP_FKOAUTHID,oauthId)).add(
-								Expression.eq(OAuthGadgetUrl.PROP_GADGET_URL,gadgetUrl)))
+				DetachedCriteria.forClass(OAuthGadgetUrl.class)
+				.add(Expression.eq(OAuthGadgetUrl.PROP_FKOAUTHID,oauthId))
+				.add(Expression.eq(OAuthGadgetUrl.PROP_GADGET_URL_KEY,Crypt.getHash(gadgetUrl))))
 				.iterator();
 		if (results.hasNext()) {
 			return (OAuthGadgetUrl)results.next();

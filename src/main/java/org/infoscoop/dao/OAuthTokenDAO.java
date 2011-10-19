@@ -30,6 +30,7 @@ import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.OAUTH_TOKEN_PK;
 import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.dao.model.OAuthToken;
+import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -55,7 +56,7 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 				.add(Restrictions.conjunction()
 					.add(Restrictions.eq("ot.Id.Uid", uid))
 					.add(Restrictions.eq("ocp.ServiceName", serviceName))
-					.add(Restrictions.eq("ogu.GadgetUrl", gadgetUrl))))
+					.add(Restrictions.eq("ogu.GadgetUrlKey", Crypt.getHash(gadgetUrl)))))
 				.iterator();
 		
 		if (results.hasNext()) {
@@ -80,7 +81,7 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 				.createAlias("OAuthToken", "ot", CriteriaSpecification.LEFT_JOIN)
 				.add(Restrictions.conjunction()
 					.add(Restrictions.eq("ot.Id.Uid", uid))
-					.add(Restrictions.eq("ogu.GadgetUrl", gadgetUrl))))
+					.add(Restrictions.eq("ogu.GadgetUrlKey", Crypt.getHash(gadgetUrl)))))
 				.iterator();
 		
 		if (results.hasNext()) {
