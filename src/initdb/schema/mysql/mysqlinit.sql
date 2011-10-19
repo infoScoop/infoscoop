@@ -418,8 +418,7 @@ create table IS_OAUTH_CONSUMERS (
   consumer_key varchar(255),
   consumer_secret varchar(255),
   signature_method varchar(20),
-  description text,
-  is_upload int(1) not null default 0
+  description text
 ) ENGINE=InnoDB;
 create index is_oauth_consumers_service_name on IS_OAUTH_CONSUMERS(service_name);
 

@@ -4065,15 +4065,25 @@ INSERT INTO `IS_OAUTH_CERTIFICATE` (`consumer_key`, `private_key`, `certificate`
 
 DROP TABLE IF EXISTS `IS_OAUTH_CONSUMERS`;
 CREATE TABLE IF NOT EXISTS `IS_OAUTH_CONSUMERS` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `gadget_url` varchar(1024) NOT NULL,
-  `gadget_url_key` varchar(255) NOT NULL,
+  `id` varchar(64) NOT NULL,
   `service_name` varchar(255) NOT NULL,
   `consumer_key` varchar(255) DEFAULT NULL,
   `consumer_secret` varchar(255) DEFAULT NULL,
   `signature_method` varchar(20) DEFAULT NULL,
-  `is_upload` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+
+
+
+
+DROP TABLE IF EXISTS `IS_OAUTH_GADGET_URLS`;
+CREATE TABLE IF NOT EXISTS `IS_OAUTH_GADGET_URLS` (
+  `id` bigint not null auto_increment primary key,
+  `fk_oauth_id` varchar(64) not null,
+  `gadget_url` varchar(1024) not null,
+  `gadget_url_key` varchar(255) not null,
+  FOREIGN KEY (`fk_oauth_id`) REFERENCES `IS_OAUTH_CONSUMERS`(`id`) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
@@ -4082,16 +4092,13 @@ CREATE TABLE IF NOT EXISTS `IS_OAUTH_CONSUMERS` (
 
 DROP TABLE IF EXISTS `IS_OAUTH_TOKENS`;
 CREATE TABLE IF NOT EXISTS `IS_OAUTH_TOKENS` (
+  `fk_oauth_id` varchar(64) not null,
   `UID` varchar(150) NOT NULL,
-  `gadget_url` varchar(1024) NOT NULL,
-  `gadget_url_key` varchar(255) NOT NULL,
-  `service_name` varchar(255) NOT NULL,
   `request_token` varchar(255) DEFAULT NULL,
   `access_token` varchar(255) DEFAULT NULL,
   `token_secret` varchar(255) NOT NULL,
-  PRIMARY KEY (`UID`,`gadget_url_key`,`service_name`)
+  PRIMARY KEY (`fk_oauth_id`,`UID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 
 

@@ -444,8 +444,7 @@ create table is_oauth_consumers (
   service_name varchar(255 BYTE) not null,
   consumer_key varchar(255 BYTE),
   consumer_secret varchar(255 BYTE),
-  signature_method varchar(20 BYTE),
-  is_upload number(1) default 0 not null
+  signature_method varchar(20 BYTE)
 );
 create index is_oauth_consumers_service_name on is_oauth_consumers(service_name);
 
