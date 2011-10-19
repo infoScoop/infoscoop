@@ -93,7 +93,8 @@ public class HolidaysService {
 			String lang = locale.getLanguage();
 			if( lang.equalsIgnoreCase("all"))
 				lang = "ALL";
-			
+			if(lang.equalsIgnoreCase("pt-br"))
+				lang = "pt-BR";
 			obj.put("lang", lang);
 			localeArray.put(obj);
 		}
