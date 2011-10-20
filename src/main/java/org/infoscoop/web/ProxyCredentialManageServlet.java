@@ -18,10 +18,12 @@
 package org.infoscoop.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,10 +35,14 @@ import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.AuthCredentialDAO;
+import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.model.AuthCredential;
+import org.infoscoop.dao.model.OAuthConsumerProp;
+import org.infoscoop.dao.model.OAuthGadgetUrl;
 import org.infoscoop.service.AuthCredentialService;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ProxyCredentialManageServlet extends HttpServlet {
 
@@ -57,13 +63,35 @@ public class ProxyCredentialManageServlet extends HttpServlet {
 		try {
 			if("list".equals(command)){
 				response.setHeader("Content-Type", "text/xml; charset=UTF-8");
-				List credentialList = AuthCredentialDAO.newInstance().select(uid);
+				List<AuthCredential> credentialList = AuthCredentialDAO.newInstance().select(uid);
+				List<OAuthConsumerProp> consumers = OAuthConsumerDAO.newInstance().getConsumersByUid(uid);
+				List<String> idList = new ArrayList<String>();
 				try {
 					JSONArray json = new JSONArray();
-					for(Iterator it = credentialList.iterator(); it.hasNext();){
+					for(Iterator<AuthCredential> it = credentialList.iterator(); it.hasNext();){
 						AuthCredential c = (AuthCredential)it.next();
 						json.put(c.toJSON());
 					}
+					
+					JSONObject oauthJSON = new JSONObject();					
+					for(Iterator<OAuthConsumerProp> i = consumers.iterator(); i.hasNext();){
+						OAuthConsumerProp consumerProp = i.next();
+						String id = consumerProp.getId();
+						if(!idList.contains(id)){
+							idList.add(id);
+							oauthJSON.put("service_name", consumerProp.getServiceName());
+							oauthJSON.put("authType", "OAuth");
+							oauthJSON.put("description", consumerProp.getDescription());
+							Set<OAuthGadgetUrl> gadgetUrls = consumerProp.getOAuthGadgetUrl();
+							JSONArray gadgetUrlArr = new JSONArray();
+							for(Iterator<OAuthGadgetUrl> j = gadgetUrls.iterator(); j.hasNext();){
+								gadgetUrlArr.put(j.next().getGadgetUrl());
+							}
+							oauthJSON.put("gadgetUrls", gadgetUrlArr);
+						}
+					}
+					json.put(oauthJSON);
+					
 					response.getWriter().write(json.toString());
 					response.getWriter().flush();
 				} catch (JSONException e) {
