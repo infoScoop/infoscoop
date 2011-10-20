@@ -87,7 +87,7 @@
 
 		<copy todir="${build.migration}/lib">
 			<fileset dir="${src.main.web}/WEB-INF/lib" includes="*.jar" />
-			<fileset dir="${basedir}/lib/migration" includes="*.jar" />
+			<fileset dir="${basedir}/lib/migration" includes="*.jar" excludes="ant.jar"/>
 		</copy>
 
 		<fixcrlf srcdir="${build.migration}" eol="lf" eof="remove" includes="**/*.sh" />
