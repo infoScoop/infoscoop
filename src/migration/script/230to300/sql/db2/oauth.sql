@@ -12,7 +12,7 @@ create table ${SCHEMA_NAME}is_oauth_consumers (
   signature_method varchar(20),
   description clob
 ) compress yes;
-create index ${SCHEMA_NAME}is_oauth_consumers_service_name on ${SCHEMA_NAME}is_oauth_consumers(service_name);
+create index ${SCHEMA_NAME}is_oauth_service_name on ${SCHEMA_NAME}is_oauth_consumers(service_name);
 
 --
 -- OAUTH_GADGET_URL
@@ -24,7 +24,7 @@ create table ${SCHEMA_NAME}is_oauth_gadget_urls (
   gadget_url_key varchar(255) not null,
   foreign key (fk_oauth_id) references ${SCHEMA_NAME}is_oauth_consumers(id) on delete cascade
 ) compress yes;
-create index ${SCHEMA_NAME}is_oauth_gadget_urls_gadget_url_key on ${SCHEMA_NAME}is_oauth_gadget_urls(gadget_url_key);
+create index ${SCHEMA_NAME}is_oauth_gadget_url_key on ${SCHEMA_NAME}is_oauth_gadget_urls(gadget_url_key);
 
 --
 -- OAUTH_TOKEN
@@ -38,4 +38,5 @@ create table ${SCHEMA_NAME}is_oauth_tokens (
   primary key (fk_oauth_id, uid),
   foreign key (fk_oauth_id) references ${SCHEMA_NAME}is_oauth_consumers(id) on delete cascade
 ) compress yes;
+
 

@@ -12,7 +12,7 @@ create table ${SCHEMA_NAME}IS_OAUTH_CONSUMERS (
   signature_method varchar(20),
   description text
 ) ENGINE=InnoDB;
-create index ${SCHEMA_NAME}is_oauth_consumers_service_name on ${SCHEMA_NAME}IS_OAUTH_CONSUMERS(service_name);
+create index ${SCHEMA_NAME}is_oauth_service_name on ${SCHEMA_NAME}IS_OAUTH_CONSUMERS(service_name);
 
 --
 -- OAUTH_GADGET_URL
@@ -24,7 +24,7 @@ create table ${SCHEMA_NAME}IS_OAUTH_GADGET_URLS (
   gadget_url_key varchar(255) not null,
   foreign key (fk_oauth_id) references ${SCHEMA_NAME}IS_OAUTH_CONSUMERS(id) on delete cascade
 ) ENGINE=InnoDB;
-create index ${SCHEMA_NAME}is_oauth_gadget_urls_gadget_url_key on ${SCHEMA_NAME}IS_OAUTH_GADGET_URLS(gadget_url_key);
+create index ${SCHEMA_NAME}is_oauth_gadget_url_key on ${SCHEMA_NAME}IS_OAUTH_GADGET_URLS(gadget_url_key);
 
 --
 -- OAUTH_TOKEN
