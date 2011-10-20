@@ -427,6 +427,20 @@ IS_Request.showCredentialList = function(e){
 		return authUrlList;
 	}
 	
+	function getGadgetTitleByServiceName(serviceName, urls){
+		var titleList = [];
+		for(var i=0;i<urls.length;i++){
+			for(tabId in IS_Portal.widgetLists ){
+				for(widgetId in IS_Portal.widgetLists[tabId] ) {
+					var widget = IS_Portal.widgetLists[tabId][widgetId];
+					if(widget.widgetType == "g_" + urls[i])
+						titleList.push(IS_Widget.WidgetHeader.getTitle(widget));
+				}
+			}
+		}
+		return titleList;
+	}
+	
 	var opt = {
 	  method: 'get',
 	  asynchronous: true,
@@ -438,60 +452,22 @@ IS_Request.showCredentialList = function(e){
 		  
 		  for(var i = 0; i < credentialList.length; i++){
 			  
-			  var authUrlList = getAuthUrlList(credentialList[i].id);
-			  authUrlList = authUrlList.uniq();
-			  
-			  if(credentialList[i].sysNum == 0 && authUrlList.length == 0){
-				  IS_Request.removeCredential(credentialList[i].id);
-				  //the function of deleting authentication infomation is put on hold and invalied in 1.2.1
-				  /*
-				  var deleteIcon = document.createElement('img');
-				  deleteIcon.id = credentialList[i].id + "_deleteCredentialInfoIcon";
-				  deleteIcon.style.cssFloat = 'right';
-				  deleteIcon.style.styleFloat = 'right';
-				  deleteIcon.style.cursor = 'pointer';
-				  deleteIcon.style.top = '2px';
-				  deleteIcon.src = imageURL + 'trush.png';
-				  IS_Event.observe(deleteIcon, "click", function(e){
-					  var deleteIcon = IS_Event.element(e);
-					  var id = deleteIcon.id.split("_")[0];
-					  var opt = {
-						method: 'post',
-						asynchronous: true,
-						postBody: "command=del&id=" + id,
-						onSuccess:function(req, obj){
-							credentialListDiv.removeChild($(id + '_authCredentialInfoTable'));
-							IS_EventDispatcher.newEvent("resetAuthCredential", "resetAuthCredential");
-						},
-						onException:function(req, obj){
-							console.log(["Error:",obj]);
-						}
-					  }
-					  AjaxRequest.invoke(hostPrefix + "/credsrv", opt);
-					  
-				  }, false, "_authCredentialList");
-				  td.appendChild(deleteIcon);
-				  */
-				  continue;
-			  }
-			  
 			  var table = document.createElement('table');
-			  table.id = credentialList[i].id + "_authCredentialInfoTable";
 			  table.className = 'authCredentialInfoTable';
 			  var tbody = document.createElement('tbody');
 			  
 			  var tr = document.createElement('tr');
-			  var td = document.createElement('th');
-			  td.colSpan = 2;
+			  var th = document.createElement('th');
+			  th.colSpan = 2;
 			  var headerLeft = document.createElement('span');
 			  headerLeft.style.cssFloat = 'left';
 			  headerLeft.style.styleFloat = 'left';
 			  headerLeft.className = 'authCredentialInfoTitle';
 			  //Authentication information
 			  headerLeft.appendChild(document.createTextNode(IS_R.lb_authInfo + (i + 1) ));
-			  td.appendChild(headerLeft);
+			  th.appendChild(headerLeft);
 
-			  tr.appendChild(td);
+			  tr.appendChild(th);
 			  
 			  tbody.appendChild(tr);
 			  
@@ -509,160 +485,126 @@ IS_Request.showCredentialList = function(e){
 			  tr.appendChild(td);
 			  tbody.appendChild(tr);
 			  
-			  var tr = document.createElement('tr');
-			  var td = document.createElement('td');
-			  td.width = '30%';
-			  td.className = 'authCredentialListLightTd';
-			  //User ID
-			  td.appendChild(document.createTextNode(IS_R.lb_userID));
-			  tr.appendChild(td);
-			  var td = document.createElement('td');
-			  td.appendChild(document.createTextNode(
-				  credentialList[i].authUid
-				  ));
-			  tr.appendChild(td);
-			  tbody.appendChild(tr);
-			  
-			  var tr = document.createElement('tr');
-			  var td = document.createElement('td');
-			  td.className = 'authCredentialListLightTd';
-			  //Password
-			  td.appendChild(document.createTextNode(IS_R.lb_password));
-			  tr.appendChild(td);
-			  var td = document.createElement('td');
-			  td.appendChild(document.createTextNode("*******"));
-
-			  //the function of password reset is put on hold and invalied in 1.2.1
-			  if(credentialList[i].sysNum == 0&&false){
-			  var resetBtn = document.createElement('input');
-			  resetBtn.id = credentialList[i].id + "_resetBtn";
-			  resetBtn.type = 'button';
-			  //Reset
-			  resetBtn.value = IS_R.lb_reset;
-			  td.appendChild(resetBtn);
-				  
-			  IS_Event.observe(resetBtn, "click", function(){
-			  	  var modal;
-				  var createCreadentialFormDiv = function(_restBtn){
-					  var creadentialFormDiv = document.createElement('div');
-					  
-					  var credentialFormTable = document.createElement('table');
-					  credentialFormTbody = document.createElement('tbody');
-					  
-					  passwordTr = document.createElement('tr');
-					  passwordLabelTd = document.createElement('td');
-					  //Password
-					  passwordLabelTd.appendChild(document.createTextNode(IS_R.lb_password));
-					  passwordTr.appendChild(passwordLabelTd);
-					  
-					  passwordInputTd = document.createElement('td');
-					  var passwordInput = document.createElement("input");
-					  passwordInput.id = "previewPasswordForm";
-					  passwordInput.type = "password";
-					  passwordInput.maxLength = 50;
-					  passwordInputTd.appendChild(passwordInput);
-					  passwordTr.appendChild(passwordInputTd);
-					  
-					  credentialFormTbody.appendChild(passwordTr);
-					  credentialFormTable.appendChild(credentialFormTbody);
-					  
-					  creadentialFormDiv.appendChild(credentialFormTable);
-
-					  var creadentialFormBtn = document.createElement("input");
-					  creadentialFormBtn.type = "button";
-					  //Reset
-					  creadentialFormBtn.value = IS_R.lb_reset;
-					  creadentialFormDiv.appendChild(creadentialFormBtn);
-					  
-					  IS_Event.observe( creadentialFormBtn, 'click', function(){
-						  modal.close();
-						  authPassword = passwordInput.value;
-						  if(authPassword)
-							authPassword = rsaPK.encrypt(authPassword);
-						  
-						  var id = _restBtn.id.split('_')[0];
-
-						  var authUrlList = getAuthUrlList(id);
-						  var postBody = "command=" + ( (authUrlList.length == 0) ? "frst" : "rst" ) + "&id=" + id + "&authPasswd=" + authPassword;
-						  for(var i = 0; i < authUrlList.length; i++){
-							  postBody += "&url=" + authUrlList[i];
-						  }
-						  var opt = {
-							method: 'post',
-							asynchronous: true,
-							postBody: postBody,
-							onSuccess:function(req, obj){
-								var errorUrls = eval(req.responseText);
-								if(!errorUrls ||errorUrls.length == 0){
-									IS_EventDispatcher.newEvent("resetAuthCredential", "resetAuthCredential");
-								}else{
-									//Do you want to set the password even though authentication failed for the URL below?
-									var errorMsg = IS_R.ms_passwordResetConfirm;
-									for(var i = 0; i < errorUrls.length; i++){
-										errorMsg += "\n" + errorUrls[i];
-									}
-									if(confirm(errorMsg)){
-										var opt = {
-											method: 'post',
-											asynchronous: true,
-											postBody : "command=frst&id=" + id + "&authPasswd=" + authPassword,
-											onSuccess:function(req, obj){
-												IS_EventDispatcher.newEvent("resetAuthCredential", "resetAuthCredential");
-											},
-										    onFailure:function(req, obj){
-												//Failed to update password
-												alert(IS_R.ms_updatePasswordError + obj);
-												msg.error(["Error:",obj]);
-											}
-										}
-										AjaxRequest.invoke(hostPrefix + "/credsrv", opt);
-									}
-								}
-							},
-			   				 onFailure:function(req, obj){
-								//Failed to update password
-								alert(IS_R.ms_updatePasswordError + obj);
-								msg.error(["Error:",obj]);
-							}
-						  }
-						  AjaxRequest.invoke(hostPrefix + "/credsrv", opt);
-						  //is_processUrlContents(url, displayPreview.bind(this, url), function(){}, ["authType", authType, "authuserid",authUid,"authpassword",authPassword]);
-					  }, false, "_authCredentialList");
-					  return creadentialFormDiv;
-				  };
-				  modal = new Control.Modal(this,
-												{
-												  contents: createCreadentialFormDiv(this),
-												  opacity: 0.5,
-												  position: 'relative',
-												  zIndex: 1000,
-												  width:  270,
-												  height: 60
-											  }
-												);
-				  modal.open();
-				  $('previewPasswordForm').focus();
-			  }.bind(resetBtn), false, "_authCredentialList");
-				  
-			  }
-			  tr.appendChild(td);
-			  tbody.appendChild(tr);
-			  
-			  var tr = document.createElement('tr');
-			  var td = document.createElement('td');
-			  td.className = 'authCredentialListLightTd';
-			  td.appendChild(document.createTextNode(IS_R.lb_urlList));
-			  tr.appendChild(td);
-			  tbody.appendChild(tr);
-			  
-			  td.rowSpan = (authUrlList.length == 0) ? 1 : authUrlList.length;
-			  for(var j = 0; j < authUrlList.length;j++){
+			  if(credentialList[i].authType == "OAuth"){
+				  var tr = document.createElement('tr');
 				  var td = document.createElement('td');
-				  td.appendChild(document.createTextNode(authUrlList[j]));
+				  td.width = '30%';
+				  td.className = 'authCredentialListLightTd';
+				  
+				  td.appendChild(document.createTextNode(IS_R.lb_oauthServiceName));
+				  tr.appendChild(td);
+				  var td = document.createElement('td');
+				  td.appendChild(document.createTextNode(credentialList[i].service_name));
+				  tr.appendChild(td);
+				  
+				  var deleteDiv = document.createElement('div');
+				  deleteDiv.className = "authCredentialDelete";
+				  var deleteIcon = document.createElement('img');
+				  deleteIcon.src = imageURL + 'trash.gif';
+				  deleteDiv.appendChild(deleteIcon);
+				  th.appendChild(deleteDiv);
+				  var deleteLabel = document.createElement("span");
+				  deleteLabel.appendChild(document.createTextNode(IS_R.lb_delete));
+				  deleteDiv.appendChild(deleteLabel);
+
+				  IS_Event.observe(deleteDiv, "click", function(serviceName, authTable){
+					if(confirm(IS_R.getResource(IS_R.ms_confirmOAuthDelete, [serviceName]))){
+						
+						IS_Request.removeOAuthToken(serviceName, function(authTable){
+							Element.remove($(authTable));
+						}.bind(this, authTable));
+					}
+				  }.bind(this, credentialList[i].service_name, table), false, "_authCredentialList");
+				  
+				  tbody.appendChild(tr);
+				  
+				  var tr = document.createElement('tr');
+				  var td = document.createElement('td');
+				  td.className = 'authCredentialListLightTd';
+				  
+				  td.appendChild(document.createTextNode(IS_R.lb_description));
+				  tr.appendChild(td);
+				  var td = document.createElement('td');
+				  td.appendChild(document.createTextNode(credentialList[i].description));
+				  td.innerHTML = td.innerHTML.split("\n").join("<br>");
 				  tr.appendChild(td);
 				  tbody.appendChild(tr);
+				  
 				  var tr = document.createElement('tr');
+				  var td = document.createElement('td');
+				  td.className = 'authCredentialListLightTd';
+				  td.appendChild(document.createTextNode(IS_R.lb_gadgetsList));
+				  tr.appendChild(td);
+				  tbody.appendChild(tr);
+				  
+				  var titleList = getGadgetTitleByServiceName(credentialList[i].service_name, credentialList[i].gadget_urls);
+				  
+				  if(titleList.length == 0){
+				  	  IS_Request.removeOAuthToken(credentialList[i].service_name);
+					  continue;
+				  }
+				  
+				  td.rowSpan = (titleList.length == 0) ? 1 : titleList.length;
+				  for(var j = 0; j < titleList.length;j++){
+					  var td = document.createElement('td');
+					  td.appendChild(document.createTextNode(titleList[j]));
+					  tr.appendChild(td);
+					  tbody.appendChild(tr);
+					  var tr = document.createElement('tr');
+				  }
+			  }else{
+				  var tr = document.createElement('tr');
+				  var td = document.createElement('td');
+				  td.width = '30%';
+				  td.className = 'authCredentialListLightTd';
+				  //User ID
+				  td.appendChild(document.createTextNode(IS_R.lb_userID));
+				  tr.appendChild(td);
+				  var td = document.createElement('td');
+				  td.appendChild(document.createTextNode(
+					  credentialList[i].authUid
+					  ));
+				  tr.appendChild(td);
+				  tbody.appendChild(tr);
+				  
+				  var tr = document.createElement('tr');
+				  var td = document.createElement('td');
+				  td.className = 'authCredentialListLightTd';
+				  //Password
+				  td.appendChild(document.createTextNode(IS_R.lb_password));
+				  tr.appendChild(td);
+				  var td = document.createElement('td');
+				  td.appendChild(document.createTextNode("*******"));
+	
+				  tr.appendChild(td);				  
+
+				  tbody.appendChild(tr);
+				  
+				  var tr = document.createElement('tr');
+				  var td = document.createElement('td');
+				  td.className = 'authCredentialListLightTd';
+				  td.appendChild(document.createTextNode(IS_R.lb_urlList));
+				  tr.appendChild(td);
+				  tbody.appendChild(tr);
+				  
+				  var authUrlList = getAuthUrlList(credentialList[i].id);
+				  authUrlList = authUrlList.uniq();
+				  
+				  if(credentialList[i].sysNum == 0 && authUrlList.length == 0){
+					  IS_Request.removeCredential(credentialList[i].id);
+					  continue;
+				  }
+				  
+				  td.rowSpan = (authUrlList.length == 0) ? 1 : authUrlList.length;
+				  for(var j = 0; j < authUrlList.length;j++){
+					  var td = document.createElement('td');
+					  td.appendChild(document.createTextNode(authUrlList[j]));
+					  tr.appendChild(td);
+					  tbody.appendChild(tr);
+					  var tr = document.createElement('tr');
+				  }
 			  }
+			  
 			  table.appendChild(tbody);
 			  credentialListDiv.appendChild(table);
 
@@ -703,4 +645,19 @@ IS_Request.removeCredential = function(authCredentialId){
 	  onComplete:function(){}
 	}
 	AjaxRequest.invoke(hostPrefix + "/credsrv", opt, self.id);
+}
+
+IS_Request.removeOAuthToken = function(serviceName, callback){
+	callback = callback? callback : function(){};
+	
+	var opt = {
+		method: 'post',
+		asynchronous: true,
+		postBody: "command=del_oauth&service_name=" + serviceName,
+		onSuccess:callback,
+		onException:function(req, obj){
+			console.log(["Error:",obj]);
+		}
+	}
+	AjaxRequest.invoke(hostPrefix + "/credsrv", opt);
 }

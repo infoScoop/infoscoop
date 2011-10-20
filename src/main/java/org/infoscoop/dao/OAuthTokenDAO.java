@@ -70,10 +70,10 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<OAuthToken> getAccessTokens(String uid, String gadgetUrl) {
-		if (uid == null || gadgetUrl == null) {
+	public List<OAuthToken> getAccessTokens(String uid, String serviceName) {
+		if (uid == null || serviceName == null) {
 			throw new RuntimeException(
-					"uid and gadgetUrl must be set.");
+					"uid and serviceName must be set.");
 		}
 		Iterator<OAuthConsumerProp> results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthConsumerProp.class,"ocp")
@@ -81,7 +81,7 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 				.createAlias("OAuthToken", "ot", CriteriaSpecification.LEFT_JOIN)
 				.add(Restrictions.conjunction()
 					.add(Restrictions.eq("ot.Id.Uid", uid))
-					.add(Restrictions.eq("ogu.GadgetUrlKey", Crypt.getHash(gadgetUrl)))))
+					.add(Restrictions.eq("ocp.ServiceName", serviceName))))
 				.iterator();
 		
 		if (results.hasNext()) {

@@ -139,7 +139,8 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 	public List<OAuthConsumerProp> getConsumersByUid(String uid){
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthConsumerProp.class)
-				.createAlias("OAuthToken", "ot", CriteriaSpecification.LEFT_JOIN)
+				.createAlias("OAuthToken", "ot", CriteriaSpecification.INNER_JOIN)
+				.add(Restrictions.isNotNull("ot.accessToken"))
 				.createAlias("OAuthGadgetUrl", "ogu", CriteriaSpecification.LEFT_JOIN)
 				.add(Restrictions.eq("ot.Id.Uid", uid)));
 	}

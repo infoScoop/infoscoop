@@ -133,6 +133,7 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 		editConfNode.appendChild( editUserPref );
 	}
 	
+	/*
 	if(conf.ModulePrefs && conf.ModulePrefs.OAuth){
 		isExistEditPref = true;
 			
@@ -206,8 +207,8 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 		  }
 		}
 		AjaxRequest.invoke(url, opt);
-		
 	}
+	*/
 	
 	if(!isExistEditPref){
 		var noEdit = document.createElement("div");
@@ -982,6 +983,7 @@ ISA_WidgetConf.EditWidgetConf.save = function(type, conf, onSuccess, onError){
 	}
 
 	var oauthServiceList = false;
+	/*
 	if(conf.ModulePrefs && conf.ModulePrefs.OAuth){
 		oauthServiceList = [];
 		serviceList = conf.ModulePrefs.OAuth.Service
@@ -994,8 +996,8 @@ ISA_WidgetConf.EditWidgetConf.save = function(type, conf, onSuccess, onError){
 			  consumerSecret: $F('oauth_consumer_secret_' + serviceName)
 			});
 		}
-		
 	}
+	*/
 	if(errorMsgs.length > 0){
 		alert(errorMsgs.join('\n'));
 		return;

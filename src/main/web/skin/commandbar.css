@@ -227,7 +227,7 @@
 .infoScoop .authCredentialInfoList{
 	width:100%;
 }
-.infoScoop .authCredentialInfoList .authCredentialInfoList table{
+.infoScoop .authCredentialInfoList .authCredentialInfoTable{
 	width:100%;
 }
 .infoScoop .authCredentialInfoList .authCredentialInfoTable th{
@@ -238,6 +238,20 @@
 	padding:2px;
 	font-size :90%;
 	color:gray;
+}
+
+.infoScoop .authCredentialInfoList .authCredentialDelete{
+	float:right;
+	padding:2px;
+	cursor:pointer;
+}
+
+.infoScoop .authCredentialInfoList .authCredentialDelete span{
+	position:relative;
+	top:-2px;
+	font-size :80%;
+	color:#000;
+	font-weight:normal;
 }
 
 .infoScoop .authCredentialInfoList .authCredentialListTable{

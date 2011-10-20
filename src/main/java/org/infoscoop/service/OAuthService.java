@@ -12,10 +12,10 @@ import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.OAuthGadgetUrlDAO;
 import org.infoscoop.dao.OAuthTokenDAO;
-import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.dao.model.OAuthCertificate;
+import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.dao.model.OAuthGadgetUrl;
-import org.infoscoop.util.Crypt;
+import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -138,6 +138,12 @@ public class OAuthService {
 	public void deleteOAuthToken(String uid, String gadgetUrl, String serviceName){
 		this.oauthTokenDAO.deleteOAuthToken(this.oauthTokenDAO.getAccessToken(uid, gadgetUrl, serviceName));
 	}	
+
+	public void deleteOAuthTokens(String uid, String serviceName){
+		List<OAuthToken> tokens = this.oauthTokenDAO.getAccessTokens(uid, serviceName);
+		if(tokens.size() > 0)
+			this.oauthTokenDAO.deleteOAuthToken(tokens);
+	}
 	
 	public String getContainerCertificateJson()throws Exception{
 		JSONObject obj = new JSONObject();
