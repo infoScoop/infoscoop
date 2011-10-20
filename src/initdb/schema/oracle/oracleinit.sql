@@ -438,20 +438,20 @@ create table IS_ACCOUNTS (
 --
 -- OAUTH_CONSUMER
 --
-create sequence is_oauth_consumers_id_seq;
 create table is_oauth_consumers (
   id varchar(64 BYTE) not null primary key,
   service_name varchar(255 BYTE) not null,
   consumer_key varchar(255 BYTE),
   consumer_secret varchar(255 BYTE),
-  signature_method varchar(20 BYTE)
+  signature_method varchar(20 BYTE),
+  description clob
 );
 create index is_oauth_consumers_service_name on is_oauth_consumers(service_name);
 
 --
 -- OAUTH_GADGET_URL
 --
-CREATE sequence is_oauth_gadget_urls_id_seq increment BY 1 start WITH 1;
+CREATE sequence is_oauth_gadget_urls_id_seq;
 create table is_oauth_gadget_urls (
   id number(18) not null primary key,
   fk_oauth_id varchar(64 BYTE) not null,
@@ -460,11 +460,6 @@ create table is_oauth_gadget_urls (
   foreign key (fk_oauth_id) references is_oauth_consumers(id) on delete cascade
 );
 create index is_oauth_gadget_urls_gadget_url_key on is_oauth_gadget_urls(gadget_url_key);
-create or replace trigger is_oauth_gadget_urls_trigger
-before insert on is_oauth_gadget_urls for each row
-begin
-	select is_oauth_gadget_urls_id_seq.nextval into :new.id from dual;
-end;
 
 --
 -- OAUTH_TOKEN

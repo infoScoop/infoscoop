@@ -425,7 +425,8 @@ create table is_oauth_consumers (
   service_name varchar(255) not null,
   consumer_key varchar(255),
   consumer_secret varchar(255),
-  signature_method varchar(20)
+  signature_method varchar(20),
+  description clob
 ) compress yes;
 create index is_oauth_consumers_service_name on is_oauth_consumers(service_name);
 
