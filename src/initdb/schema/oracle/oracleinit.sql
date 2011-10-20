@@ -446,7 +446,7 @@ create table is_oauth_consumers (
   signature_method varchar(20 BYTE),
   description clob
 );
-create index is_oauth_consumers_service_name on is_oauth_consumers(service_name);
+create index is_oauth_service_name on is_oauth_consumers(service_name);
 
 --
 -- OAUTH_GADGET_URL
@@ -459,7 +459,7 @@ create table is_oauth_gadget_urls (
   gadget_url_key varchar(255 BYTE) not null,
   foreign key (fk_oauth_id) references is_oauth_consumers(id) on delete cascade
 );
-create index is_oauth_gadget_urls_gadget_url_key on is_oauth_gadget_urls(gadget_url_key);
+create index is_oauth_gadget_url_key on is_oauth_gadget_urls(gadget_url_key);
 
 --
 -- OAUTH_TOKEN
