@@ -155,13 +155,12 @@ public class SignedAuthenticator implements Authenticator {
 			String[] params = query.split("&");
 			for (int i = 0; i < params.length; i++) {
 				try {
-					String[] param = params[i].split("=");
+					String[] param = splitParameter(params[i].split("="));
 					String name = URLDecoder.decode(param[0], "UTF-8");
 					if (name.startsWith("oauth") || name.startsWith("xoauth")
 							|| name.startsWith("opensocial"))
 						continue;
-					String value = URLDecoder.decode(param[1], "UTF-8");
-					optionParams.put(name, value);
+					optionParams.put(name, URLDecoder.decode(param[1], "UTF-8"));						
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
@@ -201,12 +200,25 @@ public class SignedAuthenticator implements Authenticator {
 			}
 			String[] keyvalues = postBodyStr.split("&");
 			for (int i = 0; i < keyvalues.length; i++) {
-				String[] keyvalue = keyvalues[i].split("=");
-				params.put(keyvalue[0].trim(), URLDecoder.decode(keyvalue[1].trim(), charset));
+				String[] keyvalue = splitParameter(keyvalues[i].split("="));
+				params.put(keyvalue[0].trim(), URLDecoder.decode(keyvalue[1].trim(), charset));					
 			}
 			requestBody.reset();
 		}
 		return params;
-
+	}
+	
+	private static String[] splitParameter(String[] params){
+		String[] sp = new String[2];
+		switch(params.length){
+			case 1:
+				sp[0] = params[0];
+				sp[1] = "";
+				break;
+			case 2:
+				sp = params;
+				break;
+		}
+		return sp;
 	}
 }
