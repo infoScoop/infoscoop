@@ -150,7 +150,7 @@ public class GadgetService {
 	 * @param widgetConfJSON a widgetConf whose form is JSON.
 	 * @throws Exception
 	 */
-	public void updateGadget(String type, String gadgetJSON, String authServiceList) throws Exception {
+	public void updateGadget(String type, String gadgetJSON) throws Exception {
 		if( type.startsWith("upload__"))
 			type = type.substring(8);
 		

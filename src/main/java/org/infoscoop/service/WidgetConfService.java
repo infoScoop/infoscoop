@@ -206,10 +206,9 @@ public class WidgetConfService {
 	/**
 	 * @param type
 	 * @param widgetConfJSON JSON format widgetConf
-	 * @param authServiceList isn't used in current version.
 	 * @throws Exception
 	 */
-	public void updateWidgetConf(String type, String widgetConfJSON, String authServiceList) throws Exception {
+	public void updateWidgetConf(String type, String widgetConfJSON) throws Exception {
 		try {
 			WidgetConf conf = widgetConfDAO.get(type);
 			Element confEl = conf.getElement();

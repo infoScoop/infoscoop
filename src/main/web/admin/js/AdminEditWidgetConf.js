@@ -133,83 +133,6 @@ ISA_WidgetConf.EditWidgetConf.render = function(editConfNode, type, conf){
 		editConfNode.appendChild( editUserPref );
 	}
 	
-	/*
-	if(conf.ModulePrefs && conf.ModulePrefs.OAuth){
-		isExistEditPref = true;
-			
-		var serviceList = conf.ModulePrefs.OAuth.Service;
-		var oauthFieldSet = $.DIV({className:"configSet"}, $.P({className: "configSetHeader"},ISA_R.alb_oauthConsumerSettings));
-
-		for(var i = 0; i < serviceList.length; i++){
-			var serviceName = serviceList[i].name;
-			oauthFieldSet.appendChild(
-				$.TABLE({width:"100%"},
-						$.TBODY({},
-								$.TR({style:"backgroundColor:#eeeeee;"}, $.TH({colSpan:2,style:"textAlign:left;padding:2px 20px;"},serviceName)),
-								$.TR({},
-									 $.TD({width:"30%",style:"textAlign:right;"},ISA_R.alb_oauthSignatureAlgorithm),
-									 $.TD({},$.SELECT({id:'oauth_signature_method_' + serviceName, onchange:{
-									   handler:function(serviceName){
-										   var oauthConsumerKeyInput = $('oauth_consumer_key_' + serviceName);
-										   var oauthConsumerSecretInput = $('oauth_consumer_secret_' + serviceName)
-										   if( 'HMAC-SHA1' == $F('oauth_signature_method_' + serviceName) ){
-											   oauthConsumerKeyInput.disabled = oauthConsumerSecretInput.disabled = false;
-										   }else{
-											   oauthConsumerKeyInput.disabled = oauthConsumerSecretInput.disabled = true;
-											   oauthConsumerKeyInput.value = oauthConsumerSecretInput.value = '';
-										   }
-									   }.bind(this, serviceName)}},
-										  $.OPTION({value:'HMAC-SHA1'}, 'HMAC-SHA1'),
-										  $.OPTION({value:'RSA-SHA1'}, 'RSA-SHA1'))
-									   )
-									   ),
-								$.TR({},
-									 $.TD({style:"textAlign:right;"},ISA_R.alb_oauthConsumerKey),
-									 $.TD({},$.INPUT({id:'oauth_consumer_key_' + serviceName, style:"width:200px;"}))
-									   ),
-								$.TR({},
-									 $.TD({style:"textAlign:right;"},ISA_R.alb_oauthConsumerSecret),
-									 $.TD({},$.INPUT({id:'oauth_consumer_secret_' + serviceName, style:"width:200px;"}))
-									   )
-								  )
-						  )
-				);
-			
-
-			editConfNode.appendChild( oauthFieldSet );
-		}
-		
-		var url = adminHostPrefix + "/services/authentication/getGetConsumerListJsonByUrl";
-		var opt = {
-		  method: 'post',
-		  contentType: "application/json",
-		  postBody: Object.toJSON([ String( type + "/gadget" ) ]),
-		  asynchronous:true,
-		  onSuccess: function(response){
-			  var consumerSettingList = eval( response .responseText );
-			  for(var i = 0; i < consumerSettingList.length; i++){
-				  var consumer = consumerSettingList[i];
-				  var serviceName = consumerSettingList[i].service_name;
-				  $('oauth_signature_method_' + serviceName).value = consumer.signature_method;
-				  var oauthConsumerKeyInput = $('oauth_consumer_key_' + serviceName);
-				  var oauthConsumerSecretInput = $('oauth_consumer_secret_' + serviceName)
-				  if('HMAC-SHA1' == consumer.signature_method){
-					  oauthConsumerKeyInput.value = consumer.consumer_key;
-					  oauthConsumerSecretInput.value = consumer.consumer_secret;
-				  }else{
-					  oauthConsumerKeyInput.disabled = oauthConsumerSecretInput.disabled = true;
-				  }
-			  }
-		  }.bind(this),
-		  onFailure: function(t) {
-			  alert(ISA_R.ams_failedDeleteGadget );
-			  msg.error(ISA_R.ams_failedDeleteGadget + t.status + " - " + t.statusText);
-		  }
-		}
-		AjaxRequest.invoke(url, opt);
-	}
-	*/
-	
 	if(!isExistEditPref){
 		var noEdit = document.createElement("div");
 		noEdit.innerHTML = ISA_R.ams_noPossibleSettings;
@@ -982,29 +905,12 @@ ISA_WidgetConf.EditWidgetConf.save = function(type, conf, onSuccess, onError){
 		}
 	}
 
-	var oauthServiceList = false;
-	/*
-	if(conf.ModulePrefs && conf.ModulePrefs.OAuth){
-		oauthServiceList = [];
-		serviceList = conf.ModulePrefs.OAuth.Service
-		for(var i = 0; i < serviceList.length; i++){
-			var serviceName = serviceList[i].name;
-			oauthServiceList.push({
-			  serviceName: serviceName,
-			  signatureMethod: $F('oauth_signature_method_' + serviceName),
-			  consumerKey: $F('oauth_consumer_key_' + serviceName),
-			  consumerSecret: $F('oauth_consumer_secret_' + serviceName)
-			});
-		}
-	}
-	*/
 	if(errorMsgs.length > 0){
 		alert(errorMsgs.join('\n'));
 		return;
 	}
 	
-	ISA_WidgetConf.EditWidgetConf.requestSaveConf(type, conf, oauthServiceList, onSuccess, onError);
-
+	ISA_WidgetConf.EditWidgetConf.requestSaveConf(type, conf, onSuccess, onError);
 }
 
 ISA_WidgetConf.EditWidgetConf.validate = function(conf, prefix, pref, value){
@@ -1025,13 +931,13 @@ ISA_WidgetConf.EditWidgetConf.validate = function(conf, prefix, pref, value){
 	return false;
 }
 
-ISA_WidgetConf.EditWidgetConf.requestSaveConf = function(type, conf, oauthServiceList, onSuccess, onError){
+ISA_WidgetConf.EditWidgetConf.requestSaveConf = function(type, conf, onSuccess, onError){
 	var url = adminHostPrefix + "/services/" + ( (conf.ModulePrefs) ? "gadget/updateGadget" :  "widgetConf/updateWidgetConf");
 	var opt = {
 		method: 'post' ,
 		contentType: "application/json",
 		asynchronous:true,
-		postBody: Object.toJSON([type, Object.toJSON(conf), Object.toJSON(oauthServiceList)]),
+		postBody: Object.toJSON([type, Object.toJSON(conf)]),
 		onSuccess: function(response){
 			if(onSuccess){
 				onSuccess(response);
