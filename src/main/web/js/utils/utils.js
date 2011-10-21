@@ -1165,6 +1165,11 @@ is_loadScript = function( src ) {
 	head.appendChild( script );
 }
 
+is_deleteProperty = function(object, propertyName){
+	if(!Object.isUndefined(object[propertyName]))
+		delete object[propertyName];
+}
+
 if( !Object.hasOwnProperty ) {
 	Object.prototype.hasOwnProperty = function( property ) {
 		return ( this[property] && !this.constructor.prototype[property] );
