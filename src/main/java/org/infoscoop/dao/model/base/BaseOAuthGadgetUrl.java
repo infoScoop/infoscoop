@@ -2,7 +2,7 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
-public class BaseOAuthGadgetUrl implements Serializable {
+public class BaseOAuthGadgetUrl implements Serializable, Comparable<org.infoscoop.dao.model.OAuthGadgetUrl> {
 	public static String REF = "OAuthGadgetUrl";
 	public static String PROP_FKOAUTHID = "FkOauthId";
 	public static String PROP_GADGET_URL = "GadgetUrl";
@@ -108,7 +108,11 @@ public class BaseOAuthGadgetUrl implements Serializable {
 			else return (this.getId().equals(oauthgadgeturl.getId()));
 		}
 	}
-
+	
+	public int compareTo (org.infoscoop.dao.model.OAuthGadgetUrl obj) {
+		return 1;
+	}
+	
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
