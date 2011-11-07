@@ -400,7 +400,7 @@ ISA_Authentication = {
 	_createRow: function( consumer, index){
 		var descriptionDiv = $.DIV({style:'width:530px;white-space:normal; overflow:hidden;'});
 		var description = escapeHTMLEntity(consumer['description']);
-		descriptionDiv.innerHTML = description.replace(/(\n|\r)+/g, '<br/>');
+		descriptionDiv.innerHTML = description.replace(/(\r\n|\n|\r)/g, '<br/>');
 		var consumerListTable = $('authentication_contentTable').firstChild;
 		var elementId = 'oauth_consumer_setting_' + index;
 		var deleteIcon = $.IMG({id:elementId +"_delete", src:"../../skin/imgs/trash.gif", title:ISA_R.alb_delete, style:'cursor:pointer'});
@@ -653,14 +653,13 @@ ISA_Authentication = {
 			consumerData.signature_method = signatureMethod;
 			var description = $(elementId + '_description').value;
 			consumerData.description = description;
-			
 			if(isNew){
 				oauthConsumerList.push(consumerData);
 				this._createRow(consumerData, index);
 			}
 			else{
-				this._updateRow(consumerData, index);
 				oauthConsumerList.splice(index, 1, consumerData);
+				this._updateRow(consumerData, index);
 			}
 			
 			Control.Modal.close();

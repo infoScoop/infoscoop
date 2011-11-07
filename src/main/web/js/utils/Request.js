@@ -525,8 +525,8 @@ IS_Request.showCredentialList = function(e){
 				  td.appendChild(document.createTextNode(IS_R.lb_description));
 				  tr.appendChild(td);
 				  var td = document.createElement('td');
-				  td.appendChild(document.createTextNode(credentialList[i].description));
-				  td.innerHTML = td.innerHTML.split("\n").join("<br>");
+				  var description = escapeHTMLEntity(credentialList[i].description);
+				  td.innerHTML = description.replace(/(\r\n|\n|\r)/g, '<br/>');
 				  tr.appendChild(td);
 				  tbody.appendChild(tr);
 				  
