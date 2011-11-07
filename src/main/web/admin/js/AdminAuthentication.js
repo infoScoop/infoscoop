@@ -70,7 +70,7 @@ ISA_Authentication = {
 							title = (conf.title && 0 < conf.title.length)? conf.title : conf.type;
 						}
 						uploadedGadgets.push({
-							gadgetUrl: conf.type,
+							gadgetUrl: conf.type + '/gadget',
 							gadgetTitle : title
 						});
 					}
@@ -173,15 +173,10 @@ ISA_Authentication = {
 		
 	},
 	_validateUrl: function(gadgetId) {
-		var urlInput = $(gadgetId);
+		var urlInput =  $(gadgetId);
 		var newUrl = urlInput.value;
 		var error = false;
 		var regex = "^" + newUrl +"$";
-		for(var i=0; i<tempGadgetUrls.length; i++){
-			if(tempGadgetUrls[i].match(regex)){
-				isSame = true;
-			}
-		}
 		if( newUrl.length == 0 ) {
 			error = ISA_R.ams_typeValidURL;
 		} else if(error = IS_Validator.validate(newUrl, {maxBytes:1024, regex:'^http(s)?://.*'})){
@@ -551,6 +546,8 @@ ISA_Authentication = {
 		
 		var gadgetId = elementId + '_gadget_url';
 		IS_Event.observe( gadgetUrlAddButton, "click", function(){
+			if(this._validateUrl(gadgetId))
+				return;
 			this._createGadgetRow(gadgetId, true);
 		}.bind(this));
 		IS_Event.observe( uploadGadgetAddButton, "click", function(){
