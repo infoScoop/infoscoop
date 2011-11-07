@@ -17,6 +17,7 @@
 
 package org.infoscoop.dao;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -111,19 +112,24 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 			newConsumer.setConsumerKey(consumer.getConsumerKey());
 			newConsumer.setConsumerSecret(consumer.getConsumerSecret());
 			newConsumer.setSignatureMethod(consumer.getSignatureMethod());
+			newConsumer.setDescription(consumer.getDescription());
 			super.getHibernateTemplate().saveOrUpdate(newConsumer);
 		}
 		
 		//validate duplication URLs
 		Set<OAuthGadgetUrl> gadgetUrls = consumer.getOAuthGadgetUrl();
+		List<String> gadgetUrlKeyList = new ArrayList<String>();
 		for(Iterator<OAuthGadgetUrl> i = gadgetUrls.iterator();i.hasNext();){
 			OAuthGadgetUrl tmp = i.next();
 			bool = validateConsumerByIdAndServiceAndURL(consumerId, consumer.getServiceName(), tmp.getGadgetUrl());
+			gadgetUrlKeyList.add(tmp.getGadgetUrlKey());
 			if(!bool){
-				OAuthGadgetUrlDAO.newInstance().deleteGadgetUrl(tmp);
 				OAuthGadgetUrlDAO.newInstance().save(tmp);
 			}
-		}		
+		}
+		if(gadgetUrlKeyList.size() == 0)
+			gadgetUrlKeyList.add("");
+		OAuthGadgetUrlDAO.newInstance().deleteGadgetUrls(OAuthGadgetUrlDAO.newInstance().getGadgetUrlsNotInUrl(gadgetUrlKeyList, consumerId));			
 	}
 
 	public static void main(String args[]) {

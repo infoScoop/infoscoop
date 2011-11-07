@@ -48,7 +48,6 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 			throw new RuntimeException(
 					"uid, gadgetUrl and serviceName must be set.");
 		}
-		//String gadgetUrlKey = Crypt.getHash(gadgetUrl);
 		Iterator results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthConsumerProp.class,"ocp")
 				.createAlias("OAuthGadgetUrl", "ogu", CriteriaSpecification.LEFT_JOIN)

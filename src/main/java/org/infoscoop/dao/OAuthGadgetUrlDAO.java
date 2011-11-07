@@ -50,6 +50,14 @@ public class OAuthGadgetUrlDAO extends HibernateDaoSupport{
 				.add(Restrictions.eq(OAuthGadgetUrl.PROP_FKOAUTHID, fkOauthId)));
 	}	
 	
+	public List<OAuthGadgetUrl> getGadgetUrlsNotInUrl(List<String> urlKeyList, String fkOauthId){
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(OAuthGadgetUrl.class).add(
+						Restrictions.and(
+							Restrictions.not(Restrictions.in(OAuthGadgetUrl.PROP_GADGET_URL_KEY,urlKeyList)),
+							Restrictions.eq(OAuthGadgetUrl.PROP_FKOAUTHID, fkOauthId))));
+	}
+	
 	public void save(OAuthGadgetUrl gadgetUrl) {
 		OAuthGadgetUrl newGadgetUrl = getGadgetUrl(gadgetUrl.getFkOauthId(), gadgetUrl.getGadgetUrl());
 
@@ -93,5 +101,9 @@ public class OAuthGadgetUrlDAO extends HibernateDaoSupport{
 	public void deleteGadgetUrl(OAuthGadgetUrl gadgetUrl){
 		if (gadgetUrl != null)
 			super.getHibernateTemplate().delete(gadgetUrl);
+	}
+	
+	public void deleteGadgetUrls(List<OAuthGadgetUrl> gadgetUrls){
+		super.getHibernateTemplate().deleteAll(gadgetUrls);
 	}
 }
