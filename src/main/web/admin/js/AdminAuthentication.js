@@ -455,7 +455,7 @@ ISA_Authentication = {
 		
 		var descriptionDiv = $.DIV({style:'width:530px;white-space:normal; overflow:hidden;'});
 		var description = escapeHTMLEntity(consumer['description']);
-		descriptionDiv.innerHTML = description.replace(/(\n|\r)+/g, '<br/>');
+		descriptionDiv.innerHTML = description.replace(/(\r\n|\n|\r)/g, '<br/>');
 		descriptionTd.replaceChild(descriptionDiv, descriptionTd.firstChild);
 	},
 	
