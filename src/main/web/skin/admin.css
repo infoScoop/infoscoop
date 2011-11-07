@@ -881,6 +881,10 @@ a.gadgetListTabA:visited{
 	height: auto;
 }
 
+.fixedTable{
+	table-layout:fixed
+}
+
 :root *> .modalConfigSetContent {
 	width: 100%;
 }
