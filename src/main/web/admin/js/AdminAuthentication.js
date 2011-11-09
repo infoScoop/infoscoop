@@ -465,7 +465,7 @@ ISA_Authentication = {
 		var gadgetOptRadioUpload = $.INPUT({type:"radio", name:"gadget_opt", id:"gadget_opt_upload"});
 		var gadgetUrlAddButton = $.INPUT({type:"button", value:ISA_R.alb_add});
 		var uploadGadgetAddButton = $.INPUT({type:"button", value:ISA_R.alb_add});
-		var gadgetSelect = $.SELECT({id:"gadgetSelect", name:"gadgetSelect"});
+		var gadgetSelect = $.SELECT({id:"gadgetSelect", name:"gadgetSelect", style:'width:80%;' });
 		for(var h=0; h<uploadedGadgets.length; h++){
 			if(uploadedGadgets[0].gadgetUrl == ''){
 				gadgetSelect.disabled = true;
@@ -507,23 +507,6 @@ ISA_Authentication = {
 				)
 			);
 		};
-		
-		//create uploaded oauth gadget select
-		var gadgetSelect = $.SELECT({id:"gadgetSelect", name:"gadgetSelect"});
-		uploadGadgetAddButton = $.INPUT({type:"button", value:ISA_R.alb_add});
-		
-		if(0<uploadedGadgets.length){
-			for(var h=0; h<uploadedGadgets.length; h++){
-				if(uploadedGadgets[0].gadgetUrl == ''){
-					gadgetSelect.disabled = true;
-					uploadGadgetAddButton.disabled = true;
-				}
-				var option = $.OPTION({id:uploadedGadgets[h].gadgetUrl, value:uploadedGadgets[h].gadgetTitle}
-					, uploadedGadgets[h].gadgetTitle
-				);
-				gadgetSelect.appendChild(option);
-			}
-		}
 		
 		var gadgetUrlTd = $.TD({ style:"padding:5;"}
 			,$.INPUT({id:elementId + '_gadget_url', value: 'http://', style: 'width: 80%'})
@@ -615,7 +598,7 @@ ISA_Authentication = {
 				)
 		);
 
-		consumerEditForm.appendChild($.TABLE({id:elementId, width:'90%', style:'table-layout:fixed;' }, tbody));
+		consumerEditForm.appendChild($.TABLE({id:elementId, width:'90%', className: 'fixedTable' }, tbody));
 		
 		var buttonsDiv = $.DIV({align:'center'});
 		
