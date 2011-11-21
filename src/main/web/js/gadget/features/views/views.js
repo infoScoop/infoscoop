@@ -21,13 +21,16 @@
  *     with views of the current gadget.
  */
 
-var gadgets = gadgets || {};
-
 /**
  * Implements the gadgets.views API spec. See
  * http://code.google.com/apis/gadgets/docs/reference/gadgets.views.html
  */
 gadgets.views = function() {
+
+  /**
+   * all view constants
+   */
+  var _viewType = {};
 
   /**
    * Reference to the current view object.
@@ -63,10 +66,10 @@ gadgets.views = function() {
       target = target.parentNode;
     }
 
-    if (target.nodeName.toLowerCase() === "a") {
+    if (target.nodeName.toLowerCase() === 'a') {
       // We use getAttribute() instead of .href to avoid automatic relative path resolution.
-      var href = target.getAttribute("href");
-      if (href && href[0] !== "#" && href.indexOf("://") === -1) {
+      var href = target.getAttribute('href');
+      if (href && href[0] !== '#' && href.indexOf('://') === -1) {
         gadgets.views.requestNavigateTo(currentView, href);
         if (e.stopPropagation) {
           e.stopPropagation();
@@ -91,19 +94,21 @@ gadgets.views = function() {
    *
    */
   function init(config) {
-    var conf = config.views || {};
+    var conf = config['views'] || {};
     for (var s in conf) {
       if (conf.hasOwnProperty(s)) {
         // TODO: Fix this by moving view names / config into a sub property.
-        if (s != "rewriteLinks") {
+        if (s != 'rewriteLinks') {
           var obj = conf[s];
+          var constantName = s.toUpperCase();
+          _viewType[constantName] = constantName;
           if (!obj) {
             continue;
           }
           supportedViews[s] = new gadgets.views.View(s, obj.isOnlyVisible);
-          var aliases = obj.aliases || [];
+          var aliases = obj['aliases'] || [];
           for (var i = 0, alias; (alias = aliases[i]); ++i) {
-            supportedViews[alias] = new gadgets.views.View(s, obj.isOnlyVisible);
+            supportedViews[alias] = new gadgets.views.View(s, obj['isOnlyVisible']);
           }
         }
       }
@@ -111,21 +116,17 @@ gadgets.views = function() {
 
     var urlParams = gadgets.util.getUrlParameters();
     // View parameters are passed as a single parameter.
-    if (urlParams["view-params"]) {
-      params = gadgets.json.parse(urlParams["view-params"]) || params;
+    if (urlParams['view-params']) {
+      params = gadgets.json.parse(urlParams['view-params']) || params;
     }
-    currentView = supportedViews[urlParams.view] || supportedViews["default"];
+    currentView = supportedViews[urlParams['view']] || supportedViews['default'];
 
     if (conf.rewriteLinks) {
-      if (document.attachEvent) {
-        document.attachEvent("onclick", forceNavigate);
-      } else {
-        document.addEventListener("click", forceNavigate, false);
-      }
+      gadgets.util.attachBrowserEvent(document, 'click', forceNavigate, false);
     }
   }
 
-  gadgets.config.register("views", null, init);
+  gadgets.config.register('views', null, init);
 
   return {
 
@@ -137,10 +138,10 @@ gadgets.views = function() {
      * http://bitworking.org/projects/URI-Templates/spec/draft-gregorio-uritemplate-03.html
      *
      * @param {string} urlTemplate A URL template for a container view.
-     * @param {Map&lt;string, string&gt;} environment A set of named variables.
+     * @param {Object.<string, string>} environment A set of named variables.
      * @return {string} A URL string with substituted variables.
      */
-    bind : function(urlTemplate, environment) {
+    bind: function(urlTemplate, environment) {
       if (typeof urlTemplate !== 'string') {
         throw new Error('Invalid urlTemplate');
       }
@@ -150,7 +151,7 @@ gadgets.views = function() {
       }
 
       var varRE = /^([a-zA-Z0-9][a-zA-Z0-9_\.\-]*)(=([a-zA-Z0-9\-\._~]|(%[0-9a-fA-F]{2}))*)?$/,
-          expansionRE = new RegExp('\\{([^}]*)\\}','g'),
+          expansionRE = new RegExp('\\{([^}]*)\\}', 'g'),
           opRE = /^-([a-zA-Z]+)\|([^|]*)\|(.+)$/,
           result = [],
           textStart = 0,
@@ -163,6 +164,10 @@ gadgets.views = function() {
           vars,
           flag;
 
+      /**
+       * @param {string} varName
+       * @param {string=} defaultVal
+       */
       function getVar(varName, defaultVal) {
         return environment.hasOwnProperty(varName) ?
                environment[varName] : defaultVal;
@@ -185,6 +190,18 @@ gadgets.views = function() {
         return j;
       }
 
+      function objectIsEmpty(v) {
+        if ((typeof v === 'object') || (typeof v === 'function')) {
+          for (var i in v) {
+            if (v.hasOwnProperty(i)) {
+              return false;
+            }
+          }
+          return true;
+        }
+        return false;
+      }
+
       while ((group = expansionRE.exec(urlTemplate))) {
         result.push(urlTemplate.substring(textStart, group.index));
         textStart = expansionRE.lastIndex;
@@ -199,45 +216,52 @@ gadgets.views = function() {
             vars = match[3];
             flag = 0;
             switch (op) {
-            case 'neg':
-              flag = 1;
-            case 'opt':
-              if (matchVars(vars, {flag: flag}, function(j, v) {
-                    if (typeof v !== 'undefined' && (typeof v !== 'object' || v.length)) {
-                      j.flag = !j.flag;
-                      return 1;
-                    }
-                  }).flag) {
-                result.push(arg);
-              }
-              break;
-            case 'join':
-              result.push(matchVars(vars, [], function(j, v, k) {
-                if (typeof v === 'string') {
-                  j.push(k + '=' + v);
+              case 'neg':
+                flag = 1;
+              case 'opt':
+                if (matchVars(vars, {flag: flag}, function(j, v) {
+                  if (typeof v !== 'undefined' && !objectIsEmpty(v)) {
+                    j.flag = !j.flag;
+                    return 1;
+                  }
+                  return 0;
+                }).flag) {
+                  result.push(arg);
                 }
-              }).join(arg));
-              break;
-            case 'list':
-              matchVar(vars);
-              value = getVar(match[1]);
-              if (typeof value === 'object' && typeof value.join === 'function') {
-                result.push(value.join(arg));
-              }
-              break;
-            case 'prefix':
-              flag = 1;
-            case 'suffix':
-              matchVar(vars);
-              value = getVar(match[1], match[2] && match[2].substr(1));
-              if (typeof value === 'string') {
-                result.push(flag ? arg + value : value + arg);
-              } else if (typeof value === 'object' && typeof value.join === 'function') {
-                result.push(flag ? arg + value.join(arg) : value.join(arg) + arg);
-              }
-              break;
-            default:
-              throw new Error('Invalid operator : ' + op);
+                break;
+              case 'join':
+                result.push(matchVars(vars, [], function(j, v, k) {
+                  if (typeof v === 'string') {
+                    j.push(k + '=' + v);
+                  } else if (typeof v === 'object') {
+                    for (var i in v) {
+                      if (v.hasOwnProperty(i)) {
+                        j.push(i + '=' + v[i]);
+                      }
+                    }
+                  }
+                }).join(arg));
+                break;
+              case 'list':
+                matchVar(vars);
+                var value = getVar(match[1]);
+                if (typeof value === 'object' && typeof value.join === 'function') {
+                  result.push(value.join(arg));
+                }
+                break;
+              case 'prefix':
+                flag = 1;
+              case 'suffix':
+                matchVar(vars);
+                value = getVar(match[1], match[2] && match[2].substr(1));
+                if (typeof value === 'string') {
+                  result.push(flag ? arg + value : value + arg);
+                } else if (typeof value === 'object' && typeof value.join === 'function') {
+                  result.push(flag ? arg + value.join(arg) : value.join(arg) + arg);
+                }
+                break;
+              default:
+                throw new Error('Invalid operator : ' + op);
             }
           } else {
             throw new Error('Invalid syntax : ' + group[0]);
@@ -255,25 +279,28 @@ gadgets.views = function() {
      * supports parameters will pass the optional parameters along to the gadget
      * in the new view.
      *
-     * @param {string | gadgets.views.View} view The view to navigate to
-     * @param {Map.&lt;String, String&gt;} opt_params Parameters to pass to the
-     *     gadget after it has been navigated to on the surface
-     * @param {string} opt_ownerId The ID of the owner of the page to navigate to;
+     * @param {string | gadgets.views.View} view The view to navigate to.
+     * @param {Object.<string, string>=} opt_params Parameters to pass to the
+     *     gadget after it has been navigated to on the surface.
+     * @param {string=} opt_ownerId The ID of the owner of the page to navigate to;
      *                 defaults to the current owner.
      */
-    requestNavigateTo : function(view, opt_params, opt_ownerId) {
-      if (typeof view !== "string") {
+    requestNavigateTo: function(view, opt_params, opt_ownerId) {
+      if (typeof view !== 'string') {
         view = view.getName();
       }
-      gadgets.rpc.call(null, "requestNavigateTo", null, view, opt_params, opt_ownerId);
+      // TODO If we want to implement a POPUP view we'll have to do it here,
+      // The parent frame's attempts to use window.open will fail since it's not
+      // directly initiated from the onclick handler
+      gadgets.rpc.call(null, 'requestNavigateTo', null, view, opt_params, opt_ownerId);
     },
 
     /**
      * Returns the current view.
      *
-     * @return {gadgets.views.View} The current view
+     * @return {gadgets.views.View} The current view.
      */
-    getCurrentView : function() {
+    getCurrentView: function() {
       return currentView;
     },
 
@@ -281,10 +308,10 @@ gadgets.views = function() {
      * Returns a map of all the supported views. Keys each gadgets.view.View by
      * its name.
      *
-     * @return {Map&lt;gadgets.views.ViewType | String, gadgets.views.View&gt;}
+     * @return {Object.<gadgets.views.ViewType | string, gadgets.views.View>}
      *   All supported views, keyed by their name attribute.
      */
-    getSupportedViews : function() {
+    getSupportedViews: function() {
       return supportedViews;
     },
 
@@ -293,13 +320,29 @@ gadgets.views = function() {
      * include all url parameters, only the ones passed into
      * gadgets.views.requestNavigateTo
      *
-     * @return {Map.&lt;String, String&gt;} The parameter map
+     * @return {Object.<string, string>} The parameter map.
      */
-    getParams : function() {
+    getParams: function() {
       return params;
-    }
+    },
+
+    ViewType: _viewType
   };
 }();
+
+
+/**
+ * @class
+ * View Class
+ * @name gadgets.views.View
+ */
+
+/**
+ * View Representation
+ * @constructor
+ * @param {string} name - the name of the view.
+ * @param {boolean=} opt_isOnlyVisible - is this view devoted to this gadget.
+ */
 
 gadgets.views.View = function(name, opt_isOnlyVisible) {
   this.name_ = name;
@@ -307,7 +350,7 @@ gadgets.views.View = function(name, opt_isOnlyVisible) {
 };
 
 /**
- * @return {String} The view name.
+ * @return {string} The view name.
  */
 gadgets.views.View.prototype.getName = function() {
   return this.name_;
@@ -329,7 +372,7 @@ gadgets.views.View.prototype.getUrlTemplate = function() {
 /**
  * Binds the view's URL template with variables in the passed environment
  * to produce a URL string.
- * @param {Map&lt;string, string&gt;} environment A set of named variables.
+ * @param {Object.<string, string>} environment A set of named variables.
  * @return {string} A URL string with substituted variables.
  */
 gadgets.views.View.prototype.bind = function(environment) {
@@ -337,14 +380,8 @@ gadgets.views.View.prototype.bind = function(environment) {
 };
 
 /**
- * @return {Boolean} True if this is the only visible gadget on the page.
+ * @return {boolean} True if this is the only visible gadget on the page.
  */
 gadgets.views.View.prototype.isOnlyVisibleGadget = function() {
   return this.isOnlyVisible_;
 };
-
-gadgets.views.ViewType = gadgets.util.makeEnum([
-  "CANVAS", "HOME", "PREVIEW", "PROFILE",
-  // TODO Deprecate the following ViewTypes.
-  "FULL_PAGE", "DASHBOARD", "POPUP"
-]);

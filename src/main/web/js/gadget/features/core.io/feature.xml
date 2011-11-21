@@ -28,11 +28,26 @@
       encoded inside of the POST body.
 -->
   <name>core.io</name>
-	<!-- core.io needs an explicit core dependency to ensure that the graph
-	    is resolved in the correct order.
-	-->
-  <dependency>core</dependency>
-  <gadget>
+  <dependency>globals</dependency>
+  <dependency>taming</dependency>
+  <dependency>shindig.auth</dependency>
+  <dependency>core.config.base</dependency>
+  <dependency>core.json</dependency>
+  <dependency>core.util.base</dependency>
+  <dependency>core.util.urlparams</dependency>
+  <all>
     <script src="io.js"/>
-  </gadget>
+    <script src="taming.js" caja="1"/>
+    <api>
+      <exports type="js">gadgets.io.makeRequest</exports>
+      <exports type="js">gadgets.io.makeNonProxiedRequest</exports>
+      <exports type="js">gadgets.io.clearOAuthState</exports>
+      <exports type="js">gadgets.io.encodeValues</exports>
+      <exports type="js">gadgets.io.getProxyUrl</exports>
+      <exports type="js">gadgets.io.RequestParameters</exports>
+      <exports type="js">gadgets.io.MethodType</exports>
+      <exports type="js">gadgets.io.ContentType</exports>
+      <exports type="js">gadgets.io.AuthorizationType</exports>
+    </api>
+  </all>
 </feature>

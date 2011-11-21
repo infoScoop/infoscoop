@@ -20,16 +20,15 @@
  * @fileoverview Remote procedure call library for gadget-to-container,
  * container-to-gadget, and gadget-to-gadget (thru container) communication.
  */
-var gadgets = gadgets || {};
 
 /**
  * gadgets.rpc Transports
  *
  * All transports are stored in object gadgets.rpctx, and are provided
  * to the core gadgets.rpc library by various build rules.
- * 
+ *
  * Transports used by core gadgets.rpc code to actually pass messages.
- * each transport implements the same interface exposing hooks that
+ * Each transport implements the same interface exposing hooks that
  * the core library calls at strategic points to set up and use
  * the transport.
  *
@@ -53,592 +52,607 @@ var gadgets = gadgets || {};
  *     true if successful, false otherwise.
  */
 
-/**
- * @static
- * @class Provides operations for making rpc calls.
- * @name gadgets.rpc
- */
-gadgets.rpc = function() {
-  // General constants.
-  var CALLBACK_NAME = '__cb';
-  var DEFAULT_NAME = '';
-
-  // Special service name for acknowledgements.
-  var ACK = '__ack';
-
-  // Timeout and number of setup attempts between each
-  // for when setAuthToken is called before the target it specifies exists.
-  var SETUP_FRAME_TIMEOUT = 500;
-  var SETUP_FRAME_MAX_TRIES = 10;
-
-  var services = {};
-  var relayUrl = {};
-  var useLegacyProtocol = {};
-  var authToken = {};
-  var callId = 0;
-  var callbacks = {};
-  var setup = {};
-  var sameDomain = {};
-  var params = {};
-  var receiverTx = {};
-  var earlyRpcQueue = {};
-
-  // isGadget =~ isChild for the purposes of rpc (used only in setup).
-  var isGadget = (window.top !== window.self);
-
-  // Set the current rpc ID from window.name immediately, to prevent
-  // shadowing of window.name by a "var name" declaration, or similar.
-  var rpcId = window.name;
-
-  // Fallback transport is simply a dummy impl that emits no errors
-  // and logs info on calls it receives, to avoid undesired side-effects
-  // from falling back to IFPC or some other transport.
-  var fallbackTransport = (function() {
-    function logFn(name) {
-      return function() {
-        gadgets.log("gadgets.rpc." + name + "(" +
-                    gadgets.json.stringify(Array.prototype.slice.call(arguments)) +
-                    "): call ignored. [caller: " + document.location +
-                    ", isGadget: " + isGadget + "]");
-      }
-    }
-    return {
-      getCode: function() {
-        return "noop";
-      },
-      isParentVerifiable: function() {
-        return true;  // Not really, but prevents transport assignment to IFPC.
-      },
-      init: logFn("init"),
-      setup: logFn("setup"),
-      call: logFn("call")
-    }
-  })();
-
-  // Load the authentication token for speaking to the container
-  // from the gadget's parameters, or default to '0' if not found.
-  if (gadgets.util) {
-    params = gadgets.util.getUrlParameters();
-  }
-
-  authToken['..'] = params.rpctoken || params.ifpctok || "";
-
-  // Indicates whether to support early-message queueing, which is designed
-  // to ensure that all messages sent by gadgets.rpc.call, irrespective
-  // when they were made (before/after setAuthToken, before/after transport
-  // setup complete), are sent. Hiding behind a query param to allow opt-in
-  // for a time while this technique is proven.
-  var useEarlyQueueing = (params['rpc_earlyq'] === "1");
-
-  /*
-   * Return a transport representing the best available cross-domain
-   * message-passing mechanism available to the browser.
-   *
-   * Transports are selected on a cascading basis determined by browser
-   * capability and other checks. The order of preference is:
-   * 1. wpm: Uses window.postMessage standard.
-   * 2. dpm: Uses document.postMessage, similar to wpm but pre-standard.
-   * 3. nix: Uses IE-specific browser hacks.
-   * 4. rmr: Signals message passing using relay file's onresize handler.
-   * 5. fe: Uses FF2-specific window.frameElement hack.
-   * 6. ifpc: Sends messages via active load of a relay file.
-   *
-   * See each transport's commentary/documentation for details.
-   */
-  function getTransport() {
-    return gadgets.rpctx.ifpc;
-  }
+if (!window['gadgets']['rpc']) { // make lib resilient to double-inclusion
 
   /**
-   * Function passed to, and called by, a transport indicating it's ready to
-   * send and receive messages.
+   * @static
+   * @namespace Provides operations for making rpc calls.
+   * @name gadgets.rpc
    */
-  function transportReady(receiverId, readySuccess) {
-    var tx = transport;
-    if (!readySuccess) {
-      tx = fallbackTransport;
-    }
-    receiverTx[receiverId] = tx;
+  gadgets.rpc = function() {
+    /**
+     * @const
+     * @private
+     */
+    var CALLBACK_NAME = '__cb';
 
-    // If there are any early-queued messages, send them now directly through
-    // the needed transport. This queue will only have contents if
-    // useEarlyQueueing === true (see call method).
-    var earlyQueue = earlyRpcQueue[receiverId] || [];
-    for (var i = 0; i < earlyQueue.length; ++i) {
-      var rpc = earlyQueue[i];
-      // There was no auth/rpc token set before, so set it now.
-      rpc.t = gadgets.rpc.getAuthToken(receiverId);
-      tx.call(receiverId, rpc.f, rpc);
-    }
+    /**
+     * @const
+     * @private
+     */
+    var DEFAULT_NAME = '';
 
-    // Clear the queue so it won't be sent again.
-    earlyRpcQueue[receiverId] = [];
-  }
+    /** Exported constant, for use by transports only.
+     * @const
+     * @type {string}
+     * @member gadgets.rpc
+     */
+    var ACK = '__ack';
 
-  /**
-   * Helper function to process an RPC request
-   * @param {Object} rpc RPC request object
-   * @private
-   */
-  function process(rpc) {
-    //
-    // RPC object contents:
-    //   s: Service Name
-    //   f: From
-    //   c: The callback ID or 0 if none.
-    //   a: The arguments for this RPC call.
-    //   t: The authentication token.
-    //
-/*
-    if( rpc && !( rpc.a instanceof Array ) && typeof rpc.a == "string")
-      rpc.a = gadgets.json.parse( rpc.a );
-*/
-    if (rpc && typeof rpc.s === 'string' && typeof rpc.f === 'string' && rpc.a instanceof Array ) {
-      // Validate auth token.
-      if (authToken[rpc.f]) {
-        // We don't do type coercion here because all entries in the authToken
-        // object are strings, as are all url params. See setAuthToken(...).
-        if (authToken[rpc.f] !== rpc.t) {
-          throw new Error("Invalid auth token. " +
-              authToken[rpc.f] + " vs " + rpc.t);
-        }
-      }
+    /**
+     * Timeout and number of attempts made to setup a transport receiver.
+     * @const
+     * @private
+     */
+    var SETUP_FRAME_TIMEOUT = 500;
 
-      if (rpc.s === ACK) {
-        // Acknowledgement API, used to indicate a receiver is ready.
-        window.setTimeout(function() { transportReady(rpc.f, true); }, 0);
-        return;
-      }
+    /**
+     * @const
+     * @private
+     */
+    var SETUP_FRAME_MAX_TRIES = 10;
 
-      // If there is a callback for this service, attach a callback function
-      // to the rpc context object for asynchronous rpc services.
-      //
-      // Synchronous rpc request handlers should simply ignore it and return a
-      // value as usual.
-      // Asynchronous rpc request handlers, on the other hand, should pass its
-      // result to this callback function and not return a value on exit.
-      //
-      // For example, the following rpc handler passes the first parameter back
-      // to its rpc client with a one-second delay.
-      //
-      // function asyncRpcHandler(param) {
-      //   var me = this;
-      //   setTimeout(function() {
-      //     me.callback(param);
-      //   }, 1000);
-      // }
-      if (rpc.c) {
-        rpc.callback = function(result) {
-          gadgets.rpc.call(rpc.f, CALLBACK_NAME, null, rpc.c, result);
+    /**
+     * @const
+     * @private
+     */
+    var ID_ORIGIN_DELIMITER = '|';
+
+    /**
+     * @const
+     * @private
+     */
+    var RPC_KEY_CALLBACK = 'callback';
+
+    /**
+     * @const
+     * @private
+     */
+    var RPC_KEY_ORIGIN = 'origin';
+    var RPC_KEY_REFERRER = 'referer';
+
+    var services = {};
+    var relayUrl = {};
+    var useLegacyProtocol = {};
+    var authToken = {};
+    var callId = 0;
+    var callbacks = {};
+    var setup = {};
+    var sameDomain = {};
+    var params = {};
+    var receiverTx = {};
+    var earlyRpcQueue = {};
+    var passReferrerDirection = null;
+    var passReferrerContents = null;
+
+    // isGadget =~ isChild for the purposes of rpc (used only in setup).
+    var isChild = (window.top !== window.self);
+
+    // Set the current rpc ID from window.name immediately, to prevent
+    // shadowing of window.name by a "var name" declaration, or similar.
+    var rpcId = window.name;
+
+    var securityCallback = function() {};
+    var arbitrator = null;
+    var LOAD_TIMEOUT = 0;
+    var FRAME_PHISH = 1;
+    var FORGED_MSG = 2;
+
+    // Fallback transport is simply a dummy impl that emits no errors
+    // and logs info on calls it receives, to avoid undesired side-effects
+    // from falling back to IFPC or some other transport.
+    var console = window['console'];
+    var clog = console && console.log && function(msg) { console.log(msg); } || function(){};
+    var fallbackTransport = (function() {
+      function logFn(name) {
+        return function() {
+          clog(name + ': call ignored');
         };
       }
+      return {
+        'getCode': function() { return 'noop'; },
+        // Not really, but prevents transport assignment to IFPC.
+        'isParentVerifiable': function() { return true; },
+        'init': logFn('init'),
+        'setup': logFn('setup'),
+        'call': logFn('call')
+      };
+    })();
 
-      // Call the requested RPC service.
-      var result = (services[rpc.s] ||
-                    services[DEFAULT_NAME]).apply(rpc, rpc.a);
+    // Load the authentication token for speaking to the container
+    // from the gadget's parameters, or default to '0' if not found.
+    if (gadgets.util) {
+      params = gadgets.util.getUrlParameters();
+    }
 
-      // If the rpc request handler returns a value, immediately pass it back
-      // to the callback. Otherwise, do nothing, assuming that the rpc handler
-      // will make an asynchronous call later.
-      if (rpc.c && typeof result !== 'undefined') {
-        gadgets.rpc.call(rpc.f, CALLBACK_NAME, null, rpc.c, result);
+    /**
+     * Return a transport representing the best available cross-domain
+     * message-passing mechanism available to the browser.
+     *
+     * <p>Transports are selected on a cascading basis determined by browser
+     * capability and other checks. The order of preference is:
+     * <ol>
+     * <li> wpm: Uses window.postMessage standard.
+     * <li> dpm: Uses document.postMessage, similar to wpm but pre-standard.
+     * <li> nix: Uses IE-specific browser hacks.
+     * <li> rmr: Signals message passing using relay file's onresize handler.
+     * <li> fe: Uses FF2-specific window.frameElement hack.
+     * <li> ifpc: Sends messages via active load of a relay file.
+     * </ol>
+     * <p>See each transport's commentary/documentation for details.
+     * @return {Object}
+     * @member gadgets.rpc
+     */
+    function getTransport() {
+      if (params['rpctx'] == 'flash') return gadgets.rpctx.flash;
+      if (params['rpctx'] == 'rmr') return gadgets.rpctx.rmr;
+      return typeof window.postMessage === 'function' ? gadgets.rpctx.wpm :
+          typeof window.postMessage === 'object' ? gadgets.rpctx.wpm :
+          window.ActiveXObject ? (gadgets.rpctx.flash ? gadgets.rpctx.flash : gadgets.rpctx.nix) :
+          navigator.userAgent.indexOf('WebKit') > 0 ? gadgets.rpctx.rmr :
+          navigator.product === 'Gecko' ? gadgets.rpctx.frameElement :
+          gadgets.rpctx.ifpc;
+    }
+
+    /**
+     * Function passed to, and called by, a transport indicating it's ready to
+     * send and receive messages.
+     */
+    function transportReady(receiverId, readySuccess) {
+      if (receiverTx[receiverId]) return;
+      var tx = transport;
+      if (!readySuccess) {
+        tx = fallbackTransport;
       }
-    }
-  }
+      receiverTx[receiverId] = tx;
 
-  /**
-   * Helper method returning a canonicalized protocol://host[:port] for
-   * a given input URL, provided as a string. Used to compute convenient
-   * relay URLs and to determine whether a call is coming from the same
-   * domain as its receiver (bypassing the try/catch capability detection
-   * flow, thereby obviating Firebug and other tools reporting an exception).
-   *
-   * @param {string} url Base URL to canonicalize.
-   */
-  function getOrigin(url) {
-    if (!url) {
-      return "";
-    }
-    
-    if(/^.?\//.test( url ) || url.indexOf("://") < 0 )
-    	url = window.location.href;
-    
-    url = url.toLowerCase();
-    if (url.indexOf("//") == 0) {
-      url = window.location.protocol + ":" + url;
-    }
-    if (url.indexOf("http://") != 0 &&
-        url.indexOf("https://") != 0) {
-      // Assumed to be schemaless. Default to current protocol.
-      url = window.location.protocol + "://" + url;
-    }
-    // At this point we guarantee that "://" is in the URL and defines
-    // current protocol. Skip past this to search for host:port.
-    var host = url.substring(url.indexOf("://") + 3);
-
-    // Find the first slash char, delimiting the host:port.
-    var slashPos = host.indexOf("/");
-    if (slashPos != -1) {
-      host = host.substring(0, slashPos);
-    }
-
-    var protocol = url.substring(0, url.indexOf("://"));
-
-    // Use port only if it's not default for the protocol.
-    var portStr = "";
-    var portPos = host.indexOf(":");
-    if (portPos != -1) {
-      var port = host.substring(portPos + 1);
-      host = host.substring(0, portPos);
-      if ((protocol === "http" && port !== "80") ||
-          (protocol === "https" && port !== "443")) {
-        portStr = ":" + port;
+      // If there are any early-queued messages, send them now directly through
+      // the needed transport.
+      var earlyQueue = earlyRpcQueue[receiverId] || [];
+      for (var i = 0; i < earlyQueue.length; ++i) {
+        var rpc = earlyQueue[i];
+        // There was no auth/rpc token set before, so set it now.
+        rpc['t'] = getAuthToken(receiverId);
+        tx.call(receiverId, rpc['f'], rpc);
       }
+
+      // Clear the queue so it won't be sent again.
+      earlyRpcQueue[receiverId] = [];
     }
 
-    // Return <protocol>://<host>[<port>]
-    return protocol + "://" + host + portStr;
-  }
+    //  Track when this main page is closed or navigated to a different location
+    // ("unload" event).
+    //  NOTE: The use of the "unload" handler here and for the relay iframe
+    // prevents the use of the in-memory page cache in modern browsers.
+    // See: https://developer.mozilla.org/en/using_firefox_1.5_caching
+    // See: http://webkit.org/blog/516/webkit-page-cache-ii-the-unload-event/
+    var mainPageUnloading = false,
+        hookedUnload = false;
 
-  // Pick the most efficient RPC relay mechanism.
-  var transport = getTransport();
-
-  // Create the Default RPC handler.
-  services[DEFAULT_NAME] = function() {
-    gadgets.warn('Unknown RPC service: ' + this.s);
-  };
-
-  // Create a Special RPC handler for callbacks.
-  services[CALLBACK_NAME] = function(callbackId, result) {
-    var callback = callbacks[callbackId];
-    if (callback) {
-      delete callbacks[callbackId];
-      callback(result);
-    }
-  };
-
-  /**
-   * Conducts any frame-specific work necessary to setup
-   * the channel type chosen. This method is called when
-   * the container page first registers the gadget in the
-   * RPC mechanism. Gadgets, in turn, will complete the setup
-   * of the channel once they send their first messages.
-   */
-  function setupFrame(frameId, token) {
-    if (setup[frameId] === true) {
-      return;
-    }
-
-    if (typeof setup[frameId] === 'undefined') {
-      setup[frameId] = 0;
-    }
-
-    var tgtFrame = document.getElementById(frameId);
-    if (frameId === '..' || tgtFrame != null) {
-      if (transport.setup(frameId, token) === true) {
-        setup[frameId] = true;
+    function hookMainPageUnload() {
+      if (hookedUnload) {
         return;
       }
-    }
-
-    if (setup[frameId] !== true && setup[frameId]++ < SETUP_FRAME_MAX_TRIES) {
-      // Try again in a bit, assuming that frame will soon exist.
-      window.setTimeout(function() { setupFrame(frameId, token) },
-                        SETUP_FRAME_TIMEOUT);
-    } else {
-      // Fail: fall back for this gadget.
-      receiverTx[frameId] = fallbackTransport;
-      setup[frameId] = true;
-    }
-  }
-
-  /**
-   * Attempts to make an rpc by calling the target's receive method directly.
-   * This works when gadgets are rendered on the same domain as their container,
-   * a potentially useful optimization for trusted content which keeps
-   * RPC behind a consistent interface.
-   * @param {String} target Module id of the rpc service provider
-   * @param {String} from Module id of the caller (this)
-   * @param {String} callbackId Id of the call
-   * @param {String} rpcData JSON-encoded RPC payload
-   * @return
-   */
-  function callSameDomain(target, rpc) {
-//  if (typeof sameDomain[target] === 'undefined') {
-      // Seed with a negative, typed value to avoid
-      // hitting this code path repeatedly.
-      sameDomain[target] = false;
-      var targetRelay = gadgets.rpc.getRelayUrl(target);
-      if (getOrigin(targetRelay) !== getOrigin(window.location.href)) {
-        // Not worth trying -- avoid the error and just return.
-        return false;
+      function onunload() {
+        mainPageUnloading = true;
       }
 
-      var targetEl = null;
-      if (target === '..') {
-        targetEl = window.parent;
-      } else {
-        targetEl = window.frames[target];
+      // TODO: use common helper
+      if (typeof window.addEventListener != 'undefined') {
+        window.addEventListener('unload', onunload, false);
+      } else if (typeof window.attachEvent != 'undefined') {
+        window.attachEvent('onunload', onunload);
       }
-      try {
-        // If this succeeds, then same-domain policy applied
-        sameDomain[target] = targetEl.gadgets.rpc.receiveSameDomain;
-      } catch (e) {
-        // Shouldn't happen due to origin check. Caught to emit
-        // more meaningful error to the caller.
-        //gadgets.error("Same domain call failed: parent= incorrectly set.");
-      }
-//  }
 
-    if (typeof sameDomain[target] === 'function') {
-      // Call target's receive method
-      sameDomain[target](rpc);
-      return true;
+      hookedUnload = true;
     }
 
-    return false;
-  }
+    function relayOnload(targetId, sourceId, token, data, relayWindow) {
+      // Validate auth token.
+      if (!authToken[sourceId] || authToken[sourceId] !== token) {
+        gadgets.error('Invalid auth token. ' + authToken[sourceId] + ' vs ' + token);
+        securityCallback(sourceId, FORGED_MSG);
+      }
 
-  // gadgets.config might not be available, such as when serving container js.
-  if ( gadgets.config) {
+      relayWindow.onunload = function() {
+        if (setup[sourceId] && !mainPageUnloading) {
+          securityCallback(sourceId, FRAME_PHISH);
+          gadgets.rpc.removeReceiver(sourceId);
+        }
+      };
+      hookMainPageUnload();
+
+      data = gadgets.json.parse(decodeURIComponent(data));
+    }
+
     /**
-     * Initializes gadget to container RPC params from the provided configuration.
+     * Helper function that performs actual processing of an RPC request.
+     * Origin is passed in separately to ensure that it cannot be spoofed,
+     * and guard code in the method ensures the same before dispatching
+     * any service handler.
+     * @param {Object} rpc RPC request object.
+     * @param {String} opt_sender RPC sender, if available and with a verified origin piece.
+     * @private
      */
-    function init(config) {
-      var configRpc = config ? config.rpc : {};
-      var parentRelayUrl = configRpc.parentRelayUrl;
+    function process(rpc, opt_sender) {
+      //
+      // RPC object contents:
+      //   s: Service Name
+      //   f: From
+      //   c: The callback ID or 0 if none.
+      //   a: The arguments for this RPC call.
+      //   t: The authentication token.
+      //
+      if (rpc && typeof rpc['s'] === 'string' && typeof rpc['f'] === 'string' &&
+          rpc['a'] instanceof Array) {
 
-      // Allow for wild card parent relay files as long as it's from a
-      // white listed domain. This is enforced by the rendering servlet.
-      if (parentRelayUrl.substring(0, 7) !== 'http://' &&
-          parentRelayUrl.substring(0, 8) !== 'https://' &&
-          parentRelayUrl.substring(0, 2) !== '//') {
-        // Relative path: we append to the parent.
-        // We're relying on the server validating the parent parameter in this
-        // case. Because of this, parent may only be passed in the query, not fragment.
-        if (typeof params.parent === "string" && params.parent !== "") {
-          // Otherwise, relayUrl['..'] will be null, signaling transport
-          // code to ignore rpc calls since they cannot work without a
-          // relay URL with host qualification.
-          if (parentRelayUrl.substring(0, 1) !== '/') {
-            // Path-relative. Trust that parent is passed in appropriately.
-            var lastSlash = params.parent.lastIndexOf('/');
-            parentRelayUrl = params.parent.substring(0, lastSlash + 1) + parentRelayUrl;
-          } else {
-            // Host-relative.
-            parentRelayUrl = getOrigin(params.parent) + parentRelayUrl;
+        if (typeof arbitrate === 'function' && !arbitrate(rpc['s'], rpc['f'])) {
+          return;
+        }
+
+        // Validate auth token.
+        if (authToken[rpc['f']]) {
+          // We don't do type coercion here because all entries in the authToken
+          // object are strings, as are all url params. See setupReceiver(...).
+          if (authToken[rpc['f']] !== rpc['t']) {
+            gadgets.error('Invalid auth token. ' + authToken[rpc['f']] + ' vs ' + rpc['t']);
+            securityCallback(rpc['f'], FORGED_MSG);
           }
         }
-      }
-      relayUrl['..'] = parentRelayUrl;
 
-      var useLegacy = !!configRpc.useLegacyProtocol;
-      useLegacyProtocol['..'] = useLegacy;
-      if (useLegacy) {
-        transport = gadgets.rpctx.ifpc;
-        transport.init(process, transportReady);
-      }
+        if (rpc['s'] === ACK) {
+          // Acknowledgement API, used to indicate a receiver is ready.
+          window.setTimeout(function() { transportReady(rpc['f'], true); }, 0);
+          return;
+        }
 
-      // Here, we add a hook for the transport to actively set up
-      // gadget -> container communication. Running here ensures
-      // that relayUri info will be available.
-      if (transport.setup('..') === false) {
-        receiverTx['..'] = fallbackTransport;
+        // If there is a callback for this service, attach a callback function
+        // to the rpc context object for asynchronous rpc services.
+        //
+        // Synchronous rpc request handlers should simply ignore it and return a
+        // value as usual.
+        // Asynchronous rpc request handlers, on the other hand, should pass its
+        // result to this callback function and not return a value on exit.
+        //
+        // For example, the following rpc handler passes the first parameter back
+        // to its rpc client with a one-second delay.
+        //
+        // function asyncRpcHandler(param) {
+        //   var me = this;
+        //   setTimeout(function() {
+        //     me.callback(param);
+        //   }, 1000);
+        // }
+        if (rpc['c']) {
+          rpc[RPC_KEY_CALLBACK] = function(result) {
+            gadgets.rpc.call(rpc['f'], CALLBACK_NAME, null, rpc['c'], result);
+          };
+        }
+
+        // Set the requestor origin.
+        // If not passed by the transport, then this simply sets to undefined.
+        if (opt_sender) {
+          var origin = getOrigin(opt_sender);
+          rpc[RPC_KEY_ORIGIN] = opt_sender;
+          var referrer = rpc['r'];
+          if (!referrer || getOrigin(referrer) != origin) {
+            // Transports send along as much info as they can about the sender
+            // of the message; 'origin' is the origin component alone, while
+            // 'referrer' is a best-effort field set from available information.
+            // The second clause simply verifies that referrer is valid.
+            referrer = opt_sender;
+          }
+          rpc[RPC_KEY_REFERRER] = referrer;
+        }
+
+        // Call the requested RPC service.
+        var result = (services[rpc['s']] ||
+            services[DEFAULT_NAME]).apply(rpc, rpc['a']);
+
+        // If the rpc request handler returns a value, immediately pass it back
+        // to the callback. Otherwise, do nothing, assuming that the rpc handler
+        // will make an asynchronous call later.
+        if (rpc['c'] && typeof result !== 'undefined') {
+          gadgets.rpc.call(rpc['f'], CALLBACK_NAME, null, rpc['c'], result);
+        }
       }
     }
 
-    var requiredConfig = {
-      parentRelayUrl : gadgets.config.NonEmptyStringValidator
-    };
-    gadgets.config.register("rpc", requiredConfig, init);
-  }
-
-  return /** @scope gadgets.rpc */ {
     /**
-     * Registers an RPC service.
-     * @param {String} serviceName Service name to register.
-     * @param {Function} handler Service handler.
+     * Helper method returning a canonicalized protocol://host[:port] for
+     * a given input URL, provided as a string. Used to compute convenient
+     * relay URLs and to determine whether a call is coming from the same
+     * domain as its receiver (bypassing the try/catch capability detection
+     * flow, thereby obviating Firebug and other tools reporting an exception).
      *
-     * @member gadgets.rpc
+     * @param {string} url Base URL to canonicalize.
+     * @memberOf gadgets.rpc
      */
-    register: function(serviceName, handler) {
-      if (serviceName === CALLBACK_NAME || serviceName === ACK) {
-        throw new Error("Cannot overwrite callback/ack service");
+    function getOrigin(url) {
+      if (!url) {
+        return '';
       }
-
-      if (serviceName === DEFAULT_NAME) {
-        throw new Error("Cannot overwrite default service:"
-                        + " use registerDefault");
-      }
-
-      services[serviceName] = handler;
-    },
-
-    /**
-     * Unregisters an RPC service.
-     * @param {String} serviceName Service name to unregister.
-     *
-     * @member gadgets.rpc
-     */
-    unregister: function(serviceName) {
-      if (serviceName === CALLBACK_NAME || serviceName === ACK) {
-        throw new Error("Cannot delete callback/ack service");
-      }
-
-      if (serviceName === DEFAULT_NAME) {
-        throw new Error("Cannot delete default service:"
-                        + " use unregisterDefault");
-      }
-
-      delete services[serviceName];
-    },
-
-    /**
-     * Registers a default service handler to processes all unknown
-     * RPC calls which raise an exception by default.
-     * @param {Function} handler Service handler.
-     *
-     * @member gadgets.rpc
-     */
-    registerDefault: function(handler) {
-      services[DEFAULT_NAME] = handler;
-    },
-
-    /**
-     * Unregisters the default service handler. Future unknown RPC
-     * calls will fail silently.
-     *
-     * @member gadgets.rpc
-     */
-    unregisterDefault: function() {
-      delete services[DEFAULT_NAME];
-    },
-
-    /**
-     * Forces all subsequent calls to be made by a transport
-     * method that allows the caller to verify the message receiver
-     * (by way of the parent parameter, through getRelayUrl(...)).
-     * At present this means IFPC or WPM.
-     */
-    forceParentVerifiable: function() {
-      if (!transport.isParentVerifiable()) {
-        transport = gadgets.rpctx.ifpc;
-      }
-    },
-
-    /**
-     * Calls an RPC service.
-     * @param {String} targetId Module Id of the RPC service provider.
-     *                          Empty if calling the parent container.
-     * @param {String} serviceName Service name to call.
-     * @param {Function|null} callback Callback function (if any) to process
-     *                                 the return value of the RPC request.
-     * @param {*} var_args Parameters for the RPC request.
-     *
-     * @member gadgets.rpc
-     */
-    call: function(targetId, serviceName, callback, var_args) {
-      targetId = targetId || '..';
-      // Default to the container calling.
-      var from = '..';
-
-      if (targetId === '..') {
-        from = rpcId;
-      }
-
-      ++callId;
-      if (callback) {
-        callbacks[callId] = callback;
-      }
-
-      var rpc = {
-        s: serviceName,
-        f: from,
-        c: callback ? callId : 0,
-        a: [].concat( Array.prototype.slice.call(arguments, 3)),
-        t: authToken[targetId],
-        l: useLegacyProtocol[targetId]
-      };
       
-      if( window["widgetId"] && window["tabId"]) {
-      	rpc.mid = /^w__Maximize__/.test( widgetId ) ? widgetId.substring(13) : widgetId;
-        rpc.tid = tabId;
+      if(/^.?\//.test( url ) || url.indexOf("://") < 0 )
+        url = window.location.href;
+      
+      url = url.toLowerCase();
+      if (url.indexOf('//') == 0) {
+        url = window.location.protocol + url;
+      }
+      if (url.indexOf('://') == -1) {
+        // Assumed to be schemaless. Default to current protocol.
+        url = window.location.protocol + '//' + url;
+      }
+      // At this point we guarantee that "://" is in the URL and defines
+      // current protocol. Skip past this to search for host:port.
+      var host = url.substring(url.indexOf('://') + 3);
+
+      // Find the first slash char, delimiting the host:port.
+      var slashPos = host.indexOf('/');
+      if (slashPos != -1) {
+        host = host.substring(0, slashPos);
       }
 
-      // If target is on the same domain, call method directly
-      if (callSameDomain(targetId, rpc)) {
-        return;
-      }
+      var protocol = url.substring(0, url.indexOf('://'));
 
-      // Attempt to make call via a cross-domain transport.
-      // Retrieve the transport for the given target - if one
-      // target is misconfigured, it won't affect the others.
-      var channel = receiverTx[targetId] ? receiverTx[targetId] : transport;
-
-      if (!channel) {
-        // Not set up yet. Enqueue the rpc for such time as it is.
-        if (!earlyRpcQueue[targetId]) {
-          earlyRpcQueue[targetId] = [ rpc ];
-        } else {
-          earlyRpcQueue[targetId].push(rpc);
+      // Use port only if it's not default for the protocol.
+      var portStr = '';
+      var portPos = host.indexOf(':');
+      if (portPos != -1) {
+        var port = host.substring(portPos + 1);
+        host = host.substring(0, portPos);
+        if ((protocol === 'http' && port !== '80') ||
+            (protocol === 'https' && port !== '443')) {
+          portStr = ':' + port;
         }
+      }
+
+      // Return <protocol>://<host>[<port>]
+      return protocol + '://' + host + portStr;
+    }
+
+    /*
+     * Makes a sibling id in the format of "/<siblingFrameId>|<siblingOrigin>".
+     */
+    function makeSiblingId(id, opt_origin) {
+      return '/' + id + (opt_origin ? ID_ORIGIN_DELIMITER + opt_origin : '');
+    }
+
+    /*
+     * Parses an iframe id.  Returns null if not a sibling id or
+     *   {id: <siblingId>, origin: <siblingOrigin>} otherwise.
+     */
+    function parseSiblingId(id) {
+      if (id.charAt(0) == '/') {
+        var delimiter = id.indexOf(ID_ORIGIN_DELIMITER);
+        var siblingId = delimiter > 0 ? id.substring(1, delimiter) : id.substring(1);
+        var origin = delimiter > 0 ? id.substring(delimiter + 1) : null;
+        return {id: siblingId, origin: origin};
+      } else {
+        return null;
+      }
+    }
+
+    function getTargetWin(id) {
+      if (typeof id === 'undefined' ||
+          id === '..') {
+        return window.parent;
+      }
+
+      var siblingId = parseSiblingId(id);
+      if (siblingId) {
+        return window.top.frames[siblingId.id];
+      }
+
+      // Cast to a String to avoid an index lookup.
+      id = String(id);
+      
+      // Try getElementById() first
+      target = document.getElementById(id);
+      if (target && target.contentWindow) {
+        return target.contentWindow;
+      }
+
+      // Fallback to window.frames
+      var target = window.frames[id];
+      if (target && !target.closed) {
+        return target;
+      }
+
+      return null;
+    }
+
+    function getTargetOrigin(id) {
+      var targetRelay = null;
+      var relayUrl = getRelayUrl(id);
+      if (relayUrl) {
+        targetRelay = relayUrl;
+      } else {
+        var siblingId = parseSiblingId(id);
+        if (siblingId) {
+          // sibling
+          targetRelay = siblingId.origin;
+        } else if (id == '..') {
+          // parent
+          targetRelay = params['parent'];
+        } else {
+          // child
+          targetRelay = document.getElementById(id).src;
+        }
+      }
+
+      return getOrigin(targetRelay);
+    }
+
+    // Pick the most efficient RPC relay mechanism.
+    var transport = getTransport();
+
+    // Create the Default RPC handler.
+    services[DEFAULT_NAME] = function() {
+      clog('Unknown RPC service: ' + this.s);
+    };
+
+    // Create a Special RPC handler for callbacks.
+    services[CALLBACK_NAME] = function(callbackId, result) {
+      var callback = callbacks[callbackId];
+      if (callback) {
+        delete callbacks[callbackId];
+        callback.call(this, result);
+      }
+    };
+
+    /**
+     * Conducts any frame-specific work necessary to setup
+     * the channel type chosen. This method is called when
+     * the container page first registers the gadget in the
+     * RPC mechanism. Gadgets, in turn, will complete the setup
+     * of the channel once they send their first messages.
+     */
+    function setupFrame(frameId, token) {
+      if (setup[frameId] === true) {
         return;
       }
 
-      // If we are told to use the legacy format, then we must
-      // default to IFPC.
-      if (useLegacyProtocol[targetId]) {
-        channel = gadgets.rpctx.ifpc;
+      if (typeof setup[frameId] === 'undefined') {
+        setup[frameId] = 0;
       }
 
-      if (channel.call(targetId, from, rpc) === false) {
-        // Fall back to IFPC. This behavior may be removed as IFPC is as well.
-        receiverTx[targetId] = fallbackTransport;
-        transport.call(targetId, from, rpc);
+      var tgtFrame = getTargetWin(frameId);
+      if (frameId === '..' || tgtFrame != null) {
+        if (transport.setup(frameId, token) === true) {
+          setup[frameId] = true;
+          return;
+        }
       }
-    },
+
+      if (setup[frameId] !== true && setup[frameId]++ < SETUP_FRAME_MAX_TRIES) {
+        // Try again in a bit, assuming that frame will soon exist.
+        window.setTimeout(function() { setupFrame(frameId, token); },
+                        SETUP_FRAME_TIMEOUT);
+      } else {
+        // Fail: fall back for this gadget.
+        receiverTx[frameId] = fallbackTransport;
+        setup[frameId] = true;
+      }
+    }
+
+    var _flagCrossOrigin = {};
+    /**
+     * Attempts to make an rpc by calling the target's receive method directly.
+     * This works when gadgets are rendered on the same domain as their container,
+     * a potentially useful optimization for trusted content which keeps
+     * RPC behind a consistent interface.
+     *
+     * @param {string} target Module id of the rpc service provider.
+     * @param {Object} rpc RPC data.
+     * @return {boolean}
+     */
+    function callSameDomain(target, rpc) {
+      var targetEl = getTargetWin(target);
+      if (!sameDomain[target] || (sameDomain[target] !== _flagCrossOrigin &&
+              targetEl.Function.prototype !== sameDomain[target].constructor.prototype)) {
+
+        var targetRelay = getRelayUrl(target);
+        if (getOrigin(targetRelay) !== getOrigin(window.location.href)) {
+          // Not worth trying -- avoid the error and just return.
+          sameDomain[target] = _flagCrossOrigin; // never try this again
+          return false;
+        }
+
+        try {
+          // If this succeeds, then same-domain policy applied
+          var targetGadgets = targetEl['gadgets'];
+          sameDomain[target] = targetGadgets.rpc.receiveSameDomain;
+        } catch (e) {
+          // Shouldn't happen due to origin check. Caught to emit more
+          // meaningful error to the caller. Consider emitting in non-opt mode.
+          // gadgets.log('Same domain call failed: parent= incorrectly set.');
+          sameDomain[target] = _flagCrossOrigin; // never try this again
+          return false;
+        }
+      }
+
+      // Cross window functions in IE often look like objects in nearly every way
+      // (typeof() will lie to you)
+      if (sameDomain[target] && sameDomain[target] !== _flagCrossOrigin) {
+        // Call target's receive method
+        sameDomain[target](rpc);
+        return true;
+      }
+
+      return false;
+    }
 
     /**
      * Gets the relay URL of a target frame.
-     * @param {String} targetId Name of the target frame.
-     * @return {String|undefined} Relay URL of the target frame.
+     * @param {string} targetId Name of the target frame.
+     * @return {string|undefined} Relay URL of the target frame.
      *
      * @member gadgets.rpc
      */
-    getRelayUrl: function(targetId) {
+    function getRelayUrl(targetId) {
       var url = relayUrl[targetId];
       // Some RPC methods (wpm, for one) are unhappy with schemeless URLs.
-      if (url && url.indexOf('//') == 0) {
-        url = document.location.protocol + url;
+      if (url && url.substring(0, 1) === '/') {
+        if (url.substring(1, 2) === '/') {    // starts with '//'
+          url = document.location.protocol + url;
+        } else {    // relative URL, starts with '/'
+          url = document.location.protocol + '//' + document.location.host + url;
+        }
       }
-      
       return url;
-    },
+    }
 
     /**
      * Sets the relay URL of a target frame.
-     * @param {String} targetId Name of the target frame.
-     * @param {String} url Full relay URL of the target frame.
-     * @param {Boolean} opt_useLegacy True if this relay needs the legacy IFPC
-     *     wire format.
+     * @param {string} targetId Name of the target frame.
+     * @param {string} url Full relay URL of the target frame.
      *
      * @member gadgets.rpc
+     * @deprecated
      */
-    setRelayUrl: function(targetId, url, opt_useLegacy) {
+    function setRelayUrl(targetId, url, opt_useLegacy) {
+      // Make URL absolute if necessary
+      // 20:49 2011/11/14 for relative relayUrl.
+//    if (!/http(s)?:\/\/.+/.test(url)) {
+      if (!/http(s)?:\/\/.+/.test(url) && !url.indexOf('.') == 0) {
+        if (url.indexOf('//') == 0) {
+          url = window.location.protocol + url;
+        } else if (url.charAt(0) == '/') {
+          url = window.location.protocol + '//' + window.location.host + url;
+        } else if (url.indexOf('://') == -1) {
+          // Assumed to be schemaless. Default to current protocol.
+          url = window.location.protocol + '//' + url;
+        }
+      }
       relayUrl[targetId] = url;
-      useLegacyProtocol[targetId] = !!opt_useLegacy;
-    },
+      if (typeof opt_useLegacy !== 'undefined') {
+        useLegacyProtocol[targetId] = !!opt_useLegacy;
+      }
+    }
+
+    /**
+     * Helper method to retrieve the authToken for a given gadget.
+     * Not to be used directly.
+     * @member gadgets.rpc
+     * @return {string}
+     */
+    function getAuthToken(targetId) {
+      return authToken[targetId];
+    }
 
     /**
      * Sets the auth token of a target frame.
-     * @param {String} targetId Name of the target frame.
-     * @param {String} token The authentication token to use for all
+     * @param {string} targetId Name of the target frame.
+     * @param {string} token The authentication token to use for all
      *     calls to or from this target id.
      *
      * @member gadgets.rpc
+     * @deprecated
      */
-    setAuthToken: function(targetId, token) {
-      token = token || "";
+    function setAuthToken(targetId, token) {
+      token = token || '';
 
       // Coerce token to a String, ensuring that all authToken values
       // are strings. This ensures correct comparison with URL params
@@ -646,79 +660,434 @@ gadgets.rpc = function() {
       authToken[targetId] = String(token);
 
       setupFrame(targetId, token);
-    },
+    }
+
+    function setReferrerConfig(cfg) {
+      var passReferrer = cfg['passReferrer'] || '';
+      var prParts = passReferrer.split(':', 2);
+      passReferrerDirection = prParts[0] || 'none';
+      passReferrerContents = prParts[1] || 'origin';
+    }
+
+
+    function setLegacyProtocolConfig(cfg) {
+      if (isLegacyProtocolConfig(cfg)) {
+        transport = gadgets.rpctx.ifpc;
+        transport.init(process, transportReady);
+      }
+    }
+
+    function isLegacyProtocolConfig(cfg) {
+      return String(cfg['useLegacyProtocol']) === 'true';
+    }
+
+    function setupContainedContext(rpctoken, opt_parent) {
+      function init(config) {
+        var cfg = config ? config['rpc'] : {};
+        setReferrerConfig(cfg);
+
+        // Parent-relative only.
+        var parentRelayUrl = cfg['parentRelayUrl'] || '';
+        parentRelayUrl = getOrigin(params['parent'] || opt_parent) + parentRelayUrl;
+        setRelayUrl('..', parentRelayUrl, isLegacyProtocolConfig(cfg));
+
+        setLegacyProtocolConfig(cfg);
+
+        setAuthToken('..', rpctoken);
+      }
+
+      // Check to see if we know the parent yet.
+      // In almost all cases we will, since the parent param is provided.
+      // However, it's possible that the lib doesn't yet know, but is
+      // initialized in forced fashion later.
+      if (!params['parent'] && opt_parent) {
+        // Handles the forced initialization case.
+        init({});
+        return;
+      }
+
+      // Handles the standard gadgets.config.init() case.
+      gadgets.config.register('rpc', null, init);
+    }
+
+    function setupChildIframe(gadgetId, opt_frameurl, opt_authtoken) {
+      var childIframe = null;
+      if (gadgetId.charAt(0) != '/') {
+        // only set up child (and not sibling) iframe
+        if (!gadgets.util) {
+          return;
+        }
+        childIframe = document.getElementById(gadgetId);
+        if (!childIframe) {
+          throw new Error('Cannot set up gadgets.rpc receiver with ID: ' + gadgetId +
+              ', element not found.');
+        }
+      }
+
+      // The "relay URL" can either be explicitly specified or is set as
+      // the child IFRAME URL's origin
+      var childSrc = childIframe && childIframe.src;
+      var relayUrl = opt_frameurl || gadgets.rpc.getOrigin(childSrc);
+      setRelayUrl(gadgetId, relayUrl);
+
+      // The auth token is parsed from child params (rpctoken) or overridden.
+      var childParams = gadgets.util.getUrlParameters(childSrc);
+      var rpctoken = opt_authtoken || childParams['rpctoken'];
+      setAuthToken(gadgetId, rpctoken);
+    }
 
     /**
-     * Helper method to retrieve the authToken for a given gadget.
-     */
-    getAuthToken: function(targetId) {
-      return authToken[targetId];
-    },
-
-    /**
-     * Gets the RPC relay mechanism.
-     * @return {String} RPC relay mechanism. See above for
-     *   a list of supported types.
+     * Sets up the gadgets.rpc library to communicate with the receiver.
+     * <p>This method replaces setRelayUrl(...) and setAuthToken(...)
+     *
+     * <p>Simplified instructions - highly recommended:
+     * <ol>
+     * <li> Generate &lt;iframe id="&lt;ID&gt;" src="...#parent=&lt;PARENTURL&gt;&rpctoken=&lt;RANDOM&gt;"/&gt;
+     *      and add to DOM.
+     * <li> Call gadgets.rpc.setupReceiver("&lt;ID>");
+     *      <p>All parent/child communication initializes automatically from here.
+     *         Naturally, both sides need to include the library.
+     * </ol>
+     *
+     * <p>Detailed container/parent instructions:
+     * <ol>
+     * <li> Create the target IFRAME (eg. gadget) with a given &lt;ID> and params
+     *    rpctoken=<token> (eg. #rpctoken=1234), which is a random/unguessbable
+     *    string, and parent=&lt;url>, where &lt;url> is the URL of the container.
+     * <li> Append IFRAME to the document.
+     * <li> Call gadgets.rpc.setupReceiver(&lt;ID>)
+     * <p>[Optional]. Strictly speaking, you may omit rpctoken and parent. This
+     *             practice earns little but is occasionally useful for testing.
+     *             If you omit parent, you MUST pass your container URL as the 2nd
+     *             parameter to this method.
+     * </ol>
+     *
+     * <p>Detailed gadget/child IFRAME instructions:
+     * <ol>
+     * <li> If your container/parent passed parent and rpctoken params (query string
+     *    or fragment are both OK), you needn't do anything. The library will self-
+     *    initialize.
+     * <li> If "parent" is omitted, you MUST call this method with targetId '..'
+     *    and the second param set to the parent URL.
+     * <li> If "rpctoken" is omitted, but the container set an authToken manually
+     *    for this frame, you MUST pass that ID (however acquired) as the 2nd param
+     *    to this method.
+     * </ol>
      *
      * @member gadgets.rpc
+     * @param {string} targetId
+     * @param {string=} opt_receiverurl
+     * @param {string=} opt_authtoken
      */
-    getRelayChannel: function() {
-      return transport.getCode();
-    },
-
-    /**
-     * Receives and processes an RPC request. (Not to be used directly.)
-     * Only used by IFPC.
-     * @param {Array.<String>} fragment An RPC request fragment encoded as
-     *        an array. The first 4 elements are target id, source id & call id,
-     *        total packet number, packet id. The last element stores the actual
-     *        JSON-encoded and URI escaped packet data.
-     *
-     * @member gadgets.rpc
-     */
-    receive: function(fragment) {
-      if (fragment.length > 4) {
-        // TODO parse fragment[1..3] to merge multi-fragment messages
-        process(gadgets.json.parse(
-            decodeURIComponent(fragment[fragment.length - 1])));
+    function setupReceiver(targetId, opt_receiverurl, opt_authtoken) {
+      if (targetId === '..') {
+        // Gadget/IFRAME to container.
+        var rpctoken = opt_authtoken || params['rpctoken'] || params['ifpctok'] || '';
+        setupContainedContext(rpctoken, opt_receiverurl);
+      } else {
+        // Container to child.
+        setupChildIframe(targetId, opt_receiverurl, opt_authtoken);
       }
-    },
+    }
 
-    /**
-     * Receives and processes an RPC request sent via the same domain.
-     * (Not to be used directly). Converts the inbound rpc object's
-     * Array into a local Array to pass the process() Array test.
-     * @param {Object} rpc RPC object containing all request params
-     */
-    receiveSameDomain: function(rpc) {
-      // Pass through to local process method but converting to a local Array
-      rpc.a = Array.prototype.slice.call(rpc.a);
-      window.setTimeout(function() { process(rpc); }, 0);
-    },
-
-    /**
-     * Helper method to get the protocol://host:port of an input URL.
-     */
-    getOrigin: getOrigin,
-
-    /**
-     * Internal-only method used to initialize gadgets.rpc.
-     */
-    init: function() {
-      // Conduct any global setup necessary for the chosen transport.
-      // Do so after gadgets.rpc definition to allow transport to access
-      // gadgets.rpc methods.
-      if (transport.init(process, transportReady) === false) {
-        transport = fallbackTransport;
+    function getReferrer(targetId) {
+      if (passReferrerDirection === 'bidir' ||
+          (passReferrerDirection === 'c2p' && targetId === '..') ||
+          (passReferrerDirection === 'p2c' && targetId !== '..')) {
+        var href = window.location.href;
+        var lopOff = '?';  // default = origin
+        if (passReferrerContents === 'query') {
+          lopOff = '#';
+        } else if (passReferrerContents === 'hash') {
+          return href;
+        }
+        var lastIx = href.lastIndexOf(lopOff);
+        lastIx = lastIx === -1 ? href.length : lastIx;
+        return href.substring(0, lastIx);
       }
-    },
+      return null;
+    }
 
-    /** Exported constant, for use by transports only. */
-    ACK: ACK,
+    return /** @scope gadgets.rpc */ {
+      config: function(config) {
+        if (typeof config.securityCallback === 'function') {
+          securityCallback = config.securityCallback;
+        }
+        if (typeof config.arbitrator === 'function') {
+          arbitrate = config.arbitrator;
+        }
+      },
 
-    RPC_ID: rpcId
-  };
-}();
+      /**
+       * Registers an RPC service.
+       * @param {string} serviceName Service name to register.
+       * @param {function(Object,Object)} handler Service handler.
+       *
+       * @member gadgets.rpc
+       */
+      register: function(serviceName, handler) {
+        if (serviceName === CALLBACK_NAME || serviceName === ACK) {
+          throw new Error('Cannot overwrite callback/ack service');
+        }
 
-// Initialize library/transport.
-gadgets.rpc.init();
+        if (serviceName === DEFAULT_NAME) {
+          throw new Error('Cannot overwrite default service:'
+                        + ' use registerDefault');
+        }
+
+        services[serviceName] = handler;
+      },
+
+      /**
+       * Unregisters an RPC service.
+       * @param {string} serviceName Service name to unregister.
+       *
+       * @member gadgets.rpc
+       */
+      unregister: function(serviceName) {
+        if (serviceName === CALLBACK_NAME || serviceName === ACK) {
+          throw new Error('Cannot delete callback/ack service');
+        }
+
+        if (serviceName === DEFAULT_NAME) {
+          throw new Error('Cannot delete default service:'
+                        + ' use unregisterDefault');
+        }
+
+        delete services[serviceName];
+      },
+
+      /**
+       * Registers a default service handler to processes all unknown
+       * RPC calls which raise an exception by default.
+       * @param {function(Object,Object)} handler Service handler.
+       *
+       * @member gadgets.rpc
+       */
+      registerDefault: function(handler) {
+        services[DEFAULT_NAME] = handler;
+      },
+
+      /**
+       * Unregisters the default service handler. Future unknown RPC
+       * calls will fail silently.
+       *
+       * @member gadgets.rpc
+       */
+      unregisterDefault: function() {
+        delete services[DEFAULT_NAME];
+      },
+
+      /**
+       * Forces all subsequent calls to be made by a transport
+       * method that allows the caller to verify the message receiver
+       * (by way of the parent parameter, through getRelayUrl(...)).
+       * At present this means IFPC or WPM.
+       * @member gadgets.rpc
+       */
+      forceParentVerifiable: function() {
+        if (!transport.isParentVerifiable()) {
+          transport = gadgets.rpctx.ifpc;
+        }
+      },
+
+      /**
+       * Calls an RPC service.
+       * @param {string} targetId Module Id of the RPC service provider.
+       *                          Empty if calling the parent container.
+       * @param {string} serviceName Service name to call.
+       * @param {function()|null} callback Callback function (if any) to process
+       *                                 the return value of the RPC request.
+       * @param {*} var_args Parameters for the RPC request.
+       *
+       * @member gadgets.rpc
+       */
+      call: function(targetId, serviceName, callback, var_args) {
+        targetId = targetId || '..';
+        // Default to the container calling.
+        var from = '..';
+
+        if (targetId === '..') {
+          from = rpcId;
+        } else if (targetId.charAt(0) == '/') {
+          // sending to sibling
+          from = makeSiblingId(rpcId, gadgets.rpc.getOrigin(window.location.href));
+        }
+
+        ++callId;
+        if (callback) {
+          callbacks[callId] = callback;
+        }
+
+        var rpc = {
+          's': serviceName,
+          'f': from,
+          'c': callback ? callId : 0,
+          'a': [].concat( Array.prototype.slice.call(arguments, 3)),
+          't': authToken[targetId],
+          'l': !!useLegacyProtocol[targetId]
+        };
+
+        if( window["widgetId"] && window["tabId"]) {
+      	  rpc.mid = /^w__Maximize__/.test( widgetId ) ? widgetId.substring(13) : widgetId;
+          rpc.tid = tabId;
+        }
+
+        var referrer = getReferrer(targetId);
+        if (referrer) {
+          rpc['r'] = referrer;
+        }
+
+        if (targetId !== '..' &&
+            parseSiblingId(targetId) == null &&  // sibling never in the document
+            !document.getElementById(targetId)) {
+          // The target has been removed from the DOM. Don't even try.
+          return;
+        }
+
+        // If target is on the same domain, call method directly
+        if (callSameDomain(targetId, rpc)) {
+          return;
+        }
+
+        // Attempt to make call via a cross-domain transport.
+        // Retrieve the transport for the given target - if one
+        // target is misconfigured, it won't affect the others.
+        // In the case of a sibling relay, channel is not found
+        // in the receiverTx map but in the transport itself.
+        var channel = receiverTx[targetId];
+        if (!channel && parseSiblingId(targetId) !== null) {
+          // Sibling-to-sibling communication; use default trasport
+          // (in practice, wpm) despite not being ready()-indicated.
+          channel = transport;
+        }
+
+        if (!channel) {
+          // Not set up yet. Enqueue the rpc for such time as it is.
+          if (!earlyRpcQueue[targetId]) {
+            earlyRpcQueue[targetId] = [rpc];
+          } else {
+            earlyRpcQueue[targetId].push(rpc);
+          }
+          return;
+        }
+
+        // If we are told to use the legacy format, then we must
+        // default to IFPC.
+        if (useLegacyProtocol[targetId]) {
+          channel = gadgets.rpctx.ifpc;
+        }
+
+        if (channel.call(targetId, from, rpc) === false) {
+          // Fall back to IFPC. This behavior may be removed as IFPC is as well.
+          receiverTx[targetId] = fallbackTransport;
+          transport.call(targetId, from, rpc);
+        }
+      },
+
+      getRelayUrl: getRelayUrl,
+      setRelayUrl: setRelayUrl,
+      setAuthToken: setAuthToken,
+      setupReceiver: setupReceiver,
+      getAuthToken: getAuthToken,
+
+      // Note: Does not delete iframe
+      removeReceiver: function(receiverId) {
+        delete relayUrl[receiverId];
+        delete useLegacyProtocol[receiverId];
+        delete authToken[receiverId];
+        delete setup[receiverId];
+        delete sameDomain[receiverId];
+        delete receiverTx[receiverId];
+      },
+
+      /**
+       * Gets the RPC relay mechanism.
+       * @return {string} RPC relay mechanism. See above for
+       *   a list of supported types.
+       *
+       * @member gadgets.rpc
+       */
+      getRelayChannel: function() {
+        return transport.getCode();
+      },
+
+      /**
+       * Receives and processes an RPC request. (Not to be used directly.)
+       * Only used by IFPC.
+       * @param {Array.<string>} fragment An RPC request fragment encoded as
+       *        an array. The first 4 elements are target id, source id & call id,
+       *        total packet number, packet id. The last element stores the actual
+       *        JSON-encoded and URI escaped packet data.
+       *
+       * @member gadgets.rpc
+       * @deprecated
+       */
+      receive: function(fragment, otherWindow) {
+        if (fragment.length > 4) {
+          transport._receiveMessage(fragment, process);
+        } else {
+          relayOnload.apply(null, fragment.concat(otherWindow));
+        }
+      },
+
+      /**
+       * Receives and processes an RPC request sent via the same domain.
+       * (Not to be used directly). Converts the inbound rpc object's
+       * Array into a local Array to pass the process() Array test.
+       * @param {Object} rpc RPC object containing all request params.
+       * @member gadgets.rpc
+       */
+      receiveSameDomain: function(rpc) {
+        // Pass through to local process method but converting to a local Array
+        rpc['a'] = Array.prototype.slice.call(rpc['a']);
+        window.setTimeout(function() { process(rpc); }, 0);
+      },
+
+      // Helper method to get the protocol://host:port of an input URL.
+      // see docs above
+      getOrigin: getOrigin,
+      getTargetOrigin: getTargetOrigin,
+
+      /**
+       * Internal-only method used to initialize gadgets.rpc.
+       * @member gadgets.rpc
+       */
+      init: function() {
+        // Conduct any global setup necessary for the chosen transport.
+        // Do so after gadgets.rpc definition to allow transport to access
+        // gadgets.rpc methods.
+        if (transport.init(process, transportReady) === false) {
+          transport = fallbackTransport;
+        }
+        if (isChild) {
+          setupReceiver('..');
+        } else {
+          gadgets.config.register('rpc', null, function(config) {
+            var cfg = config['rpc'] || {};
+            setReferrerConfig(cfg);
+            setLegacyProtocolConfig(cfg);
+          });
+        }
+      },
+
+      /** Returns the window keyed by the ID. null/".." for parent, else child */
+      _getTargetWin: getTargetWin,
+
+      /** Parses a sibling id into {id: <siblingId>, origin: <siblingOrigin>} */
+      _parseSiblingId: parseSiblingId,
+
+      ACK: ACK,
+
+      RPC_ID: rpcId || '..',
+
+      SEC_ERROR_LOAD_TIMEOUT: LOAD_TIMEOUT,
+      SEC_ERROR_FRAME_PHISH: FRAME_PHISH,
+      SEC_ERROR_FORGED_MSG: FORGED_MSG
+    };
+  }();
+
+  // Initialize library/transport.
+  gadgets.rpc.init();
+
+} // !end of double-inclusion guard

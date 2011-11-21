@@ -75,15 +75,48 @@ var config = {"gadgets.container" : ["default"],
 // Use an insecure security token by default
 "gadgets.securityTokenType" : "insecure",
 
+// Uncomment these to switch to a secure version
+//
+//"gadgets.securityTokenType" : "secure",
+//"gadgets.securityTokenKeyFile" : "/path/to/key/file.txt",
+
 // Config param to load Opensocial data for social
 // preloads in data pipelining.  %host% will be
 // substituted with the current host.
 "gadgets.osDataUri" : "http://%host%/social/rpc", //FIXME
 
-// Uncomment these to switch to a secure version
-// 
-//"gadgets.securityTokenType" : "secure",
-//"gadgets.securityTokenKeyFile" : "/path/to/key/file.txt",
+// OS 2.0 Gadget DOCTYPE: used in Gadgets with @specificationVersion 2.0 or greater and
+// quirksmode on Gadget has not been set.
+"gadgets.doctype_qname" : "HTML",  //HTML5 doctype
+"gadgets.doctype_pubid" : "",
+"gadgets.doctype_sysid" : "",
+
+
+// Authority (host:port without scheme) for the default shindig test instance.
+"defaultShindigTestAuthority":"%authority%",
+
+// Authority (host:port without scheme) for the proxy and concat servlets.
+"defaultShindigProxyConcatAuthority":"%authority%",
+
+// Default Js Uri config: also must be overridden.
+"gadgets.uri.js.host": "//${Cur['defaultShindigTestAuthority']}",
+"gadgets.uri.js.path": "${CONTEXT_ROOT}/gadgets/js",
+
+// Default concat Uri config; used for testing.
+"gadgets.uri.concat.host" : "${Cur['defaultShindigProxyConcatAuthority']}",
+"gadgets.uri.concat.path" : "${CONTEXT_ROOT}/gadgets/concat",
+"gadgets.uri.concat.js.splitToken" : "false",
+
+// Default proxy Uri config; used for testing.
+"gadgets.uri.proxy.host" : "${Cur['defaultShindigProxyConcatAuthority']}",
+"gadgets.uri.proxy.path" : "${CONTEXT_ROOT}/gadgets/proxy",
+
+//Enables/Disables feature administration
+"gadgets.admin.enableFeatureAdministration" : "false",
+
+//Enables whitelist checks
+"gadgets.admin.enableGadgetWhitelist" : "false",
+
 
 // This config data will be passed down to javascript. Please
 // configure your object using the feature name rather than
@@ -98,21 +131,94 @@ var config = {"gadgets.container" : ["default"],
     "jsonProxyUrl" : getContextPath()+"/jsonproxy"
   },
   "views" : {
-    "home" : {
+    "default" : {
       "isOnlyVisible" : false,
       "urlTemplate" : "", //FIXME
-      "aliases": ["default"]
+      "aliases" : ["home", "profile", "canvas"]
     },
     "profile" : {
       "isOnlyVisible" : false,
       "urlTemplate" : "", //FIXME
-      "aliases": ["DASHBOARD"]
+      "aliases": ["DASHBOARD", "default"]
     },
     "canvas" : {
       "isOnlyVisible" : true,
       "urlTemplate" : "", //FIXME
       "aliases" : ["FULL_PAGE"]
+    },
+    "home" : {
+      "isOnlyVisible" : false,
+      "urlTemplate" : "", //FIXME
+      "aliases": ["default"]
     }
+  },
+  "tabs": {
+    "css" : [
+      ".tablib_table {",
+      "width: 100%;",
+      "border-collapse: separate;",
+      "border-spacing: 0px;",
+      "empty-cells: show;",
+      "font-size: 11px;",
+      "text-align: center;",
+    "}",
+    ".tablib_emptyTab {",
+      "border-bottom: 1px solid #676767;",
+      "padding: 0px 1px;",
+    "}",
+    ".tablib_spacerTab {",
+      "border-bottom: 1px solid #676767;",
+      "padding: 0px 1px;",
+      "width: 1px;",
+    "}",
+    ".tablib_selected {",
+      "padding: 2px;",
+      "background-color: #ffffff;",
+      "border: 1px solid #676767;",
+      "border-bottom-width: 0px;",
+      "color: #3366cc;",
+      "font-weight: bold;",
+      "width: 80px;",
+      "cursor: default;",
+    "}",
+    ".tablib_unselected {",
+      "padding: 2px;",
+      "background-color: #dddddd;",
+      "border: 1px solid #aaaaaa;",
+      "border-bottom-color: #676767;",
+      "color: #000000;",
+      "width: 80px;",
+      "cursor: pointer;",
+    "}",
+    ".tablib_navContainer {",
+      "width: 10px;",
+      "vertical-align: middle;",
+    "}",
+    ".tablib_navContainer a:link, ",
+    ".tablib_navContainer a:visited, ",
+    ".tablib_navContainer a:hover {",
+      "color: #3366aa;",
+      "text-decoration: none;",
+    "}"
+    ]
+  },
+  "minimessage": {
+      "css": [
+        ".mmlib_table {",
+        "width: 100%;",
+        "font: bold 9px arial,sans-serif;",
+        "background-color: #fff4c2;",
+        "border-collapse: separate;",
+        "border-spacing: 0px;",
+        "padding: 1px 0px;",
+      "}",
+      ".mmlib_xlink {",
+        "font: normal 1.1em arial,sans-serif;",
+        "font-weight: bold;",
+        "color: #0000cc;",
+        "cursor: pointer;",
+      "}"
+     ]
   },
   "rpc" : {
     // Path to the relay file. Automatically appended to the parent
@@ -123,7 +229,11 @@ var config = {"gadgets.container" : ["default"],
 
     // If true, this will use the legacy ifpc wire format when making rpc
     // requests.
-    "useLegacyProtocol" : false
+    "useLegacyProtocol" : false,
+
+    // Path to the cross-domain enabling SWF for rpc's Flash transport.
+    "commSwf": "/xpc.swf",
+    "passReferrer": "c2p:query"
   },
   // Skin defaults
   "skins" : {
@@ -135,9 +245,32 @@ var config = {"gadgets.container" : ["default"],
       "FONT_COLOR": "black",
       "ANCHOR_COLOR": "blue"
     }
+  },
+  "osapi.services" : {
+    // Specifying a binding to "container.listMethods" instructs osapi to dynamicaly introspect the services
+    // provided by the container and delay the gadget onLoad handler until that introspection is
+    // complete.
+    // Alternatively a container can directly configure services here rather than having them
+    // introspected. Simply list out the available servies and omit "container.listMethods" to
+    // avoid the initialization delay caused by gadgets.rpc
+    // E.g. "gadgets.rpc" : ["activities.requestCreate", "messages.requestSend", "requestShareApp", "requestPermission"]
+    "gadgets.rpc" : ["container.listMethods"]
+//  "//%host%/rpc" : ["http.post", "http.delete", "http.head", "http.get", "http.put"]
+  },
+  "osapi" : {
+    // The endpoints to query for available JSONRPC/REST services
+    "endPoints" : [ "//%host%${CONTEXT_ROOT}/rpc" ]
+  },
+  "container" : {
+    "relayPath": "${CONTEXT_ROOT}/gadgets/files/container/rpc_relay.html",
+
+    //Enables/Disables the RPC arbitrator functionality in the common container
+    "enableRpcArbitration": false
   }
 //}
 };
+
+config["osapi.services"][hostPrefix + "/rpc"] = ["http.post", "http.delete", "http.head", "http.get", "http.put"];
 
 gadgets.Prefs.setMessages_( i18nMsgs );
 

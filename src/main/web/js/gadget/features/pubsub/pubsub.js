@@ -20,8 +20,6 @@
  * @fileoverview Gadget-side PubSub library for gadget-to-gadget communication.
  */
 
-var gadgets = gadgets || {};
-
 /**
  * @static
  * @class Provides operations for making rpc calls.
@@ -35,12 +33,6 @@ gadgets.pubsub = function() {
     if (typeof listener === 'function') {
       listener(sender, message);
     }
-  }
-  
-  window.onunload = function() {
-  	for( var i in listeners ) if( listeners.hasOwnProperty( i )) {
-	  	gadgets.pubsub.unsubscribe( i );
-  	}
   }
 
   return /** @scope gadgets.pubsub */ {
@@ -56,13 +48,13 @@ gadgets.pubsub = function() {
     /**
      * Subscribes to a channel.
      * @param {string} channel Channel name.
-     * @param {function} callback Callback function that receives messages.
+     * @param {function(Object,Object)} callback Callback function that receives messages.
      *                   For example:
      *                   function(sender, message) {
      *                     if (isTrustedGadgetSpecUrl(sender)) {
      *                       processMessage(message);
      *                     }
-     *                   }
+     *                   }.
      */
     subscribe: function(channel, callback) {
       listeners[channel] = callback;
