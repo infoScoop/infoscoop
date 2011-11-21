@@ -567,6 +567,13 @@
 	</servlet>
 
 	<servlet>
+		<servlet-name>OAuth2CallbackServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.OAuth2CallbackServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
 		<servlet-name>I18NExportServlet</servlet-name>
 		<servlet-class>
 			org.infoscoop.admin.web.I18NExportServlet
@@ -762,6 +769,11 @@
 	<servlet-mapping>
 		<servlet-name>OAuthCallbackServlet</servlet-name>
 		<url-pattern>/oauthcallback</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>OAuth2CallbackServlet</servlet-name>
+		<url-pattern>/oauth2callback</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

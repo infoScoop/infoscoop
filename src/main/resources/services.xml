@@ -540,6 +540,9 @@
 				<property name="oauthTokenDAO">
 					<ref bean="oauthTokenDAO" />
 				</property>
+				<property name="oauth2TokenDAO">
+					<ref bean="oauth2TokenDAO" />
+				</property>
 				<property name="oauthCertificateDAO">
 					<ref bean="oauthCertificateDAO" />
 				</property>

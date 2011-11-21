@@ -60,5 +60,11 @@
             </key>
             <one-to-many class="OAuthToken" />  
         </set>
+        <set name="OAuth2Token" lazy="true" inverse="true">  
+            <key>  
+                <column name="fk_oauth_id" not-null="true" />  
+            </key>
+            <one-to-many class="OAuth2Token" />  
+        </set>      
 	</class>	
 </hibernate-mapping>

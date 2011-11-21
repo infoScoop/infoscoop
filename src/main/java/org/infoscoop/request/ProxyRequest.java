@@ -133,6 +133,7 @@ public class ProxyRequest{
     private String redirectURL;
     
     private OAuthConfig oauthConfig;
+    private OAuth2Config oauth2Config;
     
     private String targetJSessionId;
     
@@ -870,6 +871,72 @@ public class ProxyRequest{
 		}
 	}
 
+    public OAuth2Config getOauth2Config() {
+		return oauth2Config;
+	}
+
+	public void setOauth2Config(OAuth2Config oauth2Config) {
+		this.oauth2Config = oauth2Config;
+	}
+
+	public class OAuth2Config {
+		String serviceName;
+		String userAuthorizationURL;
+		String accessTokenURL;
+		String scope;
+		
+		String code;
+		String accessToken;
+		String refreshToken;
+		Long validityPeriodUTC;
+		
+		String gadgetUrl;
+		String hostPrefix;
+
+		public String getGadgetUrl() {
+			return gadgetUrl;
+		}
+
+		public void setGadgetUrl(String gadgetUrl) {
+			this.gadgetUrl = gadgetUrl;
+		}
+
+		public String getHostPrefix() {
+			return hostPrefix;
+		}
+
+		public void setHostPrefix(String hostPrefix) {
+			this.hostPrefix = hostPrefix;
+		}
+
+		public OAuth2Config(String serviceName){
+			this.serviceName = serviceName;
+		}
+		
+		public void setCode(String code) {
+			this.code = code;
+		}
+		
+		public void setAccessToken(String accessToken) {
+			this.accessToken = accessToken;
+		}
+		public void setRefreshToken(String refreshToken) {
+			this.refreshToken = refreshToken;
+		}
+		
+		public void setUserAuthorizationURL(String userAuthorizationURL) {
+			this.userAuthorizationURL = userAuthorizationURL;
+		}
+		public void setAccessTokenURL(String accessTokenURL) {
+			this.accessTokenURL = accessTokenURL;
+		}
+		public void setScope(String scope){
+			this.scope = scope;
+		}
+		public void setValidityPeriodUTC(Long validityPeriodUTC){
+			this.validityPeriodUTC = validityPeriodUTC;
+		}
+	}	
 }
 
 class HeadersMap implements Map<String, List<String>>{

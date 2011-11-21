@@ -369,6 +369,11 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
+	<bean id="oauth2TokenDAO" class="org.infoscoop.dao.OAuth2TokenDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
 	<bean id="oauthGadgetUrlDAO" class="org.infoscoop.dao.OAuthGadgetUrlDAO">
 		<property name="sessionFactory">
    	   		<ref bean="sessionFactory"/>

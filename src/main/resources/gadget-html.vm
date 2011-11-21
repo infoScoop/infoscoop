@@ -12,6 +12,7 @@ var staticContentURL = "${staticContentURL}";
 var widgetId = "${widgetId}";
 var tabId = "${tabId}";
 var oauthServicesJson = ${oauthServicesJson};
+var oauth2ServicesJson = ${oauth2ServicesJson};
 var gadgetUrl = "${gadgetUrl}";
 window.onerror = function( message,fileName,lineNumber ) {
 	if( fileName && lineNumber ) {

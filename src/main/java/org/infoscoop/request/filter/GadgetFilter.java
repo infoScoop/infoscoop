@@ -98,6 +98,7 @@ public class GadgetFilter extends ProxyFilter {
 		// ModulePrefs
 		context.put("requires", getRequires( xpath,doc ));
 		context.put("oauthServicesJson", getOAuthServicesJson( xpath,doc ));
+		context.put("oauth2ServicesJson", getOAuth2ServicesJson( xpath,doc ));
 		
 		context.put("i18nMsgs", new JSONObject( i18n.getMsgs()));
 		context.put("userPrefs",getUserPrefs( urlParameters ));
@@ -178,7 +179,7 @@ public class GadgetFilter extends ProxyFilter {
 		
 		return params;
 	}
-	
+		
 	private static String getOAuthServicesJson(XPath xpath, Document doc) throws XPathExpressionException, JSONException {
 		JSONObject services = new JSONObject();
 		NodeList serviceNodes = ( NodeList )xpath.evaluate(
@@ -207,6 +208,29 @@ public class GadgetFilter extends ProxyFilter {
 				if(method != null)
 					service.put("accessTokenMethod", requestEl.getAttribute("method"));
 			}
+			services.put(serviceEl.getAttribute("name"), service);
+		}
+		return services.toString();
+	}
+	
+	private static String getOAuth2ServicesJson(XPath xpath, Document doc) throws XPathExpressionException, JSONException {
+		JSONObject services = new JSONObject();
+		NodeList serviceNodes = ( NodeList )xpath.evaluate(
+				"/Module/ModulePrefs/OAuth2/Service",doc,XPathConstants.NODESET );
+		for( int j=0;j<serviceNodes.getLength();j++ ) {
+			Element serviceEl = ( Element )serviceNodes.item( j );
+			JSONObject service = new JSONObject();
+			NodeList nodeList = serviceEl.getElementsByTagName("Authorization");
+			if(nodeList.getLength() > 0){
+				Element requestEl = (Element)nodeList.item(0);
+				service.put("userAuthorizationURL", requestEl.getAttribute("url"));
+			}
+			nodeList = serviceEl.getElementsByTagName("Token");
+			if(nodeList.getLength() > 0){
+				Element requestEl = (Element)nodeList.item(0);
+				service.put("accessTokenURL", requestEl.getAttribute("url"));
+			}
+			service.put("scope", serviceEl.getAttribute("scope"));
 			services.put(serviceEl.getAttribute("name"), service);
 		}
 		return services.toString();

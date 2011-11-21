@@ -66,6 +66,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 
 	private java.util.Set<org.infoscoop.dao.model.OAuthGadgetUrl> OAuthGadgetUrl;
 	private java.util.Set<org.infoscoop.dao.model.OAuthToken> OAuthToken;
+	private java.util.Set<org.infoscoop.dao.model.OAuth2Token> OAuth2Token;
 
 	/**
 	 * Return the unique identifier of this class
@@ -175,6 +176,14 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
        
     public java.util.Set<org.infoscoop.dao.model.OAuthToken> getOAuthToken() {  
         return OAuthToken;  
+    }  
+
+    public void setOAuth2Token(java.util.Set<org.infoscoop.dao.model.OAuth2Token> OAuth2Token) {  
+        this.OAuth2Token = OAuth2Token;  
+    }  
+       
+    public java.util.Set<org.infoscoop.dao.model.OAuth2Token> getOAuth2Token() {  
+        return OAuth2Token;  
     }  
     
 	public boolean equals (Object obj) {

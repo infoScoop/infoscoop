@@ -75,4 +75,5 @@ drop table is_oauth_consumers;
 drop sequence is_oauth_gadget_urls_id_seq;
 drop table is_oauth_gadget_urls;
 drop table is_oauth_tokens;
+drop table is_oauth2_tokens;
 drop table is_oauth_certificate;

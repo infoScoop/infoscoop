@@ -379,7 +379,7 @@ gadgets.io = function() {
       };
 
       // OAuth goodies
-      if (auth === "oauth" || auth === "signed") {
+      if (auth === "oauth" || auth === "oauth2" || auth === "signed") {
         if (gadgets.io.oauthReceivedCallbackUrl_) {
           paramData.OAUTH_RECEIVED_CALLBACK = gadgets.io.oauthReceivedCallbackUrl_;
           gadgets.io.oauthReceivedCallbackUrl_ = null;
@@ -388,7 +388,7 @@ gadgets.io = function() {
         // Just copy the OAuth parameters into the req to the server
         for (opt in params) {
           if (params.hasOwnProperty(opt)) {
-            if (opt.indexOf("OAUTH_") === 0) {
+            if (opt.indexOf("OAUTH_") === 0 || opt.indexOf("OAUTH2_") === 0) {
               paramData[opt] = params[opt];
             }
           }
@@ -401,8 +401,14 @@ gadgets.io = function() {
         paramData["userAuthorizationURL"] = oauthService["userAuthorizationURL"];
         paramData["accessTokenURL"] = oauthService["accessTokenURL"];
         paramData["accessTokenMethod"] = oauthService["accessTokenMethod"];
+      }else if (auth === "oauth2") {
+  	    var oauthService = oauth2ServicesJson[paramData[gadgets.io.RequestParameters.OAUTH_SERVICE_NAME]];
+        paramData["userAuthorizationURL"] = oauthService["userAuthorizationURL"];
+        paramData["accessTokenURL"] = oauthService["accessTokenURL"];
+        if(!paramData[gadgets.io.RequestParameters.OAUTH2_SCOPE])
+        	paramData[gadgets.io.RequestParameters.OAUTH2_SCOPE] = oauthService["scope"];
       }
-
+      
       var proxyUrl = config.jsonProxyUrl.replace("%host%", document.location.host);
 
       if (!respondWithPreload(paramData, params, callback, processResponse)) {
@@ -521,7 +527,8 @@ gadgets.io.RequestParameters = gadgets.util.makeEnum([
   "OAUTH_TOKEN_NAME",
   "OAUTH_REQUEST_TOKEN",
   "OAUTH_REQUEST_TOKEN_SECRET",
-  "OAUTH_RECEIVED_CALLBACK"
+  "OAUTH_RECEIVED_CALLBACK",
+  "OAUTH2_SCOPE"
 ]);
 
 gadgets.io.MethodType = gadgets.util.makeEnum([
@@ -533,5 +540,5 @@ gadgets.io.ContentType = gadgets.util.makeEnum([
 ]);
 
 gadgets.io.AuthorizationType = gadgets.util.makeEnum([
-  "NONE", "SIGNED", "OAUTH"
+  "NONE", "SIGNED", "OAUTH", "OAUTH2"
 ]);

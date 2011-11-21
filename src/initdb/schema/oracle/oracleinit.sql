@@ -467,10 +467,23 @@ create index is_oauth_gadget_url_key on is_oauth_gadget_urls(gadget_url_key);
 create table is_oauth_tokens (
   fk_oauth_id varchar(64 BYTE) not null,
   "UID" varchar(150 BYTE) not null,
-  service_name varchar(255 BYTE) not null,
   request_token varchar(255 BYTE),
   access_token varchar(255 BYTE),
   token_secret varchar(255 BYTE) not null,
+  primary key (fk_oauth_id, "UID"),
+  foreign key (fk_oauth_id) references is_oauth_consumers(id) on delete cascade
+);
+
+--
+-- OAUTH2_TOKEN
+--
+create table is_oauth2_tokens (
+  fk_oauth_id varchar(64 BYTE) not null,
+  "UID" varchar(150 BYTE) not null,
+  auth_code varchar(255 BYTE), 
+  access_token varchar(255 BYTE),
+  refresh_token varchar(255 BYTE),
+  validity_period_utc number(18),
   primary key (fk_oauth_id, "UID"),
   foreign key (fk_oauth_id) references is_oauth_consumers(id) on delete cascade
 );

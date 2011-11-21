@@ -4097,7 +4097,24 @@ CREATE TABLE IF NOT EXISTS `IS_OAUTH_TOKENS` (
   `request_token` varchar(255) DEFAULT NULL,
   `access_token` varchar(255) DEFAULT NULL,
   `token_secret` varchar(255) NOT NULL,
-  PRIMARY KEY (`fk_oauth_id`,`UID`)
+  PRIMARY KEY (`fk_oauth_id`,`UID`),
+  FOREIGN KEY (`fk_oauth_id`) REFERENCES `IS_OAUTH_CONSUMERS`(`id`) on delete cascade
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+
+DROP TABLE IF EXISTS `IS_OAUTH2_TOKENS`;
+CREATE TABLE IF NOT EXISTS `IS_OAUTH2_TOKENS` (
+  `fk_oauth_id` varchar(64) not null,
+  `UID` varchar(150) NOT NULL,
+  `auth_code` varchar(255) DEFAULT NULL,
+  `access_token` varchar(255) DEFAULT NULL,
+  `refresh_token` varchar(255) DEFAULT NULL,
+  `validity_period_utc` bigint(20) DEFAULT NULL,  
+  PRIMARY KEY (`fk_oauth_id`,`UID`),
+  FOREIGN KEY (`fk_oauth_id`) REFERENCES `IS_OAUTH_CONSUMERS`(`id`) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

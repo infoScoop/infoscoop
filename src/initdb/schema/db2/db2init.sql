@@ -456,6 +456,20 @@ create table is_oauth_tokens (
 ) compress yes;
 
 --
+-- OAUTH2_TOKEN
+--
+create table is_oauth2_tokens (
+  fk_oauth_id varchar(64) not null,
+  uid varchar(150) not null,
+  auth_code varchar(255),  
+  access_token varchar(255),
+  refresh_token varchar(255),
+  validity_period_utc bigint,
+  primary key (fk_oauth_id, uid),
+  foreign key (fk_oauth_id) references is_oauth_consumers(id) on delete cascade
+) compress yes;
+
+--
 -- OAUTH_CERTIFICATE
 --
 create table is_oauth_certificate (

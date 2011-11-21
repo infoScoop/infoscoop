@@ -1,3 +1,20 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
 package org.infoscoop.service;
 
 import java.util.ArrayList;
@@ -8,6 +25,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.OAuth2TokenDAO;
 import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.OAuthGadgetUrlDAO;
@@ -16,6 +34,7 @@ import org.infoscoop.dao.model.OAuthCertificate;
 import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.dao.model.OAuthGadgetUrl;
 import org.infoscoop.dao.model.OAuthToken;
+import org.infoscoop.dao.model.OAuth2Token;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +47,7 @@ public class OAuthService {
 	private OAuthConsumerDAO oauthConsumerDAO;
 	private OAuthGadgetUrlDAO oauthGadgetUrlDAO;
 	private OAuthTokenDAO oauthTokenDAO;
+	private OAuth2TokenDAO oauth2TokenDAO;
 	private OAuthCertificateDAO oauthCertificateDAO;
 
 	public static OAuthService getHandle() {
@@ -49,6 +69,10 @@ public class OAuthService {
 		this.oauthTokenDAO = oauthTokenDAO;
 	}
 	
+	public void setOauth2TokenDAO(OAuth2TokenDAO oauth2TokenDAO){
+		this.oauth2TokenDAO = oauth2TokenDAO;
+	}
+
 	public void setOauthCertificateDAO(OAuthCertificateDAO oauthCertificateDAO){
 		this.oauthCertificateDAO = oauthCertificateDAO;
 	}
@@ -143,6 +167,22 @@ public class OAuthService {
 		List<OAuthToken> tokens = this.oauthTokenDAO.getAccessTokens(uid, serviceName);
 		if(tokens.size() > 0)
 			this.oauthTokenDAO.deleteOAuthToken(tokens);
+	}
+	
+	public void saveOAuth2Token(String uid, String gadgetUrl,
+			String serviceName, String authCode, String accessToken,
+			String refreshToken, Long validityPeriodUTC) {
+		this.oauth2TokenDAO.saveAccessToken(uid, gadgetUrl, serviceName, authCode, accessToken, refreshToken, validityPeriodUTC);
+	}
+	
+	public void deleteOAuth2Token(String uid, String gadgetUrl, String serviceName){
+		this.oauth2TokenDAO.deleteOAuth2Token(this.oauth2TokenDAO.getAccessToken(uid, gadgetUrl, serviceName));
+	}	
+
+	public void deleteOAuth2Tokens(String uid, String serviceName){
+		List<OAuth2Token> tokens = this.oauth2TokenDAO.getAccessTokens(uid, serviceName);
+		if(tokens.size() > 0)
+			this.oauth2TokenDAO.deleteOAuth2Token(tokens);
 	}
 	
 	public String getContainerCertificateJson()throws Exception{

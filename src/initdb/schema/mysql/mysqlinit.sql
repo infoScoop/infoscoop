@@ -448,6 +448,20 @@ create table IS_OAUTH_TOKENS (
 ) ENGINE=InnoDB;
 
 --
+-- OAUTH2_TOKEN
+--
+create table IS_OAUTH2_TOKENS (
+  fk_oauth_id varchar(64) not null,
+  `UID` varchar(150) not null,
+  auth_code varchar(255),
+  access_token varchar(255),
+  refresh_token varchar(255),
+  validity_period_utc bigint,
+  primary key (fk_oauth_id,`UID`),
+  foreign key (fk_oauth_id) references IS_OAUTH_CONSUMERS(id) on delete cascade
+) ENGINE=InnoDB;
+
+--
 -- OAUTH_CERTIFICATE
 --
 create table IS_OAUTH_CERTIFICATE (

@@ -40,7 +40,9 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.OAuth2TokenDAO;
 import org.infoscoop.dao.OAuthTokenDAO;
+import org.infoscoop.dao.model.OAuth2Token;
 import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.Authenticator;
 import org.infoscoop.request.ProxyRequest;
@@ -111,6 +113,7 @@ public class JsonProxyServlet extends HttpServlet {
 		NONE,
 		SIGNED,
 		OAUTH,
+		OAUTH2,
 		SEND_PORTAL_UID_HEADER,
 		POST_PORTAL_UID,
 		BASIC;
@@ -230,6 +233,28 @@ public class JsonProxyServlet extends HttpServlet {
 			
 			proxy.setOauthConfig(oauthConfig);
 			break;
+		case OAUTH2:
+			headers.put("authType","oauth2");
+			oauthServiceName = params.get("OAUTH_SERVICE_NAME");
+			gadgetUrl = params.get("gadgetUrl");
+			
+			ProxyRequest.OAuth2Config oauth2Config = proxy.new OAuth2Config(oauthServiceName);
+			oauth2Config.setUserAuthorizationURL(params.get("userAuthorizationURL"));
+			oauth2Config.setAccessTokenURL(params.get("accessTokenURL"));
+			oauth2Config.setScope(params.get("OAUTH2_SCOPE"));
+			oauth2Config.setGadgetUrl(gadgetUrl);
+			oauth2Config.setHostPrefix(params.get("hostPrefix"));
+			
+			OAuth2Token token2 = OAuth2TokenDAO.newInstance().getAccessToken(uid,
+					gadgetUrl, oauthServiceName);
+			if(token2 != null){
+				oauth2Config.setAccessToken(token2.getAccessToken());
+				oauth2Config.setRefreshToken(token2.getRefreshToken());
+				oauth2Config.setValidityPeriodUTC(token2.getValidityPeriodUTC());
+			}
+			
+			proxy.setOauth2Config(oauth2Config);
+			break;
 		case SIGNED:
 			headers.put("authType", "signed");
 			headers.put("gadgetUrl", params.get("gadgetUrl"));
@@ -304,9 +329,14 @@ public class JsonProxyServlet extends HttpServlet {
 		urlJson.put("headers",jsonHeaders );
 		urlJson.put("rc",status );
 
-		if(status == 401 && AuthType.OAUTH == authz){
-			OAuthService.getHandle().deleteOAuthToken(uid, gadgetUrl,
-					oauthServiceName);
+		if(status == 401 && (AuthType.OAUTH == authz || AuthType.OAUTH2 == authz)){
+			if(AuthType.OAUTH == authz){
+				OAuthService.getHandle().deleteOAuthToken(uid, gadgetUrl,
+						oauthServiceName);				
+			}else if(AuthType.OAUTH2 == authz){
+				OAuthService.getHandle().deleteOAuth2Token(uid, gadgetUrl,
+						oauthServiceName);
+			}
 			log.error("OAuth request is failed:\n" + bodyStr);
 			urlJson.put("oauthError", "OAuth request is failed");
 		}
