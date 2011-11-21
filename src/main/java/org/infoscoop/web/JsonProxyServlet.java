@@ -31,7 +31,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.DeleteMethod;
@@ -152,7 +151,7 @@ public class JsonProxyServlet extends HttpServlet {
 		
 		JSONObject result;
 		try {
-			result = invokeJSONProxyRequest( req.getSession(), uid,params,headers );
+			result = invokeJSONProxyRequest( uid,params,headers );
 		} catch( Exception ex ) {
 			if( ex.getCause() != null )
 				ex = ( Exception )ex.getCause();
@@ -181,7 +180,7 @@ public class JsonProxyServlet extends HttpServlet {
 		
 		return singles;
 	}
-	private JSONObject invokeJSONProxyRequest( HttpSession session, String uid,Map<String,String> params,Map<String,List<String>> rheaders ) throws Exception {
+	public static JSONObject invokeJSONProxyRequest( String uid,Map<String,String> params,Map<String,List<String>> rheaders ) throws Exception {
 		AuthType authz = AuthType.as( params.get("authz") );
 		
 		HttpMethods httpMethod = HttpMethods.as( params.get("httpMethod"));
@@ -343,7 +342,7 @@ public class JsonProxyServlet extends HttpServlet {
 		return json;
 	}
 
-	private String getResponseBodyAsStringWithAutoDetect( ProxyRequest proxy ) throws Exception {
+	public static String getResponseBodyAsStringWithAutoDetect( ProxyRequest proxy ) throws Exception {
 		byte[] body = ProxyRequest.stream2Bytes( proxy.getResponseBody());
 		
 		String contentType = null;
@@ -359,7 +358,7 @@ public class JsonProxyServlet extends HttpServlet {
 		
 		return new String( body,encoding );
 	}
-	private Map<String,String> extractHeadersParam( String headerData ) throws UnsupportedEncodingException {
+	public static Map<String,String> extractHeadersParam( String headerData ) throws UnsupportedEncodingException {
 		Map<String,String> headers = new HashMap<String,String>();
 	    if( headerData != null && headerData.length() > 0 ) {
 			String[] pairs = headerData.split("&");

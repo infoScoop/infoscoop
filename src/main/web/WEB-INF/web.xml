@@ -16,7 +16,7 @@
 
 	<context-param>
 		<param-name>guice-modules</param-name>
-		<param-value>org.apache.shindig.common.PropertiesModule:</param-value>
+		<param-value>org.infoscoop.web.ShindigGuiceModule:</param-value>
 	</context-param>
 
 	<context-param>
@@ -320,7 +320,12 @@
 		<filter-name>TabDispatchFilter</filter-name>
 		<url-pattern>/tab/*</url-pattern>
 	</filter-mapping>
-
+<!-- 
+	<filter-mapping>
+		<filter-name>authFilter</filter-name>
+		<url-pattern>/rpc/*</url-pattern>
+	</filter-mapping>
+-->
 	<listener>
 		<listener-class>org.apache.shindig.common.servlet.GuiceServletContextListener</listener-class>
 	</listener>
@@ -631,6 +636,15 @@
   </servlet>
 
   <servlet>
+    <servlet-name>rpc</servlet-name>
+    <servlet-class>org.infoscoop.protocol.JsonRpcServlet</servlet-class>
+    <init-param>
+      <param-name>handlers</param-name>
+      <param-value>org.infoscoop.rpc.handlers</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
   	<servlet-name>upsrv</servlet-name>
     <servlet-class>org.infoscoop.web.UserPrefServlet</servlet-class>
   </servlet>
@@ -719,6 +733,11 @@
   <servlet-mapping>
     <servlet-name>jsonproxy</servlet-name>
     <url-pattern>/jsonproxy</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>rpc</servlet-name>
+    <url-pattern>/rpc/*</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
