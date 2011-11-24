@@ -962,14 +962,14 @@
 		</antcall>
 		
 		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="dynamic-height.height/dynamic-height.height"/>
+			<param name="file" value="dynamic-height.height/dynamic-height-height"/>
 		</antcall>
 		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
 			<param name="file" value="dynamic-height.height/taming"/>
 		</antcall>
 		
 		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="dynamic-size.util/dynamic-size.util"/>
+			<param name="file" value="dynamic-size.util/dynamic-size-util"/>
 		</antcall>
 		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
 			<param name="file" value="dynamic-size.util/taming"/>
@@ -1065,9 +1065,6 @@
 
 		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
 			<param name="file" value="setprefs/setprefs"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="setprefs/taming"/>
 		</antcall>
 		
 		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
