@@ -171,10 +171,7 @@ public class OAuth2Message {
 				JSONObject obj = new JSONObject();
 				obj.put("__GADGET_URL__", request.getOauth2Config().getGadgetUrl());
 				obj.put("consumer", consumerName);
-				byte[] tmpByte = (obj.toString()).getBytes("UTF-8");
-				byte[] tmpByte2 = Base64.encodeBase64(tmpByte);
 				state = new String(Base64.encodeBase64((obj.toString()).getBytes("UTF-8")));
-//				state = (Base64.encodeBase64((obj.toString()).getBytes("UTF-8"))).toString();
 			}catch(JSONException e){
 				this.params.put(OAuth2Message.ERROR, "JSONException build state");
 			}catch(Exception e){

@@ -4109,6 +4109,7 @@ DROP TABLE IF EXISTS `IS_OAUTH2_TOKENS`;
 CREATE TABLE IF NOT EXISTS `IS_OAUTH2_TOKENS` (
   `fk_oauth_id` varchar(64) not null,
   `UID` varchar(150) NOT NULL,
+  `token_type` varchar(16) DEFAULT NULL,  
   `auth_code` varchar(255) DEFAULT NULL,
   `access_token` varchar(255) DEFAULT NULL,
   `refresh_token` varchar(255) DEFAULT NULL,

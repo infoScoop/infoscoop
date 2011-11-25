@@ -16,6 +16,14 @@
 			<key-property name="FkOAuthId" column="fk_oauth_id" type="string"/>
 		</composite-id>
 				
+		
+		<property
+			name="tokenType"
+			column="token_type"
+			type="string"
+			length="16"
+		/>
+
 		<property
 			name="authCode"
 			column="auth_code"

@@ -170,9 +170,9 @@ public class OAuthService {
 	}
 	
 	public void saveOAuth2Token(String uid, String gadgetUrl,
-			String serviceName, String authCode, String accessToken,
+			String serviceName, String tokenType, String authCode, String accessToken,
 			String refreshToken, Long validityPeriodUTC) {
-		this.oauth2TokenDAO.saveAccessToken(uid, gadgetUrl, serviceName, authCode, accessToken, refreshToken, validityPeriodUTC);
+		this.oauth2TokenDAO.saveAccessToken(uid, gadgetUrl, serviceName, tokenType, authCode, accessToken, refreshToken, validityPeriodUTC);
 	}
 	
 	public void deleteOAuth2Token(String uid, String gadgetUrl, String serviceName){

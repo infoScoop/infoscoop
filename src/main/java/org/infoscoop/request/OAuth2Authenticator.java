@@ -39,7 +39,9 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.OAuth2TokenDAO;
 import org.infoscoop.dao.OAuthConsumerDAO;
+import org.infoscoop.dao.model.OAuth2Token;
 import org.infoscoop.dao.model.OAuthConsumerProp;
 import org.infoscoop.service.OAuthService;
 import org.infoscoop.util.RequestUtil;
@@ -73,6 +75,10 @@ public class OAuth2Authenticator implements Authenticator {
 	    				returnApprovalUrl(request, consumer);
 	            	}else{
 	            		getAccessTokenByRefreshToken(request,consumer);
+	            		OAuth2Token token2 = OAuth2TokenDAO.newInstance().getAccessToken(request.getPortalUid(), oauthConfig.gadgetUrl, oauthConfig.serviceName);
+	            		oauthConfig.setAccessToken(token2.getAccessToken());
+	            		oauthConfig.setRefreshToken(token2.getRefreshToken());
+	            		oauthConfig.setValidityPeriodUTC(token2.getValidityPeriodUTC());
 	            	}
 	            }
 			}
@@ -87,10 +93,14 @@ public class OAuth2Authenticator implements Authenticator {
 				String charset = RequestUtil.getCharset(contentType);
 				parameters = RequestUtil.parseRequestBody(request.getRequestBody(), charset);
 			}
-
-			String queryString = method.getQueryString();
-			queryString = "access_token=" + oauthConfig.accessToken + "&" + queryString;
-			method.setQueryString(queryString);
+			
+			if("Bearer".equalsIgnoreCase(oauthConfig.tokenType)){
+				method.addRequestHeader("Authorization", oauthConfig.tokenType+" "+oauthConfig.accessToken);				
+			}else{
+				String queryString = method.getQueryString();
+				queryString = "access_token=" + oauthConfig.accessToken + "&" + queryString;
+				method.setQueryString(queryString);	
+			}
 		}catch (URISyntaxException e) {
 			throw new ProxyAuthenticationException(e);
 		} catch (OAuthException e) {
@@ -103,6 +113,10 @@ public class OAuth2Authenticator implements Authenticator {
 	public int getCredentialType() {
 		// TODO Auto-generated method stub
 		return 3;
+	}
+	
+	private void setOauthConfigAfterRefresh(){
+		
 	}
 	
 	protected OAuthConsumer newConsumer(String name, ProxyRequest.OAuth2Config oauthConfig) throws ProxyAuthenticationException{
@@ -135,7 +149,7 @@ public class OAuth2Authenticator implements Authenticator {
 		String gadgetUrl = request.getOauth2Config().getGadgetUrl();
 		
 		OAuthService.getHandle().saveOAuth2Token(request.getPortalUid(),
-				gadgetUrl, consumerName, null, null, null, null);
+				gadgetUrl, consumerName, null, null, null, null, null);
 		String authorizationURL = request.getOauth2Config().userAuthorizationURL;
 		String state = msg.buildStateJSON(request, consumerName);
 		authorizationURL = OAuth.addParameters(authorizationURL,
@@ -189,7 +203,7 @@ public class OAuth2Authenticator implements Authenticator {
 	        }
 	        
 	        final String expiresIn = msg.getExpiresIn();
-		      	if (expiresIn != null) {
+		    if (expiresIn != null) {
 	    	    Long expires = Long.parseLong(expiresIn);
 	            Calendar cal = Calendar.getInstance();
 	            cal.setTime(new Date());
@@ -202,10 +216,15 @@ public class OAuth2Authenticator implements Authenticator {
 				throw problem;
 			}
 			
+			String refreshToken = msg.getRefreshToken();
+			if (refreshToken == null){
+				refreshToken = request.getOauth2Config().refreshToken;
+			}
+
 			OAuthService.getHandle().saveOAuth2Token(request.getPortalUid(), 
 					request.getOauth2Config().getGadgetUrl(),request.getOauth2Config().serviceName,
-					request.getOauth2Config().code, request.getOauth2Config().accessToken,
-					request.getOauth2Config().refreshToken, validityPeriodUTC);				
+					msg.getTokenType(), request.getOauth2Config().code, msg.getAccessToken(),
+					refreshToken, validityPeriodUTC);				
 		} catch (Exception e){
 			OAuthService.getHandle().deleteOAuthToken(request.getPortalUid(),
 					request.getOauth2Config().getGadgetUrl(),

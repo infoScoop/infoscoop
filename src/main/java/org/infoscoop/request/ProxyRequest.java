@@ -886,6 +886,7 @@ public class ProxyRequest{
 		String scope;
 		
 		String code;
+		String tokenType;
 		String accessToken;
 		String refreshToken;
 		Long validityPeriodUTC;
@@ -915,6 +916,10 @@ public class ProxyRequest{
 		
 		public void setCode(String code) {
 			this.code = code;
+		}
+		
+		public void setTokenType(String tokenType) {
+			this.tokenType = tokenType;
 		}
 		
 		public void setAccessToken(String accessToken) {

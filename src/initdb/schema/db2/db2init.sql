@@ -461,6 +461,7 @@ create table is_oauth_tokens (
 create table is_oauth2_tokens (
   fk_oauth_id varchar(64) not null,
   uid varchar(150) not null,
+  token_type varchar(16),
   auth_code varchar(255),  
   access_token varchar(255),
   refresh_token varchar(255),

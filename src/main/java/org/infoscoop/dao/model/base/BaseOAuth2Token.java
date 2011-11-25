@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class BaseOAuth2Token implements Serializable {
 
 	public static String REF = "OAuth2Token";
+	public static String PROP_TOKEN_TYPE = "tokenType";
 	public static String PROP_AUTH_CODE = "authCode";
 	public static String PROP_ACCESS_TOKEN = "accessToken";
 	public static String PROP_REFRESH_TOKEN = "refreshToken";
@@ -35,6 +36,7 @@ public class BaseOAuth2Token implements Serializable {
 	private org.infoscoop.dao.model.OAUTH2_TOKEN_PK id;
 
 	// fields
+	private java.lang.String tokenType;
 	private java.lang.String authCode;
 	private java.lang.String accessToken;
 	private java.lang.String refreshToken;
@@ -60,6 +62,15 @@ public class BaseOAuth2Token implements Serializable {
 	}
 
 
+	public java.lang.String getTokenType () {
+		return tokenType;
+	}
+
+	public void setTokenType (java.lang.String tokenType) {
+		this.tokenType = tokenType;
+	}
+
+	
 	public java.lang.String getAuthCode () {
 		return authCode;
 	}

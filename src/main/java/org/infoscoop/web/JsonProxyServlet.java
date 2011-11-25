@@ -247,6 +247,8 @@ public class JsonProxyServlet extends HttpServlet {
 			OAuth2Token token2 = OAuth2TokenDAO.newInstance().getAccessToken(uid,
 					gadgetUrl, oauthServiceName);
 			if(token2 != null){
+				oauth2Config.setCode(token2.getAuthCode());
+				oauth2Config.setTokenType(token2.getTokenType());
 				oauth2Config.setAccessToken(token2.getAccessToken());
 				oauth2Config.setRefreshToken(token2.getRefreshToken());
 				oauth2Config.setValidityPeriodUTC(token2.getValidityPeriodUTC());

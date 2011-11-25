@@ -38,12 +38,18 @@ import net.oauth.OAuth;
 import net.oauth.OAuthConsumer;
 import net.oauth.OAuthProblemException;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.request.OAuth2Authenticator;
 import org.infoscoop.request.OAuth2Message;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.service.OAuthService;
+import org.infoscoop.web.JsonProxyServlet.HttpMethods;
+
+import sun.misc.BASE64Encoder;
 
 public class OAuth2CallbackServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -66,6 +72,8 @@ public class OAuth2CallbackServlet extends HttpServlet {
 		String consumerName = msg.getServiceName();
         
         try {
+        	// ToDo 
+        	// NOT RECOMMEND Request
 			OAuthConsumer consumer = OAuth2Authenticator.getConsumer(gadgetUrl, consumerName);	
 			ProxyRequest proxy = new ProxyRequest(consumer.serviceProvider.accessTokenURL,"NoOperation");
 			Map<String, String> params = new HashMap<String,String>();
@@ -76,6 +84,7 @@ public class OAuth2CallbackServlet extends HttpServlet {
 			params.put("grant_type","authorization_code");
 			String postData = msg.buildPostBody(params);
 			proxy.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
 			proxy.setReqeustBody( new ByteArrayInputStream( postData.getBytes()));
 			proxy.executePost();
 			
@@ -108,7 +117,7 @@ public class OAuth2CallbackServlet extends HttpServlet {
            	}
             
 			OAuthService.getHandle().saveOAuth2Token(uid, gadgetUrl, consumerName,
-					msg.getAuthorization(), msg.getAccessToken(),
+					msg.getTokenType(),msg.getAuthorization(), msg.getAccessToken(),
 					msg.getRefreshToken(),validityPeriodUTC);				
 			
 			response.setContentType("text/html");
