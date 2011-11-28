@@ -167,7 +167,9 @@ public class ProxyCredentialManageServlet extends HttpServlet {
 				AuthCredentialService.getHandle().removeCredential(uid, credentialId);
 			}else if("del_oauth".equals(command)){
 				String serviceName = request.getParameter("service_name");
-				OAuthService.getHandle().deleteOAuthTokens(uid, serviceName);
+				if(!OAuthService.getHandle().deleteOAuthTokens(uid, serviceName)){
+					OAuthService.getHandle().deleteOAuth2Tokens(uid, serviceName);
+				}
 			}else{
 				response.sendError(500);
 			}

@@ -163,10 +163,13 @@ public class OAuthService {
 		this.oauthTokenDAO.deleteOAuthToken(this.oauthTokenDAO.getAccessToken(uid, gadgetUrl, serviceName));
 	}	
 
-	public void deleteOAuthTokens(String uid, String serviceName){
+	public boolean deleteOAuthTokens(String uid, String serviceName){
 		List<OAuthToken> tokens = this.oauthTokenDAO.getAccessTokens(uid, serviceName);
-		if(tokens.size() > 0)
+		if(tokens != null && tokens.size() > 0){
 			this.oauthTokenDAO.deleteOAuthToken(tokens);
+			return true;
+		}
+		return false;
 	}
 	
 	public void saveOAuth2Token(String uid, String gadgetUrl,
@@ -179,10 +182,13 @@ public class OAuthService {
 		this.oauth2TokenDAO.deleteOAuth2Token(this.oauth2TokenDAO.getAccessToken(uid, gadgetUrl, serviceName));
 	}	
 
-	public void deleteOAuth2Tokens(String uid, String serviceName){
+	public boolean deleteOAuth2Tokens(String uid, String serviceName){
 		List<OAuth2Token> tokens = this.oauth2TokenDAO.getAccessTokens(uid, serviceName);
-		if(tokens.size() > 0)
+		if(tokens != null && tokens.size() > 0){
 			this.oauth2TokenDAO.deleteOAuth2Token(tokens);
+			return true;
+		}
+		return false;
 	}
 	
 	public String getContainerCertificateJson()throws Exception{
