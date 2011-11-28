@@ -1,4 +1,4 @@
-var emptyConsumerData = {'id':'', 'gadget_url':[],'service_name':'','consumer_key':'','consumer_secret':'','signature_method':'HMAC-SHA1','description':''};
+var emptyConsumerData = {'id':'', 'gadget_url':[],'service_name':'','consumer_key':'','consumer_secret':'','signature_method':'HMAC-SHA1','description':'', 'oauth_version':'1.0'};
 var oauthConsumerList = [];
 var uploadedGadgets = [];
 var tempGadgetList = [];
@@ -62,7 +62,7 @@ ISA_Authentication = {
 				for(var i = 0; i < widgetConfList.length; i++){
 					var title;
 					var conf = widgetConfList[i];
-					if(widgetConfList[i].ModulePrefs.OAuth){
+					if(widgetConfList[i].ModulePrefs.OAuth || widgetConfList[i].ModulePrefs.OAuth2){
 						if(widgetConfList[i].ModulePrefs){
 							title = conf.ModulePrefs.directory_title || conf.ModulePrefs.title || conf.type;
 						}
@@ -382,13 +382,13 @@ ISA_Authentication = {
 		var signatureMethod = $(elementId + '_signature_method').value;
 		var element1 = $(elementId + '_consumer_key');
 		var element2 = $(elementId + '_consumer_secret');
-		if(signatureMethod == 'HMAC-SHA1'){
-			element1.disabled = element2.disabled = false;
-			element1.style.backgroundColor = element2.style.backgroundColor= "";
-		}else{
+		if(signatureMethod == 'RSA-SHA1'){
 			element1.disabled = element2.disabled = true;
 			element1.style.backgroundColor = element2.style.backgroundColor = '#eee';
 			element1.value = element2.value = '';
+		}else{
+			element1.disabled = element2.disabled = false;
+			element1.style.backgroundColor = element2.style.backgroundColor= "";
 		}
 	},
 	
@@ -479,6 +479,8 @@ ISA_Authentication = {
 		//create gadget list
 		tempGadgetList = [];
 		
+		consumer.isOAuth2 = !(consumer['signature_method'] && consumer['signature_method'].length > 0);
+		
 		var gadgetTableBody = 
 		$.TBODY({id:"gadgetTableBody"}
 			,$.TR({style:"backgroundColor:#eee;fontWeight:bold;textAlign:center;"}
@@ -545,6 +547,25 @@ ISA_Authentication = {
 				)
 			)
 			,$.TR({}, 
+				$.TD({width:"35%", style:"padding:5;"}, "OAuth " + ISA_R.alb_versionNum),
+				$.TD({},
+					$.SELECT({
+						id: elementId + '_oauth_version',
+						onchange:{
+							handler:function(elementId){
+								$(elementId + '_signature_method').value = 'HMAC-SHA1';
+								this._displayConsumerKeySecret(elementId);
+								$jq('.oauth1_element').toggle();
+								$jq('.oauth2_element').toggle();
+							}.bind(this, elementId)
+						}
+					}
+						,$.OPTION({value:'1.0', selected: !consumer.isOAuth2}, '1.0')
+						,$.OPTION({value:'2.0', selected: consumer.isOAuth2}, '2.0')
+					)
+				)
+			)
+			,$.TR({class:"oauth1_element", style:(consumer.isOAuth2)? 'display:none' : ''}, 
 				$.TD({ style:"padding:5;"}, ISA_R.alb_oauthSignatureAlgorithm),
 				$.TD({}, 
 					$.SELECT({
@@ -558,13 +579,15 @@ ISA_Authentication = {
 				)
 			)
 			,$.TR({},
-				$.TD({style:"padding:5;"}, ISA_R.alb_oauthConsumerKey),
+				$.TD({class:"oauth1_element", style:"padding:5;" + ((consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthConsumerKey),
+				$.TD({class:"oauth2_element", style:"padding:5;" + ((!consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthClientId),
 				$.TD({}
 						,this._createTextbox(elementId + '_consumer_key', consumer['consumer_key'])
 					)
 				)
 			,$.TR({}, 
-				$.TD({style:"padding:5;"}, ISA_R.alb_oauthConsumerSecret),
+				$.TD({class:"oauth1_element", style:"padding:5;" + ((consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthConsumerSecret),
+				$.TD({class:"oauth2_element", style:"padding:5;" + ((!consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthClientSecret),
 				$.TD({} 
 					,this._createTextbox(elementId + '_consumer_secret', consumer['consumer_secret'])
 				)
@@ -624,13 +647,14 @@ ISA_Authentication = {
 			consumerData.consumer_key = $(elementId + '_consumer_key').value;
 			consumerData.consumer_secret = $(elementId + '_consumer_secret').value;
 			var signatureMethod = $(elementId + '_signature_method').value;
-			if(signatureMethod == 'HMAC-SHA1'){
+			if(signatureMethod != 'RSA-SHA1'){
 				if(this._validateConsumerKey(elementId))
 					return;
 				if(this._validateConsumerSecret(elementId))
 					return;
 			}
-			consumerData.signature_method = signatureMethod;
+			consumerData.oauth_version = $(elementId + '_oauth_version').value;
+			consumerData.signature_method =	(consumerData.oauth_version == '1.0')? signatureMethod : '';
 			var description = $(elementId + '_description').value;
 			consumerData.description = description;
 			if(isNew){
