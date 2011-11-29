@@ -44,7 +44,8 @@ public class ProxyFilterContainer {
 			.getLog(ProxyFilterContainer.class);
 
 	private List<ProxyFilter> filterChain = new ArrayList<ProxyFilter>(3);
-
+	final static int EXECUTE_POST_STATUS = 201;
+	
 	public void addFilter(ProxyFilter filter){
 		filterChain.add(filter);
 	}
@@ -115,9 +116,14 @@ public class ProxyFilterContainer {
 	}
 	public final int invoke(HttpClient client, HttpMethod method, ProxyRequest request)throws Exception {
 		int preStatus = prepareInvoke( client,method,request );
-		if( preStatus != 0 )
-			return preStatus;
-		
+		switch(preStatus){
+			case 0:
+				break;
+			case EXECUTE_POST_STATUS:
+				doFilterChain(request, request.getResponseBody());
+			default:
+				return preStatus;
+		}
 		// copy headers sent target server
 		List ignoreHeaderNames = request.getIgnoreHeaders();
 		List allowedHeaderNames = request.getAllowedHeaders();
