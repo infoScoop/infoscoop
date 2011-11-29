@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 
-import javax.servlet.ServletException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -43,7 +42,6 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.infoscoop.request.ProxyRequest;
-import org.infoscoop.service.GadgetService;
 import org.infoscoop.util.NoOpEntityResolver;
 import org.infoscoop.util.XmlUtil;
 import org.infoscoop.widgetconf.I18NConverter;
@@ -96,7 +94,7 @@ public class GadgetFilter extends ProxyFilter {
 		context.put("gadgetUrl",urlParameters.get( "url" ));
 		
 		// ModulePrefs
-		context.put("requires", getRequires( xpath,doc ));
+		context.put("requires", getRequires( xpath,doc,urlParameters.get( "view" ) ));
 		context.put("oauthServicesJson", getOAuthServicesJson( xpath,doc ));
 		context.put("oauth2ServicesJson", getOAuth2ServicesJson( xpath,doc ));
 		
@@ -133,7 +131,6 @@ public class GadgetFilter extends ProxyFilter {
 		
 		Node content = contentNodeList.item(0);
 		String contentStr = XmlUtil.getChildText(content);
-		
 		contentStr = i18n.replace(contentStr);
 		
 		for( Map.Entry<String,String> param : urlParameters.entrySet() ) {
@@ -148,7 +145,7 @@ public class GadgetFilter extends ProxyFilter {
 		return contentStr;
 	}
 	
-	private static JSONObject getRequires( XPath xpath,Document doc ) throws XPathExpressionException,JSONException {
+	private static JSONObject getRequires( XPath xpath,Document doc,String viewType ) throws XPathExpressionException,JSONException {
 		JSONObject requires = new JSONObject();
 		requires.put("core",new JSONObject());
 		requires.put("core.io",new JSONObject());
@@ -156,10 +153,19 @@ public class GadgetFilter extends ProxyFilter {
 		
 		NodeList requireNodes = ( NodeList )xpath.evaluate(
 				"/Module/ModulePrefs/Require|/Module/ModulePrefs/Optional",doc,XPathConstants.NODESET );
+		
 		for (int i = 0; i < requireNodes.getLength(); i++) {
 			Element require = ( Element )requireNodes.item(i);
-			
-			requires.put( require.getAttribute("feature").toLowerCase(),getRequireParams( xpath,require ));
+			String requireViewType = require.getAttribute("views").toLowerCase();
+			if(requireViewType != null && !requireViewType.equals("")){
+				if(requireViewType.indexOf("default") > -1 && viewType.equals("home")){
+					requires.put( require.getAttribute("feature").toLowerCase(),getRequireParams( xpath,require ));
+				}else if(requireViewType.indexOf(viewType) > -1){
+					requires.put( require.getAttribute("feature").toLowerCase(),getRequireParams( xpath,require ));
+				}
+			}else{
+				requires.put( require.getAttribute("feature").toLowerCase(),getRequireParams( xpath,require ));
+			}
 		}
 		
 		requires.put("infoscoop",new JSONObject());
@@ -269,9 +275,9 @@ public class GadgetFilter extends ProxyFilter {
 
 				request.setResponseBody(data);
 
-				request.setResponseBody( postProcess( request, request.getResponseBody() ));
-
-				return 200;
+//				request.setResponseBody( postProcess( request, request.getResponseBody() ));
+				
+				return org.infoscoop.request.filter.ProxyFilterContainer.EXECUTE_POST_STATUS;
 			} catch( IOException ex ) {
 				throw new RuntimeException( ex );
 			} catch (Exception e) {
