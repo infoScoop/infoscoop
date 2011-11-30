@@ -252,6 +252,8 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 IS_Widget.FragmentMiniBrowser.getMiniBrowserHeight = function( element ) {
 	var height = element.height;
 	if (!(!isNaN(height) && height > 0)) {
+		element = element.body? element.body : element;
+		
 		while (element != null) {
 			height = parseInt(element.offsetHeight);
 			
