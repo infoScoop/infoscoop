@@ -31,6 +31,7 @@ var i18nMsgs = ${i18nMsgs.toString()};
 <script src="./js/gadget/features/#foreach( $require in $requires.keys())#if($velocityCount > 1):#end${require}#end.js"></script>
 <script type="text/javascript">
 gadgets.Prefs.setInternal_( ${userPrefs.toString()} );
+${i18nDataConstants}
 </script>
 <!--start script-->
 <script src="${staticContentURL}/js/lib/prototype-1.6.0.3.js"></script>

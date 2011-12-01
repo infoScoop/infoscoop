@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -33,11 +34,11 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.shindig.common.util.ResourceLoader;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -61,7 +62,10 @@ public class GadgetFilter extends ProxyFilter {
 	private static final String PARAM_STATIC_CONTENT_URL = "__STATIC_CONTENT_URL__";
 	private static final String PARAM_HOST_PREFIX = "__HOST_PREFIX__";
 	private static final String PARAM_TAB_ID = "__TAB_ID__";
-	
+
+	private static final String DATA_PATH = "features/i18n/data/";
+	private static final String DATE_TIME_PATH = DATA_PATH + "DateTimeConstants__";
+	private static final String DATE_NUMBER_PATH = DATA_PATH + "NumberFormatConstants__";
 	private DocumentBuilderFactory factory;
 	
 	public GadgetFilter() {
@@ -102,7 +106,25 @@ public class GadgetFilter extends ProxyFilter {
 		context.put("gadgetUrl",urlParameters.get( "url" ));
 		
 		// ModulePrefs
-		context.put("requires", getRequires( xpath,doc,urlParameters.get( "view" ) ));
+		JSONObject req = getRequires( xpath,doc,urlParameters.get( "view" ));
+		context.put("requires", req);
+		
+		if(req.has("opensocial-i18n")){
+			String localeName = getLocaleNameForLoadingI18NConstants(locale);
+			String dateTimeConstants = DATE_TIME_PATH + localeName + ".js";
+			String numberFormatConstants = DATE_NUMBER_PATH + localeName + ".js";
+			
+			StringBuilder sb = new StringBuilder();
+			try {
+				sb.append(ResourceLoader.getContent(dateTimeConstants))
+							.append("\n")
+								.append(ResourceLoader.getContent(numberFormatConstants));
+			} catch (IOException e) {
+				log.error(e.getMessage(), e);
+				throw new Exception(e);
+			}
+			context.put("i18nDataConstants", sb.toString());
+		}
 		context.put("oauthServicesJson", getOAuthServicesJson( xpath,doc ));
 		context.put("oauth2ServicesJson", getOAuth2ServicesJson( xpath,doc ));
 		
@@ -117,6 +139,30 @@ public class GadgetFilter extends ProxyFilter {
 		return writer.toString().getBytes("UTF-8");
 	}
 
+	static String getLocaleNameForLoadingI18NConstants(Locale locale) {
+		String localeName = "en";
+		String language = locale.getLanguage();
+		String country = locale.getCountry();
+		if (!language.equalsIgnoreCase("ALL")) {
+			try {
+				ResourceLoader.getContent((DATE_TIME_PATH + localeName + ".js"));
+				localeName = language;
+			} catch (IOException e) {
+				// ignore
+			}
+		}
+
+		if (!country.equalsIgnoreCase("ALL")) {
+			try {
+				ResourceLoader.getContent(DATE_TIME_PATH + localeName + '_' + country + ".js");
+				localeName += '_' + country;
+			} catch (IOException e) {
+				// ignore
+			}
+		}
+		return localeName;
+	}
+	
 	private static String getModuleVersion(Document doc) throws Exception {
 		NodeList moduleNodes = doc.getElementsByTagName("Module");
 		Node versionNode = moduleNodes.item(0).getAttributes().getNamedItem("specificationVersion");
@@ -184,7 +230,7 @@ public class GadgetFilter extends ProxyFilter {
 		
 		return charset;
 	}
-	
+
 	private static Map<String,String> getUrlParameters( Map<String,String> filterParameters ) {
 		Map<String,String> parameters = new HashMap<String,String>();
 		for( String key : filterParameters.keySet()) {
@@ -386,8 +432,10 @@ public class GadgetFilter extends ProxyFilter {
 				.setUrl( request.getOriginalURL() )
 				.setHostPrefix( urlParameters.get( PARAM_HOST_PREFIX ));
 			
+			Locale locale = request.getLocale();
+			
 			responseBytes = gadget2html( context.getBaseUrl(),doc,urlParameters,
-					context.getI18NConveter( request.getLocale(),doc ));
+					context.getI18NConveter( locale,doc ), locale);
 		} catch ( Exception ex ) {
 			log.error("unexpected error ocurred.", ex );
 			
@@ -400,4 +448,5 @@ public class GadgetFilter extends ProxyFilter {
 		
 		return new ByteArrayInputStream(responseBytes);
 	}
+	
 }

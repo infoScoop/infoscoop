@@ -73,7 +73,7 @@ public class WidgetConf2HtmlServlet extends HttpServlet {
 				parameterMap.put( ( String )key,( String )request.getParameter(( String )key ));
 			
 			I18NConverter i18n = new I18NConverter(request.getLocale(),new ArrayList<MessageBundle>() );
-			writer.write( new String( GadgetFilter.gadget2html(".",element.getOwnerDocument(),parameterMap,i18n )
+			writer.write( new String( GadgetFilter.gadget2html(".",element.getOwnerDocument(),parameterMap,i18n, request.getLocale() )
 					,"UTF-8"));
 		} catch (Exception e) {
 			log.error("Unexpected exception occurred.", e);
