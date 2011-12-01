@@ -83,7 +83,7 @@ public class GadgetFilter extends ProxyFilter {
 	}
 
 	public static byte[] gadget2html( String baseUrl,Document doc,
-			Map<String,String> urlParameters,I18NConverter i18n ) throws Exception {
+			Map<String,String> urlParameters,I18NConverter i18n,Locale locale) throws Exception {
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();
 		String version = getModuleVersion(doc);
