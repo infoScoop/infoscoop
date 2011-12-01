@@ -565,7 +565,7 @@ ISA_Authentication = {
 					)
 				)
 			)
-			,$.TR({class:"oauth1_element", style:(consumer.isOAuth2)? 'display:none' : ''}, 
+			,$.TR({"class":"oauth1_element", style:(consumer.isOAuth2)? 'display:none' : ''}, 
 				$.TD({ style:"padding:5;"}, ISA_R.alb_oauthSignatureAlgorithm),
 				$.TD({}, 
 					$.SELECT({
@@ -579,15 +579,15 @@ ISA_Authentication = {
 				)
 			)
 			,$.TR({},
-				$.TD({class:"oauth1_element", style:"padding:5;" + ((consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthConsumerKey),
-				$.TD({class:"oauth2_element", style:"padding:5;" + ((!consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthClientId),
+				$.TD({"class":"oauth1_element", style:"padding:5;" + ((consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthConsumerKey),
+				$.TD({"class":"oauth2_element", style:"padding:5;" + ((!consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthClientId),
 				$.TD({}
 						,this._createTextbox(elementId + '_consumer_key', consumer['consumer_key'])
 					)
 				)
 			,$.TR({}, 
-				$.TD({class:"oauth1_element", style:"padding:5;" + ((consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthConsumerSecret),
-				$.TD({class:"oauth2_element", style:"padding:5;" + ((!consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthClientSecret),
+				$.TD({"class":"oauth1_element", style:"padding:5;" + ((consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthConsumerSecret),
+				$.TD({"class":"oauth2_element", style:"padding:5;" + ((!consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthClientSecret),
 				$.TD({} 
 					,this._createTextbox(elementId + '_consumer_secret', consumer['consumer_secret'])
 				)
