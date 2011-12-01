@@ -394,7 +394,7 @@
 			<filelist dir="${src.main.web}/skin" files="calendar.css"/>
 			<filelist dir="${src.main.web}/skin" files="calendarinput.css"/>
 			<filelist dir="${src.main.web}/skin" files="commandbar.css"/>
-			<filelist dir="${src.main.web}/skin" files="mysitemap.css"/>
+			<filelist dir="${src.main.web}/skin" files="mySiteMap.css"/>
 			<filelist dir="${src.main.web}/skin" files="pulldown.css"/>
 			<filelist dir="${src.main.web}/skin" files="siteaggregationmenu.css"/>
 			<filelist dir="${src.main.web}/skin" files="pulldown.css"/>
