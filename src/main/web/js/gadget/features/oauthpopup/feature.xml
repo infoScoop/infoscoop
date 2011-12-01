@@ -18,7 +18,13 @@ specific language governing permissions and limitations under the License.
 -->
 <feature>
   <name>oauthpopup</name>
+  <dependency>globals</dependency>
   <gadget>
     <script src="oauthpopup.js"/>
+    <api>
+      <exports type="js">gadgets.oauth.Popup</exports>
+      <exports type="js">gadgets.oauth.Popup.prototype.createOpenerOnClick</exports>
+      <exports type="js">gadgets.oauth.Popup.prototype.createApprovedOnClick</exports>
+    </api>
   </gadget>
 </feature>
