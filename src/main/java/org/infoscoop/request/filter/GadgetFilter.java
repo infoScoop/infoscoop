@@ -82,8 +82,16 @@ public class GadgetFilter extends ProxyFilter {
 			Map<String,String> urlParameters,I18NConverter i18n ) throws Exception {
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();
-		
+		String version = getModuleVersion(doc);
+		double validVersion = compareVersion(version, "2.0");
+		String quirks = getQuirks(doc);
+
 		VelocityContext context = new VelocityContext();
+		
+		//quirks mode
+		context.put("doctype", getDoctype(validVersion, quirks));
+		context.put("charset", getCharset(validVersion, quirks));
+
 		context.put("baseUrl",baseUrl );
 		context.put("content",replaceContentStr( doc,i18n,urlParameters ) );
 		
@@ -109,6 +117,74 @@ public class GadgetFilter extends ProxyFilter {
 		return writer.toString().getBytes("UTF-8");
 	}
 
+	private static String getModuleVersion(Document doc) throws Exception {
+		NodeList moduleNodes = doc.getElementsByTagName("Module");
+		Node versionNode = moduleNodes.item(0).getAttributes().getNamedItem("specificationVersion");
+		String version = "";
+		if(versionNode != null){
+			version = versionNode.getNodeValue();
+		}
+		return version;
+	}
+	
+	private static String getQuirks(Document doc) throws Exception {
+		NodeList prefsNodes = doc.getElementsByTagName("ModulePrefs");
+		Node quirksNode = prefsNodes.item(0).getAttributes().getNamedItem("doctype");
+		String quirks = "";
+		if(quirksNode != null){
+			quirks = quirksNode.getNodeValue();
+		}
+		
+		return quirks;
+	}
+	
+	private static double compareVersion(String version, String target) {
+		if(version.equals("")){
+			return 1.0;
+		}
+		
+		String[] versionArr = version.split("\\.");
+		String[] specArr = target.split("\\.");
+		if(!version.equals(target)){
+			int len = 0;
+			if(versionArr.length > specArr.length){
+				len = specArr.length;
+			}else{
+				len = versionArr.length;
+			}
+			
+			for(int i = 0; i < len; i++){
+				int ver = Integer.parseInt(versionArr[i]);
+				int spec = Integer.parseInt(specArr[i]);
+				if(ver > spec){
+					target = versionArr[0] + "." +versionArr[1];
+					break;
+				}else if(ver < spec){
+					break;
+				}
+			}
+		}
+		return Double.parseDouble(target);
+	}
+	
+	private static String getDoctype( double version, String quirks ) {
+		String doctype = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">";
+		if(!quirks.equals("quirksmode") && version >= 2.0){
+			doctype = "<!DOCTYPE html>";
+		}
+		
+		return doctype;
+	}
+	
+	private static String getCharset( double version, String quirks ) {
+		String charset = "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">";
+		if(!quirks.equals("quirksmode") && version >= 2.0){
+			charset = "<meta charset=\"UTF-8\">";
+		}
+		
+		return charset;
+	}
+	
 	private static Map<String,String> getUrlParameters( Map<String,String> filterParameters ) {
 		Map<String,String> parameters = new HashMap<String,String>();
 		for( String key : filterParameters.keySet()) {
