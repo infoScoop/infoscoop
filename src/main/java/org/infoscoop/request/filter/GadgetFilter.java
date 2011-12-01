@@ -124,6 +124,9 @@ public class GadgetFilter extends ProxyFilter {
 				throw new Exception(e);
 			}
 			context.put("i18nDataConstants", sb.toString());
+		}else{
+			// Must set blank
+			context.put("i18nDataConstants", "");
 		}
 		context.put("oauthServicesJson", getOAuthServicesJson( xpath,doc ));
 		context.put("oauth2ServicesJson", getOAuth2ServicesJson( xpath,doc ));
