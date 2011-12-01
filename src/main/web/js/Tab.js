@@ -1197,7 +1197,8 @@ IS_Portal.changeActiveTab = function( changeTab, isInitialize ){
 	} else {
 		$("siteMenuOpenTd").show();
 		var siteMenuElm = $("siteMenu");
-		siteMenuElm.style.width = 0;
+		// #428 The width of a side menu does not become fixed.
+		//siteMenuElm.style.width = 0;
 		siteMenuElm.show();
 		IS_SidePanel.adjustPosition();
 	}
