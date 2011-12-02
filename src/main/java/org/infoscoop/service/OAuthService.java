@@ -95,7 +95,13 @@ public class OAuthService {
 				obj.put("consumer_key", prop.getConsumerKey());
 				obj.put("consumer_secret", prop.getConsumerSecret());
 				obj.put("signature_method", prop.getSignatureMethod());
-				obj.put("description", prop.getDescription());
+				
+				String description = prop.getDescription();
+				if(description == null){
+					//for oracle
+					description = "";
+				}
+				obj.put("description", description);
 				cunsumerList.put(obj);
 				idList.add(id);
 			}
