@@ -40,7 +40,6 @@ ISA_Authentication = {
 		});
 		
 		//uploaded gadget list
-		var container = $.TD({id:"gadgetListTd"});
 		var gadgetList = [];
 		var url = adminHostPrefix + "/services/gadget/getGadgetJson";
 		var opt = {
@@ -176,10 +175,10 @@ ISA_Authentication = {
 		var urlInput =  $(gadgetId);
 		var newUrl = urlInput.value;
 		var error = false;
-		var regex = "^" + newUrl +"$";
+		var regex = '^http(s)?://.*';
 		if( newUrl.length == 0 ) {
 			error = ISA_R.ams_typeValidURL;
-		} else if(error = IS_Validator.validate(newUrl, {maxBytes:1024, regex:'^http(s)?://.*'})){
+		} else if(error = IS_Validator.validate(newUrl, {maxBytes:1024, regex:regex})){
 		} 
 		if(error){
 			alert("["+ISA_R.alb_gadgetUrl+"] " + error);
@@ -363,8 +362,7 @@ ISA_Authentication = {
 			id: id
 			, value: value
 			, width: "99%"
-			, style: "width:99%; backgroundColor:"
-			, onchange: {handler: function(){ISA_Admin.isUpdated = true;}}
+			, style: "width:99%;"
 		});
 	},
 	
@@ -373,8 +371,7 @@ ISA_Authentication = {
 			id: id
 			, value: value
 			, rows: 5
-			, style: "width:99%; backgroundColor:"
-			, onchange: {handler: function(){ISA_Admin.isUpdated = true;}}
+			, style: "width:99%;"
 		});
 	},
 
@@ -409,6 +406,7 @@ ISA_Authentication = {
 		IS_Event.observe( deleteIcon,"click",function(tr, delObj){
 			tr.parentNode.removeChild(tr);
 			oauthConsumerList[index] = null;
+			ISA_Admin.isUpdated = true;
 		}.bind(this, tr, {gadgetUrl:consumer['gadget_url'],serviceName:consumer['service_name']}),true,"_adminAuthentication" );
 		consumerListTable.appendChild(tr);
 
@@ -665,13 +663,14 @@ ISA_Authentication = {
 				oauthConsumerList.splice(index, 1, consumerData);
 				this._updateRow(consumerData, index);
 			}
-			
+			ISA_Admin.isUpdated = true;
 			Control.Modal.close();
 		}.bind(this));
 	
 		var cancelButton = buttonsDiv.appendChild(createButton(ISA_R.alb_cancel));
 		IS_Event.observe(cancelButton, 'click', function(){
 			Control.Modal.close();
+			ISA_Admin.isUpdated = false;
 		}.bind(this));
 	
 		formContainer.appendChild(consumerEditForm);
@@ -691,9 +690,8 @@ ISA_Authentication = {
 	_createGadgetRow: function(gadgetId, isUrlGadget){
 		var gadgetTableBody = $('gadgetTableBody');
 		var index = tempGadgetList.length;
-		var gadgetUrl;
-		var gadgetTitle;
-
+		var gadgetUrl = "";
+		var gadgetTitle = "";
 		
 		if(isUrlGadget){
 			gadgetUrl = $(gadgetId).value;
