@@ -36,7 +36,7 @@
 	</target>
 	
 	<property name="basedir" value="." />
-	<property name="BACKUP_TABLE_SUFFIX" value="_bak22"/>
+	<property name="BACKUP_TABLE_SUFFIX" value="_bak223"/>
 
 	<path id="task.classpath">
 		<pathelement location="classes"/>
@@ -77,27 +77,33 @@
 			filtering="true"/>
 	</target>
 	
-	<target name="all" depends="oauth"/>
+	<target name="all" depends="proxyConf,oauth"/>
 	
-	<target name="clean-all" depends="clean-oauth"/>
-		
+	<target name="clean-all" depends="clean-proxyConf,clean-oauth"/>
+	
 	<target name="clean-all-backup" depends="prepare">
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}is_proxyconfs${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}is_oauth_consumers${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}is_oauth_tokens${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 	</target>
 	
+	<target name="proxyConf" depends="clean-proxyConf">
+		<current.sql src="sql/${DBMS}/proxyconf.sql"/>
+	</target>
+	<target name="clean-proxyConf" depends="prepare">
+		<exec-sql quiet="true"><property name="table">is_proxyconfs</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+	</target>
+	
 	<target name="oauth" depends="clean-oauth">
 		<current.sql src="sql/${DBMS}/oauth.sql"/>
+		<current.sql src="sql/${DBMS}/oauth2.sql"/>
 		<hibernate-beans type="OAuthConsumerProp">
 			<task class="org.infoscoop.batch.migration.v230to300.OAuthConvertTask"/>
 		</hibernate-beans>
 	</target>
 	<target name="clean-oauth" depends="prepare">
-		<exec-sql quiet="true">
-			<property name="table">is_oauth_consumers</property>
-			<sql file="sql/${DBMS}/restore.sql"/>
-			<sql>drop index ${SCHEMA_NAME}is_oauth_consumers_service_name</sql>
-		</exec-sql>
 		<exec-sql quiet="true">
 			<property name="table">is_oauth_tokens</property>
 			<sql file="sql/${DBMS}/restore.sql"/>
@@ -109,5 +115,14 @@
 		<exec-sql quiet="true">
 			<sql>drop table ${SCHEMA_NAME}is_oauth_gadget_urls</sql>
 		</exec-sql>
+		<exec-sql quiet="true">
+			<sql>drop table ${SCHEMA_NAME}IS_OAUTH2_TOKENS</sql>
+		</exec-sql>
+		<exec-sql quiet="true">
+			<property name="table">is_oauth_consumers</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+			<sql>drop index ${SCHEMA_NAME}is_oauth_consumers_service_name</sql>
+		</exec-sql>
 	</target>
+
 </project>

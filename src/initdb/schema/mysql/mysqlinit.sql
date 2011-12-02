@@ -221,7 +221,7 @@ create index is_properties_advanced on IS_PROPERTIES(advanced);
 --
 create table IS_PROXYCONFS (
   temp integer not null,
-  data text not null,
+  data mediumtext not null,
   lastmodified timestamp
 ) ENGINE=InnoDB;
 
