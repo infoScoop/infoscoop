@@ -64,6 +64,13 @@
 			<include name="*.jar" />
 		</fileset>
 	</path>
+	
+	<path id="project.classpath">
+		<fileset dir="${basedir}/lib/build">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path> 
+	<taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="project.classpath" />
 
     <target name="dist"
         depends="clean, prepare, build-main, build-admin, build-war,
@@ -852,275 +859,46 @@
 			<fileset dir="${build.main.features}" includes="**/*test.js"/>
 		</delete>
 
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="analytics/analytics"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="auth-refresh/auth-refresh"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="auth-refresh/auth-refresh"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.config/validators"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.config.base/config"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.io/io"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.io/taming"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.json/json-flatten"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.json/json-jsimpl"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.json/json-native"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.json/taming"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.legacy/legacy"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.log/log"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.log/taming"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.prefs/prefs"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.prefs/taming"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.util/util"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.util/taming"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.util.base/base"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.util.dom/dom"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.util.event/event"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.util.onload/onload"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.util.onload/taming"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.util.string/string"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.util.string/taming"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.util.urlparams/taming"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="core.util.urlparams/urlparams"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="drag/drag"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="dynamic-height/dynamic-height"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="dynamic-height/taming"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="dynamic-height.height/dynamic-height-height"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="dynamic-height.height/taming"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="dynamic-size.util/dynamic-size-util"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="dynamic-size.util/taming"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="flash/flash"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="flash/taming"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="globals/globals"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="infoscoop/config"/>
-		</antcall><antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="infoscoop/container"/>
-		</antcall><antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="infoscoop/legacy"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="minimessage/minimessage"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="minimessage/taming"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="oauthpopup/oauthpopup"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="osapi/gadgetsrpctransport"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="osapi/jsonrpctransport"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="osapi/peoplehelpers"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="osapi/taming"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="osapi.base/batch"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="osapi.base/osapi"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="osapi.base/taming"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="pubsub/pubsub-router"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="pubsub/pubsub"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="pubsub/taming"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="rpc/fe.transport"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="rpc/flash.transport"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="rpc/ifpc.transport"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="rpc/nix.transport"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="rpc/noop.transport"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="rpc/rmr.transport"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="rpc/rpc"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="rpc/wpm.transport"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="setprefs/setprefs"/>
-		</antcall>
-		
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="settitle/settitle"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="settitle/taming"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="shindig.auth/auth"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="shindig.auth/auth-init"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="skins/skins"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="skins/taming"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="tabs/tabs"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="tabs/taming"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="taming/taming"/>
-		</antcall>
-
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="views/views"/>
-		</antcall>
-		<antcall target="optimize-js"><param name="dir" value="${build.main.features}"/>
-			<param name="file" value="views/taming"/>
-		</antcall>
-
+		<foreach target="optimize-js" param="js.file">
+			<path>
+				<fileset dir="${build.main.features}" includes="*/*.js"/>
+				<fileset dir="${build.main.features}" includes="*/*/*.js"/>
+			</path>
+		</foreach>
+	
 		<delete>
 			<fileset dir="${build.main.features}" includes="README"/>
 		</delete>
 	</target>
-
+	
 	<target name="optimize-js">
-		<java jar="${yuicompressor}" fork="true">
-			<arg line="--type js --charset UTF-8 -o &quot;${dir}/${file}.opt.js&quot; &quot;${dir}/${file}.js&quot;"/>
-			<classpath>
-				<pathelement location="${yuicompressor}"/>
-			</classpath>
-		</java>
+		<basename file="${js.file.name}" property="js.file" />
+		<dirname file="${js.file}" property="js.dir.path"/>
+		<basename file="${js.file}" property="js.file.name" suffix=".js" />
+		<macro.compress input="${js.file}" output="${js.dir.path}/${js.file.name}.opt.js" />
 	</target>
-
-
+	
+	<macrodef name="macro.compress">
+		<attribute name="input" />
+		<attribute name="output" />
+		<sequential>
+			<if>
+				<available file="@{input}"/>
+					<then>
+						<java jar="${yuicompressor}" fork="true" failonerror="true">
+							<arg value="--type" />
+							<arg value="js" />
+							<arg value="--charset" />
+							<arg value="UTF-8" />
+							<arg value="-o" />
+							<arg value="@{output}" />
+							<arg value="@{input}" />
+					</java>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+	
     <!--build for google apps-->
     <target name="googleapps-prepare">
         <copy todir="${build.main}" file="${googleapps.web}/gapps_openid_login.jsp"/>
