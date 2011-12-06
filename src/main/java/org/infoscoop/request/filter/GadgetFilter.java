@@ -86,15 +86,14 @@ public class GadgetFilter extends ProxyFilter {
 			Map<String,String> urlParameters,I18NConverter i18n,Locale locale) throws Exception {
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();
-		String version = getModuleVersion(doc);
-		double validVersion = compareVersion(version, "2.0");
+		Boolean specCompair = compareVersion(getModuleVersion(doc));
 		String quirks = getQuirks(doc);
 
 		VelocityContext context = new VelocityContext();
 		
 		//quirks mode
-		context.put("doctype", getDoctype(validVersion, quirks));
-		context.put("charset", getCharset(validVersion, quirks));
+		context.put("doctype", getDoctype(specCompair, quirks));
+		context.put("charset", getCharset(specCompair, quirks));
 
 		context.put("baseUrl",baseUrl );
 		context.put("content",replaceContentStr( doc,i18n,urlParameters ) );
@@ -187,14 +186,20 @@ public class GadgetFilter extends ProxyFilter {
 		return quirks;
 	}
 	
-	private static double compareVersion(String version, String target) {
+	/*
+	 *  version <= 2.0 : true
+	 *  version >  2.0 : false
+	 */	
+	private static Boolean compareVersion(String version) {
 		if(version.equals("")){
-			return 1.0;
+			// version = 1.0
+			return false;
 		}
-		
+
 		String[] versionArr = version.split("\\.");
-		String[] specArr = target.split("\\.");
-		if(!version.equals(target)){
+		String[] specArr = "2.0".split("\\.");
+		Boolean specComp = false;
+		if(!version.equals("2.0")){
 			int len = 0;
 			if(versionArr.length > specArr.length){
 				len = specArr.length;
@@ -206,28 +211,32 @@ public class GadgetFilter extends ProxyFilter {
 				int ver = Integer.parseInt(versionArr[i]);
 				int spec = Integer.parseInt(specArr[i]);
 				if(ver > spec){
-					target = versionArr[0] + "." +versionArr[1];
+					specComp = true;
 					break;
 				}else if(ver < spec){
 					break;
 				}
 			}
+		}else{
+			specComp = true;
 		}
-		return Double.parseDouble(target);
+		
+		return specComp;
+//		return Double.parseDouble(target);
 	}
 	
-	private static String getDoctype( double version, String quirks ) {
+	private static String getDoctype( Boolean specComp, String quirks ) {
 		String doctype = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">";
-		if(!quirks.equals("quirksmode") && version >= 2.0){
+		if(!quirks.equals("quirksmode") && specComp){
 			doctype = "<!DOCTYPE html>";
 		}
 		
 		return doctype;
 	}
 	
-	private static String getCharset( double version, String quirks ) {
+	private static String getCharset( Boolean specComp, String quirks ) {
 		String charset = "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">";
-		if(!quirks.equals("quirksmode") && version >= 2.0){
+		if(!quirks.equals("quirksmode") && specComp){
 			charset = "<meta charset=\"UTF-8\">";
 		}
 		
