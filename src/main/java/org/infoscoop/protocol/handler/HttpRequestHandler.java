@@ -196,18 +196,18 @@ public class HttpRequestHandler {
 
         if (authz == AuthType.OAUTH2) {
             Map<String, String> authSettings = getAuthSettings(requestItem);
-            OAuth2Arguments oauth2Args = new OAuth2Arguments(req.getAuthType(), authSettings);
+            OAuth2Arguments oauth2Args = new OAuth2Arguments(authz, authSettings);
 
             req.setOAuth2Arguments(oauth2Args);
             
-        	proxyParams.put("OAUTH_SERVICE_NAME", oauth2Args.getServiceName());
+            proxyParams.put("OAUTH_SERVICE_NAME", (String)authSettings.get("OAUTH_SERVICE_NAME"));
         	proxyParams.put("hostPrefix", req.getSecurityToken().getContainer());
         	proxyParams.put("userAuthorizationURL", requestItem.getParameter("userAuthorizationURL"));
         	proxyParams.put("accessTokenURL", requestItem.getParameter("accessTokenURL"));
         	proxyParams.put("OAUTH2_SCOPE", requestItem.getParameter("OAUTH2_SCOPE"));
         } else if(authz == AuthType.OAUTH){
             Map<String, String> authSettings = getAuthSettings(requestItem);
-            OAuthArguments oauthArgs = new OAuthArguments(req.getAuthType(), authSettings);
+            OAuthArguments oauthArgs = new OAuthArguments(authz, authSettings);
             oauthArgs.setSignOwner(httpApiRequest.signOwner);
             oauthArgs.setSignViewer(httpApiRequest.signViewer);
             
@@ -303,7 +303,8 @@ public class HttpRequestHandler {
     @SuppressWarnings("unchecked")
     Set<String> allParameters = requestItem.getTypedRequest(Map.class).keySet();
     
-    Map<String, String> authSettings = Maps.newHashMap();
+//    Map<String, String> authSettings = Maps.newHashMap();
+    Map<String, String> authSettings = new TreeMap<String,String>(String.CASE_INSENSITIVE_ORDER);
     for (String paramName : allParameters) {
       if (!HttpApiRequest.KNOWN_PARAMETERS.contains(paramName)) {
         authSettings.put(paramName, requestItem.getParameter(paramName));

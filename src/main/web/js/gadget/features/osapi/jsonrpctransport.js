@@ -73,7 +73,7 @@
   	    var oauthService = oauth2ServicesJson[request.params.oauth_service_name];
         request.params.userAuthorizationURL = oauthService["userAuthorizationURL"];
         request.params.accessTokenURL = oauthService["accessTokenURL"];
-        if(!paramData[gadgets.io.RequestParameters.OAUTH2_SCOPE])
+        if(oauthService["scope"])
         	request.params['OAUTH2_SCOPE'] = oauthService["scope"];
       }
     }
