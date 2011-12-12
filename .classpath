@@ -22,11 +22,8 @@
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/datedFileAppender-1.0.2.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/freemarker.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/google-collections-0.8.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/guice-1.0.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/hibernate3.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/ical4j-1.0-rc2.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/joda-time-1.6.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/json.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jsr173_1.0_api.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/jstl.jar"/>
@@ -36,8 +33,6 @@
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/nekohtml.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/resolver.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/serializer.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/shindig-common-1.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/shindig-gadgets-1.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/standard.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/uuid.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/velocity-dep-1.5.jar"/>
@@ -73,5 +68,11 @@
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/org.springframework.transaction-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/org.springframework.web-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/org.springframework.web.servlet-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/guava-10.0.1.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/guice-3.0.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/guice-multibindings-3.0.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/shindig-common-3.0.0-beta3-java5.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/shindig-gadgets-3.0.0-beta3-java5.jar"/>
+	<classpathentry kind="lib" path="src/main/web/WEB-INF/lib/shindig-social-api-3.0.0-beta3-java5.jar"/>
 	<classpathentry kind="output" path="src/main/web/WEB-INF/classes"/>
 </classpath>
