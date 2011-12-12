@@ -23,7 +23,9 @@ gadgets.rpc.register("set_pref",function( ifpctok ) {
 	var widget = IS_Portal.getWidget( this.mid,this.tid );
 	if( widget.authToken != this.t ) return;
 	
-	var args = $A( arguments );args.shift();
+	var length = arguments.length || 0, args = new Array(length);
+	while (length--) args[length] = arguments[length];
+	args.shift();
 	
 	widget.setUserPrefs.apply( widget,args );
 });
