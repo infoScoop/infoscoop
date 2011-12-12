@@ -88,7 +88,6 @@ public class GadgetDAO extends HibernateDaoSupport {
 	public boolean delete( String type,String path,String name ) {
 		Gadget resource = select( type,path,name );
 		
-		System.out.println( type+","+path+","+name+"="+resource );
 		if( resource == null )
 			return false;
 		
