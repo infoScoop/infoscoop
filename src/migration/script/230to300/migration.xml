@@ -88,7 +88,7 @@
 	</target>
 	
 	<target name="proxyConf" depends="clean-proxyConf">
-		<current.sql src="sql/${DBMS}/proxyconf.sql"/>
+		<current.sql src="sql/${DBMS}/proxyConf.sql"/>
 	</target>
 	<target name="clean-proxyConf" depends="prepare">
 		<exec-sql quiet="true"><property name="table">is_proxyconfs</property>
