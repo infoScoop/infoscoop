@@ -522,9 +522,13 @@ ISA_Authentication = {
 		var gadgetOptTr = $.TR({}, $.TD({width:'35%'}), gadgetUrlTd);
 		
 		IS_Event.observe( gadgetOptRadioUrl, "click", function(){
+			gadgetOptRadioUpload.checked = false; //to switch the checked status for only IE6 
+			gadgetOptRadioUrl.checked = true;
 			gadgetOptTr.replaceChild(gadgetUrlTd, gadgetOptTr.childNodes[1]);
 		});
 		IS_Event.observe( gadgetOptRadioUpload, "click", function(){
+			gadgetOptRadioUrl.checked = false; //to switch the checked status for only IE6 
+			gadgetOptRadioUpload.checked = true;
 			gadgetOptTr.replaceChild(gadgetListTd, gadgetOptTr.childNodes[1]);
 		});
 		
@@ -599,13 +603,13 @@ ISA_Authentication = {
 			)
 			,$.TR({}, 
 					$.TD({width:"", style:"padding:5;"}, ISA_R.alb_oauthAddingGadget),
-					$.TD({width: "", style:"padding:5"} 
-						, $.LABEL({style:"padding: 0 15 0 0"}
-							, gadgetOptRadioUrl
+					$.TD({width: "", style:"padding:5"}
+						, gadgetOptRadioUrl
+						, $.LABEL({htmlFor:"gadget_opt_url", style:"padding: 0 15 0 0"}
 							, ISA_R.alb_gadgetUrlSpecified
 						)
-						, $.LABEL({}
-							, gadgetOptRadioUpload
+						, gadgetOptRadioUpload
+						, $.LABEL({htmlFor:"gadget_opt_upload"}
 							, ISA_R.alb_upload, ISA_R.alb_widget
 						)
 					)
