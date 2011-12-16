@@ -82,10 +82,8 @@ public class RssJsonResultBuilder extends RssResultBuilder{
 		if( channelDesc != null )
 			rssJson.append("description : \"").append(channelDesc).append("\",");
 		if (channelFullDate != null)
-			rssJson.append("rssDate : new Date(").append(
-					channelFullDate).append("),");
-		rssJson.append("date : \"").append(channelDate).append(
-		"\"");
+			rssJson.append("rssDate : new Date(").append(channelFullDate).append("),");		// check the FeedJsonFilter.json#postProcess
+		rssJson.append("date : \"").append(channelDate).append("\"");
 		
 		if( channelOtherProperties != null ) {
 			Iterator keys = channelOtherProperties.keySet().iterator();

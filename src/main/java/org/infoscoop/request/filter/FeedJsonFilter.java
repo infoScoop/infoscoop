@@ -20,6 +20,8 @@ package org.infoscoop.request.filter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 import org.apache.commons.httpclient.HttpClient;
@@ -61,6 +63,9 @@ public class FeedJsonFilter extends ProxyFilter {
 		
 		try {
 			String r1Str = request.getResponseBodyAsString("UTF-8");
+			Pattern pattern = Pattern.compile("rssDate : new Date\\(.*\\),");
+			Matcher matcher = pattern.matcher(r1Str);
+			r1Str = matcher.replaceFirst("");
 			JSONObject r1 = new JSONObject( r1Str );
 			
 			if( r1.getInt("statusCode") != 0)
