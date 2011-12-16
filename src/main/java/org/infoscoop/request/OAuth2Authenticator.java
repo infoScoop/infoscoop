@@ -226,7 +226,7 @@ public class OAuth2Authenticator implements Authenticator {
 					msg.getTokenType(), request.getOauth2Config().code, msg.getAccessToken(),
 					refreshToken, validityPeriodUTC);				
 		} catch (Exception e){
-			OAuthService.getHandle().deleteOAuthToken(request.getPortalUid(),
+			OAuthService.getHandle().deleteOAuth2Token(request.getPortalUid(),
 					request.getOauth2Config().getGadgetUrl(),
 					request.getOauth2Config().serviceName);
 			log.error("unexpected error has occured.", e);

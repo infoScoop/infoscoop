@@ -92,6 +92,7 @@ public class OAuth2CallbackServlet extends HttpServlet {
 			final String contentType = proxy.getResponseHeader("Content-Type");
             Long validityPeriodUTC = null;
 
+        	log.debug(responseBody);
             if(contentType.startsWith("text/plain")){	            	
             	//for facebook
             	msg.parseQuery('?'+responseBody);
@@ -125,8 +126,7 @@ public class OAuth2CallbackServlet extends HttpServlet {
 			out.println("<html><head><script> window.close();</script></head></html>");
 			out.flush();
 		} catch (Exception e) {
-			OAuthService.getHandle().deleteOAuthToken(uid, gadgetUrl,
-					consumerName);
+			OAuthService.getHandle().deleteOAuth2Token(uid, gadgetUrl,consumerName);
 			log.error("unexpected error has occured.", e);
 			RequestDispatcher dispatcher = request
 					.getRequestDispatcher("/error.jsp");
