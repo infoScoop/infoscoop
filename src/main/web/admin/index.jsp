@@ -19,7 +19,7 @@
 
 <!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%
-	response.sendRedirect("../manager/");
+	response.sendRedirect("../manager/home/index");
 %>
 <html>
 <head>
