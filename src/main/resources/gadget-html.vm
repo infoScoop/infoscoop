@@ -34,6 +34,7 @@ gadgets.Prefs.setInternal_( ${userPrefs.toString()} );
 ${i18nDataConstants}
 </script>
 #if( $requires.has("drag"))
+<script src="${staticContentURL}/js/lib/prototype-1.6.0.3.js"></script>
 <script src="${staticContentURL}/js/lib/scriptaculous-js-1.8.2/effects.js"></script>
 <script src="${staticContentURL}/js/lib/scriptaculous-js-1.8.2/dragdrop.js"></script>
 #end
