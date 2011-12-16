@@ -390,7 +390,8 @@ ISA_Authentication = {
 	},
 	
 	_createRow: function( consumer, index){
-		var descriptionDiv = $.DIV({style:'width:530px;white-space:normal; overflow:hidden;'});
+		var serviceNameDiv = $.DIV({style:'width:270px; white-space:normal; overflow:hidden;', title:consumer['service_name']}, consumer['service_name']);
+		var descriptionDiv = $.DIV({style:'width:530px;white-space:pre; overflow:hidden;'});
 		var description = escapeHTMLEntity(consumer['description']);
 		descriptionDiv.innerHTML = description.replace(/(\r\n|\n|\r)/g, '<br/>');
 		var consumerListTable = $('authentication_contentTable').firstChild;
@@ -398,7 +399,7 @@ ISA_Authentication = {
 		var deleteIcon = $.IMG({id:elementId +"_delete", src:"../../skin/imgs/trash.gif", title:ISA_R.alb_delete, style:'cursor:pointer'});
 		var editImg = $.IMG({id:elementId +"_edit", src:"../../skin/imgs/edit.gif", title:ISA_R.alb_editing, style:'cursor:pointer'});
 		var tr = $.TR({id:elementId}
-			,$.TD({id:elementId+'_service_nameTd', className:"configTableTd", style:"textAlign:left; padding: 3;"}, consumer['service_name'] )
+			,$.TD({id:elementId+'_service_nameTd', className:"configTableTd", style:"textAlign:left; padding: 3;"}, serviceNameDiv )
 			,$.TD({id:elementId+'_editTd', className:"configTableTd", style:"textAlign:center;"}, editImg )
 			,$.TD({id:elementId+'_descriptionTd', className:"configTableTd", style:"textAlign:left; padding: 3;"}, descriptionDiv )
 			,$.TD({className:"configTableTd", style:"textAlign:center;"}, deleteIcon )
@@ -426,11 +427,11 @@ ISA_Authentication = {
 	
 	_updateRow :function(consumer, index){
 		var elementId = 'oauth_consumer_setting_' + index;
-		var serviceNameTd = $(elementId + '_service_nameTd');
+		var serviceNameDiv = $(elementId + '_service_nameTd').firstChild;
 		var editTd = $(elementId + '_editTd');
 		var descriptionTd = $(elementId + '_descriptionTd');
 		
-		serviceNameTd.innerHTML = escapeHTMLEntity(consumer['service_name']);
+		serviceNameDiv.innerHTML = escapeHTMLEntity(consumer['service_name']);
 		var editImg = $.IMG({id:elementId +"_edit", src:"../../skin/imgs/edit.gif", title:ISA_R.alb_editing, style:'cursor:pointer'});
 		var editModal = new Control.Modal(editImg, {
 			contents: "<div/>",
