@@ -76,13 +76,13 @@ public class RssJsonResultBuilder extends RssResultBuilder{
 		if(getPageCount() > 1){
 			rssJson.append("pageCount:").append(getPageCount()).append(",");
 		}
+		if (channelFullDate != null)
+			rssJson.append("rssDate : new Date(").append(channelFullDate).append("),");		// check the FeedJsonFilter.json#postProcess
 		rssJson.append("title : \"").append(channelTitle).append("\",");
 		if( channelLink != null )
 			rssJson.append("link : \"").append(channelLink).append("\",");
 		if( channelDesc != null )
 			rssJson.append("description : \"").append(channelDesc).append("\",");
-		if (channelFullDate != null)
-			rssJson.append("rssDate : new Date(").append(channelFullDate).append("),");		// check the FeedJsonFilter.json#postProcess
 		rssJson.append("date : \"").append(channelDate).append("\"");
 		
 		if( channelOtherProperties != null ) {
