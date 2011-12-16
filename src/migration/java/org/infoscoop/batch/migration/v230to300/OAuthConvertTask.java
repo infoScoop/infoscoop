@@ -31,7 +31,7 @@ public class OAuthConvertTask implements HibernateBeansTask.BeanTask2 {
 	private Session session;
 
 	static {
-		String beanDefinitionsParam = "datasource.xml,dataaccess.xml,commands.xml,services.xml,proxyrequest.xml,accountservices.xml";
+		String beanDefinitionsParam = "datasource.xml,dataaccess.xml";
 		String[] beanDefinitions = beanDefinitionsParam.split(",");
 		for(int i = 0; i < beanDefinitions.length; i++){
 			beanDefinitions[i] = beanDefinitions[i].trim();

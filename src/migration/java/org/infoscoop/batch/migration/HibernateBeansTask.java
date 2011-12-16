@@ -1,17 +1,13 @@
 package org.infoscoop.batch.migration;
 
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.*;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 public class HibernateBeansTask extends Task {
 	public HibernateBeansTask() {
