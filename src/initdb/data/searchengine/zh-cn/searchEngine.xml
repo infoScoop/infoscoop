@@ -2,20 +2,24 @@
 <searchEngines>
 	<defaultSearch>
 		<searchEngine id="baidu" defaultSelected="true" title="百度" retrieveUrl="http://www.baidu.com/s?wd=" encoding="gb2312">
-			<countRule method="regexp" value=".*找到相关网页约?([0-9,]+)篇.*"/>
+			<countRule method="regexp" value=".*找到相关网页约?([0-9,]+)个.*"/>
 		</searchEngine>
-		<searchEngine id="google" defaultSelected="true" title="Google" retrieveUrl="http://www.google.com.hk/search?q=">
+		<!-- <searchEngine id="google" defaultSelected="true" title="Google" retrieveUrl="http://www.google.com.hk/search?q=">
 			<countRule method="regexp" value=".*获得约? ([0-9,]+) 条结果.*"/>
-		</searchEngine>
+		</searchEngine> -->
 		<searchEngine id="soso" defaultSelected="true" title="搜搜" retrieveUrl="http://www.soso.com/q?w=" encoding="gb2312">
 			<countRule method="regexp" value=".*搜索到约?([0-9,]+)项结果.*"/>
 		</searchEngine>
 	</defaultSearch>
 	<rssSearch>
-		<searchEngine id="googlesite" retrieveUrl="http://www.google.com.hk/search?&amp;q=site%3A$1%20">
+		<searchEngine id="sososite" retrieveUrl="http://www.soso.com/q?w=site%3A$1%20">
+			<rssPattern>^http://([^/]+)/.*</rssPattern>
+			<countRule method="regexp" value=".*搜索到约?([0-9,]+)项结果.*"/>
+		</searchEngine>
+		<!-- <searchEngine id="googlesite" retrieveUrl="http://www.google.com.hk/search?&amp;q=site%3A$1%20">
 			<rssPattern>^http://([^/]+)/.*</rssPattern>
 			<countRule method="regexp" value=".*获得约? ([0-9,]+) 条结果.*"/>
-		</searchEngine>
+		</searchEngine> -->
 	</rssSearch>
 </searchEngines>
 

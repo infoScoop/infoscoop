@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <searchEngines>
 	<defaultSearch>
-		<searchEngine id="google" defaultSelected="true" title="Google" retrieveUrl="http://www.google.co.jp/search?q=">
+		<!-- <searchEngine id="google" defaultSelected="true" title="Google" retrieveUrl="http://www.google.co.jp/search?q=">
 			<countRule method="regexp" value="約? ([0-9,]+) 件|約? &lt;b&gt;([0-9,]+)&lt;\/b&gt; 件"/>
-		</searchEngine>
+		</searchEngine> -->
 		<searchEngine id="bing" defaultSelected="true" title="Bing" retrieveUrl="http://www.bing.com/search?q=">
 			<countRule method="regexp" value="\(([0-9,]+) 件中\)"/>
 		</searchEngine>
@@ -12,10 +12,14 @@
 		</searchEngine>
 	</defaultSearch>
 	<rssSearch>
-		<!--上記に該当しないRSSをgoogleサイト内検索で検索する設定例-->
+		<searchEngine id="bingsite" retrieveUrl="http://www.bing.com/search?q=site%3A$1%20">
+			<rssPattern>^http://([^/]+)/.*</rssPattern>
+			<countRule method="regexp" value="\(([0-9,]+) 件中\)" />
+		</searchEngine>
+		<!-- setting example for searching RSS in Google in-site search if the rss does not match with the above
 		<searchEngine id="googlesite" retrieveUrl="http://www.google.com/search?&amp;q=site%3A$1%20">
 			<rssPattern>^http://([^/]+)/.*</rssPattern>
 			<countRule method="regexp" value="約? ([0-9,]+) 件|約? &lt;b&gt;([0-9,]+)&lt;\/b&gt; 件"/>
-		</searchEngine>
+		</searchEngine> -->
 	</rssSearch>
 </searchEngines>
