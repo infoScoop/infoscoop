@@ -47,7 +47,6 @@ features/oauthpopup/feature.xml
 features/minimessage/feature.xml
 features/osapi.base/feature.xml
 features/osapi/feature.xml
-features/minimessage/feature.xml
 features/pubsub/feature.xml
 features/rpc/feature.xml
 features/security-token/feature.xml
@@ -59,5 +58,4 @@ features/tabs/feature.xml
 features/taming/feature.xml
 features/views/feature.xml
 features/drag/feature.xml
-features/oauthpopup/feature.xml
 features/infoscoop/feature.xml
