@@ -161,6 +161,11 @@ public class OAuth2Authenticator implements Authenticator {
 			parameters.add(new OAuth.Parameter("scope", scope.toString()));
 			authorizationURL = OAuth.addParameters(authorizationURL, "scope", scope.toString());
 		}
+		
+		//for Google
+		//If other server has some problem by follow parameter, thought corresponding.
+		authorizationURL = OAuth.addParameters(authorizationURL, "access_type", "offline");
+
 		request.putResponseHeader("oauthApprovalUrl", authorizationURL);
 		throw new ProxyAuthenticationException("Redirect to authorization url.", false);
     }
