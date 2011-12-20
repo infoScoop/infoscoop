@@ -31,7 +31,7 @@ drop table is_userprefs;
 drop table is_messages;
 drop table is_systemmessages;
 drop table is_oauth_certificate;
-drop table is_oauth_consumers;
 drop table is_oauth_gadget_urls;
 drop table is_oauth_tokens;
 drop table is_oauth2_tokens;
+drop table is_oauth_consumers;
