@@ -128,9 +128,17 @@ public class OAuthService {
 			idList.add(id);
 			consumer.setId(id);
 			consumer.setServiceName(obj.getString("serviceName"));
-			consumer.setConsumerKey(obj.getString("consumerKey"));
-			consumer.setConsumerSecret(obj.getString("consumerSecret"));
-			consumer.setSignatureMethod(obj.getString("signatureMethod"));
+			
+			consumer.setConsumerKey(
+					obj.has("consumerKey")?
+							obj.getString("consumerKey") : "");
+			consumer.setConsumerSecret(
+					obj.has("consumerSecret")?
+							obj.getString("consumerSecret") : "");
+			consumer.setSignatureMethod(
+					obj.has("signatureMethod")?
+							obj.getString("signatureMethod") : "");
+			
 			consumer.setDescription(obj.getString("description"));
 			
 			JSONArray gadgetUrlArr = obj.getJSONArray("gadgetUrl");
