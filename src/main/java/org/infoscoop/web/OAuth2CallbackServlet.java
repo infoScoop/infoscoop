@@ -92,7 +92,6 @@ public class OAuth2CallbackServlet extends HttpServlet {
 			final String contentType = proxy.getResponseHeader("Content-Type");
             Long validityPeriodUTC = null;
 
-        	log.debug(responseBody);
             if(contentType.startsWith("text/plain")){	            	
             	//for facebook
             	msg.parseQuery('?'+responseBody);
