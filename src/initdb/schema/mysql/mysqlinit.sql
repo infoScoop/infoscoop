@@ -29,7 +29,7 @@ create table IS_TABS (
 
 create table IS_WIDGETS (
   id bigint not null auto_increment primary key,
-  `UID` varchar(75) not null,
+  `UID` varchar(150) not null,
   defaultUid varchar(150),
   tabId varchar(32) not null,
   widgetId varchar(128) not null,
