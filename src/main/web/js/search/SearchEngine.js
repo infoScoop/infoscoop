@@ -270,7 +270,12 @@ IS_SearchEngine.prototype.classDef = function() {
 		
 		try{
 			var iframeDoc = Browser.isIE ? this.iframe.contentWindow.document : this.iframe.contentDocument;
-			var current = this.iframe.contentWindow.location.href;
+			var current;
+			try{
+				current = this.iframe.contentWindow.location.href;
+			}catch(e){
+				return;
+			}
 			var base = iframeDoc.getElementById("baseUrl");
 			if( base ) {
 				var baseUrl = base.href;
