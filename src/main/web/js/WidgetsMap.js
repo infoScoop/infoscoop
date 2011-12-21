@@ -194,10 +194,11 @@ IS_MySiteMap.prototype = {
 		var divIcon = $.DIV({Class:'menuItemIcon menuItemIcon_dropped'});
 		IS_Widget.setIcon(divIcon, widget.widgetType);
 		div.appendChild(divIcon);
-
-		var widgetTitle = IS_Widget.WidgetHeader.getTitle(widget);
-		div.appendChild( document.createTextNode( widgetTitle || widget.widgetConf.title || IS_R.lb_notitle ) );
 		
+		var widgetTitle = IS_Widget.WidgetHeader.getTitle(widget);
+		var titleDiv = $.SPAN({Class:'titleText'});
+		titleDiv.appendChild( document.createTextNode( widgetTitle || widget.widgetConf.title || IS_R.lb_notitle ) );
+		div.appendChild(titleDiv);		
 		Event.observe( div,"click",this.focusWidget.bind( this,tab,widget ));
 		
 		container.appendChild( div );

@@ -115,7 +115,9 @@
 	cursor: pointer;
 	height: 16px;
 }
-
+.mySiteMap .tabWidgetListItem .titleText {
+	position: absolute;
+}
 .mySiteMap .menuItemIcon {
 	margin-right: 5px;
 }
