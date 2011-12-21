@@ -85,6 +85,7 @@
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}is_proxyconfs${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}is_oauth_consumers${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
 		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}is_oauth_tokens${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+		<exec-sql quiet="true"><sql>drop sequence ${SCHEMA_NAME}is_oauth_consumers_id_seq</sql></exec-sql>
 	</target>
 	
 	<target name="proxyConf" depends="clean-proxyConf">
@@ -109,11 +110,8 @@
 			<sql file="sql/${DBMS}/restore.sql"/>
 		</exec-sql>
 		<exec-sql quiet="true">
-			<property name="sequence">is_oauth_consumers_id_seq</property>
-			<sql file="sql/${DBMS}/restore-sequence.sql"/>
-		</exec-sql>
-		<exec-sql quiet="true">
 			<sql>drop table ${SCHEMA_NAME}is_oauth_gadget_urls</sql>
+			<sql>drop sequence is_oauth_gadget_urls_id_seq</sql>
 		</exec-sql>
 		<exec-sql quiet="true">
 			<sql>drop table ${SCHEMA_NAME}IS_OAUTH2_TOKENS</sql>
@@ -121,7 +119,6 @@
 		<exec-sql quiet="true">
 			<property name="table">is_oauth_consumers</property>
 			<sql file="sql/${DBMS}/restore.sql"/>
-			<sql>drop index ${SCHEMA_NAME}is_oauth_consumers_service_name</sql>
 		</exec-sql>
 	</target>
 
