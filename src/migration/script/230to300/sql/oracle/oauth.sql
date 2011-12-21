@@ -34,7 +34,6 @@ create index ${SCHEMA_NAME}is_oauth_gadget_url_key on ${SCHEMA_NAME}is_oauth_gad
 create table ${SCHEMA_NAME}is_oauth_tokens (
   fk_oauth_id varchar(64 BYTE) not null,
   "UID" varchar(150 BYTE) not null,
-  service_name varchar(255 BYTE) not null,
   request_token varchar(255 BYTE),
   access_token varchar(255 BYTE),
   token_secret varchar(255 BYTE) not null,
