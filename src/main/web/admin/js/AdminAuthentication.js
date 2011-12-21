@@ -248,7 +248,7 @@ ISA_Authentication = {
 		var error = false;
 		var highlightRowNum = [];
 		for(var i=0; i<oauthConsumerList.length; i++){
-			if(index == i)//exclude itself
+			if(index == i || oauthConsumerList[i]==null)//exclude itself and deleted object
 				continue;
 			if(serviceName == oauthConsumerList[i].service_name){
 				for(var j=0; j<tempGadgetList.length; j++){
