@@ -4204,7 +4204,7 @@ CREATE TABLE `IS_OAUTH2_TOKENS` (
   `refresh_token` varchar(255) DEFAULT NULL,
   `validity_period_utc` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`fk_oauth_id`,`UID`),
-  CONSTRAINT `is_oauth2_tokens_ibfk_1` FOREIGN KEY (`fk_oauth_id`) REFERENCES `is_oauth_consumers` (`id`) ON DELETE CASCADE
+  CONSTRAINT `is_oauth2_tokens_ibfk_1` FOREIGN KEY (`fk_oauth_id`) REFERENCES `IS_OAUTH_CONSUMERS` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -4229,7 +4229,7 @@ CREATE TABLE `IS_OAUTH_TOKENS` (
   `access_token` varchar(255) DEFAULT NULL,
   `token_secret` varchar(255) NOT NULL,
   PRIMARY KEY (`fk_oauth_id`,`UID`),
-  CONSTRAINT `is_oauth_tokens_ibfk_1` FOREIGN KEY (`fk_oauth_id`) REFERENCES `is_oauth_consumers` (`id`) ON DELETE CASCADE
+  CONSTRAINT `is_oauth_tokens_ibfk_1` FOREIGN KEY (`fk_oauth_id`) REFERENCES `IS_OAUTH_CONSUMERS` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
