@@ -271,8 +271,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		annotateDiv.appendChild(font);
 
 		defaultSearchEngineDiv.appendChild(addDefaultDiv);
-		//defaultSearchEngineDiv.appendChild($.P({className: "", style:"margin:10px;"}, ISA_R.alb_clickToEditMessage));
-		defaultSearchEngineDiv.appendChild($.DIV({className: "", style:"float:left;margin:10px"}, "各セルをクリックすると値を編集できます。"));
+		defaultSearchEngineDiv.appendChild($.P({className: "", style:"padding:10px"}, ISA_R.alb_clickToEditMessage));
 		defaultSearchEngineDiv.appendChild(annotateDiv);
 
 		return defaultSearchEngineDiv;
