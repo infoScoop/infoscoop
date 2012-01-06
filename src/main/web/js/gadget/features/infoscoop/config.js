@@ -270,7 +270,7 @@ var config = {"gadgets.container" : ["default"],
 //}
 };
 
-config["osapi.services"][hostPrefix + "/rpc"] = ["http.post", "http.delete", "http.head", "http.get", "http.put"];
+config["osapi.services"][getContextPath() + "/rpc"] = ["http.post", "http.delete", "http.head", "http.get", "http.put"];
 
 gadgets.Prefs.setMessages_( i18nMsgs );
 
