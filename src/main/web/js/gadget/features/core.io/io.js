@@ -257,6 +257,13 @@ gadgets.io = function() {
       xhr.onreadystatechange = gadgets.util.makeClosure(
           null, processResponseFunction, realUrl, callback, params, xhr);
     }
+    
+    // BugFix #435
+    // Processing for operating a gadget in another domain
+    if (window.is_sessionId) {
+        xhr.setRequestHeader('MSDPortal-SessionId', window.is_sessionId);
+    }
+    
     if (paramData !== null) {
       var contentTypeHeader = 'Content-Type';
       var contentType = 'application/x-www-form-urlencoded';

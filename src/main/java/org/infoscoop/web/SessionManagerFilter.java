@@ -48,6 +48,7 @@ import org.infoscoop.account.SessionCreateConfig;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.web.PreviewImpersonationFilter;
+import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.util.RSAKeyManager;
 
@@ -67,6 +68,7 @@ public class SessionManagerFilter implements Filter {
 	public static String LOGINUSER_ID_ATTR_NAME = "Uid";
 	public static String LOGINUSER_NAME_ATTR_NAME = "loginUserName";
 	public static String LOGINUSER_SUBJECT_ATTR_NAME = "loginUser";
+	public static String LOGINUSER_SESSION_ID_ATTR_NAME = "SessionId";
 
 	private Collection excludePaths = new HashSet();
 	private Collection<String> excludePathx = new HashSet<String>();
@@ -137,6 +139,7 @@ public class SessionManagerFilter implements Filter {
 	private String getUidFromSession(HttpServletRequest req){
 		HttpSession session = req.getSession(true);
 		String uid = (String)session.getAttribute("Uid");
+		String sessionId = req.getHeader("MSDPortal-SessionId");
 		boolean uidIgnoreCase = SessionCreateConfig.getInstance().isUidIgnoreCase();
 
 		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
@@ -150,7 +153,21 @@ public class SessionManagerFilter implements Filter {
 
 			session.setAttribute("Uid",uid );
 		}
-
+		
+		if (uid == null) {
+			if (sessionId != null) {
+				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
+				return SessionDAO.newInstance().getUid(sessionId);
+			}
+		} else if (sessionId != null) {
+			String oldSessionId = (String) session.getAttribute(LOGINUSER_SESSION_ID_ATTR_NAME);
+			if (oldSessionId != null && !sessionId.equals(oldSessionId)) {
+				session.invalidate();
+				session = req.getSession(true);
+				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
+				return SessionDAO.newInstance().getUid(sessionId);
+			}
+		}
 		return uid;
 	}
 
@@ -169,6 +186,10 @@ public class SessionManagerFilter implements Filter {
 			if(SessionCreateConfig.doLogin()){
 				uid = getUidFromSession(httpReq);
 
+	            if (uid != null){
+	                addUidToSession(uid, request);
+	            }
+				
 				if(redirectPaths.contains(httpReq.getServletPath())){
 					httpResponse.addCookie(new Cookie("redirect_path", httpReq.getServletPath()));
 				}

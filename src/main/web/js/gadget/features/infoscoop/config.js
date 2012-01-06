@@ -323,9 +323,10 @@ try {
 
 var readyContent = false;
 var readyLoginUid = false;
+var readySessionId = false;
 var firedOnload = false;
 function runOnLoadHandlers() {
-	if( !readyContent || !readyLoginUid || firedOnload )
+	if( !readyContent || !readyLoginUid || !readySessionId || firedOnload )
 		return;
 	
 	gadgets.util.runOnLoadHandlers();
@@ -335,6 +336,28 @@ function runOnLoadHandlers() {
 		window.removeEventListener("load",handleContentOnLoad,false );
 	} else if( window.detachEvent ){
 		window.detachEvent("onload",handleContentOnLoad );
+	}
+}
+
+function getSessionId(){
+	function handleGetSessionId( sessionId ) {
+		window.is_sessionId = sessionId;
+		
+		readySessionId = true;
+		
+		runOnLoadHandlers();
+	}
+	
+	try {
+		if( !window.is_sessionId ) window.is_sessionId = top.is_sessionId;
+	} catch( ex ) { }
+	
+	if( !window.is_sessionId ) {
+		setTimeout( function() {
+			gadgets.rpc.call( null,"is_get_session_id",handleGetSessionId );
+		},100 );
+	} else {
+		handleGetSessionId( window.is_sessionId );
 	}
 }
 
@@ -360,6 +383,8 @@ function handleContentOnLoad() {
 	} else {
 		handleGetLoginUid( window.is_userId );
 	}
+	
+	getSessionId();
 	
 	runOnLoadHandlers();
 }

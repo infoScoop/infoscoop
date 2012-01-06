@@ -46,6 +46,22 @@ public class SessionDAO extends HibernateDaoSupport {
 		return (SessionDAO) SpringUtil.getContext().getBean("sessionDAO");
 	}
 
+	@SuppressWarnings("unchecked")
+    public String getUid(String sessionId) {
+		Iterator<Session> results = super
+				.getHibernateTemplate()
+				.findByCriteria(
+						DetachedCriteria.forClass(Session.class).add(
+								Expression
+										.eq(Session.PROP_SESSIONID, sessionId)))
+				.iterator();
+		if (results.hasNext()) {
+			Session session = results.next();
+			return session.getUid();
+		}
+		return null;
+	}
+	
 	public String getSessionId(String uid) {
 		if (uid == null)
 			throw new RuntimeException("uid must be set.");

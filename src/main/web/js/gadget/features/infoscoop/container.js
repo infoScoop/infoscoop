@@ -196,3 +196,7 @@ gadgets.rpc.register("is_close_gadget",function( relayUrl ) {
 	if( widget.authToken != this.t ) return;
 	widget.headerContent.close();
 });
+
+gadgets.rpc.register("is_get_session_id",function() {
+	return is_sessionId;
+});
