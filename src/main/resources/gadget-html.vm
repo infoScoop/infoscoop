@@ -24,7 +24,13 @@ window.onerror = function( message,fileName,lineNumber ) {
 	
 	return true;
 }
-
+is_loadScript = function( src ) {
+	var head = document.getElementsByTagName("head")[0];
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src = src;
+	head.appendChild( script );
+}
 var features = ${requires.toString()};
 var i18nMsgs = ${i18nMsgs.toString()};
 --></script>
