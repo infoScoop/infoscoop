@@ -1571,6 +1571,7 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 		
 		function addAuthorization(){
 			var principalType = $('principalSelect').value;
+			var principalLabel = $("principalSelect").options[$("principalSelect").selectedIndex].text;
 			var regx = $('authRegxInput').value;
 			for(var i = 0; i < authorizations.length; i++){
 				if( authorizations[i].type == principalType && authorizations[i].regx == regx ){
@@ -1582,7 +1583,7 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 			var authTr = document.createElement('tr');
 			
 			var principalTd = document.createElement('td');
-			principalTd.appendChild(document.createTextNode(principalType));
+			principalTd.appendChild(document.createTextNode(principalLabel));
 			authTr.appendChild(principalTd);
 			
 			var regxTd = document.createElement('td');
@@ -1644,7 +1645,18 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 			for(var i = 0; i < menuItem.auths.length; i++){
 				var authTr = document.createElement('tr');
 				var principalTd = document.createElement('td');
-				principalTd.appendChild(document.createTextNode(menuItem.auths[i].type));
+                var principalLabel=menuItem.auths[i].type;
+              
+				for ( var j = 0; j < principals.length; j++) {
+					if (menuItem.auths[i].type == principals[j].type) {
+						principalLabel=principals[j].displayName;
+						break;
+					} 
+				}
+				
+				principalTd.appendChild(document
+								.createTextNode(principalLabel));
+				
 				authTr.appendChild(principalTd);
 				var regxTd = document.createElement('td');
 				regxTd.appendChild(document.createTextNode(menuItem.auths[i].regx));
