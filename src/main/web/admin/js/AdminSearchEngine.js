@@ -953,7 +953,7 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 			this.currentModal = new Control.Modal(
 				editorElement,
 				{
-					contents: "",
+					contents: "&nbsp;",
 					opacity: 0.2,
 					containerClassName:"adminSearchEngine",
 					afterClose:this.hideTitleEditorForm.bind(this)

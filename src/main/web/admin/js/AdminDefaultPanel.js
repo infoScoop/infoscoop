@@ -38,6 +38,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	var defaultRoleName = "defaultRole";
 	var defaultDefaultUid = "default";
 	var commandBarMap = {
+		"portal-logo":{id:"portal-logo", type:"logo", title:ISA_R.alb_logo, togglable:true, undeletable:true},
+		"portal-searchform":{id:"portal-searchform", title:ISA_R.alb_searchForm, togglable:true, undeletable:true},
 		"Ticker":{id:"p_1_w_4", title:ISA_R.alb_Ticker, type:"Ticker", togglable:true, undeletable:true},
 		"Ranking":{id:"p_1_w_6", title:ISA_R.alb_ranking, type:"Ranking", togglable:true, undeletable:true},
 		"portal-go-home":{id:"portal-go-home", title:ISA_R.alb_toTopPage, togglable:true, undeletable:true,
@@ -253,6 +255,37 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				commandDiv.innerHTML = htmlInput.value;
 
 				self.addCommandBar(commandDiv);
+				return true;
+			}
+		},
+		logo :{
+			buildForm : function(commandItem){
+				var src = "http://";
+				if(commandItem){
+					var commandDiv = $(commandItem.id);
+					src = $jq("img", commandDiv).attr("src");
+				}
+				
+				var editAreaDiv = document.createElement("div");
+				editAreaDiv.id = "panelAddCommandBarInputWrap";
+
+				var dialogTable = new ISA_RightLeftAlignTable()
+				var editUrlInput = document.createElement("input");
+				editUrlInput.id = "panelAddCommandBarURL";
+				editUrlInput.type = "text";
+				editUrlInput.size = 70;
+				editUrlInput.value = src;
+				editUrlInput.maxLength = 1024;
+				dialogTable.addRow(ISA_R.alb_ImageUrl, editUrlInput);
+
+				editAreaDiv.appendChild(dialogTable.build());
+				return editAreaDiv;
+			},
+			onOK : function(commandItem){
+				var commandDiv = $(commandItem.id);
+				$jq("img", commandDiv).attr("src", $("panelAddCommandBarURL").value);
+				
+				self.changeCommandBarLayout();
 				return true;
 			}
 		}

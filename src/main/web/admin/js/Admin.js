@@ -463,7 +463,7 @@ ISA_previewFormModal = {
 		ISA_previewFormModal.controlModal = new Control.Modal(
 			false,
 			{
-				contents: "",
+				contents: "&nbsp;",
 				opacity: 0.2,
 				containerClassName:"",
 				afterClose:ISA_previewFormModal.hide
@@ -590,7 +590,7 @@ ISA_AddCommandBarModal = {
 		this.addCommandBarModal.controlModal = new Control.Modal(
 			false,
 			{
-				contents: "",
+				contents: "&nbsp;",
 				opacity: 0.2,
 				containerClassName:"",
 				afterClose:this.addCommandBarModal.hide.bind(this.addCommandBarModal)

@@ -19,7 +19,7 @@ ISA_DefaultPanel.CommandItemEditor.prototype.classDef = function() {
 		this.modal = new Control.Modal(
 			false,
 			{
-				contents: "",
+				contents: "&nbsp;",
 				opacity: 0.2,
 				containerClassName:"",
 				afterClose:this.hide.bind(this)
@@ -91,7 +91,7 @@ ISA_DefaultPanel.prototype.addCommandBarModal = {
 		this.addCommandBarModal.controlModal = new Control.Modal(
 			false,
 			{
-				contents: "",
+				contents: "&nbsp;",
 				opacity: 0.2,
 				containerClassName:"",
 				afterClose:this.addCommandBarModal.hide.bind(this.addCommandBarModal)
@@ -156,7 +156,7 @@ ISA_DefaultPanel.prototype.addHTMLCommandBarModal = {
 		this.addHTMLCommandBarModal.controlModal = new Control.Modal(
 			false,
 			{
-				contents: "",
+				contents: "&nbsp;",
 				opacity: 0.2,
 				containerClassName:"",
 				afterClose:this.addHTMLCommandBarModal.hide.bind(this.addHTMLCommandBarModal)
@@ -223,7 +223,7 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 		this.selectLayoutModal.controlModal = new Control.Modal(
 			false,
 			{
-				contents: "",
+				contents: "&nbsp;",
 				opacity: 0.2,
 				containerClassName:"adminDefaultPanel",
 				afterClose:this.selectLayoutModal.hide.bind(this.selectLayoutModal)
@@ -327,7 +327,7 @@ ISA_DefaultPanel.prototype.editHTMLModal = {
 		this.editHTMLModal.controlModal = new Control.Modal(
 			false,
 			{
-				contents: "",
+				contents: "&nbsp;",
 				opacity: 0.2,
 				containerClassName:"adminDefaultPanel",
 				afterClose:this.editHTMLModal.hide.bind(this.editHTMLModal)
@@ -510,7 +510,7 @@ ISA_DefaultPanel.prototype.selectColumnModal = {
 		this.selectColumnModal.controlModal = new Control.Modal(
 			false,
 			{
-			  contents: "",
+			  contents: "&nbsp;",
 			  opacity: 0.2,
 			  containerClassName:"adminDefaultPanel",
 			  afterClose:this.selectColumnModal.hide.bind(this.selectColumnModal)
