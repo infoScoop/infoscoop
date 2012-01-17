@@ -102,6 +102,7 @@ IS_Portal.start = function() {
 
 	var command = document.getElementById("portal-command");
 	command.innerHTML = IS_Customization.commandbar;
+	IS_Portal.buildLogo();
 	IS_Portal.buildFontSelectDiv();
 	IS_Portal.buildGlobalSettingModal();
 	IS_Portal.Trash.initialize();
@@ -2053,6 +2054,16 @@ IS_Portal.buildLogout = function() {
 		logout.parentNode.style.width = logout.offsetWidth +"px";
 }
 
+IS_Portal.buildLogo = function() {
+	var logo = $("portal-logo");
+	if( !logo ) return;
+	
+	Event.observe( logo.firstChild,"click",function( e ) {
+		IS_Portal.goHome();
+		Event.stop( e );
+	});
+}
+
 // Log at dropping and drop processing
 /*IS_Portal.menuDropped = function( id, rssUrl, title ){
 	IS_EventDispatcher.newEvent('dropWidget', id, null);
@@ -2210,7 +2221,7 @@ IS_Portal.CommandBar = {
 	},
 	isIframeViewHiddenWidget : function(itemId){
 		// Judge commandbar widget hidden at displaying frmae in portal
-		if(itemId == "portal-admin-link")
+		if(itemId == "portal-admin-link" || itemId == "portal-logo")
 			return false;
 		
 		var cmdBarWidget = this.commandbarWidgets[itemId];
