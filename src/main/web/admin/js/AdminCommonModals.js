@@ -207,6 +207,15 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 			editorFormFieldDiv.id = 'editorFormFieldDiv';
 			self.loadEditorForm(editorFormFieldDiv);
 			self.currentModal.update(editorFormFieldDiv);
+			
+			jQuery("#authorizationTable").tablesorter({
+				sortList : [ [ 0, 0 ] ],
+				headers : {
+					2 : {
+						sorter : false
+					}
+				}
+			});
 //			
 //			var editPanel = document.getElementById('treeMenuEditPanel');
 //			editPanel.appendChild(editorFormFieldDiv);
@@ -1627,6 +1636,8 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 		var authTable = document.createElement('table');
 		authTable.id = 'authorizationTable';
 		authTable.className = "authorizationTable";
+	    authThead = document.createElement('thead');
+		authTable.appendChild(authThead);
 		authTbody = document.createElement('tbody');
 		authTbody.id = 'authorizationList';
 		authTable.appendChild(authTbody);
@@ -1635,12 +1646,13 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 		principalTh.appendChild(document.createTextNode(ISA_R.alb_subject));
 		authHeadTr.appendChild(principalTh);
 		var regxTh = document.createElement('th');
+		regxTh.className = "nosort";
 		regxTh.appendChild(document.createTextNode(ISA_R.alb_regularExpression));
 		authHeadTr.appendChild(regxTh);
 		var trushTd = document.createElement('th');
 		trushTd.appendChild(document.createTextNode(ISA_R.alb_delete));
 		authHeadTr.appendChild(trushTd);
-		authTbody.appendChild(authHeadTr);
+		authThead.appendChild(authHeadTr);
 		if(menuItem && menuItem.auths){
 			for(var i = 0; i < menuItem.auths.length; i++){
 				var authTr = document.createElement('tr');
