@@ -795,6 +795,21 @@ a.gadgetListTabA:visited{
 	color: #0066B3;
 	background-color: #BFE4FF;
 }
+.authorizationTable thead tr .header {
+	min-width:95px;
+	background-image: url(imgs/sort.gif);
+	background-repeat: no-repeat;
+	background-position: center left;
+	cursor: pointer;
+	
+}
+.authorizationTable thead tr .headerSortUp {
+	background-image: url(imgs/asc.gif);
+}
+.authorizationTable thead tr .headerSortDown {
+	background-image: url(imgs/desc.gif);
+}
+
 .modalContentHeader{
 	color: #0066B3;
 	background-color: #BFE4FF;
