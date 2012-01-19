@@ -97,6 +97,8 @@ public class OAuth2Authenticator implements Authenticator {
 			if("Bearer".equalsIgnoreCase(oauthConfig.tokenType)){
 				method.addRequestHeader("Authorization", oauthConfig.tokenType+" "+oauthConfig.accessToken);				
 			}else{
+				method.addRequestHeader("Authorization", "OAuth " + oauthConfig.accessToken);
+				
 				String queryString = method.getQueryString();
 				queryString = "access_token=" + oauthConfig.accessToken + "&" + queryString;
 				method.setQueryString(queryString);	
