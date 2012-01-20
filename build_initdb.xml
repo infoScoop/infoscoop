@@ -6,6 +6,7 @@
 	<property name="main.java" value="${basedir}/src/main/java" />
 	<property name="main.resources" value="${basedir}/src/main/resources" />
 	<property name="main.web" value="${basedir}/src/main/web" />
+	<property name="shindig.java" value="${basedir}/src/shindig/java" />	
 	<property name="build.home" value="${basedir}/build" />
     <property name="build.work" value="${build.home}/work" />
 
@@ -26,7 +27,7 @@
 				<include name="*.hbm.xml"/>
 			</fileset>
 		</copy>
-		<javac srcdir="${main.java}" encoding="utf-8" destdir="${build.work}/initdb/infoscoop" source="${compile.level}" target="${compile.level}">
+		<javac srcdir="${main.java}:${shindig.java}" encoding="utf-8" destdir="${build.work}/initdb/infoscoop" source="${compile.level}" target="${compile.level}">
 			<classpath>
 				<fileset dir="${basedir}/lib" includes="*.jar" />
 				<fileset dir="${main.web}/WEB-INF/lib" includes="*.jar" />

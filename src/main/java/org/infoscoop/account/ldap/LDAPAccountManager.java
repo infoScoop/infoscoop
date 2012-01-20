@@ -341,8 +341,8 @@ public class LDAPAccountManager implements IAccountManager{
 
 		while(grpRes.hasMoreElements()) {
 			SearchResult findGrpEntry = (SearchResult) grpRes.next();
-			if(log.isDebugEnabled())log.debug("Found Groups: " + findGrpEntry.getAttributes().get("DN").get(0));
-			String grpdn = findGrpEntry.getName() + "," + userBase;
+			if(log.isDebugEnabled())log.debug("Found Groups: " + findGrpEntry.getAttributes().toString());
+			String grpdn = findGrpEntry.getName() + "," + groupBase;
 
 			grpList.add(createLDAPGroup(grpdn, findGrpEntry.getAttributes()));
 		}

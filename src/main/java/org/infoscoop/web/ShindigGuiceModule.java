@@ -36,7 +36,10 @@ import org.apache.shindig.protocol.conversion.BeanXStreamConverter;
 import org.apache.shindig.protocol.conversion.xstream.XStreamConfiguration;
 import org.apache.shindig.social.core.util.BeanXStreamAtomConverter;
 import org.apache.shindig.social.core.util.xstream.XStream081Configuration;
+import org.apache.shindig.social.opensocial.spi.PersonService;
 import org.infoscoop.protocol.handler.HttpRequestHandler;
+import org.infoscoop.service.PersonServiceImpl;
+import org.infoscoop.social.opensocial.service.PersonHandler;
 
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
@@ -92,6 +95,9 @@ public class ShindigGuiceModule extends DefaultGuiceModule {
     bind(new TypeLiteral<List<AuthenticationHandler>>(){}).toProvider(
             AuthenticationHandlerProvider.class);
     */
+    //for opensocial api
+    bind(PersonService.class).to(PersonServiceImpl.class);
+
   }
 
   /**
@@ -100,6 +106,7 @@ public class ShindigGuiceModule extends DefaultGuiceModule {
   protected void registerGadgetHandlers() {
 	Multibinder<Object> handlerBinder = Multibinder.newSetBinder(binder(), Object.class, Names.named("org.infoscoop.rpc.handlers"));
 	handlerBinder.addBinding().to(HttpRequestHandler.class);
+	handlerBinder.addBinding().toInstance(PersonHandler.class);
   }
 
 }
