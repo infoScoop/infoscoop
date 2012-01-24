@@ -1606,7 +1606,18 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		// Remove if the item displayed last time is remained
 		this.clearWorkContainer();
 		this.workContainer.innerHTML = ISA_Admin.replaceUndefinedValue(jsonRole.layout);
-
+		
+		if(Browser.isIE){
+			$jq("img", this.workContainer).each(function(idx, img){
+				img = $jq(img);
+				var src = img.attr("src");
+				var location = String(window.location).substring(0, String(window.location).lastIndexOf("/") + 1);
+				if(src.indexOf(location) == 0)
+					img.attr("src", src.substring(location.length, src.length));
+				
+			});
+		}
+		
 		if(!this.staticContainer) return;
 		// Remove if the item displayed last time is remained
 		this.clearStaticContainer();
