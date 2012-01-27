@@ -14,7 +14,7 @@
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
-package org.infoscoop.protocol;
+package org.infoscoop.gadgets.servlet;
 
 import java.io.IOException;
 import java.io.Writer;

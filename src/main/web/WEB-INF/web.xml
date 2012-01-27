@@ -637,7 +637,7 @@
 
   <servlet>
     <servlet-name>rpc</servlet-name>
-    <servlet-class>org.infoscoop.protocol.JsonRpcServlet</servlet-class>
+    <servlet-class>org.infoscoop.gadgets.servlet.JsonRpcServlet</servlet-class>
     <init-param>
       <param-name>handlers</param-name>
       <param-value>org.infoscoop.rpc.handlers</param-value>

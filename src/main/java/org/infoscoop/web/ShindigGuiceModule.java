@@ -37,7 +37,7 @@ import org.apache.shindig.protocol.conversion.xstream.XStreamConfiguration;
 import org.apache.shindig.social.core.util.BeanXStreamAtomConverter;
 import org.apache.shindig.social.core.util.xstream.XStream081Configuration;
 import org.apache.shindig.social.opensocial.spi.PersonService;
-import org.infoscoop.protocol.handler.HttpRequestHandler;
+import org.infoscoop.gadgets.servlet.HttpRequestHandler;
 import org.infoscoop.service.PersonServiceImpl;
 import org.infoscoop.social.opensocial.service.PersonHandler;
 

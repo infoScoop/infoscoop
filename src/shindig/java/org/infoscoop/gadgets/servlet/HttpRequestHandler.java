@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.infoscoop.protocol.handler;
+package org.infoscoop.gadgets.servlet;
 
 import java.io.IOException;
 import java.util.Collection;
