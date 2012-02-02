@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="migrate" default="all" basedir=".">
+    <delete file="${basedir}/migration.properties.tmp"/>
+	<copy tofile="${basedir}/migration.properties.tmp" file="${basedir}/migration.properties" encoding="UTF-8">
+		<filterchain>
+			<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks">
+				<param name="linebreaks" value="&#65279;"/>
+			</filterreader>
+		</filterchain>
+	</copy>
+	<property file="${basedir}/migration.properties.tmp"/>
+	<delete file="${basedir}/migration.properties.tmp"/>
+	
+	<copy tofile="${basedir}/migration.properties.tmp" file="${basedir}/migration.properties" encoding="UTF-8">
+		<filterchain>
+			<tokenfilter>
+  				  <replacestring from="&amp;" to="&amp;amp;"/>
+  				  <replacestring from="&lt;" to="&amp;lt;"/>
+  				  <replacestring from="&gt;" to="&amp;gt;"/>
+			</tokenfilter>
+		</filterchain>
+	</copy>
+	<property file="${basedir}/migration.properties.tmp" prefix="datasource.xml"/>
+	<delete file="${basedir}/migration.properties.tmp"/>
+	
+	<property file="${basedir}/conf/${DBMS}.properties"/>
+	
+	<target name="set-schema" if="SCHEMA">
+		<property name="SCHEMA_NAME" value="${SCHEMA}."/>
+		<property name="datasource.xml.SCHEMA_NAME" value="${SCHEMA}"/>
+	</target>
+	<target name="default-schema" unless="SCHEMA">
+		<property name="SCHEMA_NAME" value=""/>
+		<property name="datasource.xml.SCHEMA_NAME" value=""/>
+	</target>
+	
+	<property name="basedir" value="." />
+	<property name="BACKUP_TABLE_SUFFIX" value="_bak300"/>
+
+	<path id="task.classpath">
+		<pathelement location="classes"/>
+		<pathelement location="classes/migration.jar"/>
+		<fileset dir="lib" includes="*.jar" />
+	</path>
+	
+	<presetdef name="current.sql">
+		<sql driver="${DATABASE_DRIVER}" url="${DATABASE_URL}" userid="${USER}" password="${PASSWORD}"
+			encoding="UTF-8" delimiter=";" autocommit="true"/>
+	</presetdef>
+	
+	<taskdef name="exec-sql" classname="org.infoscoop.batch.migration.SQLTask" classpathref="task.classpath"/>
+	<taskdef name="migration" classname="org.infoscoop.batch.migration.MigrationTask" classpathref="task.classpath"/>
+	<taskdef name="importDel" classname="org.infoscoop.batch.migration.ImportTask" classpathref="task.classpath"/>
+	<taskdef name="hibernate-beans" classname="org.infoscoop.batch.migration.HibernateBeansTask" classpathref="task.classpath"/>
+	
+    <typedef name="property-xslt" classname="org.infoscoop.batch.migration.BeanPropertyXSLTTask" classpathref="task.classpath"/>
+	<typedef name="property-regx" classname="org.infoscoop.batch.migration.BeanPropertyRegxTask" classpathref="task.classpath"/>
+	
+	<target name="set-compress" depends="set-compress2" unless="TABLESPACE">
+    	<property name="COMPRESS" value="compress yes"/>
+	</target>
+	<target name="set-compress2" if="TABLESPACE">
+    	<property name="COMPRESS" value="in ${TABLESPACE} compress yes"/>
+	</target>
+	
+	<target name="prepare" depends="set-schema,default-schema,set-compress">
+		<delete file="classes/datasource.xml"/>
+		<filter token="DATABASE_URL" value="${datasource.xml.DATABASE_URL}"/>
+		<filter token="USER" value="${datasource.xml.USER}"/>
+		<filter token="PASSWORD" value="${datasource.xml.PASSWORD}"/>
+		<filter token="SCHEMA_NAME" value="${datasource.xml.SCHEMA_NAME}"/>
+		<filter token="LOG_LEVEL" value="${datasource.xml.LOG_LEVEL}"/>
+		<filter token="DATABASE_DRIVER" value="${DATABASE_DRIVER}"/>
+		<filter token="HIBERNATE_DIALECT" value="${HIBERNATE_DIALECT}"/>
+		<copy tofile="classes/datasource.xml" file="classes/datasource.xml.bak"
+			filtering="true"/>
+	</target>
+	
+	<target name="all" depends="tabLayout"/>
+	
+	<target name="clean-all" depends="clean-tabLayout"/>
+	
+	<target name="clean-all-backup" depends="prepare">
+		<exec-sql quiet="true"><sql>drop table ${SCHEMA_NAME}is_tabLayouts${BACKUP_TABLE_SUFFIX}</sql></exec-sql>
+	</target>
+	
+	<target name="tabLayout" depends="clean-tabLayout">
+		<hibernate-beans type="TabLayout">
+			<task class="org.infoscoop.batch.migration.v300to310.TabLayoutTask"/>
+		</hibernate-beans>
+	</target>
+	<target name="clean-tabLayout" depends="prepare">
+		<!--
+		<exec-sql quiet="true"><property name="table">is_tabLayouts</property>
+			<sql file="sql/${DBMS}/restore.sql"/>
+		</exec-sql>
+		-->
+	</target>
+
+</project>
