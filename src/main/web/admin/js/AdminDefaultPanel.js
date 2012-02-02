@@ -1809,7 +1809,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		if(!commandBarItem.onlyoutside){
 			selectLabelOptions.push({
 				selected : enabled && !outside,
-				name : "表示",
+				name : ISA_R.alb_display_true,
 				callback : function(elementTd, widgetJSON){
 					var disabledDiv = $('disabled_'+commandBarItem.id);
 					if(disabledDiv && disabledDiv.firstChild)
@@ -1825,7 +1825,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		
 		selectLabelOptions.push({
 			selected: enabled && outside,
-			name:"外に表示",
+			name: ISA_R.alb_display_outside,
 			callback:function(elementTd, widgetJSON){
 				var disabledDiv = $('disabled_'+commandBarItem.id);
 				if(disabledDiv && disabledDiv.firstChild)
@@ -1841,7 +1841,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		if(commandBarItem.togglable){
 			selectLabelOptions.push({
 				selected : !enabled,
-				name : "非表示",
+				name : ISA_R.alb_display_false,
 				callback : function(elementTd, widgetJSON){
 					var disabledDiv = document.createElement("div");
 					disabledDiv.id = 'disabled_' + commandBarItem.id;
