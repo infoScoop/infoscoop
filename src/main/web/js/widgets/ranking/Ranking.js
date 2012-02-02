@@ -170,10 +170,16 @@ IS_Widget.Ranking.prototype.classDef = function() {
 
 IS_Widget.Ranking.buildCommandBar = function( widgetId ){
 	var containerDiv = document.createElement("div");
-	containerDiv.id = "s_" + widgetId;
 	
 	var rankingWidgetDiv = $( widgetId );
 	if(!rankingWidgetDiv) return;
+	
+	var attrs = rankingWidgetDiv.attributes;
+	for(var i=0;i<attrs.length;i++){
+		containerDiv.setAttribute(attrs[i].nodeName, attrs[i].nodeValue);
+	}
+	containerDiv.id = "s_" + widgetId + "_container";
+	
 	var commandBarTd = rankingWidgetDiv.parentNode;
 	commandBarTd.appendChild(containerDiv);
 	
