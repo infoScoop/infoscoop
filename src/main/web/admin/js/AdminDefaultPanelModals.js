@@ -728,7 +728,8 @@ ISA_DefaultPanel.prototype.templates = {
 		var html = "";
 		html += '<table cellpadding="0" cellspacing="3" width="100%">\n';
 		html += '  <tr>\n';
-		html += '    <td width="100%"><div id="p_1_w_4"></div></td>\n';
+		html += '    <td><div id="portal-logo" outside="true"><a href="javascript:void(0)"><img border="0" class="pngfix" src="skin/imgs/infoscoop_logo.png"/></a></div></td>\n';
+		html += '    <td width="100%"><div id="p_1_w_4" outside="true"></div></td>\n';
 		html += '    <td><div id="p_1_w_6"></div></td>\n';
 		html += '    <td><div id="portal-go-home"></div></td>\n';
 		html += '    <td><div id="disabled_portal-change-fontsize" disabledCommand="true"><!--&lt;div id="portal-change-fontsize"&gt;&lt;/div&gt;--></div></td>\n';
@@ -737,6 +738,7 @@ ISA_DefaultPanel.prototype.templates = {
 		html += '    <td><div id="disabled_portal-credential-list" disabledCommand="true"><!--&lt;div id="portal-credential-list"&gt;&lt;/div&gt;--></div></td>\n';
 		html += '    <td><div id="portal-admin-link"></div></td>\n';
 		html += '    <td><div id="portal-logout"></div></td>\n';
+		html += '    <td><div id="portal-searchform" outside="true"/></td>\n';
 		html += '  </tr>\n';
 		html += '</table>\n';
 
@@ -744,7 +746,7 @@ ISA_DefaultPanel.prototype.templates = {
 		jsonObject.layout = html;
 		
 		var xmlJson = {};
-		xmlJson["p_1_w_4"] = {id:"p_1_w_4",href:"",title:"Ticker",type:"Ticker",properties:{url:"http://localhost:8080/infoscoop/executiveMessages_rss.xml"}};
+		xmlJson["p_1_w_4"] = {id:"p_1_w_4",href:"",title:"Ticker",type:"Ticker",properties:{url:"http://www.infoscoop.org/index.php/en/news.feed"}};
 		xmlJson["p_1_w_6"] = {id:"p_1_w_6",href:"",title:ISA_R.alb_ranking,type:"Ranking",properties:{urls:"<urls><url title='"+ISA_R.alb_keyWordSearchRanking+"' url='http://localhost:8080/infoscoop/cacsrv?id=keywordRanking'/></urls>"}};
 		
 		// Replace to json

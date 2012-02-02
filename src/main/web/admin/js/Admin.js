@@ -248,6 +248,49 @@ ISA_Admin.createBaseCheckBox = function(name, isChecked, isDisabled, d) {
 	return checkbox;
 };
 
+/**
+ * [{name:"Display", callback:function(){}, selected:true}, {name:...}]
+ **/
+ISA_Admin.SelectLabel = function(renderTo, options, d) {
+	var doc = d ? d : document;
+	
+	options = $jq(options);
+	renderTo = $jq(renderTo).addClass("SelectLabel");
+	var div = $jq("<div/>").appendTo(renderTo);
+	
+	options.each(function(idx, option){
+		var label = $jq("<span/>").text(option.name);
+		label.addClass((option.selected)? "selected" : "label");
+		
+		label.click({callback:option.callback}, function(event){
+			var self = $jq(this);
+			if(self.hasClass("selected"))
+				return;
+			
+			event.data.callback(self);
+			
+			$jq("span", self.parent()).each(function(idx, element){
+				$jq(element).removeClass("selected").addClass("label");
+			});
+			
+			self.removeClass("label").removeClass("hover");
+			self.addClass("selected");
+		});
+		label.mouseover(function(){
+			if($jq(this).hasClass("label"))
+				$jq(this).addClass("hover");
+		});
+		label.mouseout(function(){
+			if($jq(this).hasClass("hover"))
+				$jq(this).removeClass("hover");
+		});
+		div.append(label).append("&nbsp;&nbsp;");
+	})
+	
+	return div;
+};
+
+
 ISA_Admin.trim = function (val) {
 	return String(val).replace(/^[ 　]*/gim, "").replace(/[ 　]*$/gim, "");
 };

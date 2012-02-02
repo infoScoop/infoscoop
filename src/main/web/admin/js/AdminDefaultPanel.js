@@ -38,11 +38,12 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	var defaultRoleName = "defaultRole";
 	var defaultDefaultUid = "default";
 	var commandBarMap = {
-		"portal-logo":{id:"portal-logo", type:"logo", title:ISA_R.alb_logo, togglable:true, undeletable:true},
-		"portal-searchform":{id:"portal-searchform", title:ISA_R.alb_searchForm, togglable:true, undeletable:true},
-		"Ticker":{id:"p_1_w_4", title:ISA_R.alb_Ticker, type:"Ticker", togglable:true, undeletable:true},
+		"portal-logo":{id:"portal-logo", type:"logo", title:ISA_R.alb_logo, togglable:true, undeletable:true, onlyoutside:true},
+		"portal-searchform":{id:"portal-searchform", title:ISA_R.alb_searchForm, togglable:true, undeletable:true, onlyoutside:true},
+		"Ticker":{id:"p_1_w_4", title:ISA_R.alb_Ticker, type:"Ticker", togglable:true, undeletable:true, onlyoutside:true},
 		"Ranking":{id:"p_1_w_6", title:ISA_R.alb_ranking, type:"Ranking", togglable:true, undeletable:true},
-		"portal-go-home":{id:"portal-go-home", title:ISA_R.alb_toTopPage, togglable:true, undeletable:true,
+		/*
+		"portal-go-home":{id:"portal-go-home", title:ISA_R.alb_toTopPage, togglable:true, undeletable:true, menudisplay:false
 			togglableConfirm:function(element){
 				if(!element.checked){
 					return confirm(ISA_R.ams_confirmNoTop1+"\n"+
@@ -52,6 +53,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				return true;
 			}
 		},
+		*/
 		"portal-change-fontsize":{id:"portal-change-fontsize", title:ISA_R.alb_changeFont, togglable:true, undeletable:true},
 		"portal-trash":{id:"portal-trash", title:ISA_R.alb_trashBox, togglable:true, undeletable:true},
 		"portal-preference":{id:"portal-preference", title:ISA_R.alb_setupAll, togglable:true, undeletable:true},
@@ -900,17 +902,15 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			disabledDefualtDiv.style.styleFloat = "left";
 			var disableDefaultCheckbox = document.createElement('input');
 			disableDefaultCheckbox.type = 'checkbox';
-			disableDefaultCheckbox.defaultChecked = defaultRoleJson.disabledDefault
-			  disabledDefualtDiv.appendChild(disableDefaultCheckbox);
+			disableDefaultCheckbox.defaultChecked = defaultRoleJson.disabledDefault;
+			disabledDefualtDiv.appendChild(disableDefaultCheckbox);
 			disabledDefualtDiv.appendChild(document.createTextNode(ISA_R.alb_noDefault));
 			IS_Event.observe(disableDefaultCheckbox, "click", function(checkbox, defaultRoleJson){
 				// Update to public object
 				defaultRoleJson.disabledDefault = checkbox.checked;
 				if(checkbox.checked)
-//				  Element.hide("tab_"+self.displayTabId+'_role_' + defaultRoleJson.roleOrder);
 				  Element.hide("tab_"+self.displayTabId+'_role_' + defaultRoleJson.id);
 				else
-//				  Element.show("tab_"+self.displayTabId+'_role_' + defaultRoleJson.roleOrder);
 				  Element.show("tab_"+self.displayTabId+'_role_' + defaultRoleJson.id);
 				this.isUpdated = true;
 				ISA_Admin.isUpdated = true;
@@ -1659,7 +1659,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		commandBarListTh = document.createElement("td");
 		commandBarListTh.className = "headerDefaultPanel";
 		commandBarListTh.style.whiteSpace = "nowrap";
-		commandBarListTh.style.width = "150px";
+		commandBarListTh.style.width = "200px";
 		commandBarListTh.appendChild(document.createTextNode(ISA_R.alb_displayOrNot));
 		commandBarListTr.appendChild(commandBarListTh);
 
@@ -1782,51 +1782,13 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		// Display/Not Display
 		commandBarTd = document.createElement("td");
-		commandBarTd.style.textAlign = "center";
 		commandBarTr.appendChild(commandBarTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "140px";
+		contentDiv.style.width = "190px";
 		contentDiv.className = "contentsDefaultPanel";
 		contentDiv.id = "disp_" + commandBarItem.id;
 		var td = getParentTdElement(commandBarItem.id);
-		if(commandBarItem.togglable){
-			var checkedCheckBox = true;
-			var disabledDiv = $("disabled_"+commandBarItem.id);
-			if(disabledDiv && disabledDiv.getAttribute("disabledCommand")){
-				checkedCheckBox = false;
-			}
-			var checkBox = ISA_Admin.createBaseCheckBox("", checkedCheckBox, false, document);
-			contentDiv.appendChild(checkBox);
-			var clickCheckHandler = function(e) {
-				if(commandBarItem.togglableConfirm && !commandBarItem.togglableConfirm(checkBox)){
-					checkBox.checked = true;
-					return;
-				}
-
-				var elementTd = getParentTdElement(commandBarItem.id);
-				var roleJSON = self.displayRoleJsons[self.displayRoleId];
-				var widgetJSON = roleJSON.staticPanel[commandBarItem.id];
-				if(!checkBox.checked) {
-					var disabledDiv = document.createElement("div");
-					disabledDiv.id = 'disabled_' + commandBarItem.id;
-					disabledDiv.setAttribute('disabledCommand','true');
-					disabledDiv.appendChild(document.createComment(escapeHTMLEntity(elementTd.innerHTML)));
-					elementTd.innerHTML = "";
-					elementTd.appendChild(disabledDiv);
-					if(widgetJSON)widgetJSON.disabled = true;
-				} else {
-					var disabledDiv = $('disabled_'+commandBarItem.id);
-					if(disabledDiv && disabledDiv.firstChild)
-						elementTd.innerHTML = unescapeHTMLEntity(disabledDiv.firstChild.nodeValue);
-					if(widgetJSON)widgetJSON.disabled = false;
-				}
-				if(Browser.isIE) {
-					self.commandDispMap[commandBarItem.id] = checkBox.checked;
-				}
-				self.changeCommandBarLayout();
-			};
-			IS_Event.observe(checkBox, 'click', clickCheckHandler, false, ["_adminPanelTab","_adminPanel"]);
-		}
+		
 		commandBarTd.appendChild(contentDiv);
 
 		// spacer
@@ -1903,6 +1865,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	*/
 	this.addSortableEventCommand = function(){
 		var draggingDivId = false;
+		/*
 		if(Browser.isIE && !self.commandDispMap){
 			//Dealing with the problem that unchecked checkbox in IE at sorting.
 			self.commandDispMap = {};
@@ -1914,6 +1877,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 					self.commandDispMap[commandWidgetId] = dispCheckbox.checked;
 			}
 		}
+		*/
 		Sortable.create($("panelCommandGroup"),
 			{
 				tag: 'div',
@@ -1936,11 +1900,13 @@ ISA_DefaultPanel.prototype.classDef = function() {
 					} else {
 						parent.insertBefore(dragTd, dropTd);
 					}
+					/*
 					if(self.commandDispMap){
 						var dispCheckbox = $("disp_" + draggedWidgetId).firstChild;
 						if(dispCheckbox)
 							dispCheckbox.checked = self.commandDispMap[draggedWidgetId];
 					}
+					*/
 					self.changeCommandBarLayout();
 				}
 			}
@@ -1978,131 +1944,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		ISA_Admin.isUpdated = true;
 	}
 
-	/**
-		Creating Static widget list
-	this.buildStaticWidgetsList = function(layout, staticJson) {
-		if(!this.staticContainer) return;
-
-		while( this.editStaticDiv.firstChild )
-			this.editStaticDiv.removeChild( this.editStaticDiv.firstChild );
-
-		this.editStaticDiv.appendChild( this.staticContainer );
-
-		var buttonDiv = document.createElement("div");
-		buttonDiv.style.clear = "both";
-		this.editStaticDiv.insertBefore(buttonDiv, this.staticContainer);
-		// Selecting layout button
-		var selectButton = document.createElement("input");
-		selectButton.type = "button";
-		selectButton.value = ISA_R.alb_selectLayout;
-		IS_Event.observe(selectButton, 'click', this.selectLayoutModal.init.bind(this), false, ["_adminPanelTab","_adminPanel"]);
-		buttonDiv.appendChild(selectButton);
-		buttonDiv.appendChild(document.createTextNode("　"));
-		// Editting HTML button
-		var htmlButton = document.createElement("input");
-		htmlButton.type = "button";
-		htmlButton.value = ISA_R.alb_editHTML;
-		IS_Event.observe(htmlButton, 'click', this.editHTMLModal.init.bind(this, layout), false, ["_adminPanelTab","_adminPanel"]);
-		buttonDiv.appendChild(htmlButton);
-
-		// Remove the item displayed ay last time
-		this.clearStaticContainer();
-
-		this.staticContainer.innerHTML = ISA_Admin.replaceUndefinedValue(layout);
-		var childDivs = this.staticContainer.getElementsByTagName('div');
-		for(var i = 0; i < childDivs.length; i++){
-			if(!childDivs[i].id) continue;
-			childDivs[i].style.border = "solid 1px #000";
-			var json = staticJson[childDivs[i].id];
-			if( !json ) continue;
-
-			var editImgSpan = document.createElement('span');//It does not work if the handler of Control modal is added to img element in IE
-			var editImg = document.createElement("img");
-			editImg.src = imageURL + "edit.gif";
-			editImg.style.cursor = "pointer";
-			editImg.title = ISA_R.alb_editing;
-			editImgSpan.appendChild(editImg);
-			if(!childDivs[i].firstChild) {
-				childDivs[i].appendChild(editImgSpan);
-			} else {
-				childDivs[i].insertBefore(editImgSpan, childDivs[i].firstChild);
-			}
-//			IS_Event.observe(editImg, 'click', this.selectWidgetModal.init.bind(this, json.id, "static"), false, ["_adminPanelTab","_adminPanel"]);
-			var editorFormObj =
-			  new ISA_CommonModals.EditorForm(
-				  editImgSpan,
-				  function(widgetJSON){
-					  var selectType = ISA_CommonModals.EditorForm.getSelectType();
-					  if( widgetJSON.type != selectType )
-						  widgetJSON.properties = {};
-					  
-					  var roleJSON = self.displayRoleJsons[self.displayRoleId];
-					  var oldId = widgetJSON.id;
-					  //var widgetJSON = roleJSON.staticPanel[widgetObj.id];
-					  //var widgetJSON = Object.clone(roleJSON.staticPanel[widgetObj.id]);
-					  widgetJSON.id = "w_"+new Date().getTime();
-					  widgetJSON.type = ISA_CommonModals.EditorForm.getSelectType();
-					  widgetJSON.properties = ISA_CommonModals.EditorForm.getProperty(widgetJSON);
-					  widgetJSON.ignoreHeader = ISA_CommonModals.EditorForm.isIgnoreHeader();
-					  if(!widgetJSON.ignoreHeader) delete widgetJSON.ignoreHeader;
-					  widgetJSON.noBorder = ISA_CommonModals.EditorForm.isNoBorder();
-					  if(!widgetJSON.noBorder) delete widgetJSON.noBorder;
-
-					  widgetJSON.title = ISA_Admin.trim($("formTitle").value);
-					  widgetJSON.href =  $("formHref").value;
-					  var _widgetTitleDiv = $("title_" + oldId);
-					  _widgetTitleDiv.innerHTML = widgetJSON.title;
-
-					  delete roleJSON.staticPanel[oldId];
-					  roleJSON.staticPanel[widgetJSON.id] = widgetJSON;
-					  roleJSON.layout = roleJSON.layout.replace( escapeHTMLEntity( oldId ),widgetJSON.id );
-
-					  self.changeStaticLayout( roleJSON );
-
-					  if( Control.Modal.current ) {
-						  Control.Modal.close();
-					  } else {
-						  Control.Modal.container.hide();
-					  }
-				  },{
-					menuFieldSetLegend:ISA_R.alb_widgetHeaderSettings,
-					setDefaultValue: false,
-					disableMiniBrowserHeight: true,
-					showIgnoreHeaderForm:true,
-					showNoBorderForm:true,
-					displayACLFieldSet:false,
-					disableDisplayRadio:true,
-					omitTypeList:['Ranking','Ticker','MultiRssReader']
-				  });
-			IS_Event.observe(editImgSpan, 'click', function(editorFormObj,json){editorFormObj.showEditorForm(json);}.bind(editImgSpan,editorFormObj,json), false, ["_adminPanelTab","_adminPanel"]);
-
-
-			var widgetTypeDiv = document.createElement("div");
-			widgetTypeDiv.style.paddingTop = '10px';
-			widgetTypeDiv.style.paddingBottom = '20px';
-			widgetTypeDiv.style.paddingLeft = '20px';
-			widgetTypeDiv.style.paddingRight = '20px';
-			widgetTypeDiv.style.textAlign = 'center';
-			var widgetTitleDiv = document.createElement("span");
-			widgetTitleDiv.id = "title_" + json.id;
-
-			var iconDiv = ISA_Admin.buildWidgetTypeIconDiv(json.type);
-			iconDiv.style.cssFloat = iconDiv.style.styleFloat = "left";
-
-			widgetTitleDiv.appendChild(iconDiv);
-			if(json.title && json.title.length > 0){
-				widgetTitleDiv.appendChild(document.createTextNode(json.title));
-			}else{
-				widgetTitleDiv.appendChild(document.createTextNode(ISA_R.alb_noneSetting));
-			}
-			widgetTypeDiv.appendChild(widgetTitleDiv);
-			childDivs[i].appendChild(widgetTypeDiv);
-
-			childDivs[i].style.overflow = "hidden";
-		}
-	}
-	*/
-	
 	/**
 		Creating Static widget list
 	*/

@@ -52,11 +52,9 @@ IS_WidgetsContainer.prototype.classDef = function() {
 		        IS_WidgetsContainer.loadFailed = true;
 		    },
 		    onException:function(r,t){
-
 				alert(IS_R.lb_containerLoginonException);
-				
-
 				msg.error(IS_R.getResource(IS_R.lb_containerLoadonException, [getText(t)]));
+				console.log(t);
 				
 		        IS_WidgetsContainer.loadFailed = true;
 		    }

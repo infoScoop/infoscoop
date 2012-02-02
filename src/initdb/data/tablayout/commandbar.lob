@@ -1,7 +1,7 @@
 <table cellpadding="0" cellspacing="3" width="100%">
 	<tr>
-		<td id="td_portal-logo"><div id="portal-logo"><a href="javascript:void(0)"><img src="skin/imgs/infoscoop_logo.gif"></a></div></td>
-		<td id="td_portal-searchform"><div id="portal-searchform"></div></td>
+		<td><div id="portal-logo"><a href="javascript:void(0)"><img class="pngfix" src="skin/imgs/infoscoop_logo.png" border="0"></a></div></td>
+		<td><div id="portal-searchform"></div></td>
 		<td width="100%"><div id="p_1_w_4"></div></td>
 		<td><div id="p_1_w_6"></div></td>
 		<td><div id="portal-go-home"></div></td>

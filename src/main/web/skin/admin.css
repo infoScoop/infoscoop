@@ -1353,3 +1353,18 @@ a.home-menu-header:visited {
 #widgetPreviewContainer .widget{
 	width: 95%;
 }
+
+/* SelectLabel */
+.SelectLabel .label{
+	color : #15C;
+	cursor: pointer;
+}
+
+.SelectLabel .selected{
+	color : #000;
+	font-weight : bold;
+}
+
+.SelectLabel .hover{
+	border-bottom : 1px solid #15C;
+}

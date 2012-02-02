@@ -171,6 +171,12 @@ if( isPreview == null )
     <script src="<%=staticContentURL%>/js/widgets/Message/Message.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/Message/MaximizeMessage.js"></script>
     <!--end script-->
+    
+	<!--[if IE 6]>
+	<script src="<%=staticContentURL%>/js/lib/DD_belatedPNG_0.0.8a-min.js"></script>
+	<script>DD_belatedPNG.fix('.pngfix');</script>
+	<![endif]-->
+	
    	<script type="text/javascript">
 		var rsaPK = new RSAKey();
 		rsaPK.setPublic("<%= RSAKeyManager.getInstance().getModulus() %>", "<%= RSAKeyManager.getInstance().getPublicExponent() %>");
