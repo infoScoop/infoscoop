@@ -1789,6 +1789,74 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		contentDiv.id = "disp_" + commandBarItem.id;
 		var td = getParentTdElement(commandBarItem.id);
 		
+		var selectLabelOptions = [];
+		
+		var enabled = true;
+		var outside = false;
+		var disabledDiv = $("disabled_"+commandBarItem.id);
+		if(disabledDiv && disabledDiv.getAttribute("disabledCommand")){
+			enabled = false;
+		}
+		var enabledDiv = $(commandBarItem.id);
+		if(commandBarItem.onlyoutside || (enabledDiv && enabledDiv.getAttribute("outside"))){
+			outside = true;
+		}
+		
+		var elementTd = getParentTdElement(commandBarItem.id);
+		var roleJSON = this.displayRoleJsons[this.displayRoleId];
+		var widgetJSON = roleJSON.staticPanel[commandBarItem.id];
+		
+		if(!commandBarItem.onlyoutside){
+			selectLabelOptions.push({
+				selected : enabled && !outside,
+				name : "表示",
+				callback : function(elementTd, widgetJSON){
+					var disabledDiv = $('disabled_'+commandBarItem.id);
+					if(disabledDiv && disabledDiv.firstChild)
+						elementTd.innerHTML = unescapeHTMLEntity(disabledDiv.firstChild.nodeValue);
+					if(widgetJSON)widgetJSON.disabled = false;
+					
+					$jq("#" + commandBarItem.id).removeAttr("outside");
+					
+					this.changeCommandBarLayout();
+				}.bind(this, elementTd, widgetJSON)
+			});
+		}
+		
+		selectLabelOptions.push({
+			selected: enabled && outside,
+			name:"外に表示",
+			callback:function(elementTd, widgetJSON){
+				var disabledDiv = $('disabled_'+commandBarItem.id);
+				if(disabledDiv && disabledDiv.firstChild)
+					elementTd.innerHTML = unescapeHTMLEntity(disabledDiv.firstChild.nodeValue);
+				if(widgetJSON)widgetJSON.disabled = false;
+				
+				$jq("#" + commandBarItem.id).attr("outside", true);
+				
+				this.changeCommandBarLayout();
+			}.bind(this, elementTd, widgetJSON)
+		});
+		
+		if(commandBarItem.togglable){
+			selectLabelOptions.push({
+				selected : !enabled,
+				name : "非表示",
+				callback : function(elementTd, widgetJSON){
+					var disabledDiv = document.createElement("div");
+					disabledDiv.id = 'disabled_' + commandBarItem.id;
+					disabledDiv.setAttribute('disabledCommand','true');
+					disabledDiv.appendChild(document.createComment(escapeHTMLEntity(elementTd.innerHTML)));
+					elementTd.innerHTML = "";
+					elementTd.appendChild(disabledDiv);
+					if(widgetJSON)widgetJSON.disabled = true;
+					
+					this.changeCommandBarLayout();
+				}.bind(this, elementTd, widgetJSON)
+			});
+		}
+		new ISA_Admin.SelectLabel(contentDiv, selectLabelOptions);
+
 		commandBarTd.appendChild(contentDiv);
 
 		// spacer
