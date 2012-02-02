@@ -2,7 +2,7 @@
 
 <project name="build-migrate" default="compile" basedir=".">
 	<property file="build.properties"/>
-	<property name="version" value="230to300" />
+	<property name="version" value="300to310" />
 	<property name="build.migration" value="${basedir}/build/work/migration" />
 	<!--property name="dist.home" value="${basedir}/dist" /-->
 	<property name="src.initdb.home" value="${basedir}/src/initdb" />
