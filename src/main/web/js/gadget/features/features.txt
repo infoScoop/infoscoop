@@ -59,3 +59,5 @@ features/taming/feature.xml
 features/views/feature.xml
 features/drag/feature.xml
 features/infoscoop/feature.xml
+features/pubsub-2/feature.xml
+features/org.openajax.hub-2.0.5/feature.xml

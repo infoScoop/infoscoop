@@ -649,7 +649,8 @@ IS_Widget.prototype.classDef = function() {
 			lang: IS_Portal.lang,
 			country: IS_Portal.country || "jp",
 			ifpctok: this.authToken,
-			url: this.getGadgetUrl()
+			url: this.getGadgetUrl(),
+			parent: hostPrefix
 		};
 		
 		if( this.view_params )
@@ -823,6 +824,37 @@ IS_Widget.prototype.classDef = function() {
 		
 		self.iframe.id = "ifrm_" + self.id;
 		self.iframe.name = "ifrm_" + self.id;
+
+		if(this.hasFeature("pubsub-2")){
+			// for IframeContainer callback
+			if(!window["__gadgetOnLoad"])
+				window["__gadgetOnLoad"] = function(gadgetUrl){};
+			
+			var oaIframeContainer = new OpenAjax.hub.IframeContainer(
+				gadgets.pubsub2router.hub,
+				"ifrm_" + self.id,
+				{
+					Container: {
+						onSecurityAlert: function(source, alertType) {
+							gadgets.error(['Security error for container ', source.getClientID(), ' : ', alertType].join(''));
+							source.getIframe().src = 'about:blank';
+						},
+						onConnect: function(container) {
+							gadgets.log(['connected: ', container.getClientID()].join(''));
+						}
+					},
+					IframeContainer: {
+						parent: self.elm_widgetContent,
+						uri: "./blank.html",
+						iframeAttrs: {},
+						onGadgetLoad: "__gadgetOnLoad"	// If this property is not specified, an error occurred. (iframe onload)
+					}
+				}
+			);
+			self.iframe = oaIframeContainer.getIframe();
+			IS_Event.observe(this.iframe, "load", function(){ IS_EventDispatcher.newEvent('loadComplete', this.id, null);}.bind(this), false, this.closeId);
+		}
+		
 		self.iframe.frameBorder = 0;
 		self.iframe.src = "./blank.html";
 		
@@ -874,6 +906,18 @@ IS_Widget.prototype.classDef = function() {
 		IS_Event.observe(self.iframe, "load", function(){ IS_EventDispatcher.newEvent('loadComplete', this.id, null);}.bind(self), false, self.closeId);
 		//self.iframeDoc = self.iframe.contentDocument ? self.iframe.contentDocument : self.iframe.Document;
 	}
+	
+	this.hasFeature = function(feature){
+		var params = ["Require", "Optional"];
+		
+		for(var i=0;i<params.length;i++){
+			var param = typeConf[params[i]];
+			if(param && (param[feature] || param.feature == feature))
+				return true;
+		}
+		return false;
+	}
+	
 	this.setStaticIframeHeight = function() {
 		if( !this.staticWidgetHeight){
 			self.iframe.style.height = 0;
@@ -956,6 +1000,7 @@ IS_Widget.prototype.classDef = function() {
 			//self.postLoaded();
 
 			msg.error(IS_R.getResource(IS_R.ms_widgetonExceptionAt, [self.widgetType, self.title,getText(e)]));
+			console.log(e);
 
 //			self.elm_widgetContent.innerHTML = IS_R.getResource(IS_R.ms_widgetonExceptionAt_invalid, [self.widgetType, self.title, e]);
 			self.elm_widgetContent.innerHTML = IS_R.ms_invalidWidget;

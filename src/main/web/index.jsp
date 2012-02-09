@@ -71,7 +71,7 @@ if( isPreview == null )
 
     <script src="js/resources/resourceBundle.jsp"></script>
 
-    <script src="js/gadget/features/core:rpc:pubsub:infoscoop.js?c=1"></script>
+    <script src="js/gadget/features/core:rpc:pubsub:pubsub-2:infoscoop.js?c=1"></script>
 	<%
 		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_ID_ATTR_NAME
 		String uid = (String) session.getAttribute("Uid");

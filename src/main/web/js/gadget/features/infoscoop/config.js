@@ -225,7 +225,7 @@ var config = {"gadgets.container" : ["default"],
     /// parameter if it passes input validation and is not null.
     // This should never be on the same host in a production environment!
     // Only use this for TESTING!
-    "parentRelayUrl" : hostPrefix+"/rpc_relay.html",
+    "parentRelayUrl" : "/rpc_relay.html",
 
     // If true, this will use the legacy ifpc wire format when making rpc
     // requests.

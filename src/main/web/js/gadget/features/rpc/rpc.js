@@ -183,7 +183,13 @@ if (!window['gadgets']['rpc']) { // make lib resilient to double-inclusion
      * @return {Object}
      * @member gadgets.rpc
      */
+    // modified by BIT 2012.02.07 for IE6&IE7
     function getTransport() {
+    	if(window.ActiveXObject && typeof window.postMessage !== 'function' && typeof window.postMessage !== 'object')
+    		return gadgets.rpctx.ifpc;
+    	return _getTransport();
+    }
+    function _getTransport() {
       if (params['rpctx'] == 'flash') return gadgets.rpctx.flash;
       if (params['rpctx'] == 'rmr') return gadgets.rpctx.rmr;
       return typeof window.postMessage === 'function' ? gadgets.rpctx.wpm :
@@ -688,7 +694,9 @@ if (!window['gadgets']['rpc']) { // make lib resilient to double-inclusion
 
         // Parent-relative only.
         var parentRelayUrl = cfg['parentRelayUrl'] || '';
-        parentRelayUrl = getOrigin(params['parent'] || opt_parent) + parentRelayUrl;
+	    // modified by BIT 2012.02.07 for ifpc
+//      parentRelayUrl = getOrigin(params['parent'] || opt_parent) + parentRelayUrl;
+		parentRelayUrl = (params['parent'] || opt_parent) + parentRelayUrl;
         setRelayUrl('..', parentRelayUrl, isLegacyProtocolConfig(cfg));
 
         setLegacyProtocolConfig(cfg);

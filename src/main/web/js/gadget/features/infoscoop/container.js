@@ -91,6 +91,22 @@ gadgets.pubsubrouter.init( function( f ) {
 	return f;
 });
 
+gadgets.pubsub2router.init({
+	onSubscribe: function(topic, container) {
+		gadgets.log(container.getClientID() + " subscribes to topic '" + topic + "'");
+		return true;
+		// return false to reject the request.
+	},
+	onUnsubscribe: function(topic, container) {
+		gadgets.log(container.getClientID() + " unsubscribes from topic '" + topic + "'");
+	},
+	onPublish: function(topic, data, pcont, scont) {
+		gadgets.log(pcont.getClientID() + " publishes '" + data + "' to topic '" + topic + "' subscribed by " + scont.getClientID());
+		return true;
+		// return false to reject the request.
+	}
+});
+
 gadgets.rpc.register("log",function( level,message ) {
 	var levels = [false,msg.info,msg.warn,msg.error,msg.debug];
 	if( !levels[parseInt(level)] )
