@@ -948,7 +948,7 @@ class HeadersMap implements Map<String, List<String>>{
 	private static final long serialVersionUID = 
 		"org.infoscoop.request.RequestHeadersMap".hashCode();
 
-	private Map headers = new MultiHashMap();
+	private Map headers = new HashMap();
 			
 
 	public void clear() {
