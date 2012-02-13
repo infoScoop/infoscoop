@@ -63,7 +63,7 @@
 
 		<script src="../../js/resources/resourceBundle.jsp"></script>
 		<script src="../../admin/js/resources/resourceBundle.jsp"></script>
-	    <script src="../../js/gadget/features/core:rpc:pubsub:infoscoop.js?c=1"></script>
+	    <script src="../../js/gadget/features/core:rpc:pubsub:pubsub-2:infoscoop.js?c=1"></script>
 		
 		<!--start script-->
 	    <script src="../../js/lib/prototype-1.6.0.3.js"></script>
