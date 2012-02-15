@@ -858,7 +858,7 @@
 		<foreach target="optimize-js" param="js.file">
 			<path>
 				<fileset dir="${build.main.features}" includes="*/*.js"/>
-				<fileset dir="${build.main.features}" includes="*/*/*.js"/>
+				<fileset dir="${build.main.features}" includes="*/*/*.js" excludes="i18n/data/*.js"/>
 			</path>
 		</foreach>
 	
