@@ -91,7 +91,7 @@ public class SignedAuthenticator implements Authenticator {
 					&& method.getName().equalsIgnoreCase("POST")) {
 				
 				String charset = RequestUtil.getCharset(contentType);
-				postParams = parseRequestBody(request.getRequestBody(), charset);
+				postParams = RequestUtil.parseRequestBody(request.getRequestBody(), charset);
 				optionParams.putAll(postParams);
 			}
 			
@@ -180,30 +180,6 @@ public class SignedAuthenticator implements Authenticator {
 			}
 			
 			params.add(new NameValuePair(entry.getKey(), entry.getValue()));
-		}
-		return params;
-	}
-	
-	// TODO: Move this to common utility class.
-	private static Map<String, String> parseRequestBody(InputStream requestBody, String charset)
-			throws IOException {
-		if (charset == null)
-			charset = "UTF-8";
-		Map<String, String> params = new HashMap<String, String>();
-		if (requestBody != null) {
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					requestBody));
-			String postBodyStr = "";
-			String s = null;
-			while ((s = br.readLine()) != null) {
-				postBodyStr += s;
-			}
-			String[] keyvalues = postBodyStr.split("&");
-			for (int i = 0; i < keyvalues.length; i++) {
-				String[] keyvalue = splitParameter(keyvalues[i].split("="));
-				params.put(keyvalue[0].trim(), URLDecoder.decode(keyvalue[1].trim(), charset));					
-			}
-			requestBody.reset();
 		}
 		return params;
 	}

@@ -341,16 +341,30 @@ public final class RequestUtil {
 			String postBodyStr = "";
 			String s = null;
 			while ((s = br.readLine()) != null) {
-				postBodyStr += URLDecoder.decode(s, "UTF-8");
+				postBodyStr += s;
 			}
 			String[] keyvalues = postBodyStr.split("&");
 			for (int i = 0; i < keyvalues.length; i++) {
-				String[] keyvalue = keyvalues[i].split("=");
-				params.put(keyvalue[0].trim(), keyvalue[1].trim());
+				String[] keyvalue = splitParameter(keyvalues[i].split("="));
+				params.put(keyvalue[0].trim(), URLDecoder.decode(keyvalue[1].trim(), charset));					
 			}
 			requestBody.reset();
 		}
 		return params;
-
 	}
+	
+	private static String[] splitParameter(String[] params){
+		String[] sp = new String[2];
+		switch(params.length){
+			case 1:
+				sp[0] = params[0];
+				sp[1] = "";
+				break;
+			case 2:
+				sp = params;
+				break;
+		}
+		return sp;
+	}
+
 }
