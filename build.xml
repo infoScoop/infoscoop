@@ -418,6 +418,7 @@
 			<filelist dir="${src.main.web}/skin" files="maximizerssreader.css"/>
 			<filelist dir="${src.main.web}/skin" files="information.css"/>
 			<filelist dir="${src.main.web}/skin" files="ticker.css"/>
+			<filelist dir="${src.main.web}/skin" files="searchengine.css" />
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type css --charset UTF-8 -o &quot;${build.main}/skin/styles.css&quot; &quot;${build.main}/skin/styles.css.tmp&quot;"/>
