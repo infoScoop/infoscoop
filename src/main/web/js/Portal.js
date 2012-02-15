@@ -2317,23 +2317,42 @@ IS_Portal.CommandBar = {
 			$("command-bar").hide();
 		}
 		if(portalUserMenuBody.childNodes.length != 0){
-			portalUserMenu.title = portalUserMenuLabel.innerHTML;
+			portalUserMenu.title = is_userName? is_userName : "";
 			portalUserMenu.style.background = 'url(./skin/imgs/user_menu_collapse.gif) no-repeat center right';
 			portalUserMenu.style.cursor = 'pointer';
+			
 			//loginID mouseover and mouseout
-			IS_Event.observe($("portal-user-menu"), "mouseover", function(){
+			Event.observe(portalUserMenu, "mouseover", function(){
 				// change background color to white
 				if($("portal-user-menu-body").style.display != 'none') return;
 				$("portal-user-menu").parentNode.style.backgroundColor = '#5286BB';
 				$('portal-user-menu').style.color = '#fff';
-			}, "_portalUserMenu");
+			});
 			
-			IS_Event.observe($("portal-user-menu"), "mouseout", function(){
+			var menu_mouseout = function(){
 				// change background color to normal
 				$("portal-user-menu").parentNode.style.backgroundColor = '#e6e6e6';
 				$('portal-user-menu').style.color = '#000';
-			}, "_portalUserMenu");
+			}
+			Event.observe(portalUserMenu, "mouseout", menu_mouseout);
 			
+			// when not login.
+			if($("portal-loginLink")){
+				var loginLink = $("portal-loginLink");
+				Event.observe(loginLink, "mouseover", function(e){
+					menu_mouseout();
+					Event.stop(e)
+				});
+				Event.observe(loginLink, 'click', function(e){
+					if(window.event){
+						window.event.cancelBubble = true;
+					}
+					if(e && e.stopPropagation){
+						e.stopPropagation();
+					}
+				});
+			}
+
 			var closeMenu = function(e){
 				$("portal-user-menu-body").hide();
 				$("userMenuCloser").hide();
@@ -2341,7 +2360,7 @@ IS_Portal.CommandBar = {
 				$("portal-user-menu").parentNode.style.backgroundColor = '#e6e6e6';
 			};
 			// loginID clicked	
-			IS_Event.observe($("portal-user-menu"), "click", function(e){
+			IS_Event.observe(portalUserMenu, "click", function(e){
 				$("portal-user-menu-body").show();
 				var targetPosition = Position.page($("messageIcon"));
 				$("portal-user-menu-body").style.left = targetPosition[0] - $("portal-user-menu-body").offsetWidth;
@@ -2367,7 +2386,7 @@ IS_Portal.CommandBar = {
 				}else{
 					$("userMenuCloser").show();
 				}
-			}, "_portalUserMenu");
+			});
 		}
 		//TODO close user menu if a menu is clicked
 //		IS_Event.observe($("portal-user-menu-body"), "click", closeMenu, true, "_portalUserMenuBody");

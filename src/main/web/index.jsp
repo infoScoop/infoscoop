@@ -25,6 +25,7 @@
 <%@page import="org.infoscoop.service.PreferenceService" %>
 <%@page import="org.infoscoop.util.RSAKeyManager"%>
 <%@page import="org.infoscoop.web.SessionManagerFilter"%>
+<%@page import="org.infoscoop.util.I18NUtil"%>
 <%String staticContentURL = PropertiesService.getHandle().getProperty("staticContentURL"); %>
 <%
 Boolean isPreview = (Boolean) request.getAttribute(PreviewImpersonationFilter.IS_PREVIEW);
@@ -75,10 +76,10 @@ if( isPreview == null )
     <script src="js/gadget/features/core:rpc:pubsub:pubsub-2:infoscoop.js?c=1"></script>
 	<%
 		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_ID_ATTR_NAME
-		String userName = (String) session.getAttribute("loginUserName");
+		String displayName = (String) session.getAttribute("loginUserName");
 		String uid = (String) session.getAttribute("Uid");
-		if(userName.equals(null) || userName.equals("")){
-			userName = uid;
+		if(displayName == null || "".equals(displayName)){
+			displayName = uid;
 		}
 		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_NAME_ATTR_NAME
 		Boolean isAdmin = (Boolean) request.getAttribute("isAdministrator");
@@ -95,7 +96,7 @@ if( isPreview == null )
 			japaneseOnly : false
 		};
 		var is_userId = <%=uid != null ? "\"" + uid.replace("\\", "\\\\") + "\"" : "null" %>;
-		var is_userName = <%=userName != null ?  "\"" + userName + "\"" : "null" %>;
+		var is_userName = <%=displayName != null ?  "\"" + displayName + "\"" : "null" %>;
 		var is_isAdministrator = <%=isAdmin != null ? isAdmin.booleanValue() : false%>;
 		//dojo.require("dojo.dom");
 
@@ -263,7 +264,13 @@ if( isPreview == null )
 					<td width="100%"><div id="portal-command"></div></td>
 					<td>
 						<div id="portal-user-menu">
-							<div id="portal-user-menu-label"><%= userName %></div>
+							<div id="portal-user-menu-label">
+							    <% if(uid != null){ %>
+									<%= displayName %>
+								<% } else { %>
+									<a id="portal-loginLink" href="login.jsp"><%= I18NUtil.resolve(I18NUtil.TYPE_JS, "%{lb_login}", request.getLocale()) %></a>
+								<% } %>
+							</div>
 						</div>
 					</td>
 					<td width="16px"><img id="messageIcon" src="<%=staticContentURL%>/skin/imgs/information.gif" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();"/></td>
