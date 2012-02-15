@@ -3,7 +3,6 @@
 		<td><div id="portal-logo" outside="true"><a href="javascript:void(0)"><img class="pngfix" src="skin/imgs/infoscoop_logo.png" border="0" /></a></div></td>
 		<td width="100%"><div id="p_1_w_4" outside="true"></div></td>
 		<td><div id="p_1_w_6"></div></td>
-		<td><div id="portal-go-home" outside="true" style="display:none;"></div></td>
 		<td><div id="disabled_portal-change-fontsize" disabledCommand="true" style="display:none;"><!--&lt;div id="portal-change-fontsize"&gt;&lt;/div&gt;--></div></td>
 		<td><div id="portal-trash" style="display:none;"></div></td>
 		<td><div id="portal-preference" style="display:none;"></div></td>

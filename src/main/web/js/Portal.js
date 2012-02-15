@@ -1025,7 +1025,7 @@ IS_Portal.showIframe = function(url){
 
 	divIFrame.style.display="";
 	
-	IS_Portal.CommandBar.changeIframeView('portal-site-aggregation-menu');
+	IS_Portal.CommandBar.changeIframeView();
 	
 	var iframe = $("ifrm");
 	iframe.src = url? url : "";
@@ -2396,13 +2396,8 @@ IS_Portal.CommandBar = {
 		$(goHome.parentNode).hide();
 		IS_Widget.Ticker.adjustTickerWidth();
 	},
-	changeIframeView : function(target){
+	changeIframeView : function(){
 		var go_home = $("portal-go-home");
-		if(target){
-			target = $(target);
-			var pos = Position.cumulativeOffset(target);
-			go_home.setStyle({top:pos[1]});
-		}
 		$(go_home.parentNode).show();
 		IS_Widget.Ticker.adjustTickerWidth();
 	},
