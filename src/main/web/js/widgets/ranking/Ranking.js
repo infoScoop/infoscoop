@@ -184,10 +184,15 @@ IS_Widget.Ranking.buildCommandBar = function( widgetId ){
 	commandBarTd.appendChild(containerDiv);
 	
 	commandBarTd.removeChild(rankingWidgetDiv);
-	var commandBarRankingDiv = document.createElement("div");
-	commandBarRankingDiv.className = "command ranking";
-
-	commandBarRankingDiv.appendChild(document.createTextNode(IS_R.lb_ranking));
+	var commandBarRankingDiv = document.createElement("a");
+	commandBarRankingDiv.className = "portal-user-menu-link"; //"command ranking portal-user-menu-link";
+	commandBarRankingDiv.href = 'javascript:void(0);';
+	commandBarRankingDiv.title = IS_R.lb_ranking;
+	commandBarRankingDiv.appendChild(
+		$.DIV({id: 'command-ranking', className:'portal-user-menu-item-label'}
+			, IS_R.lb_ranking
+		)
+	);
 	Event.observe(commandBarRankingDiv, "click", IS_Widget.Ranking.toggleRanking.bindAsEventListener(this, commandBarRankingDiv, widgetId ));
 	containerDiv.appendChild(commandBarRankingDiv);
 	var rankingOuterDiv = document.createElement("div");
@@ -209,11 +214,10 @@ IS_Widget.Ranking.toggleRanking = function(e, obj, widgetId) {
 	rankingOuterDiv = $(widgetId+"_div");
 	if(rankingOuterDiv.style.display == 'none') {
 		rankingOuterDiv.style.display = '';
-		rankingOuterDiv.style.top = findPosY(obj) + 10;
-		var outerDivLeft = findPosX(obj) - 10;
-		if(outerDivLeft + rankingOuterDiv.offsetWidth > getWindowSize(true) - 25)
-			outerDivLeft = getWindowSize(true) - rankingOuterDiv.offsetWidth - 25;
-		rankingOuterDiv.style.left = outerDivLeft;
+		if(!rankingOuterDiv.parentNode.getAttribute('outside')){
+			rankingOuterDiv.style.top = '0px';
+			rankingOuterDiv.style.left = '-300px';
+		}
 		//rankingOuterDiv.style.left = getWindowSize(true) - rankingOuterDiv.offsetWidth - 25;
 		Event.observe(window, "resize", IS_Widget.Ranking.handleResize, false);
 		Event.observe(document, "click", IS_Widget.Ranking.handleWindowClick, false);

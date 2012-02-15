@@ -1,15 +1,15 @@
-<table cellpadding="0" cellspacing="3" width="100%">
+<table cellpadding="0" cellspacing="0" width="100%">
 	<tr>
-		<td><div id="portal-logo"><a href="javascript:void(0)"><img class="pngfix" src="skin/imgs/infoscoop_logo.png" border="0"></a></div></td>
-		<td><div id="portal-searchform"></div></td>
-		<td width="100%"><div id="p_1_w_4"></div></td>
+		<td><div id="portal-logo" outside="true"><a href="javascript:void(0)"><img class="pngfix" src="skin/imgs/infoscoop_logo.png" border="0" /></a></div></td>
+		<td width="100%"><div id="p_1_w_4" outside="true"></div></td>
 		<td><div id="p_1_w_6"></div></td>
-		<td><div id="portal-go-home"></div></td>
+		<td><div id="portal-go-home" outside="true"></div></td>
 		<td><div id="disabled_portal-change-fontsize" disabledCommand="true"><!--&lt;div id="portal-change-fontsize"&gt;&lt;/div&gt;--></div></td>
 		<td><div id="portal-trash"></div></td>
-		<td><div id="portal-preference"><div class="allPreference"></div></div></td>
+		<td><div id="portal-preference"></div></td>
 		<td><div id="disabled_portal-credential-list" disabledCommand="true"><!--&lt;div id="portal-credential-list"&gt;&lt;/div&gt;--></div></td>
 		<td><div id="portal-admin-link"></div></td>
 		<td><div id="disabled_portal-logout" disabledCommand="true"><!--&lt;div id="portal-logout"&gt;&lt;/div&gt;--></div></td>
+		<td><div id="portal-searchform" outside="true"></div></td>
 	</tr>
 </table>

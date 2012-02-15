@@ -328,56 +328,95 @@ IS_Portal.SearchEngines = {
 	_searchResultsWindowInfo: {},
 	init : function() {
 		this.isNewWindow = $('panels') ? false : true;
-		var editoption = $('editsearchoption');
-		if(editoption){
-			IS_Event.observe(editoption, 'mousedown', this._buildEditSearchOption.bind(this));
-		}
+		this._buildPortalSearch();
 	},
 
-	_buildEditSearchOption:function(){
+	_buildPortalSearch:function(){
 		if(!this.isLoaded){
 			this.loadConf();
-			setTimeout(this._buildEditSearchOption.bind(this), 200);
+			setTimeout(this._buildPortalSearch.bind(this), 200);
 			return;
 		}
-		var editoption = $('editsearchoption');
-		IS_Event.stopObserving(editoption, 'mousedown', this._buildEditSearchOption.bind(this));
+		var configs = this._searchEngineConfigEls;
+
+		/*
+		 * build portal search form
+		 */
+		var p_searchform = $("portal-searchform");
+		if( !p_searchform || configs.length == 0) 
+			return;
+
+		var editSearchOption = $.IMG({
+			id: 'editsearchoption'
+			, src: './skin/imgs/searchform_left.gif'
+			, title: IS_R.lb_searchOption
+		});
 		
-		searchTd = editoption.parentNode;
+		var searchForm = $.FORM(
+			{name: 'searchForm', id: 'searchForm'}
+			, editSearchOption
+			, $.IMG({id: 'searchSubmit'
+				, src:'./skin/imgs/portal_search.gif'
+				, title: IS_R.lb_search
+			})
+			, $.INPUT(
+				{id: 'searchTextInput', type: 'text', value:IS_R.lb_search, style: 'color: #ccc;'}
+			)
+		);
+		p_searchform.appendChild(searchForm);
+
+		var doSearch = function(e){
+			var keyword = $F('searchTextInput');
+			IS_Portal.SearchEngines.buildSearchTabs(keyword);
+			Event.stop(e);
+		};
 		
-		var searchoption = $.DIV({id:"searchoption",style:"fontSize:14px;border:1px solid gray;width:300px;backgroundColor:#FFF;display:none;position:absolute;zIndex:50;padding:5px;"});
+		//show pale 'search' on form background
+		var setInitValue = function(e){
+			if(!$('searchTextInput').value == ""){
+				return;
+			}
+			$('searchTextInput').value = IS_R.lb_search;
+			$('searchTextInput').style.color = '#ccc';
+			Event.stop(e);
+		};
+		var remInitValue = function(e){
+			if($('searchTextInput').value == IS_R.lb_search){
+				$('searchTextInput').value = "";
+				$('searchTextInput').style.color = '#000';
+			}
+			Event.stop(e);
+		};
 		
-		if(Browser.isIE){
-			var pos = Position.cumulativeOffset(searchTd);
-			searchoption.style.top = pos[1] + searchTd.offsetHeight;
-			searchoption.style.left = pos[0];
-			IS_Event.observe(window, 'resize', function(){
-				var pos = Position.cumulativeOffset(searchTd);
-				searchoption.style.left = pos[0];
-			}, true);
-		
-		}
-		searchoption.appendChild( $.DIV({style:"borderBottom:solid 1px #ddd;"}, IS_R.lb_searchOption) );
-		var selectsearchsitediv = $.FIELDSET({id:"selectsearchsitefieldset", style:"margin:5px;"}, $.LEGEND({}, IS_R.lb_selectSearchSite));
+		IS_Event.observe(searchForm, 'submit', doSearch, false);
+		IS_Event.observe($('searchTextInput'), 'focus', this._saveSearchOptions.bind(this), false);
+		IS_Event.observe($('searchTextInput'), 'blur', setInitValue, false);
+		IS_Event.observe($('searchTextInput'), 'focus', remInitValue, false);
+		IS_Event.observe($('searchSubmit'), 'click', this._showSearchOption.bind(this), false);
+		IS_Event.observe(editSearchOption, 'click', this._showSearchOption.bind(this), false);
+
+		/*
+		 * build portal search option
+		 */
+		searchTd = editSearchOption.parentNode;
+		var searchoption = $.DIV({id:"searchoption",style:"display:none;"});
+		var selectsearchsitediv = $.DIV({id:"selectsearchsitefieldset", style:"margin:5px;"});
 		searchoption.appendChild(selectsearchsitediv);
 		searchoption.appendChild(
 			$.DIV(
-				{style:"margin:5px;"},
+				{style:"margin:5px; paddingTop:5px; borderTop: 1px solid #aaa;"},
 				$.INPUT(
 					{id:"displaySearchResultsOnNewWindow",type:'checkbox' }),
-					IS_R.lb_searchResultsOnNewWindow
-				 )
-			);
+				IS_R.lb_searchResultsOnNewWindow
+			)
+		);
 		searchoption.appendChild(
 			$.DIV(
-				{style:"margin:5px;"},
-				$.INPUT({type:'button',value:IS_R.lb_saveSettings,onclick:{handler:this._saveSearchOptions.bind(this)}}),
-				$.INPUT({type:'button',value:IS_R.lb_resetToDefaultSettings,onclick:{handler:this._resetSearchOptions.bind(this)}}),
-				$.INPUT({type:'button',value:IS_R.lb_cancel,onclick:{handler:this._closeSearchOption.bind(this)}})
-				  )
-			);
+				{style:"margin:5px; textAlign:right;"},
+				$.SPAN({style:'borderBottom:1px solid #000; cursor: pointer;', onclick:{handler:this._resetSearchOptions.bind(this)}},IS_R.lb_resetToDefaultSettings)				
+			)
+		);
 
-		var configs = this._searchEngineConfigEls;
 		if(configs){
 			for(var i = 0; i < configs.length;i++){
 				var searchId = configs[i].getAttribute("id");
@@ -386,34 +425,6 @@ IS_Portal.SearchEngines = {
 			}
 		}
 		searchTd.appendChild(searchoption);
-
-		IS_Event.observe(editoption, 'mousedown', this._showSearchOption.bind(this));
-
-		var closer = $.DIV({
-			  id:'searchOptionCloser',
-			  className:'widgetMenuCloser'
-			});
-		document.body.appendChild( closer );
-		IS_Event.observe(closer, 'mousedown', this._closeSearchOption.bind(this), true);
-		
-		this._showSearchOption();
-	},
-	
-	loadConf:function(){
-		if(this.isLoading)return;
-		this.isLoading = true;
-		this._loadConfig(true);
-	},
-
-	_showSearchOption:function(){
-		var winX = Math.max(document.body.scrollWidth, document.body.clientWidth);
-		var winY = Math.max(document.body.scrollHeight, document.body.clientHeight);
-
-		var closer = $('searchOptionCloser');
-		closer.style.width = winX;
-		closer.style.height = winY;
-		closer.style.display = "";
-
 		var displaySearchResultsOnNewWindow = $('displaySearchResultsOnNewWindow');
 		displaySearchResultsOnNewWindow.defaultChecked = displaySearchResultsOnNewWindow.checked = this.searchOption.displayNewWindow;
 		var configs = this._searchEngineConfigEls;
@@ -424,14 +435,39 @@ IS_Portal.SearchEngines = {
 				searchOption.defaultChecked = searchOption.checked = this._selectedList.include(searchId);
 			}
 		}
-		var searchOptionSpan = $('searchoption');
-		Element.show(searchOptionSpan);
-		IS_Portal.behindIframe.show(searchOptionSpan);
+	},
+	
+	loadConf:function(){
+		if(this.isLoading)return;
+		this.isLoading = true;
+		this._loadConfig(true);
+	},
+
+	_showSearchOption:function(){
+		$('searchoption').show();
+		if($('searchOptionCloser')){
+			$('searchOptionCloser').show();
+		}
+		else{
+			var winX = Math.max(document.body.scrollWidth, document.body.clientWidth);
+			var winY = Math.max(document.body.scrollHeight, document.body.clientHeight);
+			
+			var closer = $.DIV({
+				  id:'searchOptionCloser',
+				  className:'widgetMenuCloser'
+				});
+			document.body.appendChild( closer );
+			IS_Event.observe(closer, 'mousedown', this._saveSearchOptions.bind(this), true);
+	
+			closer.style.width = winX;
+			closer.style.height = winY;
+			closer.style.display = "";
+		}
 	},
 
 	_closeSearchOption:function(){
-		Element.hide('searchoption');
-		Element.hide('searchOptionCloser');
+		$('searchoption').hide();
+		$('searchOptionCloser').hide();
 		IS_Portal.behindIframe.hide();
 	},
 	
@@ -541,7 +577,7 @@ IS_Portal.SearchEngines = {
 			var searchEngine = false;
 			for(var j = 0; j < enableSearchEngines.length; j++) {
 				if( searchId == enableSearchEngines[j].searchId)
-				  searchEngine = enableSearchEngines[j]
+				  searchEngine = enableSearchEngines[j];
 			}
 			if(searchSiteCheckBoxList[i].checked){
 				selectSiteList.push(searchId);
@@ -636,7 +672,6 @@ IS_Portal.SearchEngines = {
 	
 	_buildSearchTabs : function(keyword, urllist){
 		if(is_jlength(keyword) > 256){
-
 			alert(IS_R.lb_keywordTooLong);
 			return false;
 		}

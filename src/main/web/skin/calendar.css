@@ -159,6 +159,7 @@
 
 .infoScoop .widgetContent.Calendar .calweekdayrow {
 	height:12%;
+	background-color: #fff;
 }
 
 .infoScoop .widgetContent.Calendar .calweekdaycell {

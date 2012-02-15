@@ -157,6 +157,7 @@ IS_Portal.theme = {
 		  is_addCssRule('.infoScoop .widget .widgetBox', widgetBoxStyle.join(';') + ';');
 		  is_addCssRule('.infoScoop .widget .widgetShade', widgetShadeStyle.join(';') + ';');
 		  is_addCssRule('.infoScoop .subwidget .widgetBox', 'border:none;-webkit-border-radius:0;-moz-border-radius:0;');
+		  is_addCssRule('.widgetBoxNoHeader', widgetBoxStyle.join(';') + ';');
 	  }
   },
 

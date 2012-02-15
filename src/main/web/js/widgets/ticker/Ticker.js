@@ -51,13 +51,7 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		widget = widgetObj;
 		id = widget.id;
 		selfContent = widget.elm_widgetContent;
-		widget.elm_widget.style.margin = 0;
-		widget.elm_widgetShade.style.margin = 0;
-		selfContent.style.height = "1.2em";
-		selfContent.parentNode.style.height = "1.2em";
-		selfContent.style.border ="1px inset #EEEEEE";
-		widget.elm_widget.style.height = "1.2em";
-		
+		selfContent.style.border = '0px';
 		ticker_speed = widget.getUserPref("speed");
 		ticker_speed = Math.max(1, ticker_speed-1);
 		copyspeed = ticker_speed;
@@ -210,14 +204,14 @@ IS_Widget.Ticker.prototype.classDef = function() {
 			tickerNobr = document.createElement("nobr");
 			tickerNobr.id = widget.id + "_tickerTxt";
 			tickerNobr.innerHTML = msg;
-			tickerNobr.style.lineHeight = "1.25em";
+			tickerNobr.style.lineHeight = "1.5em";
 		}else{
 			
 			tickerNobr = document.createElement("nobr");
 			tickerNobr.id = widget.id + "_tickerTxt";
 			
 			var aTag = document.createElement("a");
-			aTag.style.lineHeight = "1.25em";
+			aTag.style.lineHeight = "1.5em";
 			aTag.href = url;
 			aTag.innerHTML = msg;
 //			aTag.appendChild(document.createTextNode(msg));

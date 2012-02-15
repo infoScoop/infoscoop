@@ -41,7 +41,6 @@
 }
 
 .infoScoop #portal-command div.ranking.command {
-	background:url(./imgs/award_star_gold_1.gif) top left no-repeat;
 	margin:2px;
 	height:16px;
 	cursor:pointer;
@@ -49,11 +48,7 @@
 }
 
 .infoScoop #portal-command #portal-logout {
-	background:	url(./imgs/door_in.gif) top left no-repeat;
-	margin:2px;
-	height:16px;
-	cursor:pointer;
-	padding-left:18px;
+
 }
 
 .infoScoop #portal-command .fontChange_large {
@@ -81,15 +76,12 @@
 	float:left;
 	cursor:pointer;
 	margin:0px;
+	z-index: 99999;
 }
 
 /* Trash */
 
 .infoScoop #portal-command .trashIcon {
-	background:url(./imgs/trash.gif) top left no-repeat;
-	width:16px;
-	/*margin:2px 2px 2px 2px;*/
-	height:16px;
 	cursor:pointer;
 }
 .infoScoop .trashContainer {
@@ -143,10 +135,8 @@
 /* Preference */
 
 .infoScoop #portal-command div.allPreference {
-	background:url(./imgs/wrench.gif) top left no-repeat;
-	width:16px;
+	background:url(./imgs/wrench.gif) center left no-repeat;
 	margin:2px 2px 2px 2px;
-	height:16px;
 	cursor:pointer;
 }
 
@@ -218,8 +208,6 @@
 
 
 .infoScoop .authCredentialListIcon {
-	background:url(./imgs/page_user.gif) top left no-repeat;
-	width:16px;
 	height:16px;
 	cursor:pointer;
 }
@@ -262,4 +250,120 @@
 	font-size:80%;
 	text-align:right;
 	vertical-align:top;
+}
+
+#authCredentialListIcon{
+	background:url(./imgs/page_user.gif) center left no-repeat;
+}
+
+/** command bar */
+#command-bar{
+/*	background-color : #4D4D4D; same color as Administration page*/
+	background-color : #e6e6e6;
+	height: 24px;
+}
+
+.commandbar-item{
+	width: 100%;
+	white-space: nowrap;
+}
+
+/** user menu */
+
+#portal-user-menu{
+	float: right;
+	font-size: 12px;
+	padding-right: 12px;
+	white-space: nowrap;
+/* 	max-width: 150px; */
+	overflow-x: hidden;
+}
+
+#portal-user-menu-label{
+/* 	_width: 100%; */
+/* 	max-width: 120px; */
+	overflow: hidden;
+	padding: 2px 0 0 20px;
+	_padding-bottom: 5px; /* for IE */
+	background: url(./imgs/status_offline.gif) center left no-repeat;
+}
+
+#portal-user-menu-body{
+/* 	width: 149px; */
+/* 	_width: 151px; for IE */
+	position: absolute;
+	top: 24px;
+	background-color: #fff;
+	z-index: 100000;
+	border: solid 1px #aaa;
+}
+
+div.portal-user-menu-item{
+	display: block;
+	clear: both;
+	border-bottom: 1px solid #ddd;
+	width: 100%;
+/* 	height: 30px; */
+	color: #000;
+}
+
+a.portal-user-menu-link{
+	display: block;
+	clear: both;
+	color: #000;
+	width: 100%;
+	height: 24px;
+	wihte-space: nowrap;
+}
+
+a.portal-user-menu-link:hover{
+	color: #fff;
+	background-color: #5286BB;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a.portal-user-menu-link:visited{
+	color: #000;
+}
+
+.portal-user-menu-item-label{
+	height: 22px;
+	font-size: 12px;
+	margin-left: 5px;
+	padding: 3 5 0 22;
+	float: left;
+	white-space: nowrap;
+}
+
+
+#trash-icon{
+	background: url(./imgs/trash.gif) no-repeat center left;
+}
+
+#allPreference{
+	background: url(./imgs/wrench.gif) no-repeat center left;
+}
+
+#admin-link{
+	background: url(./imgs/cog.gif) no-repeat center left;
+}
+
+#logout{
+	background: url(./imgs/door_in.gif) no-repeat center left;
+}
+
+#font-change-div{
+	background: url(./imgs/font.gif) no-repeat center left;
+}
+
+#font-change-contents{
+	white-space: nowrap;
+	height: 24px;
+}
+
+select#font-size-select{
+	margin: 4px 0px 0 5px;
+	float: left;
+	z-index: 1000;
 }

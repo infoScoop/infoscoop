@@ -20,6 +20,22 @@ IS_Portal.prefsEls = [];
 IS_Portal.buildGlobalSettingModal = function() {
 	var currentMenu;
 	var preferenceDiv = $("portal-preference");
+	if(!preferenceDiv)
+		return $("disabled_portal-preference").hide();
+	var allPreference = $.A({
+		className:'portal-user-menu-link'
+		, href:'javascript:void(0);'
+		, title:IS_R.lb_setupAll}
+	);
+	preferenceDiv.appendChild(allPreference);
+	allPreference.appendChild(
+		$.DIV({id:'allPreference', className:'portal-user-menu-item-label'}
+			, IS_R.lb_setupAll
+		)
+	);
+	if( Browser.isIE && preferenceDiv.getAttribute('outside'))
+		preferenceDiv.style.width = preferenceDiv.offsetWidth+"px";
+
 	var prefPage;
 	
 	var allSettingBody;
@@ -472,7 +488,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 	if(preferenceDiv){
 		IS_Portal.currentModal = new Control.Modal(preferenceDiv,{contents: "", containerClassName:"preference"});
 		
-		preferenceDiv.title = IS_R.lb_setting;
+		preferenceDiv.title = IS_R.lb_setupAll;
 		Event.observe(preferenceDiv, "click", showModal, false);
 		
 

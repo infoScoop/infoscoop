@@ -85,3 +85,8 @@
 	word-break: break-all;
 	font-size:85%;
 }
+
+#command-ranking{
+	background: url(./imgs/award_star_gold_1.gif) no-repeat center left;
+}
+

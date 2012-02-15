@@ -25,7 +25,7 @@ body{
  padding:0;
  overflow-y: scroll; 
  font-size:100%;
- font-family:'ãƒ’ãƒ©ã‚®ãƒŽè§’ã‚´ Pro W3','Hiragino Kaku Gothic Pro','ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯',sans-serif;
+ font-family:'ƒqƒ‰ƒMƒmŠpƒS Pro W3','Hiragino Kaku Gothic Pro','‚l‚r ‚oƒSƒVƒbƒN',sans-serif;
 }
 
 th{
@@ -39,6 +39,7 @@ td{
 a
 {
 	text-decoration: none;
+	outline: none;
 }
 
 a:hover
@@ -50,6 +51,14 @@ fieldset {
 	border-radius: 7px;
 	-webkit-border-radius: 7px;
 	-moz-border-radius: 7px;
+}
+
+input[type="text"], input[type="password"], textarea, select { 
+	outline: none;
+}
+
+img{
+	border: 0px;
 }
 
 /** message bar */
@@ -455,13 +464,6 @@ div#search-iframe div.search_tabs{
 	color: #627EB7;
 }
 
-
-#editsearchoption {
-	color : #7777CC;
-	cursor : pointer;
-	font-size : 13px;
-	border-bottom : solid 1px #7777CC;
-}
 
 /* IFrameToolbar */
 

@@ -24,5 +24,6 @@
 }
 
 .infoScoop .Ticker .ticker-base {
+	padding-top:0px;
 	font-size:82%;
 }

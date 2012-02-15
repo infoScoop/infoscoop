@@ -1,0 +1,69 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2012 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+ 
+#portal-searchform{
+	background-color: #e6e6e6;
+	position: relative;
+	z-index:20000;
+}
+
+#searchForm{
+	height: 24px;
+	width: 175px;
+	margin-bottom: 0px; /* for IE layout */
+	background-color: #e6e6e6;
+	background: url(./imgs/searchform_right.gif) no-repeat right top;
+	position: relative;
+}
+
+#searchTextInput{
+	vertical-align: top;
+	height: 24px;
+	width: 127px;
+	border-top:1px solid #aaa;
+	border-bottom:1px solid #aaa;
+	border-right: 0px;
+	border-left: 0px;
+}
+
+#searchSubmit{
+	height: 22px;
+	width: 22px;
+	background-color: #fff;
+	border-top: 1px solid #aaa;
+	border-bottom: 1px solid #aaa;
+	cursor : pointer;
+}
+
+#editsearchoption {
+	height: 24px;
+	width: 13px;
+	cursor : pointer;
+	display: inline;
+}
+
+#searchoption{
+	font-size: 12px;
+	border: 1px solid #aaa;
+	width: 190px;
+	background-color:#fff;
+	position: absolute;
+	top: 26px;
+	left: 0px;
+	z-index: 80000;
+}
+ 

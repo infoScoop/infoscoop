@@ -62,6 +62,7 @@ if( isPreview == null )
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/maximizerssreader.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/information.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/ticker.css">
+    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/searchengine.css">
 	<!--end styles css-->
 
 	<!-- prototype-window -->
@@ -74,9 +75,12 @@ if( isPreview == null )
     <script src="js/gadget/features/core:rpc:pubsub:pubsub-2:infoscoop.js?c=1"></script>
 	<%
 		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_ID_ATTR_NAME
-		String uid = (String) session.getAttribute("Uid");
-		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_NAME_ATTR_NAME
 		String userName = (String) session.getAttribute("loginUserName");
+		String uid = (String) session.getAttribute("Uid");
+		if(userName.equals(null) || userName.equals("")){
+			userName = uid;
+		}
+		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_NAME_ATTR_NAME
 		Boolean isAdmin = (Boolean) request.getAttribute("isAdministrator");
 	%>
     <script>
@@ -253,6 +257,19 @@ if( isPreview == null )
  </head>
 
 	<body style="margin-top:0;padding-top:0;" class="infoScoop">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" id="command-bar">
+			<tbody>
+				<tr>
+					<td width="100%"><div id="portal-command"></div></td>
+					<td>
+						<div id="portal-user-menu">
+							<div id="portal-user-menu-label"><%= userName %></div>
+						</div>
+					</td>
+					<td width="16px"><img id="messageIcon" src="<%=staticContentURL%>/skin/imgs/information.gif" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();"/></td>
+				</tr>
+			</tbody>
+		</table>
 		<div id="portal-header"></div>
 		<div id="portal-body">
 		<div id="error-msg-bar" style="display:none;"></div>
@@ -270,14 +287,6 @@ if( isPreview == null )
 					</td>
 					<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
 					<td colspan="3" valign="top" align="left">
-						<table width="100%" border="0" cellspacing="0" cellpadding="0" id="command-bar">
-							<tbody>
-								<tr>
-									<td><div id="portal-command"></div></td>
-									<td width="16px"><img id="messageIcon" src="<%=staticContentURL%>/skin/imgs/information.gif" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();"/></td>
-								</tr>
-							</tbody>
-						</table>
 						<div id="portal-iframe-url"></div>
 						<div id="panels" style="display:;">
 						  <div id="tab-container"></div>
