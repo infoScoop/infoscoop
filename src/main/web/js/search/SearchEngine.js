@@ -646,9 +646,6 @@ IS_Portal.SearchEngines = {
 			return;
 		}
 
-		if(!this.isNewWindow)
-			IS_Portal.CommandBar.changeIframeView();
-		
 		if(this.buildTabTimer)
 			clearTimeout(this.buildTabTimer);
 		
@@ -688,6 +685,8 @@ IS_Portal.SearchEngines = {
 		var searchPanel = document.getElementById("search-iframe");
 		searchPanel.className = "SearchEngine";
 		searchPanel.style.display="";
+		
+		IS_Portal.CommandBar.changeIframeView('portal-site-aggregation-menu');
 		
 		var defaultTabsUl = $("search-tabs");
 		var defaultResult = $("search-result");

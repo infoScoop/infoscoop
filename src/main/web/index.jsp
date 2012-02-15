@@ -274,7 +274,12 @@ if( isPreview == null )
 		<div id="portal-body">
 		<div id="error-msg-bar" style="display:none;"></div>
 		<div id="message-bar" style="display:none;"><div id="message-list"></div><div id="message-list-more" style="display:none;"></div><div id="message-bar-controles"></div></div>
-		<table width="100%" border="0" cellspacing="0" cellpadding="0"><tbody><tr><td id="portal-site-aggregation-menu"></td></tr></tbody></table>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"><tbody>
+			<tr>
+				<td id="portal-site-aggregation-menu"></td>
+				<td style="display:none;"><div id="portal-go-home"></div></td>
+			</tr>
+			</tbody></table>
 		<table style="clear:both;" cellpadding="0" cellspacing="0" width="100%" id="portal-maincontents-table">
 			<tbody>
 				<tr>

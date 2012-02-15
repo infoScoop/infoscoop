@@ -20,7 +20,8 @@
 }
 
 .infoScoop #portal-command .command,
-.infoScoop #modal_container.preference .preferenceClose.command{
+.infoScoop #modal_container.preference .preferenceClose.command,
+.infoScoop #portal-go-home{
 	font-size: 13px;
 	margin-right: 3px;
 	white-space:nowrap;
@@ -28,13 +29,6 @@
 	color:#7777cc;
 }
 
-.infoScoop #portal-command div.toppage {
-	background:url(./imgs/house.gif) top left no-repeat !important;
-	margin:2px;
-	height:16px;
-	cursor:pointer;
-	padding-left:18px;
-}
 .infoScoop #portal-command a.command.manual img {
 	border: none;
 	cursor:pointer;

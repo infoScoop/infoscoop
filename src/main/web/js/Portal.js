@@ -1012,8 +1012,6 @@ IS_Portal.showIframe = function(url){
 	if(iframeToolBar.innerHTML == "")
 		IS_Portal.buildIframeToolBar();
 	
-	IS_Portal.CommandBar.changeIframeView();
-	
 	var divIFrame = $("search-iframe");
 	if ( divIFrame ) {
 		divIFrame.style.display = "none";
@@ -1026,6 +1024,9 @@ IS_Portal.showIframe = function(url){
 	IS_Portal.widgetDisplayUpdated();
 
 	divIFrame.style.display="";
+	
+	IS_Portal.CommandBar.changeIframeView('portal-site-aggregation-menu');
+	
 	var iframe = $("ifrm");
 	iframe.src = url? url : "";
 	setTimeout(IS_Portal.adjustIframeHeight.bind(iframe, null, iframe), 1);
@@ -2372,23 +2373,18 @@ IS_Portal.CommandBar = {
 //		IS_Event.observe($("portal-user-menu-body"), "click", closeMenu, true, "_portalUserMenuBody");
 	},
 	changeDefaultView : function(){
-		this.toggleView(false);
+		var goHome = $("portal-go-home");
+		$(goHome.parentNode).hide();
+		IS_Widget.Ticker.adjustTickerWidth();
 	},
-	changeIframeView : function(){
-		this.toggleView(true);
-	},
-	toggleView : function(isFrameView){
-		for(var i in this.commandbarWidgetDivs){
-			var itemDiv = this.commandbarWidgetDivs[i];
-			
-			if(typeof itemDiv == "function") continue;
-			
-			var itemId = itemDiv.id.replace(/^s_/, "");
-			if(itemId == "portal-go-home")
-				itemDiv.style.display = (isFrameView)? "" : "none";
-			else if(this.isIframeViewHiddenWidget(itemId))
-				itemDiv.style.display = (isFrameView)? "none" : "";
+	changeIframeView : function(target){
+		var go_home = $("portal-go-home");
+		if(target){
+			target = $(target);
+			var pos = Position.cumulativeOffset(target);
+			go_home.setStyle({top:pos[1]});
 		}
+		$(go_home.parentNode).show();
 		IS_Widget.Ticker.adjustTickerWidth();
 	},
 	isIframeViewHiddenWidget : function(itemId){

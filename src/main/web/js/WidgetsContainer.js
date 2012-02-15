@@ -434,7 +434,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 	
 			var goHome = $("portal-go-home");
 			if(goHome){
-				goHome.style.display = "none";
 				var topPageDiv = document.createElement("div");
 				topPageDiv.className = "command toppage";
 
