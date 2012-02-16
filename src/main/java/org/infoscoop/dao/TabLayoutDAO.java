@@ -293,12 +293,14 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	 */
 	public void copy(String uid, boolean toTemp) {
 		this.deleteByTemp(toTemp ? TabLayout.TEMP_TRUE : TabLayout.TEMP_FALSE);
-		/*String queryString = "insert into TabLayout(id.Tabid,id.Roleorder,Role,Rolename,Principaltype,Defaultuid,Widgets,Layout,Widgetslastmodified,Tabnumber,Deleteflag,id.Temp) "
-				+ "select id.Tabid,id.Roleorder,Role,Rolename,Principaltype,Defaultuid,Widgets,Layout,Widgetslastmodified,Tabnumber,Deleteflag,1 from TabLayout where id.Temp = ?";
-		super.getHibernateTemplate().bulkUpdate(queryString,
-				new Object[] { TabLayout.TEMP_FALSE });*/
+		
 		List<TabLayout> tabLayouts = selectByTemp(toTemp ? TabLayout.TEMP_FALSE
 				: TabLayout.TEMP_TRUE);
+		
+		if(tabLayouts.size() == 0){
+			throw new RuntimeException("The record for a copy is not found. ");
+		}
+		
 		for (TabLayout tabLayout : tabLayouts) {
 			TABLAYOUTPK id = tabLayout.getId();
 			TABLAYOUTPK newid = new TABLAYOUTPK(id.getTabid(), id

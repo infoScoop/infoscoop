@@ -112,10 +112,15 @@ public class TabLayoutService {
 			throw new IllegalAccessException("Temp data is not found.");
 		}
 		*/
-		if (myUid != null && lockingUid != null && !myUid.equals(lockingUid)) {
-			throw new IllegalAccessException("The user \"" + lockingUid
+		if (myUid != null && !myUid.equals(lockingUid)) {
+			if(lockingUid != null){
+				throw new IllegalAccessException("The user \"" + lockingUid
 					+ "\" is editing it.");
+			}else{
+				throw new IllegalAccessException("Your temprary record was deleted by another administrator.");
+			}
 		}
+		
 		return myUid;
 	}
 
