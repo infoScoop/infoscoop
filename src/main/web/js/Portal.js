@@ -2395,11 +2395,13 @@ IS_Portal.CommandBar = {
 		var goHome = $("portal-go-home");
 		$(goHome.parentNode).hide();
 		IS_Widget.Ticker.adjustTickerWidth();
+		IS_SidePanel.adjustPosition();
 	},
 	changeIframeView : function(){
 		var go_home = $("portal-go-home");
 		$(go_home.parentNode).show();
 		IS_Widget.Ticker.adjustTickerWidth();
+		IS_SidePanel.adjustPosition();
 	},
 	isIframeViewHiddenWidget : function(itemId){
 		// Judge commandbar widget hidden at displaying frmae in portal
