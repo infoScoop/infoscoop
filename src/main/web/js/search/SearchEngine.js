@@ -686,7 +686,7 @@ IS_Portal.SearchEngines = {
 		searchPanel.className = "SearchEngine";
 		searchPanel.style.display="";
 		
-		IS_Portal.CommandBar.changeIframeView('portal-site-aggregation-menu');
+		IS_Portal.CommandBar.changeIframeView();
 		
 		var defaultTabsUl = $("search-tabs");
 		var defaultResult = $("search-result");

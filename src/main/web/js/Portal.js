@@ -85,7 +85,7 @@ IS_Portal.start = function() {
 	  onFailure: function(t) {
 		  alert('Retrieving customization info failed. ' + t.status + ' -- ' + t.statusText);
 	  },
-	  onExcepti: function(t) {
+	  onException: function(t) {
 		  alert('Retrieving customization info failed. ' + t);
 	  }
 	};	
@@ -2270,14 +2270,19 @@ IS_Portal.CommandBar = {
 		var portalUserMenuLabel = $('portal-user-menu-label');
 		//if user name is long, limit user menu width 150
 		//TODO better to use css instead of script for max-width
-		if(portalUserMenuLabel.offsetWidth > 150){
+		if(Browser.isIE && portalUserMenuLabel.offsetWidth > 150){
 			portalUserMenu.parentNode.style.width = portalUserMenu.style.width = 150 + 'px';
-			if(Browser.isIE)
-				portalUserMenuLabel.style.width = 140;
+			portalUserMenuLabel.style.width = 140;
 		}
 		
 		var commandBarItems =  this.elm_commandbar.getElementsByTagName('tr')[0].childNodes;
 		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', style:'display:none;'});
+		
+		Event.observe(portalUserMenuBody, "click", function(e){
+			$(this).hide();
+			Event.stop(e);
+		}.bind(portalUserMenuBody));
+		
 		portalUserMenu.parentNode.appendChild(portalUserMenuBody);
 		for(var i = 0; i < commandBarItems.length; i++){
 			if(commandBarItems[i].nodeType != 1)
@@ -2285,6 +2290,7 @@ IS_Portal.CommandBar = {
 			var itemDiv = commandBarItems[i].getElementsByTagName('div')[0];
 			if(!/^disabled/.test(itemDiv.id))
 				this.hasCommandBar = true;
+			itemDiv = $(itemDiv);
 			var itemId = itemDiv.id.replace(/^s_/, "");
 			
 			var cmdBarWidget = IS_Portal.getWidget(itemId, IS_Portal.currentTabId);
@@ -2297,7 +2303,7 @@ IS_Portal.CommandBar = {
 			if(!itemDiv.getAttribute("outside") && !itemDiv.getAttribute('disabledCommand')){
 				// hide empty td
 				if(!Browser.isIE)
-					itemDiv.parentNode.hide();
+					$(itemDiv.parentNode).hide();
 				itemDiv.className = 'portal-user-menu-item';
 				portalUserMenuBody.appendChild(itemDiv);
 			}
@@ -2315,6 +2321,9 @@ IS_Portal.CommandBar = {
 
 		if(!this.hasCommandBar){
 			$("command-bar").hide();
+		}
+		else{
+			IS_Portal.CommandBar.show();
 		}
 		if(portalUserMenuBody.childNodes.length != 0){
 			portalUserMenu.title = is_userName? is_userName : "";
@@ -2390,6 +2399,10 @@ IS_Portal.CommandBar = {
 		}
 		//TODO close user menu if a menu is clicked
 //		IS_Event.observe($("portal-user-menu-body"), "click", closeMenu, true, "_portalUserMenuBody");
+	},
+	show : function(){
+		$("command-bar").show();
+		$("command-bar").setStyle({visibility:"visible"});
 	},
 	changeDefaultView : function(){
 		var goHome = $("portal-go-home");

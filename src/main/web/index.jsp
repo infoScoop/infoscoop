@@ -258,7 +258,7 @@ if( isPreview == null )
  </head>
 
 	<body style="margin-top:0;padding-top:0;" class="infoScoop">
-		<table width="100%" border="0" cellspacing="0" cellpadding="0" id="command-bar">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" id="command-bar" style="visibility:hidden;">
 			<tbody>
 				<tr>
 					<td width="100%"><div id="portal-command"></div></td>
