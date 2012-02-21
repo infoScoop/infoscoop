@@ -726,12 +726,11 @@ ISA_DefaultPanel.prototype.templates = {
 	setCommandLayout: function(jsonObject) {
 		var datetime = new Date().getTime();
 		var html = "";
-		html += '<table cellpadding="0" cellspacing="3" width="100%">\n';
+		html += '<table cellpadding="0" cellspacing="0" width="100%">\n';
 		html += '  <tr>\n';
 		html += '    <td><div id="portal-logo" outside="true"><a href="javascript:void(0)"><img border="0" class="pngfix" src="skin/imgs/infoscoop_logo.png"/></a></div></td>\n';
 		html += '    <td width="100%"><div id="p_1_w_4" outside="true"></div></td>\n';
 		html += '    <td><div id="p_1_w_6"></div></td>\n';
-		html += '    <td><div id="portal-go-home"></div></td>\n';
 		html += '    <td><div id="disabled_portal-change-fontsize" disabledCommand="true"><!--&lt;div id="portal-change-fontsize"&gt;&lt;/div&gt;--></div></td>\n';
 		html += '    <td><div id="portal-trash"></div></td>\n';
 		html += '    <td><div id="portal-preference"><div class="allPreference"></div></div></td>\n';
