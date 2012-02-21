@@ -1475,8 +1475,8 @@ IS_Portal.Trash = new function() {
 		
 		if(e) {//Event is passed only if trash icon is clicked.
 			this.modal.showCenter();
-			if(this.modal.element.style.top.slice(0,-2)<0)
-				this.modal.setLocation('0',this.modal.element.style.left);
+			if( Position.cumulativeOffset($(this.modal.element)).top<0)
+				this.modal.setLocation('0', Position.cumulativeOffset($(this.modal.element)).left);
 		} else {
 			this.modal.centered = false;
 			this.modal.show();
