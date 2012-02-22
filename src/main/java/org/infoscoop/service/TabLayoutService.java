@@ -93,9 +93,13 @@ public class TabLayoutService {
 	}
 
 	public synchronized void deleteTemp() throws IllegalAccessException{
-		checkLoginUid();
-		tabLayoutDAO.deleteByTemp(TabLayout.TEMP_TRUE);
-		log.info("Success to delete Tempolary TabLayouts.");
+		try{
+			checkLoginUid();
+			tabLayoutDAO.deleteByTemp(TabLayout.TEMP_TRUE);
+			log.info("Success to delete Tempolary TabLayouts.");
+		}catch(IllegalAccessException e){
+			// ignore
+		}
 	}
 
 	/**
