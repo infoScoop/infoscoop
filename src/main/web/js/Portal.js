@@ -70,7 +70,7 @@ IS_Portal.start = function() {
 	}
 	IS_Portal.theme.setTheme(IS_Portal.theme.currentTheme);
 	
-	IS_Portal.startIndicator();
+	IS_Portal.startIndicator('portal-maincontents-table');
 	
 	var fontSize = getActiveStyle( document.body, "font-size");
 	IS_Portal.defaultFontSize = (fontSize.charAt(fontSize.length-1)=="%" ? fontSize : Math.round(parseInt(fontSize)/16*100) + "%" );
@@ -2097,12 +2097,9 @@ IS_Portal.buildAdminLink = function(){
 		adminLink.parentNode.style.width = adminLabel.offsetWidth+"px";
 	
 	Event.observe( adminLink, "click", function( e ) {
-		if( window.IS_Preview ) return Event.stop( e );
-		
-		Event.stopObserving( window,"unload",windowUnload );
-		windowUnload();
-		window.open().location.href = "admin";
+		window.open("admin");
 		$('portal-user-menu-body').hide();
+		Event.stop( e )
 	});
 	
 	if(adminLink.parentNode && adminLink.offsetWidth)//Setting width of command bar
@@ -2494,9 +2491,9 @@ IS_Portal.getPortalOverlay = function() {
 	return IS_Portal.portalOverlay;
 }
 
-IS_Portal.startIndicator = function(e){
+IS_Portal.startIndicator = function(target){
 	var divOverlay = $("divOverlay");
-	var panel = document.getElementById("panels");
+	var panel = $(target? target : "panels");
 	if(!divOverlay){
 		divOverlay = document.createElement("img");
 		divOverlay.src = imageURL +"indicator_verybig.gif";
