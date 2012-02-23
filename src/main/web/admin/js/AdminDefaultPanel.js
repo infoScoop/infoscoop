@@ -197,8 +197,11 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				commandDiv.style.whiteSpace = "nowrap";
 
 				var commandA = document.createElement("a");
-				commandA.appendChild(document.createTextNode(title));
+				var label = $.DIV({className: 'portal-user-menu-item-label user-link'}, title);
+				commandA.appendChild(label);
 				commandA.href = ISA_Admin.trim( $("panelAddCommandBarUrl").value );
+				commandA.title = title;
+				commandA.className = 'portal-user-menu-link';
 				if($("panelAddCommandBarNewwindow").checked){
 					commandA.target = "_blank";
 				} else {

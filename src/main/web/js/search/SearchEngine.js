@@ -389,7 +389,6 @@ IS_Portal.SearchEngines = {
 		};
 		
 		IS_Event.observe(searchForm, 'submit', doSearch, false);
-		IS_Event.observe($('searchTextInput'), 'focus', this._saveSearchOptions.bind(this), false);
 		IS_Event.observe($('searchTextInput'), 'blur', setInitValue, false);
 		IS_Event.observe($('searchTextInput'), 'focus', remInitValue, false);
 		IS_Event.observe($('searchSubmit'), 'click', this._showSearchOption.bind(this), false);

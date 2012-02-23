@@ -1117,9 +1117,6 @@ IS_Portal.Trash = new function() {
 			)
 		);
 		trashIconContainer.appendChild(trashIcon);
-
-		if(trashIconContainer.parentNode && trashIcon.offsetWidth)
-			trashIconContainer.parentNode.style.width = trashIcon.offsetWidth;
 		
 		IS_Event.observe(trashIcon, "mouseover", this.addIconEventListener.bind(this), false, "_trashInit");
 	}
@@ -1550,15 +1547,12 @@ IS_Portal.buildFontSelectDiv = function(){
 	var fontEl = $("portal-change-fontsize");
 	if(!fontEl)
 		return;
-	var fontChangeDiv = document.createElement("div");
-	fontEl.style.display = 'none';//FIXME something wrong with commandbar.lob??
-	fontEl.appendChild(fontChangeDiv);
+
+	//font select for user menu (select box ver.)
 	if(!fontEl.getAttribute('outside')){
-		//font select for user menu (select box ver.)
-		fontChangeDiv.style.width = '135px';
-		fontChangeDiv.id = "font-change-contents";
+		Element.setStyle(fontEl, {width: '135px'});
 		
-		fontChangeDiv.appendChild(
+		fontEl.appendChild(
 			$.DIV({className:'portal-user-menu-item-label', id :'font-change-div'}
 			, IS_R.lb_resizeFont
 			)
@@ -1570,8 +1564,7 @@ IS_Portal.buildFontSelectDiv = function(){
 			, $.OPTION({id:'option-large'}, IS_R.lb_resizeFontLarger)
 		);
 		
-		fontChangeDiv.appendChild(fontSizeSelect);
-		fontEl.appendChild(fontChangeDiv);
+		fontEl.appendChild(fontSizeSelect);
 		fontEl.title = IS_R.lb_resizeFont;
 		
 		IS_Event.observe(fontSizeSelect, "change", function(){
@@ -1592,77 +1585,60 @@ IS_Portal.buildFontSelectDiv = function(){
 					break;
 			}
 			IS_Portal.applyFontSize(size);
+			$('portal-user-menu-body').hide();
+			$('userMenuCloser').hide();
 		}, false, "_fontchange");
 		
+		IS_Event.observe(fontSizeSelect, "click", function(e){
+			if(window.event){
+				window.event.cancelBubble = true;
+			}
+			if(e && e.stopPropagation){
+				e.stopPropagation();
+			}
+		});
+
+	//font change for outside (3 icon ver.)
 	}else{
-		//font change for outside (3 icon ver.)
-		fontChangeDiv.style.width = "40px";
-		fontChangeDiv.className = "fontChangeDiv";
+		fontEl.className = 'fontChangeDiv';
 		
 		var fontChangeDivDel = document.createElement("div");
-		fontChangeDivDel.className = "fontChange_small";
+		fontChangeDivDel.id = "fontChange_small";
+		fontChangeDivDel.className = 'portal-user-menu-item-label';
 		fontChangeDivDel.title = IS_R.lb_resizeFont +' '+ IS_R.lb_resizeFontSmaller;
 		
 		var fontChangeDivSta = document.createElement("div");
-		fontChangeDivSta.className = "fontChange_standard";
+		fontChangeDivSta.id = "fontChange_standard";
+		fontChangeDivSta.className = 'portal-user-menu-item-label';
 		fontChangeDivSta.title = IS_R.lb_resizeFont +' '+ IS_R.lb_resizeFontNormal;
 		
 		var fontChangeDivAdd = document.createElement("div");
-		fontChangeDivAdd.className = "fontChange_large";
+		fontChangeDivAdd.id = "fontChange_large";
+		fontChangeDivAdd.className = 'portal-user-menu-item-label';
 		fontChangeDivAdd.title = IS_R.lb_resizeFont +' '+ IS_R.lb_resizeFontLarger;
 		
-		fontChangeDiv.appendChild(fontChangeDivDel);
-		fontChangeDiv.appendChild(fontChangeDivSta);
-		fontChangeDiv.appendChild(fontChangeDivAdd);
+		var fontChangeDivDelA = $.A({className:'portal-user-menu-link fontChange', href:'#'}, fontChangeDivDel);
+		var fontChangeDivStaA = $.A({className:'portal-user-menu-link fontChange', href:'#'}, fontChangeDivSta);
+		var fontChangeDivAddA = $.A({className:'portal-user-menu-link fontChange', href:'#'}, fontChangeDivAdd);
+
+		fontChangeDivDelA.width = fontChangeDivDelA.offsetWidth;
 		
-		if( Browser.isSafari1 )
-			return;
-		
-		function setButtonActionEvent(element, eventName, type){
-			IS_Event.observe(element, eventName, function(){
-				setBorder(element, type);
-			}, false, "_fontchange");
-		}
-		function setBorder(element, type){
-			element.style.border = "";
-			if(type == "inset"){
-				element.style.borderTop = "1px solid #A9A9A9";
-				element.style.borderLeft = "1px solid #A9A9A9";
-			}
-			else if(type == "outset"){
-				currentFontDiv = element;
-				element.style.borderRight = "1px solid #A9A9A9";
-				element.style.borderBottom = "1px solid #A9A9A9";
-			}
-		}
-		
-		setButtonActionEvent(fontChangeDivAdd, "mouseover", "outset");
-		setButtonActionEvent(fontChangeDivSta, "mouseover", "outset");
-		setButtonActionEvent(fontChangeDivDel, "mouseover", "outset");
-		
-		setButtonActionEvent(fontChangeDivAdd, "mousedown", "inset");
-		setButtonActionEvent(fontChangeDivSta, "mousedown", "inset");
-		setButtonActionEvent(fontChangeDivDel, "mousedown", "inset");
-		
-		setButtonActionEvent(fontChangeDivAdd, "mouseout", null);
-		setButtonActionEvent(fontChangeDivSta, "mouseout", null);
-		setButtonActionEvent(fontChangeDivDel, "mouseout", null);
+		fontEl.appendChild(fontChangeDivDelA);
+		fontEl.appendChild(fontChangeDivStaA);
+		fontEl.appendChild(fontChangeDivAddA);
 		
 		IS_Event.observe(fontChangeDivAdd, "mouseup", function(){
-				setBorder(fontChangeDivAdd, "outset");
 				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) + 20) + "%");
 			}, false, "_fontchange");
 		IS_Event.observe(fontChangeDivSta, "mouseup", function(){
-				setBorder(fontChangeDivSta, "outset");
 				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize)) + "%");
 			}, false, "_fontchange");
 		IS_Event.observe(fontChangeDivDel, "mouseup", function(){
-				setBorder(fontChangeDivDel, "outset");
 				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) - 20) + "%");
 			}, false, "_fontchange");
 
-		if(fontEl.parentNode && fontChangeDiv.offsetWidth)//Setting width of command bar
-			fontEl.parentNode.style.width = fontChangeDiv.offsetWidth;
+		if(fontEl.parentNode && fontEl.offsetWidth)//Setting width of command bar
+			Element.setStyle(fontEl, {width: fontEl.offsetWidth * 3 });
 	}
 };
 
@@ -1934,8 +1910,6 @@ IS_Portal.buildCredentialList = function(){
 				, IS_R.lb_credentialList
 			)
 		);
-		if(portalCredentialListDiv.parentNode)//Setting of command bar width.
-			 portalCredentialListDiv.parentNode.style.width = credentialListIcon.offsetWidth;
 		
 		IS_Event.observe(credentialListIcon, 'mouseover', function(){
 			IS_Event.unloadCache('_portalCredentialListInit');
@@ -2080,7 +2054,7 @@ IS_Portal.buildAdminLink = function(){
 		return;
 	}
 	if(!is_isAdministrator) {
-		//TODO hide div if not an admin
+		// hide div if not an admin
 		adminLink.hide();
 		return;
 	}
@@ -2093,20 +2067,12 @@ IS_Portal.buildAdminLink = function(){
 	var adminLinkDiv =$.A({className:'portal-user-menu-link', href:'javascript:void(0);', title:IS_R.lb_adminLink}, adminLabel);
 	adminLink.appendChild(adminLinkDiv);
 
-	if(adminLink.parentNode)
-		adminLink.parentNode.style.width = adminLabel.offsetWidth+"px";
-	
 	Event.observe( adminLink, "click", function( e ) {
 		window.open("admin");
 		$('portal-user-menu-body').hide();
 		Event.stop( e )
 	});
-	
-	if(adminLink.parentNode && adminLink.offsetWidth)//Setting width of command bar
-		adminLink.parentNode.style.width = adminLink.offsetWidth;
-	//if( Browser.isIE )
-	//	adminLink.style.width = adminLink.offsetWidth+"px";
-}
+};
 
 IS_Portal.buildLogout = function() {
 	var logout = $("portal-logout");
@@ -2118,7 +2084,7 @@ IS_Portal.buildLogout = function() {
 	}
 	// don't display "Logout", while no user logged in.
 	if( !is_userId ){
-		logout.parentNode.style.display = "none";
+		Element.setStyle(logout.parentNode,{display: "none"});
 		return;
 	}
 	
@@ -2135,8 +2101,6 @@ IS_Portal.buildLogout = function() {
 		location.href = "logout";
 	});
 	logout.appendChild(logoutDiv);
-	if( logout.parentNode )
-		logout.parentNode.style.width = logout.offsetWidth +"px";
 };
 
 IS_Portal.buildLogo = function() {
@@ -2265,20 +2229,24 @@ IS_Portal.CommandBar = {
 	commandbarWidgets : [],
 	init : function(){
 		this.elm_commandbar = $('portal-command');
+		if(Browser.isIE){
+			this.elm_commandbar.childNodes[0].cellSpacing = '0';
+		}
 		var portalUserMenu = $('portal-user-menu');
 		var portalUserMenuLabel = $('portal-user-menu-label');
-		//if user name is long, limit user menu width 150
-		//TODO better to use css instead of script for max-width
+		//IE: if user name is long, limit user menu width 150
 		if(Browser.isIE && portalUserMenuLabel.offsetWidth > 150){
-			portalUserMenu.parentNode.style.width = portalUserMenu.style.width = 150 + 'px';
-			portalUserMenuLabel.style.width = 140;
+			Element.setStyle(portalUserMenu, {width: '150px'});
+			Element.setStyle(portalUserMenuLabel, {width: '140px'});
 		}
 		
 		var commandBarItems =  this.elm_commandbar.getElementsByTagName('tr')[0].childNodes;
 		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', style:'display:none;'});
 		
 		Event.observe(portalUserMenuBody, "click", function(e){
+			console.log('click event');
 			$(this).hide();
+			$('userMenuCloser').hide();
 			Event.stop(e);
 		}.bind(portalUserMenuBody));
 		
@@ -2298,23 +2266,39 @@ IS_Portal.CommandBar = {
 			}
 			this.commandbarWidgetDivs[itemId] = itemDiv;
 			itemDiv.className = 'commandbar-item';
-			// portal user menu
+			// put into portal user menu
 			if(!itemDiv.getAttribute("outside") && !itemDiv.getAttribute('disabledCommand')){
 				// hide empty td
 				if(!Browser.isIE)
 					$(itemDiv.parentNode).hide();
 				itemDiv.className = 'portal-user-menu-item';
 				portalUserMenuBody.appendChild(itemDiv);
+				
+				// stop event propergation if the item is a link that user added
+				if(/w_1$/.test(itemDiv.id)){
+					Event.observe(itemDiv, 'click', function(e){
+						if(window.event){
+							window.event.cancelBubble = true;
+						}
+						if(e && e.stopPropagation){
+							e.stopPropagation();
+						}
+						portalUserMenuBody.hide();
+						$("userMenuCloser").hide();
+					});
+				}
 			}
-			// remove label if a menu is displayed outside
-			else if(itemDiv.getElementsByTagName('a').length && itemDiv.id != 'portal-logo'){
-				itemDiv.getElementsByTagName('a')[0].childNodes[0].innerHTML = '';
-				itemDiv.style.width = itemDiv.parentNode.style.width = '30px';
-			}
-
-			//display all menu items after marged to user menu
-			if(itemDiv.id != 'portal-go-home' && itemDiv.style.display == 'none'){
-				itemDiv.show();
+			// remove label if a menu is displayed outside (except for user added link)
+			else if(itemDiv.getElementsByTagName('a').length && itemDiv.id != 'portal-logo' && itemDiv.id != 'portal-change-fontsize'){
+				if(/w_1$/.test(itemDiv.id)){
+					Element.setStyle(itemDiv, {width: itemDiv.offsetWidth});
+				}
+				else{
+					var labelA =itemDiv.getElementsByTagName('a')[0].childNodes[0];
+					labelA.innerHTML = '';
+					Element.setStyle(itemDiv, {width:'30px'});
+					Element.setStyle(labelA, {backgroundPosition : 'center center'});
+				}
 			}
 		}
 
@@ -2326,22 +2310,29 @@ IS_Portal.CommandBar = {
 		}
 		if(portalUserMenuBody.childNodes.length != 0){
 			portalUserMenu.title = is_userName? is_userName : "";
-			portalUserMenu.style.background = 'url(./skin/imgs/user_menu_collapse.gif) no-repeat center right';
-			portalUserMenu.style.cursor = 'pointer';
+			Element.setStyle(portalUserMenu, {
+				background: 'url(./skin/imgs/user_menu_collapse.gif) no-repeat center right'
+				, cursor: 'pointer'
+			});
 			
 			//loginID mouseover and mouseout
 			Event.observe(portalUserMenu, "mouseover", function(){
 				// change background color to white
 				if($("portal-user-menu-body").style.display != 'none') return;
-				$("portal-user-menu").parentNode.style.backgroundColor = '#5286BB';
-				$('portal-user-menu').style.color = '#fff';
+				//TODO write in css if possible
+				Element.setStyle($("portal-user-menu"),{
+					backgroundColor : '#5286BB'
+					, color : '#fff'
+				});
 			});
 			
 			var menu_mouseout = function(){
 				// change background color to normal
-				$("portal-user-menu").parentNode.style.backgroundColor = '#e6e6e6';
-				$('portal-user-menu').style.color = '#000';
-			}
+				Element.setStyle($("portal-user-menu"),{
+					backgroundColor : ''
+					, color : ''
+				});
+			};
 			Event.observe(portalUserMenu, "mouseout", menu_mouseout);
 			
 			// when not login.
@@ -2349,7 +2340,7 @@ IS_Portal.CommandBar = {
 				var loginLink = $("portal-loginLink");
 				Event.observe(loginLink, "mouseover", function(e){
 					menu_mouseout();
-					Event.stop(e)
+					Event.stop(e);
 				});
 				Event.observe(loginLink, 'click', function(e){
 					if(window.event){
@@ -2365,13 +2356,17 @@ IS_Portal.CommandBar = {
 				$("portal-user-menu-body").hide();
 				$("userMenuCloser").hide();
 				Event.stop( e );
-				$("portal-user-menu").parentNode.style.backgroundColor = '#e6e6e6';
+				Element.setStyle($("portal-user-menu").parentNode, {backgroundColor: ''});
 			};
-			// loginID clicked	
+			// loginID clicked
 			IS_Event.observe(portalUserMenu, "click", function(e){
 				$("portal-user-menu-body").show();
-				var targetPosition = Position.page($("messageIcon"));
-				$("portal-user-menu-body").style.left = targetPosition[0] - $("portal-user-menu-body").offsetWidth;
+				Element.setStyle($("portal-user-menu-body"), {width: $("portal-user-menu-body").offsetWidth});
+				var targetPosition = Position.page($("portal-user-menu"));
+				Element.setStyle($("portal-user-menu-body"), {
+					left: targetPosition[0] - $("portal-user-menu-body").offsetWidth + $("portal-user-menu").offsetWidth
+					, top: targetPosition[1] + $("portal-user-menu").offsetHeight
+				});
 				if(!$('userMenuCloser')){
 					var winX = Math.max(document.body.scrollWidth, document.body.clientWidth);
 					var winY = Math.max(document.body.scrollHeight, document.body.clientHeight);
@@ -2380,15 +2375,16 @@ IS_Portal.CommandBar = {
 						, className:'widgetMenuCloser'
 					});
 					document.body.appendChild( closer );
-					closer.style.width = winX;
-					closer.style.height = winY;
-					closer.style.display = "";
+					Element.setStyle(closer, {
+						width: winX,
+						height: winY,
+						display: ''
+					});
 					
 					IS_Event.observe(closer, 'mousedown', closeMenu, true);
 					IS_Event.observe($("portal-user-menu-body"), "mouseover", function(){
 						// change background color to normal
-						$("portal-user-menu").parentNode.style.backgroundColor = '#e6e6e6';
-						$('portal-user-menu').style.color = '#000';
+						$("portal-user-menu").parentNode.style.backgroundColor = $('portal-user-menu').style.color = '';
 					}, "_portalUserMenu");
 					Event.observe(window, 'resize', closeMenu, true);
 				}else{
@@ -2396,8 +2392,6 @@ IS_Portal.CommandBar = {
 				}
 			});
 		}
-		//TODO close user menu if a menu is clicked
-//		IS_Event.observe($("portal-user-menu-body"), "click", closeMenu, true, "_portalUserMenuBody");
 	},
 	show : function(){
 		$("command-bar").show();

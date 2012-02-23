@@ -16,53 +16,55 @@
  */
  
 #portal-searchform{
-	background-color: #e6e6e6;
 	position: relative;
-	z-index:20000;
+	margin: -1px 2px 0px 2px;
+	_margin-top: 1px;
 }
 
 #searchForm{
-	height: 24px;
-	width: 175px;
+	height: 22px;
+	width: 174px;
 	margin-bottom: 0px; /* for IE layout */
-	background-color: #e6e6e6;
 	background: url(./imgs/searchform_right.gif) no-repeat right top;
 	position: relative;
 }
 
 #searchTextInput{
 	vertical-align: top;
-	height: 24px;
+	height: 22px;
 	width: 127px;
-	border-top:1px solid #aaa;
-	border-bottom:1px solid #aaa;
+	border-top:1px solid #b7b7b7;
+	border-bottom:1px solid #b7b7b7;
 	border-right: 0px;
 	border-left: 0px;
+	_position: absolute; /* for IE6 only */
+	_top: 0; /* for IE6 only */
 }
 
 #searchSubmit{
-	height: 22px;
+	height: 20px;
 	width: 22px;
 	background-color: #fff;
-	border-top: 1px solid #aaa;
-	border-bottom: 1px solid #aaa;
+	border-top: 1px solid #b7b7b7;
+	border-bottom: 1px solid #b7b7b7;
 	cursor : pointer;
 }
 
 #editsearchoption {
-	height: 24px;
+	height: 22px;
 	width: 13px;
+	_margin-left: 2px; /* for IE */
 	cursor : pointer;
 	display: inline;
 }
 
 #searchoption{
 	font-size: 12px;
-	border: 1px solid #aaa;
+	border: 1px solid #b7b7b7;
 	width: 190px;
 	background-color:#fff;
 	position: absolute;
-	top: 26px;
+	top: 24px;
 	left: 0px;
 	z-index: 80000;
 }

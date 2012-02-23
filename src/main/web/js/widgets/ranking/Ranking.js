@@ -215,8 +215,16 @@ IS_Widget.Ranking.toggleRanking = function(e, obj, widgetId) {
 	if(rankingOuterDiv.style.display == 'none') {
 		rankingOuterDiv.style.display = '';
 		if(!rankingOuterDiv.parentNode.getAttribute('outside')){
-			rankingOuterDiv.style.top = '0px';
-			rankingOuterDiv.style.left = '-300px';
+			Element.setStyle(rankingOuterDiv, {
+				left : -300
+				, top: 0
+			});
+		}else{
+			var targetPosition = Position.page($("command-ranking"));
+			Element.setStyle(rankingOuterDiv, {
+				left : targetPosition[0]
+				, top: targetPosition[1] + $("command-ranking").offsetHeight + 1
+			});
 		}
 		//rankingOuterDiv.style.left = getWindowSize(true) - rankingOuterDiv.offsetWidth - 25;
 		Event.observe(window, "resize", IS_Widget.Ranking.handleResize, false);
