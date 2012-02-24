@@ -20,26 +20,34 @@ package org.infoscoop.batch.migration.v300to310;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.Target;
 import org.apache.xerces.parsers.DOMParser;
+import org.apache.xpath.XPathAPI;
 import org.cyberneko.html.HTMLConfiguration;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.infoscoop.batch.migration.HibernateBeansTask;
+import org.infoscoop.batch.migration.SQLTask;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.util.SpringUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.traversal.NodeIterator;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -118,6 +126,17 @@ public class TabLayoutTask implements HibernateBeansTask.BeanTask2 {
 				Element go_home = getElementById(root, "portal-go-home");
 				if(go_home != null && go_home.getParentNode() != null && go_home.getParentNode().getParentNode() != null){
 					go_home.getParentNode().getParentNode().removeChild(go_home.getParentNode());
+				}
+				
+				// add class="commandbar-item"
+				try {
+					NodeIterator nodeIte = XPathAPI.selectNodeIterator(root, "//tr/td/div");
+					Element itemDiv = null;
+					while((itemDiv = (Element)nodeIte.nextNode()) != null){
+						itemDiv.setAttribute("class", "commandbar-item");
+					}
+				} catch (TransformerException e) {
+					e.printStackTrace();
 				}
 				
 				String newLayout = dom2String(root, "UTF-8");
@@ -211,7 +230,9 @@ public class TabLayoutTask implements HibernateBeansTask.BeanTask2 {
 			TransformerFactory factory = TransformerFactory.newInstance();
 			Transformer transformer = factory.newTransformer();
 			
-			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			transformer.setOutputProperty(OutputKeys.INDENT, "no");
+			transformer.setOutputProperty(OutputKeys.METHOD, "html");
+//			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, encoding);
 			
 			transformer.transform(source, result);
@@ -226,6 +247,17 @@ public class TabLayoutTask implements HibernateBeansTask.BeanTask2 {
 		SessionFactory sessionFactory = ( SessionFactory )SQLTask.getContext().getBean("sessionFactory");
 		Session session = sessionFactory.openSession();
 		
+		class DummyProject extends Project {
+			@Override
+			public void log(String message) {
+				System.out.println(message);
+			}
+			@Override
+			public void log(Target target, String message, int msgLevel) {
+				System.out.println(message);
+			}
+		}
+		
 		try {
 			String queryString = "from TabLayout";
 			
@@ -236,7 +268,7 @@ public class TabLayoutTask implements HibernateBeansTask.BeanTask2 {
 			for( int i=0;i<objects.size();i++ ) {
 				Object object = objects.get( i );
 					
-				task.execute( null,object );
+				task.execute( new DummyProject(),object );
 				session.update( object );
 			}
 			session.flush();
