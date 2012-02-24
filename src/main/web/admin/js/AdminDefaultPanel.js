@@ -197,11 +197,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				commandDiv.style.whiteSpace = "nowrap";
 
 				var commandA = document.createElement("a");
-				var label = $.DIV({className: 'portal-user-menu-item-label user-link'}, title);
-				commandA.appendChild(label);
+				commandA.appendChild(document.createTextNode(title));
 				commandA.href = ISA_Admin.trim( $("panelAddCommandBarUrl").value );
-				commandA.title = title;
-				commandA.className = 'portal-user-menu-link';
 				if($("panelAddCommandBarNewwindow").checked){
 					commandA.target = "_blank";
 				} else {
@@ -1655,14 +1652,14 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		commandBarListTh = document.createElement("td");
 		commandBarListTh.className = "headerDefaultPanel";
 		commandBarListTh.style.whiteSpace = "nowrap";
-		commandBarListTh.style.width = "100px";
+		commandBarListTh.style.width = "60px";
 		commandBarListTh.appendChild(document.createTextNode(ISA_R.alb_order));
 		commandBarListTr.appendChild(commandBarListTh);
 
 		commandBarListTh = document.createElement("td");
 		commandBarListTh.className = "headerDefaultPanel";
 		commandBarListTh.style.whiteSpace = "nowrap";
-		commandBarListTh.style.width = "200px";
+		commandBarListTh.style.width = "240px";
 		commandBarListTh.appendChild(document.createTextNode(ISA_R.alb_displayOrNot));
 		commandBarListTr.appendChild(commandBarListTh);
 
@@ -1766,7 +1763,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		commandBarTd.style.textAlign = "center";
 		commandBarTr.appendChild(commandBarTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "90px";
+		contentDiv.style.width = "50px";
 		contentDiv.className = "handle";
 		var commandBarA = document.createElement("a");
 		commandBarA.style.cursor = "move";
@@ -1787,7 +1784,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		commandBarTd = document.createElement("td");
 		commandBarTr.appendChild(commandBarTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "190px";
+		contentDiv.style.width = "230px";
 		contentDiv.className = "contentsDefaultPanel";
 		contentDiv.id = "disp_" + commandBarItem.id;
 		var td = getParentTdElement(commandBarItem.id);
@@ -1884,7 +1881,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		commandBarTd.style.textAlign = "center";
 		commandBarTr.appendChild(commandBarTd);
 		contentDiv = document.createElement("div");
-		contentDiv.style.width = "40px";
+		contentDiv.style.width = "50px";
 		contentDiv.className = "contentsDefaultPanel";
 		if(self.commandBarEditor[commandBarItem.type]){
 			var editor = self.commandBarEditor[commandBarItem.type];
@@ -1990,6 +1987,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	this.addCommandBar = function(commandDiv) {
 		var existDiv = $(commandDiv.id);
 		if(existDiv) {
+			var outside = existDiv.getAttribute("outside");
+			if(getBooleanValue(outside))
+				commandDiv.setAttribute("outside", "true");
 			existDiv.parentNode.replaceChild(commandDiv, existDiv);
 		} else {
 			var commandTd = document.createElement("td");
@@ -2010,6 +2010,15 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		Change layout of hiding CommandBar
 	*/
 	this.changeCommandBarLayout = function() {
+		
+		var commandBarItems = this.workContainer.getElementsByTagName('tr')[0].childNodes;
+		for(var i = 0; i < commandBarItems.length; i++){
+			if(commandBarItems[i].nodeType != 1)
+				continue;
+			var itemDiv = commandBarItems[i].getElementsByTagName('div')[0];
+			itemDiv.className = 'commandbar-item';
+		}
+		
 		this.displayRoleJsons[this.displayRoleId].layout = this.workContainer.innerHTML;
 		this.isUpdated = true;
 		ISA_Admin.isUpdated = true;
