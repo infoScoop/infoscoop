@@ -825,7 +825,7 @@ IS_Widget.prototype.classDef = function() {
 		self.iframe.id = "ifrm_" + self.id;
 		self.iframe.name = "ifrm_" + self.id;
 
-		if(this.hasFeature("pubsub-2")){
+		if(this.hasFeature("pubsub-2") && self.id.indexOf("previewWidget_") < 0){
 			// for IframeContainer callback
 			if(!window["__gadgetOnLoad"])
 				window["__gadgetOnLoad"] = function(gadgetUrl){};
@@ -853,6 +853,10 @@ IS_Widget.prototype.classDef = function() {
 			);
 			self.iframe = oaIframeContainer.getIframe();
 			IS_Event.observe(this.iframe, "load", function(){ IS_EventDispatcher.newEvent('loadComplete', this.id, null);}.bind(this), false, this.closeId);
+			
+			IS_EventDispatcher.addListener('closeWidget',self.id.substring(2),function(){
+				gadgets.pubsub2router.hub.removeContainer(this);
+			}.bind(oaIframeContainer), this, true);
 		}
 		
 		self.iframe.frameBorder = 0;
