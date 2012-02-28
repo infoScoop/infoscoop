@@ -261,7 +261,7 @@ if( isPreview == null )
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" id="command-bar">
 			<tbody>
 				<tr>
-					<td width="100%"><div id="portal-command"></div></td>
+					<td width="100%"><div id="portal-command" style="visibility:hidden;"></div></td>
 					<td>
 						<div id="portal-user-menu">
 							<div id="portal-user-menu-label">

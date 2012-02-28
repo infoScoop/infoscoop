@@ -101,10 +101,6 @@ IS_Portal.start = function() {
 	IS_Portal.SearchEngines.init();
 
 	var command = document.getElementById("portal-command");
-	Element.setStyle(command, {
-		position: 'relative'
-		, left: '-99999px'
-	});
 	command.innerHTML = IS_Customization.commandbar;
 	IS_Portal.buildLogo();
 	IS_Portal.buildFontSelectDiv();
@@ -2320,7 +2316,7 @@ IS_Portal.CommandBar = {
 		}
 
 		if(!this.hasCommandBar){
-			$("portal-command").hide();
+			$("command-bar").hide();
 		}
 		else{
 			IS_Portal.CommandBar.show();
@@ -2412,7 +2408,7 @@ IS_Portal.CommandBar = {
 	},
 	show : function(){
 		$("portal-command").setStyle({
-			position: ''
+			visibility: 'visible'
 		});
 	},
 	changeDefaultView : function(){
