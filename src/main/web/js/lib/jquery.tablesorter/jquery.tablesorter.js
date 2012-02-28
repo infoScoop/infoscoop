@@ -785,7 +785,8 @@
                         }
                     });
                     // apply easy methods that trigger binded events
-                    $this.bind("update", function () {
+                    //prototypeの競合エラーを避けるため、updateをupdateTableにしました
+                    $this.bind("updateTable", function () {
                         var me = this;
                         setTimeout(function () {
                             // rebuild parsers.
@@ -802,16 +803,20 @@
                         cache.normalized[pos[0]][pos[1]] = config.parsers[pos[1]].format(
                         getElementText(config, cell), cell);
                     }).bind("sorton", function (e, list) {
-                        $(this).trigger("sortStart");
-                        config.sortList = list;
-                        // update and store the sortlist
-                        var sortList = config.sortList;
-                        // update header count index
-                        updateHeaderSortCount(this, sortList);
-                        // set css for headers
-                        setHeadersCss(this, $headers, sortList, sortCSS);
-                        // sort the table and append it to the dom
-                        appendToTable(this, multisort(this, sortList, cache));
+                    　//batchを当てたところ
+                    	var totalRows = ($(this)[0].tBodies[0] && $(this)[0].tBodies[0].rows.length) || 0;
+                    	if (totalRows > 0) {
+                    		$(this).trigger("sortStart");
+                    		config.sortList = list;
+                    		// update and store the sortlist
+                    		var sortList = config.sortList;
+                    		// update header count index
+                    		updateHeaderSortCount(this,sortList);
+                    		//set css for headers
+                    		setHeadersCss(this,$headers,sortList,sortCSS);
+                    		// sort the table and append it to the dom
+                    		appendToTable(this,multisort(this,sortList,cache));
+                    	}
                     }).bind("appendCache", function () {
                         appendToTable(this, cache);
                     }).bind("applyWidgetId", function (e, id) {

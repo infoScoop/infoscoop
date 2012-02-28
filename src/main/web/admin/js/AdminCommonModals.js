@@ -207,15 +207,7 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 			editorFormFieldDiv.id = 'editorFormFieldDiv';
 			self.loadEditorForm(editorFormFieldDiv);
 			self.currentModal.update(editorFormFieldDiv);
-			
-			jQuery("#authorizationTable").tablesorter({
-				sortList : [ [ 0, 0 ] ],
-				headers : {
-					2 : {
-						sorter : false
-					}
-				}
-			});
+
 //			
 //			var editPanel = document.getElementById('treeMenuEditPanel');
 //			editPanel.appendChild(editorFormFieldDiv);
@@ -1612,6 +1604,8 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 			if (!disabled)
 				IS_Event.observe(trashImg, 'click', makeDelFunc(authObj, authTr));
 			authorizations.push(authObj);
+			
+			jQuery("#authorizationTable").trigger("updateTable");
 		}
 		function makeDelFunc(authObj, delAuthTr){
 			return function(e){
@@ -1623,6 +1617,7 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 				}
 				authorizations = tempAuths;
 				delAuthTr.parentNode.removeChild(delAuthTr);
+				jQuery("#authorizationTable").trigger("updateTable");
 			}
 			
 		}
@@ -1688,6 +1683,15 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 				
 			}
 		}
+		jQuery(authTable).tablesorter({
+			sortList : [ [ 0, 0 ] ],
+			headers : {
+				2 : {
+					sorter : false
+				}
+			}
+		});
+		
 		aclEditorFormDiv.appendChild(authTable);
 		publicDiv.appendChild(aclEditorFormDiv);
 		
