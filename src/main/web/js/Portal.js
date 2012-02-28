@@ -101,6 +101,10 @@ IS_Portal.start = function() {
 	IS_Portal.SearchEngines.init();
 
 	var command = document.getElementById("portal-command");
+	Element.setStyle(command, {
+		position: 'relative'
+		, left: '-99999px'
+	});
 	command.innerHTML = IS_Customization.commandbar;
 	IS_Portal.buildLogo();
 	IS_Portal.buildFontSelectDiv();
@@ -1600,7 +1604,7 @@ IS_Portal.buildFontSelectDiv = function(){
 
 	//font change for outside (3 icon ver.)
 	}else{
-		fontEl.className = 'fontChangeDiv';
+		fontEl.className = 'commandbar-item fontChangeDiv';
 		
 		var fontChangeDivDel = document.createElement("div");
 		fontChangeDivDel.id = "fontChange_small";
@@ -1636,9 +1640,16 @@ IS_Portal.buildFontSelectDiv = function(){
 		IS_Event.observe(fontChangeDivDel, "mouseup", function(){
 				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) - 20) + "%");
 			}, false, "_fontchange");
-
-		if(fontEl.parentNode && fontEl.offsetWidth)//Setting width of command bar
-			Element.setStyle(fontEl, {width: fontEl.offsetWidth * 3 });
+		
+		//Setting width of command bar
+		if(fontEl.parentNode && fontEl.offsetWidth && !Browser.isSafari){
+			Element.setStyle(fontEl, {width: fontEl.offsetWidth * 3});
+			Element.setStyle(fontEl.parentNode, {width: fontEl.style.width});
+		}else{
+			console.log(fontEl.offsetWidth);
+			Element.setStyle(fontEl, {width: fontEl.offsetWidth +1});
+			Element.setStyle(fontEl.parentNode, {width: fontEl.style.width});
+		}
 	}
 };
 
@@ -2240,11 +2251,10 @@ IS_Portal.CommandBar = {
 			Element.setStyle(portalUserMenuLabel, {width: '140px'});
 		}
 		
-		var commandBarItems =  this.elm_commandbar.getElementsByTagName('tr')[0].childNodes;
+		var commandBarItems = $$(".commandbar-item");
 		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', style:'display:none;'});
 		
 		Event.observe(portalUserMenuBody, "click", function(e){
-			console.log('click event');
 			$(this).hide();
 			$('userMenuCloser').hide();
 			Event.stop(e);
@@ -2252,12 +2262,9 @@ IS_Portal.CommandBar = {
 		
 		portalUserMenu.parentNode.appendChild(portalUserMenuBody);
 		for(var i = 0; i < commandBarItems.length; i++){
-			if(commandBarItems[i].nodeType != 1)
-				continue;
-			var itemDiv = commandBarItems[i].getElementsByTagName('div')[0];
+			var itemDiv = commandBarItems[i];
 			if(!/^disabled/.test(itemDiv.id))
 				this.hasCommandBar = true;
-			itemDiv = $(itemDiv);
 			var itemId = itemDiv.id.replace(/^s_/, "");
 			
 			var cmdBarWidget = IS_Portal.getWidget(itemId, IS_Portal.currentTabId);
@@ -2265,12 +2272,21 @@ IS_Portal.CommandBar = {
 				this.commandbarWidgets[itemId] = cmdBarWidget;
 			}
 			this.commandbarWidgetDivs[itemId] = itemDiv;
-			itemDiv.className = 'commandbar-item';
+			
+			// re-form user added link menu
+			if(/w_1$/.test(itemDiv.id) && itemDiv.getAttribute('type') == 'link'){
+				var userLinkA = itemDiv.childNodes[0];
+				userLinkA.className = 'portal-user-menu-link user-link';
+				var userLinkLabel = $.DIV({className: 'portal-user-menu-item-label'}, userLinkA.innerHTML);
+				userLinkA.innerHTML = '';
+				userLinkA.appendChild(userLinkLabel);
+			}
 			// put into portal user menu
 			if(!itemDiv.getAttribute("outside") && !itemDiv.getAttribute('disabledCommand')){
 				// hide empty td
 				if(!Browser.isIE)
 					$(itemDiv.parentNode).hide();
+				
 				itemDiv.className = 'portal-user-menu-item';
 				portalUserMenuBody.appendChild(itemDiv);
 				
@@ -2288,9 +2304,10 @@ IS_Portal.CommandBar = {
 					});
 				}
 			}
-			// remove label if a menu is displayed outside (except for user added link)
-			else if(itemDiv.getElementsByTagName('a').length && itemDiv.id != 'portal-logo' && itemDiv.id != 'portal-change-fontsize'){
+			// remove label from command bar menu if a menu is displayed outside (except for user added link)
+			else if(itemDiv.getElementsByTagName('a')[0] && itemDiv.id != 'portal-logo' && itemDiv.id != 'portal-change-fontsize' && itemDiv.id != 'portal-searchform' && itemDiv.id != 's_p_1_w_4'){
 				if(/w_1$/.test(itemDiv.id)){
+					// for IE layout
 					Element.setStyle(itemDiv, {width: itemDiv.offsetWidth});
 				}
 				else{
@@ -2303,7 +2320,7 @@ IS_Portal.CommandBar = {
 		}
 
 		if(!this.hasCommandBar){
-			$("command-bar").hide();
+			$("portal-command").hide();
 		}
 		else{
 			IS_Portal.CommandBar.show();
@@ -2394,8 +2411,9 @@ IS_Portal.CommandBar = {
 		}
 	},
 	show : function(){
-		$("command-bar").show();
-		$("command-bar").setStyle({visibility:"visible"});
+		$("portal-command").setStyle({
+			position: ''
+		});
 	},
 	changeDefaultView : function(){
 		var goHome = $("portal-go-home");

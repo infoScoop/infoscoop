@@ -264,7 +264,7 @@ div#portal-command > table{
 .commandbar-item{
 	margin: auto;
 	width: 99%;
-	white-space: nowrap;
+	white-space: nowrap; /* for IE */
 }
 
 /** user menu */

@@ -179,13 +179,16 @@ IS_Widget.Ranking.buildCommandBar = function( widgetId ){
 		containerDiv.setAttribute(attrs[i].nodeName, attrs[i].nodeValue);
 	}
 	containerDiv.id = "s_" + widgetId + "_container";
+	// copy class name and remove from original (original is for easier migration)
+	containerDiv.className = rankingWidgetDiv.className;
+	rankingWidgetDiv.className ='';
 	
 	var commandBarTd = rankingWidgetDiv.parentNode;
 	commandBarTd.appendChild(containerDiv);
 	
 	commandBarTd.removeChild(rankingWidgetDiv);
 	var commandBarRankingDiv = document.createElement("a");
-	commandBarRankingDiv.className = "portal-user-menu-link"; //"command ranking portal-user-menu-link";
+	commandBarRankingDiv.className = "portal-user-menu-link";
 	commandBarRankingDiv.href = 'javascript:void(0);';
 	commandBarRankingDiv.title = IS_R.lb_ranking;
 	commandBarRankingDiv.appendChild(
@@ -216,7 +219,7 @@ IS_Widget.Ranking.toggleRanking = function(e, obj, widgetId) {
 		rankingOuterDiv.style.display = '';
 		if(!rankingOuterDiv.parentNode.getAttribute('outside')){
 			Element.setStyle(rankingOuterDiv, {
-				left : -300
+				left : - rankingOuterDiv.offsetWidth
 				, top: 0
 			});
 		}else{
