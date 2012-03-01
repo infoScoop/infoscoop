@@ -83,6 +83,9 @@ public class PersonServiceImpl implements PersonService {
 	      SearchUserService search = (SearchUserService) SpringUtil.getBean("searchUserService");
 	      for(Iterator<String> itr = idSet.iterator();itr.hasNext();){
 	    	  IAccount account = getUser(itr.next(), search);
+	    	  if(account == null)
+	    		  continue;
+	    	  
 		      JSONObject person = new JSONObject();
 		      person.put(Person.Field.ID.toString(), account.getUid());
 	    	  Person personObj = getPersonObject(filterFields(person, fields, Person.class), account);

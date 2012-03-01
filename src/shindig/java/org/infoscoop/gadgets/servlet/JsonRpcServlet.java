@@ -43,6 +43,7 @@ import org.apache.shindig.protocol.RestfulCollection;
 import org.apache.shindig.protocol.RpcHandler;
 import org.apache.shindig.protocol.multipart.FormDataItem;
 import org.apache.shindig.protocol.multipart.MultipartFormParser;
+import org.infoscoop.acl.SecurityController;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -116,7 +117,8 @@ public class JsonRpcServlet extends ApiServlet {
     String appUrl = servletRequest.getHeader("x-is-gadgeturl");
     String containerUrl = servletRequest.getHeader("x-is-hostprefix");
     String moduleId = servletRequest.getHeader("x-is-moduleid");
-    SecurityToken token = new DefaultSecurityToken(containerUrl, appUrl, moduleId);
+    String uid = SecurityController.getPrincipalByType("UIDPrincipal").getName();
+    SecurityToken token = new DefaultSecurityToken(containerUrl, appUrl, moduleId, uid, uid);
     
     try {
       String content = null;
@@ -376,10 +378,12 @@ public class JsonRpcServlet extends ApiServlet {
   
   class DefaultSecurityToken extends AbstractSecurityToken{
 	
-	public DefaultSecurityToken(String container, String appUrl, String appId){
+	public DefaultSecurityToken(String container, String appUrl, String appId, String viewerId, String ownerId){
 		super.setContainer(container);
 		super.setAppUrl(appUrl);
 		super.setAppId(appId);
+		super.setViewerId(viewerId);
+		super.setOwnerId(ownerId);
 	}
 	
 	public String getUpdatedToken() {
