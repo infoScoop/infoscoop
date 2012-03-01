@@ -886,6 +886,17 @@ function _saveDynamicPanel(){
 
 function updatePanel(){
 	openerPanel.isUpdated = true;
+	
+	// sync
+	for(var i in jsonRole.staticPanel){
+		if(jsonRole.staticPanel[i] && jsonRole.staticPanel[i].id){
+			var widgetId = jsonRole.staticPanel[i].id;
+			if($jq("#" + widgetId).size()  == 0){
+				is_deleteProperty(jsonRole.staticPanel, widgetId)
+			}
+		}
+	}
+	
 	openerPanel.updatePanel(true);
 }
 Event.observe(window, 'beforeunload', updatePanel);

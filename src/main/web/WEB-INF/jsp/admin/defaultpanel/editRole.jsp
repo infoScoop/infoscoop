@@ -68,11 +68,12 @@
 
 	<script src="../../js/resources/resourceBundle.jsp"></script>
 	<script src="../../admin/js/resources/resourceBundle.jsp"></script>
-	<script src="../../js/gadget/features/core:rpc:pubsub:infoscoop.js?c=1"></script>
+	<script src="../../js/gadget/features/core:rpc:pubsub:pubsub-2:infoscoop.js?c=1"></script>
 
     <script>
 		<jsp:include page="/prpsrv" flush="true" />
 		var isTabView = false;
+		var is_sessionId = null;
 		
 		var IS_forbiddenURLs = <%= ForbiddenURLService.getHandle().getForbiddenURLsJSON() %>;
 		
