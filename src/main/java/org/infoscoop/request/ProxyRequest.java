@@ -941,6 +941,12 @@ public class ProxyRequest{
 		public void setValidityPeriodUTC(Long validityPeriodUTC){
 			this.validityPeriodUTC = validityPeriodUTC;
 		}
+		public boolean hasRefreshToken(){
+			return this.refreshToken != null;
+		}
+		public boolean hasValidityPeriodUTC(){
+			return this.validityPeriodUTC != null;
+		}
 	}	
 }
 

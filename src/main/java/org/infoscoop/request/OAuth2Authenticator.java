@@ -74,6 +74,7 @@ public class OAuth2Authenticator implements Authenticator {
 	    				OAuthService.getHandle().deleteOAuth2Token(request.getPortalUid(), oauthConfig.gadgetUrl, oauthConfig.serviceName);
 	    				returnApprovalUrl(request, consumer);
 	            	}else{
+						log.error("AccessToken was expired, try re-get the token. [" + oauthConfig.serviceName + "]");
 	            		getAccessTokenByRefreshToken(request,consumer);
 	            		OAuth2Token token2 = OAuth2TokenDAO.newInstance().getAccessToken(request.getPortalUid(), oauthConfig.gadgetUrl, oauthConfig.serviceName);
 	            		oauthConfig.setAccessToken(token2.getAccessToken());

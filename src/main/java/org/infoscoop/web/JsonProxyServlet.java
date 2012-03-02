@@ -127,6 +127,8 @@ public class JsonProxyServlet extends HttpServlet {
 		}
 	}
 	
+	private static final String OAUTH2_FORCE_REFRESH = "OAUTH2_FORCE_REFRESH";
+	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		doGet( req,resp );
@@ -251,7 +253,11 @@ public class JsonProxyServlet extends HttpServlet {
 				oauth2Config.setTokenType(token2.getTokenType());
 				oauth2Config.setAccessToken(token2.getAccessToken());
 				oauth2Config.setRefreshToken(token2.getRefreshToken());
-				oauth2Config.setValidityPeriodUTC(token2.getValidityPeriodUTC());
+
+				Long validityPeriodUTC = params.get(OAUTH2_FORCE_REFRESH) != null ?
+						new Long(0) : token2.getValidityPeriodUTC();
+						
+				oauth2Config.setValidityPeriodUTC(validityPeriodUTC);
 			}
 			
 			proxy.setOauth2Config(oauth2Config);
@@ -335,6 +341,14 @@ public class JsonProxyServlet extends HttpServlet {
 				OAuthService.getHandle().deleteOAuthToken(uid, gadgetUrl,
 						oauthServiceName);				
 			}else if(AuthType.OAUTH2 == authz){
+				ProxyRequest.OAuth2Config oauth2Config = proxy.getOauth2Config();
+				
+				// Retry if config has refreshToken only.
+				if(params.get(OAUTH2_FORCE_REFRESH) == null && oauth2Config.hasRefreshToken() && !oauth2Config.hasValidityPeriodUTC()){
+					params.put(OAUTH2_FORCE_REFRESH, new String());
+					return invokeJSONProxyRequest(uid, params, rheaders);
+				}
+				
 				OAuthService.getHandle().deleteOAuth2Token(uid, gadgetUrl,
 						oauthServiceName);
 			}
