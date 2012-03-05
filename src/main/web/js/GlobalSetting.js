@@ -21,7 +21,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 	var currentMenu;
 	var preferenceDiv = $("portal-preference");
 	if(!preferenceDiv)
-		return $("disabled_portal-preference").hide();
+		return;
 	var allPreference = $.A({
 		className:'portal-user-menu-link'
 		, href:'javascript:void(0);'

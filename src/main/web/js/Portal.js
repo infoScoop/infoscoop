@@ -2259,8 +2259,11 @@ IS_Portal.CommandBar = {
 		portalUserMenu.parentNode.appendChild(portalUserMenuBody);
 		for(var i = 0; i < commandBarItems.length; i++){
 			var itemDiv = commandBarItems[i];
-			if(!/^disabled/.test(itemDiv.id))
+			if(!/^disabled/.test(itemDiv.id)){
 				this.hasCommandBar = true;
+			}else{
+				$(itemDiv).hide();
+			}
 			var itemId = itemDiv.id.replace(/^s_/, "");
 			
 			var cmdBarWidget = IS_Portal.getWidget(itemId, IS_Portal.currentTabId);
