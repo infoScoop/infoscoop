@@ -38,7 +38,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	var defaultRoleName = "defaultRole";
 	var defaultDefaultUid = "default";
 	var commandBarMap = {
-		"portal-logo":{id:"portal-logo", type:"logo", title:ISA_R.alb_logo, togglable:true, undeletable:true, onlyoutside:true},
+		"portal-logo":{id:"portal-logo", type:"logo", title:ISA_R.alb_logo, togglable:false, undeletable:true, onlyoutside:true, hidden:true},
 		"portal-searchform":{id:"portal-searchform", title:ISA_R.alb_searchForm, togglable:true, undeletable:true, onlyoutside:true},
 		"Ticker":{id:"p_1_w_4", title:ISA_R.alb_Ticker, type:"Ticker", togglable:true, undeletable:true, onlyoutside:true},
 		"Ranking":{id:"p_1_w_6", title:ISA_R.alb_ranking, type:"Ranking", togglable:true, undeletable:true},
@@ -1924,6 +1924,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			IS_Event.observe(commandBarA, 'click', deleteCommandItemHandler, false, ["_adminPanelTab","_adminPanel"]);
 		}
 		commandBarTd.appendChild(contentDiv);
+
+		if(commandBarItem.hidden)
+			$jq(commandBarDiv).hide();
 
 		return commandBarDiv;
 	}
