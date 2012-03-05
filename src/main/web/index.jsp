@@ -261,6 +261,11 @@ if( isPreview == null )
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" id="command-bar">
 			<tbody>
 				<tr>
+					<td id="td-portal-logo">
+						<div id="portal-logo" class="commandbar-item" outside="true">
+							<a href="javascript:void(0)"><img class="pngfix" src="<%=staticContentURL%>/skin/imgs/infoscoop_logo.png" border="0" /></a>
+						</div>
+					</td>
 					<td width="100%"><div id="portal-command" style="visibility:hidden;"></div></td>
 					<td>
 						<div id="portal-user-menu">
