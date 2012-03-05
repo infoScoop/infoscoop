@@ -1,6 +1,5 @@
 <table cellpadding="0" cellspacing="0" width="100%">
 	<tr>
-		<td><div id="portal-logo" class="commandbar-item" outside="true"><a href="javascript:void(0)"><img class="pngfix" src="skin/imgs/infoscoop_logo.png" border="0" /></a></div></td>
 		<td width="100%"><div id="p_1_w_4" class="commandbar-item" outside="true"></div></td>
 		<td><div id="p_1_w_6" class="commandbar-item"></div></td>
 		<td><div id="disabled_portal-change-fontsize" disabledCommand="true" class="commandbar-item"><!--&lt;div id="portal-change-fontsize"&gt;&lt;/div&gt;--></div></td>

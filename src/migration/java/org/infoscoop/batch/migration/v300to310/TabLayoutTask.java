@@ -113,7 +113,7 @@ public class TabLayoutTask implements HibernateBeansTask.BeanTask2 {
 					}
 				}
 				
-				// insert new elements [portal-logo, portal-searchform]
+				// insert new elements [portal-searchform]
 				insertNewElements(root);
 				
 				// add outside to Ticker
@@ -168,13 +168,6 @@ public class TabLayoutTask implements HibernateBeansTask.BeanTask2 {
 	/**
 	 * insert following html elements
 	 * <td>
-	 *	<div outside="true" id="portal-logo">
-	 *		<a href="javascript:void(0)">
-	 *			<img class="pngfix" border="0" src="skin/imgs/infoscoop_logo.png">
-	 *		</a>
-	 * 	</div>
-	 * </td>
-	 * <td>
 	 *	<div outside="true" id="portal-searchform"></div>
 	 * </td>
 	 */
@@ -184,6 +177,7 @@ public class TabLayoutTask implements HibernateBeansTask.BeanTask2 {
 		Element parent = (Element)baseElement.getParentNode();
 		
 		// portal-logo
+		/*
 		if(getElementById(root, "portal-logo") == null){
 			Element portalLogoTd = doc.createElement("td");
 			Element portalLogoDiv = doc.createElement("div");
@@ -202,6 +196,8 @@ public class TabLayoutTask implements HibernateBeansTask.BeanTask2 {
 
 			parent.insertBefore(portalLogoTd, baseElement);
 		}
+		*/
+		
 		// portal-searchform
 		if(getElementById(root, "portal-searchform") == null){
 			Element portalSearchTd = doc.createElement("td");
