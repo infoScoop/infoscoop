@@ -2114,10 +2114,13 @@ IS_Portal.buildLogo = function() {
 	var logo = $("portal-logo");
 	if( !logo ) return;
 	
-	Event.observe( logo.firstChild,"click",function( e ) {
-		IS_Portal.goHome();
-		Event.stop( e );
-	});
+	var logoA = logo.getElementsByTagName("a");
+	if(logoA.length > 0){
+		Event.observe( logoA[0],"click",function( e ) {
+			IS_Portal.goHome();
+			Event.stop( e );
+		});
+	}
 };
 
 // Log at dropping and drop processing
