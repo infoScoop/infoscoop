@@ -745,7 +745,7 @@ ISA_DefaultPanel.prototype.templates = {
 		
 		var xmlJson = {};
 		xmlJson["p_1_w_4"] = {id:"p_1_w_4",href:"",title:"Ticker",type:"Ticker",properties:{url:"http://www.infoscoop.org/index.php/en/news.feed"}};
-		xmlJson["p_1_w_6"] = {id:"p_1_w_6",href:"",title:ISA_R.alb_ranking,type:"Ranking",properties:{urls:"<urls><url title='"+ISA_R.alb_keyWordSearchRanking+"' url='http://localhost:8080/infoscoop/cacsrv?id=keywordRanking'/></urls>"}};
+		xmlJson["p_1_w_6"] = {id:"p_1_w_6",href:"",title:ISA_R.alb_ranking,type:"Ranking",properties:{urls:"<urls><url title='"+ISA_R.alb_keyWordSearchRanking+"' url='http://localhost:8080/infoscoop/kwdsrv?baseDate=TODAY&amp;period=30&amp;rankingNum=20'/></urls>"}};
 		
 		// Replace to json
 		jsonObject.staticPanel = xmlJson;

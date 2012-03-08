@@ -26,11 +26,15 @@
 <%@page import="org.infoscoop.util.RSAKeyManager"%>
 <%@page import="org.infoscoop.web.SessionManagerFilter"%>
 <%@page import="org.infoscoop.util.I18NUtil"%>
-<%String staticContentURL = PropertiesService.getHandle().getProperty("staticContentURL"); %>
 <%
-Boolean isPreview = (Boolean) request.getAttribute(PreviewImpersonationFilter.IS_PREVIEW);
-if( isPreview == null )
-	isPreview = Boolean.FALSE;
+	response.setHeader("Pragma","no-cache");
+	response.setHeader("Cache-Control","no-cache");
+%> 
+<%
+	String staticContentURL = PropertiesService.getHandle().getProperty("staticContentURL");
+	Boolean isPreview = (Boolean) request.getAttribute(PreviewImpersonationFilter.IS_PREVIEW);
+	if( isPreview == null )
+		isPreview = Boolean.FALSE;
 %>
 <%@page import="org.w3c.util.UUID"%>
 <%@page import="org.infoscoop.dao.SessionDAO"%>
@@ -262,7 +266,7 @@ if( isPreview == null )
 			<tbody>
 				<tr>
 					<td id="td-portal-logo">
-						<div id="portal-logo" class="commandbar-item" outside="true">
+						<div id="portal-logo" outside="true">
 							<a href="javascript:void(0)"><img class="pngfix" src="<%=staticContentURL%>/skin/imgs/infoscoop_logo.png" border="0" /></a>
 						</div>
 					</td>

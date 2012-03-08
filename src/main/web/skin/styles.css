@@ -554,3 +554,9 @@ div#search-iframe div.search_tabs{
 	cursor: pointer;
 	padding-left: 18px;
 }
+
+.infoScoop #portal-logo {
+	margin: auto;
+	width: 99%;
+	white-space: nowrap; /* for IE */
+}

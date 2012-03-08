@@ -2247,7 +2247,7 @@ IS_Portal.CommandBar = {
 			Element.setStyle(portalUserMenuLabel, {width: '140px'});
 		}
 		
-		var commandBarItems = $$(".commandbar-item");
+		var commandBarItems = $$("#portal-command .commandbar-item");
 		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', style:'display:none;'});
 		
 		Event.observe(portalUserMenuBody, "click", function(e){
