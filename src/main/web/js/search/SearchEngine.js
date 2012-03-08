@@ -423,7 +423,8 @@ IS_Portal.SearchEngines = {
 				selectsearchsitediv.appendChild($.DIV({},$.INPUT({id:'searchEnableOption' + searchId, type:'checkbox', value:searchId }),title));
 			}
 		}
-		searchTd.appendChild(searchoption);
+		document.body.appendChild(searchoption);
+		
 		var displaySearchResultsOnNewWindow = $('displaySearchResultsOnNewWindow');
 		displaySearchResultsOnNewWindow.defaultChecked = displaySearchResultsOnNewWindow.checked = this.searchOption.displayNewWindow;
 		var configs = this._searchEngineConfigEls;
@@ -443,7 +444,11 @@ IS_Portal.SearchEngines = {
 	},
 
 	_showSearchOption:function(){
+		this._updateSearchOptionPos();
+		Event.observe(window, 'resize', this._updateSearchOptionPos);
+		
 		$('searchoption').show();
+		
 		if($('searchOptionCloser')){
 			$('searchOptionCloser').show();
 		}
@@ -456,15 +461,30 @@ IS_Portal.SearchEngines = {
 				  className:'widgetMenuCloser'
 				});
 			document.body.appendChild( closer );
+			Element.setStyle(closer, {
+				width: winX,
+				height: winY,
+				display: ''
+			});
+
 			IS_Event.observe(closer, 'mousedown', this._saveSearchOptions.bind(this), true);
-	
-			closer.style.width = winX;
-			closer.style.height = winY;
-			closer.style.display = "";
 		}
 	},
-
+	
+	_updateSearchOptionPos:function(){
+		var searchOption = $('searchoption');
+		var portalSearchForm = $('portal-searchform');
+		var searchOptionOffset = Position.cumulativeOffset(portalSearchForm);
+		
+		searchOption.setStyle({
+			top: searchOptionOffset.top + parseInt(portalSearchForm.offsetHeight),
+			left: searchOptionOffset.left > 0 ? searchOptionOffset.left : 1
+		});
+	},
+	
 	_closeSearchOption:function(){
+		Event.stopObserving(window, 'resize', this._updateSearchOptionPos);
+		
 		$('searchoption').hide();
 		$('searchOptionCloser').hide();
 		IS_Portal.behindIframe.hide();
@@ -685,7 +705,8 @@ IS_Portal.SearchEngines = {
 		searchPanel.className = "SearchEngine";
 		searchPanel.style.display="";
 		
-		IS_Portal.CommandBar.changeIframeView();
+		if( !this.isNewWindow )
+			IS_Portal.CommandBar.changeIframeView();
 		
 		var defaultTabsUl = $("search-tabs");
 		var defaultResult = $("search-result");
