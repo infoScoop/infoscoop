@@ -160,9 +160,6 @@ public class HttpRequestHandler {
     try {
       HttpRequest req = new HttpRequest(href);
       req.setMethod(method);
-      if (httpApiRequest.body != null) {
-        req.setPostBody(httpApiRequest.body.getBytes());
-      }
 
       // Copy over allowed headers
       for (Map.Entry<String, List<String>> header : httpApiRequest.headers.entrySet()) {
@@ -189,7 +186,11 @@ public class HttpRequestHandler {
       HttpResponse results = null;
       String oauthApprovalUrl = null;
       try {
-      	Map<String, String> proxyParams = new HashMap<String, String>();
+        if (httpApiRequest.body != null) {
+            req.setPostBody(httpApiRequest.body.getBytes("UTF-8"));
+        }
+
+    	Map<String, String> proxyParams = new HashMap<String, String>();
       	
         final AuthType authz = req.getAuthType();
         req.setSecurityToken(requestItem.getToken());
@@ -291,7 +292,7 @@ public class HttpRequestHandler {
     
     return builder
         .setHttpStatusCode(rc)
-        .setResponse(body.getBytes())
+        .setResponse(body.getBytes("UTF-8"))
         .create();
   }
 
