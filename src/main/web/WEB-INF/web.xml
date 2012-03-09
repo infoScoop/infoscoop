@@ -153,6 +153,14 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/rpc</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/jsonproxy</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
 		<url-pattern>/gadgetsrv</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
