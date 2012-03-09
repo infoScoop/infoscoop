@@ -2279,7 +2279,8 @@ IS_Portal.CommandBar = {
 			if(/w_1$/.test(itemDiv.id) && itemDiv.getAttribute('type') == 'link'){
 				var userLinkA = itemDiv.childNodes[0];
 				userLinkA.className = 'portal-user-menu-link user-link';
-				var userLinkLabel = $.DIV({className: 'portal-user-menu-item-label'}, userLinkA.innerHTML);
+				var userLinkLabel = $.DIV({className: 'portal-user-menu-item-label'}, "");
+				userLinkLabel.innerHTML = userLinkA.innerHTML;
 				userLinkA.innerHTML = '';
 				userLinkA.appendChild(userLinkLabel);
 			}
@@ -2372,6 +2373,8 @@ IS_Portal.CommandBar = {
 			}
 
 			var closeMenu = function(e){
+				IS_Widget.Ranking.hide(false, true);
+				
 				$("portal-user-menu-body").hide();
 				$("userMenuCloser").hide();
 				Event.stop( e );
@@ -2413,6 +2416,7 @@ IS_Portal.CommandBar = {
 		}
 	},
 	show : function(){
+		IS_Widget.Ticker.adjustTickerWidth();
 		$("portal-command").setStyle({
 			visibility: 'visible'
 		});

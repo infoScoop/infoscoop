@@ -63,13 +63,13 @@ img{
 
 /** message bar */
 #error-msg-bar {
-	background-color:lightyellow;
+	background-color:#ffffe0;
 	color: olive;
 	font-size:80%;
 	padding:2px;
 }
 #message-bar {
-	background-color:lightyellow;
+	background-color:#ffffe0;
 	color: olive;
 	font-size:80%;
 	padding:2px;
@@ -338,6 +338,7 @@ body.fixedPortalHeader #panels .panel{
 
 div#search-iframe{
 	padding-top: 2px;
+	font-size: 15px;
 }
 div#search-iframe div.search_tabs{
 	clear: left;

@@ -269,9 +269,9 @@ IS_SearchEngine.prototype.classDef = function() {
 			Event.stopObserving( this.iframe,"load",this.reanderCompleteHandler );
 		
 		try{
-			var iframeDoc = Browser.isIE ? this.iframe.contentWindow.document : this.iframe.contentDocument;
-			var current;
+			var iframeDoc, current;
 			try{
+				iframeDoc = Browser.isIE ? this.iframe.contentWindow.document : this.iframe.contentDocument;
 				current = this.iframe.contentWindow.location.href;
 			}catch(e){
 				return;

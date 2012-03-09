@@ -206,6 +206,9 @@ IS_Widget.Ranking.buildCommandBar = function( widgetId ){
 	rankingOuterDivStyle.zIndex = "999";
 	rankingOuterDivStyle.width = "300px";
 	rankingOuterDiv.appendChild(rankingWidgetDiv);
+	
+	Event.observe(rankingOuterDiv, "click", function(e){Event.stop(e);}, false);
+	
 	containerDiv.appendChild(rankingOuterDiv);
 	if(commandBarRankingDiv.offsetWidth)
 		commandBarTd.style.width = commandBarRankingDiv.offsetWidth;
@@ -261,12 +264,17 @@ IS_Widget.Ranking.handleResize = function(e) {
 	IS_Widget.Ranking.hide();
 }
 
-IS_Widget.Ranking.hide = function(e) {
+IS_Widget.Ranking.hide = function(e, force) {
+	var hideEvent = function() {
+		rankingOuterDiv.style.display = 'none';
+		IS_Portal.behindIframe.hide();
+	}
+	
 	if(rankingOuterDiv && !rankingShowTimer) {
-		rankingShowTimer = setTimeout(function() {
-			rankingOuterDiv.style.display = 'none';
-			IS_Portal.behindIframe.hide();
-			}, 500);
+		rankingShowTimer = setTimeout(hideEvent, 500);
+	}
+	else if(rankingOuterDiv && force === true){
+		hideEvent();
 	}
 }
 

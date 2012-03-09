@@ -348,6 +348,8 @@ IS_SidePanel.prototype.classDef = function () {
 		y += document.body.scrollTop;
 		treeOpen.style.top = container.style.top = y;
 	}
+	
+	IS_EventDispatcher.addListener("adjustedMessageBar","",IS_SidePanel.adjustPosition);
 };
 
 IS_SidePanel.sideMenuAdjusted = function(e){
