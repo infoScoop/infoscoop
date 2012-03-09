@@ -181,11 +181,6 @@
     <script src="<%=staticContentURL%>/js/widgets/Message/MaximizeMessage.js"></script>
     <!--end script-->
     
-	<!--[if IE 6]>
-	<script src="<%=staticContentURL%>/js/lib/DD_belatedPNG_0.0.8a-min.js"></script>
-	<script>DD_belatedPNG.fix('.pngfix');</script>
-	<![endif]-->
-	
    	<script type="text/javascript">
 		var rsaPK = new RSAKey();
 		rsaPK.setPublic("<%= RSAKeyManager.getInstance().getModulus() %>", "<%= RSAKeyManager.getInstance().getPublicExponent() %>");
@@ -267,7 +262,7 @@
 				<tr>
 					<td id="td-portal-logo">
 						<div id="portal-logo" outside="true">
-							<a href="javascript:void(0)"><img class="pngfix" src="<%=staticContentURL%>/skin/imgs/infoscoop_logo.png" border="0" /></a>
+							<a href="javascript:void(0)"><img id="portal-logo-img" src="<%=staticContentURL%>/skin/imgs/infoscoop_logo.png" border="0" /></a>
 						</div>
 					</td>
 					<td width="100%"><div id="portal-command" style="visibility:hidden;"></div></td>
