@@ -1617,7 +1617,7 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 				}
 				authorizations = tempAuths;
 				delAuthTr.parentNode.removeChild(delAuthTr);
-				jQuery("#authorizationTable").trigger("updateTable");
+				$jq("#authorizationTable").trigger("updateTable");
 			}
 			
 		}
@@ -1683,14 +1683,16 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 				
 			}
 		}
-		jQuery(authTable).tablesorter({
-			sortList : [ [ 0, 0 ] ],
-			headers : {
-				2 : {
-					sorter : false
+		if($jq(authTable).tablesorter){
+			$jq(authTable).tablesorter({
+				sortList : [ [ 0, 0 ] ],
+				headers : {
+					2 : {
+						sorter : false
+					}
 				}
-			}
-		});
+			});
+		}
 		
 		aclEditorFormDiv.appendChild(authTable);
 		publicDiv.appendChild(aclEditorFormDiv);

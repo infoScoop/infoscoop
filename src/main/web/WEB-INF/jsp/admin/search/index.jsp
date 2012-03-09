@@ -30,7 +30,7 @@
 	<tiles:putAttribute name="body" type="string">
 
 <div id="searchEngine"></div>
-
+<script src="../../js/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script>
 	$jq(function(){
 		ISA_SearchEngine.searchEngine = new ISA_SearchEngine();

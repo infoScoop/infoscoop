@@ -30,7 +30,7 @@
 
 <div id="menu"></div>
 <div id="menuTree"></div>
-
+<script src="../../js/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script>
 	$jq(function(){
 		function buildFunc(){
