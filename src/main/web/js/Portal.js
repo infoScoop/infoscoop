@@ -1558,11 +1558,28 @@ IS_Portal.buildFontSelectDiv = function(){
 			)
 		);
 		
-		var fontSizeSelect = $.SELECT({id:'font-size-select'}
-			, $.OPTION({id:'option-small'}, IS_R.lb_resizeFontSmaller)
-			, $.OPTION({id:'option-normal', selected:'selected'}, IS_R.lb_resizeFontNormal)
-			, $.OPTION({id:'option-large'}, IS_R.lb_resizeFontLarger)
-		);
+		var defaultFontSize = parseInt(IS_Portal.defaultFontSize), fontSize = parseInt(IS_Portal.fontSize);
+		var selected = fontSize > defaultFontSize ? "option-large" :  fontSize < defaultFontSize ? "option-small" : "option-normal";
+		
+		var fontSizeSelect = $.SELECT({id:'font-size-select'});
+		for(var i=0;i<3;i++){
+			var opt;
+			switch (i){
+				case 0:
+					opt = $.OPTION({id:'option-small'}, IS_R.lb_resizeFontSmaller);
+					break;
+				case 1:
+					opt = $.OPTION({id:'option-normal'}, IS_R.lb_resizeFontNormal);
+					break;
+				case 2:
+					opt = $.OPTION({id:'option-large'}, IS_R.lb_resizeFontLarger);
+					break;
+			}
+			if(opt.id == selected)
+				opt.selected = 'true';
+			
+			fontSizeSelect.appendChild(opt);
+		}
 		
 		fontEl.appendChild(fontSizeSelect);
 		fontEl.title = IS_R.lb_resizeFont;
@@ -2418,7 +2435,9 @@ IS_Portal.CommandBar = {
 	show : function(){
 		IS_Widget.Ticker.adjustTickerWidth();
 		$("portal-command").setStyle({
-			visibility: 'visible'
+			visibility: 'visible',
+			position: '',
+			left: "0px"
 		});
 	},
 	changeDefaultView : function(){

@@ -265,7 +265,7 @@
 							<a href="javascript:void(0)"><img id="portal-logo-img" src="<%=staticContentURL%>/skin/imgs/infoscoop_logo.png" border="0" /></a>
 						</div>
 					</td>
-					<td width="100%"><div id="portal-command" style="visibility:hidden;"></div></td>
+					<td width="100%"><div id="portal-command" style="visibility:hidden;position:absolute;left:9999px;"></div></td>
 					<td>
 						<div id="portal-user-menu">
 							<div id="portal-user-menu-label">
