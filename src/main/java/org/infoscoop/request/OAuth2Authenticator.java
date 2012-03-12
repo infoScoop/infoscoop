@@ -168,7 +168,8 @@ public class OAuth2Authenticator implements Authenticator {
 		//for Google
 		//If other server has some problem by follow parameter, thought corresponding.
 		authorizationURL = OAuth.addParameters(authorizationURL, "access_type", "offline");
-
+		authorizationURL = OAuth.addParameters(authorizationURL, "approval_prompt", "force");
+		
 		request.putResponseHeader("oauthApprovalUrl", authorizationURL);
 		throw new ProxyAuthenticationException("Redirect to authorization url.", false);
     }
