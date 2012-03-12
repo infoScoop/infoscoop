@@ -1550,7 +1550,9 @@ IS_Portal.buildFontSelectDiv = function(){
 
 	//font select for user menu (select box ver.)
 	if(!fontEl.getAttribute('outside')){
-		Element.setStyle(fontEl, {width: '135px'});
+		Element.setStyle(fontEl, {
+			width: '135px'
+		});
 		
 		fontEl.appendChild(
 			$.DIV({className:'portal-user-menu-item-label', id :'font-change-div'}
@@ -1659,7 +1661,6 @@ IS_Portal.buildFontSelectDiv = function(){
 			Element.setStyle(fontEl, {width: fontEl.offsetWidth * 3});
 			Element.setStyle(fontEl.parentNode, {width: fontEl.style.width});
 		}else{
-			console.log(fontEl.offsetWidth);
 			Element.setStyle(fontEl, {width: fontEl.offsetWidth +1});
 			Element.setStyle(fontEl.parentNode, {width: fontEl.style.width});
 		}
@@ -1922,26 +1923,25 @@ IS_Portal.buildCredentialList = function(){
 	var portalCredentialListDiv = $("portal-credential-list");
 	if(!portalCredentialListDiv) return;
 
-	if(portalCredentialListDiv){
-		var credentialListIcon = document.createElement('a');
-		credentialListIcon.className ='portal-user-menu-link';
-		credentialListIcon.href = '#';
-		credentialListIcon.title = IS_R.lb_credentialList;
-		
-		portalCredentialListDiv.appendChild(credentialListIcon);
-		credentialListIcon.appendChild(
-			$.DIV({className:'portal-user-menu-item-label', id:'authCredentialListIcon'}
-				, IS_R.lb_credentialList
-			)
-		);
-		
-		IS_Event.observe(credentialListIcon, 'mouseover', function(){
-			IS_Event.unloadCache('_portalCredentialListInit');
-			IS_Request.showCredentialList();
-		}, false, '_portalCredentialListInit');
-		
-	}
+	var credentialListIcon = $.A({
+		id: 'authCredentialListIcon'
+		, className: 'portal-user-menu-link'
+		, href: '#'
+		, title: IS_R.lb_credentialList
+	});
+	portalCredentialListDiv.appendChild(credentialListIcon);
 	
+	credentialListIcon.appendChild(
+		$.DIV({className:'portal-user-menu-item-label', id:'authCredentialListDiv'}
+			, IS_R.lb_credentialList
+		)
+	);
+	
+	IS_Event.observe(credentialListIcon, 'mouseover', function(){
+		IS_Event.unloadCache('_portalCredentialListInit');
+		IS_Request.showCredentialList();
+	}, false, '_portalCredentialListInit');
+
 }
 
 // Commit change
@@ -2400,7 +2400,10 @@ IS_Portal.CommandBar = {
 			// loginID clicked
 			IS_Event.observe(portalUserMenu, "click", function(e){
 				$("portal-user-menu-body").show();
-				Element.setStyle($("portal-user-menu-body"), {width: $("portal-user-menu-body").offsetWidth});
+				// set width for IE only (do not set width for FF and Webkit to prevent unnecessary gap)
+				if(Browser.isIE){
+					Element.setStyle($("portal-user-menu-body"), {width: $("portal-user-menu-body").offsetWidth});
+				}
 				var targetPosition = Position.page($("portal-user-menu"));
 				Element.setStyle($("portal-user-menu-body"), {
 					left: targetPosition[0] - $("portal-user-menu-body").offsetWidth + $("portal-user-menu").offsetWidth

@@ -364,7 +364,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 		fs.appendChild(
 			$.DIV({style:"clear:both;display:" + (Browser.isIE ? 'none' : '') + ";"},
 				  IS_R.lb_enableRoundCorner,
-				  $.INPUT({id:"is_preference_setting_border_radius", type:"checkbox", defaultChecked:currentBorderRadius && currentBorderRadius!="0"})
+				  $.INPUT({id:"is_preference_setting_border_radius", type:"checkbox", defaultChecked:currentBorderRadius && currentBorderRadius!="0px"})
 					)
 			);
 		

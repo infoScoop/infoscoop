@@ -65,9 +65,8 @@
 
 .infoScoop #portal-command .fontChange{
 	width:16px;
-	height:24px;
+	height:26px;
 	background-position: left center;
-/* 	margin:0px; */
 }
 
 /* Trash */
@@ -244,7 +243,7 @@
 	vertical-align:top;
 }
 
-#authCredentialListIcon{
+#authCredentialListDiv{
 	background:url(./imgs/page_user.gif) no-repeat;
 	background-position: 3px center;
 }
@@ -305,7 +304,7 @@ a.portal-user-menu-link{
 	display: block;
 	color: #000;
 	width: 100%;
-	height: 25px;
+	height: 26px;
 	wihte-space: nowrap;
 	float: left;
 }
