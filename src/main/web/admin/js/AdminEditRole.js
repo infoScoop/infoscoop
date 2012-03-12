@@ -183,6 +183,18 @@ var ISA_Principals = window.opener.ISA_Principals;
 
 function prepareStaticArea(){
 	var tabId = IS_Portal.currentTabId.replace("tab","");
+	
+	if($jq('#staticAreaContainer .static_column').size() == 0){
+		var modified = false;
+		$jq('#staticAreaContainer .column[id]').each(function(j){
+			modified = true;
+			$jq(this).addClass("static_column");
+		});
+		
+		if(modified)
+			openerPanel.setNewValue("layout", $jq('#staticAreaContainer').html(), jsonRole.id);
+	}
+	
 	$jq('#staticAreaContainer .static_column').each(function(j){
 		var containerId = $jq(this).attr("id");
 		div = $jq(this).data("containerId", $jq(this).attr("id"));
