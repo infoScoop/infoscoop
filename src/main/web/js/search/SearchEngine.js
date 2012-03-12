@@ -355,9 +355,9 @@ IS_Portal.SearchEngines = {
 		var searchForm = $.FORM(
 			{name: 'searchForm', id: 'searchForm'}
 			, editSearchOption
-			, $.IMG({id: 'searchSubmit'
-				, src:'./skin/imgs/portal_search.gif'
-				, title: IS_R.lb_search
+			, $.IMG({id: 'searchIcon'
+				, src: './skin/imgs/portal_search.gif'
+				, title: IS_R.lb_searchOption
 			})
 			, $.INPUT(
 				{id: 'searchTextInput', type: 'text', value:IS_R.lb_search, style: 'color: #ccc;'}
@@ -391,7 +391,7 @@ IS_Portal.SearchEngines = {
 		IS_Event.observe(searchForm, 'submit', doSearch, false);
 		IS_Event.observe($('searchTextInput'), 'blur', setInitValue, false);
 		IS_Event.observe($('searchTextInput'), 'focus', remInitValue, false);
-		IS_Event.observe($('searchSubmit'), 'click', this._showSearchOption.bind(this), false);
+		IS_Event.observe($('searchIcon'), 'click', this._showSearchOption.bind(this), false);
 		IS_Event.observe(editSearchOption, 'click', this._showSearchOption.bind(this), false);
 
 		/*

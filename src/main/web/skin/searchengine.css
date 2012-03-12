@@ -32,7 +32,7 @@
 #searchTextInput{
 	vertical-align: top;
 	height: 22px;
-	width: 127px;
+	width: 128px;
 	border-top:1px solid #b7b7b7;
 	border-bottom:1px solid #b7b7b7;
 	border-right: 0px;
@@ -41,18 +41,19 @@
 	_top: 0; /* for IE6 only */
 }
 
-#searchSubmit{
-	height: 20px;
+#searchIcon{
+	height: 22px;
 	width: 22px;
 	background-color: #fff;
-	border-top: 1px solid #b7b7b7;
-	border-bottom: 1px solid #b7b7b7;
+/*	border-top: 1px solid #b7b7b7;
+	border-bottom: 1px solid #b7b7b7;*/
 	cursor : pointer;
+	display: inline;
 }
 
 #editsearchoption {
 	height: 22px;
-	width: 13px;
+	width: 12px;
 	_margin-left: 2px; /* for IE */
 	cursor : pointer;
 	display: inline;
