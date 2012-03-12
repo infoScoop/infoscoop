@@ -1687,6 +1687,12 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 			$jq(authTable).tablesorter({
 				sortList : [ [ 0, 0 ] ],
 				headers : {
+					0 : {
+						sorter : "text"
+					},
+					1 : {
+						sorter : "text"
+					},
 					2 : {
 						sorter : false
 					}
