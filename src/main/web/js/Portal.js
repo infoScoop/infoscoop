@@ -2091,7 +2091,7 @@ IS_Portal.buildLogout = function() {
 	}
 	// don't display "Logout", while no user logged in.
 	if( !is_userId ){
-		Element.setStyle(logout.parentNode,{display: "none"});
+		logout.hide();
 		return;
 	}
 	
