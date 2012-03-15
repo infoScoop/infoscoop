@@ -551,8 +551,8 @@ div#search-iframe div.search_tabs{
 
 .infoScoop #portal-go-home div.toppage {
 	background: url(./imgs/house.gif) top left no-repeat !important;
-	height:18px;
 	margin: 2px;
+	height:18px;
 	cursor: pointer;
 	padding-left: 18px;
 }
