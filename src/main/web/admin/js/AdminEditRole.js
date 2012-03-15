@@ -722,6 +722,10 @@ function init() {
 				IS_Portal.behindIframe.show(this.parentNode);
 				
 				$jq("#edit_layout_textarea").val(jsonRole.layout);
+				
+				var dialog = $jq(this);
+				if(dialog.data("init")) return;
+				
 				$jq("#edit_layout_ok").click(function(){
 					openerPanel.setNewValue("layout", $jq("#edit_layout_textarea").val(), jsonRole.id);
 					$jq('#staticAreaContainer').html(jsonRole.layout);
@@ -730,8 +734,7 @@ function init() {
 					reloadStaticGadgets();
 					dialog.dialog("close");
 				});
-				var dialog = $jq(this);
-				if(dialog.data("init")) return;
+				
 				$jq("#edit_layout_cancel").click(function(){
 					dialog.dialog("close");
 				});
@@ -821,7 +824,7 @@ function reloadStaticGadgets(){
 	var widgets = IS_Portal.widgetLists[IS_Portal.currentTabId];
 	for(var id in widgets){
 		var widget = widgets[id];
-		if(widget.panelType != "StaticPanel") return;
+		if(widget.panelType != "StaticPanel") continue;
 		displayStaticGadget(widget.widgetConf);
 	}
 }
