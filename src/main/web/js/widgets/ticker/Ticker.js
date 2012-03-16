@@ -74,13 +74,13 @@ IS_Widget.Ticker.prototype.classDef = function() {
 			else newRssItems = [];
 			isReloaded = true;
 			var preExist = exist;
-			exist = newRssItems.length > 0 && (newRssItems[0].title || newRssItems[0].description || newRssItems[0].link);
+			exist = newRssItems.length > 0;
 			if(!preExist) self.displayContents();
 		}else{
 			selfContent.innerHTML = '';
 			var rss = IS_Widget.parseRss(response);
 			if(rss && rss.items) rssItems = rss.items;
-			exist = rssItems.length > 0 && (rssItems[0].title || rssItems[0].description || rssItems[0].link);
+			exist = rssItems.length > 0;
 			self.displayContents();
 		}
 	};
