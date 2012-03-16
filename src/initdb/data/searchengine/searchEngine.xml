@@ -4,17 +4,17 @@
 		<!-- <searchEngine id="google" defaultSelected="true" title="Google" retrieveUrl="http://www.google.com/search?hl=en&amp;q=">
 			<countRule method="regexp" value="(?:About)? ([0-9,]+) results|of about &lt;b&gt;([0-9,]+)&lt;/b&gt; for"/>
 		</searchEngine> -->
-		<searchEngine id="bing" defaultSelected="true" title="Bing" retrieveUrl="http://www.bing.com/search?q=">
-			<countRule method="regexp" value=" of ([0-9,]+) results"/>
+		<searchEngine id="bing" defaultSelected="true" title="Bing" retrieveUrl="http://www.bing.com/search?mkt=en-US&amp;q=">
+			<countRule method="regexp" value="of ([0-9,]+) results"/>
 		</searchEngine>
-		<searchEngine id="yahoo" defaultSelected="true" title="Yahoo" retrieveUrl="http://search.yahoo.com/search?ei=UTF-8&amp;p=">
+		<searchEngine id="yahoo" defaultSelected="true" title="Yahoo!" retrieveUrl="http://search.yahoo.com/search?ei=UTF-8&amp;p=">
 			<countRule method="id" value="resultCount"/>
 		</searchEngine>
 	</defaultSearch>
 	<rssSearch>
-		<searchEngine id="bingsite" retrieveUrl="http://www.bing.com/search?q=site%3A$1%20">
+		<searchEngine id="bingsite" retrieveUrl="http://www.bing.com/search?mkt=en-US&amp;q=site%3A$1%20">
 			<rssPattern>^http://([^/]+)/.*</rssPattern>
-			<countRule method="regexp" value=" of ([0-9,]+) results" />
+			<countRule method="regexp" value="of ([0-9,]+) results" />
 		</searchEngine>
 		<!-- <searchEngine id="googlesite" retrieveUrl="http://www.google.com/search?hl=en&amp;q=site%3A$1%20">
 			<rssPattern>^http://([^/]+)/.*</rssPattern>

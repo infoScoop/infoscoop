@@ -2,7 +2,7 @@
 <searchEngines>
 	<defaultSearch>
 		<searchEngine id="baidu" defaultSelected="true" title="百度" retrieveUrl="http://www.baidu.com/s?wd=" encoding="gb2312">
-			<countRule method="regexp" value=".*找到相关网页约?([0-9,]+)个.*"/>
+			<countRule method="regexp" value=".*找到相关结果约?([0-9,]+)个.*"/>
 		</searchEngine>
 		<!-- <searchEngine id="google" defaultSelected="true" title="Google" retrieveUrl="http://www.google.com.hk/search?q=">
 			<countRule method="regexp" value=".*获得约? ([0-9,]+) 条结果.*"/>
@@ -22,4 +22,3 @@
 		</searchEngine> -->
 	</rssSearch>
 </searchEngines>
-
