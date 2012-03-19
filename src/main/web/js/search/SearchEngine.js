@@ -212,6 +212,7 @@ IS_SearchEngine.prototype.classDef = function() {
 			this.renderResult();
 		}
 		IS_Portal.SearchEngines.next();
+		this.adjustTabWidth();
 	}
 	this.endSearch = function(req) {
 		this.cacheID = req.getResponseHeader("MSDPortal-Cache-ID");
