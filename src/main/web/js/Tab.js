@@ -1285,6 +1285,8 @@ IS_Portal.adjustStaticWidgetHeight = function(){
 		if(!widget.isBuilt)break;
 		if(widget.panelType == "StaticPanel" && widget.widgetType != 'Ticker' && widget.widgetType != 'Ranking'){
 			var height = widget.headerContent ? adjustHeight : adjustHeight + 22;
+			if(height <= 0)	return;
+
 			if(widget.widgetConf && widget.widgetConf.noBorder) height += 2;
 			if(widget.iframe)
 			  widget.iframe.style.height = height + "px";
