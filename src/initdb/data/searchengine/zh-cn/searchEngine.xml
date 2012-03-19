@@ -12,7 +12,7 @@
 		</searchEngine>
 	</defaultSearch>
 	<rssSearch>
-		<searchEngine id="sososite" retrieveUrl="http://www.soso.com/q?w=site%3A$1%20">
+		<searchEngine id="sososite" retrieveUrl="http://www.soso.com/q?w=site%3A$1%20" encoding="gb2312">
 			<rssPattern>^http://([^/]+)/.*</rssPattern>
 			<countRule method="regexp" value=".*搜索到约?([0-9,]+)项结果.*"/>
 		</searchEngine>
