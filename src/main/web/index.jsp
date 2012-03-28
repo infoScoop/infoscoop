@@ -35,6 +35,11 @@
 	Boolean isPreview = (Boolean) request.getAttribute(PreviewImpersonationFilter.IS_PREVIEW);
 	if( isPreview == null )
 		isPreview = Boolean.FALSE;
+	
+	String userAgent = request.getHeader("user-agent");
+	boolean pngSupport = true;
+	if(userAgent != null)
+		pngSupport = (userAgent.toLowerCase().indexOf("msie 6.") == -1);
 %>
 <%@page import="org.w3c.util.UUID"%>
 <%@page import="org.infoscoop.dao.SessionDAO"%>
@@ -262,7 +267,7 @@
 				<tr>
 					<td id="td-portal-logo">
 						<div id="portal-logo" outside="true">
-							<a href="javascript:void(0)"><img id="portal-logo-img" src="<%=staticContentURL%>/skin/imgs/infoscoop_logo.gif" border="0" /></a>
+							<a href="javascript:void(0)"><img id="portal-logo-img" src="<%=staticContentURL%>/skin/imgs/infoscoop_logo.<%= (pngSupport)? "png":"gif" %>" border="0" /></a>
 						</div>
 					</td>
 					<td width="100%"><div id="portal-command" style="visibility:hidden;position:absolute;left:9999px;"></div></td>
