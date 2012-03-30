@@ -58,7 +58,7 @@ To migrate from version 3.0.0 to 3.1.0, follow the steps below.
 
 6. Redeploy infoscoop.war to WebApplication Server.
 
-7. Search form and a userID(userName) display are moving to the command bar from this version. Ae recommend deleting a corresponding
+7. Search form and a userID(userName) display are moving to the command bar from this version. We recommend deleting a corresponding
    section from a custom header area. 
    Please delete the following HTML from "Administration page > Layout > Other Layout > header". 
 
