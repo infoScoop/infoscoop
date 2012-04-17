@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="infoScoop" default="dist" basedir=".">
+<project name="infoScoop" default="dist" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
     <property file="build.properties"/>
 	<property name="basedir" value="." />
 	<!-- main and common properties -->
@@ -74,7 +74,7 @@
     </target>
 
     <target name="dist"
-        depends="clean, prepare, build-main, build-admin, build-war,
+        depends="clean, prepare, retrieve, build-main, build-admin, build-war,
         build-install-image, archive-install-image, build-quickstart"
         description="Build disribution files.">
     </target>
@@ -94,6 +94,24 @@
         <delete dir="${build.main}" />
     </target>
 
+	<target name="retrieve" description="retrieve dependencies with ivy">
+		<property name="ivy.lib.dir" value="src/main/web/WEB-INF/lib"/>
+	    <delete>
+	      <fileset dir="${ivy.lib.dir}" includes="*.jar"/>
+		  <fileset dir="lib" includes="*.jar"/>	    	
+	    </delete>
+	    <ivy:configure />
+		
+		<ivy:resolve file="pom.xml" conf="provided" />
+		<ivy:retrieve pattern="lib/[artifact]-[revision](-[classifier]).[ext]"/>
+
+	    <ivy:resolve file="pom.xml" conf="compile"/>
+	    <ivy:retrieve pattern="${ivy.lib.dir}/[artifact]-[revision](-[classifier]).[ext]"/>
+		
+	    <ivy:resolve file="pom.xml" conf="system"/>
+	    <ivy:retrieve pattern="${ivy.lib.dir}/[artifact]-[revision].[ext]"/>
+	</target>
+	
     <target name="build-main" depends="clean-main, compile-main,copy-webresouces,replaceTag-main"
         description="Clean build main directory, then main compile">
         <copy todir="${build.home}/work/staticContent" overwrite="true">

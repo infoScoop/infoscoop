@@ -1,8 +1,0 @@
-Xerces 2.9.1ŠÖ˜A
-xercesImpl.jar
-xml-apis.jar
-resolver.jar
-serializer.jar
-
-Xalan 2.7.1
-xalan.jar
