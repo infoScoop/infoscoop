@@ -78,7 +78,14 @@
             gadgets.Hub = new OpenAjax.hub.IframeHubClient(gadgets.HubSettings.params);
             
             // Connect to the ManagedHub
-            gadgets.Hub.connect(gadgets.HubSettings.onConnect); 
+            gadgets.Hub.connect(gadgets.HubSettings.onConnect);
+            
+            // issue #461
+            if( window.addEventListener ) {
+            	window.addEventListener("beforeunload",function(){gadgets.Hub.disconnect();},false );
+            } else if( window.attachEvent ){
+            	window.attachEvent("onbeforeunload",function(){gadgets.Hub.disconnect();} );
+            }
         } catch(e) {
             // TODO: error handling should be consistent with other OS gadget initialization error handling
             gadgets.error("ERROR creating or connecting IframeHubClient in gadgets.Hub [" + e.message + "]");
