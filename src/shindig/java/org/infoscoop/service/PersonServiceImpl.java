@@ -178,17 +178,18 @@ public class PersonServiceImpl implements PersonService {
 		//DisplayName
 		obj.setDisplayName(account.getName());
 		
-		//EMail
-		JSONObject mailObj = new JSONObject();
-		String mail = account.getMail();
-		if(mail==null){
-			mail = "";
-		}
-		mailObj.put(ListField.Field.VALUE.toString(), mail);
-		mailObj.put(ListField.Field.TYPE.toString(), "");
+		//EMails
 		List<ListField> mailList = new ArrayList<ListField>();
-		mailList.add(converter.convertToObject(mailObj.toString(), ListField.class));
-		obj.setEmails(mailList);
+		List<String> mails = account.getMails();
+		if(mails.size()!=0){
+			for(String mail : mails){
+				JSONObject mailObj = new JSONObject();
+				mailObj.put(ListField.Field.VALUE.toString(), mail);
+				mailObj.put(ListField.Field.TYPE.toString(), "");
+				mailList.add(converter.convertToObject(mailObj.toString(), ListField.class));
+			}
+		}
+				obj.setEmails(mailList);
 		
 		//Organization
 		IGroup[] groups = account.getGroups();

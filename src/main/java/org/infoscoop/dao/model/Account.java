@@ -20,6 +20,8 @@ package org.infoscoop.dao.model;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.infoscoop.account.IAccount;
@@ -65,6 +67,9 @@ public class Account implements IAccount {
 	public void setGroupName(String groupName) { this.groupName = groupName; }
 
 	public IGroup[] getGroups() { return null; }
-
-
+	public List<String> getMails() {
+		List<String> mails = new ArrayList<String>();
+		if(this.mail!=null) mails.add(this.mail);
+		return mails;
+	}
 }
