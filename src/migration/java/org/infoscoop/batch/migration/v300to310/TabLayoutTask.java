@@ -20,6 +20,7 @@ package org.infoscoop.batch.migration.v300to310;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.transform.OutputKeys;
@@ -43,6 +44,8 @@ import org.infoscoop.batch.migration.HibernateBeansTask;
 import org.infoscoop.batch.migration.SQLTask;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.util.SpringUtil;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -117,7 +120,22 @@ public class TabLayoutTask implements HibernateBeansTask.BeanTask2 {
 				insertNewElements(root);
 				
 				// add outside to Ticker
-				Element ticker = getElementById(root, "p_1_w_4");
+				String tickerId = "p_1_w_4";
+				JSONObject widgetsObj = bean.getStaticPanelJson();
+				
+				@SuppressWarnings("unchecked")
+				Iterator<String> ite = widgetsObj.keys();
+				while(ite.hasNext()){
+					String key = ite.next();
+					JSONObject json = (JSONObject)widgetsObj.get(key);
+					if(json.has("type") && json.getString("type").equalsIgnoreCase("ticker")){
+						tickerId = json.getString("id");
+						project.log("tickerId=" + tickerId);
+						break;
+					}
+				}
+				
+				Element ticker = getElementById(root, tickerId);
 				if(ticker != null){
 					ticker.setAttribute(ATTR_OUTSIDE, "true");
 				}
@@ -147,6 +165,9 @@ public class TabLayoutTask implements HibernateBeansTask.BeanTask2 {
 				project.log(e.getMessage(), Project.MSG_ERR);
 				e.printStackTrace();
 			} catch (IOException e) {
+				project.log(e.getMessage(), Project.MSG_ERR);
+				e.printStackTrace();
+			} catch (JSONException e) {
 				project.log(e.getMessage(), Project.MSG_ERR);
 				e.printStackTrace();
 			}
