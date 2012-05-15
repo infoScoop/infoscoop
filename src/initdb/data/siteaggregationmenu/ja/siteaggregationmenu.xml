@@ -13,17 +13,17 @@
 	    </site>
 	    <site id="news_gigazine" title="GIGAZINE" href="http://gigazine.net/" type="MultiRssReader">
 	    	<properties>
-	    		<property name="url">http://www.pheedo.jp/f/gigazine_2</property>
+	    		<property name="url">http://feed.rssad.jp/rss/gigazine/rss_2.0</property>
 	    	</properties>
 	    </site>
 	    <site id="news_jcast" title="J-CAST" href="http://www.j-cast.com/" type="MultiRssReader">
 	    	<properties>
-	    		<property name="url">http://www.pheedo.jp/f/jcast_news_atom</property>
+	    		<property name="url">http://feed.rssad.jp/rss/jcast/index.xml</property>
 	    	</properties>
 	    </site>
 	    <site id="news_keitaiwatch" title="ケータイ Watch" href="http://k-tai.impress.co.jp/" type="MultiRssReader">
 	    	<properties>
-	    		<property name="url">http://www.pheedo.jp/f/k-tai_watch/</property>
+	    		<property name="url">http://rss.rssad.jp/rss/k-taiwatch/k-tai.rdf</property>
 	    	</properties>
 	    </site>
 	    <site id="news_slashdotjp" title="Slashdot JP" href="http://slashdot.jp/" type="MultiRssReader">
@@ -50,7 +50,7 @@
 	    </site>
 	    <site id="sports_goo" title="goo スポーツ" href="http://sports.goo.ne.jp/" type="MultiRssReader">
 	    	<properties>
-	    		<property name="url">http://sports.goo.ne.jp/atom/index.xml</property>
+	    		<property name="url">http://sports.goo.ne.jp/sports/rss/rss.xml</property>
 	    	</properties>
 	    </site>
 	    <site id="news_nikkansports" title="nikkansports.com" href="http://www.nikkansports.com/sports/top-sports.html" type="MultiRssReader">
@@ -60,7 +60,7 @@
 	    </site>
 	    <site id="news_sportsnavi" title="スポーツナビ" href="http://sportsnavi.yahoo.co.jp/" type="MultiRssReader">
 	    	<properties>
-	    		<property name="url">http://bulknews.net/rss/rdf.cgi?SportsNavi</property>
+	    		<property name="url">http://sportsnavi.yahoo.co.jp/rss/all.xml</property>
 	    	</properties>
 	    </site>
 	    <site id="news_fumofumocolumn" title="スポーツ見るもの語る者～フモフモコラム" href="http://blog.livedoor.jp/vitaminw/" type="MultiRssReader">
