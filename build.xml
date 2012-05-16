@@ -207,7 +207,7 @@
 		</copy>
 
 		<copy todir="${build.main}">
-			<fileset dir="${src.main.web}" includes="*.jsp, *.html" excludes="openid_login.jsp.sample"/>
+			<fileset dir="${src.main.web}" includes="*.jsp, *.html, *.ico" excludes="openid_login.jsp.sample"/>
 		</copy>
 
 		<copy todir="${build.main}" file="${src.main.web}/admin/role.jsp"/>

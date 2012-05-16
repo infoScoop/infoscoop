@@ -23,6 +23,10 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<title>%{ms_sessionTimeout}</title>
+		
+		<!-- favicon.ico -->
+		<link rel="shortcut icon" href="favicon.ico">
+		
 		<style type="text/css">
 .header{
   font-size:14px;

@@ -30,6 +30,10 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<title><%= pageTitle %> %{lb_loginTitle}</title>
+		
+		<!-- favicon.ico -->
+		<link rel="shortcut icon" href="favicon.ico">
+		
         <style>
 .header{
   font-size:14px;
