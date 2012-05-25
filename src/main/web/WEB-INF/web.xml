@@ -46,7 +46,7 @@
 		<filter-class>org.infoscoop.web.SessionManagerFilter</filter-class>
 		<init-param>
 			<param-name>excludePath</param-name>
-			<param-value>/xmlrpc,/login.jsp,/changePassword.jsp,/authsrv,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html</param-value>
+			<param-value>/xmlrpc,/login.jsp,/changePassword.jsp,/authsrv,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html,/favicon.ico</param-value>
 		</init-param>
 		<init-param>
 			<param-name>redirectPath</param-name>
