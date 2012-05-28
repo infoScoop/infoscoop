@@ -45,6 +45,7 @@ public class OAuthConvertTask implements HibernateBeansTask.BeanTask2 {
 	public void prepare( Project project ) throws BuildException {
 		String schemaName = project.getProperty("SCHEMA_NAME");
 		String backupTableSuffix = project.getProperty("BACKUP_TABLE_SUFFIX");
+		String dbms = project.getProperty("DBMS");
 		DataSource dataSource = ( DataSource )SQLTask.getContext().getBean("dataSource");
 		
 		SessionFactory sessionFactory = ( SessionFactory )SQLTask.getContext().getBean("sessionFactory");
@@ -52,7 +53,7 @@ public class OAuthConvertTask implements HibernateBeansTask.BeanTask2 {
 		
 		try {
 			String queryString = "select service_name, consumer_key, consumer_secret, signature_method, gadget_url, gadget_url_key from "+schemaName+"IS_OAUTH_CONSUMERS" + backupTableSuffix;
-			project.log(queryString);
+			project.log(dbms + ": " + queryString);
 			
 			ResultSet resultSet = null;
 			
@@ -108,8 +109,12 @@ public class OAuthConvertTask implements HibernateBeansTask.BeanTask2 {
 			project.log("Start OAuth Token migration.");
 			isSuccess = false;
 			try {
-				queryString = "select UID, gadget_url, gadget_url_key, service_name, request_token, access_token, token_secret from "+schemaName+"IS_OAUTH_TOKENS" + backupTableSuffix;
-				project.log(queryString);
+				if("mysql".equalsIgnoreCase(dbms.trim())){
+					queryString = "select UID, gadget_url, gadget_url_key, service_name, request_token, access_token, token_secret from "+schemaName+"IS_OAUTH_TOKENS" + backupTableSuffix;
+				}else{
+					queryString = "select \"UID\", gadget_url, gadget_url_key, service_name, request_token, access_token, token_secret from "+schemaName+"IS_OAUTH_TOKENS" + backupTableSuffix;
+				}
+				project.log(dbms + ": " + queryString);
 				resultSet = null;
 				
 				bakConnection = dataSource.getConnection();
