@@ -2114,7 +2114,7 @@ IS_Portal.buildLogout = function() {
 	
 	var logoutLabel = $.DIV({id:'logout', className:'portal-user-menu-item-label'}, IS_R.lb_logout);
 	
-	var logoutDiv = $.A({className:'portal-user-menu-link', href:'javascript:void(0);', title:IS_R.lb_logout}
+	var logoutDiv = $.A({className:'portal-user-menu-link', href:'#', title:IS_R.lb_logout}
 		, logoutLabel);
 
 	Event.observe( logout,"click",function( e ) {
