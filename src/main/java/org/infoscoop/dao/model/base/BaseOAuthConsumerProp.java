@@ -155,7 +155,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	}
 
 	public java.lang.String getDescription() {
-		return description;
+		return (description != null)? description : "";
 	}
 
 	public void setDescription(java.lang.String description) {
