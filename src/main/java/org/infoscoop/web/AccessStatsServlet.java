@@ -20,6 +20,7 @@ package org.infoscoop.web;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -53,7 +54,9 @@ public class AccessStatsServlet extends HttpServlet {
 		LogDAO dao = LogDAO.newInstance();
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat( DATE_FORMAT );
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Calendar cal = Calendar.getInstance();
+		cal.setTimeZone(TimeZone.getTimeZone("UTC"));
 		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal
 				.get(Calendar.DATE), 0, 0, 0);
 		cal.add(Calendar.DATE, -1);

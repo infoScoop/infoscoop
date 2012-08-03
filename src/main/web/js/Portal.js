@@ -38,6 +38,9 @@ var proxyServerURL = hostPrefix + "/proxy";
 
 var searchEngineURL = searchEngineURL ? is_getProxyUrl( searchEngineURL, "NoOperation") : hostPrefix+"/schsrv";
 
+var d = new Date();
+IS_Portal.clientTimeZone = String(-d.getTimezoneOffset());
+
 IS_Customization = false;
 IS_WidgetConfiguration = [];
 IS_Portal.logoffDateTime = -1;

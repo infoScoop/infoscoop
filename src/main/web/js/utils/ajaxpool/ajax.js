@@ -37,10 +37,15 @@ var AjaxRequest = {
 			}
 		}
 		var self = this;
+		if(!IS_Portal.clientTimeZone && IS_Portal.clientTimeZone !== 0){
+			var d = new Date();
+			IS_Portal.clientTimeZone = String(-d.getTimezoneOffset());
+		}
 		
 		var headers = [
 			"MSDPortal-Timeout", ajaxRequestTimeout,
-			"MSDPortal-Ajax", "true"
+			"MSDPortal-Ajax", "true",
+			"X-IS-TIMEZONE", IS_Portal.clientTimeZone
 		];
 		if( window.is_sessionId ){
 			headers.push("MSDPortal-SessionId");

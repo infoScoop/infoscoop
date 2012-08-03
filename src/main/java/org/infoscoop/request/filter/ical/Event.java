@@ -25,6 +25,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
+
+import org.infoscoop.context.UserContext;
 
 public class Event {
 	public static final String DATE_RORMAT = "yyyy/MM/dd";
@@ -82,8 +85,10 @@ public class Event {
 	}
 
 	public String getDtend() {
-		if (dtendDate != null)
+		if (dtendDate != null){
+			dateFormat.setTimeZone(UserContext.instance().getUserInfo().getClientTimezone());
 			return dateFormat.format(dtendDate);
+		}
 		return "";
 	}
 
@@ -107,6 +112,7 @@ public class Event {
 			}
 
 			dtendDate = new net.fortuna.ical4j.model.DateTime(dtend);
+			timeFormat.setTimeZone(UserContext.instance().getUserInfo().getClientTimezone());
 			dtendTime = timeFormat.format(dtendDate);
 		}else{
 			dtendDate = new net.fortuna.ical4j.model.Date(dtend);
@@ -119,6 +125,7 @@ public class Event {
 	}
 
 	public String getDtstart() {
+		dateFormat.setTimeZone(UserContext.instance().getUserInfo().getClientTimezone());
 		return dateFormat.format(dtstartDate);
 	}
 
@@ -142,6 +149,7 @@ public class Event {
 				dtstart += "Z";
 			}
 			dtstartDate = new net.fortuna.ical4j.model.DateTime(dtstart);
+			timeFormat.setTimeZone(UserContext.instance().getUserInfo().getClientTimezone());
 			dtstartTime = timeFormat.format(dtstartDate);
 		}else{
 			dtstartDate = new net.fortuna.ical4j.model.Date(dtstart);
@@ -171,6 +179,7 @@ public class Event {
 			return;
 		net.fortuna.ical4j.model.Dur dur= new net.fortuna.ical4j.model.Dur(duration);
 		dtendDate = new net.fortuna.ical4j.model.DateTime(dur.getTime(dtstartDate));
+		timeFormat.setTimeZone(UserContext.instance().getUserInfo().getClientTimezone());
 		String tmpDtendTime = timeFormat.format(dtendDate);
 		if(!"00:00".equals(tmpDtendTime))
 			this.dtendTime = tmpDtendTime;
@@ -323,6 +332,7 @@ public class Event {
     }
     
     private String getRruleLimit() {
+		dateFormat.setTimeZone(UserContext.instance().getUserInfo().getClientTimezone());
     	return dateFormat.format(limitDate);
     }
 

@@ -19,6 +19,7 @@ package org.infoscoop.command;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 import org.apache.commons.logging.Log;
@@ -69,6 +70,7 @@ public class AddKeyword extends XMLCommandProcessor {
 
 		String commandId = super.commandXml.getAttribute("id").trim();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHH");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 		//String keyword = XmlUtil.escapeXmlEntities(el.getAttributeValue("keyword").trim());
 		String keyword = super.commandXml.getAttribute("keyword").trim();
 		String[] keywords = keyword.split(" ");

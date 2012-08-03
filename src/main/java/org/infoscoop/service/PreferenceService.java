@@ -21,9 +21,11 @@ package org.infoscoop.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.model.Preference;
 import org.infoscoop.util.SpringUtil;
@@ -86,8 +88,8 @@ public class PreferenceService{
 				if(prefPropObj.has("logoffDateTime")){
 					String logoffDateTime = prefPropObj.getString("logoffDateTime");
 					Date logoffDate = new SimpleDateFormat( formatW3C ).parse(logoffDateTime);
-					prefPropObj.put("logoffDateTime",
-							new SimpleDateFormat( formatFullDate ).format(logoffDate));
+					SimpleDateFormat sdf = UserContext.instance().getUserInfo().getClientDateFormat(formatFullDate);
+					prefPropObj.put("logoffDateTime", sdf.format(logoffDate));
 					//prefPropObj.put("logoffDateTime",logoffDateTime );
 				}
 			}

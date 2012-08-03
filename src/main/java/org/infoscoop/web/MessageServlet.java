@@ -20,6 +20,7 @@ package org.infoscoop.web;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.MessageDAO;
 import org.infoscoop.dao.model.Message;
 import org.infoscoop.service.MessageService;
@@ -211,7 +213,8 @@ public class MessageServlet extends HttpServlet {
 	}
 
 	private String listToJson(List<Message> msgs) throws JSONException {
-		SimpleDateFormat df = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+		SimpleDateFormat df = UserContext.instance().getUserInfo().getClientDateFormat(DEFAULT_DATE_FORMAT);
+		
 		JSONArray result = new JSONArray();
 		for (Message msg : msgs) {
 			JSONObject obj = new JSONObject();

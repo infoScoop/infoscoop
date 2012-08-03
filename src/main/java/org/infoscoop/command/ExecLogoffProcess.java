@@ -19,6 +19,7 @@ package org.infoscoop.command;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 import org.apache.commons.logging.Log;
@@ -55,7 +56,9 @@ public class ExecLogoffProcess extends XMLCommandProcessor {
 
         String commandId = super.commandXml.getAttribute("id").trim();
 		String field = super.commandXml.getAttribute("field").trim();
-		String value = new SimpleDateFormat( FORMAT_W3C ).format(new Date());
+		SimpleDateFormat sdf = new SimpleDateFormat( FORMAT_W3C );
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		String value = sdf.format(new Date());
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("uid:[" + uid + "]: processXML: field:[" + field
