@@ -24,7 +24,6 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.oauth.OAuth;
@@ -61,7 +60,7 @@ public class OAuth2Authenticator implements Authenticator {
 			throws ProxyAuthenticationException {
 		ProxyRequest.OAuth2Config oauthConfig = request.getOauth2Config();
 		try {
-			OAuthConsumer consumer = newConsumer(oauthConfig.serviceName,oauthConfig);
+			OAuthConsumer consumer = newConsumer(oauthConfig.serviceName,oauthConfig, getCallbackURL(request));
 			if (oauthConfig.accessToken == null) {
 				returnApprovalUrl(request, consumer);
 			}
@@ -122,7 +121,7 @@ public class OAuth2Authenticator implements Authenticator {
 		
 	}
 	
-	protected OAuthConsumer newConsumer(String name, ProxyRequest.OAuth2Config oauthConfig) throws ProxyAuthenticationException{
+	protected OAuthConsumer newConsumer(String name, ProxyRequest.OAuth2Config oauthConfig, String callbackURL) throws ProxyAuthenticationException{
 		OAuthServiceProvider serviceProvider = 
 			new OAuthServiceProvider(
 					null,
@@ -134,7 +133,7 @@ public class OAuth2Authenticator implements Authenticator {
 
 		String consumerKey = consumerProp.getConsumerKey();
 		String consumerSecret = consumerProp.getConsumerSecret();
-		OAuthConsumer consumer = new OAuthConsumer(null, consumerKey, consumerSecret, serviceProvider);
+		OAuthConsumer consumer = new OAuthConsumer(callbackURL, consumerKey, consumerSecret, serviceProvider);
 		consumer.setProperty("name", name);
 		consumer.setProperty("request.scope", oauthConfig.scope);
 		consumers.put(oauthConfig.getGadgetUrl() + "\t" + name, consumer);
@@ -148,7 +147,6 @@ public class OAuth2Authenticator implements Authenticator {
 		final String callbackURL = getCallbackURL(request);
 		Object scope = consumer.getProperty("request.scope");
 		final OAuth2Message msg = new OAuth2Message();		
-		List<OAuth.Parameter> parameters = OAuth.newList(OAuth.OAUTH_CALLBACK,callbackURL);
 		String gadgetUrl = request.getOauth2Config().getGadgetUrl();
 		
 		OAuthService.getHandle().saveOAuth2Token(request.getPortalUid(),
@@ -161,7 +159,6 @@ public class OAuth2Authenticator implements Authenticator {
 												"response_type","code",
 												"state", state);
 		if (scope!=null) {
-			parameters.add(new OAuth.Parameter("scope", scope.toString()));
 			authorizationURL = OAuth.addParameters(authorizationURL, "scope", scope.toString());
 		}
 		
