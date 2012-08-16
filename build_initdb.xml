@@ -38,17 +38,17 @@
 
 		<copy todir="${build.work}/initdb/lib">
 			<fileset dir="${main.web}/WEB-INF/lib">
-				<include name="antlr*.jar"/>
-				<include name="cglib*.jar"/>
+				<include name="antlr-*.jar"/>
+				<include name="cglib-*.jar"/>
 				<include name="commons*.jar"/>
-				<include name="dom4j*.jar"/>
-				<include name="hibernate*.jar"/>
-				<include name="jta.jar"/>
+				<include name="dom4j-*.jar"/>
+				<include name="hibernate-*.jar"/>
+				<include name="jta-*.jar"/>
 				<include name="log4j*.jar"/>
-				<include name="opencsv*.jar"/>
+				<include name="opencsv-*.jar"/>
 				<include name="spring-*.jar"/>
-				<include name="xercesImpl.jar"/>
-				<include name="json.jar"/>
+				<include name="xercesImpl-*.jar"/>
+				<include name="json-*.jar"/>
 			</fileset>
 			<fileset dir="${initdb.home}/importTool/lib" includes="*.jar"/>
 		</copy>
