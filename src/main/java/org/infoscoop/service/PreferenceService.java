@@ -87,10 +87,7 @@ public class PreferenceService{
 				JSONObject prefPropObj = prefObj.getJSONObject("property");
 				if(prefPropObj.has("logoffDateTime")){
 					String logoffDateTime = prefPropObj.getString("logoffDateTime");
-					Date logoffDate = new SimpleDateFormat( formatW3C ).parse(logoffDateTime);
-					SimpleDateFormat sdf = UserContext.instance().getUserInfo().getClientDateFormat(formatFullDate);
-					prefPropObj.put("logoffDateTime", sdf.format(logoffDate));
-					//prefPropObj.put("logoffDateTime",logoffDateTime );
+					prefPropObj.put("logoffDateTime",logoffDateTime );
 				}
 			}
 
