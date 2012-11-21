@@ -351,7 +351,12 @@ IS_Widget.prototype.classDef = function() {
 			if ( this.content && this.content[funcName]) {
 				func = this.content[funcName].bind( this.content );
 			} else if( this.iframe && this.iframe.contentWindow && this.iframe.contentWindow[ funcName ]) {
-				func = this.iframe.contentWindow[funcName].bind( this.iframe.contentWindow );
+//				func = this.iframe.contentWindow[funcName].bind( this.iframe.contentWindow );
+				func = function(iframe, funcName){
+					return function(){
+						iframe.contentWindow[funcName]();
+					}
+				}(this.iframe, funcName);
 			}
 		} catch( ex ) {
 			// ignore
