@@ -93,6 +93,7 @@ gadgets.log = (function() {
  * @private
  */
   function logAtLevel(level, message) {
+  	/*
     if (level < logLevelThreshold_ || !_console) {
       return;
     }
@@ -104,6 +105,8 @@ gadgets.log = (function() {
     } else if (_console.log) {
       _console.log(message);
     }
+    */
+    gadgets.rpc.call( null,"log",null,level,message );
   };
 
   /**
