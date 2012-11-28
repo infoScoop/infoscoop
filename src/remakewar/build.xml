@@ -6,6 +6,13 @@
 	<property name="collect.home" location="${basedir}/collect"/>
 	<property name="dist.home" value="${basedir}/dist" />
 
+	<path id="project.classpath">
+		<fileset dir="${basedir}/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="project.classpath" />
+	
 	<delete file="${basedir}/build.properties.tmp"/>
 	<copy tofile="${basedir}/build.properties.tmp" file="${basedir}/build.properties" encoding="UTF-8">
 		<filterchain>
@@ -208,14 +215,22 @@
 	</target>
 	
 	<target name="replaceDataSourceXml">
+		<if>
+			<not>
+				<equals arg1="${dataSource.schema}" arg2="" />
+			</not>
+			<then>
+				<replaceregexp file="${collect.home}/WEB-INF/classes/datasource.xml"
+					match="&lt;!--Database Schema Name--&gt;"
+					replace="&lt;prop key=&quot;hibernate.default_schema&quot;&gt;${dataSource.schema}&lt;/prop&gt;"
+					flags="s"
+					encoding="UTF-8"/>
+			</then>
+		</if>
+		
 		<replaceregexp file="${collect.home}/WEB-INF/classes/datasource.xml"
 			match="&lt;!--start dataSource.jndiName--&gt;.*&lt;!--end dataSource.jndiName--&gt;"
 			replace="java:comp/env/${dataSource.jndiName}"
-			flags="s"
-			encoding="UTF-8"/>
-		<replaceregexp file="${collect.home}/WEB-INF/classes/datasource.xml"
-			match="&lt;!--start dataSource.schema--&gt;.*&lt;!--end dataSource.schema--&gt;"
-			replace="${dataSource.schema}"
 			flags="s"
 			encoding="UTF-8"/>
 		<replaceregexp file="${collect.home}/WEB-INF/classes/datasource.xml"
