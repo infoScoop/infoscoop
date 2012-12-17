@@ -33,6 +33,11 @@ body{
 	width:120px;
 	height:194px;
 }
+
+.staticLayout, .template, .staticLayoutAdjustHeight .template{
+	display:none;
+}
+
 .static_column {
 	border : dotted 1px gray;
 	cursor: pointer;

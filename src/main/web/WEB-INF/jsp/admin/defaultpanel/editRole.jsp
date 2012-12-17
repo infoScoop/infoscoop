@@ -198,7 +198,9 @@
 	
 	<script src="../../js/lib/jquery-1.5.2.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery-ui-1.8.13.custom.css">
+	<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery.ui.button.css">
 	<script src="../../js/lib/jquery-ui-1.8.13.custom.min.js"></script>
+	<script src="../../js/lib/jquery-ui/jquery.ui.button.js"></script>
 	
 	<script type="text/javascript">
 		jQuery.noConflict();
@@ -231,7 +233,12 @@
 	</center>
 </div>
 <div style="display:none" id='select_layout_modal' title="%{alb_selectLayout}">
+	<div style="height:25px;">
+		<div style="float:left;padding:3;">%{alb_number_of_gadgets}</div>
+		<div style="font-size:70%;" id="gadgetsnum_buttonset"></div>
+	</div>
 	<c:import url="/WEB-INF/jsp/admin/defaultpanel/_layoutTemplates.jsp"/>
+	
 	<div style="clear:both;text-align:center;">
 		<input id='select_layout_cancel' type="button" value="%{alb_cancel}"/>
 	</div>

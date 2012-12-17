@@ -705,11 +705,15 @@ ISA_DefaultPanel.prototype.templates = {
 		var targetClass = (defaultPanel.displayRoleJsons[defaultPanel.displayRoleId] && defaultPanel.displayRoleJsons[defaultPanel.displayRoleId].adjustToWindowHeight)
 			? 'staticLayoutAdjustHeight' : 'staticLayout';
 		$jq("#select_layout_modal ." + targetClass).each(function(idx, element){
-			this.layouts[idx] = $jq(element).html();
+//			this.layouts[idx] = $jq(element).html();
+			var template = (ISA_Admin.trim($jq(element).html()).length > 0)? $jq($jq(element).html()) : $jq(element);
+			var layoutTemplate = template.closest(".template");
+			this.layouts[idx] = (layoutTemplate.length > 0) ? layoutTemplate.html() : $jq(element).html();
+			if($jq(element).attr("id") == "staticLayout_tpl_default"){
+				this.staticLayoutDefaultIdx = idx;
+			}
 		}.bind(this));
 		
-//		this.layouts[number] = html;
-//		return html;
 		return this.layouts[number];
 	},
 	// Set for default fixed area
@@ -718,7 +722,8 @@ ISA_DefaultPanel.prototype.templates = {
 //		  this.getStaticLayout(i);
 		this.getStaticLayout();
 		
-		return this.setStaticLayout(jsonObject, (number ? number : 3));
+		console.log(this.staticLayoutDefaultIdx);
+		return this.setStaticLayout(jsonObject, (number ? number : this.staticLayoutDefaultIdx));
 	},
 	/**
 		Set fixed area of command bar
