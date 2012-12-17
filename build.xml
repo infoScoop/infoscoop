@@ -156,8 +156,14 @@
                 <filter token="APP.MAIN.NAME" value="${app.main.name}"/>
             </filterset>
         </copy>
+        <mkdir dir="${install_image.home}/${app.main.name}/lib" />
+        <copy todir="${install_image.home}/${app.main.name}/lib" encoding="UTF-8">
+            <fileset dir="${basedir}/lib/build">
+              <include name="**/ant-contrib*.jar"/>
+            </fileset>
+        </copy>
 
-        <mkdir dir="${install_image.home}/${app.main.name}/Customization/WEB-INF/classes" />
+    	<mkdir dir="${install_image.home}/${app.main.name}/Customization/WEB-INF/classes" />
         <mkdir dir="${install_image.home}/${app.main.name}/Customization/WEB-INF/lib" />
         <copy todir="${install_image.home}/${app.main.name}/Customization" file="${src.main.web}/login.jsp"/>
         <copy todir="${install_image.home}/${app.main.name}/Customization" file="${src.main.web}/openid_login.jsp.sample"/>
