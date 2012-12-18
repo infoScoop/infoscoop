@@ -387,7 +387,11 @@ function init() {
 		new IS_SiteAggregationMenu(true);
 		new IS_SidePanel.SiteMap(true);
 	}
-	new IS_WidgetsContainer("manager/defaultpanel/widsrv?tabId=" + jsonRole.tabId + "&roleOrder=" + jsonRole.roleOrder);
+	
+	var currentUrl = location.href;
+	var srvUrl = currentUrl.replace(/.*\/(manager\/[^\/]*\/).*/, "$1");
+	
+	new IS_WidgetsContainer(srvUrl + "widsrv?tabId=" + jsonRole.tabId + "&roleOrder=" + jsonRole.roleOrder);
 
 	//menuItem to panel
 	var panelBody = document.body;
@@ -672,8 +676,69 @@ function init() {
 	}
 	IS_Droppables.add(panelBody, menuopt);
 	
+	
+	/** init layoutSelect **/
+	var currentStaticColCount = $jq("#staticAreaContainer .static_column").length;
+	
+	$jq("#staticLayouts"+(areaType != 2 ? "AdjustHeight":"")).hide();
+	var targetAreaId = "staticLayouts"+(areaType == 2 ? "AdjustHeight":"");
+	$jq("#" + targetAreaId+ ">div").hide();
+	
+	// create gadgets-num button
+	var columnsCountList = [];
+	$jq("#" + targetAreaId+ ">div").each(function(idx, staticLayout){
+		staticLayout = $jq(staticLayout);
+		
+		var columnLength = $jq(".static_column", $jq(">:not(.template)", staticLayout)).length;
+		
+		staticLayout.addClass("gadgets-" + columnLength);
+		
+		if($jq.inArray(columnLength, columnsCountList) == -1)
+			columnsCountList.push(columnLength);
+	});
+	
+	columnsCountList.sort(function(a,b){return a>b});
+	
+	$jq.each(columnsCountList, function(idx, gadgetsNum){
+		var parent = $jq("#gadgetsnum_buttonset")
+		var idPrefix = "gadgetsnum_buttonset_";
+		;
+		var radioButton = $jq("<input>")
+			.attr("id", idPrefix + gadgetsNum)
+			.attr("type", "radio")
+			.attr("name", idPrefix + "radio")
+			.appendTo(parent);
+		
+		if(gadgetsNum == 0){
+			radioButton.attr("checked", true);
+		}
+		else if(gadgetsNum == currentStaticColCount){
+			$jq("input", parent).attr("checked", false);
+			radioButton.attr("checked", true);
+		}
+		
+		$jq("<label>").attr("for", idPrefix + gadgetsNum).text(gadgetsNum).appendTo(parent);
+		
+		radioButton.click(function(){
+			var id = $jq(this).attr("id");
+			var number = id.replace(/^gadgetsnum_buttonset_(.+)$/, "$1");
+			
+			$jq("#" + targetAreaId+ ">div").hide();
+			$jq("#" + targetAreaId + " .gadgets-" + number).show();
+		});
+	});
+	
+	$jq("#gadgetsnum_buttonset").buttonset();
+	
+	// show default
+	if($jq("#" + targetAreaId + " .gadgets-" + currentStaticColCount).length > 0){
+		$jq("#" + targetAreaId + " .gadgets-" + currentStaticColCount).show();
+	}else{
+		$jq("#" + targetAreaId + " .gadgets-" + columnsCountList[0]).show();
+	}
+	
 	$jq("#select_layout_link").click(function(){
-		$jq("#staticLayouts"+(areaType != 2 ? "AdjustHeight":"")).hide();
+//		$jq("#staticLayouts"+(areaType != 2 ? "AdjustHeight":"")).hide();
 		
 		$jq("#select_layout_modal").dialog({
 			modal:true,
@@ -684,18 +749,23 @@ function init() {
 				
 				var dialog = $jq(this);
 				if(dialog.data("init")) return;
+				
+				// init process
 				$jq("#select_layout_modal .staticLayout"+(areaType == 2 ? "AdjustHeight":""))
 					.mouseover(function(){$jq(this).css("background-color","#9999cc")})
 					.mouseout(function(){$jq(this).css("background-color","")})
 					.click(function(){
 						if(!confirm(ISA_R.alb_destroyOldSettings))
 							return;
-						var newNode = setIdentifier($jq(this).clone(true));
+						var layoutTemplate = $jq($jq(this).html()).closest(".template");
+						var newNode = (layoutTemplate.length > 0) ? layoutTemplate : $jq(this).clone(true);
+						setIdentifier(newNode);
+//						var newNode = setIdentifier($jq(this).clone(true));
 						openerPanel.setNewValue("layout", newNode.html(), jsonRole.id);
+						openerPanel.setNewValue("staticPanel", "{}", jsonRole.id);
 						
 						$jq("#staticAreaContainer").html(jsonRole.layout);
 						
-						jsonRole.staticPanel = {};
 						prepareStaticArea();
 						
 						reloadStaticGadgets();
@@ -705,6 +775,7 @@ function init() {
 				$jq("#select_layout_cancel").click(function(){
 					dialog.dialog("close");
 				});
+				
 				dialog.data("init", true);
 			},
 			close:function(){
@@ -727,8 +798,15 @@ function init() {
 				if(dialog.data("init")) return;
 				
 				$jq("#edit_layout_ok").click(function(){
+					/*
 					openerPanel.setNewValue("layout", $jq("#edit_layout_textarea").val(), jsonRole.id);
 					$jq('#staticAreaContainer').html(jsonRole.layout);
+					*/
+					var staticAreaContainer = $jq('#staticAreaContainer');
+					staticAreaContainer.html($jq("#edit_layout_textarea").val());
+					setIdentifier(staticAreaContainer);
+					openerPanel.setNewValue("layout", staticAreaContainer.html(), jsonRole.id);
+					
 					prepareStaticArea();
 					
 					reloadStaticGadgets();
@@ -750,9 +828,29 @@ function init() {
 	Event.observe($("areaType"), 'change', function(){
 		//change areaType from static and personalized area to only static area.
 		if(areaType != this.value){
-			if(!confirm("表示エリアを変更するにはリロードする必要があります。よろしいですか？")){
+//			if(!confirm("表示エリアを変更するにはリロードする必要があります。よろしいですか？")){
+			var confirmMessage;
+			var isReset = false;
+			if((this.value == "2" && areaType != "2") || (this.value != "2" && areaType == "2")){
+				confirmMessage = ISA_R.alb_changeStaticAreaType_confirm_2;
+				isReset = true;
+			}else{
+				confirmMessage = ISA_R.alb_changeStaticAreaType_confirm_1;
+			}
+			
+			if(!confirm(confirmMessage)){
 				$jq("#areaType option[value="+ areaType.toString() +"]").attr("selected","selected");
 				return;
+			}
+			
+			if(isReset){
+				// reset
+				var target = $jq("#staticLayout" + ((this.value == "2")? "AdjustHeight" : "") + "_tpl_default");
+				var layoutTemplate = $jq($jq(target).html()).closest(".template");
+				layoutTemplate = (layoutTemplate.length > 0) ? layoutTemplate : $jq(target).clone(true);
+				setIdentifier(layoutTemplate);
+				openerPanel.setNewValue("layout", layoutTemplate.html(), jsonRole.id);
+				openerPanel.setNewValue("staticPanel", "{}", jsonRole.id);
 			}
 			
 			switch(this.value){
@@ -769,6 +867,7 @@ function init() {
 					openerPanel.setNewValue("adjusttowindowheight", true, jsonRole.id);
 					break;
 			}
+			
 			location.reload();
 		}
 	});
