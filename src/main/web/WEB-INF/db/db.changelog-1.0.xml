@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--Issue 12826-->
+    <!--CREATE TABLE `IS_STATIC_TABS` (tabid varchar(50) not null, tabnumber integer, tabdesc varchar(255), deleteflag integer not null, disabledefault integer not null,primary key(tabid));-->
+    <!--CREATE TABLE `IS_TAB_ADMINS` (tabid integer not null, `uid` varchar(150) not null, primary key(tabid), foreign key (tabid) references IS_STATIC_TABS(tabid) on delete cascade);-->
+    
+    <changeSet id="infoscoop320_12826_1" author="mikami">
+        <preConditions onFail="HALT" onFailMessage="skip infoscoop320_12826_1">
+            <not>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_STATIC_TABS"/>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_TAB_ADMINS"/>
+            </not>
+        </preConditions>
+        <createTable tableName="IS_STATIC_TABS" tablespace="${.tablespace}">
+            <column name="tabid" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="tabnumber" type="integer"/>
+            <column name="tabdesc" type="varchar(255)"/>
+            <column name="deleteflag" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="disabledefault" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="IS_TAB_ADMINS" tablespace="${.tablespace}">
+            <column name="tabid" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="tabid" references="IS_STATIC_TABS(tabid)" deleteCascade="true"/>
+            </column>
+            <column name="adminUid" type="varchar(150)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--Issue 12826-->
+    <!--
+        insert into [スキーマ].is_static_tabs(tabid,tabnumber,deleteflag, desabledefault)
+        select distinct
+        tabid,
+        tabnumber,
+        (select min(deleteflag) from [スキーマ].is_tablayouts where tl.tabid = tabid) as deleteflag,
+        (select deleteflag
+        from [スキーマ].is_tablayouts
+        where
+        temp = 0
+        AND
+        tl.tabid = tabid
+        AND
+        roleorder=(select max(roleorder) from [スキーマ].is_tablayouts where temp = 0 AND tl.tabid = tabid)
+        ) as disableDefault
+        from
+        [スキーマ].is_tablayouts tl
+        where
+        temp = 0
+    -->
+    <changeSet id="infoscoop320_12826_2" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_2">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_STATIC_TABS;</sqlCheck>
+        </preConditions>
+        <sql>
+insert into ${migration.defaultSchemaWithDot}is_static_tabs(tabid, tabnumber, deleteflag, disabledefault)
+select distinct
+tabid,
+tabnumber,
+(select min(deleteflag) from ${migration.defaultSchemaWithDot}is_tablayouts where tl.tabid = tabid) as deleteflag,
+(select deleteflag
+from ${migration.defaultSchemaWithDot}is_tablayouts
+where
+temp = 0
+AND
+tl.tabid = tabid
+AND
+roleorder=(select max(roleorder) from ${migration.defaultSchemaWithDot}is_tablayouts where temp = 0 AND tl.tabid = tabid)
+) as disableDefault
+from
+${migration.defaultSchemaWithDot}is_tablayouts tl
+where
+temp = 0
+        </sql>
+    </changeSet>
+
+    <!--Issue 12826-->
+    <!--UPDATE IS_STATIC_TABS SET tabdesc = '%{alb_home}' WHERE tabid = '0';-->
+    <changeSet id="infoscoop320_12826_3" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_3">
+            <not>
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_STATIC_TABS where tabid='0';</sqlCheck>
+            </not>
+        </preConditions>
+        <update tableName="IS_STATIC_TABS">
+            <column name="tabdesc" value="%{alb_home}"/>
+            <where>tabid='0'</where>
+        </update>
+    </changeSet>    
+
+    <!--Issue 12826-->
+    <!--ALTER TABLE [スキーマ].IS_TABLAYOUTS ADD COLUMN TEMPLASTMODIFIED TIMESTAMP;-->
+    <changeSet id="infoscoop320_12826_4" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_4">
+            <changeSetExecuted id="infoscoop320_12826_2" author="mikami" changeLogFile="../db/db.changelog-1.0.xml"></changeSetExecuted>
+            <not>
+                <columnExists tableName="IS_TABLAYOUTS" columnName="templastmodified"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="IS_TABLAYOUTS">
+            <column name="templastmodified" type="Timestamp"/>
+        </addColumn>
+    </changeSet>    
+
+    <!--Issue 12826-->
+    <!--DELETE FROM IS_TABLAYOUTS WHERE temp = 1;-->
+    <changeSet id="infoscoop320_12826_5" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_5">
+            <not>
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_TABLAYOUTS where deleteFlag=1;</sqlCheck>
+            </not>
+        </preConditions>
+        <delete tableName="IS_TABLAYOUTS">
+            <where>temp=1</where>
+        </delete>
+    </changeSet>
+
+    <!--Issue 12826-->
+    <!--ALTER TABLE [スキーマ].IS_TABLAYOUTS DROP COLUMN TABNUMBER RESTRICT DROP COLUMN DELETEFLAG RESTRICT;-->
+    <changeSet id="infoscoop320_12826_6" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_6">
+            <changeSetExecuted id="infoscoop320_12826_2" author="mikami" changeLogFile="../db/db.changelog-1.0.xml"></changeSetExecuted>
+            <columnExists tableName="IS_TABLAYOUTS" columnName="tabNumber"/>
+            <columnExists tableName="IS_TABLAYOUTS" columnName="deleteFlag"/>
+        </preConditions>
+        <dropColumn tableName="IS_TABLAYOUTS" columnName="tabNumber"/>
+        <dropColumn tableName="IS_TABLAYOUTS" columnName="deleteFlag"/>
+    </changeSet>
+
+    <!--Issue 12826-->
+    <!--INSERT INTO `IS_PROPERTIES` VALUES ("tabLockTimeout","system",0,"60","int","",1,"^((-?[1-9][0-9]*)|0)$","!{typeInt}");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_role_tabAdmin","ALL","ALL","Tab Administrator");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_role_tabAdmin","ALL","ja","タブ管理者");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_role_tabAdmin","ALL","zh","标签管理员"-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_backTabList","ALL","ALL","Back");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_backTabList","ALL","ja","タブ一覧に戻る");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_backTabList","ALL","zh","返回标签一览");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_desc_tabLockTimeout","ALL","ALL","Lock time-out time of manager tab (minute)");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_desc_tabLockTimeout","ALL","ja","タブ編集のロックタイムアウト時間（分）。-1で無期限");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_desc_tabLockTimeout","ALL","zh","管理员标记的锁暂停时间(分)。-1为无限期");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_error_tabnotfound","ALL","ALL","The selected tab is already deleted. ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_error_tabnotfound","ALL","ja","選択されたタブは既に削除されています。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_error_tabnotfound","ALL","zh","被选择的标记已经被删除");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_forceEdit","ALL","ALL","Compulsive edit ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_forceEdit","ALL","ja","強制的に編集する");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_forceEdit","ALL","zh","强制编辑");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_tabList","ALL","ALL","Tab List");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_tabList","ALL","ja","タブ一覧");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_tabList","ALL","zh","标签一览");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_tabList","ALL","ALL","Tab Description");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_tabList","ALL","ja","タブの説明");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_tabList","ALL","zh","标栏说明");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_sequence","ALL","ALL","Order");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_sequence","ALL","ja","順序");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_sequence","ALL","zh","顺序");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_tabTimeout","ALL","ALL","Failed in the acquisition of temporary data. There is a possibility that time-out occurred during the process or that it was edited by other users.");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_tabTimeout","ALL","ja","テンポラリデータの取得に失敗しました。他のユーザに編集されたか、タイムアウトした可能性があります。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_tabTimeout","ALL","zh","未能取得临时数据。可能其他用户在编辑，暂停。");-->
+    <changeSet id="infoscoop320_12826_7" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_7">
+            <or>
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_PROPERTIES where id='tabLockTimeout';</sqlCheck>
+                <!--  
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_ADMINROLES where name='%{alb_role_tabAdmin}';</sqlCheck>
+                -->
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_role_tabAdmin';</sqlCheck>
+            </or>
+        </preConditions>
+        <insert tableName="IS_PROPERTIES">
+            <column name="id" value="tabLockTimeout"/>
+            <column name="category" value="system"/>
+            <column name="advanced" valueNumeric="0"/>
+            <column name="value" value="60"/>
+            <column name="datatype" value="int"/>
+            <column name="enumValue" value=""/>
+            <column name="required" valueNumeric="1"/>
+            <column name="regex" value="^((-?[1-9][0-9]*)|0)$"/>
+            <column name="regexMsg" value="!{typeInt}"/>
+        </insert>
+        <!-- 
+        <insert tableName="IS_ADMINROLES">
+            <column name="roleid" value="tabAdmin"/>
+            <column name="name" value="%{alb_role_tabAdmin}"/>
+            <column name="permission" value="[&quot;tabAdmin&quot;]"/>
+            <column name="allowdelete" valueNumeric="0"/>
+        </insert>
+        -->
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_role_tabAdmin"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Tab Administrator"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_role_tabAdmin"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="タブ管理者"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_role_tabAdmin"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="标签管理员"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_backTabList"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Back"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_backTabList"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="タブ一覧に戻る"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_backTabList"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="返回标签一览"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_desc_tabLockTimeout"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Lock time-out time of manager tab (minute)"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_desc_tabLockTimeout"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="タブ編集のロックタイムアウト時間（分）。-1で無期限"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_desc_tabLockTimeout"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="管理员标记的锁暂停时间(分)。-1为无限期"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_error_tabnotfound"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="The selected tab is already deleted. "/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_error_tabnotfound"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="選択されたタブは既に削除されています。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_error_tabnotfound"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="被选择的标记已经被删除。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_forceEdit"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Compulsive edit "/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_forceEdit"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="強制的に編集する"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_forceEdit"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="强制编辑"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_tabList"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Tab List"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_tabList"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="タブ一覧"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_tabList"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="标签一览"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_tabDesc"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Tab Description"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_tabDesc"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="タブの説明"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_tabDesc"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="标栏说明"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_sequence"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Order"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_sequence"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="順序"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_sequence"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="顺序"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_tabTimeout"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Failed in the acquisition of temporary data. There is a possibility that time-out occurred during the process or that it was edited by other users."/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_tabTimeout"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="テンポラリデータの取得に失敗しました。他のユーザに編集されたか、タイムアウトした可能性があります。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_tabTimeout"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="未能取得临时数据。可能其他用户在编辑，暂停。"/>
+        </insert>
+    </changeSet>
+    
+    <!--Issue 12826-->
+    <!--UPDATE IS_ADMINROLE SET permission = '[&quot;menu&quot;, &quot;menu_tree&quot;, &quot;search&quot;, &quot;widget&quot;, &quot;defaultPanel&quot;, &quot;tabAdmin&quot;, &quot;portalLayout&quot;, &quot;i18n&quot;, &quot;properties&quot;, &quot;proxy&quot;, &quot;admins&quot;, &quot;forbiddenURL&quot;, &quot;authentication&quot;]' WHERE roleid = 'root';-->
+    <!--UPDATE IS_I18N SET message = '強制的に編集すると、上記ユーザの編集データは破棄されます。' WHERE type = 'adminjs' AND  id = 'alb_multiUserEdit2' AND country = 'ALL' AND lang = 'ja';-->
+    <changeSet id="infoscoop320_12826_8" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_8">
+            <not>
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_ADMINROLES where roleid='root';</sqlCheck>
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where type = 'adminjs' AND  id = 'alb_multiUserEdit2' AND country = 'ALL' AND lang = 'ja';</sqlCheck>
+            </not>
+        </preConditions>
+        <update tableName="IS_ADMINROLES">
+            <column name="permission" value="[&quot;menu&quot;, &quot;menu_tree&quot;, &quot;search&quot;, &quot;widget&quot;, &quot;defaultPanel&quot;, &quot;tabAdmin&quot;, &quot;portalLayout&quot;, &quot;i18n&quot;, &quot;properties&quot;, &quot;proxy&quot;, &quot;admins&quot;, &quot;forbiddenURL&quot;, &quot;authentication&quot;]"/>
+            <where>roleid='root'</where>
+        </update>
+        <update tableName="IS_I18N">
+            <column name="message" value="強制的に編集すると、上記ユーザの編集データは破棄されます。"/>
+            <where>type = 'adminjs' AND id = 'alb_multiUserEdit2' AND country = 'ALL' AND lang = 'ja'</where>
+        </update>
+    </changeSet>    
+
+    <!--Issue 12826(oracle)-->
+    <!--INSERT INTO `IS_ADMINROLE` VALUES ("tabAdmin","%{alb_role_tabAdmin}","[&quot;tabAdmin&quot;]",0);-->
+    <changeSet id="infoscoop320_12826_9" author="mikami" dbms="oracle">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_8">
+			<sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_ADMINROLES where name='%{alb_role_tabAdmin}';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_ADMINROLES">
+        	<column name="id" valueComputed="is_adminRoles_id_seq.NEXTVAL"/>
+            <column name="roleid" value="tabAdmin"/>
+            <column name="name" value="%{alb_role_tabAdmin}"/>
+            <column name="permission" value="[&quot;tabAdmin&quot;]"/>
+            <column name="allowdelete" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
+    <!--Issue 12826(db2,mysql)-->
+    <!--INSERT INTO `IS_ADMINROLE` VALUES ("tabAdmin","%{alb_role_tabAdmin}","[&quot;tabAdmin&quot;]",0);-->
+    <changeSet id="infoscoop320_12826_9" author="mikami" dbms="db2,mysql">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_8">
+			<sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_ADMINROLES where name='%{alb_role_tabAdmin}';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_ADMINROLES">
+            <column name="roleid" value="tabAdmin"/>
+            <column name="name" value="%{alb_role_tabAdmin}"/>
+            <column name="permission" value="[&quot;tabAdmin&quot;]"/>
+            <column name="allowdelete" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+    
+    <!--Issue 13117-->
+    <!--INSERT INTO `IS_PROPERTIES` VALUES ('lastAccessTimeFormat','session',0,'yy/MM/dd HH:mm','string','',1,'','');-->
+    <!--INSERT INTO `IS_I18N` VALUES ('adminjs','alb_desc_lastAccessTimeFormat','ALL','ALL','The format of last access time (${lastAccessTime}). Default: yy/MM/dd HH:mm');-->
+    <!--INSERT INTO `IS_I18N` VALUES ('adminjs','alb_desc_lastAccessTimeFormat','ALL','ja','最終アクセス日時（${lastAccessTime}）のフォーマット。（デフォルト値: yy/MM/dd HH:mm）');-->
+    <!--INSERT INTO `IS_I18N` VALUES ('adminjs','alb_desc_lastAccessTimeFormat','ALL','zh','最后访问日期和时间（${lastAccessTime}）的格式（缺省值∶ yy/MM/dd HH∶mm）');-->
+    <changeSet id="infoscoop320_13117" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_13117">
+            <or>
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_PROPERTIES where id='lastAccessTimeFormat';</sqlCheck>
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_desc_lastAccessTimeFormat';</sqlCheck>
+            </or>
+        </preConditions>
+        <insert tableName="IS_PROPERTIES">
+            <column name="id" value="lastAccessTimeFormat"/>
+            <column name="category" value="session"/>
+            <column name="advanced" valueNumeric="0"/>
+            <column name="value" value="yy/MM/dd HH:mm"/>
+            <column name="datatype" value="string"/>
+            <column name="enumValue" value=""/>
+            <column name="required" valueNumeric="1"/>
+            <column name="regex" value=""/>
+            <column name="regexMsg" value=""/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_desc_lastAccessTimeFormat"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="The format of last access time (${lastAccessTime}). Default: yy/MM/dd HH:mm"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_desc_lastAccessTimeFormat"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="最終アクセス日時（${lastAccessTime}）のフォーマット。（デフォルト値: yy/MM/dd HH:mm）"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_desc_lastAccessTimeFormat"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="最后访问日期和时间（${lastAccessTime}）的格式（缺省值∶ yy/MM/dd HH∶mm）"/>
+        </insert>
+    </changeSet>
+    
+    <!--Issue 13333-->
+    <changeSet id="infoscoop320_13333" author="ak.nishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_13333">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_number_of_gadgets';</sqlCheck>
+        </preConditions>
+    	<insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_number_of_gadgets"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Number of Gadgets"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_number_of_gadgets"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="配置するガジェット数"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_number_of_gadgets"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="配置的小工具數"/>
+        </insert>
+    </changeSet>
+
+    <!--Issue 13346-->
+    <changeSet id="infoscoop320_13346" author="ak.nishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_13333">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_changeStaticAreaType_confirm_1';</sqlCheck>
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_changeStaticAreaType_confirm_2';</sqlCheck>
+        </preConditions>
+    	<insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_changeStaticAreaType_confirm_1"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="It is necessary to reload for changing area type. Are you sure?"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_changeStaticAreaType_confirm_1"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="表示エリアを変更するにはリロードする必要があります。よろしいですか？"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_changeStaticAreaType_confirm_1"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="要變更表示區域需要刷新。可以吗?"/>
+        </insert>
+    	<insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_changeStaticAreaType_confirm_2"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="The StaticPanel settings are lost if area type is changed. Are you sure?"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_changeStaticAreaType_confirm_2"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="この表示エリアに変更すると、固定エリアの設定は破棄されます。よろしいですか？"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_changeStaticAreaType_confirm_2"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="變更為這個表示區域的話，固定區域的設定被廢棄。可以吗?"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
