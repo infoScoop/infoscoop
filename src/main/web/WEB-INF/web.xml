@@ -45,7 +45,7 @@
   	
   	<context-param>
 	    <param-name>liquibase.changelog</param-name>
-	    <param-value>../db/db.changelog-master.xml</param-value>
+	    <param-value>org/infoscoop/migration/db.changelog-master.xml</param-value>
 	</context-param>
 	<context-param>
     	<param-name>liquibase.datasource</param-name>
