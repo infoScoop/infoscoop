@@ -88,22 +88,6 @@
 				</replace>			
 			</then>
 		</if>
-		<if>
-			<not>
-				<equals arg1="${dataSource.tablespace}" arg2="" />
-			</not>
-			<then>
-				<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
-					<replacetoken><![CDATA[<!--Migration Database TableSpace-->]]></replacetoken>
-					<replacevalue><![CDATA[
-	<context-param>
-		<param-name>liquibase.parametertablespace</param-name>
-		<param-value>@TABLE_SPACE@</param-value>
-	</context-param>
-			]]></replacevalue>
-				</replace>			
-			</then>
-		</if>
 		<replaceregexp file="${collect.home}/WEB-INF/web.xml"
 			match="@SCHEMA_NAME@"
 			replace="${dataSource.schema}"

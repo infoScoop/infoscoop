@@ -59,8 +59,11 @@
     	<param-name>liquibase.onerror.fail</param-name>
     	<param-value>true</param-value>
 	</context-param>
+	<context-param>
+    	<param-name>liquibase.parameter.tablespace</param-name>
+    	<param-value>@TABLE_SPACE@</param-value>
+	</context-param>
 	<!--Migration Database Schema-->
-	<!--Migration Database TableSpace-->
 	<listener>
 		<listener-class>org.infoscoop.migration.ISMigrationListener</listener-class>
 	</listener>
