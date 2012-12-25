@@ -54,6 +54,10 @@
 			var imageURL = staticContentURL + "/skin/imgs/";
 			
 			var IS_Portal = {};
+			
+			var d = new Date();
+			IS_Portal.clientTimeZone = String(-d.getTimezoneOffset());
+			
 			var is_userId = <%=uid != null ? "\"" + uid + "\"" : "null" %>;
 
 			var IS_forbiddenURLs = <%= ForbiddenURLService.getHandle().getForbiddenURLsJSON() %>;

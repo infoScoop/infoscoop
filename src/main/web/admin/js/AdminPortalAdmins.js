@@ -12,6 +12,7 @@ ISA_PortalAdmins.portalPermissionTypeInfo = $H({
 	search: ISA_R.alb_searchForm,
 	widget: ISA_R.alb_widget,
 	defaultPanel: ISA_R.alb_defaultPanel,
+	tabAdmin: ISA_R.alb_tab,
 	portalLayout: ISA_R.alb_otherLayout,
 	i18n: ISA_R.alb_i18n,
 	properties: ISA_R.alb_properties,
@@ -729,6 +730,12 @@ ISA_PortalAdmins.prototype.classDef = function() {
 	}
 	
 	this.build = function() {
+		var adminsData = portalAdminsJson;
+		
+		ISA_PortalAdmins.portalRolesList = adminsData.roles;
+		self.displayPortalAdmins(adminsData.admins);
+
+		/*
 		var url = adminHostPrefix + "/services/portalAdmins/getPortalAdminsJson";
 		var opt = {
 			method: 'get' ,
@@ -762,6 +769,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 			}
 		};
 		AjaxRequest.invoke(url, opt);
+		*/
 	};
 
 	this.getRole = function(roleId){

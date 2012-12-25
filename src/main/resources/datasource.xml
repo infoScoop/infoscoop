@@ -90,6 +90,8 @@
 					<value>org/infoscoop/dao/model/OAuthGadgetUrl.hbm.xml</value>
 					<value>org/infoscoop/dao/model/OAuthConsumer.hbm.xml</value>
 					<value>org/infoscoop/dao/model/OAuthCertificate.hbm.xml</value>
+					<value>org/infoscoop/dao/model/StaticTab.hbm.xml</value>
+					<value>org/infoscoop/dao/model/TabAdmin.hbm.xml</value>
 				</list>
 			</property>
 			<property name="hibernateProperties">

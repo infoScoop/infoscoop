@@ -211,6 +211,11 @@
 	</filter-mapping>
 
 	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/manager/defaultpanel/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
 		<filter-name>PreviewImpersonationFilter</filter-name>
 		<url-pattern>/adminpreview/*</url-pattern>
 	</filter-mapping>
@@ -346,11 +351,6 @@
 		<servlet-class>
 			org.infoscoop.web.InitializeServlet
 		</servlet-class>
-
-		<init-param>
-			<param-name>log4j-init-file</param-name>
-			<param-value>/WEB-INF/conf/log4j.xml</param-value>
-		</init-param>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 

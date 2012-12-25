@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.security.auth.Subject;
 
@@ -35,9 +35,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
-import org.infoscoop.dao.TabDAO;
+import org.infoscoop.admin.exception.TabTimeoutException;
+import org.infoscoop.dao.StaticTabDAO;
 import org.infoscoop.dao.TabLayoutDAO;
 import org.infoscoop.dao.WidgetDAO;
+import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.dao.model.Widget;
@@ -46,20 +48,20 @@ import org.infoscoop.util.RoleUtil;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.XmlUtil;
 import org.infoscoop.web.WidgetServlet;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class TabLayoutService {
 	public static String DEFAULT_ROLE_NAME = "defaultRole";
+	public static final String COMMANDBAR_TAB_ID = "commandbar";
 
 	private TabLayoutDAO tabLayoutDAO;
 	private WidgetDAO widgetDAO;
-	private TabDAO tabDAO;
+	private StaticTabDAO staticTabDAO;
+	
 
 	private static Log log = LogFactory.getLog(TabLayoutService.class);
 
-	private static final String COMMANDBAR_TAB_ID = "commandbar";
 
 	public TabLayoutService() {
 	}
@@ -72,8 +74,8 @@ public class TabLayoutService {
 		this.widgetDAO = widgetDAO;
 	}
 
-	public void setTabDAO(TabDAO tabDAO) {
-		this.tabDAO = tabDAO;
+	public void setStaticTabDAO(StaticTabDAO staticTabDAO) {
+		this.staticTabDAO = staticTabDAO;
 	}
 
 	public static TabLayoutService getHandle() {
@@ -82,20 +84,47 @@ public class TabLayoutService {
 
 	/**
 	 * Committing temporary data to actual data
-	 * @throws IllegalAccessException
+	 * @throws Exception 
 	 */
-	public synchronized void commitDefaultPanel() throws IllegalAccessException {
-		String myUid = checkLoginUid();
-		//tabLayoutDAO.deleteByTemp(TabLayout.TEMP_FALSE);
-		//tabLayoutDAO.updateTempFlag(TabLayout.TEMP_TRUE);
-		tabLayoutDAO.copy(myUid, false);
+	public synchronized void commitDefaultPanel(String tabId, String tabDesc, boolean disableDefault) throws Exception {
+		String myUid = checkLoginUid(tabId);
+//		tabLayoutDAO.copy(myUid, false);
+		tabLayoutDAO.copyByTabId(myUid, tabId, false);
+		
+		StaticTab staticTab = staticTabDAO.getTab(tabId);
+		if(staticTab == null){
+			staticTab = new StaticTab(tabId);
+			
+			// TODO: tabNumber, tabId
+			Map maxMap = staticTabDAO.selectMax();
+			String tabNumber = maxMap.get("tabNumber").toString();
+			if (tabNumber != null && tabNumber.length() != 0) {
+				int newInt = Integer.valueOf(tabNumber).intValue();
+				tabNumber = String.valueOf(newInt + 1).toString();
+			} else {
+				throw new Exception("\"select max tabNumber\" not found");
+			}
+			staticTab.setTabnumber(new Integer(tabNumber));
+			staticTab.setDeleteflag(StaticTab.DELETEFLAG_FALSE);
+		}
+		
+		staticTab.setTabdesc(tabDesc);
+		staticTab.setDisabledefault(disableDefault? StaticTab.DISABLE_DEFAULT_TRUE : StaticTab.DISABLE_DEFAULT_FALSE);
+		staticTabDAO.saveTab(staticTab);
+		
 		log.info("Success to commit TabLayouts.");
 	}
-
-	public synchronized void deleteTemp() throws IllegalAccessException{
+	
+	public void copyToTemp(String tabId){
+		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
+		String uid = p.getName();
+		tabLayoutDAO.copyByTabId(uid, tabId, true);
+	}
+	
+	public synchronized void deleteTemp(String tabId) throws Exception{
 		try{
-			checkLoginUid();
-			tabLayoutDAO.deleteByTemp(TabLayout.TEMP_TRUE);
+			checkLoginUid(tabId);
+			tabLayoutDAO.deleteByTemp(tabId, TabLayout.TEMP_TRUE);
 			log.info("Success to delete Tempolary TabLayouts.");
 		}catch(IllegalAccessException e){
 			// ignore
@@ -107,15 +136,22 @@ public class TabLayoutService {
 	 * @return
 	 * @throws IllegalAccessException
 	 */
-	private String checkLoginUid() throws IllegalAccessException {
+	private String checkLoginUid(String tabId) throws Exception {
+		if(!StaticTabService.getHandle().isTabAdmin(tabId)){
+			throw new IllegalAccessException("You have no authority to edit this.");
+		}
+		
+		if(checkTimeout(tabId)){
+	    	// If time out
+			tabLayoutDAO.deleteByTemp(tabId, TabLayout.TEMP_TRUE);
+			String message = "Operation timed out";
+			throw new TabTimeoutException(message);
+		}
+		
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String myUid = p.getName();
-		String lockingUid = tabLayoutDAO.selectLockingUid();
-		/*
-		if (lockingUid == null) {
-			throw new IllegalAccessException("Temp data is not found.");
-		}
-		*/
+		String lockingUid = tabLayoutDAO.selectLockingUid(tabId);
+		
 		if (myUid != null && !myUid.equals(lockingUid)) {
 			if(lockingUid != null){
 				throw new IllegalAccessException("The user \"" + lockingUid
@@ -135,36 +171,17 @@ public class TabLayoutService {
 	 * @return
 	 * @throws Exception
 	 */
-	public synchronized String updateDefaultPanel(String tabId, String tabNumber,
-			Map panelMap) throws Exception {
-		String myUid = checkLoginUid();
+	public synchronized String updateDefaultPanel(String tabId, Map panelMap, boolean isNew) throws Exception {
+		
+		String myUid;
+		if(!isNew){
+			myUid = checkLoginUid(tabId);
+		}else{
+			ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
+			myUid = p.getName();
+		}
+		
 		try {
-			if (tabId == null || tabId.length() == 0) {
-				Map MaxMap = tabLayoutDAO.selectMax();
-				//
-				tabId = (String) MaxMap.get("tabId");
-				if (tabId != null && tabId.length() != 0) {
-					int newInt = Integer.valueOf(tabId).intValue();
-					if (0 == newInt) {
-						tabId = "10001";
-					} else if (0 < newInt) {
-						tabId = String.valueOf(newInt + 1).toString();
-					} else {
-						throw new Exception("Bad max tabId");
-					}
-				} else {
-					throw new Exception("\"select max tabId\" not found");
-				}
-				//
-				tabNumber = MaxMap.get("tabNumber").toString();
-				if (tabNumber != null && tabNumber.length() != 0) {
-					int newInt = Integer.valueOf(tabNumber).intValue();
-					tabNumber = String.valueOf(newInt + 1).toString();
-				} else {
-					throw new Exception("\"select max tabNumber\" not found");
-				}
-			}
-
 			List oldTabList = tabLayoutDAO.selectByTabId(tabId,
 					TabLayout.TEMP_TRUE);
 			Map oldDynamicPanelMap = new HashMap();
@@ -275,8 +292,6 @@ public class TabLayoutService {
 //					map.put("widgets", doc);
 					map.put("widgets", xml.toString());
 					map.put("tabId", tabId);
-					map.put("tabNumber", tabNumber != null
-							&& tabNumber.length() > 0 ? tabNumber : null);
 
 					String roleName = (String)map.get("roleName");
 					if(DEFAULT_ROLE_NAME.equals(roleName) &&
@@ -298,7 +313,7 @@ public class TabLayoutService {
 				tabLayoutDAO.updateLastmodifiedByTabId("0");
 			}
 
-			return "[" + JSONObject.quote(tabId) + ", " + JSONObject.quote(tabNumber) + "]";
+			return "[" + JSONObject.quote(tabId) + "]";
 		} catch (Exception e) {
 			log.error("Unexpected error occurred.", e);
 			throw e;
@@ -358,20 +373,6 @@ public class TabLayoutService {
 	}
 
 	/**
-	 * @param tabId
-	 * @throws Exception
-	 */
-	public synchronized void removeDefaultPanel(String tabId) throws Exception {
-		try {
-			// Update
-			tabLayoutDAO.updateDeleteFlag(tabId, "1");
-		} catch (Exception e) {
-			log.error("Unexpected error occurred.", e);
-			throw e;
-		}
-	}
-
-	/**
 	 * for debug
 	 *
 	 * @param args
@@ -379,7 +380,7 @@ public class TabLayoutService {
 	 */
 	public static void main(String args[]) throws Exception {
 		//System.out.println(getHandle().getDefaultPanelJson(COMMANDBAR_TAB_ID));
-		System.out.println(getHandle().getTabIdListJson());
+//		System.out.println(getHandle().getTabIdListJson());
 		System.out.println(getHandle().getDefaultPanelJson(COMMANDBAR_TAB_ID));
 	}
 
@@ -387,8 +388,8 @@ public class TabLayoutService {
 	 * Obtain user who is editing
 	 * @return
 	 */
-	public String getLockingUid(){
-		return tabLayoutDAO.selectLockingUid();
+	public String getLockingUid(String tabId){
+		return tabLayoutDAO.selectLockingUid(tabId);
 	}
 
 
@@ -413,6 +414,7 @@ public class TabLayoutService {
 		JSONObject value = null;
 		for(Iterator it = tabLayoutList.iterator(); it.hasNext();){
 			TabLayout tablayout = (TabLayout)it.next();
+			StaticTab staticTab = tablayout.getStatictab();
 			value = new JSONObject();
 //			value.put("id", Tablayout.getId().getTabid() + "_" + Tablayout.getRole());	// tabId+role can not be unique
 //			value.put("id", tablayout.getId().getTabid() + "_" + tablayout.getId().getRoleorder() + "_" + tablayout.getRole());	// fix #174
@@ -420,7 +422,7 @@ public class TabLayoutService {
 			value.put("tabId", tablayout.getId().getTabid());
 			value.put("tabName", tablayout.getTabName());
 			value.put("columnsWidth", tablayout.getColumnsWidth());
-			value.put("tabNumber", tablayout.getTabnumber());
+			value.put("tabNumber", staticTab != null ? staticTab.getTabnumber(): null);
 			value.put("role", tablayout.getRole());
 			value.put("principalType", tablayout.getPrincipaltype());
 			value.put("roleOrder", tablayout.getId().getRoleorder().intValue() );
@@ -436,7 +438,10 @@ public class TabLayoutService {
 
 			result.put(value.getString("id"), value);
 
-			if(DEFAULT_ROLE_NAME.equals(tablayout.getRolename()) && tablayout.getDeleteflag().intValue() == 1)
+			if(DEFAULT_ROLE_NAME.equals(
+					tablayout.getRolename())
+					&& staticTab != null
+					&& staticTab.getDisabledefault().intValue() == StaticTab.DISABLE_DEFAULT_TRUE)
 				value.put("disabledDefault", true);
 		}
 
@@ -453,6 +458,7 @@ public class TabLayoutService {
 	 * @return
 	 * @throws Exception
 	 */
+	/*
 	public String getTabIdListJson() throws Exception {
 		//Copy data to TEMP.
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
@@ -484,6 +490,7 @@ public class TabLayoutService {
 //		System.out.println(json.toString());
 		return json.toString();
 	}
+	*/
 
 	/**
 	 * Return map of Customization information related to role information.
@@ -625,12 +632,12 @@ public class TabLayoutService {
 				int i = 0;
 				int j = 0;
 				try{
-					i = x1.getTabnumber() != null? x1.getTabnumber().intValue() : 0;
+					i = x1.getStatictab().getTabnumber() != null? x1.getStatictab().getTabnumber().intValue() : 0;
 				}catch(NumberFormatException e){
 					return 1;
 				}
 				try{
-					j = x2.getTabnumber() != null? x2.getTabnumber().intValue() : 0;
+					j = x2.getStatictab().getTabnumber() != null? x2.getStatictab().getTabnumber().intValue() : 0;
 				}catch(NumberFormatException e){
 					return 0;
 				}
@@ -653,4 +660,42 @@ public class TabLayoutService {
 		return map.values();
 	}
 
+	public String getNewTabId() throws Exception{
+		String tabId = tabLayoutDAO.selectMaxTabId();
+		
+		if (tabId != null && tabId.length() != 0) {
+			int newInt = Integer.valueOf(tabId).intValue();
+			if (0 == newInt) {
+				tabId = "10001";
+			} else if (0 < newInt) {
+				tabId = String.valueOf(newInt + 1).toString();
+			} else {
+				throw new Exception("Bad max tabId");
+			}
+		} else {
+			throw new Exception("\"select max tabId\" not found");
+		}
+		return tabId;
+	}
+	
+	public boolean checkTimeout(String tabId) throws Exception{
+		// Obtain the latest last modified date.
+		Date latestLastModifiedTime = tabLayoutDAO.findLatestLastModifiedTime(tabId);
+
+		if(latestLastModifiedTime == null)
+			return true;
+		
+		Date now = new Date();
+		
+		long one_minute_time = 1000 * 60;
+	    long diffMinute = (now.getTime() - latestLastModifiedTime.getTime()) / one_minute_time;
+		
+	    String tabLockTimeoutStr = PropertiesService.getHandle().getProperty("tabLockTimeout");
+	    int tabLockTimeout = Integer.parseInt(tabLockTimeoutStr);
+	    
+	    if(tabLockTimeout > -1 && (diffMinute >= tabLockTimeout)){
+	    	return true;
+	    }
+	    return false;
+	}
 }

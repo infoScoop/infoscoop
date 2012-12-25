@@ -42,6 +42,11 @@ public class PortalAdminsService {
 	private PortalAdminsDAO portalAdminsDAO;
 	private AdminRoleDAO adminRoleDAO;
 	
+	public static final String ADMINROLE_DEFAULTPANEL = "defaultPanel";
+	public static final String ADMINROLE_TAB_ADMIN = "tabAdmin";
+	public static final String ADMINROLE_MENU = "menu";
+	public static final String ADMINROLE_MENU_TREE = "menu_tree";
+	
 	/**
 	 * Constructor
 	 */
@@ -185,6 +190,14 @@ public class PortalAdminsService {
 	}
 	
 	/**
+	 * @return
+	 * @throws Exception
+	 */
+	public Portaladmins getPortalAdmin(String userId) throws Exception {
+		return portalAdminsDAO.selectById(userId);
+	}
+	
+	/**
 	 * 
 	 * @param authorityid
 	 * @return
@@ -210,6 +223,6 @@ public class PortalAdminsService {
 	}
 	
 	public boolean isMenuTreeRoleUser(){
-		return !isPermitted("menu") && isPermitted("menu_tree");
+		return !isPermitted(PortalAdminsService.ADMINROLE_MENU) && isPermitted(PortalAdminsService.ADMINROLE_MENU_TREE);
 	}
 }

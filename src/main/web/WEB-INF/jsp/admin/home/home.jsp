@@ -68,7 +68,7 @@
 			</div>
 		</div>
 		<%}%>
-		<%if( adminService.isPermitted("defaultPanel") || adminService.isPermitted("portalLayout")){%>
+		<%if( adminService.isPermitted("defaultPanel") || adminService.isPermitted("portalLayout") || adminService.isPermitted("tabAdmin") ){%>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
 				<a href="../defaultpanel/index"><img src="../../skin/imgs/home_icons/mycomputer.gif"></a>

@@ -416,6 +416,7 @@ a.menuContextA_edit:visited{
 }
 
 .defaultPanelWidgetsGroup {
+	margin-left: 10px;
 	width: 700px;
 	clear:both;
 }
@@ -490,7 +491,7 @@ a.menuContextA_edit:visited{
 	margin-left:2px;
 }
 
-.propertiesGroup, .portalAdminsGroup {
+.propertiesGroup, .portalAdminsGroup, .tabListGroup, .tabAdminsGroup {
 	border-collapse: collapse;
 	margin: 0px 0px 15px 15px;
 	padding: 5px;
@@ -500,6 +501,45 @@ a.menuContextA_edit:visited{
 	tableLayout : fixed;
 	emptyCells : show;
 	background-color: #ffffff;
+}
+
+.tabListGroup {
+	width: 650px;
+	margin: 10px;
+}
+
+.tabListGroup td {
+	border: 1px solid #666666;
+}
+
+.tabAdminsGroup {
+	width: 330px;
+	margin: 10px;
+}
+
+/* for modern browser */
+:root *> .tabAdminsGroup {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.tabAdminsGroup td {
+	border: 1px solid #666666;
+}
+
+.tabAdminModal .tabAdminInput {
+	margin: 10 0 0 15;
+}
+
+.tabListButtons {
+	width: 650px;
+	padding-bottom:10px;
+	padding-top:10px;
+	padding-left:15px;
+}
+
+.tabAdmin .hiddenTabAdmin {
+	display:none;
 }
 
 .roleSelectTd{
@@ -1368,4 +1408,9 @@ a.home-menu-header:visited {
 
 .SelectLabel .hover{
 	border-bottom : 1px solid #15C;
+}
+.errorMessage {
+	font-weight: bold;
+	color: #FF0000;
+	margin: 10px;
 }

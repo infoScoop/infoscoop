@@ -1245,7 +1245,7 @@ public class SiteAggregationMenuService {
 			String permissionStr = adminRole.getPermission();
 			JSONArray jArray = new JSONArray(permissionStr);
 			for(int i=0;i<jArray.length();i++){
-				if("menu_tree".equals(jArray.getString(i)))
+				if(PortalAdminsService.ADMINROLE_MENU_TREE.equals(jArray.getString(i)))
 					treeAdminArray.put(admin.getUid());
 			}
 		}

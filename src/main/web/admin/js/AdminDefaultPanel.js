@@ -1,10 +1,11 @@
 var ISA_DefaultPanel = IS_Class.create();
 IS_EventDispatcher.addListener("deleteTemp", "", function(all){
-	if(all || ISA_DefaultPanel.defaultPanel){
+	if((all || ISA_DefaultPanel.defaultPanel) && window["displayTabId"]){
 		// Deleting Temp data
 		var url = adminHostPrefix + "/services/tabLayout/deleteTemp";
 		var opt = {
-			method: 'post' ,
+			method: 'post',
+			postBody: Object.toJSON([ displayTabId ]),
 			contentType: "application/json",
 			asynchronous:false,
 			onSuccess: function(response){
@@ -34,26 +35,17 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 	var commandBarTabId = "commandbar";
 	var ignoreTabIdList = [commandBarTabId, "0"];
-	var defaultRoleRegex = "default";
-	var defaultRoleName = "defaultRole";
-	var defaultDefaultUid = "default";
+	
+	this.defaultRoleRegex = "default";
+	this.defaultRoleName = "defaultRole";
+	this.defaultDefaultUid = "default";
+	
+	var defaultDefaultUid = this.defaultDefaultUid;
 	var commandBarMap = {
 		"portal-logo":{id:"portal-logo", type:"logo", title:ISA_R.alb_logo, togglable:false, undeletable:true, onlyoutside:true, hidden:true},
 		"portal-searchform":{id:"portal-searchform", title:ISA_R.alb_searchForm, togglable:true, undeletable:true, onlyoutside:true},
 		"Ticker":{id:"p_1_w_4", title:ISA_R.alb_Ticker, type:"Ticker", togglable:true, undeletable:true, onlyoutside:true},
 		"Ranking":{id:"p_1_w_6", title:ISA_R.alb_ranking, type:"Ranking", togglable:true, undeletable:true},
-		/*
-		"portal-go-home":{id:"portal-go-home", title:ISA_R.alb_toTopPage, togglable:true, undeletable:true, menudisplay:false
-			togglableConfirm:function(element){
-				if(!element.checked){
-					return confirm(ISA_R.ams_confirmNoTop1+"\n"+
-					ISA_R.ams_confirmNoTop2+"\n"+
-					ISA_R.ams_confirmNoTop3);
-				}
-				return true;
-			}
-		},
-		*/
 		"portal-change-fontsize":{id:"portal-change-fontsize", title:ISA_R.alb_changeFont, togglable:true, undeletable:true},
 		"portal-trash":{id:"portal-trash", title:ISA_R.alb_trashBox, togglable:true, undeletable:true},
 		"portal-preference":{id:"portal-preference", title:ISA_R.alb_setupAll, togglable:true, undeletable:true},
@@ -308,6 +300,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	}
 
 	this.initialize = function() {
+
 		controlModal = new Control.Modal(
 			false,
 			{
@@ -320,24 +313,16 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		//
 		container = document.getElementById("defaultPanel");
 
-		/**
-		 * Delete trush
-		 */
-		var len = container.childNodes.length;
-		for(var i = 0; i < len; i++) {
-			container.removeChild(container.lastChild);
-		}
-
 		loadingMessage = document.createElement('div');
 		loadingMessage.innerHTML = "Loading...";
 		loadingMessage.style.clear = "both";
 		loadingMessage.style.cssFloat = "left";
 		container.appendChild(loadingMessage);
-
-		// Tab ID currently displayed
-		this.displayTabId = false;
-		// Tab Number currently displayed
-		this.displayTabNumber = false;
+		
+		if(window["displayTabId"])
+			this.displayTabId = displayTabId;
+		if(window["defaultPanelJson"])
+			this.displayRoleJsons = defaultPanelJson;
 	};
 
 	this.displayDefaultPanel = function() {
@@ -347,51 +332,35 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		// Flag for update
 		this.isUpdated = false;
 
-		// Dsiplaying Top tab initialy
-		this.buildTabs();
-		container.replaceChild(this.panelTabsContainer.tabContainer, loadingMessage);
-
-		var previewDivWrap = document.createElement("div");
-		previewDivWrap.className = "refreshAll";
-//		previewDivWrap.style.clear = "both";
-//		previewDivWrap.style.width = "98%";
-
-		container.insertBefore(previewDivWrap, this.panelTabsContainer.tabContainer);
-		var previewDiv = ISA_Admin.createIconButton(ISA_R.alb_previewTop, ISA_R.alb_previewTop, "minibrowser.gif", "right");
-		previewDivWrap.appendChild(previewDiv);
-		IS_Event.observe(previewDiv, 'click', ISA_previewFormModal.init, false, "_adminPanel");
-
-		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
-		previewDivWrap.appendChild(commitDiv);
+		$jq(loadingMessage).remove();
+		
+		var commitDiv = $("changeApply");
 		IS_Event.observe(commitDiv, 'click', self.commitPanel.bind(this), false, "_adminPanel");
-
-		var resetDiv = ISA_Admin.createIconButton(
-//			"Initialization of customizing information",
-			ISA_R.alb_clearConfigurationButton,
-//			"Initializing customizing information",
-			ISA_R.alb_clearConfigurationDesc,
-			"database_refresh.gif","right");
-		previewDivWrap.appendChild( resetDiv );
-		IS_Event.observe( resetDiv,"click",this.resetUserCustomization.bind( this ),false,"_adminPanel");
-		this.tab = new Control.Tabs("panelTabs",{
-			//defaultTab: "tab_" + self.tabIdList[0],
-			defaultTab: "tab_"+commandBarTabId,
-			beforeChange: function( old_container,container ) {
-				if(self.changeTab( container.id.substring(4),false ))
-				throw $break;
-			}
-		});
+		
+		var tabContent = $jq("<div>").attr("id", "tabContent");
+		$jq(container).append(tabContent);
+		this.buildTabContents();
 	}
 
 	this.commitPanel = function(){
 		if(!self.updatePanel(true)) return;
-
+		
+		var tabDesc = $jq("#tabDesc").val();
+		var error = IS_Validator.validate(tabDesc, {maxBytes:256, label:ISA_R.alb_tabDesc});
+		if(error){
+			alert(error);
+			$jq("#tabDesc").select();
+			return false;
+		}
 		controlModal.open();
-
+		
+		var disableDefault = $jq('#disableDefaultCheck').attr('checked')? true : false;
+		
 		var url = adminHostPrefix + "/services/tabLayout/commitDefaultPanel";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
+			postBody: Object.toJSON([ this.displayTabId, tabDesc? tabDesc : "", disableDefault]),
 			asynchronous:true,
 			onSuccess: function(response){
 				controlModal.update(ISA_R.ams_changeUpdated);
@@ -407,6 +376,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			onException: function(r, t){
 				alert(ISA_R.ams_failedToSaveTop);
 				msg.error(ISA_R.ams_failedToSaveTop + getErrorMessage(t));
+				throw t;
 			},
 			onComplete: function(){
 				setTimeout(function(){
@@ -416,339 +386,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		};
 		AjaxRequest.invoke(url, opt);
 	};
-
-	this.resetUserCustomization = function() {
-		var content = document.createElement("div");
-		content.className = "resetConfigurations";
-
-		var modal = new Control.Modal( false,{
-			contents: content,
-			opacity: 0.2,
-			overlayCloseOnClick: true
-		});
-
-		var description = document.createElement("div");
-		description.className = "resetConfigurations-description"
-		description.innerHTML = ISA_R.alb_clearConfigurationChooseUser;
-		content.appendChild( description );
-
-		var form = document.createElement("div");
-		form.className = "resetConfigurations-form";
-		var formLabel = document.createElement("span");
-		formLabel.innerHTML = ISA_R.alb_userName +":";
-		form.appendChild( formLabel );
-		var formInput = document.createElement("input");
-		form.appendChild( formInput );
-		content.appendChild( form );
-
-		var commands = document.createElement("div");
-		commands.className = "resetConfigurations-commands";
-		content.appendChild( commands );
-
-		var okButton = document.createElement("input");
-		okButton.type = "button";
-		okButton.value = "OK";
-		commands.appendChild( okButton );
-		IS_Event.observe( okButton,"click",function() {
-			var uid = formInput.value;
-			modal.close();
-			if( uid == "" || /^[ 　]+$/.test( uid ) )
-				return;
-
-			this._resetUserCustomization( uid );
-		}.bind( this ),false,"_adminPanel");
-
-		var cancelButton = document.createElement("input");
-		cancelButton.type = "button";
-		cancelButton.value = "Cancel";
-		commands.appendChild( cancelButton );
-		IS_Event.observe( cancelButton,"click",function() { modal.close() },false,"_adminPanel");
-
-		modal.open();
-	}
-	this._resetUserCustomization = function( uid ) {
-		var url = adminHostPrefix + "/services/tab/clearConfigurations";
-		var opt = {
-			method: 'post' ,
-			contentType: "application/json",
-			postBody: Object.toJSON([ uid ]),
-			asynchronous:true,
-			onSuccess: function(response){
-			},
-			onFailure: function(t) {
-				var errMsg = IS_R.ms_clearConfigurationFailed+ "\n" +
-					((t.responseText && typeof t.responseText == "string") ? t.responseText.substr(0, 100) : "");
-				alert( errMsg );
-				msg.error( errMsg );
-			},
-			onException: function(r, t){
-				var errMsg = IS_R.ms_clearConfigurationFailed +getErrorMessage(t);
-				alert( errMsg );
-				msg.error( errMsg );
-			},
-			onComplete: function(){
-				setTimeout(function(){
-					controlModal.close();
-				},500);
-			}
-		};
-		AjaxRequest.invoke(url, opt);
-	}
-
-	/**
-		Create a tab
-	*/
-	this.buildTabs = function() {
-		this.panelTabsContainer = null;
-
-		var tabsDiv = document.createElement("div");
-		tabsDiv.id = "tabsDiv";
-		tabsDiv.style.clear = "both";
-		var tabsUl = document.createElement("ul");
-		tabsUl.id = "panelTabs";
-		tabsUl.className = "tabs-ui";
-
-		for(var i=0; i<this.tabIdList.length; i++){
-			tabsUl.appendChild(this.buildTab(this.tabIdList[i]));
-		}
-		// Adding tab
-		var addTabDiv = document.createElement("li");
-		addTabDiv.noWrap = "-1";
-		addTabDiv.className = "addatab";
-		addTabDiv.id = "addTabDiv";
-		var addA = ISA_Admin.createIconButton(ISA_R.alb_addTab, ISA_R.alb_addTab, "add.gif", "left");
-		addA.removeAttribute('href');
-		addA.style.margin = "0 0 3px 0";
-		addTabDiv.appendChild(addA);
-		tabsUl.appendChild(addTabDiv);
-		var addTabHandler = function(e) {
-			//Commiting update
-			self.updatePanel( true );
-
-			var datetime = new Date().getTime();
-			var jsonObject = {
-				id : String( datetime ),
-				tabId : "",
-				tabName : ISA_R.alb_newTab,
-				columnsWidth : "",
-				principalType : null,
-				role : defaultRoleRegex,
-				roleName : defaultRoleName,
-				defaultUid : defaultDefaultUid,
-				layout : "",
-				staticPanel : {},
-				dynamicPanel : {},
-				widgetsLastmodified : null,
-				tabNumber : "",
-				isDefault : true
-			};
-			self.displayRoleJsons = {};
-			self.displayRoleJsons[datetime] = jsonObject;
-			self.displayRoleId = jsonObject.id;
-			self.displayRoleOrder = jsonObject.roleOrder;
-			// Register event
-			IS_EventDispatcher.addListener('updatePanelOnSuccess', 'default', self.addAfter, true);
-			jsonObject = self.setColumnsArray(jsonObject);
-			self.isUpdated = true;
-			
-			// Set default fixed area
-			jsonObject = self.templates.setStaticLayout0(jsonObject);
-			
-			self.updatePanel( false );
-			
-			ISA_Admin.isUpdated = true;
-		};
-		IS_Event.observe(addA, 'click', addTabHandler, false, "_adminPanel");
-		tabsDiv.appendChild(tabsUl);
-
-		// Create displaying area of tab contents
-		var tabContentsDiv = document.createElement("div");
-		tabContentsDiv.id = "panelTabContents";
-		tabContentsDiv.className = "panelTabContents";
-		tabsDiv.appendChild(tabContentsDiv);
-		
-		for(var i=0; i<this.tabIdList.length; i++){
-			var tabContentDiv = document.createElement("div");
-			tabContentDiv.id = "tab_"+this.tabIdList[i];
-			
-			tabContentsDiv.appendChild( tabContentDiv );
-		}
-		
-		this.panelTabsContainer = {tabContainer:tabsDiv, tabContents:tabContentsDiv};
-	}
-
-	this.addAfter = function() {
-		var tabsUl = $("panelTabs");
-		if(!tabsUl) return;
-
-		var tabid = self.displayTabId;
-		var tabnum = self.displayTabNumber;
-		// Set the values obatined from response
-		self.displayRoleJsons[self.displayRoleId].tabId = tabid;
-		self.displayRoleJsons[self.displayRoleId].tabNumber = tabnum;
-		self.tabIdList.push(tabid);
-		self.tabNumberJson[tabid] = {id: tabnum};
-		// Insert before [Add tab] 
-		tabsUl.insertBefore(self.buildTab(tabid,true), tabsUl.lastChild);
-		
-		var tabContentsDiv = $("panelTabContents");
-		var tabContentDiv = document.createElement("div");
-		tabContentDiv.id = "tab_"+tabid;
-		
-		tabContentsDiv.appendChild( tabContentDiv );
-		
-		// Change display to the tab added at the last minute
-		self.tab.addTab($("panelTab_"+tabid ));
-		self.tab.setActiveTab("tab_"+tabid );
-	}
-
-	/**
-		Create a tab
-	*/
-	var currentMaxTabNumber = 0;
-	this.buildTab = function(tabId,add) {
-		var tabDiv = document.createElement("li");
-
-		var tabAnchor = document.createElement("a");
-		tabAnchor.id = "panelTab_" + tabId;
-		tabAnchor.className = "tab-ui";
-		tabAnchor.href = "#tab_"+tabId;
-		
-		var tabTitleSpan = document.createElement("span");
-		tabTitleSpan.className = 'title';
-		tabTitleSpan.id = "panelTab_" + tabId + "_Title";
-		// Genarate tab name
-		var tabName;
-		if(!isNaN(tabId)) {
-			tabName = 'tab' + currentMaxTabNumber;
-			currentMaxTabNumber ++;
-		} else {
-			tabName = tabId;
-		}
-		tabTitleSpan.appendChild(document.createTextNode(tabName));
-		tabAnchor.appendChild(tabTitleSpan);
-		tabDiv.appendChild(tabAnchor);
-		
-		if( !add )
-			this.setTabAttribute(tabAnchor, tabId);
-
-		return tabDiv;
-	}
-
-	/**
-		Switch tab
-	*/
-	this.changeTab = function(activeTabId, addTab) {
-		if(!self.updatePanel()) return true;
-
-		if(self.editRoleWin && !self.editRoleWin.closed){
-			if(!confirm(ISA_R.ams_confirmCloseEditRoleWin)){
-				return true;
-			}else{
-				self.editRoleWin.close();
-			}
-		}
-		
-		var link = $("panelTab_"+activeTabId );
-		if( !link || link.hasClassName("selected"))
-			return;
-		
-		// Replace to the tab ID currently displayed
-		this.displayTabId = activeTabId;
-		// Replace to the tab Number currently displayed
-		this.displayTabNumber = this.tabNumberJson[activeTabId].id;
-		IS_Event.unloadCache("_adminPanelTab");
-		for(var i=0; i<this.tabIdList.length; i++){
-			var tabDiv = $("panelTab_" + this.tabIdList[i]);
-			this.setTabAttribute(tabDiv, this.tabIdList[i]);
-		}
-		
-		self.panelTabsContainer.tabContents = $("tab_"+this.displayTabId );
-//		if(addTab != true){
-			this.getDefaultPanelJSONByTabId( this.displayTabId,this.buildTabContents.bind( this ) );
-//		}else{
-//			this.buildTabContents();
-//		}
-	}
-
-	/**
-		Set atrribute of tab
-	*/
-	var displayDeleteImgSpan = false;
-	this.setTabAttribute = function(targetTabDiv, targetTabId) {
-		// Create delete button
-		if(!displayDeleteImgSpan){
-			displayDeleteImgSpan = document.createElement("span");
-			var deleteImg = document.createElement("img");
-			deleteImg.src = imageURL+"x.gif";
-			deleteImg.width = 14;
-			deleteImg.height = 14;
-			deleteImg.style.verticalAlign = 'middle';
-			deleteImg.style.cursor = 'pointer';
-			deleteImg.title = ISA_R.ams_deleteThisTab;
-			displayDeleteImgSpan.appendChild(deleteImg);
-		}
-		//
-		if(String(targetTabId) != String(this.displayTabId)){
-			targetTabDiv.className = "tab-ui";
-//			IS_Event.observe(targetTabDiv, "click", this.changeTab.bind(this, targetTabId), false, ["_adminPanelTab","_adminPanel"]);
-		}else{
-//			targetTabDiv.className = "tab-ui selected";
-			targetTabDiv.className = "tab-ui active";
-			// The tab can diplay delete button or not.
-			var isIgnored = false;
-			for(var i = 0; i < ignoreTabIdList.length; i++) {
-				if(ignoreTabIdList[i] == this.displayTabId) {
-					isIgnored = true;
-					break;
-				}
-			}
-			if(!isIgnored) {
-				targetTabDiv.className += " deletable";
-				targetTabDiv.firstChild.appendChild(displayDeleteImgSpan);
-				IS_Event.observe(displayDeleteImgSpan, "click", this.deleteTab.bind(this, targetTabDiv, targetTabId), true, ["_adminPanelTab","_adminPanel"]);
-			} else {
-				if(displayDeleteImgSpan.parentNode)
-					displayDeleteImgSpan.parentNode.removeChild(displayDeleteImgSpan);
-			}
-		}
-	}
-
-	/**
-		Delete tab
-	*/
-	this.deleteTab = function(targetTabDiv, targetTabId,event ) {
-		//self.isUpdated = true;
-		if( event ) Event.stop( event );
-		if( !confirm(ISA_R.ams_confirmDeleting) ) {
-			return;
-		}
-		//controlModal.open();
-		Element.remove(targetTabDiv);
-		Element.remove($("tab_"+targetTabId ) );
-		this.tabIdList = this.tabIdList.without(targetTabId);
-		delete this.tabNumberJson[targetTabId];
-
-		this.removeDefaultPanel(this.displayTabId );
-		this.displayRoleJsons = null;
-		
-		currentMaxTabNumber = 0;
-		this.tabIdList.each( function( tabId ) {
-			var tabTitleSpan = $("panelTab_" + tabId + "_Title");
-			
-			var tabName;
-			if(!isNaN(tabId)) {
-				tabName = 'tab' + currentMaxTabNumber;
-				currentMaxTabNumber ++;
-			} else {
-				tabName = tabId;
-			}
-			tabTitleSpan.firstChild.nodeValue = tabName;
-		})
-		//this.tab.setActiveTab("tab_"+self.tabIdList[0] );
-		this.tab.setActiveTab("tab_"+commandBarTabId );
-		ISA_Admin.isUpdated = true;
-	}
 
 	/**
 		Create tab contents
@@ -779,7 +416,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		var defaultPanelTable = document.createElement("table");
 		defaultPanelTable.id = "panelTabContentsTable";
 		defaultPanelTable.style.width = "100%";
-		defaultPanelTable.style.borderTop = "gray 1px solid";
 		defaultPanelDiv.appendChild(defaultPanelTable);
 
 		var defaultPanelTbody = document.createElement("tbody");
@@ -807,10 +443,11 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		roleEditDiv.appendChild(editAreaDiv);
 		defaultPanelTdLeft.appendChild(roleEditDiv);
 
-		if(self.panelTabsContainer.tabContents.firstChild) {
-			self.panelTabsContainer.tabContents.replaceChild(defaultPanelDiv, self.panelTabsContainer.tabContents.firstChild);
+		var tabContent = $("tabContent");
+		if(tabContent.firstChild) {
+			tabContent.replaceChild(defaultPanelDiv, tabContent.firstChild);
 		} else {
-			self.panelTabsContainer.tabContents.appendChild(defaultPanelDiv);
+			tabContent.appendChild(defaultPanelDiv);
 		}
 
 		this.addSortableEvent();
@@ -847,7 +484,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				staticPanel : {},
 				dynamicPanel : {},
 				widgetsLastmodified : null,
-				tabNumber : self.tabNumberJson[self.displayTabId].id
+				tabNumber : displayTabNumber
+//				tabNumber : self.tabNumberJson[self.displayTabId].id
 			};
 			// Defalut fixed area setting.
 			if(jsonObject.tabId == commandBarTabId) {
@@ -901,6 +539,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			disabledDefualtDiv.style.cssFloat = "left";
 			disabledDefualtDiv.style.styleFloat = "left";
 			var disableDefaultCheckbox = document.createElement('input');
+			disableDefaultCheckbox.id = "disableDefaultCheck";
 			disableDefaultCheckbox.type = 'checkbox';
 			disableDefaultCheckbox.defaultChecked = defaultRoleJson.disabledDefault;
 			disabledDefualtDiv.appendChild(disableDefaultCheckbox);
@@ -2989,14 +2628,11 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
-			postBody: Object.toJSON([ tabId,tabNumber,roleJsons]),
+			postBody: Object.toJSON([ tabId, roleJsons, false]),
 			asynchronous:!isSync,
 			onSuccess: function(response){
 				var array = eval(response.responseText);
-				if(!self.tabIdList.contains(array[0])){//It is needed to be set only if tab is added.
-					self.displayTabId = array[0];
-					self.displayTabNumber = array[1];
-				}
+				
 				// Call registering event
 				IS_EventDispatcher.newEvent('updatePanelOnSuccess', 'default', null);
 			},
@@ -3008,6 +2644,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			onException: function(r, t){
 				alert(ISA_R.ams_failedToSaveTop);
 				msg.error(ISA_R.ams_failedToSaveTop + getErrorMessage(t));
+				throw t;
 			},
 			onComplete: function(){
 				// Delete registered event when tab is added
@@ -3048,7 +2685,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				asynchronous:true,
 				onSuccess: function(response){
 					eval("ISA_SiteAggregationMenu.setWidgetConf("+response.responseText+")");
-					self.getDefaultPanelJSONByTabId( self.tabIdList[0],self.displayDefaultPanel.bind( self ) );
+					self.displayDefaultPanel();
 				},
 				on404: function(t) {
 				if(!container.firstChild) container.appendChild(document.createElement("div"));
@@ -3064,6 +2701,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				if(!container.firstChild) container.appendChild(document.createElement("div"));
 					container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_FailedLoadingWidget+"。</span>";
 					msg.error(ISA_R.ams_FailedLoadingWidget + getErrorMessage(t));
+					throw t;
 				},
 				onComplete: function(req, obj){
 					ISA_Admin.requestComplete = true;
@@ -3074,116 +2712,9 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			};
 			AjaxRequest.invoke(url, opt);
 		}
+		getWidgetConf();
 
-		function getTabIdListJson(){
-			var url = adminHostPrefix + "/services/tabLayout/getTabIdListJson";
-			var opt = {
-				method: 'get' ,
-				asynchronous:true,
-				onSuccess: function(response){
-					var array = eval(response.responseText);
-					self.tabIdList = array[0];
-					self.tabNumberJson = array[1];
-					getWidgetConf();
-				},
-				on404: function(t) {
-				if(!container.firstChild) container.appendChild(document.createElement("div"));
-					container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_toppageSettingsNF+"</span>";
-					msg.error(ISA_R.ams_toppageSettingsNF + t.status + " - " + t.statusText);
-				},
-				onFailure: function(t) {
-				if(!container.firstChild) container.appendChild(document.createElement("div"));
-					container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedToloadTS+"</span>";
-					msg.error(ISA_R.ams_failedToloadTS + t.status + " - " + t.statusText);
-				},
-				onException: function(r, t){
-				if(!container.firstChild) container.appendChild(document.createElement("div"));
-					container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedToloadTS+"</span>";
-					msg.error(ISA_R.ams_failedToloadTS + getErrorMessage(t));
-				},
-				onComplete: function(req, obj){
-					ISA_Admin.requestComplete = true;
-				},
-				onRequest: function() {
-					ISA_Admin.requestComplete = false;
-				}
-			};
-			AjaxRequest.invoke(url, opt);
-		}
-
-		var url = adminHostPrefix + "/services/tabLayout/getLockingUid";
-		var opt = {
-			method: 'get' ,
-			asynchronous:true,
-			onSuccess: function(response){
-				var lockedUid = response.responseText;
-				var conflictMsg = IS_R.getResource(ISA_R.alb_editByOtherUser, [lockedUid]);
-				if(lockedUid && lockedUid != is_userId
-					 && !confirm(conflictMsg + "\n"+ISA_R.alb_multiUserEdit2)){
-					loadingMessage.innerHTML = "";
-					loadingMessage.appendChild(document.createTextNode(conflictMsg));
-					return;
-				}
-				getTabIdListJson();
-			},
-			on404: function(t) {
-				container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_toppageSettingsNF+"</span>";
-				msg.error(ISA_R.ams_toppageSettingsNF + t.status + " - " + t.statusText);
-			},
-			onFailure: function(t) {
-				container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedToloadTS+"</span>";
-				msg.error(ISA_R.ams_failedToloadTS + t.status + " - " + t.statusText);
-			},
-			onException: function(r, t){
-				container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedToloadTS+"</span>";
-				msg.error(ISA_R.ams_failedToloadTS + getErrorMessage(t));
-			},
-			onComplete: function(req, obj){
-				ISA_Admin.requestComplete = true;
-			},
-			onRequest: function() {
-				ISA_Admin.requestComplete = false;
-			}
-		};
-		AjaxRequest.invoke(url, opt);
 	};
-
-	this.getDefaultPanelJSONByTabId = function(tabId,callback ){
-		var url = adminHostPrefix + "/services/tabLayout/getDefaultPanelJson";
-		var opt = {
-			method: 'post' ,
-			contentType: "application/json",
-			postBody: Object.toJSON([tabId]),
-			asynchronous:true,
-			onSuccess: function(response){
-				self.displayRoleJsons = eval("(" + response.responseText + ")");
-				if( callback )
-					callback();
-			},
-			on404: function(t) {
-				if(!container.firstChild) container.appendChild(document.createElement("div"));
-				container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_toppageSettingsNF+"</span>";
-				msg.error(ISA_R.ams_toppageSettingsNF + t.status + " - " + t.statusText);
-			},
-			onFailure: function(t) {
-		  		if(!container.firstChild) container.appendChild(document.createElement("div"));
-				container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedToloadTS+"</span>";
-				msg.error(ISA_R.ams_failedToloadTS + t.status + " - " + t.statusText);
-			},
-			onException: function(r, t){
-				if(!container.firstChild) container.appendChild(document.createElement("div"));
-				container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedToloadTS+"</span>";
-				msg.error(ISA_R.ams_failedToloadTS + getErrorMessage(t));
-			},
-			onComplete: function(req, obj){
-				ISA_Admin.requestComplete = true;
-			},
-			onRequest: function() {
-				ISA_Admin.requestComplete = false;
-			}
-		};
-		AjaxRequest.invoke(url, opt);
-	}
 
 	function findParentTdElement(element) {
 		if(!element) return null;

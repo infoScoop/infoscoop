@@ -389,4 +389,15 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
+	<bean id="staticTabDAO" class="org.infoscoop.dao.StaticTabDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="tabAdminDAO" class="org.infoscoop.dao.TabAdminDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+
 </beans>
