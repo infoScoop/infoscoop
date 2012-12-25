@@ -17,31 +17,21 @@
 
 package org.infoscoop.web;
 
-
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.Security;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.apache.velocity.app.Velocity;
 import org.infoscoop.account.SearchUserService;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 
 public class InitializeServlet extends HttpServlet {
 
