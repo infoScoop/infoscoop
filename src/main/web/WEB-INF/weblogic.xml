@@ -2,6 +2,7 @@
 <weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/weblogic-web-app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <container-descriptor>
     <filter-dispatched-requests-enabled>false</filter-dispatched-requests-enabled>
+    <show-archived-real-path-enabled>true</show-archived-real-path-enabled>
 	<prefer-application-packages>
 		<package-name>antlr.*</package-name>
 		<package-name>javax.xml.parsers.*</package-name>
