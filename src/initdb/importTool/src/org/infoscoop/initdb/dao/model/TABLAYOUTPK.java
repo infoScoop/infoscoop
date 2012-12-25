@@ -1,38 +1,41 @@
 /* infoScoop OpenSource
  * Copyright (C) 2010 Beacon IT Inc.
- *
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3
  * as published by the Free Software Foundation.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
-package org.infoscoop.manager.controller;
+package org.infoscoop.initdb.dao.model;
 
-import javax.servlet.http.HttpServletRequest;
+import org.infoscoop.dao.model.base.BaseTABLAYOUTPK;
 
-import org.infoscoop.service.PortalAdminsService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+public class TABLAYOUTPK extends BaseTABLAYOUTPK {
+	private static final long serialVersionUID = 1L;
 
-@Controller
-public class AdministratorController implements ControllerInterface{
-	@RequestMapping(method=RequestMethod.GET)
-	public void index(HttpServletRequest request) throws Exception {
-		String json = PortalAdminsService.getHandle().getPortalAdminsJson();
-		request.setAttribute("portalAdminsJson", json);
+/*[CONSTRUCTOR MARKER BEGIN]*/
+	public TABLAYOUTPK () {}
+	
+	public TABLAYOUTPK (
+		java.lang.String tabid,
+		java.lang.Integer roleorder,
+		java.lang.Integer temp) {
+
+		super (
+			tabid,
+			roleorder,
+			temp);
 	}
+/*[CONSTRUCTOR MARKER END]*/
 
-	public String getRoleName() {
-		return "admins";
-	}
+
 }

@@ -58,6 +58,11 @@
 				<fileset dir="${build.work}/initdb/lib" includes="*.jar" />
 			</classpath>
 		</javac>
+		<copy todir="${build.work}/initdb/bin/org/infoscoop/initdb/dao/model" includeemptydirs="yes">
+			<fileset dir="${initdb.home}/importTool/src/org/infoscoop/initdb/dao/model">
+				<include name="*.hbm.xml"/>
+			</fileset>
+		</copy>
 		<jar basedir="${build.work}/initdb/bin" jarfile="${build.work}/initdb/lib/importTool.jar" />
 		<delete dir="${build.work}/initdb/bin"/>
 

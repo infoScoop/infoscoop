@@ -17,6 +17,7 @@
 
 package org.infoscoop.manager.controller;
 
+import org.infoscoop.service.PortalAdminsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +29,6 @@ public class MenutreeController implements ControllerInterface{
 	}
 
 	public String getRoleName() {
-		return "menu_tree";
+		return PortalAdminsService.ADMINROLE_MENU_TREE;
 	}
 }

@@ -17,6 +17,7 @@
 
 package org.infoscoop.manager.controller;
 
+
 public interface ControllerInterface {
 	public String getRoleName();
 }
