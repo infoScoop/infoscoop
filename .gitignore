@@ -2,3 +2,5 @@ build/
 dist/
 .classpath
 .project
+src/main/web/WEB-INF/lib/*.jar
+src/main/web/WEB-INF/classes/
