@@ -105,9 +105,9 @@ temp = 0
     <!--ALTER TABLE [スキーマ].IS_TABLAYOUTS ADD COLUMN TEMPLASTMODIFIED TIMESTAMP;-->
     <changeSet id="infoscoop320_12826_4" author="mikami">
         <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_4">
-            <changeSetExecuted id="infoscoop320_12826_2" author="mikami" changeLogFile="../db/db.changelog-1.0.xml"></changeSetExecuted>
+            <changeSetExecuted id="infoscoop320_12826_2" author="mikami" changeLogFile="org/infoscoop/migration/db.changelog-1.0.xml"></changeSetExecuted>
             <not>
-                <columnExists tableName="IS_TABLAYOUTS" columnName="templastmodified"/>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_TABLAYOUTS" columnName="templastmodified"/>
             </not>
         </preConditions>
         <addColumn tableName="IS_TABLAYOUTS">
@@ -132,9 +132,9 @@ temp = 0
     <!--ALTER TABLE [スキーマ].IS_TABLAYOUTS DROP COLUMN TABNUMBER RESTRICT DROP COLUMN DELETEFLAG RESTRICT;-->
     <changeSet id="infoscoop320_12826_6" author="mikami">
         <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_6">
-            <changeSetExecuted id="infoscoop320_12826_2" author="mikami" changeLogFile="../db/db.changelog-1.0.xml"></changeSetExecuted>
-            <columnExists tableName="IS_TABLAYOUTS" columnName="tabNumber"/>
-            <columnExists tableName="IS_TABLAYOUTS" columnName="deleteFlag"/>
+            <changeSetExecuted id="infoscoop320_12826_2" author="mikami" changeLogFile="org/infoscoop/migration/db.changelog-1.0.xml"></changeSetExecuted>
+            <columnExists schemaName="${migration.defaultSchema}" tableName="IS_TABLAYOUTS" columnName="tabNumber"/>
+            <columnExists schemaName="${migration.defaultSchema}" tableName="IS_TABLAYOUTS" columnName="deleteFlag"/>
         </preConditions>
         <dropColumn tableName="IS_TABLAYOUTS" columnName="tabNumber"/>
         <dropColumn tableName="IS_TABLAYOUTS" columnName="deleteFlag"/>
