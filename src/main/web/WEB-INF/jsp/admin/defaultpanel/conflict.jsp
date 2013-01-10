@@ -41,7 +41,10 @@
 			<img src="../../skin/imgs/arrow_undo.gif" style="position: relative; top: 2px; margin: 0pt 5px 0pt 0pt;">%{alb_backTabList}</a>
 	</div>
 	
-	<h2>%{alb_tab}${displayTabOrder}</h2>
+	<h2><c:choose>
+		<c:when test="${commandbarView == true}">%{alb_commandBar}</c:when>
+		<c:otherwise>%{alb_tab}${displayTabOrder}</c:otherwise>
+	</c:choose></h2>
 	
 	<div style="margin-top:10px;" id="conflictMessage"></div>
 </div>

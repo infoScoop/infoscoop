@@ -143,6 +143,10 @@ public class DefaultpanelController implements ControllerInterface{
 			HttpServletResponse response,
 			@RequestParam("tabId") String tabId) throws Exception {
 		request.setAttribute("forceEdit", "true");
+		
+		if(TabLayoutService.COMMANDBAR_TAB_ID.equals(tabId))
+			return commandbar(request, response);
+		
 		return editTab(request, response, tabId);
 	}
 	
