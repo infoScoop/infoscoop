@@ -61,7 +61,7 @@
 	</context-param>
 	<context-param>
     	<param-name>liquibase.parameter.tablespace</param-name>
-    	<param-value>@TABLE_SPACE@</param-value>
+    	<param-value><!--Migration Database TableSpace--></param-value>
 	</context-param>
 	<!--Migration Database Schema-->
 	<listener>

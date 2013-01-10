@@ -94,7 +94,7 @@
 			flags="s"
 			encoding="UTF-8"/>
 		<replaceregexp file="${collect.home}/WEB-INF/web.xml"
-			match="@TABLE_SPACE@"
+			match="&lt;!--Migration Database TableSpace--&gt;"
 			replace="${dataSource.tablespace}"
 			flags="s"
 			encoding="UTF-8"/>
