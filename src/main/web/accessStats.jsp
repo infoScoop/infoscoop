@@ -152,8 +152,7 @@ function loadStats(_start, isInitialize){
 	start = _start;
 	
 	var d = new Date();
-	IS_Portal.clientTimeZone = String(-d.getTimezoneOffset());
-	var headers = ["X-IS-TIMEZONE", IS_Portal.clientTimeZone];
+	var headers = ["X-IS-TIMEZONE", String(-d.getTimezoneOffset()];
 	var opt = {
 		parameters:"rssUrl=" + encodeURIComponent(rssUrl) + "&start=" + start + "&limit=" + limit,
 		requestHeaders:headers,
