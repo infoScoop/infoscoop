@@ -77,7 +77,7 @@
 				<img src="../../skin/imgs/add.gif" style="position: relative; top: 2px; margin: 0pt 5px 0pt 0pt;">%{alb_addTab}</a>
 		</div>
 		<div style="display:inline;width:80%;">
-			<a class="iconButton" style="margin: 3px;" title="%{alb_commandBar}%{alb_edit}" href="commandbar">
+			<a class="iconButton" style="margin: 3px;" title="%{alb_commandBar}%{alb_edit}" href="commandbar" id="toCommandbar">
 				<img src="../../skin/imgs/edit.gif" style="position: relative; top: 2px; margin: 0pt 5px 0pt 0pt;">%{alb_commandBar}%{alb_edit}</a>
 		</div>
 		</c:if>
@@ -106,6 +106,12 @@
 	var tabListJSON = ${requestScope.tabListJSON};
 	var tabAdminList = ${requestScope.tabAdminsJSON};
 	$jq(function(){
+		var checkUpdated = function(){
+			if(!ISA_Admin.checkUpdated())
+				return false;
+		}
+		$jq("#toCommandbar").click(checkUpdated);
+
 		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
 		$jq("#defaultPanel").ISA_TabList();
 	});

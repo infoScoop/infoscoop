@@ -50,7 +50,7 @@
 		-->
 		<a id="changeApply" class="iconButton" style="float: right;" title="%{alb_changeApply}" href="#">
 			<img src="../../skin/imgs/database_save.gif" style="position: relative; top: 2px; margin: 0pt 5px 0pt 0pt;">%{alb_changeApply}</a>
-		<a class="iconButton" style="float: right; " title="%{alb_backTabList}" href="index">
+		<a class="iconButton" style="float: right; " title="%{alb_backTabList}" href="index" id="backToTabList">
 			<img src="../../skin/imgs/arrow_undo.gif" style="position: relative; top: 2px; margin: 0px 5px 0px 0px; ">%{alb_backTabList}</a>
 	</div>
 </div>
@@ -68,6 +68,12 @@
 	var defaultPanelJson = ${defaultPanelJson};
 	var displayTabOrder = "${displayTabOrder}";
 	$jq(function(){
+		var checkUpdated = function(){
+			if(!ISA_Admin.checkUpdated())
+				return false;
+		}
+		$jq("#backToTabList").click(checkUpdated);
+
 		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
 		IS_SiteAggregationMenu.init();
 		ISA_loadProperties(ISA_DefaultPanel.defaultPanel.build);

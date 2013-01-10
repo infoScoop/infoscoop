@@ -93,6 +93,8 @@
 				.css({"cursor":"pointer"});
 			
 			editButton.click({tabId: tabObj.id}, function(e){
+				if(!ISA_Admin.checkUpdated())
+					return false;
 				window.location.href = "editTab?tabId=" + e.data.tabId;
 			});
 			
@@ -254,6 +256,10 @@
 			jsonObject = defaultPanel.templates.setStaticLayout0(jsonObject);
 			
 			$jq("#addTabJson").val(Object.toJSON(jsonObject));
+
+			if(!ISA_Admin.checkUpdated())
+				return false;
+
 			$jq("#addTabForm").submit();
 		};
 		

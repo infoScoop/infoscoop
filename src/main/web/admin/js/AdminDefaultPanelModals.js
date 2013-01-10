@@ -722,7 +722,6 @@ ISA_DefaultPanel.prototype.templates = {
 //		  this.getStaticLayout(i);
 		this.getStaticLayout();
 		
-		console.log(this.staticLayoutDefaultIdx);
 		return this.setStaticLayout(jsonObject, (number ? number : this.staticLayoutDefaultIdx));
 	},
 	/**
