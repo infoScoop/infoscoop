@@ -150,8 +150,13 @@ function loadStats(_start, isInitialize){
 	isLoading = true;
 	
 	start = _start;
+	
+	var d = new Date();
+	IS_Portal.clientTimeZone = String(-d.getTimezoneOffset());
+	var headers = ["X-IS-TIMEZONE", IS_Portal.clientTimeZone];
 	var opt = {
 		parameters:"rssUrl=" + encodeURIComponent(rssUrl) + "&start=" + start + "&limit=" + limit,
+		requestHeaders:headers,
 		onSuccess:function(req){
 			var stats = eval("("+req.responseText+")");
 			
