@@ -208,6 +208,8 @@
 		
 		var rsaPK = new RSAKey();
 		rsaPK.setPublic("<%= RSAKeyManager.getInstance().getModulus() %>", "<%= RSAKeyManager.getInstance().getPublicExponent() %>");
+		
+		var editRoleScreen = true;
 	</script>
 
 	<script type="text/javascript">

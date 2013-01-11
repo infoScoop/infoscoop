@@ -128,6 +128,8 @@ public class TabLayoutService {
 			log.info("Success to delete Tempolary TabLayouts.");
 		}catch(IllegalAccessException e){
 			// ignore
+		}catch(TabTimeoutException e){
+			// ignore
 		}
 	}
 
@@ -447,7 +449,7 @@ public class TabLayoutService {
 
 		// fix #174
 		if(value != null){
-			// At the end of roleOrde is default（This is only way to determine as regular expression is not unique because of handling ecah subject）
+			// At the end of roleOrde is default(This is is only way to determine as regular expression is not unique because of handling ecah subject)
 			value.put("isDefault", "true");
 		}
 

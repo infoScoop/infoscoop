@@ -939,7 +939,8 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 			singleton = (menuItem.type == 'RssReader' || menuItem.type == 'MultiRssReader');
 		}
 		
-		var isDefaultPanelTabActive = ($('tab_defaultPanel') && $('tab_defaultPanel').className == 'tab active');
+//		var isDefaultPanelTabActive = ($('tab_defaultPanel') && $('tab_defaultPanel').className == 'tab active');
+		var isDefaultPanelTabActive = (window["editRoleScreen"] && window["editRoleScreen"] == true);
 		if( !singleton && !(isDefaultPanelTabActive)) {
 			var row = document.createElement("tr");
 			row.className = "multiTr";
