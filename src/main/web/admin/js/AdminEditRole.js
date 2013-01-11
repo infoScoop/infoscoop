@@ -367,6 +367,7 @@ function init() {
 			
 			ISA_DefaultPanel.updateRaws.push("tab_"+openerPanel.displayTabId+"_role_" + openerPanel.displayRoleId);
 			openerPanel.updateRawStyle();
+			saveDynamicPanel();
 		});
 	
 	//set static container
@@ -954,7 +955,7 @@ function _saveDynamicPanel(){
 			
 			var widgetJSON = {
 				id : "w_" + menuItem.id,
-				column : new String(widget.widgetConf.column),
+				column : new String($jq(widget.elm_widget).parent().attr('colnum')),
 				type : menuItem.type? menuItem.type : widget.widgetType,
 				properties: (menuItem.properties && typeof menuItem.properties == "Object" )?
 								menuItem.properties : {}
