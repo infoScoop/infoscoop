@@ -99,7 +99,8 @@
 		commandQueueWait = 15;
 		menuAutoRefresh = false;
 		widgetRefreshInterval = 36000;
-		gadgetProxyURL = localhostPrefix + "/gadgetsrv";
+		if(/^\.\/(.+)$/.test( gadgetProxyURL ) )
+			gadgetProxyURL = hostPrefix +"/" +RegExp.$1;
 		
 		var displayTabOrder = "0";
 		IS_Portal = {
