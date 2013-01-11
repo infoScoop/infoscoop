@@ -11,7 +11,8 @@
 	<property name="qs.build" value="${build.home}/quickstart" />
 	<property name="qs.home" value="${qs.build}/infoscoop-${build.version}-quickstart" />
 	<property name="qs.file.name" value="infoscoop-${build.version}-quickstart" />
-	<property name="qs.tomcat.webapps" value="${qs.home}/apache-tomcat-6.0.28/webapps" />
+	<property name="qs.tomcat.home" value="${qs.home}/apache-tomcat-7.0.34" />	
+	<property name="qs.tomcat.webapps" value="${qs.tomcat.home}/webapps" />
 
 
 	<target name="all" depends="quickstart,archive-quickstart" />
@@ -43,18 +44,18 @@
 		<copy todir="${qs.home}" file="${basedir}/gpl-3.0.txt" />
 		<copy todir="${qs.home}" file="${basedir}/lgpl-3.0.txt" />
 		<copy todir="${qs.home}" file="${basedir}/LICENSE.txt" />
-		<unzip src="${src.qs}/apache-tomcat-6.0.28.zip" dest="${qs.home}" />
+		<unzip src="${src.qs}/apache-tomcat-7.0.34.zip" dest="${qs.home}" />
 		<delete dir="${qs.tomcat.webapps}/docs" />
 		<delete dir="${qs.tomcat.webapps}/examples" />
 		<copy todir="${qs.tomcat.webapps}" file="${build.work}/infoscoop.war" />
 		<fixcrlf srcdir="${qs.home}" eol="lf" eof="remove" includes="**/*.sh" />
-		<copy todir="${qs.home}/apache-tomcat-6.0.28/lib">
+		<copy todir="${qs.tomcat.home}/lib">
 			<fileset dir="${src.qs.tomcat}/lib" />
 		</copy>
-		<copy todir="${qs.home}/apache-tomcat-6.0.28/conf">
+		<copy todir="${qs.tomcat.home}/conf">
 			<fileset dir="${src.qs.tomcat}/conf" />
 		</copy>
-		<copy todir="${qs.home}/apache-tomcat-6.0.28/conf/Catalina/localhost"
+		<copy todir="${qs.tomcat.home}/conf/Catalina/localhost"
 		      file="${src.qs.tomcat}/context/infoscoop.xml" />
 	</target>
 
