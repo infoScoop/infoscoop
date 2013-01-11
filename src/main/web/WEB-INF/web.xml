@@ -49,7 +49,7 @@
 	</context-param>
 	<context-param>
     	<param-name>liquibase.datasource</param-name>
-    	<param-value><!--Migration Database jndiName--></param-value>
+    	<param-value><!--start migration jndiName-->java:comp/env/jdbc/infoscoop<!--end migration jndiName--></param-value>
 	</context-param>
 	<context-param>
     	<param-name>liquibase.should.run</param-name>

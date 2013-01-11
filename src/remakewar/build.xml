@@ -99,7 +99,7 @@
 			flags="s"
 			encoding="UTF-8"/>
 		<replaceregexp file="${collect.home}/WEB-INF/web.xml"
-			match="&lt;!--Migration Database jndiName--&gt;"
+			match="&lt;!--start migration jndiName--&gt;.*&lt;!--end migration jndiName--&gt;"
 			replace="java:comp/env/${dataSource.jndiName}"
 			flags="s"
 			encoding="UTF-8"/>
