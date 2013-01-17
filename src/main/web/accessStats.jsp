@@ -152,7 +152,7 @@ function loadStats(_start, isInitialize){
 	start = _start;
 	
 	var d = new Date();
-	var headers = ["X-IS-TIMEZONE", String(-d.getTimezoneOffset()];
+	var headers = ["X-IS-TIMEZONE", String(-d.getTimezoneOffset())];
 	var opt = {
 		parameters:"rssUrl=" + encodeURIComponent(rssUrl) + "&start=" + start + "&limit=" + limit,
 		requestHeaders:headers,

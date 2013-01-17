@@ -5,7 +5,7 @@
 			<countRule method="regexp" value="約? ([0-9,]+) 件|約? &lt;b&gt;([0-9,]+)&lt;\/b&gt; 件"/>
 		</searchEngine> -->
 		<searchEngine id="bing" defaultSelected="true" title="Bing" retrieveUrl="http://www.bing.com/search?mkt=ja-JP&amp;q=">
-			<countRule method="regexp" value="([0-9,]+) results"/>
+			<countRule method="regexp" value="([0-9,]+) 件"/>
 		</searchEngine>
 		<searchEngine id="yahoojapan" defaultSelected="true" title="Yahoo! Japan" retrieveUrl="http://search.yahoo.co.jp/search?p=">
 			<countRule method="regexp" value="約&lt;span class=&quot;bo&quot;&gt;([0-9,]+)&lt;/span&gt;件"/>
@@ -14,7 +14,7 @@
 	<rssSearch>
 		<searchEngine id="bingsite" retrieveUrl="http://www.bing.com/search?mkt=ja-JP&amp;q=site%3A$1%20">
 			<rssPattern>^http://([^/]+)/.*</rssPattern>
-			<countRule method="regexp" value="([0-9,]+) results" />
+			<countRule method="regexp" value="([0-9,]+) 件" />
 		</searchEngine>
 		<!-- setting example for searching RSS in Google in-site search if the rss does not match with the above
 		<searchEngine id="googlesite" retrieveUrl="http://www.google.com/search?&amp;q=site%3A$1%20">
