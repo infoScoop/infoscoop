@@ -36,7 +36,7 @@
 	</context-param>
 	<context-param>
 	<param-name>webAppRootKey</param-name>
-		<param-value>infoScoop</param-value>
+		<param-value>@WEBAPP.ISCOOP.ROOT.KEY@</param-value>
 	</context-param>
 
 	<listener>
