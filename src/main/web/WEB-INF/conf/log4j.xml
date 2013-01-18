@@ -22,7 +22,7 @@
             <param name="AcceptOnMatch" value="true"/>
         </filter>
         <filter class="org.apache.log4j.varia.DenyAllFilter"/>
-     </appender>
+    </appender>
     
     <!-- direct messages to file infoscoop_admin_log -->
     <appender name="admin" class="biz.minaret.log4j.DatedFileAppender">
@@ -37,24 +37,28 @@
             <param name="AcceptOnMatch" value="true"/>
         </filter>
         <filter class="org.apache.log4j.varia.DenyAllFilter"/>
-     </appender>
+    </appender>
     
-     <appender name="migration" class="biz.minaret.log4j.DatedFileAppender">
+    <!-- direct messages to file infoscoop_migrate_log -->
+    <appender name="migration" class="biz.minaret.log4j.DatedFileAppender">
        	<param name="directory" value="/var/log/infoscoop"/>
        	<param name="prefix" value="infoscoop_migrate_log_"/>
        	<param name="suffix" value=".log"/>
        	<layout class="org.apache.log4j.PatternLayout">
        		<param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
        	</layout>
-     </appender>
+    </appender>
 
-    <!-- direct messages to file infoscoop_migrate_log -->    
+        
+    <!-- set log levels - for more verbose logging change 'info' to 'debug' -->
+    <!-- set log levels - for migration log -->    
    	<logger name="liquibase.ext.logging">
        	<level value="info" />
        	<appender-ref ref="migration" />
    	</logger>
     
     <!-- set log levels - for more verbose logging change 'info' to 'debug' -->
+    <!-- set log levels - for operation log -->    
     <root>
         <priority value="info"/>
         <appender-ref ref="main"/>
