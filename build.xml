@@ -157,6 +157,11 @@
               <include name="**/ant-contrib*.jar"/>
             </fileset>
         </copy>
+    	<copy todir="${install_image.home}/${app.main.name}/lib" encoding="UTF-8">
+            <fileset dir="${src.main.web}/WEB-INF/lib">
+              <include name="**/liquibase-core*.jar"/>
+            </fileset>
+		</copy>    		
 
         <mkdir dir="${install_image.home}/${app.main.name}/Customization/WEB-INF/classes" />
         <mkdir dir="${install_image.home}/${app.main.name}/Customization/WEB-INF/lib" />
