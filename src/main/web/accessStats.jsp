@@ -17,19 +17,21 @@
 # <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 --%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><%@ page contentType="text/html; charset=UTF-8" %>
+<!DOCTYPE HTML>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@page import="org.infoscoop.service.PropertiesService"%>
 <%String staticContentURL = PropertiesService.getHandle().getProperty("staticContentURL"); %>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-Control" content="no-cache">
     <meta http-equiv="Expires" content="Thu, 01 Dec 1994 16:00:00 GMT">
 <style type="text/css"><!--
 html, body, table {
-	margin:0;
-	padding:0;
+	margin:0px;
+	padding:0px;
 }
 body {
 	font-size: 0.9em;
@@ -53,7 +55,7 @@ a:focus {
 }
 a.nolink {
 	color:#f4f9fe;
-	border-bottom:0;
+	border-bottom:0px;
 	text-decoration:none;
 	cursor:auto;
 }
@@ -85,14 +87,14 @@ tr.odd td{
 	background:#f7fbfd;
 }
 .paging th{
-	border:0;
+	border:0px;
 }
 .paging div{
 	width:16px;
 	height:16px;
 	cursor:pointer;
 	position:relative;
-	margin:0 3px;
+	margin:0px 3px;
 }
 .paging div.nolink{
 	visibility:hidden;
@@ -116,7 +118,7 @@ tr.odd td{
 -->
 </style>
 <!--start script-->
-<script src="<%=staticContentURL%>/js/lib/prototype-1.6.0.3.js"></script>
+<script src="<%=staticContentURL%>/js/lib/prototype-1.7.1.js"></script>
 <script src="<%=staticContentURL%>/js/lib/date/date.js"></script>
 <!--end script-->
 <script src="js/resources/resourceBundle.jsp"></script>

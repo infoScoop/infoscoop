@@ -223,12 +223,8 @@ IS_Widget.MaximizeRssReader.RssItemRender.getDetailIframe = function() {
 		return maxIframe;
 	}
 	var maxIframe;
-	if(Browser.isIE){
-		maxIframe = document.createElement("<iframe name='maximize_ifrm'>"); // IE specially needs this format of description to set name property
-	}else{
-		maxIframe = document.createElement("iframe");
-		maxIframe.name = "maximize_ifrm";
-	}
+	maxIframe = document.createElement("iframe");
+	maxIframe.name = "maximize_ifrm";
 	maxIframe.style.border = "0px";
 	maxIframe.id = "maximize_ifrm";
 	maxIframe.style.display = "none";

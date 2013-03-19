@@ -1354,8 +1354,8 @@ IS_Portal.Trash = new function() {
 				table.replaceChild(tbody, table.firstChild);
 			else
 				table.appendChild(tbody);
-			style.top = Event.pointerY(e);
-			style.left = Event.pointerX(e);
+			style.top = Event.pointerY(e) + 'px';
+			style.left = Event.pointerX(e) + 'px';
 			style.display = "block";
 			titleTd.className = "trashSelectedWidget";
 			self.selectedWidgetTd = titleTd;
@@ -2181,7 +2181,7 @@ IS_Portal.setDisplayMsgBarPosition = function(){
 	var offset = parseInt($("portal_msgbar").offsetHeight);
 	if(!Browser.isIE) offset += 1;
 	
-	$("portal_msgbar").style.top = (scrollTop + innerHeight) - offset;
+	$("portal_msgbar").style.top = (scrollTop + innerHeight) - offset + 'px';
 }
 
 // display message bar.
@@ -2216,9 +2216,9 @@ IS_Portal.behindIframe = {
 	init:function(){
 		//if(!Browser.isIE)return;
 		this.behindIframe = $(document.createElement('iframe'));
-		this.behindIframe.border = 0;
-		this.behindIframe.style.margin = 0;
-		this.behindIframe.style.padding = 0;
+		this.behindIframe.border = 0 + 'px';
+		this.behindIframe.style.margin = 0 + 'px';
+		this.behindIframe.style.padding = 0 + 'px';
 		this.behindIframe.id = "is_portal_behind_iframe";
 		this.behindIframe.frameBorder = 0;
 		this.behindIframe.style.position = "absolute";
@@ -2233,8 +2233,8 @@ IS_Portal.behindIframe = {
 		var pos = Position.cumulativeOffset(element);
 		this.behindIframe.style.top = pos[1] + "px";
 		this.behindIframe.style.left = pos[0] + "px";
-		this.behindIframe.style.width = element.offsetWidth;
-		this.behindIframe.style.height = element.offsetHeight;
+		this.behindIframe.style.width = element.offsetWidth + 'px';
+		this.behindIframe.style.height = element.offsetHeight + 'px';
 		if(element.style.zIndex)
 			this.behindIframe.style.zIndex = element.style.zIndex -1;
 		else
@@ -2248,8 +2248,8 @@ IS_Portal.behindIframe = {
 		//if(!Browser.isIE)return;
 		this.behindIframe.style.left = 0 + "px";
 		this.behindIframe.style.top = 0 + "px";
-		this.behindIframe.style.width = 0;
-		this.behindIframe.style.height = 0;
+		this.behindIframe.style.width = 0 + 'px';
+		this.behindIframe.style.height = 0 + 'px';
 		this.behindIframe.hide();
 	}
 }
@@ -2548,8 +2548,8 @@ IS_Portal.startIndicator = function(target){
 		divOverlay.style.display = "block";
 	}
 	if(panel.offsetWidth > 0){
-		divOverlay.style.top = findPosY(panel) + 200;
-		divOverlay.style.left = findPosX(panel) + panel.offsetWidth/2 - divOverlay.offsetWidth/2;
+		divOverlay.style.top = findPosY(panel) + 200 + 'px';
+		divOverlay.style.left = findPosX(panel) + panel.offsetWidth/2 - divOverlay.offsetWidth/2  + 'px';
 	}
 	IS_Portal.getPortalOverlay().show("default");
 }

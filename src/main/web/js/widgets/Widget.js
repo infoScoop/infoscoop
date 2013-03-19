@@ -821,12 +821,7 @@ IS_Widget.prototype.classDef = function() {
 			self.elm_widgetContent.style.removeAttribute("overflow");
 		}
 		
-		if( Browser.isIE ) {
-			self.iframe = document.createElement('<iframe name="ifrm_'+self.id+(isOuter?' scrolling="no"':'')+'">');
-		} else {
-			self.iframe = document.createElement('iframe');
-		}
-		
+		self.iframe = document.createElement('iframe');
 		self.iframe.id = "ifrm_" + self.id;
 		self.iframe.name = "ifrm_" + self.id;
 

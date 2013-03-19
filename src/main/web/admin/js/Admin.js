@@ -208,7 +208,7 @@ ISA_Admin.createBaseRadio = function(name, isChecked, isDisabled, d) {
 		radio.checked = String(isChecked);
 	if(isDisabled)
 		radio.disabled = String(isDisabled);
-	
+	/*	fix #13565
 	if(Browser.isIE) {
 		var inputElement = "";
 		inputElement += "<";
@@ -220,6 +220,7 @@ ISA_Admin.createBaseRadio = function(name, isChecked, isDisabled, d) {
 		inputElement += ">";
 		radio = doc.createElement(inputElement);
 	}
+	*/
 	return radio;
 };
 
@@ -234,6 +235,7 @@ ISA_Admin.createBaseCheckBox = function(name, isChecked, isDisabled, d) {
 	if(isDisabled)
 		checkbox.disabled = String(isDisabled);
 	
+	/*	fix #13565
 	if(Browser.isIE) {
 		var inputElement = "";
 		inputElement += "<";
@@ -245,6 +247,7 @@ ISA_Admin.createBaseCheckBox = function(name, isChecked, isDisabled, d) {
 		inputElement += ">";
 		checkbox = doc.createElement(inputElement);
 	}
+	*/
 	return checkbox;
 };
 

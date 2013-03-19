@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
 --%>
 
-<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <%@page contentType="text/html; charset=UTF-8" %>
 <%@page import="org.infoscoop.service.PropertiesService" %>
 <%@page import="org.infoscoop.util.RSAKeyManager"%>
@@ -33,6 +33,7 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Cache-Control" content="no-cache">
 
@@ -143,9 +144,9 @@
 	
 	<!--start script-->
 	<!-- lib -->
-	<script src="../../js/lib/prototype-1.6.0.3.js"></script>
-	<script src="../../js/lib/scriptaculous-js-1.8.2/effects.js"></script>
-	<script src="../../js/lib/scriptaculous-js-1.8.2/dragdrop.js"></script>
+	<script src="../../js/lib/prototype-1.7.1.js"></script>
+	<script src="../../js/lib/scriptaculous-js-1.9.0/effects.js"></script>
+	<script src="../../js/lib/scriptaculous-js-1.9.0/dragdrop.js"></script>
 	<script src="../../js/lib/control.modal.js"></script>
 	<script src="../../js/lib/date/date.js"></script>
 	<script src="../../js/lib/rsa/jsbn.js"></script>

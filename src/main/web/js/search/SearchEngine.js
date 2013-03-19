@@ -478,8 +478,8 @@ IS_Portal.SearchEngines = {
 		var searchOptionOffset = Position.cumulativeOffset(portalSearchForm);
 		
 		searchOption.setStyle({
-			top: searchOptionOffset.top + parseInt(portalSearchForm.offsetHeight),
-			left: searchOptionOffset.left > 0 ? searchOptionOffset.left : 1
+			top: searchOptionOffset.top + parseInt(portalSearchForm.offsetHeight) + 'px',
+			left: searchOptionOffset.left > 0 ? searchOptionOffset.left+'px' : '1px'
 		});
 	},
 	

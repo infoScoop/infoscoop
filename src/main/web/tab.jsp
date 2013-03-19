@@ -17,7 +17,7 @@
 # <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 --%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@page import="org.infoscoop.admin.web.PreviewImpersonationFilter"%>
 <%@page import="org.infoscoop.service.PropertiesService"%>
@@ -27,6 +27,7 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-Control" content="no-cache">
     <meta http-equiv="Expires" content="Thu, 01 Dec 1994 16:00:00 GMT">
@@ -67,11 +68,11 @@
 	</script>
 
 	<!--start script-->
-    <script src="<%=staticContentURL%>/js/lib/prototype-1.6.0.3.js"></script>
+    <script src="<%=staticContentURL%>/js/lib/prototype-1.7.1.js"></script>
     <script src="<%=staticContentURL%>/js/lib/control.modal.js"></script>
     <script src="<%=staticContentURL%>/js/utils/ajax304.js"></script>
     
-	<script src="<%=staticContentURL%>/js/lib/scriptaculous-js-1.8.2/effects.js"></script>
+	<script src="<%=staticContentURL%>/js/lib/scriptaculous-js-1.9.0/effects.js"></script>
 	
 	
 	<script src="<%=staticContentURL%>/js/lib/date/date.js"></script>
