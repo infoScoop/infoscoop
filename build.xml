@@ -260,9 +260,9 @@
 
 		<concat destfile="${build.main}/js/dist/Portal.js.tmp" append="false" encoding="utf-8" fixlastline="true">
 			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="controls.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="effects.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="controls.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="jsbn.js"/>
@@ -326,7 +326,7 @@
 		</java>
 
 		<concat destfile="${build.main}/js/dist/Portal-core.js.tmp" append="false" encoding="utf-8" fixlastline="true">
-			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="prototype-1.7.1.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="ajax304.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="utils.js"/>
             <filelist dir="${src.main.web}/js/utils" files="domhelper.js"/>
@@ -446,9 +446,9 @@
 
 		<concat destfile="${build.admin}/js/dist/PortalMain.js.tmp" append="false" encoding="utf-8" fixlastline="true">
 			<!-- lib -->
-			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="prototype-1.7.1.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="effects.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
 			<filelist dir="${src.admin.web}/js/lib" files="popupmenu.js"/>
@@ -527,9 +527,9 @@
 		</java>
 		<concat destfile="${build.admin}/js/dist/PortalAdmin-EditRole.js.tmp" append="false" encoding="utf-8" fixlastline="true">
 			<!-- lib -->
-			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="prototype-1.7.1.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="effects.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
 			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
 			<filelist dir="${src.main.web}/js/lib/date" files="date.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa" files="jsbn.js"/>
@@ -623,7 +623,7 @@
 		<copy todir="${build.admin}/js/resources" file="${src.admin.web}/js/resources/resourceBundle.jsp"/>
 		
 		<!-- Copy from main -->
-		<copy todir="${build.admin}/js/lib" file="${src.main.web}/js/lib/prototype-1.6.0.3.js"/>
+		<copy todir="${build.admin}/js/lib" file="${src.main.web}/js/lib/prototype-1.7.1.js"/>
 		<copy todir="${build.admin}/skin">
 			<fileset dir="${src.main.web}/skin" includes="**/igtab.css"/>
 		</copy>
