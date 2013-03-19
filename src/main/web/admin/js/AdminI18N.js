@@ -289,30 +289,21 @@ ISA_I18N.prototype.classDef = function() {
 		var fileForm;
 		var radio_allReplace;
 		var radio_insertUpdate 
-		if (Browser.isIE) {
-			form = document.createElement("<form target='csvResult' method='POST' enctype='multipart/form-data'>");
-			
-			fileForm = document.createElement("<input type='file' name='csvFile'>");
-			
-			radio_allReplace = document.createElement("<input type='radio' name='mode'>");
-			radio_insertUpdate = document.createElement("<input type='radio' name='mode'>");
-		}else{
-			form = document.createElement("form")
-			form.target = "csvResult";
-			form.method = "POST";
-			form.enctype="multipart/form-data";
-			
-			fileForm = document.createElement("input");
-			fileForm.type = "file";
-			fileForm.name = "csvFile";
-			
-			radio_allReplace = document.createElement("input");
-			radio_allReplace.type = "radio";
-			radio_allReplace.name = "mode";
-			radio_insertUpdate = document.createElement("input");
-			radio_insertUpdate.type = "radio";
-			radio_insertUpdate.name = "mode";
-		}
+		form = document.createElement("form")
+		form.target = "csvResult";
+		form.method = "POST";
+		form.enctype="multipart/form-data";
+		
+		fileForm = document.createElement("input");
+		fileForm.type = "file";
+		fileForm.name = "csvFile";
+		
+		radio_allReplace = document.createElement("input");
+		radio_allReplace.type = "radio";
+		radio_allReplace.name = "mode";
+		radio_insertUpdate = document.createElement("input");
+		radio_insertUpdate.type = "radio";
+		radio_insertUpdate.name = "mode";
 		
 		if( type != "holiday") {
 			form.action = adminHostPrefix + "/i18nimport?type=" + type + "&country=" + country + "&lang=" + lang;
@@ -342,12 +333,8 @@ ISA_I18N.prototype.classDef = function() {
 		
 		var resultFrame
 		
-		if (Browser.isIE) {
-			resultFrame = document.createElement("<iframe name='csvResult'>");
-		}else{
-			resultFrame = document.createElement("iframe");
-			resultFrame.name = "csvResult";
-		}
+		resultFrame = document.createElement("iframe");
+		resultFrame.name = "csvResult";
 		resultFrame.style.width = "100%";
 		resultFrame.style.height = "300px";
 		resultFrame.frameBorder = 0;

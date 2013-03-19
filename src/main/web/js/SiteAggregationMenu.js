@@ -980,9 +980,9 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		var offsetY = findPosY(container) + container.offsetHeight;
 
 		var overlayStyle = self.overlay.style;
-		overlayStyle.top = offsetY;
-		overlayStyle.width = Math.max(document.body.scrollWidth, document.body.clientWidth) - 5;
-		overlayStyle.height = Math.max(document.body.scrollHeight, document.body.clientHeight) - offsetY - 5;
+		overlayStyle.top = offsetY + 'px';
+		overlayStyle.width = Math.max(document.body.scrollWidth, document.body.clientWidth) - 5  + 'px';
+		overlayStyle.height = Math.max(document.body.scrollHeight, document.body.clientHeight) - offsetY - 5  + 'px';
 		overlayStyle.display = "";
 		parent.overTimeout = setTimeout(function() { topMenuMOver2(e, parent, parentMenuItem); }, 150);
 

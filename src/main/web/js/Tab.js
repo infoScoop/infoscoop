@@ -328,8 +328,8 @@ IS_Portal.showTabMenu = function(tabElement, e){
 			offset = (winX  - tabMenu.offsetWidth );
 		}
 		
-		tabMenu.style.left = offset;
-		tabMenu.style.top = (findPosY(tabElement) + tabElement.firstChild.offsetHeight);
+		tabMenu.style.left = offset + 'px';
+		tabMenu.style.top = (findPosY(tabElement) + tabElement.firstChild.offsetHeight)  + 'px';
 
 		IS_Portal.behindIframe.show(tabMenu);
 	}

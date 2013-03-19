@@ -113,9 +113,9 @@ IS_Portal.behindIframe = {
 	init:function(){
 		//if(!Browser.isIE)return;
 		this.behindIframe = $(document.createElement('iframe'));
-		this.behindIframe.border = 0;
-		this.behindIframe.style.margin = 0;
-		this.behindIframe.style.padding = 0;
+		this.behindIframe.border = 0 + 'px';
+		this.behindIframe.style.margin = 0 + 'px';
+		this.behindIframe.style.padding = 0 + 'px';
 		this.behindIframe.id = "is_portal_behind_iframe";
 		this.behindIframe.frameBorder = 0;
 		this.behindIframe.style.position = "absolute";
@@ -130,8 +130,8 @@ IS_Portal.behindIframe = {
 		var pos = Position.cumulativeOffset(element);
 		this.behindIframe.style.top = pos[1] + "px";
 		this.behindIframe.style.left = pos[0] + "px";
-		this.behindIframe.style.width = element.offsetWidth;
-		this.behindIframe.style.height = element.offsetHeight;
+		this.behindIframe.style.width = element.offsetWidth + 'px';
+		this.behindIframe.style.height = element.offsetHeight + 'px';
 		if(element.style.zIndex)
 			this.behindIframe.style.zIndex = element.style.zIndex -1;
 		else
@@ -145,8 +145,8 @@ IS_Portal.behindIframe = {
 		//if(!Browser.isIE)return;
 		this.behindIframe.style.left = 0 + "px";
 		this.behindIframe.style.top = 0 + "px";
-		this.behindIframe.style.width = 0;
-		this.behindIframe.style.height = 0;
+		this.behindIframe.style.width = 0 + 'px';
+		this.behindIframe.style.height = 0 + 'px';
 		this.behindIframe.hide();
 	}
 };

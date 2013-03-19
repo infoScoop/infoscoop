@@ -17,7 +17,7 @@
 # <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 --%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@ page import="org.infoscoop.account.AuthenticationService, org.infoscoop.service.PortalLayoutService, org.infoscoop.util.*" %>
 <%
@@ -29,6 +29,7 @@
 <%@page import="org.infoscoop.dao.PropertiesDAO"%><html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title><%= pageTitle %> %{lb_loginTitle}</title>
 		
 		<!-- favicon.ico -->

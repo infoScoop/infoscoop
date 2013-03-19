@@ -15,7 +15,7 @@ gadgets.rpc.register("resize_iframe",function( height, heightAutoCalculated ) {
 	
 	widget.adjustHeightAuto = heightAutoCalculated;
 	
-	iframe.style.height = height;
+	iframe.style.height = parseInt(height) + "px";
 });
 gadgets.rpc.register("set_pref",function( ifpctok ) {
 	if( /^previewWidget/.test( this.mid )) return;

@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
 --%>
 
-<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <%@ page contentType="text/html; charset=UTF-8" errorPage="/jspError.jsp" %>
 
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>

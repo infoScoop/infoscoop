@@ -17,7 +17,7 @@
 # <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 --%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@ page import="org.infoscoop.service.PortalLayoutService, org.infoscoop.util.I18NUtil" %>
 <%
@@ -27,6 +27,7 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>%{lb_changePassword}</title>
         <style>
 .header{
@@ -36,7 +37,7 @@
 }
 		</style>
  	</head>
-	<body style="margin-top:0;padding-top:160px;">
+	<body style="margin-top:0px;padding-top:160px;">
 		<center>
 			<div>
 				<form id="loginform" method="post" action="authsrv/changePassword">

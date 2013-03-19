@@ -193,8 +193,13 @@ CalendarInput.prototype = {
 					xy[1] -= Position.realOffset(input.parentNode)[1];
 				}
 				
+				/*
 				contents.style.top = xy[1] +input.parentNode.offsetHeight;
 				contents.style.left = xy[0] +input.parentNode.offsetWidth-contents.offsetWidth;
+				*/
+				// fix #13565
+				contents.style.top = xy[1] +input.parentNode.offsetHeight + "px";
+				contents.style.left = xy[0] +input.parentNode.offsetWidth-contents.offsetWidth + "px";
 				
 				if( IS_Portal.behindIframe )
 					IS_Portal.behindIframe.show(contents);
