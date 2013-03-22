@@ -135,6 +135,11 @@ gadgets.window = gadgets.window || {};
    * to figure out.
    */
   gadgets.window.getHeight = function() {
+  	// added by bit #478 (from 2.5.0-beta6)
+  	return gadgets.window.getDimen(1);
+  	
+  	// deleted by bit #478
+  	/*
     // Get the height of the viewport
     var vh = gadgets.window.getViewportDimensions().height;
     var body = document.body;
@@ -181,5 +186,6 @@ gadgets.window = gadgets.window || {};
         return sh < oh ? sh : oh;
       }
     }
+    */
   };
 }());
