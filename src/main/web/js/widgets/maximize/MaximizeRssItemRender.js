@@ -83,7 +83,7 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 		
 		if( init ) {
 			this.containerTr = document.createElement("div");
-			this.containerTr.style.paddingLeft = 2;
+			this.containerTr.style.paddingLeft = '2px';
 			this.containerTr.style.paddingBottom = this.containerTr.style.paddingTop = 0;
 			this.containerTr.style.borderBottom = "1px solid #CCC";
 			this.containerTr.__key__ = this.key;
@@ -158,7 +158,7 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 		if( init ) {
 			this.rssPubDateTd = document.createElement("div");
 //			this.rssPubDateTd.style.textAlign = "right";
-			this.rssPubDateTd.style.paddingLeft = 2;
+			this.rssPubDateTd.style.paddingLeft = '2px';
 			this.rssPubDateTd.style.clear = "both";
 			this.rssPubDateTd.appendChild( this.rssPubDate );
 			this.containerTr.appendChild( this.rssPubDateTd );

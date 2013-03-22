@@ -163,7 +163,7 @@ IS_Widget.Maximize.createMaximizeWidget = function( wigetObj ) {
 			if( this.elm_widget ) {
 				var height = getWindowHeight() -findPosY( this.elm_widget ) -( Browser.isIE ? 5:60 );
 				if( !isNaN( height ) && height >= 0 )
-					this.elm_widget.style.height = height;
+					this.elm_widget.style.height = height + 'px';
 			}
 			
 			if( this.content && this.content.adjustMaximizeHeight ) {
@@ -346,7 +346,7 @@ IS_Widget.Maximize.adjustMaximizeHeight = function() {
 IS_Widget.Maximize.defaultAdjustMaximizeHeight = function( widget ) {
 	var height = getWindowSize(false) - findPosY( widget.elm_widgetContent ) -25;
 	if( !isNaN( height ) && height >= 0 )
-		widget.iframe.style.height = height;
+		widget.iframe.style.height = height + 'px';
 }
 IS_Widget.Maximize.adjustMaximizeWidth = function() {
 	var maximizeWidget = IS_Widget.MaximizeWidget;

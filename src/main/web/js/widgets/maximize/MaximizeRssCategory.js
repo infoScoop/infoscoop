@@ -66,7 +66,7 @@ IS_Widget.MaximizeRssCategory.prototype.classDef = function() {
 					} else {
 						scrollPos = itemPos;
 					}
-					rssContentView.elm_viewport.scrollTop = scrollPos;
+					rssContentView.elm_viewport.scrollTop = scrollPos +'px';
 				}
 			}
 		}

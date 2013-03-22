@@ -55,6 +55,9 @@ fieldset {
 
 input[type="text"], input[type="password"], textarea, select { 
 	outline: none;
+	-moz-box-sizing: border-box; /* Firefox */
+	-webkit-box-sizing: border-box; /* Webkit */
+	box-sizing:border-box;
 }
 
 img{

@@ -183,12 +183,12 @@
 	font-size: 9pt;
 	color: blue;
 	cursor: pointer;
-	_margin-top: 1;
-	margin-left: 4;
-	margin-right: 2;
-	padding-left: 2;
-	padding-right: 2;
-	border: 1px solid darkgray;
+	_margin-top: 1px;
+	margin-left: 4px;
+	margin-right: 2px;
+	padding-left: 2px;
+	padding-right: 2px;
+	border: 1px solid #6F7866;;
 	white-space:nowrap;
 }
 .infoScoop .widgetHeader .headerIcon_turnbackMaximize span {
@@ -207,6 +207,10 @@
 	top: 0;
 	left: 0;
 	width: 100%;
+	background-color: white;
+	filter: alpha( opacity=0 );
+	-moz-opacity: 0
+	opacity: 0;
 }
 
 * html .infoScoop .widgetMenuCloser {
@@ -326,12 +330,12 @@
 	font-size: 10.5pt;
 }
 .infoScoop .widgetEditHelp .header {
-	padding: 2;
+	padding: 2px;
 	padding-left: 16px;
 	background: url(./imgs/help.gif) left center no-repeat;
 	background-color: #DDF;
 	font-weight: bold;
 }
 .infoScoop .widgetEditHelp .description {
-	padding: 5;
+	padding: 5px;
 }

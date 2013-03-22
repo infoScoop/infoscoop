@@ -196,7 +196,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			this.targetWidget = null;
 		}
 		opt.onDrop = this.droppableOption.onWidgetDrop;
-		opt.marginBottom = 10;
+		opt.marginBottom = "10px";
 		
 		if(!widget.isMulti && !isDroppable)
 		  IS_Widget.RssReader.dropGroup.add(widget.elm_widget, opt);
@@ -236,7 +236,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			self.droppableOption.onWidgetDrop.call(self, element,lastActiveElement, newWidget, event, modalOption);
 		}
 		menuOpt.onDrop = this.droppableOption.onMenuDrop;
-		menuOpt.marginBottom = 10;
+		menuOpt.marginBottom = "10px";
 		
 		if(!widget.isMulti && !isDroppable)
 		  IS_Widget.RssReader.dropGroup.add(widget.elm_widget, menuOpt);
@@ -478,7 +478,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 				showDatetime : this.showDatetime.bind( this )
 			}
 		this.rssContentView = new IS_Widget.RssReader.RssContentView( widget,this.rssContent,{
-			height :  this.getHeight(),
+			height :  this.getHeight() + 'px',
 			scrollable: !this.isNoneScrollMode(),
 			render: render,
 			renderContext: renderContext
@@ -504,6 +504,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		this.rssContentView.view();
 		this.rssContentView.onContentHeightChange();
 	}
+
 	this.setStaticErrorHeight = function( content ) {
 		if( 0 < widget.staticWidgetHeight ){
 			var widgetHeight = widget.staticWidgetHeight;
@@ -514,7 +515,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			}
 			
 			if ( content.offsetHeight != widgetHeight)
-				content.style.height = widgetHeight;
+				content.style.height = widgetHeight + 'px';
 			
 			return;
 		} else {
@@ -1583,7 +1584,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 				}
 				
 				if (this.elm_viewport.offsetHeight != widgetHeight)
-					this.elm_viewport.style.height = widgetHeight;
+					this.elm_viewport.style.height = widgetHeight + 'px';
 	
 				this.widget.elm_widgetContent.style.overflowY = "hidden";
 				
@@ -1599,12 +1600,13 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		}
 		
 		try {
-			this.elm_viewport.style.height = height;
+			this.elm_viewport.style.height = height + 'px';
 		} catch( ex ) {
 			msg.error( ex );
 		}
 	}
 	
+	//ToDo
 	if( Browser.isSafari1 ) {
 		this.setViewportHeight = ( function() {
 			var setViewportHeight = this.setViewportHeight;
@@ -1723,7 +1725,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 			current += itemWeight;
 		});
 		
-		this.elm_content.style.height = contentHeight;
+		this.elm_content.style.height = contentHeight + 'px';
 		
 		if( this.contentHeightChangeListener )
 			this.contentHeightChangeListener();
@@ -1870,7 +1872,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		
 		var contentHeight = this.getContentHeight()/* -(this.rssContent.rssItems.length /2 )*/;
 		var topHeight = this.getItemPosition( head );
-		this.elm_content.style.height = contentHeight;
+		this.elm_content.style.height = contentHeight + 'px';
 		if( this.render.tableRowRender ) {
 			if( this.elm_content.style.overflow == "hidden") {
 				this.elm_content.style.overflow = "visible"
@@ -1884,7 +1886,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		} else {
 			this.elm_top.style.display = "";
 		}
-		this.elm_top.style.height = topHeight;
+		this.elm_top.style.height = topHeight + 'px';
 		//this.elm_bottom.style.height = bottomHeight;
 		
 		for( var i=0;i<headGap && container.firstChild;i++ ) {
@@ -1967,9 +1969,9 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 				*/
 			} else {
 				tr = document.createElement("div");
-				tr.style.margin = 4;
+				tr.style.margin = '4px';
 				tr.style.textAlign = "center"
-				tr.style.height = this.getItemHeight( item );
+				tr.style.height = this.getItemHeight( item ) + 'px';
 				tr.appendChild( document.createTextNode("Now Loading ..."));
 			}
 			
@@ -2165,8 +2167,8 @@ IS_Widget.RssReader.showAccessStats = function(widget){
 		className: "alphacube",
 
 		title: IS_R.getResource(IS_R.lb_accessStatsTitle, [widget.title]),
-		width:600,
-		height:350,
+		width:'600px',
+		height:'350px',
 		minimizable: false,
 		maximizable: false,
 		resizable: false,
@@ -2185,7 +2187,7 @@ IS_Widget.RssReader.showAccessStats = function(widget){
 		win.setContent( multiAccessStatContent );
 		
 		IS_Widget.RssReader.buildMultiAccessStatContent( widget,multiAccessStatContent );
-		win.setSize( multiAccessStatContent.offsetWidth +24,multiAccessStatContent.offsetHeight +16 );
+		win.setSize( multiAccessStatContent.offsetWidth +24+'px',multiAccessStatContent.offsetHeight +16+'px' );
 	}
 }
 

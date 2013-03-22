@@ -549,7 +549,6 @@ function PullDown(opt){
 		this.elm_pulldown = pulldown;
 		
 		this.buildPulldown( pulldown );
-		
 		var list = document.createElement("ul");
 		if( Browser.isIE )
 			list.style.width = opt.width;
@@ -599,7 +598,6 @@ function PullDown(opt){
 		
 		var field = document.createElement("div");
 		labelTd.appendChild(field);
-		field.style.height = "1em";
 		field.style.overflow = "hidden";
 		this.elm_field = field;
 		
@@ -715,16 +713,16 @@ function PullDown(opt){
 		this.adjustItemList();
 	}
 	this.adjustItemList = function() {
-		this.elm_list.style.left = findPosX( this.elm_pulldown );
-		this.elm_list.style.top = findPosY( this.elm_pulldown ) +this.elm_pulldown.offsetHeight;
-		this.elm_list.style.width = this.elm_pulldown.offsetWidth;
+		this.elm_list.style.left = findPosX( this.elm_pulldown ) + 'px';
+		this.elm_list.style.top = findPosY( this.elm_pulldown ) +this.elm_pulldown.offsetHeight + 'px';
+		this.elm_list.style.width = this.elm_pulldown.offsetWidth + 'px';
 		
 		var posY = findPosY( this.elm_list ) -
 			( document.documentElement.scrollTop || document.body.scrollTop );
 		var height = this.elm_list.offsetHeight;
 		var viewportHeight = getWindowSize( false );
 		if( ( posY +height ) > viewportHeight ) {
-			this.elm_list.style.height = viewportHeight -posY -4;
+			this.elm_list.style.height = viewportHeight -posY -4 + 'px';
 			this.elm_list.style.overflowY = "auto";
 			this.elm_list.style.overflowX = "hidden";
 		} else {

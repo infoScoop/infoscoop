@@ -332,11 +332,11 @@ IS_Widget.RssReader.RssItemRender.prototype.buildTitle = function( widget,opt ) 
 		titleTd.appendChild(this.rssItemDiv);
 		
 		this.latestMarkTd = rssItemTable.firstChild.firstChild.childNodes[1];
-		this.latestMarkTd.style.width = 15;
+		this.latestMarkTd.style.width = '15px';
 		this.latestMarkTd.appendChild(this.latestMark1);
 		
 		var titleTable = IS_Widget.RssReader.RssItemRender.createTable( 1,2 );
-		titleTable.cellPadding = 1;
+		titleTable.cellPadding = '1';
 		titleTable.cellSpacing = 0;
 		titleTable.style.height = "auto";
 		titleTable.style.tableLayout = "fixed";
@@ -674,14 +674,14 @@ IS_Widget.RssReader.RssItemRender.prototype.changeImages = function( widget,desc
 			if(imgCtrl.isShowing) return false;
 			imgCtrl.isShowing = true;
 			IS_Portal.imageController.modal.src = this.src;
-			imgCtrl.style.left = findPosX(this) + this.offsetWidth - 20;
+			imgCtrl.style.left = findPosX(this) + this.offsetWidth - 20 + 'px';
 			var positionY = findPosY(this) + this.offsetHeight - 20;
 			var offsetY = getOffsetY(positionY);
 			if(offsetY < 0) {
 				imgCtrl.isShowing = false;
 				return false;
 			}
-			imgCtrl.style.top = positionY - offsetY;
+			imgCtrl.style.top = positionY - offsetY + 'px';
 			imgCtrl.style.display = "block";
 		};
 		var hideImgCtrl = function(e) {
@@ -981,7 +981,7 @@ IS_Widget.RssReader.RssItemRender.checkHideRssDesc = function(e){
 	var scrollY = (document.documentElement.scrollTop || document.body.scrollTop);
 	var scrollX = (document.documentElement.scrollLeft || document.body.scrollLeft);
 	if(Browser.isIE
-			&& ( (document.body.clientWidth + scrollX) < mouseX || (document.body.clientHeight + scrollY) < mouseY )){
+			&& ( (document.documentElement.clientWidth + scrollX) < mouseX || (document.documentElement.clientHeight + scrollY) < mouseY )){
 		// For trouble in the operation of (IE) window scroll whose description dissapears
 		isInWindow = false;
 	}
@@ -1074,8 +1074,8 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 	
 	var scrollY = (document.documentElement.scrollTop || document.body.scrollTop);
 	var scrollX = (document.documentElement.scrollLeft || document.body.scrollLeft);
-	var windowInnerWidth = (Browser.isIE)? document.body.clientWidth : window.innerWidth;
-	var windowInnerHeight = (Browser.isIE)? document.body.clientHeight : window.innerHeight;
+	var windowInnerWidth = (Browser.isIE)? document.documentElement.clientWidth : window.innerWidth;
+	var windowInnerHeight = (Browser.isIE)? document.documentElement.clientHeight : window.innerHeight;
 	var windowInnerRight = (Browser.isIE)? (windowInnerWidth + scrollX) : (windowInnerWidth + scrollX - 25);
 	var windowInnerBottom = (Browser.isIE)? (windowInnerHeight + scrollY) : (windowInnerHeight + scrollY - 15);
 	
@@ -1159,8 +1159,8 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 		rssFloatMark.style.backgroundImage = 'url(' + imageURL + 'resultset_previous.gif)';
 	}
 	// Modify the lateral location of description
-	rssFloat.style.left = descLeft;
-	rssFloat.style.width = descWidth;
+	rssFloat.style.left = descLeft + 'px';
+	rssFloat.style.width = descWidth + 'px';
 	
 	// Get the height after modifying
 	var setHeight = false;
@@ -1183,7 +1183,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 		// Consider width of scroll bar when height exceeds maximum
 		var offset = (rssFloat.offsetHeight >= 300) ? 30 : 10;
 		if((rssFloat.offsetWidth - offset) > 0){
-			rssFloat.firstChild.style.width = (rssFloat.offsetWidth - offset);
+			rssFloat.firstChild.style.width = (rssFloat.offsetWidth - offset) + 'px';
 		}
 	}
 	
@@ -1193,19 +1193,19 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 	}
 	
 	// Modify the longitudinal location of description
-	rssFloat.style.top = descTop;
+	rssFloat.style.top = descTop + 'px';
 	if(setHeight){
-		rssFloat.style.height = descHeight;
+		rssFloat.style.height = descHeight + 'px';
 	}
 	
 	//Modify the location of Iframe to hide pull-down and Flash
 	IS_Portal.behindIframe.show(rssFloat);
 	
 	// Modify the location of mark
-	rssFloatMark.style.top = markTop;
-	rssFloatMark.style.left = markLeft;
+	rssFloatMark.style.top = markTop + 'px';
+	rssFloatMark.style.left = markLeft + 'px';
 	
-	rssFloat.scrollTop = rssFloatScrollTop;
+	rssFloat.scrollTop = rssFloatScrollTop + 'px';
 	
 	// Modify the width of image
 	if(rssFloat.style.display != "none")
@@ -1223,12 +1223,12 @@ IS_Widget.processAdjustRssDesc = function(){
 
 IS_Widget.adjustDescSingleImgWidth = function(img, headerWidth) {
 	if(!img.originalWidth && img.offsetWidth)
-		img.originalWidth = img.offsetWidth;
+		img.originalWidth = img.offsetWidth + 'px';
 	if(!img.originalHeight && img.offsetHeight)
-		img.originalHeight = img.offsetHeight;
+		img.originalHeight = img.offsetHeight + 'px';
 	var isAdjust = false;
 	if(img.originalWidth > headerWidth) {
-		img.style.width = headerWidth;
+		img.style.width = headerWidth + 'px';
 		isAdjust = true;
 	} else if(img.originalWidth > img.offsetWidth) {
 		img.style.width = img.originalWidth;
@@ -1237,7 +1237,7 @@ IS_Widget.adjustDescSingleImgWidth = function(img, headerWidth) {
 	
 	if(isAdjust) {
 		var descImgHeght = img.offsetWidth * (img.originalHeight / img.originalWidth);
-		img.style.height = descImgHeght;
+		img.style.height = descImgHeght + 'px';
 	}
 	
 	img.style.visibility = "";
