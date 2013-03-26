@@ -383,7 +383,7 @@ IS_Widget.prototype.classDef = function() {
 		if(self.elm_widgetHeader.offsetHeight || (!self.headerContent && container.offsetHeight) ){
 			var widgetHeight = parseInt(container.style.height);
 			var headerHeight = ( typeConf.Header )? self.elm_widgetHeader.offsetHeight : 0;
-			self.elm_widgetContent.style.height = widgetHeight - headerHeight;
+			self.elm_widgetContent.style.height = widgetHeight - headerHeight + 'px';
 			self.elm_widgetContent.style.overflow = "auto";//Autocomplete misalignment problem occurs if "overflow=hidden" is set in IE
 			if(!Browser.isIE)self.elm_widgetContent.style.overflowX = "hidden";//Fix 484
 			self.staticWidgetHeight = widgetHeight - headerHeight;

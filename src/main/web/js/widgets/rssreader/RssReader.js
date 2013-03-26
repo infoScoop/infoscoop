@@ -60,13 +60,8 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		//Load custom icons for every item
 		if(widget.widgetPref.rssItemCustomIcons && widget.widgetPref.rssItemCustomIcons.value){
 			try{
-				if(Browser.isIE){
-					var rssItemCustomIconsFunc = eval("[" + widget.widgetPref.rssItemCustomIcons.value + "]");
-					this.rssItemCustomIcons = rssItemCustomIconsFunc[0];
-				} else {
-					var rssItemCustomIconsFunc = eval("("+widget.widgetPref.rssItemCustomIcons.value+")");
-					this.rssItemCustomIcons = rssItemCustomIconsFunc;
-				}
+				var rssItemCustomIconsFunc = eval("("+widget.widgetPref.rssItemCustomIcons.value+")");
+				this.rssItemCustomIcons = rssItemCustomIconsFunc;
 			}catch(e){
 				msg.error("failed to create custom icons in "+ widget.widgetType +":" + getErrorMessage(e));
 			}
@@ -420,11 +415,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			}
 
 			if( isStatic ) {
-				if(Browser.isIE){
-					setTimeout(this.setStaticErrorHeight.bind(this, contents ), 0);
-				}else{
-					this.setStaticErrorHeight( contents );
-				}
+				this.setStaticErrorHeight( contents );
 			}
 		} else /*if( this.isOpenWidget() )*/{ 
 			this.displayContents();
@@ -450,13 +441,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			return;
 		
 		IS_Event.unloadCache(widget.id);
-		
-		//IS_Widget.RssReader.RssItemRender.hideWidgetRssDesc(widget.id);
-		
-		/*
-		if( widget.elm_widgetContent.firstChild )
-			widget.elm_widgetContent.removeChild( widget.elm_widgetContent.firstChild );
-		*/
 		while( widget.elm_widgetContent.firstChild )
 			widget.elm_widgetContent.removeChild( widget.elm_widgetContent.firstChild );
 		
@@ -509,7 +493,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		if( 0 < widget.staticWidgetHeight ){
 			var widgetHeight = widget.staticWidgetHeight;
 			if( this.itemsCountPanel && 0 < this.itemsCountPanel.offsetHeight ) {
-				widgetHeight -= this.itemsCountPanel.offsetHeight +(Browser.isIE ? 1 : 0);
+				widgetHeight -= this.itemsCountPanel.offsetHeight;
 			} else {
 				setTimeout( this.setStaticErrorHeight.bind( this,content ),100 );
 			}
@@ -929,19 +913,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		//this.adjustHeight();
 	}
 	
-	if( Browser.isSafari1 ) {
-	    this.repaint = ( function() {
-	        var repaint = this.repaint;
-	        
-	        return function() {
-				if( !widget.elm_widgetContent.offsetHeight || !( widget.elm_widgetContent.offsetHeight > 0 ))
-	            	return;
-	            
-	            repaint.apply( this,$A( arguments ));
-	        }
-	    }).apply( this );
-	}
-	
 	this.minimize = function () {
 		widget.setUserPref("showLatestNews", false);
 		
@@ -990,7 +961,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 	}
 	this.handleTimeout = function() {
 		widget.elm_widgetContent.innerHTML = "<span style='font-size:90%;padding:5px;'>"+
-
 			IS_R.ms_getdatafailed +"</span>";
 		
 		this.hideErrorMsg();
@@ -1098,14 +1068,13 @@ IS_Widget.RssReader.prototype.classDef = function() {
 	
 	this.buildRssLink = function(form, url) {
 		if(!url) return;
-		var aBlank = (Browser.isIE)? "" : "&nbsp;&nbsp;&nbsp;&nbsp;"; //for Firefox
+		var aBlank = "&nbsp;&nbsp;&nbsp;&nbsp;"; //for Firefox
 		var rssLinkDiv = document.createElement("div");
 		rssLinkDiv.style.clear = "both";
 		
 		rssLinkDiv.innerHTML += '<a href="' + escapeHTMLEntity(url) +
 			'" title="' + escapeHTMLEntity(url) + '" target="_blank" class="rssUrl_Icon">'+ aBlank +'</a>&nbsp;';
 		rssLinkDiv.innerHTML += '<a href="' + escapeHTMLEntity(url) +
-
 			'" title="' + escapeHTMLEntity(url) + '" target="_blank">' + IS_R.lb_displayRSS + '</a>';
 		
 		form.appendChild(rssLinkDiv);
@@ -1582,21 +1551,16 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 						setTimeout( this.setViewportHeight.bind( this,height ),100 );
 					}
 				}
-				
 				if (this.elm_viewport.offsetHeight != widgetHeight)
 					this.elm_viewport.style.height = widgetHeight + 'px';
-	
+			
 				this.widget.elm_widgetContent.style.overflowY = "hidden";
 				
 				return;
 			} else {
 				height = 1;
-				
 				setTimeout( this.setViewportHeight.bind( this,height ),100 );
 			}
-		}
-		if( height == 0 && Browser.isIE ) {
-			height = 1;
 		}
 		
 		try {
@@ -1604,22 +1568,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		} catch( ex ) {
 			msg.error( ex );
 		}
-	}
-	
-	//ToDo
-	if( Browser.isSafari1 ) {
-		this.setViewportHeight = ( function() {
-			var setViewportHeight = this.setViewportHeight;
-			
-			return function( height ) {
-				if( this.scrollable && 10 < height && height < 64 ) {
-				// Scroll bar is unshown if there is no minimum height
-					height = 64;
-				}
-				
-				setViewportHeight.apply( this,[height] );
-			}
-		}).apply( this );
 	}
 	
 	this.handleScroll = function( e ) {
@@ -1635,23 +1583,8 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		this.repaintTimeout = setTimeout( function(y){
 			this.view( y );
 			IS_Widget.RssReader.RssItemRender.hideRssDesc();
-			this.scrolled = true;
-			
-			// Set time-out in 0.5 second after continuous scroll
-			if( Browser.isIE || Browser.isSafari1 )
-				this.repaintTimeout = setTimeout( this.handleMouseUp.bind( this ),500 );
+			this.scrolled = true;			
 		}.bind(this, y), 100);
-		/*
-		if( !this.rendering ) {
-			this.view( y );
-			this.scrolled = true;
-			
-			if( Browser.isIE )
-				this.repaintTimeout = setTimeout( this.handleMouseUp.bind( this ),100 );
-		}
-		
-		IS_Widget.RssReader.RssItemRender.hideRssDesc();
-		*/
 	}
 	
 	this.handleMouseUp = function( e ) {
@@ -1787,7 +1720,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		});
 		
 		// Keep large size in case for flicker in upper direction
-		var margin = Browser.isIE ? 5 : 2;
+		var margin = 2;
 		for( var i=0;i<margin&&head>0;i++)
 			head--;
 		

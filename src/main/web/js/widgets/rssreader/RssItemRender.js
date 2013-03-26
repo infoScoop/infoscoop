@@ -212,17 +212,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssItemDiv = function( widget,o
 		for(var i = 0; i<customIcons.length; i++){
 			this.customIconsDiv.appendChild(customIcons[i]);
 		}
-	}
-	
-	if( Browser.isIE ) {
-		//Recalculate size forcibly because it is not recalculated
-		if( this.rssItemDiv.style.width != "auto") {
-			this.rssItemDiv.style.width = "auto";
-		} else {
-			this.rssItemDiv.style.width = "100%";
-		}
-	}
-	
+	}	
 
 	this.rssTitle = (rssItem.title.length == 0)? IS_R.lb_notitle : rssItem.title;
 	this.rssTitle = this.rssTitle.replace(/&nbsp;/g," ");	// For trouble with "&nbsp;" where line-break does not occur
@@ -786,7 +776,7 @@ IS_Widget.RssReader.RssItemRender.prototype.displayInlineDesc = function( widget
 		if( Browser.isSafari1 )
 			offset += 1;
 		
-		var browserOffset = Browser.isIE ? 2 : 1;
+		var browserOffset = 1;
 		//rssDesc.style.width = (headerDiv.offsetWidth - offset - browserOffset) + "px";
 		var width = (headerDiv.offsetWidth - offset - browserOffset);
 		this.rssDesc.style.width = width + "px";
@@ -1132,7 +1122,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 		// Pop-up on the left
 		//if( itemsLeft < maxDescWidth ) descWidth = itemsLeft;
 		descWidth = itemsLeft;
-		descLeft = itemsLeft - descWidth + ((Browser.isIE)? 13 : 4);
+		descLeft = itemsLeft - descWidth + 4;
 		markLeft = itemsLeft - 10;
 		
 		descWidth -= 20;
@@ -1266,34 +1256,11 @@ IS_Widget.adjustDescImgWidth = function(rssDesc, headerWidth, widget) {
 		}
 	}
 }
-//Event.observe(window, 'resize', IS_Widget.processAdjustRssDesc, false);
-/*
-IS_Widget.adjustDescWidth = function() {
-	var offset = Browser.isIE ? 5 : 0;
-	for(var j = 0; j < IS_Widget.RssReaderDescriptionList.length; j++){
-		var obj = IS_Widget.RssReaderDescriptionList[j];
-		var headerWidth = obj.headerDiv.offsetWidth;
-		if(obj.headerDiv && obj.headerDiv.offsetWidth > 0){
-			obj.desc.style.width = (headerWidth - 10 - offset) + "px";
-		}
-		IS_Widget.adjustDescImgWidth(obj.desc, headerWidth, obj.widget);
-	}
-	for(var j = 0; j < IS_Widget.RssReaderDescriptionWithScrollList.length; j++){
-		var obj = IS_Widget.RssReaderDescriptionWithScrollList[j];
-		var headerWidth = obj.headerDiv.offsetWidth;
-		if(obj.headerDiv && obj.headerDiv.offsetWidth > 0){
-			obj.desc.style.width = (headerWidth - 30 - offset) + "px";
-		}
-		IS_Widget.adjustDescImgWidth(obj.desc, headerWidth, obj.widget);
-	}
-	IS_Widget.processAdjustRssDesc();
-};
-*/
 
 IS_Widget.adjustDescWidth = function() {
 	var objList = new Array();
 	
-	var offset = Browser.isIE ? 6 : 2;
+	var offset = 2;
 	for(var j = 0; j < IS_Widget.RssReaderDescriptionList.length; j++){
 		adjustDescObjWidth( IS_Widget.RssReaderDescriptionList[j],0 +offset );
 	}
@@ -1332,9 +1299,6 @@ IS_Widget.adjustDescWidth = function() {
 //			IS_Widget.adjustDescImgWidth(obj.desc, objList[i].headerWidth, obj.widget);
 			IS_Widget.adjustDescImgWidth(objList[i].desc, objList[i].headerWidth, objList[i].widget);
 		}
-	}
-	if(Browser.isIE && objList.length > 0){
-		setTimeout(resizeDescs, 1);
 	}
 };
 

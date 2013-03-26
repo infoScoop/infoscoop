@@ -116,7 +116,7 @@ function getWindowSize(flag) {
     offset = window["inner" + ((flag)? "Width" : "Height")];
   } else if( document.documentElement &&
       ( document.body.offsetWidth || document.body.offsetHeight ) ) {
-    offset = document.body["offset" + ((flag)? "Width" : "Height")];
+    offset = document.documentElement["offset" + ((flag)? "Width" : "Height")];
   }
 
   return offset;

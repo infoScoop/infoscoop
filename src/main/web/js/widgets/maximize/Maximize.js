@@ -159,11 +159,13 @@ IS_Widget.Maximize.createMaximizeWidget = function( wigetObj ) {
 			this.adjustTimerY = setTimeout( this._adjustMaximizeHeight.bind( this ),500 );
 		}
 		this._adjustMaximizeHeight = function() {
+			clearTimeout( this.adjustTimerY );
 			this.adjustTimerY = undefined;
 			if( this.elm_widget ) {
-				var height = getWindowHeight() -findPosY( this.elm_widget ) -( Browser.isIE ? 5:60 );
-				if( !isNaN( height ) && height >= 0 )
+				var height = getWindowHeight() -findPosY( this.elm_widget ) -60;
+				if( !isNaN( height ) && height >= 0 ) {
 					this.elm_widget.style.height = height + 'px';
+				}
 			}
 			
 			if( this.content && this.content.adjustMaximizeHeight ) {
@@ -177,6 +179,7 @@ IS_Widget.Maximize.createMaximizeWidget = function( wigetObj ) {
 			this.adjustTimerX = setTimeout( this._adjustMaximizeWidth.bind( this ),500 );
 		}
 		this._adjustMaximizeWidth = function() {
+			clearTimeout( this.adjustTimerX );
 			this.adjustTimerX = undefined;
 			if( this.content && this.content.adjustMaximizeWidth )
 				this.content.adjustMaximizeWidth();
@@ -276,7 +279,6 @@ IS_Widget.Maximize.setupMaximizeView = function() {
 	//$("panels").style.display = "none";
 	
 	$("maximize-panel").style.display = "block";
-	
 	setTimeout( IS_Widget.Maximize.adjustMaximizeHeight.bind( IS_Widget.Maximize ),100);
 	setTimeout( IS_Widget.Maximize.adjustMaximizeWidth.bind( IS_Widget.Maximize ),100);
     
@@ -311,35 +313,9 @@ IS_Widget.Maximize.restoreMaximizeView = function() {
 	IS_Widget.MaximizeWidget = null;
 }
 
-//For Safari: Not process descriptions except for the current tub
-//Set handler that replaces currentTabId
-if( Browser.isSafari1 ) {
-	IS_Widget.Maximize.setupMaximizeView = ( function() {
-		var setup = IS_Widget.Maximize.setupMaximizeView;
-		
-		return function() {
-			IS_Portal.disableCommandBar();
-			setup.apply( IS_Widget.Maximize,$A( arguments ));
-			IS_Portal.currentTabId = "_"+IS_Portal.currentTabId;
-		}
-	})();
-	IS_Widget.Maximize.restoreMaximizeView = ( function() {
-		var restore = IS_Widget.Maximize.restoreMaximizeView;
-		
-		return function() {
-			IS_Portal.currentTabId = IS_Portal.currentTabId.substring(1);
-			restore.apply( IS_Widget.Maximize,$A( arguments ));
-			IS_Portal.enableCommandBar();
-			
-			IS_Portal.adjustCurrentTabSize();
-		}
-	})();
-}
-
 IS_Widget.MaximizeWidget = null;
 IS_Widget.Maximize.adjustMaximizeHeight = function() {
 	var maximizeWidget = IS_Widget.MaximizeWidget;
-	
 	if( maximizeWidget && maximizeWidget.adjustMaximizeHeight )
 		maximizeWidget.adjustMaximizeHeight();
 }
@@ -357,11 +333,11 @@ IS_Widget.Maximize.adjustMaximizeWidth = function() {
 IS_Widget.Maximize.adjustMaximizeSize = function() {
 	if( !IS_Widget.MaximizeWidget )
 		return;
-	
 	IS_Widget.Maximize.adjustMaximizeHeight();
 	IS_Widget.Maximize.adjustMaximizeWidth();
 }
 
+//ToDo
 Event.observe(window, 'resize', IS_Widget.Maximize.adjustMaximizeSize, false);
 IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Widget.Maximize.adjustMaximizeSize );
 

@@ -305,22 +305,26 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		while(titleHeaderDiv.firstChild){
 			titleHeaderDiv.removeChild(titleHeaderDiv.firstChild);
 		}
+
 		var titleHeaderTable = document.createElement("table");
-		titleHeaderTable.cellSpacing = 0;
-		titleHeaderTable.cellPadding = 0;
+		titleHeaderTable.border = 0;
+		titleHeaderTable.cellSpacing = '0px';
+		titleHeaderTable.cellPadding = '0px';
 		var titleHeaderTBody =document.createElement("tbody");
 		titleHeaderTable.appendChild(titleHeaderTBody);
 		var titleHeaderTr = document.createElement("tr");
 		titleHeaderTBody.appendChild(titleHeaderTr);
 		
-		var indicatorDiv = document.createElement("td");
-		
+		var indicatorTd = document.createElement("td");
+		var indicatorDiv = document.createElement("div");
+//		indicatorDiv.style.marginTop = "-1px";
 		indicatorDiv.appendChild(widget.elm_indicator);
-		titleHeaderTr.appendChild(indicatorDiv);
+		indicatorTd.appendChild(indicatorDiv)
+		titleHeaderTr.appendChild(indicatorTd);
 		
 		if(widget.elm_favoriteIcon){
 			var favoriteIconDiv = document.createElement("td");
-			//$(favoriteIconDiv).setStyle({"float":"left"});
+//			widget.elm_favoriteIcon.style.marginTop = '-1px';
 			favoriteIconDiv.appendChild(widget.elm_favoriteIcon);
 			titleHeaderTr.appendChild(favoriteIconDiv);
 		}
@@ -328,7 +332,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		var titleTd = document.createElement("td");
 		widget.elm_title.id = widget.id + "_widgetTitle";
 		widget.elm_title.className = "widgetTitle";
-		//$(widget.elm_title).setStyle({"float":"left"});
 		titleTd.appendChild(widget.elm_title);
 		titleHeaderTr.appendChild(titleTd);
 		
@@ -336,7 +339,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 
 
 		widget.elm_latestMark.id = "m_" + widget.id;
-		
 		widget.eventTargetList.push({element:widget.elm_latestMark});
 		self.stockEvent(widget.elm_latestMark, 'mousedown', this.showLatestNews.bind( this ), true, widget.closeId);
 		
@@ -536,12 +538,11 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			labelDiv.appendChild( div );
 			
 			var labelText = document.createElement("span");
-			labelText.appendChild(document.createTextNode(
-
-				IS_R.lb_turnbackMaximize ));
+			labelText.appendChild(document.createTextNode( IS_R.lb_turnbackMaximize ));
 				
 			labelText.style.position = "relative";
-			labelText.style.top = "3px";
+			labelText.style.top = "-1px";
+			labelText.style.verticalAlign = "bottom";
 			
 			labelDiv.appendChild(labelText);
 			

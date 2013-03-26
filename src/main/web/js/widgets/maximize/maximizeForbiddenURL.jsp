@@ -17,10 +17,11 @@
 # <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 --%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE HTML>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <html>
 <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<title></title>
 </head>
 

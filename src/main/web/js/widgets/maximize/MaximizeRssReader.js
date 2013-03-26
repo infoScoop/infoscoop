@@ -34,22 +34,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		
 		this.rssItemSelection = new IS_Widget.MaximizeRssReader.RssItemSelection( widget );
 		
-		widget.elm_widgetBox.style.backgroundColor = "#fff";
-		
-		if( Browser.isSafari1 ) {
-			// Not be minimized if window size is changed after getting back from maximization
-			widget.turnbackMaximize = ( function() {
-				var func = widget.turnbackMaximize;
-				
-				return function() {
-					$("maximizeRssDetailTd_" +this.id).style.height =
-						$("MaximizeItemList_"+this.id ).style.height = '100px';
-					
-					func.apply( widget );
-				}
-			})();
-		}
-		
+		widget.elm_widgetBox.style.backgroundColor = "#fff";		
 		this.buildMaximizeRssContent();
 		
 		$( widget.elm_widgetContent ).addClassName("RssReader");
@@ -126,7 +111,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		
 
 		dragBarTd.title = IS_R.ms_customizeWidthByDrag;
-		dragBarTd.style.cursor = ( !Browser.isSafari1? "col-resize" : "e-resize" );
+		dragBarTd.style.cursor = "col-resize";
 		
 		Event.observe(dragBarTd, 'mousedown', this.drag.dragStart, false,widget.id);
 		
@@ -1011,15 +996,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 			//Delete the event of buttom that shows description desplay for AtomPub
 			//IS_Event.unloadCache(rssReader.id + "_desc");
 		});
-		
-		// iframe disconnected with root is not loaded, and the old contents is shown at next time
-		if( Browser.isIE ) {
-			var iframe = IS_Widget.MaximizeRssReader.RssItemRender.getDetailIframe();
-			document.body.appendChild( iframe );
-			iframe.style.display = "none";
-			iframe.src = "./blank.html";
-		}
-		
+				
 		[
 			$("maximizeRssTitle_"+widget.id ),
 			$("maximizeRssPubDate_"+widget.id ),
@@ -1122,10 +1099,10 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 			
 			var filterContent = $("filterContent_"+widget.id );
 			if( filterContent && filterContent.style.display != "none")
-				itemListHeight -= filterContent.offsetHeight +( Browser.isIE ? 0:0 );
+				itemListHeight -= filterContent.offsetHeight;
 			
 			if( !isNaN( itemListHeight ) && itemListHeight >= 0 )
-				itemListDiv.style.height = itemListHeight;
+				itemListDiv.style.height = itemListHeight + 'px';
 			
 			if( this.currentCategory ) {
 				var maximizeButtons = $("MaximizeButtons_"+this.currentCategory.id );
@@ -1135,9 +1112,9 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 				  this.currentCategory.maximizeRender.rssContentView.setViewportHeight(itemListHeight);
 			}
 			
-			var detailHeight = getWindowSize(false) -findPosY( widget.elm_widget ) -65
-				-( Browser.isIE ? 20:0 ) -toolbarHeight;
+			var detailHeight = getWindowSize(false)-findPosY( widget.elm_widget )-65-toolbarHeight;
 			
+
 			rssDetailTd.style.height = detailHeight + 'px';
 			if( Browser.isFirefox )
 				rssDetailTable.style.display = detailTdDisplay;
@@ -1151,7 +1128,6 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 	
 	this.adjustMaximizeWidth = function() {
 		var contents = $("maximizeContents_"+widget.id );
-//		if(contents && Browser.isIE) {
 		if(contents) {	// fix #844
 			try{
 				var adjustWidth = getWindowSize(true) - findPosX(contents) - 32;
@@ -1176,7 +1152,12 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 						if(rssDesc.offsetWidth > 0){
 							// Specify width of rssDescText
 							rssDescText.style.width = rssDesc.offsetWidth - 8 + 'px';						
-							rssDescText.style.height = rssDesc.offsetHeight - 16 + 'px';
+							if(Browser.isIE){
+								var headerHeight = $("maximizeRssPubDate_"+widget.id).offsetHeight + $("maximizeRssCategory_"+widget.id).offsetHeight + $("maximizeRssTitle_"+widget.id).offsetHeight + 30;
+								rssDescText.style.height = maximizeDetailTd.offsetHeight - headerHeight + 'px';
+							}else{
+								rssDescText.style.height = rssDesc.offsetHeight - 16 + 'px';
+							}
 						}
 						rssDescText.style.display = "block";
 					}
@@ -1396,17 +1377,6 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		IS_Widget.Maximize.adjustMaximizeHeight();
 		
 		// Specify width of rssDescText
-		if(Browser.isIE){
-			rssDescText.style.width = rssDesc.offsetWidth - 8 + 'px';
-			
-			if( !isNaN( rssDesc.offsetHeight )) {
-				var rssDescTextHeight = rssDesc.offsetHeight;
-				if( rssDescTextHeight > 16 )
-					rssDescTextHeight -= 16;
-				
-				rssDescText.style.height = rssDescTextHeight + 'px';
-			}
-		}
 		rssDescText.innerHTML = IS_Widget.RssReader.RssItemRender.normalizeDesc( rssItem.description );
 		rssDescText.scrollTop = 0;
 		if(rssDescText) {
@@ -1597,11 +1567,7 @@ IS_Widget.MaximizeRssReader.Drag.prototype.classDef = function() {
 			review = true;
 		}
 		
-		if( Browser.isIE && nowWidth < 16 ) {
-			list.style.display = "none";
-		} else {
-			list.style.display = "";
-		}
+		list.style.display = "";
 		
 		var contents = $("maximizeContents_"+maximizeWidget.id );
 		var contentsWidth;
