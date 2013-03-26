@@ -25,6 +25,11 @@
     <title></title>
 	<style>
 		<!--
+		body {
+			padding:0px;
+			margin:0px;
+			overflow:hidden;
+		}
 		a:link, a:visited{
 			text-decoration:none;
 			border:0px;
@@ -34,14 +39,12 @@
 			border:none;
 		}
 		#msgbar {
-			position:absolute;
 			top:0px;
 			left:0px;
 			width:100%;
-			height:100%;
 			overflow: auto;
 			overflow-x:hidden;
-			overflow-y:auto
+			overflow-y:auto;
 		}
 		#version {
 			border:1px solid #cccccc;
@@ -54,23 +57,33 @@
 		-->
 	</style>
   </head>
-  <body style="padding:0px;margin:0px;overflow:hidden;" onload="setTimeout('window.opener.msg_render(null)', 100);">
+  <body>
   	<table width="100%" height="100%">
-  		<tr><td>
-			<table width="100%" style="border-bottom:1px solid #cccccc;background-color:#EDECE2">
-				<tr>
-					<td><a href="javascript:window.opener.msg_render();"><img id="allImg"/><span id="all"></span></a></td>
-					<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(4);"><img id="errorImg"/><span id="error"></span></a></td>
-					<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(3);"><img id="warnImg"/><span id="warn"></span></a></td>
-					<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(2);"><img id="infoImg"/><span id="info"></span></a></td>
-					<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(1);"><img id="debugImg"/><span id="debug"></span></a></td>
-				</tr>
-			</table>
-		</td></tr><tr><td height="100%"><div style="position:relative;width:100%;height:100%;">
-		    <div id="msgbar"></div>
-		</div></td></tr><tr><td>
-		    <div id="version">@PRODUCT.NAME@ version @BUILD.VERSION@</div>
-	    </td></tr>
+  		<tr id="header">
+  			<td>
+				<table width="100%" style="border-bottom:1px solid #cccccc;background-color:#EDECE2">
+					<tr>
+						<td><a href="javascript:window.opener.msg_render();"><img id="allImg"/><span id="all"></span></a></td>
+						<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(4);"><img id="errorImg"/><span id="error"></span></a></td>
+						<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(3);"><img id="warnImg"/><span id="warn"></span></a></td>
+						<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(2);"><img id="infoImg"/><span id="info"></span></a></td>
+						<td style="border-left:solid 1px #cccccc;"><a href="javascript:window.opener.msg_render(1);"><img id="debugImg"/><span id="debug"></span></a></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="100%;vertical-align:top;">
+				<div style="width:100%;height:100%;">
+			    	<div id="msgbar"></div>
+				</div>
+			</td>
+		</tr>
+		<tr id="footer">
+			<td>
+		    	<div id="version">@PRODUCT.NAME@ version @BUILD.VERSION@</div>
+	    	</td>
+	    </tr>
     </table>
   </body>
 	<script type="text/javascript">
@@ -93,6 +106,21 @@
 		$("warnImg").src = imageURL + "error.gif";
 		$("infoImg").src = imageURL + "information.gif";
 		$("debugImg").src = imageURL + "debug.gif";
+		
+		function adjustHeight() {
+			var headerHeight = parseInt($("header").offsetHeight);
+			var footerHeight = parseInt($("footer").offsetHeight);
+			var innerHeight = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0);
+			var bodyHeight = (innerHeight - (headerHeight + footerHeight)) - 7;
+			if(bodyHeight < 1) return;
+			$("msgbar").style.height = bodyHeight + "px";
+		}
+		
+		window.onload = function(){
+			adjustHeight();
+			window.opener.msg_render(null);
+		}
+		window.onresize = adjustHeight;
 		-->
 	</script>
 </html>

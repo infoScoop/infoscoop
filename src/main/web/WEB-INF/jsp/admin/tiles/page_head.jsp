@@ -150,7 +150,7 @@
 
 			$jq(function(){
 				$jq("#messageIcon").click(function(){
-					msg.showPopupDialog(adminHostPrefix);
+					msg.showPopupDialog(hostPrefix);
 				});
 				$jq("#admin-tabs .tab").click(function(){
 					if(!ISA_Admin.checkUpdated())
