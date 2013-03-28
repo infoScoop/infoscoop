@@ -95,15 +95,11 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		divParent = document.createElement("div");
 		divParent.style.overflow = "hidden";
 		divParent.style.position = "absolute";
-		divParent.style.width = selfContent.offsetWidth;
-		divParent.style.height = selfContent.offsetHeight;
+		divParent.style.width = parseInt(selfContent.offsetWidth) + 'px';
+		divParent.style.height = parseInt(selfContent.offsetHeight) + 'px';
 		
 		divTicker = document.createElement("div");
-		if ( Browser.isIE ) {
-			divTicker.className = "ticker-base";
-		}else {
-			divTicker.className = "ticker";
-		}
+		divTicker.className = "ticker";
 		
 		var onMouseHandler = this.onmouse.bind(this);
 		Event.observe(divTicker, 'mouseover', onMouseHandler);
@@ -113,30 +109,14 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		Event.observe(divTicker, 'mouseout', outMouseHandler);
 		Event.observe(selfContent, 'mouseout', outMouseHandler);
 		
-		if ( Browser.isIE ) {
-			divMarquee = document.createElement("marquee");
-			divMarquee.id = "marquee";
-			divMarquee.width = "100%";
-			//divMarquee.height = "100%";
-			divMarquee.scrollDelay = 50;
-			divMarquee.scrollAmount = copyspeed*2;
-			divMarquee.loop = 1;
-			divMarquee.style.display = "none";
-			divMarquee.appendChild(divTicker);
-			divParent.appendChild(divMarquee);
-			Event.observe(divMarquee, 'finish' , stopScrollWithMarqueeTag );
-		}else {
-			divParent.appendChild(divTicker);
-		}
+		divParent.appendChild(divTicker);
 		selfContent.appendChild(divParent);
 		
 		showTicker();
 	};
 	
 	function showTicker(){
-		if ( !Browser.isIE )  {
-			clearTimeout(lefttime);
-		}
+		clearTimeout(lefttime);
 		
 		if(!rssItems[currentRssNum]){
 			//Reload if items to display go away
@@ -179,20 +159,13 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		
 		divTicker.title = rssItems[currentRssNum].title;
 		
-		//divTicker.innerHTML = marqueecontent;
 		divTicker.innerHTML = "";
 		divTicker.appendChild(contentDiv);
-		
-		
-		
-		if ( Browser.isIE ) {
-			scrollWithMarqueeTag();
-		}else {
-			//Position of start
-			divTicker.style.left = parseInt(selfContent.offsetWidth)+2+"px";
-			actualwidth = divTicker.offsetWidth * (-1)  ;
-			scrollmarquee();
-		}
+
+		//Position of start
+		divTicker.style.left = parseInt(selfContent.offsetWidth)+2+"px";
+		actualwidth = divTicker.offsetWidth * (-1)  ;
+		scrollmarquee();
 	}
 	
 	function addURL(url, msg, title, startDateTime) {
@@ -214,8 +187,6 @@ IS_Widget.Ticker.prototype.classDef = function() {
 			aTag.style.lineHeight = "1.5em";
 			aTag.href = url;
 			aTag.innerHTML = msg;
-//			aTag.appendChild(document.createTextNode(msg));
-			//aTag.target = "ifrm";
 			
 			var aTagOnclick =function(aTag){
 				return function(e){
@@ -223,8 +194,7 @@ IS_Widget.Ticker.prototype.classDef = function() {
 				}
 			}(aTag);
 			tickerNobr.appendChild(aTag);
-			
-//			Event.observe(aTag, "click", aTagOnclick, false);
+
 			IS_Event.observe(aTag, "click", aTagOnclick, false, "_tickermessage");
 		}
 		return tickerNobr;
@@ -248,22 +218,6 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		}
 		
 		lefttime = setTimeout(scrollmarquee,25);
-	}
-	
-	function scrollWithMarqueeTag() {
-		var div = $("marquee");
-		if ( div ) {
-			div.style.display="";
-		}
-	}
-	
-	function stopScrollWithMarqueeTag() {
-		var div = $("marquee");
-		if ( div ) {
-			div.style.display="none";
-			currentRssNum++;
-			showTicker();
-		}
 	}
 	
 	this.onmouse = function () {
@@ -305,8 +259,8 @@ IS_Widget.Ticker.prototype.classDef = function() {
 	
 	this.adjustTickerWidth = function (){
 		if(divParent){
-			divParent.style.width = selfContent.offsetWidth;
-			divParent.style.height = selfContent.offsetHeight;
+			divParent.style.width = parseInt(selfContent.offsetWidth) + 'px';
+			divParent.style.height = parseInt(selfContent.offsetHeight) + 'px';
 		}
 	};
 	
