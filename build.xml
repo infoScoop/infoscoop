@@ -614,12 +614,6 @@
 				<exclude name="messageConsole.html/"/>
 			</fileset>
 		</copy>
-		<copy todir="${build.admin}" file="${src.admin.web}/messageConsole.html" encoding="UTF-8">
-		    <filterset>
-				<filter token="PRODUCT.NAME" value="${product.name}"/>
-				<filter token="BUILD.VERSION" value="${build.version}"/>
-			</filterset>
-		</copy>
 		<copy todir="${build.admin}/js/resources" file="${src.admin.web}/js/resources/resourceBundle.jsp"/>
 		
 		<!-- Copy from main -->
