@@ -92,7 +92,7 @@
 }
 .infoScoop .trashContainer td,
 .infoScoop .trashContainer th{
-	font-size:80%;
+	font-size:100%;
 	white-space:nowrap;
 }
 .infoScoop .trashContainer th{
@@ -111,7 +111,7 @@
 }
 .infoScoop #trashContext td{
 	cursor:pointer;
-	font-size:80%;
+	font-size:90%;
 }
 .infoScoop .trashContainer .trashSelectedWidget{
 	background-color:#008;
@@ -215,7 +215,7 @@
 
 .infoScoop .authCredentialInfoList .authCredentialInfoTitle{
 	padding:2px;
-	font-size :90%;
+	font-size :110%;
 	color:gray;
 }
 
@@ -228,7 +228,7 @@
 .infoScoop .authCredentialInfoList .authCredentialDelete span{
 	position:relative;
 	top:-2px;
-	font-size :80%;
+	font-size :100%;
 	color:#000;
 	font-weight:normal;
 }
@@ -238,7 +238,7 @@
 }
 .infoScoop .authCredentialInfoList .authCredentialListLightTd{
 	background-color: #eeeeee;
-	font-size:80%;
+	font-size:110%;
 	text-align:right;
 	vertical-align:top;
 }
@@ -329,10 +329,10 @@ a.portal-user-menu-link:visited:hover{
 .portal-user-menu-item-label{
 	height: 20px;
 	font-size: 12px;
-	padding: 5 5 0 22;
+	padding: 5px 5px 0 22px;
 	float: left;
 	white-space: nowrap;
-	line-height: 1.5;
+	line-height: 1.5em;
 }
 
 .user-link{
