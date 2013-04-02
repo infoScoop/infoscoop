@@ -157,6 +157,11 @@ function findHostURL(flag) {
 	}
 }
 
+function setUnitOfLength(length){
+	var unit = (length + "").replace(/^\d+(.*)$/, "$1");
+	return (unit)? length : length + "px";
+}
+
 function is_getProxyUrl(url, filter,opts ) {
 	if(typeof IS_Preview != "undefined" && IS_Preview.rewriteUrl){
 		url = IS_Preview.rewriteUrl(url);

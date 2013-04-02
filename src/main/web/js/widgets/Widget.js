@@ -599,7 +599,7 @@ IS_Widget.prototype.classDef = function() {
 			if( parseInt( widgetHeight ) < 1 )
 				widgetHeight = 1;
 			
-			divWidgetContent.style.height = widgetHeight;
+			divWidgetContent.style.height = setUnitOfLength(widgetHeight);
 		}
 		
 		//Use 'resetAuthCredential' only if there is loginCredentialAuthType
@@ -881,7 +881,7 @@ IS_Widget.prototype.classDef = function() {
 			var iframeHeight = parseInt(typeConf.height) + 10;
 			if( iframeHeight < 1 )
 				iframeHeight = 1;
-			self.iframe.style.height = iframeHeight;
+			self.iframe.style.height = setUnitOfLength(iframeHeight);
 			self.elm_widgetContent.style.height = "auto";
 		}
 		
