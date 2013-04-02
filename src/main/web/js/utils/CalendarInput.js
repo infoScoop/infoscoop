@@ -349,7 +349,7 @@ CalendarComponent.prototype = {
 			table = document.createElement("table");
 			table.cellSpacing = 0;
 			table.className = "CalendarComponent_Table";
-			Element.addClassName( table,"calendar" );
+			Element.addClassName( table,"Calendar" );
 			Element.addClassName( table,"widgetContent" );
 			panel.appendChild( table );
 			head = document.createElement("thead");
