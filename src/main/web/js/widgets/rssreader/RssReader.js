@@ -1473,12 +1473,8 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		
 		this.scrollable = opt.scrollable || ( opt.scrollable === undefined )
 		if( this.scrollable) {
-			if( !Browser.isSafari1 ) {
-				viewport.style.overflowX = "hidden";
-				viewport.style.overflowY = "scroll";
-			} else {
-				viewport.style.overflow = "auto";
-			}
+			viewport.style.overflowX = "hidden";
+			viewport.style.overflowY = "scroll";
 		} else {
 			viewport.style.overflow = "hidden";
 		}
@@ -1543,15 +1539,16 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 	this.setViewportHeight = function( height ) {
 		if(this.isStatic && !this.isCanvas ) {
 			if( 0 < this.widget.staticWidgetHeight ){
-				var widgetHeight = this.widget.staticWidgetHeight;
+				var widgetHeight = parseInt(this.widget.staticWidgetHeight);
 				if( this.widget.content.itemsCountPanel ) {
-					if( 0 < this.widget.content.itemsCountPanel.offsetHeight ) {
-						widgetHeight -= this.widget.content.itemsCountPanel.offsetHeight;
+					var offsetHeight = parseInt(this.widget.content.itemsCountPanel.offsetHeight);
+					if( 0 <  offsetHeight) {
+						widgetHeight -= offsetHeight;
 					} else {
-						setTimeout( this.setViewportHeight.bind( this,height ),100 );
+						setTimeout( this.setViewportHeight.bind( this,parseInt(height) ),100 );
 					}
 				}
-				if (this.elm_viewport.offsetHeight != widgetHeight)
+				if (parseInt(this.elm_viewport.offsetHeight) != widgetHeight)
 					this.elm_viewport.style.height = widgetHeight + 'px';
 			
 				this.widget.elm_widgetContent.style.overflowY = "hidden";
@@ -1564,7 +1561,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		}
 		
 		try {
-			this.elm_viewport.style.height = height + 'px';
+			this.elm_viewport.style.height = parseInt(height) + 'px';
 		} catch( ex ) {
 			msg.error( ex );
 		}

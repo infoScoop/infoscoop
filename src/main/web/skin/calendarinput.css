@@ -58,7 +58,7 @@
 }
 .CalendarComponent {
 	padding:	0.2em;
-	border:	2px ridge darkgray ;
+	border:	2px ridge #A9A9A9 ;
 	background-color: white;
 }
 .CalendarComponent .CalendarComponent_Table {
@@ -88,7 +88,7 @@
 }
 .CalendarComponent .CalendarComponent_Day_Selected {
 	padding:	0px;
-	border: 2px dotted pink;
+	border: 2px dotted #FFC0CB;
 }
 
 .CalendarComponent .CalendarComponent_Panel .calweekdayrow {

@@ -929,7 +929,6 @@ IS_Widget.prototype.classDef = function() {
 			return setTimeout( this.setStaticIframeHeight.bind( this ),100 );
 		}
 		
-		if(Browser.isIE )this.staticWidgetHeight -=2;//Modify calculation error of Box model
 		self.iframe.style.height = this.staticWidgetHeight;
 		self.elm_widgetContent.style.height = "auto";
 	}
@@ -947,8 +946,6 @@ IS_Widget.prototype.classDef = function() {
 		}
 		
 		if( !isReadyContents() ) {
-//			this.elm_widgetContent.innerHTML = 
-
 			this.elm_widgetContent.innerHTML = IS_R.lb_setupUnfinished;
 			this.elm_widgetContent.style.fontSize = "14px";
 			if( !this.getBoolUserPref("openWidget") && this.headerContent )
@@ -972,8 +969,6 @@ IS_Widget.prototype.classDef = function() {
 			} else {
 				self.preLoad();
 				if(contentsType == "url"){
-//					self.elm_widgetContent.innerHTML = '<iframe src="'  + contentsDef.href + '" style="border: 0px none ; margin: 0px; padding: 0px; overflow: auto; width: 100%; height: 250px;" frameborder="0" height="250px" width="100%" scrolling="yes"></iframe>';
-//					self.elm_widgetContent.innerHTML = '<iframe src="'  + contentsDef.href + '" style="border: 0px none ; margin: 0px; padding: 0px; overflow: auto; width: 100%; height: 100%;" frameborder="0" scrolling="yes"/>';
 					if(!self.iframe)
 						self.initIframe( !self.isGadget() );
 					
@@ -997,16 +992,13 @@ IS_Widget.prototype.classDef = function() {
 				}
 				self.isSuccess = true;
 				self.isComplete = true;
-				//self.postLoaded();
 			}
 		}catch(e){
 			IS_EventDispatcher.newEvent('loadComplete', self.id, null);
-			//self.postLoaded();
 
 			msg.error(IS_R.getResource(IS_R.ms_widgetonExceptionAt, [self.widgetType, self.title,getText(e)]));
 			console.log(e);
 
-//			self.elm_widgetContent.innerHTML = IS_R.getResource(IS_R.ms_widgetonExceptionAt_invalid, [self.widgetType, self.title, e]);
 			self.elm_widgetContent.innerHTML = IS_R.ms_invalidWidget;
 			//throw e;
 		}
@@ -1153,18 +1145,6 @@ IS_Widget.prototype.classDef = function() {
 				var authType = upAuthType.split(' ')[0];
 				if(self.id.indexOf("adminPreviewWidget") == 0 ){
 					showAuthenticationForm((authType) ? authType : _authType);
-				/*}else if(self.id.indexOf( "previewWidget" ) == 0){
-					 IS_Request.createModalAuthFormDiv(
-							 IS_R.lb_add_preview,
-							 $("previewButtonDiv"),
-							 function (authUid, authPassword){
-								 self.removeUserPref("authType");
-								 self.setUserPref("previewAuthType", _authType);
-								 self.setUserPref("previewAuthUserId", authUid);
-								 self.setUserPref("previewAuthPasswd", authPassword);
-								 self.loadContents();
-							 }
-					 );*/
 				}else{
 					self.setUserPref('authType', _authType);
 					if(self.getUserPref('authCredentialId')){
@@ -1212,10 +1192,6 @@ IS_Widget.prototype.classDef = function() {
 			    timeout : contentOpt.timeout || ajaxRequestTimeout,
 			    retryCount : contentOpt.retryCount || ajaxRequestRetryCount,
 			    onSuccess: function(req, obj) {
-					if( Browser.isSafari1 ) {
-			    		if( self.isSuccess && !req.status && !req.responseText )
-			    			return this.on304( req,obj );
-			    	}
 					var _authType = req.getResponseHeader("MSDPortal-AuthType");
 					if(_authType){
 						self.iframe = false;
