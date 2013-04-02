@@ -1651,14 +1651,14 @@ IS_Portal.buildFontSelectDiv = function(){
 		
 		//Setting width of command bar
 		if(fontEl.parentNode && fontEl.offsetWidth && !Browser.isSafari){
-			var offset = parseInt(fontEl.offsetWidth)*3 
-			var styleWidth = parseInt(fontEl.style.width)+1
-			Element.setStyle(fontEl, {width: offset+"px" });
-			Element.setStyle(fontEl.parentNode, {width: styleWidth+"px"});
+			var offset = parseInt(fontEl.offsetWidth)*3;
+			var styleWidth = parseInt(fontEl.style.width)+1;
+			if(!styleWidth) styleWidth = 1;
+			Element.setStyle(fontEl, {width: offset + 'px'});
+			Element.setStyle(fontEl.parentNode, {width: styleWidth+'px'});
 		}else{
-			var offset = parseInt(fontEl.offsetWidth)+1+"px"
 			var styleWidth = parseInt(fontEl.style.width)+"px"
-			Element.setStyle(fontEl, {width: offset+"px" });
+			Element.setStyle(fontEl, {width: "1px" });
 			Element.setStyle(fontEl.parentNode, {width: styleWidth+"px"});
 		}
 	}
