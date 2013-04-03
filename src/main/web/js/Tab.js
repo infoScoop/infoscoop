@@ -1291,7 +1291,7 @@ IS_Portal.adjustStaticWidgetHeight = function(){
 			if(widget.iframe)
 			  widget.iframe.style.height = height + "px";
 			widget.elm_widgetContent.style.height = height + "px";
-			widget.staticWidgetHeight =  height ;
+			widget.staticWidgetHeight =  height + 'px';
 
 			if(widget.widgetType == 'RssReader' && widget.content.rssContentView){
 				widget.content.rssContentView.setViewportHeight( height );
