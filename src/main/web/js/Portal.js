@@ -1579,7 +1579,6 @@ IS_Portal.buildFontSelectDiv = function(){
 		fontEl.title = IS_R.lb_resizeFont;
 		
 		IS_Event.observe(fontSizeSelect, "change", function(){
-			console.log(IS_Portal.defaultFontSize);
 			var index = fontSizeSelect.selectedIndex;
 			var size;
 			switch (index){
