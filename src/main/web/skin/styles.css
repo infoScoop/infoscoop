@@ -348,6 +348,8 @@ div#search-iframe div.search_tabs{
 
 .infoScoop .SearchEngine ul.search_tabs.tabs a.tab {
 	text-align: right;
+	white-space: nowrap;
+	min-width: 100px;
 }
 .infoScoop .SearchEngine ul.search_tabs.tabs a.tab.multi {
 	padding-right: 18px;
@@ -412,12 +414,6 @@ div#search-iframe div.search_tabs{
 	display: inline;
 	position: relative;
     float: left;
-    
-/*
-   	top: 1;
-	padding-bottom: 1px;
-	border-bottom: 1px solid gray;
-*/
 }
 .tabs .tab {
 	position: relative;
@@ -440,7 +436,7 @@ div#search-iframe div.search_tabs{
 	background-color: #DEDEDE;
 }
 .tabs .tab.selected {
-	top: 1;
+	top: 1px;
 	margin-top: 0px;
 	padding-bottom: 1px;
 	
