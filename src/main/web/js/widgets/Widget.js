@@ -815,12 +815,6 @@ IS_Widget.prototype.classDef = function() {
 	this.initIframe = function( isOuter ) {
 		self.elm_widgetContent.innerHTML = "";
 		
-		if( Browser.isIE ) {
-			// fix 
-			$( self.elm_widgetContent ).removeClassName("widgetContent");
-			self.elm_widgetContent.style.removeAttribute("overflow");
-		}
-		
 		self.iframe = document.createElement('iframe');
 		self.iframe.id = "ifrm_" + self.id;
 		self.iframe.name = "ifrm_" + self.id;
@@ -867,10 +861,6 @@ IS_Widget.prototype.classDef = function() {
 			scrolling = true;
 		
 		self.iframe.scrolling = ( isOuter || !scrolling ?"no":"auto");
-		
-		self.iframe.style.margin = 0;
-		self.iframe.style.padding = 0;
-		self.iframe.style.width = "100%";
 		
 		if(isStatic && self.isStaticHeight) {
 			if( !isOuter )
@@ -1565,7 +1555,7 @@ IS_Widget.prototype.classDef = function() {
 
 	this.adjustMaximizeHeight = function()  {
 		this.elm_widgetContent.style.height = this.iframe.style.height
-		  = getWindowSize(false) - findPosY( this.elm_widgetBox ) - (Browser.isFirefox ? 28 : 32);
+		  = (getWindowSize(false) - findPosY( this.elm_widgetBox ) - (Browser.isFirefox ? 28 : 32)) + "px";
 	}
 	
 	this.adjustMaximize = function(){
@@ -1577,9 +1567,9 @@ IS_Widget.prototype.classDef = function() {
 			IS_Portal.tabs[IS_Portal.currentTabId].panel.style.height = "auto";
 		
 		var pos = Position.cumulativeOffset(panelsDiv);
-		this.elm_widget.style.top=pos[1];
-		this.elm_widget.style.left=pos[0];
-		this.elm_widget.style.width = panelsDiv.offsetWidth;
+		this.elm_widget.style.top = pos[1] + "px";
+		this.elm_widget.style.left = pos[0] + "px";
+		this.elm_widget.style.width = parseInt(panelsDiv.offsetWidth) + "px";
 		
 		var tabPanel = $('panel' + this.tabId.substr(3));
 		var widgetDivList = tabPanel.getElementsByClassName('widgetBox');

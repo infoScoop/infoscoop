@@ -46,6 +46,14 @@ if( url == null ) {
 			iframe.style.display = "";
 		};
 	</script>
+	<style>
+		html {
+			height: 100%;
+		}
+		body {
+			height: 100%;
+		}
+	</style>
 </head>
 <body style="margin:0px;padding:0px;">
 
