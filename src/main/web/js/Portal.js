@@ -1787,7 +1787,10 @@ IS_Portal.windowOverlay = function(id, tag){
 	var overlay = document.createElement(tag);
 	overlay.className = "windowOverlay";
 	overlay.id = id;
-	if(tag == 'iframe')overlay.src = './blank.html';
+	if(tag == 'iframe'){
+		overlay.src = './blank.html';
+		overlay.setAttribute("frameborder", "0");
+	}
 	document.body.appendChild(overlay);
 	
 	this.show = function(cursorType){
