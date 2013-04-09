@@ -1093,7 +1093,7 @@ IS_Draggable.prototype = {
     if(!this.dragging) return;
     this.stopScrolling();
     this.finishDrag(event, true);
-	document.body.style.overflow = 'auto';
+	document.body.style.overflow = '';
     Event.stop(event);
   },
   
