@@ -506,15 +506,14 @@ ISA_previewFormModal = {
 	controlModal: false,
 	principalDefault: "OrganizationPrincipal",
 	init: function() {
-		ISA_previewFormModal.controlModal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"",
-				afterClose:ISA_previewFormModal.hide
-			}
-		);
+		if(!ISA_previewFormModal.controlModal){
+			ISA_previewFormModal.controlModal = new Control.Modal('',
+				{
+					overlayOpacity: 0.2,
+					afterClose:ISA_previewFormModal.hide
+				}
+			);			
+		}
 		ISA_previewFormModal.load();
 	},
 	load: function() {
@@ -522,9 +521,9 @@ ISA_previewFormModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelPreviewFormModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},
@@ -633,13 +632,11 @@ ISA_AddCommandBarModal = {
 	controlModal: false,
 	init: function() {
 		this.addCommandBarModal.isaDefaultPanel = this;
-		this.addCommandBarModal.controlModal = new Control.Modal(
-			false,
+		this.addCommandBarModal.controlModal = new Control.Modal('',
 			{
-				contents: "&nbsp;",
-				opacity: 0.2,
+				overlayOpacity: 0.2,
 				containerClassName:"",
-				afterClose:this.addCommandBarModal.hide.bind(this.addCommandBarModal)
+				afterClose:this.addCommandBarModal.hide
 			}
 		);
 		this.addCommandBarModal.load();
@@ -649,9 +646,9 @@ ISA_AddCommandBarModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelCommandBarModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},

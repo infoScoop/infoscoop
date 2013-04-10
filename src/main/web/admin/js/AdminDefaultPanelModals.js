@@ -16,22 +16,23 @@ ISA_DefaultPanel.CommandItemEditor.prototype.classDef = function() {
 		commandItem = _commandItem;
 		buildForm = _buildForm;
 		onOK = _onOK;
-		this.modal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"",
-				afterClose:this.hide.bind(this)
-			}
-		);
 		IS_Event.observe(iconElm, 'click', this.show.bind(this), false, "_adminPanel");
 	}
 	
 	this.show = function(){
-		this.modal.open();
 		var editor = this.buildEditorWindow(buildForm(commandItem));
-		this.modal.update(editor);
+
+		if(!this.modal){
+			this.modal = new Control.Modal('',
+				{
+					overlayOpacity: 0.2,
+					afterClose:this.hide
+				}
+			);
+		}
+
+		this.modal.container.update(editor);
+		this.modal.open();
 	}
 	
 	this.buildEditorWindow = function(form){
@@ -88,15 +89,14 @@ ISA_DefaultPanel.prototype.addCommandBarModal = {
 	controlModal: false,
 	init: function() {
 		this.addCommandBarModal.isaDefaultPanel = this;
-		this.addCommandBarModal.controlModal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"",
-				afterClose:this.addCommandBarModal.hide.bind(this.addCommandBarModal)
-			}
-		);
+		if(!this.addCommandBarModal.controlModal){
+			this.addCommandBarModal.controlModal = new Control.Modal('',
+				{
+					overlayOpacity: 0.2,
+					afterClose:this.addCommandBarModal.hide
+				}
+			);
+		}
 		this.addCommandBarModal.load();
 	},
 	load: function() {
@@ -104,9 +104,9 @@ ISA_DefaultPanel.prototype.addCommandBarModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelCommandBarModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},
@@ -153,15 +153,14 @@ ISA_DefaultPanel.prototype.addHTMLCommandBarModal = {
 	controlModal: false,
 	init: function() {
 		this.addHTMLCommandBarModal.isaDefaultPanel = this;
-		this.addHTMLCommandBarModal.controlModal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"",
-				afterClose:this.addHTMLCommandBarModal.hide.bind(this.addHTMLCommandBarModal)
-			}
-		);
+		if(!this.addHTMLCommandBarModal.controlModal){
+			this.addHTMLCommandBarModal.controlModal = new Control.Modal('',
+				{
+					overlayOpacity: 0.2,
+					afterClose:this.addHTMLCommandBarModal.hide
+				}
+			);
+		}
 		this.addHTMLCommandBarModal.load();
 	},
 	load: function() {
@@ -169,9 +168,9 @@ ISA_DefaultPanel.prototype.addHTMLCommandBarModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelHTMLCommandBarModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},
@@ -220,15 +219,15 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 	init: function() {
 		this.selectLayoutModal.isaDefaultPanel = this;
 		this.selectLayoutModal.templates = this.templates;
-		this.selectLayoutModal.controlModal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"adminDefaultPanel",
-				afterClose:this.selectLayoutModal.hide.bind(this.selectLayoutModal)
-			}
-		);
+		if(!this.selectLayoutModal.controlModal){
+			this.selectLayoutModal.controlModal = new Control.Modal('',
+				{
+					overlayOpacity: 0.2,
+					className:"adminDefaultPanel",
+					afterClose:this.selectLayoutModal.hide
+				}
+			);			
+		}
 		this.selectLayoutModal.load();
 	},
 	load: function() {
@@ -236,9 +235,9 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelStaticLayoutModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},
@@ -324,15 +323,15 @@ ISA_DefaultPanel.prototype.editHTMLModal = {
 	init: function(layout) {
 		this.editHTMLModal.isaDefaultPanel = this;
 		this.editHTMLModal.layoutHTML = layout;
-		this.editHTMLModal.controlModal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"adminDefaultPanel",
-				afterClose:this.editHTMLModal.hide.bind(this.editHTMLModal)
-			}
-		);
+		if(!this.editHTMLModal.controlModal){
+			this.editHTMLModal.controlModal = new Control.Modal('',
+				{
+					overlayOpacity: 0.2,
+					className:"adminDefaultPanel",
+					afterClose:this.editHTMLModal.hide.bind(this.editHTMLModal)
+				}
+			);			
+		}
 		this.editHTMLModal.load();
 	},
 	load: function() {
@@ -340,9 +339,9 @@ ISA_DefaultPanel.prototype.editHTMLModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelStaticHTMLModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},
@@ -507,15 +506,15 @@ ISA_DefaultPanel.prototype.selectColumnModal = {
 	init: function() {
 		this.selectColumnModal.isaDefaultPanel = this;
 		this.selectColumnModal.columnsArray = this.displayRoleJsons[this.displayRoleId].columnsArray;
-		this.selectColumnModal.controlModal = new Control.Modal(
-			false,
-			{
-			  contents: "&nbsp;",
-			  opacity: 0.2,
-			  containerClassName:"adminDefaultPanel",
-			  afterClose:this.selectColumnModal.hide.bind(this.selectColumnModal)
-			}
-		);
+		if(!this.selectColumnModal.controlModal){
+			this.selectColumnModal.controlModal = new Control.Modal('',
+				{
+				  overlayOpacity: 0.2,
+				  className:"adminDefaultPanel",
+				  afterClose:this.selectColumnModal.hide.bind(this.selectColumnModal)
+				}
+			);			
+		}
 		this.selectColumnModal.load();
 	},
 	load: function() {
@@ -523,9 +522,9 @@ ISA_DefaultPanel.prototype.selectColumnModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelDynamicColumnModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},

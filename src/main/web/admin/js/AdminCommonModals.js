@@ -58,21 +58,16 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 		options.omitTypeList.push('notAvailable');
 		
 		callbackFunc = _callbackFunc;
-//		if(procType == "del") {
 		if(options.formDisabled) {
 			disabled = "true";
 			disabledAttribute = " disabled='disabled'";
 		}
 		
-		this.currentModal = new Control.Modal(
-			editorElement,
-			{
-			  contents: "<div/>",
-			  opacity: 0.2,
-			  containerClassName:"adminTreeMenu",
+		this.currentModal = new Control.Modal('', {
+			  overlayOpacity: 0.2,
+			  className:"adminTreeMenu",
 			  afterClose:this.hideWidgetEditorForm.bind(this)
-			}
-			);
+			});
 		
 		authorizations = [];
 		
@@ -206,16 +201,8 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 			var editorFormFieldDiv = document.createElement("div");
 			editorFormFieldDiv.id = 'editorFormFieldDiv';
 			self.loadEditorForm(editorFormFieldDiv);
-			self.currentModal.update(editorFormFieldDiv);
-
-//			
-//			var editPanel = document.getElementById('treeMenuEditPanel');
-//			editPanel.appendChild(editorFormFieldDiv);
-			
-					
-//			if(ISA_CommonModals.EditorForm.previewWidget){ // May not be necessary
-//				ISA_CommonModals.EditorForm.loadPreviewWidget();
-//			}
+			self.currentModal.container.update(editorFormFieldDiv);
+			self.currentModal.open();
 		}
 
 		setTimeout(viewFormArea, 10);

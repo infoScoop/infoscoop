@@ -239,7 +239,6 @@ function prepareStaticArea(){
 					ignoreHeader : ISA_CommonModals.EditorForm.isIgnoreHeader(),
 					noBorder : ISA_CommonModals.EditorForm.isNoBorder(),
 					type : ISA_CommonModals.EditorForm.getSelectType(),
-//					property : ISA_CommonModals.EditorForm.getProperty(widgetJSON)
 					property : $jq.extend(true,{}, widgetJSON.properties)
 				});
 				

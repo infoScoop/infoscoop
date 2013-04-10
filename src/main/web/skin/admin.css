@@ -621,7 +621,7 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 	cursor: pointer;
 }
 
-#modal_container {
+div[id^="control_window_"] {
 	padding:5px;
 	background-color:#fff;
 	border:1px solid #666;
@@ -631,15 +631,15 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 	text-align:left;
 }
 
-#modal_overlay {
-	background-color:#000;
+#control_overlay {
+	background-color: #000;
 }
 
-#modal_container.adminTreeMenu,
-#modal_container.adminSearchEngine,
-#modal_container.adminDefaultPanel,
-#modal_container.adminWidgetConfModal,
-#modal_container.adminWidgetInstModal {
+div[id^="control_window_"].adminTreeMenu,
+div[id^="control_window_"].adminSearchEngine,
+div[id^="control_window_"].adminDefaultPanel,
+div[id^="control_window_"].adminWidgetConfModal,
+div[id^="control_window_"].adminWidgetInstModal {
 	width:94%;
 	height:auto;
 	overflow:visible;
@@ -652,14 +652,14 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 	overflow:visible;
 }
 
-#modal_container iframe{
+div[id^="control_window_"] iframe{
 	width:100%;
 	height:85%;
 	border: 1px outset #ffffff;
 	overflow:visible;
 }
 
-#modal_container.commitDialog {
+div[id^="control_window_"].commitDialog {
 	width:200px;
 	text-align:center;
 	height:auto;

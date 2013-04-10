@@ -3,6 +3,7 @@ ISA_PortalForbiddenURL = Class.create();
 ISA_PortalForbiddenURL.prototype = {
 	initialize: function() {
 		this.temp = 0;
+		this.controlModal;		// Apply Change dialog
 	},
 	createUrlInput: function(forbiddenUrl){
 		var urlId = forbiddenUrl.id;
@@ -29,13 +30,10 @@ ISA_PortalForbiddenURL.prototype = {
 		tr.appendChild(document.createElement("td"))
 		tr.lastChild.style.padding = "3px";
 		var urlInput = this.createUrlInput(forbiddenUrl);
-//		urlInput.style.border = "none";
-//		urlInput.style.padding = 2;
 		tr.lastChild.className = "configTableTd";
 		tr.lastChild.appendChild( urlInput );
 		
 		tr.appendChild(document.createElement("td"));
-//		var removeForbiddenURLButton = ISA_Admin.createIconButton("", ISA_R.alb_delete, "trash.gif");
 		var removeForbiddenURLButton =
 			$.IMG({
 				id:"removeForbiddenURLButton_" + urlId,
@@ -43,10 +41,6 @@ ISA_PortalForbiddenURL.prototype = {
 				src:"../../skin/imgs/trash.gif", 
 				title:ISA_R.alb_delete,
 				style: "cursor: pointer;"});
-//		removeForbiddenURLButton.src = imageURL + "trash.gif";
-//		removeForbiddenURLButton.style.cursor = "pointer";
-//		removeForbiddenURLButton.id = "removeForbiddenURLButton_" + urlId;
-//		removeForbiddenURLButton.style.textAlign = "center";
 		tr.lastChild.className = "configTableTd";
 		tr.lastChild.style.padding = "3px";
 		tr.lastChild.style.textAlign = 'center';
@@ -59,15 +53,11 @@ ISA_PortalForbiddenURL.prototype = {
 		var urlInput = $("forbiddenURL_"+urlId+"_url");
 		urlInput.value = this.forbiddenURLs.get(urlId).url;
 		urlInput.className = "portalAdminInput";
-//		urlInput.style.border = "2px solid #AFA";
-//		urlInput.style.padding = 0;
 	},
 	handleUrlInputBlur: function( urlId ) {
 		var urlInput = $("forbiddenURL_"+urlId+"_url");
 		if( !urlInput ) return;
 		
-//		urlInput.style.border = "none";
-//		urlInput.style.padding = 2;
 		var newUrl = ISA_Admin.trim( urlInput.value );
 		
 		this.validate( urlId,ISA_Admin.trim( urlInput.value ) );
@@ -140,12 +130,16 @@ ISA_PortalForbiddenURL.prototype = {
 			return;
 		}
 		
-		var currentModal = new Control.Modal( false, {
-			contents: ISA_R.ams_applyingChanges,
-			opacity: 0.2,
-			overlayCloseOnClick: false
-		});
-		
+		if(!this.controlModal){
+			this.controlModal = new Control.Modal('',{
+				overlayOpacity: 0.2,
+				className:"commitDialog",
+				closeOnClick:false
+			});
+		}
+		this.controlModal.container.update(ISA_R.ams_applyingChanges);
+		this.controlModal.open();
+
 		var url = adminHostPrefix + "/services/forbiddenUrls/updateForbiddenURLs";
 		var opt = {
 			method: 'post' ,
@@ -154,9 +148,9 @@ ISA_PortalForbiddenURL.prototype = {
 			postBody: Object.toJSON([this.forbiddenURLs.toObject()]),
 			onSuccess: function( resp ) {
 				ISA_Admin.isUpdated = false;
-				currentModal.update(ISA_R.ams_changeUpdated);
+				this.controlModal.container.update(ISA_R.ams_changeUpdated);
 				setTimeout( function() {
-					currentModal.close();
+					Control.Modal.close();
 				},500 );
 				
 				this.build();
@@ -170,10 +164,9 @@ ISA_PortalForbiddenURL.prototype = {
 				msg.error(ISA_R.ams_failedToUpdateFURL + getErrorMessage(t));
 			},
 			onComplete: function(){
-				currentModal.close();
+				Control.Modal.close();
 			}
 		};
-		currentModal.open();
 		AjaxRequest.invoke(url, opt);
 	},
 	build: function() {
@@ -231,7 +224,6 @@ ISA_PortalForbiddenURL.prototype = {
 			);
 		table.id = "forbiddenURL_contentTable";
 		container.appendChild( table );
-//		table.className = "configTable";
 		table.className = "configTableHeader";
 		table.style.tableLayout = "fixed";
 		table.style.clear ="both";
@@ -250,7 +242,6 @@ ISA_PortalForbiddenURL.prototype = {
 	displayHeader: function(container){
 		var controlDiv = document.createElement("div");
 		controlDiv.className ='refreshAll';
-		//controlDiv.style.textAlign = "right";
 		
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		controlDiv.appendChild(commitDiv);
@@ -261,11 +252,6 @@ ISA_PortalForbiddenURL.prototype = {
 		IS_Event.observe(refreshDiv, "click", this.build.bind(this), false, "_adminForbiddenURL");
 		
 		container.appendChild(controlDiv);
-		
-//		var titleDiv = document.createElement("div");
-//		titleDiv.className = "proxyTitle";
-//		titleDiv.appendChild(document.createTextNode(ISA_R.alb_forbiddenURLsettings));
-//		container.appendChild(titleDiv);
 		
 		var addButton = ISA_Admin.createIconButton(ISA_R.alb_add, ISA_R.alb_add, "add.gif", "left");
 		addButton.style.textAlign = "left"

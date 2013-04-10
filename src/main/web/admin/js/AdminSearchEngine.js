@@ -16,7 +16,8 @@ ISA_SearchEngine.prototype.classDef = function() {
 	var self = this;
 	var container;
 	var loadingMessage;
-	
+	var controlModal;		// Apply Change dialog
+
 	this.initialize = function() {
 		container = document.getElementById("searchEngine");
 		
@@ -46,16 +47,8 @@ ISA_SearchEngine.prototype.classDef = function() {
 	
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		refreshAllDiv.appendChild(commitDiv);
-		var currentModal = new Control.Modal(
-			commitDiv,
-			{
-			  contents: ISA_R.ams_applyingChanges,
-			  opacity: 0.2,
-			  containerClassName:"commitDialog",
-			  overlayCloseOnClick:false
-			}
-		);
-		IS_Event.observe(commitDiv, 'click', commitSearchEngine.bind(this, currentModal), "_adminSearch");
+
+		IS_Event.observe(commitDiv, 'click', commitSearchEngine.bind(this), "_adminSearch");
 		
 		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
 		refreshAllDiv.appendChild(refreshDiv);
@@ -69,12 +62,6 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		searchEngineDiv.appendChild(refreshAllDiv);
 
-//		var searchEngineFieldSet = document.createElement("fieldset");
-//		searchEngineFieldSet.style.padding = "7px";
-//		searchEngineFieldSet.style.marginBottom = "10px";
-//		searchEngineFieldSet.style.clear = "both";
-//		searchEngineFieldSet.style.width = "90%";
-//		var label = document.createElement("legend");
 		var searchEngineFieldSet = document.createElement("div");
 		searchEngineFieldSet.className = "configSet";
 		var label = document.createElement("p");
@@ -165,9 +152,20 @@ ISA_SearchEngine.prototype.classDef = function() {
 				);
 	}
 
-	function commitSearchEngine(currentModal) {
+	function commitSearchEngine() {
 		var defaultSelectedCheckboxList = document.getElementsByClassName('defaultSelectedCheckbox');
 		var emptyDefaultSelected = true;
+
+		if(!controlModal){
+			controlModal = new Control.Modal('', {
+				  overlayOpacity: 0.2,
+				  className:"commitDialog",
+				  closeOnClick:'overlay'
+				});
+		}
+		controlModal.container.update(ISA_R.ams_applyingChanges);
+		controlModal.open();
+
 		for(var i = 0; i < defaultSelectedCheckboxList.length;i++){
 			if(defaultSelectedCheckboxList[i].checked){
 				emptyDefaultSelected = false;
@@ -177,7 +175,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 		if(emptyDefaultSelected){
 			setTimeout(function(){
 				alert(ISA_R.ams_pleaseDefaultSelectedSearchSite);
-				currentModal.close();
+				Control.Modal.close();
 			},10);
 			return;
 		}
@@ -187,7 +185,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 			asynchronous:true,
 			onSuccess: function(response){
 				ISA_Admin.isUpdated = false;
-				currentModal.update(ISA_R.ams_changeUpdated);
+				controlModal.container.update(ISA_R.ams_changeUpdated);
 			},
 			onFailure: function(t) {
 				alert(ISA_R.ams_failedCommitSearchForm);
@@ -199,7 +197,7 @@ ISA_SearchEngine.prototype.classDef = function() {
 			},
 			onComplete: function(){
 				setTimeout(function(){
-					currentModal.close();
+					Control.Modal.close();
 				},500);
 			}
 		};
@@ -940,7 +938,8 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 			
 			self.loadEditorForm(editorFormFieldDiv);
 
-			self.currentModal.update(editorFormFieldDiv);
+			self.currentModal.container.update(editorFormFieldDiv);
+			self.currentModal.open()
 		}
 
 		setTimeout(viewFormArea, 10);
@@ -950,12 +949,9 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 		if(editorElement){
 			IS_Event.observe(editorElement, 'click', this.showTitleEditorForm.bind(this), false, "_adminSearch");
 
-			this.currentModal = new Control.Modal(
-				editorElement,
-				{
-					contents: "&nbsp;",
-					opacity: 0.2,
-					containerClassName:"adminSearchEngine",
+			this.currentModal = new Control.Modal('',{
+					overlayOpacity: 0.2,
+					className:"adminSearchEngine",
 					afterClose:this.hideTitleEditorForm.bind(this)
 				});
 		}

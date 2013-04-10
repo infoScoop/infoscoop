@@ -15,6 +15,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 	var self = this;
 	var container;
 	var loadingMessage;
+	var controlModal;
 
 	this.initialize = function() {
 		container = document.getElementById("proxy");
@@ -34,27 +35,15 @@ ISA_ProxyConf.prototype.classDef = function() {
 	this.displayProxyConfig = function() {
 
 		var proxyConfigDiv = document.createElement("div");
-//		proxyConfigDiv.style.width = "1000px";
 
 		container.replaceChild(proxyConfigDiv,loadingMessage);
 		
 		var refreshAllDiv = document.createElement("div");
 		refreshAllDiv.className = "refreshAll";
-//		refreshAllDiv.style.textAlign = "right";
-//		refreshAllDiv.style.width = "1000px";
 
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		refreshAllDiv.appendChild(commitDiv);
-		var currentModal = new Control.Modal(
-			commitDiv,
-			{
-				contents: ISA_R.ams_applyingChanges,
-				opacity: 0.2,
-				containerClassName:"commitDialog",
-				overlayCloseOnClick:false
-			}
-		);
-		IS_Event.observe(commitDiv, 'click', commitProxyConfig.bind(this, currentModal), "_adminProxy");
+		IS_Event.observe(commitDiv, 'click', commitProxyConfig.bind(this), "_adminProxy");
 
 		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
 		refreshAllDiv.appendChild(refreshDiv);
@@ -67,11 +56,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 			ISA_ProxyConf.proxyConf.build();
 		}, false, "_adminProxy");
 
-//		var titleDiv1 = document.createElement("div");
-//		titleDiv1.id = "proxyCaseTitle";
-//		titleDiv1.className = "proxyTitle";
-//		titleDiv1.appendChild(document.createTextNode(ISA_R.alb_proxyAndURLSettings));
-
 		var titleDiv2 = document.createElement("div");
 		titleDiv2.id = "proxyDefaultTitle";
 		titleDiv2.className = "proxyTitle";
@@ -83,7 +67,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 		var lineHr = document.createElement("hr");
 		lineDiv.appendChild(lineHr);
 		proxyConfigDiv.appendChild(refreshAllDiv);
-//		proxyConfigDiv.appendChild(titleDiv1);
 		proxyConfigDiv.appendChild(self.buildTableControl());
 		proxyConfigDiv.appendChild(self.buildTableHeader());
 
@@ -97,7 +80,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		defaultListDiv = document.createElement("div");
 		defaultListDiv.id = "defaultProxyConfigList";
-//		defaultListDiv.style.width = "900px";
 		defaultListDiv.style.width = $("proxyConfigHeader").offsetWidth;
 		for(var i in ISA_ProxyConf.defaultConf){
 			if( !(ISA_ProxyConf.defaultConf[i] instanceof Function) )
@@ -107,20 +89,26 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		proxyConfigDiv.appendChild(document.createElement("br"));
 
-//		container.replaceChild(proxyConfigDiv,loadingMessage);
-
 		// Drag&Drop
 		this.dnd = new ISA_DragDrop.ProxyConfigDragDrop("caseProxyConfigList");
 	}
 
-	function commitProxyConfig(currentModal) {
+	function commitProxyConfig() {
+		if(!controlModal){
+			controlModal = new Control.Modal('', {
+					className:"commitDialog",
+					closeOnClick:false
+				});			
+		}
+		controlModal.container.update(ISA_R.ams_applyingChanges);
+		controlModal.open();
 		var url = adminHostPrefix + "/services/proxyConf/commitProxyConf";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,
 			onSuccess: function(response){
 				ISA_Admin.isUpdated = false;
-				currentModal.update(ISA_R.ams_changeUpdated);
+				controlModal.container.update(ISA_R.ams_changeUpdated);
 			},
 			onFailure: function(t) {
 				alert(ISA_R.ams_failedCommitProxy);
@@ -132,7 +120,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 			},
 			onComplete: function(){
 				setTimeout(function(){
-					currentModal.close();
+					controlModal.close();
 				},500);
 			}
 		};
@@ -532,18 +520,10 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 				var contentDiv = $("proxyAuthEdit_"+ caseConfigItem.id);
 				contentDiv.style.cursor = "pointer";
-				caseConfigItem.modal = new Control.Modal(contentDiv,
-							  {
-								contents: showProxyAuthEdit.bind(this, caseConfigItem),
-								opacity: 0.5,
-								position: 'relative',
-								width: '300',
-								height:'180'
-							  }
-							  );
-				contentDiv.parentNode.style.backgroundColor= '#ffffff';
-
+				contentDiv.parentNode.style.backgroundColor= '#ffffff';				
 			}else{
+				var contentDiv = $("proxyAuthEdit_"+ caseConfigItem.id);
+				contentDiv.style.cursor = "default";
 				$("hst_"+ caseConfigItem.id).style.cursor = "default";
 				$("prt_" + caseConfigItem.id).style.cursor = "default";
 				
@@ -584,7 +564,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 					  caseConfigItem.password = null;
 					  caseConfigItem.domaincontroller = null;
 					  caseConfigItem.domain = null;
-					  var contentDiv = $("proxyAuthEdit_"+ caseConfigItem.id);
 					  if(contentDiv)contentDiv.onclick = function(){return false;};
 				  },
 				  onFailure: function(t) {
@@ -657,21 +636,38 @@ ISA_ProxyConf.prototype.classDef = function() {
 		editIcon.src = imageURL + "edit.gif";
 		editIconSpan.appendChild(editIcon);
 		if("proxy" == ISA_Admin.replaceUndefinedValue(caseConfigItem.type) ){
-
 			editIconSpan.style.cursor = "pointer";
-			caseConfigItem.modal = new Control.Modal(editIconSpan,
-							  {
-								contents: showProxyAuthEdit.bind(this, caseConfigItem),
-								opacity: 0.5,
-								position: 'relative',
-								width: '300',
-								height: '180'
-							  }
-							  );
+			// if(!caseConfigItem.modal){
+			// 	caseConfigItem.modal = new Control.Modal('', {
+			// 					width: 300
+			// 				  });					
+			// }
+			// var authEditContent = showProxyAuthEdit.bind(this, caseConfigItem);
+			// caseConfigItem.modal.update(authEditContent());
+
+			// 	IS_Event.observe(contentDiv, "click", function(){
+			// 		var authEditContent = showProxyAuthEdit.bind(this, caseConfigItem);
+			// 		caseConfigItem.modal.container.update(authEditContent());
+			// 		caseConfigItem.modal.open();
+			// 	}.bind(this), false, "_adminProxy");
 		}else{
 			configTd.style.backgroundColor= '#eeeeee';
 		}
 		configTd.appendChild(editIconSpan);
+		IS_Event.observe(editIcon, "click", function(){
+			var radioElement = document.getElementsByName("typeCheckbox_" + caseConfigItem.id)[0];
+			if(radioElement.checked){
+				if(!caseConfigItem.modal){
+					caseConfigItem.modal = new Control.Modal('', {
+									width: 300
+								  });
+				}
+				var authEditContent = showProxyAuthEdit.bind(this, caseConfigItem);
+				caseConfigItem.modal.container.update(authEditContent());
+				caseConfigItem.modal.open();				
+			}
+		}.bind(this), false, "_adminProxy");
+
 
 		// Replacement
 		configTd = document.createElement("td");
@@ -709,11 +705,15 @@ ISA_ProxyConf.prototype.classDef = function() {
 		headersIcon.src = imageURL + "edit.gif";
 		headersIconSpan.appendChild(headersIcon);
 		headersIconSpan.style.cursor = "pointer";
-		caseConfigItem.headersModal = new Control.Modal(headersIconSpan,{
-				contents: ISA_ProxyConf.HeaderConfigPane.showModal.bind( false,caseConfigItem ),
-				opacity: 0.5,
+
+		caseConfigItem.headersModal = new Control.Modal('',{
 				width: 600
-			} );
+			});
+		IS_Event.observe(headersIcon, "click", function(){
+			var headerConfigPane = ISA_ProxyConf.HeaderConfigPane.showModal.bind( false, caseConfigItem );
+			caseConfigItem.headersModal.container.update(headerConfigPane());
+			caseConfigItem.headersModal.open();
+		}.bind(this, caseConfigItem), false, "_adminProxy");
 
 		configTd.appendChild( headersIconSpan );
 

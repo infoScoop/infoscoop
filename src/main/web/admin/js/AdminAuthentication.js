@@ -2,6 +2,7 @@ var emptyConsumerData = {'id':'', 'gadget_url':[],'service_name':'','consumer_ke
 var oauthConsumerList = [];
 var uploadedGadgets = [];
 var tempGadgetList = [];
+var editModal = [];
 ISA_Authentication = {
 	build: function(){
 		var container = document.getElementById("authentication");
@@ -33,10 +34,9 @@ ISA_Authentication = {
 			}.bind(this)
 		});
 
-		this.currentModal = new Control.Modal( false, {
-			contents: ISA_R.ams_applyingChanges,
-			opacity: 0.2,
-			overlayCloseOnClick: false
+		this.currentModal = new Control.Modal( '', {
+			overlayOpacity: 0.2,
+			closeOnClick: false
 		});
 		
 		//uploaded gadget list
@@ -148,9 +148,9 @@ ISA_Authentication = {
 			postBody: Object.toJSON([Object.toJSON(consumerList)]),
 			onSuccess: function( resp ) {
 				ISA_Admin.isUpdated = false;
-				this.currentModal.update(ISA_R.ams_changeUpdated);
+				this.currentModal.container.update(ISA_R.ams_changeUpdated);
 				setTimeout( function() {
-					this.currentModal.close();
+					Control.Modal.close();
 				}.bind( this ),500 );
 				
 				this._displayConsumer();
@@ -164,9 +164,10 @@ ISA_Authentication = {
 				msg.error(ISA_R.ams_failedToUpdateOAuthSettings + getErrorMessage(t));
 			},
 			onComplete: function(){
-				this.currentModal.close();
+				Control.Modal.close();
 			}.bind(this)
 		};
+		this.currentModal.container.update(ISA_R.ams_applyingChanges);
 		this.currentModal.open();
 		AjaxRequest.invoke(url, opt);
 		
@@ -292,7 +293,7 @@ ISA_Authentication = {
 				msg.error(ISA_R.ams_failedToGetOAuthSettings + getErrorMessage(t));
 			},
 			onComplete: function(){
-				this.currentModal.close();
+				Control.Modal.close();
 			}.bind(this)
 		};
 		AjaxRequest.invoke(url, opt);
@@ -345,14 +346,14 @@ ISA_Authentication = {
 		container.appendChild(addButton);
 		
 		//add Modal to addButton
-		var modal = new Control.Modal(addButton,{
-			contents: "<div/>",
-			opacity: 0.5,
+		var modal = new Control.Modal('',{
+			overlayOpacity: 0.5,
 			width: 650
 		});
 		IS_Event.observe(addButton, "click", function(modal){
-			modal.update(this._createConsumerForm(emptyConsumerData, oauthConsumerList.length, true));
+			modal.container.update(this._createConsumerForm(emptyConsumerData, oauthConsumerList.length, true));
 			$('gadget_opt_url').checked = true;
+			modal.open();
 			}.bind(this, modal), false, "_adminAuthentication"
 		);
 	},
@@ -410,18 +411,21 @@ ISA_Authentication = {
 			ISA_Admin.isUpdated = true;
 		}.bind(this, tr, {gadgetUrl:consumer['gadget_url'],serviceName:consumer['service_name']}),true,"_adminAuthentication" );
 		consumerListTable.appendChild(tr);
-
-		var editModal = new Control.Modal(editImg, {
-			contents: "<div/>",
-			opacity: 0.5,
-			width: 650
-		});
 		
-		IS_Event.observe(editImg, "click", function(editModal, elementId){
-			editModal.update(this._createConsumerForm(consumer, index, false));
+		IS_Event.observe(editImg, "click", function(elementId){
+			var modal = editModal[elementId];
+			if(!modal){
+				modal = new Control.Modal('', {
+					overlayOpacity: 0.2,
+					width: 650
+				});
+				editModal[elementId] = modal;				
+			}
+			modal.container.update(this._createConsumerForm(consumer, index, false));
 			this._displayConsumerKeySecret(elementId);
 			$('gadget_opt_url').checked = true;
-			}.bind(this, editModal, elementId), false, "_adminAuthentication"
+			modal.open();
+			}.bind(this, elementId), false, "_adminAuthentication"
 		);
 	},
 	
@@ -433,18 +437,20 @@ ISA_Authentication = {
 		
 		serviceNameDiv.innerHTML = escapeHTMLEntity(consumer['service_name']);
 		var editImg = $.IMG({id:elementId +"_edit", src:"../../skin/imgs/edit.gif", title:ISA_R.alb_editing, style:'cursor:pointer'});
-		var editModal = new Control.Modal(editImg, {
-			contents: "<div/>",
-			opacity: 0.5,
-			width: 650
-		});
-		
-		IS_Event.observe(editImg, "click", function(editModal, elementId){
-			editModal.update(this._createConsumerForm(consumer, index, false));
+		IS_Event.observe(editImg, "click", function(elementId){
+			var modal = editModal[elementId];
+			if(!modal){
+				modal = new Control.Modal('', {
+					overlayOpacity: 0.2,
+					width: 650
+				});
+				editModal[elementId] = modal;				
+			}
+			modal.container.update(this._createConsumerForm(consumer, index, false));
 			this._displayConsumerKeySecret(elementId);
 			$('gadget_opt_url').checked = true;
-			}.bind(this, editModal, elementId), false, "_adminAuthentication"
-		);
+			modal.open();
+		}.bind(this, elementId), false, "_adminAuthentication");
 		editTd.replaceChild(editImg, editTd.firstChild);
 		
 		var descriptionDiv = $.DIV({style:'width:530px;white-space:normal; overflow:hidden;'});
@@ -749,9 +755,9 @@ ISA_Authentication = {
 			postBody: Object.toJSON([consumerKey, privateKey, certificate]),
 			onSuccess: function( resp ) {
 				ISA_Admin.isUpdated = false;
-				this.currentModal.update(ISA_R.ams_changeUpdated);
+				this.currentModal.container.update(ISA_R.ams_changeUpdated);
 				setTimeout( function() {
-					this.currentModal.close();
+					Control.Modal.close();
 				}.bind(this),500 );
 				
 				this._displayContainerCert();
@@ -765,9 +771,10 @@ ISA_Authentication = {
 				msg.error(ISA_R.ams_failedToUpdateOAuthSettings + getErrorMessage(t));
 			},
 			onComplete: function(){
-				this.currentModal.close();
+				Control.Modal.close();
 			}.bind(this)
 		};
+		this.currentModal.container.update(ISA_R.ams_applyingChanges);
 		this.currentModal.open();
 		AjaxRequest.invoke(url, opt);
 	},
@@ -802,7 +809,7 @@ ISA_Authentication = {
 				msg.error(ISA_R.ams_failedToGetOAuthSettings + getErrorMessage(t));
 			},
 			onComplete: function(){
-				this.currentModal.close();
+				Control.Modal.close();
 			}.bind(this)
 		};
 		AjaxRequest.invoke(url, opt);

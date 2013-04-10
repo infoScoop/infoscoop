@@ -147,7 +147,9 @@
 	<script src="../../js/lib/prototype-1.7.1.js"></script>
 	<script src="../../js/lib/scriptaculous-js-1.9.0/effects.js"></script>
 	<script src="../../js/lib/scriptaculous-js-1.9.0/dragdrop.js"></script>
-	<script src="../../js/lib/control.modal.js"></script>
+	<script src="../../js/lib/syntacticx-livepipe-ui/livepipe.js"></script>
+	<script src="../../js/lib/syntacticx-livepipe-ui/resizable.js"></script>
+	<script src="../../js/lib/syntacticx-livepipe-ui/window.js"></script>
 	<script src="../../js/lib/date/date.js"></script>
 	<script src="../../js/lib/rsa/jsbn.js"></script>
 	<script src="../../js/lib/rsa/prng4.js"></script>

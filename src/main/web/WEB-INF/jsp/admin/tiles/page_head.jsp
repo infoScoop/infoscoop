@@ -76,13 +76,15 @@
 		<script src="../../js/lib/scriptaculous-js-1.9.0/dragdrop.js"></script>
 		<script src="../../js/lib/syntacticx-livepipe-ui/livepipe.js"></script>
 		<script src="../../js/lib/syntacticx-livepipe-ui/tabs.js"></script>
+		<script src="../../js/lib/syntacticx-livepipe-ui/resizable.js"></script>
+		<script src="../../js/lib/syntacticx-livepipe-ui/window.js"></script>
+
 		<script src="../../admin/js/lib/popupmenu.js"></script>
 
 		<script src="../../js/utils/utils.js"></script>
 		<script src="../../js/utils/domhelper.js"></script>
 		<script src="../../js/utils/ajaxpool/ajax.js"></script>
 		<script src="../../js/utils/ajax304.js"></script>
-		<script src="../../js/lib/control.modal.js"></script>
 		<script src="../../js/lib/date/date.js"></script>
 		<script src="../../js/lib/rsa/jsbn.js"></script>
 		<script src="../../js/lib/rsa/prng4.js"></script>

@@ -300,17 +300,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	}
 
 	this.initialize = function() {
-
-		controlModal = new Control.Modal(
-			false,
-			{
-				contents: ISA_R.ams_applyingChanges,
-				opacity: 0.2,
-				containerClassName:"commitDialog",
-				overlayCloseOnClick:false
-			}
-		);
-		//
 		container = document.getElementById("defaultPanel");
 
 		loadingMessage = document.createElement('div');
@@ -352,6 +341,17 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			$jq("#tabDesc").select();
 			return false;
 		}
+
+		if(!controlModal){
+			controlModal = new Control.Modal('',
+				{
+					overlayOpacity: 0.2,
+					className:"commitDialog",
+					closeOnClick:false
+				}
+			);			
+		}
+		controlModal.container.update(ISA_R.ams_applyingChanges);
 		controlModal.open();
 		
 		var disableDefault = $jq('#disableDefaultCheck').attr('checked')? true : false;
@@ -363,7 +363,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			postBody: Object.toJSON([ this.displayTabId, tabDesc? tabDesc : "", disableDefault]),
 			asynchronous:true,
 			onSuccess: function(response){
-				controlModal.update(ISA_R.ams_changeUpdated);
+				controlModal.container.update(ISA_R.ams_changeUpdated);
 				ISA_Admin.isUpdated = false;
 				ISA_DefaultPanel.updateRaws = [];
 				this.updateRawStyle();
@@ -380,7 +380,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			},
 			onComplete: function(){
 				setTimeout(function(){
-					controlModal.close();
+					Control.Modal.close();
 				},500);
 			}
 		};
@@ -399,7 +399,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		refreshAllDiv.id = "refreshAll";
 		refreshAllDiv.style.textAlign = "left";
 		refreshAllDiv.style.width = "100%";
-		//defaultPanelDiv.appendChild(refreshAllDiv);
 
 		var dummyDiv = document.createElement("div");
 		dummyDiv.style.clear = "both";
@@ -1730,8 +1729,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 					  
 					  var roleJSON = self.displayRoleJsons[self.displayRoleId];
 					  var oldId = widgetJSON.id;
-					  //var widgetJSON = roleJSON.staticPanel[widgetObj.id];
-					  //var widgetJSON = Object.clone(roleJSON.staticPanel[widgetObj.id]);
 					  widgetJSON.id = "w_"+new Date().getTime();
 					  widgetJSON.type = ISA_CommonModals.EditorForm.getSelectType();
 					  widgetJSON.properties = ISA_CommonModals.EditorForm.getProperty(widgetJSON);
