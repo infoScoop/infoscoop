@@ -265,7 +265,7 @@ div[id^="control_window_"].GroupSchedule .user-search {
 	padding: 5px;
 	font-weight: bold;
 	margin-bottom: 10px;
-	background: url(./imgs/widget_header.png) center bottom;
+	background: url(./imgs/theme/widget_header.png) center bottom;
 }
 .infoScoop .user-search-modal .content {
 	position: relative;
