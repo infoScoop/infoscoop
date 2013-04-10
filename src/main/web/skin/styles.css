@@ -194,7 +194,7 @@ body.fixedPortalHeader #panels .panel{
 	background: url(./imgs/indicator.gif) top left no-repeat;
 }
 
-#modal_container {
+div[id^="control_window_"] {
 	padding: 5px;
 	background-color: #fff;
 	border:1px solid #666;
@@ -204,7 +204,8 @@ body.fixedPortalHeader #panels .panel{
 	text-align: left;
 }
 
-#modal_overlay {
+/* control.window */
+#control_overlay {
 	background-color: #000;
 }
 

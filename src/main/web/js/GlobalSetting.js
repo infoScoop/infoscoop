@@ -199,11 +199,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 		if(rssReaderConf.UserPref.scrollMode){
 			appendOption(wfs, rssReaderConf.UserPref.scrollMode, rssReaderConf.UserPref.scrollMode.EnumValue);
 		}
-		
-//		if(Browser.isIE){
-//			lastp.style.marginBottom = "10px";
-//		}
-		
+	
 		wfs.appendChild( createExecButton());
 		
 		return wfs;
@@ -482,12 +478,14 @@ IS_Portal.buildGlobalSettingModal = function() {
 
 
 	var showModal = function(){
-		IS_Portal.currentModal.update(createPreferenceBody());
+		IS_Portal.currentModal.container.update(createPreferenceBody());
+		IS_Portal.currentModal.open();
 	}
 	
 	if(preferenceDiv){
-		IS_Portal.currentModal = new Control.Modal(preferenceDiv,{contents: "", containerClassName:"preference"});
-		
+		IS_Portal.currentModal = new Control.Modal('',{
+			className: 'preference'
+		});
 		preferenceDiv.title = IS_R.lb_setupAll;
 		Event.observe(preferenceDiv, "click", showModal, false);
 		

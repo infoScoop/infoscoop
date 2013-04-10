@@ -76,9 +76,9 @@ IS_Widget.RssReader.RssItemRender.newInstance = function(){
 }
 IS_Widget.RssReader.RssItemRender.getInstance = function(){
 	var instance;
-	if( this.availableKeys.length > 0 ) {// console.info("recycle");
+	if( this.availableKeys.length > 0 ) {
 		instance = this.instances[this.availableKeys.shift()];
-	} else {// console.info("new");
+	} else {
 		instance = this.newInstance();
 		var key = this.no++;
 		instance.key = key;
@@ -134,7 +134,6 @@ IS_Widget.RssReader.RssItemRender.prototype.render = function ( context,rssItem,
 		this.itemDiv =document.createElement("div");
 		this.itemDiv.style.width = "100%";
 		this.itemDiv.style.clear = "both";
-		//this.tr = document.createElement("tr");
 		this.tr = this.itemDiv;
 		this.tr.__key__ = this.key;
 	}
@@ -217,13 +216,11 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssItemDiv = function( widget,o
 	this.rssTitle = (rssItem.title.length == 0)? IS_R.lb_notitle : rssItem.title;
 	this.rssTitle = this.rssTitle.replace(/&nbsp;/g," ");	// For trouble with "&nbsp;" where line-break does not occur
 	
-	//this.rsslink.title = this.rssTitle;
 	if(rssItem.link && rssItem.link.length > 0 && !noLink ) {
 		this.aTag.style.display = "";
 		this.textTitle.style.display = "none";
 		
 		this.aTag.href = rssItem.link;
-//		aTag.innerHTML = rssTitle;
 		this.aTag.appendChild(document.createTextNode(this.rssTitle));
 		this.aTag.title = this.rssTitle;
 		if( itemDisplay == "newwindow" )
@@ -299,18 +296,6 @@ IS_Widget.RssReader.RssItemRender.prototype.buildTitle = function( widget,opt ) 
 		
 		this.rssDetail1 = this.createRssDetailLink();
 		
-		/*var row1 = document.createElement("div");
-		this.itemDiv.appendChild( row1 );
-		
-		this.latestMark1.style.cssFloat = this.latestMark1.style.styleFloat = "right";
-		this.latestMarkTd = this.latestMark1;
-		this.rssDetail1.style.cssFloat = this.rssDetail1.style.styleFloat = "right";
-		this.moreTd1 = this.rssDetail1;
-		
-		row1.appendChild( this.rssDetail1 );
-		row1.appendChild( this.latestMark1 );
-		row1.appendChild( this.rssItemDiv );*/
-		
 		var rssItemTable = IS_Widget.RssReader.RssItemRender.createTable( 1,2 );
 		rssItemTable.cellPadding = 0;
 		rssItemTable.cellSpacing = 0;
@@ -369,7 +354,6 @@ IS_Widget.RssReader.RssItemRender.prototype.buildTitle = function( widget,opt ) 
 	this.rssDetail1.id = widget.id + '_item_'+ itemNumber + '_more1';
 	
 	if(rssItem.description && rssItem.description.length > 0) {
-//		rssDetailNobr.appendChild(document.createTextNode("description>>"));
 		this.rssDetail1.style.display = "";
 	} else {
 		this.rssDetail1.style.display = "none";
@@ -429,8 +413,6 @@ IS_Widget.RssReader.RssItemRender.prototype.buildPubDate = function( widget,opt 
 	this.rssDetail.id = widget.id + '_item_'+ itemNumber + '_more';
 	this.rssDetail.firstChild.innerHTML = IS_R.lb_descLink;
 	if(rssItem.description && rssItem.description.length > 0) {
-//		rssDetailNobr.appendChild(document.createTextNode("description>>"));
-		
 		this.rssDetail.style.display = "";
 	} else {
 		this.rssDetail.style.display = "none";
@@ -453,7 +435,6 @@ IS_Widget.RssReader.RssItemRender.prototype.buildPubDate = function( widget,opt 
 		
 		this.itemTr2.appendChild( this.rssPubDate );
 	}
-	//this.moreTd.id = widget.id + '_item_'+ itemNumber + '_more';
 	
 	if( pubDate ) {
 		this.itemTr2.style.display = this.rssDetail.style.display = "";
@@ -593,15 +574,29 @@ IS_Widget.RssReader.RssItemRender.prototype.buildDesc = function( widget,rssDesc
 	}
 }
 IS_Widget.RssReader.RssItemRender.createImageController = function() {
-	var imgCtrl = document.createElement("a");
+	var showModal = function(){
+		var imgTag = document.createElement("img");
+		imgTag.src = IS_Portal.imageController.modal.src;
+		IS_Event.observe( imgTag,"click",function() { Control.Modal.close()} );
+		IS_Portal.imageController.modal.container.update(imgTag);
+		IS_Portal.imageController.modal.open();
+	}
+	var imgCtrl = document.createElement("div");
 	imgCtrl.id = "imageController";
 	imgCtrl.className = "imageController";
 	imgCtrl.style.display = "none";
-	IS_Portal.imageController.modal = new Control.Modal(imgCtrl, {
-		image:true,
-		afterOpen:function(){this.scrollTop = document.body.scrollTop; document.body.scrollTop = 0;},
-		afterClose:function(){document.body.scrollTop = this.scrollTop;}
+	IS_Portal.imageController.modal = new Control.Modal('', {
+		className: 'rssDescImage',
+		afterOpen:function(){
+			this.scrollTop = document.documentElement.scrollTop;
+			document.documentElement.scrollTop = 0;
+		},
+		afterClose:function(){
+			document.documentElement.scrollTop = this.scrollTop;
+		}
 	});
+
+	Event.observe(imgCtrl, "click", showModal);
 	document.body.appendChild(imgCtrl);
 	IS_Portal.imageController.element = imgCtrl;
 	var showImgCtrl = function(e) {
@@ -641,9 +636,7 @@ IS_Widget.RssReader.RssItemRender.prototype.changeImages = function( widget,desc
 			return _offsetY;
 		}
 		if( popupDetail ){
-//			return function(){
 			return function(positionY){
-//				return rssFloat ? rssFloat.scrollTop : 0;
 				return getScrollY(this_.rssFloat, positionY);
 			}
 		} else if(widget.getUserPref("scrollMode") == "scroll") {
@@ -747,7 +740,6 @@ IS_Widget.RssReader.RssItemRender.prototype.buildDescContent = function( widget,
 }
 IS_Widget.RssReader.RssItemRender.prototype.displayInlineDesc = function( widget,rssItem ) {
 	var descObj = {
-//		headerDiv : widget.parent ? widget.parent.elm_widgetHeader : widget.elm_widgetHeader,
 		widget : widget,
 		tr : this.itemTr3,
 		desc : this.rssDesc,
@@ -777,7 +769,6 @@ IS_Widget.RssReader.RssItemRender.prototype.displayInlineDesc = function( widget
 			offset += 1;
 		
 		var browserOffset = 1;
-		//rssDesc.style.width = (headerDiv.offsetWidth - offset - browserOffset) + "px";
 		var width = (headerDiv.offsetWidth - offset - browserOffset);
 		this.rssDesc.style.width = width + "px";
 	}
@@ -829,7 +820,6 @@ IS_Widget.RssReader.RssItemRender.prototype.displayInlineDesc = function( widget
 }
 IS_Widget.RssReader.RssItemRender.prototype.hideInlineDesc = function( widget,rssItem ) {
 	var descObj = {
-//		headerDiv : widget.parent ? widget.parent.elm_widgetHeader : widget.elm_widgetHeader,
 		widget : widget,
 		tr : this.itemTr3,
 		desc : this.rssDesc,
@@ -1028,7 +1018,6 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 	
 	var widgetId = descId.substring(0, descId.lastIndexOf('_item_'));
 	var widgetObj = null;
-//	var widgetData = IS_Portal.widgetLists[ IS_Portal.currentTabId ][ widgetId ];
 	var widgetData = IS_Portal.getWidget(widgetId);
 	if(widgetData ){
 		if( widgetData.widgetType != "MultiRssReader" ) {

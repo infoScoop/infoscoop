@@ -122,13 +122,14 @@
 
 	<!--start script-->
     <script src="<%=staticContentURL%>/js/lib/prototype-1.7.1.js"></script>
-    <script src="<%=staticContentURL%>/js/lib/control.modal.js"></script>
     <script src="<%=staticContentURL%>/js/utils/ajax304.js"></script>
 	<script src="<%=staticContentURL%>/js/lib/scriptaculous-js-1.9.0/effects.js"></script>
 	<script src="<%=staticContentURL%>/js/lib/scriptaculous-js-1.9.0/dragdrop.js"></script>
 	<script src="<%=staticContentURL%>/js/lib/scriptaculous-js-1.9.0/controls.js"></script>
 	<script src="<%=staticContentURL%>/js/lib/syntacticx-livepipe-ui/livepipe.js"></script>
 	<script src="<%=staticContentURL%>/js/lib/syntacticx-livepipe-ui/tabs.js"></script>
+	<script src="<%=staticContentURL%>/js/lib/syntacticx-livepipe-ui/resizable.js"></script>
+	<script src="<%=staticContentURL%>/js/lib/syntacticx-livepipe-ui/window.js"></script>
     <!--script src="<%=staticContentURL%>/js/lib/json.js"></script-->
 	<script src="<%=staticContentURL%>/js/lib/date/date.js"></script>
 	<script src="<%=staticContentURL%>/js/lib/rsa/jsbn.js"></script>
