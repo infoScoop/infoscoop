@@ -1730,8 +1730,8 @@ IS_SiteAggregationMenu.createMultiDropConf = function(element, lastActiveElement
 			var modal = new Control.Modal('', {
 				className: 'preference',
 				closeOnClick: false,
-			    beforeOpen:function(){
-			    	modal.container.update(contentPane);
+			    afterOpen:function(){
+			    	this.container.update(contentPane);
 			    },
 			    afterClose:function(){
 			    	this.destroy();

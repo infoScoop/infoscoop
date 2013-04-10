@@ -487,7 +487,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 			className: 'preference'
 		});
 		preferenceDiv.title = IS_R.lb_setupAll;
-		Event.observe(preferenceDiv, "click", showModal, false);
+		Event.observe(preferenceDiv, "click", showModal);
 		
 
 		if(preferenceDiv.parentNode)//Setting of command bar width.

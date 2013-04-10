@@ -91,7 +91,7 @@ IS_Portal.groupSettingModal.prototype = {
 		
 		this.buildContents( content );
 		
-		//Control.Modal.center();
+		this.currentModal.position();
 	},
 	buildContents: function( container ) {
 		container.innerHTML = "<table><tbody><tr><td/></tr><tr><td/></tr></tbody></table>";

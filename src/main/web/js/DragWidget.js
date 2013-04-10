@@ -409,8 +409,8 @@ IS_Droppables.mergeConfirm = function(element, lastActiveElement, draggedWidget,
 		var modal = new Control.Modal('', {
 			className: 'preference',
 			closeOnClick: false,
-		    beforeOpen:function(){
-		    	modal.container.update(contentPane);
+		    afterOpen:function(){
+		    	this.container.update(contentPane);
 		    },
 		    afterClose:function(){
 		    	this.destroy();

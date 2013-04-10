@@ -367,10 +367,6 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 			
 			var shareIcon = Event.element(e);
 			self.shareModal = new Control.Modal('',{
-						width: "auto",
-					    beforeOpen:function(){
-							self.shareModal.container.insert(modalDiv);
-					    },
 						afterOpen:function(){
 						  	self.toInput.value = self.msgTextarea.value = "";
 						  	self.toInput.disabled = false;
@@ -395,6 +391,7 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 							  	IS_Widget.MaximizeWidget.keybind.enable = true;
 						}
 					});
+			self.shareModal.container.update(modalDiv);
 		}
 		self.shareModal.open();
 	}
