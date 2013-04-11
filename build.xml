@@ -259,12 +259,13 @@
 	<target name="compress-main" depends="prepare-main">
 
 		<concat destfile="${build.main}/js/dist/Portal.js.tmp" append="false" encoding="utf-8" fixlastline="true">
-			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
 			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="effects.js"/>
 			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
 			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="controls.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="resizable.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="window.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="jsbn.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="prng4.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="rng.js"/>
@@ -451,8 +452,9 @@
 			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="resizable.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="window.js"/>
 			<filelist dir="${src.admin.web}/js/lib" files="popupmenu.js"/>
-			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
 			<filelist dir="${src.main.web}/js/lib/date" files="date.js"/>
             <filelist dir="${src.main.web}/js/lib/rsa" files="jsbn.js"/>
             <filelist dir="${src.main.web}/js/lib/rsa" files="prng4.js"/>
@@ -530,7 +532,10 @@
 			<filelist dir="${src.main.web}/js/lib" files="prototype-1.7.1.js"/>
 			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="effects.js"/>
 			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
-			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="resizable.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="window.js"/>
 			<filelist dir="${src.main.web}/js/lib/date" files="date.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa" files="jsbn.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa" files="prng4.js"/>
