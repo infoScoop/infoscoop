@@ -48,8 +48,7 @@ function ISA_buildMenuExplorer(element, _callback){
 		
 		var changeMenuDiv = document.createElement("div");
 		changeMenuDiv.id = "changeMenu";
-		
-//		if(siteAggregationMenuURL == sideMenuURL)changeMenuDiv.style.display = "none";
+
 		if( !(getBooleanValue(displayTopMenu) && getBooleanValue(displaySideMenu)) )
 			changeMenuDiv.style.display = "none";
 		

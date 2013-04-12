@@ -507,12 +507,9 @@ ISA_previewFormModal = {
 	principalDefault: "OrganizationPrincipal",
 	init: function() {
 		if(!ISA_previewFormModal.controlModal){
-			ISA_previewFormModal.controlModal = new Control.Modal('',
-				{
-					overlayOpacity: 0.2,
-					afterClose:ISA_previewFormModal.hide
-				}
-			);			
+			ISA_previewFormModal.controlModal = new Control.Modal('',{
+				afterClose:ISA_previewFormModal.hide
+			});			
 		}
 		ISA_previewFormModal.load();
 	},
@@ -632,13 +629,10 @@ ISA_AddCommandBarModal = {
 	controlModal: false,
 	init: function() {
 		this.addCommandBarModal.isaDefaultPanel = this;
-		this.addCommandBarModal.controlModal = new Control.Modal('',
-			{
-				overlayOpacity: 0.2,
-				containerClassName:"",
-				afterClose:this.addCommandBarModal.hide
-			}
-		);
+		this.addCommandBarModal.controlModal = new Control.Modal('',{
+			className:"",
+			afterClose:this.addCommandBarModal.hide
+		});
 		this.addCommandBarModal.load();
 	},
 	load: function() {

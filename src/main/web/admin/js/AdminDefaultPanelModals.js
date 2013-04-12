@@ -23,12 +23,9 @@ ISA_DefaultPanel.CommandItemEditor.prototype.classDef = function() {
 		var editor = this.buildEditorWindow(buildForm(commandItem));
 
 		if(!this.modal){
-			this.modal = new Control.Modal('',
-				{
-					overlayOpacity: 0.2,
-					afterClose:this.hide
-				}
-			);
+			this.modal = new Control.Modal('',{
+				afterClose:this.hide
+			});
 		}
 
 		this.modal.container.update(editor);
@@ -90,12 +87,9 @@ ISA_DefaultPanel.prototype.addCommandBarModal = {
 	init: function() {
 		this.addCommandBarModal.isaDefaultPanel = this;
 		if(!this.addCommandBarModal.controlModal){
-			this.addCommandBarModal.controlModal = new Control.Modal('',
-				{
-					overlayOpacity: 0.2,
-					afterClose:this.addCommandBarModal.hide
-				}
-			);
+			this.addCommandBarModal.controlModal = new Control.Modal('',{
+				afterClose:this.addCommandBarModal.hide
+			});
 		}
 		this.addCommandBarModal.load();
 	},
@@ -154,12 +148,9 @@ ISA_DefaultPanel.prototype.addHTMLCommandBarModal = {
 	init: function() {
 		this.addHTMLCommandBarModal.isaDefaultPanel = this;
 		if(!this.addHTMLCommandBarModal.controlModal){
-			this.addHTMLCommandBarModal.controlModal = new Control.Modal('',
-				{
-					overlayOpacity: 0.2,
-					afterClose:this.addHTMLCommandBarModal.hide
-				}
-			);
+			this.addHTMLCommandBarModal.controlModal = new Control.Modal('', {
+				afterClose:this.addHTMLCommandBarModal.hide
+			});
 		}
 		this.addHTMLCommandBarModal.load();
 	},
@@ -220,13 +211,10 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 		this.selectLayoutModal.isaDefaultPanel = this;
 		this.selectLayoutModal.templates = this.templates;
 		if(!this.selectLayoutModal.controlModal){
-			this.selectLayoutModal.controlModal = new Control.Modal('',
-				{
-					overlayOpacity: 0.2,
-					className:"adminDefaultPanel",
-					afterClose:this.selectLayoutModal.hide
-				}
-			);			
+			this.selectLayoutModal.controlModal = new Control.Modal('', {
+				className:"adminDefaultPanel",
+				afterClose:this.selectLayoutModal.hide
+			});			
 		}
 		this.selectLayoutModal.load();
 	},
@@ -324,13 +312,10 @@ ISA_DefaultPanel.prototype.editHTMLModal = {
 		this.editHTMLModal.isaDefaultPanel = this;
 		this.editHTMLModal.layoutHTML = layout;
 		if(!this.editHTMLModal.controlModal){
-			this.editHTMLModal.controlModal = new Control.Modal('',
-				{
-					overlayOpacity: 0.2,
-					className:"adminDefaultPanel",
-					afterClose:this.editHTMLModal.hide.bind(this.editHTMLModal)
-				}
-			);			
+			this.editHTMLModal.controlModal = new Control.Modal('', {
+				className:"adminDefaultPanel",
+				afterClose:this.editHTMLModal.hide.bind(this.editHTMLModal)
+			});			
 		}
 		this.editHTMLModal.load();
 	},
@@ -507,13 +492,10 @@ ISA_DefaultPanel.prototype.selectColumnModal = {
 		this.selectColumnModal.isaDefaultPanel = this;
 		this.selectColumnModal.columnsArray = this.displayRoleJsons[this.displayRoleId].columnsArray;
 		if(!this.selectColumnModal.controlModal){
-			this.selectColumnModal.controlModal = new Control.Modal('',
-				{
-				  overlayOpacity: 0.2,
-				  className:"adminDefaultPanel",
-				  afterClose:this.selectColumnModal.hide.bind(this.selectColumnModal)
-				}
-			);			
+			this.selectColumnModal.controlModal = new Control.Modal('',{
+			  className:"adminDefaultPanel",
+			  afterClose:this.selectColumnModal.hide.bind(this.selectColumnModal)
+			});			
 		}
 		this.selectColumnModal.load();
 	},

@@ -283,7 +283,6 @@ ISA_PortalAdmins.prototype.classDef = function() {
 				var modal = editModal[role.id];
 				if(!modal){
 					modal = new Control.Modal('', {
-						overlayOpacity: 0.2,
 						width: 480,
 						afterClose : function(permissionNameDiv){
 							permissionNameDiv.innerHTML = "";
@@ -680,7 +679,6 @@ ISA_PortalAdmins.prototype.classDef = function() {
 	this.updatePortalAdmins = function(sendData) {
 		if(!controlModal){
 			controlModal = new Control.Modal('',{
-					overlayOpacity: 0.2,
 					className:"commitDialog",
 					closeOnClick:false
 				}

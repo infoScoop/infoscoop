@@ -11,7 +11,6 @@
 		this.build = function(){
 			if(!controlModal){
 				controlModal = new Control.Modal('',{
-						overlayOpacity: 0.2,
 						className:"commitDialog",
 						closeOnClick:false
 					});
@@ -111,7 +110,6 @@
 				var formContent = document.createElement("div");
 				if(!tabAdminModal){
 					tabAdminModal = new Control.Modal( '',{
-							overlayOpacity: 0.2,
 							closeOnClick: 'overlay',
 							width: 400
 						});
@@ -192,7 +190,6 @@
 
 			if(!resetUserCustomizeModal){
 				resetUserCustomizeModal = new Control.Modal( '',{
-					overlayOpacity: 0.2,
 					closeOnClick: 'overlay'
 				});
 			}

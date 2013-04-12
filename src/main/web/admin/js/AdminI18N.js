@@ -33,7 +33,6 @@ ISA_I18N.prototype.classDef = function() {
 	var i18nBody;
 	
 	// var loadingModal = new Control.Modal('',{
-	// 		overlayOpacity: 0.2,
 	// 		className:"commitDialog",
 	// 		closeOnClick:false
 	// 	});
@@ -155,7 +154,6 @@ ISA_I18N.prototype.classDef = function() {
 		}
 		
 		var table = document.createElement("table");
-		//table.className = "configTable";
 		var tbody = document.createElement("tbody");
 		table.appendChild(tbody);
 		
@@ -180,9 +178,7 @@ ISA_I18N.prototype.classDef = function() {
 			headerRight.style.width = "100%";
 			headerRight.style.textAlign = "right";
 			
-			var localeModal = new Control.Modal('', {
-					overlayOpacity: 0.2
-				});
+			var localeModal = new Control.Modal('');
 			buildLink(headerRight, ISA_R.alb_addLocale, self.showLocaleEditor.bind(this, localeModal, type));
 			headerTd.appendChild(headerRight);
 			headerTr.appendChild(headerTd);
@@ -193,7 +189,6 @@ ISA_I18N.prototype.classDef = function() {
 				var country = locales[i].country;
 				var lang = locales[i].lang;
 				var localesTr = document.createElement("tr");
-				//localesTr.className = "proxyConfigList";
 				var localeTd = document.createElement("td");
 				localeTd.style.padding = "3px";
 				localeTd.style.width = "100px";

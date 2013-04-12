@@ -35,7 +35,6 @@ ISA_Authentication = {
 		});
 
 		this.currentModal = new Control.Modal( '', {
-			overlayOpacity: 0.2,
 			closeOnClick: false
 		});
 		
@@ -347,7 +346,6 @@ ISA_Authentication = {
 		
 		//add Modal to addButton
 		var modal = new Control.Modal('',{
-			overlayOpacity: 0.5,
 			width: 650
 		});
 		IS_Event.observe(addButton, "click", function(modal){
@@ -416,7 +414,6 @@ ISA_Authentication = {
 			var modal = editModal[elementId];
 			if(!modal){
 				modal = new Control.Modal('', {
-					overlayOpacity: 0.2,
 					width: 650
 				});
 				editModal[elementId] = modal;				
@@ -441,7 +438,6 @@ ISA_Authentication = {
 			var modal = editModal[elementId];
 			if(!modal){
 				modal = new Control.Modal('', {
-					overlayOpacity: 0.2,
 					width: 650
 				});
 				editModal[elementId] = modal;				

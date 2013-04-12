@@ -343,13 +343,10 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		}
 
 		if(!controlModal){
-			controlModal = new Control.Modal('',
-				{
-					overlayOpacity: 0.2,
-					className:"commitDialog",
-					closeOnClick:false
-				}
-			);			
+			controlModal = new Control.Modal('',{
+				className:"commitDialog",
+				closeOnClick:false
+			});			
 		}
 		controlModal.container.update(ISA_R.ams_applyingChanges);
 		controlModal.open();

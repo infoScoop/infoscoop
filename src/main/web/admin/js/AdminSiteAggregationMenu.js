@@ -143,6 +143,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 	var loadingMessage;
 	var topMenuType;
 	var sideMenuType;
+	var controlModal;
 
 	this.menuType;
 	this.editSitetopIdList = [];
@@ -240,16 +241,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		commitDiv.id = "adminmenu_commit";
 		refreshAllDiv.appendChild(commitDiv);
-		var currentModal = new Control.Modal(
-			commitDiv,
-			{
-			  contents: ISA_R.ams_applyingChanges,
-			  opacity: 0.2,
-			  containerClassName:"commitDialog",
-			  overlayCloseOnClick:false
-			}
-		);
-		IS_Event.observe(commitDiv, 'click', commitMenu.bind(this, currentModal), "_adminMenu");
+		IS_Event.observe(commitDiv, 'click', commitMenu.bind(this), "_adminMenu");
 		Element.hide(commitDiv);
 		
 		// Reread
@@ -647,44 +639,39 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		divMenuTitle.appendChild(document.createTextNode(menuItem.directoryTitle || menuItem.title));
 		divMenuTitle.style.cursor ="pointer";
 		
-		//divMenuItem.appendChild(divMenuTitle);
 		menuItemTitleTd.appendChild(divMenuTitle);
 		divMenuItem.appendChild(menuItemTable);
 		// Make navigator
 		createNavigator(menuItem, menuItemTr, this);
 		
 		itemTd.appendChild(divMenuItem);
-		/*
-		var mdiv = document.createElement('div');
-		mdiv.id = "ml_" + menuItem.id;
-		mdiv.className = 'menuItemLink';
-		if (menuItem.href) {
-			var aTag = document.createElement('a');
-			aTag.id = 'tl_' + menuItem.id;
-			aTag.href = menuItem.href;
-			aTag.appendChild(document.createTextNode(menuItem.href));
-			aTag.target="_blank";
-			mdiv.appendChild(aTag);
-		}
-		menuDiv.appendChild(mdiv);
-		*/
 		
 		return menuDiv;
 	}
 
-	function commitMenu(currentModal) {
+	function commitMenu() {
 		var isForceUpdate = false;
 		for(i in ISA_SiteAggregationMenu.forceUpdatePrefMap)isForceUpdate = true;
 		if(isForceUpdate){
 			if(!confirm(ISA_R.ams_confirmForceUpdateUserPrefs)){
 				setTimeout(function(){
-					currentModal.close();
+					Control.Modal.close();
 				},100);
 				return;
 			}
 		}
 		var currentTopUrl = ISA_Properties.propertiesList["displayTopMenu"].value;
 		var currentSideUrl = ISA_Properties.propertiesList["displaySideMenu"].value;
+
+		if(!controlModal){
+			controlModal = new Control.Modal('', {
+			  className:"commitDialog",
+			  closeOnClick:false
+			});			
+		}
+		controlModal.container.update(ISA_R.ams_applyingChanges);
+		controlModal.open();
+
 
 		var url = adminHostPrefix + "/services/menu/commitMenu";
 		var opt = {
@@ -697,7 +684,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 			asynchronous:true,
 			onSuccess: function(response){
 				ISA_TempGadgetsConfs = [];
-				currentModal.update(ISA_R.ams_changeUpdated);
+				controlModal.container.update(ISA_R.ams_changeUpdated);
 				ISA_Admin.isUpdated = false;
 				self.isUpdated = false;
 				ISA_SiteAggregationMenu.forceUpdatePrefMap = {};
@@ -713,7 +700,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 			},
 			onComplete: function(){
 				setTimeout(function(){
-					currentModal.close();
+					Control.Modal.close();
 				},500);
 			}
 		};
@@ -775,7 +762,6 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		var childList = ISA_SiteAggregationMenu.menuItemTreeMap[menuItem.id];
 		var childrenDiv = document.getElementById("tg_" + menuItem.id);
 		if(childList){
-//			var childrenDiv = document.getElementById("tg_" + menuItem.id);
 			for(var j = 0; j < childList.length;j++){
 				var child = ISA_SiteAggregationMenu.menuItemList[childList[j]];
 				child.depth = menuItem.depth + 1;
@@ -854,7 +840,6 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 			el.className = 'ygtvlm';
 		}
 		
-//		var liNode = el.parentNode.parentNode;
 		var menuDiv = el.parentNode.parentNode.parentNode.parentNode;
 
 		if (!menuItem.isChildrenBuildSiteMap) {
@@ -1060,9 +1045,6 @@ ISA_SiteAggregationMenu.removeTemp = function(){
 }
 
 ISA_SiteAggregationMenu.getUpdMenuItem = function(menuItem, menuType){
-	//var newMenuItem = {};
-	//newMenuItem.id = menuItem.id;
-	//newMenuItem.parentId = menuItem.parentId;
 	menuItem.type = ISA_CommonModals.EditorForm.getSelectType();
 	
 	var title = ISA_Admin.trim($("formTitle").value);
@@ -1128,7 +1110,7 @@ ISA_SiteAggregationMenu.getForceUpdPrefs = function(menuItem){
 	var forceUpdateHref = $F('FUP_HREF');
 	if(forceUpdateHref) forceUpdatePrefs['__MENU_HREF__'] = {implied:true}
 
-	var widgetType = menuItem.type;//ISA_CommonModals.EditorForm.getSelectType();
+	var widgetType = menuItem.type;
 	if(widgetType){
 		if("MultiRssReader" == widgetType) widgetType = "RssReader";
 		var conf = ISA_SiteAggregationMenu.widgetConfs[widgetType];
@@ -1209,17 +1191,6 @@ ISA_SiteAggregationMenu.addMenuTree = function(menuObj, newMenuItem, menuItem){
 ISA_SiteAggregationMenu.updateMenuTree = function(newMenuItem, menuItem){
 	newMenuItem.depth = menuItem.depth;
 	$('t_' + menuItem.id).innerHTML = escapeHTMLEntity(newMenuItem.directoryTitle || newMenuItem.title);
-	/*
-	var hrefTag = $('tl_' + menuItem.id);
-	if(!hrefTag){
-		hrefTag = document.createElement('a');
-		hrefTag.id = 'tl_' + menuItem.id;
-		hrefTag.target="_blank";
-		$('ml_' + menuItem.id).appendChild(hrefTag);
-	}
-	hrefTag.href = newMenuItem.href;
-	hrefTag.innerHTML = newMenuItem.href;
-	*/
 	
 	//Disapprove of changing types
 	//Likely to be changed to a state where you can drop sevral
@@ -1313,7 +1284,7 @@ ISA_SiteAggregationMenu.refreshMenuTree = function(treeJson){
 		ISA_SiteAggregationMenu.menuItemList[menuItem.id].parentId = menuItem.parentId;
 		ISA_SiteAggregationMenu.treeMenu.refreshTreeChild(menuItem);
 		
-		self.currentModal.close();
+		controlModal.close();
 	}
 	eval(treeJson);
 	
@@ -1418,73 +1389,74 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 			editDiv.style.margin = "0";
 			editTitleTd.appendChild(editDiv);
 			
-			var editorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
-				var url = adminHostPrefix + "/services/menu/updateMenuItem";
-				var newMenuItem = ISA_SiteAggregationMenu.getUpdMenuItem(menuItem, menuObj.menuType);
-				if (menuItem.serviceURL && !newMenuItem.serviceURL) {
-					alert(ISA_R.ams_externalServiceDataNotDelete);
-					return true;
-				}
-				var allertSetting = $F('allertSetting');
-				var forceUpdatePrefs = ISA_SiteAggregationMenu.getForceUpdPrefs(newMenuItem);
-				var opt = {
-					method: 'post',
-					contentType: "application/json",
-					postBody: Object.toJSON([
-						newMenuItem.id, 
-						newMenuItem.title || "", 
-						newMenuItem.href || "", 
-						newMenuItem.display, 
-						newMenuItem.type, 
-						newMenuItem.serviceURL || "", 
-						newMenuItem.serviceAuthType || "", 
-						newMenuItem.properties, allertSetting, 
-						newMenuItem.menuType, 
-						newMenuItem.auths || null, 
-						newMenuItem.menuTreeAdmins || null, 
-						newMenuItem.linkDisabled, 
-						newMenuItem.directoryTitle || "", 
-						ISA_SiteAggregationMenu.getSitetopId(menuItem),
-						newMenuItem.multi || false
-					]),
-					asynchronous: true,
-					onSuccess: function(response){
-						binder.isUpdated = true;
-						ISA_SiteAggregationMenu.updateMenuTree(newMenuItem, menuItem);
-						ISA_SiteAggregationMenu.forceUpdatePrefMap[newMenuItem.id] = forceUpdatePrefs;
-						Object.extend(menuItem, newMenuItem);
-						if (menuItem.serviceURL) 
-							self.addEditDiv.style.display = "none";
-						else 
-							self.addEditDiv.style.display = "block";
-					},
-					onFailure: function(t){
-						var resTxt = ISA_SiteAggregationMenu.getErrorMessage(t);
-						alert(ISA_R.ams_failedUpdatingMenu + resTxt);
-						msg.error(ISA_R.ams_failedUpdatingMenu + t.status + " - " + t.statusText + " " + resTxt);
-					},
-					onException: function(r, t){
-						alert(ISA_R.ams_failedUpdatingMenu);
-						msg.error(ISA_R.ams_failedUpdatingMenu + getErrorMessage(t));
-					},
-					onComplete: function(){
-						Control.Modal.close();
-					},
-					contentType: 'text/plain'
-				};
-				AjaxRequest.invoke(url, opt);
-			}, Object.extend({
-				omitTypeList: typeList,
-				displayWidgetFieldSet: (menuItem.depth > 0),
-				disabledTypeEdit: true,
-				displayAlertFieldSet: true,
-				displayForceUpdatePropertyForm: true,
-				disabledAlertFieldSet: !(menuItem.serviceURL && menuItem.depth == 0)
-			}, menuItem.depth == 0 ? {
-				menuFieldSetLegend: ISA_R.alb_settingMenuLink,
-				displayMenuTreeAdminsFieldSet: true
-			} : {}));
 			IS_Event.observe(editDiv, 'click', function(){
+				var editorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
+					var url = adminHostPrefix + "/services/menu/updateMenuItem";
+					var newMenuItem = ISA_SiteAggregationMenu.getUpdMenuItem(menuItem, menuObj.menuType);
+					if (menuItem.serviceURL && !newMenuItem.serviceURL) {
+						alert(ISA_R.ams_externalServiceDataNotDelete);
+						return true;
+					}
+					var allertSetting = $F('allertSetting');
+					var forceUpdatePrefs = ISA_SiteAggregationMenu.getForceUpdPrefs(newMenuItem);
+					var opt = {
+						method: 'post',
+						contentType: "application/json",
+						postBody: Object.toJSON([
+							newMenuItem.id, 
+							newMenuItem.title || "", 
+							newMenuItem.href || "", 
+							newMenuItem.display, 
+							newMenuItem.type, 
+							newMenuItem.serviceURL || "", 
+							newMenuItem.serviceAuthType || "", 
+							newMenuItem.properties, allertSetting, 
+							newMenuItem.menuType, 
+							newMenuItem.auths || null, 
+							newMenuItem.menuTreeAdmins || null, 
+							newMenuItem.linkDisabled, 
+							newMenuItem.directoryTitle || "", 
+							ISA_SiteAggregationMenu.getSitetopId(menuItem),
+							newMenuItem.multi || false
+						]),
+						asynchronous: true,
+						onSuccess: function(response){
+							binder.isUpdated = true;
+							ISA_SiteAggregationMenu.updateMenuTree(newMenuItem, menuItem);
+							ISA_SiteAggregationMenu.forceUpdatePrefMap[newMenuItem.id] = forceUpdatePrefs;
+							Object.extend(menuItem, newMenuItem);
+							if (menuItem.serviceURL) 
+								self.addEditDiv.style.display = "none";
+							else 
+								self.addEditDiv.style.display = "block";
+						},
+						onFailure: function(t){
+							var resTxt = ISA_SiteAggregationMenu.getErrorMessage(t);
+							alert(ISA_R.ams_failedUpdatingMenu + resTxt);
+							msg.error(ISA_R.ams_failedUpdatingMenu + t.status + " - " + t.statusText + " " + resTxt);
+						},
+						onException: function(r, t){
+							alert(ISA_R.ams_failedUpdatingMenu);
+							msg.error(ISA_R.ams_failedUpdatingMenu + getErrorMessage(t));
+						},
+						onComplete: function(){
+							Control.Modal.close();
+						},
+						contentType: 'text/plain'
+					};
+					AjaxRequest.invoke(url, opt);
+				}, Object.extend({
+					omitTypeList: typeList,
+					displayWidgetFieldSet: (menuItem.depth > 0),
+					disabledTypeEdit: true,
+					displayAlertFieldSet: true,
+					displayForceUpdatePropertyForm: true,
+					disabledAlertFieldSet: !(menuItem.serviceURL && menuItem.depth == 0)
+				}, menuItem.depth == 0 ? {
+					menuFieldSetLegend: ISA_R.alb_settingMenuLink,
+					displayMenuTreeAdminsFieldSet: true
+				} : {}));
+
 				editorFormObj.showEditorForm(menuItem);
 			}, false, "_adminMenu");
 			
@@ -1495,43 +1467,44 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 				editDiv.style.margin = "0";
 				editTitleTd.appendChild(editDiv);
 				
-				var deleteEditorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
-					
-					var url = adminHostPrefix + "/services/menu/"
-						+ ((menuItem.parentId)? "removeMenuItem" : "removeTopMenuItem");
-					var opt = {
-						method: 'post',
-						contentType: "application/json",
-						postBody: Object.toJSON([menuObj.menuType, menuItem.id, ISA_SiteAggregationMenu.getSitetopId(menuItem)]),
-						asynchronous: true,
-						onSuccess: function(response){
-							binder.isUpdated = true;
-							if(menuItem.forceDelete)
-							  ISA_SiteAggregationMenu.forceDeleteList = ISA_SiteAggregationMenu.forceDeleteList.concat(eval(response.responseText));
-							ISA_SiteAggregationMenu.removeMenuTree(menuItem);
-						},
-						onFailure: function(t){
-							var resTxt = ISA_SiteAggregationMenu.getErrorMessage(t);
-							alert(ISA_R.ams_failedDeleteMenu + resTxt);
-							msg.error(ISA_R.ams_failedDeleteMenu + t.status + " - " + t.statusText + " " + resTxt);
-						},
-						onException: function(r, t){
-							alert(ISA_R.ams_failedDeleteMenu);
-							msg.error(ISA_R.ams_failedDeleteMenu + getErrorMessage(t));
-						},
-						onComplete: function(){
-							Control.Modal.close();
-						}
-					};
-					AjaxRequest.invoke(url, opt);
-				}, Object.extend({
-					formDisabled: true,
-					displayAlertFieldSet: true
-				}, menuItem.depth == 0 ? {
-					menuFieldSetLegend: ISA_R.alb_settingMenuLink,
-					displayMenuTreeAdminsFieldSet: true
-				} : {}));
 				IS_Event.observe(editDiv, 'click', function(){
+					var deleteEditorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
+						
+						var url = adminHostPrefix + "/services/menu/"
+							+ ((menuItem.parentId)? "removeMenuItem" : "removeTopMenuItem");
+						var opt = {
+							method: 'post',
+							contentType: "application/json",
+							postBody: Object.toJSON([menuObj.menuType, menuItem.id, ISA_SiteAggregationMenu.getSitetopId(menuItem)]),
+							asynchronous: true,
+							onSuccess: function(response){
+								binder.isUpdated = true;
+								if(menuItem.forceDelete)
+								  ISA_SiteAggregationMenu.forceDeleteList = ISA_SiteAggregationMenu.forceDeleteList.concat(eval(response.responseText));
+								ISA_SiteAggregationMenu.removeMenuTree(menuItem);
+							},
+							onFailure: function(t){
+								var resTxt = ISA_SiteAggregationMenu.getErrorMessage(t);
+								alert(ISA_R.ams_failedDeleteMenu + resTxt);
+								msg.error(ISA_R.ams_failedDeleteMenu + t.status + " - " + t.statusText + " " + resTxt);
+							},
+							onException: function(r, t){
+								alert(ISA_R.ams_failedDeleteMenu);
+								msg.error(ISA_R.ams_failedDeleteMenu + getErrorMessage(t));
+							},
+							onComplete: function(){
+								Control.Modal.close();
+							}
+						};
+						AjaxRequest.invoke(url, opt);
+					}, Object.extend({
+						formDisabled: true,
+						displayAlertFieldSet: true
+					}, menuItem.depth == 0 ? {
+						menuFieldSetLegend: ISA_R.alb_settingMenuLink,
+						displayMenuTreeAdminsFieldSet: true
+					} : {}));
+
 					menuItem.isDelete = true;
 					deleteEditorFormObj.showEditorForm(menuItem);
 				}, false, "_adminMenu");
@@ -1545,60 +1518,61 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 				editDiv.style.display = "none";
 			editTitleTd.appendChild(editDiv);
 			
-			var parentMenuItem = menuItem;
-			var addEditorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
-				var url = adminHostPrefix + "/services/menu/addMenuItem";
-				var newMenuItem = ISA_SiteAggregationMenu.getUpdMenuItem(menuItem, menuObj.menuType);
-				newMenuItem.add = true;
-				
-				var allertSetting = $F('allertSetting');
-				var opt = {
-					method: 'post',
-					contentType: "application/json",
-					postBody: Object.toJSON([
-						String(newMenuItem.id), 
-						String(newMenuItem.parentId), 
-						newMenuItem.title, 
-						newMenuItem.href || "", 
-						newMenuItem.display || "", 
-						newMenuItem.type || "", 
-						newMenuItem.properties ||{}, 
-						allertSetting, 
-						newMenuItem.menuType, 
-						newMenuItem.auths || null, 
-						newMenuItem.linkDisabled, 
-						newMenuItem.directoryTitle || "", 
-						ISA_SiteAggregationMenu.getSitetopId(parentMenuItem),
-						newMenuItem.multi || false
-					]),
-					asynchronous: true,
-					onSuccess: function(response){
-						binder.isUpdated = true;
-						ISA_SiteAggregationMenu.addMenuTree(menuObj, newMenuItem, parentMenuItem);
-					},
-					onFailure: function(t){
-						var resTxt = ISA_SiteAggregationMenu.getErrorMessage(t);
-						alert(ISA_R.ams_failedAddMenu + resTxt);
-						msg.error(ISA_R.ams_failedAddMenu + t.status + " - " + t.statusText + " " + resTxt);
-					},
-					onException: function(r, t){
-						alert(ISA_R.ams_failedAddMenu);
-						msg.error(ISA_R.ams_failedAddMenu + getErrorMessage(t));
-					},
-					onComplete: function(){
-						Control.Modal.close();
-					},
-					contentType: 'text/plain'
-				};
-				AjaxRequest.invoke(url, opt);
-			}, {
-				omitTypeList: typeList,
-				setDefaultValue: false,
-				generateId: true,
-				disableTypeEdit: true,
-				displayAlertFieldSet: true
-			});
 			IS_Event.observe(editDiv, 'click', function(){
+				var parentMenuItem = menuItem;
+				var addEditorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){
+					var url = adminHostPrefix + "/services/menu/addMenuItem";
+					var newMenuItem = ISA_SiteAggregationMenu.getUpdMenuItem(menuItem, menuObj.menuType);
+					newMenuItem.add = true;
+					
+					var allertSetting = $F('allertSetting');
+					var opt = {
+						method: 'post',
+						contentType: "application/json",
+						postBody: Object.toJSON([
+							String(newMenuItem.id), 
+							String(newMenuItem.parentId), 
+							newMenuItem.title, 
+							newMenuItem.href || "", 
+							newMenuItem.display || "", 
+							newMenuItem.type || "", 
+							newMenuItem.properties ||{}, 
+							allertSetting, 
+							newMenuItem.menuType, 
+							newMenuItem.auths || null, 
+							newMenuItem.linkDisabled, 
+							newMenuItem.directoryTitle || "", 
+							ISA_SiteAggregationMenu.getSitetopId(parentMenuItem),
+							newMenuItem.multi || false
+						]),
+						asynchronous: true,
+						onSuccess: function(response){
+							binder.isUpdated = true;
+							ISA_SiteAggregationMenu.addMenuTree(menuObj, newMenuItem, parentMenuItem);
+						},
+						onFailure: function(t){
+							var resTxt = ISA_SiteAggregationMenu.getErrorMessage(t);
+							alert(ISA_R.ams_failedAddMenu + resTxt);
+							msg.error(ISA_R.ams_failedAddMenu + t.status + " - " + t.statusText + " " + resTxt);
+						},
+						onException: function(r, t){
+							alert(ISA_R.ams_failedAddMenu);
+							msg.error(ISA_R.ams_failedAddMenu + getErrorMessage(t));
+						},
+						onComplete: function(){
+							Control.Modal.close();
+						},
+						contentType: 'text/plain'
+					};
+					AjaxRequest.invoke(url, opt);
+				}, {
+					omitTypeList: typeList,
+					setDefaultValue: false,
+					generateId: true,
+					disableTypeEdit: true,
+					displayAlertFieldSet: true
+				});
+
 				addEditorFormObj.showEditorForm({
 					title: ISA_R.alb_newMenu,
 					parentId: menuItem.id,
@@ -1620,15 +1594,15 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 			editDiv.style.margin = "0";
 			editTitleTd.appendChild(editDiv);
 			
-			var refEditorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){}, Object.extend({
-				formDisabled: true,
-				displayAlertFieldSet: true,
-				displayOK: false
-			}, menuItem.depth == 0 ? {
-				menuFieldSetLegend: ISA_R.alb_settingMenuLink,
-				displayMenuTreeAdminsFieldSet: true
-			} : {}));
 			IS_Event.observe(editDiv, 'click', function(){
+				var refEditorFormObj = new ISA_CommonModals.EditorForm(editDiv, function(menuItem){}, Object.extend({
+					formDisabled: true,
+					displayAlertFieldSet: true,
+					displayOK: false
+				}, menuItem.depth == 0 ? {
+					menuFieldSetLegend: ISA_R.alb_settingMenuLink,
+					displayMenuTreeAdminsFieldSet: true
+				} : {}));
 				refEditorFormObj.showEditorForm(menuItem);
 			}, false, "_adminMenu");
 		}

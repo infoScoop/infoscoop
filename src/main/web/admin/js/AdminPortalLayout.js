@@ -269,7 +269,6 @@ ISA_PortalLayout.prototype.classDef = function() {
 		// Update to DB
 		if(!controlModal){
 			controlModal = new Control.Modal('',{
-				overlayOpacity: 0.2,
 				className:"commitDialog",
 				closeOnClick:false
 			});		

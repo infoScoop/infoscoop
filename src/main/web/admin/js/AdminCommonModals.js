@@ -6,9 +6,6 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 	var self = this;
 	var editorElement;
 	var menuItem;
-	/*
-	var procType;
-	*/
 	var disabled;
 	var disabledAttribute;
 	var menuObj;
@@ -63,11 +60,20 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 			disabledAttribute = " disabled='disabled'";
 		}
 		
+		// this.currentModal = new Control.Modal('', {
+		//   className:"adminTreeMenu",
+		//   afterClose:this.hideWidgetEditorForm.bind(this)
+		// });
+
 		this.currentModal = new Control.Modal('', {
-			  overlayOpacity: 0.2,
-			  className:"adminTreeMenu",
-			  afterClose:this.hideWidgetEditorForm.bind(this)
-			});
+		  className:"adminTreeMenu",
+		  afterClose: function(){
+		  	this.destroy();
+  			IS_Event.unloadCache("_editorForm");
+			IS_Event.unloadCache("_adminMenuEdit");
+		  }
+		});
+
 		
 		authorizations = [];
 		
@@ -81,20 +87,6 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 		buttonDiv.style.textAlign = "center";
 		
 		if (options.displayOK) {
-			/*
-			if( menuItem.isDelete && menuItem.type ){
-				buttonDiv.appendChild(
-					$.DIV({},
-						  $.INPUT({id:'removeGadgetOnUserPortal',type:'checkbox', onclick:{handler:
-							  function(menuItem,e){
-								  var checkbox = Event.element(e);
-								  menuItem.forceDelete = checkbox.checked;
-							  }.bind(null,menuItem)}}),
-						  $.LABEL({"htmlFor": 'removeGadgetOnUserPortal'},ISA_R.alb_deleteGadgetOnUserPortal)
-							)
-					);
-			}
-			*/
 			var elementInput = document.createElement("input");
 			elementInput.className = "modal_button";
 			elementInput.type = "button";
@@ -444,7 +436,6 @@ ISA_CommonModals.EditorForm.preview = function(previewDiv, widgetObj, menuItem )
 				subWidgetObj.title = subWidgetTitle;
 				var feedWidget = new IS_Widget(false, subWidgetObj);
 				feedWidget.tabId = IS_Portal.currentTabId;
-				//ISA_CommonModals.EditorForm.previewWidget.addSubWidget(feedWidget);
 				feedWidget.parent = ISA_CommonModals.EditorForm.previewWidget;
 				subWidgetList = [feedWidget];
 			} else {
@@ -483,21 +474,7 @@ ISA_CommonModals.EditorForm.preview = function(previewDiv, widgetObj, menuItem )
 		previewDiv.appendChild( widgetBody );
 	}
 }
-/*
-ISA_CommonModals.EditorForm.makeWidgetEditFieldSetNamedParam = function( opt ) {
-	return new ISA_CommonModals.EditorForm.makeWidgetEditFieldSet(
-		opt.disabled || false,
-		opt.types || [],
-		opt.menuItem || false,
-		opt.titleEdit || false,
-		opt.multiEdit || false,
-		opt.ignoreHeader || false,
-		opt.noBorder || false,
-		opt.disabledTypeEdit || false,
-		opt.options || {}
-	);
-}
-*/
+
 /**
  * Generate widget selecting page
  *
@@ -508,13 +485,6 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 	var menuItem = Object.extend({},_menuItem);
 	if(!menuItem.properties)
 		menuItem.properties = {};
-	
-	/* Widget settings */
-//	var widgetFieldSet = document.createElement("fieldset");
-//	var widgetFieldSetLegend = document.createElement("legend");
-//	var widgetFieldSetTitle = options.title || ISA_R.alb_widgetSettings;
-//	widgetFieldSetLegend.appendChild(document.createTextNode( widgetFieldSetTitle ));
-//	widgetFieldSet.appendChild(widgetFieldSetLegend);
 	
 	var widgetFieldSet = document.createElement("div");
 	widgetFieldSet.className = "modalConfigSet";
@@ -527,8 +497,6 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 	var contentSubDiv = document.createElement("div");
 	var editorFormSubTable = document.createElement("table");
 	editorFormSubTable.className = "modalConfigSetContent";
-//	editorFormSubTable.style.width = "100%";
-//	editorFormSubTable.style.margin = "5px";
 	contentSubDiv.appendChild(editorFormSubTable);
 	var editorFormSubTbody = document.createElement("tbody");
 	editorFormSubTable.appendChild(editorFormSubTbody);
@@ -567,7 +535,6 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 	var isWidgetDeleted = false;
 	
 	var widgetType = replaceUndefinedDefaultValue(menuItem.type);
-	//if("FragmentMiniBrowser" == widgetType) widgetType = "MiniBrowser";
 	
 	// Title information setting button
 	var setWidgetTitleInfoButton;
@@ -675,7 +642,6 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 			var optionEl = document.createElement("option");
 			optionEl.id = menuItem.id + '_optType' + i;
 			optionEl.value = (conf.type) ? conf.type : i;
-//			var typeName = (conf.ModulePrefs) ? conf.ModulePrefs.title : (conf.title) ? conf.title : conf.type;//TODO:
 			var typeName;
 			if(conf.ModulePrefs){
 				typeName = conf.ModulePrefs.directory_title || conf.ModulePrefs.title || conf.type;
@@ -835,42 +801,6 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 		var widgetConf = ISA_SiteAggregationMenu.widgetConfs[widgetType];
 		//ISA_WidgetConf.EditWidgetConf.makePrefForm(editorFormSubTbody,widgetConf, menuItem,disabled);
 		if(!widgetConf)return;
-		/*
-		var widgetPrefList = (widgetConf.ModulePrefs) ? {} : widgetConf.WidgetPref;//ModulePrefs can not be editted
-		for( i in widgetPrefList ){
-			
-			if( !( widgetPrefList[i] instanceof Function ) ){
-				var prefConf = widgetPrefList[i];
-				prefConf.isDefault = true;
-				var inputType = ISA_WidgetConf.EditWidgetConf.getInputType(prefConf);
-				if(inputType == 'hidden')
-				  continue;
-				
-				var displayName =prefConf.display_name;
-				if(displayName == null)
-				  displayName = prefConf.name;
-				
-				var subTr = document.createElement("tr");
-				subTr.className = "propertyTr";
-				var subTd = document.createElement("td");
-				subTd.style.textAlign = "right";
-				subTd.appendChild(document.createTextNode(displayName + "："));
-				var nameField = document.createElement("input");
-				nameField.type = "hidden";
-				nameField.value = prefConf.name;
-				nameField.className = "propertyName";
-				subTd.appendChild(nameField);
-				subTr.appendChild(subTd);
-				
-				var subTd = document.createElement("td");
-				var inputField = ISA_WidgetConf.makeForm( 'MP', prefConf);
-				if(disabled) disable(inputField);
-				subTd.appendChild(inputField);
-				subTr.appendChild(subTd);
-				editorFormSubTbody.appendChild(subTr);
-			}
-		}
-		*/
 		var userPrefList = widgetConf.UserPref;
 		for( i in userPrefList ){
 			if( !( userPrefList[i] instanceof Function ) ){
@@ -952,9 +882,6 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 	
 	function replaceUndefinedDefaultValue(val) {
 		var value = val;
-		//if(procType == "add")
-		//if(!options.setDefaultValue)
-		//return "";
 		return ISA_Admin.replaceUndefinedValue(value);
 	}
 	
@@ -963,10 +890,6 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 
 
 ISA_CommonModals.EditorForm.makeMenuAlertEditFieldSet = function(disabled, menuItem){
-//	var menuItemFieldSet = document.createElement("fieldset");
-//	var menuItemFieldSetLegend = document.createElement("legend");
-//	menuItemFieldSetLegend.appendChild(document.createTextNode(ISA_R.alb_alertSettings));
-//	menuItemFieldSet.appendChild(menuItemFieldSetLegend);
 	
 	var menuItemFieldSet = document.createElement("div");
 	menuItemFieldSet.className = "modalConfigSet";
@@ -976,7 +899,6 @@ ISA_CommonModals.EditorForm.makeMenuAlertEditFieldSet = function(disabled, menuI
 	menuItemFieldSet.appendChild(menuItemFieldSetLegend);
 	
 	menuItemFieldSet.appendChild(
-//		document.createTextNode(ISA_R.alb_informNewMenu)
 		$.P({className:"modalConfigSetContent"}, ISA_R.alb_informNewMenu )
 		);
 	
@@ -1042,11 +964,7 @@ ISA_CommonModals.EditorForm.makeMenuAlertEditFieldSet.setForceDropOpton = functi
 }
 
 ISA_CommonModals.EditorForm.makeMenuUpdateSettingFieldSet = function(disabled, menuItem){
-//	var menuItemFieldSet = document.createElement("fieldset");
-//	var menuItemFieldSetLegend = document.createElement("legend");
-//	menuItemFieldSetLegend.appendChild(document.createTextNode(ISA_R.alb_selectUpdateProperties));
-//	menuItemFieldSet.appendChild(menuItemFieldSetLegend);
-	
+
 	var menuItemFieldSet = document.createElement("div");
 	menuItemFieldSet.className = "modalConfigSet";
 	var menuItemFieldSetLegend = document.createElement("p");
@@ -1139,10 +1057,6 @@ ISA_CommonModals.EditorForm.makeMenuUpdateSettingFieldSet = function(disabled, m
  * @obj {id:ID of widget,type:Type of widget,properties:Properties of widget}
  */
 ISA_CommonModals.EditorForm.makeMenuItemEditFieldSet = function(disabled, menuItem, options){
-//	var menuItemFieldSet = document.createElement("fieldset");
-//	var menuItemFieldSetLegend = document.createElement("legend");
-//	menuItemFieldSetLegend.appendChild(document.createTextNode(options.menuFieldSetLegend));
-//	menuItemFieldSet.appendChild(menuItemFieldSetLegend);
 	
 	var menuItemFieldSet = document.createElement("div");
 	menuItemFieldSet.className = "modalConfigSet";
@@ -1388,11 +1302,6 @@ ISA_CommonModals.EditorForm.makeMenuItemEditFieldSet = function(disabled, menuIt
 
 ISA_CommonModals.EditorForm.makeMenuTreeAdminsFieldSet = function(disabled, menuItem){
 	menuTreeAdmins = [];
-	
-//	var fieldSet = document.createElement("fieldset");
-//	var fieldSetLegend = document.createElement("legend");
-//	fieldSetLegend.appendChild(document.createTextNode(ISA_R.alb_adminSettings));
-//	fieldSet.appendChild(fieldSetLegend);
 	
 	var fieldSet = document.createElement("div");
 	fieldSet.className = "modalConfigSet";

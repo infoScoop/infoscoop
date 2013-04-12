@@ -158,7 +158,6 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 		if(!controlModal){
 			controlModal = new Control.Modal('', {
-				  overlayOpacity: 0.2,
 				  className:"commitDialog",
 				  closeOnClick:'overlay'
 				});
@@ -950,7 +949,6 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 			IS_Event.observe(editorElement, 'click', this.showTitleEditorForm.bind(this), false, "_adminSearch");
 
 			this.currentModal = new Control.Modal('',{
-					overlayOpacity: 0.2,
 					className:"adminSearchEngine",
 					afterClose:this.hideTitleEditorForm.bind(this)
 				});
