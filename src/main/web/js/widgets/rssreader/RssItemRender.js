@@ -1202,15 +1202,15 @@ IS_Widget.processAdjustRssDesc = function(){
 
 IS_Widget.adjustDescSingleImgWidth = function(img, headerWidth) {
 	if(!img.originalWidth && img.offsetWidth)
-		img.originalWidth = img.offsetWidth + 'px';
+		img.originalWidth = img.offsetWidth;
 	if(!img.originalHeight && img.offsetHeight)
-		img.originalHeight = img.offsetHeight + 'px';
+		img.originalHeight = img.offsetHeight;
 	var isAdjust = false;
 	if(img.originalWidth > headerWidth) {
 		img.style.width = headerWidth + 'px';
 		isAdjust = true;
 	} else if(img.originalWidth > img.offsetWidth) {
-		img.style.width = img.originalWidth;
+		img.style.width = img.originalWidth + 'px';
 		isAdjust = true;
 	}
 	
@@ -1258,12 +1258,6 @@ IS_Widget.adjustDescWidth = function() {
 	}
 	
 	function adjustDescObjWidth( obj,offset ) {
-		if( Browser.isSafari1 ) {
-			var widget = obj.widget;
-			if( widget.tabId != IS_Portal.currentTabId ) 
-				return;
-		}
-		
 		obj.headerDiv = obj.widget.parent? obj.widget.parent.elm_widgetHeader : obj.widget.elm_widgetHeader;
 		
 		var headerWidth = obj.headerDiv.offsetWidth;
