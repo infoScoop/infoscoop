@@ -841,11 +841,11 @@ IS_Widget.prototype.classDef = function() {
 				{
 					Container: {
 						onSecurityAlert: function(source, alertType) {
-							gadgets.error(['Security error for container ', source.getClientID(), ' : ', alertType].join(''));
+							msg.error(['Security error for container ', source.getClientID(), ' : ', alertType].join(''));
 							source.getIframe().src = 'about:blank';
 						},
 						onConnect: function(container) {
-							gadgets.log(['connected: ', container.getClientID()].join(''));
+							msg.info(['connected: ', container.getClientID()].join('')); 
 						}
 					},
 					IframeContainer: {
