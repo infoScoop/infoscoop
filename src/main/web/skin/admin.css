@@ -514,7 +514,7 @@ a.menuContextA_edit:visited{
 }
 
 .tabAdminModal .tabAdminInput {
-	margin: 10 0 0 15;
+	margin: 10px 0 0 15px;
 }
 
 .tabListButtons {
@@ -941,7 +941,6 @@ a.gadgetListTabA:visited{
 table.configTableHeader{
 	clear : both;
 	margin: 10px 10px 0 10px;
-	margin-bottom: 10px;
 	height: auto;
 	tableLayout : fixed;
 	emptyCells : show;
