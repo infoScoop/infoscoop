@@ -535,7 +535,6 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		menuTable.className = 'menuItemTable';
 		menuTable.cellPadding = 0;
 		menuTable.cellSpacing = 0;
-		//menuTable.style.width = '100%';//Without this line, the Title will unexpectedly have a break in the middle after dropping
 		menuDiv.appendChild(menuTable);
 		var menuTbody = document.createElement('tbody');
 		menuTable.appendChild(menuTbody);
@@ -1367,7 +1366,7 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 
 		var editTitleTable = document.createElement("table");
 		editTitleTable.cellSpacing = "0";
-		editTitleTable.cellPadding = "3";
+		editTitleTable.cellPadding = "3px";
 		editTitleTable.className = "treemenuNavigator";
 
 		var editTitleTbody = document.createElement("tbody");
@@ -1610,8 +1609,9 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 
 		this.titleEditBox.appendChild(editTitleTable);
 
-		if(Browser.isIE)
-			this.titleEditBox.style.width = editTitleTable.offsetWidth;
+		// Fix #480
+		// if(Browser.isIE)
+		// 	this.titleEditBox.style.width = editTitleTable.offsetWidth;
 
 		$("admin-menu-navigator").appendChild(this.titleEditBox);
 	};
@@ -1684,8 +1684,8 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 			var currentNavi = ISA_SiteAggregationMenu.Navigator.displayNavi;
 			currentNavi.style.display = "none";
 		}
-		self.titleEditBox.style.top = Event.pointerY(e);
-		self.titleEditBox.style.left = Event.pointerX(e);
+		self.titleEditBox.style.top = Event.pointerY(e) + 'px';
+		self.titleEditBox.style.left = Event.pointerX(e) + 'px';
 		self.titleEditBox.style.display = "block";
 		ISA_SiteAggregationMenu.Navigator.displayNavi = self.titleEditBox;
 		return false;

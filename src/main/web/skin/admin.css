@@ -15,8 +15,8 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 * {
-	margin: 0;
-	padding: 0;
+	margin: 0px;
+	padding: 0px;
 }
 body {
 	background: url(imgs/header_bg.gif) repeat-x #fff !important;
@@ -38,7 +38,7 @@ a { outline: none; }
 	color:#FFF;
 	_font-size : x-medium;
 	text-decoration : none ;
-	margin : 8px 0 0 10px;
+	margin : 8px 0px 0px 10px;
 	font-weight : bold ;
 	border : none ;
 }
@@ -51,7 +51,7 @@ a { outline: none; }
 	top: 50px;
 /* 	width: 100%; */
 	margin : 0px;
-	padding : 0;
+	padding : 0px;
 	background-color: #4d4d4d;
 	white-space:nowrap;
 	border-bottom: 10px solid #eee;
@@ -60,7 +60,7 @@ a { outline: none; }
 #admin-tabs ul{
 	width: 1100px;
 	margin-left: 10px;
-	margin:0;
+	margin:0px;
 	display: block;
 	white-space:nowrap;
 }
@@ -95,7 +95,7 @@ a { outline: none; }
 	background-color:#eee; 
 	color: #000000;
 	border-style: none;
-	margin-top:0;
+	margin-top:0px;
 	height: 30px;
 	font-weight: bold;
 }
@@ -153,7 +153,7 @@ a { outline: none; }
 }
 
 #admin-side ul{
-	margin: 40px 0 0 0;
+	margin: 40px 0px 0px 0px;
 	padding: 0px;
 	border-bottom: none;
 	width: 100%;
@@ -161,7 +161,7 @@ a { outline: none; }
 
 #admin-side li{
 	list-style: none;
-	margin: 0px 0 10 0;
+	margin: 0px 0px 10px 0px;
 	white-space:nowrap;
 	height: 32px;
 	border-right: none;
@@ -171,12 +171,12 @@ a { outline: none; }
 
 .sideBarTabs-ui {
 	width:100%;
-	margin:0 5 0 5;
-	padding:0;
+	margin:0px 5px 0px 5px;
+	padding:0px;
 }
 ul.sideBarTabs-ui {
-	margin:40 0;
-	padding:0;
+	margin:40px 0px;
+	padding:0px;
 	list-style:none;
 	border-bottom: #666666 solid 1px;
 	width: 100%;
@@ -195,7 +195,7 @@ a.sideBarTab-ui {
 	border-right: none;
 	text-decoration: none !important;
 	outline: none;
-	top: 0;
+	top: 0px;
 	height: auto;
 	width: 100%;
 	color: #000000;
@@ -233,12 +233,12 @@ span.title {
 
 .tabs-ui {
 	width:100%;
-	margin:0 5 0 5;
+	margin:0px 5px 0px 5px;
 	padding:0;
 }
 .tabs-ui ul {
-	margin:0;
-	padding:0;
+	margin:0px;
+	padding:0px;
 	list-style:none;
 	border-bottom: #000 solid 1px;
 }
@@ -261,14 +261,10 @@ span.title {
 	height: auto;
 }
 .tabs-ui .tab-ui.active{
-/* 	top: 1; */
-/* 	border-bottom: solid 1px gray; */
 	background-color: #cbeaf8;
 }
 
 .tabs-ui .tab-ui.active:hover{
-/* 	top: 1; */
-/* 	border-bottom: solid 1px gray; */
 	background-color: #cbeaf8;
 }
 
@@ -295,7 +291,6 @@ a:active { color:#ff0000;}
 a:hover{text-decoration: underline;}
 
 a.iconButton{
-/* 	background: url(imgs/button_bg.jpg); */
 	height: 20px;
 	background: url(imgs/iconButton_bg.gif);
 	font-size:14px;
@@ -375,18 +370,13 @@ a.menuContextA:visited{
 }
 
 a.menuContextA_edit:link{
-	color: 0000ff;
+	color: #0000ff;
 	text-decoration: none;
 }
 a.menuContextA_edit:visited{
-	color: 0000ff;
+	color: #0000ff;
 	text-decoration: none;
 }
-
-/* a.menuContextA:hover{ */
-/* 	text-decoration: none; */
-/* 	background-color: #cbeaf8; */
-/* } */
 
 .button:link { color:#000;}
 .button:visited { color:#000;}
@@ -422,19 +412,17 @@ a.menuContextA_edit:visited{
 }
 
 .headerProperties, .headerDefaultPanel, .headerPortalAdmins {
-	border : 1px solid gray;
+	border : 1px solid #808080;
 	background-color : #eeeeee;
 	text-align : center;
 }
 
 .rowDefaultPanel {
-	border : 1px solid gray;
+	border : 1px solid #808080;
 	padding: 3px;
 	margin:0px;
 	margin-bottom:-1px;
 	border-top:0px solid #fff;
-	
-//	margin-bottom:0px;
 }
 
 .homeTitle, .searchEngineTitle, .propertiesTitle, .proxyTitle, .i18nTitle, .portalAdminsTitle {
@@ -453,7 +441,6 @@ a.menuContextA_edit:visited{
 	border: 1px solid #666666;
 	width: 320px;
 	height: auto;
-/* 	clear: both; */
 	float: left;
 	padding: 0px;
 	-webkit-border-radius: 3px;
@@ -465,7 +452,6 @@ a.menuContextA_edit:visited{
 	border-bottom: 1px solid #666666;
 	padding: 3px;
 	background-color: #cccccc;
-/* 	background: url(./imgs/configSetHeader_bg.jpg) repeat; */
 	width: 314px;
 	_width: 320px;
 	
@@ -842,7 +828,11 @@ a.gadgetListTabA:visited{
 	background-repeat: no-repeat;
 	background-position: center left;
 	cursor: pointer;
-	
+	text-align: center;
+}
+.authorizationTable thead tr .regexpheader {
+	min-width:170px;
+  　width: 170px;
 }
 .authorizationTable thead tr .headerSortUp {
 	background-image: url(imgs/asc.gif);

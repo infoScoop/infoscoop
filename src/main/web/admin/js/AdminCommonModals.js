@@ -35,7 +35,6 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 		  generateId : false,
 		  omitTypeList:[],
 		  showServiceURL:false,
-		  //showMultiEditForm:false,
 		  showIgnoreHeaderForm:false,
 		  showNoBorderForm:false,
 		  showMenuExplorer:false,
@@ -60,11 +59,6 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 			disabledAttribute = " disabled='disabled'";
 		}
 		
-		// this.currentModal = new Control.Modal('', {
-		//   className:"adminTreeMenu",
-		//   afterClose:this.hideWidgetEditorForm.bind(this)
-		// });
-
 		this.currentModal = new Control.Modal('', {
 		  className:"adminTreeMenu",
 		  afterClose: function(){
@@ -1335,7 +1329,7 @@ ISA_CommonModals.EditorForm.makeMenuTreeAdminsFieldSet = function(disabled, menu
 	addUid.disabled= disabled;
 	
 	var dummy = document.createElement("div");
-	dummy.innerHTML = '<table class="authorizationTable"><tbody><tbody></table>';
+	dummy.innerHTML = '<table class="authorizationTable"><tbody></tbody></table>';
 	var valueTable = dummy.firstChild;
 	var valueTbody = valueTable.firstChild;
 	
@@ -1538,7 +1532,7 @@ ISA_CommonModals.EditorForm.makeMenuItemACLEditFieldSet = function(disabled, men
 		principalTh.appendChild(document.createTextNode(ISA_R.alb_subject));
 		authHeadTr.appendChild(principalTh);
 		var regxTh = document.createElement('th');
-		regxTh.className = "nosort";
+		regxTh.className = "nosort regexpheader";
 		regxTh.appendChild(document.createTextNode(ISA_R.alb_regularExpression));
 		authHeadTr.appendChild(regxTh);
 		var trushTd = document.createElement('th');

@@ -171,10 +171,8 @@ ISA_loadProperties = function(_callback){
 }
 
 ISA_Admin.createIconButton = function(text, title, imgName, floatValue) {
-	//var div = document.createElement("div");
 	var button = document.createElement("a");
 	button.className = "iconButton";
-	//div.type = "button";
 	if(floatValue) {
 		if(Browser.isIE)
 			button.style.styleFloat = floatValue;
@@ -186,15 +184,11 @@ ISA_Admin.createIconButton = function(text, title, imgName, floatValue) {
 	img.src = imageURL + imgName;
 	img.style.position = "relative";
 	img.style.top = "2px";
-	img.style.margin = "0 5 0 0";
-//	var anc = document.createElement("a");
-//	anc.appendChild(document.createTextNode(text));
-//	anc.className = "button";
-//	anc.href = "#";
+	img.style.margin = "0px 5px 0px 0px";
 	button.href = "#";
 	button.appendChild(img);
 	button.appendChild(document.createTextNode(text));
-//	button.appendChild(anc);
+
 	return button;
 };
 
@@ -607,7 +601,6 @@ ISA_previewFormModal = {
 			selectPrincipal.appendChild( opt );
 		}
 		inputDiv.appendChild(selectPrincipal);
-		// 
 		var editRoleInput = document.createElement("input");
 		editRoleInput.className = "panelPrincipalValue";
 		editRoleInput.type = "text";
