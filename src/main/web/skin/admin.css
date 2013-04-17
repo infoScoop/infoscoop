@@ -940,8 +940,8 @@ a.gadgetListTabA:visited{
 /* configuration table -------------------- */
 table.configTableHeader{
 	clear : both;
-	margin: 10px 10px 0px 10px;
-/* 	background-color:#666666; */
+	margin: 10px 10px 0 10px;
+	margin-bottom: 10px;
 	height: auto;
 	tableLayout : fixed;
 	emptyCells : show;
@@ -968,12 +968,9 @@ div.configListDiv{/*  not in use? */
 }
 
 div.configTableDiv{
-/* 	width: 400; */
-	width: 900;
+	width: 900px;
 	height: auto;
-	margin: 0px 10px 0px 10px;
-/* 	float: left; */
-/* 	background-color: #666666; */
+	margin: 0 10px 0 10px;
 }.
 
 table.configTable{
@@ -1221,6 +1218,14 @@ td.configTableTd{
 #oauthContainerCertForm p.note {
 	padding:10px;
 	font-size:12px;
+}
+
+table[id^="oauth_consumer_setting_"] {
+	text-align: left;
+}
+
+table.gadgetUrlTable{
+	margin: 10px 0 0 0;
 }
 
 /*- Footer not in use--------------------------- */

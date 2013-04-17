@@ -360,6 +360,7 @@ ISA_Authentication = {
 		return $.INPUT({
 			id: id
 			, value: value
+			, type: "text"
 			, width: "99%"
 			, style: "width:99%;"
 		});
@@ -398,9 +399,9 @@ ISA_Authentication = {
 		var deleteIcon = $.IMG({id:elementId +"_delete", src:"../../skin/imgs/trash.gif", title:ISA_R.alb_delete, style:'cursor:pointer'});
 		var editImg = $.IMG({id:elementId +"_edit", src:"../../skin/imgs/edit.gif", title:ISA_R.alb_editing, style:'cursor:pointer'});
 		var tr = $.TR({id:elementId}
-			,$.TD({id:elementId+'_service_nameTd', className:"configTableTd", style:"textAlign:left; padding: 3;"}, serviceNameDiv )
+			,$.TD({id:elementId+'_service_nameTd', className:"configTableTd", style:"textAlign:left; padding: 3px;"}, serviceNameDiv )
 			,$.TD({id:elementId+'_editTd', className:"configTableTd", style:"textAlign:center;"}, editImg )
-			,$.TD({id:elementId+'_descriptionTd', className:"configTableTd", style:"textAlign:left; padding: 3;"}, descriptionDiv )
+			,$.TD({id:elementId+'_descriptionTd', className:"configTableTd", style:"textAlign:left; padding: 3px;"}, descriptionDiv )
 			,$.TD({className:"configTableTd", style:"textAlign:center;"}, deleteIcon )
 		);
 		IS_Event.observe( deleteIcon,"click",function(tr, delObj){
@@ -485,7 +486,7 @@ ISA_Authentication = {
 		var gadgetTableBody = 
 		$.TBODY({id:"gadgetTableBody"}
 			,$.TR({style:"backgroundColor:#eee;fontWeight:bold;textAlign:center;"}
-				,$.TD({style:"padding:2"}, ISA_R.alb_oauthGadgetsUsingService)
+				,$.TD({style:"padding:2px"}, ISA_R.alb_oauthGadgetsUsingService)
 				,$.TD({width:"50px"},ISA_R.alb_delete)
 			)
 		);
@@ -503,7 +504,7 @@ ISA_Authentication = {
 			var deleteIcon = this._createDeleteIcon(i);
 			gadgetTableBody.appendChild(
 				$.TR({id:'gadget_list_' + i}
-					, $.TD({style:'padding:2;'}
+					, $.TD({style:'padding:2px;'}
 						, $.DIV({style:"overflow:hidden"},gadgetTitle)
 					)
 					, $.TD({align:"center"}, deleteIcon)
@@ -511,12 +512,12 @@ ISA_Authentication = {
 			);
 		};
 		
-		var gadgetUrlTd = $.TD({ style:"padding:5;"}
-			,$.INPUT({id:elementId + '_gadget_url', value: 'http://', style: 'width: 80%'})
+		var gadgetUrlTd = $.TD({ style:"padding:5px;"}
+			,$.INPUT({id:elementId + '_gadget_url', value: 'http://', type:"text", style: 'width: 80%'})
 			,gadgetUrlAddButton
 		);
 		
-		var gadgetListTd = $.TD({ style:"padding:5;"}
+		var gadgetListTd = $.TD({ style:"padding:5px;"}
 			,gadgetSelect
 			, uploadGadgetAddButton
 		);
@@ -546,13 +547,13 @@ ISA_Authentication = {
 		
 		var tbody = $.TBODY({},
 			$.TR({}, 
-				$.TD({width:"35%", style:"padding:5;"}, ISA_R.alb_oauthServiceName),
+				$.TD({width:"35%", style:"padding:5px;"}, ISA_R.alb_oauthServiceName),
 				$.TD({} 
 					,this._createTextbox(elementId + '_service_name', consumer['service_name'])
 				)
 			)
 			,$.TR({}, 
-				$.TD({width:"35%", style:"padding:5;"}, "OAuth " + ISA_R.alb_versionNum),
+				$.TD({width:"35%", style:"padding:5px;"}, "OAuth " + ISA_R.alb_versionNum),
 				$.TD({},
 					$.SELECT({
 						id: elementId + '_oauth_version',
@@ -571,7 +572,7 @@ ISA_Authentication = {
 				)
 			)
 			,$.TR({"class":"oauth1_element", style:(consumer.isOAuth2)? 'display:none' : ''}, 
-				$.TD({ style:"padding:5;"}, ISA_R.alb_oauthSignatureAlgorithm),
+				$.TD({ style:"padding:5px;"}, ISA_R.alb_oauthSignatureAlgorithm),
 				$.TD({}, 
 					$.SELECT({
 						id: elementId + '_signature_method',
@@ -584,30 +585,30 @@ ISA_Authentication = {
 				)
 			)
 			,$.TR({},
-				$.TD({"class":"oauth1_element", style:"padding:5;" + ((consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthConsumerKey),
-				$.TD({"class":"oauth2_element", style:"padding:5;" + ((!consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthClientId),
+				$.TD({"class":"oauth1_element", style:"padding:5px;" + ((consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthConsumerKey),
+				$.TD({"class":"oauth2_element", style:"padding:5px;" + ((!consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthClientId),
 				$.TD({}
 						,this._createTextbox(elementId + '_consumer_key', consumer['consumer_key'])
 					)
 				)
 			,$.TR({}, 
-				$.TD({"class":"oauth1_element", style:"padding:5;" + ((consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthConsumerSecret),
-				$.TD({"class":"oauth2_element", style:"padding:5;" + ((!consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthClientSecret),
+				$.TD({"class":"oauth1_element", style:"padding:5px;" + ((consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthConsumerSecret),
+				$.TD({"class":"oauth2_element", style:"padding:5px;" + ((!consumer.isOAuth2)? 'display:none' : '')}, ISA_R.alb_oauthClientSecret),
 				$.TD({} 
 					,this._createTextbox(elementId + '_consumer_secret', consumer['consumer_secret'])
 				)
 			)
 			,$.TR({}, 
-				$.TD({style:"padding:5;"}, ISA_R.alb_description),
+				$.TD({style:"padding:5px;"}, ISA_R.alb_description),
 				$.TD({} 
 					, this._createTextArea(elementId + '_description', consumer['description'])
 				)
 			)
 			,$.TR({}, 
-					$.TD({width:"", style:"padding:5;"}, ISA_R.alb_oauthAddingGadget),
-					$.TD({width: "", style:"padding:5"}
+					$.TD({width:"", style:"padding:5px;"}, ISA_R.alb_oauthAddingGadget),
+					$.TD({width: "", style:"padding:5px"}
 						, gadgetOptRadioUrl
-						, $.LABEL({htmlFor:"gadget_opt_url", style:"padding: 0 15 0 0"}
+						, $.LABEL({htmlFor:"gadget_opt_url", style:"padding: 0 15px 0 0"}
 							, ISA_R.alb_gadgetUrlSpecified
 						)
 						, gadgetOptRadioUpload
@@ -618,8 +619,8 @@ ISA_Authentication = {
 				)
 				,gadgetOptTr
 				,$.TR({}, 
-					$.TD({colSpan:"2", style:"padding:5;"}
-						,$.TABLE({border:"1", width:"99%", className:"configTableHeader fixedTable"}
+					$.TD({colSpan:"2", style:"padding:5px;"}
+						,$.TABLE({border:"1px", width:"100%", className:"gadgetUrlTable configTableHeader fixedTable"}
 							,gadgetTableBody
 						)
 					)
@@ -720,10 +721,10 @@ ISA_Authentication = {
 		tempGadgetList.push(gadgetUrl);
 		gadgetTableBody.appendChild(
 			$.TR({id:'gadget_list_' + index}
-				, $.TD({style:"padding:2;"}
+				, $.TD({style:"padding:2px;"}
 					, $.DIV({style:"overflow:hidden"}, gadgetTitle)
 				)
-				, $.TD({align:"center", style:"padding:0 3 0 3;"}, deleteIcon)
+				, $.TD({align:"center", style:"padding:0 3px 0 3px;"}, deleteIcon)
 			)
 		);
 	},
@@ -844,7 +845,7 @@ ISA_Authentication = {
 			$.DIV({className:"configSet"}, 
 				$.P({className:"configSetHeader"},ISA_R.alb_oauthConsumerKey),
 				consumerKeyNote,
-				$.INPUT({id:'oauth_container_consumer_key', className:"configSetContent",value:certificate.consumerKey})),
+				$.INPUT({id:'oauth_container_consumer_key', className:"configSetContent", type:"text", value:certificate.consumerKey})),
 			$.DIV({className:"configSet"}, 
 				$.P({className:"configSetHeader"},ISA_R.alb_oauthPrivateKey),
 				privateKeyNote, 
