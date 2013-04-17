@@ -730,13 +730,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 	}
 	
 	this.build = function() {
-		var adminsData = portalAdminsJson;
-		
-		ISA_PortalAdmins.portalRolesList = adminsData.roles;
-		self.displayPortalAdmins(adminsData.admins);
-
-		/*
-		var url = adminHostPrefix + "/services/portalAdmins/getPortalAdminsJson";
+		var url = "getPortalAdminsJson";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,
@@ -769,7 +763,6 @@ ISA_PortalAdmins.prototype.classDef = function() {
 			}
 		};
 		AjaxRequest.invoke(url, opt);
-		*/
 	};
 
 	this.getRole = function(roleId){
