@@ -12,6 +12,7 @@ ISA_PortalForbiddenURL.prototype = {
 		urlInput.id = "forbiddenURL_"+urlId+"_url";
 		urlInput.value = forbiddenUrl.url;
 		urlInput.style.width = "100%";
+		urlInput.type="text";
 		urlInput.className = "portalAdminInput";
 		IS_Event.observe( urlInput,"change",function(){
 			ISA_Admin.isUpdated = true;
