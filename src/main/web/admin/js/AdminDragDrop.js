@@ -27,6 +27,7 @@ ISA_DragDrop.SiteAggregationMenu.prototype.classDef = function() {
 				starteffect: function(el) {
 				},
 				constraint:'vertical',
+				ghosting: true,
 				// A function called at finish dragging
 				endeffect: function(element) {
 					// Below is initial diplay setting as position=relative

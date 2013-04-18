@@ -644,7 +644,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		createNavigator(menuItem, menuItemTr, this);
 		
 		itemTd.appendChild(divMenuItem);
-		
+
 		return menuDiv;
 	}
 
