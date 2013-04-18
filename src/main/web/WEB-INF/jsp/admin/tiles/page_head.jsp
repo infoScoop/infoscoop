@@ -139,7 +139,7 @@
 		<script src="../../admin/js/AdminAuthentication.js"></script>
 		<!--end script-->
 		
-		<script src="../../js/lib/jquery-1.5.2.min.js"></script>
+		<script src="../../js/lib/jquery-1.9.1.min.js"></script>
 		<script>
 			jQuery.noConflict();
 			$jq = jQuery;
