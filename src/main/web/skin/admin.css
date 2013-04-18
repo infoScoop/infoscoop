@@ -539,7 +539,8 @@ a.menuContextA_edit:visited{
 }
 
 .headerProperties{
-	padding: 3px;
+	padding: 5px;
+	white-space: nowrap;
 	font-weight: bold;
 }
 
@@ -547,9 +548,19 @@ a.menuContextA_edit:visited{
 	width: 100%;
 }
 
+.standardProperty > td {
+	border-color: #666666;
+	padding: 3px;
+}
+
 .advancedProperty {
-	color: #FF0000;
 	margin: 10px;
+}
+
+.advancedProperty > td {
+	border-color: #666666;
+	color: #FF0000;
+	padding: 3px;
 }
 
 .portalAdminInput {

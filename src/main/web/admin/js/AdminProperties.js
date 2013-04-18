@@ -111,25 +111,19 @@ ISA_Properties.prototype.classDef = function() {
 			var propertiesTd;
 			propertiesTd = document.createElement("td");
 			propertiesTd.className = "headerProperties";
-			propertiesTd.style.whiteSpace = "nowrap";
 			propertiesTd.style.width = "30%";
-			propertiesTd.style.padding = "5px";
 			propertiesTd.appendChild(document.createTextNode(ISA_R.alb_porpety));
 			propertiesTr.appendChild(propertiesTd);
 
 			propertiesTd = document.createElement("td");
 			propertiesTd.className = "headerProperties";
-			propertiesTd.style.whiteSpace = "nowrap";
 			propertiesTd.style.width = "30%";
-			propertiesTd.style.padding = "5px";
 			propertiesTd.appendChild(document.createTextNode(ISA_R.alb_value));
 			propertiesTr.appendChild(propertiesTd);
 
 			propertiesTd = document.createElement("td");
 			propertiesTd.className = "headerProperties";
-			propertiesTd.style.whiteSpace = "nowrap";
 			propertiesTd.style.width = "40%";
-			propertiesTd.style.padding = "5px";
 			propertiesTd.appendChild(document.createTextNode(ISA_R.alb_description));
 			propertiesTr.appendChild(propertiesTd);
 
@@ -156,6 +150,7 @@ ISA_Properties.prototype.classDef = function() {
 		
 		if(!property) return tr;
 		
+		tr.className = "standardProperty";
 		if(property.advanced){
 			tr.className = "advancedProperty";
 			tr.style.display = "none";
@@ -164,14 +159,12 @@ ISA_Properties.prototype.classDef = function() {
 		var td;
 		td = document.createElement("td");
 		td.style.whiteSpace = "nowrap";
-		td.style.padding = "3px";
 		
 		td.appendChild(document.createTextNode(ISA_Admin.replaceUndefinedValue(property.id)));
 		tr.appendChild(td);
 		
 		td = document.createElement("td");
 		td.style.whiteSpace = "nowrap";
-		td.style.padding = "3px";
 		
 		var prefConf = property;
 		prefConf.name = property.id;
@@ -179,7 +172,7 @@ ISA_Properties.prototype.classDef = function() {
 		prefConf.maxBytes = 1024;
 		if (property.enumValue) {
 			try {
-				prefConf.EnumValue = property.enumValue.evalJSON();
+				prefConf.EnumValue = eval('('+property.enumValue+')');
 			}catch(e){
 				msg.warn(getErrorMessage(e));
 			}
@@ -194,7 +187,6 @@ ISA_Properties.prototype.classDef = function() {
 			propertyValueInput.disabled = true;*/
 		
 		td = document.createElement("td");
-		td.style.padding = "3px";
 		td.style.fontSize = "90%";
 		td.appendChild(document.createTextNode(ISA_R["alb_desc_"+property.id]+ "　"));
 		tr.appendChild(td);

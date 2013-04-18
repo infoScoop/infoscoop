@@ -31,33 +31,33 @@
 			var propertiesTd;
 			propertiesTd = $jq("<td>")
 				.addClass("headerProperties")
-				.css({"white-space":"nowrap", "width":"10%", "padding":"5px"});
+				.css({"width":"10%"});
 			propertiesTd.text(ISA_R.alb_sequence);
 			propertiesTr.append(propertiesTd);
 
 			propertiesTd = $jq("<td>")
 				.addClass("headerProperties")
-				.css({"white-space":"nowrap", "width":"400px", "padding":"5px"});
+				.css({"width":"400px"});
 			propertiesTd.text(ISA_R.alb_tabDesc);
 			propertiesTr.append(propertiesTd);
 
 			propertiesTd = $jq("<td>")
 				.addClass("headerProperties")
-				.css({"white-space":"nowrap", "width":"10%", "padding":"5px"});
+				.css({"width":"10%"});
 			propertiesTd.text(ISA_R.alb_edit);
 			propertiesTr.append(propertiesTd);
 
 			propertiesTd = $jq("<td>")
 				.addClass("headerProperties")
 				.addClass("hiddenTabAdmin")
-				.css({"white-space":"nowrap", "width":"10%", "padding":"5px"});
+				.css({"width":"10%"});
 			propertiesTd.text(ISA_R.alb_admin);
 			propertiesTr.append(propertiesTd);
 
 			propertiesTd = $jq("<td>")
 				.addClass("headerProperties")
 				.addClass("hiddenTabAdmin")
-				.css({"white-space":"nowrap", "width":"10%", "padding":"5px"});
+				.css({"width":"10%"});
 			propertiesTd.text(ISA_R.alb_delete);
 			propertiesTr.append(propertiesTd);
 			
@@ -372,14 +372,13 @@
 			propertiesTbody.append(propertiesTr);
 
 			var uidTd = $jq("<td>")
-				.addClass("headerProperties")
-				.css({"white-space":"nowrap", "padding":"5px"});
+				.addClass("headerProperties");
 			uidTd.text(IS_R.lb_userID);
 			propertiesTr.append(uidTd);
 			
 			var deleteTd = $jq("<td>")
 				.addClass("headerProperties")
-				.css({"width":"20%", "padding":"5px"});
+				.css({"width":"20%"});
 			deleteTd.text(ISA_R.alb_delete);
 			propertiesTr.append(deleteTd);
 			
