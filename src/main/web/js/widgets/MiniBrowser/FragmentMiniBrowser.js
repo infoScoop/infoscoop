@@ -189,14 +189,13 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 		
 		if(Browser.isIE){
 			if(iframeDoc && iframeDoc.body){
-				widget.iframe.style.height = (isAuto)? (iframeDoc.body.scrollHeight) + offset : height;
+				widget.iframe.style.height = ((isAuto)? (iframeDoc.body.scrollHeight) + offset : height) + "px";
 			}
 		} else {
 			if(iframeDoc && iframeDoc.body){
-//				widget.iframe.style.height = (isAuto)? parseInt(iframeDoc.height) + offset : height;
 				widget.iframe.style.height = 0;
 				widget.iframe.style.height =
-					(isAuto)? IS_Widget.FragmentMiniBrowser.getMiniBrowserHeight(iframeDoc) + offset: height;
+					((isAuto)? IS_Widget.FragmentMiniBrowser.getMiniBrowserHeight(iframeDoc) + offset: height) + "px";
 			}
 		}
 
@@ -232,7 +231,7 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 	
 	this.adjustMaximizeHeight = function() {
 		if(widget.iframe)
-			widget.iframe.style.height = getWindowSize(false) - findPosY( widget.elm_widgetContent ) -6;
+			widget.iframe.style.height = (getWindowSize(false) - findPosY( widget.elm_widgetContent ) -6) + "px";
 	}
 	
 	this.turnBackIconHandler = function (e) {
@@ -250,7 +249,7 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 
 		// If the function cannot get body height, return available child height
 IS_Widget.FragmentMiniBrowser.getMiniBrowserHeight = function( element ) {
-	var height = element.height;
+	var height = element.documentElement.offsetHeight;
 	if (!(!isNaN(height) && height > 0)) {
 		element = element.body? element.body : element;
 		

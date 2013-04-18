@@ -358,8 +358,8 @@ ISA_Admin.initIndicator = function() {
 	LoadingDiv.className = "nowLoading";
 	indicatorDiv.appendChild(LoadingDiv);
 	
-	LoadingDiv.style.top = findPosY(document.body) + 200;
-	LoadingDiv.style.left = findPosX(document.body) + document.body.offsetWidth/2 - divOverlay.offsetWidth/2;
+	LoadingDiv.style.top = (findPosY(document.body) + 200) + "px";
+	LoadingDiv.style.left = (findPosX(document.body) + document.body.offsetWidth/2 - divOverlay.offsetWidth/2) + "px";
 
 }
 
@@ -369,8 +369,8 @@ ISA_Admin.startIndicator = function() {
 //	var overlay = ISA_Admin.indicatorDiv;
 	var overlay = ISA_Admin.overlay;
 	
-	overlay.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth);
-	overlay.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight);
+	overlay.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth) + "px";
+	overlay.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight) + "px";
 //	overlay.style.display = "";
 	ISA_Admin.indicatorDiv.style.display = "";
 }
