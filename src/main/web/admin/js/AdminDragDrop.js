@@ -33,7 +33,9 @@ ISA_DragDrop.SiteAggregationMenu.prototype.classDef = function() {
 					// Below is initial diplay setting as position=relative
 					element.style.left = 0;
 					element.style.top = 0;
-					new Effect.Highlight(element, {duration:3});
+					element.style.position = 'relative';
+					//fix #478
+//					new Effect.Highlight(element, {duration:3});
 				}
 			});
 			ISA_DragDrop.draggableList.push(this.draggable);
@@ -182,7 +184,6 @@ ISA_DragDrop.SiteAggregationMenu.prototype.classDef = function() {
 			ISA_SiteAggregationMenu.treeMenu.subMenuOpen(dropLineTd, dropItem,
 				(dropLineTd.className == 'ygtvln' || dropLineTd.className == 'ygtvtn'));
 		}
-		
 		var beforeDepth;
 		if(endProcessMode == "move"){
 			// Update content of item
