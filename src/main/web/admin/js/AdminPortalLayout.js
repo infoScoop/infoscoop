@@ -232,6 +232,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 				editLayoutTextarea = document.createElement("input");
 				editLayoutTextarea.style.width = "99%";
 				editLayoutTextarea.style.margin = "5px";
+				editLayoutTextarea.type = "text";
 				break;
 			default:
 				editLayoutTextarea = document.createElement("textarea");

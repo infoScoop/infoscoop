@@ -649,7 +649,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		jsonRole = this.setColumnsArray(jsonRole);
 
 		var roleDiv = document.createElement("div");
-//		roleDiv.id = "tab_"+this.displayTabId+"_role_" + jsonRole.roleOrder;
 		roleDiv.id = "tab_"+this.displayTabId+"_role_" + jsonRole.id;
 		roleDiv.roleId = jsonRole.id;
 		roleDiv.className = "configTableDiv";
@@ -675,7 +674,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		sortableTd.className = "configTableTd";
 		sortableTd.style.width = "40px";
 		sortableTd.style.textAlign = 'center';
-//		if(jsonRole.id != this.displayTabId + "_" + defaultRoleRegex){
 		if(!jsonRole.isDefault){
 			var imgSrc = imageURL +"drag.gif";
 
@@ -687,8 +685,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				sortableImg = document.createElement("img");
 				sortableImg.src = imgSrc;
 			}
-			sortableImg.style.width = 16;
-			sortableImg.style.height = 16;
+			sortableImg.style.width = "16px";
+			sortableImg.style.height = "16px";
 			sortableImg.style.cursor = "move";
 			sortableImg.title = ISA_R.alb_changingOrder;
 

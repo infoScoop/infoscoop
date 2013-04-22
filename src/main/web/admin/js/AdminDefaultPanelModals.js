@@ -699,8 +699,6 @@ ISA_DefaultPanel.prototype.templates = {
 	},
 	// Set for default fixed area
 	setStaticLayout0: function(jsonObject, number){
-//		for(var i=0; i < 8; i++)
-//		  this.getStaticLayout(i);
 		this.getStaticLayout();
 		
 		return this.setStaticLayout(jsonObject, (number ? number : this.staticLayoutDefaultIdx));

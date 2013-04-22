@@ -895,12 +895,12 @@ IS_WidgetsContainer.adjustColumns = {
 		
 		IS_WidgetsContainer.adjustColumns.endX = Event.pointerX(e);
 		
-		if(!Browser.isIE){
+//		if(!Browser.isIE){
 			IS_WidgetsContainer.adjustColumns.changeWidth();
-		}else{
-			IS_WidgetsContainer.adjustColumns.timer = 
-				setTimeout(IS_WidgetsContainer.adjustColumns.changeWidth, 5);
-		}
+//		}else{
+//			IS_WidgetsContainer.adjustColumns.timer = 
+//				setTimeout(IS_WidgetsContainer.adjustColumns.changeWidth, 5);
+//		}
 		
 		// Prevent event from being passed to upper level
 		Event.stop(e);
@@ -919,7 +919,6 @@ IS_WidgetsContainer.adjustColumns = {
 		var parentWidth = IS_WidgetsContainer.adjustColumns.parentWidth;
 		
 		IS_WidgetsContainer.adjustColumns.isDragging = false;
-//		IS_WidgetsContainer.adjustColumns.hideAdjustDivs(targetEl1.parentNode, e);
 		var numCol = IS_Portal.tabs[IS_Portal.currentTabId].numCol;
 		
 		var p = ( targetEl1.offsetWidth / parentWidth ) * 100;
@@ -965,14 +964,15 @@ IS_WidgetsContainer.adjustColumns = {
 		
 		var setWidth = (endx - startx);
 		if(startOffsetWidth + setWidth < totalWidth-10 && startOffsetWidth + setWidth > 0){
-			targetEl1.style.width = (startOffsetWidth + setWidth);
+			targetEl1.style.width = (startOffsetWidth + setWidth) + 'px';
 		}else{
-			targetEl1.style.width = (startOffsetWidth + setWidth > 0)? (totalWidth-10) : 10;
+			var wid = (startOffsetWidth + setWidth > 0)? (totalWidth-10) : 10;
+			targetEl1.style.width = wid+'px';
 		}
 		
 		var setWidth2 = (totalWidth - targetEl1.offsetWidth);
 		if(totalWidth - setWidth2 > 0){
-			targetEl2.style.width = setWidth2 - 1;
+			targetEl2.style.width = setWidth2 - 1 + 'px';
 		}
 		
 		IS_WidgetsContainer.adjustColumns.isChanging = false;
@@ -992,47 +992,48 @@ IS_WidgetsContainer.adjustColumns = {
 	}
 }
 
-if( Browser.isSafari1 ) {
-	IS_WidgetsContainer.adjustColumns.end = ( function(){
-		var end = IS_WidgetsContainer.adjustColumns.end;
+// Fix 13855
+// if( Browser.isSafari1 ) {
+// 	IS_WidgetsContainer.adjustColumns.end = ( function(){
+// 		var end = IS_WidgetsContainer.adjustColumns.end;
 		
-		return function() {
-			end.apply( this,$A( arguments ));
+// 		return function() {
+// 			end.apply( this,$A( arguments ));
 			
-			var total = 0;
-			var widths = {};
-			IS_Portal.tabs[IS_Portal.currentTabId].columnsWidth.each( function( columnWidth,i ){ 
-				var width = parseFloat( columnWidth.match(/(\d+(?:.\d+)?)%/)[1] );
-				if( !width || isNaN( width ))
-					return;
+// 			var total = 0;
+// 			var widths = {};
+// 			IS_Portal.tabs[IS_Portal.currentTabId].columnsWidth.each( function( columnWidth,i ){ 
+// 				var width = parseFloat( columnWidth.match(/(\d+(?:.\d+)?)%/)[1] );
+// 				if( !width || isNaN( width ))
+// 					return;
 				
-				widths[i] = width;
-				total += width;
-			});
+// 				widths[i] = width;
+// 				total += width;
+// 			});
 			
-			var currentTab = IS_Portal.tabs[IS_Portal.currentTabId];
-			var max = ( ( 100-( currentTab.numCol-1 ))/currentTab.numCol ) *currentTab.numCol;
-			if( total >= max -0.01 )
-				return;
+// 			var currentTab = IS_Portal.tabs[IS_Portal.currentTabId];
+// 			var max = ( ( 100-( currentTab.numCol-1 ))/currentTab.numCol ) *currentTab.numCol;
+// 			if( total >= max -0.01 )
+// 				return;
 			
-			var scale = max/total;
+// 			var scale = max/total;
 			
-			currentTab.columnsWidth = [];
-			var columns = $("columns"+currentTab.tabNumber ).childNodes;
-			var columnNumber = 0;
-			for(var i=0;i<columns.length;i++){
-				var column = columns[i];
-				if(column.className != "column") continue;
+// 			currentTab.columnsWidth = [];
+// 			var columns = $("columns"+currentTab.tabNumber ).childNodes;
+// 			var columnNumber = 0;
+// 			for(var i=0;i<columns.length;i++){
+// 				var column = columns[i];
+// 				if(column.className != "column") continue;
 				
-				var width = widths[columnNumber] *scale;
-				column.style.width = width+"%";
-				currentTab.columnsWidth.push( width );
+// 				var width = widths[columnNumber] *scale;
+// 				column.style.width = width+"%";
+// 				currentTab.columnsWidth.push( width );
 				
-				columnNumber++;
-			}
-		}
-	})();
-}
+// 				columnNumber++;
+// 			}
+// 		}
+// 	})();
+// }
 
 IS_Portal.rebuilding = new Object();
 IS_WidgetsContainer.rebuildColumns = function( tabId, numCol, columnsWidth, isReset, isInitialize ) {
