@@ -200,7 +200,7 @@
 	<script src="../../admin/js/AdminEditRole.js"></script>
 	<!--end script-->
 	
-	<script src="../../js/lib/jquery-1.5.2.min.js"></script>
+	<script src="../../js/lib/jquery-1.9.1.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery-ui-1.8.13.custom.css">
 	<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery.ui.button.css">
 	<script src="../../js/lib/jquery-ui-1.8.13.custom.min.js"></script>
