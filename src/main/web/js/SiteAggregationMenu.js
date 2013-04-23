@@ -1798,6 +1798,7 @@ IS_SiteAggregationMenu.createMultiDropConf = function(element, lastActiveElement
 			});
 
 			modal.open();
+			modal.position();
 
 			return;
 		}

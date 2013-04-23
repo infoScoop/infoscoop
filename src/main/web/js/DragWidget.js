@@ -405,7 +405,6 @@ IS_Droppables.mergeConfirm = function(element, lastActiveElement, draggedWidget,
 		
 		var contentPane = document.createElement("div");
 		Element.addClassName(contentPane, "preference");
-		
 		var modal = new Control.Modal('', {
 			className: 'preference',
 			closeOnClick: false,
@@ -479,6 +478,7 @@ IS_Droppables.mergeConfirm = function(element, lastActiveElement, draggedWidget,
 			draggedWidget.elm_widget.style.display = "none";
 			
 		modal.open();
+		modal.position();
 		// Flag indicate if Confirm is displayed
 		IS_Droppables.isConfirm = true;
 		
