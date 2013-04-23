@@ -201,10 +201,8 @@
 	<!--end script-->
 	
 	<script src="../../js/lib/jquery-1.9.1.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery-ui-1.8.13.custom.css">
-	<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery.ui.button.css">
-	<script src="../../js/lib/jquery-ui-1.8.13.custom.min.js"></script>
-	<script src="../../js/lib/jquery-ui/jquery.ui.button.js"></script>
+	<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery-ui-1.10.2.custom.css">
+	<script src="../../js/lib/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
 	
 	<script type="text/javascript">
 		jQuery.noConflict();

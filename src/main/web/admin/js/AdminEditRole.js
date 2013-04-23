@@ -743,6 +743,8 @@ function init() {
 			modal:true,
 			width: 600,
 			height: 500,
+			resizable: false,
+			draggable: false,
 			open: function(){
 				IS_Portal.behindIframe.show(this.parentNode);
 				
@@ -756,8 +758,10 @@ function init() {
 					.click(function(){
 						if(!confirm(ISA_R.alb_destroyOldSettings))
 							return;
-						var layoutTemplate = $jq($jq(this).html()).closest(".template");
-						var newNode = (layoutTemplate.length > 0) ? layoutTemplate : $jq(this).clone(true);
+
+						var selectedContent = $jq(this);
+						var layoutTemplate = $jq($jq.parseHTML(selectedContent.html())).closest(".template");
+						var newNode = (layoutTemplate.length > 0) ? layoutTemplate : selectedContent.clone(true);
 						setIdentifier(newNode);
 						openerPanel.setNewValue("layout", newNode.html(), jsonRole.id);
 						openerPanel.setNewValue("staticPanel", "{}", jsonRole.id);
@@ -787,6 +791,8 @@ function init() {
 			modal:true,
 			width: 580,
 			height: 400,
+			resizable: false,
+			draggable: false,
 			open:function(){
 				IS_Portal.behindIframe.show(this.parentNode);
 				
@@ -844,7 +850,7 @@ function init() {
 			if(isReset){
 				// reset
 				var target = $jq("#staticLayout" + ((this.value == "2")? "AdjustHeight" : "") + "_tpl_default");
-				var layoutTemplate = $jq($jq(target).html()).closest(".template");
+				var layoutTemplate = $jq($jq.parseHTML(target.html())).closest(".template");
 				layoutTemplate = (layoutTemplate.length > 0) ? layoutTemplate : $jq(target).clone(true);
 				setIdentifier(layoutTemplate);
 				openerPanel.setNewValue("layout", layoutTemplate.html(), jsonRole.id);

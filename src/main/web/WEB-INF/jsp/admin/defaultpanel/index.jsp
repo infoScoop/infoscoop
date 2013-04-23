@@ -34,17 +34,15 @@
 	<tiles:putAttribute name="side_body" type="string">
 	
 
-<script src="../../js/lib/jquery-ui-1.8.13.custom.min.js"></script>
-<script src="../../js/lib/jquery-ui/jquery.ui.autocomplete.js"></script>
+<script src="../../js/lib/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
 <script src="../../admin/js/AdminTabList.js"></script>
-<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery-ui-1.8.13.custom.css">
-<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery.ui.autocomplete.css">
+<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery-ui-1.10.2.custom.css">
 <style>
 	.ui-autocomplete {
         max-height: 100px;
         overflow-y: auto;
-        /* prevent horizontal scrollbar */
         overflow-x: hidden;
+        z-index: 20000;
     }
     /* IE 6 doesn't support max-height
      * we use height instead, but this forces the menu to always be this tall

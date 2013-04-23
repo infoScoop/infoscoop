@@ -687,10 +687,12 @@ ISA_DefaultPanel.prototype.templates = {
 			? 'staticLayoutAdjustHeight' : 'staticLayout';
 		$jq("#select_layout_modal ." + targetClass).each(function(idx, element){
 //			this.layouts[idx] = $jq(element).html();
-			var template = (ISA_Admin.trim($jq(element).html()).length > 0)? $jq($jq(element).html()) : $jq(element);
-			var layoutTemplate = template.closest(".template");
-			this.layouts[idx] = (layoutTemplate.length > 0) ? layoutTemplate.html() : $jq(element).html();
-			if($jq(element).attr("id") == "staticLayout_tpl_default"){
+			element = $jq(element);
+			
+			var template = (ISA_Admin.trim(element.html()).length > 0)? $jq.parseHTML(element.html()) : element;
+			var layoutTemplate = $jq(template).closest(".template");
+			this.layouts[idx] = (layoutTemplate.length > 0) ? layoutTemplate.html() : element.html();
+			if(element.attr("id") == "staticLayout_tpl_default"){
 				this.staticLayoutDefaultIdx = idx;
 			}
 		}.bind(this));
