@@ -801,7 +801,6 @@ IS_Draggable.prototype = {
 		  dummyContent.style.height = "100%";
 		  IS_Draggable.dummyElement.appendChild(dummyContent);
 	  } else{
-//		  var dummyElement = document.createElement("div");
 		  var dummyContent = document.createElement(this.element.nodeName? this.element.nodeName : "div");
 		  dummyContent.className = this.element.className;
 		  dummyContent.innerHTML = this.element.innerHTML;
@@ -820,25 +819,17 @@ IS_Draggable.prototype = {
 	  dummyStyle.width = (this.options.dummyWidth)? this.options.dummyWidth : this.element.offsetWidth + "px";
 	  Element.setOpacity(IS_Draggable.dummyElement, 0.7);
 	  	
-//	  this.draw(pointer, this.element, IS_Draggable.dummyElement);
 	  var pos = Position.cumulativeOffset(this.element);
 	  var offset = Position.realOffset(this.element);
-      dummyStyle.left = pos[0] - offset[0];
-	  dummyStyle.top = pos[1] - offset[1];
+      dummyStyle.left = pos[0] - offset[0] + 'px';
+	  dummyStyle.top = pos[1] + 'px';
 	  this.scrollOffset = offset;
 
 	if(this.options.ghosting) {
-/*    this._clone = this.element.cloneNode(true);*/
-
-//      this.element.style.display = "none";
-	  
 	  this.ghost = document.createElement("div");
 	  this.ghost.id = "widgetGhost";
 	  this.ghost.col = this.element.parentNode;
 	  IS_Draggable.ghost = this.ghost;
-	  
-//    Position.absolutize(this.element);
-//		this.element.parentNode.insertBefore(this.ghost, this.element);
 	  
 	  // Slow if it is substituted by height before append.
 	  this.ghost.style.height = elementHeight;
@@ -846,9 +837,6 @@ IS_Draggable.prototype = {
     
     if(this.options.scroll) {
       if (this.options.scroll == window) {
-//        var where = this._getWindowScroll(this.options.scroll);
-//        this.originalScrollLeft = where.left;
-//        this.originalScrollTop = where.top;
 		this.originalScrollLeft = Position.deltaX;
 		this.originalScrollTop = Position.deltaY;
 		Event.observe(window, "scroll", this.scrollPositionPrepare);
@@ -859,8 +847,8 @@ IS_Draggable.prototype = {
     }
     
     if(this.options.viewport ) {
-    	dummyStyle.left = pos[0] - this.options.viewport.scrollLeft;
-    	dummyStyle.top = pos[1] - this.options.viewport.scrollTop;
+    	dummyStyle.left = pos[0] - this.options.viewport.scrollLeft + 'px';
+    	dummyStyle.top = pos[1] - this.options.viewport.scrollTop + 'px';
     }
     
 	IS_Droppables.findDroppablesPos(this.element);
@@ -871,8 +859,6 @@ IS_Draggable.prototype = {
 	
 	if(this.options.move)
 		this.element.style.display = "none";
-        
-//    if(this.options.starteffect) this.options.starteffect(this.element);
   },
   
   //Processing of dragging
@@ -882,7 +868,6 @@ IS_Draggable.prototype = {
 		isFirstUpdating = true;
 		this.startDrag(event, pointer);
 	}
-//  Position.prepare();
 	
 	var now = new Date().getTime();
 	if(IS_Droppables.span) {
@@ -904,7 +889,6 @@ IS_Draggable.prototype = {
 	
 	if(!isFirstUpdating)
     	this.draw(pointer);
-//    if(this.options.change) this.options.change(this);
     
     if(this.options.scroll) {
       this.stopScrolling();
@@ -986,9 +970,6 @@ IS_Draggable.prototype = {
     if(this.options.zindex)
       this.element.style.zIndex = this.originalZ;
 
-//    if(this.options.endeffect) 
-//      this.options.endeffect(this.element);
-
 	Event.stopObserving(document, 'keydown', IS_Draggables.keyEvent.keyDownHandler, false);
 	Event.stopObserving(document, 'keyup', IS_Draggables.keyEvent.keyUpHandler, false);
 	IS_Draggables.keyEvent.reset();
@@ -1014,7 +995,6 @@ IS_Draggable.prototype = {
   	if(!element || !dummyElement)
 		element = dummyElement = IS_Draggable.dummyElement;
 
-//    var pos = Position.cumulativeOffset(this.element);
     var pos = Position.cumulativeOffset(element);
 	
     if(this.options.ghosting) {
@@ -1038,7 +1018,6 @@ IS_Draggable.prototype = {
       return (point[i]-pos[i]-this.offset[i]) 
     }.bind(this));
     
-//    var style = this.element.style;
     var style = dummyElement.style;
     style.left = p[0] + "px";
     style.top  = p[1] + "px";
@@ -1164,7 +1143,7 @@ if( Browser.isSafari1 ) {
 			}
 			
 			bar.style.display = "";
-			bar.style.height = document.body.offsetHeight;
+			bar.style.height = document.documentElement.offsetHeight+'px';
 		}
 	})();
 	
@@ -1179,7 +1158,7 @@ if( Browser.isSafari1 ) {
 				IS_Draggable.dummyElement.offsetHeight;
 			
 			if( bar.offsetHeight < y )
-				bar.style.height = y;
+				bar.style.height = y+'px';
 		}
 	})();
 	
@@ -1192,7 +1171,7 @@ if( Browser.isSafari1 ) {
 			finishDrag.apply( this,$A( arguments ));
 			
 			var bar = $("autoScrollHoldBar");
-			bar.style.height = 1;
+			bar.style.height = '1px';
 			bar.style.display = "none"
 		}
 	})();
