@@ -236,6 +236,7 @@
 			var jsonObject = {
 				id : String( datetime ),
 				tabId : "",
+				numCol: "3",
 				tabName : ISA_R.alb_newTab,
 				columnsWidth : "",
 				principalType : null,
