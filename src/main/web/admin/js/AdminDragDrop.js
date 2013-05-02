@@ -535,6 +535,11 @@ ISA_DragDrop.SearchEngineDragDrop.prototype.classDef = function() {
 			{
 				tag: 'div',
 				handle: 'handle',
+				starteffect: function(div) {
+					// opacity effect drag start
+					div.style.opacity = 0.7;
+					div.style.filter = 'alpha(opacity=70)';
+				},
 				onChange: function(div){
 					id = div.firstChild.id;
 					nextsibling = (div.nextSibling) ? div.nextSibling.firstChild.id : "";
@@ -599,11 +604,17 @@ ISA_DragDrop.ProxyConfigDragDrop.prototype.classDef = function() {
 			{
 				tag: 'div',
 				handle: 'handle',
+				starteffect: function(div) {
+					// opacity effect drag start
+					div.style.opacity = 0.7;
+					div.style.filter = 'alpha(opacity=70)';
+				},
 				onChange: function(div){
 					id = div.firstChild.id;
 					nextsibling = (div.nextSibling) ? div.nextSibling.firstChild.id : "";
 				},
 				onUpdate:function(div){
+					console.log("test")
 					if(self.proxyCheckMap){
 						var proxyCheckbox = $("typ_" + id).previousSibling;
 						if(proxyCheckbox)

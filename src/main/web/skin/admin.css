@@ -971,7 +971,8 @@ td.configTableHeaderTd{
 	color: #000;
 	vertical-align:middle;
 	text-align:center;
-	word-wrap: none;
+	word-wrap: break-word;
+	-ms-word-break: break-all;
 }
 
 div.configListDiv{/*  not in use? */
@@ -979,7 +980,7 @@ div.configListDiv{/*  not in use? */
 }
 
 div.configTableDiv{
-	width: 900px;
+	width: 932px;
 	height: auto;
 	margin: 0 10px 0 10px;
 }.
@@ -987,7 +988,7 @@ div.configTableDiv{
 table.configTable{
 	margin: 0px;
 	clear: both;
-	width : 900px;
+	width : 920px;
 	tableLayout : fixed;
 	emptyCells : show;
 	border-collapse: collapse; 
@@ -1001,7 +1002,6 @@ td.configTableTd{
 	border-color: #666666;
 	border-top:none;
 	font-size:14px;
-/* 	font-weight:bold; */
 	color: #000;
 	vertical-align:middle;
 	text-align:center;
