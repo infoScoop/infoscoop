@@ -95,11 +95,15 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		divParent = document.createElement("div");
 		divParent.style.overflow = "hidden";
 		divParent.style.position = "absolute";
-		divParent.style.width = parseInt(selfContent.offsetWidth) + 'px';
-		divParent.style.height = parseInt(selfContent.offsetHeight) + 'px';
+		divParent.style.width = selfContent.offsetWidth + 'px';
+		divParent.style.height = selfContent.offsetHeight + 'px';
 		
 		divTicker = document.createElement("div");
-		divTicker.className = "ticker";
+		if ( Browser.isIE ) {
+			divTicker.className = "ticker-base";
+		}else {
+			divTicker.className = "ticker";
+		}
 		
 		var onMouseHandler = this.onmouse.bind(this);
 		Event.observe(divTicker, 'mouseover', onMouseHandler);
@@ -109,14 +113,29 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		Event.observe(divTicker, 'mouseout', outMouseHandler);
 		Event.observe(selfContent, 'mouseout', outMouseHandler);
 		
-		divParent.appendChild(divTicker);
+		if ( Browser.isIE ) {
+			divMarquee = document.createElement("marquee");
+			divMarquee.id = "marquee";
+			divMarquee.width = "100%";
+			divMarquee.scrollDelay = 50;
+			divMarquee.scrollAmount = copyspeed*2;
+			divMarquee.loop = 1;
+			divMarquee.style.display = "none";
+			divMarquee.appendChild(divTicker);
+			divParent.appendChild(divMarquee);
+			Event.observe(divMarquee, 'finish' , stopScrollWithMarqueeTag );
+		}else {
+			divParent.appendChild(divTicker);
+		}
 		selfContent.appendChild(divParent);
 		
 		showTicker();
 	};
 	
 	function showTicker(){
-		clearTimeout(lefttime);
+		if ( !Browser.isIE )  {
+			clearTimeout(lefttime);
+		}
 		
 		if(!rssItems[currentRssNum]){
 			//Reload if items to display go away
@@ -148,7 +167,6 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		//date
 		if(widget.getBoolUserPref("date")) marqueecontent = addMsg(marqueecontent,rssItems[currentRssNum].date);
 		//title
-
 		var itemTitle = (rssItems[currentRssNum].title.length == 0)? IS_R.lb_notitle : escapeHTMLEntity(rssItems[currentRssNum].title);
 		if(widget.getBoolUserPref("title")) marqueecontent = addMsg(marqueecontent,"[" + itemTitle + "]");
 		//description
@@ -161,27 +179,33 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		
 		divTicker.innerHTML = "";
 		divTicker.appendChild(contentDiv);
-
-		//Position of start
-		divTicker.style.left = parseInt(selfContent.offsetWidth)+2+"px";
-		actualwidth = divTicker.offsetWidth * (-1)  ;
-		scrollmarquee();
+		
+		
+		
+		if ( Browser.isIE ) {
+			scrollWithMarqueeTag();
+		}else {
+			//Position of start
+			divTicker.style.left = parseInt(selfContent.offsetWidth)+2+"px";
+			actualwidth = divTicker.offsetWidth * (-1)  ;
+			scrollmarquee();
+		}
 	}
 	
 	function addURL(url, msg, title, startDateTime) {
-		//var res;
 		var tickerNobr = null;
 		
 		if(!url || url.length == 0){
-			//res = "<nobr id=\"" + widget.id + "_tickerTxt\">" + msg + "</nobr>";
-			tickerNobr = document.createElement("nobr");
+			tickerNobr = document.createElement("span");
 			tickerNobr.id = widget.id + "_tickerTxt";
 			tickerNobr.innerHTML = msg;
 			tickerNobr.style.lineHeight = "1.5em";
+			tickerNobr.style.whiteSpace = "nowrap"
 		}else{
 			
-			tickerNobr = document.createElement("nobr");
+			tickerNobr = document.createElement("span");
 			tickerNobr.id = widget.id + "_tickerTxt";
+			tickerNobr.style.whiteSpace = "nowrap"
 			
 			var aTag = document.createElement("a");
 			aTag.style.lineHeight = "1.5em";
@@ -194,11 +218,10 @@ IS_Widget.Ticker.prototype.classDef = function() {
 				}
 			}(aTag);
 			tickerNobr.appendChild(aTag);
-
+			
 			IS_Event.observe(aTag, "click", aTagOnclick, false, "_tickermessage");
 		}
 		return tickerNobr;
-		//return res;
 	}
 	
 	function addMsg(msg1,msg2) {
@@ -218,6 +241,22 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		}
 		
 		lefttime = setTimeout(scrollmarquee,25);
+	}
+	
+	function scrollWithMarqueeTag() {
+		var div = $("marquee");
+		if ( div ) {
+			div.style.display="";
+		}
+	}
+	
+	function stopScrollWithMarqueeTag() {
+		var div = $("marquee");
+		if ( div ) {
+			div.style.display="none";
+			currentRssNum++;
+			showTicker();
+		}
 	}
 	
 	this.onmouse = function () {
@@ -259,8 +298,8 @@ IS_Widget.Ticker.prototype.classDef = function() {
 	
 	this.adjustTickerWidth = function (){
 		if(divParent){
-			divParent.style.width = parseInt(selfContent.offsetWidth) + 'px';
-			divParent.style.height = parseInt(selfContent.offsetHeight) + 'px';
+			divParent.style.width = selfContent.offsetWidth + 'px';
+			divParent.style.height = selfContent.offsetHeight + 'px';
 		}
 	};
 	
