@@ -920,7 +920,7 @@ IS_Widget.prototype.classDef = function() {
 		var params = ["Require", "Optional"];
 		
 		for(var i=0;i<params.length;i++){
-			var param = typeConf[params[i]];
+			var param = typeConf.ModulePrefs ? typeConf.ModulePrefs[params[i]] : typeConf[params[i]];;
 			if(param && (param[feature] || param.feature == feature))
 				return true;
 		}
