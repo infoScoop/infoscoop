@@ -182,7 +182,7 @@ public class SessionManagerFilter implements Filter {
 		if (request instanceof javax.servlet.http.HttpServletRequest) {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpServletResponse httpResponse = (HttpServletResponse)response;
-
+			
 			String uid = null;
 			if(SessionCreateConfig.doLogin()){
 				uid = getUidFromSession(httpReq);
@@ -320,6 +320,8 @@ public class SessionManagerFilter implements Filter {
 		}
 		chain.doFilter(request, response);
 
+		UserContext.destroy();
+		
 		if(log.isDebugEnabled()){
 			log.debug("Exit SessionManagerFilter　form " + httpReq.getRequestURI());
 		}

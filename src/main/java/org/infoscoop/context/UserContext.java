@@ -35,7 +35,11 @@ public abstract class UserContext {
           
         instance.set(new UserContextImpl());  
         return (UserContext)instance.get();  
-    } 
+    }
+    
+    public static void destroy(){
+    	instance.remove();
+    }
 }
 
 class UserContextImpl extends UserContext {  
