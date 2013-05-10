@@ -950,9 +950,16 @@ function _saveDynamicPanel(){
 			var menuId = (widget.widgetConf.menuId)? widget.widgetConf.menuId : wid.substring(2);
 			
 			var targetMenu = (IS_TreeMenu.types.topmenu)? IS_TreeMenu.types.topmenu : IS_TreeMenu.types.sidemenu;
-			if(!targetMenu) return;
+			var menuItem = {};
+			if(!targetMenu){
+				menuItem = {
+					id: +new Date(),
+					type: "notAvailable"
+				}
+			}else{
+				menuItem = targetMenu.menuItemList[menuId];
+			}
 
-			var menuItem = targetMenu.menuItemList[menuId];
 			var widgetJSON = {
 				id : "w_" + menuItem.id,
 				column : new String($jq(widget.elm_widget).parent().attr('colnum')),
