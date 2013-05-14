@@ -223,7 +223,10 @@ function prepareStaticArea(){
 			//delete jsonRole.staticPanel[oldId];
 			is_deleteProperty(jsonRole.staticPanel, oldId);
 			jsonRole.staticPanel[widgetJSON.id] = widgetJSON;
-			openerPanel.setNewValue("staticpanel", Object.toJSON(jsonRole.staticPanel), jsonRole.id);
+			
+ 			// When converting the object of a parent window to a jsonString in IE8, it is necessary to perform a deep copy. Otherwise, "undifined" will be returned. 
+			openerPanel.setNewValue("staticpanel", Object.toJSON($jq.extend(true,{},jsonRole.staticPanel)), jsonRole.id);
+//			openerPanel.setNewValue("staticpanel", Object.toJSON(jsonRole.staticPanel), jsonRole.id);
 			
 			jsonRole.layout = jsonRole.layout.replace( escapeHTMLEntity( oldId ),widgetJSON.id );
 			$jq("#" + oldId).attr("id", widgetJSON.id);
@@ -286,7 +289,7 @@ function adjustStaticWidgetHeight(){
 	var columns = $$("#staticAreaContainer .static_column");
 	var windowHeight = getWindowSize(false) - findPosY($("staticAreaContainer")) - 36;
 	for(var i =0; i < columns.length; i++){
-		columns[i].style.height = windowHeight;
+		columns[i].style.height = windowHeight + "px";
 	}
 }
 
@@ -669,7 +672,7 @@ function init() {
 			}
 		}
 		if (nearGhost != null && widgetGhost.nextSibling != nearGhost) {
-			widgetGhost.style.height = 20;
+			widgetGhost.style.height = 20 + "px";
 			widgetGhost.style.display = "block";
 			nearGhost.parentNode.insertBefore(widgetGhost,nearGhost);
 			widgetGhost.col = nearGhost.col;

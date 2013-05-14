@@ -914,12 +914,12 @@ IS_Widget.prototype.classDef = function() {
 	
 	this.setStaticIframeHeight = function() {
 		if( !this.staticWidgetHeight){
-			self.iframe.style.height = 0;
+			self.iframe.style.height = 0 + "px";
 			
 			return setTimeout( this.setStaticIframeHeight.bind( this ),100 );
 		}
 		
-		self.iframe.style.height = this.staticWidgetHeight;
+		self.iframe.style.height = this.staticWidgetHeight + "px";
 		self.elm_widgetContent.style.height = "auto";
 	}
 
