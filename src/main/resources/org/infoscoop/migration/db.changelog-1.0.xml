@@ -9,7 +9,6 @@
     <!--Issue 12826-->
     <!--CREATE TABLE `IS_STATIC_TABS` (tabid varchar(50) not null, tabnumber integer, tabdesc varchar(255), deleteflag integer not null, disabledefault integer not null,primary key(tabid));-->
     <!--CREATE TABLE `IS_TAB_ADMINS` (tabid integer not null, `uid` varchar(150) not null, primary key(tabid), foreign key (tabid) references IS_STATIC_TABS(tabid) on delete cascade);-->
-    
     <changeSet id="infoscoop320_12826_1" author="mikami">
         <preConditions onFail="HALT" onFailMessage="skip infoscoop320_12826_1">
             <not>
