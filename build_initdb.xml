@@ -48,6 +48,7 @@
 				<include name="opencsv-*.jar"/>
 				<include name="spring-*.jar"/>
 				<include name="xercesImpl-*.jar"/>
+				<include name="xml-apis-*.jar"/>
 				<include name="json-*.jar"/>
 			</fileset>
 			<fileset dir="${initdb.home}/importTool/lib" includes="*.jar"/>
