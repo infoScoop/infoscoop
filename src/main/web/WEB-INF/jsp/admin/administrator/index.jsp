@@ -30,7 +30,6 @@
 <div id="portalAdmin"></div>
 
 <script>
-	var portalAdminsJson = ${requestScope.portalAdminsJson};
 	$jq(function(){
 		ISA_PortalAdmins.portalAdmins = new ISA_PortalAdmins();
 		ISA_PortalAdmins.portalAdmins.build();

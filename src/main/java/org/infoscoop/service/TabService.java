@@ -153,8 +153,10 @@ public class TabService {
 		// Delete StaticPanel if the tab is not found in tabLayout information. Change tabType to dynamic.
 		Collection currentTabList = TabDAO.newInstance().getTabs(uid);
 		
+		// The currentTabList is updated. Dynamic tab conversion of the erased tab and renewal of display sequence is performed.
 		obsoleteStaticTabToDynamicTab( tabLayoutMap,currentTabList,uid  );
 		
+		// Processing to the tab added newly is performed. 
 		List differenceTabs = getDifferenceTabs( tabLayoutMap,currentTabList,uid );
 		for( int i=0;i<differenceTabs.size();i++ ) {
 			TabLayout tabLayout = ( TabLayout )differenceTabs.get( i );
@@ -297,7 +299,9 @@ public class TabService {
 		}
 		
 		for(Iterator ite=obsolutes.iterator();ite.hasNext();) {
+			// changed to DynamicTab 
 			Tab tab = convertStaticToDynamic( dynamicTabIdList,(Tab)ite.next() );
+			if(tab == null)	continue;
 			tab.setOrder( new Integer( temp.size()));
 			tabDAO.updateTab( tab );
 			temp.add( tab );
@@ -399,27 +403,37 @@ public class TabService {
 		return defaultTabLayouts;
 	}
 	
+	/**
+	 * Even if a tab is deleted from a master, a tab is not necessarily erased on a user's screen. <br/>
+	 * When the user has some gadgets, convert StaticTab To DynamicTab.
+	 * @param dynamicTabIdList
+	 * @param staticTab
+	 * @return
+	 */
 	private Tab convertStaticToDynamic( List dynamicTabIdList,Tab staticTab ) {
-		// Processing of allocating tab ID again.
-		int newTabId = getNextNumber(dynamicTabIdList);
-		
-		Tab newTab = new Tab(new TABPK(staticTab.getUid(), String.valueOf(newTabId)));
-		
-		//Delete StaticPanel, tabType=dynamic
-		newTab.setType("dynamic");
-		newTab.setName(staticTab.getName());
-		newTab.setData(staticTab.getData());
-		newTab.setDefaultuid(staticTab.getDefaultuid());
-		//Delete tab number
-		//TODO: Is it placed at last if order is null?
-		newTab.setOrder(null);
-		
-		tabDAO.addTab(newTab);
-		
+		Tab newTab = null;
 		Collection<Widget> dynamicWidgets = tabDAO.getDynamicWidgetList(staticTab.getUid(),staticTab.getTabId() );
-		for( Widget widget : dynamicWidgets) {
-			widget.setTabid( String.valueOf( newTabId ) );
-			widget.setIsstatic( new Integer( 0 ) );
+		if(!staticTab.isDisabledDynamicPanel() && dynamicWidgets.size() > 0){
+			// Processing of allocating tab ID again.
+			int newTabId = getNextNumber(dynamicTabIdList);
+			
+			newTab = new Tab(new TABPK(staticTab.getUid(), String.valueOf(newTabId)));
+			
+			//Delete StaticPanel, tabType=dynamic
+			newTab.setType("dynamic");
+			newTab.setName(staticTab.getName());
+			newTab.setData(staticTab.getData());
+			newTab.setDefaultuid(staticTab.getDefaultuid());
+			//Delete tab number
+			//TODO: Is it placed at last if order is null?
+			newTab.setOrder(null);
+			
+			tabDAO.addTab(newTab);
+			
+			for( Widget widget : dynamicWidgets) {
+				widget.setTabid( String.valueOf( newTabId ) );
+				widget.setIsstatic( new Integer( 0 ) );
+			}
 		}
 		
 		WidgetDAO widgetDAO = WidgetDAO.newInstance();
@@ -428,14 +442,8 @@ public class TabService {
 			widgetDAO.delete(widget);
 		}
 		
-		
-		//update
-//		WidgetDAO.newInstance().addTab(newTab);
-		
-		// Delete differences here
-		// Delete existing (can not update key��
+		// Delete existing (can not update key)
 		tabDAO.deleteTab( staticTab );
-//		WidgetDAO.newInstance().updateTab( tab );
 		
 		return newTab;
 	}
