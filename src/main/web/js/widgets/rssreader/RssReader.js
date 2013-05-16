@@ -34,7 +34,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		this.isRssReader = true;
 		
 		if(isStatic){
-//			setTimeout(widget._setStaticWidgetHeight, 10);
 			widget.initUserPref("scrollMode", "scroll");
 		}
 		
@@ -90,8 +89,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 					this_.loadContentsOption.preLoad();
 					
 					var opt =  Object.extend({
-						
-						//requestHeaders: this_.loadContentsOption.requestHeaders.concat( ["X-IS-PAGE",pageNo ] )
 						requestHeaders: [] // nazo
 					},this_.loadContentsOption );
 					opt.requestHeaders = this_.loadContentsOption.requestHeaders.concat( ["X-IS-PAGE",pageNo ] );
@@ -103,14 +100,12 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			});
 
 		IS_EventDispatcher.addListener("adjustedColumnWidth", null, this.repaintIfCurrentTab.bind(this,false,false,true ) );
-		
 		IS_EventDispatcher.addListener("dragWidget", widget.id,this.repaint.bind( this ) );
 		
 		this.droppableOption = {};
 		
 		//Process of dragging
 		var opt = {
-//			accept : ["widget", "subWidget"],
 			accept : function(element, widgetType, classNames){
 				if (widget.tabId != IS_Portal.currentTabId) {
 					return false;
@@ -126,7 +121,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			},
 			onHover: function(element, dropElement, dragMode, point) {
 				if(!this.targetWidget)
-//					this.targetWidget = IS_Portal.widgetLists[IS_Portal.currentTabId][dropElement.id];
 					this.targetWidget = IS_Portal.getWidget(dropElement.id);
 				if(!this.targetWidget || this.targetWidget.parent
 				   || element.id == this.targetWidget.id //for Safari
@@ -170,15 +164,11 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			var newWidget = IS_Widget.RssReader.createMultiRssReader(draggedWidget, targetWidget);
 			targetWidget.elm_widgetBox.className = "widgetBox";
 			// Show title edit
-//			newWidget.headerContent.showTitleEditorForm();
-
-			
 			IS_EventDispatcher.newEvent("applyIconStyle", widget.id );
 			IS_EventDispatcher.newEvent("applyIconStyle", draggedWidget.id );
 			
 			if(oldParentWidget){
 				// In case of subCategory, remove the source before moving
-//					oldParentWidget.content.removeRssReader(widget.id, false, true);
 				IS_Portal.removeSubWidget(oldParentWidget.id , draggedWidget.id);
 				
 				if(oldParentWidget.content)
@@ -191,8 +181,8 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			this.targetWidget = null;
 		}
 		opt.onDrop = this.droppableOption.onWidgetDrop;
-		opt.marginBottom = "10px";
-		
+		opt.marginBottom = 10;
+
 		if(!widget.isMulti && !isDroppable)
 		  IS_Widget.RssReader.dropGroup.add(widget.elm_widget, opt);
 		
@@ -380,12 +370,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		this.rss = rss;
 		
 		// Prepare to specify max item length
-		//self.rssItemLength = (self.maxItemLength < rssItems.length)? self.maxItemLength : rssItems.length;
 		var rssItemLength = (rss)? this.rssContent.rssItems.length : 0;
-		
-		//if( !widget.latestDatetime ){
-		//	widget.latestDatetime = new Date().getTime();
-		//}
 		
 		if( rssItemLength == 0) {
 			IS_Event.unloadCache(widget.id);
@@ -524,14 +509,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		var itemsCount = 0;
 		if( this.rssContent && this.rssContent.rssItems )
 			itemsCount = this.rssContent.rssItems.length;
-		
-		/*if( itemsCount > 0 ) {
-			//Items count:{0}
-			var itemsCountLabel = IS_R.getResource( IS_R.lb_itemCount,[ itemsCount ]);
-			this.itemsCountPanel.appendChild( document.createTextNode(itemsCountLabel));
-			this.itemsCountPanel.title = itemsCountLabel;
-		}*/
-		//Items count:{0}
 		var itemsCountDiv = document.createElement('div');
 		itemsCountDiv.className = 'RssReader_itemsCount';
 		var itemsCountLabel = IS_R.getResource( IS_R.lb_itemCount,[ itemsCount ]);
@@ -672,8 +649,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		
 		if( itemsnum == 0 )
 			this.hideContent();
-		
-		//IS_Widget.RssReader.RssItemRender.adjustRssDesc();
 	}
 	this.isOpenWidget = function() {
 		return widget.getBoolUserPref("openWidget");
@@ -685,7 +660,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		
 		// Use defaultValue if the value is invalid
 		if( !itemsnum || itemsnum < 0 || isNaN( itemsnum ))
-		//	itemsnum = IS_Widget.getConfiguration("RssReader").UserPref["itemsnum"].defaultValue;
 			itemsnum = 0;
 		
 		return parseInt( itemsnum );
@@ -817,9 +791,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 	};
 	
 	this.showAllLatestItems = function(e){
-//		if( !( this.getLatestItemCount() > 0 ))
-//			return;
-		
 		widget.setUserPref("showLatestNews",true );
 		
 		var latestCount = this.getLatestItemCount();
@@ -839,8 +810,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		} else {
 			this.hideContent();
 		}
-		
-		//this.adjustShowLatestNewsHeight();
 		
 		if( e )
 			IS_Event.stopBubbling( e );
@@ -909,8 +878,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		this.rssContentView.view();
 		if( !keepContentHeight )
 			this.rssContentView.onContentHeightChange();
-		
-		//this.adjustHeight();
 	}
 	
 	this.minimize = function () {
@@ -998,11 +965,9 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		}.bind( this ),
 		request : true,
 		unloadCache : false,
-//		onSuccess : this.buildRssItems.bind(this),
 	  onSuccess : function(response){
 			this.buildRssItems(response);
 		}.bind(this),
-//		on304 : this.stopLatestMarkRotate.bind(this),
 		on304 : function(){
 			this.stopLatestMarkRotate();
 		}.bind(this),
@@ -1211,7 +1176,6 @@ IS_Widget.RssReader.prototype.classDef = function() {
 IS_Widget.RssReader.searchBuildMenuContent = function(widget){
 	var div = document.createElement("span");
 	div.id = widget.id + "_rssSearchBox";
-	//div.className = "rssSearchBox";
 	var input = document.createElement("input");
 	input.type = "text";
 	input.style.width = "100px";
@@ -1250,7 +1214,6 @@ IS_Widget.RssReader.searchBuildMenuContent = function(widget){
 		if(e.keyCode == Event.KEY_RETURN) {
 			var keyword = input.value;
 			IS_Portal.SearchEngines.buildSearchTabs(keyword, listUrl());
-			//div.style.display = "none";
 			widget.headerContent.hiddenMenu.hide();
 			return false;
 		}
@@ -1259,7 +1222,6 @@ IS_Widget.RssReader.searchBuildMenuContent = function(widget){
 	var buttonClicked = function() {
 		var keyword = input.value;
 		IS_Portal.SearchEngines.buildSearchTabs(keyword, listUrl());
-		//div.style.display = "none";
 		widget.headerContent.hiddenMenu.hide();
 	};
 	Event.observe(button, "click", buttonClicked, false);
@@ -1325,7 +1287,6 @@ IS_Widget.RssReader.RssContent.prototype = {
 		this.filter = filter;
 		this.rssItems.clear();
 		this.loadPage(0);
-		//this.handleLoadPageCompleted( 0,{ items: this.delegator.rssItems });
 	},
 	
 	loadPage : function( itemNo ) {
@@ -1516,7 +1477,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		
 		this.eventId = widget.id+"_rssContentView";
 		IS_Event.observe( viewport,"scroll",this.handleScroll.bind( this ),false,this.eventId );
-		//IS_Event.observe( viewport,"mouseup",this.onContentHeightChange.bind( this ),false,widget.id );
 		
 		if( Browser.isFirefox ) {
 			IS_Event.observe( viewport,"mouseup",this.handleMouseUp.bind( this ),false,this.eventId );
@@ -1568,14 +1528,8 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 	}
 	
 	this.handleScroll = function( e ) {
-		//if( this.repaintTimeout )
-		  clearTimeout( this.repaintTimeout );
+		clearTimeout( this.repaintTimeout );
 		
-		//var time = new Date().getTime();
-		//if( this.lastScrollTime && time -this.lastScrollTime < 1000/10 )
-		//	return;
-		
-		//this.lastScrollTime = time;
 		var y = this.elm_viewport.scrollTop;
 		this.repaintTimeout = setTimeout( function(y){
 			this.view( y );
@@ -1643,7 +1597,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 			if( current > 1 || i == rssItems.length -1 )
 				current = 1 -itemWeight;
 			
-			//if(DEBUG)console.info( i+" = "+Math.ceil( current *100 )+","+Math.ceil( (current+itemWeight) *100 ));
 			this_.itemList[i] = {
 				index: i,
 				rss: rss,
@@ -1683,11 +1636,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		var contentHeight = this.getContentHeight();
 		
 		if( pos === undefined ) {
-			/*while( container.firstChild )
-				this.render.releaseInstance( container.firstChild );
-			
-			this.renderingHead = this.renderingTail = undefined;*/
-			
 			pos = this.elm_viewport.scrollTop;
 		} else if( pos +viewportHeight > contentHeight ) {
 			pos = contentHeight -viewportHeight;
@@ -1699,14 +1647,12 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		
 		this.pos = pos;
 		
-		var current = 0//,offset =0;
+		var current = 0
 		var head=-Number.MAX_VALUE,tail=-Number.MAX_VALUE;
 		var hy,ty;
 		this.itemList.each( function( item,i ) {
 			if( head < i && current <= pos ) {
 				head = i;if(DEBUG)hy=current;
-				
-				//offset = current -pos;
 			}
 			
 			if( tail < i && current <= ( pos +viewportHeight )) {
@@ -1734,18 +1680,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 			return;
 		
 		this.renderItems( head,tail );
-		
-		/**
-		 * Keep on drawing if contents gets smaller size
-		 */
-		//var newContentHeight = 0;
-		//while( ( this.elm_root.offsetHeight != 0 )&&
-		//	( newContentHeight = this.getContentHeight( true ))-contentHeight < 0 ) {
-		//	if(DEBUG)console.info("content re rendering: "+newContentHeight -contentHeight );
-		//	this.view( pos );
-		//	
-		//	contentHeight = newContentHeight;
-		//}
 	}
 	
 	/**
@@ -1768,7 +1702,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		if( !this.stopAutoPageLoad ) {
 			for( var i=tail;head<=i;i-- ) {
 				if( !rssItems[i] ) {
-					//console.info("#"+i+" load from render!  "+head+" ... "+tail )
 					this.rssContent.loadPage( i );
 					tail = i -1;
 				}
@@ -1817,7 +1750,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 			this.elm_top.style.display = "";
 		}
 		this.elm_top.style.height = topHeight + 'px';
-		//this.elm_bottom.style.height = bottomHeight;
 		
 		for( var i=0;i<headGap && container.firstChild;i++ ) {
 			if( DEBUG )console.info("remove: "+ container.firstChild.id );
@@ -1858,13 +1790,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 			if( DEBUG )console.info("other");
 		}
 		if( DEBUG )console.info( this.renderingHead +" ... "+this.renderingTail +" | "+head +" ... "+tail+"/"+rssItems.length )
-		//console.info( ( !foward ? "head":"tail")+": "+renders );
-		//DEBUG =0;
-		//console.info("renderItems("+head+","+tail+")/"+rssItems.length);
-		
-		//renders += 5;
-		
-		//container.style.display = "none";
 		var fragment = document.createDocumentFragment();
 		var renderItems = [];
 		for( var i=0;i<renders;i++ ) {
@@ -1879,24 +1804,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 			var tr;
 			if( rssItem ) {
 				tr = renderInst.render( this.renderContext,rssItem,index );
-				/* Lightweight version
-				tr = document.createElement("div");
-				tr.className = "rssItem";
-				
-				var aTag = document.createElement('a');
-				aTag.href = rssItem.link;
-				IS_Event.observe(aTag, "click", IS_Portal.buildIFrame.bind(this, aTag));
-				aTag.appendChild(document.createTextNode( rssItem.title ));
-				tr.appendChild(aTag);
-				
-				if(IS_Widget.RssReader.isLatestNews(item.rss.rssDate)){
-					var latestMark = document.createElement("img");
-					latestMark.className = "latestMark";
-					var isHotNews = IS_Widget.RssReader.isHotNews( self.widget.latestDatetime,rssItem );
-					latestMark.src = imageURL +( isHotNews ? "sun_blink.gif":"sun.gif");
-					tr.appendChild( latestMark );
-				}
-				*/
 			} else {
 				tr = document.createElement("div");
 				tr.style.margin = '4px';
@@ -1936,8 +1843,6 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		this.renderingTail = tail;
 		
 		this.rendering = false;
-		
-		//container.style.top = offset;
 	}
 	this.clearContents = function( light ) {
 		while( this.elm_container.firstChild )
@@ -2062,10 +1967,8 @@ IS_Widget.RssReader.dropGroup = new IS_DropGroup({
 				var widget = widgetLists[IS_Portal.getTrueId(wiz.id)];
 				if(widget && /^RssReader|MultiRssReader$/.test(widget.widgetType)){
 					if (wiz == element){
-						//myHeight = IS_Draggable.ghost.offsetHeight;
 						myHeight = element.offsetHeight;
-//						continue;
-}
+					}
 					var drops = this.getDropObjByElement(widget.elm_widget);
 					if(drops)
 						for(var k =0; k<drops.length;k++){
@@ -2077,7 +1980,6 @@ IS_Widget.RssReader.dropGroup = new IS_DropGroup({
 				wiz.posLeft = findPosX(wiz);
 				wiz.posTop = findPosY(wiz) - myHeight;
 				if( parentElement && (wiz == parentElement))
-//					myHeight = IS_Draggable.ghost.offsetHeight;
 					myHeight = element.offsetHeight;
 			}
 		}
@@ -2130,7 +2032,6 @@ IS_Widget.RssReader.buildMultiAccessStatContent = function( widget,root ) {
 	var contents = document.createElement("div");
 	contents.className = "accessStat_tabs_content";
 	
-//	var root = document.createElement("div");
 	root.appendChild( tabs );
 	root.appendChild( contents );
 	
