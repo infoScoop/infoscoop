@@ -410,7 +410,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				
 // fix 31
 				if( header.opened )
-//					header.hideTools();
 					header.applyAllIconStyle();
 			}
 		}
@@ -755,7 +754,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 			for (var i = 0; i < loop; i++) {
 				if(!subWidgets[i]) continue;
 				//Set equal value in all 'deleteDate' of subWidgets
-//				subWidgets[i].widgetConf.deleteDate = widget.widgetConf.deleteDate;
 				if(deleteDate)
 					subWidgets[i].widgetConf.deleteDate = deleteDate;
 				subWidgets[i].headerContent.close();
@@ -973,7 +971,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		$H( errors ).each( function( error ) {
 			var url = error.key;
 			var title = this_.getRssReaders().findAll( function( rssReader ) {
-				//console.info( rssReader.getUserPref("url")+"?"+url )
 				return ( rssReader.getUserPref("url") == url )
 			}).shift().title;
 			var errorCode = error.value;
@@ -1261,7 +1258,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 
 		if(disabledTitleList.length > 0) {
 			msgDiv.style.display = "block";
-			//					var msg = "※";
 			var msg = IS_R.lb_attention;
 			for(var i = 0; i < disabledTitleList.length; i++) {
 				if(i > 0) msg += ", ";

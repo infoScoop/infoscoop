@@ -472,8 +472,10 @@ IS_Portal.showTabMenu = function(tabElement, e){
 			var itemDiv = document.createElement( opt.anchor ? "a":"div");
 			itemDiv.className = className + " item";
 			itemDiv.id = tabObj.id+"_menu_"+className;
-			if( opt.anchor )
+			if( opt.anchor ){
 				itemDiv.href = "javascript:void(0)";
+				IS_Event.observe( itemDiv, "click", function(e){Event.stop(e)}, false, tabObj.id );
+			}
 			
 			var content = document.createElement("div");
 			content.className = "content";

@@ -88,8 +88,6 @@ var IS_Droppables = {
   //Called at dragging
   show: function(point, element, dragMode, widgetType) {
     var affected = [];
-    
-	
 	// Check to the nearest items only
 	var nearDropTarget = IS_Droppables.getNearDropTarget(element, point);
 	
@@ -326,7 +324,6 @@ IS_Droppables.getNearDropTarget = function(element, point){
 		IS_Droppables.positions[blockX][blockY].each(function(pos){
 			var drop = pos.drop;
 			var dropElement = drop.element;
-			
 			var effectiveHeight = (drop.marginBottom)? dropElement.offsetHeight - drop.marginBottom : dropElement.offsetHeight;
 			var effectiveWidth = dropElement.offsetWidth;
 			if (y >= pos.y &&
@@ -575,7 +572,6 @@ var IS_Draggables = {
       this.eventMouseMove = this.updateDrag.bindAsEventListener(this);
       
       Event.observe(document, "mouseup", this.eventMouseUp);
-//      Event.observe(document, "mousemove", this.eventMouseMove);
     }
     this.drags.push(draggable);
   },
@@ -715,9 +711,6 @@ IS_Draggable.prototype = {
   currentDelta: function(element) {
     if(!element)
       element = this.element;
-//    return([
-//      parseInt(Element.getStyle(this.element,'left') || '0'),
-//      parseInt(Element.getStyle(this.element,'top') || '0')]);
     return([
       parseInt(Element.getStyle(element,'left') || '0'),
       parseInt(Element.getStyle(element,'top') || '0')]);
@@ -732,8 +725,6 @@ IS_Draggable.prototype = {
 			return;
 	}
 	
-//    if(typeof IS_Draggable._dragging[this.element] != 'undefined' &&
-//      IS_Draggable._dragging[this.element]) return;
 	if(IS_Draggable._lastDraggingTime){
 		var span = new Date().getTime() - IS_Draggable._lastDraggingTime;
 		if(span < 1000) return;

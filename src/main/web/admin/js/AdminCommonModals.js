@@ -59,22 +59,27 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 			disabledAttribute = " disabled='disabled'";
 		}
 		
-		this.currentModal = new Control.Modal('', {
-		  className:"adminTreeMenu",
-		  afterClose: function(){
-		  	this.destroy();
-  			IS_Event.unloadCache("_editorForm");
-			IS_Event.unloadCache("_adminMenuEdit");
-		  }
-		});
-
+		this.initModal();
 		
 		authorizations = [];
 		
 		//TODO: Temporary response for the judgement of widgetType validation by clearing editWidgetType
 		ISA_WidgetConf.widgetConf.editWidgetType = false;
 	};
-
+	
+	this.initModal = function(){
+		this.currentModal = new Control.Modal('', {
+		  className:"adminTreeMenu",
+		  afterClose: function(){
+//		  	this.destroy();
+			this.currentModal.destroy();
+			this.currentModal = null;
+  			IS_Event.unloadCache("_editorForm");
+			IS_Event.unloadCache("_adminMenuEdit");
+		  }.bind(this)
+		});
+	}
+	
 	//TODO:Valid only at widget setting
 	function makeExecButton(){
 		var buttonDiv = document.createElement('div');
@@ -183,6 +188,9 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 	};
 
 	this.showWidgetEditorForm = function (){
+		if(!this.currentModal)
+			this.initModal();
+		
 		var viewFormArea = function(){
 			var editorFormFieldDiv = document.createElement("div");
 			editorFormFieldDiv.id = 'editorFormFieldDiv';
