@@ -1554,8 +1554,13 @@ IS_Widget.prototype.classDef = function() {
 	}
 
 	this.adjustMaximizeHeight = function()  {
-		this.elm_widgetContent.style.height = this.iframe.style.height
-		  = (getWindowSize(false) - findPosY( this.elm_widgetBox ) - (Browser.isFirefox ? 28 : 32)) + "px";
+//		this.elm_widgetContent.style.height = this.iframe.style.height
+//		  = (getWindowSize(false) - findPosY( this.elm_widgetBox ) - (Browser.isFirefox ? 28 : 32)) + "px";
+		var height = (getWindowSize(false) - findPosY(this.elm_widgetBox) - (Browser.isFirefox ? 28 : 32));
+		if (height < 0) {
+			height = 0;
+		}
+		this.elm_widgetContent.style.height = this.iframe.style.height = height + "px";
 	}
 	
 	this.adjustMaximize = function(){
