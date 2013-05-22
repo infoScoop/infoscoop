@@ -734,10 +734,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 				topLi = createTopMenu(menuItem);
 			}
 			menuUl.appendChild(topLi);
-			if(Browser.isIE){
-				topLi.style.width = topLi.firstChild.offsetWidth + "px";
-				topLi.firstChild.style.height = "1.75em";
-			}
 		}
 		createMenuRefreshIcon();
 
@@ -762,7 +758,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		var topLi = document.createElement("li");
 		topLi.id = menuItem.id;
 		topLi.className = "topMenuLi";
-		topLi.style.height = "1.75em";//IE
 		topLoadingDiv = document.createElement("div");
 		topLoadingDiv.appendChild(document.createTextNode("Loading..."));
 		topLi.appendChild(topLoadingDiv);
@@ -810,10 +805,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 							args.push(menuTopItems[i].id);
 							var newTopLi = createTopMenu(menuTopItems[i]);
 							topContainer.insertBefore(newTopLi, topLi);
-							if(Browser.isIE){
-								newTopLi.style.width = newTopLi.firstChild.offsetWidth + "px";
-								newTopLi.firstChild.style.height = "1.75em";
-							}
 						}
 						IS_SiteAggregationMenu.topMenuIdList.splice.apply(IS_SiteAggregationMenu.topMenuIdList, args);
 						topContainer.removeChild(topLi);
@@ -865,7 +856,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		var topLi = document.createElement("li");
 		topLi.id = menuItem.id;
 		topLi.className = "topMenuLi";
-		topLi.style.height = "1.75em";//IE
 		var titleA =document.createElement("a");
 		titleA.className = "topMenuItem";
 		titleA.title = menuItem.title;
@@ -953,20 +943,13 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		clearTimeout(parent.outTimeout);
 		clearTimeout(parent.overTimeout);
 
-		var childs = parent.childNodes;
-		for(var i = 0; i < childs.length; i++){
-			if(childs[i].nodeName.toUpperCase() == "A"){
-				//childs[i].style.backgroundImage = "url(" + imageURL + "lev0_bg2.png)";
-			}
-		}
-
 		if(!self.overlay) self.initMenuOverlay();
 		var offsetY = findPosY(container) + container.offsetHeight;
 
 		var overlayStyle = self.overlay.style;
 		overlayStyle.top = offsetY + 'px';
-		overlayStyle.width = Math.max(document.body.scrollWidth, document.body.clientWidth) - 5  + 'px';
-		overlayStyle.height = Math.max(document.body.scrollHeight, document.body.clientHeight) - offsetY - 5  + 'px';
+		overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth) - 5  + 'px';
+		overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight) - offsetY - 5  + 'px';
 		overlayStyle.display = "";
 		parent.overTimeout = setTimeout(function() { topMenuMOver2(e, parent, parentMenuItem); }, 150);
 
@@ -1534,12 +1517,12 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			scrollers[parent.id] = new IS_SiteAggregationMenu.Scroller(childUl);
 			//The height of childUl get lower if Scroller is newed.
 			//Use same calculation of getting height as it placed under the if statement when the mouse is overed again
-			childUl.style.top = (windowY - childUl.offsetHeight) - parentTop;
+			childUl.style.top = (windowY - childUl.offsetHeight) - parentTop + "px";
 //			setChildY( childUl, parent );
 		}else if( (liTop + ulHeight) > windowY ){
 			// Adjust bottom of menu if it does not fit to bottom of browser.
 //			childUl.style.top = (windowY - ulHeight) + "px";
-			childUl.style.top = (windowY - ulHeight) - parentTop;
+			childUl.style.top = (windowY - ulHeight) - parentTop + "px";
 		}else{
 			// Ordinally(Adjust Top to the place of parent
 			childUl.style.top = liTop + "px";
