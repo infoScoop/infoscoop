@@ -1919,6 +1919,7 @@ IS_Widget.RssReader.createMultiRssReader = function(widget, targetWidget){
 			}
 			IS_Portal.addSubWidget(newWidget, rssReader, newWidget.tabId);
 			IS_Widget.setWidgetLocationCommand( rssReader);
+			rssReader.blink();
 			subWidgets.push( rssReader );
 		}
 		
@@ -1938,6 +1939,7 @@ IS_Widget.RssReader.createMultiRssReader = function(widget, targetWidget){
 		newWidget.content.addSubWidget(widget);
 		IS_Portal.addSubWidget(newWidget, widget, newWidget.tabId);
 		IS_Widget.setWidgetLocationCommand(widget);
+		widget.blink();
 		subWidgets.push(widget);
 	}
 	
