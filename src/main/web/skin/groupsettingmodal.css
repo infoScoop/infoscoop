@@ -84,15 +84,15 @@
 
 /* Group Setting Modal */
 
-#modal_container.GroupSchedule {
+div[id^="control_window_"].GroupSchedule {
 	height:auto;
 	overflow:visible;
 	width: 80%;
 }
-#modal_container.GroupSchedule .modal-layout {
+div[id^="control_window_"].GroupSchedule .modal-layout {
 	width: 100%;
 }
-#modal_container.GroupSchedule .user-search {
+div[id^="control_window_"].GroupSchedule .user-search {
 	margin-top: 10px;
 }
 /* Group Setting Panel */
@@ -265,7 +265,7 @@
 	padding: 5px;
 	font-weight: bold;
 	margin-bottom: 10px;
-	background: url(./imgs/widget_header.png) center bottom;
+	background: url(./imgs/theme/widget_header.png) center bottom;
 }
 .infoScoop .user-search-modal .content {
 	position: relative;

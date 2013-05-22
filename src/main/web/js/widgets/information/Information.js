@@ -38,7 +38,6 @@ IS_Widget.Information.prototype.classDef = function() {
 		var rss = IS_Widget.parseRss(response);
 		self.rss = rss;
 		rssItems = (rss && rss.items) ? rss.items : [];
-//		if(rss && rss.items) rssItems = rss.items;
 		self.rssContent = {
 		  repaint:function(){
 			  self.displayContents();
@@ -54,11 +53,11 @@ IS_Widget.Information.prototype.classDef = function() {
 		var container = widget.elm_widget.parentNode;
 		if( container ) {
 			if( !container.height && !container.style.height )
-				widget.elm_widgetContent.style.height = 200;
+				widget.elm_widgetContent.style.height = '200px';
 		}
 		
 		var contentsTable = document.createElement("table");
-		contentsTable.cellPadding = "1";
+		contentsTable.cellPadding = "1px";
 		contentsTable.cellSpacing = "0";
 		contentsTable.setAttribute("width", "99%");
 		
@@ -78,10 +77,7 @@ IS_Widget.Information.prototype.classDef = function() {
 			itemTd.appendChild(rsslink);
 			
 		} else {
-			
-			//var count = (widget.getUserPref("itemsnum")<rssItems.length) ? widget.getUserPref("itemsnum") : rssItems.length;
 			for ( var i=0; i<rssItems.length ; i++ ) {
-				
 				var itemTr = document.createElement("tr");
 				tbodyEl.appendChild(itemTr);
 				var itemTd = document.createElement("td");
@@ -103,7 +99,6 @@ IS_Widget.Information.prototype.classDef = function() {
 
 					var itemTitle = (rssItems[i].title.length == 0)? IS_R.lb_notitle : rssItems[i].title;
 					itemTitle = itemTitle.replace(/&nbsp;/g," ");	// For trouble with "&nbsp;" where line-break does not occur
-//					rsslink.innerHTML = itemTitle;
 					rsslink.appendChild(document.createTextNode(itemTitle));
 				}
 	
@@ -111,8 +106,6 @@ IS_Widget.Information.prototype.classDef = function() {
 				var isHotNews = IS_Widget.RssReader.isHotNews( widget.latestDatetime,rssItems[i] );
 				latestMark.className = "latestMark";
 				latestMark.src = imageURL +( isHotNews ? "sun_blink.gif":"sun.gif");
-				
-				//latestMark.style.display = "inline";
 				
 				var titleTable = document.createElement("table");
 				titleTable.cellPadding = "0";
@@ -142,7 +135,6 @@ IS_Widget.Information.prototype.classDef = function() {
 					titleTd.appendChild(rsslink);
 					titleTr.appendChild(titleTd);
 					
-//					if(getBooleanValue(rssItems[i].isLatestNews)) {
 					if(IS_Widget.RssReader.isLatestNews(rssItems[i].rssDate)){
 						var latestMarkTd = document.createElement("td");
 						latestMarkTd.style.padding = "0";
@@ -156,10 +148,7 @@ IS_Widget.Information.prototype.classDef = function() {
 					rsslink.style.display = "inline";
 					rssItemDiv.appendChild(rsslink);
 					
-//					if(getBooleanValue(rssItems[i].isLatestNews)) {
 					if(IS_Widget.RssReader.isLatestNews(rssItems[i].rssDate)){
-//						latestMark.style.display = "inline";
-//						latestMark.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
 						rssItemDiv.appendChild(latestMark);
 					}
 					
@@ -206,9 +195,7 @@ IS_Widget.Information.prototype.classDef = function() {
 		itemTitle = itemTitle.replace(/&nbsp;/g," ");	//For trouble with "&nbsp;" where line-break does not occur
 		var aTag = document.createElement('a');
 		aTag.href = rssItem.link;
-//		aTag.innerHTML = itemTitle;
 		aTag.appendChild(document.createTextNode(itemTitle));
-		//aTag.target="ifrm";
 		var ctitle = rssItem.title;
 		var aTagOnclick =function(e){
 			var startDateTime = (rssItem.rssDate)? rssItem.rssDate.getTime() : "";
@@ -280,7 +267,6 @@ IS_Widget.Information.prototype.classDef = function() {
 		try{
 			this.switchLineBreak();
 		}catch(error){
-
 			msg.error( IS_R.getResource( IS_R.ms_lineChangeFailure,[widget.id,error]) );
 		}
 	};

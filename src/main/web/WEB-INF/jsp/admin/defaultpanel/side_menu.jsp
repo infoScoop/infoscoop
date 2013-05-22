@@ -30,7 +30,12 @@
 	<li>
 		<a href="../defaultpanel/index" class="sideBarTab-ui checkUpdate <c:if test="${title == 'alb_defaultPanel'}">active</c:if>"><span class="title">%{alb_defaultPanel}</span></a>
 	</li>
+<%} else if( adminService.isPermitted("tabAdmin") ){%>
+	<li>
+		<a href="../tabadmin/index" class="sideBarTab-ui checkUpdate <c:if test="${title == 'alb_defaultPanel'}">active</c:if>"><span class="title">%{alb_defaultPanel}</span></a>
+	</li>
 <%}%>
+
 <%if( adminService.isPermitted("portalLayout") ){%>
 	<li>
 		<a href="../portallayout/index" class="sideBarTab-ui checkUpdate <c:if test="${title == 'alb_otherLayout'}">active</c:if>"><span class="title">%{alb_otherLayout}</span></a>

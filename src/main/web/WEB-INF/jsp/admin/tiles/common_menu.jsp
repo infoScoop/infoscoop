@@ -54,7 +54,7 @@
 		</li>
 		<%}%>
 		
-		<%if( adminService.isPermitted("defaultPanel") || adminService.isPermitted("portalLayout") ){%>
+		<%if( adminService.isPermitted("defaultPanel") || adminService.isPermitted("portalLayout") ||  adminService.isPermitted("tabAdmin") ){%>
 		<li>
 			<a href="../generallayout/index" class="tab <c:if test="${type == 'generallayout'}">active</c:if>" id="tab_defaultPanel"><span>%{alb_generalLayout}</span></a>
 			

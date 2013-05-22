@@ -15,8 +15,8 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 * {
-	margin: 0;
-	padding: 0;
+	margin: 0px;
+	padding: 0px;
 }
 body {
 	background: url(imgs/header_bg.gif) repeat-x #fff !important;
@@ -38,7 +38,7 @@ a { outline: none; }
 	color:#FFF;
 	_font-size : x-medium;
 	text-decoration : none ;
-	margin : 8px 0 0 10px;
+	margin : 8px 0px 0px 10px;
 	font-weight : bold ;
 	border : none ;
 }
@@ -51,7 +51,7 @@ a { outline: none; }
 	top: 50px;
 /* 	width: 100%; */
 	margin : 0px;
-	padding : 0;
+	padding : 0px;
 	background-color: #4d4d4d;
 	white-space:nowrap;
 	border-bottom: 10px solid #eee;
@@ -60,7 +60,7 @@ a { outline: none; }
 #admin-tabs ul{
 	width: 1100px;
 	margin-left: 10px;
-	margin:0;
+	margin:0px;
 	display: block;
 	white-space:nowrap;
 }
@@ -95,7 +95,7 @@ a { outline: none; }
 	background-color:#eee; 
 	color: #000000;
 	border-style: none;
-	margin-top:0;
+	margin-top:0px;
 	height: 30px;
 	font-weight: bold;
 }
@@ -153,7 +153,7 @@ a { outline: none; }
 }
 
 #admin-side ul{
-	margin: 40px 0 0 0;
+	margin: 40px 0px 0px 0px;
 	padding: 0px;
 	border-bottom: none;
 	width: 100%;
@@ -161,7 +161,7 @@ a { outline: none; }
 
 #admin-side li{
 	list-style: none;
-	margin: 0px 0 10 0;
+	margin: 0px 0px 10px 0px;
 	white-space:nowrap;
 	height: 32px;
 	border-right: none;
@@ -171,12 +171,12 @@ a { outline: none; }
 
 .sideBarTabs-ui {
 	width:100%;
-	margin:0 5 0 5;
-	padding:0;
+	margin:0px 5px 0px 5px;
+	padding:0px;
 }
 ul.sideBarTabs-ui {
-	margin:40 0;
-	padding:0;
+	margin:40px 0px;
+	padding:0px;
 	list-style:none;
 	border-bottom: #666666 solid 1px;
 	width: 100%;
@@ -195,7 +195,7 @@ a.sideBarTab-ui {
 	border-right: none;
 	text-decoration: none !important;
 	outline: none;
-	top: 0;
+	top: 0px;
 	height: auto;
 	width: 100%;
 	color: #000000;
@@ -233,12 +233,12 @@ span.title {
 
 .tabs-ui {
 	width:100%;
-	margin:0 5 0 5;
+	margin:0px 5px 0px 5px;
 	padding:0;
 }
 .tabs-ui ul {
-	margin:0;
-	padding:0;
+	margin:0px;
+	padding:0px;
 	list-style:none;
 	border-bottom: #000 solid 1px;
 }
@@ -261,14 +261,10 @@ span.title {
 	height: auto;
 }
 .tabs-ui .tab-ui.active{
-/* 	top: 1; */
-/* 	border-bottom: solid 1px gray; */
 	background-color: #cbeaf8;
 }
 
 .tabs-ui .tab-ui.active:hover{
-/* 	top: 1; */
-/* 	border-bottom: solid 1px gray; */
 	background-color: #cbeaf8;
 }
 
@@ -295,7 +291,6 @@ a:active { color:#ff0000;}
 a:hover{text-decoration: underline;}
 
 a.iconButton{
-/* 	background: url(imgs/button_bg.jpg); */
 	height: 20px;
 	background: url(imgs/iconButton_bg.gif);
 	font-size:14px;
@@ -375,18 +370,13 @@ a.menuContextA:visited{
 }
 
 a.menuContextA_edit:link{
-	color: 0000ff;
+	color: #0000ff;
 	text-decoration: none;
 }
 a.menuContextA_edit:visited{
-	color: 0000ff;
+	color: #0000ff;
 	text-decoration: none;
 }
-
-/* a.menuContextA:hover{ */
-/* 	text-decoration: none; */
-/* 	background-color: #cbeaf8; */
-/* } */
 
 .button:link { color:#000;}
 .button:visited { color:#000;}
@@ -416,24 +406,23 @@ a.menuContextA_edit:visited{
 }
 
 .defaultPanelWidgetsGroup {
+	margin-left: 10px;
 	width: 700px;
 	clear:both;
 }
 
 .headerProperties, .headerDefaultPanel, .headerPortalAdmins {
-	border : 1px solid gray;
+	border : 1px solid #808080;
 	background-color : #eeeeee;
 	text-align : center;
 }
 
 .rowDefaultPanel {
-	border : 1px solid gray;
+	border : 1px solid #808080;
 	padding: 3px;
 	margin:0px;
 	margin-bottom:-1px;
 	border-top:0px solid #fff;
-	
-//	margin-bottom:0px;
 }
 
 .homeTitle, .searchEngineTitle, .propertiesTitle, .proxyTitle, .i18nTitle, .portalAdminsTitle {
@@ -450,9 +439,8 @@ a.menuContextA_edit:visited{
 .i18nCategoryField {
 	margin: 10px;
 	border: 1px solid #666666;
-	width: 320px;
+	width: 31%;
 	height: auto;
-/* 	clear: both; */
 	float: left;
 	padding: 0px;
 	-webkit-border-radius: 3px;
@@ -462,10 +450,9 @@ a.menuContextA_edit:visited{
 	margin: 0px;
 	height: auto;
 	border-bottom: 1px solid #666666;
-	padding: 3px;
+	padding: 3px 3px 3px -1px;
 	background-color: #cccccc;
-/* 	background: url(./imgs/configSetHeader_bg.jpg) repeat; */
-	width: 314px;
+	width: 100%;
 	_width: 320px;
 	
 /* 	-webkit-border-radius: 3px; */
@@ -476,6 +463,7 @@ a.menuContextA_edit:visited{
 	margin: 5px;
 	border-collapse: collapse;
 	border:1px solid #666666;
+	width:97%;
 }
 
 .i18nLinkTd {
@@ -490,7 +478,7 @@ a.menuContextA_edit:visited{
 	margin-left:2px;
 }
 
-.propertiesGroup, .portalAdminsGroup {
+.propertiesGroup, .portalAdminsGroup, .tabListGroup, .tabAdminsGroup {
 	border-collapse: collapse;
 	margin: 0px 0px 15px 15px;
 	padding: 5px;
@@ -500,6 +488,45 @@ a.menuContextA_edit:visited{
 	tableLayout : fixed;
 	emptyCells : show;
 	background-color: #ffffff;
+}
+
+.tabListGroup {
+	width: 650px;
+	margin: 10px;
+}
+
+.tabListGroup td {
+	border: 1px solid #666666;
+}
+
+.tabAdminsGroup {
+	width: 330px;
+	margin: 10px;
+}
+
+/* for modern browser */
+:root *> .tabAdminsGroup {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.tabAdminsGroup td {
+	border: 1px solid #666666;
+}
+
+.tabAdminModal .tabAdminInput {
+	margin: 10px 0 0 15px;
+}
+
+.tabListButtons {
+	width: 650px;
+	padding-bottom:10px;
+	padding-top:10px;
+	padding-left:15px;
+}
+
+.tabAdmin .hiddenTabAdmin {
+	display:none;
 }
 
 .roleSelectTd{
@@ -513,7 +540,8 @@ a.menuContextA_edit:visited{
 }
 
 .headerProperties{
-	padding: 3px;
+	padding: 5px;
+	white-space: nowrap;
 	font-weight: bold;
 }
 
@@ -521,9 +549,19 @@ a.menuContextA_edit:visited{
 	width: 100%;
 }
 
+.standardProperty > td {
+	border-color: #666666;
+	padding: 3px;
+}
+
 .advancedProperty {
-	color: #FF0000;
 	margin: 10px;
+}
+
+.advancedProperty > td {
+	border-color: #666666;
+	color: #FF0000;
+	padding: 3px;
 }
 
 .portalAdminInput {
@@ -581,7 +619,7 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 	cursor: pointer;
 }
 
-#modal_container {
+div[id^="control_window_"] {
 	padding:5px;
 	background-color:#fff;
 	border:1px solid #666;
@@ -591,15 +629,15 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 	text-align:left;
 }
 
-#modal_overlay {
-	background-color:#000;
+#control_overlay {
+	background-color: #000;
 }
 
-#modal_container.adminTreeMenu,
-#modal_container.adminSearchEngine,
-#modal_container.adminDefaultPanel,
-#modal_container.adminWidgetConfModal,
-#modal_container.adminWidgetInstModal {
+div[id^="control_window_"].adminTreeMenu,
+div[id^="control_window_"].adminSearchEngine,
+div[id^="control_window_"].adminDefaultPanel,
+div[id^="control_window_"].adminWidgetConfModal,
+div[id^="control_window_"].adminWidgetInstModal {
 	width:94%;
 	height:auto;
 	overflow:visible;
@@ -612,14 +650,14 @@ ul.tabs#panelTabs a.tab.selected.deletable span.title img {
 	overflow:visible;
 }
 
-#modal_container iframe{
+div[id^="control_window_"] iframe{
 	width:100%;
 	height:85%;
 	border: 1px outset #ffffff;
 	overflow:visible;
 }
 
-#modal_container.commitDialog {
+div[id^="control_window_"].commitDialog {
 	width:200px;
 	text-align:center;
 	height:auto;
@@ -802,7 +840,11 @@ a.gadgetListTabA:visited{
 	background-repeat: no-repeat;
 	background-position: center left;
 	cursor: pointer;
-	
+	text-align: center;
+}
+.authorizationTable thead tr .regexpheader {
+	min-width:170px;
+  　width: 170px;
 }
 .authorizationTable thead tr .headerSortUp {
 	background-image: url(imgs/asc.gif);
@@ -910,8 +952,7 @@ a.gadgetListTabA:visited{
 /* configuration table -------------------- */
 table.configTableHeader{
 	clear : both;
-	margin: 10px 10px 0px 10px;
-/* 	background-color:#666666; */
+	margin: 10px 10px 0 10px;
 	height: auto;
 	tableLayout : fixed;
 	emptyCells : show;
@@ -930,7 +971,8 @@ td.configTableHeaderTd{
 	color: #000;
 	vertical-align:middle;
 	text-align:center;
-	word-wrap: none;
+	word-wrap: break-word;
+	-ms-word-break: break-all;
 }
 
 div.configListDiv{/*  not in use? */
@@ -938,18 +980,15 @@ div.configListDiv{/*  not in use? */
 }
 
 div.configTableDiv{
-/* 	width: 400; */
-	width: 900;
+	width: 932px;
 	height: auto;
-	margin: 0px 10px 0px 10px;
-/* 	float: left; */
-/* 	background-color: #666666; */
+	margin: 0 10px 0 10px;
 }.
 
 table.configTable{
 	margin: 0px;
 	clear: both;
-	width : 900px;
+	width : 920px;
 	tableLayout : fixed;
 	emptyCells : show;
 	border-collapse: collapse; 
@@ -963,7 +1002,6 @@ td.configTableTd{
 	border-color: #666666;
 	border-top:none;
 	font-size:14px;
-/* 	font-weight:bold; */
 	color: #000;
 	vertical-align:middle;
 	text-align:center;
@@ -1193,6 +1231,14 @@ td.configTableTd{
 	font-size:12px;
 }
 
+table[id^="oauth_consumer_setting_"] {
+	text-align: left;
+}
+
+table.gadgetUrlTable{
+	margin: 10px 0 0 0;
+}
+
 /*- Footer not in use--------------------------- */
 #admin-footer{
 	position: relative;
@@ -1368,4 +1414,9 @@ a.home-menu-header:visited {
 
 .SelectLabel .hover{
 	border-bottom : 1px solid #15C;
+}
+.errorMessage {
+	font-weight: bold;
+	color: #FF0000;
+	margin: 10px;
 }

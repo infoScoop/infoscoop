@@ -30,7 +30,7 @@
 	<property name="build.admin" value="${build.main}/admin" />
 	<property name="build.admin.jsp" value="${build.main}/WEB-INF/jsp/admin" />
 	<!-- other properties -->
-	<property name="compile.level" value="1.5" />
+	<property name="compile.level" value="1.6" />
 	<property name="compile.debug" value="true" />
 	<property name="compile.deprecation" value="false" />
 	<property name="compile.optimize" value="true" />
@@ -67,11 +67,6 @@
 	</path> 
 	
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="project.classpath" />
-
-    <target name="dist2"
-        depends="clean, prepare, build-main, build-admin"
-        description="Build disribution files.">
-    </target>
 
     <target name="dist"
         depends="clean, prepare, retrieve, build-main, build-admin, build-war,
@@ -146,7 +141,7 @@
         <copy todir="${install_image.home}" file="${basedir}/README.ja.txt"/>
 
         <antcall target="initdb"/>
-        <antcall target="migration"/>
+        <!--antcall target="migration"/-->
 
         <copy todir="${install_image.home}/${app.main.name}" file="${build.home}/work/${app.main.name}.war"/>
         <fixcrlf srcdir="${src.remakewar}/" eol="lf" eof="remove" includes="**/*.sh" />
@@ -156,6 +151,17 @@
                 <filter token="APP.MAIN.NAME" value="${app.main.name}"/>
             </filterset>
         </copy>
+        <mkdir dir="${install_image.home}/${app.main.name}/lib" />
+        <copy todir="${install_image.home}/${app.main.name}/lib" encoding="UTF-8">
+            <fileset dir="${basedir}/lib/build">
+              <include name="**/ant-contrib*.jar"/>
+            </fileset>
+        </copy>
+    	<copy todir="${install_image.home}/${app.main.name}/lib" encoding="UTF-8">
+            <fileset dir="${src.main.web}/WEB-INF/lib">
+              <include name="**/liquibase-core*.jar"/>
+            </fileset>
+		</copy>    		
 
         <mkdir dir="${install_image.home}/${app.main.name}/Customization/WEB-INF/classes" />
         <mkdir dir="${install_image.home}/${app.main.name}/Customization/WEB-INF/lib" />
@@ -253,12 +259,13 @@
 	<target name="compress-main" depends="prepare-main">
 
 		<concat destfile="${build.main}/js/dist/Portal.js.tmp" append="false" encoding="utf-8" fixlastline="true">
-			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="controls.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="effects.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="controls.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="resizable.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="window.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="jsbn.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="prng4.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="rng.js"/>
@@ -320,7 +327,7 @@
 		</java>
 
 		<concat destfile="${build.main}/js/dist/Portal-core.js.tmp" append="false" encoding="utf-8" fixlastline="true">
-			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="prototype-1.7.1.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="ajax304.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="utils.js"/>
             <filelist dir="${src.main.web}/js/utils" files="domhelper.js"/>
@@ -350,10 +357,12 @@
 				<pathelement location="${yuicompressor}"/>
 			</classpath>
 		</java>
-
+		
+		<!--
 		<delete>
 			<fileset dir="${build.main}/js/dist" includes="*.tmp"/>
 		</delete>
+		-->
 
 		<copy todir="${build.main}/js/widgets" includeEmptyDirs="false">
 			<fileset dir="${src.main.web}/js/widgets" excludes="**/*.js,**/imgs/*,**/*.css"/>
@@ -438,13 +447,14 @@
 
 		<concat destfile="${build.admin}/js/dist/PortalMain.js.tmp" append="false" encoding="utf-8" fixlastline="true">
 			<!-- lib -->
-			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="prototype-1.7.1.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="effects.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="resizable.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="window.js"/>
 			<filelist dir="${src.admin.web}/js/lib" files="popupmenu.js"/>
-			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
 			<filelist dir="${src.main.web}/js/lib/date" files="date.js"/>
             <filelist dir="${src.main.web}/js/lib/rsa" files="jsbn.js"/>
             <filelist dir="${src.main.web}/js/lib/rsa" files="prng4.js"/>
@@ -519,10 +529,13 @@
 		</java>
 		<concat destfile="${build.admin}/js/dist/PortalAdmin-EditRole.js.tmp" append="false" encoding="utf-8" fixlastline="true">
 			<!-- lib -->
-			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
-			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="prototype-1.7.1.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="effects.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="resizable.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="window.js"/>
 			<filelist dir="${src.main.web}/js/lib/date" files="date.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa" files="jsbn.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa" files="prng4.js"/>
@@ -579,6 +592,22 @@
 			</classpath>
 		</java>
 		
+		<!-- optimize single js files -->
+		<copy todir="${build.admin}/js">
+			<fileset dir="${src.admin.web}/js">
+				<include name="AdminTabList.js"/>
+				<!-- add js file -->
+			</fileset>
+		</copy>
+		<foreach target="optimize-js" param="js.file">
+			<param name="suffix" value="" />
+			<path>
+				<fileset dir="${build.admin}/js">
+					<include name="*.js"/>
+				</fileset>
+			</path>
+		</foreach>
+		
 		<delete>
 			<fileset dir="${build.admin}/js/dist" includes="*.tmp"/>
 		</delete>
@@ -590,16 +619,10 @@
 				<exclude name="messageConsole.html/"/>
 			</fileset>
 		</copy>
-		<copy todir="${build.admin}" file="${src.admin.web}/messageConsole.html" encoding="UTF-8">
-		    <filterset>
-				<filter token="PRODUCT.NAME" value="${product.name}"/>
-				<filter token="BUILD.VERSION" value="${build.version}"/>
-			</filterset>
-		</copy>
 		<copy todir="${build.admin}/js/resources" file="${src.admin.web}/js/resources/resourceBundle.jsp"/>
 		
 		<!-- Copy from main -->
-		<copy todir="${build.admin}/js/lib" file="${src.main.web}/js/lib/prototype-1.6.0.3.js"/>
+		<copy todir="${build.admin}/js/lib" file="${src.main.web}/js/lib/prototype-1.7.1.js"/>
 		<copy todir="${build.admin}/skin">
 			<fileset dir="${src.main.web}/skin" includes="**/igtab.css"/>
 		</copy>
@@ -765,7 +788,8 @@
             <fileset dir="${build.home}/work/initdb"/>
         </copy>
     </target>
-
+	
+	<!--
     <target name="migration"  if="withMigration">
     	<ant antfile="${basedir}/build_migration.xml" inheritall="false">
 			<property name="compile.level" value="${compile.level}"/>
@@ -776,12 +800,14 @@
     		<fileset dir="${build.migration}"/>
     	</copy>
     </target>
+    -->
 
 	<target name="optimize-gadget-features">
 		<delete>
 			<fileset dir="${build.main.features}" includes="**/*test.js"/>
 		</delete>
 		<foreach target="optimize-js" param="js.file">
+			<param name="suffix" value=".opt" />
 			<path>
 				<fileset dir="${build.main.features}" includes="*/*.js"/>
 				<fileset dir="${build.main.features}" includes="*/*/*.js" excludes="i18n/data/*.js"/>
@@ -797,7 +823,7 @@
 		<basename file="${js.file.name}" property="js.file" />
 		<dirname file="${js.file}" property="js.dir.path"/>
 		<basename file="${js.file}" property="js.file.name" suffix=".js" />
-		<macro.compress input="${js.file}" output="${js.dir.path}/${js.file.name}.opt.js" />
+		<macro.compress input="${js.file}" output="${js.dir.path}/${js.file.name}${suffix}.js" />
 	</target>
 	
 	<macrodef name="macro.compress">

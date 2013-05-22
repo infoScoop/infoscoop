@@ -89,6 +89,7 @@
 		<property name="notPermittedPatterns">
 			<props>
 				<prop key="defaultPanel"></prop>
+				<prop key="tabAdmin"></prop>
 				<prop key="*">.*</prop>
 			</props>
 		</property>

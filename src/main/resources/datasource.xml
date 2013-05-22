@@ -90,6 +90,8 @@
 					<value>org/infoscoop/dao/model/OAuthGadgetUrl.hbm.xml</value>
 					<value>org/infoscoop/dao/model/OAuthConsumer.hbm.xml</value>
 					<value>org/infoscoop/dao/model/OAuthCertificate.hbm.xml</value>
+					<value>org/infoscoop/dao/model/StaticTab.hbm.xml</value>
+					<value>org/infoscoop/dao/model/TabAdmin.hbm.xml</value>
 				</list>
 			</property>
 			<property name="hibernateProperties">
@@ -99,7 +101,7 @@
 						org.hibernate.dialect.MySQLDialect
 					<!--end dataSource.dialect-->
 					</prop>
-					<prop key="hibernate.default_schema"><!--start dataSource.schema--><!--end dataSource.schema--></prop>
+					<!--Database Schema Name-->
 					<prop key="hibernate.show_sql">false</prop>
 					<prop key="hibernate.jdbc.use_get_generated_keys">false</prop>
 				</props>

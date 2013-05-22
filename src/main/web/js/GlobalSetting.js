@@ -199,11 +199,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 		if(rssReaderConf.UserPref.scrollMode){
 			appendOption(wfs, rssReaderConf.UserPref.scrollMode, rssReaderConf.UserPref.scrollMode.EnumValue);
 		}
-		
-//		if(Browser.isIE){
-//			lastp.style.marginBottom = "10px";
-//		}
-		
+	
 		wfs.appendChild( createExecButton());
 		
 		return wfs;
@@ -257,7 +253,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 		var backgroundImages = [IS_Portal.theme.defaultTheme['background']['image']].concat(IS_Portal.theme.backgroundImages);
 		var currentBackgroundImage = IS_Portal.theme.currentTheme['background'] && IS_Portal.theme.currentTheme['background']['image'] ? IS_Portal.theme.currentTheme['background']['image'] : IS_Portal.theme.defaultTheme['background']['image'];
 		for(var i = 0; i < backgroundImages.length; i++){
-			var radioBtn = Browser.isIE ? document.createElement('<input type="radio" name="backgroundImageRadio">') : $.INPUT({type:'radio',name:"backgroundImageRadio"});
+			var radioBtn = $.INPUT({type:'radio',name:"backgroundImageRadio"});
 			radioBtn.id = 'background_setting_' + backgroundImages[i];
 			radioBtn.defaultChecked = currentBackgroundImage == backgroundImages[i];
 			radioBtn.value = backgroundImages[i];
@@ -309,7 +305,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 		var currentWidgetHeaderImage = currentWidgetTheme.header && currentWidgetTheme.header['background'] && currentWidgetTheme.header['background']['image'] ?
 		  currentWidgetTheme.header['background']['image'] : defaultWidgetHeaderImage;
 		for(var i = 0; i < widgetHeaderImages.length; i++){
-			var radioBtn = Browser.isIE ? document.createElement('<input type="radio" name="widgetHeaderSettingRadio">') : $.INPUT({type:'radio',name:"widgetHeaderSettingRadio"});
+			var radioBtn = $.INPUT({type:'radio',name:"widgetHeaderSettingRadio"});
 			radioBtn.id = 'widget_header_setting_' + widgetHeaderImages[i];
 			radioBtn.defaultChecked = currentWidgetHeaderImage == widgetHeaderImages[i];
 			radioBtn.value = widgetHeaderImages[i];
@@ -334,7 +330,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 		var currentSubWidgetHeaderColor = currentWidgetTheme.subheader && currentWidgetTheme.subheader['background'] && currentWidgetTheme.subheader['background']['color'] ?
 		  currentWidgetTheme.subheader['background']['color'] : defaultSubWidgetHeaderColor;
 		for(var i = 0; i < subWidgetHeaderColors.length; i++){
-			var radioBtn = Browser.isIE ? document.createElement('<input type="radio" name="subWidgetHeaderColorRadio">') : $.INPUT({type:'radio',name:"subWidgetHeaderColorRadio"});
+			var radioBtn = $.INPUT({type:'radio',name:"subWidgetHeaderColorRadio"});
 			radioBtn.id = 'sub_widget_header_setting_' + subWidgetHeaderColors[i];
 			radioBtn.defaultChecked = currentSubWidgetHeaderColor == subWidgetHeaderColors[i];
 			radioBtn.value = subWidgetHeaderColors[i];
@@ -482,14 +478,16 @@ IS_Portal.buildGlobalSettingModal = function() {
 
 
 	var showModal = function(){
-		IS_Portal.currentModal.update(createPreferenceBody());
+		IS_Portal.currentModal.container.update(createPreferenceBody());
+		IS_Portal.currentModal.open();
 	}
 	
 	if(preferenceDiv){
-		IS_Portal.currentModal = new Control.Modal(preferenceDiv,{contents: "", containerClassName:"preference"});
-		
+		IS_Portal.currentModal = new Control.Modal('',{
+			className: 'preference'
+		});
 		preferenceDiv.title = IS_R.lb_setupAll;
-		Event.observe(preferenceDiv, "click", showModal, false);
+		Event.observe(preferenceDiv, "click", showModal);
 		
 
 		if(preferenceDiv.parentNode)//Setting of command bar width.

@@ -257,46 +257,45 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 			Element.addClassName( tab,"loading");
 		},null,false );
 	
-	var tabTr = $.TR();
-	
-	tabTr.appendChild(
-		$.TD({},
-			$.IMG({src:imageURL +"indicator.gif", id:tab.id+"_loadingIcon", className:"tabLoadingIcon"})
-		)
-	);
-	
+	var tabBaseDiv = $.DIV();
+
+	// indicator
+	var indicatorDiv = $.DIV({className:"inlineBlock"},$.IMG({src:imageURL +"indicator.gif", id:tab.id+"_loadingIcon", className:"tabLoadingIcon"}));
+	tabBaseDiv.appendChild(indicatorDiv);
+
+	// static-pin
 	if(disabledDynamicPanel){
-		tabTr.appendChild(
-			$.TD({width:6},
-				$.IMG({src:imageURL+"pin-small.gif", className:"fixedTab", title:IS_R.ms_thisIsFixedTab})
-			)
-		);
+		var pinDiv = $.DIV({width:'6px', className:"inlineBlock"}, $.IMG({src:imageURL+"pin-small.gif", className:"fixedTab", title:IS_R.ms_thisIsFixedTab}));
+		tabBaseDiv.appendChild(pinDiv);
 	}
-	
-	tabTr.appendChild($.TD({},
-		$.SPAN({id:tab.id + "_title", className:"tabTitle"}, name)
-	));
-	
+
+	// title
+	var titleDiv = $.DIV({id:tab.id + "_title", className:"tabTitle inlineBlock"}, name);
+	tabBaseDiv.appendChild(titleDiv);
+
+	//Menu
 	if(disabledDynamicPanel){
 		var refreshImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"refresh.gif", className:"selectMenu"});
-		tabTr.appendChild($.TD({}, refreshImg));
+		var refreshImgDiv = $.DIV({className:"inlineBlock"}, refreshImg);
+		tabBaseDiv.appendChild(refreshImgDiv);
 		IS_Event.observe(refreshImg, 'click', function(e){
 			var tabObj = IS_Portal.tabs[this.id];
 			tabObj.refresh();
 		}.bindAsEventListener(tab), false, tab.id);
 	} else {
 		var selectMenuImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"bullet_arrow_down.gif", className:"selectMenu"});
-		tabTr.appendChild($.TD({}, selectMenuImg));
+		var menuImgDiv = $.DIV({className:"inlineBlock"}, selectMenuImg);
+		tabBaseDiv.appendChild(menuImgDiv);
 		IS_Event.observe(selectMenuImg, 'click', IS_Portal.showTabMenu.bind(selectMenuImg, tab), false, tab.id);
 		IS_Event.observe(selectMenuImg, 'mousedown', function(e){Event.stop(e);}, false, tab.id);
-	}
+	}	
 	
 	var tabOnMousedown = function(e){
 		IS_Portal.tabDrag(e, tab);
 	}
 	IS_Event.observe(tab, 'mousedown', tabOnMousedown, false, tab.id);
 	
-	innerSpan.appendChild($.TABLE({cellPadding:0, cellSpacing:0}, $.TBODY({}, tabTr)));
+	innerSpan.appendChild(tabBaseDiv);
 	
 	outerSpan.appendChild(innerSpan);
 	tab.appendChild(outerSpan);
@@ -328,8 +327,8 @@ IS_Portal.showTabMenu = function(tabElement, e){
 			offset = (winX  - tabMenu.offsetWidth );
 		}
 		
-		tabMenu.style.left = offset;
-		tabMenu.style.top = (findPosY(tabElement) + tabElement.firstChild.offsetHeight);
+		tabMenu.style.left = offset + 'px';
+		tabMenu.style.top = (findPosY(tabElement) + tabElement.firstChild.offsetHeight)  + 'px';
 
 		IS_Portal.behindIframe.show(tabMenu);
 	}
@@ -473,8 +472,10 @@ IS_Portal.showTabMenu = function(tabElement, e){
 			var itemDiv = document.createElement( opt.anchor ? "a":"div");
 			itemDiv.className = className + " item";
 			itemDiv.id = tabObj.id+"_menu_"+className;
-			if( opt.anchor )
+			if( opt.anchor ){
 				itemDiv.href = "javascript:void(0)";
+				IS_Event.observe( itemDiv, "click", function(e){Event.stop(e)}, false, tabObj.id );
+			}
 			
 			var content = document.createElement("div");
 			content.className = "content";
@@ -1291,7 +1292,7 @@ IS_Portal.adjustStaticWidgetHeight = function(){
 			if(widget.iframe)
 			  widget.iframe.style.height = height + "px";
 			widget.elm_widgetContent.style.height = height + "px";
-			widget.staticWidgetHeight =  height ;
+			widget.staticWidgetHeight =  height + 'px';
 
 			if(widget.widgetType == 'RssReader' && widget.content.rssContentView){
 				widget.content.rssContentView.setViewportHeight( height );

@@ -43,7 +43,6 @@ IS_Widget.Information2.prototype.classDef = function() {
 	function buildRssItems(response){
 		var rss = IS_Widget.parseRss(response);
 		self.rss = rss;
-//		if(rss && rss.items) rssItems = rss.items;
 		rssItems = (rss && rss.items) ? rss.items : [];
 		
 		self.displayContents();
@@ -55,7 +54,7 @@ IS_Widget.Information2.prototype.classDef = function() {
 		var container = widget.elm_widget.parentNode;
 		if( container ) {
 			if( !container.height && !container.style.height )
-				widget.elm_widgetContent.style.height = 200;
+				widget.elm_widgetContent.style.height = '200px';
 		}
 		
 		IS_Widget.InformationDescriptionList[widget.id] = [];
@@ -73,14 +72,13 @@ IS_Widget.Information2.prototype.classDef = function() {
 		} else {
 			for ( var i=0; i<rssItems.length ; i++ ) {
 				var contentsTable = document.createElement("table");
-				contentsTable.cellPadding = "1";
+				contentsTable.cellPadding = "1px";
 				contentsTable.cellSpacing = "0";
 				
 				if(Browser.isIE){
 					contentsTable.style.wordBreak = "break-all";
 				}
 				
-				//contentsTable.border = "1";
 				contentsTable.setAttribute("width", "99%");
 				contentsDiv.appendChild(contentsTable);
 				var contentsTbody = document.createElement("tbody");
@@ -100,8 +98,6 @@ IS_Widget.Information2.prototype.classDef = function() {
 					//imgTd.firstChild.style.padding = "0 5px 5px 0";
 					if(rssItems[i].creatorImg.match(/height=[\'\"]?([0-9a-z]+)[\'\"]?/i))
 						itemHeight = RegExp.$1;
-					//itemDiv.firstChild.style.height = "80px";
-					//itemDiv.firstChild.style.width = "60px";
 				}
 				
 				var latestMark = document.createElement("img");
@@ -114,9 +110,8 @@ IS_Widget.Information2.prototype.classDef = function() {
 				contentsTr.appendChild(itemTd);
 				
 				var itemTable = document.createElement("table");
-				//itemTable.border = "1";
 				itemTable.cellSpacing = "0";
-				itemTable.cellPadding = "1";
+				itemTable.cellPadding = "1px";
 				itemTable.setAttribute("width", "99%");
 				itemTd.appendChild(itemTable);
 				var itemTBody = document.createElement("tbody");
@@ -146,7 +141,6 @@ IS_Widget.Information2.prototype.classDef = function() {
 					
 					var rssTitle = (rssItems[i].title.length == 0)? IS_R.lb_notitle : rssItems[i].title;
 					rssTitle = rssTitle.replace(/&nbsp;/g," ");	// For trouble of "&nbsp;" where line-break does not occur
-					//titleDiv.innerHTML = rssTitle;
 					titleDiv.appendChild(document.createTextNode(rssTitle));
 				}
 				
@@ -157,19 +151,16 @@ IS_Widget.Information2.prototype.classDef = function() {
 					var titleTdBox = document.createElement("td");
 					titleTr.appendChild(titleTdBox);
 					var titleTable = document.createElement("table");
-					titleTable.cellPadding = "1";
+					titleTable.cellPadding = "1px";
 					titleTable.cellSpacing = "0";
-					//titleTable.border = "1";
 					var titleTbody = document.createElement("tbody");
 					titleTable.appendChild(titleTbody);
 					var titleNobrTr = document.createElement("tr");
 					titleTbody.appendChild(titleNobrTr);
 					titleDiv.className = "rssItem";
 					titleDiv.style.overflow = "hidden";
-/*					titleTd.style.fontSize = "90%";*/
 					titleNobrTr.appendChild(titleTd);
 					
-//					if(getBooleanValue(rssItems[i].isLatestNews)) {
 					if(IS_Widget.RssReader.isLatestNews(rssItems[i].rssDate)){
 						var latestMarkTd = document.createElement("td");
 						latestMarkTd.style.padding = "0";
@@ -183,15 +174,11 @@ IS_Widget.Information2.prototype.classDef = function() {
 					titleDiv.style.overflow = "visible";
 					titleDiv.style.display = "inline";
 					
-//					if(getBooleanValue(rssItems[i].isLatestNews)) {
 					if(IS_Widget.RssReader.isLatestNews(rssItems[i].rssDate)){
-//						latestMark.style.display = "inline";
-//						latestMark.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
 						titleDiv.appendChild(latestMark);
 					}
 					
 					titleDiv.className = "rssItem";
-//					titleTd.style.fontSize = "90%";
 					titleTd.appendChild(titleDiv);
 					titleTr.appendChild(titleTd);
 				}
@@ -201,19 +188,13 @@ IS_Widget.Information2.prototype.classDef = function() {
 				var metaTd = document.createElement("td");
 				metaTr.appendChild(metaTd);
 				
-				/*
-				metaTd.style.color = "gray";
-				metaTd.style.fontSize = "80%";
-				*/
-				
 				var metaDiv = document.createElement("div");
 				metaDiv.className = "rssPubDate";
 				metaDiv.style.lineHeight = "1.1em";
 				metaDiv.style.height = "1.0em";
 				metaDiv.style.overflow = "hidden";
 				if (rssItems[i].date && rssItems[i].date.length > 0) {
-					metaDiv.innerHTML = rssItems[i].date ;
-					//metaDiv.style.whiteSpace = "nowrap";
+					metaDiv.innerHTML = rssItems[i].date;
 				}
 				
 				if (rssItems[i].creator && rssItems[i].creator.length > 0){
@@ -232,9 +213,8 @@ IS_Widget.Information2.prototype.classDef = function() {
 				if(rssItems[i].description && rssItems[i].description.length > 0){
 					var descDiv = document.createElement("div");
 					descDiv.style.fontSize = "80%";
-//					descDiv.descHeight = (parseInt(itemHeight) > 40 ? (parseInt(itemHeight) - 40) : 1) + "px";
-					var descHeightBefore = (parseInt(itemHeight) > 40 ? (parseInt(itemHeight) - 40) : 1) + "px";
-					descDiv.style.height = descHeightBefore;//"5em";
+					var descHeightBefore = (parseInt(itemHeight) > 40 ? (parseInt(itemHeight) - 40) : 1);
+					descDiv.style.height = descHeightBefore + "px";//"5em";
 					descDiv.style.width = 0;
 					descDiv.style.overflow = "hidden";
 					descDiv.innerHTML = rssItems[i].description;
@@ -243,7 +223,6 @@ IS_Widget.Information2.prototype.classDef = function() {
 						for(var j = 0; j < descLinks.length; j++) {
 							if(!descLinks[j].target || descLinks[j].target == "_self"
 								|| descLinks[j].target == "_top" || descLinks[j].target == "_parent") {
-								//descLinks[j].target = "ifrm";
 								descLinks[j].target = "";
 								var descClick = function() {
 									IS_Portal.buildIFrame(this);
@@ -286,7 +265,7 @@ IS_Widget.Information2.prototype.classDef = function() {
 							var tmpHeight = this.descHeight;
 							this.desc.style.height = "100%";
 							if(this.desc.offsetHeight < tmpHeight)
-								this.desc.style.height = tmpHeight;
+								this.desc.style.height = tmpHeight+'px';
 							//Save the height when it is firstly shown in FireFox because it cannot be shown at second or later actions even though 100% is set
 							this.descHeight = this.desc.offsetHeight;
 							var startDateTime = (this.rssItem.rssDate)? this.rssItem.rssDate.getTime() : "";
@@ -294,7 +273,7 @@ IS_Widget.Information2.prototype.classDef = function() {
 							IS_Widget.updateRssMeta("0",this.rssItem.link,widget.getUserPref("url"),this.rssItem.title,startDateTime);
 						},
 						descDetailOnClicked : function(){
-							this.desc.style.height = this.descHeightBefore;//"5em";
+							this.desc.style.height = this.descHeightBefore + 'px';//"5em";
 							this.desc.style.overflow = "hidden";
 							if(Browser.isIE) {
 								this.focusEl.focus();
@@ -302,7 +281,7 @@ IS_Widget.Information2.prototype.classDef = function() {
 								var currentScrollTop = widget.elm_widgetContent.scrollTop;
 								var targetScrollTop = this.focusEl.offsetTop - widget.elm_widgetContent.offsetTop;
 								if(targetScrollTop < currentScrollTop)
-									widget.elm_widgetContent.scrollTop = targetScrollTop;
+									widget.elm_widgetContent.scrollTop = targetScrollTop + 'px';
 							}
 						}
 					};
@@ -346,9 +325,7 @@ IS_Widget.Information2.prototype.classDef = function() {
 		rssTitle = rssTitle.replace(/&nbsp;/g," ");	// For trouble of "&nbsp;" where line-break does not occur
 		var aTag = document.createElement('a');
 		aTag.href = rssItem.link;
-//		aTag.innerHTML = rssTitle;
 		aTag.appendChild(document.createTextNode(rssTitle));
-		//aTag.target="ifrm";
 		
 		var ctitle = rssItem.title;
 		var aTagOnClick =function(e){
@@ -493,12 +470,7 @@ IS_Widget.Information2.adjustDescWidth = function() {
 		}
 	}
 	
-	if(Browser.isIE){
-		if(adjustDescWidthTimer) clearTimeout(adjustDescWidthTimer);
-		adjustDescWidthTimer = setTimeout(resizeDescs, 500);
-	}else{
-		resizeDescs();
-	}
+	resizeDescs();
 };
 Event.observe(window, 'resize', IS_Widget.Information2.adjustDescWidth, false);
 

@@ -60,11 +60,10 @@ public class TabLayout extends BaseTablayout {
 
 	private static Log log = LogFactory.getLog(TabLayout.class);
 	
-	public static final Integer DELETEFLAG_TRUE = new Integer(1);
-	public static final Integer DELETEFLAG_FALSE = new Integer(0);
-	
 	public static final Integer TEMP_TRUE = new Integer(1);
 	public static final Integer TEMP_FALSE = new Integer(0);
+	public static final Integer DELETEFLAG_TRUE = new Integer(1);
+	public static final Integer DELETEFLAG_FALSE = new Integer(0);
 	
 /*[CONSTRUCTOR MARKER BEGIN]*/
 	public TabLayout () {
@@ -88,7 +87,6 @@ public class TabLayout extends BaseTablayout {
 		java.lang.String principaltype,
 		java.lang.String widgets,
 		java.lang.String layout,
-		java.lang.Integer deleteflag,
 		java.lang.String workinguid) {
 
 		super (
@@ -98,7 +96,6 @@ public class TabLayout extends BaseTablayout {
 			principaltype,
 			widgets,
 			layout,
-			deleteflag,
 			workinguid);
 		
 	}
@@ -312,7 +309,8 @@ public class TabLayout extends BaseTablayout {
 		Tab tab = new Tab(new TABPK(uid, tabId));
 		tab.setDefaultuid(super.getDefaultuid());
 		tab.setWidgetlastmodified(super.getWidgetslastmodified());
-		tab.setOrder( super.getTabnumber() );
+		StaticTab staticTab = super.getStatictab();
+		tab.setOrder( staticTab != null ? staticTab.getTabnumber() : null );
 		tab.setName( this.getTabName());
 		tab.setType("static");
 		tab.setProperty("numCol", this.getNumCol());

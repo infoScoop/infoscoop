@@ -198,6 +198,9 @@
 				<property name="widgetDAO">
 					<ref bean="widgetDAO" />
 				</property>
+				<property name="StaticTabDAO">
+					<ref bean="staticTabDAO" />
+				</property>
 			</bean>
 		</property>
 		<property name="transactionManager">
@@ -206,6 +209,7 @@
 		<property name="transactionAttributes">
 			<props>
 				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="copy*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="replace*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="commit*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
@@ -559,4 +563,32 @@
 			</props>
 		</property>
 	</bean>
+	<bean id="StaticTabService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.StaticTabService">
+				<property name="StaticTabDAO">
+					<ref bean="staticTabDAO" />
+				</property>
+				<property name="TabAdminDAO">
+					<ref bean="tabAdminDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="save*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="replace*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+				<prop key="is*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
 </beans>

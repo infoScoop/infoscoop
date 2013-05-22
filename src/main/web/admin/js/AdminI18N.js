@@ -31,18 +31,12 @@ ISA_I18N.prototype.classDef = function() {
 	var loadingMessage;
 	var i18nDiv;
 	var i18nBody;
-	//var isInitialized = false;
-	//var currentType = "menu";
 	
-	var loadingModal = new Control.Modal(
-		false,
-		{
-			contents: "Loading...",
-			opacity: 0.2,
-			containerClassName:"commitDialog",
-			overlayCloseOnClick:false
-		}
-	);
+	// var loadingModal = new Control.Modal('',{
+	// 		className:"commitDialog",
+	// 		closeOnClick:false
+	// 	});
+	// loadinModal.container.update("Loading...");
 	
 	this.initialize = function() {
 		container = document.getElementById("i18n");
@@ -57,8 +51,6 @@ ISA_I18N.prototype.classDef = function() {
 		loadingMessage.style.clear = "both";
 		loadingMessage.style.cssFloat = "left";
 		container.appendChild(loadingMessage);
-		
-//		IS_Event.observe(window, "resize", self.adjustHeight.bind(this), false, "_adminI18N");
 	};
 	
 	this.display = function() {
@@ -162,22 +154,18 @@ ISA_I18N.prototype.classDef = function() {
 		}
 		
 		var table = document.createElement("table");
-		//table.className = "configTable";
 		var tbody = document.createElement("tbody");
 		table.appendChild(tbody);
 		
 		var i18nLocales = ISA_I18N.i18nLocales;
-//		var types = ISA_I18N.types;
 		for(var type in types) {
 			if(typeof types[type] == "function") continue;
 			var headerTr = document.createElement("tr");
-			//headerTr.className = "configTableHeader";
 			var headerTd = document.createElement("td");
 			headerTd.className = "configTableHeaderTd";
 			headerTd.style.bordeTop = "1px solid #666";
 			headerTd.style.padding = "5px";
 			headerTd.colSpan = 3;
-//			headerTd.style.textAlign = "left";
 			var headerLeft = document.createElement("div");
 			headerLeft.style.cssFloat = "left";
 			headerLeft.style.styleFloat = "left";
@@ -190,14 +178,7 @@ ISA_I18N.prototype.classDef = function() {
 			headerRight.style.width = "100%";
 			headerRight.style.textAlign = "right";
 			
-			var localeModal = new Control.Modal(
-				false,
-				{
-					contents: false,
-					opacity: 0.2
-				}
-			);
-			//IS_Event.observe(localeDiv, "click", self.showLocaleEditor.bind(this, localeModal), false, "_adminI18N");
+			var localeModal = new Control.Modal('');
 			buildLink(headerRight, ISA_R.alb_addLocale, self.showLocaleEditor.bind(this, localeModal, type));
 			headerTd.appendChild(headerRight);
 			headerTr.appendChild(headerTd);
@@ -208,7 +189,6 @@ ISA_I18N.prototype.classDef = function() {
 				var country = locales[i].country;
 				var lang = locales[i].lang;
 				var localesTr = document.createElement("tr");
-				//localesTr.className = "proxyConfigList";
 				var localeTd = document.createElement("td");
 				localeTd.style.padding = "3px";
 				localeTd.style.width = "100px";
@@ -289,30 +269,21 @@ ISA_I18N.prototype.classDef = function() {
 		var fileForm;
 		var radio_allReplace;
 		var radio_insertUpdate 
-		if (Browser.isIE) {
-			form = document.createElement("<form target='csvResult' method='POST' enctype='multipart/form-data'>");
-			
-			fileForm = document.createElement("<input type='file' name='csvFile'>");
-			
-			radio_allReplace = document.createElement("<input type='radio' name='mode'>");
-			radio_insertUpdate = document.createElement("<input type='radio' name='mode'>");
-		}else{
-			form = document.createElement("form")
-			form.target = "csvResult";
-			form.method = "POST";
-			form.enctype="multipart/form-data";
-			
-			fileForm = document.createElement("input");
-			fileForm.type = "file";
-			fileForm.name = "csvFile";
-			
-			radio_allReplace = document.createElement("input");
-			radio_allReplace.type = "radio";
-			radio_allReplace.name = "mode";
-			radio_insertUpdate = document.createElement("input");
-			radio_insertUpdate.type = "radio";
-			radio_insertUpdate.name = "mode";
-		}
+		form = document.createElement("form")
+		form.target = "csvResult";
+		form.method = "POST";
+		form.enctype="multipart/form-data";
+		
+		fileForm = document.createElement("input");
+		fileForm.type = "file";
+		fileForm.name = "csvFile";
+		
+		radio_allReplace = document.createElement("input");
+		radio_allReplace.type = "radio";
+		radio_allReplace.name = "mode";
+		radio_insertUpdate = document.createElement("input");
+		radio_insertUpdate.type = "radio";
+		radio_insertUpdate.name = "mode";
 		
 		if( type != "holiday") {
 			form.action = adminHostPrefix + "/i18nimport?type=" + type + "&country=" + country + "&lang=" + lang;
@@ -342,12 +313,8 @@ ISA_I18N.prototype.classDef = function() {
 		
 		var resultFrame
 		
-		if (Browser.isIE) {
-			resultFrame = document.createElement("<iframe name='csvResult'>");
-		}else{
-			resultFrame = document.createElement("iframe");
-			resultFrame.name = "csvResult";
-		}
+		resultFrame = document.createElement("iframe");
+		resultFrame.name = "csvResult";
 		resultFrame.style.width = "100%";
 		resultFrame.style.height = "300px";
 		resultFrame.frameBorder = 0;
@@ -380,9 +347,10 @@ ISA_I18N.prototype.classDef = function() {
 		
 		form.appendChild(resultFrame);
 		div.appendChild(form);
-		localeModal.update(div);
-		localeModal.open();
 		
+		localeModal.container.update(div);
+		localeModal.open();
+
 		var iframeDoc = Browser.isIE ? resultFrame.contentWindow.document : resultFrame.contentDocument;
 		iframeDoc.write(ISA_R.alb_resultDisplaying);
 	}
@@ -395,7 +363,7 @@ ISA_I18N.prototype.classDef = function() {
 		var closeLink = document.createElement("a");
 		closeLink.innerHTML = ISA_R.alb_close;
 		closeLink.style.cursor = "pointer";
-		IS_Event.observe(closeLink, "click", function(){localeModal.close();}, false, "_adminI18N");
+		IS_Event.observe(closeLink, "click", function(){Control.Modal.close();}, false, "_adminI18N");
 		closeDiv.appendChild(closeLink);
 		div.appendChild(closeDiv);
 		
@@ -410,10 +378,6 @@ ISA_I18N.prototype.classDef = function() {
 		
 		function createColumn(rows, isHeader){
 			var tr = document.createElement("tr");
-//			if(isHeader)
-//				tr.id = "configTableHeader";
-//			else
-//				tr.className = "proxyConfigList";
 			for(var i=0;i<rows.length;i++){
 				var td = document.createElement("td");
 				if(isHeader){
@@ -472,17 +436,13 @@ ISA_I18N.prototype.classDef = function() {
 			}else{
 				alert(ISA_R.getResource(ISA_R.ams_localeAlreadyAdded, [country,lang]));
 			}
-
-			/*
-			if(!contains) locales[type].push({country:country, lang:lang});
-			this.display();
-			*/
 		}.bind(this), false, "_adminI18N");
+
+		createColumn([selectCountry, selectLang, button]);
 		
-		localeModal.update(div);
+		localeModal.container.update(div);
 		localeModal.open();
 		
-		createColumn([selectCountry, selectLang, button]);
 	}
 	
 	this.insertI18nLocale = function(type, country, lang) {
@@ -497,7 +457,7 @@ ISA_I18N.prototype.classDef = function() {
 			asynchronous:true,
 			onSuccess: function(response){
 				// Reload becuase there is no apply chanegs
-				Control.Modal.current.close();
+				Control.Modal.close();
 				ISA_Admin.clearAdminCache();
 				ISA_I18N.i18n = new ISA_I18N();
 				ISA_I18N.i18n.build();
@@ -579,7 +539,7 @@ ISA_Holidays.insertHoliday = function( lang,country ) {
 		asynchronous:true,
 		onSuccess: function(response){
 			// Reload becuase there is no apply chanegs
-			Control.Modal.current.close();
+			Control.Modal.close();
 			ISA_Admin.clearAdminCache();
 			ISA_I18N.i18n = new ISA_I18N();
 			ISA_I18N.i18n.build();

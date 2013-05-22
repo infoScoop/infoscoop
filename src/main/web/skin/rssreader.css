@@ -102,7 +102,7 @@
 	font-size: 9pt;
 	color: #7777CC;
 	background-color: #E2E2E2;
-	height:10pt;
+	height:12pt;
 	overflow:hidden;
 	//padding-top: 1;
 }
@@ -145,8 +145,8 @@
 .infoScoop .accessStat_tabs_content {
 	border-top: 1px solid #999999;
 	clear: both;
-	width: 600;
-	height: 350;
+	width: 600px;
+	height: 350px;
 	margin: 0;
 	padding-top: 3px;
 }

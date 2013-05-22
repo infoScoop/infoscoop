@@ -17,6 +17,9 @@
 
 package org.infoscoop.manager.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.infoscoop.service.PortalAdminsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +27,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class AdministratorController implements ControllerInterface{
 	@RequestMapping(method=RequestMethod.GET)
-	public void index() throws Exception {
+	public void index(HttpServletRequest request) throws Exception {
+		String json = PortalAdminsService.getHandle().getPortalAdminsJson();
+		request.setAttribute("portalAdminsJson", json);
 	}
 
 	public String getRoleName() {

@@ -331,13 +331,9 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 			}
 			
 			var radio = null;
-			if(Browser.isIE) {
-				radio = document.createElement('<input type="radio" name="'+prefType + '_' + prefConf.name +'>');
-			} else {
-				radio = document.createElement('input');
-				radio.type = 'radio';
-				radio.name = prefType + '_' + prefConf.name;
-			}
+			radio = document.createElement('input');
+			radio.type = 'radio';
+			radio.name = prefType + '_' + prefConf.name;
 			radio.value = value;
 			radio.defaultChecked = prefValue == value;
 			radioDiv.appendChild(radio);

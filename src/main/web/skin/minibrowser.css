@@ -42,11 +42,8 @@
 
 .infoScoop .adjustMiniBrowserBarOver .adjustMiniBrowserBarHandle,
 .infoScoop .adjustMiniBrowserBarOut .adjustMiniBrowserBarHandle {
-	display: inline-block;
-	_display: inline;
 	position: relative;
 	height: 6px;
-	width: 64px;
 	background: url(./imgs/adjust-bar-handle.gif) top center no-repeat;
 	_overflow: hidden;
 	top: -1px;

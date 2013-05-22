@@ -68,7 +68,7 @@ IS_Widget.MaximizeMessage.prototype.classDef = function() {
 		this.content.appendChild(this.contentTable);
 		
 		this.buildLeftContent(this.leftContent);
-		this.latestMsgPanel.style.width = this.leftContent.offsetWidth - 5;
+		this.latestMsgPanel.style.width = (this.leftContent.offsetWidth - 5) + "px";
 		this.buildRightContent(this.rightContent);
 		
 		this.adjustMaximizeHeight();
@@ -387,11 +387,11 @@ IS_Widget.MaximizeMessage.prototype.classDef = function() {
 	this.adjustMaximizeHeight = function() {
 		function setElementHeight(elm, height){
 			if(elm && elm.style)
-				elm.style.height = height;
+				elm.style.height = height + "px";
 		}
 		setElementHeight(self.msgMenu, 1);
 		setElementHeight(self.msgListBox, 1);
-		self.contentTable.style.height = getWindowSize(false) - findPosY( self.contentTable ) - 30;
+		self.contentTable.style.height = (getWindowSize(false) - findPosY( self.contentTable ) - 30) + "px";
 		setElementHeight(self.msgMenu, self.leftContent.offsetHeight);
 		setElementHeight(self.msgListBox, self.rightContent.offsetHeight - self.msgTitle.offsetHeight);
 	}
@@ -400,7 +400,7 @@ IS_Widget.MaximizeMessage.prototype.classDef = function() {
 		Element.hide(self.msgTitle);
 		self.msgListBox.style.width = 
 		self.msgTitle.style.width =
-				getWindowSize(true) -findPosX( this.rightContent ) -( Browser.isIE? 32:30 );
+				(getWindowSize(true) -findPosX( this.rightContent ) -( Browser.isIE? 32:30 )) + "px";
 		Element.show(self.msgListBox);
 		Element.show(self.msgTitle);
 	}

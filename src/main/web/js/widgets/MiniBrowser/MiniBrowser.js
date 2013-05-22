@@ -100,7 +100,7 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 
 	this.hideIframe = function () {
 		if(widget.iframe) {
-			widget.iframe.style.height = "0";
+			widget.iframe.style.height = "0px";
 		} else {
 			widget.elm_widgetContent.style.display = "none";
 		}
@@ -115,13 +115,14 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 		
 		if(widget.iframe){
 			if( widget.staticWidgetHeight > 0 ) {
-				widget.iframe.style.height = widget.staticWidgetHeight;
+				widget.iframe.style.height = widget.staticWidgetHeight + "px";
 			} else if(widget.getUserPref("height")) {
-				widget.iframe.style.height = widget.getUserPref("height");
+				widget.iframe.style.height = parseInt(widget.getUserPref("height")) + "px";
 			}
 			widget.iframe.style.overflow = "";
 		} else {
-			widget.elm_widgetContent.style.height = widget.staticWidgetHeight > 0 ? widget.staticWidgetHeight : widget.getUserPref("height");
+			widget.elm_widgetContent.style.height = 
+				(widget.staticWidgetHeight > 0 ? widget.staticWidgetHeight : parseInt(widget.getUserPref("height"))) + "px";
 			widget.elm_widgetContent.style.overflow = "auto";
 		}
 		var adjustBar = $( widget.id + "_heightAdjustBar" );
@@ -296,7 +297,7 @@ IS_Widget.MiniBrowser.adjustHeight = {
 		// Set location of START again
 		if(setHeight < 1) setHeight = 1;
 		
-		IS_Widget.MiniBrowser.adjustHeight.widget.iframe.style.height = setHeight;
+		IS_Widget.MiniBrowser.adjustHeight.widget.iframe.style.height = setHeight + "px";
 		IS_Widget.MiniBrowser.adjustHeight.isChanging = false;
 		// Set location of START again
 		IS_Widget.MiniBrowser.adjustHeight.startY = endY;

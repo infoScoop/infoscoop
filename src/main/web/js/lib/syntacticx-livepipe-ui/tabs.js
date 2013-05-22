@@ -22,14 +22,16 @@ Control.Tabs = Class.create({
         this.activeLink = false;
         this.containers = $H({});
         this.links = [];
-        Control.Tabs.instances.push(this);
         this.options = {
             beforeChange: Prototype.emptyFunction,
             afterChange: Prototype.emptyFunction,
             hover: false,
+            tracked: true,
             linkSelector: 'li a',
+            linkAttribute: 'href',
             setClassOnContainer: false,
             activeClassName: 'active',
+            disabledClassName: 'disabled',
             defaultTab: 'first',
             autoLinkExternal: true,
             targetRegExp: /#(.+)$/,
@@ -37,12 +39,34 @@ Control.Tabs = Class.create({
             hideFunction: Element.hide
         };
         Object.extend(this.options,options || {});
-        (typeof(this.options.linkSelector == 'string') ? 
+        if (this.options.tracked) {
+            Control.Tabs.instances.push(this);
+        }
+        var filterLinks;
+        switch (this.options.linkAttribute) {
+        case 'href':
+        case 'src':
+            filterLinks = function(link){
+                return (/^#/).test(link.getAttribute(this.options.linkAttribute).replace(
+                    window.location.href.split('#')[0],''));
+            };
+            break;
+
+        default:
+            if (typeof(this.options.linkAttribute) == 'function') {
+                filterLinks = this.options.linkAttribute;
+            }
+            else {
+                filterLinks = function(link) {
+                    return link.hasAttribute(this.options.linkAttribute);
+                };
+            }
+        }
+
+        (typeof(this.options.linkSelector) == 'string' ? 
             $(tab_list_container).select(this.options.linkSelector) : 
             this.options.linkSelector($(tab_list_container))
-        ).findAll(function(link){
-            return (/^#/).exec((Prototype.Browser.WebKit ? decodeURIComponent(link.href) : link.href).replace(window.location.href.split('#')[0],''));
-        }).each(function(link){
+        ).findAll(filterLinks.bind(this)).each(function(link){
             this.addTab(link);
         }.bind(this));
         this.containers.values().each(Element.hide);
@@ -77,8 +101,23 @@ Control.Tabs = Class.create({
     },
     addTab: function(link){
         this.links.push(link);
-        link.key = link.getAttribute('href').replace(window.location.href.split('#')[0],'').split('#').last().replace(/#/,'');
-        var container = $(link.key);
+        
+        switch (this.options.linkAttribute) {
+        case 'href':
+        case 'src':
+            link.key = link.getAttribute(this.options.linkAttribute).replace(
+                window.location.href.split('#')[0],'').split('#').last().replace(/#/,'');
+            break;
+
+        default:
+            if (typeof(this.options.linkAttribute) == 'function') {
+                link.key = this.options.linkAttribute(link);
+            }
+            else {
+                link.key = link.getAttribute(this.options.linkAttribute);
+            }
+        }
+        var container = this.options.tabs_container ? this.options.tabs_container.down('#'+link.key) : $(link.key);
         if(!container) {
             throw "Control.Tabs: #" + link.key + " was not found on the page."; }
         this.containers.set(link.key,container);
@@ -89,6 +128,19 @@ Control.Tabs = Class.create({
             return false;
         }.bind(this,link);
     },
+    getTab: function (link) {
+        if(!link && typeof(link) == 'undefined') {
+            return null; }
+        if(typeof(link) == 'string'){
+            return this.getTab(this.links.find(function(_link){
+                return _link.key == link;
+            }));
+        }else if(typeof(link) == 'number'){
+            return this.getTab(this.links[link]);
+        }else {
+            return this.containers.get(link.key);
+        }
+    },
     setActiveTab: function(link){
         if(!link && typeof(link) == 'undefined') {
             return; }
@@ -98,7 +150,9 @@ Control.Tabs = Class.create({
             }));
         }else if(typeof(link) == 'number'){
             this.setActiveTab(this.links[link]);
-        }else{
+        }else if(!(this.options.setClassOnContainer ? $(link.parentNode) : link).hasClassName(this.options.disabledClassName)){
+            if(link == this.activeLink) {
+                return; }
             if(this.notify('beforeChange',this.activeContainer,this.containers.get(link.key)) === false) {
                 return; }
             if(this.activeContainer) {
@@ -111,6 +165,36 @@ Control.Tabs = Class.create({
             this.activeLink = link;
             this.options.showFunction(this.containers.get(link.key));
             this.notify('afterChange',this.containers.get(link.key));
+        }
+    },
+    disableTab: function (link) {
+        if(!link && typeof(link) == 'undefined') {
+            return; }
+        if(typeof(link) == 'string'){
+            this.disableTab(this.links.find(function(_link){
+                return _link.key == link;
+            }));
+        }else if(typeof(link) == 'number'){
+            this.disableTab(this.links[link]);
+        }else{
+            if ({'INPUT':true,'BUTTON':true,'SELECT':true,'TEXTAREA':true}[link.nodeName]) {
+                link.disabled = true; }
+            (this.options.setClassOnContainer ? $(link.parentNode) : link).addClassName(this.options.disabledClassName);
+        }
+    },
+    enableTab: function (link) {
+        if(!link && typeof(link) == 'undefined') {
+            return; }
+        if(typeof(link) == 'string'){
+            this.enableTab(this.links.find(function(_link){
+                return _link.key == link;
+            }));
+        }else if(typeof(link) == 'number'){
+            this.enableTab(this.links[link]);
+        }else{
+            if ({'INPUT':true,'BUTTON':true,'SELECT':true,'TEXTAREA':true}[link.nodeName]) {
+                link.disabled = false; }
+            (this.options.setClassOnContainer ? $(link.parentNode) : link).removeClassName(this.options.disabledClassName);
         }
     },
     next: function(){

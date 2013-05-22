@@ -19,11 +19,11 @@
 	width: 100%;
 	table-layout: fixed;
 }
-.infoScoop .Message .MessageUsers{
+.infoScoop .Message .messageUsers{
 	padding: 0;
 	margin: 0 0 0 10px;
 }
-.infoScoop .Message .MessageUsers li{
+.infoScoop .Message .messageUsers li{
 	background:	url(./imgs/user.gif) center left no-repeat;
 	list-style: none;
 	margin: 0;
@@ -34,13 +34,13 @@
 	word-break: break-all;
 	word-wrap: break-word;
 }
-.infoScoop .Message .MessageUsers li span{
+.infoScoop .Message .messageUsers li span{
 }
-.infoScoop .Message .MessageUsers li a{
+.infoScoop .Message .messageUsers li a{
 	word-break: break-all;
 	word-wrap: break-word;
 }
-.infoScoop .Message .MessageGroup{
+.infoScoop .Message .messageGroup{
 	background-color:#CCEEFF;
 	border-bottom:2px dotted #99DDFF;
 	font-size:95%;
@@ -49,26 +49,26 @@
 	word-wrap: break-word;
 	clear: both;
 }
-.infoScoop .Message .MessageGroupOpen,
-.infoScoop .Message .MessageGroupClose{
+.infoScoop .Message .messageGroupOpen,
+.infoScoop .Message .messageGroupClose{
 	padding-left:13px;
 	_width: 13px;
 	_float: left;
 }
-.infoScoop .Message .MessageGroupOpen{
+.infoScoop .Message .messageGroupOpen{
 	background: url(./imgs/down.gif) center center no-repeat;
 }
-.infoScoop .Message .MessageGroupClose{
+.infoScoop .Message .messageGroupClose{
 	background: url(./imgs/right.gif) center center no-repeat;
 }
-.infoScoop .Message .MessageSelf{
+.infoScoop .Message .messageSelf{
 	background: url(./imgs/comment.gif) 3px center no-repeat;
 	font-size:13px;
 	padding-left:17px;
 	cursor:pointer;
 	color:#0000CC;
 }
-.infoScoop .Message .MessageTo{
+.infoScoop .Message .messageTo{
 	background: url(./imgs/email_edit.gif) left center no-repeat;
 	font-size:13px;
 	padding-left:17px;
@@ -81,29 +81,29 @@
 .infoScoop .Message .latestMsg span{
 	word-break:break-all;
 }
-.infoScoop .Maximize.Message .maximizeMsg{
+.infoScoop .maximize.Message .maximizeMsg{
 	width:100%;
 	overflow: hidden;
 }
-.infoScoop .Maximize.Message .maximizeMsg td{
+.infoScoop .maximize.Message .maximizeMsg td{
 	vertical-align: top;
 }
-.infoScoop .Maximize.Message .maximizeMsgMenuTd{
+.infoScoop .maximize.Message .maximizeMsgMenuTd{
 	width:200px;
 	border-right:1px solid gray;
 }
-.infoScoop .Maximize.Message .maximizeMsgMenu{
+.infoScoop .maximize.Message .maximizeMsgMenu{
 	overflow-x:hidden;
 	overflow-y:auto;
 	width: 200px;
 }
-.infoScoop .Maximize.Message .maximizeMsgListTd{
+.infoScoop .maximize.Message .maximizeMsgListTd{
 }
-.infoScoop .Maximize.Message .maximizeMsgList{
+.infoScoop .maximize.Message .maximizeMsgList{
 	overflow-x: hidden;
 	overflow-y:auto;
 }
-.infoScoop .Maximize.Message .msgTitle{
+.infoScoop .maximize.Message .msgTitle{
 	background-color:#CCEEFF;
 	font-size:120%;
 	padding:3px 0;
@@ -112,7 +112,7 @@
 	font-weight:bold;
 	overflow-x: hidden;
 }
-.infoScoop .Maximize.Message .maximizeMsgLabelSelected{
+.infoScoop .maximize.Message .maximizeMsgLabelSelected{
 	color:#FFF !important;;
 	background-color:navy !important;
 }

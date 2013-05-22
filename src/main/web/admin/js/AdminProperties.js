@@ -12,6 +12,7 @@ ISA_Properties.prototype.classDef = function() {
 	var self = this;
 	var container;
 	var loadingMessage;
+	var controlModal;		// Apply Change dialog
 	var CATEGORY_LIST = $H({
 		menu: ISA_R.alb_menu,
 		ajax: ISA_R.alb_ajaxRequest,
@@ -45,21 +46,10 @@ ISA_Properties.prototype.classDef = function() {
 		
 		var refreshAllDiv = document.createElement("div");
 		refreshAllDiv.className = "refreshAll";
-		//refreshAllDiv.style.textAlign = "right";
-		//refreshAllDiv.style.width = "80%";
 		
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		refreshAllDiv.appendChild(commitDiv);
-		var currentModal = new Control.Modal(
-			false,
-			{
-				contents: ISA_R.ams_applyingChanges,
-				opacity: 0.2,
-				containerClassName:"commitDialog",
-				overlayCloseOnClick:false
-			}
-		);
-		IS_Event.observe(commitDiv, 'click', self.commitProperties.bind(this, currentModal), false, "_adminProperties");
+		IS_Event.observe(commitDiv, 'click', self.commitProperties.bind(this), false, "_adminProperties");
 		
 		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
 		refreshAllDiv.appendChild(refreshDiv);
@@ -80,18 +70,12 @@ ISA_Properties.prototype.classDef = function() {
 			});
 		}, false, "_adminProperties");
 		
-//		var titleDiv = document.createElement("div");
-//		titleDiv.id = "propertiesTitle";
-//		titleDiv.className = "propertiesTitle";
-//		titleDiv.appendChild(document.createTextNode(ISA_R.alb_propertiesList));
-		
 		var advancedMsg = document.createElement("div");
 		advancedMsg.className = "advancedProperty";
 		advancedMsg.style.display = "none";
 		advancedMsg.innerHTML = ISA_R.alb_advancedSettingsMessage;
 		
 		propertiesDiv.appendChild(refreshAllDiv);
-//		propertiesDiv.appendChild(titleDiv);
 		propertiesDiv.appendChild(advancedMsg);
 		propertiesDiv.appendChild(self.buildProperties());
 		
@@ -101,17 +85,11 @@ ISA_Properties.prototype.classDef = function() {
 	this.buildProperties = function() {
 		var propertiesDiv = document.createElement("div");
 		propertiesDiv.id = "properties";
-//		propertiesDiv.style.width = "90%";
 		
 		var categoryTables = {};
 		// PropertiesList build
 		CATEGORY_LIST.each(function(category){
-//			var categoryElm = document.createElement("fieldSet");
-//			categoryElm.style.width = "100%";
-//			var categoryLabel = document.createElement("legend");
 			var categoryElm = document.createElement("div");
-//			categoryElm.className = "configSet";
-//			categoryElm.style.width = "100%";
 			var categoryLabel = document.createElement("p");
 			categoryLabel.className = "homeTitle";
 			categoryLabel.appendChild(document.createTextNode(category.value));
@@ -122,7 +100,6 @@ ISA_Properties.prototype.classDef = function() {
 			propertiesTable.cellSpacing = "0";
 			propertiesTable.cellPadding = "0";
 			propertiesTable.className = "propertiesGroup";
-//			propertiesTable.style.width = "98%";
 
 			var propertiesTbody = document.createElement("tbody");
 			propertiesTbody.id = "propertiesTbody";
@@ -134,25 +111,19 @@ ISA_Properties.prototype.classDef = function() {
 			var propertiesTd;
 			propertiesTd = document.createElement("td");
 			propertiesTd.className = "headerProperties";
-			propertiesTd.style.whiteSpace = "nowrap";
 			propertiesTd.style.width = "30%";
-			propertiesTd.style.padding = "5px";
 			propertiesTd.appendChild(document.createTextNode(ISA_R.alb_porpety));
 			propertiesTr.appendChild(propertiesTd);
 
 			propertiesTd = document.createElement("td");
 			propertiesTd.className = "headerProperties";
-			propertiesTd.style.whiteSpace = "nowrap";
 			propertiesTd.style.width = "30%";
-			propertiesTd.style.padding = "5px";
 			propertiesTd.appendChild(document.createTextNode(ISA_R.alb_value));
 			propertiesTr.appendChild(propertiesTd);
 
 			propertiesTd = document.createElement("td");
 			propertiesTd.className = "headerProperties";
-			propertiesTd.style.whiteSpace = "nowrap";
 			propertiesTd.style.width = "40%";
-			propertiesTd.style.padding = "5px";
 			propertiesTd.appendChild(document.createTextNode(ISA_R.alb_description));
 			propertiesTr.appendChild(propertiesTd);
 
@@ -179,6 +150,7 @@ ISA_Properties.prototype.classDef = function() {
 		
 		if(!property) return tr;
 		
+		tr.className = "standardProperty";
 		if(property.advanced){
 			tr.className = "advancedProperty";
 			tr.style.display = "none";
@@ -187,14 +159,12 @@ ISA_Properties.prototype.classDef = function() {
 		var td;
 		td = document.createElement("td");
 		td.style.whiteSpace = "nowrap";
-		td.style.padding = "3px";
 		
 		td.appendChild(document.createTextNode(ISA_Admin.replaceUndefinedValue(property.id)));
 		tr.appendChild(td);
 		
 		td = document.createElement("td");
 		td.style.whiteSpace = "nowrap";
-		td.style.padding = "3px";
 		
 		var prefConf = property;
 		prefConf.name = property.id;
@@ -202,7 +172,7 @@ ISA_Properties.prototype.classDef = function() {
 		prefConf.maxBytes = 1024;
 		if (property.enumValue) {
 			try {
-				prefConf.EnumValue = property.enumValue.evalJSON();
+				prefConf.EnumValue = eval('('+property.enumValue+')');
 			}catch(e){
 				msg.warn(getErrorMessage(e));
 			}
@@ -217,8 +187,6 @@ ISA_Properties.prototype.classDef = function() {
 			propertyValueInput.disabled = true;*/
 		
 		td = document.createElement("td");
-		//td.style.whiteSpace = "nowrap";
-		td.style.padding = "3px";
 		td.style.fontSize = "90%";
 		td.appendChild(document.createTextNode(ISA_R["alb_desc_"+property.id]+ "　"));
 		tr.appendChild(td);
@@ -226,7 +194,7 @@ ISA_Properties.prototype.classDef = function() {
 		return tr;
 	}
 	
-	this.commitProperties = function(modal) {
+	this.commitProperties = function() {
 		var errorMsgs = [];
 		for(var id in ISA_Properties.propertiesList) {
 			if( (ISA_Properties.propertiesList[id] instanceof Function) )
@@ -263,11 +231,18 @@ ISA_Properties.prototype.classDef = function() {
 		}
 		
 		// Update to DB
-		self.updateProperties(modal);
+		self.updateProperties();
 	}
 	
-	this.updateProperties = function(modal) {
-		modal.open();
+	this.updateProperties = function() {
+		if(!controlModal){
+			controlModal = new Control.Modal('',{
+				className:"commitDialog",
+				closeOnClick:false
+			});
+		}
+		controlModal.container.update(ISA_R.ams_applyingChanges);
+		controlModal.open();
 		
 		var url = adminHostPrefix + "/services/properties/updateProperties";
 		var properties = {};
@@ -288,7 +263,7 @@ ISA_Properties.prototype.classDef = function() {
 			asynchronous:true,
 			onSuccess: function(response){
 				ISA_Admin.isUpdated = false;
-				modal.update(ISA_R.ams_changeUpdated);
+				controlModal.container.update(ISA_R.ams_changeUpdated);
 			},
 			onFailure: function(t) {
 				alert(ISA_R.ams_failedUpdateProperties);
@@ -298,13 +273,13 @@ ISA_Properties.prototype.classDef = function() {
 				alert(ISA_R.ams_failedUpdateProperties);
 				msg.error(ISA_R.ams_failedUpdateProperties + getErrorMessage(t));
 				setTimeout(function(){
-					modal.close();
+					Control.Modal.close();
 				},500);
 				throw t;
 			},
 			onComplete: function(){
 				setTimeout(function(){
-					modal.close();
+					Control.Modal.close();
 				},500);
 			}
 		};

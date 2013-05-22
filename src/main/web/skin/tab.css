@@ -133,6 +133,10 @@
 .infoScoop #tabs .tab.selected .tabTitle {
     color:#627EB7;
 }
+.infoScoop #tabs .tab div.inlineBlock {
+	display: inline-block;
+	vertical-align: middle;
+}
 
 .infoScoop #tabs .Tab_onHover {
 	border: 2px dashed #FF5533 !important;
@@ -194,7 +198,7 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 	position:relative;
 }
 .infoScoop #tabs #tabLoadProgressBar{
-	background-color:cyan;
+	background-color:#00FFFF;
 	height:1.2em;
 	position:relative;
 	margin-left:0 !important;
@@ -209,15 +213,15 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 .infoScoop #tabs .tab .selectMenu {
 	width: 13px;
 	height: 13px;
-	margin: 3px 1px 3px 4px;
-	//margin-right: 8px;
+	margin: 0px 1px 0px 4px;
 	cursor:pointer;
 	
 	display: none;
 }
 .infoScoop #tabs .tab.selected .selectMenu{
-	display: inline;
+	display: block;
 }
+
 
 .infoScoop #tabs .tab .fixedTab {
 	width: 16px;

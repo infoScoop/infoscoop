@@ -26,12 +26,9 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 	//Judge whether reloading is needed or not when 'OK' is clicked on edit panel
 	var needsReloadContents = false;
 	
-//	var reloadContents = false;delete at 20081017 by endoh, because this val is not used.
-//	var retry = 0; delete at 20081017 by endoh, because this val is not used.
 	var contentInCategory = document.createElement("div");
 	var contentInTime = document.createElement("div");
 	var sortedTotalItems = [];
-//	var rssReaders = [];
 
 	var titleFilter,creatorFilter,categoryFilter;
 	
@@ -81,7 +78,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 	this.setDroppable = function(droppableElement){
 		var dragMode;
 		var opt = {};
-//		opt.accept = ["widget", "subWidget"];
 		opt.accept = function(element, widgetType, classNames){
 			if (widget.tabId != IS_Portal.currentTabId) {
 				return false;
@@ -159,7 +155,7 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				IS_Portal.removeWidget(draggedWidget.id, draggedWidget.tabId);
 			}else{//widget or subWidget or Menu
 				var nextSiblingId = (widgetGhost.nextSibling) ? widgetGhost.nextSibling.id : "";
-				if( !Browser.isSafari1 ||( widgetGhost && widgetGhost.style.display != "none") ) {
+				if( widgetGhost && widgetGhost.style.display != "none") {
 					widgetGhost.parentNode.replaceChild(draggedWidget.elm_widget, widgetGhost);
 				} else {
 				    widgetGhost.parentNode.removeChild( widgetGhost );
@@ -168,11 +164,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				if(draggedWidget.isBuilt){
 					draggedWidget.elm_widget.className = "subWidget";
 				}
-				/*
-				else{
-					self.addSubWidget(draggedWidget, nextSiblingId);
-				}
-				*/
 				var oldParent = draggedWidget.parent;
 				self.addSubWidget(draggedWidget, nextSiblingId);
 				
@@ -249,12 +240,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 			var widgetConf = IS_SiteAggregationMenu.getConfigurationFromMenuItem(menuItem, ghostColumnNum);
 			widgetConf.type = "RssReader";
 			
-//			var divWidgetDummy = element.dummy;
-//			if (divWidgetDummy) {
-//				element = divWidgetDummy.parentNode.replaceChild(element, divWidgetDummy);
-//				element.style.top = "0px";
-//				element.style.width = "auto";
-//			}
 			// Check merging
 			if(menuItem.parentId != IS_Portal.getTrueId(widget.id).substring(2)){
 				if(!IS_Droppables.mergeConfirm.call(self, element, lastActiveElement, menuItem, event, self.droppableOption.onMenuDrop, function(){
@@ -264,11 +249,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 					return;
 				}
 			}
-			/*
-			if((menuItem.parentId != IS_Portal.getTrueId(widget.id).substring(2))
-				&& !IS_Droppables.mergeConfirm(element, lastActiveElement, menuItem, event, this.onDrop, function(){}, widget.title, modalOption))
-				return;
-			*/
 			
 			var newWidget = IS_WidgetsContainer.addWidget( IS_Portal.currentTabId, widgetConf, false );
 			IS_Portal.addSubWidget(widget, newWidget, widget.tabId);
@@ -304,7 +284,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		widget.elm_widgetContent.appendChild(contentInCategory);
 		widget.elm_widgetContent.appendChild(contentInTime);
 		
-//		var subWidgets = IS_Portal.subWidgetMap[widget.id];
 		var tabId = (widget.tabId)? widget.tabId : IS_Portal.currentTabId;
 		var subWidgets = IS_Portal.getSubWidgetList(widget.id, tabId);
 		for ( i=0; i < subWidgets.length; i++){
@@ -356,7 +335,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 			return widget.getUserPref(name);
 		};
 		
-		//widget.isSuccess = true; // hissu
 		var errorHandlers = {
 			on404 : this.handleMerge404.bind(this),
 			on403 : this.handleMerge403.bind(this),
@@ -422,7 +400,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 			var sibling = $(nextSiblingId);
 			contentInCategory.insertBefore(feedWidget.elm_widget, sibling);
 		}
-		//rssReaders.push(feedWidget);
 	}
 	this.initRssReader = function( rssReader ) {
 		if( rssReader.isBuilt ) {
@@ -433,7 +410,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				
 // fix 31
 				if( header.opened )
-//					header.hideTools();
 					header.applyAllIconStyle();
 			}
 		}
@@ -456,8 +432,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		
 		return prefChanged;
 	}
-	
-	//var stopEvent = function(e){ Event.stop(e) };
 	
 	this.displayContents = function(){
 		if ( this.isTimeDisplayMode()) {
@@ -512,7 +486,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		
 		// Use 'defaultValue' when the value is invalid
 		if( !itemsnum || itemsnum < 0 || isNaN( itemsnum ))
-		//	itemsnum = IS_Widget.getConfiguration("RssReader").UserPref["itemsnum"].defaultValue;
 			itemsnum = 0;
 		
 		return itemsnum;
@@ -539,7 +512,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		
 		if ( this.isCategoryDisplayMode() ) {
 			for (var i=0; i<rssReaders.length; i++) {
-//				if (rssReaders[i].widgetConf.isChecked && rssReaders[i].content) rssReaders[i].content.increaseItem();
 				if (rssReaders[i].content) rssReaders[i].content.increaseItem();
 			}
 		} else {
@@ -556,7 +528,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		if ( this.isCategoryDisplayMode() ) {
 			var rssReaders = this.getRssReaders();
 			for (var i=0; i<rssReaders.length; i++) {
-//				if (rssReaders[i].widgetConf.isChecked && rssReaders[i].content) rssReaders[i].content.decreaseItem();
 				if (rssReaders[i].content) rssReaders[i].content.decreaseItem();
 			}
 		} else {
@@ -712,9 +683,7 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		if(originalItemsCount != newItemsCount+""){
 			widget.setUserPref("itemsnum", newItemsCount);
 		}
-		//this.timeDisplayModeLoadContents( true );
 		widget.setUserPref("showLatestNews","false");
-		//widget.setUserPref("openWidget","true");
 		
 		this.mergeRssReader.loadContents();
 		
@@ -722,8 +691,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 			this.mergeRssReader.content.hideContent();
 		
 		changeTurnbkIcon();
-		
-		//IS_EventDispatcher.newEvent("applyIconStyle",widget.id );
 	};
 	
 	//Show category
@@ -745,7 +712,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		
 		widget.elm_latestMark.style.display = "none";
 		
-		//widget.setUserPref("openWidget", true);
 		IS_EventDispatcher.newEvent("applyIconStyle",widget.id );
 	};
 
@@ -788,7 +754,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 			for (var i = 0; i < loop; i++) {
 				if(!subWidgets[i]) continue;
 				//Set equal value in all 'deleteDate' of subWidgets
-//				subWidgets[i].widgetConf.deleteDate = widget.widgetConf.deleteDate;
 				if(deleteDate)
 					subWidgets[i].widgetConf.deleteDate = deleteDate;
 				subWidgets[i].headerContent.close();
@@ -850,7 +815,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 	
 	this.getRssReaders = function(){
 		return IS_Portal.getSubWidgetList(widget.id, widget.tabId);
-//		return rssReaders;
 	};
 	
 	this.isError = function () {
@@ -936,36 +900,9 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 			var sec = 0;
 			for( var i = 0;i <rssReaders.length;i++ ){
 				var rssReader = rssReaders[i];
-				/*
-				var loadFunc = ( isAutoReload ? rssReader.autoReloadContents : rssReader.loadContents )
-				loadFunc = ( function() {
-					var _loadFunc = loadFunc;
-					
-					return function() {
-						var closeListener = function( w ) {
-							
-							IS_EventDispatcher.newEvent("loadComplete",this.id );
-						}.bind( this );
-						
-						var loadCompleteListener = function( w ) {
-							setTimeout( this.removeCloseListener.bind(this, closeListener ), 100 );
-						}.bind( this );
-						
-						this.addCloseListener( closeListener );
-						this.addLoadCompleteListener( loadCompleteListener,true );
-						
-						return _loadFunc.apply( this,arguments );
-					}
-				})();
-				*/
 				var loadFunc = ( isAutoReload ? rssReader.autoReloadContents : rssReader.loadContents )
 				
-				if( Browser.isIE ) {
-					setTimeout(loadFunc.bind( rssReader ), sec * subWidgetRefreshInterval);
-					sec++;
-				} else {
-					loadFunc.apply( rssReader );
-				}
+				loadFunc.apply( rssReader );
 			}
 		} else{
 			IS_EventDispatcher.newEvent('loadComplete', widget.id, null);
@@ -982,25 +919,13 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				this.mergeRssReader.isComplete = false;
 				
 				contentInCategory.style.display = "none";
-				//if( !this.mergeRssReader.isComplete ) {
-					//this.mergeRssReader.loadContents();
 				this.mergeRssReaderLoadContents( isAutoReload );
-				//} else {
-					//IS_EventDispatcher.addListener('loadComplete', this.mergeRssReader.id, this.mergeRssReader.postLoaded.bind(this.mergeRssReader), this.mergeRssReader, true);
-					
-				//	this.mergeRssReader.content.repaint();
-				//}
-				//this.timeDisplayModeLoadContents();
-			
 			} else {
 				this.categoryDisplayModeLoadContents( false,isAutoReload );
 			}
 		}else{
 
 			// When Multi is promoted, empty Multi is created for a moment; then if widgetContent.innerHTML is used, system does not work properly
-//			widget.elm_widgetContent.innerHTML = IS_R.lb_noDiplayItem;
-			
-			//widget.headerContent.close(false, true);
 			IS_EventDispatcher.newEvent('loadComplete', widget.id, null);
 		}
 	};
@@ -1008,7 +933,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 	this.autoReloadContents = function () {
 		var rssReaders = this.getRssReaders();
 		for(var i in rssReaders){
-//			if(rssReaders[i].widgetConf && rssReaders[i].widgetConf.isChecked){
 			if(rssReaders[i].widgetConf ){
 				var convUrl = escapeXMLEntity(rssReaders[i].getUserPref("url"));
 				var autoRefreshCount = IS_Portal.autoRefCountList[convUrl];
@@ -1047,7 +971,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		$H( errors ).each( function( error ) {
 			var url = error.key;
 			var title = this_.getRssReaders().findAll( function( rssReader ) {
-				//console.info( rssReader.getUserPref("url")+"?"+url )
 				return ( rssReader.getUserPref("url") == url )
 			}).shift().title;
 			var errorCode = error.value;
@@ -1078,7 +1001,7 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				div.style.backgroundColor = "#FDD"
 				div.style.borderBottom = "1px solid #CCC"
 				div.style.fontSize = "12px"
-				div.style.paddingLeft = div.style.paddingRight = 2;
+				div.style.paddingLeft = div.style.paddingRight = '2px';
 				
 				var messageDiv = document.createElement("span");
 				messageDiv.innerHTML = IS_R.getResource( message,[title]);
@@ -1090,7 +1013,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				closeAnchor.innerHTML = IS_R.lb_bracketClose;
 				closeAnchor.href = "javascript:void(0)"
 				closeAnchor.style.color = "#77C"
-				//closeDiv.style.fontSize = "75%";
 				div.appendChild( closeAnchor );
 				
 				IS_Event.observe( div,"click",this_.closeDiv.bind( this_,div ),false,eventId );
@@ -1187,8 +1109,8 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		for ( var i=0; i<feeds.length; i++ ) {
 			var feedId = feeds[i];
 			
-			var aBlank = (Browser.isIE)? "" : "&nbsp;&nbsp;&nbsp;&nbsp;"; //for Firefox
-			var vstyle = (Browser.isIE)? "" : "vertical-align:middle;";
+			var aBlank = "&nbsp;&nbsp;&nbsp;&nbsp;"; //for Firefox
+			var vstyle = "vertical-align:middle;";
 			var rssReader = IS_Portal.getWidget('w_' + feedId);
 			var eachbox = document.createElement("div");
 			eachbox.style.verticalAlign = "middle";
@@ -1200,7 +1122,7 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 			rssIcon.className = "rssUrl_Icon";
 			rssIcon.innerHTML = aBlank;
 			rssIcon.style.position = "relative";
-			rssIcon.style.top = (Browser.isIE)? "-3" : "0";
+			rssIcon.style.top = "0px";
 			
 			var titleA;
 			if(rssReader.title_url) {
@@ -1210,7 +1132,7 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				titleA = document.createElement("span");
 			}
 			titleA.style.position = "relative";
-			titleA.style.top = (Browser.isIE)? "-3" : "0";
+			titleA.style.top = "0px";
 
 			titleA.appendChild(document.createTextNode(rssReader.title));
 			if (rssReader.title_url) {
@@ -1336,7 +1258,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 
 		if(disabledTitleList.length > 0) {
 			msgDiv.style.display = "block";
-			//					var msg = "※";
 			var msg = IS_R.lb_attention;
 			for(var i = 0; i < disabledTitleList.length; i++) {
 				if(i > 0) msg += ", ";
@@ -1552,105 +1473,6 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 	}
 };
 
-/**
- * Remove feed from unbuilt MultiRssReader, or remove check mark
- */
-/*
-IS_Widget.removeAiryRssReader = function(widget, removeId){
-	var feeds = widget.widgetConf.feed;
-	var allClose = true;
-	for(var i = 0;i <feeds.length;i++){
-		if (feeds[i].id == removeId) {
-			if(feeds[i].property.relationalId != IS_Portal.getTrueId(widget.id, widget.widgetType)){
-				// A case of not working together
-
-				msg.debug(IS_R.getResource(IS_R.ms_multiRssReaderDeleteSubcategory, [widget.title, feeds[i].title]));
-				
-				feeds.remove(feeds[i]);
-			}else{
-				feeds[i].isChecked = false;
-			}
-			break;
-		}
-	}
-
-	// Check for removing the whole widget
-	for(var i = 0;i <feeds.length;i++){
-		if(isDisplay(feeds[i])) allClose = false;
-	}
-	
-	function isDisplay(feed){
-		return (getBooleanValue(feed.isChecked) || feed.property.relationalId != IS_Portal.getTrueId(widget.id, widget.widgetType));
-	}
-	
-	return allClose;
-}
-*/
-
-/**
- * Add feed to unbuilt MultiRssReader, or insert check mark
- */
-/*
-IS_Widget.addAiryRssReader = function(widget, subWidgetConf, siblingId, tabId){
-	// Check whether it is type of working with menu
-	var isRelatedItem = false;
-	
-	if(subWidgetConf.property.relationalId == IS_Portal.getTrueId(widget.id, widget.widgetType)){
-		isRelatedItem = true;
-	}
-	
-	var subWidgetList = widget.widgetConf.feed;
-	if(isRelatedItem){
-		for(var i=0;i<subWidgetList.length;i++){
-			if(subWidgetList[i].id == subWidgetConf.id){
-				subWidgetList[i].isChecked = true;
-				
-				// Passing parameter
-				subWidgetList[i].title = subWidgetConf.title;
-				var orgProps = subWidgetConf.property;
-				for(var k in orgProps){
-					if(typeof orgProps[k] == "function") continue;
-					subWidgetList[i].property[k] = orgProps[k];
-				}
-				
-				subWidgetConf = subWidgetList[i];
-				
-				// Remove
-				subWidgetList.splice( i, 1 );
-				break;
-			}
-		}
-	}
-	
-	if(siblingId == ""){
-		subWidgetList.splice(0, 0, subWidgetConf);
-	}else{
-		for(var i=0;i<subWidgetList.length;i++){
-			if(subWidgetList[i].id == siblingId){
-				subWidgetList.splice(i+1, 0, subWidgetConf);
-				break;
-			}
-		}
-	}
-	
-	if(tabId != widget.tabId){
-//		IS_Portal.widgetLists[tabId][subWidgetConf.id] = null;
-		IS_Portal.removeWidget(subWidgetConf.id, tabId);
-	}
-	
-	return subWidgetConf;
-}
-*/
-
-/**
- * <multiRss widgetId = "">
- *   <rss method="get" url="http://hoge/hoge.rss"/>
- *   <rss method="post" url="http://hage/hage.rss">
- *     <header name="head">atama</header>
- *     <body><![CDATA[atama dekkati]]></body>
- *   </rss>
- * </multiRss>
- */
 IS_Widget.MultiRssReader.getMultiProxyPostBody = function( widget ) {
 	var postBody = '<?xml version="1.0" encoding="UTF-8"?>';
 	if( !widget.content.getRssReaders )

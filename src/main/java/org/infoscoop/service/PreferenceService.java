@@ -19,13 +19,10 @@
 package org.infoscoop.service;
 
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.Calendar;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.model.Preference;
 import org.infoscoop.util.SpringUtil;
@@ -55,6 +52,17 @@ public class PreferenceService{
 		this.preferenceDAO = preferenceDAO;
 	}
 	
+	public Preference getPreferenceEntity(String uid) throws Exception{
+		Preference entity = preferenceDAO.select(uid);
+		if(entity == null){
+			entity = new Preference();
+			entity.setUid(uid);
+			entity.setElement(Preference.newElement(uid));
+		}
+		
+		return entity;
+	}
+	
 	/**
 	 * We return an entity of Preference related to uid. <BR>
 	 * When there is not it, we return an empty entity. <BR>
@@ -64,13 +72,7 @@ public class PreferenceService{
 	 * @throws Exception
 	 */
 	public String getPreferenceJSON(String uid) throws Exception{
-		Preference entity = preferenceDAO.select(uid);
-		if(entity == null){
-			entity = new Preference();
-			entity.setUid(uid);
-			entity.setElement(Preference.newElement(uid));
-		}
-		
+		Preference entity = getPreferenceEntity(uid);
 		Node node = entity.getElement();
 		
 		JSONObject prefObj;
@@ -90,7 +92,7 @@ public class PreferenceService{
 					prefPropObj.put("logoffDateTime",logoffDateTime );
 				}
 			}
-
+			
 			// remove failed flag
 			boolean isChanged = PreferenceService.updateProperty((Element)node, "failed", "false");
 			if(isChanged && uid !=null){
@@ -102,6 +104,72 @@ public class PreferenceService{
 			prefObj = new JSONObject();
 		}
 		return prefObj.toString();
+	}
+	
+	
+	/** 
+	 * set access time
+	 */
+	public void setAccessTime(String uid) throws Exception {
+		Preference entity = getPreferenceEntity(uid);
+		Node node = entity.getElement();
+		
+		JSONObject prefObj;
+		if(node != null){
+			Xml2Json x2j = new Xml2Json();
+			String rootPath = "/preference";
+			x2j.addSkipRule(rootPath);
+			x2j.addPathRule(rootPath + "/property", "name", true, true);
+			String prefJsonStr = x2j.xml2json((Element)node);
+			prefObj = new JSONObject(prefJsonStr);
+
+			// create/update lastAccessDate and accessDate.
+			if(prefObj.has("property")){
+				JSONObject prefPropObj = prefObj.getJSONObject("property");
+				if(prefPropObj.has("accessTime")){
+					String accessTime = prefPropObj.getString("accessTime");
+					PreferenceService.updateProperty((Element)node, "lastAccessTime", accessTime);
+				}
+			}
+
+			Calendar calendar = Calendar.getInstance();
+			long millis = calendar.getTimeInMillis();
+			boolean changeAccessTime = PreferenceService.updateProperty((Element)node, "accessTime", String.valueOf(millis));
+			if(changeAccessTime && uid != null){
+				entity.setElement((Element)node);
+				PreferenceService.getHandle().update(entity);
+			}
+		}else{
+			prefObj = new JSONObject();
+		}
+	}
+	
+	/**
+	 * get the property of preference.
+	 */
+	public String getProperty(String uid, String field) throws Exception {
+		Preference entity = preferenceDAO.select(uid);
+		String propValue = new String();
+		if(entity != null){
+			Node node = entity.getElement();
+			JSONObject prefObj;
+			if(node != null){
+				Xml2Json x2j = new Xml2Json();
+				String rootPath = "/preference";
+				x2j.addSkipRule(rootPath);
+				x2j.addPathRule(rootPath + "/property", "name", true, true);
+				String prefJsonStr = x2j.xml2json((Element)node);
+				prefObj = new JSONObject(prefJsonStr);
+				if(prefObj.has("property")){
+					JSONObject prefPropObj = prefObj.getJSONObject("property");
+					if(prefPropObj.has(field)){
+						propValue = prefPropObj.getString(field);
+					}
+				}
+			}
+		}
+
+		return propValue;
 	}
 	
 	/**

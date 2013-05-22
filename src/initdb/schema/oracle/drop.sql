@@ -78,3 +78,9 @@ drop table is_oauth2_tokens;
 drop table is_oauth_certificate;
 
 drop table is_oauth_consumers;
+
+drop table is_tab_admins;
+drop table is_static_tabs;
+
+drop table DATABASECHANGELOG;
+drop table DATABASECHANGELOGLOCK;

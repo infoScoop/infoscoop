@@ -29,6 +29,45 @@
    		   ,/WEB-INF/classes/accountservices.xml
    		   ,/WEB-INF/classes/org/infoscoop/admin/command/serviceCommands.xml</param-value>
   	</context-param>
+
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/conf/log4j.xml</param-value>
+	</context-param>
+	<context-param>
+	<param-name>webAppRootKey</param-name>
+		<param-value>@WEBAPP.ISCOOP.ROOT.KEY@</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+  	
+  	<context-param>
+	    <param-name>liquibase.changelog</param-name>
+	    <param-value>org/infoscoop/migration/db.changelog-master.xml</param-value>
+	</context-param>
+	<context-param>
+    	<param-name>liquibase.datasource</param-name>
+    	<param-value><!--start migration jndiName-->java:comp/env/jdbc/infoscoop<!--end migration jndiName--></param-value>
+	</context-param>
+	<context-param>
+    	<param-name>liquibase.should.run</param-name>
+    	<param-value>true</param-value>
+	</context-param>
+	<context-param>
+    	<param-name>liquibase.onerror.fail</param-name>
+    	<param-value>true</param-value>
+	</context-param>
+	<context-param>
+    	<param-name>liquibase.parameter.tablespace</param-name>
+    	<param-value><!--Migration Database TableSpace--></param-value>
+	</context-param>
+	<!--Migration Database Schema-->
+	<listener>
+		<listener-class>org.infoscoop.migration.ISMigrationListener</listener-class>
+	</listener>
+ 	
 	<filter>
 		<filter-name>SetCharacterEncodingFilter</filter-name>
 		<filter-class>org.infoscoop.web.SetCharacterEncodingFilter</filter-class>
@@ -211,6 +250,11 @@
 	</filter-mapping>
 
 	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/manager/defaultpanel/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
 		<filter-name>PreviewImpersonationFilter</filter-name>
 		<url-pattern>/adminpreview/*</url-pattern>
 	</filter-mapping>
@@ -346,11 +390,6 @@
 		<servlet-class>
 			org.infoscoop.web.InitializeServlet
 		</servlet-class>
-
-		<init-param>
-			<param-name>log4j-init-file</param-name>
-			<param-value>/WEB-INF/conf/log4j.xml</param-value>
-		</init-param>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 

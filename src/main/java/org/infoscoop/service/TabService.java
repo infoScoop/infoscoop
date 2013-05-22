@@ -211,7 +211,7 @@ public class TabService {
 			TabLayout layout = (TabLayout)tabLayoutMap.get(tempTabId);
 			String tempDefaultUid = layout.getDefaultuid();
 			String tempLastModified = layout.getWidgetslastmodified();
-			int tempTabNumber = layout.getTabnumber() != null ? layout.getTabnumber().intValue() : 0;
+			int tempTabNumber = layout.getStatictab().getTabnumber() != null ? layout.getStatictab().getTabnumber().intValue() : 0;
 			for(Iterator it = currentTabList.iterator(); it.hasNext();){
 				Tab tab = (Tab)it.next();
 				String widgetTabId = tab.getTabId();

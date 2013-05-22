@@ -353,10 +353,10 @@ ISA_GadgetResources.prototype = {
 		modalContent.className = "gadgetResources";
 		var editPanel = new ISA_GadgetResourceModalRenderer( {
 			handleUploadStart: function() {
-				this.createSimpleModal( ISA_R.ams_gadgetResourceUploading,true ).open();
+				this.createSimpleModal( ISA_R.ams_gadgetResourceUploading,'overlay' );
 			}.bind( this ),
 			handleUploadEnd: function( iframe ) {
-				this.modal && this.modal.close();
+				Control.Modal.close();
 				
 				var message = iframe.contentWindow.document.body.innerHTML;
 				if( !/^\s*success\s*$/i.test( message ))
@@ -371,11 +371,11 @@ ISA_GadgetResources.prototype = {
 			handleOk: function( upload ) {
 				upload.uploader.submit();
 			}.bind( this ),
-			handleCancel: function() { this.modal && this.modal.close(); }.bind( this )
+			handleCancel: function() { Control.Modal.close(); }.bind( this )
 		},resource,this.eventId );
 		editPanel.renderUpload( modalContent,create );
 		
-		this.createSimpleModal( modalContent,true ).open();
+		this.createSimpleModal( modalContent,'overlay' );
 	},
 	handleResourceEdit: function( renderer,resource ) {
 		var modalContent = document.createElement("div");
@@ -383,19 +383,18 @@ ISA_GadgetResources.prototype = {
 		var editPanel = new ISA_GadgetResourceModalRenderer( {
 			handleReload: this.handleResourceEditModalReload.bind( this ),
 			handleOk: this.handleResourceEditModalSave.bind( this ),
-			handleCancel: function() { this.modal && this.modal.close(); }.bind( this )
+			handleCancel: function() { Control.Modal.close(); }.bind( this )
 		},resource,this.eventId );
 		
 		editPanel.renderEdit( modalContent );
 		
-		this.createSimpleModal( modalContent,true ).open();
+		this.createSimpleModal( modalContent,'overlay' );
 	},
 	handleResourceDelete: function( renderer,resource ) {
 		if( !confirm( ISA_R.getResource( ISA_R.ams_gadgetResourceDeleteConfirm,[resource.getAbsolutePath()])) )
 			return;
 		
-		var modal = this.createSimpleModal( ISA_R.ams_gadgetResourceDeleting )
-		modal.open();
+		this.createSimpleModal( ISA_R.ams_gadgetResourceDeleting,false );
 		
 		resource.remove({
 			onSuccess: function( response ) {
@@ -419,17 +418,16 @@ ISA_GadgetResources.prototype = {
 	},
 	handleResourceEditModalSave: function( renderer,resource ) {
 		var value = renderer.textarea.value;
-		var modal = this.createSimpleModal( ISA_R.ams_gadgetResourceUpdating );
-		modal.open();
+		this.createSimpleModal( ISA_R.ams_gadgetResourceUpdating,false );
 		
 		resource.update( value,{
 			onSuccess: function( response ) {
-				modal.close();
+				Control.Modal.close();
 				
 				this.reloadGadgetConf();
 			}.bind( this ),
 			onFailure: function( response ) {
-				modal.close();
+				Control.Modal.close();
 				
 				alert( ISA_R.ams_gadgetResourceUpdateFailed +"\n"+response.responseText );
 				msg.error( ISA_R.ams_gadgetResourceUpdateFailed +"\n"+response.responseText);
@@ -458,16 +456,18 @@ ISA_GadgetResources.prototype = {
 		});
 	},
 	createSimpleModal: function( content,closable ) {
-		if( this.modal )
-			this.modal.close();
-		
-		var modal = this.modal = new Control.Modal( false,{
-			contents: content,
-			opacity: 0.2,
-			overlayCloseOnClick: closable || false
-		});
-		
-		return modal;
+		if( !this.modal ){
+			this.modal = new Control.Modal( '',{
+				closeOnClick: false,
+				afterClose: function(){
+					this.destroy();
+				}
+			});			
+		}
+		this.modal.options.closeOnClick = closable;
+		this.modal.container.update(content);
+		this.modal.position();
+		this.modal.open();
 	}
 }
 
@@ -506,15 +506,10 @@ ISA_GadgetResourceTreeRenderer.prototype = {
 			lb.appendChild( document.createTextNode( resource.name ));
 			itemDiv.appendChild( lb );
 		} else {
-//			var lb = $( document.createElement( "a" ));
 			var lb = $( document.createElement( "span" ));
 			lb.className = "file";
-//			lb.target = "blank";
 			lb.appendChild( document.createTextNode( resource.name ));
 			itemDiv.appendChild( lb );
-			
-//			if( !resource.isGadget() )
-//				lb.href = localhostPrefix+"/gadget/"+resource.getAbsolutePath();
 			
 			if( resource.isImage() ) {
 				lb.className += " image";

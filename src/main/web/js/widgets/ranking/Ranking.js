@@ -222,14 +222,14 @@ IS_Widget.Ranking.toggleRanking = function(e, obj, widgetId) {
 		rankingOuterDiv.style.display = '';
 		if(!rankingOuterDiv.parentNode.getAttribute('outside')){
 			Element.setStyle(rankingOuterDiv, {
-				left : - rankingOuterDiv.offsetWidth
+				left : - parseInt(rankingOuterDiv.offsetWidth) + "px"
 				, top: 0
 			});
 		}else{
 			var targetPosition = Position.page($("command-ranking"));
 			Element.setStyle(rankingOuterDiv, {
-				left : targetPosition[0]
-				, top: targetPosition[1] + $("command-ranking").offsetHeight + 1
+				left : parseInt(targetPosition[0]) + "px"
+				, top: parseInt(targetPosition[1]) + parseInt($("command-ranking").offsetHeight) + 1 +"px"
 			});
 		}
 		//rankingOuterDiv.style.left = getWindowSize(true) - rankingOuterDiv.offsetWidth - 25;
