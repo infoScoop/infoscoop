@@ -43,7 +43,7 @@
 	font-color:	inherit;
 	font-style:	inherit;
 }
-.DatatypeCalendar .Calendar_Button_Icon,.Calendar_Button:hover,.Calendar_Button:active {
+.DatatypeCalendar .Calendar_Button_Icon,.Calendar_Button a:hover,.Calendar_Button:active {
 	border:	none;
 	
 	cursor:	pointer;

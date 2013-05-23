@@ -133,7 +133,7 @@
 	text-align:left;
 }
 
-.infoScoop .maximize.RssReader .maximizeToggleEditElement:hover {
+.infoScoop .maximize.RssReader .maximizeToggleEditElement a:hover {
 	background: #DDD;
 }
 .infoScoop .maximize.RssReader .maximizeToggleEditElement:visited {
