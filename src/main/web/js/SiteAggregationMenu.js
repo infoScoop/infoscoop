@@ -1133,12 +1133,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		clearTimeout(el.outTimeout);
 
 		var childs = el.childNodes;
-		for(var i = 0; i < childs.length; i++){
-			if(childs[i].nodeName.toUpperCase() == "A"){
-				///childs[i].style.backgroundImage = "url(" + imageURL + "lev0_bg1.png)";
-			}
-		}
-
 		el.outTimeout = setTimeout(function() { topMenuItemMOut2(el); }, 100);
 	}
 	function topMenuItemMOut2(el){
@@ -1367,7 +1361,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			}
 			// Make child menu to not built status.
 			IS_SiteAggregationMenu.menuItemList[el.id].isChildrenBuild = false;
-			//
 			currentDisplayParentItem = undefined;
 			// Delete from array
 			delete scrollers[el.id];
@@ -1512,16 +1505,12 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		var liTop = parent.offsetTop;
 		if( ulHeight > windowY && !scrollers[parent.id]){
 			// Fit to maximum if the item does not fit to screen.
-//			childUl.style.top = (findPosY(parent.parentNode.parentNode) * -1) + "px";
-//			childUl.style.top = (findPosY(IS_SiteAggregationMenu.displayTopLi) - IS_SiteAggregationMenu.displayTopLi.offsetHeight) - parentTop;
 			scrollers[parent.id] = new IS_SiteAggregationMenu.Scroller(childUl);
 			//The height of childUl get lower if Scroller is newed.
 			//Use same calculation of getting height as it placed under the if statement when the mouse is overed again
 			childUl.style.top = (windowY - childUl.offsetHeight) - parentTop + "px";
-//			setChildY( childUl, parent );
 		}else if( (liTop + ulHeight) > windowY ){
 			// Adjust bottom of menu if it does not fit to bottom of browser.
-//			childUl.style.top = (windowY - ulHeight) + "px";
 			childUl.style.top = (windowY - ulHeight) - parentTop + "px";
 		}else{
 			// Ordinally(Adjust Top to the place of parent
@@ -1655,7 +1644,6 @@ IS_SiteAggregationMenu.createMultiDropConf = function(element, lastActiveElement
 		var feedNode = children[i];
 
 		var tempFeed = IS_Portal.searchWidgetAndFeedNode(feedNode.id);
-		//if(tempFeed &&( /RssReader/.test( feedNode.type )|| /MultiRssReader/.test( feedNode.type )) ){
 		if(tempFeed){
 			existsItemList[feedNode.id] = tempFeed;
 			existsItemTitleArray.push( feedNode.title );
@@ -1913,56 +1901,9 @@ IS_SiteAggregationMenu.createMultiDropConf = function(element, lastActiveElement
 
 			IS_EventDispatcher.newEvent("applyIconStyle", newExistWidget.id );
 		}
-
-		/*
-		else if( IS_Portal.isWidgetInTab( tabId, w_id )){
-			// Move property and title by creating empty MultiWidget
-			var tempTargetWidget = IS_Portal.getWidget( w_id )
-			var tempWidgetConf = eval('('+tempTargetWidget.widgetConf.toJSONString()+')');
-			tempWidgetConf.feed = new Array();
-			tempWidgetConf.id = "p_" + new Date().getTime();
-			var newExistWidget = IS_WidgetsContainer.addWidget(targetTabId, tempWidgetConf, tempTargetWidget.isBuilt);
-
-			if(tempTargetWidget.isBuilt){
-				var tempRssReaders = tempTargetWidget.content.getRssReaders();
-				var tempSiblingId = "";
-				for(var i=0;i<tempRssReaders.length;i++){
-					if(tempRssReaders[i].widgetConf.property.relationalId != IS_Portal.getTrueId(w_id, "MultiRssReader")){
-						newExistWidget.content.addRssReader(tempRssReaders[i], tempSiblingId);
-						tempSiblingId = tempRssReaders[i].id;
-					}
-				}
-				tempTargetWidget.headerContent.close("notCloseFeeds");
-			}else{
-				// Not built
-				var tempFeeds = tempTargetWidget.widgetConf.feed;
-				var tempSiblingId = "";
-				for(var i=0;i<tempFeeds.length;i++){
-					if(tempFeeds[i].property.relationalId != IS_Portal.getTrueId(w_id, "MultiRssReader")){
-						IS_Widget.addAiryRssReader(newExistWidget, tempFeeds[i], tempSiblingId, targetTabId);
-						tempSiblingId = tempFeeds[i].id;
-					}
-				}
-//				IS_Portal.widgetLists[targetTabId][w_id] = null;
-				IS_Portal.removeWidget(w_id, targetTabId);
-			}
-		}
-		*/
 	}
 
 	var isCreate = false;
-	// Check if there is subWidget or not.
-	/*
-	if(confs[1].length > 0){
-		for(var i=0;i<confs[1].length;i++){
-//			if(getBooleanValue(confs[1][i].isChecked)){
-				isCreate = true;
-				break;
-//			}
-		}
-	}
-	*/
-
 	if( confs[1].length == 0 && confs[2].length == 0) {
 		//Finish if there is no feed to be displayed.
 		widgetGhost.parentNode.removeChild(widgetGhost);
@@ -1996,7 +1937,6 @@ IS_SiteAggregationMenu.refreshMenu = function  () {
 	if(IS_Portal.isItemDragging) {
 		setTimeout(IS_SiteAggregationMenu.refreshMenu, 500);
 	} else {
-		//document.getElementById("portal-site-aggregation-menu").innerHTML = "";
 		IS_SiteAggregationMenu.isMenuRefreshed = true;
 		IS_Event.unloadCache("_menu");
 		//TODO:The message of SideMenu is disappered if sideMenuURL != siteAggregationMenuURL as well.
@@ -2020,30 +1960,6 @@ IS_SiteAggregationMenu.refreshMenu = function  () {
 
 IS_SiteAggregationMenu.draggable = false;
 IS_SiteAggregationMenu.tempReaders = {};
-/*
-IS_SiteAggregationMenu.menuDragInit = function(menuItem, menuIconDiv, menuItemDiv, isMultiMenu, isTree){
-//	return function(e){ menuItemDragStart(e, menuItem, menuIconDiv, menuItemDiv); };
-
-	menuItem.menuIconDiv = menuIconDiv;
-	menuItem.menuItemDiv = menuItemDiv;
-
-	var dragObject = new Object();
-	for(var i in menuItem){
-		dragObject[i] = menuItem[i];
-	}
-	dragObject.menuIconDiv = menuIconDiv;
-	dragObject.menuItemDiv = menuItemDiv;
-	dragObject.isMultiMenu = isMultiMenu;
-
-	if(isTree){
-		dragObject.isTree = true;
-	}
-
-	var drag = new IS_DragWidget(dragObject, "menu");
-	return drag.start;
-};
-*/
-
 IS_SiteAggregationMenu.getConfigurationFromMenuItem = function(menuItem, columnNum){
 	var w_id;
 	if(/true/i.test(menuItem.multi)){
@@ -2078,24 +1994,7 @@ IS_SiteAggregationMenu.getDraggable = function(menuItem, menuIconDiv, menuItemDi
 				IS_Widget.MaximizeWidget.headerContent.turnbackMaximize();
 
 			var element = draggble.element;
-
-//			var divWidgetDummy = element.cloneNode(true);
-//			element.dummy = divWidgetDummy;
-
 			this.menuUL = element.parentNode.parentNode;
-
-			// Handling that same widget is dropped plurally.
-			//if (this.menuItem.multi) this.menuItem.id = this.menuItem.type+ "_" + new Date().getTime();
-
-//			//Create dummy for menu.
-//			divWidgetDummy.id = "divWidgetDummy_" + this.menuItem.id;
-//			divWidgetDummy.style.position = "";
-//			element.parentNode.insertBefore(divWidgetDummy, element);
-//
-//			divWidgetDummy.style.display = "";
-//			element = document.body.appendChild(element);
-//			element.style.width = "30%";
-
 			var widgetGhost = IS_Draggable.ghost;
 			if(/MultiRssReader/.test(this.menuItem.type)){
 				var parentItem = this.menuItem.parent;
@@ -2103,7 +2002,6 @@ IS_SiteAggregationMenu.getDraggable = function(menuItem, menuIconDiv, menuItemDi
 				var divParent = $(p_id);
 				if ( divParent ) {
 					// Execurte at coordinating menu.
-//					var targetWidget = IS_Portal.widgetLists[IS_Portal.currentTabId][p_id];
 					var targetWidget = IS_Portal.getWidget(p_id, IS_Portal.currentTabId);
 
 					this.syncId = targetWidget.elm_widget.id;
@@ -2119,20 +2017,6 @@ IS_SiteAggregationMenu.getDraggable = function(menuItem, menuIconDiv, menuItemDi
 					widgetGhost.menuItem = this.menuItem;
 				}
 			}
-/*				}else {
-					if(widgetGhost.col.firstChild){
-						widgetGhost.col.insertBefore(widgetGhost,widgetGhost.col.firstChild);
-					}else{
-						widgetGhost.col.appendChild(widgetGhost);
-					}
-				}
-			}else{
-				if(widgetGhost.col.firstChild){
-					widgetGhost.col.insertBefore(widgetGhost,widgetGhost.col.firstChild);
-				}else{
-					widgetGhost.col.appendChild(widgetGhost);
-				}
-			}*/
 		},
 		onDrag: function(draggble, e){
 			if(!e) return;
@@ -2215,8 +2099,6 @@ IS_SiteAggregationMenu.closeBubble = function(el) {
 		} else if(nodeName == 'li' && node.className == 'menuItem') {
 			node.style.background = "#F6F6F6";
 			node.style.color = "#5286BB";
-		} else if(nodeName == 'a' && el.className == "topMenuLi") {
-			//node.style.backgroundImage = "url(" + imageURL + "lev0_bg1.png)";
 		}
 		IS_SiteAggregationMenu.closeBubble(node);
 	}

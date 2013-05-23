@@ -29,24 +29,15 @@ IS_WidgetsContainer.prototype.classDef = function() {
 		var opt = {
 		    method: 'get' ,
 		    asynchronous:true,
-		    /*parameters:'Uid=ABCED',*/
 		    onSuccess: displayWidgets,
 		    on404: function(t) {
 
-				alert(IS_R.lb_getCustomInfoon404);
-				
-//		        msg.error('Error 404: location "' + hostPrefix + "/widsrv" + '" was not found.');
 				msg.error(IS_R.getResource(IS_R.ms_containerLoadon404, [hostPrefix]));
 				
 		        IS_WidgetsContainer.loadFailed = true;
 		    },
 		    onFailure: function(t) {
-
-//				alert(IS_R.lb_getCustomInfoonFailure2);
 				alert("Getting user's custormize information failed. Please try again later.");
-				
-
-//				msg.error(IS_R.getResource(IS_R.lb_getCustomInfoonFailure1, [t.status, t.statusText]));
 				msg.error('Getting user\'s custormize information failed. : ' + t.status + ' -- ' + t.statusText);
 				
 		        IS_WidgetsContainer.loadFailed = true;
@@ -76,7 +67,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 							IS_Widget.Ranking.buildCommandBar( widgets[i].id );
 						
 						container.id = "s_" + widgets[i].id;
-//						var widget = new IS_Widget(false, widgets[i], container, true);
 						var widget = new IS_Widget(false, widgets[i]);
 						widget.panelType = "StaticPanel";
 						widget.containerId = container.id;
@@ -86,7 +76,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 							widget.build();
 				    		container.appendChild(widget.elm_widget);
 				    	}
-//						IS_Portal.widgetLists[tabId][widget.id] = widget;
 						IS_Portal.addWidget(widget, tabId);
 					} catch(e) {
 						alert(getText(e));
@@ -150,7 +139,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					});
 					widgetConf.id = "p_"+widgetConf.id.substring(2);
 					
-					//var children = menuItem.children;
 					var empty = true;
 					var lastChild;
 					children.findAll( function( child ) {
@@ -208,17 +196,15 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				IS_Request.CommandQueue.addCommand( new IS_Commands.EmptyWidgetCommand( widgetConf,tabId.substring(3) ));
 			});
 		} catch( ex ) {
-			throw ex;//msg.error( ex );
+			throw ex;
 		}
 		
 		for(var i in widgets) {
 			if(widgets[i].id) {
 				try{
 					setTabId( tabId, widgets[i] );
-//					var widget = new IS_Widget(true, widgets[i], columnObj, true);
 					
 					var widget = new IS_Widget(true, widgets[i]);
-					
 					widget.tabId = tabId;
 					
 					if(widget.widgetConf.needUpdate){
@@ -228,32 +214,8 @@ IS_WidgetsContainer.prototype.classDef = function() {
 					if(widgets[i].parentId){
 						widgets[i].tabId = tabId;
 						subWidgets.push(widgets[i]);
-						/*
-						var parentId = widgets[i].parentId;
-						IS_Portal.addSubWidget(parentId, widget.id, tabId);
-						*/
 						widget.isSubWidget = true;
 					}
-					/*
-					if(isBuild){
-						widget.build();
-						if(widgetOrderReverse) {
-						    if (columnObj.hasChildNodes()) {
-						    	columnObj.insertBefore(widget.elm_widget, columnObj.firstChild);
-						    }else {
-						    	columnObj.appendChild(widget.elm_widget);
-						    }
-						} else {
-							var end = $("columns"+tabId.substring(3)+"_end_" + widgets[i].column);
-							if(end) {
-								columnObj.insertBefore(widget.elm_widget, end);
-							} else {
-								columnObj.appendChild(widget.elm_widget);
-							}
-						}
-					}
-					*/
-//					IS_Portal.widgetLists[tabId][widget.id] = widget;
 					IS_Portal.addWidget(widget, tabId);
 				} catch(e) {
 					console.log(e);
@@ -269,7 +231,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 		}
 		
 		for(i in IS_Portal.widgetLists[tabId]){
-//			var widget = IS_Portal.widgetLists[tabId][i];
 			var widget = IS_Portal.getWidget(i, tabId);
 			
 			if(widget.panelType == "DynamicPanel"){
@@ -327,13 +288,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				// Show them in order of displayed number if tabType has the same value
 				if(a.tabNumber && !b.tabNumber) return -1;
 				if(!a.tabNumber && b.tabNumber) return 1;
-				/*
-				if(typeof a.tabNumber != "undefined" && typeof b.tabNumber == "undefined") return -1;
-				if(typeof a.tabNumber == "undefined" && typeof b.tabNumber != "undefined") return -1;
-				*/
-				
 				if(a.tabNumber && b.tabNumber){
-	//			if(typeof a.tabNumber != "undefined" && typeof b.tabNumber != "undefined"){
 					if(parseInt(a.tabNumber) < parseInt(b.tabNumber)) return -1;
 					if(parseInt(b.tabNumber) < parseInt(a.tabNumber)) return 1;
 				}
@@ -425,12 +380,10 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			}
 
 			//Holiday information
-//			IS_Holiday = new IS_Widget.Calendar.iCalendar(localhostPrefix + "/holidaysrv");
 			IS_Holiday = new IS_Widget.Calendar.iCalendar(hostPrefix + "/holidaysrv");
 			IS_Holiday.noProxy = true;
 			IS_Holiday.load({asynchronous:false});
 			freshDays = IS_Portal.getFreshDays(IS_Portal.freshDays);
-			//IS_Portal.freshDays = freshDays;
 	
 			var goHome = $("portal-go-home");
 			if(goHome){
@@ -444,7 +397,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				Event.observe(goHome, "click" , IS_Portal.goHome, false);
 			}
 			//Show ranking in command bar
-			//IS_Widget.Ranking.buildCommandBar("p_1_w_6");
 			
 			if($("messageIcon")) $("messageIcon").title = IS_R.lb_messageConsole;
 			
@@ -468,8 +420,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			
 			if(!isTabView)
 			  IS_Portal.CommandBar.init();
-	
-			// loadContents();
 			
 			var loadWidgets = IS_Portal.getLoadWidgets("tab0");
 			if(loadWidgets.length > 0) {
@@ -585,7 +535,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 
 	function loadContents(){
 		for(id in IS_Portal.widgetLists[IS_Portal.currentTabId]){
-//			var widget = IS_Portal.widgetLists[IS_Portal.currentTabId][id];
 			var widget = IS_Portal.getWidget(id);
 			if(widget.loadContents && !widget.isSubWidget) {
 				widget.loadContents();
@@ -596,7 +545,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 IS_Portal.getLoadWidgets = function(tabId, isAllReload){
 	var loadWidgets = [];
 	for(id in IS_Portal.widgetLists[tabId]){
-//		var widget = IS_Portal.widgetLists[tabId][id];
 		var widget = IS_Portal.getWidget(id, tabId);
 		if(widget && !(widget instanceof Function) && !widget.isSubWidget){
 			if(!widget.isBuilt){
@@ -629,7 +577,6 @@ IS_Portal.getLoadWidgets = function(tabId, isAllReload){
 					}
 				}
 				if(widget.isBuilt){
-					//widget.loadContents();
 					loadWidgets.push(widget);
 				}
 			}else {
@@ -671,10 +618,6 @@ IS_Portal.buildContents = function( tabId , isAllReload){
 		}
 		
 		IS_Portal.adjustSiteMenuHeight(null);
-	//	Event.observe(window, 'resize', IS_Portal.adjustSiteMenuHeight, false);
-	//	Event.observe(window, 'resize', IS_Portal.adjustIframeHeight, false);
-		
-	//	IS_Portal.setFontSize();
 		IS_Portal.adjustIS_PortalStyle();
 	} else {
 		IS_EventDispatcher.newEvent("tabLoadCompleted",tabId );
@@ -704,7 +647,6 @@ IS_Portal.buildAllTabsContents = function(){
 			IS_Portal.loadWidgetQueue[widget.id] = widget;
 		}
 	}
-//	IS_Portal.loadWidgetQueue = $H(IS_Portal.loadWidgetQueue);
 	IS_Portal.loadWidgetCount = $H( IS_Portal.loadWidgetQueue ).size();
 	IS_Portal.loadingWidgetCount = 0;
 	IS_Portal.completeWidgetCount = 0;
@@ -746,18 +688,7 @@ IS_Portal.processLoadWidget = function() {
 	if( !widget ) return;
 	delete IS_Portal.loadWidgetQueue[widget.id];
 	
-	/*
-	var closeListener = function( widget ) {
-		IS_EventDispatcher.newEvent("loadComplete",widget.id );
-		
-		widget.removeLoadCompleteListener( loadCompleteListener );
-	}.bind( null,widget );
-	widget.addCloseListener( closeListener );
-	*/
-	
 	var loadCompleteListener = function( widget ){
-		//setTimeout(widget.removeCloseListener.bind(widget, closeListener ), 100);
-		
 		if(IS_Portal.loadWidgetQueue[widget.id])
 			delete IS_Portal.loadWidgetQueue[widget.id];
 		
@@ -804,13 +735,7 @@ IS_Portal.endBuildAllTabsContents = function(){
 }
 	
 IS_WidgetsContainer.adjustColumnWidth = function( tabId, columnsWidth, isInitialize ) {
-	/*
-	var container = $("dynamic-panel"+IS_Portal.currentTabId.substring(3));
-	var width = container.offsetWidth;
-	// float at column: offsetWidth of dynamic-panel becomes 0 if left is set in IE
-	*/
 	var adjustTabId = (/^tab/.test(tabId))? tabId : IS_Portal.currentTabId;
-	//var container = IS_Portal.tabs[ adjustTabId ].panel;
 	var container = $('panels');
 	var width = container.offsetWidth-6;
 	if(width < 0){
@@ -832,11 +757,8 @@ IS_WidgetsContainer.adjustColumnWidth = function( tabId, columnsWidth, isInitial
 		var loopCount = 0;
 		for (var i=0; i < columns.length; i++ ) {
 			if(!columns[i] || columns[i].nodeType != 1 || columns[i].className != "column") continue;
-//			columns[i].style.width = Math.floor(width/IS_Portal.tabs[adjustTabId].numCol) + "px";
-			
 			if(isClear){
 				var _coefficient = (Browser.isSafari) ? 100 : 99.5;
-				// '(numCol-1)%' is used in 'adjustBar'
 				var width = ((_coefficient - (numCol-1))/numCol) + "%";
 				columns[i].style.width = width;
 				IS_Portal.tabs[adjustTabId].columnsWidth.push(width);
@@ -894,14 +816,7 @@ IS_WidgetsContainer.adjustColumns = {
 		}
 		
 		IS_WidgetsContainer.adjustColumns.endX = Event.pointerX(e);
-		
-//		if(!Browser.isIE){
-			IS_WidgetsContainer.adjustColumns.changeWidth();
-//		}else{
-//			IS_WidgetsContainer.adjustColumns.timer = 
-//				setTimeout(IS_WidgetsContainer.adjustColumns.changeWidth, 5);
-//		}
-		
+		IS_WidgetsContainer.adjustColumns.changeWidth();
 		// Prevent event from being passed to upper level
 		Event.stop(e);
 	},
@@ -992,49 +907,6 @@ IS_WidgetsContainer.adjustColumns = {
 	}
 }
 
-// Fix 13855
-// if( Browser.isSafari1 ) {
-// 	IS_WidgetsContainer.adjustColumns.end = ( function(){
-// 		var end = IS_WidgetsContainer.adjustColumns.end;
-		
-// 		return function() {
-// 			end.apply( this,$A( arguments ));
-			
-// 			var total = 0;
-// 			var widths = {};
-// 			IS_Portal.tabs[IS_Portal.currentTabId].columnsWidth.each( function( columnWidth,i ){ 
-// 				var width = parseFloat( columnWidth.match(/(\d+(?:.\d+)?)%/)[1] );
-// 				if( !width || isNaN( width ))
-// 					return;
-				
-// 				widths[i] = width;
-// 				total += width;
-// 			});
-			
-// 			var currentTab = IS_Portal.tabs[IS_Portal.currentTabId];
-// 			var max = ( ( 100-( currentTab.numCol-1 ))/currentTab.numCol ) *currentTab.numCol;
-// 			if( total >= max -0.01 )
-// 				return;
-			
-// 			var scale = max/total;
-			
-// 			currentTab.columnsWidth = [];
-// 			var columns = $("columns"+currentTab.tabNumber ).childNodes;
-// 			var columnNumber = 0;
-// 			for(var i=0;i<columns.length;i++){
-// 				var column = columns[i];
-// 				if(column.className != "column") continue;
-				
-// 				var width = widths[columnNumber] *scale;
-// 				column.style.width = width+"%";
-// 				currentTab.columnsWidth.push( width );
-				
-// 				columnNumber++;
-// 			}
-// 		}
-// 	})();
-// }
-
 IS_Portal.rebuilding = new Object();
 IS_WidgetsContainer.rebuildColumns = function( tabId, numCol, columnsWidth, isReset, isInitialize ) {
 	if(IS_Portal.tabs[tabId].disabledDynamicPanel
@@ -1066,7 +938,6 @@ IS_WidgetsContainer.rebuildColumns = function( tabId, numCol, columnsWidth, isRe
 			// adjust bar
 			if(i != 1){
 				var adjustDiv = document.createElement("div");
-				//dojo.dom.insertBefore(adjustDiv, div);
 				div.parentNode.insertBefore(adjustDiv, div);
 				adjustDiv.className = "adjustBarOut";
 				IS_Event.observe(adjustDiv, 'mousedown', IS_WidgetsContainer.adjustColumns.start.bind(adjustDiv, adjustDiv), false, IS_Portal.currentTabId);
@@ -1076,8 +947,6 @@ IS_WidgetsContainer.rebuildColumns = function( tabId, numCol, columnsWidth, isRe
 		}
 	} else {
 		var column = columns.childNodes;
-		
-//		var lastColumn = column[numCol - 1];
 		var columnsArray = new Array();
 		for(var i=0;i<column.length;i++){
 			if(column[i].className == "column")
@@ -1092,9 +961,7 @@ IS_WidgetsContainer.rebuildColumns = function( tabId, numCol, columnsWidth, isRe
 					try{
 						if(columnsArray[i].childNodes.length <= 1) break;
 						var widgetDiv = columnsArray[i].childNodes[0];
-//						var id = widgetDiv.firstChild.id;
 						var id = widgetDiv.id;
-//						var widget = IS_Portal.widgetLists[tabId][id];
 						var widget = IS_Portal.getWidget(id, tabId);
 						lastColumn.insertBefore(widgetDiv, lastColumnEnd);
 						widget.widgetConf.column = numCol;
@@ -1135,17 +1002,9 @@ IS_WidgetsContainer.addWidget = function (tabId, widgetConf, isBuild, appendFunc
 		widgetConf.column = IS_Portal.tabs[tabId].numCol;
 	}
 	var columnObj = IS_Portal.columnsObjs[tabId]["col_dp_" + widgetConf.column];
-	
-//	var widget = new IS_Widget(true, widgetConf, columnObj, true);
-	
 	var widget = new IS_Widget(true, widgetConf);
 	widget.tabId = tabId;
-	
-//	IS_Portal.widgetLists[tabId][widget.id] = widget;
 	IS_Portal.addWidget(widget, tabId);
-	
-	//Send to Server
-//	IS_Widget.addWidgetCommand(widget);
 	
 	if(subWidgetConfList){
 		for (var i = 0; i < subWidgetConfList.length; i++) {
@@ -1155,11 +1014,8 @@ IS_WidgetsContainer.addWidget = function (tabId, widgetConf, isBuild, appendFunc
 			var child = new IS_Widget(true, subWidgetConf, widget);
 			child.tabId = tabId;
 			child.isSubWidget = true;
-			//	IS_Portal.widgetLists[tabId][parent.id] = child;
-			//	IS_Portal.widgetLists[tabId][child.id] = child;
 			IS_Portal.addWidget(child, tabId);
 			IS_Portal.addSubWidget(widget.id, child.id, tabId);
-			//	IS_Widget.addWidgetCommand(child);
 		}
 		
 		IS_Widget.addMultiWidgetCommand(widget);
@@ -1201,7 +1057,6 @@ IS_WidgetsContainer.WidgetConfiguration = {
 			for(i in properties){
 				if(properties[i] && !(properties[i] instanceof Function)){
 					try{
-//						eval("widgetConf.property." + i  + " = escapeXMLEntity(properties[i])");
 						if( !( type.indexOf('g_') == 0 && i=='url') )
 						  widgetConf.property[i] = properties[i];
 					}catch(e){}
@@ -1229,7 +1084,6 @@ IS_WidgetsContainer.WidgetConfiguration = {
 		for(i in properties){
 			if(properties[i] && !(properties[i] instanceof Function)){
 				try{
-//					eval("widgetConf.property." + i  + " = escapeXMLEntity(properties[i])");
 					widgetConf.property[i] = properties[i];
 				}catch(e){}
 			}
@@ -1523,7 +1377,6 @@ IS_Portal.removeSubWidget = function(_widget, _subWidget, tabId){
 	delete IS_Portal.parentWidgetMap[subWidgetId]
 	
 	var subWidget = (_subWidget.id)? _subWidget : IS_Portal.getWidget(subWidgetId, tabId);
-//	if(subWidget) subWidget.parent = null;
 	if(subWidget
 		&& subWidget.parent
 		&& IS_Portal.getTrueId(subWidget.parent.id) == widgetId) {

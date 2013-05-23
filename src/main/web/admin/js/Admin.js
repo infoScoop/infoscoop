@@ -40,7 +40,6 @@ var freshDays = 1;
 
 var adminHostPrefix = hostPrefix + "/admin";
 var portalSSLURL = hostPrefix;
-//var searchEngineURL = hostPrefix + "/schsrv";
 var proxyServerURL = hostPrefix + "/proxy";
 var useProxy = (typeof useProxy == "undefined") ? true : useProxy;
 
@@ -85,8 +84,6 @@ ISA_Admin.clearAdminCache = function() {
 	IS_Event.unloadCache("_adminProperties");
 	IS_Event.unloadCache("_adminProxy");
 	IS_Event.unloadCache("_adminI18N");
-	//IS_Event.unloadCache("_adminPanel");
-	//IS_Event.unloadCache("_adminPanelTab");
 	IS_Event.unloadCache("_adminPortal");
 	IS_Event.unloadCache("_adminAdmins");
 	IS_Event.unloadCache("_adminAuthentication");
@@ -366,12 +363,10 @@ ISA_Admin.initIndicator = function() {
 ISA_Admin.startIndicator = function() {
 	if(!ISA_Admin.indicatorDiv)
 		ISA_Admin.initIndicator();
-//	var overlay = ISA_Admin.indicatorDiv;
 	var overlay = ISA_Admin.overlay;
 	
 	overlay.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth) + "px";
 	overlay.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight) + "px";
-//	overlay.style.display = "";
 	ISA_Admin.indicatorDiv.style.display = "";
 }
 
@@ -398,7 +393,6 @@ ISA_Admin.buildTableHeader = function(labels, widths){
 	
 	var configTr;
 	configTr = document.createElement("tr");
-//	configTr.id = "proxyConfigHeader";
 	configTbody.appendChild(configTr);
 
 	var configTh;
@@ -406,7 +400,6 @@ ISA_Admin.buildTableHeader = function(labels, widths){
 	for(var i = 0; i < labels.length; i++){
 		configTh = document.createElement("td");
 		configTh.className = "configTableHeaderTd";
-//		configTh.style.whiteSpace = "nowrap";
 		if(widths && widths[i])
 		  configTh.style.width = widths[i];
 		configTh.appendChild(document.createTextNode(labels[i]));
@@ -562,7 +555,6 @@ ISA_previewFormModal = {
 				isFirst = false;
 			}
 			window.open(url);
-//			self.hide();
 		};
 		IS_Event.observe(previewA, "click", previewClick, false, "_adminPanel");
 		formDiv.appendChild(previewDiv);
@@ -608,66 +600,6 @@ ISA_previewFormModal = {
 		inputDiv.appendChild(editRoleInput);
 		editDiv.appendChild(inputDiv);
 		return editDiv;
-	},
-	hide: function() {
-		Control.Modal.close();
-	}
-};
-
-/**
- * Adding CommandBarModal
- */
-ISA_AddCommandBarModal = {
-	isaDefaultPanel: false,
-	controlModal: false,
-	init: function() {
-		this.addCommandBarModal.isaDefaultPanel = this;
-		this.addCommandBarModal.controlModal = new Control.Modal('',{
-			className:"",
-			afterClose:this.addCommandBarModal.hide
-		});
-		this.addCommandBarModal.load();
-	},
-	load: function() {
-		var self = this;
-		var viewForm = function() {
-			var formDiv = document.createElement("div");
-			formDiv.id = "panelCommandBarModal";
-			self.build(formDiv);
-			self.controlModal.container.update(formDiv);
-			self.controlModal.open();
-		}
-		setTimeout(viewForm, 10);
-	},
-	build: function(formDiv) {
-		var self = this;
-		
-		var messageLabel = document.createElement("div");
-		messageLabel.style.clear = "both";
-		messageLabel.appendChild(document.createTextNode(ISA_R.alb_sertLinkCommandbar));
-		
-		formDiv.appendChild(messageLabel);
-		formDiv.appendChild(self.isaDefaultPanel.commandBarEditor.link.buildForm());
-		
-		var okDiv = document.createElement("div");
-		okDiv.style.clear = "both";
-		okDiv.style.textAlign = "center";
-		var okA = document.createElement("input");
-		okA.type = 'button';
-		okA.value = ISA_R.alb_add;
-		okDiv.appendChild(okA);
-		var okClick = function(e) {
-			self.isaDefaultPanel.commandBarEditor.link.onOK();
-			self.hide();
-		};
-		IS_Event.observe(okA, "click", okClick, false, "_adminPanel");
-		
-		var closeA = document.createElement("input");
-		closeA.type = "button";
-		closeA.value = ISA_R.alb_cancel;
-		okDiv.appendChild(closeA);
-		IS_Event.observe(closeA, "click", this.hide.bind(this), false, "_adminPanel");
-		formDiv.appendChild(okDiv);
 	},
 	hide: function() {
 		Control.Modal.close();

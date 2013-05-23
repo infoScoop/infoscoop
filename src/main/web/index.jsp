@@ -60,7 +60,6 @@
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/pulldown.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/calendarinput.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/mySiteMap.css">
-    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/treemenu.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/commandbar.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/tab.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/widget.css">
@@ -112,7 +111,6 @@
 		var is_userId = <%=uid != null ? "\"" + uid.replace("\\", "\\\\") + "\"" : "null" %>;
 		var is_userName = <%=displayName != null ?  "\"" + displayName + "\"" : "null" %>;
 		var is_isAdministrator = <%=isAdmin != null ? isAdmin.booleanValue() : false%>;
-		//dojo.require("dojo.dom");
 
 		var localhostPrefix = "<%=request.getScheme()%>://localhost:<%=request.getServerPort()%><%=request.getContextPath()%>"
 
