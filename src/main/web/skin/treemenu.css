@@ -160,7 +160,7 @@ height:20px;
 /* html .ygtvchildren { height:2%; }  */
 
 /* the style of the text label in ygTextNode */
-.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover { 
+.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited { 
 	margin-left:2px;
 	text-decoration: none;
     background-color: white;

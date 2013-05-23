@@ -1,4 +1,3 @@
-<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@ page contentType="text/html; charset=UTF-8" errorPage="/jspError.jsp" %>
 <%@ page import="org.infoscoop.util.RSAKeyManager"%>
 <%@ page import="org.infoscoop.service.ForbiddenURLService" %>
@@ -9,6 +8,7 @@
 %>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-Control" content="no-cache">
 
@@ -71,18 +71,20 @@
 	    <script src="../../js/gadget/features/core:rpc:pubsub:pubsub-2:infoscoop.js?c=1"></script>
 		
 		<!--start script-->
-	    <script src="../../js/lib/prototype-1.6.0.3.js"></script>
-		<script src="../../js/lib/scriptaculous-js-1.8.2/effects.js"></script>
-		<script src="../../js/lib/scriptaculous-js-1.8.2/dragdrop.js"></script>
+	    <script src="../../js/lib/prototype-1.7.1.js"></script>
+		<script src="../../js/lib/scriptaculous-js-1.9.0/effects.js"></script>
+		<script src="../../js/lib/scriptaculous-js-1.9.0/dragdrop.js"></script>
 		<script src="../../js/lib/syntacticx-livepipe-ui/livepipe.js"></script>
 		<script src="../../js/lib/syntacticx-livepipe-ui/tabs.js"></script>
+		<script src="../../js/lib/syntacticx-livepipe-ui/resizable.js"></script>
+		<script src="../../js/lib/syntacticx-livepipe-ui/window.js"></script>
+
 		<script src="../../admin/js/lib/popupmenu.js"></script>
 
 		<script src="../../js/utils/utils.js"></script>
 		<script src="../../js/utils/domhelper.js"></script>
 		<script src="../../js/utils/ajaxpool/ajax.js"></script>
 		<script src="../../js/utils/ajax304.js"></script>
-		<script src="../../js/lib/control.modal.js"></script>
 		<script src="../../js/lib/date/date.js"></script>
 		<script src="../../js/lib/rsa/jsbn.js"></script>
 		<script src="../../js/lib/rsa/prng4.js"></script>
@@ -137,7 +139,7 @@
 		<script src="../../admin/js/AdminAuthentication.js"></script>
 		<!--end script-->
 		
-		<script src="../../js/lib/jquery-1.5.2.min.js"></script>
+		<script src="../../js/lib/jquery-1.9.1.min.js"></script>
 		<script>
 			jQuery.noConflict();
 			$jq = jQuery;
@@ -150,7 +152,7 @@
 
 			$jq(function(){
 				$jq("#messageIcon").click(function(){
-					msg.showPopupDialog(adminHostPrefix);
+					msg.showPopupDialog(hostPrefix);
 				});
 				$jq("#admin-tabs .tab").click(function(){
 					if(!ISA_Admin.checkUpdated())

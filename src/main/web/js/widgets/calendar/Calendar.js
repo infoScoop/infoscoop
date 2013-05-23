@@ -159,6 +159,7 @@ IS_Widget.Calendar.prototype.classDef = function() {
 	
 	this.initCalendar = function(eventTargetList) {
 		if(this.iCalConf.length == 0) return;
+		// ToDo: if gadget setting bad JSON, occur argument exception for IE8
 		for(var i=0; i<this.iCalConf.length; i++) {
 			var calObj;
 			if(this.iCalConf[i].isHoliday){
@@ -328,7 +329,6 @@ IS_Widget.Calendar.prototype.classDef = function() {
 				try {
 					self.reloadContents();
 				} catch(t) {
-					
 					msg.error( IS_R.getResource( IS_R.ms_iCalCreateFailed, [getText(t)]));
 				}
 				return false;
@@ -366,8 +366,8 @@ IS_Widget.Calendar.DayHandler.prototype.classDef = function() {
 	
 	this.computeCoordinate = function(e) {
 		if(!e) return;
-		var y = e.pageY || e.clientY + document.body.scrollTop;
-		var x = e.pageX || e.clientX + document.body.scrollLeft;
+		var y = e.pageY || e.clientY + document.documentElement.scrollTop;
+		var x = e.pageX || e.clientX + document.documentElement.scrollLeft;
 		if(!x) return;
 		detailDiv.style.visibility = "hidden";
 		detailDiv.style.display = "block";
@@ -390,9 +390,9 @@ IS_Widget.Calendar.DayHandler.prototype.classDef = function() {
 		var cellTop = findPosY(cell);
 		if(fixedPortalHeader)
 			cellTop -= IS_Portal.tabs[IS_Portal.currentTabId].panel.scrollTop;
-		detailDiv.style.top = cellTop + cell.offsetHeight;
+		detailDiv.style.top = cellTop + cell.offsetHeight + 'px';
 		
-		detailDiv.style.left = x;
+		detailDiv.style.left = x + 'px';
 	}
 	
 	this.showSlowly = function(e) {
@@ -468,11 +468,7 @@ IS_Widget.Calendar.DayHandler.prototype.classDef = function() {
 	this._show = function() {
 		if(!calendar.dayShare.isShowing) {
 			calendar.dayShare.isShowing = true;
-			if(Browser.isIE){
-				detailDiv.style.display = "block";
-			}else{
-				new Effect.Appear(detailDiv, {duration:0.3});
-			}
+			new Effect.Appear(detailDiv, {duration:0.3});
 			calendar.dayShare.isShowing = false;
 		}
 	}

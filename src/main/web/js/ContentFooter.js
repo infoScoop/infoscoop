@@ -225,7 +225,7 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 				
 				self.shareModal.position();
 			}
-			self.toInput = $.INPUT({style:'width:100%'});
+			self.toInput = $.INPUT({type: "text", style:'width:100%'});
 			self.userSearch = $.INPUT({
 				Class: "userSearchButton",
 				type:"button",
@@ -354,7 +354,7 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 									Class: "cancelButton",
 									onclick:{
 										handler:function(){
-											self.shareModal.close();
+											Control.Modal.close();
 										},
 										id:self.id
 									}
@@ -366,37 +366,32 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 			);
 			
 			var shareIcon = Event.element(e);
-			self.shareModal = new Control.Modal(
-				shareIcon,
-				{
-				  afterOpen:function(){
-				  	self.toInput.value = self.msgTextarea.value = "";
-				  	self.toInput.disabled = false;
-					self.userSearch.disabled = false;
-				  	self.toPublic.checked = false;
-				  	
-				  	setTimeout( function() {
-				  		self.toInput.focus();
-				  	},10 );
-				  	
-				  	//FIXME u-n ,,,
-				  	if( IS_Widget.MaximizeWidget )
-					  	IS_Widget.MaximizeWidget.keybind.enable = false;
-				  },
-				  beforeClose: function() {
-				  	toggleMode( false );
-				  	
-				  	if( modalDiv.parentNode ) //CHECKIT modalDiv is emputy at update("") in IE6
-					  	modalDiv.parentNode.removeChild( modalDiv );
-				  },
-				  afterClose: function(){
-				  	if( IS_Widget.MaximizeWidget )
-					  	IS_Widget.MaximizeWidget.keybind.enable = true;
-				  },
-				  contents: modalDiv,
-				  width: ( Browser.isIE?400:"auto")
-				}
-			);
+			self.shareModal = new Control.Modal('',{
+						afterOpen:function(){
+						  	self.toInput.value = self.msgTextarea.value = "";
+						  	self.toInput.disabled = false;
+							self.userSearch.disabled = false;
+						  	self.toPublic.checked = false;
+						  	setTimeout( function() {
+						  		self.toInput.focus();
+						  	},10 );
+						  	
+						  	//FIXME u-n ,,,
+						  	if( IS_Widget.MaximizeWidget )
+							  	IS_Widget.MaximizeWidget.keybind.enable = false;
+						},
+						beforeClose: function() {
+						  	toggleMode( false );
+						  	
+						  	if( modalDiv.parentNode ) //CHECKIT modalDiv is emputy at update("") in IE6
+							  	modalDiv.parentNode.removeChild( modalDiv );
+						},
+						afterClose: function(){
+						  	if( IS_Widget.MaximizeWidget )
+							  	IS_Widget.MaximizeWidget.keybind.enable = true;
+						}
+					});
+			self.shareModal.container.update(modalDiv);
 		}
 		self.shareModal.open();
 	}
@@ -456,7 +451,7 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 				onSuccess:function(){
 					self.msgTextarea.value = '';
 					self.toInput.value = '';
-					self.shareModal.close();
+					Control.Modal.close();
 				}
 			};
 			AjaxRequest.invoke(url, opt);

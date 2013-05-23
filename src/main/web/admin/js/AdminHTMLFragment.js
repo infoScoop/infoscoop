@@ -9,6 +9,7 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 	
 	// Display for modal
 	var fragmentDiv = document.createElement("div");
+	fragmentDiv.style.height = "100%";
 	
 	var explainDiv = document.createElement("div");
 	explainDiv.style.width = "100%";
@@ -214,7 +215,7 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 			addFragmentWidgetInstance();
 		});
 		popup.setDoc(iframeDoc);
-		popup.bind(iframeDoc);
+		popup.bind(iframeDoc.documentElement);
 		
 		function elementSelect(targetNode, color, e){
 			if(!PopupMenu.current){

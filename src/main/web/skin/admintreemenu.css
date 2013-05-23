@@ -23,7 +23,7 @@ div.treeMenuTitle_edit{
 	float:left;
 	margin-left: 2px;
 	font-size:0.9em;
-	color:0000FF;
+	color:#0000FF;
 }
 .treemenuItemIcon {
 	float:left;
@@ -49,10 +49,10 @@ width: 900px;
 	overflow:hidden;
 }
 .hoverDragging_move{
-	border-top: 2px dashed orangered;
+	border-top: 2px dashed #FF4500;
 	padding-top: 2px;
 }
 .hoverDragging_append{
-	border: 1px dashed orangered;
+	border: 1px dashed #FF4500;
 	padding-top: 2px;
 }

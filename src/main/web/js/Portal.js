@@ -208,7 +208,7 @@ IS_Portal.start = function() {
 		}
 		
 		if( widget.isGadget()) {
-			if( Browser.isIE ) {
+			if( Browser.isIE8 ) {
 				IS_Portal.adjustGadgetHeight( widget,true );
 			} else {
 				widget.loadContents();
@@ -880,24 +880,13 @@ Event.observe(window, Browser.isIE ? 'beforeunload' : 'unload',  windowUnload );
 
 function windowUnload() {
 	IS_Request.asynchronous = false;
-
-	//Send to Server
-	/*
-	try{
-		IS_Portal.processLogoff();
-	}catch(e){
-		alert(IS_R.getResource(IS_R.ms_logofftimeSavingfailure,[getText(e)]));
-	}
-	*/
 	
 	//Event.unloadCache();
 	// Cache is deleted on loading
-	if( !Browser.isSafari1 )
-		IS_Portal.deleteCache();
+	IS_Portal.deleteCache();
 	
 	for ( var id in IS_Portal.widgetLists){
 		for ( var i in IS_Portal.widgetLists[id] ) {
-//			IS_Portal.widgetLists[id][i] = null;
 			IS_Portal.removeWidget(i, id);
 		}
 	}
@@ -1354,8 +1343,8 @@ IS_Portal.Trash = new function() {
 				table.replaceChild(tbody, table.firstChild);
 			else
 				table.appendChild(tbody);
-			style.top = Event.pointerY(e);
-			style.left = Event.pointerX(e);
+			style.top = Event.pointerY(e) + 'px';
+			style.left = Event.pointerX(e) + 'px';
 			style.display = "block";
 			titleTd.className = "trashSelectedWidget";
 			self.selectedWidgetTd = titleTd;
@@ -1591,16 +1580,16 @@ IS_Portal.buildFontSelectDiv = function(){
 		
 		IS_Event.observe(fontSizeSelect, "change", function(){
 			var index = fontSizeSelect.selectedIndex;
-			var size;		
+			var size;
 			switch (index){
 				case 0:
-					size = parseInt(IS_Portal.defaultFontSize) - 20 + "%";
+					size = parseInt(IS_Portal.defaultFontSize) -5 + "%";
 					break;
 				case 1:
 					size = parseInt(IS_Portal.defaultFontSize) + "%";
 					break;
 				case 2:
-					size = parseInt(IS_Portal.defaultFontSize) + 20 + "%";
+					size = parseInt(IS_Portal.defaultFontSize) + 10 + "%";
 					break;
 				default:
 					size = parseInt(IS_Portal.defaultFontSize) + "%";
@@ -1650,22 +1639,26 @@ IS_Portal.buildFontSelectDiv = function(){
 		fontEl.appendChild(fontChangeDivAddA);
 		
 		IS_Event.observe(fontChangeDivAdd, "mouseup", function(){
-				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) + 20) + "%");
+				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) + 10) + "%");
 			}, false, "_fontchange");
 		IS_Event.observe(fontChangeDivSta, "mouseup", function(){
 				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize)) + "%");
 			}, false, "_fontchange");
 		IS_Event.observe(fontChangeDivDel, "mouseup", function(){
-				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) - 20) + "%");
+				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) - 5) + "%");
 			}, false, "_fontchange");
 		
 		//Setting width of command bar
 		if(fontEl.parentNode && fontEl.offsetWidth && !Browser.isSafari){
-			Element.setStyle(fontEl, {width: fontEl.offsetWidth * 3});
-			Element.setStyle(fontEl.parentNode, {width: fontEl.style.width});
+			var offset = parseInt(fontEl.offsetWidth)*3;
+			var styleWidth = parseInt(fontEl.style.width)+1;
+			if(!styleWidth) styleWidth = 1;
+			Element.setStyle(fontEl, {width: offset + 'px'});
+			Element.setStyle(fontEl.parentNode, {width: styleWidth+'px'});
 		}else{
-			Element.setStyle(fontEl, {width: fontEl.offsetWidth +1});
-			Element.setStyle(fontEl.parentNode, {width: fontEl.style.width});
+			var styleWidth = parseInt(fontEl.style.width)+"px"
+			Element.setStyle(fontEl, {width: "1px" });
+			Element.setStyle(fontEl.parentNode, {width: styleWidth+"px"});
 		}
 	}
 };
@@ -1794,12 +1787,15 @@ IS_Portal.windowOverlay = function(id, tag){
 	var overlay = document.createElement(tag);
 	overlay.className = "windowOverlay";
 	overlay.id = id;
-	if(tag == 'iframe')overlay.src = './blank.html';
+	if(tag == 'iframe'){
+		overlay.src = './blank.html';
+		overlay.setAttribute("frameborder", "0");
+	}
 	document.body.appendChild(overlay);
 	
 	this.show = function(cursorType){
-		overlay.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth);
-		overlay.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight);
+		overlay.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth) + "px";
+		overlay.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight) + "px";
 		
 		if(cursorType)
 			overlay.style.cursor = cursorType;
@@ -2176,12 +2172,10 @@ IS_Portal.initMsdBar = function(){
 // set message bar position.
 IS_Portal.setDisplayMsgBarPosition = function(){
 	if($("portal_msgbar").style.display == "none") return;
-	var scrollTop = parseInt(document.body.scrollTop);
+	var scrollTop = parseInt(document.documentElement.scrollTop);
 	var innerHeight = getWindowHeight();
-	var offset = parseInt($("portal_msgbar").offsetHeight);
-	if(!Browser.isIE) offset += 1;
-	
-	$("portal_msgbar").style.top = (scrollTop + innerHeight) - offset;
+	var offset = parseInt($("portal_msgbar").offsetHeight)+1;
+	$("portal_msgbar").style.top = (scrollTop + innerHeight) - offset + 'px';
 }
 
 // display message bar.
@@ -2214,11 +2208,10 @@ IS_Portal.unDisplayMsgBar = function(id){
 
 IS_Portal.behindIframe = {
 	init:function(){
-		//if(!Browser.isIE)return;
 		this.behindIframe = $(document.createElement('iframe'));
-		this.behindIframe.border = 0;
-		this.behindIframe.style.margin = 0;
-		this.behindIframe.style.padding = 0;
+		this.behindIframe.border = 0 + 'px';
+		this.behindIframe.style.margin = 0 + 'px';
+		this.behindIframe.style.padding = 0 + 'px';
 		this.behindIframe.id = "is_portal_behind_iframe";
 		this.behindIframe.frameBorder = 0;
 		this.behindIframe.style.position = "absolute";
@@ -2228,13 +2221,12 @@ IS_Portal.behindIframe = {
 	},
 	
 	show:function(element){
-		//if(!Browser.isIE)return;
 		Position.prepare();
 		var pos = Position.cumulativeOffset(element);
 		this.behindIframe.style.top = pos[1] + "px";
 		this.behindIframe.style.left = pos[0] + "px";
-		this.behindIframe.style.width = element.offsetWidth;
-		this.behindIframe.style.height = element.offsetHeight;
+		this.behindIframe.style.width = element.offsetWidth + 'px';
+		this.behindIframe.style.height = element.offsetHeight + 'px';
 		if(element.style.zIndex)
 			this.behindIframe.style.zIndex = element.style.zIndex -1;
 		else
@@ -2245,11 +2237,10 @@ IS_Portal.behindIframe = {
 	},
 	
 	hide:function(){
-		//if(!Browser.isIE)return;
 		this.behindIframe.style.left = 0 + "px";
 		this.behindIframe.style.top = 0 + "px";
-		this.behindIframe.style.width = 0;
-		this.behindIframe.style.height = 0;
+		this.behindIframe.style.width = 0 + 'px';
+		this.behindIframe.style.height = 0 + 'px';
 		this.behindIframe.hide();
 	}
 }
@@ -2259,16 +2250,13 @@ IS_Portal.CommandBar = {
 	commandbarWidgets : [],
 	init : function(){
 		this.elm_commandbar = $('portal-command');
-		if(Browser.isIE){
-			this.elm_commandbar.childNodes[0].cellSpacing = '0';
-		}
 		var portalUserMenu = $('portal-user-menu');
 		var portalUserMenuLabel = $('portal-user-menu-label');
 		//IE: if user name is long, limit user menu width 150
-		if(Browser.isIE && portalUserMenuLabel.offsetWidth > 150){
-			Element.setStyle(portalUserMenu, {width: '150px'});
-			Element.setStyle(portalUserMenuLabel, {width: '140px'});
-		}
+		// if(Browser.isIE && portalUserMenuLabel.offsetWidth > 150){
+		// 	Element.setStyle(portalUserMenu, {width: '150px'});
+		// 	Element.setStyle(portalUserMenuLabel, {width: '140px'});
+		// }
 		
 		var commandBarItems = $$("#portal-command .commandbar-item");
 		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', style:'display:none;'});
@@ -2307,8 +2295,7 @@ IS_Portal.CommandBar = {
 			// put into portal user menu
 			if(!itemDiv.getAttribute("outside") && !itemDiv.getAttribute('disabledCommand')){
 				// hide empty td
-				if(!Browser.isIE)
-					$(itemDiv.parentNode).hide();
+				$(itemDiv.parentNode).hide();
 				
 				itemDiv.className = 'portal-user-menu-item';
 				portalUserMenuBody.appendChild(itemDiv);
@@ -2403,26 +2390,22 @@ IS_Portal.CommandBar = {
 			// loginID clicked
 			IS_Event.observe(portalUserMenu, "click", function(e){
 				$("portal-user-menu-body").show();
-				// set width for IE only (do not set width for FF and Webkit to prevent unnecessary gap)
-				if(Browser.isIE){
-					Element.setStyle($("portal-user-menu-body"), {width: $("portal-user-menu-body").offsetWidth});
-				}
 				var targetPosition = Position.page($("portal-user-menu"));
 				Element.setStyle($("portal-user-menu-body"), {
-					left: targetPosition[0] - $("portal-user-menu-body").offsetWidth + $("portal-user-menu").offsetWidth
-					, top: targetPosition[1] + $("portal-user-menu").offsetHeight
+					left: targetPosition[0] - $("portal-user-menu-body").offsetWidth + $("portal-user-menu").offsetWidth + 'px'
+					, top: targetPosition[1] + $("portal-user-menu").offsetHeight +'px'
 				});
 				if(!$('userMenuCloser')){
-					var winX = Math.max(document.body.scrollWidth, document.body.clientWidth);
-					var winY = Math.max(document.body.scrollHeight, document.body.clientHeight);
+					var winX = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth);
+					var winY = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight);
 					var closer = $.DIV({
 						id:'userMenuCloser'
 						, className:'widgetMenuCloser'
 					});
 					document.body.appendChild( closer );
 					Element.setStyle(closer, {
-						width: winX,
-						height: winY,
+						width: winX + 'px',
+						height: winY + 'px',
 						display: ''
 					});
 					
@@ -2548,8 +2531,8 @@ IS_Portal.startIndicator = function(target){
 		divOverlay.style.display = "block";
 	}
 	if(panel.offsetWidth > 0){
-		divOverlay.style.top = findPosY(panel) + 200;
-		divOverlay.style.left = findPosX(panel) + panel.offsetWidth/2 - divOverlay.offsetWidth/2;
+		divOverlay.style.top = findPosY(panel) + 200 + 'px';
+		divOverlay.style.left = findPosX(panel) + panel.offsetWidth/2 - divOverlay.offsetWidth/2  + 'px';
 	}
 	IS_Portal.getPortalOverlay().show("default");
 }

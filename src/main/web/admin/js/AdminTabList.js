@@ -4,18 +4,18 @@
        	var self = this;
 		var content = $jq(this);
 		var deleteIdList = [];
-		
-		var controlModal = new Control.Modal(
-			false,
-			{
-				contents: ISA_R.ams_applyingChanges,
-				opacity: 0.2,
-				containerClassName:"commitDialog",
-				overlayCloseOnClick:false
-			}
-		);
-		
+		var controlModal;			// Apply Change dialog
+		var tabAdminModal;			// tab admin
+		var resetUserCustomizeModal;// resetUserCustomization
+
 		this.build = function(){
+			if(!controlModal){
+				controlModal = new Control.Modal('',{
+						className:"commitDialog",
+						closeOnClick:false
+					});
+			}
+
 			var propertiesTable = $jq("<table>");
 			propertiesTable.attr("border", 1)
 				.attr("cellSpacing", 0)
@@ -31,33 +31,33 @@
 			var propertiesTd;
 			propertiesTd = $jq("<td>")
 				.addClass("headerProperties")
-				.css({"white-space":"nowrap", "width":"10%", "padding":"5px"});
+				.css({"width":"10%"});
 			propertiesTd.text(ISA_R.alb_sequence);
 			propertiesTr.append(propertiesTd);
 
 			propertiesTd = $jq("<td>")
 				.addClass("headerProperties")
-				.css({"white-space":"nowrap", "width":"400px", "padding":"5px"});
+				.css({"width":"400px"});
 			propertiesTd.text(ISA_R.alb_tabDesc);
 			propertiesTr.append(propertiesTd);
 
 			propertiesTd = $jq("<td>")
 				.addClass("headerProperties")
-				.css({"white-space":"nowrap", "width":"10%", "padding":"5px"});
+				.css({"width":"10%"});
 			propertiesTd.text(ISA_R.alb_edit);
 			propertiesTr.append(propertiesTd);
 
 			propertiesTd = $jq("<td>")
 				.addClass("headerProperties")
 				.addClass("hiddenTabAdmin")
-				.css({"white-space":"nowrap", "width":"10%", "padding":"5px"});
+				.css({"width":"10%"});
 			propertiesTd.text(ISA_R.alb_admin);
 			propertiesTr.append(propertiesTd);
 
 			propertiesTd = $jq("<td>")
 				.addClass("headerProperties")
 				.addClass("hiddenTabAdmin")
-				.css({"white-space":"nowrap", "width":"10%", "padding":"5px"});
+				.css({"width":"10%"});
 			propertiesTd.text(ISA_R.alb_delete);
 			propertiesTr.append(propertiesTd);
 			
@@ -108,16 +108,15 @@
 			
 			adminButton.click({tabId: tabObj.id, adminUidList: tabObj.adminUidList}, function(e){
 				var formContent = document.createElement("div");
-				
-				var modal = new Control.Modal( false,{
-					contents: formContent,
-					opacity: 0.2,
-					overlayCloseOnClick: true,
-					width: 400
-				});
-				
-				modal.open();
+				if(!tabAdminModal){
+					tabAdminModal = new Control.Modal( '',{
+							closeOnClick: 'overlay',
+							width: 400
+						});
+				}
 				$jq(formContent).ISA_TabAdminForm(tabObj);
+				tabAdminModal.container.update(formContent);
+				tabAdminModal.open();
 			});
 			
 			td = $jq("<td>").css(commoncss).append(adminButton).addClass("hiddenTabAdmin");
@@ -152,12 +151,6 @@
 			var content = document.createElement("div");
 			content.className = "resetConfigurations";
 
-			var modal = new Control.Modal( false,{
-				contents: content,
-				opacity: 0.2,
-				overlayCloseOnClick: true
-			});
-
 			var description = document.createElement("div");
 			description.className = "resetConfigurations-description"
 			description.innerHTML = ISA_R.alb_clearConfigurationChooseUser;
@@ -182,7 +175,7 @@
 			commands.appendChild( okButton );
 			IS_Event.observe( okButton,"click",function() {
 				var uid = formInput.value;
-				modal.close();
+				Control.Modal.close();
 				if( uid == "" || /^[ 　]+$/.test( uid ) )
 					return;
 
@@ -193,11 +186,19 @@
 			cancelButton.type = "button";
 			cancelButton.value = "Cancel";
 			commands.appendChild( cancelButton );
-			IS_Event.observe( cancelButton,"click",function() { modal.close() },false,"_adminPanel");
+			IS_Event.observe( cancelButton,"click",function() { Control.Modal.close() },false,"_adminPanel");
 
-			modal.open();
+			if(!resetUserCustomizeModal){
+				resetUserCustomizeModal = new Control.Modal( '',{
+					closeOnClick: 'overlay'
+				});
+			}
+			resetUserCustomizeModal.container.update(content);
+			resetUserCustomizeModal.open();
 		}
 		this._resetUserCustomization = function( uid ) {
+			controlModal.container.update(ISA_R.ams_applyingChanges);
+			controlModal.open();
 			var url = adminHostPrefix + "/services/tab/clearConfigurations";
 			var opt = {
 				method: 'post' ,
@@ -205,7 +206,7 @@
 				postBody: Object.toJSON([ uid ]),
 				asynchronous:true,
 				onSuccess: function(response){
-					controlModal.update(ISA_R.ams_changeUpdated);
+					controlModal.container.update(ISA_R.ams_changeUpdated);
 				},
 				onFailure: function(t) {
 					var errMsg = IS_R.ms_clearConfigurationFailed+ "\n" +
@@ -221,7 +222,7 @@
 				},
 				onComplete: function(){
 					setTimeout(function(){
-						controlModal.close();
+						Control.Modal.close();
 					},500);
 				}
 			};
@@ -276,21 +277,17 @@
 				deleteIdList : deleteIdList,
 				adminUidJson : adminUidJson
 			};
-			/*
-			$jq("#updateDataJson").val(Object.toJSON(jsonObject));
-			$jq("#commitForm").submit();
-			*/
 
 			// TODO: change ajax request process
+			controlModal.container.update(ISA_R.ams_applyingChanges);
 			controlModal.open();
 			var opt = {
 				method: 'post' ,
 				contentType: "application/json",
-//				contentType: "application/x-www-form-urlencoded",
 				postBody: Object.toJSON(jsonObject),
 				asynchronous:true,
 				onSuccess: function(response){
-					controlModal.update(ISA_R.ams_changeUpdated);
+					controlModal.container.update(ISA_R.ams_changeUpdated);
 				}.bind(this),
 				onFailure: function(t) {
 					var errormsg = t.responseText && typeof t.responseText == "string" ? t.responseText.substr(0, 100) : "";
@@ -299,7 +296,7 @@
 				},
 				onComplete: function(){
 					setTimeout(function(){
-						controlModal.close();
+						Control.Modal.close();
 						window.location.href = "index";
 					},500);
 				}
@@ -376,14 +373,13 @@
 			propertiesTbody.append(propertiesTr);
 
 			var uidTd = $jq("<td>")
-				.addClass("headerProperties")
-				.css({"white-space":"nowrap", "padding":"5px"});
+				.addClass("headerProperties");
 			uidTd.text(IS_R.lb_userID);
 			propertiesTr.append(uidTd);
 			
 			var deleteTd = $jq("<td>")
 				.addClass("headerProperties")
-				.css({"width":"20%", "padding":"5px"});
+				.css({"width":"20%"});
 			deleteTd.text(ISA_R.alb_delete);
 			propertiesTr.append(deleteTd);
 			

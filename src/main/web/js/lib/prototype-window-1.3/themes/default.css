@@ -138,11 +138,11 @@
 }
 
 .dialog table.table_window  { 
-  border-collapse: collapse; 
-  border-spacing: 0; 
+  border-collapse: separate;
+  border-spacing: 0;
   width: 100%;
-	margin: 0px;
-	padding:0px;
+  margin: 0px;
+  padding: 0px;
 }
 
 .dialog table.table_window td , .dialog table.table_window th { 

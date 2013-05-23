@@ -20,7 +20,7 @@
 }
 
 .infoScoop #portal-command .command,
-.infoScoop #modal_container.preference .preferenceClose.command,
+.infoScoop div[id^="control_window_"].preference .preferenceClose.command,
 .infoScoop #portal-go-home{
 	font-size: 13px;
 	margin-right: 3px;
@@ -92,7 +92,7 @@
 }
 .infoScoop .trashContainer td,
 .infoScoop .trashContainer th{
-	font-size:80%;
+	font-size:100%;
 	white-space:nowrap;
 }
 .infoScoop .trashContainer th{
@@ -111,7 +111,7 @@
 }
 .infoScoop #trashContext td{
 	cursor:pointer;
-	font-size:80%;
+	font-size:90%;
 }
 .infoScoop .trashContainer .trashSelectedWidget{
 	background-color:#008;
@@ -131,69 +131,69 @@
 	cursor:pointer;
 }
 
-.infoScoop #modal_container.preference {
+.infoScoop div[id^="control_window_"].preference {
 	height:auto;
 	overflow:visible;
 }
 
-.infoScoop #modal_container.preference .preferenceClose {
+.infoScoop div[id^="control_window_"].preference .preferenceClose {
 	position: absolute;
 	right: 0px;
 	top: 0px;
 }
 
-.infoScoop #modal_container.preference .preferenceTable {
+.infoScoop div[id^="control_window_"].preference .preferenceTable {
 /*	width:400px;*/
 	min-height:100px;
 	padding:10px;
 	height:auto;
 }
-.infoScoop #modal_container.preference .preferenceTable {
+.infoScoop div[id^="control_window_"].preference .preferenceTable {
 	height: 100px;
 }
 
-.infoScoop #modal_container.preference .preferenceTable td{
+.infoScoop div[id^="control_window_"].preference .preferenceTable td{
 	font-size:13px;
 	vertical-align:top;
 }
 
-.infoScoop #modal_container.preference .preferenceHeader {
+.infoScoop div[id^="control_window_"].preference .preferenceHeader {
 	position: relative;
 }
-.infoScoop #modal_container.preference .preferencePage {
+.infoScoop div[id^="control_window_"].preference .preferencePage {
 }
 
-.infoScoop #modal_container.preference .preferencePage fieldset {
+.infoScoop div[id^="control_window_"].preference .preferencePage fieldset {
 	padding: 5px;
 }
 
-.infoScoop #modal_container.preference .preferencePage .preferenceMenu{
+.infoScoop div[id^="control_window_"].preference .preferencePage .preferenceMenu{
 	height:100%;
 	vertical-align:top;
 }
 
-.infoScoop #modal_container.preference .preferencePage .preferenceMenu div{
+.infoScoop div[id^="control_window_"].preference .preferencePage .preferenceMenu div{
 	cursor:pointer;
 	height:30px;
 	font-size: 13px;
 	color:#7777cc;
 }
 
-.infoScoop #modal_container.preference .preferencePage .preferenceMenu span{
+.infoScoop div[id^="control_window_"].preference .preferencePage .preferenceMenu span{
 	position:relative;
 	top:8px;
 }
 
-.infoScoop #modal_container.preference .preferencePage fieldSet{
+.infoScoop div[id^="control_window_"].preference .preferencePage fieldSet{
 	margin-bottom:8px;
 }
 
-.infoScoop #modal_container.preference .preferencePage .pageTitle{
+.infoScoop div[id^="control_window_"].preference .preferencePage .pageTitle{
 	border-bottom:1px solid #DDDDDD;
 	margin-bottom:0.3em;
 }
 
-.infoScoop #modal_container.preference .preferencePage .option .rightTd{
+.infoScoop div[id^="control_window_"].preference .preferencePage .option .rightTd{
 	text-align:right;
 }
 
@@ -215,7 +215,7 @@
 
 .infoScoop .authCredentialInfoList .authCredentialInfoTitle{
 	padding:2px;
-	font-size :90%;
+	font-size :110%;
 	color:gray;
 }
 
@@ -228,7 +228,7 @@
 .infoScoop .authCredentialInfoList .authCredentialDelete span{
 	position:relative;
 	top:-2px;
-	font-size :80%;
+	font-size :100%;
 	color:#000;
 	font-weight:normal;
 }
@@ -238,7 +238,7 @@
 }
 .infoScoop .authCredentialInfoList .authCredentialListLightTd{
 	background-color: #eeeeee;
-	font-size:80%;
+	font-size:110%;
 	text-align:right;
 	vertical-align:top;
 }
@@ -329,10 +329,10 @@ a.portal-user-menu-link:visited:hover{
 .portal-user-menu-item-label{
 	height: 20px;
 	font-size: 12px;
-	padding: 5 5 0 22;
+	padding: 5px 5px 0 22px;
 	float: left;
 	white-space: nowrap;
-	line-height: 1.5;
+	line-height: 1.5em;
 }
 
 .user-link{

@@ -76,9 +76,9 @@ IS_Widget.RssReader.RssItemRender.newInstance = function(){
 }
 IS_Widget.RssReader.RssItemRender.getInstance = function(){
 	var instance;
-	if( this.availableKeys.length > 0 ) {// console.info("recycle");
+	if( this.availableKeys.length > 0 ) {
 		instance = this.instances[this.availableKeys.shift()];
-	} else {// console.info("new");
+	} else {
 		instance = this.newInstance();
 		var key = this.no++;
 		instance.key = key;
@@ -134,7 +134,6 @@ IS_Widget.RssReader.RssItemRender.prototype.render = function ( context,rssItem,
 		this.itemDiv =document.createElement("div");
 		this.itemDiv.style.width = "100%";
 		this.itemDiv.style.clear = "both";
-		//this.tr = document.createElement("tr");
 		this.tr = this.itemDiv;
 		this.tr.__key__ = this.key;
 	}
@@ -212,28 +211,16 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssItemDiv = function( widget,o
 		for(var i = 0; i<customIcons.length; i++){
 			this.customIconsDiv.appendChild(customIcons[i]);
 		}
-	}
-	
-	if( Browser.isIE ) {
-		//Recalculate size forcibly because it is not recalculated
-		if( this.rssItemDiv.style.width != "auto") {
-			this.rssItemDiv.style.width = "auto";
-		} else {
-			this.rssItemDiv.style.width = "100%";
-		}
-	}
-	
+	}	
 
 	this.rssTitle = (rssItem.title.length == 0)? IS_R.lb_notitle : rssItem.title;
 	this.rssTitle = this.rssTitle.replace(/&nbsp;/g," ");	// For trouble with "&nbsp;" where line-break does not occur
 	
-	//this.rsslink.title = this.rssTitle;
 	if(rssItem.link && rssItem.link.length > 0 && !noLink ) {
 		this.aTag.style.display = "";
 		this.textTitle.style.display = "none";
 		
 		this.aTag.href = rssItem.link;
-//		aTag.innerHTML = rssTitle;
 		this.aTag.appendChild(document.createTextNode(this.rssTitle));
 		this.aTag.title = this.rssTitle;
 		if( itemDisplay == "newwindow" )
@@ -309,18 +296,6 @@ IS_Widget.RssReader.RssItemRender.prototype.buildTitle = function( widget,opt ) 
 		
 		this.rssDetail1 = this.createRssDetailLink();
 		
-		/*var row1 = document.createElement("div");
-		this.itemDiv.appendChild( row1 );
-		
-		this.latestMark1.style.cssFloat = this.latestMark1.style.styleFloat = "right";
-		this.latestMarkTd = this.latestMark1;
-		this.rssDetail1.style.cssFloat = this.rssDetail1.style.styleFloat = "right";
-		this.moreTd1 = this.rssDetail1;
-		
-		row1.appendChild( this.rssDetail1 );
-		row1.appendChild( this.latestMark1 );
-		row1.appendChild( this.rssItemDiv );*/
-		
 		var rssItemTable = IS_Widget.RssReader.RssItemRender.createTable( 1,2 );
 		rssItemTable.cellPadding = 0;
 		rssItemTable.cellSpacing = 0;
@@ -332,11 +307,11 @@ IS_Widget.RssReader.RssItemRender.prototype.buildTitle = function( widget,opt ) 
 		titleTd.appendChild(this.rssItemDiv);
 		
 		this.latestMarkTd = rssItemTable.firstChild.firstChild.childNodes[1];
-		this.latestMarkTd.style.width = 15;
+		this.latestMarkTd.style.width = '15px';
 		this.latestMarkTd.appendChild(this.latestMark1);
 		
 		var titleTable = IS_Widget.RssReader.RssItemRender.createTable( 1,2 );
-		titleTable.cellPadding = 1;
+		titleTable.cellPadding = '1';
 		titleTable.cellSpacing = 0;
 		titleTable.style.height = "auto";
 		titleTable.style.tableLayout = "fixed";
@@ -379,7 +354,6 @@ IS_Widget.RssReader.RssItemRender.prototype.buildTitle = function( widget,opt ) 
 	this.rssDetail1.id = widget.id + '_item_'+ itemNumber + '_more1';
 	
 	if(rssItem.description && rssItem.description.length > 0) {
-//		rssDetailNobr.appendChild(document.createTextNode("description>>"));
 		this.rssDetail1.style.display = "";
 	} else {
 		this.rssDetail1.style.display = "none";
@@ -439,8 +413,6 @@ IS_Widget.RssReader.RssItemRender.prototype.buildPubDate = function( widget,opt 
 	this.rssDetail.id = widget.id + '_item_'+ itemNumber + '_more';
 	this.rssDetail.firstChild.innerHTML = IS_R.lb_descLink;
 	if(rssItem.description && rssItem.description.length > 0) {
-//		rssDetailNobr.appendChild(document.createTextNode("description>>"));
-		
 		this.rssDetail.style.display = "";
 	} else {
 		this.rssDetail.style.display = "none";
@@ -463,7 +435,6 @@ IS_Widget.RssReader.RssItemRender.prototype.buildPubDate = function( widget,opt 
 		
 		this.itemTr2.appendChild( this.rssPubDate );
 	}
-	//this.moreTd.id = widget.id + '_item_'+ itemNumber + '_more';
 	
 	if( pubDate ) {
 		this.itemTr2.style.display = this.rssDetail.style.display = "";
@@ -603,15 +574,29 @@ IS_Widget.RssReader.RssItemRender.prototype.buildDesc = function( widget,rssDesc
 	}
 }
 IS_Widget.RssReader.RssItemRender.createImageController = function() {
-	var imgCtrl = document.createElement("a");
+	var showModal = function(){
+		var imgTag = document.createElement("img");
+		imgTag.src = IS_Portal.imageController.modal.src;
+		IS_Event.observe( imgTag,"click",function() { Control.Modal.close()} );
+		IS_Portal.imageController.modal.container.update(imgTag);
+		IS_Portal.imageController.modal.open();
+	}
+	var imgCtrl = document.createElement("div");
 	imgCtrl.id = "imageController";
 	imgCtrl.className = "imageController";
 	imgCtrl.style.display = "none";
-	IS_Portal.imageController.modal = new Control.Modal(imgCtrl, {
-		image:true,
-		afterOpen:function(){this.scrollTop = document.body.scrollTop; document.body.scrollTop = 0;},
-		afterClose:function(){document.body.scrollTop = this.scrollTop;}
+	IS_Portal.imageController.modal = new Control.Modal('', {
+		className: 'rssDescImage',
+		afterOpen:function(){
+			this.scrollTop = document.documentElement.scrollTop;
+			document.documentElement.scrollTop = 0;
+		},
+		afterClose:function(){
+			document.documentElement.scrollTop = this.scrollTop;
+		}
 	});
+
+	Event.observe(imgCtrl, "click", showModal);
 	document.body.appendChild(imgCtrl);
 	IS_Portal.imageController.element = imgCtrl;
 	var showImgCtrl = function(e) {
@@ -651,9 +636,7 @@ IS_Widget.RssReader.RssItemRender.prototype.changeImages = function( widget,desc
 			return _offsetY;
 		}
 		if( popupDetail ){
-//			return function(){
 			return function(positionY){
-//				return rssFloat ? rssFloat.scrollTop : 0;
 				return getScrollY(this_.rssFloat, positionY);
 			}
 		} else if(widget.getUserPref("scrollMode") == "scroll") {
@@ -674,14 +657,14 @@ IS_Widget.RssReader.RssItemRender.prototype.changeImages = function( widget,desc
 			if(imgCtrl.isShowing) return false;
 			imgCtrl.isShowing = true;
 			IS_Portal.imageController.modal.src = this.src;
-			imgCtrl.style.left = findPosX(this) + this.offsetWidth - 20;
+			imgCtrl.style.left = findPosX(this) + this.offsetWidth - 20 + 'px';
 			var positionY = findPosY(this) + this.offsetHeight - 20;
 			var offsetY = getOffsetY(positionY);
 			if(offsetY < 0) {
 				imgCtrl.isShowing = false;
 				return false;
 			}
-			imgCtrl.style.top = positionY - offsetY;
+			imgCtrl.style.top = positionY - offsetY + 'px';
 			imgCtrl.style.display = "block";
 		};
 		var hideImgCtrl = function(e) {
@@ -757,7 +740,6 @@ IS_Widget.RssReader.RssItemRender.prototype.buildDescContent = function( widget,
 }
 IS_Widget.RssReader.RssItemRender.prototype.displayInlineDesc = function( widget,rssItem ) {
 	var descObj = {
-//		headerDiv : widget.parent ? widget.parent.elm_widgetHeader : widget.elm_widgetHeader,
 		widget : widget,
 		tr : this.itemTr3,
 		desc : this.rssDesc,
@@ -786,8 +768,7 @@ IS_Widget.RssReader.RssItemRender.prototype.displayInlineDesc = function( widget
 		if( Browser.isSafari1 )
 			offset += 1;
 		
-		var browserOffset = Browser.isIE ? 2 : 1;
-		//rssDesc.style.width = (headerDiv.offsetWidth - offset - browserOffset) + "px";
+		var browserOffset = 1;
 		var width = (headerDiv.offsetWidth - offset - browserOffset);
 		this.rssDesc.style.width = width + "px";
 	}
@@ -839,7 +820,6 @@ IS_Widget.RssReader.RssItemRender.prototype.displayInlineDesc = function( widget
 }
 IS_Widget.RssReader.RssItemRender.prototype.hideInlineDesc = function( widget,rssItem ) {
 	var descObj = {
-//		headerDiv : widget.parent ? widget.parent.elm_widgetHeader : widget.elm_widgetHeader,
 		widget : widget,
 		tr : this.itemTr3,
 		desc : this.rssDesc,
@@ -981,7 +961,7 @@ IS_Widget.RssReader.RssItemRender.checkHideRssDesc = function(e){
 	var scrollY = (document.documentElement.scrollTop || document.body.scrollTop);
 	var scrollX = (document.documentElement.scrollLeft || document.body.scrollLeft);
 	if(Browser.isIE
-			&& ( (document.body.clientWidth + scrollX) < mouseX || (document.body.clientHeight + scrollY) < mouseY )){
+			&& ( (document.documentElement.clientWidth + scrollX) < mouseX || (document.documentElement.clientHeight + scrollY) < mouseY )){
 		// For trouble in the operation of (IE) window scroll whose description dissapears
 		isInWindow = false;
 	}
@@ -1038,7 +1018,6 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 	
 	var widgetId = descId.substring(0, descId.lastIndexOf('_item_'));
 	var widgetObj = null;
-//	var widgetData = IS_Portal.widgetLists[ IS_Portal.currentTabId ][ widgetId ];
 	var widgetData = IS_Portal.getWidget(widgetId);
 	if(widgetData ){
 		if( widgetData.widgetType != "MultiRssReader" ) {
@@ -1074,8 +1053,8 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 	
 	var scrollY = (document.documentElement.scrollTop || document.body.scrollTop);
 	var scrollX = (document.documentElement.scrollLeft || document.body.scrollLeft);
-	var windowInnerWidth = (Browser.isIE)? document.body.clientWidth : window.innerWidth;
-	var windowInnerHeight = (Browser.isIE)? document.body.clientHeight : window.innerHeight;
+	var windowInnerWidth = (Browser.isIE)? document.documentElement.clientWidth : window.innerWidth;
+	var windowInnerHeight = (Browser.isIE)? document.documentElement.clientHeight : window.innerHeight;
 	var windowInnerRight = (Browser.isIE)? (windowInnerWidth + scrollX) : (windowInnerWidth + scrollX - 25);
 	var windowInnerBottom = (Browser.isIE)? (windowInnerHeight + scrollY) : (windowInnerHeight + scrollY - 15);
 	
@@ -1132,7 +1111,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 		// Pop-up on the left
 		//if( itemsLeft < maxDescWidth ) descWidth = itemsLeft;
 		descWidth = itemsLeft;
-		descLeft = itemsLeft - descWidth + ((Browser.isIE)? 13 : 4);
+		descLeft = itemsLeft - descWidth + 4;
 		markLeft = itemsLeft - 10;
 		
 		descWidth -= 20;
@@ -1159,8 +1138,8 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 		rssFloatMark.style.backgroundImage = 'url(' + imageURL + 'resultset_previous.gif)';
 	}
 	// Modify the lateral location of description
-	rssFloat.style.left = descLeft;
-	rssFloat.style.width = descWidth;
+	rssFloat.style.left = descLeft + 'px';
+	rssFloat.style.width = descWidth + 'px';
 	
 	// Get the height after modifying
 	var setHeight = false;
@@ -1183,7 +1162,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 		// Consider width of scroll bar when height exceeds maximum
 		var offset = (rssFloat.offsetHeight >= 300) ? 30 : 10;
 		if((rssFloat.offsetWidth - offset) > 0){
-			rssFloat.firstChild.style.width = (rssFloat.offsetWidth - offset);
+			rssFloat.firstChild.style.width = (rssFloat.offsetWidth - offset) + 'px';
 		}
 	}
 	
@@ -1193,19 +1172,19 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 	}
 	
 	// Modify the longitudinal location of description
-	rssFloat.style.top = descTop;
+	rssFloat.style.top = descTop + 'px';
 	if(setHeight){
-		rssFloat.style.height = descHeight;
+		rssFloat.style.height = descHeight + 'px';
 	}
 	
 	//Modify the location of Iframe to hide pull-down and Flash
 	IS_Portal.behindIframe.show(rssFloat);
 	
 	// Modify the location of mark
-	rssFloatMark.style.top = markTop;
-	rssFloatMark.style.left = markLeft;
+	rssFloatMark.style.top = markTop + 'px';
+	rssFloatMark.style.left = markLeft + 'px';
 	
-	rssFloat.scrollTop = rssFloatScrollTop;
+	rssFloat.scrollTop = rssFloatScrollTop + 'px';
 	
 	// Modify the width of image
 	if(rssFloat.style.display != "none")
@@ -1228,16 +1207,16 @@ IS_Widget.adjustDescSingleImgWidth = function(img, headerWidth) {
 		img.originalHeight = img.offsetHeight;
 	var isAdjust = false;
 	if(img.originalWidth > headerWidth) {
-		img.style.width = headerWidth;
+		img.style.width = headerWidth + 'px';
 		isAdjust = true;
 	} else if(img.originalWidth > img.offsetWidth) {
-		img.style.width = img.originalWidth;
+		img.style.width = img.originalWidth + 'px';
 		isAdjust = true;
 	}
 	
 	if(isAdjust) {
 		var descImgHeght = img.offsetWidth * (img.originalHeight / img.originalWidth);
-		img.style.height = descImgHeght;
+		img.style.height = descImgHeght + 'px';
 	}
 	
 	img.style.visibility = "";
@@ -1266,34 +1245,11 @@ IS_Widget.adjustDescImgWidth = function(rssDesc, headerWidth, widget) {
 		}
 	}
 }
-//Event.observe(window, 'resize', IS_Widget.processAdjustRssDesc, false);
-/*
-IS_Widget.adjustDescWidth = function() {
-	var offset = Browser.isIE ? 5 : 0;
-	for(var j = 0; j < IS_Widget.RssReaderDescriptionList.length; j++){
-		var obj = IS_Widget.RssReaderDescriptionList[j];
-		var headerWidth = obj.headerDiv.offsetWidth;
-		if(obj.headerDiv && obj.headerDiv.offsetWidth > 0){
-			obj.desc.style.width = (headerWidth - 10 - offset) + "px";
-		}
-		IS_Widget.adjustDescImgWidth(obj.desc, headerWidth, obj.widget);
-	}
-	for(var j = 0; j < IS_Widget.RssReaderDescriptionWithScrollList.length; j++){
-		var obj = IS_Widget.RssReaderDescriptionWithScrollList[j];
-		var headerWidth = obj.headerDiv.offsetWidth;
-		if(obj.headerDiv && obj.headerDiv.offsetWidth > 0){
-			obj.desc.style.width = (headerWidth - 30 - offset) + "px";
-		}
-		IS_Widget.adjustDescImgWidth(obj.desc, headerWidth, obj.widget);
-	}
-	IS_Widget.processAdjustRssDesc();
-};
-*/
 
 IS_Widget.adjustDescWidth = function() {
 	var objList = new Array();
 	
-	var offset = Browser.isIE ? 6 : 2;
+	var offset = 2;
 	for(var j = 0; j < IS_Widget.RssReaderDescriptionList.length; j++){
 		adjustDescObjWidth( IS_Widget.RssReaderDescriptionList[j],0 +offset );
 	}
@@ -1302,12 +1258,6 @@ IS_Widget.adjustDescWidth = function() {
 	}
 	
 	function adjustDescObjWidth( obj,offset ) {
-		if( Browser.isSafari1 ) {
-			var widget = obj.widget;
-			if( widget.tabId != IS_Portal.currentTabId ) 
-				return;
-		}
-		
 		obj.headerDiv = obj.widget.parent? obj.widget.parent.elm_widgetHeader : obj.widget.elm_widgetHeader;
 		
 		var headerWidth = obj.headerDiv.offsetWidth;
@@ -1332,9 +1282,6 @@ IS_Widget.adjustDescWidth = function() {
 //			IS_Widget.adjustDescImgWidth(obj.desc, objList[i].headerWidth, obj.widget);
 			IS_Widget.adjustDescImgWidth(objList[i].desc, objList[i].headerWidth, objList[i].widget);
 		}
-	}
-	if(Browser.isIE && objList.length > 0){
-		setTimeout(resizeDescs, 1);
 	}
 };
 

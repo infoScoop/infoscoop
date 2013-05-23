@@ -93,7 +93,7 @@ IS_Widget.RssReader.dropGroup.add = function(){};
 // override
 IS_Widget.Message.checkNewMsg = function(){};
 
-IS_Customization = {"commandbar":"<table cellpadding=\"0\" cellspacing=\"3\" width=\"100%\">\r\n\t<tr>\r\n\t\t<td width=\"100%\"><div id=\"p_1_w_4\"><\/div><\/td>\r\n\t\t<td><div id=\"p_1_w_6\"><\/div><\/td>\r\n\t\t<td><div id=\"portal-go-home\"><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-change-fontsize\" disabledCommand=\"true\"><!--&lt;div id=\"portal-change-fontsize\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t\t<td><div id=\"portal-trash\"><\/div><\/td>\r\n\t\t<td><div id=\"portal-preference\"><div class=\"allPreference\"><\/div><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-credential-list\" disabledCommand=\"true\"><!--&lt;div id=\"portal-credential-list\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t\t<td><div id=\"portal-admin-link\"><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-logout\" disabledCommand=\"true\"><!--&lt;div id=\"portal-logout\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t<\/tr>\r\n<\/table>\r\n","contentFooter":[{"type":"mail"},{"type":"message"}],"css":"/* Custom CSS code is described here.  */","header":"<table width=\"100%\" height=\"53px\" cellspacing=\"0\" cellpadding=\"0\" style=\"background:url(skin/imgs/head_blue.png)\">\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td><a href=\"javascript:void(0)\" onclick=\"javascript:IS_Portal.goHome();return false;\"><img src=\"skin/imgs/infoscoop.gif\" alt=\"infoScoop\" border=\"0\" style=\"margin:0 0 0 20px;\" height=\"45\"/><\/a>\r\n\t\t\t<\/td>\r\n\t\t\t<td>\r\n\t\t\t\t<form name=\"searchForm\" onsubmit=\"javascript:IS_Portal.SearchEngines.buildSearchTabs(document.getElementById('searchTextForm').value);return false;\">\r\n\t\t\t\t<div style=\"float:right;margin-right:5px\">\r\n\t\t\t\t\t<table>\r\n\t\t\t\t\t\t<tbody>\r\n\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t<td colspan=\"2\" align=\"right\" style=\"font-size:80%;\">\r\n\t\t\t\t\t\t\t\t\tWelcome,admin-\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<\/td>\r\n\t\t\t\t\t\t\t<\/tr>\r\n\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t\t\t<input id=\"searchTextForm\" type=\"text\" style=\"width:200px;height:23px;float:left;\"/>\r\n\t\t\t\t\t\t\t\t\t<input type=\"submit\" value=\"Search\" style=\"padding:0 0.4em;\"/>\r\n\t\t\t\t\t\t\t\t\t<span id=\"editsearchoption\">Search options<\/span>\r\n\t\t\t\t\t\t\t\t<\/td>\r\n\t\t\t\t\t\t\t<\/tr>\r\n\t\t\t\t\t\t<\/tbody>\r\n\t\t\t\t\t<\/table>\r\n\t\t\t\t<\/div>\r\n\t\t\t\t<\/form>\r\n\t\t\t<\/td>\r\n\t\t<\/tr>\r\n\t<\/tbody>\r\n<\/table>","title":"infoScoop"};
+IS_Customization = {"commandbar":"<table cellpadding=\"0\" cellspacing=\"3px\" width=\"100%\">\r\n\t<tr>\r\n\t\t<td width=\"100%\"><div id=\"p_1_w_4\"><\/div><\/td>\r\n\t\t<td><div id=\"p_1_w_6\"><\/div><\/td>\r\n\t\t<td><div id=\"portal-go-home\"><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-change-fontsize\" disabledCommand=\"true\"><!--&lt;div id=\"portal-change-fontsize\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t\t<td><div id=\"portal-trash\"><\/div><\/td>\r\n\t\t<td><div id=\"portal-preference\"><div class=\"allPreference\"><\/div><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-credential-list\" disabledCommand=\"true\"><!--&lt;div id=\"portal-credential-list\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t\t<td><div id=\"portal-admin-link\"><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-logout\" disabledCommand=\"true\"><!--&lt;div id=\"portal-logout\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t<\/tr>\r\n<\/table>\r\n","contentFooter":[{"type":"mail"},{"type":"message"}],"css":"/* Custom CSS code is described here.  */","header":"<table width=\"100%\" height=\"53px\" cellspacing=\"0\" cellpadding=\"0\" style=\"background:url(skin/imgs/head_blue.png)\">\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td><a href=\"javascript:void(0)\" onclick=\"javascript:IS_Portal.goHome();return false;\"><img src=\"skin/imgs/infoscoop.gif\" alt=\"infoScoop\" border=\"0\" style=\"margin:0 0 0 20px;\" height=\"45\"/><\/a>\r\n\t\t\t<\/td>\r\n\t\t\t<td>\r\n\t\t\t\t<form name=\"searchForm\" onsubmit=\"javascript:IS_Portal.SearchEngines.buildSearchTabs(document.getElementById('searchTextForm').value);return false;\">\r\n\t\t\t\t<div style=\"float:right;margin-right:5px\">\r\n\t\t\t\t\t<table>\r\n\t\t\t\t\t\t<tbody>\r\n\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t<td colspan=\"2\" align=\"right\" style=\"font-size:80%;\">\r\n\t\t\t\t\t\t\t\t\tWelcome,admin-\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<\/td>\r\n\t\t\t\t\t\t\t<\/tr>\r\n\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t\t\t<input id=\"searchTextForm\" type=\"text\" style=\"width:200px;height:23px;float:left;\"/>\r\n\t\t\t\t\t\t\t\t\t<input type=\"submit\" value=\"Search\" style=\"padding:0 0.4em;\"/>\r\n\t\t\t\t\t\t\t\t\t<span id=\"editsearchoption\">Search options<\/span>\r\n\t\t\t\t\t\t\t\t<\/td>\r\n\t\t\t\t\t\t\t<\/tr>\r\n\t\t\t\t\t\t<\/tbody>\r\n\t\t\t\t\t<\/table>\r\n\t\t\t\t<\/div>\r\n\t\t\t\t<\/form>\r\n\t\t\t<\/td>\r\n\t\t<\/tr>\r\n\t<\/tbody>\r\n<\/table>","title":"infoScoop"};
 
 IS_Portal.CommandBar = {
   init:function(){}
@@ -113,9 +113,9 @@ IS_Portal.behindIframe = {
 	init:function(){
 		//if(!Browser.isIE)return;
 		this.behindIframe = $(document.createElement('iframe'));
-		this.behindIframe.border = 0;
-		this.behindIframe.style.margin = 0;
-		this.behindIframe.style.padding = 0;
+		this.behindIframe.border = 0 + 'px';
+		this.behindIframe.style.margin = 0 + 'px';
+		this.behindIframe.style.padding = 0 + 'px';
 		this.behindIframe.id = "is_portal_behind_iframe";
 		this.behindIframe.frameBorder = 0;
 		this.behindIframe.style.position = "absolute";
@@ -130,8 +130,8 @@ IS_Portal.behindIframe = {
 		var pos = Position.cumulativeOffset(element);
 		this.behindIframe.style.top = pos[1] + "px";
 		this.behindIframe.style.left = pos[0] + "px";
-		this.behindIframe.style.width = element.offsetWidth;
-		this.behindIframe.style.height = element.offsetHeight;
+		this.behindIframe.style.width = element.offsetWidth + 'px';
+		this.behindIframe.style.height = element.offsetHeight + 'px';
 		if(element.style.zIndex)
 			this.behindIframe.style.zIndex = element.style.zIndex -1;
 		else
@@ -145,8 +145,8 @@ IS_Portal.behindIframe = {
 		//if(!Browser.isIE)return;
 		this.behindIframe.style.left = 0 + "px";
 		this.behindIframe.style.top = 0 + "px";
-		this.behindIframe.style.width = 0;
-		this.behindIframe.style.height = 0;
+		this.behindIframe.style.width = 0 + 'px';
+		this.behindIframe.style.height = 0 + 'px';
 		this.behindIframe.hide();
 	}
 };
@@ -223,7 +223,10 @@ function prepareStaticArea(){
 			//delete jsonRole.staticPanel[oldId];
 			is_deleteProperty(jsonRole.staticPanel, oldId);
 			jsonRole.staticPanel[widgetJSON.id] = widgetJSON;
-			openerPanel.setNewValue("staticpanel", Object.toJSON(jsonRole.staticPanel), jsonRole.id);
+			
+ 			// When converting the object of a parent window to a jsonString in IE8, it is necessary to perform a deep copy. Otherwise, "undifined" will be returned. 
+			openerPanel.setNewValue("staticpanel", Object.toJSON($jq.extend(true,{},jsonRole.staticPanel)), jsonRole.id);
+//			openerPanel.setNewValue("staticpanel", Object.toJSON(jsonRole.staticPanel), jsonRole.id);
 			
 			jsonRole.layout = jsonRole.layout.replace( escapeHTMLEntity( oldId ),widgetJSON.id );
 			$jq("#" + oldId).attr("id", widgetJSON.id);
@@ -239,7 +242,6 @@ function prepareStaticArea(){
 					ignoreHeader : ISA_CommonModals.EditorForm.isIgnoreHeader(),
 					noBorder : ISA_CommonModals.EditorForm.isNoBorder(),
 					type : ISA_CommonModals.EditorForm.getSelectType(),
-//					property : ISA_CommonModals.EditorForm.getProperty(widgetJSON)
 					property : $jq.extend(true,{}, widgetJSON.properties)
 				});
 				
@@ -287,7 +289,7 @@ function adjustStaticWidgetHeight(){
 	var columns = $$("#staticAreaContainer .static_column");
 	var windowHeight = getWindowSize(false) - findPosY($("staticAreaContainer")) - 36;
 	for(var i =0; i < columns.length; i++){
-		columns[i].style.height = windowHeight;
+		columns[i].style.height = windowHeight + "px";
 	}
 }
 
@@ -670,7 +672,7 @@ function init() {
 			}
 		}
 		if (nearGhost != null && widgetGhost.nextSibling != nearGhost) {
-			widgetGhost.style.height = 20;
+			widgetGhost.style.height = 20 + "px";
 			widgetGhost.style.display = "block";
 			nearGhost.parentNode.insertBefore(widgetGhost,nearGhost);
 			widgetGhost.col = nearGhost.col;
@@ -739,13 +741,13 @@ function init() {
 		$jq("#" + targetAreaId + " .gadgets-" + columnsCountList[0]).show();
 	}
 	
-	$jq("#select_layout_link").click(function(){
-//		$jq("#staticLayouts"+(areaType != 2 ? "AdjustHeight":"")).hide();
-		
+	$jq("#select_layout_link").click(function(){		
 		$jq("#select_layout_modal").dialog({
 			modal:true,
-			width: (Browser.isIE)? "600px" : 600,
-			height: (Browser.isIE)? "500px" : 500,
+			width: 600,
+			height: 500,
+			resizable: false,
+			draggable: false,
 			open: function(){
 				IS_Portal.behindIframe.show(this.parentNode);
 				
@@ -759,10 +761,11 @@ function init() {
 					.click(function(){
 						if(!confirm(ISA_R.alb_destroyOldSettings))
 							return;
-						var layoutTemplate = $jq($jq(this).html()).closest(".template");
-						var newNode = (layoutTemplate.length > 0) ? layoutTemplate : $jq(this).clone(true);
+
+						var selectedContent = $jq(this);
+						var layoutTemplate = $jq($jq.parseHTML(selectedContent.html())).closest(".template");
+						var newNode = (layoutTemplate.length > 0) ? layoutTemplate : selectedContent.clone(true);
 						setIdentifier(newNode);
-//						var newNode = setIdentifier($jq(this).clone(true));
 						openerPanel.setNewValue("layout", newNode.html(), jsonRole.id);
 						openerPanel.setNewValue("staticPanel", "{}", jsonRole.id);
 						
@@ -789,8 +792,10 @@ function init() {
 	$jq("#edit_layout_link").click(function(){
 		$jq("#edit_layout_modal").dialog({
 			modal:true,
-			width: (Browser.isIE)? "580px" : 580,
-			height: (Browser.isIE)? "400px" : 400,
+			width: 580,
+			height: 400,
+			resizable: false,
+			draggable: false,
 			open:function(){
 				IS_Portal.behindIframe.show(this.parentNode);
 				
@@ -848,7 +853,7 @@ function init() {
 			if(isReset){
 				// reset
 				var target = $jq("#staticLayout" + ((this.value == "2")? "AdjustHeight" : "") + "_tpl_default");
-				var layoutTemplate = $jq($jq(target).html()).closest(".template");
+				var layoutTemplate = $jq($jq.parseHTML(target.html())).closest(".template");
 				layoutTemplate = (layoutTemplate.length > 0) ? layoutTemplate : $jq(target).clone(true);
 				setIdentifier(layoutTemplate);
 				openerPanel.setNewValue("layout", layoutTemplate.html(), jsonRole.id);

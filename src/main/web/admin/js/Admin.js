@@ -171,10 +171,8 @@ ISA_loadProperties = function(_callback){
 }
 
 ISA_Admin.createIconButton = function(text, title, imgName, floatValue) {
-	//var div = document.createElement("div");
 	var button = document.createElement("a");
 	button.className = "iconButton";
-	//div.type = "button";
 	if(floatValue) {
 		if(Browser.isIE)
 			button.style.styleFloat = floatValue;
@@ -186,15 +184,11 @@ ISA_Admin.createIconButton = function(text, title, imgName, floatValue) {
 	img.src = imageURL + imgName;
 	img.style.position = "relative";
 	img.style.top = "2px";
-	img.style.margin = "0 5 0 0";
-//	var anc = document.createElement("a");
-//	anc.appendChild(document.createTextNode(text));
-//	anc.className = "button";
-//	anc.href = "#";
+	img.style.margin = "0px 5px 0px 0px";
 	button.href = "#";
 	button.appendChild(img);
 	button.appendChild(document.createTextNode(text));
-//	button.appendChild(anc);
+
 	return button;
 };
 
@@ -208,7 +202,7 @@ ISA_Admin.createBaseRadio = function(name, isChecked, isDisabled, d) {
 		radio.checked = String(isChecked);
 	if(isDisabled)
 		radio.disabled = String(isDisabled);
-	
+	/*	fix #13565
 	if(Browser.isIE) {
 		var inputElement = "";
 		inputElement += "<";
@@ -220,6 +214,7 @@ ISA_Admin.createBaseRadio = function(name, isChecked, isDisabled, d) {
 		inputElement += ">";
 		radio = doc.createElement(inputElement);
 	}
+	*/
 	return radio;
 };
 
@@ -234,6 +229,7 @@ ISA_Admin.createBaseCheckBox = function(name, isChecked, isDisabled, d) {
 	if(isDisabled)
 		checkbox.disabled = String(isDisabled);
 	
+	/*	fix #13565
 	if(Browser.isIE) {
 		var inputElement = "";
 		inputElement += "<";
@@ -245,6 +241,7 @@ ISA_Admin.createBaseCheckBox = function(name, isChecked, isDisabled, d) {
 		inputElement += ">";
 		checkbox = doc.createElement(inputElement);
 	}
+	*/
 	return checkbox;
 };
 
@@ -361,8 +358,8 @@ ISA_Admin.initIndicator = function() {
 	LoadingDiv.className = "nowLoading";
 	indicatorDiv.appendChild(LoadingDiv);
 	
-	LoadingDiv.style.top = findPosY(document.body) + 200;
-	LoadingDiv.style.left = findPosX(document.body) + document.body.offsetWidth/2 - divOverlay.offsetWidth/2;
+	LoadingDiv.style.top = (findPosY(document.body) + 200) + "px";
+	LoadingDiv.style.left = (findPosX(document.body) + document.body.offsetWidth/2 - divOverlay.offsetWidth/2) + "px";
 
 }
 
@@ -372,8 +369,8 @@ ISA_Admin.startIndicator = function() {
 //	var overlay = ISA_Admin.indicatorDiv;
 	var overlay = ISA_Admin.overlay;
 	
-	overlay.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth);
-	overlay.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight);
+	overlay.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth) + "px";
+	overlay.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight) + "px";
 //	overlay.style.display = "";
 	ISA_Admin.indicatorDiv.style.display = "";
 }
@@ -503,15 +500,11 @@ ISA_previewFormModal = {
 	controlModal: false,
 	principalDefault: "OrganizationPrincipal",
 	init: function() {
-		ISA_previewFormModal.controlModal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"",
+		if(!ISA_previewFormModal.controlModal){
+			ISA_previewFormModal.controlModal = new Control.Modal('',{
 				afterClose:ISA_previewFormModal.hide
-			}
-		);
+			});			
+		}
 		ISA_previewFormModal.load();
 	},
 	load: function() {
@@ -519,9 +512,9 @@ ISA_previewFormModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelPreviewFormModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},
@@ -608,7 +601,6 @@ ISA_previewFormModal = {
 			selectPrincipal.appendChild( opt );
 		}
 		inputDiv.appendChild(selectPrincipal);
-		// 
 		var editRoleInput = document.createElement("input");
 		editRoleInput.className = "panelPrincipalValue";
 		editRoleInput.type = "text";
@@ -630,15 +622,10 @@ ISA_AddCommandBarModal = {
 	controlModal: false,
 	init: function() {
 		this.addCommandBarModal.isaDefaultPanel = this;
-		this.addCommandBarModal.controlModal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"",
-				afterClose:this.addCommandBarModal.hide.bind(this.addCommandBarModal)
-			}
-		);
+		this.addCommandBarModal.controlModal = new Control.Modal('',{
+			className:"",
+			afterClose:this.addCommandBarModal.hide
+		});
 		this.addCommandBarModal.load();
 	},
 	load: function() {
@@ -646,9 +633,9 @@ ISA_AddCommandBarModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelCommandBarModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},

@@ -17,7 +17,7 @@
 # <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 --%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@ page import="org.infoscoop.service.PortalLayoutService, org.infoscoop.util.*" %>
 <%@page import="org.infoscoop.service.PropertiesService"%>
@@ -30,10 +30,11 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title><%= pageTitle %> <%= i18n.msg("lb_error") %></title>
 		<style type="text/css">
 			body{
-				margin-top:0;
+				margin-top:0px;
 				padding-top:50px;
 				text-align:center;
 				background-color:#E6F3FE;

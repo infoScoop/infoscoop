@@ -56,7 +56,7 @@ IS_Widget.MaximizeRssCategory.prototype.classDef = function() {
 			if( !withoutScroll ) {
 				var itemPos = rssContentView.getItemPosition( no );
 				if( !rssContentView.itemList[no] ) return;
-				var itemHeight = ( rssContentView.itemList[no].height || 50) +( Browser.isIE?0:6);
+				var itemHeight = ( rssContentView.itemList[no].height || 50) + 6;
 				var viewportHeight = rssContentView.elm_viewport.offsetHeight;
 				
 				if( !( viewportPos < itemPos && itemPos +itemHeight < viewportPos +viewportHeight )) {
@@ -66,7 +66,7 @@ IS_Widget.MaximizeRssCategory.prototype.classDef = function() {
 					} else {
 						scrollPos = itemPos;
 					}
-					rssContentView.elm_viewport.scrollTop = scrollPos;
+					rssContentView.elm_viewport.scrollTop = scrollPos +'px';
 				}
 			}
 		}

@@ -34,22 +34,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		
 		this.rssItemSelection = new IS_Widget.MaximizeRssReader.RssItemSelection( widget );
 		
-		widget.elm_widgetBox.style.backgroundColor = "#fff";
-		
-		if( Browser.isSafari1 ) {
-			// Not be minimized if window size is changed after getting back from maximization
-			widget.turnbackMaximize = ( function() {
-				var func = widget.turnbackMaximize;
-				
-				return function() {
-					$("maximizeRssDetailTd_" +this.id).style.height =
-						$("MaximizeItemList_"+this.id ).style.height = 100;
-					
-					func.apply( widget );
-				}
-			})();
-		}
-		
+		widget.elm_widgetBox.style.backgroundColor = "#fff";		
 		this.buildMaximizeRssContent();
 		
 		$( widget.elm_widgetContent ).addClassName("RssReader");
@@ -120,13 +105,13 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		// For drag bar
 		var dragBarTd = lrTable.firstChild.firstChild.childNodes[1];
 		dragBarTd.id = 'maximizeDragBar_'+widget.id;
-		dragBarTd.style.width = 5;
+		dragBarTd.style.width = '5px';
 		if( Browser.isSafari1 )
 			dragBarTd.appendChild( IS_Widget.RssReader.RssItemRender.createTable(1,1))
 		
 
 		dragBarTd.title = IS_R.ms_customizeWidthByDrag;
-		dragBarTd.style.cursor = ( !Browser.isSafari1? "col-resize" : "e-resize" );
+		dragBarTd.style.cursor = "col-resize";
 		
 		Event.observe(dragBarTd, 'mousedown', this.drag.dragStart, false,widget.id);
 		
@@ -249,6 +234,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		
 		var titleInput = document.createElement("input");
 		titleInput.id = "filterFormTitle_"+widget.id;
+		titleInput.type = "text";
 		titleInput.style.width = "100%";
 		//titleInput.style.border = "1px solid #666";
 		titleDiv.appendChild( titleInput );
@@ -266,6 +252,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		
 		var creatorInput = document.createElement("input");
 		creatorInput.id = "filterFormCreator_"+widget.id;
+		creatorInput.type = "text";
 		creatorInput.style.width = "100%";
 		//creatorInput.style.border = "1px solid #666";
 		creatorDiv.appendChild( creatorInput );
@@ -322,15 +309,14 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		var categoryRow = filterForm.firstChild.childNodes[3];
 		categoryRow.childNodes[0].style.fontSize = "9pt";
 		categoryRow.childNodes[0].style.whiteSpace = "nowrap";
-		categoryRow.childNodes[0].appendChild( document.createTextNode(
-
-			IS_R.lb_category ));
+		categoryRow.childNodes[0].appendChild( document.createTextNode(IS_R.lb_category ));
 		var categoryDiv = document.createElement("div");
 		categoryDiv.position = "relative";
 		categoryRow.childNodes[1].appendChild( categoryDiv );
 		
 		var categoryInput = document.createElement("input");
 		categoryInput.id = "filterFormCategory_"+widget.id;
+		categoryInput.type = "text";
 		categoryInput.style.width = "100%";
 		//categoryInput.style.border = "1px solid #666";
 		categoryDiv.appendChild( categoryInput );
@@ -388,7 +374,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		
 		div.style.width = "100%"
 		div.style.clear = "both";
-		div.style.paddingLeft = div.style.paddingRight = 2;
+		div.style.paddingLeft = div.style.paddingRight = '2px';
 		div.style.position = "relative";
 		
 		var titleTable = $( IS_Widget.RssReader.RssItemRender.createTable( 1,2 ));
@@ -1010,15 +996,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 			//Delete the event of buttom that shows description desplay for AtomPub
 			//IS_Event.unloadCache(rssReader.id + "_desc");
 		});
-		
-		// iframe disconnected with root is not loaded, and the old contents is shown at next time
-		if( Browser.isIE ) {
-			var iframe = IS_Widget.MaximizeRssReader.RssItemRender.getDetailIframe();
-			document.body.appendChild( iframe );
-			iframe.style.display = "none";
-			iframe.src = "./blank.html";
-		}
-		
+				
 		[
 			$("maximizeRssTitle_"+widget.id ),
 			$("maximizeRssPubDate_"+widget.id ),
@@ -1121,10 +1099,10 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 			
 			var filterContent = $("filterContent_"+widget.id );
 			if( filterContent && filterContent.style.display != "none")
-				itemListHeight -= filterContent.offsetHeight +( Browser.isIE ? 0:0 );
+				itemListHeight -= filterContent.offsetHeight;
 			
 			if( !isNaN( itemListHeight ) && itemListHeight >= 0 )
-				itemListDiv.style.height = itemListHeight;
+				itemListDiv.style.height = itemListHeight + 'px';
 			
 			if( this.currentCategory ) {
 				var maximizeButtons = $("MaximizeButtons_"+this.currentCategory.id );
@@ -1134,14 +1112,14 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 				  this.currentCategory.maximizeRender.rssContentView.setViewportHeight(itemListHeight);
 			}
 			
-			var detailHeight = getWindowSize(false) -findPosY( widget.elm_widget ) -65
-				-( Browser.isIE ? 20:0 ) -toolbarHeight;
+			var detailHeight = getWindowSize(false)-findPosY( widget.elm_widget )-65-toolbarHeight;
 			
-			rssDetailTd.style.height = detailHeight;
+
+			rssDetailTd.style.height = detailHeight + 'px';
 			if( Browser.isFirefox )
 				rssDetailTable.style.display = detailTdDisplay;
 			
-			widget.elm_widget.style.height = maximizeHeight;
+			widget.elm_widget.style.height = maximizeHeight + 'px';
 		}catch(e){
 
 			msg.warn( IS_R.getResource( IS_R.ms_errorOnWindowResize,[e]));
@@ -1150,7 +1128,6 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 	
 	this.adjustMaximizeWidth = function() {
 		var contents = $("maximizeContents_"+widget.id );
-//		if(contents && Browser.isIE) {
 		if(contents) {	// fix #844
 			try{
 				var adjustWidth = getWindowSize(true) - findPosX(contents) - 32;
@@ -1170,12 +1147,17 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 						reView = true;
 					}
 					var descWidth = maximizeDetailTd.offsetWidth;
-					maximizeRssDescDiv.style.width = descWidth;
+					maximizeRssDescDiv.style.width = descWidth + 'px';
 					if(reView){
 						if(rssDesc.offsetWidth > 0){
 							// Specify width of rssDescText
-							rssDescText.style.width = rssDesc.offsetWidth - 8;
-							rssDescText.style.height = rssDesc.offsetHeight - 16;
+							rssDescText.style.width = rssDesc.offsetWidth - 8 + 'px';						
+							if(Browser.isIE){
+								var headerHeight = $("maximizeRssPubDate_"+widget.id).offsetHeight + $("maximizeRssCategory_"+widget.id).offsetHeight + $("maximizeRssTitle_"+widget.id).offsetHeight + 30;
+								rssDescText.style.height = maximizeDetailTd.offsetHeight - headerHeight + 'px';
+							}else{
+								rssDescText.style.height = rssDesc.offsetHeight - 16 + 'px';
+							}
 						}
 						rssDescText.style.display = "block";
 					}
@@ -1395,17 +1377,6 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		IS_Widget.Maximize.adjustMaximizeHeight();
 		
 		// Specify width of rssDescText
-		if(Browser.isIE){
-			rssDescText.style.width = rssDesc.offsetWidth - 8;
-			
-			if( !isNaN( rssDesc.offsetHeight )) {
-				var rssDescTextHeight = rssDesc.offsetHeight;
-				if( rssDescTextHeight > 16 )
-					rssDescTextHeight -= 16;
-				
-				rssDescText.style.height = rssDescTextHeight;
-			}
-		}
 		rssDescText.innerHTML = IS_Widget.RssReader.RssItemRender.normalizeDesc( rssItem.description );
 		rssDescText.scrollTop = 0;
 		if(rssDescText) {
@@ -1558,11 +1529,11 @@ IS_Widget.MaximizeRssReader.Drag.prototype.classDef = function() {
 		
 		// init ghost
 		document.body.appendChild(barGhost);
-		barGhost.style.height = bar.offsetHeight;
-		barGhost.style.width = bar.offsetWidth;
+		barGhost.style.height = bar.offsetHeight + 'px';
+		barGhost.style.width = bar.offsetWidth + 'px';
 		barGhost.style.border = "1px solid red";
-		barGhost.style.top = findPosY(bar);
-		barGhost.style.left = findPosX(bar);
+		barGhost.style.top = findPosY(bar) + 'px';
+		barGhost.style.left = findPosX(bar) + 'px';
 		
 		IS_Portal.showDragOverlay(Element.getStyle(bar, "cursor"));
 		
@@ -1575,7 +1546,7 @@ IS_Widget.MaximizeRssReader.Drag.prototype.classDef = function() {
 	function dragging(e) {
 		var mousex = Event.pointerX(e);
 		
-		barGhost.style.left = mousex - 6;
+		barGhost.style.left = mousex - 6 + 'px';
 	}
 	
 	function dragEnd(e) {
@@ -1596,11 +1567,7 @@ IS_Widget.MaximizeRssReader.Drag.prototype.classDef = function() {
 			review = true;
 		}
 		
-		if( Browser.isIE && nowWidth < 16 ) {
-			list.style.display = "none";
-		} else {
-			list.style.display = "";
-		}
+		list.style.display = "";
 		
 		var contents = $("maximizeContents_"+maximizeWidget.id );
 		var contentsWidth;
@@ -1612,7 +1579,7 @@ IS_Widget.MaximizeRssReader.Drag.prototype.classDef = function() {
 		} else {
 			maximizeWidget.content.toolBarContent.elm_toolBar.style.display = "";
 		}
-		list.style.width = nowWidth;
+		list.style.width = nowWidth + 'px';
 		
 		if( maximizeWidget.content.currentCategory &&
 			maximizeWidget.content.currentCategory.content.rssContentView ) {

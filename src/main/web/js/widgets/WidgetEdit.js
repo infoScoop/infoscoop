@@ -1013,8 +1013,8 @@ IS_Widget.WidgetEdit.makeHelpIcon = function( container,userPref ) {
 	a.observe("mouseover",function( event ) {
 		help.style.display = "block";
 		if( help.offsetWidth > 300 )
-			help.style.width = 300;
-		
+			help.style.width = 300+'px';
+
 		var x = event.pointerX();
 		var y = event.pointerY();
 		var x_limit = getWindowSize(true) +document.body.scrollLeft;
@@ -1025,8 +1025,8 @@ IS_Widget.WidgetEdit.makeHelpIcon = function( container,userPref ) {
 		if( y +help.offsetHeight > y_limit )
 			y = y_limit -help.offsetHeight -10;
 		
-		help.style.top = y;
-		help.style.left = x;
+		help.style.top = y + 'px';
+		help.style.left = x + 'px';
 	});
 	a.observe("mouseout",function(){
 		help.style.display = "none";
