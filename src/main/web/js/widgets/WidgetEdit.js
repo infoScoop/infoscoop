@@ -32,7 +32,7 @@ IS_Widget.WidgetEdit = function (widget) {
 			if(this.style.display == "none") return;
 			var target = Event.element(e);
 			while(target != document.body){
-				if(target == this)
+				if(!target || target == this)
 					return;
 				target = target.parentNode;
 			}
@@ -57,12 +57,12 @@ IS_Widget.WidgetEdit = function (widget) {
 			var contentWidth = elm_widgetContent.offsetWidth;
 			if(!contentWidth || contentWidth < 200) contentWidth = 200;
 			var editStyle = widget.elm_widgetEditHeader.style;
-			editStyle.width = contentWidth;
+			editStyle.width = contentWidth + 'px';
 			var widgetContentPos = Position.cumulativeOffset(elm_widgetContent);
 			if(fixedPortalHeader) 
 				widgetContentPos[1] -= IS_Portal.tabs[IS_Portal.currentTabId].panel.scrollTop;
-			editStyle.top = widgetContentPos[1];
-			editStyle.left = widgetContentPos[0];
+			editStyle.top = widgetContentPos[1] + 'px';
+			editStyle.left = widgetContentPos[0] + 'px';
 		}
 		
 		var editNode = IS_WidgetConfiguration[widget.widgetType];
@@ -935,7 +935,7 @@ IS_Widget.adjustEditPanelTextWidth = function(element){
 				continue;
 			}
 			
-			adjustItems[i].style.width = resultWidth;
+			adjustItems[i].style.width = resultWidth + 'px';
 			
 			if(!adjustItems[i].orgWidth)
 				adjustItems[i].orgWidth = inputWidth;
