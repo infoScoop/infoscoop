@@ -98,11 +98,8 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 			} else {
 				widget.iframe.src = fragmentCacheURL;
 			}
-			
-			//widget.iframe.style.height = "auto";
 		},
 		onComplete : function(req){
-			//console.info(req);
 		}
 	};
 	
@@ -213,18 +210,6 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 			adjustBar.style.display = "block";
 	};
 	
-	/*this.errorCheck = function(){
-		var form = widget.elm_editForm;
-		if(form && form.height){
-			var height = form.height.value;
-			var error = IS_Widget.FragmentMiniBrowser.validateUserPref.height(height);
-			if(error) {
-				alert(error);
-				return false;
-			}
-		}
-		return true;
-	};*/
 	this._IS_Validate = {
 		height: IS_Widget.FragmentMiniBrowser.validateUserPref.height
 	}
@@ -247,14 +232,14 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 	}
 }
 
-		// If the function cannot get body height, return available child height
+// If the function cannot get body height, return available child height
 IS_Widget.FragmentMiniBrowser.getMiniBrowserHeight = function( element ) {
 	var height = element.documentElement.offsetHeight;
 	if (!(!isNaN(height) && height > 0)) {
 		element = element.body? element.body : element;
-		
+		console.log(element);
 		while (element != null) {
-			height = parseInt(element.offsetHeight);
+			height = parseInt(element.offsetHeight) ? parseInt(element.offsetHeight) : parseInt(element.scrollHeight);
 			
 			if (height > 0) 
 				break;
@@ -294,7 +279,6 @@ IS_Widget.FragmentMiniBrowser.validateUserPref = Object.extend(IS_Widget.Fragmen
 	},
 	xPath:function(value){
 		return IS_Validator.validate(value, {
-//			label: 'XPath',
 			label: IS_Widget.getDisplayName('FragmentMiniBrowser', 'xPath'),
 			required: true
 		});
