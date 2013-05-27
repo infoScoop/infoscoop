@@ -27,6 +27,7 @@
         	<column name="isStatic" type="integer"/>
     	</createIndex>
     </changeSet>
+
     <!--Issue 14007-->
     <!--UPDATE IS_TABLAYOUTS SET templastmodified = NULL;-->
     <changeSet id="infoscoop330_14007_2" author="mikami">
@@ -36,6 +37,40 @@
 		</preConditions>
         <update tableName="IS_TABLAYOUTS">
             <column name="templastmodified" value="NULL"/>
+        </update>
+    </changeSet>    
+
+    <!--Issue 13813-->
+    <!--UPDATE IS_18N SET message = 'Save the access log treating RSS of an inclusion gadget or not' WHERE id = 'alb_desc_accessLogEntry' AND lang = 'ALL';-->
+    <!--UPDATE IS_18N SET message = 'RSSを扱う組み込みガジェットのアクセスログを保存するか否か' WHERE id = 'alb_desc_accessLogEntry' AND lang = 'ja';-->
+    <!--UPDATE IS_18N SET message = '是否保存处理RSS的编入小工具的访问的履历' WHERE id = 'alb_desc_accessLogEntry' AND lang = 'zh';-->
+    <!--UPDATE IS_18N SET message = 'Save the access log treating RSS of an inclusion gadget or not(true or false)' WHERE id = 'alb_accessLogEntry' AND lang = 'ALL';-->
+    <!--UPDATE IS_18N SET message = 'RSSを扱う組み込みガジェットのアクセスログを保存するか否か ( true or false )' WHERE id = 'alb_accessLogEntry' AND lang = 'ja';-->
+    <!--UPDATE IS_18N SET message = '是否保存处理RSS的编入小工具的访问的履历(true or false)' WHERE id = 'alb_accessLogEntry' AND lang = 'zh';-->
+    <changeSet id="infoscoop330_13813" author="mikami">
+        <update tableName="IS_I18N">
+        	<column name="message" value="Save the access log treating RSS of an inclusion gadget or not"/>
+        	<where>id='alb_desc_accessLogEntry' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="RSSを扱う組み込みガジェットのアクセスログを保存するか否か"/>
+        	<where>id='alb_desc_accessLogEntry' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="是否保存处理RSS的编入小工具的访问的履历"/>
+        	<where>id='alb_desc_accessLogEntry' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="Save the access log treating RSS of an inclusion gadget or not(true or false)"/>
+        	<where>id='alb_accessLogEntry' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="RSSを扱う組み込みガジェットのアクセスログを保存するか否か ( true or false )"/>
+        	<where>id='alb_accessLogEntry' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="是否保存处理RSS的编入小工具的访问的履历(true or false)"/>
+        	<where>id='alb_accessLogEntry' AND lang='zh'</where>
         </update>
     </changeSet>    
 </databaseChangeLog>
