@@ -237,7 +237,6 @@ IS_Widget.FragmentMiniBrowser.getMiniBrowserHeight = function( element ) {
 	var height = element.documentElement.offsetHeight;
 	if (!(!isNaN(height) && height > 0)) {
 		element = element.body? element.body : element;
-		console.log(element);
 		while (element != null) {
 			height = parseInt(element.offsetHeight) ? parseInt(element.offsetHeight) : parseInt(element.scrollHeight);
 			
