@@ -1028,3 +1028,41 @@ function updatePanel(){
 	openerPanel.updatePanel(true);
 }
 Event.observe(window, 'beforeunload', updatePanel);
+
+ISA_Admin.initEditRoleIndicator = function() {
+	var indicatorDiv = document.createElement("div");
+	document.body.appendChild(indicatorDiv);
+	ISA_Admin.editRoleIndicatorDiv = indicatorDiv;
+	
+	var overlay = document.createElement("div");
+	overlay.className = "indicatorOverlay";
+	overlay.id = "drag-overlay";
+	indicatorDiv.appendChild(overlay);
+	ISA_Admin.editRoleOverlay = overlay;
+	
+	LoadingDiv = document.createElement("div");
+	LoadingDiv.id = "divOverlay";
+	LoadingDiv.className = "nowLoading";
+	indicatorDiv.appendChild(LoadingDiv);
+
+	LoadingDiv.style.top = (findPosY(document.body) + 200) + "px";
+	LoadingDiv.style.left = (findPosX(document.body) + document.body.offsetWidth/2 - divOverlay.offsetWidth/2) + "px";
+	LoadingDiv.style.position = 'fixed'
+}
+
+ISA_Admin.startEditRoleIndicator = function() {
+	if(!ISA_Admin.editRoleIndicatorDiv)
+		ISA_Admin.initEditRoleIndicator();
+	var overlay = ISA_Admin.editRoleOverlay;
+	
+	overlay.style.width = '100%';
+	overlay.style.height = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight) + "px";
+	ISA_Admin.editRoleIndicatorDiv.style.display = "";
+}
+
+ISA_Admin.stopEditRoleIndicator = function() {
+	if(!ISA_Admin.editRoleIndicatorDiv)
+		ISA_Admin.initEditRoleIndicator();
+	var indicatorDiv = ISA_Admin.editRoleIndicatorDiv;
+	indicatorDiv.style.display = "none";
+}
