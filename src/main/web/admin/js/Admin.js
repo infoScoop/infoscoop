@@ -339,45 +339,6 @@ ISA_Admin.countries = {
 	"US":"US(" + IS_R.lb_countryUS + ")"
 };
 
-ISA_Admin.initIndicator = function() {
-	var indicatorDiv = document.createElement("div");
-	document.body.appendChild(indicatorDiv);
-	ISA_Admin.indicatorDiv = indicatorDiv;
-	
-	var overlay = document.createElement("div");
-	overlay.className = "indicatorOverlay";
-	overlay.id = "drag-overlay";
-	indicatorDiv.appendChild(overlay);
-	ISA_Admin.overlay = overlay;
-	
-	LoadingDiv = document.createElement("div");
-	LoadingDiv.id = "divOverlay";
-	LoadingDiv.className = "nowLoading";
-	indicatorDiv.appendChild(LoadingDiv);
-	
-	LoadingDiv.style.top = (findPosY(document.body) + 200) + "px";
-	LoadingDiv.style.left = (findPosX(document.body) + document.body.offsetWidth/2 - divOverlay.offsetWidth/2) + "px";
-
-}
-
-ISA_Admin.startIndicator = function() {
-	if(!ISA_Admin.indicatorDiv)
-		ISA_Admin.initIndicator();
-	var overlay = ISA_Admin.overlay;
-	
-	overlay.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth) + "px";
-	overlay.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight) + "px";
-	ISA_Admin.indicatorDiv.style.display = "";
-}
-
-ISA_Admin.stopIndicator = function() {
-	if(!ISA_Admin.indicatorDiv)
-		ISA_Admin.initIndicator();
-	var indicatorDiv = ISA_Admin.indicatorDiv;
-	indicatorDiv.style.display = "none";
-}
-
-
 /**
  * Create common table header of administration page
  */

@@ -198,6 +198,7 @@
 	<script src="../../admin/js/AdminHTMLFragment.js"></script>
 	<script src="../../admin/js/AdminCommonModals.js"></script>
 	<script src="../../admin/js/AdminEditRole.js"></script>
+	<script src="../../admin/js/AdminUtil.js"></script>	
 	<!--end script-->
 	
 	<script src="../../js/lib/jquery-1.9.1.min.js"></script>

@@ -48,7 +48,8 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 	
 	var xpath = document.createElement("input");
 	xpath.id = "currentXPathForm";
-	xpath.style.width = "100%";
+	xpath.type = "text";
+	xpath.style.width = "99%";
 	xpath.style.border = "1px solid #000000";
 	xpath.style.backgroundColor = "#EEEEEE";
 	xpath.readonly = true;
@@ -67,8 +68,7 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 	
 	function loadIframe(authParameters){
 		var _selectXPathPanel = $("selectXPathPanel");
-		if (_selectXPathPanel.style.display == "none")
-			_selectXPathPanel.style.display = "";
+		_selectXPathPanel.show();
 		
 		if (_selectXPathPanel.firstChild) {
 			_selectXPathPanel.replaceChild(fragmentDiv, _selectXPathPanel.firstChild);
@@ -78,6 +78,7 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 					
 		iframe.src = getProxyUrl(inputURL, "URLReplace", filterEncoding) + ((authParameters) ? authParameters : "");
 		iframe.setAttribute("frameborder", "0");
+		iframe.style.width = '99%';
 	
 		IS_Event.observe(iframe, 'load', setEvent.bind(this, iframe), false, "addWidgetEdit");
 	}
@@ -116,7 +117,7 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 		
 		var selectXPathPanel = $("selectXPathPanel");
 		if(!selectXPathPanel) return;
-		selectXPathPanel.style.display = "none";
+		selectXPathPanel.hide();
 	}
 	function setIframeURL(response){
 		var _authType = response.getResponseHeader("MSDPortal-AuthType");
@@ -291,15 +292,6 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 	}
 	
 	function addFragmentWidgetInstance() {
-		/*
-		var thumbnail = "";
-		var thumbnailDiv = $("addInstThumbnail_FragmentMiniBrowser");
-		if(thumbnailDiv && 0 < thumbnailDiv.value.length){
-			var trimValue = thumbnailDiv.value.replace(/ |　/, "");
-			if(0 < trimValue.length)
-			  thumbnail = thumbnailDiv.value;
-		}
-		*/
 		var fragmentXPath = $("currentXPathForm").value;
 		var xpath = (fragmentXPath)? fragmentXPath : '//body';
 		
