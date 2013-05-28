@@ -873,7 +873,7 @@ a.gadgetListTabA:visited{
 	width : 128px;
 	height : 128px;
 	position : absolute;
-	z-index: 10000;
+	z-index: 100000;
 }
 
 #portalLayouts{

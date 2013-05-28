@@ -6,6 +6,9 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 
 	var currentTargetElement;
 	ISA_Admin.startIndicator();
+
+	if(ISA_Admin.startEditRoleIndicator)
+		ISA_Admin.startEditRoleIndicator();
 	
 	// Display for modal
 	var fragmentDiv = document.createElement("div");
@@ -67,8 +70,18 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 	
 	function loadIframe(authParameters){
 		var _selectXPathPanel = $("selectXPathPanel");
-		if (_selectXPathPanel.style.display == "none")
+		if (_selectXPathPanel.style.display == "none"){
 			_selectXPathPanel.style.display = "";
+
+			// expand overlay height
+			var overlay = ISA_Admin.overlay;
+			var editRoleOverlay = ISA_Admin.editRoleOverlay;
+			if(!editRoleOverlay){
+				overlay.style.height = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight) + "px";				
+			}else{
+				editRoleOverlay.style.height = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight) + "px";			
+			}
+		}
 		
 		if (_selectXPathPanel.firstChild) {
 			_selectXPathPanel.replaceChild(fragmentDiv, _selectXPathPanel.firstChild);
@@ -113,7 +126,10 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 	
 	function cancelXPathSelection() {
 		ISA_Admin.stopIndicator();
-		
+
+		if(ISA_Admin.stopEditRoleIndicator)
+			ISA_Admin.stopEditRoleIndicator();
+
 		var selectXPathPanel = $("selectXPathPanel");
 		if(!selectXPathPanel) return;
 		selectXPathPanel.style.display = "none";
@@ -122,6 +138,8 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 		var _authType = response.getResponseHeader("MSDPortal-AuthType");
 		if(_authType){
 			ISA_Admin.stopIndicator();
+			if(ISA_Admin.stopEditRoleIndicator)
+				ISA_Admin.stopEditRoleIndicator();
 			showAuthForm(_authType);
 		}else{
 			loadIframe();
@@ -139,6 +157,8 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 			  alert(msgbody);
 			  msg.error(msgbody);
 			  ISA_Admin.stopIndicator();
+		  	  if(ISA_Admin.stopEditRoleIndicator)
+				ISA_Admin.stopEditRoleIndicator();
 			  fragmentDiv = false;
 		  },
 		  on10408: function(r,t) {
@@ -146,6 +166,8 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 			  alert(msgbody);
 			  msg.error(msgbody);
 			  ISA_Admin.stopIndicator();
+		  	  if(ISA_Admin.stopEditRoleIndicator)
+				ISA_Admin.stopEditRoleIndicator();
 			  fragmentDiv = false;
 		  },
 		  onFailure: function(t) {
@@ -153,6 +175,8 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 			  alert(msgbody);
 			  msg.error(msgbody);
 			  ISA_Admin.stopIndicator();
+		  	  if(ISA_Admin.stopEditRoleIndicator)
+				ISA_Admin.stopEditRoleIndicator();			  
 			  fragmentDiv = false;
 		  },
 		  onException: function(r, t){
@@ -160,6 +184,8 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 			  alert(msgbody);
 			  msg.error(msgbody);
 			  ISA_Admin.stopIndicator();
+		  	  if(ISA_Admin.stopEditRoleIndicator)
+				ISA_Admin.stopEditRoleIndicator();
 			  fragmentDiv = false;
 		  }
 		};
@@ -250,6 +276,8 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 		}
 		$("currentXPathForm").value = "";
 		ISA_Admin.stopIndicator();
+	  	if(ISA_Admin.stopEditRoleIndicator)
+			ISA_Admin.stopEditRoleIndicator();
 	}
 	
 	function makeXPath(elm){
@@ -291,15 +319,6 @@ ISA_WidgetConf.EditWidgetConf.displayFragmentModal = function( prefType, inputUR
 	}
 	
 	function addFragmentWidgetInstance() {
-		/*
-		var thumbnail = "";
-		var thumbnailDiv = $("addInstThumbnail_FragmentMiniBrowser");
-		if(thumbnailDiv && 0 < thumbnailDiv.value.length){
-			var trimValue = thumbnailDiv.value.replace(/ |　/, "");
-			if(0 < trimValue.length)
-			  thumbnail = thumbnailDiv.value;
-		}
-		*/
 		var fragmentXPath = $("currentXPathForm").value;
 		var xpath = (fragmentXPath)? fragmentXPath : '//body';
 		
