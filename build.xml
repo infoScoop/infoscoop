@@ -520,6 +520,7 @@
 			<filelist dir="${src.admin.web}/js" files="AdminForbiddenURL.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminInformation.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminAuthentication.js"/>
+			<filelist dir="${src.admin.web}/js" files="AdminUtil.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalAdmin-${build.version}.js&quot; &quot;${build.admin}/js/dist/PortalAdmin.js.tmp&quot;"/>
@@ -584,6 +585,7 @@
 			<filelist dir="${src.admin.web}/js" files="AdminHTMLFragment.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminCommonModals.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminEditRole.js"/>
+			<filelist dir="${src.admin.web}/js" files="AdminUtil.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalAdmin-EditRole-${build.version}.js&quot; &quot;${build.admin}/js/dist/PortalAdmin-EditRole.js.tmp&quot;"/>
