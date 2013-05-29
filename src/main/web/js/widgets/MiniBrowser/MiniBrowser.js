@@ -114,8 +114,9 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 			widget.elm_widgetContent.style.display = "";
 		
 		if(widget.iframe){
-			if( widget.staticWidgetHeight > 0 ) {
-				widget.iframe.style.height = widget.staticWidgetHeight + "px";
+			var height = parseInt(widget.staticWidgetHeight);
+			if (height > 0) {
+				widget.iframe.style.height = height + "px";
 			} else if(widget.getUserPref("height")) {
 				widget.iframe.style.height = parseInt(widget.getUserPref("height")) + "px";
 			}
