@@ -68,14 +68,15 @@ public class PortalLayoutServlet extends HttpServlet {
 			
 			PortalLayoutService service = (PortalLayoutService)SpringUtil.getBean("PortalLayoutService");
 			String js = service.getPortalLayout(type);
-			
-			out.write(js);
+			if(js != null)
+				out.write(js);
 		} catch (Exception e){
 			logger.error("--- unexpected error occurred.", e);
 			response.sendError(500);
-		} 
-		out.flush();
-		out.close();
+		} finally {
+			out.flush();
+			out.close();
+		}
 		
 	}
 	
