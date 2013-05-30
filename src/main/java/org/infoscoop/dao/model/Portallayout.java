@@ -23,7 +23,10 @@ import org.infoscoop.dao.model.base.BasePortallayout;
 
 public class Portallayout extends BasePortallayout {
 	private static final long serialVersionUID = 1L;
-
+	
+	public static final String LAYOUT_TYPE_CSS = "css";
+	public static final String LAYOUT_TYPE_JS = "javascript";
+	
 /*[CONSTRUCTOR MARKER BEGIN]*/
 	public Portallayout () {
 		super();
