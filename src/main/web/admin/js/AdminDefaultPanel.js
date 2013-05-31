@@ -780,17 +780,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		editImg.title = ISA_R.alb_editing;
 		editTd.appendChild(editImg);
 		
-		// for debug
-		/*
-		var editImg2 = document.createElement("img");
-		editImg2.src = imageURL + "edit.gif";
-		editImg2.style.cursor = "pointer";
-		editImg2.title = ISA_R.alb_editing;
-		editTd.appendChild(editImg2);
-		IS_Event.observe(editImg2, "click", this.editRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
-		*/
 		if(self.displayTabId == commandBarTabId){
-			IS_Event.observe(editImg, "click", this.editRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
+			IS_Event.observe(editImg, "click", this.editCommandBarRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
 		}else{
 			IS_Event.observe(editImg, "click", function(jsonRole){
 				this.displayRoleId = jsonRole.id;
@@ -831,8 +822,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	/**
 		Edit permission
 	*/
-	this.editRole = function(jsonRole) {
-		ISA_Admin.isUpdated = true;
+	this.editCommandBarRole = function(jsonRole) {
 		// To edit page
 		this.backToList(false);
 
