@@ -176,6 +176,9 @@ public class TabLayout extends BaseTablayout {
 			String id = widget.getAttribute("id");
 			if (id != null)
 				widgetJson.put("id", id);
+			String menuId = widget.getAttribute("menuId");
+			if (menuId != null)
+				widgetJson.put("menuId", menuId);
 			String href = widget.getAttribute("href");
 			if (href != null)
 				widgetJson.put("href", href);
