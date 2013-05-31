@@ -963,10 +963,14 @@ function _saveDynamicPanel(){
 				}
 			}else{
 				menuItem = targetMenu.menuItemList[menuId];
+				if(!menuItem)
+					return true;
 			}
-
+			
+			var colnum = $jq(widget.elm_widget).parent().attr('colnum');
 			var widgetJSON = {
-				id : "w_" + menuItem.id,
+				id : "w_" + (menuItem.multi? menuItem.id + "_" + (+new Date()) + "_" + colnum + "_" + index : menuItem.id),
+				menuId : menuItem.id,
 				column : new String($jq(widget.elm_widget).parent().attr('colnum')),
 				type : menuItem.type? menuItem.type : widget.widgetType,
 				properties: (menuItem.properties && typeof menuItem.properties == "Object" )?

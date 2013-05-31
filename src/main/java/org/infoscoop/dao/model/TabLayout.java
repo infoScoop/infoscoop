@@ -372,7 +372,11 @@ public class TabLayout extends BaseTablayout {
 				}
 				siblingMap.put(widget.getColumn(), widget.getWidgetid());
 			}
-			widget.setMenuid(isStatic ? "" : widget.getWidgetid().substring(2));
+//			widget.setMenuid(isStatic ? "" : widget.getWidgetid().substring(2));
+			String menuId = widget.getWidgetid().substring(2);
+			if(widgetEl.hasAttribute("menuId"))
+				menuId = widgetEl.getAttribute("menuId");
+			widget.setMenuid(isStatic ? "" : menuId);
 			widget.setParentid(widgetEl.getAttribute("parentId"));
 			widget.setTitle(widgetEl.getAttribute("title"));
 			widget.setHref(widgetEl.getAttribute("href"));

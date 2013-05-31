@@ -106,7 +106,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				if ( displaySideMenu &&( !IS_SidePanel.topMenuIdList || IS_SidePanel.topMenuIdList.length == 0 ) )
 					new IS_SidePanel.SiteMap(true);
 				
-				var menuItem = IS_TreeMenu.findMenuItem(widgetConf.id.substring(2));
+				var menuItem = IS_TreeMenu.findMenuItem(widgetConf.menuId? widgetConf.menuId : widgetConf.id.substring(2));
 				if( !menuItem)
 					return;
 				
