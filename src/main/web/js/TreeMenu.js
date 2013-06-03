@@ -636,27 +636,17 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			divMenuTitle.appendChild(document.createTextNode(title));
 		}
 		divMenuTitle.title = title;
-
-		if ( Browser.isIE ) {
-			divMenuItem.appendChild(divMenuTitle);
-			divMenuItem.style.width = "100%";
-//			divMenuItem.style.whiteSpace = "nowrap";
-			divMenuItem.style.wordBreak = "break-all";
-		} else {
-			divMenuTitle.style.height = "auto";
-			var menuItemTable = document.createElement("table");
-			menuItemTable.cellSpacing = "0";
-			menuItemTable.cellPadding = "0";
-//			menuItemTable.style.width = "100%";
-//			menuItemTable.style.whiteSpace = "nowrap";
-			var tr = document.createElement("tr");
-			var td = document.createElement("td");
-			td.appendChild(divMenuTitle);
-
-			tr.appendChild(td);
-			menuItemTable.appendChild(tr);
-			divMenuItem.appendChild(menuItemTable);
-		}
+		divMenuTitle.style.height = "auto";	
+		divMenuItem.style.wordBreak = "break-all";
+		var menuItemTable = document.createElement("table");
+		menuItemTable.cellSpacing = "0";
+		menuItemTable.cellPadding = "0";
+		var tr = document.createElement("tr");
+		var td = document.createElement("td");
+		td.appendChild(divMenuTitle);
+		tr.appendChild(td);
+		menuItemTable.appendChild(tr);
+		divMenuItem.appendChild(menuItemTable);
 		itemTd.appendChild(divMenuItem);
 
 		if(hasChilds){
