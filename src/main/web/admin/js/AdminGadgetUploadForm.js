@@ -456,14 +456,12 @@ ISA_GadgetResources.prototype = {
 		});
 	},
 	createSimpleModal: function( content,closable ) {
-		if( !this.modal ){
-			this.modal = new Control.Modal( '',{
-				closeOnClick: false,
-				afterClose: function(){
-					this.destroy();
-				}
-			});			
-		}
+		this.modal = new Control.Modal( '',{
+			closeOnClick: false,
+			afterClose: function(modal){
+				this.destroy();
+			}
+		});			
 		this.modal.options.closeOnClick = closable;
 		this.modal.container.update(content);
 		this.modal.position();
