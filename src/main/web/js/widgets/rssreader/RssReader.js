@@ -221,7 +221,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			self.droppableOption.onWidgetDrop.call(self, element,lastActiveElement, newWidget, event, modalOption);
 		}
 		menuOpt.onDrop = this.droppableOption.onMenuDrop;
-		menuOpt.marginBottom = "10px";
+		menuOpt.marginBottom = 10;
 		
 		if(!widget.isMulti && !isDroppable)
 		  IS_Widget.RssReader.dropGroup.add(widget.elm_widget, menuOpt);
