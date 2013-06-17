@@ -1498,8 +1498,8 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 	}
 	this.setViewportHeight = function( height ) {
 		if(this.isStatic && !this.isCanvas ) {
+			var widgetHeight = parseInt(this.widget.staticWidgetHeight);
 			if( 0 < this.widget.staticWidgetHeight ){
-				var widgetHeight = parseInt(this.widget.staticWidgetHeight);
 				if( this.widget.content.itemsCountPanel ) {
 					var offsetHeight = parseInt(this.widget.content.itemsCountPanel.offsetHeight);
 					if( 0 <  offsetHeight) {
@@ -1522,6 +1522,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		
 		try {
 			this.elm_viewport.style.height = parseInt(height) + 'px';
+			this.view();
 		} catch( ex ) {
 			msg.error( ex );
 		}

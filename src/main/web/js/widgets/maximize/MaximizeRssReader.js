@@ -996,7 +996,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 			//Delete the event of buttom that shows description desplay for AtomPub
 			//IS_Event.unloadCache(rssReader.id + "_desc");
 		});
-				
+		IS_Portal.adjustStaticWidgetHeight();
 		[
 			$("maximizeRssTitle_"+widget.id ),
 			$("maximizeRssPubDate_"+widget.id ),

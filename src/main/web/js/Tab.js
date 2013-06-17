@@ -1295,7 +1295,8 @@ IS_Portal.adjustStaticWidgetHeight = function(){
 			widget.staticWidgetHeight =  height;
 
 			if(widget.widgetType == 'RssReader' && widget.content.rssContentView){
-				widget.content.rssContentView.setViewportHeight( height );
+				// 16px is gadget footer size.
+				widget.content.rssContentView.setViewportHeight( height - 16);
 			}
 		}
 		isReady = true;
