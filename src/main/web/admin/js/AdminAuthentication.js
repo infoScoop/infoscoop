@@ -2,7 +2,6 @@ var emptyConsumerData = {'id':'', 'gadget_url':[],'service_name':'','consumer_ke
 var oauthConsumerList = [];
 var uploadedGadgets = [];
 var tempGadgetList = [];
-var editModal = [];
 ISA_Authentication = {
 	build: function(){
 		var container = document.getElementById("authentication");
@@ -36,6 +35,10 @@ ISA_Authentication = {
 
 		this.currentModal = new Control.Modal( '', {
 			closeOnClick: false
+		});
+		
+		this.consumerFormModal = new Control.Modal('', {
+			width: 650
 		});
 		
 		//uploaded gadget list
@@ -344,15 +347,11 @@ ISA_Authentication = {
 		var addButton =ISA_Admin.createIconButton(ISA_R.alb_add, ISA_R.alb_add, "add.gif", "left");
 		container.appendChild(addButton);
 		
-		//add Modal to addButton
-		var modal = new Control.Modal('',{
-			width: 650
-		});
-		IS_Event.observe(addButton, "click", function(modal){
-			modal.container.update(this._createConsumerForm(emptyConsumerData, oauthConsumerList.length, true));
+		IS_Event.observe(addButton, "click", function(e){
+			this.consumerFormModal.container.update(this._createConsumerForm(emptyConsumerData, oauthConsumerList.length, true));
 			$('gadget_opt_url').checked = true;
-			modal.open();
-			}.bind(this, modal), false, "_adminAuthentication"
+			this.consumerFormModal.open();
+			}.bind(this), false, "_adminAuthentication"
 		);
 	},
 	
@@ -412,17 +411,10 @@ ISA_Authentication = {
 		consumerListTable.appendChild(tr);
 		
 		IS_Event.observe(editImg, "click", function(elementId){
-			var modal = editModal[elementId];
-			if(!modal){
-				modal = new Control.Modal('', {
-					width: 650
-				});
-				editModal[elementId] = modal;				
-			}
-			modal.container.update(this._createConsumerForm(consumer, index, false));
+			this.consumerFormModal.container.update(this._createConsumerForm(consumer, index, false));
 			this._displayConsumerKeySecret(elementId);
 			$('gadget_opt_url').checked = true;
-			modal.open();
+			this.consumerFormModal.open();
 			}.bind(this, elementId), false, "_adminAuthentication"
 		);
 	},
@@ -436,17 +428,10 @@ ISA_Authentication = {
 		serviceNameDiv.innerHTML = escapeHTMLEntity(consumer['service_name']);
 		var editImg = $.IMG({id:elementId +"_edit", src:"../../skin/imgs/edit.gif", title:ISA_R.alb_editing, style:'cursor:pointer'});
 		IS_Event.observe(editImg, "click", function(elementId){
-			var modal = editModal[elementId];
-			if(!modal){
-				modal = new Control.Modal('', {
-					width: 650
-				});
-				editModal[elementId] = modal;				
-			}
-			modal.container.update(this._createConsumerForm(consumer, index, false));
+			this.consumerFormModal.container.update(this._createConsumerForm(consumer, index, false));
 			this._displayConsumerKeySecret(elementId);
 			$('gadget_opt_url').checked = true;
-			modal.open();
+			this.consumerFormModal.open();
 		}.bind(this, elementId), false, "_adminAuthentication");
 		editTd.replaceChild(editImg, editTd.firstChild);
 		
@@ -463,7 +448,7 @@ ISA_Authentication = {
 		);
 		var elementId = 'oauth_consumer_setting_' + index;
 		
-		var gadgetOptRadioUrl = $.INPUT({type:"radio", name:"gadget_opt", id:"gadget_opt_url"});
+		var gadgetOptRadioUrl = $.INPUT({type:"radio", name:"gadget_opt", id:"gadget_opt_url", checked:true});
 		var gadgetOptRadioUpload = $.INPUT({type:"radio", name:"gadget_opt", id:"gadget_opt_upload"});
 		var gadgetUrlAddButton = $.INPUT({type:"button", value:ISA_R.alb_add});
 		var uploadGadgetAddButton = $.INPUT({type:"button", value:ISA_R.alb_add});
