@@ -332,7 +332,7 @@ IS_SidePanel.prototype.classDef = function () {
 				IS_SidePanel.overlayTimer = false;
 			}, 100);
 		}
-		var y = findPosY( container.parentNode ) -document.documentElement.scrollTop;
+		var y = findPosY( container.parentNode ) -(document.documentElement.scrollTop || document.body.scrollTop);
 		if( y < 0 )
 			y = 0;
 		
@@ -345,7 +345,7 @@ IS_SidePanel.prototype.classDef = function () {
 		if( width > 0 )
 			treeOpen.left = container.firstChild.style.width = (width +1) + "px";
 		
-		y += document.documentElement.scrollTop;
+		y += (document.documentElement.scrollTop || document.body.scrollTop);
 		treeOpen.style.top = container.style.top = y + "px";
 	}
 	
