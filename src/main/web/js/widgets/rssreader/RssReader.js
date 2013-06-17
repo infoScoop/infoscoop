@@ -1559,7 +1559,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		if( item && item.height )
 			return item.height;
 		
-		if( this.render.getDefaultHeight )
+		if( this.render && this.render.getDefaultHeight )
 			return this.render.getDefaultHeight( this.renderContext );
 		
 		return DEFAULT_HEIGHT;
