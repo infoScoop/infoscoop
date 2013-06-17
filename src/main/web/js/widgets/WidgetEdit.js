@@ -36,7 +36,8 @@ IS_Widget.WidgetEdit = function (widget) {
 					return;
 				target = target.parentNode;
 			}
-			this.style.display = "none"
+			this.style.display = "none";
+			IS_Portal.behindIframe.hide();
 		}.bind(divWidgetEditHeader), false, this.closeId);
 	}
 	
