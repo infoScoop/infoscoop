@@ -340,7 +340,10 @@ ISA_Authentication = {
 		
 		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
 		controlDiv.appendChild(refreshDiv);
-		IS_Event.observe(refreshDiv, "click", this._displayConsumer.bind(this), false, "_adminAuthentication");
+		IS_Event.observe(refreshDiv, "click", function(){
+			if(!ISA_Admin.checkUpdated())return;
+			this._displayConsumer();
+		}.bind(this), false, "_adminAuthentication");
 		
 		container.appendChild(controlDiv);
 		
@@ -814,7 +817,10 @@ ISA_Authentication = {
 		
 		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
 		controlDiv.appendChild(refreshDiv);
-		IS_Event.observe(refreshDiv, "click", this._displayContainerCert.bind(this), false, "_adminAuthenticationCert");
+		IS_Event.observe(refreshDiv, "click", function(){
+			if(!ISA_Admin.checkUpdated())return;
+			this._displayContainerCert();
+		}.bind(this), false, "_adminAuthenticationCert");
 		
 		container.appendChild(controlDiv);
 		
@@ -841,5 +847,12 @@ ISA_Authentication = {
 				$.TEXTAREA({id:'oauth_container_certificate', className:"configSetContent",value:certificate.certificate}))
 		);
 		container.appendChild( forms );
+		
+		var updatedFunc = function(){
+			ISA_Admin.isUpdated = true;
+		}
+		$jq('#oauth_container_consumer_key').change(updatedFunc);
+		$jq('#oauth_container_private_key').change(updatedFunc);
+		$jq('#oauth_container_certificate').change(updatedFunc);
 	}
 };
