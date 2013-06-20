@@ -739,7 +739,17 @@
 
   <servlet-mapping>
   	<servlet-name>GadgetResourceServlet</servlet-name>
+  	<url-pattern>/manager/tabadmin/gadget/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+  	<servlet-name>GadgetResourceServlet</servlet-name>
   	<url-pattern>/manager/menu/gadget/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+  	<servlet-name>GadgetResourceServlet</servlet-name>
+  	<url-pattern>/manager/menutree/gadget/*</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
