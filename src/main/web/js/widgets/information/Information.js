@@ -52,7 +52,7 @@ IS_Widget.Information.prototype.classDef = function() {
 	this.displayContents = function () {
 		var container = widget.elm_widget.parentNode;
 		if( container ) {
-			if( !container.height && !container.style.height )
+			if( !container.height && !container.style.height && !widget.staticWidgetHeight )
 				widget.elm_widgetContent.style.height = '200px';
 		}
 		
