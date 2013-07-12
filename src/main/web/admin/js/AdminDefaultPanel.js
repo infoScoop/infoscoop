@@ -678,15 +678,10 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		sortableTd.style.textAlign = 'center';
 		if(!jsonRole.isDefault){
 			var imgSrc = imageURL +"drag.gif";
-
-			var sortableImg;
-			if( Browser.isIE ) {
-				sortableImg = document.createElement("span");
-				sortableImg.style.backgroundImage = "url( "+imgSrc+" )";
-			} else {
-				sortableImg = document.createElement("img");
-				sortableImg.src = imgSrc;
-			}
+			
+			var sortableImg = document.createElement("img");
+			sortableImg.src = imgSrc;
+			
 			sortableImg.style.width = "16px";
 			sortableImg.style.height = "16px";
 			sortableImg.style.cursor = "move";
