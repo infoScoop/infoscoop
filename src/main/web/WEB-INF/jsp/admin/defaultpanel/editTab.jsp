@@ -73,6 +73,9 @@
 				return false;
 		}
 		$jq("#backToTabList").click(checkUpdated);
+		$jq("#tabDesc").change(function(){
+			ISA_Admin.isUpdated = true;
+		});
 
 		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
 		IS_SiteAggregationMenu.init();
