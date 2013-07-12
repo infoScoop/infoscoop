@@ -351,7 +351,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		controlModal.container.update(ISA_R.ams_applyingChanges);
 		controlModal.open();
 		
-		var disableDefault = $jq('#disableDefaultCheck').attr('checked')? true : false;
+		var disableDefault = $jq('#disableDefaultCheck').prop('checked')? true : false;
 		
 		var url = adminHostPrefix + "/services/tabLayout/commitDefaultPanel";
 		var opt = {
