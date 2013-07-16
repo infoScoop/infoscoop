@@ -2022,7 +2022,11 @@ IS_Widget.RssReader.showAccessStats = function(widget){
 		win.setContent( multiAccessStatContent );
 		
 		IS_Widget.RssReader.buildMultiAccessStatContent( widget,multiAccessStatContent );
-		win.setSize( multiAccessStatContent.offsetWidth +24+'px',multiAccessStatContent.offsetHeight +16+'px' );
+
+		// Need for hiding scroll bar. (Value '24' or '16' is not strict.)
+		win.setSize(multiAccessStatContent.offsetWidth + 24 + 'px',
+				multiAccessStatContent.offsetHeight + 16 + 'px');
+		win.showCenter();
 	}
 }
 
@@ -2068,7 +2072,8 @@ IS_Widget.RssReader.buildMultiAccessStatContent = function( widget,root ) {
 		
 		var iframe = document.createElement("iframe");
 		iframe.frameBorder = 0;
-		iframe.style.width = iframe.style.height = "100%";
+		iframe.style.width = "600px";
+		iframe.style.height = "350px";
 		iframe.src = "./blank.html";
 		content.appendChild( iframe );
 	});
