@@ -459,7 +459,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 						allertSetting,
 					  	newMenuItem.menuType,
 					  	newMenuItem.auths || null,
-						newMenuItem.menuTreeAdmins || null,
+						newMenuItem.menuTreeAdmins || null
 					  ]),
 					  asynchronous:true,
 					  onSuccess: function(response){
