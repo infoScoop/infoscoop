@@ -24,7 +24,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 		return;
 	var allPreference = $.A({
 		className:'portal-user-menu-link'
-		, href:'javascript:void(0);'
+		, href:'#'
 		, title:IS_R.lb_setupAll}
 	);
 	preferenceDiv.appendChild(allPreference);
