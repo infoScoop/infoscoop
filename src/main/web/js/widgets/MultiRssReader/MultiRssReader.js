@@ -1008,15 +1008,17 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 				messageDiv.style.color = "#666";
 				div.appendChild( messageDiv );
 				
-				var closeAnchor = document.createElement("a");
+				var closeAnchor = document.createElement("span");
 
 				closeAnchor.innerHTML = IS_R.lb_bracketClose;
 				closeAnchor.href = "javascript:void(0)"
-				closeAnchor.style.color = "#77C"
+				closeAnchor.style.color = "#77C";
+				closeAnchor.style.cursor = "pointer";
 				div.appendChild( closeAnchor );
 				
 				IS_Event.observe( div,"click",this_.closeDiv.bind( this_,div ),false,eventId );
-				
+				IS_Event.observe( closeAnchor, "mouseover", function(){closeAnchor.style.textDecoration = "underline";});
+				IS_Event.observe( closeAnchor, "mouseout", function(){closeAnchor.style.textDecoration = "none";});
 				this_.errorPanel.appendChild( div );
 			}
 			
