@@ -51,6 +51,8 @@ ISA_I18N.prototype.classDef = function() {
 		loadingMessage.style.clear = "both";
 		loadingMessage.style.cssFloat = "left";
 		container.appendChild(loadingMessage);
+		
+		this.localeModal = new Control.Modal('');
 	};
 	
 	this.display = function() {
@@ -178,8 +180,7 @@ ISA_I18N.prototype.classDef = function() {
 			headerRight.style.width = "100%";
 			headerRight.style.textAlign = "right";
 			
-			var localeModal = new Control.Modal('');
-			buildLink(headerRight, ISA_R.alb_addLocale, self.showLocaleEditor.bind(this, localeModal, type));
+			buildLink(headerRight, ISA_R.alb_addLocale, self.showLocaleEditor.bind(this, this.localeModal, type));
 			headerTd.appendChild(headerRight);
 			headerTr.appendChild(headerTd);
 			tbody.appendChild(headerTr);
@@ -206,7 +207,7 @@ ISA_I18N.prototype.classDef = function() {
 					exportLink.href = adminHostPrefix + "/services/holidays/downloadHoliday?country=" +country + "&lang=" + lang;
 				}
 				
-				buildLink(linkTd, ISA_R.alb_import, self.showCSVImportForm.bind(this, localeModal, type, country, lang));
+				buildLink(linkTd, ISA_R.alb_import, self.showCSVImportForm.bind(this, this.localeModal, type, country, lang));
 				
 				var fileForm = document.createElement("input");
 				fileForm.type = "file";
@@ -273,6 +274,8 @@ ISA_I18N.prototype.classDef = function() {
 		form.target = "csvResult";
 		form.method = "POST";
 		form.enctype="multipart/form-data";
+		if(Browser.isIE)
+			form.encoding="multipart/form-data";
 		
 		fileForm = document.createElement("input");
 		fileForm.type = "file";
