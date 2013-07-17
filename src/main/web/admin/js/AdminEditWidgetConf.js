@@ -483,7 +483,7 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 		}
 		
 		prefConf.calendar = new CalendarInput( textbox, dateFormat, onChange.bind(textbox, prefConf) );
-		prefConf.calendar.contents.style.zIndex = 10000;
+		prefConf.calendar.contents.style.zIndex = 99999;
 		setDefaultHilight(textbox, prefValue);
 		break;
 
