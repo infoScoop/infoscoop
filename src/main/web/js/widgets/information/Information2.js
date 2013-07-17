@@ -281,7 +281,7 @@ IS_Widget.Information2.prototype.classDef = function() {
 								var currentScrollTop = widget.elm_widgetContent.scrollTop;
 								var targetScrollTop = this.focusEl.offsetTop - widget.elm_widgetContent.offsetTop;
 								if(targetScrollTop < currentScrollTop)
-									widget.elm_widgetContent.scrollTop = targetScrollTop + 'px';
+									widget.elm_widgetContent.scrollTop = targetScrollTop;
 							}
 						}
 					};
