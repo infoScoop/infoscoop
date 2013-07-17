@@ -382,9 +382,6 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 						},
 						beforeClose: function() {
 						  	toggleMode( false );
-						  	
-						  	if( modalDiv.parentNode ) //CHECKIT modalDiv is emputy at update("") in IE6
-							  	modalDiv.parentNode.removeChild( modalDiv );
 						},
 						afterClose: function(){
 						  	if( IS_Widget.MaximizeWidget )
