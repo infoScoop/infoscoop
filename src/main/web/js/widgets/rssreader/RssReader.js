@@ -2064,6 +2064,8 @@ IS_Widget.RssReader.buildMultiAccessStatContent = function( widget,root ) {
 		
 		var content = document.createElement("div");
 		content.id = encodeURIComponent( url );
+		content.style.width = "100%";
+		content.style.height = "100%";
 		contents.appendChild( content );
 		
 		var iframe = document.createElement("iframe");
