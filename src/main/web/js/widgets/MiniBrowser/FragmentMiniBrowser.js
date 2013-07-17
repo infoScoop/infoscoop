@@ -216,7 +216,12 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 	
 	this.adjustMaximizeHeight = function() {
 		if(widget.iframe)
-			widget.iframe.style.height = (getWindowSize(false) - findPosY( widget.elm_widgetContent ) -6) + "px";
+			/*
+			 * #506
+			 * Reason keeping this code : It's not clear why overriding from parent class.
+			 */
+//			widget.iframe.style.height = (getWindowSize(false) - findPosY( widget.elm_widgetContent ) -6) + "px";
+			widget.adjustMaximizeHeight();
 	}
 	
 	this.turnBackIconHandler = function (e) {
