@@ -215,8 +215,8 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 	}
 	
 	this.adjustMaximizeHeight = function() {
-		if(widget.iframe)
-			widget.iframe.style.height = (getWindowSize(false) - findPosY( widget.elm_widgetContent ) -6) + "px";
+		if (widget.iframe)
+			widget.adjustMaximizeHeight();
 	}
 	
 	this.turnBackIconHandler = function (e) {
