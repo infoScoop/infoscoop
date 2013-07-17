@@ -87,12 +87,17 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 			this.containerTr.style.paddingBottom = this.containerTr.style.paddingTop = 0;
 			this.containerTr.style.borderBottom = "1px solid #CCC";
 			this.containerTr.__key__ = this.key;
+
+			this.rssItemTitleBox = document.createElement("div");
+			this.rssItemTitleBox.className = "rssItemTitleBox";
+			this.rssItemTitleBox.style.paddingTop = "1.5px";
+			this.rssItemTitleBox.style.paddingRight = "1px";
+			this.containerTr.appendChild( this.rssItemTitleBox);
 			
 			this.imgTd = document.createElement("div");
 			this.imgTd.style.verticalAlign = "top";
 			this.imgTd.width = "1%";
-			this.imgTd.style.cssFloat = this.imgTd.style.styleFloat = "left";
-			this.containerTr.appendChild( this.imgTd);
+			this.rssItemTitleBox.appendChild( this.imgTd);
 		} else {
 			this.removeChildren( this.imgTd );
 		}
@@ -116,7 +121,7 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 				this.imgTd.firstChild.style.width = "auto";
 			}
 			
-			this.imgTd.style.display = "";
+			this.imgTd.style.display = "table-cell";
 		} else {
 			this.imgTd.style.display = "none";
 		}
@@ -135,9 +140,10 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 			
 			this.rssItemTd = document.createElement("div");
 			this.rssItemTd.style.overflow = "hidden";
-			this.rssItemTd.style.width = "100%";
+			this.rssItemTd.style.display = "table-cell";
 			this.rssItemTd.appendChild( this.rssItemDiv );
-			this.containerTr.appendChild( this.rssItemTd );
+
+			this.rssItemTitleBox.appendChild( this.rssItemTd );
 		}
 
 		//if (widget.originalWidget.content.rss.atompub_buttons) {
