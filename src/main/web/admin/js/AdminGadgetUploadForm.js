@@ -398,18 +398,18 @@ ISA_GadgetResources.prototype = {
 		
 		resource.remove({
 			onSuccess: function( response ) {
-				modal.close();
+				Control.Modal.close();
 				
 				this.reloadGadgetConf();
 			}.bind( this ),
 			onFailure: function( response ) {
-				modal.close();
+				Control.Modal.close();
 				
 				alert( ISA_R.ams_gadgetResourceDeleteFailed +"\n"+response.responseText );
 				msg.error( ISA_R.ams_gadgetResourceDeleteFailed +"\n"+response.responseText );
 			},
 			onException: function( resp,ex ) {
-				modal.close();
+				Control.Modal.close();
 				
 				alert( ISA_R.ams_gadgetResourceDeleteFailed );
 				msg.error( ISA_R.ams_gadgetResourceDeleteFailed +getErrorMessage( ex ));
