@@ -22,7 +22,7 @@ import java.util.TimeZone;
 
 public class UserInfo {
 	private int clientTimezoneOffset;
-	private TimeZone clientTimezone;
+	private TimeZone clientTimezone = TimeZone.getTimeZone("UTC");
 
 	public int getClientTimezoneOffset(){
 		return this.clientTimezoneOffset;
