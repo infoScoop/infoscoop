@@ -1494,10 +1494,10 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		childUl.style.visibility = 'visible';
 
 		// Back to the original place.
-		childUl.style.left = (parent.offsetLeft + parent.offsetWidth);
+		childUl.style.left = (parent.offsetLeft + parent.offsetWidth) + "px";
 
 		if((findPosX(childUl) + childUl.offsetWidth ) > (getWindowSize(true) - 25) ){
-			childUl.style.left = (parent.offsetLeft - childUl.offsetWidth);
+			childUl.style.left = (parent.offsetLeft - childUl.offsetWidth) + "px";
 		}
 
 		//Adjusting Y axis
@@ -1612,8 +1612,8 @@ IS_SiteAggregationMenu.getMultiDropDraggable = function(dragElement, menuItem, h
 			},
 			getDummy: function(){
 				var dummyNode = this.cloneNode(true);
-				dummyNode.style.left = 0;
-				dummyNode.style.top = 0;
+				dummyNode.style.left = 0 + "px";
+				dummyNode.style.top = 0 + "px";
 				return dummyNode;
 			}.bind(dragElement),
 			startDroppableElement: document.body
@@ -2072,7 +2072,7 @@ if( Browser.isSafari1 ) {
 
 				var ele = draggable.element;
 				var styleObj = ele.style;
-				styleObj.top = styleObj.left = styleObj.bottom = styleObj.right = 0;
+				styleObj.top = styleObj.left = styleObj.bottom = styleObj.right = 0 + "px";
 
 				var dummyDiv = document.createElement("div");
 				var parentNode = ele.parentNode;
