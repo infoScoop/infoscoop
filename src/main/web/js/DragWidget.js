@@ -982,7 +982,7 @@ IS_Draggable.prototype = {
   
   //Draw dragging
   draw: function(point, element, dummyElement) {
-  	point = [point[0]-this.scrollOffset[0], point[1]-this.scrollOffset[1]];
+  	point = [point[0]-document.documentElement.scrollLeft, point[1]-document.documentElement.scrollTop];
   	if(!element || !dummyElement)
 		element = dummyElement = IS_Draggable.dummyElement;
 
@@ -1005,14 +1005,14 @@ IS_Draggable.prototype = {
     	pos[1] += this.options.viewport.scrollTop;
     }
     
-    var p = [0,1].map(function(i){ 
-      return (point[i]-pos[i]-this.offset[i]) 
+    var p = [0,1].map(function(i){
+      return (point[i]-pos[i]-this.offset[i]);
     }.bind(this));
     
     var style = dummyElement.style;
     style.left = p[0] + "px";
     style.top  = p[1] + "px";
-    
+    console.log(style.top)
     if(style.visibility=="hidden") style.visibility = ""; // fix gecko rendering
   },
   
