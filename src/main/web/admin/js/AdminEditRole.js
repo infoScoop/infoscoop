@@ -485,7 +485,7 @@ function init() {
 		}
 		
 		if( widget.isGadget()) {
-			if( Browser.isIE ) {
+			if( Browser.isIE8 ) {
 				IS_Portal.adjustGadgetHeight( widget,true );
 			} else {
 				widget.loadContents();
