@@ -953,12 +953,13 @@ function _saveDynamicPanel(){
 			var wid = IS_Portal.getTrueId(widgetEl.id);
 			var widget = IS_Portal.getWidget(wid, IS_Portal.currentTabId);
 			var menuId = (widget.widgetConf.menuId)? widget.widgetConf.menuId : wid.substring(2);
+			var colnum = $jq(widget.elm_widget).parent().attr('colnum');
 			
 			var targetMenu = (IS_TreeMenu.types.topmenu)? IS_TreeMenu.types.topmenu : IS_TreeMenu.types.sidemenu;
 			var menuItem = {};
 			if(!targetMenu){
 				menuItem = {
-					id: +new Date(),
+					id: +new Date() + "_" + colnum + "_" + index,
 					type: "notAvailable"
 				}
 			}else{
@@ -973,7 +974,6 @@ function _saveDynamicPanel(){
 				}
 			}
 			
-			var colnum = $jq(widget.elm_widget).parent().attr('colnum');
 			var widgetJSON = {
 				id : "w_" + (menuItem.multi? menuItem.id + "_" + (+new Date()) + "_" + colnum + "_" + index : menuItem.id),
 				menuId : menuItem.id,
