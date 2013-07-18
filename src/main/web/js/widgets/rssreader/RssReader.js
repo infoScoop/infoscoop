@@ -1422,6 +1422,10 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		self = this;
 		this.widget = widget;
 		this.isStatic = widget.panelType == "StaticPanel" && widget.isStaticHeight;
+		if(!this.isStatic && widget.panelType == "StaticPanel"){
+			var tabNumber = widget.tabId.substr(3);
+			this.isStatic = IS_Customization["staticPanel"+tabNumber].adjustToWindowHeight;
+		}
 		this.isCanvas = opt.isCanvas;
 		this.rssContent = rssContent;
 		
