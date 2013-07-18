@@ -963,8 +963,14 @@ function _saveDynamicPanel(){
 				}
 			}else{
 				menuItem = targetMenu.menuItemList[menuId];
-				if(!menuItem)
-					return true;
+				if(!menuItem){
+					if(IS_TreeMenu.types.sidemenu){
+						targetMenu = IS_TreeMenu.types.sidemenu;
+						menuItem = targetMenu.menuItemList[menuId];
+					}else{
+						return true;
+					}
+				}
 			}
 			
 			var colnum = $jq(widget.elm_widget).parent().attr('colnum');
