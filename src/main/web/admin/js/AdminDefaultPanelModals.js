@@ -648,7 +648,7 @@ ISA_DefaultPanel.prototype.templates = {
 		//Give id attribute to HTML
 		//TODO Is class="column" suite for Widget?
 		var regexp = new RegExp("class=\"static_column\"");
-		if(Browser.isIE){
+		if(Browser.isIE8){
 			regexp = new RegExp("class=static_column");
 		}
 		var newhtml = "";
