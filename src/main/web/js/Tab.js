@@ -294,10 +294,17 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 		IS_Portal.tabDrag(e, tab);
 	}
 	IS_Event.observe(tab, 'mousedown', tabOnMousedown, false, tab.id);
-	
+
+	var parenthesisSpan = document.createElement('span');
+	parenthesisSpan.className = 'parenthesis';
+	// #511
+	// ToDo: Waiting for the outstanding solution.
+	parenthesisSpan.style.padding = "4px 4px 3px 0px";
+	if(Browser.isIE) parenthesisSpan.style.padding = "0px 4px 7.5px 0px";
+
 	innerSpan.appendChild(tabBaseDiv);
-	
 	outerSpan.appendChild(innerSpan);
+	outerSpan.appendChild(parenthesisSpan);
 	tab.appendChild(outerSpan);
 	
 	IS_Portal.setTabDroppable(tab);

@@ -69,12 +69,15 @@
 .infoScoop #tabs span.inner {
     float:left;
     display:block;
-    background:url("imgs/tabright.gif") no-repeat right top;
-    padding:2px 7px 2px 7px;
+    background:url("imgs/tabcontents.gif") center top;
+    padding:2px 7px 3px 7px;
 	white-space:nowrap;
 	height:18px;
 	//height:22px;/* for IE */
 	overflow: hidden;
+}
+.infoScoop #tabs span.parenthesis {
+    background:url("imgs/tabright.gif") no-repeat right top;
 }
 
 .infoScoop #tabs span.inner table {
@@ -111,6 +114,13 @@
 .infoScoop #tabs .tab.selected span.outer {
     background-position:0% 0px;
 	cursor:move;
+}
+
+.infoScoop #tabs .tab span.parenthesis {
+	background-position:100% -24px;
+}
+.infoScoop #tabs .tab.selected span.parenthesis {
+    background-position:100% 0px;
 }
 
 .infoScoop #tabs .tab span.inner {

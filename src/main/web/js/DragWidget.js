@@ -1012,7 +1012,6 @@ IS_Draggable.prototype = {
     var style = dummyElement.style;
     style.left = p[0] + "px";
     style.top  = p[1] + "px";
-    console.log(style.top)
     if(style.visibility=="hidden") style.visibility = ""; // fix gecko rendering
   },
   
