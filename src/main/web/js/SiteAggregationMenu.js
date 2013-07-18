@@ -970,7 +970,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 
 		if(hasChilds && !parentMenuItem.isChildrenBuild){
 			var height = 21;
-			var windowY = getWindowSize(false) - (findPosY(parent) + parent.offsetHeight + 20);
+			var windowY = (getWindowSize(false) + document.documentElement.scrollTop) - (findPosY(parent) + parent.offsetHeight + 20);
 
 			var num = windowY / height;
 			num = Math.floor(num);

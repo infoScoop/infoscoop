@@ -1032,3 +1032,7 @@ function updatePanel(){
 	openerPanel.updatePanel(true);
 }
 Event.observe(window, 'beforeunload', updatePanel);
+
+if(displayTopMenu && IS_SiteAggregationMenu.topMenuIdList)
+	Event.observe(window, "scroll",  IS_SiteAggregationMenu.resetMenu, false);
+
