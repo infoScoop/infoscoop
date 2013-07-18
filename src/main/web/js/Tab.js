@@ -245,10 +245,11 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 	tab.setAttribute("href",( tab.href = "#panel"+tabNumber ));
 	tab.className = "tab";
 	
-	var outerSpan = document.createElement('span');
+	var outerSpan = document.createElement('div');
 	outerSpan.className = 'outer';
-	var innerSpan = document.createElement('span');
-	innerSpan.className = 'inner';
+	var innerSpan = document.createElement('div');
+	innerSpan.className =  'inner';
+	if(Browser.isIE && !Browser.isIE8) innerSpan.className = 'inner inner9';
 	
 	IS_EventDispatcher.addListener("tabLoadCompleted",tab.id,function() {
 			Element.removeClassName( tab,"loading");
@@ -265,7 +266,7 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 
 	// static-pin
 	if(disabledDynamicPanel){
-		var pinDiv = $.DIV({width:'6px', className:"inlineBlock"}, $.IMG({src:imageURL+"pin-small.gif", className:"fixedTab", title:IS_R.ms_thisIsFixedTab}));
+		var pinDiv = $.DIV({width:'6px', className:"inlineBlock"}, $.IMG({src:imageURL+"pin-small.gif", className:"fixedTab", title:IS_R.ms_thisIsFixedTab, style:"left:3px;"}));
 		tabBaseDiv.appendChild(pinDiv);
 	}
 
@@ -295,17 +296,17 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 	}
 	IS_Event.observe(tab, 'mousedown', tabOnMousedown, false, tab.id);
 
-	var parenthesisSpan = document.createElement('span');
+	var parenthesisSpan = document.createElement('div');
 	parenthesisSpan.className = 'parenthesis';
-	// #511
-	// ToDo: Waiting for the outstanding solution.
-	parenthesisSpan.style.padding = "4px 4px 3px 0px";
-	if(Browser.isIE) parenthesisSpan.style.padding = "0px 4px 7.5px 0px";
+
+	var tabBase = document.createElement('div');
+	tabBase.style.height = "23px";
 
 	innerSpan.appendChild(tabBaseDiv);
-	outerSpan.appendChild(innerSpan);
-	outerSpan.appendChild(parenthesisSpan);
-	tab.appendChild(outerSpan);
+	tabBase.appendChild(outerSpan);
+	tabBase.appendChild(innerSpan);
+	tabBase.appendChild(parenthesisSpan);
+	tab.appendChild(tabBase);
 	
 	IS_Portal.setTabDroppable(tab);
 	

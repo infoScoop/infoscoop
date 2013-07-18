@@ -58,29 +58,33 @@
     margin:0;
     padding:0;
 }
-.infoScoop #tabs span.outer {
-	position:relative;
-	float:left;
+.infoScoop #tabs div.outer {
+	display: inline-block;
     background:url("imgs/tableft.gif") no-repeat left top;
-    margin:0 1px;
-    padding:0 0 0 4px;
+    width:5px;
+    height:23px;
+    margin:0 0 0 2px;
     text-decoration:none;
 }
-.infoScoop #tabs span.inner {
-    float:left;
-    display:block;
+.infoScoop #tabs div.inner {
+    display:inline-block;
     background:url("imgs/tabcontents.gif") center top;
-    padding:2px 7px 3px 7px;
+    padding:2px 3px 3px 7px;
 	white-space:nowrap;
 	height:18px;
 	//height:22px;/* for IE */
 	overflow: hidden;
+    text-decoration:none;
 }
-.infoScoop #tabs span.parenthesis {
+.infoScoop #tabs div.parenthesis {
+	display: inline-block;
+    width:5px;
+    height:23px;
     background:url("imgs/tabright.gif") no-repeat right top;
+    text-decoration:none;
 }
 
-.infoScoop #tabs span.inner table {
+.infoScoop #tabs div.inner table {
 	height: 18px;
 	//height: 22px;/* for IE */
 }
@@ -103,7 +107,7 @@
 	border-width:1px 1px 0 1px;
 }
 
-.infoScoop #tabs .tab span.outer {
+.infoScoop #tabs .tab div.outer {
 	top:0;
 	background-position:0% -24px;
 	cursor:pointer;
@@ -111,27 +115,34 @@
 .infoScoop #tabs .tab.selected {
 	top :1px;
 }
-.infoScoop #tabs .tab.selected span.outer {
+.infoScoop #tabs .tab.selected div.outer {
     background-position:0% 0px;
 	cursor:move;
 }
 
-.infoScoop #tabs .tab span.parenthesis {
+.infoScoop #tabs .tab div.parenthesis {
+	top:0;
 	background-position:100% -24px;
+	cursor:pointer;
 }
-.infoScoop #tabs .tab.selected span.parenthesis {
+.infoScoop #tabs .tab.selected div.parenthesis {
     background-position:100% 0px;
 }
 
-.infoScoop #tabs .tab span.inner {
+.infoScoop #tabs .tab div.inner {
     background-position:100% -24px;
+    cursor:pointer;
+}
+.infoScoop #tabs .tab div.inner.inner9{
+    background-position:100% -23.5px;
 }
 
-.infoScoop #tabs .tab.selected span.inner {
+.infoScoop #tabs .tab.selected div.inner {
     background-position:100% 0px;
     _padding-right: 0px;
 }
-.infoScoop #tabs .tab.loading span.inner {
+
+.infoScoop #tabs .tab.loading div.inner {
 	padding-left: 0px;
 }
 .infoScoop #tabs .tab .tabTitle{
