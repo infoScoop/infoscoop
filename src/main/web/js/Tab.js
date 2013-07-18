@@ -249,7 +249,6 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 	outerSpan.className = 'outer';
 	var innerSpan = document.createElement('div');
 	innerSpan.className =  'inner';
-	if(Browser.isIE && !Browser.isIE8) innerSpan.className = 'inner inner9';
 	
 	IS_EventDispatcher.addListener("tabLoadCompleted",tab.id,function() {
 			Element.removeClassName( tab,"loading");
