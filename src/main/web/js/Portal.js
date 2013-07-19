@@ -2299,10 +2299,10 @@ IS_Portal.CommandBar = {
 		var portalUserMenu = $('portal-user-menu');
 		var portalUserMenuLabel = $('portal-user-menu-label');
 		//IE: if user name is long, limit user menu width 150
-		// if(Browser.isIE && portalUserMenuLabel.offsetWidth > 150){
-		// 	Element.setStyle(portalUserMenu, {width: '150px'});
-		// 	Element.setStyle(portalUserMenuLabel, {width: '140px'});
-		// }
+		if(Browser.isIE8 && portalUserMenuLabel.offsetWidth > 150){
+			Element.setStyle(portalUserMenu, {width: '155px'});
+//			Element.setStyle(portalUserMenuLabel, {width: '140px'});
+		}
 		
 		var commandBarItems = $$("#portal-command .commandbar-item");
 		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', style:'display:none;'});
