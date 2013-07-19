@@ -1221,17 +1221,20 @@ IS_Portal.Trash = new function() {
 			delete newwidget.deleteDate;
 			var w = IS_WidgetsContainer.addWidget(IS_Portal.currentTabId, newwidget, false, false, newSubWidgets);
 			IS_Widget.setWidgetLocationCommand(w);
-			emptyWidget(widget)();
-			
 			IS_Portal.widgetDropped( w );
-			
-			newSubWidgets.each( function( subWidget ){
-				var sw = IS_Portal.getWidget( subWidget.id,IS_Portal.curentTabId );
-				IS_Portal.widgetDropped( sw );
-			});
-			
-			if( newwidget.parentId )
-				delete newwidget.parentId;
+			if(typeof w !== "undefined") {
+				emptyWidget(widget)();
+				
+				newSubWidgets.each( function( subWidget ){
+					var sw = IS_Portal.getWidget( subWidget.id,IS_Portal.curentTabId );
+					IS_Portal.widgetDropped( sw );
+				});
+				
+				if( newwidget.parentId )
+					delete newwidget.parentId;
+			}else{
+				hideContextMenu();
+			}
 		}
 	}
 	function existWidget(widgetId, type){
@@ -2158,13 +2161,9 @@ IS_Portal.buildLogo = function() {
 }*/
 
 IS_Portal.widgetDropped = function( widget ) {
+	if(!widget) return;
 	if( IS_TreeMenu.isMenuItem( widget.id ) )
 		IS_EventDispatcher.newEvent( IS_Widget.DROP_WIDGET, IS_TreeMenu.getMenuId( widget.id ) );
-	
-//	var url = widget.getUserPref("url");
-//	if( url ) {
-//		IS_EventDispatcher.newEvent( IS_Widget.DROP_URL,url,widget );
-//	}
 }
 
 // create message bar element.

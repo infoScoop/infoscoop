@@ -2168,6 +2168,7 @@ IS_Widget.updateCheckedFeedCommand = function(owner){
 */
 
 IS_Widget.setWidgetLocationCommand = function(owner){
+	if(!owner) return;
 	var sibling = "";
 	if(owner.isBuilt){
 		sibling = (owner.elm_widget.previousSibling)? IS_Portal.getTrueId(owner.elm_widget.previousSibling.id) : "";

@@ -183,8 +183,7 @@ IS_TreeMenu.addMenuItem = function(menuItem){
 
 			var multiWidget = IS_WidgetsContainer.addWidget( IS_Portal.currentTabId, widgetConf , false, false, [subWidgetConf]);
 			IS_Widget.setWidgetLocationCommand(multiWidget);
-
-			widget = multiWidget.content.getRssReaders()[0];
+			if(typeof multiWidget !== "undefined") widget = multiWidget.content.getRssReaders()[0];
 		}else{
 			// Adding itself to existing cooperativ Multi
 			var targetWidget = IS_Portal.getWidget(divParent.id, IS_Portal.currentTabId);
@@ -233,7 +232,7 @@ IS_TreeMenu.addMenuItem = function(menuItem){
 	}else {
 		widgetConf = IS_SiteAggregationMenu.getConfigurationFromMenuItem(menuItem, 0);
 		widget = IS_WidgetsContainer.addWidget( IS_Portal.currentTabId, widgetConf );
-	 	IS_Widget.setWidgetLocationCommand(widget);
+		IS_Widget.setWidgetLocationCommand(widget);
 	}
 
 	IS_Portal.widgetDropped( widget );
