@@ -519,7 +519,7 @@ div#search-iframe div.search_tabs{
 }
 
 .infoScoop .iframetoolbar #iframeUrl {
-	width: 100%;
+	width: 99%;
 }
 
 .infoScoop .iframetoolbar.no-url .toolbar-item.mail,

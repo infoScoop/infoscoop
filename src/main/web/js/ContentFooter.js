@@ -57,7 +57,6 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 		toolBarIconTable.className = "toolBarTable";
 		toolBarIconTable.id = self.id+"_tools";
 		toolBarIconTable.style.width = "auto";
-		toolBarIconTable.style.marginLeft = "2px";
 		toolBarIconTable.cellPadding = "0";
 		toolBarIconTable.cellSpacing = "0";
 		toolBarIconTbody = document.createElement("tbody");
