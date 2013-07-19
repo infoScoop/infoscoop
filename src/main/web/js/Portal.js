@@ -2337,6 +2337,7 @@ IS_Portal.CommandBar = {
 
 		if(!this.hasCommandBar){
 			$("command-bar").hide();
+			if(IS_SidePanel.adjustPosition) IS_SidePanel.adjustPosition();
 		}
 		else{
 			IS_Portal.CommandBar.show();
