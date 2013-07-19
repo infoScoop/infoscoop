@@ -1203,18 +1203,21 @@ ISA_ProxyConf.HeaderConfigPane.prototype = {
 	},
 	buildSendingCookiesCustomizePane: function(sendingcookies,allcookies ) {
 		var ul2 = this.sendingCookieUl = $( document.createElement("ul") );
+		var cookieControls = $( document.createElement("div") );
+		ul2.appendChild(cookieControls);
+		
 		ul2.setStyle( this.categoryStyle );
 		var allCookieRadio = this.allCookieRadio = ISA_Admin.createBaseRadio("sending_cookie");
 		allCookieRadio.id = "cookie_sendall";
-		ul2.appendChild( this.wrapLabel("span",allCookieRadio,ISA_R.alb_sendAllCookies,{"padding-right":"10px"}) );
+		cookieControls.appendChild( this.wrapLabel("span",allCookieRadio,ISA_R.alb_sendAllCookies,{"padding-right":"10px"}) );
 		
 		var noCookieRadio = this.noCookieRadio = ISA_Admin.createBaseRadio("sending_cookie");
 		noCookieRadio.id = "cookie_notsending";
-		ul2.appendChild( this.wrapLabel("span",noCookieRadio,ISA_R.alb_sendNoCookie,{"padding-right":"10px"}) );
+		cookieControls.appendChild( this.wrapLabel("span",noCookieRadio,ISA_R.alb_sendNoCookie,{"padding-right":"10px"}) );
 		
 		var specifyCookieRadio = this.specifyCookieRadio = ISA_Admin.createBaseRadio("sending_cookie");
 		specifyCookieRadio.id = "cookie_specify";
-		ul2.appendChild( this.wrapLabel("span",specifyCookieRadio,ISA_R.alb_specifySendingCookies,{"padding-right":"10px"}) );
+		cookieControls.appendChild( this.wrapLabel("span",specifyCookieRadio,ISA_R.alb_specifySendingCookies,{"padding-right":"10px"}) );
 		Event.observe( noCookieRadio,"click",this.sendNoCookie.bind(this,this.sendingCookies));
 		Event.observe( allCookieRadio,"click",this.sendAllCookie.bind(this,this.sendingCookies));	
 		Event.observe( specifyCookieRadio,"click",this.specifySendingCookies.bind(this));		
