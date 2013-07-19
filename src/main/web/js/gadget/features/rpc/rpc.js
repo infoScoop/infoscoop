@@ -556,6 +556,15 @@ if (!window['gadgets']['rpc']) { // make lib resilient to double-inclusion
      */
     function callSameDomain(target, rpc) {
       var targetEl = getTargetWin(target);
+      
+      // added by bit #516
+      try{
+        if(sameDomain[target])
+          sameDomain[target].constructor;
+      }catch(e){
+        sameDomain[target] = null;
+      }
+      
       if (!sameDomain[target] || (sameDomain[target] !== _flagCrossOrigin &&
               targetEl.Function.prototype !== sameDomain[target].constructor.prototype)) {
 
