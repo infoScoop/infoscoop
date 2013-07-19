@@ -122,7 +122,6 @@ IS_Portal.start = function() {
 	if(fixedPortalHeader) {
 		Event.observe(window, 'resize', IS_Portal.adjustPanelHeight, false);
 		IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustPanelHeight);
-		IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustIframeHeight);
 		IS_EventDispatcher.addListener("changeTab","",IS_Portal.adjustPanelHeight);
 	}
 	Event.observe(window, 'resize', IS_Portal.adjustSiteMenuHeight, false);
@@ -130,6 +129,7 @@ IS_Portal.start = function() {
 	Event.observe(window, 'resize', IS_Portal.adjustGadgetHeight , false);
 	Event.observe(window, 'resize', IS_Portal.adjustStaticWidgetHeight, false);
 	IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustStaticWidgetHeight);
+	IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustIframeHeight);
 
 	var messageBarDiv = $('message-bar-controles');
 	var messageMoreBtn = document.createElement('input');
