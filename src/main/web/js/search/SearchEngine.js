@@ -102,9 +102,9 @@ IS_SearchEngine.prototype.classDef = function() {
 		if(div.style.display != "none") {
 			div.style.display = "none";
 		} else {
-			div.style.width = this.tabA.offsetWidth - (Browser.isIE ? 0 : 6);
-			div.style.left = findPosX(this.tabA);
-			div.style.top = findPosY(this.tabA) + this.tabA.offsetHeight;
+			div.style.width = this.tabA.offsetWidth - 7.5 + 'px';
+			div.style.left = findPosX(this.tabA) + 'px';
+			div.style.top = findPosY(this.tabA) + this.tabA.offsetHeight + 'px';
 			div.style.display = "block";
 		}
 	}
