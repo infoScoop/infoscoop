@@ -276,7 +276,7 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 	//Menu
 	if(disabledDynamicPanel){
 		var refreshImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"refresh.gif", className:"selectMenu"});
-		var refreshImgDiv = $.DIV({className:"inlineBlock"}, refreshImg);
+		var refreshImgDiv = $.DIV({className:"inlineBlock tabTitleImg"}, refreshImg);
 		tabBaseDiv.appendChild(refreshImgDiv);
 		IS_Event.observe(refreshImg, 'click', function(e){
 			var tabObj = IS_Portal.tabs[this.id];
@@ -284,7 +284,7 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 		}.bindAsEventListener(tab), false, tab.id);
 	} else {
 		var selectMenuImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"bullet_arrow_down.gif", className:"selectMenu"});
-		var menuImgDiv = $.DIV({className:"inlineBlock"}, selectMenuImg);
+		var menuImgDiv = $.DIV({className:"inlineBlock tabTitleImg"}, selectMenuImg);
 		tabBaseDiv.appendChild(menuImgDiv);
 		IS_Event.observe(selectMenuImg, 'click', IS_Portal.showTabMenu.bind(selectMenuImg, tab), false, tab.id);
 		IS_Event.observe(selectMenuImg, 'mousedown', function(e){Event.stop(e);}, false, tab.id);

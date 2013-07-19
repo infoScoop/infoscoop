@@ -143,6 +143,7 @@
 	padding-left: 0px;
 }
 .infoScoop #tabs .tab .tabTitle{
+	padding-top: 4.5px;
 	font-weight:bold;
 	font-size:11px;
 	color:gray;
@@ -152,8 +153,11 @@
     color:#627EB7;
 }
 .infoScoop #tabs .tab div.inlineBlock {
-	display: inline-block;
+	float:left;
 	vertical-align: middle;
+}
+.infoScoop #tabs .tab div.inlineBlock.tabTitleImg {
+	padding-top: 3px;
 }
 
 .infoScoop #tabs .Tab_onHover {
