@@ -16,6 +16,18 @@ ISA_ProxyConf.prototype.classDef = function() {
 	var container;
 	var loadingMessage;
 	var controlModal;
+	var headersModal = new Control.Modal('',{
+		width: 600,
+		afterClose: function(){
+			this.container.update('');
+		}
+	});
+	var caseConfigItemModal = new Control.Modal('', {
+		width: 300,
+		afterClose: function(){
+			this.container.update('');
+		}
+	});
 
 	this.initialize = function() {
 		container = document.getElementById("proxy");
@@ -627,9 +639,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 			var radioElement = document.getElementsByName("typeCheckbox_" + caseConfigItem.id)[0];
 			if(radioElement.checked){
 				if(!caseConfigItem.modal){
-					caseConfigItem.modal = new Control.Modal('', {
-									width: 300
-								  });
+					caseConfigItem.modal = caseConfigItemModal;
 				}
 				var authEditContent = showProxyAuthEdit.bind(this, caseConfigItem);
 				caseConfigItem.modal.container.update(authEditContent());
@@ -675,9 +685,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 		headersIconSpan.appendChild(headersIcon);
 		headersIconSpan.style.cursor = "pointer";
 
-		caseConfigItem.headersModal = new Control.Modal('',{
-				width: 600
-			});
+		caseConfigItem.headersModal = headersModal;
 		IS_Event.observe(headersIcon, "click", function(){
 			var headerConfigPane = ISA_ProxyConf.HeaderConfigPane.showModal.bind( false, caseConfigItem );
 			caseConfigItem.headersModal.container.update(headerConfigPane());
