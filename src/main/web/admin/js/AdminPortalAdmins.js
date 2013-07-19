@@ -402,9 +402,9 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		function createCheckBoxSet(checked, label, value, count){
 			var authDiv = document.createElement("div");
 			if(count == ISA_PortalAdmins.portalPermissionTypeInfo.values().length-1){
-				$(authDiv).setStyle({width:'100px', 'clear' :'both',whiteSpace:'nowrap'});
+				$(authDiv).setStyle({width:'100px', height:'1.6em', 'clear' :'both',whiteSpace:'nowrap'});
 			}else{
-				$(authDiv).setStyle({width:'100px', 'float' :'left',whiteSpace:'nowrap'});
+				$(authDiv).setStyle({width:'100px', height:'1.6em', 'float' :'left',whiteSpace:'nowrap'});
 			}
 			
 			var authName = document.createElement("label");
