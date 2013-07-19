@@ -265,7 +265,7 @@ public class TabLayoutService {
 							xml.append((String) widget.get("id")).append("\"");
 							if(widget.has("menuId")){
 								xml.append(" menuId=").append("\"");
-								xml.append((String) widget.get("menuId")).append("\"");
+								xml.append((String) widget.getString("menuId")).append("\"");
 							}
 							xml.append(" column=").append("\"");
 							xml.append((String) widget.get("column")).append("\"");
