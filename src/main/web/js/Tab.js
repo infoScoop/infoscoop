@@ -1034,10 +1034,10 @@ IS_Portal.moveToTab = function(element, tab, process){
 	*/
 	var dragElement = (IS_Draggable.dummyElement)? IS_Draggable.dummyElement : element;
 	
-	effectGhost.style.top = dragElement.style.top;
-	effectGhost.style.left = dragElement.style.left;
-	effectGhost.style.width = dragElement.offsetWidth;
-	effectGhost.style.height = dragElement.offsetHeight;
+	effectGhost.style.top = parseInt(dragElement.style.top) + "px";
+	effectGhost.style.left = parseInt(dragElement.style.left) + "px";
+	effectGhost.style.width = parseInt(dragElement.offsetWidth) + "px";
+	effectGhost.style.height = parseInt(dragElement.offsetHeight) + "px";
 	
 	effectGhost.style.display = 'block';
 	
@@ -1062,8 +1062,8 @@ IS_Portal.shrink = function(src,dest,aa, ab, callback, marginLeft) {
 	var srcH = src.offsetHeight;
 	var incW = (dest.offsetWidth-srcW) / ab;
 	var incH = (dest.offsetHeight-srcH) / ab;
-	src.style.width = srcW;
-	src.style.height = srcH;
+	src.style.width = srcW + "px";
+	src.style.height = srcH + "px";
 	
 	var id = setInterval(function () {
 		if (ab < 1) {
@@ -1078,8 +1078,8 @@ IS_Portal.shrink = function(src,dest,aa, ab, callback, marginLeft) {
 		src.style.top = parseInt(srcY) + "px";
 		srcW += incW;
 		srcH += incH;
-		src.style.width = srcW;
-		src.style.height = srcH;
+		src.style.width = srcW + "px";
+		src.style.height = srcH + "px";
 		
 	}, aa / ab)
 }
