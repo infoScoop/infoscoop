@@ -25,7 +25,10 @@ IS_Portal.groupSettingModal.prototype = {
 		//Initialize Modal
 		this.currentModal = new Control.Modal('', {
 			className: 'GroupSchedule user-search-modal',
-		    afterClose: this.afterClose.bind(this)
+		    afterClose: function(){
+		    	this.afterClose.bind(this);
+		    	this.currentModal.container.update('');
+		    }.bind(this)
 		});
 	},
 	getGroupConf: function() {
