@@ -1598,6 +1598,7 @@ IS_Portal.buildFontSelectDiv = function(){
 			IS_Portal.applyFontSize(size);
 			$('portal-user-menu-body').hide();
 			$('userMenuCloser').hide();
+			IS_Portal.commandBarMenuBehindIframe.hide();
 		}, false, "_fontchange");
 		
 		IS_Event.observe(fontSizeSelect, "click", function(e){
@@ -2099,6 +2100,7 @@ IS_Portal.buildAdminLink = function(){
 	Event.observe( adminLink, "click", function( e ) {
 		window.open("admin");
 		$('portal-user-menu-body').hide();
+		IS_Portal.commandBarMenuBehindIframe.hide();
 		Event.stop( e )
 	});
 };
@@ -2251,6 +2253,45 @@ IS_Portal.behindIframe = {
 	}
 }
 
+IS_Portal.commandBarMenuBehindIframe = {
+	init:function(){
+		this.behindIframe = $(document.createElement('iframe'));
+		this.behindIframe.border = 0 + 'px';
+		this.behindIframe.style.margin = 0 + 'px';
+		this.behindIframe.style.padding = 0 + 'px';
+		this.behindIframe.id = "is_portal_comandbar_behind_iframe";
+		this.behindIframe.frameBorder = 0;
+		this.behindIframe.style.position = "absolute";
+		this.behindIframe.src = "./blank.html";
+		document.getElementsByTagName('body')[0].appendChild(this.behindIframe);
+		this.behindIframe.hide();
+	},
+	
+	show:function(element){
+		Position.prepare();
+		var pos = Position.cumulativeOffset(element);
+		this.behindIframe.style.top = pos[1] + "px";
+		this.behindIframe.style.left = pos[0] + "px";
+		this.behindIframe.style.width = element.offsetWidth + 'px';
+		this.behindIframe.style.height = element.offsetHeight + 'px';
+		if(element.style.zIndex)
+			this.behindIframe.style.zIndex = element.style.zIndex -1;
+		else
+			this.behindIframe.style.zIndex = 0;
+		this.behindIframe.show();
+		
+		this.current = element;
+	},
+	
+	hide:function(){
+		this.behindIframe.style.left = 0 + "px";
+		this.behindIframe.style.top = 0 + "px";
+		this.behindIframe.style.width = 0 + 'px';
+		this.behindIframe.style.height = 0 + 'px';
+		this.behindIframe.hide();
+	}
+}
+
 IS_Portal.CommandBar = {
 	commandbarWidgetDivs : [],
 	commandbarWidgets : [],
@@ -2266,10 +2307,11 @@ IS_Portal.CommandBar = {
 		
 		var commandBarItems = $$("#portal-command .commandbar-item");
 		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', style:'display:none;'});
-		
+
 		Event.observe(portalUserMenuBody, "click", function(e){
 			$(this).hide();
 			$('userMenuCloser').hide();
+			IS_Portal.commandBarMenuBehindIframe.hide();
 			Event.stop(e);
 		}.bind(portalUserMenuBody));
 		
@@ -2317,6 +2359,7 @@ IS_Portal.CommandBar = {
 						}
 						portalUserMenuBody.hide();
 						$("userMenuCloser").hide();
+						IS_Portal.commandBarMenuBehindIframe.hide();
 					});
 				}
 			}
@@ -2391,6 +2434,7 @@ IS_Portal.CommandBar = {
 				
 				$("portal-user-menu-body").hide();
 				$("userMenuCloser").hide();
+				IS_Portal.commandBarMenuBehindIframe.hide();
 				Event.stop( e );
 				Element.setStyle($("portal-user-menu").parentNode, {backgroundColor: ''});
 			};
@@ -2425,6 +2469,9 @@ IS_Portal.CommandBar = {
 				}else{
 					$("userMenuCloser").show();
 				}
+				if(!$("is_portal_comandbar_behind_iframe"))
+					IS_Portal.commandBarMenuBehindIframe.init();
+				IS_Portal.commandBarMenuBehindIframe.show($("portal-user-menu-body"));
 			});
 		}
 	},

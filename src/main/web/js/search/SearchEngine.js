@@ -445,7 +445,7 @@ IS_Portal.SearchEngines = {
 		Event.observe(window, 'resize', this._updateSearchOptionPos);
 		
 		$('searchoption').show();
-		
+
 		if($('searchOptionCloser')){
 			$('searchOptionCloser').show();
 		}
@@ -466,6 +466,7 @@ IS_Portal.SearchEngines = {
 
 			IS_Event.observe(closer, 'mousedown', this._saveSearchOptions.bind(this), true);
 		}
+		IS_Portal.behindIframe.show($('searchoption'));
 	},
 	
 	_updateSearchOptionPos:function(){
