@@ -120,7 +120,7 @@ ISA_GadgetUpload.buildForm = function( opt ) {
 	
 	// #478 IE9 can't fire submit event.
 	// so, prevent double submit.
-	if(Browser.isIE && !Browser.isIE8) {
+	if(!Browser.isIE || Browser.isIE8) {
 		var iframe = $("upLoadDummyFrame");
 		Event.observe( form,"submit",function() {
 			if( opt.confirm && !confirm( ISA_R.ams_gadgetResourceUploadConfirm ) )
