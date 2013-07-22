@@ -2445,9 +2445,9 @@ IS_Portal.CommandBar = {
 					left: targetPosition[0] - $("portal-user-menu-body").offsetWidth + $("portal-user-menu").offsetWidth + 'px'
 					, top: targetPosition[1] + $("portal-user-menu").offsetHeight +'px'
 				});
+				var winX = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth);
+				var winY = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight);
 				if(!$('userMenuCloser')){
-					var winX = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth);
-					var winY = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight);
 					var closer = $.DIV({
 						id:'userMenuCloser'
 						, className:'widgetMenuCloser'
@@ -2466,6 +2466,10 @@ IS_Portal.CommandBar = {
 					}, "_portalUserMenu");
 					Event.observe(window, 'resize', closeMenu, true);
 				}else{
+					Element.setStyle($("userMenuCloser"), {
+						width: winX + 'px',
+						height: winY + 'px',
+					});
 					$("userMenuCloser").show();
 				}
 				if(!$("is_portal_comandbar_behind_iframe"))
