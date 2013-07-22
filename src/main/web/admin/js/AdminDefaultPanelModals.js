@@ -75,6 +75,8 @@ ISA_DefaultPanel.CommandItemEditor.prototype.classDef = function() {
 	
 	this.hide = function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 }
 
@@ -136,6 +138,8 @@ ISA_DefaultPanel.prototype.addCommandBarModal = {
 	},
 	hide: function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 };
 
@@ -197,6 +201,8 @@ ISA_DefaultPanel.prototype.addHTMLCommandBarModal = {
 	},
 	hide: function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 };
 
@@ -298,6 +304,8 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 	},
 	hide: function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 };
 
@@ -376,6 +384,8 @@ ISA_DefaultPanel.prototype.editHTMLModal = {
 	},
 	hide: function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 };
 
@@ -627,6 +637,8 @@ ISA_DefaultPanel.prototype.selectColumnModal = {
 	},
 	hide: function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 };
 
@@ -686,7 +698,6 @@ ISA_DefaultPanel.prototype.templates = {
 		var targetClass = (defaultPanel.displayRoleJsons[defaultPanel.displayRoleId] && defaultPanel.displayRoleJsons[defaultPanel.displayRoleId].adjustToWindowHeight)
 			? 'staticLayoutAdjustHeight' : 'staticLayout';
 		$jq("#select_layout_modal ." + targetClass).each(function(idx, element){
-//			this.layouts[idx] = $jq(element).html();
 			element = $jq(element);
 			
 			var template = (ISA_Admin.trim(element.html()).length > 0)? $jq.parseHTML(element.html()) : element;
