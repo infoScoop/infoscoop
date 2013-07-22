@@ -118,28 +118,32 @@ ISA_GadgetUpload.buildForm = function( opt ) {
 		form.appendChild( submit );
 	}
 	
-	var iframe = $("upLoadDummyFrame");
-	Event.observe( form,"submit",function() {
-		if( opt.confirm && !confirm( ISA_R.ams_gadgetResourceUploadConfirm ) )
-			return;
-		
-		var started = false;
-		var startTimeout = setTimeout( function() {
-			opt.handleUploadStart();
-			started = true;
-		},0 );
-		
-		Event.observe( iframe,"load",function() {
-			clearTimeout( startTimeout );
-			if( !started ) opt.handleUploadStart();
+	// #478 IE9 can't fire submit event.
+	// so, prevent double submit.
+	if(Browser.isIE && !Browser.isIE8) {
+		var iframe = $("upLoadDummyFrame");
+		Event.observe( form,"submit",function() {
+			if( opt.confirm && !confirm( ISA_R.ams_gadgetResourceUploadConfirm ) )
+				return;
 			
-			opt.handleUploadEnd( iframe );
+			var started = false;
+			var startTimeout = setTimeout( function() {
+				opt.handleUploadStart();
+				started = true;
+			},0 );
 			
-			Event.stopObserving( iframe,"load" );
-		} );
-		
-		return true;
-	});
+			Event.observe( iframe,"load",function() {
+				clearTimeout( startTimeout );
+				if( !started ) opt.handleUploadStart();
+				
+				opt.handleUploadEnd( iframe );
+				
+				Event.stopObserving( iframe,"load" );
+			} );
+			
+			return true;
+		});
+	}
 	
 	return form;
 }
@@ -370,6 +374,24 @@ ISA_GadgetResources.prototype = {
 			}.bind( this ),
 			handleOk: function( upload ) {
 				upload.uploader.submit();
+				// #478 IE9 can't fire submit event.
+				if(Browser.isIE && !Browser.isIE8) {
+					if( upload.confirm && !confirm( ISA_R.ams_gadgetResourceUploadConfirm ) )
+				 		return;
+					var iframe = $("upLoadDummyFrame");
+					var started = false;
+					var startTimeout = setTimeout( function() {
+						this.controller.handleUploadStart();
+						started = true;
+					}.bind(upload),0 );
+					
+					Event.observe( iframe,"load",function() {
+						clearTimeout( startTimeout );
+						if( !started ) this.controller.handleUploadStart();
+						this.controller.handleUploadEnd( iframe );							
+						Event.stopObserving( iframe,"load" );
+					}.bind(upload) );
+				}
 			}.bind( this ),
 			handleCancel: function() { Control.Modal.close(); }.bind( this )
 		},resource,this.eventId );
