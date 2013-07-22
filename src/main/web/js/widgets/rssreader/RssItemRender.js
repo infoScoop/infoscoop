@@ -1167,7 +1167,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 	}
 	
 	// Modify the size if it exceeds the bottm of window(Modify only if item top does not exceed the bottom of the window)
-	if(windowInnerBottom > itemsTop && windowInnerBottom < (descTop + descHeight) ){
+	if(windowInnerBottom > descTop && windowInnerBottom < (descTop + descHeight) ){
 		descTop = windowInnerBottom - descHeight;
 	}
 	
