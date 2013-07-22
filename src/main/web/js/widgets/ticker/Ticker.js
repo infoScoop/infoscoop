@@ -98,7 +98,7 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		divParent.style.width = selfContent.offsetWidth + 'px';
 		divParent.style.height = selfContent.offsetHeight + 'px';
 		
-		divTicker = document.createElement("div");
+		divTicker = document.createElement("span");
 		if ( Browser.isIE ) {
 			divTicker.className = "ticker-base";
 		}else {
