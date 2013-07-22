@@ -286,6 +286,8 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		if(categoryFilter)
 			headers.push(["X-IS-CATEGORYFILTER", encodeURIComponent(categoryFilter)]);
 		
+		headers.push( ["MSDPortal-Cache", "No-Cache"] );
+		
 		loadContentsOption.requestHeaders = headers.flatten();
 		if( widget.widgetType == "MultiRssReader") {
 			this.setupMergeRssLoadContentsOption( loadContentsOption );
