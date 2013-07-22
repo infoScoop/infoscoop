@@ -1125,7 +1125,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 			descLeft = itemsRight + 10;
 			markLeft = itemsRight - 2;
 			
-			descWidth -= 15;
+			descWidth -= 20;
 		}else{
 			//Show at the middle
 			var moreLeft = itemNode.offsetWidth -moreTd.offsetWidth;
