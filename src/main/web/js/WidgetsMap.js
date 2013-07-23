@@ -296,9 +296,9 @@ IS_MySiteMap.prototype = {
 		var wh = getWindowHeight();
 		
 		if( height < wh ) {
-			document.body.scrollTop = y -( wh -height )/2;
+			document.documentElement.scrollTop = y -( wh -height )/2;
 		} else {
-			document.body.scrollTop = y;
+			document.documentElement.scrollTop = y;
 		}
 	}
 }
