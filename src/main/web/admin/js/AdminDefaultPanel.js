@@ -615,6 +615,11 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				onChange: function(div){
 					draggingDivId = div.id;
 				},
+				starteffect: function(div) {
+					// opacity effect drag start
+					div.style.opacity = 0.7;
+					div.style.filter = 'alpha(opacity=70)';
+				},
 				onUpdate:function(div){
 					var divIdPrefix = "tab_"+self.displayTabId+"_role_";
 					var newJsons = {};

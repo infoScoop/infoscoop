@@ -614,7 +614,6 @@ ISA_DragDrop.ProxyConfigDragDrop.prototype.classDef = function() {
 					nextsibling = (div.nextSibling) ? div.nextSibling.firstChild.id : "";
 				},
 				onUpdate:function(div){
-					console.log("test")
 					if(self.proxyCheckMap){
 						var proxyCheckbox = $("typ_" + id).previousSibling;
 						if(proxyCheckbox)
