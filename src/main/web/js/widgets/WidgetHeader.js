@@ -320,9 +320,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		widget.elm_title.className = "widgetTitle";
 		titleTd.appendChild(widget.elm_title);
 		titleHeaderTr.appendChild(titleTd);
-		
 		this.buildTitle();
-
 
 		widget.elm_latestMark.id = "m_" + widget.id;
 		widget.eventTargetList.push({element:widget.elm_latestMark});

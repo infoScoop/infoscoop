@@ -470,13 +470,14 @@ IS_Widget.prototype.classDef = function() {
 	   	var divLatestMark = document.createElement("div");
 	   	this.elm_latestMark = divLatestMark;
 		divLatestMark.style.display = "none";
-		
+
 		var indicator = document.createElement("img");
 		indicator.src = imageURL+"indicator.gif";
 	   	this.elm_indicator = indicator;
 		indicator.id = self.id + "_widgetIndicator";
 		indicator.className = "widgetIndicator";
 		indicator.style.display = "none";
+		indicator.style.verticalAlign = "top";
 		
 	   	var divWidgetContent = document.createElement("div");
 	   	this.elm_widgetContent = divWidgetContent;
@@ -539,7 +540,15 @@ IS_Widget.prototype.classDef = function() {
 		if(icon){
 			var favoriteIconDiv = document.createElement("div");
 			this.elm_favoriteIcon = favoriteIconDiv;
-			favoriteIconDiv.innerHTML = '<img style="width:14px;height:14px;padding-left:3px;padding-top:3px" src="' + icon +  '"border="0">';
+			var favoriteIconImg = document.createElement("img");
+			favoriteIconImg.style.width = "14px";
+			favoriteIconImg.style.height = "14px";
+			favoriteIconImg.style.paddingTop = "3px";
+			favoriteIconImg.style.paddingLeft = "3px";
+			favoriteIconImg.style.verticalAlign = "top";
+			favoriteIconImg.style.border = "0px";
+			favoriteIconImg.src = icon;
+			favoriteIconDiv.appendChild(favoriteIconImg);
 		}
 	
 		if(!isStatic && !isMaximize && !this.getBoolUserPref("openWidget"))
