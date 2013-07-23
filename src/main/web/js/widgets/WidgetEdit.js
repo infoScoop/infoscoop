@@ -1018,8 +1018,8 @@ IS_Widget.WidgetEdit.makeHelpIcon = function( container,userPref ) {
 
 		var x = event.pointerX();
 		var y = event.pointerY();
-		var x_limit = getWindowSize(true) +document.body.scrollLeft;
-		var y_limit = getWindowSize(false) +document.body.scrollTop;
+		var x_limit = getWindowSize(true) +document.documentElement.scrollLeft;
+		var y_limit = getWindowSize(false) +document.documentElement.scrollTop;
 		if( x +help.offsetWidth > x_limit )
 			x = x -help.offsetWidth -48;
 		
