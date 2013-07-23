@@ -1195,8 +1195,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 					eval( menuItem.href );
 				}
 				IS_Event.observe(aTag, "click", aTagOnClick, false, "_menu");
-				IS_Event.observe(aTag, "mouseover", function(){this.className = 'scriptlinkhover';}.bind(aTag), false, "_menu");
-				IS_Event.observe(aTag, "mouseout", function(){this.className = 'scriptlink';}.bind(aTag), false, "_menu");
+				IS_Event.observe(aTag, "mousedown", function(e){Event.stop(e);}, false, "_menu");
 
 			}else{
 

@@ -153,7 +153,6 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 }
 
 .menuTitle a:hover,
-.menuTitle .scriptlinkhover{
 	COLOR: #FFFFFF;
 	text-decoration : none;
 }
