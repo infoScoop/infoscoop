@@ -3104,7 +3104,8 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
   }
 
   function hasLayout_IE(element) {
-    if (!element.currentStyle.hasLayout)
+    // merged by bit Fix for #1339 https://github.com/rydenius/prototype/commit/aa3983250f4f96d18acbc28938a78d5d01654d4c
+    if (!element.currentStyle || !element.currentStyle.hasLayout) 
       element.style.zoom = 1;
     return element;
   }
