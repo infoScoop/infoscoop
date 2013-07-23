@@ -1083,7 +1083,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			}
 			var tables = ul.getElementsByTagName('table');
 			for(var i=0;i<tables.length;i++){
-				var tableWidth = tables[i].offsetWidth + 10;
+				var tableWidth = tables[i].offsetWidth + 25;
 				if(ulWidth < tableWidth){
 					ulWidth = tableWidth;
 				}
