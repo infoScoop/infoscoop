@@ -38,12 +38,17 @@ IS_Portal.buildTabs = function(){
 	var tabsContainer = $('tab-container');
 	var tabsDiv = document.createElement("div");
 	tabsDiv.id = "tabs";
+	
+	var tabsUl = document.createElement("ul");
+	tabsUl.id = "tabsUl";
+	tabsDiv.appendChild(tabsUl);
+
 	//Loading all tabs
 	var tabsRefresh = document.createElement("div");
 	tabsRefresh.id = "tabsRefresh";
 	tabsRefresh.className = "tabsRefresh";
 	tabsRefresh.title = IS_R.ms_tabsRefresh;
-	tabsDiv.appendChild(tabsRefresh);
+	tabsUl.appendChild(tabsRefresh);
 	
 	Event.observe(tabsRefresh, "click",IS_Portal.buildAllTabsContents, false);
 	
@@ -51,14 +56,10 @@ IS_Portal.buildTabs = function(){
 	tabsRefreshStop.id = "tabsRefreshStop";
 	tabsRefreshStop.title = IS_R.ms_stopRefresh;
 	tabsRefreshStop.style.display = "none";
-	tabsDiv.appendChild( tabsRefreshStop );
+	tabsUl.appendChild( tabsRefreshStop );
 	
 	Event.observe( tabsRefreshStop,"click",IS_Portal.stopLoadWidgets,false );
-	
-	var tabsUl = document.createElement("ul");
-	tabsUl.id = "tabsUl";
-	tabsDiv.appendChild(tabsUl);
-	
+
 	// Adding tab
 	var addTab = document.createElement("div");
 	IS_Portal.addTabDiv = addTab;
