@@ -173,7 +173,6 @@ ISA_WidgetConf.prototype.classDef = function() {
 				}
 			}
 		}
-		widgetConfList.sort(sortConf);
 		
 		while( self.gadgetPanel.firstChild )
 			self.gadgetPanel.removeChild( self.gadgetPanel.firstChild );
