@@ -274,22 +274,34 @@ SwappableComponent.build = function (data, id) {
 	}
 	
 	onBeforeClicked = function () {
-		swap(this,div_after);
 		if(onclick_before) onclick_before(this);
+		swap(this,div_after);
 	}
 	
 	onAfterClicked = function () {
-		swap(this,div_before);
 		if(onclick_after) onclick_after(this);
+		swap(this,div_before);
 	}
 	
 	onMouseOut = function () {
-		this.className = style_out;
+		if(this.style){
+			this.style.color = "#7777cc";
+			this.style.textDecoration = "none";
+			this.style.cursor = "auto";			
+		}else{
+			this.className = style_out;
+		}
 		if (this.onMouseOut ) this.onMouseOut();
 	}
 	
 	onMouseOver = function () {
-		this.className = style_over;
+		if(this.style){
+			this.style.color = "#ff0000";
+			this.style.textDecoration = "underline";
+			this.style.cursor = "pointer";
+		}else{
+			this.className = style_over;
+		}
 		if (this.onMouseOver ) this.onMouseOver();
 	}
 	IS_Event.observe(div_before, "click", onBeforeClicked.bind(div_before), false, id);

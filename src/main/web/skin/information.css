@@ -15,7 +15,6 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
-
 .infoScoop .Information .floatRight{
 	float:right;
 }
@@ -47,4 +46,14 @@
 	color:red;
 	text-decoration:underline;
 	cursor:pointer;
+}
+.infoScoop .Information div.information2Desc {
+	width: 100%;
+	font-size: 80%;
+	word-break: break-all;
+	overflow: hidden;
+}
+
+.infoScoop .Information div.information2Desc > p{
+	margin:0;
 }

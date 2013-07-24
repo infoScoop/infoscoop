@@ -86,7 +86,7 @@ IS_Widget.Information2.prototype.classDef = function() {
 				var contentsTr = document.createElement("tr");
 				contentsTbody.appendChild(contentsTr);
 
-				var imgTd = null;
+			 	var imgTd = null;
 				var itemHeight = "60";
 				if(rssItems[i].creatorImg.length > 0){
 					imgTd = document.createElement("td");
@@ -212,12 +212,10 @@ IS_Widget.Information2.prototype.classDef = function() {
 
 				if(rssItems[i].description && rssItems[i].description.length > 0){
 					var descDiv = document.createElement("div");
-					descDiv.style.fontSize = "80%";
+					descDiv.className = "information2Desc";
 					var descHeightBefore = (parseInt(itemHeight) > 40 ? (parseInt(itemHeight) - 40) : 1);
 					descDiv.style.height = descHeightBefore + "px";//"5em";
-					descDiv.style.width = 0;
-					descDiv.style.overflow = "hidden";
-					descDiv.innerHTML = rssItems[i].description;
+					descDiv.update(rssItems[i].description);
 					var descLinks = descDiv.getElementsByTagName("a");
 					if(descLinks) {
 						for(var j = 0; j < descLinks.length; j++) {
@@ -241,31 +239,26 @@ IS_Widget.Information2.prototype.classDef = function() {
 					moreTd.appendChild(more);
 
 					var descMore = document.createElement("div");
-					var descMoreNobr = document.createElement("nobr");
+					var descMoreNobr = document.createElement("span");
 					descMore.appendChild(descMoreNobr);
-
 					descMoreNobr.appendChild(document.createTextNode(IS_R.lb_continueLink ));
 				
 					var descDetail = document.createElement("div");
-					var descDetailNobr = document.createElement("nobr");
+					var descDetailNobr = document.createElement("span");
 					descDetail.appendChild(descDetailNobr);
-
 					descDetailNobr.appendChild(document.createTextNode(IS_R.lb_closeLink ));
 
 					var obj = {
 						desc:descDiv,
-						contentDiv:widget.elm_widgetContent,
 						scrolling:scrolling,
-						image:imgTd,
+					 	image:imgTd,
 						focusEl:contentsTable,
 						descHeightBefore:descHeightBefore,
 						descHeight:descHeightBefore,
 						rssItem : rssItems[i],
 						descMoreOnClicked : function () {
 							var tmpHeight = this.descHeight;
-							this.desc.style.height = "100%";
-							if(this.desc.offsetHeight < tmpHeight)
-								this.desc.style.height = tmpHeight+'px';
+							this.desc.style.height = (this.desc.offsetHeight < tmpHeight) ? tmpHeight+'px' : '100%';
 							//Save the height when it is firstly shown in FireFox because it cannot be shown at second or later actions even though 100% is set
 							this.descHeight = this.desc.offsetHeight;
 							var startDateTime = (this.rssItem.rssDate)? this.rssItem.rssDate.getTime() : "";
@@ -296,18 +289,21 @@ IS_Widget.Information2.prototype.classDef = function() {
 						style_over:"rssMore Over"}, widget.id);
 					
 					more.appendChild(descMore);
-					more.appendChild(descDetail);
+			 		more.appendChild(descDetail);
 				}
 			}
 		}
-		
+
+		IS_Widget.InformationDescriptionList[widget.id].contentsDiv = widget.elm_widgetContent;
+		IS_Widget.InformationDescriptionList[widget.id].widgetHeader = widget.elm_widgetHeader;
+
 		if(widget.elm_widgetContent.firstChild){
 			widget.elm_widgetContent.replaceChild(contentsDiv, widget.elm_widgetContent.firstChild);
 		}else{
 			widget.elm_widgetContent.appendChild(contentsDiv);
 		}
 		
-		setTimeout(IS_Widget.Information2.adjustDescWidth, 5);
+//		setTimeout(IS_Widget.Information2.adjustDescWidth, 5);
 	};
 	
 	this.postEdit = this.displayContents;
@@ -429,49 +425,38 @@ IS_Widget.Information2.prototype.classDef = function() {
 	//this.loadContents(); 
 };
 
-var adjustDescWidthTimer;
-IS_Widget.Information2.adjustDescWidth = function() {
-	var objList = new Array();
-	for(var i in IS_Widget.InformationDescriptionList) {
-		var descs = IS_Widget.InformationDescriptionList[i];
-		if(descs && typeof descs != "function") {
-			//For Safari1: Not process descriptions except for the current tub
-			if( Browser.isSafari1 ) {
-				var tabId;
-				for( var j in IS_Portal.widgetLists ) {
-					if( IS_Portal.widgetLists[j][i] )
-						tabId = j;
-				}
-				if( tabId && tabId != IS_Portal.currentTabId )
-					continue;
-			}
+// fixes #478
+// IS_Widget.Information2.adjustDescWidth = function() {
+// 	for(var i in IS_Widget.InformationDescriptionList) {
+// 		var descs = IS_Widget.InformationDescriptionList[i];
+// 		if(descs && typeof descs != "function") {
+// 			descs.contentsDiv.style.display = "none";
+// 			var contentsOffset = descs.widgetHeader.offsetWidth;
+// 			//For Safari1: Not process descriptions except for the current tub
+// 			if( Browser.isSafari1 ) {
+// 				var tabId;
+// 				for( var j in IS_Portal.widgetLists ) {
+// 					if( IS_Portal.widgetLists[j][i] )
+// 						tabId = j;
+// 				}
+// 				if( tabId && tabId != IS_Portal.currentTabId )
+// 					continue;
+// 			}
 			
-			for(var j = 0; j < descs.length; j++){
-				var obj = descs[j];
-				
-				obj.desc.style.display = "none";
-				objList.push(obj);
-			}
-		}
-	}
-	
-	var resizeDescs = function(){
-		for(var i=0;i<objList.length;i++){
-			var obj = objList[i];
-			if(obj.contentDiv && obj.contentDiv.offsetWidth > 0){
-				//For Safari1: Not show side scroll bar
-				var offset = 30;
-				var imgWidth = obj.image ? obj.image.offsetWidth : 0;
-				
-				obj.desc.style.width = (obj.contentDiv.offsetWidth - imgWidth - offset) + "px";
-			}
-			
-			objList[i].desc.style.display = "block";
-		}
-	}
-	
-	resizeDescs();
-};
-Event.observe(window, 'resize', IS_Widget.Information2.adjustDescWidth, false);
+// 			for(var j = 0; j < descs.length; j++){
+// 				var obj = descs[j];
+// 				if(descs.contentsDiv && contentsOffset > 0){
+// 					//For Safari1: Not show side scroll bar
+// 					var offset = 30;
+// 					var imgWidth = obj.image ? obj.image.offsetWidth : 0;
+					
+// 					obj.desc.style.width = (contentsOffset - imgWidth - offset) + "px";
+// 				}
+// 			}
+// 			descs.contentsDiv.style.display = "block";
+// 		}
+// 	}	
+// };
+//Event.observe(window, 'resize', IS_Widget.Information2.adjustDescWidth, false);
 
 IS_Widget.Information2.validateUserPref = IS_Widget.RssReader.validateUserPref;
