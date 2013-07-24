@@ -106,10 +106,10 @@ function showPreview( uid ) {
 function resize() {
 	var height;
 	try {
-		if( iframe.contentDocument && iframe.contentDocument.body ) {
-			height = iframe.contentDocument.body.offsetHeight;
+		if( iframe.contentDocument && iframe.contentDocument.documentElement ) {
+			height = iframe.contentDocument.documentElement.offsetHeight;
 		} else {
-			height = iframe.contentWindow.document.body.scrollHeight;
+			height = iframe.contentWindow.document.documentElement.scrollHeight;
 			overlay.style.height = "100%";
 			if( overlay.offsetHeight < height *1.2 ){
 				overlayHeight = height *1.2
@@ -120,7 +120,7 @@ function resize() {
 		return;
 	}
 	
-	iframe.style.height = wrapper.style.height = height;
+	iframe.style.height = wrapper.style.height = height + 'px';
 	
 	var offsets = Position.positionedOffset(iframe);
     close.style.top     = offsets[1] + 'px';
