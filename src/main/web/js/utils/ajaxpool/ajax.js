@@ -236,6 +236,7 @@ AjaxRpc.prototype = {
 			errorMsgSpan.appendChild(document.createTextNode(msg));
 			errorMsgBar.appendChild(errorMsgSpan);
 			errorMsgBar.style.display = "";
+			if(IS_SidePanel.adjustPosition) IS_SidePanel.adjustPosition();
 		}
 				
 		function fireAjaxRequest() {
