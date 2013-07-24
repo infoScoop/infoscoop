@@ -526,7 +526,7 @@ IS_Portal.GroupSettingPanel.GroupContent.prototype = {
 				this.makeUser( user,div );
 			}
 			
-			Sortable.create(div, { tag : "div", onUpdate:this.updateUserOrder.bind(this)});
+			Sortable.create(div, {tag : "div", onUpdate:this.updateUserOrder.bind(this)});
 		} else {
 			this.makeNoUser();
 		}
@@ -602,6 +602,7 @@ IS_Portal.GroupSettingPanel.GroupContent.prototype = {
 		u_delButton.title = IS_R.lb_deleteUser;
 		u_delButton.src = imageURL + 'trash.gif';
 		u_delButton.style.cursor = 'pointer';
+		$(u_delButton).addClassName("delete");
 		IS_Event.observe( u_delButton, 'click', this.deleteUser.bind(this,  userObj), false, u_delButton.id, this.group.id + "_userList");
 		return u_delButton;
 	},

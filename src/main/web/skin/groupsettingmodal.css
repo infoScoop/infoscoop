@@ -23,7 +23,7 @@
 	word-break: keep-all;
 	white-space: nowrap;
 	
-	font-family:'ƒqƒ‰ƒMƒmŠpƒS Pro W3','Hiragino Kaku Gothic Pro','‚l‚r ‚oƒSƒVƒbƒN',sans-serif;
+	font-family:'ãƒ’ãƒ©ã‚®ãƒŽè§’ã‚´ Pro W3','Hiragino Kaku Gothic Pro','ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯',sans-serif;
 	font-size: 10.5pt;
 }
 
@@ -98,7 +98,7 @@ div[id^="control_window_"].GroupSchedule .user-search {
 /* Group Setting Panel */
 
 .infoScoop .group-setting {
-	font-family:'ƒqƒ‰ƒMƒmŠpƒS Pro W3','Hiragino Kaku Gothic Pro','‚l‚r ‚oƒSƒVƒbƒN',sans-serif;
+	font-family:'ãƒ’ãƒ©ã‚®ãƒŽè§’ã‚´ Pro W3','Hiragino Kaku Gothic Pro','ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯',sans-serif;
 	font-size: 10.5pt;
 }
 .infoScoop .group-setting,
@@ -161,6 +161,10 @@ div[id^="control_window_"].GroupSchedule .user-search {
 }
 .infoScoop .group-setting .contents .content .user span {
 	padding-right: 5px;
+}
+.infoScoop .group-setting .contents .content .user .delete {
+	position: absolute;
+	right: 0;
 }
 
 .infoScoop .group-setting .user-search {
