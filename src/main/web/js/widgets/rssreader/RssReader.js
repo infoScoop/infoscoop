@@ -59,7 +59,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		//Load custom icons for every item
 		if(widget.widgetPref.rssItemCustomIcons && widget.widgetPref.rssItemCustomIcons.value){
 			try{
-				var rssItemCustomIconsFunc = eval("("+widget.widgetPref.rssItemCustomIcons.value+")");
+				var rssItemCustomIconsFunc = Browser.isIE? eval("("+widget.widgetPref.rssItemCustomIcons.value+")||0;") : eval("("+widget.widgetPref.rssItemCustomIcons.value+")");
 				this.rssItemCustomIcons = rssItemCustomIconsFunc;
 			}catch(e){
 				msg.error("failed to create custom icons in "+ widget.widgetType +":" + getErrorMessage(e));
