@@ -111,6 +111,9 @@
 	background-color: #EAEAEA;
 	right:0;
 }
+.infoScoop .RssReader .latestMark{
+	display: block;
+}
 
 .infoScoop .RssReader .RssReader_filter{
 	position:absolute;
