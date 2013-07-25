@@ -950,7 +950,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth) - 5  + 'px';
 		overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight) - offsetY - 5  + 'px';
 		overlayStyle.display = "";
-		parent.overTimeout = setTimeout(function() { topMenuMOver2(e, parent, parentMenuItem); }, 150);
+		parent.overTimeout = setTimeout(function() { topMenuMOver2(e, parent, parentMenuItem); }, 300);
 
 	}
 
