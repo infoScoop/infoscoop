@@ -150,6 +150,10 @@
 	vertical-align: top;
 }
 
+.infoScoop .widgetHeader .latestMarkTd {
+	vertical-align: middle;
+}
+
 .infoScoop .widgetHeader .widgetIndicator {
 /*	float:left;*/
 	border:0;

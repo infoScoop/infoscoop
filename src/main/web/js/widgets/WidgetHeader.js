@@ -327,6 +327,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		self.stockEvent(widget.elm_latestMark, 'mousedown', this.showLatestNews.bind( this ), true, widget.closeId);
 		
 		var latestMarkTd = document.createElement("td");
+		latestMarkTd.className = "latestMarkTd";
 		latestMarkTd.appendChild(widget.elm_latestMark);
 		titleHeaderTr.appendChild(latestMarkTd);
 		titleHeaderDiv.appendChild(titleHeaderTable);
