@@ -150,9 +150,10 @@ IS_Portal.buildGlobalSettingModal = function() {
 			if(typeof IS_Portal.widgetLists[tabId] == "function") continue;
 			
 			if(tabId != IS_Portal.currentTabId){
-				// It doesn't apply to non-active tab.
 				if(IS_Portal.tabs[tabId].isBuilt){
 					IS_Portal.tabs[tabId].applyPreference = true;
+					IS_Portal.applyPreference(tabId, false, isAllRefresh);
+				}else{
 					IS_Portal.applyPreference(tabId, false, isAllRefresh);
 				}
 			}
