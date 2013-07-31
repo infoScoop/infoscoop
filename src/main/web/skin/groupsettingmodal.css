@@ -21,7 +21,7 @@
 
 .infoScoop .user-search {
 	word-break: keep-all;
-	white-space: nowrap;
+	overflow: hidden;
 	
 	font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','ＭＳ Ｐゴシック',sans-serif;
 	font-size: 10.5pt;
@@ -152,6 +152,7 @@ div[id^="control_window_"].GroupSchedule .user-search {
 	cursor: move;
 	padding: 2px 0;
 	margin: 2px 0;
+	overflow: hidden;
 }
 .infoScoop .group-setting .contents .content .user.odd {
 	background-color: #F8F8FF;
