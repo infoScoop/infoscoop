@@ -27,6 +27,8 @@ IS_Widget.Information.prototype.classDef = function() {
 		widget = widgetObj;
 		contents = widget.elm_widgetContent;
 		contents.style.width= "auto";
+		contents.style.overflowX = "hidden";
+		contents.style.overflowY = "scroll";
 		
 		if(!widget.latestDatetime || widget.latestDatetime == ""){
 			widget.latestDatetime = "";

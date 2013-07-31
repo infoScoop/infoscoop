@@ -30,6 +30,7 @@ IS_Widget.Information2.prototype.classDef = function() {
 		contents = widget.elm_widgetContent;
 		contents.style.width= "auto";
 		contents.style.overflowX = "hidden";
+		contents.style.overflowY = "scroll";
 		scrolling = getBooleanValue(IS_WidgetConfiguration[widget.widgetType].scrolling);
 		
 		if(!widget.latestDatetime || widget.latestDatetime == ""){
