@@ -1439,6 +1439,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			{
 				tag: 'div',
 				handle: 'handle',
+				format: /^commnad_(.*)/,
 
 				onChange: function(div){
 					draggingDivId = div.id;
