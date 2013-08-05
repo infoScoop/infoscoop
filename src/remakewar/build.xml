@@ -214,32 +214,41 @@
 		</replace>
 	</target>
 	
+	<condition property="doSetCheckDuplicateUidFilterMapping">
+		<istrue value="${sessionCreateConfig.uidIgnoreCase}"/>
+	</condition>
+	
 	<target name="replace-uidIgnoreCase" if="sessionCreateConfig.uidIgnoreCase">
 		<replaceregexp file="${collect.home}/WEB-INF/classes/accountservices.xml"
 			match="&lt;!--start sessionCreateConfig.uidIgnoreCase--&gt;.*&lt;!--end sessionCreateConfig.uidIgnoreCase--&gt;"
 			replace="${sessionCreateConfig.uidIgnoreCase}"
 			flags="s"
 			encoding="UTF-8"/>
+		
+		<antcall target="setCheckDuplicateUidFilterMapping" />
+	</target>
+	
+	<target name="setCheckDuplicateUidFilterMapping" if="doSetCheckDuplicateUidFilterMapping">
 		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
 			<replacetoken><![CDATA[<!--CheckDuplicateUidFilterMapping-->]]></replacetoken>
 			<replacevalue><![CDATA[
-	<filter-mapping>
-		<filter-name>CheckDuplicateUidFilter</filter-name>
-		<url-pattern>/index.jsp</url-pattern>
-	</filter-mapping>
-			]]></replacevalue>
+			<filter-mapping>
+				<filter-name>CheckDuplicateUidFilter</filter-name>
+				<url-pattern>/index.jsp</url-pattern>
+			</filter-mapping>
+					]]></replacevalue>
 		</replace>
 		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
 			<replacetoken><![CDATA[<!--MergeProfileServletMapping-->]]></replacetoken>
 			<replacevalue><![CDATA[
-	<servlet-mapping>
-		<servlet-name>MergeProfileServlet</servlet-name>
-		<url-pattern>/mergeprofile</url-pattern>
-	</servlet-mapping>
-			]]></replacevalue>
+			<servlet-mapping>
+				<servlet-name>MergeProfileServlet</servlet-name>
+				<url-pattern>/mergeprofile</url-pattern>
+			</servlet-mapping>
+					]]></replacevalue>
 		</replace>
 	</target>
-	
+
 	<target name="replace-msd.dataSource" if="msd.dataSource.jndiName">
 		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
 			<replacetoken><![CDATA[<!--msd.dataSource-->]]></replacetoken>
