@@ -165,18 +165,12 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
 			//Send to Server
 			IS_Widget.setTabPreferenceCommand(tab.id, "tabName", titleValue);
 			
-//			var titleSpan = $( this.id ).childNodes[1];
 			var titleTd = $( this.id + "_title" );
-			
-			titleTd.removeChild(titleTd.childNodes[0]);
-			titleTd.appendChild(document.createTextNode(titleValue));
+			titleTd.update(titleValue);
 			if (IS_Portal.tabs[tab.id]) {
 				IS_Portal.tabs[tab.id].name = titleValue;
 			}
 			
-//			tab.replaceChild(titleSpan, titleEditorFormDiv);
-//			IS_Portal.isDisplayTabTitleEditor = false;
-
 			return true;
 		}
 		this.changeColumnNum = function(numCol){
@@ -388,8 +382,15 @@ IS_Portal.showTabMenu = function(tabElement, e){
 				commitRename( tabObj,nameInput );
 			}, false, tabObj.id);
 			function commitRename( tabObj,nameInput ) {
-				if( !tabObj.rename( nameInput.value ))
+				if( !tabObj.rename( nameInput.value )){
 					nameInput.value = tabObj.name;
+				}else{
+					// #511
+					// Rerendering for length tuning.
+					if(Browser.isIE8)
+						$(tabObj.id).hide().show();
+				}
+
 			}
 			
 			nameInput.value = tabObj.name;
