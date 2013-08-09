@@ -956,21 +956,19 @@ function _saveDynamicPanel(){
 			var colnum = $jq(widget.elm_widget).parent().attr('colnum');
 			
 			var targetMenu = (IS_TreeMenu.types.topmenu)? IS_TreeMenu.types.topmenu : IS_TreeMenu.types.sidemenu;
-			var menuItem = {};
-			if(!targetMenu){
+			var menuItem = null;
+			
+			if(targetMenu){
+				menuItem = targetMenu.menuItemList[menuId];
+				if(!menuItem && IS_TreeMenu.types.sidemenu){
+					targetMenu = IS_TreeMenu.types.sidemenu;
+					menuItem = targetMenu.menuItemList[menuId];
+				}
+			}
+			if(!menuItem){
 				menuItem = {
 					id: +new Date() + "_" + colnum + "_" + index,
 					type: "notAvailable"
-				}
-			}else{
-				menuItem = targetMenu.menuItemList[menuId];
-				if(!menuItem){
-					if(IS_TreeMenu.types.sidemenu){
-						targetMenu = IS_TreeMenu.types.sidemenu;
-						menuItem = targetMenu.menuItemList[menuId];
-					}else{
-						return true;
-					}
 				}
 			}
 			
