@@ -726,6 +726,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			if(menuItem.serviceURL){
 				if(IS_SiteAggregationMenu.ignoreService){
 					IS_EventDispatcher.newEvent("loadMenuComplete",menuItem.serviceURL );
+					continue;
 				}else{
 					topLi = getMenuService(menuItem);
 				}
