@@ -357,11 +357,11 @@ IS_Portal.buildGlobalSettingModal = function() {
 					)
 			);
 		
-		var currentBorderRadius = currentWidgetTheme.border && currentWidgetTheme.border.radius;
+		var currentBorderRadius = parseInt(currentWidgetTheme.border && currentWidgetTheme.border.radius);
 		fs.appendChild(
 			$.DIV({style:"clear:both;display:" + (Browser.isIE8 ? 'none' : '') + ";"},
 				  IS_R.lb_enableRoundCorner,
-				  $.INPUT({id:"is_preference_setting_border_radius", type:"checkbox", defaultChecked:currentBorderRadius && currentBorderRadius!="0px"})
+				  $.INPUT({id:"is_preference_setting_border_radius", type:"checkbox", defaultChecked:currentBorderRadius && currentBorderRadius!=0})
 					)
 			);
 		
