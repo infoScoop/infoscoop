@@ -1168,7 +1168,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 	
 	// Modify the size if it exceeds the bottm of window(Modify only if item top does not exceed the bottom of the window)
 	if(windowInnerBottom > descTop && windowInnerBottom < (descTop + descHeight) ){
-		descTop = windowInnerBottom - descHeight;
+		descTop = windowInnerBottom - (Browser.isIE ? descHeight + 15 : descHeight);
 	}
 	
 	// Modify the longitudinal location of description
