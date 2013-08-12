@@ -38,6 +38,7 @@ ISA_Admin.buildInputBundleForm = function( type,isaWidgetConf ) {
 			type: type || "",
 			mode: "module"
 		},
+		formFunction: true,
 		eventId: eventId,
 		handleUploadStart: function() {},
 		handleUploadEnd: function( iframe ){
@@ -120,7 +121,7 @@ ISA_GadgetUpload.buildForm = function( opt ) {
 	
 	// #478 IE9 can't fire submit event.
 	// so, prevent double submit.
-	if(!Browser.isIE || Browser.isIE8) {
+	if( opt.formFunction ){
 		var iframe = $("upLoadDummyFrame");
 		Event.observe( form,"submit",function() {
 			if( opt.confirm && !confirm( ISA_R.ams_gadgetResourceUploadConfirm ) )
@@ -375,23 +376,21 @@ ISA_GadgetResources.prototype = {
 			handleOk: function( upload ) {
 				upload.uploader.submit();
 				// #478 IE9 can't fire submit event.
-				if(Browser.isIE && !Browser.isIE8) {
-					if( upload.confirm && !confirm( ISA_R.ams_gadgetResourceUploadConfirm ) )
-				 		return;
-					var iframe = $("upLoadDummyFrame");
-					var started = false;
-					var startTimeout = setTimeout( function() {
-						this.controller.handleUploadStart();
-						started = true;
-					}.bind(upload),0 );
-					
-					Event.observe( iframe,"load",function() {
-						clearTimeout( startTimeout );
-						if( !started ) this.controller.handleUploadStart();
-						this.controller.handleUploadEnd( iframe );							
-						Event.stopObserving( iframe,"load" );
-					}.bind(upload) );
-				}
+				if( upload.confirm && !confirm( ISA_R.ams_gadgetResourceUploadConfirm ) )
+			 		return;
+				var iframe = $("upLoadDummyFrame");
+				var started = false;
+				var startTimeout = setTimeout( function() {
+					this.controller.handleUploadStart();
+					started = true;
+				}.bind(upload),0 );
+				
+				Event.observe( iframe,"load",function() {
+					clearTimeout( startTimeout );
+					if( !started ) this.controller.handleUploadStart();
+					this.controller.handleUploadEnd( iframe );							
+					Event.stopObserving( iframe,"load" );
+				}.bind(upload) );
 			}.bind( this ),
 			handleCancel: function() { Control.Modal.close(); }.bind( this )
 		},resource,this.eventId );
@@ -677,6 +676,7 @@ ISA_GadgetResourceModalRenderer.prototype = {
 			},
 			mode: "resource",
 			eventId: this.eventId,
+			formFunction: false,
 			handleUploadStart: this.controller.handleUploadStart,
 			handleUploadEnd: this.controller.handleUploadEnd
 		} );
