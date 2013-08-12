@@ -1486,7 +1486,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 
 	function setChildY( childUl, parent ) {
 		var offset = 18;//Handling side scroll display.
-		var windowY = getWindowSize(false) - findPosY(IS_SiteAggregationMenu.displayTopLi) - IS_SiteAggregationMenu.displayTopLi.offsetHeight - offset;
+		var windowY = (getWindowSize(false) + document.documentElement.scrollTop) - findPosY(IS_SiteAggregationMenu.displayTopLi) - IS_SiteAggregationMenu.displayTopLi.offsetHeight - offset;
 		var parentTop = findPosY(parent.parentNode) - findPosY(IS_SiteAggregationMenu.displayTopLi) - IS_SiteAggregationMenu.displayTopLi.offsetHeight;
 
 		childUl.style.display ="block";
