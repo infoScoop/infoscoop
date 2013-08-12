@@ -111,6 +111,7 @@
 	font-size: 9pt;
 	text-align: left;
 	padding-left: 12px;
+	margin-left: 3px;
 	background:url(./imgs/search.gif) no-repeat;
 }
 
@@ -123,6 +124,7 @@
 	font-size:9pt;
 	text-align:left;
 	width: 124px;
+	margin-left: 3px;
 }
 
 .infoScoop .maximize.RssReader .maximizeRssReaderFilterState{
