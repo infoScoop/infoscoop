@@ -141,6 +141,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		filterStatePane.appendChild( categoryComboBox );
 		var filterFormOpenButton = document.createElement("div");
 		filterFormOpenButton.className = "maximizeFilter";
+		filterFormOpenButton.style.marginLeft = "3px";
 
 		filterFormOpenButton.appendChild( document.createTextNode(IS_R.lb_filterDescSettingLink ));
 		filterStatePane.appendChild( filterFormOpenButton );
@@ -148,6 +149,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		IS_Event.observe( filterFormOpenButton,"click",openFilterForm,false,widget.id );
 		var filterFormCloseButton = document.createElement("div");
 		filterFormCloseButton.className = 'maximizeFilterCloseButton';
+		filterFormCloseButton.style.marginLeft = "3px";
 		filterFormCloseButton.style.display  = 'none';
 		
 
