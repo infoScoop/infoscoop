@@ -447,7 +447,8 @@ IS_TreeMenu.prototype = {
 			}
 		}.bind( this );
 
-		if( (this.type == "topmenu" && !displayTopMenu ) || (this.type=="sidemenu" && !displaySideMenu ) ) {
+		if( (this.type == "topmenu" && !displayTopMenu && displaySideMenu != 'reference_top_menu' )
+			|| (this.type=="sidemenu" && !displaySideMenu ) ) {
 			setTimeout( function() {
 				option.onSuccess();
 				option.onComplete();
@@ -542,7 +543,7 @@ IS_TreeMenu.MenuItem.prototype = {
 
 var IS_SiteAggregationMenu = IS_Class.create();
 
-if( displayTopMenu ) {
+if( displayTopMenu || (!displayTopMenu && displaySideMenu == 'reference_top_menu') ) {
 	IS_TreeMenu.types.topmenu = new IS_TreeMenu("topmenu");
 	IS_TreeMenu.types.topmenu.title = IS_R.lb_topMenu;
 
