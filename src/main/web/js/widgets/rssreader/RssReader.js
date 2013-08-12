@@ -1292,7 +1292,7 @@ IS_Widget.RssReader.RssContent.prototype = {
 	},
 	
 	loadPage : function( itemNo ) {
-		if( this.filter ) {
+		if( this.filter && this.source) {
 			for( var i=this.sources.length-1;i>=0;i-- ) {
 				if( !this.sources[i]) {
 					itemNo = i;
@@ -1386,9 +1386,13 @@ IS_Widget.RssReader.RssContent.prototype = {
 				// Load unintentionally in case of impossible filter
 				this.loadPage( Number.MAX_VALUE );
 			}
-			
-			if( !this.sourceIsLoadPageCompleted())
-				this.rssItems.push( null );
+
+			// #478
+			// If it sets up to become zero affair by narrowing down of a title etc.
+			// and also the conditions of the date are specified,
+			// it will solidify with "Now Loading." 
+//			if( !this.sourceIsLoadPageCompleted())
+//				this.rssItems.push( null );
 		}
 		
 		for( var i=0;i<this.onLoadPageCompletedListeners.length;i++ ) 
