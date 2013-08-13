@@ -2008,14 +2008,33 @@ IS_Widget.RssReader.dropGroup = new IS_DropGroup({
 // Access statistics
 IS_Widget.RssReader.showAccessStats = function(widget){
 	var statsId = 'accessStats_' + widget.id;
+
+	// rerender
 	if($(statsId)) {
 		var win = Windows.getWindow(statsId);
-		win.toFront();
+		if(win.isVisible()){
+			win.toFront();
+		}else{
+			var content = win.getContent();
+			if(!/MultiRssReader/.test( widget.widgetType )) {
+				content.contentWindow.location.reload();
+				win.showCenter();
+			} else {
+				content.update('');
+				win.showCenter();
+
+				var multiAccessStatContent = document.createElement("div");
+				win.setContent( multiAccessStatContent );
+				IS_Widget.RssReader.buildMultiAccessStatContent( widget,multiAccessStatContent );
+				win.setSize( multiAccessStatContent.offsetWidth +24+'px',multiAccessStatContent.offsetHeight +16+'px' );
+			}
+		}
 		return;
 	}
+
+	// create
 	var win = new Window(statsId, {
 		className: "alphacube",
-
 		title: IS_R.getResource(IS_R.lb_accessStatsTitle, [widget.title]),
 		width:'600px',
 		height:'350px',
@@ -2024,7 +2043,6 @@ IS_Widget.RssReader.showAccessStats = function(widget){
 		resizable: false,
 		showEffect: Element.show,
 		hideEffect: Element.hide,
-		destroyOnClose: true,
 		zIndex: 10000
 	});
 	win.showCenter();
