@@ -1842,6 +1842,11 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		} else {
 			container.insertBefore( fragment,container.firstChild )
 		}
+		
+		// needs redendering on IE8.
+		if(Browser.isIE8)
+			$(container).hide().show();
+		
 		var this_ = this;
 		renderItems.each( function( renderItem ) {
 			var item = this_.itemList[renderItem.index];

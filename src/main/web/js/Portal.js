@@ -2468,7 +2468,7 @@ IS_Portal.CommandBar = {
 				}else{
 					Element.setStyle($("userMenuCloser"), {
 						width: winX + 'px',
-						height: winY + 'px',
+						height: winY + 'px'
 					});
 					$("userMenuCloser").show();
 				}
