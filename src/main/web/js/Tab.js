@@ -1214,6 +1214,7 @@ IS_Portal.changeActiveTab = function( changeTab, isInitialize ){
 	}
 	
 	IS_Widget.RssReader.RssItemRender.adjustRssDesc();
+	IS_Widget.Information2.adjustDescWidth();
 	
 	IS_Portal.adjustStaticWidgetHeight();
 	

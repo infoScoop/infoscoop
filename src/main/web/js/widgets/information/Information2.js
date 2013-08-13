@@ -62,6 +62,8 @@ IS_Widget.Information2.prototype.classDef = function() {
 		var contentsDiv = document.createElement("div");
 		contentsDiv.style.marginTop = "1px";
 		contentsDiv.style.marginLeft = "1px";
+		// show after IS_Widget.Information2.adjustDescWidth
+		$(contentsDiv).hide();
 		
 		if (rssItems.length === 0) {
 			var rsslink = document.createElement("div");
@@ -304,7 +306,7 @@ IS_Widget.Information2.prototype.classDef = function() {
 			widget.elm_widgetContent.appendChild(contentsDiv);
 		}
 		
-//		setTimeout(IS_Widget.Information2.adjustDescWidth, 5);
+		setTimeout(IS_Widget.Information2.adjustDescWidth, 5);
 	};
 	
 	this.postEdit = this.displayContents;
@@ -427,37 +429,31 @@ IS_Widget.Information2.prototype.classDef = function() {
 };
 
 // fixes #478
-// IS_Widget.Information2.adjustDescWidth = function() {
-// 	for(var i in IS_Widget.InformationDescriptionList) {
-// 		var descs = IS_Widget.InformationDescriptionList[i];
-// 		if(descs && typeof descs != "function") {
-// 			descs.contentsDiv.style.display = "none";
-// 			var contentsOffset = descs.widgetHeader.offsetWidth;
-// 			//For Safari1: Not process descriptions except for the current tub
-// 			if( Browser.isSafari1 ) {
-// 				var tabId;
-// 				for( var j in IS_Portal.widgetLists ) {
-// 					if( IS_Portal.widgetLists[j][i] )
-// 						tabId = j;
-// 				}
-// 				if( tabId && tabId != IS_Portal.currentTabId )
-// 					continue;
-// 			}
-			
-// 			for(var j = 0; j < descs.length; j++){
-// 				var obj = descs[j];
-// 				if(descs.contentsDiv && contentsOffset > 0){
-// 					//For Safari1: Not show side scroll bar
-// 					var offset = 30;
-// 					var imgWidth = obj.image ? obj.image.offsetWidth : 0;
+IS_Widget.Information2.adjustDescWidthTimer = false;
+IS_Widget.Information2.adjustDescWidth = function() {
+	if(IS_Widget.Information2.adjustDescWidthTimer)
+		clearTimeout(IS_Widget.Information2.adjustDescWidthTimer);
+	
+	IS_Widget.Information2.adjustDescWidthTimer = setTimeout(function(){
+		for(var i in IS_Widget.InformationDescriptionList) {
+			var descs = IS_Widget.InformationDescriptionList[i];
+			if(descs && typeof descs != "function") {
+				$(descs.contentsDiv.firstChild).hide();
+				var contentsOffset = descs.widgetHeader.offsetWidth;
+				for(var j = 0; j < descs.length; j++){
+					var obj = descs[j];
+					if(descs.contentsDiv && contentsOffset > 0){
+						var offset = 30;
+						var imgWidth = obj.image ? obj.image.offsetWidth : 0;
 					
-// 					obj.desc.style.width = (contentsOffset - imgWidth - offset) + "px";
-// 				}
-// 			}
-// 			descs.contentsDiv.style.display = "block";
-// 		}
-// 	}	
-// };
-//Event.observe(window, 'resize', IS_Widget.Information2.adjustDescWidth, false);
+						obj.desc.style.width = (contentsOffset - imgWidth - offset) + "px";
+					}
+				}
+				$(descs.contentsDiv.firstChild).show();
+			}
+		}
+	}, 100);
+};
+Event.observe(window, 'resize', IS_Widget.Information2.adjustDescWidth, false);
 
 IS_Widget.Information2.validateUserPref = IS_Widget.RssReader.validateUserPref;

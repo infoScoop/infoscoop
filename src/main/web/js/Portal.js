@@ -616,7 +616,7 @@ IS_Portal.closeIFrame = function () {
 	
 //	IS_WidgetsContainer.adjustColumnWidth();
 	IS_Widget.adjustDescWidth();
-//	IS_Widget.Information2.adjustDescWidth();
+	IS_Widget.Information2.adjustDescWidth();
 	//Display ifame at link icon in only IE and layout is broke up if go back.
 	//TODO Should be removed
 	IS_Widget.Maximize.adjustMaximizeWidth();
@@ -1707,7 +1707,7 @@ IS_Portal.setFontSize = function(e, isInitialize) {
 	
 	if(!isInitialize){
 		IS_Widget.Maximize.adjustMaximizeWidth();
-//		IS_Widget.Information2.adjustDescWidth();
+		IS_Widget.Information2.adjustDescWidth();
 		IS_Portal.adjustIframeHeight();
 		IS_Portal.adjustSiteMenuHeight();
 		IS_Widget.Ticker.adjustTickerWidth();
@@ -1785,7 +1785,7 @@ if( Browser.isSafari1 ) {
 	IS_Portal.adjustCurrentTabSize =  function() {
 		IS_Widget.processAdjustRssDesc();
 		IS_Widget.RssReader.RssItemRender.adjustRssDesc();
-//		IS_Widget.Information2.adjustDescWidth();
+		IS_Widget.Information2.adjustDescWidth();
 		
 		IS_Portal.adjustSiteMenuHeight();
 		IS_Portal.adjustIframeHeight();
