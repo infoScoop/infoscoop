@@ -72,7 +72,9 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 			widget.elm_widgetContent.style.backgroundColor = //"inherit";
 				widget.elm_widgetContent.parentNode.style.backgroundColor;
 		
-		widget.elm_widgetContent.appendChild( this.buildFilterStatePane() );
+		var widgetProperty = widget.widgetConf.property;
+		if(widgetProperty.hasOwnProperty("categoryFilter") || widgetProperty.hasOwnProperty("creatorFilter") || widgetProperty.hasOwnProperty("titleFilter"))
+			widget.elm_widgetContent.appendChild( this.buildFilterStatePane() );
 		
 		var lrTable = IS_Widget.RssReader.RssItemRender.createTable( 1,3 );
 		//lrTable.className = 'maximizeContents';
@@ -904,18 +906,20 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 
 		this.initFilter(this.currentCategory);
 		
-		if(rssReaders.length > 2){
-			$('maximizeCategoryCombobox').show();
-			$('maximizeCategoryCombobox').style.width = "";
-			IS_Event.unloadCache(widget.id +"_category_pulldown");
-			$('maximizeCategoryCombobox').innerHTML = "";
-			
-			self.loadNotCompleteRssReaders();
-			
-			this.buildCategoryComboBox($('maximizeCategoryCombobox'), categoryNo);
-		}else{
-			$('maximizeCategoryCombobox').style.width = 0;
-			$('maximizeCategoryCombobox').hide();
+		if($('maximizeCategoryCombobox')){
+			if(rssReaders.length > 2){
+				$('maximizeCategoryCombobox').show();
+				$('maximizeCategoryCombobox').style.width = "";
+				IS_Event.unloadCache(widget.id +"_category_pulldown");
+				$('maximizeCategoryCombobox').innerHTML = "";
+				
+				self.loadNotCompleteRssReaders();
+				
+				this.buildCategoryComboBox($('maximizeCategoryCombobox'), categoryNo);
+			}else{
+				$('maximizeCategoryCombobox').style.width = 0;
+				$('maximizeCategoryCombobox').hide();				
+			}			
 		}
 		
 		this.updateFilterState();
