@@ -36,7 +36,6 @@
     <meta http-equiv="Expires" content="Thu, 01 Dec 1994 16:00:00 GMT">
 
 	<title>import result</title>
-	<link rel="stylesheet" type="text/css" href="./skin/admin.css">
 	
 	<style>
 		.errorHeader{
