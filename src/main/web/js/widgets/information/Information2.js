@@ -437,7 +437,7 @@ IS_Widget.Information2.adjustDescWidth = function() {
 	IS_Widget.Information2.adjustDescWidthTimer = setTimeout(function(){
 		for(var i in IS_Widget.InformationDescriptionList) {
 			var descs = IS_Widget.InformationDescriptionList[i];
-			if(descs && typeof descs != "function") {
+			if(descs && typeof descs != "function" && descs.contentsDiv.firstChild) {
 				$(descs.contentsDiv.firstChild).hide();
 				var contentsOffset = descs.widgetHeader.offsetWidth;
 				for(var j = 0; j < descs.length; j++){
