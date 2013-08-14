@@ -1037,7 +1037,7 @@ IS_Portal.openIframe = function(url){
 IS_Portal.buildIFrame = function (aTag) {
 	if(aTag) {
 		if(/^notes:\/\//i.test( aTag.href )){
-			aTag.target = "_self";
+			aTag.target = "portal-externalExe-ifrm";
 			return;
 		}
 		
