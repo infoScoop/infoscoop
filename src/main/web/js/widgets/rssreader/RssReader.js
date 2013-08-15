@@ -2043,6 +2043,7 @@ IS_Widget.RssReader.showAccessStats = function(widget){
 		resizable: false,
 		showEffect: Element.show,
 		hideEffect: Element.hide,
+		recenterAuto: false,
 		zIndex: 10000
 	});
 	win.showCenter();
