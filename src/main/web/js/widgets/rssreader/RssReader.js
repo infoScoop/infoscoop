@@ -100,7 +100,14 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			});
 
 		IS_EventDispatcher.addListener("adjustedColumnWidth", null, this.repaintIfCurrentTab.bind(this,false,false,true ) );
-		IS_EventDispatcher.addListener("dragWidget", widget.id,this.repaint.bind( this ) );
+//		IS_EventDispatcher.addListener("dragWidget", widget.id,this.repaint.bind( this ) );
+		IS_EventDispatcher.addListener("dragWidget", widget.id, function(){
+			if(Browser.isIE8){
+				setTimeout(this.repaint.bind(this), 50);
+			}else{
+				this.repaint();
+			}
+		}.bind(this));
 		
 		this.droppableOption = {};
 		
@@ -2154,7 +2161,8 @@ IS_Widget.RssReader.onContentChangeLater = function(e){
 	}
 	IS_Widget.RssReader.contentChangingTimer = setTimeout(_onContentChange, 100);
 };
-IS_Event.observe( window,"resize", IS_Widget.RssReader.onContentChangeLater);
+//IS_Event.observe( window,"resize", IS_Widget.RssReader.onContentChangeLater);
+IS_EventDispatcher.addListener('windowResized', null, IS_Widget.RssReader.onContentChangeLater);
 IS_EventDispatcher.addListener('fontSizeChanged',null,IS_Widget.RssReader.onContentChange);
 IS_EventDispatcher.addListener("adjustedSiteMap", null, IS_Widget.RssReader.onContentChange.bindAsEventListener(IS_Widget.RssReader, true));
 IS_Widget.RssReader.repaint = function(tabId){

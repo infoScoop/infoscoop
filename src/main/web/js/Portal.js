@@ -61,6 +61,17 @@ var IS_User = new Object();
 
 IS_Portal.defaultFontSize = "100%";
 
+Event.observe(window, 'resize', function(){
+	var innerHeight = getWindowSize(false);
+	var innerWidth = getWindowSize(true);
+	// The block for the problem which a window resizing event will be called by document size change. (IE8 Only)
+    if (!Browser.isIE8 || innerHeight != IS_Portal.lastWindowHeight || innerWidth != IS_Portal.lastWindowWidth) {
+    	IS_EventDispatcher.newEvent("windowResized");
+    }
+    IS_Portal.lastWindowHeight = innerHeight;
+    IS_Portal.lastWindowWidth = innerWidth;
+}, false);
+
 IS_Portal.start = function() {
 	var self = this;
 

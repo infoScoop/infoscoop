@@ -454,6 +454,7 @@ IS_Widget.Information2.adjustDescWidth = function() {
 		}
 	}, 100);
 };
-Event.observe(window, 'resize', IS_Widget.Information2.adjustDescWidth, false);
+//Event.observe(window, 'resize', IS_Widget.Information2.adjustDescWidth, false);
+IS_EventDispatcher.addListener('windowResized', null, IS_Widget.Information2.adjustDescWidth);
 
 IS_Widget.Information2.validateUserPref = IS_Widget.RssReader.validateUserPref;
