@@ -102,14 +102,15 @@ IS_Widget.RssReader.RssItemRender.getDefaultHeight = function( context ) {
 		fontSize = 100;
 	
 	var d = context.showDatetime();
+
 	if( fontSize < 100 ) {
-		h = 15 +( d ?16:2 ) -( Browser.isFirefox? 1:0.0 );
+		h = 15 +( d ?16:2 ) -( Browser.isFirefox? -3:0 );
 	} else if( fontSize == 100 ){
-		h = 19 +( d ? 20:2 ) -( Browser.isFirefox ? 1.5:1 );
+		h = 19 +( d ? 20:2 ) -( Browser.isFirefox ? 0:3 );
 	} else {
-		h = 21 +( d ? 23:2 ) -( Browser.isFirefox? 0:-0.5 );
+		h = 24 +( d ? 24:2 ) +( Browser.isFirefox? 4:0.5 );
 	}
-	
+
 	return h;
 }
 IS_Widget.RssReader.RssItemRender.prototype.render = function ( context,rssItem, itemNumber) {
@@ -295,39 +296,64 @@ IS_Widget.RssReader.RssItemRender.prototype.buildTitle = function( widget,opt ) 
 		this.latestMark1.className = "latestMark";
 		
 		this.rssDetail1 = this.createRssDetailLink();
-		
-		var rssItemTable = IS_Widget.RssReader.RssItemRender.createTable( 1,2 );
-		rssItemTable.cellPadding = 0;
-		rssItemTable.cellSpacing = 0;
-		rssItemTable.style.width = "auto";
-		rssItemTable.style.height = "auto";
+
+		// itemTable
+		var rssItemTable = new Element('div');
+		Element.setStyle(rssItemTable, {
+			'width':'auto',
+			'height':'auto',
+			'padding': 0,
+			'margin': '0',
+			'display': 'table'
+		});
 		this.rssItemTable = rssItemTable;
-		
-		var titleTd = rssItemTable.firstChild.firstChild.childNodes[0];
-		titleTd.appendChild(this.rssItemDiv);
-		
-		this.latestMarkTd = rssItemTable.firstChild.firstChild.childNodes[1];
-		this.latestMarkTd.style.width = '15px';
+
+		// title
+		var rssItemRow = new Element('div');
+		Element.setStyle(rssItemRow, {
+			'display': 'table-cell'
+		});
+		rssItemTable.appendChild(rssItemRow);
+		rssItemRow.appendChild(this.rssItemDiv);
+
+		// latestMark
+		this.latestMarkTd = new Element('div');
+		Element.setStyle(this.latestMarkTd, {
+			'display': 'table-cell',
+			'width': '15px',
+			'verticalAlign': 'middle'
+		});
 		this.latestMarkTd.appendChild(this.latestMark1);
+		rssItemTable.appendChild(this.latestMarkTd);
 		
-		var titleTable = IS_Widget.RssReader.RssItemRender.createTable( 1,2 );
-		titleTable.cellPadding = '1';
-		titleTable.cellSpacing = 0;
-		titleTable.style.height = "auto";
-		titleTable.style.tableLayout = "fixed";
-		this.itemDiv.appendChild( titleTable);
-		
-		titleTable.firstChild.firstChild.childNodes[0].appendChild( rssItemTable );
-		this.moreTd1 = titleTable.firstChild.firstChild.childNodes[1];
-		this.moreTd1.style.width = 2.5+"em"
+		// titleTable
+		var titleTable = new Element('div');
+		Element.setStyle(titleTable, {
+			'width':'100%',
+			'height':'auto',
+			'padding': 0,
+			'margin': 0,
+			'display': 'table',
+			'borderCollapse': 'collapse'
+		});
+		this.itemDiv.appendChild(titleTable);
+
+		// more link for date:none
+		this.moreTd1 = new Element('div');
+		Element.setStyle(this.moreTd1, {
+			'display': 'table-cell',
+			'width':'2.5em'
+		});
 		this.moreTd1.appendChild( this.rssDetail1 );
+		titleTable.appendChild(rssItemTable);
+		titleTable.appendChild(this.moreTd1);
 	} else {
 		//this.removeChildren( this.moreTd1 );
 	}
 	
-	var titleTr = this.rssItemTable.firstChild.firstChild;
-	while( titleTr.childNodes.length > 2 )
-		titleTr.removeChild( titleTr.lastChild );
+	// rss custom icon
+	while( this.rssItemTable.childNodes.length > 2 )
+		this.rssItemTable.removeChild( this.rssItemTable.lastChild );
 	
 	if( !br && widget.content.rssItemCustomIcons){
 		var customIcons = rssItem.customIcons2;
@@ -335,15 +361,13 @@ IS_Widget.RssReader.RssItemRender.prototype.buildTitle = function( widget,opt ) 
 			customIcons = rssItem.customIcons2 = widget.content.rssItemCustomIcons(rssItem);
 			
 			for(var i = 0; i<customIcons.length; i++){
-				customIcons[i].style.display = "inline";
+				customIcons[i].style.display = "table-cell";
 				customIcons[i].innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
 			}
 		}
 		
 		for( var i=0;i<customIcons.length;i++ ) {
-			var customIconTd = document.createElement("td");
-			customIconTd.appendChild( customIcons[i] );
-			titleTr.appendChild(customIconTd);
+			this.rssItemTable.appendChild(customIcons[i]);
 		}
 	}
 	
@@ -362,13 +386,13 @@ IS_Widget.RssReader.RssItemRender.prototype.buildTitle = function( widget,opt ) 
 	this.latestMarkTd.style.display = "none";
 	
 	if( !br && IS_Widget.RssReader.isLatestNews(rssItem.rssDate))
-		this.latestMarkTd.style.display = "";
+		this.latestMarkTd.style.display = "table-cell";
 	
 	if(pubDate){
 		this.moreTd1.style.display = "none";
-		this.rssItemTable.style.marginBottom = "0px";
+		this.rssItemTable.style.marginBottom = "0";
 	}else{
-		this.moreTd1.style.display = "";
+		this.moreTd1.style.display = "table-cell";
 		this.rssItemTable.style.marginBottom = "2px";
 		
 		if( br ) {
