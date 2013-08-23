@@ -4,6 +4,7 @@
 	<property file="build.properties"/>
 	<property name="version" value="300to310" />
 	<property name="build.migration" value="${basedir}/build/work/migration" />
+    <property name="build.gadgets" value="${build.home}/work/infoscoop-gadgets-${gadgets.version}/infoscoop-gadgets" />
 	<!--property name="dist.home" value="${basedir}/dist" /-->
 	<property name="src.initdb.home" value="${basedir}/src/initdb" />
 	<property name="src.migration.java" value="${basedir}/src/migration/java" />
@@ -70,7 +71,7 @@
 		<copy todir="${build.migration}/data/oauth_certificate">
 			<fileset dir="${src.initdb.home}/data/oauth_certificate"/>
 		</copy>
-		<antcall target="download-gadgets"/>
+		<antcall target="copy-gadgets"/>
 
 		<copy todir="${build.migration}/sql">
 			<fileset dir="${src.migration.script}/${version}/sql"/>
@@ -139,11 +140,9 @@
 
 	<target name="all" depends="compile"/>
 
-	<target name="download-gadgets">
-		<get src="${gadgets.url}"
-			dest="gadgets.zip" verbose="true" usetimestamp="true" />
-
-		<unzip src="gadgets.zip" dest="${build.migration}/data/gadget" overwrite="true"/>
-		<delete file="gadgets.zip"/>
+	<target name="copy-gadgets">
+    	<copy todir="${build.work}/initdb/data/gadget" overwrite="true">
+    		<fileset dir="${build.gadgets}/gadgets"/>
+    	</copy>
 	</target>
 </project>

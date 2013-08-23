@@ -9,6 +9,7 @@
 	<property name="shindig.java" value="${basedir}/src/shindig/java" />	
 	<property name="build.home" value="${basedir}/build" />
     <property name="build.work" value="${build.home}/work" />
+    <property name="build.gadgets" value="${build.home}/work/infoscoop-gadgets-${gadgets.version}/infoscoop-gadgets" />
 
 	<target name="prepare-compile">
 		<delete dir="${build.work}/initdb"/>
@@ -79,14 +80,12 @@
 
 		<fixcrlf srcdir="${build.work}/initdb" eol="lf" eof="remove" includes="**/*.sh" />
 
-		<antcall target="download-gadgets"/>
+		<antcall target="copy-gadgets"/>
 	</target>
 
-	<target name="download-gadgets">
-		<get src="${gadgets.url}"
-			dest="gadgets.zip" verbose="true" usetimestamp="true" />
-
-		<unzip src="gadgets.zip" dest="${build.work}/initdb/data/gadget" overwrite="true"/>
-		<delete file="gadgets.zip"/>
+	<target name="copy-gadgets">
+    	<copy todir="${build.work}/initdb/data/gadget" overwrite="true">
+    		<fileset dir="${build.gadgets}/gadgets"/>
+    	</copy>
 	</target>
 </project>
