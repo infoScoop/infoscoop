@@ -17,6 +17,7 @@
 
 /* CommandQueue */
 IS_Request = {};
+IS_Request.asynchronous = true;
 IS_Request.Queue = function (servName, time, disabled, checkDuplicate){
 	this.url=hostPrefix + servName;
 	var queued=new Array();

@@ -155,6 +155,8 @@ gadgets.io = function() {
       shindig.auth.updateSecurityToken(data['st']);
     }
     callback(transformResponseData(params, data));
+    // Fix #536 avoid memory leak in MSIE.
+    xobj.onreadystatechange = new Function;
   }
 
   /**
