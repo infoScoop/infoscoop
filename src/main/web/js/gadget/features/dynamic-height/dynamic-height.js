@@ -50,7 +50,7 @@ gadgets.window = gadgets.window || {};
     }
 
     // Only make the IFPC call if height has changed
-    if (newHeight !== oldHeight && !isNaN(newHeight) &&) {
+    if (newHeight !== oldHeight && !isNaN(newHeight)) {
       oldHeight = newHeight;
       gadgets.rpc.call(null, "resize_iframe", null, newHeight, heightAutoCalculated);
     }
