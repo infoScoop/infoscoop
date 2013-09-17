@@ -1212,7 +1212,7 @@ IS_Portal.changeActiveTab = function( changeTab, isInitialize ){
 		siteMenuElm.show();
 		IS_SidePanel.adjustPosition();
 	}
-	
+
 	IS_Widget.RssReader.RssItemRender.adjustRssDesc();
 	IS_Widget.Information2.adjustDescWidth();
 	
@@ -1325,6 +1325,7 @@ IS_Portal.startChangeTab = function(e){
 
 IS_Portal.endChangeTab = function(e){
 	IS_Portal.endIndicator();
+	IS_Portal.adjustGadgetHeight();
 	IS_EventDispatcher.newEvent("changeTab");
 }
 
