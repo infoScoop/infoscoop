@@ -18,7 +18,7 @@
 var AjaxRequest = {
 	__pool:{isLock:false, objects:[], currentInUse:0}, 
 	__syncAjaxRpc:null, 
-	__options:{poolSize:( Browser.isIE || Browser.isSafari1 ) ? 2 : 5, retryInterval: 1000, timeout:-1, retryCount: 0},
+	__options:{poolSize:( window["maxConnectionsPerServer"] ) ? window["maxConnectionsPerServer"] : 6, retryInterval: 1000, timeout:-1, retryCount: 0},
 	__cancels:{},
 	__queue:{},
 	
