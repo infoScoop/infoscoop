@@ -240,6 +240,7 @@
 				<prop key="getWidgetsNode">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="syncPanels">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="clearConfigurations">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="clearProfile">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
 			</props>
 		</property>

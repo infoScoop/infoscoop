@@ -587,4 +587,23 @@ public class TabService {
 		
 		log.info("reset user data ["+uid+"]");
 	}
+	
+	/**
+	 * Clear all user profile.
+	 * @param uid
+	 * @throws Exception
+	 */
+	public void clearProfile( String uid ) throws Exception{
+		if( uid == null )
+			return;
+		
+		PreferenceDAO preferenceDAO = PreferenceDAO.newInstance();
+		Preference preference = preferenceDAO.select(uid);
+		if(preference != null)
+			preferenceDAO.delete(preference);
+		WidgetDAO.newInstance().clearWidgets( uid );
+		TabDAO.newInstance().deleteTab( uid );
+		
+		log.info("clear user profile ["+uid+"]");
+	}
 }

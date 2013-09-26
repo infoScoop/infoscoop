@@ -41,7 +41,6 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.infoscoop.dao.model.Preference;
 import org.infoscoop.dao.model.SystemMessage;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
@@ -287,13 +286,6 @@ public class WidgetDAO extends HibernateDaoSupport{
 				new Object[] { uid, tabId.toString() });
 	}
 
-	/*
-	public void deleteWidget(Widget widget, long deleteDate) {
-		widget.getId().setDeletedate(new Long(deleteDate));
-		super.getHibernateTemplate().update(widget);
-	}
-	*/
-
 	public int emptyWidget(String uid, String widgetId, long deleteDate) {
 		/*
 		return getJdbcTemplate().update(this.getQuery("emptyWidget"),
@@ -320,12 +312,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 				new Object[]{uid, widgetId,widgetId, tabId, new Long(deleteDate)});
 
 	}
-	/*
-	public void wipeWidget(String uid, String tabId, String widgetId) {
-		getJdbcTemplate().update(this.getQuery("wipeWidget"),
-				new Object[] { uid, widgetId, widgetId, tabId });
-	}*/
-
+	
 	public void emptyDeletedWidgets(String uid){
 //		String queryString = "delete from Widget where Uid = ? and Deletedate > 0";
 //		super.getHibernateTemplate().bulkUpdate( queryString,new Object[]{ uid } );
@@ -340,6 +327,17 @@ public class WidgetDAO extends HibernateDaoSupport{
 				new Object[]{ uid,tabId,new Integer( isStatic )});
 	}
 
+	/**
+	 * clear all widgets by userId.
+	 * @param uid
+	 */
+	public void clearWidgets( String uid ) {
+		String queryString = "delete from Widget where Uid = ?";
+
+		super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { uid });
+	}
+	
 	public List getWidgetRanking(int maxCount, int freshDay) {
 		Session session = null;
 		Calendar cal = Calendar.getInstance();

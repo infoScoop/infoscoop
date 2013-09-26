@@ -64,6 +64,7 @@
     	<param-value><!--Migration Database TableSpace--></param-value>
 	</context-param>
 	<!--Migration Database Schema-->
+	
 	<listener>
 		<listener-class>org.infoscoop.migration.ISMigrationListener</listener-class>
 	</listener>
@@ -415,6 +416,14 @@
 	</servlet>
 
 	<servlet>
+		<servlet-name>RestApi</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
 		<servlet-name>NewSessionIdServlet</servlet-name>
 		<servlet-class>
 			org.infoscoop.web.NewSessionIdServlet
@@ -755,6 +764,11 @@
   <servlet-mapping>
     <servlet-name>AdminDispatcher</servlet-name>
     <url-pattern>/manager/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>RestApi</servlet-name>
+    <url-pattern>/isapi/*</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
