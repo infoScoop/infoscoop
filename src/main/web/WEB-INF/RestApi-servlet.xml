@@ -12,7 +12,7 @@
 	 
 	<mvc:annotation-driven/>
 	
-	<context:component-scan base-package="org.infoscoop.api.rest.controller" />
+	<context:component-scan base-package="org.infoscoop.api.rest.*.controller" />
 	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
 	
 
