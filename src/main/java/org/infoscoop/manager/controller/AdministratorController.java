@@ -26,14 +26,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+@RequestMapping("/administrator")
 public class AdministratorController implements ControllerInterface{
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/index", method=RequestMethod.GET)
 	public void index(HttpServletRequest request) throws Exception {
 		String json = PortalAdminsService.getHandle().getPortalAdminsJson(request);
 		request.setAttribute("portalAdminsJson", json);
 	}
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/getPortalAdminsJson", method=RequestMethod.GET)
 	public TextView getPortalAdminsJson(HttpServletRequest request)
 			throws Exception {
 		String json = PortalAdminsService.getHandle().getPortalAdminsJson(request);

@@ -43,8 +43,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequestMapping("/defaultpanel")
 public class DefaultpanelController implements ControllerInterface{
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/index", method=RequestMethod.GET)
 	public String index(HttpServletRequest request) throws Exception {
 		request.setAttribute("isDefaultPanelAdmin", true);
 		request.setAttribute("tabAdminsJSON", StaticTabService.getHandle().getTabAdminsJSON());
@@ -53,7 +54,7 @@ public class DefaultpanelController implements ControllerInterface{
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(method=RequestMethod.POST)
+	@RequestMapping(value="/addTab", method=RequestMethod.POST)
 	public String addTab(HttpServletRequest request, 
 			HttpServletResponse response, 
 			@RequestParam String addTabJson) throws Exception {
@@ -81,7 +82,7 @@ public class DefaultpanelController implements ControllerInterface{
 		return "defaultpanel/editTab";
 	}
 
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/editTab", method=RequestMethod.GET)
 	public String editTab(HttpServletRequest request, 
 			HttpServletResponse response, 
 			@RequestParam("tabId") String tabId) throws Exception {
@@ -130,7 +131,7 @@ public class DefaultpanelController implements ControllerInterface{
 		return "defaultpanel/editTab";
 	}
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/commandbar", method=RequestMethod.GET)
 	public String commandbar(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String result =  editTab(request, response, TabLayoutService.COMMANDBAR_TAB_ID);
@@ -138,7 +139,7 @@ public class DefaultpanelController implements ControllerInterface{
 		return result;
 	}	
 
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/forceEdit", method=RequestMethod.GET)
 	public String forceEdit(HttpServletRequest request, 
 			HttpServletResponse response,
 			@RequestParam("tabId") String tabId) throws Exception {
@@ -150,7 +151,7 @@ public class DefaultpanelController implements ControllerInterface{
 		return editTab(request, response, tabId);
 	}
 	
-	@RequestMapping(method=RequestMethod.POST)
+	@RequestMapping(value="commitTab", method=RequestMethod.POST)
 	public TextView commitTab(HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestBody String updateDataJson) throws Exception {
@@ -163,15 +164,15 @@ public class DefaultpanelController implements ControllerInterface{
 //		return "redirect:index";
 	}
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/iframe", method=RequestMethod.GET)
 	public void iframe() throws Exception {
 	}
 
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/blank", method=RequestMethod.GET)
 	public void blank() throws Exception {
 	}
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/editRole", method=RequestMethod.GET)
 	public String editRole() throws Exception {
 		return "defaultpanel/editRole";
 	}
@@ -181,7 +182,7 @@ public class DefaultpanelController implements ControllerInterface{
 	}
 	
 //	@Transactional
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/widsrv", method=RequestMethod.GET)
 	public TextView widsrv(HttpServletRequest request,
 			@RequestParam("tabId") String tabId,
 			@RequestParam("roleOrder") Integer roleOrder, Model model)
