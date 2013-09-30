@@ -30,6 +30,12 @@
  */
 
 gadgets.io = function() {
+  // Ever incrementing Ajax transaction id
+  var ioTransactionId = 0;
+
+  // Object to store ids for the ajax poll to avoid IE memory leak
+  var ajaxPollQ = {};
+
   /**
    * Holds configuration-related data such as proxy urls.
    */
@@ -51,14 +57,16 @@ gadgets.io = function() {
         shindig.xhrwrapper.createXHR) {
       return shindig.xhrwrapper.createXHR();
     } else if (typeof ActiveXObject != 'undefined') {
-      x = new ActiveXObject('Msxml2.XMLHTTP');
-      if (!x) {
-        x = new ActiveXObject('Microsoft.XMLHTTP');
-      }
-      return x;
+      try {
+        x = new ActiveXObject('Msxml2.XMLHTTP');
+        if (!x) {
+          x = new ActiveXObject('Microsoft.XMLHTTP');
+        }
+        return x;
+      } catch (e) {} // An exception will be thrown if ActiveX is disabled
     }
     // The second construct is for the benefit of jsunit...
-    else if (typeof XMLHttpRequest != 'undefined' || window.XMLHttpRequest) {
+    if (typeof XMLHttpRequest != 'undefined' || window.XMLHttpRequest) {
       return new window.XMLHttpRequest();
     }
     else throw ('no xhr available');
@@ -121,6 +129,42 @@ gadgets.io = function() {
   var UNPARSEABLE_CRUFT = "throw 1; < don't be evil' >";
 
   /**
+   * added by BIT
+   * Fix #536 avoid memory leak in MSIE.
+   * start
+   */
+  var evalIframe;
+  var evalIframe_html = "<html><head></head>"
+    + "<body><" + "script type='text/javascript'>"
+    + "function anotherEval(str) {return eval('(' + str + ')');}"
+    + "</" + "script></body></html>";
+  function initEvalFrame() {
+    var iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    document.body.appendChild(iframe);
+    
+    evalIframe = (iframe.contentWindow) ? 
+      iframe.contentWindow : 
+      (iframe.contentDocument.document) ? 
+        iframe.contentDocument.document : 
+        iframe.contentDocument;
+  }
+  function resetEvalFrame() {
+    if(!evalIframe)
+      initEvalFrame();
+    evalIframe.document.open();
+    evalIframe.document.write(evalIframe_html);
+    evalIframe.document.close();
+  }
+  function evalInIFrame(jsonString) {
+    resetEvalFrame();
+    return evalIframe.anotherEval(jsonString);
+  }
+  /**
+   * end
+   */
+  
+  /**
    * Handles XHR callback processing.
    *
    * @param {string} url
@@ -144,8 +188,16 @@ gadgets.io = function() {
 
     // We are using eval directly here  because the outer response comes from a
     // trusted source, and json parsing is slow in IE.
-    var data = eval('(' + txt + ')');
+//  var data = eval('(' + txt + ')');
+    // Fix #536 avoid memory leak in MSIE 9+.
+    var data;
+    if(window.ActiveXObject && !(/msie 8/i).test(navigator.userAgent)){
+      data = evalInIFrame(txt);
+    }else{
+      data = eval('(' + txt + ')');
+    }
     data = data[url];
+    
     // Save off any transient OAuth state the server wants back later.
     if (data['oauthState']) {
       oauthState = data['oauthState'];
@@ -193,7 +245,14 @@ gadgets.io = function() {
       switch (params['CONTENT_TYPE']) {
         case 'JSON':
         case 'FEED':
-          resp['data'] = gadgets.json.parse(resp.text);
+//        resp['data'] = gadgets.json.parse(resp.text);
+          // Fix #536 avoid memory leak in MSIE 9+.
+          if(window.ActiveXObject && !(/msie 8/i).test(navigator.userAgent)){
+            resp['data'] = evalInIFrame(resp.text);
+          }else{
+            resp['data'] = gadgets.json.parse(resp.text);
+          }
+          
           if (!resp['data']) {
             resp['errors'].push('500 Failed to parse JSON');
             resp['rc'] = 500;
@@ -256,8 +315,17 @@ gadgets.io = function() {
 
     xhr.open(method, proxyUrl, true);
     if (callback) {
-      xhr.onreadystatechange = gadgets.util.makeClosure(
-          null, processResponseFunction, realUrl, callback, params, xhr);
+      var closureCallback = gadgets.util.makeClosure(null, processResponseFunction, realUrl,
+        callback, params, xhr);
+
+      // check for alternate ajax for onreadystatechange event handler
+      var shouldPoll = gadgets.util.shouldPollXhrReadyStateChange();
+      if(shouldPoll) {
+        handleReadyState(xhr, closureCallback);
+      }
+      else {
+        xhr.onreadystatechange = closureCallback;
+      }
     }
     
     // BugFix #435
@@ -284,6 +352,38 @@ gadgets.io = function() {
     }
     xhr.send(paramData);
   }
+
+  /**
+    * Helper function to use poll setInterval to call the callback for Ajax to avoid
+    * memory leak in certain browsers (eg: IE7) due to circular linking.
+    *
+    * The function  will create  interval polling to poll the XHR object's readyState
+    * property instead of binding a callback to the onreadystatechange event.
+    *
+    * @param {xhr} The Ajax object
+    * @param {function} The callback function for the Ajax call
+    * @return void
+    */
+    function handleReadyState(xhr, callback) {
+      var tempTid = ioTransactionId;
+      var pollInterval = config['xhrPollIntervalMs'] || 50;
+      ajaxPollQ[tempTid] = window.setInterval(
+        function() {
+          if(xhr && xhr.readyState === 4) {
+            // Clear the polling interval for the transaction and remove
+            // the reference from ajaxPollQ
+            window.clearInterval(ajaxPollQ[tempTid]);
+            delete ajaxPollQ[tempTid];
+
+            // call the callback
+            if(callback) {
+              callback();
+            }
+          }
+        }, pollInterval);
+
+      ioTransactionId++;
+    }
 
   /**
    * Satisfy a request with data that is prefetched as per the gadget Preload
