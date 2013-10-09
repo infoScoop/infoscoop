@@ -399,5 +399,14 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
-
+	<bean id="oauth2ProviderAccessTokenDAO" class="org.infoscoop.api.dao.OAuth2ProviderAccessTokenDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
+	<bean id="oauth2ProviderRefreshTokenDAO" class="org.infoscoop.api.dao.OAuth2ProviderRefreshTokenDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
 </beans>

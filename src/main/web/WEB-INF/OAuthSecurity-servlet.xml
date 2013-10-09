@@ -77,14 +77,7 @@
 	</bean>
 
 	<!-- OAuth Token Service -->
-	<bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.InMemoryTokenStore" />
-
-<!-- Database settings
-	DataSource settings is written to datasource.xml
-	<bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.JdbcTokenStore">
-		<constructor-arg ref="dataSource" />
-	</bean>
--->
+	<bean id="tokenStore" class="org.infoscoop.api.oauth2.provider.ISTokenStore" />
 
 	<bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
 		<property name="tokenStore" ref="tokenStore" />

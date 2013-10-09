@@ -19,10 +19,7 @@
 package org.infoscoop.api.oauth2.provider;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.security.auth.Subject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,6 +36,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 	private static Log log = LogFactory.getLog(CustomAuthenticationProvider.class);
 
+	private static final String ROLE_USER = "ROLE_USER";
+	
 	@Override
 	public Authentication authenticate(Authentication auth) throws AuthenticationException {
         String userid = auth.getName();
@@ -51,22 +50,23 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         	
         	// authority
         	PortalAdminsService portalService = PortalAdminsService.getHandle();
-        	Portaladmins admins = portalService.getPortalAdmin(userid);
-        	String permission = admins.getAdminrole().getPermission();
+        	portalService.getPortalAdmins();
+        	Portaladmins admin = portalService.getPortalAdmin(userid);
+        	String permission = ROLE_USER;
+        	if(admin != null)
+        		permission = admin.getAdminrole().getPermission();
         	System.out.println(permission);
         	
             List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
-            grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+            grantedAuths.add(new SimpleGrantedAuthority(ROLE_USER));
             return new UsernamePasswordAuthenticationToken(userid, password, grantedAuths);
         } catch(AuthenticationException | org.infoscoop.account.AuthenticationException e) {
         	// login error
         	e.printStackTrace();
         	return null;
         } catch (Exception ex) {
-        	// normal user
-            List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
-            grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-            return new UsernamePasswordAuthenticationToken(userid, password, grantedAuths);
+        	ex.printStackTrace();
+            return null;
 		}
 	}
 
