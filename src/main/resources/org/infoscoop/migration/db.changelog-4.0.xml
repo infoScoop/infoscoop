@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<property name="clob.type" value="clob" dbms="oracle, db2"/>
+    <property name="clob.type" value="text" dbms="mysql"/>
+
+    <!--Issue 539-->
+    <!--CREATE TABLE `IS_OAUTH2_PROVIDER_ACCESS_TOKENS` (id VARCHAR(255), token BLOB, authentication_id VARCHAR(255), user_id VARCHAR(150), client_id VARCHAR(255), authentication BLOB, refresh_token VARCHAR(255), PRIMARY KEY (id));-->
+    <!--CREATE TABLE `IS_OAUTH2_PROVIDER_REFRESH_TOKENS` (id VARCHAR(255), token BLOB, authentication BLOB, PRIMARY KEY (id));-->
+    <changeSet id="infoscoop400_539_1" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_539_1">
+            <not>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTH2_PROVIDER_ACCESS_TOKENS"/>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTH2_PROVIDER_REFRESH_TOKENS"/>
+            </not>
+        </preConditions>
+        <createTable tableName="IS_OAUTH2_PROVIDER_ACCESS_TOKENS" tablespace="${.tablespace}">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="token" type="blob"/>
+            <column name="authentication_id" type="varchar(255)"/>
+            <column name="user_id" type="varchar(255)"/>
+            <column name="client_id" type="varchar(255)"/>
+            <column name="authentication" type="blob"/>
+            <column name="refresh_token" type="varchar(255)"/>
+        </createTable>
+        <createTable tableName="IS_OAUTH2_PROVIDER_REFRESH_TOKENS" tablespace="${.tablespace}">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="token" type="blob"/>
+            <column name="authentication" type="blob"/>
+        </createTable>
+    </changeSet>
+    
+    <!--Issue 539-->
+    <!--CREATE TABLE `IS_OAUTH2_PROVIDER_CLIENT_DETAILS` (id VARCHAR(255), title VARCHAR(255) NOT NULL, resource_ids VARCHAR(255), secret VARCHAR(255) NOT NULL, scope VARCHAR(255), grant_types VARCHAR(255), redirect_url VARCHAR(255), authorities VARCHAR(255), access_token_validity INTEGER, refresh_token_validity INTEGER, additional_information CLOB, PRIMARY KEY (id));-->
+    <changeSet id="infoscoop400_539_2" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_539_2">
+            <not>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTH2_PROVIDER_CLIENT_DETAILS"/>
+            </not>
+        </preConditions>
+        <createTable tableName="IS_OAUTH2_PROVIDER_CLIENT_DETAILS" tablespace="${.tablespace}">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="varchar(255)">
+	            <constraints nullable="false"/>
+            </column>
+            <column name="resource_ids" type="varchar(255)"/>
+            <column name="secret" type="varchar(255)">
+    	        <constraints nullable="false"/>
+            </column>
+            <column name="scope" type="varchar(255)"/>
+            <column name="grant_types" type="blob"/>
+            <column name="redirect_url" type="varchar(255)"/>
+            <column name="authorities" type="varchar(255)"/>
+            <column name="access_token_validity" type="integer"/>
+            <column name="refresh_token_validity" type="integer"/>
+            <column name="additional_information" type="${clob.type}"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

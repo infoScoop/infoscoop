@@ -409,4 +409,9 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
+	<bean id="oauth2ProviderClientDetailDAO" class="org.infoscoop.api.dao.OAuth2ProviderClientDetailDAO">
+		<property name="sessionFactory">
+   	   		<ref bean="sessionFactory"/>
+   	 	</property>
+	</bean>
 </beans>

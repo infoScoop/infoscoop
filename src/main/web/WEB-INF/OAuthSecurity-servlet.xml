@@ -68,9 +68,9 @@
 		<authentication-provider user-service-ref="clientDetailsUserService" />
 	</authentication-manager>
 	<authentication-manager alias="authenticationManager" xmlns="http://www.springframework.org/schema/security">
-		<authentication-provider ref="customAuthenticationProvider"/>
+		<authentication-provider ref="authenticationProvider"/>
  	</authentication-manager>
-	<bean id="customAuthenticationProvider" class="org.infoscoop.api.oauth2.provider.CustomAuthenticationProvider" />
+	<bean id="authenticationProvider" class="org.infoscoop.api.oauth2.provider.ISAuthenticationProvider" />
 
 	<bean id="clientDetailsUserService" class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
 		<constructor-arg ref="clientDetails" />
@@ -83,6 +83,10 @@
 		<property name="tokenStore" ref="tokenStore" />
 		<property name="supportRefreshToken" value="true" />
 		<property name="clientDetailsService" ref="clientDetails" />
+		<!-- default 12 hours -->
+		<property name="accessTokenValiditySeconds" value="43200" />
+		<!-- default 30 days -->
+		<property name="refreshTokenValiditySeconds" value="2592000" />		
 	</bean>
 
 	<bean id="userApprovalHandler" class="org.infoscoop.api.oauth2.provider.UserApprovalHandler">
@@ -99,10 +103,13 @@
 
 	<oauth:resource-server id="resourceServerFilter" resource-id="infoscoop" token-services-ref="tokenServices" />
 
+	<!-- OAuth2 client detail settings -->
+	<bean id="clientDetails" class="org.infoscoop.api.oauth2.provider.ISClientDetailsService"/>
+<!-- 
 	<oauth:client-details-service id="clientDetails">
-		<oauth:client client-id="my-less-trusted-autoapprove-client" authorized-grant-types="implicit" authorities="ROLE_CLIENT" scope="read,write,trust" />
 		<oauth:client client-id="tonr" resource-ids="infoscoop" authorized-grant-types="password,authorization_code,refresh_token,implicit" authorities="ROLE_CLIENT" scope="read,write" secret="secret" />
 	</oauth:client-details-service>
+ -->
 
 	<!-- application settings -->
 	<mvc:annotation-driven />

@@ -94,6 +94,7 @@
 					<value>org/infoscoop/dao/model/TabAdmin.hbm.xml</value>
 					<value>org/infoscoop/api/dao/model/OAuth2ProviderAccessToken.hbm.xml</value>
 					<value>org/infoscoop/api/dao/model/OAuth2ProviderRefreshToken.hbm.xml</value>
+					<value>org/infoscoop/api/dao/model/OAuth2ProviderClientDetail.hbm.xml</value>
 				</list>
 			</property>
 			<property name="hibernateProperties">

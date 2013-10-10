@@ -33,8 +33,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-public class CustomAuthenticationProvider implements AuthenticationProvider {
-	private static Log log = LogFactory.getLog(CustomAuthenticationProvider.class);
+public class ISAuthenticationProvider implements AuthenticationProvider {
+	private static Log log = LogFactory.getLog(ISAuthenticationProvider.class);
 
 	private static final String ROLE_USER = "ROLE_USER";
 	
