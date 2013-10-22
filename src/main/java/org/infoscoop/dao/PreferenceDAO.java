@@ -19,11 +19,13 @@ package org.infoscoop.dao;
 
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.infoscoop.dao.model.Preference;
 import org.infoscoop.util.SpringUtil;
@@ -75,6 +77,19 @@ public class PreferenceDAO extends HibernateDaoSupport{
     	if(log.isInfoEnabled())
     		log.info("uid[" + entity.getUid() + "]: Save XML successfully.");
     }
+    
+    /**
+     * Delete the data of an appointed user.<BR>
+     * @param entity
+     */
+    public void delete(Preference entity) {
+    	if(log.isInfoEnabled())
+        	log.info("delete preference for uid: " + entity.getUid() + ".");
+    	
+    	super.getHibernateTemplate().delete(entity);;
+    	if(log.isInfoEnabled())
+    		log.info("uid[" + entity.getUid() + "]: Delete Preference successfully.");
+    }
 
 	/**
 	 * Return the users count.
@@ -98,4 +113,30 @@ public class PreferenceDAO extends HibernateDaoSupport{
 
 				});
 	}
+
+
+	/**
+	 * Return the users count.
+	 * 
+	 * @return
+	 */
+	public List<String> getUserIdList() {
+		return (List) super.getHibernateTemplate().execute(
+				new HibernateCallback() {
+
+					public Object doInHibernate(org.hibernate.Session session)
+							throws HibernateException, SQLException {
+
+						Criteria crit = session
+								.createCriteria(Preference.class);
+						
+						Projection projection = Projections.property(Preference.PROP_ID);
+						crit.setProjection(projection);
+						
+						return crit.list();
+					}
+
+				});
+	}
+
 }

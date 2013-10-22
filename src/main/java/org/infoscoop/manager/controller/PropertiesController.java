@@ -22,8 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+@RequestMapping("/properties")
 public class PropertiesController implements ControllerInterface{
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/index", method=RequestMethod.GET)
 	public void index() throws Exception {
 	}
 

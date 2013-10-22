@@ -18,6 +18,7 @@
 package org.infoscoop.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -71,5 +72,8 @@ public class InformationService {
 			throw e;
 		}
 	}
-
+	
+	public List<String> getUserIdList() {
+		return preferenceDAO.getUserIdList();
+	}
 }

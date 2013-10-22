@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.api.dao.model">
+	<class
+		name="OAuth2ProviderRefreshToken"
+		table="IS_OAUTH2_PROVIDER_REFRESH_TOKENS"
+	>
+		<meta attribute="sync-DAO">false</meta>
+   
+		<id
+			name="id"
+			type="string"
+			length="255"
+			column="id"
+		>
+		</id>
+
+		<property
+			name="token"
+			column="token"
+			type="binary"
+		/>
+
+		<property
+			name="authentication"
+			column="authentication"
+			type="binary"
+		/>
+	</class>	
+</hibernate-mapping>
