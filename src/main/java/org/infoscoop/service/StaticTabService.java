@@ -44,8 +44,6 @@ public class StaticTabService {
 
 	private static Log log = LogFactory.getLog(StaticTabService.class);
 
-	private static final String COMMANDBAR_TAB_ID = "commandbar";
-
 	public StaticTabService() {
 	}
 

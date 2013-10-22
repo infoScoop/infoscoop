@@ -67,4 +67,61 @@
             <column name="additional_information" type="${clob.type}"/>
         </createTable>
     </changeSet>
+    
+    <!--Issue 541-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_portalHeader","ALL","ALL","Header");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_portalHeader","ALL","ja","ヘッダ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_portalHeader","ALL","zh","头");-->
+    <changeSet id="infoscoop400_541_1" author="nishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_541_1">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_portalHeader';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_portalHeader"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Header"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_portalHeader"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="ヘッダ"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_portalHeader"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="头"/>
+        </insert>
+    </changeSet>
+
+    <!--Issue 541-->
+    <!--INSERT INTO IS_STATIC_TABS VALUES('header', NULL, NULL, 0, 0)-->
+    <!--DELETE FROM IS_TABLAYOUTS WHERE temp = 1;-->
+    <changeSet id="infoscoop400_541_2" author="nishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_541_2">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_STATIC_TABS where TABID='header';</sqlCheck>
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_TABLAYOUTS where TABID='header';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_STATIC_TABS">
+            <column name="TABID" value="header"/>
+            <column name="DELETEFLAG" value="0"/>
+            <column name="DISABLEDEFAULT" value="0"/>
+        </insert>
+        <sql><![CDATA[
+insert into ${migration.defaultSchemaWithDot}is_tablayouts
+(TABID, ROLEORDER, ROLE, ROLENAME, PRINCIPALTYPE, DEFAULTUID, WIDGETS, LAYOUT, WIDGETSLASTMODIFIED, TEMP, WORKINGUID)
+values('header', 0, 'default', 'defaultRole', 'OrganizationPrincipal', 'default', '<widgets/>', 
+(select layout from ${migration.defaultSchemaWithDot}is_portallayouts where name='header')
+,'0', 0, '')
+        ]]></sql>
+        <delete tableName="IS_PORTALLAYOUTS">
+            <where>NAME='header'</where>
+        </delete>
+    </changeSet>
+
 </databaseChangeLog>

@@ -34,7 +34,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	var controlModal;
 
 	var commandBarTabId = "commandbar";
-	var ignoreTabIdList = [commandBarTabId, "0"];
+	var portalHeaderTabId = "header";
+	var ignoreTabIdList = [commandBarTabId, portalHeaderTabId, "0"];
 	
 	this.defaultRoleRegex = "default";
 	this.defaultRoleName = "defaultRole";
@@ -488,7 +489,11 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			// Defalut fixed area setting.
 			if(jsonObject.tabId == commandBarTabId) {
 				jsonObject = self.templates.setCommandLayout(jsonObject);
-			} else {
+			}
+			else if(jsonObject.tabId == portalHeaderTabId) {
+				jsonObject = self.templates.setPortalHeaderLayout(jsonObject);
+			}
+			else {
 				jsonObject = self.templates.setStaticLayout0(jsonObject);
 				jsonObject = self.setColumnsArray(jsonObject);
 			}
@@ -531,7 +536,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			if(this.displayRoleJsons[i].isDefault)
 			  defaultRoleJson = this.displayRoleJsons[i];
 		}
-		if( !(self.displayTabId == 'commandbar' || self.displayTabId == '0') ){
+		if( !(self.displayTabId == commandBarTabId || self.displayTabId == portalHeaderTabId || self.displayTabId == '0') ){
 			var disabledDefualtDiv = document.createElement('div');
 			disabledDefualtDiv.className = 'iconButton';
 			disabledDefualtDiv.style.cssFloat = "left";
@@ -789,7 +794,47 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		
 		if(self.displayTabId == commandBarTabId){
 			IS_Event.observe(editImg, "click", this.editCommandBarRole.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
-		}else{
+		}
+		else if(self.displayTabId == portalHeaderTabId){
+			IS_Event.observe(editImg, "click", function(jsonRole, roleDiv){
+				this.displayRoleId = jsonRole.id;
+				if(!this.portalHeaderHtmlModal){
+					this.portalHeaderHtmlModal = new Control.Modal('', {
+						className: "adminDefaultPanel",
+						width: 580,
+						afterClose: function(){
+							this.portalHeaderHtmlModal.container.update('');
+							this.displayRoleId = false;
+						}.bind(this)
+					});	
+				}
+				var formDiv = $jq("<div>").addClass("modalConfigSet").css({"text-align":"center"});
+				var messageLabel = $jq("<p>").addClass("modalConfigSetHeader").css({clear:"both"}).text(ISA_R.alb_editHTML);
+				formDiv.append(messageLabel);
+				var editArea = $jq("<textarea>").css({margin:"5px", width:"90%"}).attr("rows", 20).val(jsonRole.layout);
+				formDiv.append(editArea);
+				
+				var okDiv = $jq("<div>").css({clear:"both", textAlign:"center"});
+				var okButton = $jq("<input>").attr("type", "button").val(ISA_R.alb_ok);
+				okDiv.append(okButton);
+				okButton.click(function(jsonRole, editArea, e) {
+					this.setNewValue("layout", editArea.val());
+					this.updatePanel();
+					this.portalHeaderHtmlModal.close();
+				}.bind(this, jsonRole, editArea));
+				
+				var closeButton = $jq("<input>").attr("type", "button").val(ISA_R.alb_cancel);
+				okDiv.append(closeButton);
+				closeButton.click(function(){
+					this.close();
+				}.bind(this.portalHeaderHtmlModal));
+				formDiv.append(okDiv);
+				
+				this.portalHeaderHtmlModal.container.update(formDiv.get(0));
+				this.portalHeaderHtmlModal.open();
+			}.bind(this, jsonRole, roleDiv), false, ["_adminPanelTab","_adminPanel"]);
+		}
+		else{
 			IS_Event.observe(editImg, "click", function(jsonRole){
 				this.displayRoleId = jsonRole.id;
 				this.displayRoleOrder = jsonRole.roleOrder;
@@ -1559,7 +1604,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	this.setColumnsArray = function(jsonRole) {
 		// Set initial value if nothing
 		if(!jsonRole.columnsWidth) {
-			if(jsonRole.tabId != commandBarTabId) {
+			if(jsonRole.tabId != commandBarTabId && jsonRole.tabId != portalHeaderTabId) {
 				jsonRole.columnsWidth = '["33%","33%","34%"]';
 			}
 		}
@@ -1721,7 +1766,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 	}
 
 	this.updateRawStyle = function(){
-		$jq("#tab_" + this.displayTabId+"_roleGroup>div").each(function(idx, div){
+		var roleGroupId = "#tab_" + this.displayTabId+"_roleGroup";
+		$jq(roleGroupId + ">div" + "," + roleGroupId + "+div>div").each(function(idx, div){
 			if(ISA_DefaultPanel.updateRaws.contains(div.id)){
 				$jq(div).addClass("updateRaw");
 			}else{

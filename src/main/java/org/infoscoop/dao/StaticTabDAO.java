@@ -76,6 +76,7 @@ public class StaticTabDAO extends HibernateDaoSupport {
 		c.add(Expression.eq(StaticTab.PROP_DELETEFLAG,
 				StaticTab.DELETEFLAG_FALSE));
 		c.add(Expression.ne(StaticTab.PROP_ID, StaticTab.COMMANDBAR_TAB_ID));
+		c.add(Expression.ne(StaticTab.PROP_ID, StaticTab.PORTALHEADER_TAB_ID));
 
 		c.createAlias(TabAdmin.REF, "ta", CriteriaSpecification.LEFT_JOIN);
 		c.addOrder(Order.asc(StaticTab.PROP_TABNUMBER));
@@ -84,13 +85,14 @@ public class StaticTabDAO extends HibernateDaoSupport {
 	}
 
 	/**
-	 * get tabId list without commandbar.
+	 * get tabId list without commandbar and portalHeader.
 	 * 
 	 * @return
 	 */
 	public List getTabIdList() {
 		DetachedCriteria c = DetachedCriteria.forClass(StaticTab.class);
 		c.add(Expression.ne(StaticTab.PROP_ID, StaticTab.COMMANDBAR_TAB_ID));
+		c.add(Expression.ne(StaticTab.PROP_ID, StaticTab.PORTALHEADER_TAB_ID));
 		c.add(Expression.eq(StaticTab.PROP_DELETEFLAG,
 				StaticTab.DELETEFLAG_FALSE));
 		c.setProjection(Projections.property("Tabid"));
@@ -115,7 +117,8 @@ public class StaticTabDAO extends HibernateDaoSupport {
 		HibernateTemplate templete = super.getHibernateTemplate();
 		List staticTabs = templete.findByCriteria(DetachedCriteria.forClass(
 				StaticTab.class).add(
-				Expression.not(Expression.eq("Tabid", "commandbar")))
+				Expression.not(Expression.eq("Tabid", StaticTab.COMMANDBAR_TAB_ID))).add(
+				Expression.not(Expression.eq("Tabid", StaticTab.PORTALHEADER_TAB_ID)))
 				.setProjection(
 						Projections.projectionList().add(
 								Projections.max("Tabid")).add(

@@ -134,8 +134,16 @@ public class DefaultpanelController implements ControllerInterface{
 	@RequestMapping(value="/commandbar", method=RequestMethod.GET)
 	public String commandbar(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String result =  editTab(request, response, TabLayoutService.COMMANDBAR_TAB_ID);
+		String result =  editTab(request, response, StaticTab.COMMANDBAR_TAB_ID);
 		request.setAttribute("commandbarView", true);
+		return result;
+	}	
+	
+	@RequestMapping(value="/portalHeader", method=RequestMethod.GET)
+	public String portalHeader(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String result =  editTab(request, response, StaticTab.PORTALHEADER_TAB_ID);
+		request.setAttribute("portalHeaderView", true);
 		return result;
 	}	
 
@@ -145,7 +153,7 @@ public class DefaultpanelController implements ControllerInterface{
 			@RequestParam("tabId") String tabId) throws Exception {
 		request.setAttribute("forceEdit", "true");
 		
-		if(TabLayoutService.COMMANDBAR_TAB_ID.equals(tabId))
+		if(StaticTab.COMMANDBAR_TAB_ID.equals(tabId))
 			return commandbar(request, response);
 		
 		return editTab(request, response, tabId);

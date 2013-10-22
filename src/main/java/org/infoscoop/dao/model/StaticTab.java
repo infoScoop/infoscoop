@@ -14,7 +14,8 @@ public class StaticTab extends BaseStaticTab {
 	private static final long serialVersionUID = 1L;
 
 	public static final String COMMANDBAR_TAB_ID = "commandbar";
-	
+	public static final String PORTALHEADER_TAB_ID = "header";
+
 /*[CONSTRUCTOR MARKER BEGIN]*/
 	public StaticTab () {
 		super();

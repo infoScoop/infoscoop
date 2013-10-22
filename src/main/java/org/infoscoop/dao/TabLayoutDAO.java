@@ -124,44 +124,6 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 						Order.asc("id.Roleorder")));
 	}
 	
-	/**
-	 * Get the tab ID data of temporary.
-	 *
-	 * @return List Map tabId,tabNumber
-	 * @throws DataResourceException
-	 */
-	public List selectTabId() {
-		String queryString = "SELECT distinct id.Tabid, Tabnumber FROM TabLayout WHERE "
-				+ "id.Temp = ? ORDER BY id.Tabid ASC";
-		List tabIdNumberList = super.getHibernateTemplate()
-				.find(
-						queryString,
-						new Object[] { TabLayout.TEMP_TRUE });
-
-		List result = new ArrayList();
-		Object[] commandberArray = null;
-		for (Iterator ite = tabIdNumberList.iterator(); ite.hasNext();) {
-			Object[] objs = (Object[]) ite.next();
-			String tabId = (String) objs[0];
-			Integer tabNumber = (Integer) objs[1];
-			if ("commandbar".equals(tabId)) {
-				commandberArray = objs;
-			} else {
-
-				if (tabNumber == null) {
-					result.add(0, objs);
-				} else {
-					result.add(objs);
-				}
-			}
-		}
-
-		if (commandberArray != null)
-			result.add(0, commandberArray);
-
-		return result;
-	}
-
 	public String selectLockingUid(String tabId) {
 		String queryString = "SELECT distinct Workinguid FROM TabLayout WHERE id.Temp = ? AND id.Tabid = ?";
 		HibernateTemplate template = super.getHibernateTemplate();
@@ -354,7 +316,8 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 		HibernateTemplate templete = super.getHibernateTemplate();
 		List tabIdList = templete.findByCriteria(DetachedCriteria.forClass(
 				TabLayout.class).add(
-				Expression.not(Expression.eq("id.Tabid", "commandbar")))
+				Expression.not(Expression.eq("id.Tabid", StaticTab.COMMANDBAR_TAB_ID))).add(
+				Expression.not(Expression.eq("id.Tabid", StaticTab.PORTALHEADER_TAB_ID)))
 				.setProjection(
 						Projections.projectionList().add(
 								Projections.max("id.Tabid"))));
@@ -407,7 +370,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 							if (tabId.equals("0")) {
 								cri.add(Expression.or(Expression.eq("id.Tabid",
 										tabId), Expression.eq("id.Tabid",
-										"commandbar")));
+										StaticTab.COMMANDBAR_TAB_ID)));
 							} else {
 								cri.add(Expression.eq("id.Tabid", tabId));
 							}

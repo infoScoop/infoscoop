@@ -130,8 +130,8 @@ public class TabLayout extends BaseTablayout {
 			NodeList panels = widgetsEl.getElementsByTagName("panel");
 			Element staticPanel =(Element)panels.item(0);
 
-			this.adjustToWindowHeight = new Boolean(staticPanel.getAttribute("adjustToWindowHeight"));
-			if("StaticPanel".equals(staticPanel.getAttribute("type"))){
+			this.adjustToWindowHeight = (staticPanel != null)? new Boolean(staticPanel.getAttribute("adjustToWindowHeight")) : false;
+			if(staticPanel != null && "StaticPanel".equals(staticPanel.getAttribute("type"))){
 				NodeList list = staticPanel.getElementsByTagName("widget");
 				this.staticPanel = getNodeListString(list);
 				this.staticPanelJson = getPanelJson(list);

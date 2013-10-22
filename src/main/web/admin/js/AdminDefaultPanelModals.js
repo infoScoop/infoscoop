@@ -748,6 +748,11 @@ ISA_DefaultPanel.prototype.templates = {
 		
 		return jsonObject;
 	},
+	setPortalHeaderLayout: function(jsonObject){
+		jsonObject.layout = "";
+		jsonObject.staticPanel = "";
+		return jsonObject;
+	},
 	getDefaultWidgetJson: function() {
 		return {id:"",href:"",title:"",type:"",properties:{}};
 	}

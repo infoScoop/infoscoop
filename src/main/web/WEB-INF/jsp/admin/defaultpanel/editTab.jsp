@@ -35,9 +35,10 @@
 			<h2><c:choose>
 				<c:when test="${isNew == true}">%{alb_newTab}</c:when>
 				<c:when test="${commandbarView == true}">%{alb_commandBar}</c:when>
+				<c:when test="${portalHeaderView == true}">%{alb_portalHeader}</c:when>
 				<c:otherwise>%{alb_tab}${displayTabOrder}</c:otherwise>
 			</c:choose></h2>
-			<c:if test="${commandbarView != true}">
+			<c:if test="${commandbarView != true && portalHeaderView != true}">
 			<div style="padding-top:10px;padding-left:5px;">
 				<div style="font-size:70%;">%{alb_tabDesc}:</div>
 				<textarea id="tabDesc" style="width:350px; height:3.5em;" maxlength="255">${tabDesc}</textarea>

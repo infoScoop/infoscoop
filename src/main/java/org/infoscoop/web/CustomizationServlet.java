@@ -42,6 +42,7 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.dao.model.Preference;
+import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.service.PortalLayoutService;
 import org.infoscoop.service.PreferenceService;
@@ -153,8 +154,8 @@ public class CustomizationServlet extends HttpServlet {
 			value.put("layout", layout);
 			value.put("adjustToWindowHeight", tabLayout.isAdjustToWindowHeight());
 
-			if("commandbar".equals(key.toLowerCase())){
-				layoutJson.put("commandbar", applyFreemakerTemplate(root, layout));
+			if(StaticTab.COMMANDBAR_TAB_ID.equals(key.toLowerCase())){
+				layoutJson.put(StaticTab.COMMANDBAR_TAB_ID, applyFreemakerTemplate(root, layout));
 			}else {
 				layoutJson.put("staticPanel" + key, value);
 			}

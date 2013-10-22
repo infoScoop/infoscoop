@@ -53,7 +53,6 @@ import org.json.JSONObject;
 
 public class TabLayoutService {
 	public static String DEFAULT_ROLE_NAME = "defaultRole";
-	public static final String COMMANDBAR_TAB_ID = "commandbar";
 
 	private TabLayoutDAO tabLayoutDAO;
 	private WidgetDAO widgetDAO;
@@ -216,7 +215,7 @@ public class TabLayoutService {
 					xml.append(" tabType=").append("\"");
 					xml.append("static").append("\"");
 					// columnsWidth attribute is not needed if it is commandbar
-					if (!COMMANDBAR_TAB_ID.equals(tabId)) {
+					if (!StaticTab.COMMANDBAR_TAB_ID.equals(tabId)) {
 						xml.append(" columnsWidth=").append("\"").append(
 								(String) map.get("columnsWidth")).append("\"");
 						xml.append(" numCol=").append("\"").append(
@@ -224,23 +223,27 @@ public class TabLayoutService {
 					}
 					xml.append(">");
 					xml.append("\n");
-					Boolean adjustToWindowHeight = (Boolean) map
-					.get("adjustToWindowHeight");
-					xml.append("<panel type=\"StaticPanel\"" +
-							(adjustToWindowHeight != null && adjustToWindowHeight ? " adjustToWindowHeight=\"true\"" : "") +
-							">");
-					xml.append("\n");
-					JSONObject staticJson = new JSONObject((String)map.get("staticPanel"));
-					for (Iterator widgetsIt = staticJson.keys(); widgetsIt.hasNext();) {
-						String widgetId = (String) widgetsIt.next();
-						JSONObject widgetJSON = staticJson.getJSONObject(widgetId);
-
-						xml.append( widgetJSONtoString( widgetJSON ));
+					
+					// StaticPanel tab is not needed if it is commandbar and header
+					if (!StaticTab.PORTALHEADER_TAB_ID.equals(tabId)) {
+						Boolean adjustToWindowHeight = (Boolean) map
+						.get("adjustToWindowHeight");
+						xml.append("<panel type=\"StaticPanel\"" +
+								(adjustToWindowHeight != null && adjustToWindowHeight ? " adjustToWindowHeight=\"true\"" : "") +
+								">");
+						xml.append("\n");
+						JSONObject staticJson = new JSONObject((String)map.get("staticPanel"));
+						for (Iterator widgetsIt = staticJson.keys(); widgetsIt.hasNext();) {
+							String widgetId = (String) widgetsIt.next();
+							JSONObject widgetJSON = staticJson.getJSONObject(widgetId);
+	
+							xml.append( widgetJSONtoString( widgetJSON ));
+						}
+						xml.append("</panel>");
+						xml.append("\n");
 					}
-					xml.append("</panel>");
-					xml.append("\n");
-					// DynamicPanel tab is not needed if it is commandbar
-					if (!COMMANDBAR_TAB_ID.equals(tabId)) {
+					// DynamicPanel tab is not needed if it is commandbar and header
+					if (!StaticTab.COMMANDBAR_TAB_ID.equals(tabId) && !StaticTab.PORTALHEADER_TAB_ID.equals(tabId)) {
 						xml.append("<panel type=\"DynamicPanel\"");
 						Boolean disabledDynamicPanel = (Boolean) map
 								.get("disabledDynamicPanel");
@@ -315,7 +318,7 @@ public class TabLayoutService {
 			updateWidgets(oldDynamicPanelMap, newDynamicPanelMap);
 
 			// Update last modified date of tab0 if it is commandbar
-			if (COMMANDBAR_TAB_ID.equals(tabId)) {
+			if (StaticTab.COMMANDBAR_TAB_ID.equals(tabId)) {
 				tabLayoutDAO.updateLastmodifiedByTabId("0");
 			}
 
@@ -387,7 +390,7 @@ public class TabLayoutService {
 	public static void main(String args[]) throws Exception {
 		//System.out.println(getHandle().getDefaultPanelJson(COMMANDBAR_TAB_ID));
 //		System.out.println(getHandle().getTabIdListJson());
-		System.out.println(getHandle().getDefaultPanelJson(COMMANDBAR_TAB_ID));
+		System.out.println(getHandle().getDefaultPanelJson(StaticTab.COMMANDBAR_TAB_ID));
 	}
 
 	/**
@@ -435,7 +438,7 @@ public class TabLayoutService {
 			value.put("roleName", tablayout.getRolename());
 			value.put("defaultUid", tablayout.getDefaultuid());
 			value.put("widgetsLastmodified", tablayout.getWidgetslastmodified());
-			value.put("staticPanel", (tabId.equalsIgnoreCase("commandbar"))?
+			value.put("staticPanel", (tabId.equalsIgnoreCase(StaticTab.COMMANDBAR_TAB_ID))?
 					tablayout.getStaticPanelJsonWithComment() : tablayout.getStaticPanelJson());
 			value.put("layout", tablayout.getLayout());
 			value.put("dynamicPanel", tablayout.getDynamicPanelJson());
@@ -459,44 +462,6 @@ public class TabLayoutService {
 
 		return result.toString();
 	}
-
-	/**
-	 * @return
-	 * @throws Exception
-	 */
-	/*
-	public String getTabIdListJson() throws Exception {
-		//Copy data to TEMP.
-		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
-		String myUid = p.getName();
-		tabLayoutDAO.copy(myUid, true);
-
-		List list = this.tabLayoutDAO.selectTabId();
-
-		//[["commandbar","0"],{"commandbar":{id:""},"0":{id:"0"}}]
-
-		JSONArray json = new JSONArray();
-		// Generate JSON
-		JSONArray tabIdList = new JSONArray();
-		JSONObject tabNumberMap = new JSONObject();
-		for(Iterator ite = list.iterator(); ite.hasNext();){
-			Object[] obj = (Object[])ite.next();
-			String tabId = (String) obj[0];
-
-			Integer tabNum = (Integer)obj[1];
-
-			tabIdList.put(tabId);
-			JSONObject tabNumObj = new JSONObject();
-			tabNumObj.put("id", tabNum == null ? null : tabNum.toString());//TODO:
-			tabNumberMap.put(tabId, tabNumObj);
-
-		}
-		json.put(tabIdList);
-		json.put(tabNumberMap);
-//		System.out.println(json.toString());
-		return json.toString();
-	}
-	*/
 
 	/**
 	 * Return map of Customization information related to role information.

@@ -108,8 +108,9 @@ IS_Portal.start = function() {
 	document.title = IS_Customization.title;
 
 	var header = document.getElementById("portal-header");
-	header.innerHTML = IS_Customization.header;
-	if(IS_Customization.header.length == 0)
+	var headerHTML = (IS_Customization.staticPanelheader) ? IS_Customization.staticPanelheader.layout : "";
+	header.innerHTML = headerHTML;
+	if(headerHTML.length == 0)
 		header.style.display = "none";
 	
 	IS_Portal.SearchEngines.init();

@@ -78,6 +78,10 @@
 			<a class="iconButton" style="margin: 3px;" title="%{alb_commandBar}%{alb_edit}" href="commandbar" id="toCommandbar">
 				<img src="../../skin/imgs/edit.gif" style="position: relative; top: 2px; margin: 0pt 5px 0pt 0pt;">%{alb_commandBar}%{alb_edit}</a>
 		</div>
+		<div style="display:inline;width:80%;">
+			<a class="iconButton" style="margin: 3px;" title="%{alb_commandBar}%{alb_edit}" href="portalHeader" id="toPortalHeader">
+				<img src="../../skin/imgs/edit.gif" style="position: relative; top: 2px; margin: 0pt 5px 0pt 0pt;">%{alb_portalHeader}%{alb_edit}</a>
+		</div>
 		</c:if>
 	</div>
 	
