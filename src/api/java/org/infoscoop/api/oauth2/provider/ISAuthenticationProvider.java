@@ -60,7 +60,11 @@ public class ISAuthenticationProvider implements AuthenticationProvider {
             List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
             grantedAuths.add(new SimpleGrantedAuthority(ROLE_USER));
             return new UsernamePasswordAuthenticationToken(userid, password, grantedAuths);
-        } catch(AuthenticationException | org.infoscoop.account.AuthenticationException e) {
+        } catch(AuthenticationException e) {
+        	// login error
+        	e.printStackTrace();
+        	return null;
+        } catch(org.infoscoop.account.AuthenticationException e) {
         	// login error
         	e.printStackTrace();
         	return null;
