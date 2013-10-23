@@ -59,7 +59,7 @@
     	        <constraints nullable="false"/>
             </column>
             <column name="scope" type="varchar(255)"/>
-            <column name="grant_types" type="blob"/>
+            <column name="grant_types" type="varchar(255)"/>
             <column name="redirect_url" type="varchar(255)"/>
             <column name="authorities" type="varchar(255)"/>
             <column name="access_token_validity" type="integer"/>
