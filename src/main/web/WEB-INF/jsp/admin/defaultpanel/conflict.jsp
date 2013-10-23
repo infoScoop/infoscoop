@@ -43,6 +43,7 @@
 	
 	<h2><c:choose>
 		<c:when test="${commandbarView == true}">%{alb_commandBar}</c:when>
+		<c:when test="${portalHeaderView == true}">%{alb_portalHeader}</c:when>
 		<c:otherwise>%{alb_tab}${displayTabOrder}</c:otherwise>
 	</c:choose></h2>
 	

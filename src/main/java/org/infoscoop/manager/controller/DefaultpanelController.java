@@ -153,8 +153,12 @@ public class DefaultpanelController implements ControllerInterface{
 			@RequestParam("tabId") String tabId) throws Exception {
 		request.setAttribute("forceEdit", "true");
 		
-		if(StaticTab.COMMANDBAR_TAB_ID.equals(tabId))
+		if(StaticTab.COMMANDBAR_TAB_ID.equals(tabId)){
 			return commandbar(request, response);
+		}
+		else if(StaticTab.PORTALHEADER_TAB_ID.equals(tabId)){
+			return portalHeader(request, response);
+		}
 		
 		return editTab(request, response, tabId);
 	}
