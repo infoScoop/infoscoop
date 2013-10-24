@@ -14,6 +14,8 @@
 	<property name="src.initdb" value="${basedir}/src/initdb" />
 	<property name="src.remakewar" value="${basedir}/src/remakewar" />
 	<property name="src.shindig" value="${basedir}/src/shindig/java" />
+	<property name="src.api.java" value="${basedir}/src/api/java" />
+	<property name="src.api.resources" value="${basedir}/src/api/resources" />
 	<property name="build.home" value="${basedir}/build" />
 	<property name="dist.home" value="${basedir}/dist" />
 
@@ -643,9 +645,12 @@
             <fileset dir="${src.main.resources}">
 				<exclude name="**/*.java"/>
             </fileset>
+        	<fileset dir="${src.api.resources}">
+        		<exclude name="**/*.java"/>
+        	</fileset>
         </copy>
 
-		<javac srcdir="${src.main}:${src.shindig}" encoding="utf-8" destdir="${build.main}/WEB-INF/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" source="${compile.level}" target="${compile.level}">
+		<javac srcdir="${src.main}:${src.shindig}:${src.api.java}" encoding="utf-8" destdir="${build.main}/WEB-INF/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" source="${compile.level}" target="${compile.level}">
 			<classpath>
 				<path refid="compile.classpath" />
 			</classpath>
