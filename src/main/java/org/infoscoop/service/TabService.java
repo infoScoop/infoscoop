@@ -38,6 +38,7 @@ import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Preference;
+import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TABPK;
 import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.TabLayout;
@@ -167,7 +168,7 @@ public class TabService {
 			
 			if( TABID_HOME.equals( tab.getTabId())) {
 				Collection commandbarWidgets =
-						(( TabLayout)tabLayoutMap.get("commandbar")).getStaticPanelXmlWidgets( uid );
+						(( TabLayout)tabLayoutMap.get(StaticTab.COMMANDBAR_TAB_ID)).getStaticPanelXmlWidgets( uid );
 				for( Iterator ite=commandbarWidgets.iterator();ite.hasNext();) {
 					Widget widget = ( Widget )ite.next();
 					widget.setTabid( tab.getTabId() );
@@ -231,7 +232,7 @@ public class TabService {
 //						el.setAttribute("tabNumber", tempTabNumber);
 						Collection staticPanelWidgets = layout.getStaticPanelXmlWidgets( uid );
 						if (widgetTabId.equals(TABID_HOME)) {
-							TabLayout commandbarLayout = (TabLayout) tabLayoutMap.get("commandbar");
+							TabLayout commandbarLayout = (TabLayout) tabLayoutMap.get(StaticTab.COMMANDBAR_TAB_ID);
 							
 							staticPanelWidgets.addAll( commandbarLayout.getStaticPanelXmlWidgets( uid ) );
 						}
