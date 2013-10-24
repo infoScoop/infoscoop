@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.infoscoop.api.dao.model">
 	<class
 		name="OAuth2ProviderRefreshToken"
-		table="IS_OAUTH2_PROVIDER_REFRESH_TOKENS"
+		table="IS_OAUTHPROVIDER_REFRESHTOKENS"
 	>
 		<meta attribute="sync-DAO">false</meta>
    

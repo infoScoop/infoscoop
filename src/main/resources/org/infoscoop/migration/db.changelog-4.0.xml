@@ -10,8 +10,8 @@
     <property name="clob.type" value="text" dbms="mysql"/>
 
     <!--Issue 539-->
-    <!--CREATE TABLE `IS_OAUTH2_PROVIDER_ACCESS_TOKENS` (id VARCHAR(255), token BLOB, authentication_id VARCHAR(255), user_id VARCHAR(150), client_id VARCHAR(255), authentication BLOB, refresh_token VARCHAR(255), PRIMARY KEY (id));-->
-    <!--CREATE TABLE `IS_OAUTH2_PROVIDER_REFRESH_TOKENS` (id VARCHAR(255), token BLOB, authentication BLOB, PRIMARY KEY (id));-->
+    <!--CREATE TABLE `IS_OAUTHPROVIDER_ACCESSTOKENS` (id VARCHAR(255), token BLOB, authentication_id VARCHAR(255), user_id VARCHAR(150), client_id VARCHAR(255), authentication BLOB, refresh_token VARCHAR(255), PRIMARY KEY (id));-->
+    <!--CREATE TABLE `IS_OAUTHPROVIDER_REFRESHTOKENS` (id VARCHAR(255), token BLOB, authentication BLOB, PRIMARY KEY (id));-->
     <changeSet id="infoscoop400_539_1" author="mikami">
         <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_539_1">
             <not>
@@ -19,7 +19,7 @@
                 <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTH2_PROVIDER_REFRESH_TOKENS"/>
             </not>
         </preConditions>
-        <createTable tableName="IS_OAUTH2_PROVIDER_ACCESS_TOKENS" tablespace="${.tablespace}">
+        <createTable tableName="IS_OAUTHPROVIDER_ACCESSTOKENS" tablespace="${.tablespace}">
             <column name="id" type="varchar(255)">
                 <constraints primaryKey="true"/>
             </column>
@@ -30,7 +30,7 @@
             <column name="authentication" type="blob"/>
             <column name="refresh_token" type="varchar(255)"/>
         </createTable>
-        <createTable tableName="IS_OAUTH2_PROVIDER_REFRESH_TOKENS" tablespace="${.tablespace}">
+        <createTable tableName="IS_OAUTHPROVIDER_REFRESHTOKENS" tablespace="${.tablespace}">
             <column name="id" type="varchar(255)">
                 <constraints primaryKey="true"/>
             </column>
@@ -47,7 +47,7 @@
                 <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTH2_PROVIDER_CLIENT_DETAILS"/>
             </not>
         </preConditions>
-        <createTable tableName="IS_OAUTH2_PROVIDER_CLIENT_DETAILS" tablespace="${.tablespace}">
+        <createTable tableName="IS_OAUTHPROVIDER_CLIENT" tablespace="${.tablespace}">
             <column name="id" type="varchar(255)">
                 <constraints primaryKey="true"/>
             </column>
