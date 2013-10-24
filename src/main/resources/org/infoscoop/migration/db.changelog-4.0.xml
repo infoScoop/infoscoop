@@ -15,8 +15,8 @@
     <changeSet id="infoscoop400_539_1" author="mikami">
         <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_539_1">
             <not>
-                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTH2_PROVIDER_ACCESS_TOKENS"/>
-                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTH2_PROVIDER_REFRESH_TOKENS"/>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTHPROVIDER_ACCESSTOKENS"/>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTHPROVIDER_REFRESHTOKENS"/>
             </not>
         </preConditions>
         <createTable tableName="IS_OAUTHPROVIDER_ACCESSTOKENS" tablespace="${.tablespace}">
@@ -40,11 +40,11 @@
     </changeSet>
     
     <!--Issue 539-->
-    <!--CREATE TABLE `IS_OAUTH2_PROVIDER_CLIENT_DETAILS` (id VARCHAR(255), title VARCHAR(255) NOT NULL, resource_ids VARCHAR(255), secret VARCHAR(255) NOT NULL, scope VARCHAR(255), grant_types VARCHAR(255), redirect_url VARCHAR(255), authorities VARCHAR(255), access_token_validity INTEGER, refresh_token_validity INTEGER, additional_information CLOB, PRIMARY KEY (id));-->
+    <!--CREATE TABLE `IS_OAUTHPROVIDER_CLIENT` (id VARCHAR(255), title VARCHAR(255) NOT NULL, resource_ids VARCHAR(255), secret VARCHAR(255) NOT NULL, scope VARCHAR(255), grant_types VARCHAR(255), redirect_url VARCHAR(255), authorities VARCHAR(255), access_token_validity INTEGER, refresh_token_validity INTEGER, additional_information CLOB, PRIMARY KEY (id));-->
     <changeSet id="infoscoop400_539_2" author="mikami">
         <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_539_2">
             <not>
-                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTH2_PROVIDER_CLIENT_DETAILS"/>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTHPROVIDER_CLIENT"/>
             </not>
         </preConditions>
         <createTable tableName="IS_OAUTHPROVIDER_CLIENT" tablespace="${.tablespace}">
