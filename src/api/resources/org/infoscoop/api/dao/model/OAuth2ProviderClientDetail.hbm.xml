@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.infoscoop.api.dao.model">
- <class name="OAuth2ProviderClientDetail" table="IS_OAUTH2_PROVIDER_CLIENT_DETAILS">
+ <class name="OAuth2ProviderClientDetail" table="IS_OAUTHPROVIDER_CLIENT">
   <meta attribute="sync-DAO">false</meta>
   <id column="id" length="255" name="id" type="string"/>
   <property column="title" generated="never" lazy="false" length="255"
