@@ -160,7 +160,10 @@ ISA_Properties.prototype.classDef = function() {
 		td = document.createElement("td");
 		td.style.whiteSpace = "nowrap";
 		
-		td.appendChild(document.createTextNode(ISA_Admin.replaceUndefinedValue(property.id)));
+		var span = document.createElement("span");
+		span.appendChild(document.createTextNode(ISA_Admin.replaceUndefinedValue(property.id)));
+		
+		td.appendChild(span);
 		tr.appendChild(td);
 		
 		td = document.createElement("td");
@@ -187,8 +190,12 @@ ISA_Properties.prototype.classDef = function() {
 			propertyValueInput.disabled = true;*/
 		
 		td = document.createElement("td");
-		td.style.fontSize = "90%";
-		td.appendChild(document.createTextNode(ISA_R["alb_desc_"+property.id]+ "　"));
+		
+		span = document.createElement("span");
+		span.style.fontSize = "90%";
+		span.appendChild(document.createTextNode(ISA_R["alb_desc_"+property.id]+ "　"));
+		
+		td.appendChild(span);
 		tr.appendChild(td);
 		
 		return tr;

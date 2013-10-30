@@ -560,8 +560,11 @@ a.menuContextA_edit:visited{
 
 .advancedProperty > td {
 	border-color: #666666;
-	color: #FF0000;
 	padding: 3px;
+}
+
+.advancedProperty > td > * {
+	color: #FF0000;
 }
 
 .portalAdminInput {
@@ -835,7 +838,7 @@ a.gadgetListTabA:visited{
 }
 .authorizationTable thead tr .header {
 	min-width:95px;
-  　width: 95px;
+	width: 95px;
 	background-image: url(imgs/sort.gif);
 	background-repeat: no-repeat;
 	background-position: center left;
@@ -844,7 +847,7 @@ a.gadgetListTabA:visited{
 }
 .authorizationTable thead tr .regexpheader {
 	min-width:170px;
-  　width: 170px;
+	width: 170px;
 }
 .authorizationTable thead tr .headerSortUp {
 	background-image: url(imgs/asc.gif);
