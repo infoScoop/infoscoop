@@ -38,7 +38,17 @@
         </filter>
         <filter class="org.apache.log4j.varia.DenyAllFilter"/>
     </appender>
-    
+
+    <!-- direct messages to file infoscoop_api_log -->
+    <appender name="api" class="biz.minaret.log4j.DatedFileAppender">
+       	<param name="directory" value="/var/log/infoscoop"/>
+       	<param name="prefix" value="infoscoop_api_log_"/>
+       	<param name="suffix" value=".log"/>
+       	<layout class="org.apache.log4j.PatternLayout">
+       		<param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
+       	</layout>
+    </appender>
+
     <!-- direct messages to file infoscoop_migrate_log -->
     <appender name="migration" class="biz.minaret.log4j.DatedFileAppender">
        	<param name="directory" value="/var/log/infoscoop"/>
@@ -56,7 +66,14 @@
        	<level value="info" />
        	<appender-ref ref="migration" />
    	</logger>
-    
+
+    <!-- set log levels - for more verbose logging change 'info' to 'debug' -->
+    <!-- set log levels - for api log -->    
+   	<logger name="org.infoscoop.api">
+       	<level value="info" />
+       	<appender-ref ref="api" />
+   	</logger>
+ 
     <!-- set log levels - for more verbose logging change 'info' to 'debug' -->
     <!-- set log levels - for operation log -->    
     <root>
