@@ -40,14 +40,17 @@
 
 	<bean id="oauthAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
 		<property name="realmName" value="infoscoop" />
+		<property name="exceptionRenderer" ref="oauthExceptionRender" />
 	</bean>
 
 	<bean id="clientAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
 		<property name="realmName" value="infoscoop/client" />
 		<property name="typeName" value="Basic" />
+		<property name="exceptionRenderer" ref="oauthExceptionRender" />
 	</bean>
 
 	<bean id="oauthAccessDeniedHandler" class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler" />
+	<bean id="oauthExceptionRender" class="org.infoscoop.api.oauth2.provider.ISOAuth2ExceptionRenderer"/>
 
 	<bean id="clientCredentialsTokenEndpointFilter" class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
 		<property name="authenticationManager" ref="clientAuthenticationManager" />
