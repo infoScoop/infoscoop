@@ -24,6 +24,10 @@ body {
 img {border: 0px;}
 a { outline: none; }
 
+input,select,textarea {
+	margin: 1px;
+}
+
 /*- Header --------------------------- */
 #admin-header {
 	height: 45px;
