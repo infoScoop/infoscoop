@@ -467,5 +467,5 @@ IS_SidePanel.Drag.dragEnd = function(e) {
 	IS_SidePanel.Drag.barGhost.parentNode.removeChild(IS_SidePanel.Drag.barGhost);
 
 	IS_Portal.hideDragOverlay();
-	IS_SidePanel.sideMenuAdjusted();
+	setTimeout(IS_SidePanel.sideMenuAdjusted, 0);
 }
