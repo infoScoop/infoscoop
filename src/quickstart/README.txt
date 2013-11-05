@@ -1,4 +1,4 @@
-infoScoop OpenSource 3.1.0
+infoScoop OpenSource 3.1.1
 ==========================
 
 About infoScoop OpenSource
@@ -23,7 +23,7 @@ These are requirements that needs before the setup of infoScoop OpenSource.
 
 How to Setup
 ------------
-Unzip infoscoop-3.1.0-quickstart.zip(tar.gz) and follow the steps below.
+Unzip infoscoop-3.1.1-quickstart.zip(tar.gz) and follow the steps below.
 
 1. Create Repository Database
 
@@ -37,7 +37,7 @@ mysql>exit
 
 Execute the following commands which inserts initial data to the created database.
 
-$ mysql -uroot iscoop < infoscoop-3.1.0-quickstart/init_infoscoop.sql
+$ mysql -uroot iscoop < infoscoop-3.1.1-quickstart/init_infoscoop.sql
 
 * Choose 'init_info_infoscoop.ja.sql' file, if you want Japanese sample settings.
 
@@ -86,7 +86,7 @@ How to Add Users
 
 Edit the following file.
 
-infoscoop-3.1.0-quickstart/initdb/data/accounts/import.csv
+infoscoop-3.1.1-quickstart/initdb/data/accounts/import.csv
 
 Add new users with the following format.
 
@@ -96,7 +96,7 @@ Add new users with the following format.
 
 Move to 'initdb' directory, and execute 'addaccount.bat(sh)' file.
 
-$ cd infoscoop-3.1.0-quickstart/initdb
+$ cd infoscoop-3.1.1-quickstart/initdb
 $ addaccount.bat(sh)
 
 
@@ -106,7 +106,7 @@ License and Copyright
 This code is licensed under the **GNU Lesser General Public License (LGPL) v3**.
 Please see LICENSE.txt for licensing and copyright information.
 
-Changes from Version 3.0.0 to 3.1.0
+Changes from Version 3.1.0 to 3.1.1
 -----------------------------------
 Refer to the URL below.
-https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=3.1.0
+https://github.com/infoScoop/infoscoop/issues?milestone=23&state=closed
