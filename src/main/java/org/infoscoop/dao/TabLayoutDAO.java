@@ -366,8 +366,6 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 										"st." + StaticTab.PROP_DELETEFLAG,
 										StaticTab.DELETEFLAG_FALSE));
 						
-						cri.add(Expression.ne("id.Tabid", StaticTab.PORTALHEADER_TAB_ID));
-						
 						if (tabId != null) {
 							if (tabId.equals("0")) {
 								cri.add(Expression.or(Expression.eq("id.Tabid",

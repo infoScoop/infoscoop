@@ -154,8 +154,8 @@ public class CustomizationServlet extends HttpServlet {
 			value.put("layout", layout);
 			value.put("adjustToWindowHeight", tabLayout.isAdjustToWindowHeight());
 
-			if(StaticTab.COMMANDBAR_TAB_ID.equals(key.toLowerCase())){
-				layoutJson.put(StaticTab.COMMANDBAR_TAB_ID, applyFreemakerTemplate(root, layout));
+			if(StaticTab.COMMANDBAR_TAB_ID.equals(key.toLowerCase()) || StaticTab.PORTALHEADER_TAB_ID.equals(key.toLowerCase())){
+				layoutJson.put(key.toLowerCase(), applyFreemakerTemplate(root, layout));
 			}else {
 				layoutJson.put("staticPanel" + key, value);
 			}

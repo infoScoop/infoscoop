@@ -108,7 +108,7 @@ IS_Portal.start = function() {
 	document.title = IS_Customization.title;
 
 	var header = document.getElementById("portal-header");
-	var headerHTML = (IS_Customization.staticPanelheader) ? IS_Customization.staticPanelheader.layout : "";
+	var headerHTML = (IS_Customization.header) ? IS_Customization.header : "";
 	header.innerHTML = headerHTML;
 	if(headerHTML.length == 0)
 		header.style.display = "none";

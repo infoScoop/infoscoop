@@ -341,7 +341,8 @@ public class TabService {
 		// Insert the difference of added tabLayout information
 		for(Iterator ite = tabLayoutMap.keySet().iterator();ite.hasNext();){
 			String tempTabId = (String)ite.next();
-			if("commandbar".equals(tempTabId.toLowerCase())) continue;
+			if(StaticTab.COMMANDBAR_TAB_ID.equals(tempTabId.toLowerCase())
+					|| StaticTab.PORTALHEADER_TAB_ID.equals(tempTabId.toLowerCase())) continue;
 			
 			// Insert the difference here.
 			if(!currentStaticTabId.contains( tempTabId ))
