@@ -140,7 +140,9 @@ Element.addMethods({
 var IframeShim = Class.create({
     initialize: function() {
         this.element = new Element('iframe',{
-            style: 'position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);display:none',
+            // 'DX filter' is obsolete in Internet Explorer 10 (alternative : 'opacity'). modified by Ishizuka 2013/11/05
+        	// style: 'position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);display:none',
+            style: 'position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);opacity:0;display:none',
             src: 'javascript:void(0);',
             frameborder: 0 
         });
