@@ -154,6 +154,10 @@ IS_Widget.prototype.classDef = function() {
 			userPref["openWidget"] = true;
 		
 		var ar = typeConf.autoRefresh;
+		// upload gadget
+		if (!ar && typeConf.ModulePrefs) {
+			ar = typeConf.ModulePrefs.autoRefresh;
+		}
 		this.autoRefresh = (ar &&  ( /true/.test(ar) || /TRUE/.test(ar) ) ) ? true: false;
 		
 		//Use widgetConfiguration.xml if title cannot be found in widget.xml
