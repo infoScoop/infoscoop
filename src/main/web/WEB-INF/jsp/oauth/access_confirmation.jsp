@@ -44,7 +44,6 @@
     <% } %>
     <c:remove scope="session" var="SPRING_SECURITY_LAST_EXCEPTION"/>
 
-    <authz:authorize ifAllGranted="ROLE_USER">
       <h2>Please Confirm</h2>
 
       <p>You hereby authorize "<c:out value="${client.clientId}"/>" to access your protected resources.</p>
@@ -57,7 +56,6 @@
         <input name="user_oauth_approval" value="false" type="hidden"/>
         <label><input name="deny" value="Deny" type="submit"></label>
       </form>
-    </authz:authorize>
   </div>
 
 </body>

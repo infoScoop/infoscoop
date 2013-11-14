@@ -52,14 +52,14 @@ public class ISAuthenticationProvider implements AuthenticationProvider {
         	
         	// authority
             List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
-            grantedAuths.add(new SimpleGrantedAuthority(ROLE_CLIENT));
-            grantedAuths.add(new SimpleGrantedAuthority(ROLE_USER));
-            
             PortalAdminsService portalService = PortalAdminsService.getHandle();
         	portalService.getPortalAdmins();
         	Portaladmins admin = portalService.getPortalAdmin(userid);
-        	if(admin != null)
+        	if(admin != null){
         		grantedAuths.add(new SimpleGrantedAuthority(ROLE_ADMIN));
+        	}else{
+        		grantedAuths.add(new SimpleGrantedAuthority(ROLE_USER));
+        	}
         	
         	if(log.isDebugEnabled())
         		log.debug("complete login "+userid+" - authotiry:" + grantedAuths.toString());
