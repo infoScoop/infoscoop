@@ -1426,3 +1426,47 @@ a.home-menu-header:visited {
 	color: #FF0000;
 	margin: 10px;
 }
+
+/* extApp tab */
+.extAppsBody{
+	width: 100%;
+	margin: 10px 0 0 2px;
+	clear: both;
+}
+.extAppsContent{
+	height: 100%;
+	vertical-align: top;
+	display: inline-block;
+}
+#adminExtAppsDetailsConf{
+	margin: 10px 5px 0 5px;
+}
+#adminExtAppsName > input {
+	font-size: 20px;
+}
+#extAppsList_div > div {
+	padding-left: 8px;
+	font-size: 14px;
+	color: #0000CC;
+}
+#adminExtAppsDetailInfo {
+	margin: 10px 5px 0;
+}
+#adminExtAppsDetailInfo > div{
+	margin: 3px;
+}
+.extAppsDetailsLabel {
+	width: 200px;
+	padding: 0 5px 5px 0;
+	text-align: right;
+	vertical-align: top;
+	display: table-cell;
+}
+.extAppsDetailsInput {
+	padding: 0 5px 5px 0;
+	display: table-cell;
+}
+.selectEditExtApps {
+	background-color: #eeffff;
+	text-decoration: underline;
+}

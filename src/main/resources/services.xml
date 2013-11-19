@@ -591,5 +591,26 @@
 			</props>
 		</property>
 	</bean>
-
+	<bean id="ExtAppsService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.ExtAppsService">
+				<property name="oauth2ProviderClientDetailDAO">
+					<ref bean="oauth2ProviderClientDetailDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="select*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
 </beans>

@@ -7,5 +7,5 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
   <include file="org/infoscoop/migration/db.changelog-1.0.xml"/>
   <include file="org/infoscoop/migration/db.changelog-1.1.xml"/>  
-  <include file="org/infoscoop/migration/db.changelog-4.0.xml"/>  
+  <include file="org/infoscoop/migration/db.changelog-3.4.xml"/>  
 </databaseChangeLog> 
