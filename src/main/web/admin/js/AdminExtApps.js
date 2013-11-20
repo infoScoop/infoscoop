@@ -19,8 +19,6 @@ var ISA_ExtApps = IS_Class.create();
 ISA_ExtApps.extApps = false;
 ISA_ExtApps.appList = false;
 ISA_ExtApps.selectedExtApps = false;
-// ISA_WidgetConf.widgetConfList = false;
-// ISA_WidgetConf.gadgetList = false;
 
 ISA_ExtApps.prototype.classDef = function() {
 	var self = this;
@@ -133,6 +131,7 @@ ISA_ExtApps.prototype.classDef = function() {
 	};
 
 	this.buildExtAppsItems = function() {
+		$jq('#extAppsList_div').empty();
 		for(var i = 0; i < ISA_ExtApps.appList.length; i++){
 			var obj = ISA_ExtApps.appList[i];
 			var itemDiv = document.createElement("div");
@@ -156,24 +155,6 @@ ISA_ExtApps.prototype.classDef = function() {
 			}.bind(this, ISA_ExtApps.appList[i]),false,this.id);
 			this.extAppsPanel.appendChild(itemDiv);
 		}
-		// var widgetConfList = [];
-		// for(var i in ISA_WidgetConf.gadgetList){
-		// 	if( !(ISA_WidgetConf.gadgetList[i] instanceof Function) ){
-		// 		var widgetConf = ISA_WidgetConf.gadgetList[i];
-		// 		// Show except for maximize and notAvailable
-		// 		if( !(/true/i.test(widgetConf.systemWidget)) ){
-		// 			if(!widgetConf.type)widgetConf.type = i;//Gadget has no type
-		// 			widgetConfList.push( widgetConf );
-		// 		}
-		// 	}
-		// }
-		
-		// while( self.gadgetPanel.firstChild )
-		// 	self.gadgetPanel.removeChild( self.gadgetPanel.firstChild );
-		
-		// for(var i = 0; i < widgetConfList.length; i++){
-		// 	self.gadgetPanel.appendChild(self._buildWidgetConfToPanel( widgetConfList[i] ));
-		// }
 	}
 	
 	this.buildExtAppsDetails = function(obj) {
@@ -197,11 +178,7 @@ ISA_ExtApps.prototype.classDef = function() {
 		cancelBtn.appendChild(document.createTextNode(ISA_R.alb_cancel));
 		opsDiv.appendChild(cancelBtn);
 
-		IS_Event.observe(submitBtn, 'click', function(){
-			ISA_Admin.isUpdated = this.isEdited();
-			if(!ISA_Admin.checkUpdated())return;
-			this.submitEdit();	
-		}.bind(this),false,this.id);
+		IS_Event.observe(submitBtn, 'click', this.submitEdit.bind(this),false,this.id);
 		IS_Event.observe(cancelBtn, 'click', function(){
 			ISA_Admin.isUpdated = this.isEdited();
 			if(!ISA_Admin.checkUpdated())return;			
@@ -239,6 +216,8 @@ ISA_ExtApps.prototype.classDef = function() {
 		var nameField = document.createElement("input");
 		nameField.id = "appName";
 		nameField.type = "text";
+		nameField.style.marginLeft = "8px";
+		nameField.style.width = "400px";
 		nameField.placeholder = ISA_R.alb_extAppsName;
 		extAppsNameDiv.appendChild(nameField);
 
@@ -348,13 +327,11 @@ ISA_ExtApps.prototype.classDef = function() {
 		extAppsDetailInfoDiv.appendChild(extAppsExplainDiv);
 
 		if(obj){
-			var refreshClientSecretBtn = ISA_Admin.createIconButton(ISA_R.alb_refreshClientSecret, ISA_R.alb_refreshClientSecret, "refresh.gif", "right");
-			editDiv.appendChild(refreshClientSecretBtn);
-			IS_Event.observe(refreshClientSecretBtn, 'click', this.refreshClientSecret.bind(this),false,this.id);
-
 			nameField.value = obj.appName;
 			clientId.appendChild(document.createTextNode(obj.clientId));
 			clientSecret.appendChild(document.createTextNode(obj.clientSecret));
+			clientSecret.appendChild(this.buildResetLink());
+
 			if(obj.redirectUrl) urlField.value = obj.redirectUrl;
 			if(obj.explain) explainField.value = obj.explain;
 		}
@@ -363,6 +340,30 @@ ISA_ExtApps.prototype.classDef = function() {
 		editDiv.appendChild(extAppsDetailInfoDiv);
 
 		return editDiv;
+	}
+
+	this.buildResetLink = function() {
+		var resetClientSecretSpan = document.createElement("span");
+		resetClientSecretSpan.className = "clientSecretResetBase";
+		var resetClientSecretLink = document.createElement("span");
+		resetClientSecretLink.appendChild(document.createTextNode(ISA_R.alb_resetClientSecret));
+
+		resetClientSecretSpan.appendChild(document.createTextNode("( "));
+		resetClientSecretSpan.appendChild(resetClientSecretLink);
+		resetClientSecretSpan.appendChild(document.createTextNode(" )"));
+
+		IS_Event.observe(resetClientSecretLink, 'mouseover', function(){
+			Element.addClassName(this, "clientSecretReset");
+		}.bind(resetClientSecretLink), false, this.id);
+		IS_Event.observe(resetClientSecretLink, 'mouseout', function(){
+			Element.removeClassName(this, "clientSecretReset");
+		}.bind(resetClientSecretLink), false, this.id);
+		IS_Event.observe(resetClientSecretLink, 'click', function(){
+			if( !confirm( ISA_R.ams_confirmResetClientSecret ))return;
+			this.resetClientSecret();
+		}.bind(this),false,this.id);
+
+		return resetClientSecretSpan;
 	}
 
 	this.build = function() {
@@ -392,9 +393,6 @@ ISA_ExtApps.prototype.classDef = function() {
 		  onSuccess: function(response){
 		  	ISA_ExtApps.appList = eval("(" + response.responseText + ")");
 			self.buildExtAppsItems();
-			  // self.buildGadgetItems();
-			  // if( callback )
-			  // 	callback();
 		  },
 		  on404: function(t) {
 				if(!container.firstChild) container.appendChild(document.createElement("div"));
@@ -422,94 +420,109 @@ ISA_ExtApps.prototype.classDef = function() {
 	}
 
 	this.submitEdit = function() {
+		var postObj = {
+			appName:$jq('#appName').val(),
+		  	clientId:$jq('#clientId').text(),
+		  	clientSecret:$jq('#clientSecret').text(),
+		  	grantType:$jq('input[name="extAppType"]:checked').val(),
+		  	redirectUrl:$jq('#redirectUrl').val(),
+		  	explain:$jq('#explain').val()
+		};
 		var url = adminHostPrefix + "/services/extApps/saveExtApps";
 		var opt = {
 		  method: 'post' ,
 		  asynchronous:true,
-		  postBody:{
-		  	'appName':$jq('#appName').val(),
-		  	'clientId':$jq('#clientId').text(),
-		  	'clientSecret':$jq('#clientSecret').text(),
-		  	'grantType':$jq('input[name="extAppType"]:checked').val(),
-		  	'redirectUrl':$jq('#redirectUrl').val(),
-		  	'explain':$jq('#explain').val()
-		  },
+		  contentType: "application/json",
+		  postBody:Object.toJSON([Object.toJSON(postObj)]),
 		  onSuccess: function(response){
-		  	ISA_ExtApps.appList = eval("(" + response.responseText + ")");
+		  	var json = eval("(" + response.responseText + ")");
+		  	ISA_ExtApps.appList = json.list;
 			self.buildExtAppsItems();
+			self.buildExtAppsDetails(json.self);
 		  },
 		  onFailure: function(t) {
-				if(!container.firstChild) container.appendChild(document.createElement("div"));
-			  container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
-			  msg.error(ISA_R.ams_failedLoadingExtApps + t.status + " - " + t.statusText);
+			if(!container.firstChild) container.appendChild(document.createElement("div"));
+			container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
+		 	msg.error(ISA_R.ams_failedLoadingExtApps + t.status + " - " + t.statusText);
 		  },
 		  onException: function(r, t){
-				if(!container.firstChild) container.appendChild(document.createElement("div"));
-			  container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
-			  msg.error(ISA_R.ams_failedLoadingExtApps + getErrorMessage(t));
-		  },
-		  onComplete: function(req, obj){
-			  ISA_Admin.requestComplete = true;
-		  },
-		  onRequest: function() {
-			  ISA_Admin.requestComplete = false;
+			if(!container.firstChild) container.appendChild(document.createElement("div"));
+			container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
+			msg.error(ISA_R.ams_failedLoadingExtApps + getErrorMessage(t));
 		  }
 		};
-		// AjaxRequest.invoke(url, opt);
+		AjaxRequest.invoke(url, opt);
 	}
 
-	this.refreshClientSecret = function() {
-		var url = adminHostPrefix + "/services/extApps/refreshClientSecret";
-		console.log(url);
+	this.resetClientSecret = function() {
+		var postObj = {
+		  	clientId:$jq('#clientId').text()
+		};
+		var url = adminHostPrefix + "/services/extApps/resetClientSecret";
 		var opt = {
-		  method: 'get' ,
+		  method: 'put',
 		  asynchronous:true,
+		  contentType: "application/json",
+		  postBody:Object.toJSON([Object.toJSON(postObj)]),
 		  onSuccess: function(response){
 		  	ISA_Admin.isUpdated = true;
-		  	ISA_ExtApps.appList = eval("(" + response.responseText + ")");
-			self.buildExtAppsItems();
+		  	var jsonObj = eval("(" + response.responseText + ")");
+		  	var clientSecretDiv = $jq("#clientSecret");
+		  	clientSecretDiv.empty().append(jsonObj.clientSecret);
+		  	clientSecretDiv.append(self.buildResetLink());
+			for(var i = 0; i < ISA_ExtApps.appList.length; i++){
+				var obj = ISA_ExtApps.appList[i];
+				if(self.selectedExtApps.clientId == obj.clientId){
+					obj.clientSecret = jsonObj.clientSecret;
+					break;
+				}
+			}
 		  },
 		  onFailure: function(t) {
-				if(!container.firstChild) container.appendChild(document.createElement("div"));
-			  container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
-			  msg.error(ISA_R.ams_failedLoadingExtApps + t.status + " - " + t.statusText);
+			if(!container.firstChild) container.appendChild(document.createElement("div"));
+			container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
+			msg.error(ISA_R.ams_failedLoadingExtApps + t.status + " - " + t.statusText);
 		  },
 		  onException: function(r, t){
-				if(!container.firstChild) container.appendChild(document.createElement("div"));
-			  container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
-			  msg.error(ISA_R.ams_failedLoadingExtApps + getErrorMessage(t));
+			if(!container.firstChild) container.appendChild(document.createElement("div"));
+			container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
+			msg.error(ISA_R.ams_failedLoadingExtApps + getErrorMessage(t));
 		  }
 		};
-//		AjaxRequest.invoke(url, opt);
+		AjaxRequest.invoke(url, opt);
 	}
 
 	this.deleteExtApps = function() {
-		// var url = adminHostPrefix + "/services/extApps/deleteExtApps";
-		// var opt = {
-		//   method: 'delete',
-		//   asynchronous:true,
-		//   onSuccess: function(response){
-		//   	ISA_ExtApps.appList = eval("(" + response.responseText + ")");
-		// 	self.buildExtAppsItems();
-		//   },
-		//   onFailure: function(t) {
-		// 		if(!container.firstChild) container.appendChild(document.createElement("div"));
-		// 	  container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
-		// 	  msg.error(ISA_R.ams_failedLoadingExtApps + t.status + " - " + t.statusText);
-		//   },
-		//   onException: function(r, t){
-		// 		if(!container.firstChild) container.appendChild(document.createElement("div"));
-		// 	  container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
-		// 	  msg.error(ISA_R.ams_failedLoadingExtApps + getErrorMessage(t));
-		//   },
-		//   onComplete: function(req, obj){
-		// 	  ISA_Admin.requestComplete = true;
-		//   },
-		//   onRequest: function() {
-		// 	  ISA_Admin.requestComplete = false;
-		//   }
-		// };
-//		AjaxRequest.invoke(url, opt);
+		var postObj = {
+		  	clientId:$jq('#clientId').text()
+		};
+		var url = adminHostPrefix + "/services/extApps/deleteExtApps";
+		var opt = {
+		  method: 'delete',
+		  asynchronous:true,
+		  contentType: "application/json",
+		  postBody:Object.toJSON([Object.toJSON(postObj)]),
+		  onSuccess: function(response){
+		  	$jq("#editExtAppsItem_"+self.selectedExtApps.clientId).remove();
+		  	self.clearSelectExtApps();
+
+		  	var deleteMessage = document.createElement("div");
+		  	deleteMessage.style.padding = "5px";
+		  	deleteMessage.innerHTML = ISA_R.ams_deleteExtApps;
+		  	$jq("#adminExtAppsDetails").empty().append(deleteMessage);
+		  },
+		  onFailure: function(t) {
+			if(!container.firstChild) container.appendChild(document.createElement("div"));
+			container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
+			msg.error(ISA_R.ams_failedLoadingExtApps + t.status + " - " + t.statusText);
+		  },
+		  onException: function(r, t){
+			if(!container.firstChild) container.appendChild(document.createElement("div"));
+			container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
+			msg.error(ISA_R.ams_failedLoadingExtApps + getErrorMessage(t));
+		  }
+		};
+		AjaxRequest.invoke(url, opt);
 	}
 
 	this.cancelEdit = function() {

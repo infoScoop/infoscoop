@@ -19,17 +19,24 @@ package org.infoscoop.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.api.dao.OAuth2ProviderAccessTokenDAO;
 import org.infoscoop.api.dao.OAuth2ProviderClientDetailDAO;
+import org.infoscoop.api.dao.OAuth2ProviderRefreshTokenDAO;
+import org.infoscoop.api.dao.model.OAuth2ProviderAccessToken;
 import org.infoscoop.api.dao.model.OAuth2ProviderClientDetail;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.util.UUID;
 
 public class ExtAppsService {
 	private OAuth2ProviderClientDetailDAO oauth2ProviderClientDetailDAO;
+	private OAuth2ProviderAccessTokenDAO oauth2ProviderAccessTokenDAO;
+	private OAuth2ProviderRefreshTokenDAO oauth2ProviderRefreshTokenDAO;
 	
 	private static Log log = LogFactory.getLog(ExtAppsService.class);
 	
@@ -39,8 +46,10 @@ public class ExtAppsService {
 	private static final String GRANTTYPE_REFRESH = "refresh_token";
 	private static final String GRANTTYPE_CLIENTCREDENTIALS = "client_credentials";
 	private static final String GRANTTYPE_PASSWORD = "password";
-	private static final String GRANTTYPE_IMPLICIT = "implicit";	
+	private static final String GRANTTYPE_IMPLICIT = "implicit";
 
+	private static final String ROLE_CLIENT = "ROLE_CLIENT";
+	private static final String SCOPE_USERPROFILE = "SCOPE_USERPROFILE";
 	
 	public ExtAppsService(){}
 
@@ -57,6 +66,24 @@ public class ExtAppsService {
 		this.oauth2ProviderClientDetailDAO = oauth2ProviderClientDetailDAO;
 	}
 	
+	public OAuth2ProviderAccessTokenDAO getOauth2ProviderAccessTokenDAO() {
+		return oauth2ProviderAccessTokenDAO;
+	}
+
+	public void setOauth2ProviderAccessTokenDAO(
+			OAuth2ProviderAccessTokenDAO oauth2ProviderAccessTokenDAO) {
+		this.oauth2ProviderAccessTokenDAO = oauth2ProviderAccessTokenDAO;
+	}
+
+	public OAuth2ProviderRefreshTokenDAO getOauth2ProviderRefreshTokenDAO() {
+		return oauth2ProviderRefreshTokenDAO;
+	}
+
+	public void setOauth2ProviderRefreshTokenDAO(
+			OAuth2ProviderRefreshTokenDAO oauth2ProviderRefreshTokenDAO) {
+		this.oauth2ProviderRefreshTokenDAO = oauth2ProviderRefreshTokenDAO;
+	}
+
 	public String getExtAppsList() throws Exception {
 		ArrayList<OAuth2ProviderClientDetail> clientDetailList = (ArrayList<OAuth2ProviderClientDetail>)oauth2ProviderClientDetailDAO.getClientDetails();
 		
@@ -74,6 +101,82 @@ public class ExtAppsService {
 		return arr.toString();
 	}
 
+	public String saveExtApps(String parameters) throws Exception {
+		JSONObject obj = new JSONObject(parameters);
+		
+		String title = obj.getString("appName");
+		String clientId = obj.getString("clientId");
+		String secret = obj.getString("clientSecret");
+		String grantType = decodeGrantTypes(obj.getString("grantType"));
+		String redirectUrl = obj.getString("redirectUrl");
+		String additionalInformation = obj.getString("explain");
+
+		if(obj.getString("clientId").isEmpty()){
+			// new
+			clientId = createUUID();
+			secret = createUUID();
+		}
+		
+		oauth2ProviderClientDetailDAO.saveClientDetail(clientId, title, title, secret, SCOPE_USERPROFILE, grantType, redirectUrl, ROLE_CLIENT, -1, -1, additionalInformation);
+		
+		// response JSON
+		JSONObject obj2 = new JSONObject();
+		obj2.put("appName", title);
+		obj2.put("clientId", clientId);
+		obj2.put("clientSecret", secret);
+		obj2.put("redirectUrl", redirectUrl);
+		obj2.put("grantType", obj.getString("grantType"));
+		obj2.put("explain", additionalInformation);
+
+		JSONObject resultObj = new JSONObject();
+		resultObj.put("list", new JSONArray(getExtAppsList()));
+		resultObj.put("self", obj2);
+		
+		return resultObj.toString();
+	}
+	
+	public void deleteExtApps(String parameters) throws Exception{
+		JSONObject obj = new JSONObject(parameters);
+		String clientId = obj.getString("clientId");
+		
+		// delete client detail
+		oauth2ProviderClientDetailDAO.deleteClientDetail(clientId);
+
+		//delete access token and refresh token
+		deleteTokens(clientId);
+	}
+	
+	public String resetClientSecret(String parameters) throws Exception {
+		JSONObject obj = new JSONObject(parameters);
+		String clientId = obj.getString("clientId");
+		String clientSecret = createUUID();
+
+		// rewrite secret
+		OAuth2ProviderClientDetail clientDetail = oauth2ProviderClientDetailDAO.getClientDetailById(clientId);
+		clientDetail.setSecret(clientSecret);
+		oauth2ProviderClientDetailDAO.saveClientDetail(clientDetail);
+
+		// delete tokens
+		deleteTokens(clientId);
+		
+		JSONObject resultObj = new JSONObject();
+		resultObj.put("clientSecret", clientSecret);
+		return resultObj.toString();
+	}
+	
+	private void deleteTokens(String clientId) {
+		List<OAuth2ProviderAccessToken> tokenList = oauth2ProviderAccessTokenDAO.getAccessTokenByClientId(clientId);
+		for(OAuth2ProviderAccessToken token : tokenList){
+			oauth2ProviderRefreshTokenDAO.deleteOAuth2ProviderRefreshToken(token.getRefreshToken());
+			oauth2ProviderAccessTokenDAO.deleteOAuth2ProviderAccessToken(token);
+		}		
+	}
+	
+	private String createUUID(){
+		String uuid = new UUID().toString();
+		return uuid.replaceAll("-", "");
+	}
+	
 	private String decodeGrantTypes(String grantTypes){
 		String type = "";
 		if(GRANTTYPE_WEB.equals(grantTypes)){
@@ -93,21 +196,4 @@ public class ExtAppsService {
 			type = GRANTTYPE_NATIVE;
 		return type;
 	}
-	
-//	public JSONObject getExtApps() throws Exception{
-//		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-//		builderFactory.setValidating(false);
-//
-//		DocumentBuilder builder = builderFactory.newDocumentBuilder();
-//		builder.setEntityResolver(NoOpEntityResolver.getInstance());
-//		
-//		Gadget gadget = gadgetDAO.select(type);
-//		Document gadgetDoc = builder.parse(new ByteArrayInputStream(gadget.getData()));
-//		Element gadgetEl = gadgetDoc.getDocumentElement();
-//		JSONObject confJson = WidgetConfUtil.gadget2JSONObject( gadgetEl,null );
-//		JSONObject obj = new JSONObject();
-//		obj.put("hogehoge","hugahuga");
-//		return obj;
-//	}
-
 }

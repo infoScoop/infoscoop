@@ -113,6 +113,11 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().saveOrUpdate(accessToken);
 	}
 
+	public void deleteOAuth2ProviderAccessToken(OAuth2ProviderAccessToken tokenObj) {
+		if(tokenObj!=null)
+			super.getHibernateTemplate().delete(tokenObj);
+	}
+	
 	public void deleteOAuth2ProviderAccessToken(String tokenId) {
 		OAuth2ProviderAccessToken accessToken = getAccessTokenById(tokenId);
 		
