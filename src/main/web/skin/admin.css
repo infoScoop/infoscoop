@@ -1445,7 +1445,7 @@ a.home-menu-header:visited {
 	font-size: 20px;
 }
 #extAppsList_div > div {
-	padding-left: 8px;
+	padding: 2px 3px 2px 10px;
 	font-size: 14px;
 	color: #0000CC;
 }
@@ -1456,11 +1456,12 @@ a.home-menu-header:visited {
 	margin: 3px;
 }
 .extAppsDetailsLabel {
-	width: 230px;
+	width: 200px;
 	padding: 0 5px 5px 0;
 	text-align: right;
 	vertical-align: top;
 	display: table-cell;
+	font-size: 90%;
 }
 .extAppsDetailsInput {
 	padding: 1px 5px 5px 0;
@@ -1473,7 +1474,6 @@ a.home-menu-header:visited {
 }
 #clientId, #clientSecret{
 	font-size: 80%;
-	padding-top: 3px;
 }
 .clientSecretResetBase {
 	color: #0000CC;

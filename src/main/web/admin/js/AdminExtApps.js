@@ -24,13 +24,13 @@ ISA_ExtApps.prototype.classDef = function() {
 	var self = this;
 	var container;
 	var loadingMessage;
+	var controlModal;
 
 	this.initialize = function() {
 		this.id = "_adminExtApps";
 	};
 
 	this.displayExtApps = function() {
-		
 		var extAppsDiv = document.createElement("div");
 		extAppsDiv.id = "adminExtAppsContent";
 
@@ -44,8 +44,6 @@ ISA_ExtApps.prototype.classDef = function() {
 		IS_Event.observe(addExtApps, 'click', function(){
 			ISA_Admin.isUpdated = this.isEdited();
 			if(!ISA_Admin.checkUpdated())return;
-			// this.rebuildGadgetUploadPanel();
-			// this.editUpdateButton.style.display = this.editDeleteButton.style.display = this.editOKButton.style.display = this.editCancelButton.style.display = "none";
 			this.buildExtAppsDetails();
 		}.bind(this),false,this.id);
 
@@ -53,11 +51,7 @@ ISA_ExtApps.prototype.classDef = function() {
 	}
 
 	this.selectExtApps = function(obj) {
-		this.clearSelectExtApps();
-		
-		// var widgetConf = this._getConf(type);
-		// if(!widgetConf) return;
-		
+		this.clearSelectExtApps();		
 		var editItem = $jq("#editExtAppsItem_"+obj.clientId);
 		if(editItem){
 			this.selectedExtApps = obj;
@@ -168,9 +162,36 @@ ISA_ExtApps.prototype.classDef = function() {
 		editLabel.appendChild(document.createTextNode(ISA_R.alb_editExtAppsSettings));
 		editDiv.appendChild(editLabel);
 		editDiv.appendChild(this.buildEditConf(obj));
+		baseDiv.append(editDiv);
 
 		var opsDiv = document.createElement("div");
 		opsDiv.style.textAlign = "center";
+
+		if(obj){
+			// TODO: bad condition.
+			if(obj.deleteFlg){
+				opsDiv = this.buildOpsDiv(opsDiv);
+				var deleteBtn = document.createElement("button");
+				deleteBtn.style.marginLeft = '5px';
+				deleteBtn.appendChild(document.createTextNode(ISA_R.alb_deleteExtApps));
+				opsDiv.appendChild(deleteBtn);
+				IS_Event.observe(deleteBtn, 'click', function(){
+					if( !confirm( ISA_R.ams_deleteExtAppsConfirm ))return;
+					this.deleteExtApps();
+				}.bind(this),false,this.id);
+			}
+
+			this.selectExtApps(obj);
+			// type check
+			$jq('input[name="extAppType"]').val([obj.grantType]);
+		}else{
+			opsDiv = this.buildOpsDiv(opsDiv);
+			this.clearSelectExtApps();
+		}
+		baseDiv.append(opsDiv);
+	}
+
+	this.buildOpsDiv = function(opsDiv) {
 		var submitBtn = document.createElement("button");
 		submitBtn.appendChild(document.createTextNode(ISA_R.alb_saveSettings));
 		opsDiv.appendChild(submitBtn)
@@ -178,32 +199,19 @@ ISA_ExtApps.prototype.classDef = function() {
 		cancelBtn.appendChild(document.createTextNode(ISA_R.alb_cancel));
 		opsDiv.appendChild(cancelBtn);
 
-		IS_Event.observe(submitBtn, 'click', this.submitEdit.bind(this),false,this.id);
+		IS_Event.observe(submitBtn, 'click', function(){
+			//validation
+			if(!this.checkFieldValidation()) return;
+			this.submitEdit();
+		}.bind(this),false,this.id);
 		IS_Event.observe(cancelBtn, 'click', function(){
 			ISA_Admin.isUpdated = this.isEdited();
-			if(!ISA_Admin.checkUpdated())return;			
-			this.cancelEdit();
+			if(!ISA_Admin.checkUpdated())return;
+			$jq("#adminExtAppsDetails").empty();
+			this.clearSelectExtApps();
 		}.bind(this),false,this.id);
 
-		baseDiv.append(editDiv);
-		baseDiv.append(opsDiv);
-
-		if(obj){
-			var deleteBtn = document.createElement("button");
-			deleteBtn.style.marginLeft = '5px';
-			deleteBtn.appendChild(document.createTextNode(ISA_R.alb_deleteExtApps));
-			opsDiv.appendChild(deleteBtn);
-			IS_Event.observe(deleteBtn, 'click', function(){
-				if( !confirm( ISA_R.ams_deleteExtAppsConfirm ))return;
-				this.deleteExtApps();
-			}.bind(this),false,this.id);
-
-			this.selectExtApps(obj);
-			// type check
-			$jq('input[name="extAppType"]').val([obj.grantType]);
-		}else{
-			this.clearSelectExtApps();
-		}
+		return opsDiv;
 	}
 
 	this.buildEditConf = function(obj) {
@@ -219,6 +227,11 @@ ISA_ExtApps.prototype.classDef = function() {
 		nameField.style.marginLeft = "8px";
 		nameField.style.width = "400px";
 		nameField.placeholder = ISA_R.alb_extAppsName;
+		nameField.value = ISA_R.alb_extAppsNew;
+		IS_Event.observe(nameField, 'focus', function(){
+			nameField.style.backgroundColor="";
+			$jq("#appName").select();
+		}.bind(this),false,this.id);
 		extAppsNameDiv.appendChild(nameField);
 
 		// client id
@@ -329,11 +342,22 @@ ISA_ExtApps.prototype.classDef = function() {
 		if(obj){
 			nameField.value = obj.appName;
 			clientId.appendChild(document.createTextNode(obj.clientId));
-			clientSecret.appendChild(document.createTextNode(obj.clientSecret));
+			var clientSecretVal = document.createElement("span");
+			clientSecretVal.id="clientSecretVal";
+			clientSecretVal.appendChild(document.createTextNode(obj.clientSecret));
+			clientSecret.appendChild(clientSecretVal);
 			clientSecret.appendChild(this.buildResetLink());
 
 			if(obj.redirectUrl) urlField.value = obj.redirectUrl;
 			if(obj.explain) explainField.value = obj.explain;
+
+			if(!obj.deleteFlg) {
+				nameField.disabled = true;
+				typeField1.disabled = true;
+				typeField2.disabled = true;
+				urlField.disabled = true;
+				explainField.disabled = true;
+			}
 		}
 
 		editDiv.appendChild(extAppsNameDiv);
@@ -420,10 +444,19 @@ ISA_ExtApps.prototype.classDef = function() {
 	}
 
 	this.submitEdit = function() {
+		if(!controlModal){
+			controlModal = new Control.Modal('', {
+				  className:"commitDialog",
+				  closeOnClick:'overlay'
+				});
+		}
+		controlModal.container.update(ISA_R.ams_applyingChanges);
+		controlModal.open();
+
 		var postObj = {
 			appName:$jq('#appName').val(),
 		  	clientId:$jq('#clientId').text(),
-		  	clientSecret:$jq('#clientSecret').text(),
+		  	clientSecret:$jq('#clientSecretVal').text(),
 		  	grantType:$jq('input[name="extAppType"]:checked').val(),
 		  	redirectUrl:$jq('#redirectUrl').val(),
 		  	explain:$jq('#explain').val()
@@ -439,6 +472,8 @@ ISA_ExtApps.prototype.classDef = function() {
 		  	ISA_ExtApps.appList = json.list;
 			self.buildExtAppsItems();
 			self.buildExtAppsDetails(json.self);
+			ISA_Admin.isUpdated = false;
+			controlModal.container.update(ISA_R.ams_changeUpdated);
 		  },
 		  onFailure: function(t) {
 			if(!container.firstChild) container.appendChild(document.createElement("div"));
@@ -449,6 +484,11 @@ ISA_ExtApps.prototype.classDef = function() {
 			if(!container.firstChild) container.appendChild(document.createElement("div"));
 			container.firstChild.innerHTML = "<span style='font-size:90%;color:red;padding:5px;'>"+ISA_R.ams_failedLoadingExtApps+"</span>";
 			msg.error(ISA_R.ams_failedLoadingExtApps + getErrorMessage(t));
+		  },
+		  onComplete: function(){
+		  	setTimeout(function(){
+				Control.Modal.close();
+			},500);
 		  }
 		};
 		AjaxRequest.invoke(url, opt);
@@ -465,11 +505,8 @@ ISA_ExtApps.prototype.classDef = function() {
 		  contentType: "application/json",
 		  postBody:Object.toJSON([Object.toJSON(postObj)]),
 		  onSuccess: function(response){
-		  	ISA_Admin.isUpdated = true;
 		  	var jsonObj = eval("(" + response.responseText + ")");
-		  	var clientSecretDiv = $jq("#clientSecret");
-		  	clientSecretDiv.empty().append(jsonObj.clientSecret);
-		  	clientSecretDiv.append(self.buildResetLink());
+		  	$jq("#clientSecretVal").text(jsonObj.clientSecret)
 			for(var i = 0; i < ISA_ExtApps.appList.length; i++){
 				var obj = ISA_ExtApps.appList[i];
 				if(self.selectedExtApps.clientId == obj.clientId){
@@ -525,22 +562,6 @@ ISA_ExtApps.prototype.classDef = function() {
 		AjaxRequest.invoke(url, opt);
 	}
 
-	this.cancelEdit = function() {
-		if(this.selectedExtApps){
-			$jq('#appName').val(this.selectedExtApps.appName);
-			$jq('#clientId').text(this.selectedExtApps.clientId);
-			$jq('#clientSecret').text(this.selectedExtApps.clientSecret);
-			(this.selectedExtApps.redirectUrl)? $jq('#redirectUrl').val(this.selectedExtApps.redirectUrl):$jq('#redirectUrl').val("");
-			(this.selectedExtApps.explain)? $jq('#explain').val(this.selectedExtApps.explain):$jq('#explain').val("");
-			$jq('input[name="extAppType"]').val([this.selectedExtApps.grantType]);
-		}else{
-			$jq('#appName').val("");
-			$jq('#redirectUrl').val("");
-			$jq('#explain').val("");
-			$jq('input[name="extAppType"]').val(["web"]);
-		}
-	}
-
 	this.isEdited = function() {
 		if(this.selectedExtApps){
 			var redirectUrl = '';
@@ -554,7 +575,7 @@ ISA_ExtApps.prototype.classDef = function() {
 				return true;
 		}else{
 			if($jq('#appName').length){
-				if($jq('#appName').val() != '' 
+				if(($jq('#appName').val() != '' && $jq('#appName').val() != ISA_R.alb_extAppsNew)
 					|| $jq('#redirectUrl').val() != ''
 					|| $jq('#explain').val() != ''
 					|| $jq('input[name="extAppType"]:checked').val() != 'web')
@@ -562,5 +583,14 @@ ISA_ExtApps.prototype.classDef = function() {
 			}
 		}
 		return false;
+	}
+
+	this.checkFieldValidation = function() {
+		if(!$jq('#appName').val()){
+			$jq('#appName').css("background-color","#FFDFDF");
+			alert("["+ISA_R.alb_extAppsName+"] "+ISA_R.ams_requiredItem);
+			return false;
+		}
+		return true;
 	}
 }

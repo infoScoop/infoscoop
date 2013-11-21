@@ -14,6 +14,7 @@ public class BaseOAuth2ProviderClientDetail implements Serializable {
 	public static String PROP_GRANT_TYPES = "grantTypes";
 	public static String PROP_REDIRECT_URL = "redirectUrl";
 	public static String PROP_AUTHORITIES = "authorities";
+	public static String PROP_DELETE_FLG = "deleteFlg";
 	public static String PROP_ACCESS_TOKEN_VALIDITY = "accessTokenValidity";
 	public static String PROP_REFRESH_TOKEN_VALIDITY = "refreshTokenValidity";
 	public static String PROP_ADDITIONAL_INFORMATION = "additionalInformation";
@@ -49,6 +50,7 @@ public class BaseOAuth2ProviderClientDetail implements Serializable {
 	private java.lang.String grantTypes;
 	private java.lang.String redirectUrl;
 	private java.lang.String authorities;
+	private java.lang.Boolean deleteFlg;
 	private java.lang.Integer accessTokenValidity;
 	private java.lang.Integer refreshTokenValidity;
 	private java.lang.String additionalInformation;
@@ -100,6 +102,12 @@ public class BaseOAuth2ProviderClientDetail implements Serializable {
 	}
 	public void setAuthorities(java.lang.String authorities) {
 		this.authorities = authorities;
+	}
+	public java.lang.Boolean getDeleteFlg() {
+		return deleteFlg;
+	}
+	public void setDeleteFlg(java.lang.Boolean deleteFlg){
+		this.deleteFlg = deleteFlg;
 	}
 	public java.lang.Integer getAccessTokenValidity() {
 		return accessTokenValidity;

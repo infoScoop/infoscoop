@@ -48,7 +48,6 @@ public class ExtAppsService {
 	private static final String GRANTTYPE_PASSWORD = "password";
 	private static final String GRANTTYPE_IMPLICIT = "implicit";
 
-	private static final String ROLE_CLIENT = "ROLE_CLIENT";
 	private static final String SCOPE_USERPROFILE = "SCOPE_USERPROFILE";
 	
 	public ExtAppsService(){}
@@ -96,6 +95,7 @@ public class ExtAppsService {
 			obj.put("redirectUrl", clientDetail.getRedirectUrl());
 			obj.put("grantType", encodeGrantTypes(clientDetail.getGrantTypes()));
 			obj.put("explain", clientDetail.getAdditionalInformation());
+			obj.put("deleteFlg", clientDetail.getDeleteFlg());
 			arr.put(obj);
 		}
 		return arr.toString();
@@ -117,7 +117,7 @@ public class ExtAppsService {
 			secret = createUUID();
 		}
 		
-		oauth2ProviderClientDetailDAO.saveClientDetail(clientId, title, title, secret, SCOPE_USERPROFILE, grantType, redirectUrl, ROLE_CLIENT, -1, -1, additionalInformation);
+		oauth2ProviderClientDetailDAO.saveClientDetail(clientId, title, title, secret, SCOPE_USERPROFILE, grantType, redirectUrl, null, null, null, null, additionalInformation);
 		
 		// response JSON
 		JSONObject obj2 = new JSONObject();
@@ -127,6 +127,7 @@ public class ExtAppsService {
 		obj2.put("redirectUrl", redirectUrl);
 		obj2.put("grantType", obj.getString("grantType"));
 		obj2.put("explain", additionalInformation);
+		obj2.put("deleteFlg", true);
 
 		JSONObject resultObj = new JSONObject();
 		resultObj.put("list", new JSONArray(getExtAppsList()));
