@@ -37,10 +37,11 @@ public abstract class BaseController{
 	 * @throws JSONException
 	 */
 	@ExceptionHandler(Exception.class)
-	public ErrorResponse handleException(Exception ex) throws JSONException {
+	public void handleException(Exception ex) throws JSONException {
 		log.error("unexpected error occurred.", ex);
 		
 		// TODO: アプリケーションのエラーコードを返すかどうか
-		return new ErrorResponse(ex.getMessage(), HttpStatus.SC_INTERNAL_SERVER_ERROR);
+		throw new RuntimeException();
+//		return new ErrorResponse(ex.getMessage(), HttpStatus.SC_INTERNAL_SERVER_ERROR);
 	}
 }

@@ -18,27 +18,14 @@
 package org.infoscoop.dao;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TabAdmin;
 import org.infoscoop.dao.model.TabAdminPK;
-import org.infoscoop.dao.model.TabLayout;
-import org.infoscoop.service.PortalAdminsService;
-import org.infoscoop.service.StaticTabService;
 import org.infoscoop.util.SpringUtil;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -64,6 +51,14 @@ public class TabAdminDAO extends HibernateDaoSupport {
 		String queryString = "delete from TabAdmin where Tabid = ?";
 		super.getHibernateTemplate().bulkUpdate(queryString,
 				new Object[] { tabId });
+	}
+
+	public void delete(Collection<TabAdmin> entities) {
+		super.getHibernateTemplate().deleteAll(entities);
+	}
+
+	public void insert(TabAdmin entity) {
+		super.getHibernateTemplate().save(entity);
 	}
 
 	public void insert(String tabId, String userId) {

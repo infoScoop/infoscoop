@@ -19,6 +19,12 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.map.annotate.JsonRootName;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 /**
  * This is an object that contains data related to the TABLAYOUT table. Do not
  * modify this class because it will be overwritten if the configuration file
@@ -27,9 +33,11 @@ import java.io.Serializable;
  * @hibernate.class table="TABLAYOUT"
  */
 
+@JsonRootName("tabLayout")
+@XStreamAlias("tabLayout")
 public abstract class BaseTablayout implements Serializable {
 
-	public static String REF = "Tablayout";
+	public static String REF = "TabLayout";
 	// public static String PROP_TABNUMBER = "Tabnumber";
 	public static String PROP_WIDGETSLASTMODIFIED = "Widgetslastmodified";
 	// public static String PROP_DELETEFLAG = "Deleteflag";
@@ -78,25 +86,43 @@ public abstract class BaseTablayout implements Serializable {
 	protected void initialize() {
 	}
 
+	@XStreamOmitField
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
+	@XStreamOmitField
 	private org.infoscoop.dao.model.TABLAYOUTPK id;
 
 	// fields
+	@XStreamAlias("roleRegx")
 	private java.lang.String role;
+	
 	private java.lang.String rolename;
 	private java.lang.String principaltype;
+	
+	@XStreamAsAttribute
 	private java.lang.String defaultuid;
+	
 	private java.lang.String widgets;
 	private java.lang.String layout;
+	
+	@XStreamOmitField
 	private java.lang.String widgetslastmodified;
+	
+	@XStreamOmitField
 	private java.lang.String workinguid;
+	
+	@XStreamOmitField
 	private java.util.Date templastmodified;
-	// private java.lang.Integer tabnumber;
-	// private java.lang.Integer deleteflag;
 
+	@XStreamOmitField
 	private org.infoscoop.dao.model.StaticTab statictab;
+
+	@XStreamAsAttribute
+	private Integer roleOrder;
+
+	@XStreamAsAttribute
+	private Integer temp;
 
 	/**
 	 * Return the unique identifier of this class
@@ -116,6 +142,8 @@ public abstract class BaseTablayout implements Serializable {
 	public void setId(org.infoscoop.dao.model.TABLAYOUTPK id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
+		this.roleOrder = id.getRoleorder();
+		this.temp = id.getTemp();
 	}
 
 	public java.util.Date getTemplastmodified() {

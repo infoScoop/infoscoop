@@ -38,6 +38,7 @@ import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Preference;
+import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TABPK;
 import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.TabLayout;
@@ -340,7 +341,8 @@ public class TabService {
 		// Insert the difference of added tabLayout information
 		for(Iterator ite = tabLayoutMap.keySet().iterator();ite.hasNext();){
 			String tempTabId = (String)ite.next();
-			if("commandbar".equals(tempTabId.toLowerCase())) continue;
+			if(StaticTab.COMMANDBAR_TAB_ID.equals(tempTabId.toLowerCase())
+					|| StaticTab.PORTALHEADER_TAB_ID.equals(tempTabId.toLowerCase())) continue;
 			
 			// Insert the difference here.
 			if(!currentStaticTabId.contains( tempTabId ))

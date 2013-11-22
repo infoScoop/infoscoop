@@ -13,11 +13,11 @@
    length="10" name="Deleteflag" not-null="true" type="integer"/>
   <property column="disabledefault" generated="never" lazy="false"
    length="10" name="Disabledefault" not-null="true" type="integer"/>
-  <set inverse="true" name="TabAdmin" sort="unsorted">
+  <set inverse="true" name="TabAdmin" sort="unsorted" lazy="false">
    <key column="Tabid"/>
    <one-to-many class="TabAdmin"/>
   </set>
-  <set name="TabLayout" inverse="true">
+  <set name="TabLayout" inverse="true" lazy="false">
    <key column="Tabid"/>
    <one-to-many class="TabLayout"/>
   </set>

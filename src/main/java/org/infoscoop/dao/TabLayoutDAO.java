@@ -20,8 +20,8 @@ package org.infoscoop.dao;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +39,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.infoscoop.dao.model.Siteaggregationmenu_temp;
 import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TABLAYOUTPK;
-import org.infoscoop.dao.model.TabAdmin;
 import org.infoscoop.dao.model.TabLayout;
-import org.infoscoop.service.StaticTabService;
 import org.infoscoop.service.TabLayoutService;
-import org.infoscoop.util.Crypt;
+import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -56,6 +53,12 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	private static Log log = LogFactory.getLog(TabLayoutDAO.class);
 
 	public TabLayoutDAO() {
+	}
+
+	public static TabLayoutDAO newInstance() {
+
+		return (TabLayoutDAO) SpringUtil.getContext().getBean("tabLayoutDAO");
+
 	}
 
 	/**
@@ -123,6 +126,45 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 						Expression.eq("id.Tabid", tabId)).addOrder(
 						Order.asc("id.Roleorder")));
 	}
+	
+	/**
+	 * Get the tab ID data of temporary.
+	 *
+	 * @return List Map tabId,tabNumber
+	 * @throws DataResourceException
+	 */
+	public List selectTabId() {
+		String queryString = "SELECT distinct id.Tabid, Tabnumber FROM TabLayout WHERE "
+				+ "id.Temp = ? ORDER BY id.Tabid ASC";
+		List tabIdNumberList = super.getHibernateTemplate()
+				.find(
+						queryString,
+						new Object[] { TabLayout.TEMP_TRUE });
+
+		List result = new ArrayList();
+		Object[] commandberArray = null;
+		for (Iterator ite = tabIdNumberList.iterator(); ite.hasNext();) {
+			Object[] objs = (Object[]) ite.next();
+			String tabId = (String) objs[0];
+			Integer tabNumber = (Integer) objs[1];
+			if (StaticTab.COMMANDBAR_TAB_ID.equals(tabId)) {
+				commandberArray = objs;
+			} else {
+
+				if (tabNumber == null) {
+					result.add(0, objs);
+				} else {
+					result.add(objs);
+				}
+			}
+		}
+
+		if (commandberArray != null)
+			result.add(0, commandberArray);
+
+		return result;
+	}
+
 	
 	public String selectLockingUid(String tabId) {
 		String queryString = "SELECT distinct Workinguid FROM TabLayout WHERE id.Temp = ? AND id.Tabid = ?";
@@ -226,7 +268,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	 * @param tabId
 	 * @throws DataResourceException
 	 */
-	public void deleteByTabId(String tabId) {
+	public void deleteTempByTabId(String tabId) {
 		HibernateTemplate templete = super.getHibernateTemplate();
 		List tabLayouts = templete.findByCriteria(DetachedCriteria.forClass(
 				TabLayout.class).add(Expression.eq("id.Tabid", tabId)).add(
@@ -246,6 +288,14 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 				new Object[] { temp, tabId });
 	}
 
+	/**
+	 * Delete entities.
+	 * @param entities
+	 */
+	public void delete(Collection<TabLayout> entities){
+		super.getHibernateTemplate().deleteAll(entities);
+	}
+	
 	/**
 	 * Overwrite and copy.
 	 * @param uid
@@ -308,28 +358,6 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 		}
 	}
 	
-	/**
-	 * @param res
-	 * @return
-	 */
-	public String selectMaxTabId() {
-		HibernateTemplate templete = super.getHibernateTemplate();
-		List tabIdList = templete.findByCriteria(DetachedCriteria.forClass(
-				TabLayout.class).add(
-				Expression.not(Expression.eq("id.Tabid", StaticTab.COMMANDBAR_TAB_ID))).add(
-				Expression.not(Expression.eq("id.Tabid", StaticTab.PORTALHEADER_TAB_ID)))
-				.setProjection(
-						Projections.projectionList().add(
-								Projections.max("id.Tabid"))));
-		
-		String tabId = null;
-		for (int i = 0; i < tabIdList.size(); i++) {
-			tabId = (String)tabIdList.get(i);
-		}
-		
-		return tabId;
-	}
-
 	/**
 	 * Return the MultiHashMap includes all the recoeds in tablayout table.
 	 *

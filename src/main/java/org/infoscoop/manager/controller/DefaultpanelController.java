@@ -71,7 +71,7 @@ public class DefaultpanelController implements ControllerInterface{
 		emptyDataMap.put("roleOrder", 0);
 		emptyDataMapWrapper.put("emptyDataMap", emptyDataMap);
 		
-		String tabId = TabLayoutService.getHandle().getNewTabId();
+		String tabId = StaticTabService.getHandle().getNewTabId();
 		TabLayoutService.getHandle().updateDefaultPanel(tabId, emptyDataMapWrapper, true);
 		request.setAttribute("tabId", tabId);
 		request.setAttribute("isNew", true);

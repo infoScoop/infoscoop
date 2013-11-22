@@ -36,10 +36,17 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.xerces.parsers.DOMParser;
 import org.apache.xerces.xni.parser.XMLDocumentFilter;
 import org.apache.xerces.xni.parser.XMLInputSource;
 import org.apache.xerces.xni.parser.XMLParserConfiguration;
 import org.cyberneko.html.HTMLConfiguration;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 /**
  * A utility class about the HTML.
@@ -755,5 +762,23 @@ public class HtmlUtil {
             }
         }
         return str;
+    }
+    
+    public static Element html2Dom(String html) throws SAXException, IOException{
+		
+		DOMParser parser = new DOMParser(new HTMLConfiguration());
+
+		parser.setFeature("http://cyberneko.org/html/features/balance-tags/document-fragment", true);
+		parser.setFeature("http://cyberneko.org/html/features/balance-tags/ignore-outside-content", true);
+		parser.setFeature("http://cyberneko.org/html/features/scanner/notify-builtin-refs", true);
+		parser.setProperty("http://cyberneko.org/html/properties/names/elems", "lower");
+		parser.setProperty("http://cyberneko.org/html/properties/names/attrs", "no-change");
+		parser.setProperty("http://cyberneko.org/html/properties/default-encoding",	"UTF-8");
+		
+		parser.parse(new InputSource(new StringReader(html)));
+		Document doc = parser.getDocument();
+		Element root = doc.getDocumentElement();
+		
+    	return root;
     }
 }
