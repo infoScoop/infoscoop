@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<property name="clob.type" value="clob" dbms="oracle, db2"/>
+    <property name="clob.type" value="text" dbms="mysql"/>
+
+    <!--Issue 539-->
+    <!--CREATE TABLE `IS_OAUTHPROVIDER_ACCESSTOKENS` (id VARCHAR(255), token BLOB, authentication_id VARCHAR(255), user_id VARCHAR(150), client_id VARCHAR(255), authentication BLOB, refresh_token VARCHAR(255), PRIMARY KEY (id));-->
+    <!--CREATE TABLE `IS_OAUTHPROVIDER_REFRESHTOKENS` (id VARCHAR(255), token BLOB, authentication BLOB, PRIMARY KEY (id));-->
+    <changeSet id="infoscoop340_539_1" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_539_1">
+            <not>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTHPROVIDER_ACCESSTOKENS"/>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTHPROVIDER_REFRESHTOKENS"/>
+            </not>
+        </preConditions>
+        <createTable tableName="IS_OAUTHPROVIDER_ACCESSTOKENS" tablespace="${.tablespace}">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="token" type="blob"/>
+            <column name="authentication_id" type="varchar(255)"/>
+            <column name="user_id" type="varchar(255)"/>
+            <column name="client_id" type="varchar(255)"/>
+            <column name="authentication" type="blob"/>
+            <column name="refresh_token" type="varchar(255)"/>
+        </createTable>
+        <createTable tableName="IS_OAUTHPROVIDER_REFRESHTOKENS" tablespace="${.tablespace}">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="token" type="blob"/>
+            <column name="authentication" type="blob"/>
+        </createTable>
+    </changeSet>
+    
+    <!--Issue 539-->
+    <!--CREATE TABLE `IS_OAUTHPROVIDER_CLIENT` (id VARCHAR(255), title VARCHAR(255) NOT NULL, resource_ids VARCHAR(255), secret VARCHAR(255) NOT NULL, scope VARCHAR(255), grant_types VARCHAR(255) DEFAULT 'authorization_code,refresh_token' NOT NULL, redirect_url VARCHAR(255), authorities VARCHAR(255) DEFAULT 'ROLE_CLIENT', delete_flg BOOLEAN DEFAULT 'true', access_token_validity INTEGER DEFAULT 43200, refresh_token_validity INTEGER DEFAULT 2592000, additional_information CLOB, PRIMARY KEY (id));-->
+    <changeSet id="infoscoop340_539_2" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_539_2">
+            <not>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTHPROVIDER_CLIENT"/>
+            </not>
+        </preConditions>
+        <createTable tableName="IS_OAUTHPROVIDER_CLIENT" tablespace="${.tablespace}">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="varchar(255)">
+	            <constraints nullable="false"/>
+            </column>
+            <column name="resource_ids" type="varchar(255)"/>
+            <column name="secret" type="varchar(255)">
+    	        <constraints nullable="false"/>
+            </column>
+            <column name="scope" type="varchar(255)"/>
+            <column name="grant_types" type="varchar(255)" defaultValue="authorization_code,refresh_token">
+                <constraints nullable="false"/>
+            </column>
+            <column name="redirect_url" type="varchar(255)"/>
+            <column name="authorities" type="varchar(255)" defaultValue="ROLE_CLIENT"/>
+            <column name="delete_flg" type="boolean" defaultValueBoolean="true"/>
+            <column name="access_token_validity" type="integer" defaultValueNumeric="43200"/>
+            <column name="refresh_token_validity" type="integer" defaultValueNumeric="2592000"/>
+            <column name="additional_information" type="${clob.type}"/>
+        </createTable>
+    </changeSet>
+    
+    <!--Issue 541-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_portalHeader","ALL","ALL","Header");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_portalHeader","ALL","ja","ヘッダ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_portalHeader","ALL","zh","头");-->
+    <changeSet id="infoscoop340_541_1" author="nishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_541_1">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_portalHeader';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_portalHeader"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Header"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_portalHeader"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="ヘッダ"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_portalHeader"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="头"/>
+        </insert>
+    </changeSet>
+
+    <!--Issue 541-->
+    <!--INSERT INTO IS_STATIC_TABS VALUES('header', NULL, NULL, 0, 0)-->
+    <!--DELETE FROM IS_TABLAYOUTS WHERE temp = 1;-->
+    <changeSet id="infoscoop340_541_2" author="nishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_541_2">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_STATIC_TABS where TABID='header';</sqlCheck>
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_TABLAYOUTS where TABID='header';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_STATIC_TABS">
+            <column name="TABID" value="header"/>
+            <column name="DELETEFLAG" value="0"/>
+            <column name="DISABLEDEFAULT" value="0"/>
+        </insert>
+        <sql><![CDATA[
+insert into ${migration.defaultSchemaWithDot}is_tablayouts
+(TABID, ROLEORDER, ROLE, ROLENAME, PRINCIPALTYPE, DEFAULTUID, WIDGETS, LAYOUT, WIDGETSLASTMODIFIED, TEMP, WORKINGUID)
+values('header', 0, 'default', 'defaultRole', 'OrganizationPrincipal', 'default', '<widgets/>', 
+(select layout from ${migration.defaultSchemaWithDot}is_portallayouts where name='header')
+,'0', 0, '')
+        ]]></sql>
+        <delete tableName="IS_PORTALLAYOUTS">
+            <where>NAME='header'</where>
+        </delete>
+    </changeSet>
+
+    <!--Issue 546-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extapps","ALL","ALL","External Apps");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extapps","ALL","ja","外部アプリ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extapps","ALL","zh","外部应用软件");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_addExtApps","ALL","ALL","Add a External App");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_addExtApps","ALL","ja","外部アプリの追加");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_addExtApps","ALL","zh","添加外部应用软件");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsList","ALL","ALL","External Apps list");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsList","ALL","ja","外部アプリ一覧");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsList","ALL","zh","外部应用软件一览表");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_editExtAppsSettings","ALL","ALL","External Apps settings");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_editExtAppsSettings","ALL","ja","外部アプリ設定の編集");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_editExtAppsSettings","ALL","zh","外部应用软件设定的编辑");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_resetClientSecret","ALL","ALL","Reset");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_resetClientSecret","ALL","ja","再設定");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_resetClientSecret","ALL","zh","Reset");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsName","ALL","ALL","Apps name");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsName","ALL","ja","外部アプリ名");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsName","ALL","zh","外部应用软件名称");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsNew","ALL","ALL","New apps");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsNew","ALL","ja","新しいアプリ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsNew","ALL","zh","新的应用软件");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsClientId","ALL","ALL","ClientID: ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsClientId","ALL","ja","クライアントID：");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsClientId","ALL","zh","ClientID: ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsClientSecret","ALL","ALL","Client Secret: ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsClientSecret","ALL","ja","クライアントシークレット：");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsClientSecret","ALL","zh","lient Secret: ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsRedirectUrl","ALL","ALL","RedirectURL: ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsRedirectUrl","ALL","ja","リダイレクトURL：");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsRedirectUrl","ALL","zh","重定向URL: ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsGrantType","ALL","ALL","Type of External Apps: ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsGrantType","ALL","ja","外部アプリの種類：");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsGrantType","ALL","zh","外部应用软件种类: ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsGrantTypeWeb","ALL","ALL","Web application");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsGrantTypeWeb","ALL","ja","ウェブアプリケーション");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsGrantTypeWeb","ALL","zh","Web应用程序");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsGrantTypeNative","ALL","ALL","Native application (batch, shell-script, etc)");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsGrantTypeNative","ALL","ja","ネイティブアプリケーション（バッチ、シェルスクリプトなど）");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsGrantTypeNative","ALL","zh","本机应用程序");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsExplain","ALL","ALL","Explain for External Apps: ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsExplain","ALL","ja","外部アプリの説明：");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_extAppsExplain","ALL","zh","外部应用软件说明");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_deleteExtApps","ALL","ALL","Delete External Apps");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_deleteExtApps","ALL","ja","外部アプリの削除");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_deleteExtApps","ALL","zh","删除外部应用软件");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_setExtAppsDefault","ALL","ALL","Common settings of each External Apps and default values are set here.");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_setExtAppsDefault","ALL","ja","ここでは各外部アプリの共通設定およびデフォルト値を設定します。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_setExtAppsDefault","ALL","zh","在此设置外部应用软件的共同设定及默认值。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_selectExtAppsToSet","ALL","ALL","Select a External App to change settings from External Apps list on the left side.");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_selectExtAppsToSet","ALL","ja","左の外部アプリ一覧より設定を変更する外部アプリを選択してください。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_selectExtAppsToSet","ALL","zh","请从左侧外部应用软件一览中选择更改设定的外部应用软件。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_deleteExtAppsConfirm","ALL","ALL","Is the External App deleted, and is it good?");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_deleteExtAppsConfirm","ALL","ja","外部アプリを削除します、よろしいですか？");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_deleteExtAppsConfirm","ALL","zh","是否删除外部应用软件？");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_deleteExtApps","ALL","ALL","External Apps is deleted.");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_deleteExtApps","ALL","ja","外部アプリを削除しました。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_deleteExtApps","ALL","zh","删除了外部应用软件。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_failedLoadingExtApps","ALL","ALL","Failed to load External Apps.");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_failedLoadingExtApps","ALL","ja","外部アプリの読み込みに失敗しました。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_failedLoadingExtApps","ALL","zh","外部应用软件读取失败。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_extAppsNotFound","ALL","ALL","External Apps is not found.");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_extAppsNotFound","ALL","ja","外部アプリが見つかりません。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_extAppsNotFound","ALL","zh","未能发现外部应用软件。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_confirmResetClientSecret","ALL","ALL","A client secret is re-set up.\\nAll the authentication information of the user using this external application is deleted.\\nThis operation cannot be canceled.\\n\\nIs it all right?");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_confirmResetClientSecret","ALL","ja","クライアントシークレットを再設定します。\\nこの外部アプリを利用しているユーザの認証情報はすべて削除されます。\\nこの操作は取り消すことができません。\\n\\nよろしいですか？");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_confirmResetClientSecret","ALL","zh","重新设置Client Secret。\\n所有使用这种外部应用程序的用户的认证信息被删除。\\n此操作不能被取消。\\n\\n没事吧？");-->
+    <changeSet id="infoscoop340_546" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_546_1">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_extapps';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extapps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="External Apps"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extapps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリ"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extapps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="外部应用软件"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_addExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Add a External App"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_addExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリの追加"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_addExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="添加外部应用软件"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsList"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="External Apps list"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsList"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリ一覧"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsList"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="外部应用软件一览表"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_editExtAppsSettings"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="External Apps settings"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_editExtAppsSettings"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリ設定の編集"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_editExtAppsSettings"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="外部应用软件设定的编辑"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_resetClientSecret"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Reset"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_resetClientSecret"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="再設定"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_resetClientSecret"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="Reset"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsName"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Apps name"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsName"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリ名"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsName"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="外部应用软件名称"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsNew"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="New apps"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsNew"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="新しいアプリ"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsNew"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="新的应用软件"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsClientId"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="ClientID:"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsClientId"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="クライアントID："/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsClientId"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="ClientID:"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsClientSecret"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Client Secret:"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsClientSecret"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="クライアントシークレット："/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsClientSecret"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="Client Secret:"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsRedirectUrl"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="RedirectURL:"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsRedirectUrl"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="リダイレクトURL："/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsRedirectUrl"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="重定向URL:"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsGrantType"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Type of External Apps:"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsGrantType"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリの種類："/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsGrantType"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="外部应用软件种类:"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsGrantTypeWeb"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Web application"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsGrantTypeWeb"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="ウェブアプリケーション"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsGrantTypeWeb"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="Web应用程序"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsGrantTypeNative"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Native application (batch, shellscript, etc)"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsGrantTypeNative"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="ネイティブアプリケーション（バッチ、シェルスクリプトなど）"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsGrantTypeNative"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="本机应用程序"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsExplain"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Explain for External Apps:"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsExplain"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリの説明："/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_extAppsExplain"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="外部应用软件说明:"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_deleteExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Delete External Apps"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_deleteExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリの削除"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_deleteExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="删除外部应用软件"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_setExtAppsDefault"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Common settings of each External Apps and default values are set here."/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_setExtAppsDefault"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="ここでは各外部アプリの共通設定およびデフォルト値を設定します。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_setExtAppsDefault"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="在此设置外部应用软件的共同设定及默认值。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_selectExtAppsToSet"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Select a External App to change settings from External Apps list on the left side."/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_selectExtAppsToSet"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="左の外部アプリ一覧より設定を変更する外部アプリを選択してください。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_selectExtAppsToSet"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="请从左侧外部应用软件一览中选择更改设定的外部应用软件。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_deleteExtAppsConfirm"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Is the External App deleted, and is it good?"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_deleteExtAppsConfirm"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリを削除します、よろしいですか？"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_deleteExtAppsConfirm"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="是否删除外部应用软件？"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_deleteExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="External Apps is deleted."/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_deleteExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリを削除しました。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_deleteExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="删除了外部应用软件。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_failedLoadingExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Failed to load External Apps."/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_failedLoadingExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリの読み込みに失敗しました。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_failedLoadingExtApps"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="外部应用软件读取失败。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_extAppsNotFound"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="External Apps is not found."/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_extAppsNotFound"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="外部アプリが見つかりません。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_extAppsNotFound"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="未能发现外部应用软件。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_confirmResetClientSecret"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="A client secret is re-set up.\\nAll the authentication information of the user using this external application is deleted.\\nThis operation cannot be canceled.\\n\\nIs it all right?"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_confirmResetClientSecret"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="クライアントシークレットを再設定します。\\nこの外部アプリを利用しているユーザの認証情報はすべて削除されます。\\nこの操作は取り消すことができません。\\n\\nよろしいですか？"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_confirmResetClientSecret"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="重新设置Client Secret。\\n所有使用这种外部应用程序的用户的认证信息被删除。\\n此操作不能被取消。\\n\\n没事吧？"/>
+        </insert>
+   </changeSet>
+</databaseChangeLog>

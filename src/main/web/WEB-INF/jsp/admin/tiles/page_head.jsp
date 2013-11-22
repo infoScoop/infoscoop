@@ -138,6 +138,7 @@
 		<script src="../../admin/js/AdminInformation.js"></script>
 		<script src="../../admin/js/AdminAuthentication.js"></script>
 		<script src="../../admin/js/AdminUtil.js"></script>	
+		<script src="../../admin/js/AdminExtApps.js"></script>
 		<!--end script-->
 		
 		<script src="../../js/lib/jquery-1.9.1.min.js"></script>

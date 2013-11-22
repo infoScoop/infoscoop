@@ -146,4 +146,12 @@
 			</props>
 		</property>
 	</bean>
+	<bean id="extApps" class="org.infoscoop.admin.command.ServiceCommand">
+		<property name="service"><ref bean="ExtAppsService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+				<prop key="*"></prop>
+			</props>
+		</property>
+	</bean>
 </beans>
