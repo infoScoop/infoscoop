@@ -22,6 +22,7 @@
 	<property name="build.main" value="${build.home}/work/main" />
 	<property name="build.initdb" value="${build.home}/work/initdb" />
 	<property name="build.migration" value="${build.home}/work/migration" />
+	<property name="build.gadgets" value="${build.home}/work/infoscoop-gadgets-${gadgets.version}/infoscoop-gadgets" />
 
     <property name="classes.dir" value="${build.main}/WEB-INF/classes"/>
     <property name="release.home" value="${build.home}/release" />
@@ -141,7 +142,7 @@
         <copy todir="${install_image.home}" file="${basedir}/LICENSE.txt"/>
         <copy todir="${install_image.home}" file="${basedir}/README.txt"/>
         <copy todir="${install_image.home}" file="${basedir}/README.ja.txt"/>
-
+		<antcall target="gadgets"/>
         <antcall target="initdb"/>
         <!--antcall target="migration"/-->
 
@@ -785,6 +786,13 @@
 		</replaceregexp>
 	</target>
 
+	<target name="gadgets">
+		<get src="${gadgets.url}/${gadgets.version}.zip" dest="gadgets.zip" verbose="true" usetimestamp="true" />
+		<unzip src="gadgets.zip" dest="${build.home}/work" overwrite="true"/>
+		<delete file="gadgets.zip"/>
+        <ant antfile="${build.gadgets}/build.xml" target="compress" dir="${build.gadgets}"/>
+    </target>
+	
     <target name="initdb">
     	<ant antfile="${basedir}/build_initdb.xml">
 			<property name="compile.level" value="${compile.level}"/>
@@ -794,6 +802,11 @@
         <copy todir="${install_image.home}/tools/initdb">
             <fileset dir="${build.home}/work/initdb"/>
         </copy>
+    	
+    	<!-- copy gadget_files -->
+    	<copy todir="${install_image.home}/tools/initdb">
+    		<fileset dir="${build.gadgets}/dist"/>
+    	</copy>
     </target>
 	
 	<!--
@@ -805,6 +818,10 @@
     	<mkdir dir="${install_image.home}/tools/migration"/>
     	<copy todir="${install_image.home}/tools/migration">
     		<fileset dir="${build.migration}"/>
+    	</copy>
+
+    	<copy todir="${install_image.home}/tools/migration">
+    		<fileset dir="${build.gadgets}/dist"/>
     	</copy>
     </target>
     -->

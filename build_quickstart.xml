@@ -4,6 +4,7 @@
 	<property name="basedir" value="." />
 	<property name="build.home" value="${basedir}/build" />
     <property name="build.work" value="${build.home}/work" />
+	<property name="build.gadgets" value="${build.work}/infoscoop-gadgets-${gadgets.version}/infoscoop-gadgets" />
 	<property name="dist.home" value="${basedir}/dist" />
 	<property name="src.home" value="${basedir}/src" />
 	<property name="src.qs" value="${src.home}/quickstart" />
@@ -30,7 +31,8 @@
     	<mkdir dir="${qs.home}" />
 		<copy todir="${qs.home}/initdb">
 			<fileset dir="${build.work}/initdb" />
-			<fileset dir="${src.qs}" includes="addaccount.*" />
+    		<fileset dir="${build.gadgets}/dist"/>
+    		<fileset dir="${src.qs}" includes="addaccount.*" />
 		</copy>
 		<copy todir="${qs.home}">
 			<fileset dir="${src.qs}" includes="*.sh" />
