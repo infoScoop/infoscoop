@@ -28,11 +28,11 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 @JsonRootName("userProfilesResponse")
-@XStreamAlias("userProfilesResponse")
+@XStreamAlias("userProfiles")
 public class UserProfilesResponse{
 	
-	@JsonProperty("profiles")
-	@XStreamImplicit(itemFieldName="profile")
+	@JsonProperty("userProfiles")
+	@XStreamImplicit(itemFieldName="userProfile")
 	List<UserProfile> profiles = new ArrayList<UserProfile>();
     
     public void add(UserProfile profile){
