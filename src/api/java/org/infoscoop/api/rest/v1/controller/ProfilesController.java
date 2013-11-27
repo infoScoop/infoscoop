@@ -23,27 +23,23 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.api.rest.v1.response.UserProfile;
 import org.infoscoop.api.rest.v1.response.UserProfilesResponse;
-import org.infoscoop.dao.model.Account;
 import org.infoscoop.service.InformationService;
 import org.infoscoop.service.TabService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
-@RequestMapping("/v1/profiles")
+@RequestMapping("/v1/admin/profiles")
 public class ProfilesController extends BaseController{
 	private static Log log = LogFactory.getLog(ProfilesController.class);
 
 	@Autowired
 	private InformationService informationService;
-    
-	@XStreamAlias("users")
-	List<Account> userList;
 	
 	/**
 	 * 指定ユーザプロファイルを完全に削除します。
@@ -53,20 +49,19 @@ public class ProfilesController extends BaseController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/deleteProfile", method = RequestMethod.GET)
-	public UserProfilesResponse deleteProfile(@RequestParam("target_uid") String targetUid) throws Exception{
-		System.out.println("targetUid=" + targetUid);
-		TabService.getHandle().clearProfile(targetUid);
-		return null;
+	@RequestMapping(value="/user/{uid}", method = RequestMethod.DELETE)
+	@ResponseStatus(value=HttpStatus.NO_CONTENT)
+	public void deleteProfile(@PathVariable("uid") String uid) throws Exception{
+		TabService.getHandle().clearProfile(uid);
 	}
-    
+
 	/**
 	 * 存在するユーザプロファイルのユーザID一覧を返します。
 	 * 
 	 * @return profiles
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uidList", method = RequestMethod.GET)
+	@RequestMapping(value="/user", method = RequestMethod.GET)
 	public UserProfilesResponse getUidList(){
 		UserProfilesResponse profiles = new UserProfilesResponse();
 

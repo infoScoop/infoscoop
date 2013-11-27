@@ -21,12 +21,12 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonRootName;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @JsonRootName("profile")
-@XStreamAlias("profile")
+@XStreamAlias("userProfile")
 public class UserProfile {
-    @XStreamAsAttribute
+
+    @XStreamAlias("uid")
     String uid;
 
     public UserProfile(String uid) {
