@@ -1,21 +1,20 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
+
 package org.infoscoop.api.rest.v1.controller;
 
 import java.io.File;
@@ -50,7 +49,6 @@ import org.infoscoop.dao.model.TabAdmin;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.dao.model.base.BaseStaticTab;
 import org.infoscoop.service.StaticTabService;
-import org.infoscoop.service.TabLayoutService;
 import org.infoscoop.util.spring.TextView;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -74,7 +72,7 @@ import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 
 @Controller
-@RequestMapping("/v1/admin/tabs")
+@RequestMapping("/v1/admin/tablayouts")
 public class TabLayoutsController extends BaseController {
 	private static Log log = LogFactory.getLog(TabLayoutsController.class);
 	private static List<String> singletonTabIdList
@@ -121,7 +119,7 @@ public class TabLayoutsController extends BaseController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteTabLayout(@PathVariable("tabId") String tabId) throws Exception {
 		if(singletonTabIdList.contains(tabId) || StaticTab.TABID_HOME.equals(tabId))
-			throw new RuntimeException("tabId=" + tabId + " cannot be deleted.");
+			throw new ISAPIException("tabId=" + tabId + " cannot be deleted.");
 
 		// check exists
 		getStaticTab(tabId);
@@ -146,7 +144,7 @@ public class TabLayoutsController extends BaseController {
 			StaticTab staticTab = staticTabList.get(0);
 			
 			if(singletonTabIdList.contains(staticTab.getTabid()))
-				throw new RuntimeException("tabId=" + staticTab.getTabid() + " cannot be deleted.");
+				throw new ISAPIException("tabId=" + staticTab.getTabid() + " cannot be deleted.");
 			
 			String tabId = service.getNewTabId();
 			staticTab.setTabid(tabId);
@@ -162,7 +160,6 @@ public class TabLayoutsController extends BaseController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public TextView getTabLayouts() throws Exception {
-		System.out.println("getTabLayouts");
 		List<StaticTab> staticTabList = StaticTabService.getHandle().getStaticTabList();
 		TextView view = createTabLayoutResponseView(staticTabList);
 		
