@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.codehaus.jackson.map.annotate.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import org.infoscoop.dao.model.TabLayout;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;

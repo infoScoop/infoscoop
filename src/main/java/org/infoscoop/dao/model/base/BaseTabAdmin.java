@@ -2,7 +2,7 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
-import org.codehaus.jackson.map.annotate.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import org.infoscoop.dao.model.TabAdminPK;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;

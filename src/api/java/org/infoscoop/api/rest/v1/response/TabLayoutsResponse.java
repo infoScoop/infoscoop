@@ -19,8 +19,8 @@ package org.infoscoop.api.rest.v1.response;
 
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import org.infoscoop.dao.model.StaticTab;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;

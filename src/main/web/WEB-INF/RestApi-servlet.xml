@@ -8,37 +8,48 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
-	 
-	<mvc:annotation-driven/>
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+	
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes" value="application/json" />
+			</bean>
+			<bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+				<property name="marshaller" ref="xstreamMarshaller"/>
+		        <property name="unmarshaller" ref="xstreamMarshaller"/>
+				<property name="supportedMediaTypes" value="application/xml" />
+        	</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+    <bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+	    <property name="autodetectAnnotations" value="true" />
+    </bean>
 	
 	<context:component-scan base-package="org.infoscoop.api.rest.*.controller" />
 	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
-	
+
+	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="favorPathExtension" value="true" />
+        <property name="favorParameter" value="false" />
+        <property name="ignoreAcceptHeader" value="false" />
+		<property name="defaultContentType" value="application/json" />
+		<property name="mediaTypes">
+			<value>
+				json=application/json
+				xml=application/xml
+			</value>
+		</property>
+	</bean>
 
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="contentNegotiationManager" ref="contentNegotiationManager"/>
 		<property name="order" value="1" />
-		<property name="mediaTypes">
-			<map>
-				<entry key="json" value="application/json" />
-				<entry key="xml" value="application/xml" />
-			</map>
-		</property>
-
-		<property name="defaultViews">
-			<list>
-				<!-- JSON View -->
-				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
-
-				<!-- XML View -->
-				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
-					<constructor-arg>
-						<bean class="org.springframework.oxm.xstream.XStreamMarshaller">
-						<property name="autodetectAnnotations" value="true"/>
-						</bean>
-					</constructor-arg>
-				</bean>
-			</list>
+		<property name="viewResolvers">
+		    <list>
+		        <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+		    </list>
 		</property>
 	</bean>
 </beans>
