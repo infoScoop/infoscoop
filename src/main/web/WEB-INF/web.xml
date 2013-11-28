@@ -196,6 +196,11 @@
 
 	<!--CustomizeSetRoleHeaderFilterMapping-->
 
+	<filter>
+		<filter-name>ApiLogFilter</filter-name>
+		<filter-class>org.infoscoop.api.filter.ApiLogFilter</filter-class>
+	</filter>
+
 	<filter-mapping>
 		<filter-name>SetCharacterEncodingFilter</filter-name>
 		<url-pattern>/proxy</url-pattern>
@@ -397,6 +402,11 @@
 		<url-pattern>/rpc/*</url-pattern>
 	</filter-mapping>
 -->
+	<filter-mapping>
+		<filter-name>ApiLogFilter</filter-name>
+		<url-pattern>/isapi/*</url-pattern>
+	</filter-mapping>
+
 	<listener>
 		<listener-class>org.apache.shindig.common.servlet.GuiceServletContextListener</listener-class>
 	</listener>
