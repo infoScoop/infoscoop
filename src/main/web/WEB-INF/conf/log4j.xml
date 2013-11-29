@@ -47,6 +47,22 @@
        	<layout class="org.apache.log4j.PatternLayout">
        		<param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
        	</layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMax"  value="WARN" />
+            <param name="AcceptOnMatch"  value="true" />
+        </filter>
+        <filter class="org.apache.log4j.varia.DenyAllFilter" />
+    </appender>
+
+    <!-- direct messages to file infoscoop_api_error -->
+    <appender name="api_error" class="biz.minaret.log4j.DatedFileAppender">
+       	<param name="directory" value="/var/log/infoscoop"/>
+       	<param name="prefix" value="infoscoop_api_error_"/>
+       	<param name="suffix" value=".log"/>
+       	<param name="Threshold" value="ERROR" />
+       	<layout class="org.apache.log4j.PatternLayout">
+       		<param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
+       	</layout>
     </appender>
 
     <!-- direct messages to file infoscoop_migrate_log -->
@@ -69,9 +85,10 @@
 
     <!-- set log levels - for more verbose logging change 'info' to 'debug' -->
     <!-- set log levels - for api log -->    
-   	<logger name="org.infoscoop.api">
+   	<logger name="org.infoscoop.api" additivity="false">
        	<level value="info" />
        	<appender-ref ref="api" />
+       	<appender-ref ref="api_error" />
    	</logger>
  
     <!-- set log levels - for more verbose logging change 'info' to 'debug' -->

@@ -28,14 +28,16 @@ public class ApiLogFilter implements Filter{
 		String path = ((HttpServletRequest)req).getPathInfo().toString();
 		String method = ((HttpServletRequest)req).getMethod().toString();
 		String remote = ((HttpServletRequest)req).getRemoteAddr().toString();
-		
-		if(log.isDebugEnabled())
-			log.debug(path+" " + method+" - " + remote);
-		
-		long start = System.currentTimeMillis();
-		chain.doFilter(req, res);
-		long stop = System.currentTimeMillis();
 
-		log.info(path+" ("+(stop-start)+"ms) " + method+" - " + remote);
+		try{
+			log.info(path+" " + method+" - " + remote);
+			long start = System.currentTimeMillis();
+			chain.doFilter(req, res);
+			long stop = System.currentTimeMillis();		
+			log.info(path+" ("+(stop-start)+"ms) " + method+" - " + remote);
+		}catch(Exception e){
+			log.warn(e.getMessage() + " - " + remote);
+			throw e;
+		}
 	}
 }
