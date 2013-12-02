@@ -17,24 +17,38 @@
 
 package org.infoscoop.api.rest.v1.response;
 
+import org.infoscoop.api.rest.v1.response.model.Menu;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-@JsonRootName("profile")
-@XStreamAlias("userProfile")
-public class UserProfile {
+@JsonRootName("menuResponse")
+@JsonInclude(Include.NON_DEFAULT)
+@XStreamAlias("menus")
+public class MenusResponse {
 
-    @XStreamAlias("uid")
-    String uid;
+	@JsonProperty("topmenu")
+	Menu topmenu;
+	
+	@JsonProperty("sidemenu")
+	Menu sidemenu;
 
-    public UserProfile(String uid) {
-        this.uid = uid;
-    }
-    
-	@JsonProperty("uid")
-    public String getUid() {
-		return uid;
+	public Menu getTopmenu() {
+		return topmenu;
+	}
+
+	public void setTopmenu(Menu topmenu) {
+		this.topmenu = topmenu;
+	}
+
+	public Menu getSidemenu() {
+		return sidemenu;
+	}
+
+	public void setSidemenu(Menu sidemenu) {
+		this.sidemenu = sidemenu;
 	}
 }

@@ -15,27 +15,26 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
-package org.infoscoop.api.rest.v1.response;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.infoscoop.api.rest.v1.response.model.UserProfile;
+package org.infoscoop.api.rest.v1.response.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-@JsonRootName("userProfilesResponse")
-@XStreamAlias("userProfiles")
-public class UserProfilesResponse{
-	
-	@JsonProperty("userProfiles")
-	@XStreamImplicit(itemFieldName="userProfile")
-	List<UserProfile> profiles = new ArrayList<UserProfile>();
-    
-    public void add(UserProfile profile){
-    	profiles.add(profile);
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@JsonRootName("profile")
+@XStreamAlias("userProfile")
+public class UserProfile {
+
+    @XStreamAlias("uid")
+    String uid;
+
+    public UserProfile(String uid) {
+        this.uid = uid;
     }
+    
+	@JsonProperty("uid")
+    public String getUid() {
+		return uid;
+	}
 }

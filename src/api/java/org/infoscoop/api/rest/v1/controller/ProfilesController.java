@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.api.rest.v1.response.UserProfile;
 import org.infoscoop.api.rest.v1.response.UserProfilesResponse;
+import org.infoscoop.api.rest.v1.response.model.UserProfile;
 import org.infoscoop.service.InformationService;
 import org.infoscoop.service.TabService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +43,9 @@ public class ProfilesController extends BaseController{
 	private InformationService informationService;
 	
 	/**
-	 * 指定ユーザプロファイルを完全に削除します。
+	 * delete user profile
 	 * 
-	 * @param target_uid 削除対象ユーザID
-	 * @param apiKey APIキー
+	 * @param target_uid
 	 * @return
 	 * @throws Exception
 	 */
@@ -57,7 +56,7 @@ public class ProfilesController extends BaseController{
 	}
 
 	/**
-	 * 存在するユーザプロファイルのユーザID一覧を返します。
+	 * returning exist user profile
 	 * 
 	 * @return profiles
 	 * @throws Exception
