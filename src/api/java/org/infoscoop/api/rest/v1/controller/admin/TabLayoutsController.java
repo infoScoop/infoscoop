@@ -15,7 +15,7 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
-package org.infoscoop.api.rest.v1.controller;
+package org.infoscoop.api.rest.v1.controller.admin;
 
 import java.io.File;
 import java.io.StringReader;
@@ -42,6 +42,7 @@ import javax.xml.validation.Validator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.api.ISAPIException;
+import org.infoscoop.api.rest.v1.controller.BaseController;
 import org.infoscoop.api.rest.v1.response.TabLayoutsResponse;
 import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TABLAYOUTPK;

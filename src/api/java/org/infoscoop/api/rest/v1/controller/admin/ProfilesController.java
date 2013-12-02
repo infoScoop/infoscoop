@@ -15,12 +15,13 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
-package org.infoscoop.api.rest.v1.controller;
+package org.infoscoop.api.rest.v1.controller.admin;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.api.rest.v1.controller.BaseController;
 import org.infoscoop.api.rest.v1.response.UserProfilesResponse;
 import org.infoscoop.api.rest.v1.response.model.UserProfile;
 import org.infoscoop.service.InformationService;
