@@ -14,11 +14,13 @@
   <property column="scope" generated="never" lazy="false" length="255"
    name="scope" type="string"/>
   <property column="grant_types" generated="never" lazy="false"
-   length="255" name="grantTypes" type="string"/>
+   length="255" name="grantTypes" not-null="true" type="string"/>
   <property column="redirect_url" generated="never" lazy="false"
    length="255" name="redirectUrl" type="string"/>
   <property column="authorities" generated="never" lazy="false"
    length="255" name="authorities" type="string"/>
+  <property column="delete_flg" generated="never" lazy="false"
+   name="deleteFlg" type="boolean"/>
   <property column="access_token_validity" generated="never"
    lazy="false" name="accessTokenValidity" type="integer"/>
   <property column="refresh_token_validity" generated="never"

@@ -36,7 +36,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 public class ISAuthenticationProvider implements AuthenticationProvider {
 	private static Log log = LogFactory.getLog(ISAuthenticationProvider.class);
 
+	private static final String ROLE_ADMIN = "ROLE_ADMIN";
 	private static final String ROLE_USER = "ROLE_USER";
+	private static final String ROLE_CLIENT = "ROLE_CLIENT";
 	
 	@Override
 	public Authentication authenticate(Authentication auth) throws AuthenticationException {
@@ -49,26 +51,31 @@ public class ISAuthenticationProvider implements AuthenticationProvider {
         	service.login(userid, password);
         	
         	// authority
-        	PortalAdminsService portalService = PortalAdminsService.getHandle();
+            List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
+            PortalAdminsService portalService = PortalAdminsService.getHandle();
         	portalService.getPortalAdmins();
         	Portaladmins admin = portalService.getPortalAdmin(userid);
-        	String permission = ROLE_USER;
-        	if(admin != null)
-        		permission = admin.getAdminrole().getPermission();
-        	System.out.println(permission);
+        	if(admin != null){
+        		grantedAuths.add(new SimpleGrantedAuthority(ROLE_ADMIN));
+        	}else{
+        		grantedAuths.add(new SimpleGrantedAuthority(ROLE_USER));
+        	}
         	
-            List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
-            grantedAuths.add(new SimpleGrantedAuthority(ROLE_USER));
+        	if(log.isDebugEnabled())
+        		log.debug("complete login "+userid+" - authotiry:" + grantedAuths.toString());
+        	
             return new UsernamePasswordAuthenticationToken(userid, password, grantedAuths);
         } catch(AuthenticationException e) {
         	// login error
+        	log.error(e);
         	e.printStackTrace();
         	return null;
         } catch(org.infoscoop.account.AuthenticationException e) {
-        	// login error
+        	log.error(e);
         	e.printStackTrace();
         	return null;
         } catch (Exception ex) {
+        	log.error(ex);
         	ex.printStackTrace();
             return null;
 		}

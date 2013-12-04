@@ -37,7 +37,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.base.BaseTablayout;
@@ -52,6 +51,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 
 
@@ -97,15 +98,19 @@ public class TabLayout extends BaseTablayout {
 			widgets,
 			layout,
 			workinguid);
-		
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	@XStreamOmitField
 	private String staticPanel;
+	@XStreamOmitField
 	private String dynamicPanel;
+	@XStreamOmitField
 	private JSONObject staticPanelJson;
+	@XStreamOmitField
 	private JSONObject dynamicPanelJson;
 	private String tabName;
+	@XStreamOmitField
 	private String columnsWidth;
 	private String numCol;
 	private boolean disabledDynamicPanel;

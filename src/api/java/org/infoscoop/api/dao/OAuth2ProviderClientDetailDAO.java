@@ -7,15 +7,19 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.infoscoop.api.dao.model.OAuth2ProviderClientDetail;
 import org.infoscoop.util.SpringUtil;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class OAuth2ProviderClientDetailDAO extends HibernateDaoSupport {
 	private static Log log = LogFactory.getLog(OAuth2ProviderClientDetailDAO.class);
+	
+	private static final String DEFAULT_AUTHORITY = "ROLE_CLIENT";
+	private static final boolean DEFAULT_DELETE_FLG = true;
+	private static final int DEFAULT_ACCESSTOKEN_VALIDITY = 60 * 60 * 12; // default 12 hours.
+	private static final int DEFAULT_REFRESHTOKEN_VALIDITY =  60 * 60 * 24 * 30; // default 30 days.
 	
 	public static OAuth2ProviderClientDetailDAO newInstance() {
 		return (OAuth2ProviderClientDetailDAO) SpringUtil.getContext().getBean("oauth2ProviderClientDetailDAO");
@@ -24,7 +28,7 @@ public class OAuth2ProviderClientDetailDAO extends HibernateDaoSupport {
 	@SuppressWarnings("unchecked")
 	public Collection<OAuth2ProviderClientDetail> getClientDetails(){
 		List<OAuth2ProviderClientDetail> results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuth2ProviderClientDetail.class,"ocd"));
+				DetachedCriteria.forClass(OAuth2ProviderClientDetail.class,"ocd").addOrder(Order.asc("ocd.title")));
 		
 		return results; 
 	}
@@ -46,8 +50,13 @@ public class OAuth2ProviderClientDetailDAO extends HibernateDaoSupport {
 		
 		return null; 
 	}
+	
+	public void saveClientDetail(OAuth2ProviderClientDetail clientDetail) {
+		if(clientDetail != null)
+			super.getHibernateTemplate().saveOrUpdate(clientDetail);
+	}
 
-	public void saveClientDetail(String clientId, String title, String secret, String scope, String grantType, String redirectUrl, String authorities, int accessTokenValidity, int refreshTokenValidity, String additionalInformation) {
+	public void saveClientDetail(String clientId, String title, String resourceIds, String secret, String scope, String grantType, String redirectUrl, String authorities, Boolean deleteFlg, Integer accessTokenValidity, Integer refreshTokenValidity, String additionalInformation) {
 		OAuth2ProviderClientDetail clientDetail = getClientDetailById(clientId);
 		
 		if(clientDetail == null){
@@ -57,11 +66,29 @@ public class OAuth2ProviderClientDetailDAO extends HibernateDaoSupport {
 		clientDetail.setTitle(title);
 		clientDetail.setSecret(secret);
 		clientDetail.setScope(scope);
+		clientDetail.setResourceIds(resourceIds);
 		clientDetail.setGrantTypes(grantType);
 		clientDetail.setRedirectUrl(redirectUrl);
-		clientDetail.setAuthorities(authorities);
-		clientDetail.setAccessTokenValidity(accessTokenValidity);
-		clientDetail.setRefreshTokenValidity(refreshTokenValidity);
+		if(authorities!=null && authorities.length()>0){
+			clientDetail.setAuthorities(authorities);
+		}else{
+			clientDetail.setAuthorities(DEFAULT_AUTHORITY);
+		}
+		if(deleteFlg!=null){
+			clientDetail.setDeleteFlg(deleteFlg);
+		}else{
+			clientDetail.setDeleteFlg(DEFAULT_DELETE_FLG);
+		}
+		if(accessTokenValidity!=null){
+			clientDetail.setAccessTokenValidity(accessTokenValidity.intValue());
+		}else{
+			clientDetail.setAccessTokenValidity(DEFAULT_ACCESSTOKEN_VALIDITY);
+		}
+		if(refreshTokenValidity!=null){
+			clientDetail.setRefreshTokenValidity(refreshTokenValidity.intValue());
+		}else{
+			clientDetail.setRefreshTokenValidity(DEFAULT_REFRESHTOKEN_VALIDITY);			
+		}
 		clientDetail.setAdditionalInformation(additionalInformation);
 		
 		super.getHibernateTemplate().saveOrUpdate(clientDetail);

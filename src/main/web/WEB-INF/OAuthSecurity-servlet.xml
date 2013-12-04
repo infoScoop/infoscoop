@@ -24,15 +24,16 @@
 	<http pattern="/isapi/**" create-session="never" entry-point-ref="oauthAuthenticationEntryPoint"
 		access-decision-manager-ref="accessDecisionManager" xmlns="http://www.springframework.org/schema/security">
 		<anonymous enabled="false" />
-		<intercept-url pattern="/isapi" access="ROLE_USER,SCOPE_READ" />
-		<intercept-url pattern="/isapi/**" access="ROLE_USER,SCOPE_READ" />
+		<intercept-url pattern="/isapi/v1/admin/profiles/**" access="ROLE_ADMIN,SCOPE_USERPROFILE" />
+		<intercept-url pattern="/isapi/v1/admin/tablayouts/**" access="ROLE_ADMIN,SCOPE_TABLAYOUT" />
+		<intercept-url pattern="/isapi/v1/user/menus/**" access="ROLE_USER,SCOPE_MENU" />
 		<custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
 		<access-denied-handler ref="oauthAccessDeniedHandler" />
 	</http>
 
 	<!-- login view -->
 	<http access-denied-page="/oauth_login.jsp?authorization_error=true" disable-url-rewriting="true" xmlns="http://www.springframework.org/schema/security">
-		<intercept-url pattern="/oauth/**" access="ROLE_USER" />
+		<intercept-url pattern="/oauth/**" access="IS_AUTHENTICATED_FULLY" />
 		<form-login authentication-failure-url="/oauth_login.jsp?authentication_error=true" default-target-url="/index.jsp"
 			login-page="/oauth_login.jsp" login-processing-url="/login.do" />
 		<anonymous />
@@ -40,24 +41,40 @@
 
 	<bean id="oauthAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
 		<property name="realmName" value="infoscoop" />
+		<property name="exceptionRenderer" ref="oauthExceptionRender" />
 	</bean>
 
 	<bean id="clientAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
 		<property name="realmName" value="infoscoop/client" />
 		<property name="typeName" value="Basic" />
+		<property name="exceptionRenderer" ref="oauthExceptionRender" />
 	</bean>
 
 	<bean id="oauthAccessDeniedHandler" class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler" />
+	<bean id="oauthExceptionRender" class="org.infoscoop.api.oauth2.provider.ISOAuth2ExceptionRenderer"/>
 
 	<bean id="clientCredentialsTokenEndpointFilter" class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
 		<property name="authenticationManager" ref="clientAuthenticationManager" />
 	</bean>
 
+	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
+    	<constructor-arg ref="roleHierarchy" />
+	</bean>
+	<bean id="roleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+    	<property name="hierarchy">
+    	    <value>
+    	    	ROLE_CLIENT > ROLE_ADMIN
+    	        ROLE_ADMIN > ROLE_USER
+    	    </value>
+    	</property>
+	</bean>
+
+	
 	<bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased" xmlns="http://www.springframework.org/schema/beans">
 		<constructor-arg>
 			<list>
 				<bean class="org.springframework.security.oauth2.provider.vote.ScopeVoter" />
-				<bean class="org.springframework.security.access.vote.RoleVoter" />
+				<ref bean="roleVoter"/>
 				<bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
 			</list>
 		</constructor-arg>
@@ -107,7 +124,7 @@
 	<bean id="clientDetails" class="org.infoscoop.api.oauth2.provider.ISClientDetailsService"/>
 <!-- 
 	<oauth:client-details-service id="clientDetails">
-		<oauth:client client-id="tonr" resource-ids="infoscoop" authorized-grant-types="password,authorization_code,refresh_token,implicit" authorities="ROLE_CLIENT" scope="read,write" secret="secret" />
+		<oauth:client client-id="tonr" resource-ids="infoscoop" authorized-grant-types="password,authorization_code,refresh_token,implicit,client_credentials" authorities="ROLE_CLIENT" scope="read,write" secret="secret" />
 	</oauth:client-details-service>
  -->
 

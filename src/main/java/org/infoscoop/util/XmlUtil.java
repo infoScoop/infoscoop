@@ -220,6 +220,25 @@ public class XmlUtil {
 		}
 		return stringWriter.getBuffer().toString();
 	}
+
+	public static String dom2HtmlString(Node node, String encoding) {
+		Source source = new DOMSource(node);
+		StringWriter stringWriter = new StringWriter();
+		Result result = new StreamResult(stringWriter);
+		try{
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Transformer transformer = factory.newTransformer();
+			
+			transformer.setOutputProperty(OutputKeys.INDENT, "no");
+			transformer.setOutputProperty(OutputKeys.METHOD, "html");
+			transformer.setOutputProperty(OutputKeys.ENCODING, encoding);
+			
+			transformer.transform(source, result);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		return stringWriter.getBuffer().toString();
+	}
 	
 	public static Node string2Dom(String xml) throws SAXException{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

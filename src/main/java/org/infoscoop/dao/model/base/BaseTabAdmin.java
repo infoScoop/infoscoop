@@ -2,7 +2,11 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
 import org.infoscoop.dao.model.TabAdminPK;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * This is an object that contains data related to the IS_TAB_ADMINS table. Do
@@ -12,6 +16,8 @@ import org.infoscoop.dao.model.TabAdminPK;
  * @hibernate.class table="IS_TAB_ADMINS"
  */
 
+@JsonRootName("tabAdmin")
+@XStreamAlias("tabAdmin")
 public abstract class BaseTabAdmin implements Serializable {
 
 	public static String PROP_ID = "Tabid";
@@ -34,9 +40,11 @@ public abstract class BaseTabAdmin implements Serializable {
 	protected void initialize() {
 	}
 
+	@XStreamOmitField
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
+	@XStreamOmitField
 	private BaseTabAdminPK id;
 
 	/**

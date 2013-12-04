@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="tabLayoutsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="tab"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tab">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="tabDesc"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="admin"/>
+        <xs:element maxOccurs="unbounded" ref="role"/>
+      </xs:sequence>
+      <xs:attribute name="disableDefault" use="required" type="xs:integer"/>
+      <xs:attribute name="tabId" use="required" type="xs:string"/>
+      <xs:attribute name="tabNumber" use="optional" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tabDesc" type="xs:string"/>
+  <xs:element name="admin">
+    <xs:complexType>
+      <xs:attribute name="uid" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="role">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="roleRegx"/>
+        <xs:element ref="rolename"/>
+        <xs:element ref="principaltype"/>
+        <xs:element ref="widgets"/>
+        <xs:element ref="layout"/>
+        <xs:element ref="tabName"/>
+        <xs:element ref="numCol"/>
+        <xs:element ref="disabledDynamicPanel"/>
+        <xs:element ref="adjustToWindowHeight"/>
+      </xs:sequence>
+      <xs:attribute name="roleOrder" use="required" type="xs:integer"/>
+      <xs:attribute name="temp" use="required" type="xs:integer"/>
+      <xs:attribute name="defaultuid" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="roleRegx" type="xs:string"/>
+  <xs:element name="rolename" type="xs:string"/>
+  <xs:element name="principaltype" type="xs:string"/>
+  <xs:element name="widgets" type="xs:string"/>
+  <xs:element name="layout" type="xs:string"/>
+  <xs:element name="tabName" type="xs:string"/>
+  <xs:element name="numCol" type="xs:string"/>
+  <xs:element name="disabledDynamicPanel" type="xs:boolean"/>
+  <xs:element name="adjustToWindowHeight" type="xs:boolean"/>
+</xs:schema>

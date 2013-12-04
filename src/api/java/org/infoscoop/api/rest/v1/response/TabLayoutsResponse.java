@@ -17,25 +17,24 @@
 
 package org.infoscoop.api.rest.v1.response;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.infoscoop.api.rest.v1.response.model.UserProfile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import org.infoscoop.dao.model.StaticTab;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-@JsonRootName("userProfilesResponse")
-@XStreamAlias("userProfiles")
-public class UserProfilesResponse{
+@JsonRootName("tabLayoutsResponse")
+@XStreamAlias("tabLayoutsResponse")
+public class TabLayoutsResponse{
 	
-	@JsonProperty("userProfiles")
-	@XStreamImplicit(itemFieldName="userProfile")
-	List<UserProfile> profiles = new ArrayList<UserProfile>();
+	@JsonProperty("tabs")
+	@XStreamImplicit(itemFieldName="tab")
+	List<StaticTab> staticTabList;
     
-    public void add(UserProfile profile){
-    	profiles.add(profile);
-    }
+	public TabLayoutsResponse(List<StaticTab> staticTabList) {
+		this.staticTabList = staticTabList;
+	}
 }

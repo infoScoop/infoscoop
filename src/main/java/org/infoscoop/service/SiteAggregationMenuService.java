@@ -736,7 +736,12 @@ public class SiteAggregationMenuService {
 	 * @see jp.co.beacon_it.msd.admin.web.IMenuAdminService#getMenuTree()
 	 */
 	private String getMenuTree(Siteaggregationmenu entity, List<String> targetMenuIdList) throws Exception {
+		Map m = getMenuTreeJson(entity, targetMenuIdList);
 
+		return "ISA_SiteAggregationMenu.setMenu(" + m.get("items").toString() + "," +  m.get("siteTopArray").toString() + "," + m.get("mapJson").toString() + ");";
+	}
+	
+	public Map getMenuTreeJson(Siteaggregationmenu entity, List<String> targetMenuIdList) throws Exception{
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String myUid = p.getName();
 		
@@ -769,7 +774,11 @@ public class SiteAggregationMenuService {
 			}
 		}
 		
-		return "ISA_SiteAggregationMenu.setMenu(" + json.toString() + "," +  siteTopArray.toString() + "," + mapJson.toString() + ");";
+		Map result = new HashMap();
+		result.put("items", json);
+		result.put("siteTopArray", siteTopArray);
+		result.put("mapJson", mapJson);
+		return result;
 	}
 	
 	/**

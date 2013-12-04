@@ -96,6 +96,11 @@
 			<a href="../authentication/index" class="tab <c:if test="${type == 'authentication'}">active</c:if>" id="tab_authentication"><span>OAuth</span></a>
 		</li>
 		<%}%>
+		<%if( adminService.isPermitted("widget")){%>
+		<li>
+			<a href="../extapps/index" class="tab <c:if test="${type == 'extapps'}">active</c:if>" id="tab_extapps"><span>%{alb_extapps}</span></a>
+		</li>
+		<%}%>
 		<li>
 			<div id="admin-message-icon">
 				<img id="messageIcon" title="%{alb_messageConsole}" src="../../skin/imgs/information3.gif" style="cursor:pointer;">

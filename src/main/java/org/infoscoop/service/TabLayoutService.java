@@ -94,16 +94,8 @@ public class TabLayoutService {
 		if(staticTab == null){
 			staticTab = new StaticTab(tabId);
 			
-			// TODO: tabNumber, tabId
-			Map maxMap = staticTabDAO.selectMax();
-			String tabNumber = maxMap.get("tabNumber").toString();
-			if (tabNumber != null && tabNumber.length() != 0) {
-				int newInt = Integer.valueOf(tabNumber).intValue();
-				tabNumber = String.valueOf(newInt + 1).toString();
-			} else {
-				throw new Exception("\"select max tabNumber\" not found");
-			}
-			staticTab.setTabnumber(new Integer(tabNumber));
+			Integer tabNumber = StaticTabService.getHandle().getNextTabNumber();
+			staticTab.setTabnumber(tabNumber);
 			staticTab.setDeleteflag(StaticTab.DELETEFLAG_FALSE);
 		}
 		
@@ -194,7 +186,7 @@ public class TabLayoutService {
 				oldDynamicPanelMap.put(tab.getId().getRoleorder(), json);
 			}
 			// Delete
-			tabLayoutDAO.deleteByTabId(tabId);
+			tabLayoutDAO.deleteTempByTabId(tabId);
 
 			Map newDynamicPanelMap = new HashMap();
 			// Insert
@@ -631,24 +623,6 @@ public class TabLayoutService {
 		return map.values();
 	}
 
-	public String getNewTabId() throws Exception{
-		String tabId = tabLayoutDAO.selectMaxTabId();
-		
-		if (tabId != null && tabId.length() != 0) {
-			int newInt = Integer.valueOf(tabId).intValue();
-			if (0 == newInt) {
-				tabId = "10001";
-			} else if (0 < newInt) {
-				tabId = String.valueOf(newInt + 1).toString();
-			} else {
-				throw new Exception("Bad max tabId");
-			}
-		} else {
-			throw new Exception("\"select max tabId\" not found");
-		}
-		return tabId;
-	}
-	
 	public boolean checkTimeout(String tabId) throws Exception{
 		// Obtain the latest last modified date.
 		Date latestLastModifiedTime = tabLayoutDAO.findLatestLastModifiedTime(tabId);

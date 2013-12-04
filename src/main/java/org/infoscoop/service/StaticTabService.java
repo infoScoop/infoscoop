@@ -17,31 +17,56 @@
 
 package org.infoscoop.service;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.xml.transform.TransformerException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tools.ant.Project;
+import org.apache.xerces.parsers.DOMParser;
+import org.apache.xpath.XPathAPI;
+import org.cyberneko.html.HTMLConfiguration;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.dao.StaticTabDAO;
 import org.infoscoop.dao.TabAdminDAO;
+import org.infoscoop.dao.TabLayoutDAO;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Portaladmins;
 import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TabAdmin;
+import org.infoscoop.dao.model.TabAdminPK;
+import org.infoscoop.dao.model.TabLayout;
+import org.infoscoop.util.HtmlUtil;
 import org.infoscoop.util.SpringUtil;
+import org.infoscoop.util.XmlUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.traversal.NodeIterator;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class StaticTabService {
+	private static Object lock = new Object();
 
 	private StaticTabDAO staticTabDAO;
 	private TabAdminDAO tabAdminDAO;
-
+	private static List<String> undeletableTabIdList
+		= Arrays.asList(StaticTab.COMMANDBAR_TAB_ID, StaticTab.PORTALHEADER_TAB_ID, StaticTab.TABID_HOME);
+	
 	private static Log log = LogFactory.getLog(StaticTabService.class);
 
 	public StaticTabService() {
@@ -111,6 +136,25 @@ public class StaticTabService {
 		return jsonArray.toString();
 	}
 
+	public StaticTab getStaticTab(String tabId){
+		return staticTabDAO.getTab(tabId);
+	}
+	
+	public List<StaticTab> getStaticTabList() {
+		List<StaticTab> result = staticTabDAO.getAllStaicLayoutList();
+		
+		List<String> staticIdList = new ArrayList<String>();
+		List<StaticTab> staticTabList = new ArrayList<StaticTab>();
+		for(StaticTab staticTab : result){
+			if(!staticIdList.contains(staticTab.getTabid()))
+				staticTabList.add(staticTab);
+			
+			staticIdList.add(staticTab.getTabid());
+		}
+		return staticTabList;
+	}
+	
+
 	public int getDisplayTabOrder(String tabId) throws Exception {
 		List<String> tabIdList = staticTabDAO.getTabIdList();
 		return tabIdList.indexOf(tabId);
@@ -121,6 +165,9 @@ public class StaticTabService {
 		try {
 			for (Iterator<String> ite = tabIdList.iterator(); ite.hasNext();) {
 				tabId = ite.next();
+				if(undeletableTabIdList.contains(tabId))
+					throw new RuntimeException("tabId=" + tabId + " cannot be deleted.");
+				
 				staticTabDAO.updateDeleteFlag(tabId, StaticTab.DELETEFLAG_TRUE);
 			}
 		} catch (Exception e) {
@@ -208,4 +255,190 @@ public class StaticTabService {
 		}
 		return false;
 	}
+	
+	public void replaceStaticTab(String currentStaticTabId, StaticTab newStaticTab) throws SAXException, IOException, TransformerException{
+		StaticTab currentStaticTab = getStaticTab(currentStaticTabId);
+		if(currentStaticTab != null){
+			replaceStaticTab(currentStaticTab, newStaticTab);
+		}else{
+			saveStaticTab(currentStaticTabId, newStaticTab);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param currentStaticTab
+	 * @param newStaticTab
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	public void replaceStaticTab(StaticTab currentStaticTab, StaticTab newStaticTab) throws SAXException, IOException, TransformerException{
+		String targetTabId = currentStaticTab.getTabid();
+		
+		// set target tabid to statictab
+		newStaticTab.setTabid(targetTabId);
+		newStaticTab.setTabnumber(currentStaticTab.getTabnumber());
+
+		if(targetTabId.equals(StaticTab.TABID_HOME)){
+			// disableDefault is disabled on HOME tab.
+			newStaticTab.setDisabledefault(StaticTab.DISABLE_DEFAULT_FALSE);
+		}
+		
+		TabLayoutDAO tabLayoutDAO = TabLayoutDAO.newInstance();
+		TabAdminDAO tadAdminDAO = TabAdminDAO.newInstance();
+		
+		// clean tablayouts data
+		tabLayoutDAO.delete(currentStaticTab.getTabLayout());
+		tabLayoutDAO.deleteTempByTabId(targetTabId);
+		
+		// clean tabadmin data
+		tadAdminDAO.delete(currentStaticTab.getTabAdmin());
+		
+		staticTabDAO.deleteTab(currentStaticTab);
+		saveStaticTab(targetTabId, newStaticTab);
+	}
+	
+	/**
+	 * Preservation of a staticTab and renewal of gadget ID (in xml, layoutHtml) are performed.</br> 
+	 * @param tabId
+	 * @param newStaticTab
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	@SuppressWarnings("unchecked")
+	public void saveStaticTab(String tabId, StaticTab newStaticTab) throws SAXException, IOException, TransformerException{
+		TabLayoutDAO tabLayoutDAO = TabLayoutDAO.newInstance();
+		TabAdminDAO tadAdminDAO = TabAdminDAO.newInstance();
+		
+		Set<TabLayout> tabLayouts = newStaticTab.getTabLayout();
+		for(Iterator<TabLayout> ite = tabLayouts.iterator();ite.hasNext();){
+			// set target tabid to tablayout
+			TabLayout tabLayout = ite.next();
+			tabLayout.getId().setTabid(tabId);
+			
+			// update gadgetid. commandbar gadgetid is not overlap, it is not changed. 
+			if(!tabId.equals(StaticTab.COMMANDBAR_TAB_ID))
+				updateGadgetId(tabLayout);
+
+			tabLayoutDAO.insert(tabLayout);
+		}
+		
+		staticTabDAO.saveTab(newStaticTab);
+
+		Set<TabAdmin> tabAdmins = newStaticTab.getTabAdmin();
+		for(Iterator<TabAdmin> ite = tabAdmins.iterator();ite.hasNext();){
+			TabAdmin tabAdmin = ite.next();
+			tabAdmin.getId().setTabid(tabId);
+			tadAdminDAO.insert(tabAdmin);
+		}
+}
+	
+	/**
+	 * replace all static tabs. (include commandbar, header)</br>
+	 * The tab layout which cannot be deleted is replaced.
+	 * @param staticTabs
+	 * @throws Exception
+	 */
+	public void replaceAllTabs(List<StaticTab> staticTabs) throws Exception{
+		// delete tabLayouts
+		List<StaticTab> currentStaticTabList = getStaticTabList();
+		TabLayoutDAO tabLayoutDAO = TabLayoutDAO.newInstance();
+		List<String> currentTabIdList = new ArrayList<String>();
+		for(Iterator<StaticTab> ite=currentStaticTabList.iterator();ite.hasNext();){
+			StaticTab currentStaticTab = ite.next();
+			
+			String currentTabId = currentStaticTab.getTabid();
+			
+			tabLayoutDAO.delete(currentStaticTab.getTabLayout());
+			tabLayoutDAO.deleteTempByTabId(currentTabId);
+			
+			if(!undeletableTabIdList.contains(currentStaticTab.getTabid()))
+				currentTabIdList.add(currentStaticTab.getTabid());
+		}
+		// delete static tabs without undeletableTabs.
+		StaticTabService.getHandle().deleteTabs(currentTabIdList);
+		
+		// insert tabs
+		for(Iterator<StaticTab> ite=staticTabs.iterator();ite.hasNext();){
+			StaticTab staticTab = ite.next();
+			String tabId = staticTab.getTabid();
+			
+			if(undeletableTabIdList.contains(tabId)){
+				replaceStaticTab(tabId, staticTab);
+			}else{
+				tabId = getNewTabId();
+				staticTab.setTabid(tabId);
+				saveStaticTab(tabId, staticTab);
+			}
+		}
+	}
+	
+	/**
+	 * Update gadgetId from gadgetXML, layoutHTML
+	 * @param tabLayout
+	 * @throws SAXException 
+	 * @throws IOException 
+	 * @throws TransformerException 
+	 */
+	private void updateGadgetId(TabLayout tabLayout) throws SAXException, IOException, TransformerException{
+		Element gadgets = tabLayout.getElement();
+		String layoutHTML = tabLayout.getLayout();
+		
+		Element layout = HtmlUtil.html2Dom(layoutHTML);
+		if(layout == null) return;
+		
+		NodeIterator widgetIte = XPathAPI.selectNodeIterator(gadgets, "//widget");
+		Element widget;
+		int count = 0;
+		while((widget = (Element)widgetIte.nextNode()) != null){
+			String newId = "p_" + new Date().getTime() + "_" + tabLayout.getId().getTabid() + "_" + count++;
+			String oldId = widget.getAttribute("id");
+			Element gadgetDiv = (Element)XPathAPI.selectSingleNode(layout, "//*[@id='" + oldId + "']");
+			
+			widget.setAttribute("id", newId);
+			if(gadgetDiv != null){
+				gadgetDiv.setAttribute("id", newId);
+			}
+		}
+		
+		tabLayout.setElement(gadgets);
+		tabLayout.setLayout(XmlUtil.dom2HtmlString(layout, "UTF-8"));
+	}
+	
+	public Integer getNextTabNumber() throws Exception{
+		synchronized(lock){
+			Map maxMap = staticTabDAO.selectMax();
+			String tabNumber = maxMap.get("tabNumber").toString();
+			if (tabNumber != null && tabNumber.length() != 0) {
+				int newInt = Integer.valueOf(tabNumber).intValue();
+				tabNumber = String.valueOf(newInt + 1).toString();
+			} else {
+				throw new Exception("\"select max tabNumber\" not found");
+			}
+			return new Integer(tabNumber);
+		}
+	}
+	
+	public String getNewTabId() throws Exception{
+		synchronized(lock){
+			String tabId = staticTabDAO.selectMaxTabId();
+			
+			if (tabId != null && tabId.length() != 0) {
+				int newInt = Integer.valueOf(tabId).intValue();
+				if (0 == newInt) {
+					tabId = "10001";
+				} else if (0 < newInt) {
+					tabId = String.valueOf(newInt + 1).toString();
+				} else {
+					throw new Exception("Bad max tabId");
+				}
+			} else {
+				throw new Exception("\"select max tabId\" not found");
+			}
+			return tabId;
+		}
+	}
+	
 }

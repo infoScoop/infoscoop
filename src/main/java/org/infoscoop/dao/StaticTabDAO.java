@@ -70,7 +70,15 @@ public class StaticTabDAO extends HibernateDaoSupport {
 		// return (StaticTab)super.getHibernateTemplate().get(StaticTab.class,
 		// tabId);
 	}
-
+	
+	public void updateTab(StaticTab entity){
+		super.getHibernateTemplate().update(entity);
+	}
+	
+	/**
+	 * Get all static tabs without commandBar and portalHeader. 
+	 * @return
+	 */
 	public List getStaticTabList() {
 		DetachedCriteria c = DetachedCriteria.forClass(StaticTab.class);
 		c.add(Expression.eq(StaticTab.PROP_DELETEFLAG,
@@ -78,6 +86,21 @@ public class StaticTabDAO extends HibernateDaoSupport {
 		c.add(Expression.ne(StaticTab.PROP_ID, StaticTab.COMMANDBAR_TAB_ID));
 		c.add(Expression.ne(StaticTab.PROP_ID, StaticTab.PORTALHEADER_TAB_ID));
 
+		c.createAlias(TabAdmin.REF, "ta", CriteriaSpecification.LEFT_JOIN);
+		c.addOrder(Order.asc(StaticTab.PROP_TABNUMBER));
+
+		return super.getHibernateTemplate().findByCriteria(c);
+	}
+	
+	/**
+	 * Get all static tabs with commandBar and portalHeader. 
+	 * @return
+	 */
+	public List getAllStaicLayoutList() {
+		DetachedCriteria c = DetachedCriteria.forClass(StaticTab.class);
+		c.add(Expression.eq(StaticTab.PROP_DELETEFLAG,
+				StaticTab.DELETEFLAG_FALSE));
+		
 		c.createAlias(TabAdmin.REF, "ta", CriteriaSpecification.LEFT_JOIN);
 		c.addOrder(Order.asc(StaticTab.PROP_TABNUMBER));
 
@@ -133,6 +156,30 @@ public class StaticTabDAO extends HibernateDaoSupport {
 
 		return resultMap;
 	}
+	
+
+	/**
+	 * @param res
+	 * @return
+	 */
+	public String selectMaxTabId() {
+		HibernateTemplate templete = super.getHibernateTemplate();
+		List tabIdList = templete.findByCriteria(DetachedCriteria.forClass(
+				StaticTab.class).add(
+				Expression.not(Expression.eq("Tabid", StaticTab.COMMANDBAR_TAB_ID))).add(
+				Expression.not(Expression.eq("Tabid", StaticTab.PORTALHEADER_TAB_ID)))
+				.setProjection(
+						Projections.projectionList().add(
+								Projections.max("Tabid"))));
+		
+		String tabId = null;
+		for (int i = 0; i < tabIdList.size(); i++) {
+			tabId = (String)tabIdList.get(i);
+		}
+		
+		return tabId;
+	}
+	
 	public void saveTab(StaticTab tab) {
 		super.getHibernateTemplate().save(tab);
 	}
