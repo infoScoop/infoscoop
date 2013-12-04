@@ -37,7 +37,6 @@ public class ApiLogFilter implements Filter{
 			log.info(path+" ("+(stop-start)+"ms) " + method+" - " + remote);
 		}catch(Exception e){
 			log.warn(e.getMessage() + " - " + remote);
-			throw e;
 		}
 	}
 }
