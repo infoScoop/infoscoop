@@ -37,6 +37,12 @@
 
 			propertiesTd = $jq("<td>")
 				.addClass("headerProperties")
+				.css({"width" : "10%"});
+			propertiesTd.text(ISA_R.alb_id);
+			propertiesTr.append(propertiesTd);
+
+			propertiesTd = $jq("<td>")
+				.addClass("headerProperties")
 				.css({"width":"400px"});
 			propertiesTd.text(ISA_R.alb_tabDesc);
 			propertiesTr.append(propertiesTd);
@@ -79,7 +85,10 @@
 			
 			td = $jq("<td>").css(commoncss).text(tabObj.rowNo);
 			tr.append(td);
-			
+
+			td = $jq("<td>").css(commoncss).text(tabObj.id);
+			tr.append(td);
+
 			var tabDesc = tabObj.tabDesc ? escapeHTMLEntity(tabObj.tabDesc) : "";
 			td = $jq("<td>")
 				.css(commoncss)
