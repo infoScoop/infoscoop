@@ -44,16 +44,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MenusController extends BaseController{
 	private static Log log = LogFactory.getLog(MenusController.class);
 	
-	private final String SERV_KEY_ITEMS = "items";
-	private final String SERV_KEY_SITETOPARRAY = "siteTopArray";
-	private final String SERV_KEY_MAPJSON = "mapJson";
+	private static final String SERV_KEY_ITEMS = "items";
+	private static final String SERV_KEY_SITETOPARRAY = "siteTopArray";
+	private static final String SERV_KEY_MAPJSON = "mapJson";
 	
-	private final String MENUTYPE_TOPMENU = "topmenu";
-	private final String MENUTYPE_SIDEMENU = "sidemenu";
+	private static final String MENUTYPE_TOPMENU = "topmenu";
+	private static final String MENUTYPE_SIDEMENU = "sidemenu";
 	
-	private final String ITEM_ATTR_AUTHS = "auths";
-	private final String ITEM_ATTR_PROPERTIES = "properties";
-	private final String ITEM_ATTR_MENUTREEADMINS = "menuTreeAdmins";
+	private static final String ITEM_ATTR_AUTHS = "auths";
+	private static final String ITEM_ATTR_PROPERTIES = "properties";
+	private static final String ITEM_ATTR_MENUTREEADMINS = "menuTreeAdmins";
 	
 	@Autowired
 	private SiteAggregationMenuService siteAggregationMenuService;
