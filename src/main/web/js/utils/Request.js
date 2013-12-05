@@ -45,7 +45,7 @@ IS_Request.Queue = function (servName, time, disabled, checkDuplicate){
 			}
 			
 			queued.push(command);
-			if (command.priority==this.PRIORITY_IMMEDIATE){
+			if (command.priority==this.PRIORITY_IMMEDIATE || time <= 0){
 				this.fireRequest();
 			}
 		}
