@@ -185,7 +185,6 @@ public class StaticTabService {
 		if(json.has("deleteIdList")){
 			JSONArray array = json.getJSONArray("deleteIdList");
 			
-			List<String> deleteIdList = new ArrayList<String>();
 			for(int i=0;i<array.length();i++){
 				deleteIdList.add(array.getString(i));
 			}
