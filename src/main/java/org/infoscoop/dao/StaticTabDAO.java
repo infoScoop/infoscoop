@@ -202,9 +202,8 @@ public class StaticTabDAO extends HibernateDaoSupport {
 	 * @return
 	 * @throws DataResourceException
 	 */
-	public void updateDeleteFlag(String tabId, Integer deleteFlag) {
+	public void updateDeleteFlag(StaticTab staticTab, Integer deleteFlag) {
 		HibernateTemplate templete = super.getHibernateTemplate();
-		StaticTab staticTab = StaticTabDAO.newInstance().getTab(tabId);
 		if(staticTab != null){
 			staticTab.setDeleteflag(deleteFlag);
 			templete.save(staticTab);
