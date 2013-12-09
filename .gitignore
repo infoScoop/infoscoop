@@ -2,5 +2,9 @@ build/
 dist/
 .classpath
 .project
+*.iml
+*.ipr
+*.iws
+.idea/
 src/main/web/WEB-INF/lib/*.jar
 src/main/web/WEB-INF/classes/

@@ -6,6 +6,8 @@
 	<property name="main.java" value="${basedir}/src/main/java" />
 	<property name="main.resources" value="${basedir}/src/main/resources" />
 	<property name="main.web" value="${basedir}/src/main/web" />
+    <property name="api.java" value="${basedir}/src/api/java" />
+    <property name="api.resources" value="${basedir}/src/api/resources"/>
 	<property name="shindig.java" value="${basedir}/src/shindig/java" />	
 	<property name="build.home" value="${basedir}/build" />
     <property name="build.work" value="${build.home}/work" />
@@ -27,8 +29,11 @@
 			<fileset dir="${main.resources}/org/infoscoop/dao/model">
 				<include name="*.hbm.xml"/>
 			</fileset>
+            <fileset dir="${api.resources}/org/infoscoop/api/dao/model">
+                <include name="*.hbm.xml"/>
+            </fileset>
 		</copy>
-		<javac srcdir="${main.java}:${shindig.java}" encoding="utf-8" destdir="${build.work}/initdb/infoscoop" source="${compile.level}" target="${compile.level}">
+		<javac srcdir="${main.java}:${shindig.java}:${api.java}" encoding="utf-8" destdir="${build.work}/initdb/infoscoop" source="${compile.level}" target="${compile.level}">
 			<classpath>
 				<fileset dir="${basedir}/lib" includes="*.jar" />
 				<fileset dir="${main.web}/WEB-INF/lib" includes="*.jar" />

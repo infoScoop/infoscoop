@@ -12,7 +12,9 @@
 	<property name="src.main.java" value="${basedir}/src/main/java" />
 	<property name="src.main.resources" value="${basedir}/src/main/resources" />
 	<property name="src.main.web" value="${basedir}/src/main/web" />
-	<property name="src.shindig.java" value="${basedir}/src/shindig/java" />	
+    <property name="src.api.java" value="${basedir}/src/api/java" />
+    <property name="src.api.resources" value="${basedir}/src/api/resources" />
+    <property name="src.shindig.java" value="${basedir}/src/shindig/java" />
 
     <delete file="${src.migration.script}/migration.properties.tmp"/>
 	<copy tofile="${build.migration}/migration.properties.tmp" file="${src.migration.script}/migration.properties" encoding="UTF-8">
@@ -111,7 +113,7 @@
 	</target>
 	<target name="compile-infoscoop">
 		<mkdir dir="${build.migration}/infoscoop"/>
-		<javac srcdir="${src.main.java}:${src.shindig.java}" encoding="utf-8" destdir="${build.migration}/infoscoop" source="${compile.level}" target="${compile.level}">
+		<javac srcdir="${src.main.java}:${src.shindig.java}:${src.api.java}" encoding="utf-8" destdir="${build.migration}/infoscoop" source="${compile.level}" target="${compile.level}">
 			<classpath>
 				<fileset dir="${basedir}/lib" includes="*.jar" />
 				<fileset dir="${src.main.web}/WEB-INF/lib" includes="*.jar" />
@@ -121,10 +123,14 @@
 			<fileset dir="${src.main.resources}/org/infoscoop/dao/model">
 				<include name="*.hbm.xml"/>
 			</fileset>
+            <fileset dir="${src.api.resources}/org/infoscoop/api/dao/model">
+                <include name="*.hbm.xml"/>
+            </fileset>
+            src.api.resources
 		</copy>
 		<copy todir="${build.migration}/infoscoop/org/infoscoop/admin/command" includeemptydirs="yes">
 			<fileset dir="${src.main.resources}/org/infoscoop/admin/command">
-				<include name="*.xml"/>
+                <include name="*.xml"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.migration}/infoscoop" includeemptydirs="yes">

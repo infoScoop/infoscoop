@@ -27,7 +27,7 @@ public class ApiLogFilter implements Filter{
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		String path = ((HttpServletRequest)req).getPathInfo().toString();
 		String method = ((HttpServletRequest)req).getMethod().toString();
-		String remote = ((HttpServletRequest)req).getRemoteAddr().toString();
+		String remote = req.getRemoteAddr();
 
 		try{
 			log.info(path+" " + method+" - " + remote);
