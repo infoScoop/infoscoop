@@ -168,7 +168,9 @@ public class StaticTabService {
 				if(undeletableTabIdList.contains(tabId))
 					throw new RuntimeException("tabId=" + tabId + " cannot be deleted.");
 				
-				staticTabDAO.updateDeleteFlag(tabId, StaticTab.DELETEFLAG_TRUE);
+				StaticTab staticTab = staticTabDAO.getTab(tabId);
+				tabAdminDAO.delete(staticTab.getTabAdmin());
+				staticTabDAO.updateDeleteFlag(staticTab, StaticTab.DELETEFLAG_TRUE);
 			}
 		} catch (Exception e) {
 			log.error("Unexpected error occurred.", e);
@@ -178,6 +180,7 @@ public class StaticTabService {
 	
 	public void updateStaticTab(String updateDataJson) throws Exception{
 		JSONObject json = new JSONObject(updateDataJson);
+		List<String> deleteIdList = new ArrayList<String>();
 		
 		if(json.has("deleteIdList")){
 			JSONArray array = json.getJSONArray("deleteIdList");
