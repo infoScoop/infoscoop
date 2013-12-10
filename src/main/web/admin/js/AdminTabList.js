@@ -16,72 +16,112 @@
 					});
 			}
 
-			var propertiesTable = $jq("<table>");
-			propertiesTable.attr("border", 1)
-				.attr("cellSpacing", 0)
-				.attr("cellPadding", 0)
-				.addClass("tabListGroup");
+			var tabList = $jq("#tabList").css({ "margin-top" : "10px", "margin-bottom" : "10px" });
 
-			var propertiesTbody = $jq("<tbody>").attr("id", "propertiesTbody");
-			propertiesTable.append(propertiesTbody);
+			// create header tab table
+			tabList.append(_createHeaderTable());
 
-			var propertiesTr = $jq("<tr>");
-			propertiesTbody.append(propertiesTr);
+			// create default tab table and sortable tab table
+			if (tabListJSON && tabListJSON.length > 0) {
+				var sortableTabListDiv = null;
 
-			var propertiesTd;
-			propertiesTd = $jq("<td>")
-				.addClass("headerProperties")
-				.css({"width":"10%"});
-			propertiesTd.text(ISA_R.alb_sequence);
-			propertiesTr.append(propertiesTd);
+				$jq.each(tabListJSON, function(idx, tabObj) {
+					var table = $jq("<table>")
+						.addClass("tabListGroup")
+						.css({
+							"margin-bottom" : "0px",
+							"border-top" : "none"
+						});
+					var tbody = $jq("<tbody>");
+					var tr = buildTabTr(tabObj);
+					table.append(tbody.append(tr));
 
-			propertiesTd = $jq("<td>")
-				.addClass("headerProperties")
-				.css({"width":"400px"});
-			propertiesTd.text(ISA_R.alb_tabDesc);
-			propertiesTr.append(propertiesTd);
+					if (tabObj.id == 0) {
+						// default (id : 0) tab table
+						tabList.append(table);
+					} else {
+						// sortable tab table
+						if (!sortableTabListDiv) {
+							sortableTabListDiv = $jq("<div>").attr("id", "sortableTabList");
+						}
+						var tableWrapperDiv = $jq("<div>").attr("id", "row_" + tabObj.id).append(table);
+						sortableTabListDiv.append(tableWrapperDiv);
+					}
 
-			propertiesTd = $jq("<td>")
-				.addClass("headerProperties")
-				.css({"width":"10%"});
-			propertiesTd.text(ISA_R.alb_edit);
-			propertiesTr.append(propertiesTd);
-
-			propertiesTd = $jq("<td>")
-				.addClass("headerProperties")
-				.addClass("hiddenTabAdmin")
-				.css({"width":"10%"});
-			propertiesTd.text(ISA_R.alb_admin);
-			propertiesTr.append(propertiesTd);
-
-			propertiesTd = $jq("<td>")
-				.addClass("headerProperties")
-				.addClass("hiddenTabAdmin")
-				.css({"width":"10%"});
-			propertiesTd.text(ISA_R.alb_delete);
-			propertiesTr.append(propertiesTd);
-			
-			$jq("#tabList").append(propertiesTable);
-			
-			$jq.each(tabListJSON, function(idx, tabObj){
-				propertiesTable.append(buildTabTr(tabObj));
-			});
+					if (sortableTabListDiv) {
+						tabList.append(sortableTabListDiv);
+					}
+				});
+			}
 		}
-		
-		function buildTabTr(tabObj) {
-			
-			var tr = $jq("<tr>").attr("id", "row_" + tabObj.id);
-			
-			if(!tabObj) return tr;
-			
+
+		function _createHeaderTable() {
+			var table = $jq("<table>")
+				.addClass("tabListGroup")
+				.css({ "margin-bottom" : "0px" });
+			var tbody = $jq("<tbody>");
+			var tr = $jq("<tr>");
 			var td;
-			var commoncss = {"padding":"3px", "text-align":"center"};
+
+			td = $jq("<td>")
+				.addClass("headerProperties")
+				.addClass("tabOrderCell")
+				.text(ISA_R.alb_sequence);
+			tr.append(td);
+
+			td = $jq("<td>")
+				.addClass("headerProperties")
+				.addClass("tabIdCell")
+				.text(ISA_R.alb_id);
+			tr.append(td);
+
+			td = $jq("<td>")
+				.addClass("headerProperties")
+				.addClass("tabDescCell")
+				.text(ISA_R.alb_tabDesc);
+			tr.append(td);
+
+			td = $jq("<td>")
+				.addClass("headerProperties")
+				.addClass("tabEditCell")
+				.text(ISA_R.alb_edit);
+			tr.append(td);
+
+			td = $jq("<td>")
+				.addClass("headerProperties")
+				.addClass("tabAdminCell")
+				.addClass("hiddenTabAdmin")
+				.text(ISA_R.alb_admin);
+			tr.append(td);
+
+			td = $jq("<td>")
+				.addClass("headerProperties")
+				.addClass("hiddenTabAdmin")
+				.addClass("tabDeleteCell")
+				.text(ISA_R.alb_delete);
+			tr.append(td);
+
+			return table.append(tbody.append(tr));
+		}
+
+		function buildTabTr(tabObj) {
+
+			var tr = $jq("<tr>");
+
+			if(!tabObj) return tr;
+
+			var td;
+			var commoncss = {"padding":"3px", "text-align":"center", "border-top" : "none"};
+
+			td = $jq("<td>").addClass("tabOrderCell").css(commoncss).text(tabObj.rowNo);
+			tr.append(td);
 			
-			td = $jq("<td>").css(commoncss).text(tabObj.rowNo);
+			td = $jq("<td>").addClass("tabIdCell").css(commoncss).text(tabObj.id);
 			tr.append(td);
 			
 			var tabDesc = tabObj.tabDesc ? escapeHTMLEntity(tabObj.tabDesc) : "";
 			td = $jq("<td>")
+				.addClass("tabDescCell")
 				.css(commoncss)
 				.css({"text-align":"left","word-break":"break-all"})
 				.html(tabDesc.replace(/(\r\n|\n|\r)/g, '<br/>'));
@@ -98,7 +138,7 @@
 				window.location.href = "editTab?tabId=" + e.data.tabId;
 			});
 			
-			td = $jq("<td>").css(commoncss).append(editButton);
+			td = $jq("<td>").css(commoncss).append(editButton).addClass("tabEditCell");
 			tr.append(td);
 			
 			var adminButton = $jq("<img>")
@@ -119,7 +159,11 @@
 				tabAdminModal.open();
 			});
 			
-			td = $jq("<td>").css(commoncss).append(adminButton).addClass("hiddenTabAdmin");
+			td = $jq("<td>")
+				.css(commoncss)
+				.append(adminButton)
+				.addClass("hiddenTabAdmin")
+				.addClass("tabAdminCell");
 			tr.append(td);
 			
 			if(tabObj.id != "0"){
@@ -141,7 +185,7 @@
 			}else{
 				td = $jq("<td>").text(" ");
 			}
-			td.addClass("hiddenTabAdmin");
+			td.addClass("hiddenTabAdmin").addClass("tabDeleteCell").css(commoncss);
 			tr.append(td);
 
 			return tr;

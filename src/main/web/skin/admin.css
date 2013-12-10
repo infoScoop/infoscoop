@@ -496,7 +496,10 @@ a.menuContextA_edit:visited{
 
 .tabListGroup {
 	width: 650px;
-	margin: 10px;
+}
+
+.tabOrderCell, .tabIdCell, .tabEditCell, .tabAdminCell, .tabDeleteCell {
+	width: 10%;
 }
 
 .tabListGroup td {
