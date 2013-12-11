@@ -133,7 +133,6 @@ public class GadgetViewFilter extends ProxyFilter {
 			if( content.hasAttribute("view") && !"".equals( content.getAttribute("view")) ) {
 				String contentViewTypes = content.getAttribute("view");
 				List<String> constentViewList = Arrays.asList(contentViewTypes.toLowerCase().split(","));
-				System.out.println(constentViewList);
 				
 				if( constentViewList.contains(viewType) ) {
 					matches = content;
