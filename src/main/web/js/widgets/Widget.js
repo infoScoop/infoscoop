@@ -21,6 +21,8 @@ IS_Widget.DROP_WIDGET = "dropWidget";
 IS_Widget.CLOSE_WIDGET = "closeWidget";
 IS_Widget.DROP_URL = "dropUrl";
 IS_Widget.CLOSE_URL = "closeUrl";
+IS_Widget.DEFAULT_VIEW = "home";
+IS_Widget.DEFAULT_MAXIMIZE_VIEW = "canvas";
 
 IS_Widget.prototype.classDef = function() {
 	//var self = this;
@@ -663,7 +665,7 @@ IS_Widget.prototype.classDef = function() {
 			__TAB_ID__: tabId,
 			__HOST_PREFIX__: hostPrefix,
 			__STATIC_CONTENT_URL__: staticContentURL == '..' ? '.' : staticContentURL,//fix #3699
-			view:  viewType == "Maximize" ? "canvas" : viewType || "home",
+			view:  viewType == "Maximize" ? IS_Widget.DEFAULT_MAXIMIZE_VIEW : viewType || IS_Widget.DEFAULT_VIEW,
 			lang: IS_Portal.lang,
 			country: IS_Portal.country || "jp",
 			ifpctok: this.authToken,

@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -35,7 +36,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.logging.Log;
@@ -45,6 +45,8 @@ import org.infoscoop.util.NoOpEntityResolver;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 public class GadgetViewFilter extends ProxyFilter {
 	private static final Log log = LogFactory.getLog( GadgetViewFilter.class );
@@ -129,7 +131,11 @@ public class GadgetViewFilter extends ProxyFilter {
 				matches = content;
 			
 			if( content.hasAttribute("view") && !"".equals( content.getAttribute("view")) ) {
-				if( content.getAttribute("view").toLowerCase().indexOf( viewType ) >= 0 ) {
+				String contentViewTypes = content.getAttribute("view");
+				List<String> constentViewList = Arrays.asList(contentViewTypes.toLowerCase().split(","));
+				System.out.println(constentViewList);
+				
+				if( constentViewList.contains(viewType) ) {
 					matches = content;
 					break;
 				}
