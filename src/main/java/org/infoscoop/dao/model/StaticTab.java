@@ -31,6 +31,7 @@ public class StaticTab extends BaseStaticTab {
 	public static final String COMMANDBAR_TAB_ID = "commandbar";
 	public static final String PORTALHEADER_TAB_ID = "header";
 	public static final String TABID_HOME = "0";
+	public static final Integer TABNUMBER_HOME = new Integer(0);
 	
 /*[CONSTRUCTOR MARKER BEGIN]*/
 	public StaticTab () {

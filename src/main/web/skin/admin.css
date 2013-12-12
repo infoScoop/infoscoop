@@ -495,10 +495,17 @@ a.menuContextA_edit:visited{
 }
 
 .tabListGroup {
-	width: 650px;
+	width: 800px;
 }
 
-.tabOrderCell, .tabIdCell, .tabEditCell, .tabAdminCell, .tabDeleteCell {
+.tabOrderCell {
+	width: 7%;
+}
+.tabIdCell {
+	width: 12%;
+}
+
+.tabEditCell, .tabAdminCell, .tabDeleteCell {
 	width: 10%;
 }
 

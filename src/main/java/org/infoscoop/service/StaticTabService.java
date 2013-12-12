@@ -197,7 +197,14 @@ public class StaticTabService {
 				List adminUidList = JsonArray2List(adminUidJson.getJSONArray(tabId));
 				replaceAdminUidList(tabId, adminUidList);
 			}
-		}		
+		}
+		if (json.has("tabOrderList")) {
+			JSONArray tabIds = json.getJSONArray("tabOrderList");
+			for (int i = 0, tabNumber = 1, end = tabIds.length(); i < end; i++, tabNumber++) {
+				String tabId = tabIds.getString(i);
+				updateTabNumber(tabId, tabNumber);
+			}
+		}
 	}
 
 	private List JsonArray2List(JSONArray jArray) throws JSONException{
@@ -215,6 +222,22 @@ public class StaticTabService {
 			Portaladmins admin = PortalAdminsService.getHandle().getPortalAdmin(userId);
 			if(admin != null)
 				tabAdminDAO.insert(tabId, userId);
+		}
+	}
+	
+	public void updateTabNumber(String tabId, int tabNumber) throws Exception {
+		try {
+			if (undeletableTabIdList.contains(tabId)) {
+				throw new RuntimeException("tabId=" + tabId + " tabNumber cannot be changed.");
+			}
+			if (tabNumber == StaticTab.TABNUMBER_HOME) {
+				throw new RuntimeException("tabId=" + tabId + " cannot be numbered \"" + StaticTab.TABNUMBER_HOME + "\".");
+			}
+			StaticTab staticTab = staticTabDAO.getTab(tabId);
+			staticTabDAO.updateTabNumber(staticTab, tabNumber);
+		} catch(Exception e) {
+			log.error("Unexpected error occurred.", e);
+			throw e;
 		}
 	}
 	

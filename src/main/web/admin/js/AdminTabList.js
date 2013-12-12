@@ -50,6 +50,18 @@
 
 					if (sortableTabListDiv) {
 						tabList.append(sortableTabListDiv);
+						Sortable.create("sortableTabList", {
+							tag : "div",
+							handle : "handle",
+							starteffect : function(div) {
+								// opacity effect drag start
+								div.style.opacity = "0.7";
+								div.style.filter = "alpha(opacity=70)";
+							},
+							onUpdate : function(div) {
+								ISA_Admin.isUpdated = true;
+							}
+						});
 					}
 				});
 			}
@@ -65,14 +77,15 @@
 
 			td = $jq("<td>")
 				.addClass("headerProperties")
+				.addClass("hiddenTabAdmin")
 				.addClass("tabOrderCell")
-				.text(ISA_R.alb_sequence);
+				.text(ISA_R.alb_order);
 			tr.append(td);
 
 			td = $jq("<td>")
 				.addClass("headerProperties")
 				.addClass("tabIdCell")
-				.text(ISA_R.alb_id);
+				.text(ISA_R.alb_tab + ISA_R.alb_id);
 			tr.append(td);
 
 			td = $jq("<td>")
@@ -113,7 +126,15 @@
 			var td;
 			var commoncss = {"padding":"3px", "text-align":"center", "border-top" : "none"};
 
-			td = $jq("<td>").addClass("tabOrderCell").css(commoncss).text(tabObj.rowNo);
+			td = $jq("<td>").addClass("tabOrderCell").addClass("hiddenTabAdmin").css(commoncss);
+			if (tabObj.id != 0) {
+				var dragIcon = $jq("<img>")
+					.addClass("handle")
+					.css({ "cursor" : "move" })
+					.attr("src", imageURL + "drag.gif")
+					.attr("title", ISA_R.alb_changeOrder);
+				td.append(dragIcon);
+			}
 			tr.append(td);
 			
 			td = $jq("<td>").addClass("tabIdCell").css(commoncss).text(tabObj.id);
@@ -317,9 +338,17 @@
 				});
 			});
 			
+			var tabOrderList = [];
+			var tabs = $jq("#sortableTabList").children();
+			$jq.each(tabs, function(idx, tab) {
+				var tabId = tab.id.replace(/row_/g, "");
+				tabOrderList.push(tabId);
+			});
+			
 			var jsonObject = {
 				deleteIdList : deleteIdList,
-				adminUidJson : adminUidJson
+				adminUidJson : adminUidJson,
+				tabOrderList : tabOrderList
 			};
 
 			// TODO: change ajax request process
