@@ -209,4 +209,13 @@ public class StaticTabDAO extends HibernateDaoSupport {
 			templete.save(staticTab);
 		}
 	}	
+
+	public void updateTabNumber(StaticTab staticTab, Integer tabNumber) {
+		HibernateTemplate template = super.getHibernateTemplate();
+		if (staticTab != null) {
+			staticTab.setTabnumber(tabNumber);
+			template.save(staticTab);
+		}
+	}
+
 }

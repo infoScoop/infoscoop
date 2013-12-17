@@ -495,8 +495,18 @@ a.menuContextA_edit:visited{
 }
 
 .tabListGroup {
-	width: 650px;
-	margin: 10px;
+	width: 800px;
+}
+
+.tabOrderCell {
+	width: 7%;
+}
+.tabIdCell {
+	width: 12%;
+}
+
+.tabEditCell, .tabAdminCell, .tabDeleteCell {
+	width: 10%;
 }
 
 .tabListGroup td {
