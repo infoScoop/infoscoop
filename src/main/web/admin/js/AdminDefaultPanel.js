@@ -815,7 +815,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				formDiv.append(editArea);
 				
 				var okDiv = $jq("<div>").css({clear:"both", textAlign:"center"});
-				var okButton = $jq("<input>").attr("type", "button").val(ISA_R.alb_ok);
+				var okButton = $jq("<input>").addClass("modal_button").attr("type", "button").val(ISA_R.alb_ok);
 				okDiv.append(okButton);
 				okButton.click(function(jsonRole, editArea, e) {
 					this.setNewValue("layout", editArea.val());
@@ -823,7 +823,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 					this.portalHeaderHtmlModal.close();
 				}.bind(this, jsonRole, editArea));
 				
-				var closeButton = $jq("<input>").attr("type", "button").val(ISA_R.alb_cancel);
+				var closeButton = $jq("<input>").addClass("modal_button").attr("type", "button").val(ISA_R.alb_cancel);
 				okDiv.append(closeButton);
 				closeButton.click(function(){
 					this.close();
