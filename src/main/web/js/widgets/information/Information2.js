@@ -50,8 +50,8 @@ IS_Widget.Information2.prototype.classDef = function() {
 		if(self.accessStatsIcon && widget.widgetPref.useAccessStat &&/true/i.test( widget.widgetPref.useAccessStat.value ))
 			self.accessStatsIcon.style.display = "";
 	}
-	
-	this.displayContents = function () {
+
+	this.displayContents = this.repaint = function () {
 		var container = widget.elm_widget.parentNode;
 		if( container ) {
 			if( !container.height && !container.style.height && !widget.staticWidgetHeight )
