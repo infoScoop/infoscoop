@@ -156,7 +156,18 @@ public class TabService {
 		
 		// The currentTabList is updated. Dynamic tab conversion of the erased tab and renewal of display sequence is performed.
 		obsoleteStaticTabToDynamicTab( tabLayoutMap,currentTabList,uid  );
-		
+
+		Collection staticTabList = new ArrayList();
+		Collection dynamicTabList = new ArrayList();
+		for (Iterator ite = currentTabList.iterator(); ite.hasNext();) {
+			Tab tab = (Tab) ite.next();
+			if ("static".equals(tab.getType().toLowerCase())) {
+				staticTabList.add(tab);
+			} else {
+				dynamicTabList.add(tab);
+			}
+		}
+
 		// Processing to the tab added newly is performed. 
 		List differenceTabs = getDifferenceTabs( tabLayoutMap,currentTabList,uid );
 		for( int i=0;i<differenceTabs.size();i++ ) {
@@ -205,9 +216,13 @@ public class TabService {
 			tabDAO.getHibernateTemplate().saveOrUpdateAll( staticWidgets );
 			WidgetDAO.newInstance().updateUserPrefs( staticWidgets );
 			
-			currentTabList.add( tab );
+			staticTabList.add( tab );
 		}
-		
+
+		currentTabList.clear();
+		currentTabList.addAll(staticTabList);
+		currentTabList.addAll(dynamicTabList);
+
 		// Replace to new StaticPanel if it is edited.
 		for(Iterator ite = tabLayoutMap.keySet().iterator();ite.hasNext();){
 			String tempTabId = (String)ite.next();
@@ -286,6 +301,7 @@ public class TabService {
 		
 		Collection temp = new ArrayList();
 		Collection obsolutes = new ArrayList();
+		Collection dynamicTabs = new ArrayList();
 		for(Iterator it = tabList.iterator(); it.hasNext();){
 			Tab tab = (Tab)it.next();
 			
@@ -296,6 +312,8 @@ public class TabService {
 				} else {
 					temp.add( tab );
 				}
+			} else {
+				dynamicTabs.add(tab);
 			}
 		}
 		
@@ -303,18 +321,14 @@ public class TabService {
 			// changed to DynamicTab 
 			Tab tab = convertStaticToDynamic( dynamicTabIdList,(Tab)ite.next() );
 			if(tab == null)	continue;
+			dynamicTabs.add( tab );
+		}
+		
+		for(Iterator it = dynamicTabs.iterator(); it.hasNext();){
+			Tab tab = (Tab)it.next();
 			tab.setOrder( new Integer( temp.size()));
 			tabDAO.updateTab( tab );
 			temp.add( tab );
-		}
-		
-		for(Iterator it = tabList.iterator(); it.hasNext();){
-			Tab tab = (Tab)it.next();
-			if(!"static".equals(tab.getType().toLowerCase())) {
-				tab.setOrder( new Integer( temp.size()));
-				tabDAO.updateTab( tab );
-				temp.add( tab );
-			}
 		}
 		
 		tabList.clear();
