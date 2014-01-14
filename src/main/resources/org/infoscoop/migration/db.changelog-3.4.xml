@@ -118,7 +118,7 @@
         <sql><![CDATA[
 insert into ${migration.defaultSchemaWithDot}is_tablayouts
 (TABID, ROLEORDER, ROLE, ROLENAME, PRINCIPALTYPE, DEFAULTUID, WIDGETS, LAYOUT, WIDGETSLASTMODIFIED, TEMP, WORKINGUID)
-values('header', 0, 'default', 'defaultRole', 'OrganizationPrincipal', 'default', '<widgets/>', 
+values('header', 0, 'default', 'defaultRole', 'OrganizationPrincipal', 'default', '<widgets/>',
 (select layout from ${migration.defaultSchemaWithDot}is_portallayouts where name='header')
 ,'0', 0, '')
         ]]></sql>
@@ -661,4 +661,18 @@ values('header', 0, 'default', 'defaultRole', 'OrganizationPrincipal', 'default'
             <column name="message" value="重新设置Client Secret。\\n所有使用这种外部应用程序的用户的认证信息被删除。\\n此操作不能被取消。\\n\\n没事吧？"/>
         </insert>
    </changeSet>
+
+    <!--Issue 556-->
+    <!--UPDATE IS_ADMINROLE SET permission = '[&quot;menu&quot;, &quot;menu_tree&quot;, &quot;search&quot;, &quot;widget&quot;, &quot;defaultPanel&quot;, &quot;tabAdmin&quot;, &quot;portalLayout&quot;, &quot;i18n&quot;, &quot;properties&quot;, &quot;proxy&quot;, &quot;admins&quot;, &quot;forbiddenURL&quot;, &quot;authentication&quot;, &quot;extapps&quot;]' WHERE roleid = 'root';-->
+    <changeSet id="infoscoop340_556" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_8">
+            <not>
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_ADMINROLES where roleid='root';</sqlCheck>
+            </not>
+        </preConditions>
+        <update tableName="IS_ADMINROLES">
+            <column name="permission" value="[&quot;menu&quot;, &quot;menu_tree&quot;, &quot;search&quot;, &quot;widget&quot;, &quot;defaultPanel&quot;, &quot;tabAdmin&quot;, &quot;portalLayout&quot;, &quot;i18n&quot;, &quot;properties&quot;, &quot;proxy&quot;, &quot;admins&quot;, &quot;forbiddenURL&quot;, &quot;authentication&quot;, &quot;extapps&quot;]"/>
+            <where>roleid='root'</where>
+        </update>
+    </changeSet>
 </databaseChangeLog>

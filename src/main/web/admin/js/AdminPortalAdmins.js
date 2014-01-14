@@ -19,7 +19,8 @@ ISA_PortalAdmins.portalPermissionTypeInfo = $H({
 	proxy: ISA_R.alb_proxy,
 	admins: ISA_R.alb_admin,
 	forbiddenURL: ISA_R.alb_forbiddenURL,
-	authentication: "OAuth"
+	authentication: "OAuth",
+	extapps: ISA_R.alb_extapps
 });
 
 ISA_PortalAdmins.prototype.classDef = function() {
@@ -357,6 +358,9 @@ ISA_PortalAdmins.prototype.classDef = function() {
 			authDivListDiv.appendChild(authDiv);
 			count++;
 		});
+        var authDiv = document.createElement("div");
+        $(authDiv).setStyle({ 'clear' :'both',whiteSpace:'nowrap'});
+        authDivListDiv.appendChild(authDiv);
 		roleEditField.appendChild(authDivListDiv);
 		
 		var buttonsDiv = document.createElement("div");
@@ -399,14 +403,10 @@ ISA_PortalAdmins.prototype.classDef = function() {
 			return button;
 		}
 		
-		function createCheckBoxSet(checked, label, value, count){
+		function createCheckBoxSet(checked, label, value){
 			var authDiv = document.createElement("div");
-			if(count == ISA_PortalAdmins.portalPermissionTypeInfo.values().length-1){
-				$(authDiv).setStyle({width:'100px', height:'1.6em', 'clear' :'both',whiteSpace:'nowrap'});
-			}else{
-				$(authDiv).setStyle({width:'100px', height:'1.6em', 'float' :'left',whiteSpace:'nowrap'});
-			}
-			
+			$(authDiv).setStyle({width:'100px', height:'1.6em', 'float' :'left',whiteSpace:'nowrap'});
+
 			var authName = document.createElement("label");
 			var authCheck = document.createElement("input");
 			authCheck.type = "checkbox";

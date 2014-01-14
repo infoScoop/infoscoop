@@ -109,7 +109,7 @@
 		<property name="notPermittedPatterns">
 			<props>
 				<prop key="widget"></prop>
-				<prop key="*">^update.*|^insert.*</prop>
+				<prop key="*">^update.*|^insert.*|^delete.*</prop>
 			</props>
 		</property>
 	</bean>
@@ -150,7 +150,8 @@
 		<property name="service"><ref bean="ExtAppsService"/></property>
 		<property name="notPermittedPatterns">
 			<props>
-				<prop key="*"></prop>
+                <prop key="extapps"></prop>
+				<prop key="*">.*</prop>
 			</props>
 		</property>
 	</bean>
