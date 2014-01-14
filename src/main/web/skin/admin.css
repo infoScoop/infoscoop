@@ -1284,7 +1284,7 @@ table.gadgetUrlTable{
 }
 
 .home-menu-box {
-	padding: 0px 30px 0px 30px;
+	padding: 0px 30px 10px ;
 	width: 400px;
 	height: auto;
 	float:left;
