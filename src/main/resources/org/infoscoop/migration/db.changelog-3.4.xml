@@ -38,7 +38,7 @@
             <column name="authentication" type="blob"/>
         </createTable>
     </changeSet>
-    
+
     <!--Issue 539-->
     <!--CREATE TABLE `IS_OAUTHPROVIDER_CLIENT` (id VARCHAR(255), title VARCHAR(255) NOT NULL, resource_ids VARCHAR(255), secret VARCHAR(255) NOT NULL, scope VARCHAR(255), grant_types VARCHAR(255) DEFAULT 'authorization_code,refresh_token' NOT NULL, redirect_url VARCHAR(255), authorities VARCHAR(255) DEFAULT 'ROLE_CLIENT', delete_flg BOOLEAN DEFAULT 'true', access_token_validity INTEGER DEFAULT 43200, refresh_token_validity INTEGER DEFAULT 2592000, additional_information CLOB, PRIMARY KEY (id));-->
     <changeSet id="infoscoop340_539_2" author="mikami">
@@ -70,7 +70,7 @@
             <column name="additional_information" type="${clob.type}"/>
         </createTable>
     </changeSet>
-    
+
     <!--Issue 541-->
     <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_portalHeader","ALL","ALL","Header");-->
     <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_portalHeader","ALL","ja","ヘッダ");-->
@@ -689,7 +689,7 @@ values('header', 0, 'default', 'defaultRole', 'OrganizationPrincipal', 'default'
     <!--Issue 556-->
     <!--UPDATE IS_ADMINROLE SET permission = '[&quot;menu&quot;, &quot;menu_tree&quot;, &quot;search&quot;, &quot;widget&quot;, &quot;defaultPanel&quot;, &quot;tabAdmin&quot;, &quot;portalLayout&quot;, &quot;i18n&quot;, &quot;properties&quot;, &quot;proxy&quot;, &quot;admins&quot;, &quot;forbiddenURL&quot;, &quot;authentication&quot;, &quot;extapps&quot;]' WHERE roleid = 'root';-->
     <changeSet id="infoscoop340_556" author="mikami">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop320_12826_8">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip iinfoscoop340_556">
             <not>
                 <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_ADMINROLES where roleid='root';</sqlCheck>
             </not>
