@@ -1361,9 +1361,11 @@ IS_Portal.buildPanel = function(panelNumber, type){
 	var staticPanel = document.createElement("div");
 	
 	staticPanel.id = "static-panel"+panelNumber;
+	staticPanel.className = "static-panel";
 	var staticDiv = document.createElement("div");
 	staticPanel.appendChild(staticDiv);
 	staticDiv.id = "static-portal-widgets"+panelNumber;
+	staticDiv.className = "static-portal-widgets";
 	
 	var staticPanelLayout = IS_Customization["staticPanel"+panelNumber];
 	if(type == "static" && staticPanelLayout && staticPanelLayout.layout){
@@ -1376,12 +1378,15 @@ IS_Portal.buildPanel = function(panelNumber, type){
 	dynamicPanel.style.clear = "both";
 	td.appendChild(dynamicPanel);
 	dynamicPanel.id = "dynamic-panel"+panelNumber;
+	dynamicPanel.className = "dynamic-panel";
 	var dynamicDiv = document.createElement("div");
 	dynamicPanel.appendChild(dynamicDiv);
 	dynamicDiv.id = "dynamic-portal-widgets"+panelNumber;
+	dynamicDiv.className = "dynamic-portal-widgets";
 	
 	var columns = document.createElement("div");
 	columns.id = "columns"+panelNumber;
+	columns.className = "columns";
 	dynamicDiv.appendChild(columns);
 	
 	return panel;
