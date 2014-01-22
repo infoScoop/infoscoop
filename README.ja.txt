@@ -1,4 +1,4 @@
-infoScoop OpenSource 3.1.1
+infoScoop OpenSource 3.3.0-beta
 ==========================
 
 infoScoop OpenSourceとは
@@ -18,11 +18,24 @@ http://www.infoscoop.org/
 http://www.infoscoop.org/index.php/ja/manual/installation-guide.html
 
 
-バージョン3.1.0からの移行手順
+バージョン3.1.1からの移行手順
 --------------------------------------------------
-3.1.0から本バージョンに移行するには以下の手順を実行します。
+3.1.1から本バージョンに移行するには以下の手順を実行します。
 
 1. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
+
+* 運用サーバーがLinuxかつリポジトリデータベースがMySQLの場合、
+  移行手順が以下のように変更されます。
+
+1. リポジトリデータベースに格納されているテーブルの名前を全て小文字に変更してください。
+
+2. MySQLの設定ファイル「my.cnf」に以下の設定を追加してください。
+***************
+[mysqld]
+lower_case_table_names = 1
+***************
+
+3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
 
 ライセンス・著作権
@@ -33,7 +46,7 @@ http://www.infoscoop.org/index.php/ja/manual/installation-guide.html
 ライセンスおよびコピーライト情報は LICENSE.txt を参照ください。
 
 
-3.1.0から3.1.1での変更点
+3.1.1から3.3.0-betaでの変更点
 ------------------------
 以下のURLを参照してください。
-https://github.com/infoScoop/infoscoop/issues?milestone=23&state=closed
+https://github.com/infoScoop/infoscoop/issues?milestone=24&state=closed

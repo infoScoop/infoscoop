@@ -1,4 +1,4 @@
-infoScoop OpenSource 3.1.1
+infoScoop OpenSource 3.3.0-beta
 ==========================
 
 infoScoop OpenSourceとは
@@ -16,13 +16,13 @@ http://www.infoscoop.org/
 --------
 infoScoop OpenSourceのセットアップを行う前に、以下の準備が必要です。
 
-・JDK 5.0
+・JDK 6.0
 ・MySQL 5.1
 
 
 セットアップ方法
 ----------------
-infoscoop-3.1.1-quickstart.zip(tar.gz)を解凍し以下の手順を実行してください。
+infoscoop-3.3.0-beta-quickstart.zip(tar.gz)を解凍し以下の手順を実行してください。
 
 1. リポジトリデータベースの作成
 
@@ -33,22 +33,31 @@ $mysql -uroot
 mysql>create database iscoop character set utf8;
 mysql>exit
 
-2. リポジトリデータベースへ初期データを投入
+2. リポジトリデータベースの設定を変更
+* リポジトリデータベースにMySQLを利用する場合、必ず行ってください。
+
+MySQLの設定ファイル「my.cnf」に以下の設定を追加します。
+***************
+[mysqld]
+lower_case_table_names = 1
+***************
+
+3. リポジトリデータベースへ初期データを投入
 
 以下のコマンドを実行し、作成したデータベースに初期データを投入します。
 
-$ mysql -uroot iscoop < infoscoop-3.1.1-quickstart/init_infoscoop.ja.sql
+$ mysql -uroot iscoop < infoscoop-3.3.0-beta-quickstart/init_infoscoop.ja.sql
 
 * init_infoscoop.sql を選択した場合はメニュー等のサンプル設定が英語になります。
 
-3. データベース接続設定
+4. データベース接続設定
 
 クイックスタートはデフォルト設定では、MySQLが同じサーバー、デフォルトポート3306、
 データベースへの接続ユーザIDが"root"、パスワードは無しになっています。
 これ以外の場合は、データベース設定を変更する必要があります。
 設定を変更する場合は、以下のファイルを編集します。
 
-apache-tomcat-6.0.28/conf/Catalina/localhost/infoscoop.xml
+apache-tomcat-7.0.34/conf/Catalina/localhost/infoscoop.xml
 
 以下の属性を適切な値に変更してください。
 
@@ -57,7 +66,7 @@ apache-tomcat-6.0.28/conf/Catalina/localhost/infoscoop.xml
 ・url: データベース接続URL、別サーバーのMySQLに接続する場合はlocalhostを適切なホ
 スト名に、デフォルトポートを使用していない場合は3306を適切な値に変更します。
 
-4. infoScoop OpenSourceサーバーの起動
+5. infoScoop OpenSourceサーバーの起動
 
 以下のコマンドを実行してください。
 
@@ -69,7 +78,7 @@ $ startup.bat(sh)
 
 $ shutdown.bat(sh)
 
-5. infoScoop OpenSourceの起動
+6. infoScoop OpenSourceの起動
 
 ブラウザを起動し以下のアドレスを表示してください。
 
@@ -84,7 +93,7 @@ http://<ホスト名>:8080/infoscoop/
 
 以下のファイルを編集します。
 
-infoscoop-3.1.1-quickstart/initdb/data/accounts/import.csv
+infoscoop-3.3.0-beta-quickstart/initdb/data/accounts/import.csv
 
 <ユーザID>,<ユーザ名>,<パスワード> の形式でユーザを追加します。
 
@@ -92,7 +101,7 @@ infoscoop-3.1.1-quickstart/initdb/data/accounts/import.csv
 
 initdbディレクトリに移動し、addaccount.bat(sh)を実行します。
 
-$ cd infoscoop-3.1.1-quickstart/initdb
+$ cd infoscoop-3.3.0-beta-quickstart/initdb
 $ addaccount.bat(sh)
 
 
@@ -104,7 +113,7 @@ $ addaccount.bat(sh)
 ライセンスおよびコピーライト情報は LICENSE.txt を参照ください。
 
 
-3.1.0から3.1.1での変更点
+3.1.1から3.3.0-betaでの変更点
 ------------------------
 以下のURLを参照してください。
-https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=3.1.0
+https://github.com/infoScoop/infoscoop/issues?milestone=24&state=closed
