@@ -3,9 +3,9 @@ infoScoop OpenSource 3.1.0
 
 About infoScoop OpenSource
 --------------------------
-"infoScoop OpenSource" is information portal that evolute according with
+"infoScoop OpenSource" is information portal that evolve according with
  personal work style. This portal provides important information for individuals
- from business system and huge information in or out of the company. It implement
+ from business system and huge information in or out of the company. It implements
  free arrangement of information and fits to individual information processing
  skill and work style.
 
