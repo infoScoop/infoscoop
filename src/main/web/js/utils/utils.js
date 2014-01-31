@@ -878,7 +878,7 @@ function is_getURLByIFrame(inputUrl, _callback, _eventId, parameters){
 		getTitleIFrame = document.createElement('iframe');
 		getTitleIFrame.name = 'getTitleInnerFrame';
 		getTitleIFrame.id = 'getTitleInnerFrame';
-		getTitleIFrame.src = "./blank.html";
+		
 		if( Browser.isSafari1 ) {
 			getTitleIFrame.style.width = getTitleIFrame.style.height = 0;
 			getTitleIFrame.style.visibility = "hidden";

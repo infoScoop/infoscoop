@@ -220,7 +220,6 @@
 		</copy>
 
 		<copy todir="${build.main}" file="${src.main.web}/admin/role.jsp"/>
-		<copy todir="${build.main}" file="${src.main.web}/admin/blank.html"/>
 
 		<copy todir="${build.main}/js/resources" file="${src.main.web}/js/resources/resourceBundle.jsp"/>
 		<copy todir="${build.main}/js/search" file="${src.main.web}/js/search/searchEngine.jsp"/>

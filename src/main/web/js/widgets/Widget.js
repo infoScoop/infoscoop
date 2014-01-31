@@ -854,7 +854,7 @@ IS_Widget.prototype.classDef = function() {
 					},
 					IframeContainer: {
 						parent: self.elm_widgetContent,
-						uri: "./blank.html",
+						uri: "about:blank",
 						iframeAttrs: {},
 						onGadgetLoad: "__gadgetOnLoad"	// If this property is not specified, an error occurred. (iframe onload)
 					}
@@ -869,7 +869,7 @@ IS_Widget.prototype.classDef = function() {
 		}
 		
 		self.iframe.frameBorder = 0;
-		self.iframe.src = "./blank.html";
+		self.iframe.src = "about:blank";
 		
 		var scrolling = self.scrolling;
 		if(/FragmentMiniBrowser/.test(self.widgetType ) )

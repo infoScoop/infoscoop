@@ -2112,7 +2112,7 @@ IS_Widget.RssReader.buildMultiAccessStatContent = function( widget,root ) {
 		var iframe = document.createElement("iframe");
 		iframe.frameBorder = 0;
 		iframe.style.width = iframe.style.height = "100%";
-		iframe.src = "./blank.html";
+		
 		content.appendChild( iframe );
 	});
 	
@@ -2122,7 +2122,7 @@ IS_Widget.RssReader.buildMultiAccessStatContent = function( widget,root ) {
 			Element.addClassName( $("tab_"+new_container.id ),"selected");
 			
 			var iframe = new_container.firstChild;
-			if( !iframe.src || /\/blank.html$/.test(iframe.src))
+			if( !iframe.src )
 				iframe.src = "accessstats?rssUrl=" +new_container.id;
 		}
 	})

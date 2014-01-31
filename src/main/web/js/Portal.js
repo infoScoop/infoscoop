@@ -1810,7 +1810,6 @@ IS_Portal.windowOverlay = function(id, tag){
 	overlay.className = "windowOverlay";
 	overlay.id = id;
 	if(tag == 'iframe'){
-		overlay.src = './blank.html';
 		overlay.setAttribute("frameborder", "0");
 	}
 	document.body.appendChild(overlay);
@@ -2234,7 +2233,6 @@ IS_Portal.behindIframe = {
 		this.behindIframe.id = "is_portal_behind_iframe";
 		this.behindIframe.frameBorder = 0;
 		this.behindIframe.style.position = "absolute";
-		this.behindIframe.src = "./blank.html";
 		document.getElementsByTagName('body')[0].appendChild(this.behindIframe);
 		this.behindIframe.hide();
 	},
@@ -2273,7 +2271,6 @@ IS_Portal.commandBarMenuBehindIframe = {
 		this.behindIframe.id = "is_portal_comandbar_behind_iframe";
 		this.behindIframe.frameBorder = 0;
 		this.behindIframe.style.position = "absolute";
-		this.behindIframe.src = "./blank.html";
 		document.getElementsByTagName('body')[0].appendChild(this.behindIframe);
 		this.behindIframe.hide();
 	},

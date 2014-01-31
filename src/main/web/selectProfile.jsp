@@ -128,8 +128,6 @@ function resize() {
 }
 function hidePreview() {
 	preview.style.display = "none";
-	iframe.src = "blank.html";
-
 	clearTimeout( timer );
 }
 function check(form){

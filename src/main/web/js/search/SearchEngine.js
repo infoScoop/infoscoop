@@ -953,7 +953,7 @@ IS_Portal.SearchEngines = {
 		var searchEngineList = this._searchEngines;
 		for(var i = 0; i <searchEngineList.length; i++){
 			var sIframe = searchEngineList[i].iframe;
-			if(sIframe) sIframe.src = "./blank.html";
+			if(sIframe) sIframe.src = "about:blank";
 		}
 	}
 }

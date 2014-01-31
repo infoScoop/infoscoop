@@ -58,7 +58,7 @@ if( url == null ) {
 <body style="margin:0px;padding:0px;">
 
 <iframe id="ifrm" frameBorder="0" style="display:none;margin:0px;padding:0px;width:100%;height:100%;"
-src="./blank.html"
+src="about:blank"
 scrolling="<%=scrolling%>"></iframe>
 
 <%

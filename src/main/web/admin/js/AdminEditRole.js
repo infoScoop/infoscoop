@@ -119,7 +119,6 @@ IS_Portal.behindIframe = {
 		this.behindIframe.id = "is_portal_behind_iframe";
 		this.behindIframe.frameBorder = 0;
 		this.behindIframe.style.position = "absolute";
-		this.behindIframe.src = "./blank.html";
 		document.getElementsByTagName('body')[0].appendChild(this.behindIframe);
 		this.behindIframe.hide();
 	},
