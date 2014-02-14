@@ -624,12 +624,6 @@ CalendarComponent.prototype = {
 			var cm = self.getScrollDate().getMonth();
 			var newDate = new Date();
 			newDate.setFullYear( scrollDate.getFullYear(),cm +step,1 );
-			var sm = newDate.getMonth();
-			newDate.setDate( scrollDate.getDate());
-			
-			var axis = ( step < 0 )? -1:1;
-			while( sm != newDate.getMonth())
-				newDate.setDate( newDate.getDate() +axis );
 			
 			self.setScrollDate( newDate );
 		}
