@@ -516,6 +516,7 @@
 			<filelist dir="${src.admin.web}/js" files="AdminGadgetUploadForm.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminWidgetConf.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminEditWidgetConf.js"/>
+            <filelist dir="${src.admin.web}/js" files="AdminExtApps.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminHTMLFragment.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminPortalAdmins.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminMenuExplorer.js"/>
