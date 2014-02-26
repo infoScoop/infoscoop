@@ -28,7 +28,16 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 
 public class ISClientDetailsService implements ClientDetailsService {
 	private static Log log = LogFactory.getLog(ISClientDetailsService.class);
-	
+	private static String resourceId;
+
+	public void setResourceId(String resourceId){
+	    this.resourceId = resourceId;
+    }
+
+	public static String getResouceId(){
+	    return resourceId;
+	}
+
 	@Override
 	public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
 		OAuth2ProviderClientDetailDAO provider = OAuth2ProviderClientDetailDAO.newInstance();

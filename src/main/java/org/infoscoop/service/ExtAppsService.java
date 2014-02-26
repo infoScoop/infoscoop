@@ -28,6 +28,7 @@ import org.infoscoop.api.dao.OAuth2ProviderClientDetailDAO;
 import org.infoscoop.api.dao.OAuth2ProviderRefreshTokenDAO;
 import org.infoscoop.api.dao.model.OAuth2ProviderAccessToken;
 import org.infoscoop.api.dao.model.OAuth2ProviderClientDetail;
+import org.infoscoop.api.oauth2.provider.ISClientDetailsService;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,7 +49,7 @@ public class ExtAppsService {
 	private static final String GRANTTYPE_PASSWORD = "password";
 	private static final String GRANTTYPE_IMPLICIT = "implicit";
 
-	private static final String SCOPE_USERPROFILE = "SCOPE_USERPROFILE";
+	private static final String SCOPE_USERPROFILE = "USERPROFILE";
 	
 	public ExtAppsService(){}
 
@@ -116,8 +117,8 @@ public class ExtAppsService {
 			clientId = createUUID();
 			secret = createUUID();
 		}
-		
-		oauth2ProviderClientDetailDAO.saveClientDetail(clientId, title, title, secret, SCOPE_USERPROFILE, grantType, redirectUrl, null, null, null, null, additionalInformation);
+
+		oauth2ProviderClientDetailDAO.saveClientDetail(clientId, title, ISClientDetailsService.getResouceId(), secret, SCOPE_USERPROFILE, grantType, redirectUrl, null, null, null, null, additionalInformation);
 		
 		// response JSON
 		JSONObject obj2 = new JSONObject();

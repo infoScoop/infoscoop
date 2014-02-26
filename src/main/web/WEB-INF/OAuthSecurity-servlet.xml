@@ -121,12 +121,9 @@
 	<oauth:resource-server id="resourceServerFilter" resource-id="infoscoop" token-services-ref="tokenServices" />
 
 	<!-- OAuth2 client detail settings -->
-	<bean id="clientDetails" class="org.infoscoop.api.oauth2.provider.ISClientDetailsService"/>
-<!-- 
-	<oauth:client-details-service id="clientDetails">
-		<oauth:client client-id="tonr" resource-ids="infoscoop" authorized-grant-types="password,authorization_code,refresh_token,implicit,client_credentials" authorities="ROLE_CLIENT" scope="read,write" secret="secret" />
-	</oauth:client-details-service>
- -->
+	<bean id="clientDetails" class="org.infoscoop.api.oauth2.provider.ISClientDetailsService">
+           <property name="resourceId" value="infoscoop"/>
+    </bean>
 
 	<!-- application settings -->
 	<mvc:annotation-driven />
