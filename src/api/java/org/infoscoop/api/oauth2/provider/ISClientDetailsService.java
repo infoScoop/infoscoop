@@ -47,7 +47,7 @@ public class ISClientDetailsService implements ClientDetailsService {
 			throw new ClientRegistrationException("Client Detail not set up.");
 		}
 		
-		BaseClientDetails clientDetails = new BaseClientDetails(clientId, pcd.getResourceIds(), pcd.getScope(), pcd.getGrantTypes(), pcd.getAuthorities());
+		BaseClientDetails clientDetails = new BaseClientDetails(clientId, pcd.getResourceIds(), pcd.getScope(), pcd.getGrantTypes(), pcd.getAuthorities(), pcd.getRedirectUrl());
 		clientDetails.setClientSecret(pcd.getSecret());
 
 		return clientDetails;
