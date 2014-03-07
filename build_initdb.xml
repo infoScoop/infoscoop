@@ -20,6 +20,7 @@
 		<mkdir dir="${build.work}/initdb/bin"/>
 		<mkdir dir="${build.work}/initdb/infoscoop"/>
 		<mkdir dir="${build.work}/initdb/lib"/>
+        <mkdir dir="${build.work}/initdb/gadget_files"/>
 
 		<copy todir="${build.work}/initdb/schema">
 			<fileset dir="${initdb.home}/schema"/>
@@ -89,6 +90,11 @@
 	</target>
 
 	<target name="copy-gadgets">
+        <!-- copy gadget_files -->
+        <copy todir="${build.home}/work/initdb/gadget_files" overwrite="true">
+            <fileset dir="${build.gadgets}/dist/gadget_files"/>
+        </copy>
+
     	<copy todir="${build.work}/initdb/data/gadget" overwrite="true">
     		<fileset dir="${build.gadgets}/gadgets"/>
     	</copy>

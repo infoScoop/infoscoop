@@ -802,11 +802,6 @@
         <copy todir="${install_image.home}/tools/initdb">
             <fileset dir="${build.home}/work/initdb"/>
         </copy>
-    	
-    	<!-- copy gadget_files -->
-    	<copy todir="${install_image.home}/tools/initdb">
-    		<fileset dir="${build.gadgets}/dist"/>
-    	</copy>
     </target>
 	
 	<!--
