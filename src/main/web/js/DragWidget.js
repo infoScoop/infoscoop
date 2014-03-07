@@ -918,7 +918,7 @@ IS_Draggable.prototype = {
 	IS_Portal.hideDragOverlay();
 	
 	// fix 908
-	if( Browser.isFirefox3 )
+	if( Browser.isFirefox3 || Browser.isChrome )
   	  IS_Draggables.deactivate(this);
 	
 	//Craete object for passing to onDrop

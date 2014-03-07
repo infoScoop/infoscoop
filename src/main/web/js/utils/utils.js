@@ -214,6 +214,7 @@ Browser.isIE8 = Browser.isIE && (navigator.userAgent.toLowerCase().indexOf('msie
 Browser.isFirefox = (navigator.userAgent.toLowerCase().indexOf("firefox")!=-1);
 Browser.isFirefox3 = (navigator.userAgent.toLowerCase().indexOf('firefox/3.')>-1);
 Browser.isOpera = (navigator.userAgent.toLowerCase().indexOf("opera")!=-1);
+Browser.isChrome = window.chrome;
 
 Browser.isSafari = (navigator.userAgent.toLowerCase().indexOf("safari")!=-1);
 Browser.Safari = {};
