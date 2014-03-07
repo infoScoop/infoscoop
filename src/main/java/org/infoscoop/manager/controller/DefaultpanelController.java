@@ -176,10 +176,6 @@ public class DefaultpanelController implements ControllerInterface{
 //		return "redirect:index";
 	}
 	
-	@RequestMapping(value="/iframe", method=RequestMethod.GET)
-	public void iframe() throws Exception {
-	}
-
 	@RequestMapping(value="/blank", method=RequestMethod.GET)
 	public void blank() throws Exception {
 	}
