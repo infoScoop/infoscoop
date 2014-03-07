@@ -261,7 +261,7 @@ public abstract class BaseTablayout implements Serializable {
 	 *            the LAYOUT value
 	 */
 	public void setLayout(java.lang.String layout) {
-		this.layout = layout;
+		this.layout = (layout != null)? layout : "";
 	}
 
 	/**
