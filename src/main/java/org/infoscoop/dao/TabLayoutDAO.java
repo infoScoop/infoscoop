@@ -334,7 +334,8 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 	 * @param toTemp If "toTemp" is true, copy the public performance data for temporary data. If it's false, temporary data
 	 */
 	public void copyByTabId(String uid, String tabId, boolean toTemp) {
-		this.deleteByTemp(tabId, toTemp ? TabLayout.TEMP_TRUE : TabLayout.TEMP_FALSE);
+		List<TabLayout> currentTabLayouts = selectByTempTabId(toTemp ? TabLayout.TEMP_TRUE : TabLayout.TEMP_FALSE, tabId);
+		delete(currentTabLayouts);
 		
 		List<TabLayout> tabLayouts = selectByTempTabId(toTemp ? TabLayout.TEMP_FALSE
 				: TabLayout.TEMP_TRUE, tabId);
