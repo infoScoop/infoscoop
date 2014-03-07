@@ -324,6 +324,11 @@ public class StaticTabService {
 		saveStaticTab(targetTabId, newStaticTab);
 	}
 	
+	public void updateLastmodifiedByTabId(String tabId) throws SAXException, IOException, TransformerException{
+		TabLayoutDAO tabLayoutDAO = TabLayoutDAO.newInstance();
+		tabLayoutDAO.updateLastmodifiedByTabId(tabId);
+	}
+	
 	/**
 	 * Preservation of a staticTab and renewal of gadget ID (in xml, layoutHtml) are performed.</br> 
 	 * @param tabId
@@ -343,10 +348,10 @@ public class StaticTabService {
 			TabLayout tabLayout = ite.next();
 			tabLayout.getId().setTabid(tabId);
 			
-			// update gadgetid. commandbar gadgetid is not overlap, it is not changed. 
-			if(!tabId.equals(StaticTab.COMMANDBAR_TAB_ID))
+			// update gadgetid. commandbar|header gadgetid is not overlap, it is not changed. 
+			if(!tabId.equals(StaticTab.COMMANDBAR_TAB_ID) && !tabId.equals(StaticTab.PORTALHEADER_TAB_ID))
 				updateGadgetId(tabLayout);
-
+			
 			tabLayoutDAO.insert(tabLayout);
 		}
 		
@@ -358,7 +363,7 @@ public class StaticTabService {
 			tabAdmin.getId().setTabid(tabId);
 			tadAdminDAO.insert(tabAdmin);
 		}
-}
+	}
 	
 	/**
 	 * replace all static tabs. (include commandbar, header)</br>
@@ -411,7 +416,10 @@ public class StaticTabService {
 		Element gadgets = tabLayout.getElement();
 		String layoutHTML = tabLayout.getLayout();
 		
-		Element layout = HtmlUtil.html2Dom(layoutHTML);
+		String rootTagLeft = "<root>";
+		String rootTagRight = "</root>";
+		
+		Element layout = HtmlUtil.html2Dom(rootTagLeft + layoutHTML + rootTagRight);
 		if(layout == null) return;
 		
 		NodeIterator widgetIte = XPathAPI.selectNodeIterator(gadgets, "//widget");
@@ -429,7 +437,9 @@ public class StaticTabService {
 		}
 		
 		tabLayout.setElement(gadgets);
-		tabLayout.setLayout(XmlUtil.dom2HtmlString(layout, "UTF-8"));
+		layoutHTML = XmlUtil.dom2HtmlString(layout, "UTF-8");
+		layoutHTML = layoutHTML.replaceFirst("^" + rootTagLeft, "").replaceFirst(rootTagRight + "$", "");
+		tabLayout.setLayout(layoutHTML);
 	}
 	
 	public Integer getNextTabNumber() throws Exception{

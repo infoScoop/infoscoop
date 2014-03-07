@@ -105,9 +105,14 @@ public class TabLayoutsController extends BaseController {
 		Document doc = parseTabLayoutsXML(requestBody);
 		List<StaticTab> staticTabList = toTabList(doc);
 		
+		StaticTabService service = StaticTabService.getHandle();
 		if(staticTabList.size() > 0){
 			StaticTab staticTab = staticTabList.get(0);
-			StaticTabService.getHandle().replaceStaticTab(currentStaticTab, staticTab);
+			service.replaceStaticTab(currentStaticTab, staticTab);
+			// Update last modified date of tab0 if it is commandbar
+			if (StaticTab.COMMANDBAR_TAB_ID.equals(targetTabId)) {
+				service.updateLastmodifiedByTabId(StaticTab.TABID_HOME);
+			}
 		}
 	}
 
