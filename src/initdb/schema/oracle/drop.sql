@@ -82,5 +82,9 @@ drop table is_oauth_consumers;
 drop table is_tab_admins;
 drop table is_static_tabs;
 
+drop table is_oauthprovider_accesstokens;
+drop table is_oauthprovider_refreshtokens;
+drop table is_oauthprovider_client;
+
 drop table DATABASECHANGELOG;
 drop table DATABASECHANGELOGLOCK;
