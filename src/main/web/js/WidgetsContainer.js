@@ -112,7 +112,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				
 				widgetConf.type = menuItem.type;
 				widgetConf.title = menuItem.title;
-				widgetConf.href = menuItem.href;
+				if(!!menuItem.href) widgetConf.href = menuItem.href;
 				
 				var originalId = widgetConf.id;
 				var invalid = false;
