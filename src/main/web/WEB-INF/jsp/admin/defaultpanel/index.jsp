@@ -113,6 +113,7 @@
 				return false;
 		}
 		$jq("#toCommandbar").click(checkUpdated);
+		$jq("#toPortalHeader").click(checkUpdated);
 
 		ISA_DefaultPanel.defaultPanel = new ISA_DefaultPanel();
 		$jq("#defaultPanel").ISA_TabList();
