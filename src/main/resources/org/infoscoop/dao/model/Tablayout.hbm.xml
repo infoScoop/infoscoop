@@ -93,6 +93,7 @@
 	    	name="statictab"
 	    	class="StaticTab"
 	    	insert="false"
+	    	update="false"
 	    	not-found="ignore">
 	      <column name="Tabid" />
 	    </many-to-one>
