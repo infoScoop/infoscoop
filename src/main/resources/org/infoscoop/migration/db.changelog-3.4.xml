@@ -699,4 +699,26 @@ values('header', 0, 'default', 'defaultRole', 'OrganizationPrincipal', 'default'
             <where>roleid='root'</where>
         </update>
     </changeSet>
+
+    <!--Issue 546-->
+    <!--UPDATE IS_I18N SET message = 'A client secret is re-set up.\nAll the authentication information of the user using this external application is deleted.\nThis operation cannot be canceled.\n\nIs it all right?' WHERE id='ams_confirmResetClientSecret' and lang='ALL';-->
+    <!--UPDATE IS_I18N SET message = 'クライアントシークレットを再設定します。\nこの外部アプリを利用しているユーザの認証情報はすべて削除されます。\nこの操作は取り消すことができません。\n\nよろしいですか？' WHERE id='ams_confirmResetClientSecret' and lang='ja';-->
+    <!--UPDATE IS_I18N SET message = '重新设置Client Secret。\n所有使用这种外部应用程序的用户的认证信息被删除。\n此操作不能被取消。\n\n没事吧？' WHERE id='ams_confirmResetClientSecret' and lang='zh';-->
+    <changeSet id="infoscoop340_546_2" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_546_2">
+            <dbms type="oracle" />
+        </preConditions>
+        <update tableName="IS_I18N">
+            <column name="message" value="A client secret is re-set up.\nAll the authentication information of the user using this external application is deleted.\nThis operation cannot be canceled.\n\nIs it all right?"/>
+            <where>id='ams_confirmResetClientSecret' and lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N">
+            <column name="message" value="クライアントシークレットを再設定します。\nこの外部アプリを利用しているユーザの認証情報はすべて削除されます。\nこの操作は取り消すことができません。\n\nよろしいですか？"/>
+            <where>id='ams_confirmResetClientSecret' and lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N">
+            <column name="message" value="重新设置Client Secret。\n所有使用这种外部应用程序的用户的认证信息被删除。\n此操作不能被取消。\n\n没事吧？"/>
+            <where>id='ams_confirmResetClientSecret' and lang='zh'</where>
+        </update>
+    </changeSet>
 </databaseChangeLog>
