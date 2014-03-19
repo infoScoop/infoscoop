@@ -1668,6 +1668,8 @@ IS_Portal.buildFontSelectDiv = function(){
 		if(fontEl.parentNode && fontEl.offsetWidth){
 			var offset = parseInt(fontEl.offsetWidth);
 			var styleWidth = parseInt(fontEl.style.width);
+			if(!styleWidth) styleWidth = 1;
+
 			offset = (!Browser.isSafari)?offset*3:offset*3.2;
 			styleWidth = styleWidth+1
 			Element.setStyle(fontEl, {width: offset + 'px'});
