@@ -706,7 +706,9 @@ values('header', 0, 'default', 'defaultRole', 'OrganizationPrincipal', 'default'
     <!--UPDATE IS_I18N SET message = '重新设置Client Secret。\n所有使用这种外部应用程序的用户的认证信息被删除。\n此操作不能被取消。\n\n没事吧？' WHERE id='ams_confirmResetClientSecret' and lang='zh';-->
     <changeSet id="infoscoop340_546_2" author="mikami">
         <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_546_2">
-            <dbms type="oracle" />
+            <not>
+                <dbms type="mysql" />
+            </not>
         </preConditions>
         <update tableName="IS_I18N">
             <column name="message" value="A client secret is re-set up.\nAll the authentication information of the user using this external application is deleted.\nThis operation cannot be canceled.\n\nIs it all right?"/>
