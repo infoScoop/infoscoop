@@ -198,6 +198,9 @@
 				<property name="widgetDAO">
 					<ref bean="widgetDAO" />
 				</property>
+				<property name="StaticTabDAO">
+					<ref bean="staticTabDAO" />
+				</property>
 			</bean>
 		</property>
 		<property name="transactionManager">
@@ -206,6 +209,7 @@
 		<property name="transactionAttributes">
 			<props>
 				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="copy*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="replace*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="commit*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
@@ -236,6 +240,7 @@
 				<prop key="getWidgetsNode">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="syncPanels">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="clearConfigurations">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="clearProfile">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
 			</props>
 		</property>
@@ -303,7 +308,7 @@
 		<property name="transactionAttributes">
 			<props>
 				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
-				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_SUPPORTS,-java.lang.Exception</prop>
 				<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
 			</props>
 		</property>
@@ -555,6 +560,61 @@
 			<props>
 				<prop key="save*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="StaticTabService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.StaticTabService">
+				<property name="StaticTabDAO">
+					<ref bean="staticTabDAO" />
+				</property>
+				<property name="TabAdminDAO">
+					<ref bean="tabAdminDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="save*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="replace*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+				<prop key="is*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="ExtAppsService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean
+				class="org.infoscoop.service.ExtAppsService">
+				<property name="oauth2ProviderClientDetailDAO">
+					<ref bean="oauth2ProviderClientDetailDAO" />
+				</property>
+				<property name="oauth2ProviderAccessTokenDAO">
+					<ref bean="oauth2ProviderAccessTokenDAO" />
+				</property>
+				<property name="oauth2ProviderRefreshTokenDAO">
+					<ref bean="oauth2ProviderRefreshTokenDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="save*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="reset*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
 			</props>
 		</property>

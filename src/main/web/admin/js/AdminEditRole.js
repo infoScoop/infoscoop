@@ -93,7 +93,7 @@ IS_Widget.RssReader.dropGroup.add = function(){};
 // override
 IS_Widget.Message.checkNewMsg = function(){};
 
-IS_Customization = {"commandbar":"<table cellpadding=\"0\" cellspacing=\"3\" width=\"100%\">\r\n\t<tr>\r\n\t\t<td width=\"100%\"><div id=\"p_1_w_4\"><\/div><\/td>\r\n\t\t<td><div id=\"p_1_w_6\"><\/div><\/td>\r\n\t\t<td><div id=\"portal-go-home\"><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-change-fontsize\" disabledCommand=\"true\"><!--&lt;div id=\"portal-change-fontsize\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t\t<td><div id=\"portal-trash\"><\/div><\/td>\r\n\t\t<td><div id=\"portal-preference\"><div class=\"allPreference\"><\/div><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-credential-list\" disabledCommand=\"true\"><!--&lt;div id=\"portal-credential-list\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t\t<td><div id=\"portal-admin-link\"><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-logout\" disabledCommand=\"true\"><!--&lt;div id=\"portal-logout\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t<\/tr>\r\n<\/table>\r\n","contentFooter":[{"type":"mail"},{"type":"message"}],"css":"/* Custom CSS code is described here.  */","header":"<table width=\"100%\" height=\"53px\" cellspacing=\"0\" cellpadding=\"0\" style=\"background:url(skin/imgs/head_blue.png)\">\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td><a href=\"javascript:void(0)\" onclick=\"javascript:IS_Portal.goHome();return false;\"><img src=\"skin/imgs/infoscoop.gif\" alt=\"infoScoop\" border=\"0\" style=\"margin:0 0 0 20px;\" height=\"45\"/><\/a>\r\n\t\t\t<\/td>\r\n\t\t\t<td>\r\n\t\t\t\t<form name=\"searchForm\" onsubmit=\"javascript:IS_Portal.SearchEngines.buildSearchTabs(document.getElementById('searchTextForm').value);return false;\">\r\n\t\t\t\t<div style=\"float:right;margin-right:5px\">\r\n\t\t\t\t\t<table>\r\n\t\t\t\t\t\t<tbody>\r\n\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t<td colspan=\"2\" align=\"right\" style=\"font-size:80%;\">\r\n\t\t\t\t\t\t\t\t\tWelcome,admin-\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<\/td>\r\n\t\t\t\t\t\t\t<\/tr>\r\n\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t\t\t<input id=\"searchTextForm\" type=\"text\" style=\"width:200px;height:23px;float:left;\"/>\r\n\t\t\t\t\t\t\t\t\t<input type=\"submit\" value=\"Search\" style=\"padding:0 0.4em;\"/>\r\n\t\t\t\t\t\t\t\t\t<span id=\"editsearchoption\">Search options<\/span>\r\n\t\t\t\t\t\t\t\t<\/td>\r\n\t\t\t\t\t\t\t<\/tr>\r\n\t\t\t\t\t\t<\/tbody>\r\n\t\t\t\t\t<\/table>\r\n\t\t\t\t<\/div>\r\n\t\t\t\t<\/form>\r\n\t\t\t<\/td>\r\n\t\t<\/tr>\r\n\t<\/tbody>\r\n<\/table>","title":"infoScoop"};
+IS_Customization = {"commandbar":"<table cellpadding=\"0\" cellspacing=\"3px\" width=\"100%\">\r\n\t<tr>\r\n\t\t<td width=\"100%\"><div id=\"p_1_w_4\"><\/div><\/td>\r\n\t\t<td><div id=\"p_1_w_6\"><\/div><\/td>\r\n\t\t<td><div id=\"portal-go-home\"><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-change-fontsize\" disabledCommand=\"true\"><!--&lt;div id=\"portal-change-fontsize\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t\t<td><div id=\"portal-trash\"><\/div><\/td>\r\n\t\t<td><div id=\"portal-preference\"><div class=\"allPreference\"><\/div><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-credential-list\" disabledCommand=\"true\"><!--&lt;div id=\"portal-credential-list\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t\t<td><div id=\"portal-admin-link\"><\/div><\/td>\r\n\t\t<td><div id=\"disabled_portal-logout\" disabledCommand=\"true\"><!--&lt;div id=\"portal-logout\"&gt;&lt;/div&gt;--><\/div><\/td>\r\n\t<\/tr>\r\n<\/table>\r\n","contentFooter":[{"type":"mail"},{"type":"message"}],"css":"/* Custom CSS code is described here.  */","header":"<table width=\"100%\" height=\"53px\" cellspacing=\"0\" cellpadding=\"0\" style=\"background:url(skin/imgs/head_blue.png)\">\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td><a href=\"javascript:void(0)\" onclick=\"javascript:IS_Portal.goHome();return false;\"><img src=\"skin/imgs/infoscoop.gif\" alt=\"infoScoop\" border=\"0\" style=\"margin:0 0 0 20px;\" height=\"45\"/><\/a>\r\n\t\t\t<\/td>\r\n\t\t\t<td>\r\n\t\t\t\t<form name=\"searchForm\" onsubmit=\"javascript:IS_Portal.SearchEngines.buildSearchTabs(document.getElementById('searchTextForm').value);return false;\">\r\n\t\t\t\t<div style=\"float:right;margin-right:5px\">\r\n\t\t\t\t\t<table>\r\n\t\t\t\t\t\t<tbody>\r\n\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t<td colspan=\"2\" align=\"right\" style=\"font-size:80%;\">\r\n\t\t\t\t\t\t\t\t\tWelcome,admin-\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<\/td>\r\n\t\t\t\t\t\t\t<\/tr>\r\n\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t\t\t<input id=\"searchTextForm\" type=\"text\" style=\"width:200px;height:23px;float:left;\"/>\r\n\t\t\t\t\t\t\t\t\t<input type=\"submit\" value=\"Search\" style=\"padding:0 0.4em;\"/>\r\n\t\t\t\t\t\t\t\t\t<span id=\"editsearchoption\">Search options<\/span>\r\n\t\t\t\t\t\t\t\t<\/td>\r\n\t\t\t\t\t\t\t<\/tr>\r\n\t\t\t\t\t\t<\/tbody>\r\n\t\t\t\t\t<\/table>\r\n\t\t\t\t<\/div>\r\n\t\t\t\t<\/form>\r\n\t\t\t<\/td>\r\n\t\t<\/tr>\r\n\t<\/tbody>\r\n<\/table>","title":"infoScoop"};
 
 IS_Portal.CommandBar = {
   init:function(){}
@@ -113,13 +113,12 @@ IS_Portal.behindIframe = {
 	init:function(){
 		//if(!Browser.isIE)return;
 		this.behindIframe = $(document.createElement('iframe'));
-		this.behindIframe.border = 0;
-		this.behindIframe.style.margin = 0;
-		this.behindIframe.style.padding = 0;
+		this.behindIframe.border = 0 + 'px';
+		this.behindIframe.style.margin = 0 + 'px';
+		this.behindIframe.style.padding = 0 + 'px';
 		this.behindIframe.id = "is_portal_behind_iframe";
 		this.behindIframe.frameBorder = 0;
 		this.behindIframe.style.position = "absolute";
-		this.behindIframe.src = "./blank.html";
 		document.getElementsByTagName('body')[0].appendChild(this.behindIframe);
 		this.behindIframe.hide();
 	},
@@ -130,8 +129,8 @@ IS_Portal.behindIframe = {
 		var pos = Position.cumulativeOffset(element);
 		this.behindIframe.style.top = pos[1] + "px";
 		this.behindIframe.style.left = pos[0] + "px";
-		this.behindIframe.style.width = element.offsetWidth;
-		this.behindIframe.style.height = element.offsetHeight;
+		this.behindIframe.style.width = element.offsetWidth + 'px';
+		this.behindIframe.style.height = element.offsetHeight + 'px';
 		if(element.style.zIndex)
 			this.behindIframe.style.zIndex = element.style.zIndex -1;
 		else
@@ -145,8 +144,8 @@ IS_Portal.behindIframe = {
 		//if(!Browser.isIE)return;
 		this.behindIframe.style.left = 0 + "px";
 		this.behindIframe.style.top = 0 + "px";
-		this.behindIframe.style.width = 0;
-		this.behindIframe.style.height = 0;
+		this.behindIframe.style.width = 0 + 'px';
+		this.behindIframe.style.height = 0 + 'px';
 		this.behindIframe.hide();
 	}
 };
@@ -223,7 +222,10 @@ function prepareStaticArea(){
 			//delete jsonRole.staticPanel[oldId];
 			is_deleteProperty(jsonRole.staticPanel, oldId);
 			jsonRole.staticPanel[widgetJSON.id] = widgetJSON;
-			openerPanel.setNewValue("staticpanel", Object.toJSON(jsonRole.staticPanel), jsonRole.id);
+			
+ 			// When converting the object of a parent window to a jsonString in IE8, it is necessary to perform a deep copy. Otherwise, "undifined" will be returned. 
+			openerPanel.setNewValue("staticpanel", Object.toJSON($jq.extend(true,{},jsonRole.staticPanel)), jsonRole.id);
+//			openerPanel.setNewValue("staticpanel", Object.toJSON(jsonRole.staticPanel), jsonRole.id);
 			
 			jsonRole.layout = jsonRole.layout.replace( escapeHTMLEntity( oldId ),widgetJSON.id );
 			$jq("#" + oldId).attr("id", widgetJSON.id);
@@ -239,7 +241,7 @@ function prepareStaticArea(){
 					ignoreHeader : ISA_CommonModals.EditorForm.isIgnoreHeader(),
 					noBorder : ISA_CommonModals.EditorForm.isNoBorder(),
 					type : ISA_CommonModals.EditorForm.getSelectType(),
-					property : ISA_CommonModals.EditorForm.getProperty(widgetJSON)
+					property : $jq.extend(true,{}, widgetJSON.properties)
 				});
 				
 			if( Control.Modal.current ) {
@@ -286,7 +288,7 @@ function adjustStaticWidgetHeight(){
 	var columns = $$("#staticAreaContainer .static_column");
 	var windowHeight = getWindowSize(false) - findPosY($("staticAreaContainer")) - 36;
 	for(var i =0; i < columns.length; i++){
-		columns[i].style.height = windowHeight;
+		columns[i].style.height = windowHeight + "px";
 	}
 }
 
@@ -366,6 +368,7 @@ function init() {
 			
 			ISA_DefaultPanel.updateRaws.push("tab_"+openerPanel.displayTabId+"_role_" + openerPanel.displayRoleId);
 			openerPanel.updateRawStyle();
+			saveDynamicPanel();
 		});
 	
 	//set static container
@@ -387,7 +390,11 @@ function init() {
 		new IS_SiteAggregationMenu(true);
 		new IS_SidePanel.SiteMap(true);
 	}
-	new IS_WidgetsContainer("manager/defaultpanel/widsrv?tabId=" + jsonRole.tabId + "&roleOrder=" + jsonRole.roleOrder);
+	
+	var currentUrl = location.href;
+	var srvUrl = currentUrl.replace(/.*\/(manager\/[^\/]*\/).*/, "$1");
+	
+	new IS_WidgetsContainer(srvUrl + "widsrv?tabId=" + jsonRole.tabId + "&roleOrder=" + jsonRole.roleOrder);
 
 	//menuItem to panel
 	var panelBody = document.body;
@@ -477,7 +484,7 @@ function init() {
 		}
 		
 		if( widget.isGadget()) {
-			if( Browser.isIE ) {
+			if( Browser.isIE8 ) {
 				IS_Portal.adjustGadgetHeight( widget,true );
 			} else {
 				widget.loadContents();
@@ -664,7 +671,7 @@ function init() {
 			}
 		}
 		if (nearGhost != null && widgetGhost.nextSibling != nearGhost) {
-			widgetGhost.style.height = 20;
+			widgetGhost.style.height = 20 + "px";
 			widgetGhost.style.display = "block";
 			nearGhost.parentNode.insertBefore(widgetGhost,nearGhost);
 			widgetGhost.col = nearGhost.col;
@@ -672,30 +679,97 @@ function init() {
 	}
 	IS_Droppables.add(panelBody, menuopt);
 	
-	$jq("#select_layout_link").click(function(){
-		$jq("#staticLayouts"+(areaType != 2 ? "AdjustHeight":"")).hide();
+	
+	/** init layoutSelect **/
+	var currentStaticColCount = $jq("#staticAreaContainer .static_column").length;
+	
+	$jq("#staticLayouts"+(areaType != 2 ? "AdjustHeight":"")).hide();
+	var targetAreaId = "staticLayouts"+(areaType == 2 ? "AdjustHeight":"");
+	$jq("#" + targetAreaId+ ">div").hide();
+	
+	// create gadgets-num button
+	var columnsCountList = [];
+	$jq("#" + targetAreaId+ ">div").each(function(idx, staticLayout){
+		staticLayout = $jq(staticLayout);
 		
+		var columnLength = $jq(".static_column", $jq(">:not(.template)", staticLayout)).length;
+		
+		staticLayout.addClass("gadgets-" + columnLength);
+		
+		if($jq.inArray(columnLength, columnsCountList) == -1)
+			columnsCountList.push(columnLength);
+	});
+	
+	columnsCountList.sort(function(a,b){return a>b});
+	
+	$jq.each(columnsCountList, function(idx, gadgetsNum){
+		var parent = $jq("#gadgetsnum_buttonset")
+		var idPrefix = "gadgetsnum_buttonset_";
+		;
+		var radioButton = $jq("<input>")
+			.attr("id", idPrefix + gadgetsNum)
+			.attr("type", "radio")
+			.attr("name", idPrefix + "radio")
+			.appendTo(parent);
+		
+		if(gadgetsNum == 0){
+			radioButton.attr("checked", true);
+		}
+		else if(gadgetsNum == currentStaticColCount){
+			$jq("input", parent).attr("checked", false);
+			radioButton.attr("checked", true);
+		}
+		
+		$jq("<label>").attr("for", idPrefix + gadgetsNum).text(gadgetsNum).appendTo(parent);
+		
+		radioButton.click(function(){
+			var id = $jq(this).attr("id");
+			var number = id.replace(/^gadgetsnum_buttonset_(.+)$/, "$1");
+			
+			$jq("#" + targetAreaId+ ">div").hide();
+			$jq("#" + targetAreaId + " .gadgets-" + number).show();
+		});
+	});
+	
+	$jq("#gadgetsnum_buttonset").buttonset();
+	
+	// show default
+	if($jq("#" + targetAreaId + " .gadgets-" + currentStaticColCount).length > 0){
+		$jq("#" + targetAreaId + " .gadgets-" + currentStaticColCount).show();
+	}else{
+		$jq("#" + targetAreaId + " .gadgets-" + columnsCountList[0]).show();
+	}
+	
+	$jq("#select_layout_link").click(function(){		
 		$jq("#select_layout_modal").dialog({
 			modal:true,
-			width: (Browser.isIE)? "600px" : 600,
-			height: (Browser.isIE)? "500px" : 500,
+			width: 600,
+			height: 500,
+			resizable: false,
+			draggable: false,
 			open: function(){
 				IS_Portal.behindIframe.show(this.parentNode);
 				
 				var dialog = $jq(this);
 				if(dialog.data("init")) return;
+				
+				// init process
 				$jq("#select_layout_modal .staticLayout"+(areaType == 2 ? "AdjustHeight":""))
 					.mouseover(function(){$jq(this).css("background-color","#9999cc")})
 					.mouseout(function(){$jq(this).css("background-color","")})
 					.click(function(){
 						if(!confirm(ISA_R.alb_destroyOldSettings))
 							return;
-						var newNode = setIdentifier($jq(this).clone(true));
+
+						var selectedContent = $jq(this);
+						var layoutTemplate = $jq($jq.parseHTML(selectedContent.html())).closest(".template");
+						var newNode = (layoutTemplate.length > 0) ? layoutTemplate : selectedContent.clone(true);
+						setIdentifier(newNode);
 						openerPanel.setNewValue("layout", newNode.html(), jsonRole.id);
+						openerPanel.setNewValue("staticPanel", "{}", jsonRole.id);
 						
 						$jq("#staticAreaContainer").html(jsonRole.layout);
 						
-						jsonRole.staticPanel = {};
 						prepareStaticArea();
 						
 						reloadStaticGadgets();
@@ -705,6 +779,7 @@ function init() {
 				$jq("#select_layout_cancel").click(function(){
 					dialog.dialog("close");
 				});
+				
 				dialog.data("init", true);
 			},
 			close:function(){
@@ -716,8 +791,10 @@ function init() {
 	$jq("#edit_layout_link").click(function(){
 		$jq("#edit_layout_modal").dialog({
 			modal:true,
-			width: (Browser.isIE)? "580px" : 580,
-			height: (Browser.isIE)? "400px" : 400,
+			width: 580,
+			height: 400,
+			resizable: false,
+			draggable: false,
 			open:function(){
 				IS_Portal.behindIframe.show(this.parentNode);
 				
@@ -727,8 +804,15 @@ function init() {
 				if(dialog.data("init")) return;
 				
 				$jq("#edit_layout_ok").click(function(){
+					/*
 					openerPanel.setNewValue("layout", $jq("#edit_layout_textarea").val(), jsonRole.id);
 					$jq('#staticAreaContainer').html(jsonRole.layout);
+					*/
+					var staticAreaContainer = $jq('#staticAreaContainer');
+					staticAreaContainer.html($jq("#edit_layout_textarea").val());
+					setIdentifier(staticAreaContainer);
+					openerPanel.setNewValue("layout", staticAreaContainer.html(), jsonRole.id);
+					
 					prepareStaticArea();
 					
 					reloadStaticGadgets();
@@ -750,9 +834,29 @@ function init() {
 	Event.observe($("areaType"), 'change', function(){
 		//change areaType from static and personalized area to only static area.
 		if(areaType != this.value){
-			if(!confirm("表示エリアを変更するにはリロードする必要があります。よろしいですか？")){
+//			if(!confirm("表示エリアを変更するにはリロードする必要があります。よろしいですか？")){
+			var confirmMessage;
+			var isReset = false;
+			if((this.value == "2" && areaType != "2") || (this.value != "2" && areaType == "2")){
+				confirmMessage = ISA_R.alb_changeStaticAreaType_confirm_2;
+				isReset = true;
+			}else{
+				confirmMessage = ISA_R.alb_changeStaticAreaType_confirm_1;
+			}
+			
+			if(!confirm(confirmMessage)){
 				$jq("#areaType option[value="+ areaType.toString() +"]").attr("selected","selected");
 				return;
+			}
+			
+			if(isReset){
+				// reset
+				var target = $jq("#staticLayout" + ((this.value == "2")? "AdjustHeight" : "") + "_tpl_default");
+				var layoutTemplate = $jq($jq.parseHTML(target.html())).closest(".template");
+				layoutTemplate = (layoutTemplate.length > 0) ? layoutTemplate : $jq(target).clone(true);
+				setIdentifier(layoutTemplate);
+				openerPanel.setNewValue("layout", layoutTemplate.html(), jsonRole.id);
+				openerPanel.setNewValue("staticPanel", "{}", jsonRole.id);
 			}
 			
 			switch(this.value){
@@ -769,6 +873,7 @@ function init() {
 					openerPanel.setNewValue("adjusttowindowheight", true, jsonRole.id);
 					break;
 			}
+			
 			location.reload();
 		}
 	});
@@ -847,14 +952,29 @@ function _saveDynamicPanel(){
 			var wid = IS_Portal.getTrueId(widgetEl.id);
 			var widget = IS_Portal.getWidget(wid, IS_Portal.currentTabId);
 			var menuId = (widget.widgetConf.menuId)? widget.widgetConf.menuId : wid.substring(2);
+			var colnum = $jq(widget.elm_widget).parent().attr('colnum');
 			
-			var menuItem = IS_TreeMenu.types.topmenu.menuItemList[menuId];
-			if(!menuItem)
-				menuItem = IS_TreeMenu.types.sidemenu.menuItemList[menuId];
+			var targetMenu = (IS_TreeMenu.types.topmenu)? IS_TreeMenu.types.topmenu : IS_TreeMenu.types.sidemenu;
+			var menuItem = null;
+			
+			if(targetMenu){
+				menuItem = targetMenu.menuItemList[menuId];
+				if(!menuItem && IS_TreeMenu.types.sidemenu){
+					targetMenu = IS_TreeMenu.types.sidemenu;
+					menuItem = targetMenu.menuItemList[menuId];
+				}
+			}
+			if(!menuItem){
+				menuItem = {
+					id: +new Date() + "_" + colnum + "_" + index,
+					type: "notAvailable"
+				}
+			}
 			
 			var widgetJSON = {
-				id : "w_" + menuItem.id,
-				column : new String(widget.widgetConf.column),
+				id : "w_" + (menuItem.multi? menuItem.id + "_" + (+new Date()) + "_" + colnum + "_" + index : menuItem.id),
+				menuId : menuItem.id,
+				column : new String($jq(widget.elm_widget).parent().attr('colnum')),
 				type : menuItem.type? menuItem.type : widget.widgetType,
 				properties: (menuItem.properties && typeof menuItem.properties == "Object" )?
 								menuItem.properties : {}
@@ -915,3 +1035,7 @@ function updatePanel(){
 	openerPanel.updatePanel(true);
 }
 Event.observe(window, 'beforeunload', updatePanel);
+
+if(displayTopMenu && IS_SiteAggregationMenu.topMenuIdList)
+	Event.observe(window, "scroll",  IS_SiteAggregationMenu.resetMenu, false);
+

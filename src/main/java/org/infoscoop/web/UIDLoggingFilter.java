@@ -18,6 +18,7 @@
 package org.infoscoop.web;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -27,6 +28,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.MDC;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class UIDLoggingFilter implements javax.servlet.Filter {
 	public void doFilter(ServletRequest req, ServletResponse resp,
@@ -34,6 +36,19 @@ public class UIDLoggingFilter implements javax.servlet.Filter {
 		String uid = ( String )(( HttpServletRequest )req ).getSession().getAttribute("Uid");
 		if( uid == null )
 			uid = "";
+		
+		// for infoScoop api log
+		Enumeration<?> enu = (( HttpServletRequest )req ).getAttributeNames();
+		while(enu.hasMoreElements()){
+			String key = (String)enu.nextElement();
+			if(key.equals("OAuth2AuthenticationDetails.ACCESS_TOKEN_VALUE")||key.equals("OAuth2AuthenticationDetails.REFRESH_TOKEN_VALUE")){
+				Object obj = SecurityContextHolder.getContext().getAuthentication().getName();
+				if(obj instanceof String)
+					uid = (String)obj;
+
+				break;
+			}
+		}
 		
 		MDC.put("uid",uid );
 		chain.doFilter( req,resp );

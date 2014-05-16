@@ -45,7 +45,7 @@ IS_Request.Queue = function (servName, time, disabled, checkDuplicate){
 			}
 			
 			queued.push(command);
-			if (command.priority==this.PRIORITY_IMMEDIATE){
+			if (command.priority==this.PRIORITY_IMMEDIATE || time <= 0){
 				this.fireRequest();
 			}
 		}
@@ -351,15 +351,11 @@ IS_Request.createModalAuthFormDiv = function(label, element, _callback, isModal,
 			if(!isOK)
 				_callback();
 		}
-		modal = new Control.Modal(element,
-				  {
-					contents: credentialFormDiv,
-					opacity: 0.5,
-					position: 'relative',
-					width: '300',
-					afterClose: afterCloseFunc
-				  }
-			  );
+		modal = new Control.Modal('', {
+			width: 300,
+			afterClose: afterCloseFunc
+		});
+		modal.container.update(credentialFormDiv);
 		modal.open();
 		element.onclick = function(){};//stopObserving does not listen
 	}else{

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.infoscoop.api.dao.model">
+ <class name="OAuth2ProviderClientDetail" table="IS_OAUTHPROVIDER_CLIENT">
+  <meta attribute="sync-DAO">false</meta>
+  <id column="id" length="255" name="id" type="string"/>
+  <property column="title" generated="never" lazy="false" length="255"
+   name="title" not-null="true" type="string"/>
+  <property column="resource_ids" generated="never" lazy="false"
+   length="255" name="resourceIds" type="string"/>
+  <property column="secret" generated="never" lazy="false" length="255"
+   name="secret" not-null="true" type="string"/>
+  <property column="scope" generated="never" lazy="false" length="255"
+   name="scope" type="string"/>
+  <property column="grant_types" generated="never" lazy="false"
+   length="255" name="grantTypes" not-null="true" type="string"/>
+  <property column="redirect_url" generated="never" lazy="false"
+   length="255" name="redirectUrl" type="string"/>
+  <property column="authorities" generated="never" lazy="false"
+   length="255" name="authorities" type="string"/>
+  <property column="delete_flg" generated="never" lazy="false"
+   name="deleteFlg" type="boolean"/>
+  <property column="access_token_validity" generated="never"
+   lazy="false" name="accessTokenValidity" type="integer"/>
+  <property column="refresh_token_validity" generated="never"
+   lazy="false" name="refreshTokenValidity" type="integer"/>
+  <property column="additional_information" generated="never"
+   lazy="false" name="additionalInformation" type="string"/>
+ </class>
+</hibernate-mapping>

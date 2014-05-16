@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration>
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "http://renga.googlecode.com/svn-history/r4/vendor/logging-log4j-1.2.14/docs/api/org/apache/log4j/xml/log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
     <!-- direct log messages to stdout -->
     <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out"/>
@@ -17,12 +17,32 @@
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
         </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMax"  value="WARN" />
+            <param name="AcceptOnMatch"  value="true" />
+        </filter>
         <filter class="org.infoscoop.log.PortalLogFilter">
             <param name="LogType" value="portal-main"/>
             <param name="AcceptOnMatch" value="true"/>
         </filter>
         <filter class="org.apache.log4j.varia.DenyAllFilter"/>
-     </appender>
+    </appender>
+
+    <!-- direct messages to file infoscoop_error -->
+    <appender name="main_error" class="biz.minaret.log4j.DatedFileAppender">
+        <param name="directory" value="/var/log/infoscoop"/>
+        <param name="prefix" value="infoscoop_error_"/>
+        <param name="suffix" value=".log"/>
+        <param name="Threshold" value="ERROR" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
+        </layout>
+        <filter class="org.infoscoop.log.PortalLogFilter">
+            <param name="LogType" value="portal-main"/>
+            <param name="AcceptOnMatch" value="true"/>
+        </filter>
+        <filter class="org.apache.log4j.varia.DenyAllFilter"/>
+    </appender>
     
     <!-- direct messages to file infoscoop_admin_log -->
     <appender name="admin" class="biz.minaret.log4j.DatedFileAppender">
@@ -32,17 +52,92 @@
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
         </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMax"  value="WARN" />
+            <param name="AcceptOnMatch"  value="true" />
+        </filter>
         <filter class="org.infoscoop.log.PortalLogFilter">
             <param name="LogType" value="portal-admin"/>
             <param name="AcceptOnMatch" value="true"/>
         </filter>
         <filter class="org.apache.log4j.varia.DenyAllFilter"/>
-     </appender>
-    
+    </appender>
+
+    <!-- direct messages to file infoscoop_admin_error -->
+    <appender name="admin_error" class="biz.minaret.log4j.DatedFileAppender">
+        <param name="directory" value="/var/log/infoscoop"/>
+        <param name="prefix" value="infoscoop_admin_error_"/>
+        <param name="suffix" value=".log"/>
+        <param name="Threshold" value="ERROR" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
+        </layout>
+        <filter class="org.infoscoop.log.PortalLogFilter">
+            <param name="LogType" value="portal-admin"/>
+            <param name="AcceptOnMatch" value="true"/>
+        </filter>
+        <filter class="org.apache.log4j.varia.DenyAllFilter"/>
+    </appender>
+
+    <!-- direct messages to file infoscoop_api_log -->
+    <appender name="api" class="biz.minaret.log4j.DatedFileAppender">
+       	<param name="directory" value="/var/log/infoscoop"/>
+       	<param name="prefix" value="infoscoop_api_log_"/>
+       	<param name="suffix" value=".log"/>
+       	<layout class="org.apache.log4j.PatternLayout">
+       		<param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
+       	</layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMax"  value="WARN" />
+            <param name="AcceptOnMatch"  value="true" />
+        </filter>
+        <filter class="org.apache.log4j.varia.DenyAllFilter" />
+    </appender>
+
+    <!-- direct messages to file infoscoop_api_error -->
+    <appender name="api_error" class="biz.minaret.log4j.DatedFileAppender">
+       	<param name="directory" value="/var/log/infoscoop"/>
+       	<param name="prefix" value="infoscoop_api_error_"/>
+       	<param name="suffix" value=".log"/>
+       	<param name="Threshold" value="ERROR" />
+       	<layout class="org.apache.log4j.PatternLayout">
+       		<param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
+       	</layout>
+    </appender>
+
+    <!-- direct messages to file infoscoop_migrate_log -->
+    <appender name="migration" class="biz.minaret.log4j.DatedFileAppender">
+       	<param name="directory" value="/var/log/infoscoop"/>
+       	<param name="prefix" value="infoscoop_migrate_log_"/>
+       	<param name="suffix" value=".log"/>
+       	<layout class="org.apache.log4j.PatternLayout">
+       		<param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
+       	</layout>
+    </appender>
+
+        
     <!-- set log levels - for more verbose logging change 'info' to 'debug' -->
+    <!-- set log levels - for migration log -->    
+   	<logger name="liquibase.ext.logging">
+       	<level value="info" />
+       	<appender-ref ref="migration" />
+   	</logger>
+
+    <!-- set log levels - for more verbose logging change 'info' to 'debug' -->
+    <!-- set log levels - for api log -->    
+   	<logger name="org.infoscoop.api" additivity="false">
+       	<level value="info" />
+       	<appender-ref ref="api" />
+       	<appender-ref ref="api_error" />
+   	</logger>
+ 
+    <!-- set log levels - for more verbose logging change 'info' to 'debug' -->
+    <!-- set log levels - for operation log -->    
     <root>
         <priority value="info"/>
         <appender-ref ref="main"/>
+        <appender-ref ref="main_error"/>
         <appender-ref ref="admin"/>
+        <appender-ref ref="admin_error"/>
     </root>
 </log4j:configuration>

@@ -47,9 +47,9 @@ import org.infoscoop.dao.model.Properties;
 import org.infoscoop.dao.model.Proxyconf;
 import org.infoscoop.dao.model.Searchengine;
 import org.infoscoop.dao.model.Siteaggregationmenu;
-import org.infoscoop.dao.model.TABLAYOUTPK;
-import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.dao.model.WidgetConf;
+import org.infoscoop.initdb.dao.model.TABLAYOUTPK;
+import org.infoscoop.initdb.dao.model.TabLayout;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

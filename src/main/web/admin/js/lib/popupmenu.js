@@ -64,10 +64,12 @@ PopupMenu.prototype = {
         };
         */
 		var func = function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			
             self.show.call(self, e);
-            Event.stop(e);
 		}
-		Event.observe(this.target, "contextmenu", func, false);
+		$jq(this.target).contextmenu(func);
         
         var listener = function() { self.hide.call(self) };
         PopupMenu.addEventListener(this.doc, 'click', listener, true);

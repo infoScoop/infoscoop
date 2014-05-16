@@ -33,6 +33,11 @@ body{
 	width:120px;
 	height:194px;
 }
+
+.staticLayout, .template, .staticLayoutAdjustHeight .template{
+	display:none;
+}
+
 .static_column {
 	border : dotted 1px gray;
 	cursor: pointer;
@@ -149,6 +154,11 @@ body{
 
 /* disable multidrop */
 #portal-site-aggregation-menu .menufolderfeedTitle, #portal-site-aggregation-menu .menufolderfeed {
+	cursor: default;
+	visibility: hidden;
+}
+.menuGroup .menufolderfeed {
+	cursor: default;
 	visibility: hidden;
 }
 #portal-tree-menu .menufolderfeedTitle, #portal-tree-menu .menufolderfeed {

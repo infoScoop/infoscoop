@@ -21,7 +21,7 @@
 <%@page import="java.util.Collection"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.Iterator"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 
 <%
 response.setHeader("Pragma","no-cache");
@@ -29,13 +29,14 @@ response.setHeader("Cache-Control", "no-cache");
 %>
 <html>
 <head>
-<script src="./js/lib/prototype-1.6.0.3.js"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<script src="./js/lib/prototype-1.7.1.js"></script>
 
 <style><!--
 .popup {
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 0px;
+	left: 0px;
 	width: 100%;
 	height: 100%;
 }
@@ -48,7 +49,7 @@ response.setHeader("Cache-Control", "no-cache");
 .overlayContent {
 	width: 90%;
 	margin: 5%;
-	margin-bottom: 0;
+	margin-bottom: 0px;
 	overflow: hidden;
 }
 .close {
@@ -105,28 +106,28 @@ function showPreview( uid ) {
 function resize() {
 	var height;
 	try {
-		if( iframe.contentDocument && iframe.contentDocument.body ) {
-			height = iframe.contentDocument.body.offsetHeight;
+		if( iframe.contentDocument && iframe.contentDocument.documentElement ) {
+			height = iframe.contentDocument.documentElement.offsetHeight;
 		} else {
-			height = iframe.contentWindow.document.body.scrollHeight;
+			height = iframe.contentWindow.document.documentElement.scrollHeight;
 			overlay.style.height = "100%";
-			if( overlay.offsetHeight < height *1.2 )
-				overlay.style.height = height *1.2;
+			if( overlay.offsetHeight < height *1.2 ){
+				overlayHeight = height *1.2
+				overlay.style.height = overlayHeight + 'px';
+			}
 		}
 	} catch( ex ) {
 		return;
 	}
 	
-	iframe.style.height = wrapper.style.height = height;
+	iframe.style.height = wrapper.style.height = height + 'px';
 	
 	var offsets = Position.positionedOffset(iframe);
-    close.style.top     = offsets[1];
-	close.style.left    = offsets[0] + iframe.offsetWidth - 62;
+    close.style.top     = offsets[1] + 'px';
+	close.style.left    = offsets[0] + iframe.offsetWidth - 62 + 'px';
 }
 function hidePreview() {
 	preview.style.display = "none";
-//	iframe.src = "about:blank";
-	
 	clearTimeout( timer );
 }
 function check(form){

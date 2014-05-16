@@ -16,22 +16,20 @@ ISA_DefaultPanel.CommandItemEditor.prototype.classDef = function() {
 		commandItem = _commandItem;
 		buildForm = _buildForm;
 		onOK = _onOK;
-		this.modal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"",
-				afterClose:this.hide.bind(this)
-			}
-		);
 		IS_Event.observe(iconElm, 'click', this.show.bind(this), false, "_adminPanel");
 	}
 	
 	this.show = function(){
-		this.modal.open();
 		var editor = this.buildEditorWindow(buildForm(commandItem));
-		this.modal.update(editor);
+
+		if(!this.modal){
+			this.modal = new Control.Modal('',{
+				afterClose:this.hide
+			});
+		}
+
+		this.modal.container.update(editor);
+		this.modal.open();
 	}
 	
 	this.buildEditorWindow = function(form){
@@ -77,6 +75,8 @@ ISA_DefaultPanel.CommandItemEditor.prototype.classDef = function() {
 	
 	this.hide = function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 }
 
@@ -88,15 +88,11 @@ ISA_DefaultPanel.prototype.addCommandBarModal = {
 	controlModal: false,
 	init: function() {
 		this.addCommandBarModal.isaDefaultPanel = this;
-		this.addCommandBarModal.controlModal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"",
-				afterClose:this.addCommandBarModal.hide.bind(this.addCommandBarModal)
-			}
-		);
+		if(!this.addCommandBarModal.controlModal){
+			this.addCommandBarModal.controlModal = new Control.Modal('',{
+				afterClose:this.addCommandBarModal.hide
+			});
+		}
 		this.addCommandBarModal.load();
 	},
 	load: function() {
@@ -104,9 +100,9 @@ ISA_DefaultPanel.prototype.addCommandBarModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelCommandBarModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},
@@ -142,6 +138,8 @@ ISA_DefaultPanel.prototype.addCommandBarModal = {
 	},
 	hide: function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 };
 
@@ -153,15 +151,11 @@ ISA_DefaultPanel.prototype.addHTMLCommandBarModal = {
 	controlModal: false,
 	init: function() {
 		this.addHTMLCommandBarModal.isaDefaultPanel = this;
-		this.addHTMLCommandBarModal.controlModal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"",
-				afterClose:this.addHTMLCommandBarModal.hide.bind(this.addHTMLCommandBarModal)
-			}
-		);
+		if(!this.addHTMLCommandBarModal.controlModal){
+			this.addHTMLCommandBarModal.controlModal = new Control.Modal('', {
+				afterClose:this.addHTMLCommandBarModal.hide
+			});
+		}
 		this.addHTMLCommandBarModal.load();
 	},
 	load: function() {
@@ -169,9 +163,9 @@ ISA_DefaultPanel.prototype.addHTMLCommandBarModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelHTMLCommandBarModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},
@@ -207,6 +201,8 @@ ISA_DefaultPanel.prototype.addHTMLCommandBarModal = {
 	},
 	hide: function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 };
 
@@ -220,15 +216,12 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 	init: function() {
 		this.selectLayoutModal.isaDefaultPanel = this;
 		this.selectLayoutModal.templates = this.templates;
-		this.selectLayoutModal.controlModal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"adminDefaultPanel",
-				afterClose:this.selectLayoutModal.hide.bind(this.selectLayoutModal)
-			}
-		);
+		if(!this.selectLayoutModal.controlModal){
+			this.selectLayoutModal.controlModal = new Control.Modal('', {
+				className:"adminDefaultPanel",
+				afterClose:this.selectLayoutModal.hide
+			});			
+		}
 		this.selectLayoutModal.load();
 	},
 	load: function() {
@@ -236,9 +229,9 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelStaticLayoutModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},
@@ -311,6 +304,8 @@ ISA_DefaultPanel.prototype.selectLayoutModal = {
 	},
 	hide: function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 };
 
@@ -324,15 +319,12 @@ ISA_DefaultPanel.prototype.editHTMLModal = {
 	init: function(layout) {
 		this.editHTMLModal.isaDefaultPanel = this;
 		this.editHTMLModal.layoutHTML = layout;
-		this.editHTMLModal.controlModal = new Control.Modal(
-			false,
-			{
-				contents: "&nbsp;",
-				opacity: 0.2,
-				containerClassName:"adminDefaultPanel",
+		if(!this.editHTMLModal.controlModal){
+			this.editHTMLModal.controlModal = new Control.Modal('', {
+				className:"adminDefaultPanel",
 				afterClose:this.editHTMLModal.hide.bind(this.editHTMLModal)
-			}
-		);
+			});			
+		}
 		this.editHTMLModal.load();
 	},
 	load: function() {
@@ -340,9 +332,9 @@ ISA_DefaultPanel.prototype.editHTMLModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelStaticHTMLModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},
@@ -392,6 +384,8 @@ ISA_DefaultPanel.prototype.editHTMLModal = {
 	},
 	hide: function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 };
 
@@ -507,15 +501,12 @@ ISA_DefaultPanel.prototype.selectColumnModal = {
 	init: function() {
 		this.selectColumnModal.isaDefaultPanel = this;
 		this.selectColumnModal.columnsArray = this.displayRoleJsons[this.displayRoleId].columnsArray;
-		this.selectColumnModal.controlModal = new Control.Modal(
-			false,
-			{
-			  contents: "&nbsp;",
-			  opacity: 0.2,
-			  containerClassName:"adminDefaultPanel",
+		if(!this.selectColumnModal.controlModal){
+			this.selectColumnModal.controlModal = new Control.Modal('',{
+			  className:"adminDefaultPanel",
 			  afterClose:this.selectColumnModal.hide.bind(this.selectColumnModal)
-			}
-		);
+			});			
+		}
 		this.selectColumnModal.load();
 	},
 	load: function() {
@@ -523,9 +514,9 @@ ISA_DefaultPanel.prototype.selectColumnModal = {
 		var viewForm = function() {
 			var formDiv = document.createElement("div");
 			formDiv.id = "panelDynamicColumnModal";
-			self.controlModal.open();
 			self.build(formDiv);
-			self.controlModal.update(formDiv);
+			self.controlModal.container.update(formDiv);
+			self.controlModal.open();
 		}
 		setTimeout(viewForm, 10);
 	},
@@ -646,6 +637,8 @@ ISA_DefaultPanel.prototype.selectColumnModal = {
 	},
 	hide: function() {
 		Control.Modal.close();
+		if(this.container)
+			this.container.update('');
 	}
 };
 
@@ -667,7 +660,7 @@ ISA_DefaultPanel.prototype.templates = {
 		//Give id attribute to HTML
 		//TODO Is class="column" suite for Widget?
 		var regexp = new RegExp("class=\"static_column\"");
-		if(Browser.isIE){
+		if(Browser.isIE8){
 			regexp = new RegExp("class=static_column");
 		}
 		var newhtml = "";
@@ -705,20 +698,23 @@ ISA_DefaultPanel.prototype.templates = {
 		var targetClass = (defaultPanel.displayRoleJsons[defaultPanel.displayRoleId] && defaultPanel.displayRoleJsons[defaultPanel.displayRoleId].adjustToWindowHeight)
 			? 'staticLayoutAdjustHeight' : 'staticLayout';
 		$jq("#select_layout_modal ." + targetClass).each(function(idx, element){
-			this.layouts[idx] = $jq(element).html();
+			element = $jq(element);
+			
+			var template = (ISA_Admin.trim(element.html()).length > 0)? $jq.parseHTML(element.html()) : element;
+			var layoutTemplate = $jq(template).closest(".template");
+			this.layouts[idx] = (layoutTemplate.length > 0) ? layoutTemplate.html() : element.html();
+			if(element.attr("id") == "staticLayout_tpl_default"){
+				this.staticLayoutDefaultIdx = idx;
+			}
 		}.bind(this));
 		
-//		this.layouts[number] = html;
-//		return html;
 		return this.layouts[number];
 	},
 	// Set for default fixed area
 	setStaticLayout0: function(jsonObject, number){
-//		for(var i=0; i < 8; i++)
-//		  this.getStaticLayout(i);
 		this.getStaticLayout();
 		
-		return this.setStaticLayout(jsonObject, (number ? number : 3));
+		return this.setStaticLayout(jsonObject, (number ? number : this.staticLayoutDefaultIdx));
 	},
 	/**
 		Set fixed area of command bar
@@ -750,6 +746,11 @@ ISA_DefaultPanel.prototype.templates = {
 		// Replace to json
 		jsonObject.staticPanel = xmlJson;
 		
+		return jsonObject;
+	},
+	setPortalHeaderLayout: function(jsonObject){
+		jsonObject.layout = "";
+		jsonObject.staticPanel = "";
 		return jsonObject;
 	},
 	getDefaultWidgetJson: function() {

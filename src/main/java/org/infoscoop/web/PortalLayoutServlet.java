@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.service.PortalLayoutService;
 import org.infoscoop.util.SpringUtil;
 
@@ -57,8 +58,13 @@ public class PortalLayoutServlet extends HttpServlet {
 			logger.error("It is an unjust summons. Type is not appointed.");
 			response.sendError(500);
 		}
-
-		response.setContentType("text/javascript; charset=UTF-8");
+		
+		if(Portallayout.LAYOUT_TYPE_CSS.equalsIgnoreCase(type)){
+			response.setContentType("text/css; charset=UTF-8");
+		}
+		else if(Portallayout.LAYOUT_TYPE_JS.equalsIgnoreCase(type)){
+			response.setContentType("text/javascript; charset=UTF-8");
+		}
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache");
 
@@ -68,12 +74,12 @@ public class PortalLayoutServlet extends HttpServlet {
 			
 			PortalLayoutService service = (PortalLayoutService)SpringUtil.getBean("PortalLayoutService");
 			String js = service.getPortalLayout(type);
-			
-			out.write(js);
+			if(js != null)
+				out.write(js);
 		} catch (Exception e){
 			logger.error("--- unexpected error occurred.", e);
 			response.sendError(500);
-		} 
+		}
 		out.flush();
 		out.close();
 		

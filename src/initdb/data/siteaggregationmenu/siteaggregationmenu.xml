@@ -87,12 +87,11 @@
 			</properties>
 		</site>
 	
-		<site type="MultiRssReader" title="Sportsfrog.com" href="http://www.sportsfrog.com/" id="sports_sportsfrog">
+		<site type="MultiRssReader" title="Goal.com News" href="http://www.goal.com/" id="goal_com">
 			<properties>
-				<property  name="url">http://www.sportsfrog.com/feed/</property>
+				<property  name="url">http://www.goal.com/feeds/news</property>
 			</properties>
 		</site>
-	
 		<site type="MultiRssReader" title="YFSF" href="http://www.yfsf.org/" id="sports_yfsf">
 			<properties>
 				<property  name="url">http://www.yfsf.org/atom.xml</property>
@@ -105,34 +104,24 @@
 				<property name="url">http://rss.cnn.com/rss/money_topstories.rss</property>
 			</properties>
 		</site>
-	
 		<site type="MultiRssReader" title="Fool.com" href="http://www.fool.com/" id="finance_fool">
 			<properties>
 				<property name="url">http://feeds.fool.com/usmf/foolwatch</property>
 			</properties>
 		</site>
-	
 		<site type="MultiRssReader" title="Get Rich Slowly" href="http://www.getrichslowly.org/blog" id="finance_getrichslowly">
 			<properties>
 				<property name="url">http://www.getrichslowly.org/blog/feed/</property>
 			</properties>
 		</site>
-	
 		<site type="MultiRssReader" title="I Will Teach You To Be Rich" href="http://www.iwillteachyoutoberich.com/" id="finance_iwillteachyoutoberich">
 			<properties>
 				<property name="url">http://feeds2.feedburner.com/IWillTeachYouToBeRich</property>
 			</properties>
 		</site>
-	
 		<site type="MultiRssReader" title="Market Watch" href="http://www.marketwatch.com/" id="finance_marketwatch">
 			<properties>
 				<property name="url">http://feeds.marketwatch.com/marketwatch/topstories</property>
-			</properties>
-		</site>
-	
-		<site type="MultiRssReader" title="The Personal Finance Blog" href="http://www.pfblog.com/" id="finance_pfblog">
-			<properties>
-				<property name="url">http://feeds.feedburner.com/pfblog2</property>
 			</properties>
 		</site>
 	</site-top>

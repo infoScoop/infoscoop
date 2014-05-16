@@ -37,7 +37,7 @@ function ISA_buildMenuExplorer(element, _callback){
 		+ ISA_R.alb_selectWidgetFromList
 	element.appendChild(helpDiv);
 	var errorMsgDiv = document.createElement("div");
-	errorMsgDiv.style.color = "red";
+	errorMsgDiv.style.color = "#FF0000";
 	element.appendChild(errorMsgDiv);
 	
 	var menuExplorerDiv = document.createElement("div");
@@ -48,8 +48,7 @@ function ISA_buildMenuExplorer(element, _callback){
 		
 		var changeMenuDiv = document.createElement("div");
 		changeMenuDiv.id = "changeMenu";
-		
-//		if(siteAggregationMenuURL == sideMenuURL)changeMenuDiv.style.display = "none";
+
 		if( !(getBooleanValue(displayTopMenu) && getBooleanValue(displaySideMenu)) )
 			changeMenuDiv.style.display = "none";
 		
@@ -96,7 +95,6 @@ function ISA_buildMenuExplorer(element, _callback){
 		menuExplorerDiv.appendChild(buildMenuSelect());
 		if(menuItem){
 			var returnParent = document.createElement("div");
-//			returnParent.style.width = "30%";
 			returnParent.style.cursor = "pointer";
 			returnParent.style.textAlign = "left";
 			returnParent.style.cssFloat = "left";

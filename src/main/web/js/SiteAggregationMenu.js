@@ -183,8 +183,7 @@ IS_TreeMenu.addMenuItem = function(menuItem){
 
 			var multiWidget = IS_WidgetsContainer.addWidget( IS_Portal.currentTabId, widgetConf , false, false, [subWidgetConf]);
 			IS_Widget.setWidgetLocationCommand(multiWidget);
-
-			widget = multiWidget.content.getRssReaders()[0];
+			if(typeof multiWidget !== "undefined") widget = multiWidget.content.getRssReaders()[0];
 		}else{
 			// Adding itself to existing cooperativ Multi
 			var targetWidget = IS_Portal.getWidget(divParent.id, IS_Portal.currentTabId);
@@ -233,11 +232,8 @@ IS_TreeMenu.addMenuItem = function(menuItem){
 	}else {
 		widgetConf = IS_SiteAggregationMenu.getConfigurationFromMenuItem(menuItem, 0);
 		widget = IS_WidgetsContainer.addWidget( IS_Portal.currentTabId, widgetConf );
-	 	IS_Widget.setWidgetLocationCommand(widget);
+		IS_Widget.setWidgetLocationCommand(widget);
 	}
-
-//							  var widgetConf = IS_SiteAggregationMenu.getConfigurationFromMenuItem(menuItem, 0);
-//							  var widget = IS_WidgetsContainer.addWidget( IS_Portal.currentTabId, widgetConf );
 
 	IS_Portal.widgetDropped( widget );
 	return widget;
@@ -451,9 +447,8 @@ IS_TreeMenu.prototype = {
 			}
 		}.bind( this );
 
-		//var url = "menusrv/" + this.type ;//( this.type == "topmenu"? siteAggregationMenuURL : sideMenuURL );
-
-		if( (this.type == "topmenu" && !displayTopMenu ) || (this.type=="sidemenu" && !displaySideMenu ) ) {
+		if( (this.type == "topmenu" && !displayTopMenu && displaySideMenu != 'reference_top_menu' )
+			|| (this.type=="sidemenu" && !displaySideMenu ) ) {
 			setTimeout( function() {
 				option.onSuccess();
 				option.onComplete();
@@ -531,11 +526,6 @@ IS_TreeMenu.MenuItem.prototype = {
 
 			if( !this.isSuccess ) this.isSuccess = true;
 			if( opt.onSuccess ) opt.onSuccess( evalResult );
-
-			/*if( option.includeServiceMenu ) {
-			} else {
-				IS_EventDispatcher.newEvent("loadMenuComplete",this.serviceURL );
-			}*/
 		}.bind( this );
 		option.onComplete = function() {
 			this.loading = false;
@@ -553,11 +543,9 @@ IS_TreeMenu.MenuItem.prototype = {
 
 var IS_SiteAggregationMenu = IS_Class.create();
 
-if( displayTopMenu ) {
+if( displayTopMenu || (!displayTopMenu && displaySideMenu == 'reference_top_menu') ) {
 	IS_TreeMenu.types.topmenu = new IS_TreeMenu("topmenu");
 	IS_TreeMenu.types.topmenu.title = IS_R.lb_topMenu;
-	//var alertSetting = is_getPropertyInt(siteAggregationMenuAlertSetting, 1);
-	//IS_TreeMenu.alertSettings[siteAggregationMenuURL] = ( alertSetting < 3 ) ? alertSetting : 1;
 
 	//Call return value of MakeMenuFilter
 	IS_SiteAggregationMenu.setMenu = function(url, a,b,c){
@@ -671,7 +659,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			msgDiv.innerHTML = "Loading...";
 			msgDiv.style.cssFloat = "left";
 			container.appendChild(msgDiv);
-	//		container.innerHTML = "Loading...";
 		}
 
 		IS_EventDispatcher.addListener("loadMenuComplete",IS_TreeMenu.types.topmenu.type,handleLoadComplete,false,true );
@@ -740,6 +727,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			if(menuItem.serviceURL){
 				if(IS_SiteAggregationMenu.ignoreService){
 					IS_EventDispatcher.newEvent("loadMenuComplete",menuItem.serviceURL );
+					continue;
 				}else{
 					topLi = getMenuService(menuItem);
 				}
@@ -747,10 +735,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 				topLi = createTopMenu(menuItem);
 			}
 			menuUl.appendChild(topLi);
-			if(Browser.isIE){
-				topLi.style.width = topLi.firstChild.offsetWidth + "px";
-				topLi.firstChild.style.height = "1.75em";
-			}
 		}
 		createMenuRefreshIcon();
 
@@ -762,7 +746,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		}
 
 		if(Browser.isIE)
-//			Event.observe(document, "click", IS_SiteAggregationMenu.closeMenu, true);
 			Event.observe("portal-maincontents-table", "click", IS_SiteAggregationMenu.closeMenu, true);
 	}
 
@@ -776,7 +759,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		var topLi = document.createElement("li");
 		topLi.id = menuItem.id;
 		topLi.className = "topMenuLi";
-		topLi.style.height = "1.75em";//IE
 		topLoadingDiv = document.createElement("div");
 		topLoadingDiv.appendChild(document.createTextNode("Loading..."));
 		topLi.appendChild(topLoadingDiv);
@@ -824,10 +806,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 							args.push(menuTopItems[i].id);
 							var newTopLi = createTopMenu(menuTopItems[i]);
 							topContainer.insertBefore(newTopLi, topLi);
-							if(Browser.isIE){
-								newTopLi.style.width = newTopLi.firstChild.offsetWidth + "px";
-								newTopLi.firstChild.style.height = "1.75em";
-							}
 						}
 						IS_SiteAggregationMenu.topMenuIdList.splice.apply(IS_SiteAggregationMenu.topMenuIdList, args);
 						topContainer.removeChild(topLi);
@@ -879,7 +857,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		var topLi = document.createElement("li");
 		topLi.id = menuItem.id;
 		topLi.className = "topMenuLi";
-		topLi.style.height = "1.75em";//IE
 		var titleA =document.createElement("a");
 		titleA.className = "topMenuItem";
 		titleA.title = menuItem.title;
@@ -903,7 +880,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 				var titleAOnclick = function(e){
 					IS_Portal.buildIFrame(titleA);
 				}
-//				IS_Event.observe(titleA, "click", titleAOnclick, false, menuItem.id);
 				IS_Event.observe(titleA, "click", titleAOnclick, false, "_menu");
 			}
 		}else{
@@ -926,7 +902,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		iframe.border = "0";
 		iframe.frameborder = "0";
 		iframe.style.display = "none";
-		iframe.src = "./blank.html";
 		document.body.appendChild(iframe);
 		Event.observe(iframe, "mouseover", function(){this.style.display = "none";}.bind(iframe), false);
 		this.overlay = iframe;
@@ -968,23 +943,15 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		clearTimeout(parent.outTimeout);
 		clearTimeout(parent.overTimeout);
 
-		var childs = parent.childNodes;
-		for(var i = 0; i < childs.length; i++){
-			if(childs[i].nodeName.toUpperCase() == "A"){
-				//childs[i].style.backgroundImage = "url(" + imageURL + "lev0_bg2.png)";
-			}
-		}
-
 		if(!self.overlay) self.initMenuOverlay();
-//		var offsetY = findPosY(parent) + parent.offsetHeight;
 		var offsetY = findPosY(container) + container.offsetHeight;
 
 		var overlayStyle = self.overlay.style;
-		overlayStyle.top = offsetY;
-		overlayStyle.width = Math.max(document.body.scrollWidth, document.body.clientWidth) - 5;
-		overlayStyle.height = Math.max(document.body.scrollHeight, document.body.clientHeight) - offsetY - 5;
+		overlayStyle.top = offsetY + 'px';
+		overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth) - 5  + 'px';
+		overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight) - offsetY - 5  + 'px';
 		overlayStyle.display = "";
-		parent.overTimeout = setTimeout(function() { topMenuMOver2(e, parent, parentMenuItem); }, 150);
+		parent.overTimeout = setTimeout(function() { topMenuMOver2(e, parent, parentMenuItem); }, 300);
 
 	}
 
@@ -1002,8 +969,8 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		var hasChilds = (childList && childList.length > 0) ? true : false;
 
 		if(hasChilds && !parentMenuItem.isChildrenBuild){
-			var height = (Browser.isIE) ? 23 : 21;//parseInt(document.getElementById("dummymenu").offsetHeight) ;
-			var windowY = getWindowSize(false) - (findPosY(parent) + parent.offsetHeight + 20);
+			var height = 21;
+			var windowY = (getWindowSize(false) + document.documentElement.scrollTop) - (findPosY(parent) + parent.offsetHeight + 20);
 
 			var num = windowY / height;
 			num = Math.floor(num);
@@ -1117,7 +1084,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			}
 			var tables = ul.getElementsByTagName('table');
 			for(var i=0;i<tables.length;i++){
-				var tableWidth = tables[i].offsetWidth + 10;
+				var tableWidth = tables[i].offsetWidth + 25;
 				if(ulWidth < tableWidth){
 					ulWidth = tableWidth;
 				}
@@ -1132,7 +1099,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			}
 
 			//Set the width and far left of menu.
-			//var childUls =  getChildrenByTagName(parent, 'ul');
 			for(var i = 0; i < childUls.length; i++){
 				var ul = childUls[i];
 				ul.style.width = ulWidth + "px";
@@ -1167,12 +1133,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		clearTimeout(el.outTimeout);
 
 		var childs = el.childNodes;
-		for(var i = 0; i < childs.length; i++){
-			if(childs[i].nodeName.toUpperCase() == "A"){
-				///childs[i].style.backgroundImage = "url(" + imageURL + "lev0_bg1.png)";
-			}
-		}
-
 		el.outTimeout = setTimeout(function() { topMenuItemMOut2(el); }, 100);
 	}
 	function topMenuItemMOut2(el){
@@ -1236,8 +1196,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 					eval( menuItem.href );
 				}
 				IS_Event.observe(aTag, "click", aTagOnClick, false, "_menu");
-				IS_Event.observe(aTag, "mouseover", function(){this.className = 'scriptlinkhover';}.bind(aTag), false, "_menu");
-				IS_Event.observe(aTag, "mouseout", function(){this.className = 'scriptlink';}.bind(aTag), false, "_menu");
+				IS_Event.observe(aTag, "mousedown", function(e){Event.stop(e);}, false, "_menu");
 
 			}else{
 
@@ -1265,7 +1224,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		divMenuItem.appendChild(divMenuTitle);
 
 		if ( menuItem.type ){
-//			var handler = IS_SiteAggregationMenu.menuDragInit(menuItem, divMenuIcon, divMenuItem);
 			var handler = IS_SiteAggregationMenu.getDraggable(menuItem, divMenuIcon, divMenuItem);
 
 			IS_Event.observe(menuLi, "mousedown", function(e){
@@ -1296,13 +1254,11 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 					return;
 
 				try{
-//					Event.stopObserving(menuLi, "mousedown", handler, false);
 					handler.destroy();
 
 					Element.addClassName(divMenuIcon, 'menuItemIcon_dropped');
 
 					$("mc_" + menuItemId).parentNode.style.background = "#F6F6F6";
-					//$("m_" + menuItemId).style.color = "#5286bb";
 
 					IS_Event.observe(divMenuIcon, 'mouseover', displayTabName, false, "_menu");
 				}catch(e){
@@ -1328,13 +1284,11 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			}
 			function closeWidgetHandler(menuItemId, handler){
 				try{
-//					IS_Event.observe(menuLi, "mousedown", handler, false, "_menu");
 					Event.observe(handler.handle, "mousedown", handler.eventMouseDown);
 					IS_Draggables.register(handler);
 
 					Element.removeClassName(divMenuIcon, 'menuItemIcon_dropped');
 
-//					divMenuIcon.className = (/MultiRssReader/.test(menuItem.type))? "menuItemIcon_multi_rss" : "menuItemIcon_rss";
 					menuLi.style.cursor = "move"
 
 					divMenuIcon.title = "";
@@ -1384,7 +1338,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		clearTimeout(el.outTimeout);
 		clearTimeout(el.overTimeout);
 		el.style.background = "#F6F6F6";
-		//el.style.color = "#5286BB";
 		el.outTimeout = setTimeout(function() { menuItemMOut2(el); }, 150);
 	}
 	var scrollers = [];
@@ -1407,7 +1360,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			}
 			// Make child menu to not built status.
 			IS_SiteAggregationMenu.menuItemList[el.id].isChildrenBuild = false;
-			//
 			currentDisplayParentItem = undefined;
 			// Delete from array
 			delete scrollers[el.id];
@@ -1533,38 +1485,32 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 	}
 
 	function setChildY( childUl, parent ) {
-		var offset = Browser.isIE ? 22 : 18;//Handling side scroll display.
-		//var windowY = getWindowSize(false) - findPosY($("portal-maincontents-table")) + offset;
-		var windowY = getWindowSize(false) - findPosY(IS_SiteAggregationMenu.displayTopLi) - IS_SiteAggregationMenu.displayTopLi.offsetHeight - offset;
+		var offset = 18;//Handling side scroll display.
+		var windowY = (getWindowSize(false) + document.documentElement.scrollTop) - findPosY(IS_SiteAggregationMenu.displayTopLi) - IS_SiteAggregationMenu.displayTopLi.offsetHeight - offset;
 		var parentTop = findPosY(parent.parentNode) - findPosY(IS_SiteAggregationMenu.displayTopLi) - IS_SiteAggregationMenu.displayTopLi.offsetHeight;
 
 		childUl.style.display ="block";
 		childUl.style.visibility = 'visible';
 
 		// Back to the original place.
-		childUl.style.left = (parent.offsetLeft + parent.offsetWidth);
+		childUl.style.left = (parent.offsetLeft + parent.offsetWidth) + "px";
 
 		if((findPosX(childUl) + childUl.offsetWidth ) > (getWindowSize(true) - 25) ){
-			childUl.style.left = (parent.offsetLeft - childUl.offsetWidth);
+			childUl.style.left = (parent.offsetLeft - childUl.offsetWidth) + "px";
 		}
 
 		//Adjusting Y axis
 		var ulHeight = childUl.offsetHeight;
-//		var liTop = findPosY(parent);
 		var liTop = parent.offsetTop;
 		if( ulHeight > windowY && !scrollers[parent.id]){
 			// Fit to maximum if the item does not fit to screen.
-//			childUl.style.top = (findPosY(parent.parentNode.parentNode) * -1) + "px";
-//			childUl.style.top = (findPosY(IS_SiteAggregationMenu.displayTopLi) - IS_SiteAggregationMenu.displayTopLi.offsetHeight) - parentTop;
 			scrollers[parent.id] = new IS_SiteAggregationMenu.Scroller(childUl);
 			//The height of childUl get lower if Scroller is newed.
 			//Use same calculation of getting height as it placed under the if statement when the mouse is overed again
-			childUl.style.top = (windowY - childUl.offsetHeight) - parentTop;
-//			setChildY( childUl, parent );
+			childUl.style.top = (windowY - childUl.offsetHeight) - parentTop + "px";
 		}else if( (liTop + ulHeight) > windowY ){
 			// Adjust bottom of menu if it does not fit to bottom of browser.
-//			childUl.style.top = (windowY - ulHeight) + "px";
-			childUl.style.top = (windowY - ulHeight) - parentTop;
+			childUl.style.top = (windowY - ulHeight) - parentTop + "px";
 		}else{
 			// Ordinally(Adjust Top to the place of parent
 			childUl.style.top = liTop + "px";
@@ -1640,12 +1586,6 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 
 			tr.appendChild(folderIconTd);
 			tr.appendChild(folderFeedTitleTd);
-
-//			var dragHandler = IS_SiteAggregationMenu.menuDragInit(parentMenuItem, ul, ul, true);
-/*
-			IS_Event.observe(folderIconTd,"mousedown", dragHandler, false, "_menu");
-			IS_Event.observe(folderFeedTitleTd,"mousedown", dragHandler, false, "_menu");
-*/
 			IS_SiteAggregationMenu.getMultiDropDraggable(ul, parentMenuItem, handle);
 
 			return true;
@@ -1664,37 +1604,15 @@ IS_SiteAggregationMenu.getMultiDropDraggable = function(dragElement, menuItem, h
 			click: true,
 			zindex: 10000,
 			onStart: function(){
-//				IS_SiteAggregationMenu.closeMenu();
 				setTimeout(IS_SiteAggregationMenu.closeMenu, 100);
 			},
-			/*onStart: function(draggble, e){
-				var element = draggble.element;
-
-//				IS_Droppables.findWizPos(element);
-
-				var divWidgetDummy = document.createElement("div");
-				element.dummy = divWidgetDummy;
-
-				// Create dummy for menu
-				divWidgetDummy.style.display = "none";
-				element.parentNode.insertBefore(divWidgetDummy, element);
-
-				element = document.body.appendChild(element);
-
-				var widgetGhost = IS_Draggable.ghost;
-				if(widgetGhost.col.firstChild){
-					widgetGhost.col.insertBefore(widgetGhost,widgetGhost.col.firstChild);
-				}else{
-					widgetGhost.col.appendChild(widgetGhost);
-				}
-			},*/
 			getDropObject: function(){
 				return this.menuItem;
 			},
 			getDummy: function(){
 				var dummyNode = this.cloneNode(true);
-				dummyNode.style.left = 0;
-				dummyNode.style.top = 0;
+				dummyNode.style.left = 0 + "px";
+				dummyNode.style.top = 0 + "px";
 				return dummyNode;
 			}.bind(dragElement),
 			startDroppableElement: document.body
@@ -1725,7 +1643,6 @@ IS_SiteAggregationMenu.createMultiDropConf = function(element, lastActiveElement
 		var feedNode = children[i];
 
 		var tempFeed = IS_Portal.searchWidgetAndFeedNode(feedNode.id);
-		//if(tempFeed &&( /RssReader/.test( feedNode.type )|| /MultiRssReader/.test( feedNode.type )) ){
 		if(tempFeed){
 			existsItemList[feedNode.id] = tempFeed;
 			existsItemTitleArray.push( feedNode.title );
@@ -1758,10 +1675,6 @@ IS_SiteAggregationMenu.createMultiDropConf = function(element, lastActiveElement
 	var hasOtherTab = false;
 	for(var num=0; num < IS_Portal.tabList.length; num++){
 		var tab = IS_Portal.tabList[num];
-		/*
-		var widgetList = IS_Portal.widgetLists[tab.id];
-		if( widgetList[ IS_Portal.getTrueId( w_id )] ) {
-		*/
 		if(IS_Portal.getWidget(w_id, tab.id)){
 			if( tab.id == tabId ) {
 				hasCurrentTab = true;
@@ -1779,17 +1692,20 @@ IS_SiteAggregationMenu.createMultiDropConf = function(element, lastActiveElement
 
 			var ghostParent = widgetGhost.parentNode;
 			var ghostNextSibling = widgetGhost.nextSibling;
-//			widgetGhost.parentNode.removeChild(widgetGhost);
 			element.style.display = "none";
 
 			var contentPane = document.createElement("div");
 			Element.addClassName( contentPane,"preference");
 
-			var modalElement = document.createElement("div");
-			var modal = new Control.Modal( modalElement,{
-				contents: contentPane,
-				containerClassName:"preference",
-				overlayCloseOnClick:false
+			var modal = new Control.Modal('', {
+				className: 'preference',
+				closeOnClick: false,
+			    afterOpen:function(){
+			    	this.container.update(contentPane);
+			    },
+			    afterClose:function(){
+			    	this.destroy();
+			    }
 			});
 
 			var dialogPane = document.createElement("div");
@@ -1836,8 +1752,7 @@ IS_SiteAggregationMenu.createMultiDropConf = function(element, lastActiveElement
 				function handleClick( event ) {
 					var clickedElement = Event.element( event );
 
-					modal.close();
-//					IS_Portal.isItemDragging = true;
+					Control.Modal.close();
 					if( ghostNextSibling ) {
 						ghostParent.insertBefore( widgetGhost,ghostNextSibling );
 					} else {
@@ -1853,16 +1768,10 @@ IS_SiteAggregationMenu.createMultiDropConf = function(element, lastActiveElement
 			});
 
 			modal.open();
+			modal.position();
 
 			return;
 		}
-		/*
-		else if(IS_Portal.isWidgetInTab( tabId, w_id )){
-			originFunc( element, lastActiveElement, menuItem, event, originFunc, MergeMode.remain );
-			return;
-		}
-		*/
-
 	} // end of (!modalOption)
 
 	if( hasCurrentTab && modalOption == MergeMode.remain ) {
@@ -1991,56 +1900,9 @@ IS_SiteAggregationMenu.createMultiDropConf = function(element, lastActiveElement
 
 			IS_EventDispatcher.newEvent("applyIconStyle", newExistWidget.id );
 		}
-
-		/*
-		else if( IS_Portal.isWidgetInTab( tabId, w_id )){
-			// Move property and title by creating empty MultiWidget
-			var tempTargetWidget = IS_Portal.getWidget( w_id )
-			var tempWidgetConf = eval('('+tempTargetWidget.widgetConf.toJSONString()+')');
-			tempWidgetConf.feed = new Array();
-			tempWidgetConf.id = "p_" + new Date().getTime();
-			var newExistWidget = IS_WidgetsContainer.addWidget(targetTabId, tempWidgetConf, tempTargetWidget.isBuilt);
-
-			if(tempTargetWidget.isBuilt){
-				var tempRssReaders = tempTargetWidget.content.getRssReaders();
-				var tempSiblingId = "";
-				for(var i=0;i<tempRssReaders.length;i++){
-					if(tempRssReaders[i].widgetConf.property.relationalId != IS_Portal.getTrueId(w_id, "MultiRssReader")){
-						newExistWidget.content.addRssReader(tempRssReaders[i], tempSiblingId);
-						tempSiblingId = tempRssReaders[i].id;
-					}
-				}
-				tempTargetWidget.headerContent.close("notCloseFeeds");
-			}else{
-				// Not built
-				var tempFeeds = tempTargetWidget.widgetConf.feed;
-				var tempSiblingId = "";
-				for(var i=0;i<tempFeeds.length;i++){
-					if(tempFeeds[i].property.relationalId != IS_Portal.getTrueId(w_id, "MultiRssReader")){
-						IS_Widget.addAiryRssReader(newExistWidget, tempFeeds[i], tempSiblingId, targetTabId);
-						tempSiblingId = tempFeeds[i].id;
-					}
-				}
-//				IS_Portal.widgetLists[targetTabId][w_id] = null;
-				IS_Portal.removeWidget(w_id, targetTabId);
-			}
-		}
-		*/
 	}
 
 	var isCreate = false;
-	// Check if there is subWidget or not.
-	/*
-	if(confs[1].length > 0){
-		for(var i=0;i<confs[1].length;i++){
-//			if(getBooleanValue(confs[1][i].isChecked)){
-				isCreate = true;
-				break;
-//			}
-		}
-	}
-	*/
-
 	if( confs[1].length == 0 && confs[2].length == 0) {
 		//Finish if there is no feed to be displayed.
 		widgetGhost.parentNode.removeChild(widgetGhost);
@@ -2074,7 +1936,6 @@ IS_SiteAggregationMenu.refreshMenu = function  () {
 	if(IS_Portal.isItemDragging) {
 		setTimeout(IS_SiteAggregationMenu.refreshMenu, 500);
 	} else {
-		//document.getElementById("portal-site-aggregation-menu").innerHTML = "";
 		IS_SiteAggregationMenu.isMenuRefreshed = true;
 		IS_Event.unloadCache("_menu");
 		//TODO:The message of SideMenu is disappered if sideMenuURL != siteAggregationMenuURL as well.
@@ -2098,30 +1959,6 @@ IS_SiteAggregationMenu.refreshMenu = function  () {
 
 IS_SiteAggregationMenu.draggable = false;
 IS_SiteAggregationMenu.tempReaders = {};
-/*
-IS_SiteAggregationMenu.menuDragInit = function(menuItem, menuIconDiv, menuItemDiv, isMultiMenu, isTree){
-//	return function(e){ menuItemDragStart(e, menuItem, menuIconDiv, menuItemDiv); };
-
-	menuItem.menuIconDiv = menuIconDiv;
-	menuItem.menuItemDiv = menuItemDiv;
-
-	var dragObject = new Object();
-	for(var i in menuItem){
-		dragObject[i] = menuItem[i];
-	}
-	dragObject.menuIconDiv = menuIconDiv;
-	dragObject.menuItemDiv = menuItemDiv;
-	dragObject.isMultiMenu = isMultiMenu;
-
-	if(isTree){
-		dragObject.isTree = true;
-	}
-
-	var drag = new IS_DragWidget(dragObject, "menu");
-	return drag.start;
-};
-*/
-
 IS_SiteAggregationMenu.getConfigurationFromMenuItem = function(menuItem, columnNum){
 	var w_id;
 	if(/true/i.test(menuItem.multi)){
@@ -2156,24 +1993,7 @@ IS_SiteAggregationMenu.getDraggable = function(menuItem, menuIconDiv, menuItemDi
 				IS_Widget.MaximizeWidget.headerContent.turnbackMaximize();
 
 			var element = draggble.element;
-
-//			var divWidgetDummy = element.cloneNode(true);
-//			element.dummy = divWidgetDummy;
-
 			this.menuUL = element.parentNode.parentNode;
-
-			// Handling that same widget is dropped plurally.
-			//if (this.menuItem.multi) this.menuItem.id = this.menuItem.type+ "_" + new Date().getTime();
-
-//			//Create dummy for menu.
-//			divWidgetDummy.id = "divWidgetDummy_" + this.menuItem.id;
-//			divWidgetDummy.style.position = "";
-//			element.parentNode.insertBefore(divWidgetDummy, element);
-//
-//			divWidgetDummy.style.display = "";
-//			element = document.body.appendChild(element);
-//			element.style.width = "30%";
-
 			var widgetGhost = IS_Draggable.ghost;
 			if(/MultiRssReader/.test(this.menuItem.type)){
 				var parentItem = this.menuItem.parent;
@@ -2181,7 +2001,6 @@ IS_SiteAggregationMenu.getDraggable = function(menuItem, menuIconDiv, menuItemDi
 				var divParent = $(p_id);
 				if ( divParent ) {
 					// Execurte at coordinating menu.
-//					var targetWidget = IS_Portal.widgetLists[IS_Portal.currentTabId][p_id];
 					var targetWidget = IS_Portal.getWidget(p_id, IS_Portal.currentTabId);
 
 					this.syncId = targetWidget.elm_widget.id;
@@ -2197,20 +2016,6 @@ IS_SiteAggregationMenu.getDraggable = function(menuItem, menuIconDiv, menuItemDi
 					widgetGhost.menuItem = this.menuItem;
 				}
 			}
-/*				}else {
-					if(widgetGhost.col.firstChild){
-						widgetGhost.col.insertBefore(widgetGhost,widgetGhost.col.firstChild);
-					}else{
-						widgetGhost.col.appendChild(widgetGhost);
-					}
-				}
-			}else{
-				if(widgetGhost.col.firstChild){
-					widgetGhost.col.insertBefore(widgetGhost,widgetGhost.col.firstChild);
-				}else{
-					widgetGhost.col.appendChild(widgetGhost);
-				}
-			}*/
 		},
 		onDrag: function(draggble, e){
 			if(!e) return;
@@ -2266,7 +2071,7 @@ if( Browser.isSafari1 ) {
 
 				var ele = draggable.element;
 				var styleObj = ele.style;
-				styleObj.top = styleObj.left = styleObj.bottom = styleObj.right = 0;
+				styleObj.top = styleObj.left = styleObj.bottom = styleObj.right = 0 + "px";
 
 				var dummyDiv = document.createElement("div");
 				var parentNode = ele.parentNode;
@@ -2293,8 +2098,6 @@ IS_SiteAggregationMenu.closeBubble = function(el) {
 		} else if(nodeName == 'li' && node.className == 'menuItem') {
 			node.style.background = "#F6F6F6";
 			node.style.color = "#5286BB";
-		} else if(nodeName == 'a' && el.className == "topMenuLi") {
-			//node.style.backgroundImage = "url(" + imageURL + "lev0_bg1.png)";
 		}
 		IS_SiteAggregationMenu.closeBubble(node);
 	}

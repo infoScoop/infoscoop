@@ -10,6 +10,7 @@
 			<xsl:for-each select="widget">
 			<xsl:element name="widget">
 				<xsl:attribute name="widgetId"><xsl:value-of select="@id" /></xsl:attribute>
+				<xsl:attribute name="menuId"><xsl:value-of select="@menuId" /></xsl:attribute>
 				<xsl:attribute name="colnum"><xsl:value-of select="@column" /></xsl:attribute>
 				<xsl:attribute name="siblingId"><xsl:value-of select="./preceding-sibling::widget[1][@column=$colnum]/@id" /></xsl:attribute>
 				<xsl:attribute name="href"><xsl:value-of select="@href" /></xsl:attribute>

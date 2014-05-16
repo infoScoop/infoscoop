@@ -38,6 +38,7 @@ import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Preference;
+import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TABPK;
 import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.TabLayout;
@@ -153,8 +154,10 @@ public class TabService {
 		// Delete StaticPanel if the tab is not found in tabLayout information. Change tabType to dynamic.
 		Collection currentTabList = TabDAO.newInstance().getTabs(uid);
 		
+		// The currentTabList is updated. Dynamic tab conversion of the erased tab and renewal of display sequence is performed.
 		obsoleteStaticTabToDynamicTab( tabLayoutMap,currentTabList,uid  );
 		
+		// Processing to the tab added newly is performed. 
 		List differenceTabs = getDifferenceTabs( tabLayoutMap,currentTabList,uid );
 		for( int i=0;i<differenceTabs.size();i++ ) {
 			TabLayout tabLayout = ( TabLayout )differenceTabs.get( i );
@@ -165,7 +168,7 @@ public class TabService {
 			
 			if( TABID_HOME.equals( tab.getTabId())) {
 				Collection commandbarWidgets =
-						(( TabLayout)tabLayoutMap.get("commandbar")).getStaticPanelXmlWidgets( uid );
+						(( TabLayout)tabLayoutMap.get(StaticTab.COMMANDBAR_TAB_ID)).getStaticPanelXmlWidgets( uid );
 				for( Iterator ite=commandbarWidgets.iterator();ite.hasNext();) {
 					Widget widget = ( Widget )ite.next();
 					widget.setTabid( tab.getTabId() );
@@ -211,7 +214,7 @@ public class TabService {
 			TabLayout layout = (TabLayout)tabLayoutMap.get(tempTabId);
 			String tempDefaultUid = layout.getDefaultuid();
 			String tempLastModified = layout.getWidgetslastmodified();
-			int tempTabNumber = layout.getTabnumber() != null ? layout.getTabnumber().intValue() : 0;
+			int tempTabNumber = layout.getStatictab().getTabnumber() != null ? layout.getStatictab().getTabnumber().intValue() : 0;
 			for(Iterator it = currentTabList.iterator(); it.hasNext();){
 				Tab tab = (Tab)it.next();
 				String widgetTabId = tab.getTabId();
@@ -229,7 +232,7 @@ public class TabService {
 //						el.setAttribute("tabNumber", tempTabNumber);
 						Collection staticPanelWidgets = layout.getStaticPanelXmlWidgets( uid );
 						if (widgetTabId.equals(TABID_HOME)) {
-							TabLayout commandbarLayout = (TabLayout) tabLayoutMap.get("commandbar");
+							TabLayout commandbarLayout = (TabLayout) tabLayoutMap.get(StaticTab.COMMANDBAR_TAB_ID);
 							
 							staticPanelWidgets.addAll( commandbarLayout.getStaticPanelXmlWidgets( uid ) );
 						}
@@ -297,7 +300,9 @@ public class TabService {
 		}
 		
 		for(Iterator ite=obsolutes.iterator();ite.hasNext();) {
+			// changed to DynamicTab 
 			Tab tab = convertStaticToDynamic( dynamicTabIdList,(Tab)ite.next() );
+			if(tab == null)	continue;
 			tab.setOrder( new Integer( temp.size()));
 			tabDAO.updateTab( tab );
 			temp.add( tab );
@@ -336,7 +341,8 @@ public class TabService {
 		// Insert the difference of added tabLayout information
 		for(Iterator ite = tabLayoutMap.keySet().iterator();ite.hasNext();){
 			String tempTabId = (String)ite.next();
-			if("commandbar".equals(tempTabId.toLowerCase())) continue;
+			if(StaticTab.COMMANDBAR_TAB_ID.equals(tempTabId.toLowerCase())
+					|| StaticTab.PORTALHEADER_TAB_ID.equals(tempTabId.toLowerCase())) continue;
 			
 			// Insert the difference here.
 			if(!currentStaticTabId.contains( tempTabId ))
@@ -399,27 +405,37 @@ public class TabService {
 		return defaultTabLayouts;
 	}
 	
+	/**
+	 * Even if a tab is deleted from a master, a tab is not necessarily erased on a user's screen. <br/>
+	 * When the user has some gadgets, convert StaticTab To DynamicTab.
+	 * @param dynamicTabIdList
+	 * @param staticTab
+	 * @return
+	 */
 	private Tab convertStaticToDynamic( List dynamicTabIdList,Tab staticTab ) {
-		// Processing of allocating tab ID again.
-		int newTabId = getNextNumber(dynamicTabIdList);
-		
-		Tab newTab = new Tab(new TABPK(staticTab.getUid(), String.valueOf(newTabId)));
-		
-		//Delete StaticPanel, tabType=dynamic
-		newTab.setType("dynamic");
-		newTab.setName(staticTab.getName());
-		newTab.setData(staticTab.getData());
-		newTab.setDefaultuid(staticTab.getDefaultuid());
-		//Delete tab number
-		//TODO: Is it placed at last if order is null?
-		newTab.setOrder(null);
-		
-		tabDAO.addTab(newTab);
-		
+		Tab newTab = null;
 		Collection<Widget> dynamicWidgets = tabDAO.getDynamicWidgetList(staticTab.getUid(),staticTab.getTabId() );
-		for( Widget widget : dynamicWidgets) {
-			widget.setTabid( String.valueOf( newTabId ) );
-			widget.setIsstatic( new Integer( 0 ) );
+		if(!staticTab.isDisabledDynamicPanel() && dynamicWidgets.size() > 0){
+			// Processing of allocating tab ID again.
+			int newTabId = getNextNumber(dynamicTabIdList);
+			
+			newTab = new Tab(new TABPK(staticTab.getUid(), String.valueOf(newTabId)));
+			
+			//Delete StaticPanel, tabType=dynamic
+			newTab.setType("dynamic");
+			newTab.setName(staticTab.getName());
+			newTab.setData(staticTab.getData());
+			newTab.setDefaultuid(staticTab.getDefaultuid());
+			//Delete tab number
+			//TODO: Is it placed at last if order is null?
+			newTab.setOrder(null);
+			
+			tabDAO.addTab(newTab);
+			
+			for( Widget widget : dynamicWidgets) {
+				widget.setTabid( String.valueOf( newTabId ) );
+				widget.setIsstatic( new Integer( 0 ) );
+			}
 		}
 		
 		WidgetDAO widgetDAO = WidgetDAO.newInstance();
@@ -428,14 +444,8 @@ public class TabService {
 			widgetDAO.delete(widget);
 		}
 		
-		
-		//update
-//		WidgetDAO.newInstance().addTab(newTab);
-		
-		// Delete differences here
-		// Delete existing (can not update key��
+		// Delete existing (can not update key)
 		tabDAO.deleteTab( staticTab );
-//		WidgetDAO.newInstance().updateTab( tab );
 		
 		return newTab;
 	}
@@ -578,5 +588,24 @@ public class TabService {
 		SessionDAO.newInstance().setForceReload( uid );
 		
 		log.info("reset user data ["+uid+"]");
+	}
+	
+	/**
+	 * Clear all user profile.
+	 * @param uid
+	 * @throws Exception
+	 */
+	public void clearProfile( String uid ) throws Exception{
+		if( uid == null )
+			return;
+		
+		PreferenceDAO preferenceDAO = PreferenceDAO.newInstance();
+		Preference preference = preferenceDAO.select(uid);
+		if(preference != null)
+			preferenceDAO.delete(preference);
+		WidgetDAO.newInstance().clearWidgets( uid );
+		TabDAO.newInstance().deleteTab( uid );
+		
+		log.info("clear user profile ["+uid+"]");
 	}
 }

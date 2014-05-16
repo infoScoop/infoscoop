@@ -49,6 +49,7 @@
 	border-bottom: 1px solid #b7b7b7;*/
 	cursor : pointer;
 	display: inline;
+	vertical-align: top;
 }
 
 #editsearchoption {
@@ -57,6 +58,7 @@
 	_margin-left: 2px; /* for IE */
 	cursor : pointer;
 	display: inline;
+	vertical-align: top;
 }
 
 #searchoption{

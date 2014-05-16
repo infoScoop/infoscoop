@@ -23,7 +23,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	this.hiddenIcons = [];
 	this.visibleIcons = [];
 	
-	//this.opened=false;
 	var onMove=false;
 	var effect=null;
 	
@@ -75,22 +74,13 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		widget.elm_widgetHeader.appendChild(headerDiv);
 		
 		IS_Event.observe( headerDiv, "mouseover", observeEventsFunc, false, widget.closeId);
-		
+	
 		titleHeaderDiv = document.createElement("div");
-		//titleHeaderDiv.style.marginTop = "2px";
-		
 		headerDiv.appendChild(titleHeaderDiv);
-		
 		var widgetConf  = IS_WidgetConfiguration[widget.widgetType];
 		var header = widgetConf.Header;
 		//build title
-		//var titleHeader = header.titleHeader;
-		//if(titleHeader.option) {
-			//for(var i in titleHeader.option) {
-			//	if(!( titleHeader.option[i] instanceof Function ))
-					self.buildTitleHeader();
-			//}
-		//}
+		self.buildTitleHeader();
 		
 		//build rightHeader
 		var headerIconDiv = document.createElement("div");
@@ -230,8 +220,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		titleHeaderDiv.style.marginRight = ((visibleCount - 1) * 16 + 10) + "px";//Minus 1 for maximizing and minimizing, and not consider 'search' and 'access statics' as they are set in menu
 		headerDiv.appendChild(headerIconDiv);
 		self.stockEvent(headerIconDiv, 'mousedown', this.common.bind(this, this.dummy, false, headerIconDiv), false, widget.closeId);
-		
-		//this.applyAllIconStyle();
 	}
 
 	
@@ -305,22 +293,24 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		while(titleHeaderDiv.firstChild){
 			titleHeaderDiv.removeChild(titleHeaderDiv.firstChild);
 		}
+
 		var titleHeaderTable = document.createElement("table");
-		titleHeaderTable.cellSpacing = 0;
-		titleHeaderTable.cellPadding = 0;
+		titleHeaderTable.border = 0;
+		titleHeaderTable.cellSpacing = '0px';
+		titleHeaderTable.cellPadding = '0px';
 		var titleHeaderTBody =document.createElement("tbody");
 		titleHeaderTable.appendChild(titleHeaderTBody);
 		var titleHeaderTr = document.createElement("tr");
 		titleHeaderTBody.appendChild(titleHeaderTr);
 		
-		var indicatorDiv = document.createElement("td");
-		
+		var indicatorTd = document.createElement("td");
+		var indicatorDiv = document.createElement("div");
 		indicatorDiv.appendChild(widget.elm_indicator);
-		titleHeaderTr.appendChild(indicatorDiv);
+		indicatorTd.appendChild(indicatorDiv)
+		titleHeaderTr.appendChild(indicatorTd);
 		
 		if(widget.elm_favoriteIcon){
 			var favoriteIconDiv = document.createElement("td");
-			//$(favoriteIconDiv).setStyle({"float":"left"});
 			favoriteIconDiv.appendChild(widget.elm_favoriteIcon);
 			titleHeaderTr.appendChild(favoriteIconDiv);
 		}
@@ -328,19 +318,16 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		var titleTd = document.createElement("td");
 		widget.elm_title.id = widget.id + "_widgetTitle";
 		widget.elm_title.className = "widgetTitle";
-		//$(widget.elm_title).setStyle({"float":"left"});
 		titleTd.appendChild(widget.elm_title);
 		titleHeaderTr.appendChild(titleTd);
-		
 		this.buildTitle();
 
-
 		widget.elm_latestMark.id = "m_" + widget.id;
-		
 		widget.eventTargetList.push({element:widget.elm_latestMark});
 		self.stockEvent(widget.elm_latestMark, 'mousedown', this.showLatestNews.bind( this ), true, widget.closeId);
 		
 		var latestMarkTd = document.createElement("td");
+		latestMarkTd.className = "latestMarkTd";
 		latestMarkTd.appendChild(widget.elm_latestMark);
 		titleHeaderTr.appendChild(latestMarkTd);
 		titleHeaderDiv.appendChild(titleHeaderTable);
@@ -364,7 +351,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				
 				aTag.href = widget.title_url;
 				aTag.appendChild(document.createTextNode(displayTitle));//To show HTML: escape more
-				//aTag.target = "ifrm";
 				
 				self.stockEvent(aTag, 'mousedown', this.common.bind(this, this.dummy, false, aTag), false, widget.closeId);
 				var isGadget = /^g_/.test(widget.widgetType);
@@ -416,25 +402,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				maximizeHeaderTitleDiv.appendChild(document.createTextNode(this.getTitle()));
 			}
 		}
-	}
-	
-	if( Browser.isSafari1 ) {
-		this.buildTitle = (function() {
-			var buildTitle = this.buildTitle;
-			
-			return function( type ) {
-				buildTitle.apply( this,[type] );
-				
-				if( !widget.title_url ) {
-					widget.elm_title.style.position = "relative";
-					var dragHandle = document.createElement("div");
-					dragHandle.style.position = "absolute"
-					dragHandle.style.top = dragHandle.style.left = 0;
-					dragHandle.style.width = dragHandle.style.height = "100%";
-					widget.elm_title.appendChild( dragHandle );
-				}
-			}
-		}).apply( this );
 	}
 
 	this.getTitle = function() {
@@ -527,7 +494,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		
 
 		if( type == "turnbackMaximize") {
-			div.style.margin = "0";
+			div.style.margin = "0px";
 			
 			var labelDiv = document.createElement("div");
 			labelDiv.className = 'headerIcon_turnbackMaximize';
@@ -536,12 +503,11 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			labelDiv.appendChild( div );
 			
 			var labelText = document.createElement("span");
-			labelText.appendChild(document.createTextNode(
-
-				IS_R.lb_turnbackMaximize ));
+			labelText.appendChild(document.createTextNode( IS_R.lb_turnbackMaximize ));
 				
 			labelText.style.position = "relative";
-			labelText.style.top = "3";
+			labelText.style.top = "-1px";
+			labelText.style.verticalAlign = "bottom";
 			
 			labelDiv.appendChild(labelText);
 			
@@ -582,11 +548,9 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	this.stockedEvents = [];
 	this.stockEvent = function(element, name, observer, useCapture, id){
 		this.stockedEvents.push({"element":element, "name":name, "observer":observer, "useCapture":useCapture, "id":id});
-		//IS_Event.observe(element, name, observer, useCapture, id);
 	}
 	
 	function observeEvents(){
-//		console.log("self.stockedEvents.length="+self.stockedEvents.length);
 		for(var i=0;i<self.stockedEvents.length;i++){
 			var ebObj = self.stockedEvents[i];
 			if(ebObj) IS_Event.observe(ebObj.element, ebObj.name, ebObj.observer, ebObj.useCapture, ebObj.id);
@@ -618,7 +582,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				},
 				onEnd: function(draggable, e){
 				// Adjust description when drag finishes
-				//IS_Widget.processAdjustRssDesc();
 				},
 				getDropObject: function(){
 					return widget;
@@ -636,7 +599,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			}.bind(widget), true);
 		}
 
-		//IS_Event.stopObserving( headerTable, "mouseover", observeEventsFunc, false);
 		IS_Event.stopObserving( headerDiv, "mouseover", observeEventsFunc, false);
 	}
 	
@@ -723,13 +685,10 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		IS_EventDispatcher.newEvent('closeWidget', widget.id.substring(2), null);
 		
 		var url = widget.getUserPref("url");
-//		if( url ) IS_EventDispatcher.newEvent( IS_Widget.CLOSE_URL,url,widget );
 		
 		if(widget.parent)
 			IS_Portal.removeSubWidget(widget.parent.id, widget.id, widget.parent.tabId);
-//		IS_Portal.widgetLists[tabId][widget.id] = null;
 		IS_Portal.removeWidget(widget.id, tabId);
-//		IS_Portal.subWidgetLists[tabId][widget.id] = null;
 		try{AjaxRequest.cancel(widget.id);}catch(ex){msg.error(ex);}
 		try{IS_Event.unloadCache(widget.id);}catch(ex){msg.error(ex);}
 		try{IS_Event.unloadCache(widget.closeId);}catch(ex){msg.error(ex);}
@@ -754,7 +713,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 
 	this.changeTurnbkIcon = function(){
 		var openWidget = widget.getBoolUserPref("openWidget");
-		//console.log("chageTurnbkIcon:"+ openWidget);
 		var divTurnBack = $("hi_" + widget.id + "_turnBack");
 		if(divTurnBack){
 			if( !openWidget ){
@@ -782,7 +740,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	this.minimize = function( e ){
 		if( e ) Event.stop( e );
 		
-		//console.log("call minimize");
 		var openWidget = widget.getBoolUserPref("openWidget");
 		if( !openWidget )
 			return;
@@ -792,7 +749,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		this.changeTurnbkIcon();
 		
 		if(widget.content && widget.content.minimizeIconHandler){
-			//console.log("call content function");
 			widget.content.minimizeIconHandler(e);
 		} else {
 			widget.elm_widgetContent.style.display = "none";
@@ -801,7 +757,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	this.turnBack = function( e ){
 		if( e ) Event.stop( e );
 		
-		//console.log("call turnback");
 		if( widget.getBoolUserPref("openWidget") )
 			return;
 		
@@ -810,7 +765,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		this.changeTurnbkIcon();
 		
 		if(widget.content && widget.content.turnBackIconHandler){
-			//console.log("call content turnback function");
 			widget.content.turnBackIconHandler(e);
 		} else {
 			widget.elm_widgetContent.style.display = "block";
@@ -951,7 +905,7 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			itemDiv.id = "hm_" + widgetId + "_" + this.menuOptList[i].type;
 			menuDiv.appendChild( itemDiv );
 		}
-		menuDiv.style.top = 0;
+		menuDiv.style.top = '0px';
 		document.body.appendChild(menuDiv);
 		
 		this.elm_menu = menuDiv;
@@ -966,27 +920,19 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			var itemDiv = document.createElement( opt.anchor ? "a":"span");
 			itemDiv.className = className + " item";
 			itemDiv.style.borderBottom = 'none';
-			//itemDiv.style.position = "relative";
 			
 			if( opt.anchor )
 				itemDiv.href = "javascript:void(0)";
 			
 			if (opt.icon) {
 				itemDiv.appendChild( opt.icon );
-				/*
-				$(opt.icon).setStyle({
-					position: "absolute",
-					top: 0,
-					left: 0
-				});
-				*/
 			}
 			
 			var content = document.createElement("span");
 			content.style.whiteSpace = 'nowrap';
 			content.style.paddingLeft = '2px';
 			content.style.position = "relative";
-			content.style.top = -2;
+			content.style.top = '-2px';
 			
 			if (opt.label) {
 				var labelSpan = document.createElement("s");
@@ -1027,13 +973,14 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			return setTimeout( this.show.bind( this,element ),10 );
 		}
 		
-		var winX = Math.max(document.body.scrollWidth, document.body.clientWidth);
-		var winY = Math.max(document.body.scrollHeight, document.body.clientHeight);
+		var winX = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth);
+		var winY = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight);
+
 		
 		var closer = $(this.eventKey + "_closer");
 		
-		closer.style.width = winX;
-		closer.style.height = winY;
+		closer.style.width = winX + 'px';
+		closer.style.height = winY + 'px';
 		closer.style.display = "";
 		
 		if (!isInit && this.elm_menu.style.display != "none") {
@@ -1051,20 +998,17 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			
 			var offsetX= xy[0];
 			if( (offsetX + this.elm_menu.offsetWidth ) > winX ){//if the width of the whole menu is bigger than the distance between the left end of top menu and the right end of window
-				//offsetX = (winX  - this.elm_menu.offsetWidth) - 10;
 				this.elm_menu.style.left = "auto";
-				this.elm_menu.style.right = fixedPortalHeader ? 16:10;
+				this.elm_menu.style.right = fixedPortalHeader ? '16px':'10px';
 			}else{
 				this.elm_menu.style.right = "auto";
-				this.elm_menu.style.left = offsetX;
+				this.elm_menu.style.left = offsetX+'px';
 			}
 			var offsetY = xy[1] + showToolsDiv.offsetHeight;
 			if((offsetY + this.elm_menu.offsetHeight) > winY){
-				//offsetY = xy[1] - this.elm_menu.offsetHeight;
 				offsetY = winY - this.elm_menu.offsetHeight;
 			}
-			
-			this.elm_menu.style.top = offsetY;
+			this.elm_menu.style.top = offsetY + 'px';
 			this.elm_menu.style.visibility = "visible";
 			
 			IS_Portal.behindIframe.show(this.elm_menu);
@@ -1073,9 +1017,10 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			var tail = Position.cumulativeOffset( showToolsDiv )[1] + this.elm_menu.offsetHeight;
 			var limit = getWindowHeight() +document.body.scrollTop;
 			
-			
-			if( !( tail < limit ))
-				document.body.scrollTop += tail -limit +16;
+			if( !( tail < limit )){
+				var scrollTop = document.body.scrollTop + tail -limit +16;
+				document.body.scrollTop = scrollTop + 'px';
+			}
 		}
 		IS_Event.observe(window, 'resize', this.handleHideMenu, false, this.eventKey);
 	}
@@ -1087,13 +1032,6 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 		var closer = $(this.eventKey + "_closer");
 		
 		IS_Event.stopObserving( window,'resize',this.handleHideMenu );
-		/*
-		if( e ) {
-			var element = Event.element( e );
-			if( element && (Element.childOf( element, menu ) || selectMenu && Element.childOf( element,selectMenu ) ||
-				menu.style.display == "none")) return;
-		}
-		*/
 		if( menu ) menu.style.display = "none";
 		if( closer ) closer.style.display = "none";
 		

@@ -248,7 +248,7 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 		textarea.id = prefType + '_' + prefConf.name;
 		textarea.rows = "12";
 		textarea.wrap = "off";
-		textarea.style.width = "100%";
+		textarea.style.width = "99%";
 		//Content may be inserted if prefConf is WidgetPref...
 		textarea.value = prefValue || "";
 		IS_Event.observe(textarea, 'change', onChange.bind(textarea, prefConf), false, "_widgetEditForm");
@@ -331,13 +331,9 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 			}
 			
 			var radio = null;
-			if(Browser.isIE) {
-				radio = document.createElement('<input type="radio" name="'+prefType + '_' + prefConf.name +'>');
-			} else {
-				radio = document.createElement('input');
-				radio.type = 'radio';
-				radio.name = prefType + '_' + prefConf.name;
-			}
+			radio = document.createElement('input');
+			radio.type = 'radio';
+			radio.name = prefType + '_' + prefConf.name;
 			radio.value = value;
 			radio.defaultChecked = prefValue == value;
 			radioDiv.appendChild(radio);
@@ -487,7 +483,7 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 		}
 		
 		prefConf.calendar = new CalendarInput( textbox, dateFormat, onChange.bind(textbox, prefConf) );
-		prefConf.calendar.contents.style.zIndex = 10000;
+		prefConf.calendar.contents.style.zIndex = 99999;
 		setDefaultHilight(textbox, prefValue);
 		break;
 

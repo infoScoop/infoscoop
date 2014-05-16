@@ -38,12 +38,17 @@ IS_Portal.buildTabs = function(){
 	var tabsContainer = $('tab-container');
 	var tabsDiv = document.createElement("div");
 	tabsDiv.id = "tabs";
+	
+	var tabsUl = document.createElement("ul");
+	tabsUl.id = "tabsUl";
+	tabsDiv.appendChild(tabsUl);
+
 	//Loading all tabs
 	var tabsRefresh = document.createElement("div");
 	tabsRefresh.id = "tabsRefresh";
 	tabsRefresh.className = "tabsRefresh";
 	tabsRefresh.title = IS_R.ms_tabsRefresh;
-	tabsDiv.appendChild(tabsRefresh);
+	tabsUl.appendChild(tabsRefresh);
 	
 	Event.observe(tabsRefresh, "click",IS_Portal.buildAllTabsContents, false);
 	
@@ -51,14 +56,10 @@ IS_Portal.buildTabs = function(){
 	tabsRefreshStop.id = "tabsRefreshStop";
 	tabsRefreshStop.title = IS_R.ms_stopRefresh;
 	tabsRefreshStop.style.display = "none";
-	tabsDiv.appendChild( tabsRefreshStop );
+	tabsUl.appendChild( tabsRefreshStop );
 	
 	Event.observe( tabsRefreshStop,"click",IS_Portal.stopLoadWidgets,false );
-	
-	var tabsUl = document.createElement("ul");
-	tabsUl.id = "tabsUl";
-	tabsDiv.appendChild(tabsUl);
-	
+
 	// Adding tab
 	var addTab = document.createElement("div");
 	IS_Portal.addTabDiv = addTab;
@@ -164,18 +165,12 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
 			//Send to Server
 			IS_Widget.setTabPreferenceCommand(tab.id, "tabName", titleValue);
 			
-//			var titleSpan = $( this.id ).childNodes[1];
 			var titleTd = $( this.id + "_title" );
-			
-			titleTd.removeChild(titleTd.childNodes[0]);
-			titleTd.appendChild(document.createTextNode(titleValue));
+			titleTd.update(titleValue);
 			if (IS_Portal.tabs[tab.id]) {
 				IS_Portal.tabs[tab.id].name = titleValue;
 			}
 			
-//			tab.replaceChild(titleSpan, titleEditorFormDiv);
-//			IS_Portal.isDisplayTabTitleEditor = false;
-
 			return true;
 		}
 		this.changeColumnNum = function(numCol){
@@ -245,10 +240,10 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 	tab.setAttribute("href",( tab.href = "#panel"+tabNumber ));
 	tab.className = "tab";
 	
-	var outerSpan = document.createElement('span');
+	var outerSpan = document.createElement('div');
 	outerSpan.className = 'outer';
-	var innerSpan = document.createElement('span');
-	innerSpan.className = 'inner';
+	var innerSpan = document.createElement('div');
+	innerSpan.className =  'inner';
 	
 	IS_EventDispatcher.addListener("tabLoadCompleted",tab.id,function() {
 			Element.removeClassName( tab,"loading");
@@ -257,49 +252,55 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 			Element.addClassName( tab,"loading");
 		},null,false );
 	
-	var tabTr = $.TR();
-	
-	tabTr.appendChild(
-		$.TD({},
-			$.IMG({src:imageURL +"indicator.gif", id:tab.id+"_loadingIcon", className:"tabLoadingIcon"})
-		)
-	);
-	
+	var tabBaseDiv = $.DIV();
+
+	// indicator
+	var indicatorDiv = $.DIV({className:"inlineBlock"},$.IMG({src:imageURL +"indicator.gif", id:tab.id+"_loadingIcon", className:"tabLoadingIcon"}));
+	tabBaseDiv.appendChild(indicatorDiv);
+
+	// static-pin
 	if(disabledDynamicPanel){
-		tabTr.appendChild(
-			$.TD({width:6},
-				$.IMG({src:imageURL+"pin-small.gif", className:"fixedTab", title:IS_R.ms_thisIsFixedTab})
-			)
-		);
+		var pinDiv = $.DIV({width:'6px', className:"inlineBlock"}, $.IMG({src:imageURL+"pin-small.gif", className:"fixedTab", title:IS_R.ms_thisIsFixedTab, style:"left:3px;"}));
+		tabBaseDiv.appendChild(pinDiv);
 	}
-	
-	tabTr.appendChild($.TD({},
-		$.SPAN({id:tab.id + "_title", className:"tabTitle"}, name)
-	));
-	
+
+	// title
+	var titleDiv = $.DIV({id:tab.id + "_title", className:"tabTitle inlineBlock"}, name);
+	tabBaseDiv.appendChild(titleDiv);
+
+	//Menu
 	if(disabledDynamicPanel){
 		var refreshImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"refresh.gif", className:"selectMenu"});
-		tabTr.appendChild($.TD({}, refreshImg));
+		var refreshImgDiv = $.DIV({className:"inlineBlock tabTitleImg"}, refreshImg);
+		tabBaseDiv.appendChild(refreshImgDiv);
 		IS_Event.observe(refreshImg, 'click', function(e){
 			var tabObj = IS_Portal.tabs[this.id];
 			tabObj.refresh();
 		}.bindAsEventListener(tab), false, tab.id);
 	} else {
 		var selectMenuImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"bullet_arrow_down.gif", className:"selectMenu"});
-		tabTr.appendChild($.TD({}, selectMenuImg));
+		var menuImgDiv = $.DIV({className:"inlineBlock tabTitleImg"}, selectMenuImg);
+		tabBaseDiv.appendChild(menuImgDiv);
 		IS_Event.observe(selectMenuImg, 'click', IS_Portal.showTabMenu.bind(selectMenuImg, tab), false, tab.id);
 		IS_Event.observe(selectMenuImg, 'mousedown', function(e){Event.stop(e);}, false, tab.id);
-	}
+	}	
 	
 	var tabOnMousedown = function(e){
 		IS_Portal.tabDrag(e, tab);
 	}
 	IS_Event.observe(tab, 'mousedown', tabOnMousedown, false, tab.id);
-	
-	innerSpan.appendChild($.TABLE({cellPadding:0, cellSpacing:0}, $.TBODY({}, tabTr)));
-	
-	outerSpan.appendChild(innerSpan);
-	tab.appendChild(outerSpan);
+
+	var parenthesisSpan = document.createElement('div');
+	parenthesisSpan.className = 'parenthesis';
+
+	var tabBase = document.createElement('div');
+	tabBase.style.height = "23px";
+
+	innerSpan.appendChild(tabBaseDiv);
+	tabBase.appendChild(outerSpan);
+	tabBase.appendChild(innerSpan);
+	tabBase.appendChild(parenthesisSpan);
+	tab.appendChild(tabBase);
 	
 	IS_Portal.setTabDroppable(tab);
 	
@@ -328,8 +329,8 @@ IS_Portal.showTabMenu = function(tabElement, e){
 			offset = (winX  - tabMenu.offsetWidth );
 		}
 		
-		tabMenu.style.left = offset;
-		tabMenu.style.top = (findPosY(tabElement) + tabElement.firstChild.offsetHeight);
+		tabMenu.style.left = offset + 'px';
+		tabMenu.style.top = (findPosY(tabElement) + tabElement.firstChild.offsetHeight)  + 'px';
 
 		IS_Portal.behindIframe.show(tabMenu);
 	}
@@ -381,8 +382,15 @@ IS_Portal.showTabMenu = function(tabElement, e){
 				commitRename( tabObj,nameInput );
 			}, false, tabObj.id);
 			function commitRename( tabObj,nameInput ) {
-				if( !tabObj.rename( nameInput.value ))
+				if( !tabObj.rename( nameInput.value )){
 					nameInput.value = tabObj.name;
+				}else{
+					// #511
+					// Rerendering for length tuning.
+					if(Browser.isIE8)
+						$(tabObj.id).hide().show();
+				}
+
 			}
 			
 			nameInput.value = tabObj.name;
@@ -473,8 +481,10 @@ IS_Portal.showTabMenu = function(tabElement, e){
 			var itemDiv = document.createElement( opt.anchor ? "a":"div");
 			itemDiv.className = className + " item";
 			itemDiv.id = tabObj.id+"_menu_"+className;
-			if( opt.anchor )
+			if( opt.anchor ){
 				itemDiv.href = "javascript:void(0)";
+				IS_Event.observe( itemDiv, "click", function(e){Event.stop(e)}, false, tabObj.id );
+			}
 			
 			var content = document.createElement("div");
 			content.className = "content";
@@ -1026,10 +1036,10 @@ IS_Portal.moveToTab = function(element, tab, process){
 	*/
 	var dragElement = (IS_Draggable.dummyElement)? IS_Draggable.dummyElement : element;
 	
-	effectGhost.style.top = dragElement.style.top;
-	effectGhost.style.left = dragElement.style.left;
-	effectGhost.style.width = dragElement.offsetWidth;
-	effectGhost.style.height = dragElement.offsetHeight;
+	effectGhost.style.top = parseInt(dragElement.style.top) + "px";
+	effectGhost.style.left = parseInt(dragElement.style.left) + "px";
+	effectGhost.style.width = parseInt(dragElement.offsetWidth) + "px";
+	effectGhost.style.height = parseInt(dragElement.offsetHeight) + "px";
 	
 	effectGhost.style.display = 'block';
 	
@@ -1054,8 +1064,8 @@ IS_Portal.shrink = function(src,dest,aa, ab, callback, marginLeft) {
 	var srcH = src.offsetHeight;
 	var incW = (dest.offsetWidth-srcW) / ab;
 	var incH = (dest.offsetHeight-srcH) / ab;
-	src.style.width = srcW;
-	src.style.height = srcH;
+	src.style.width = srcW + "px";
+	src.style.height = srcH + "px";
 	
 	var id = setInterval(function () {
 		if (ab < 1) {
@@ -1070,8 +1080,8 @@ IS_Portal.shrink = function(src,dest,aa, ab, callback, marginLeft) {
 		src.style.top = parseInt(srcY) + "px";
 		srcW += incW;
 		srcH += incH;
-		src.style.width = srcW;
-		src.style.height = srcH;
+		src.style.width = srcW + "px";
+		src.style.height = srcH + "px";
 		
 	}, aa / ab)
 }
@@ -1202,8 +1212,9 @@ IS_Portal.changeActiveTab = function( changeTab, isInitialize ){
 		siteMenuElm.show();
 		IS_SidePanel.adjustPosition();
 	}
-	
+
 	IS_Widget.RssReader.RssItemRender.adjustRssDesc();
+	IS_Widget.Information2.adjustDescWidth();
 	
 	IS_Portal.adjustStaticWidgetHeight();
 	
@@ -1272,7 +1283,7 @@ if( Browser.isSafari1 ) {
 
 IS_Portal.adjustStaticWidgetHeight = function(){
 	var currentTab = IS_Portal.tabs[IS_Portal.currentTabId];
-	if(currentTab.type != "static")return;
+	if(!currentTab || currentTab.type != "static")return;
 	
 	var tabNumber = IS_Portal.currentTabId.substr(3);
 	var adjustToWindowHeight = IS_Customization["staticPanel"+tabNumber].adjustToWindowHeight;
@@ -1291,10 +1302,11 @@ IS_Portal.adjustStaticWidgetHeight = function(){
 			if(widget.iframe)
 			  widget.iframe.style.height = height + "px";
 			widget.elm_widgetContent.style.height = height + "px";
-			widget.staticWidgetHeight =  height ;
+			widget.staticWidgetHeight =  height;
 
 			if(widget.widgetType == 'RssReader' && widget.content.rssContentView){
-				widget.content.rssContentView.setViewportHeight( height );
+				// 16px is gadget footer size.
+				widget.content.rssContentView.setViewportHeight( height - 16);
 			}
 		}
 		isReady = true;
@@ -1313,6 +1325,7 @@ IS_Portal.startChangeTab = function(e){
 
 IS_Portal.endChangeTab = function(e){
 	IS_Portal.endIndicator();
+	IS_Portal.adjustGadgetHeight();
 	IS_EventDispatcher.newEvent("changeTab");
 }
 

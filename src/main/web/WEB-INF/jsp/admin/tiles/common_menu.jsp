@@ -54,7 +54,7 @@
 		</li>
 		<%}%>
 		
-		<%if( adminService.isPermitted("defaultPanel") || adminService.isPermitted("portalLayout") ){%>
+		<%if( adminService.isPermitted("defaultPanel") || adminService.isPermitted("portalLayout") ||  adminService.isPermitted("tabAdmin") ){%>
 		<li>
 			<a href="../generallayout/index" class="tab <c:if test="${type == 'generallayout'}">active</c:if>" id="tab_defaultPanel"><span>%{alb_generalLayout}</span></a>
 			
@@ -94,6 +94,11 @@
 		<%if( adminService.isPermitted("authentication")){%>
 		<li>
 			<a href="../authentication/index" class="tab <c:if test="${type == 'authentication'}">active</c:if>" id="tab_authentication"><span>OAuth</span></a>
+		</li>
+		<%}%>
+		<%if( adminService.isPermitted("extapps")){%>
+		<li>
+			<a href="../extapps/index" class="tab <c:if test="${type == 'extapps'}">active</c:if>" id="tab_extapps"><span>%{alb_extapps}</span></a>
 		</li>
 		<%}%>
 		<li>

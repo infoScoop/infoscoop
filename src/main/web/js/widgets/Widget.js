@@ -21,6 +21,8 @@ IS_Widget.DROP_WIDGET = "dropWidget";
 IS_Widget.CLOSE_WIDGET = "closeWidget";
 IS_Widget.DROP_URL = "dropUrl";
 IS_Widget.CLOSE_URL = "closeUrl";
+IS_Widget.DEFAULT_VIEW = "home";
+IS_Widget.DEFAULT_MAXIMIZE_VIEW = "canvas";
 
 IS_Widget.prototype.classDef = function() {
 	//var self = this;
@@ -154,6 +156,10 @@ IS_Widget.prototype.classDef = function() {
 			userPref["openWidget"] = true;
 		
 		var ar = typeConf.autoRefresh;
+		// upload gadget
+		if (!ar && typeConf.ModulePrefs) {
+			ar = typeConf.ModulePrefs.autoRefresh;
+		}
 		this.autoRefresh = (ar &&  ( /true/.test(ar) || /TRUE/.test(ar) ) ) ? true: false;
 		
 		//Use widgetConfiguration.xml if title cannot be found in widget.xml
@@ -351,7 +357,12 @@ IS_Widget.prototype.classDef = function() {
 			if ( this.content && this.content[funcName]) {
 				func = this.content[funcName].bind( this.content );
 			} else if( this.iframe && this.iframe.contentWindow && this.iframe.contentWindow[ funcName ]) {
-				func = this.iframe.contentWindow[funcName].bind( this.iframe.contentWindow );
+//				func = this.iframe.contentWindow[funcName].bind( this.iframe.contentWindow );
+				func = function(iframe, funcName){
+					return function(){
+						iframe.contentWindow[funcName]();
+					}
+				}(this.iframe, funcName);
 			}
 		} catch( ex ) {
 			// ignore
@@ -377,8 +388,8 @@ IS_Widget.prototype.classDef = function() {
 		var container = $("s_" + this.id);
 		if(self.elm_widgetHeader.offsetHeight || (!self.headerContent && container.offsetHeight) ){
 			var widgetHeight = parseInt(container.style.height);
-			var headerHeight = ( typeConf.Header )? self.elm_widgetHeader.offsetHeight : 0;
-			self.elm_widgetContent.style.height = widgetHeight - headerHeight;
+			var headerHeight = ( typeConf.Header )? parseInt(self.elm_widgetHeader.offsetHeight) : 0;
+			self.elm_widgetContent.style.height = widgetHeight - headerHeight + 'px';
 			self.elm_widgetContent.style.overflow = "auto";//Autocomplete misalignment problem occurs if "overflow=hidden" is set in IE
 			if(!Browser.isIE)self.elm_widgetContent.style.overflowX = "hidden";//Fix 484
 			self.staticWidgetHeight = widgetHeight - headerHeight;
@@ -465,13 +476,14 @@ IS_Widget.prototype.classDef = function() {
 	   	var divLatestMark = document.createElement("div");
 	   	this.elm_latestMark = divLatestMark;
 		divLatestMark.style.display = "none";
-		
+
 		var indicator = document.createElement("img");
 		indicator.src = imageURL+"indicator.gif";
 	   	this.elm_indicator = indicator;
 		indicator.id = self.id + "_widgetIndicator";
 		indicator.className = "widgetIndicator";
 		indicator.style.display = "none";
+		indicator.style.verticalAlign = "top";
 		
 	   	var divWidgetContent = document.createElement("div");
 	   	this.elm_widgetContent = divWidgetContent;
@@ -534,7 +546,15 @@ IS_Widget.prototype.classDef = function() {
 		if(icon){
 			var favoriteIconDiv = document.createElement("div");
 			this.elm_favoriteIcon = favoriteIconDiv;
-			favoriteIconDiv.innerHTML = '<img style="width:14px;height:14px;padding-left:3px;padding-top:3px" src="' + icon +  '"border="0">';
+			var favoriteIconImg = document.createElement("img");
+			favoriteIconImg.style.width = "14px";
+			favoriteIconImg.style.height = "14px";
+			favoriteIconImg.style.paddingTop = "3px";
+			favoriteIconImg.style.paddingLeft = "3px";
+			favoriteIconImg.style.verticalAlign = "top";
+			favoriteIconImg.style.border = "0px";
+			favoriteIconImg.src = icon;
+			favoriteIconDiv.appendChild(favoriteIconImg);
 		}
 	
 		if(!isStatic && !isMaximize && !this.getBoolUserPref("openWidget"))
@@ -594,7 +614,7 @@ IS_Widget.prototype.classDef = function() {
 			if( parseInt( widgetHeight ) < 1 )
 				widgetHeight = 1;
 			
-			divWidgetContent.style.height = widgetHeight;
+			divWidgetContent.style.height = setUnitOfLength(widgetHeight);
 		}
 		
 		//Use 'resetAuthCredential' only if there is loginCredentialAuthType
@@ -645,7 +665,7 @@ IS_Widget.prototype.classDef = function() {
 			__TAB_ID__: tabId,
 			__HOST_PREFIX__: hostPrefix,
 			__STATIC_CONTENT_URL__: staticContentURL == '..' ? '.' : staticContentURL,//fix #3699
-			view:  viewType == "Maximize" ? "canvas" : viewType || "home",
+			view:  viewType == "Maximize" ? IS_Widget.DEFAULT_MAXIMIZE_VIEW : viewType || IS_Widget.DEFAULT_VIEW,
 			lang: IS_Portal.lang,
 			country: IS_Portal.country || "jp",
 			ifpctok: this.authToken,
@@ -810,18 +830,7 @@ IS_Widget.prototype.classDef = function() {
 	this.initIframe = function( isOuter ) {
 		self.elm_widgetContent.innerHTML = "";
 		
-		if( Browser.isIE ) {
-			// fix 
-			$( self.elm_widgetContent ).removeClassName("widgetContent");
-			self.elm_widgetContent.style.removeAttribute("overflow");
-		}
-		
-		if( Browser.isIE ) {
-			self.iframe = document.createElement('<iframe name="ifrm_'+self.id+(isOuter?' scrolling="no"':'')+'">');
-		} else {
-			self.iframe = document.createElement('iframe');
-		}
-		
+		self.iframe = document.createElement('iframe');
 		self.iframe.id = "ifrm_" + self.id;
 		self.iframe.name = "ifrm_" + self.id;
 
@@ -836,16 +845,16 @@ IS_Widget.prototype.classDef = function() {
 				{
 					Container: {
 						onSecurityAlert: function(source, alertType) {
-							gadgets.error(['Security error for container ', source.getClientID(), ' : ', alertType].join(''));
+							msg.error(['Security error for container ', source.getClientID(), ' : ', alertType].join(''));
 							source.getIframe().src = 'about:blank';
 						},
 						onConnect: function(container) {
-							gadgets.log(['connected: ', container.getClientID()].join(''));
+							msg.info(['connected: ', container.getClientID()].join('')); 
 						}
 					},
 					IframeContainer: {
 						parent: self.elm_widgetContent,
-						uri: "./blank.html",
+						uri: "about:blank",
 						iframeAttrs: {},
 						onGadgetLoad: "__gadgetOnLoad"	// If this property is not specified, an error occurred. (iframe onload)
 					}
@@ -860,17 +869,13 @@ IS_Widget.prototype.classDef = function() {
 		}
 		
 		self.iframe.frameBorder = 0;
-		self.iframe.src = "./blank.html";
+		self.iframe.src = "about:blank";
 		
 		var scrolling = self.scrolling;
 		if(/FragmentMiniBrowser/.test(self.widgetType ) )
 			scrolling = true;
 		
 		self.iframe.scrolling = ( isOuter || !scrolling ?"no":"auto");
-		
-		self.iframe.style.margin = 0;
-		self.iframe.style.padding = 0;
-		self.iframe.style.width = "100%";
 		
 		if(isStatic && self.isStaticHeight) {
 			if( !isOuter )
@@ -881,7 +886,7 @@ IS_Widget.prototype.classDef = function() {
 			var iframeHeight = parseInt(typeConf.height) + 10;
 			if( iframeHeight < 1 )
 				iframeHeight = 1;
-			self.iframe.style.height = iframeHeight;
+			self.iframe.style.height = setUnitOfLength(iframeHeight);
 			self.elm_widgetContent.style.height = "auto";
 		}
 		
@@ -915,7 +920,7 @@ IS_Widget.prototype.classDef = function() {
 		var params = ["Require", "Optional"];
 		
 		for(var i=0;i<params.length;i++){
-			var param = typeConf[params[i]];
+			var param = typeConf.ModulePrefs ? typeConf.ModulePrefs[params[i]] : typeConf[params[i]];;
 			if(param && (param[feature] || param.feature == feature))
 				return true;
 		}
@@ -924,13 +929,12 @@ IS_Widget.prototype.classDef = function() {
 	
 	this.setStaticIframeHeight = function() {
 		if( !this.staticWidgetHeight){
-			self.iframe.style.height = 0;
+			self.iframe.style.height = 0 + "px";
 			
 			return setTimeout( this.setStaticIframeHeight.bind( this ),100 );
 		}
 		
-		if(Browser.isIE )this.staticWidgetHeight -=2;//Modify calculation error of Box model
-		self.iframe.style.height = this.staticWidgetHeight;
+		self.iframe.style.height = this.staticWidgetHeight + "px";
 		self.elm_widgetContent.style.height = "auto";
 	}
 
@@ -947,8 +951,6 @@ IS_Widget.prototype.classDef = function() {
 		}
 		
 		if( !isReadyContents() ) {
-//			this.elm_widgetContent.innerHTML = 
-
 			this.elm_widgetContent.innerHTML = IS_R.lb_setupUnfinished;
 			this.elm_widgetContent.style.fontSize = "14px";
 			if( !this.getBoolUserPref("openWidget") && this.headerContent )
@@ -972,8 +974,6 @@ IS_Widget.prototype.classDef = function() {
 			} else {
 				self.preLoad();
 				if(contentsType == "url"){
-//					self.elm_widgetContent.innerHTML = '<iframe src="'  + contentsDef.href + '" style="border: 0px none ; margin: 0px; padding: 0px; overflow: auto; width: 100%; height: 250px;" frameborder="0" height="250px" width="100%" scrolling="yes"></iframe>';
-//					self.elm_widgetContent.innerHTML = '<iframe src="'  + contentsDef.href + '" style="border: 0px none ; margin: 0px; padding: 0px; overflow: auto; width: 100%; height: 100%;" frameborder="0" scrolling="yes"/>';
 					if(!self.iframe)
 						self.initIframe( !self.isGadget() );
 					
@@ -997,16 +997,13 @@ IS_Widget.prototype.classDef = function() {
 				}
 				self.isSuccess = true;
 				self.isComplete = true;
-				//self.postLoaded();
 			}
 		}catch(e){
 			IS_EventDispatcher.newEvent('loadComplete', self.id, null);
-			//self.postLoaded();
 
 			msg.error(IS_R.getResource(IS_R.ms_widgetonExceptionAt, [self.widgetType, self.title,getText(e)]));
 			console.log(e);
 
-//			self.elm_widgetContent.innerHTML = IS_R.getResource(IS_R.ms_widgetonExceptionAt_invalid, [self.widgetType, self.title, e]);
 			self.elm_widgetContent.innerHTML = IS_R.ms_invalidWidget;
 			//throw e;
 		}
@@ -1153,18 +1150,6 @@ IS_Widget.prototype.classDef = function() {
 				var authType = upAuthType.split(' ')[0];
 				if(self.id.indexOf("adminPreviewWidget") == 0 ){
 					showAuthenticationForm((authType) ? authType : _authType);
-				/*}else if(self.id.indexOf( "previewWidget" ) == 0){
-					 IS_Request.createModalAuthFormDiv(
-							 IS_R.lb_add_preview,
-							 $("previewButtonDiv"),
-							 function (authUid, authPassword){
-								 self.removeUserPref("authType");
-								 self.setUserPref("previewAuthType", _authType);
-								 self.setUserPref("previewAuthUserId", authUid);
-								 self.setUserPref("previewAuthPasswd", authPassword);
-								 self.loadContents();
-							 }
-					 );*/
 				}else{
 					self.setUserPref('authType', _authType);
 					if(self.getUserPref('authCredentialId')){
@@ -1212,10 +1197,6 @@ IS_Widget.prototype.classDef = function() {
 			    timeout : contentOpt.timeout || ajaxRequestTimeout,
 			    retryCount : contentOpt.retryCount || ajaxRequestRetryCount,
 			    onSuccess: function(req, obj) {
-					if( Browser.isSafari1 ) {
-			    		if( self.isSuccess && !req.status && !req.responseText )
-			    			return this.on304( req,obj );
-			    	}
 					var _authType = req.getResponseHeader("MSDPortal-AuthType");
 					if(_authType){
 						self.iframe = false;
@@ -1588,8 +1569,11 @@ IS_Widget.prototype.classDef = function() {
 	}
 
 	this.adjustMaximizeHeight = function()  {
-		this.elm_widgetContent.style.height = this.iframe.style.height
-		  = getWindowSize(false) - findPosY( this.elm_widgetBox ) - (Browser.isFirefox ? 28 : 32);
+		var height = getWindowSize(false) - findPosY(this.elm_widgetBox) - (Browser.isFirefox ? 28 : 32);
+		if (height < 0) {
+			height = 0;
+		}
+		this.elm_widgetContent.style.height = this.iframe.style.height = height + "px";
 	}
 	
 	this.adjustMaximize = function(){
@@ -1601,9 +1585,9 @@ IS_Widget.prototype.classDef = function() {
 			IS_Portal.tabs[IS_Portal.currentTabId].panel.style.height = "auto";
 		
 		var pos = Position.cumulativeOffset(panelsDiv);
-		this.elm_widget.style.top=pos[1];
-		this.elm_widget.style.left=pos[0];
-		this.elm_widget.style.width = panelsDiv.offsetWidth;
+		this.elm_widget.style.top = pos[1] + "px";
+		this.elm_widget.style.left = pos[0] + "px";
+		this.elm_widget.style.width = parseInt(panelsDiv.offsetWidth) + "px";
 		
 		var tabPanel = $('panel' + this.tabId.substr(3));
 		var widgetDivList = tabPanel.getElementsByClassName('widgetBox');
@@ -2199,6 +2183,7 @@ IS_Widget.updateCheckedFeedCommand = function(owner){
 */
 
 IS_Widget.setWidgetLocationCommand = function(owner){
+	if(!owner) return;
 	var sibling = "";
 	if(owner.isBuilt){
 		sibling = (owner.elm_widget.previousSibling)? IS_Portal.getTrueId(owner.elm_widget.previousSibling.id) : "";

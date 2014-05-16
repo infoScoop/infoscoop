@@ -26,61 +26,6 @@ var IS_Droppables = {
   remove: function(){IS_DropGroup.common.remove.apply(IS_DropGroup.common, arguments)},
   add: function(){IS_DropGroup.common.add.apply(IS_DropGroup.common, arguments)},
   
-/*  remove: function(element) {
-    this.drops = this.drops.reject(function(d) { return d.element==$(element) });
-  },
-
-  add: function(element) {
-    element = $(element);
-    var options = Object.extend({
-      greedy:     true,
-      hoverclass: null,
-      tree:       false
-    }, arguments[1] || {});
-
-    // cache containers
-    if(options.containment) {
-      options._containers = [];
-      var containment = options.containment;
-      if((typeof containment == 'object') && 
-        (containment.constructor == Array)) {
-        containment.each( function(c) { options._containers.push($(c)) });
-      } else {
-        options._containers.push($(containment));
-      }
-    }
-    
-    if(options.accept && !(options.accept instanceof Function)) options.accept = [options.accept].flatten();
-	
-	// CPU usage is increased in Firefox. IE may be fixed 
-	// Widget style is broke up if deleted position = 'relative'(IE)
-	//if(Browser.isIE) Element.makePositioned(element); // fix IE
-    options.element = element;
-	
-	if(options.isPanel){
-		if(!this.panelTarget)
-			this.panelTarget = [];
-		
-		this.panelTarget.push(options);
-	}
-	
-	if(!options.key){
-		if(!this.commonDrops) this.commonDrops = [];
-		this.commonDrops.push(options);
-	}
-	
-	if(!this.dropMap[element.id])
-		this.dropMap[element.id] = [];
-	this.dropMap[element.id].push(options);
-	
-	
-    this.drops.push(options);
-  },
-  
-  getDropObjByElement: function(element){
-  	return this.dropMap[element.id];
-  },*/
-  
   findDeepestChild: function(drops) {
     deepest = drops[0];
       
@@ -125,9 +70,6 @@ var IS_Droppables = {
           (!(drop.accept instanceof Function) && 
             (classNames.detect( 
               function(v) { return drop.accept.include(v) } ) ))) ));
-//              function(v) { return drop.accept.include(v) } ) ))) ) &&
-//		(drop.element == document.body || this.within(drop.element, point[0], point[1])));
-//      Position.within(drop.element, point[0], point[1]) );
   },
   //Processing of returning Class if it is out of target
   deactivate: function(drop) {
@@ -145,10 +87,7 @@ var IS_Droppables = {
   
   //Called at dragging
   show: function(point, element, dragMode, widgetType) {
-//    if(!this.drops.length) return;
     var affected = [];
-    
-	
 	// Check to the nearest items only
 	var nearDropTarget = IS_Droppables.getNearDropTarget(element, point);
 	
@@ -168,13 +107,6 @@ var IS_Droppables = {
 				affected.push(drop);
 		})
 	}
-	
-	/*
-    this.drops.each( function(drop) {
-      if(IS_Droppables.isAffected(point, element, drop, widgetType))
-        affected.push(drop);
-    });
-    */
         
     if(affected.length>0) {
       drop = IS_Droppables.findDeepestChild(affected);
@@ -356,7 +288,6 @@ IS_Droppables.getNearDropTarget = function(element, point){
 	var y = point[1];
 	
 	var ghost = IS_Draggable.ghost;
-	//var ghostY = (ghost.parentNode)? findPosY(ghost) : 0;
 	Position.prepare();
 	var ghostY = ((ghost.parentNode)? Position.cumulativeOffset(ghost)[1] : 0) -Position.realOffset( element )[1];
 	//Adjust Y axis of mouse pointer if ghost is displayed.
@@ -393,18 +324,12 @@ IS_Droppables.getNearDropTarget = function(element, point){
 		IS_Droppables.positions[blockX][blockY].each(function(pos){
 			var drop = pos.drop;
 			var dropElement = drop.element;
-			
-//			var effectiveHeight = dropElement.offsetHeight - parseInt(dropElement.offsetHeight * 0.08);
 			var effectiveHeight = (drop.marginBottom)? dropElement.offsetHeight - drop.marginBottom : dropElement.offsetHeight;
 			var effectiveWidth = dropElement.offsetWidth;
-//			console.info(["within", dropElement, pos.y, y, (pos.y + effectiveHeight)]);
 			if (y >= pos.y &&
 			    y <  pos.y + effectiveHeight &&
 			    x >= pos.x &&
 				x <  pos.x + effectiveWidth){
-//		        x <  pos.x + effectiveWidth &&
-//				(targetElementList.contains(dropElement) || IS_Droppables.within(dropElement, x, y) )){
-//				targetElementList.push(dropElement);
 				nearDropTarget.push(drop);
 			}
 		});
@@ -423,7 +348,6 @@ var IS_DroppableOptions = {
 	},
 	onHover: function(element, dropElement, dragMode, point) {
 		var x = point[0] - element.boxLeftDiff;
-//		var y = point[1] - element.boxTopDiff;
 		var y = point[1];//Leave y axis as getNearDropTarget
 
 		var min = 10000000;
@@ -435,7 +359,6 @@ var IS_DroppableOptions = {
 			var col = IS_Portal.columnsObjs[IS_Portal.currentTabId]["col_dp_" + i];
 			for (var j=0; j<col.childNodes.length; j++ ) {
 				var div = col.childNodes[j];
-				//if (div == widgetGhost || div == element) {
 				if (div == widgetGhost) {
 					continue;
 				}
@@ -461,14 +384,6 @@ var IS_DroppableOptions = {
 			widgetGhost.style.display = "block";
 			nearGhost.parentNode.insertBefore(widgetGhost,nearGhost);
 			widgetGhost.col = nearGhost.col;
-//			console.info(["move",widgetGhost,nearGhost]);
-		}
-		
-		if( Browser.isSafari1 ) {
-			if( ( nearGhost && element.id == nearGhost.id )|| 
-				( widgetGhost.previousSibling && element.id == widgetGhost.previousSibling.id)){
-				widgetGhost.style.display = "none";
-			}
 		}
 	},
 	outHover: function(element) {
@@ -487,12 +402,15 @@ IS_Droppables.mergeConfirm = function(element, lastActiveElement, draggedWidget,
 		
 		var contentPane = document.createElement("div");
 		Element.addClassName(contentPane, "preference");
-		
-		var modalElement = document.createElement("div");
-		var modal = new Control.Modal(modalElement, {
-			contents: contentPane,
-			containerClassName: "preference",
-			overlayCloseOnClick: false
+		var modal = new Control.Modal('', {
+			className: 'preference',
+			closeOnClick: false,
+		    afterOpen:function(){
+		    	this.container.update(contentPane);
+		    },
+		    afterClose:function(){
+		    	this.destroy();
+		    }
 		});
 		var dialogPane = document.createElement("div");
 		contentPane.appendChild(dialogPane);
@@ -542,21 +460,10 @@ IS_Droppables.mergeConfirm = function(element, lastActiveElement, draggedWidget,
 				IS_Widget.setPreferenceCommand("mergeconfirm", IS_Portal.mergeconfirm);
 				
 				var clickedElement = Event.element(event);
-				modal.close();
-//				IS_Portal.isItemDragging = true;
-				/*
-				if (entry.value == "merge") {
-					if (ghostNextSibling) {
-						ghostParent.insertBefore(widgetGhost, ghostNextSibling);
-					}
-					else {
-						ghostParent.appendChild(widgetGhost);
-					}
-				}
-				*/
+				Control.Modal.close();
+
 				modalOption = entry.value;
 				IS_Droppables.isConfirm = false;
-//				originFunc(element, lastActiveElement, draggedWidget, event, modalOption);
 				originFunc.call(self, element, lastActiveElement, draggedWidget, event, modalOption);
 				
 				IS_Event.stopObserving(clickedElement, 'click', handleClick);
@@ -568,6 +475,7 @@ IS_Droppables.mergeConfirm = function(element, lastActiveElement, draggedWidget,
 			draggedWidget.elm_widget.style.display = "none";
 			
 		modal.open();
+		modal.position();
 		// Flag indicate if Confirm is displayed
 		IS_Droppables.isConfirm = true;
 		
@@ -664,7 +572,6 @@ var IS_Draggables = {
       this.eventMouseMove = this.updateDrag.bindAsEventListener(this);
       
       Event.observe(document, "mouseup", this.eventMouseUp);
-//      Event.observe(document, "mousemove", this.eventMouseMove);
     }
     this.drags.push(draggable);
   },
@@ -804,9 +711,6 @@ IS_Draggable.prototype = {
   currentDelta: function(element) {
     if(!element)
       element = this.element;
-//    return([
-//      parseInt(Element.getStyle(this.element,'left') || '0'),
-//      parseInt(Element.getStyle(this.element,'top') || '0')]);
     return([
       parseInt(Element.getStyle(element,'left') || '0'),
       parseInt(Element.getStyle(element,'top') || '0')]);
@@ -821,8 +725,6 @@ IS_Draggable.prototype = {
 			return;
 	}
 	
-//    if(typeof IS_Draggable._dragging[this.element] != 'undefined' &&
-//      IS_Draggable._dragging[this.element]) return;
 	if(IS_Draggable._lastDraggingTime){
 		var span = new Date().getTime() - IS_Draggable._lastDraggingTime;
 		if(span < 1000) return;
@@ -890,7 +792,6 @@ IS_Draggable.prototype = {
 		  dummyContent.style.height = "100%";
 		  IS_Draggable.dummyElement.appendChild(dummyContent);
 	  } else{
-//		  var dummyElement = document.createElement("div");
 		  var dummyContent = document.createElement(this.element.nodeName? this.element.nodeName : "div");
 		  dummyContent.className = this.element.className;
 		  dummyContent.innerHTML = this.element.innerHTML;
@@ -909,25 +810,17 @@ IS_Draggable.prototype = {
 	  dummyStyle.width = (this.options.dummyWidth)? this.options.dummyWidth : this.element.offsetWidth + "px";
 	  Element.setOpacity(IS_Draggable.dummyElement, 0.7);
 	  	
-//	  this.draw(pointer, this.element, IS_Draggable.dummyElement);
 	  var pos = Position.cumulativeOffset(this.element);
 	  var offset = Position.realOffset(this.element);
-      dummyStyle.left = pos[0] - offset[0];
-	  dummyStyle.top = pos[1] - offset[1];
+      dummyStyle.left = pos[0] - offset[0] + 'px';
+	  dummyStyle.top = pos[1] + 'px';
 	  this.scrollOffset = offset;
 
 	if(this.options.ghosting) {
-/*    this._clone = this.element.cloneNode(true);*/
-
-//      this.element.style.display = "none";
-	  
 	  this.ghost = document.createElement("div");
 	  this.ghost.id = "widgetGhost";
 	  this.ghost.col = this.element.parentNode;
 	  IS_Draggable.ghost = this.ghost;
-	  
-//    Position.absolutize(this.element);
-//		this.element.parentNode.insertBefore(this.ghost, this.element);
 	  
 	  // Slow if it is substituted by height before append.
 	  this.ghost.style.height = elementHeight;
@@ -935,9 +828,6 @@ IS_Draggable.prototype = {
     
     if(this.options.scroll) {
       if (this.options.scroll == window) {
-//        var where = this._getWindowScroll(this.options.scroll);
-//        this.originalScrollLeft = where.left;
-//        this.originalScrollTop = where.top;
 		this.originalScrollLeft = Position.deltaX;
 		this.originalScrollTop = Position.deltaY;
 		Event.observe(window, "scroll", this.scrollPositionPrepare);
@@ -948,8 +838,8 @@ IS_Draggable.prototype = {
     }
     
     if(this.options.viewport ) {
-    	dummyStyle.left = pos[0] - this.options.viewport.scrollLeft;
-    	dummyStyle.top = pos[1] - this.options.viewport.scrollTop;
+    	dummyStyle.left = pos[0] - this.options.viewport.scrollLeft + 'px';
+    	dummyStyle.top = pos[1] - this.options.viewport.scrollTop + 'px';
     }
     
 	IS_Droppables.findDroppablesPos(this.element);
@@ -960,8 +850,6 @@ IS_Draggable.prototype = {
 	
 	if(this.options.move)
 		this.element.style.display = "none";
-        
-//    if(this.options.starteffect) this.options.starteffect(this.element);
   },
   
   //Processing of dragging
@@ -971,7 +859,6 @@ IS_Draggable.prototype = {
 		isFirstUpdating = true;
 		this.startDrag(event, pointer);
 	}
-//  Position.prepare();
 	
 	var now = new Date().getTime();
 	if(IS_Droppables.span) {
@@ -993,7 +880,6 @@ IS_Draggable.prototype = {
 	
 	if(!isFirstUpdating)
     	this.draw(pointer);
-//    if(this.options.change) this.options.change(this);
     
     if(this.options.scroll) {
       this.stopScrolling();
@@ -1032,7 +918,7 @@ IS_Draggable.prototype = {
 	IS_Portal.hideDragOverlay();
 	
 	// fix 908
-	if( Browser.isFirefox3 )
+	if( Browser.isFirefox3 || Browser.isChrome )
   	  IS_Draggables.deactivate(this);
 	
 	//Craete object for passing to onDrop
@@ -1075,9 +961,6 @@ IS_Draggable.prototype = {
     if(this.options.zindex)
       this.element.style.zIndex = this.originalZ;
 
-//    if(this.options.endeffect) 
-//      this.options.endeffect(this.element);
-
 	Event.stopObserving(document, 'keydown', IS_Draggables.keyEvent.keyDownHandler, false);
 	Event.stopObserving(document, 'keyup', IS_Draggables.keyEvent.keyUpHandler, false);
 	IS_Draggables.keyEvent.reset();
@@ -1093,17 +976,16 @@ IS_Draggable.prototype = {
     if(!this.dragging) return;
     this.stopScrolling();
     this.finishDrag(event, true);
-	document.body.style.overflow = 'auto';
+	document.body.style.overflow = '';
     Event.stop(event);
   },
   
   //Draw dragging
   draw: function(point, element, dummyElement) {
-  	point = [point[0]-this.scrollOffset[0], point[1]-this.scrollOffset[1]];
+  	point = [point[0]-document.documentElement.scrollLeft, point[1]-document.documentElement.scrollTop];
   	if(!element || !dummyElement)
 		element = dummyElement = IS_Draggable.dummyElement;
 
-//    var pos = Position.cumulativeOffset(this.element);
     var pos = Position.cumulativeOffset(element);
 	
     if(this.options.ghosting) {
@@ -1123,15 +1005,13 @@ IS_Draggable.prototype = {
     	pos[1] += this.options.viewport.scrollTop;
     }
     
-    var p = [0,1].map(function(i){ 
-      return (point[i]-pos[i]-this.offset[i]) 
+    var p = [0,1].map(function(i){
+      return (point[i]-pos[i]-this.offset[i]);
     }.bind(this));
     
-//    var style = this.element.style;
     var style = dummyElement.style;
     style.left = p[0] + "px";
     style.top  = p[1] + "px";
-    
     if(style.visibility=="hidden") style.visibility = ""; // fix gecko rendering
   },
   
@@ -1253,7 +1133,7 @@ if( Browser.isSafari1 ) {
 			}
 			
 			bar.style.display = "";
-			bar.style.height = document.body.offsetHeight;
+			bar.style.height = document.documentElement.offsetHeight+'px';
 		}
 	})();
 	
@@ -1268,7 +1148,7 @@ if( Browser.isSafari1 ) {
 				IS_Draggable.dummyElement.offsetHeight;
 			
 			if( bar.offsetHeight < y )
-				bar.style.height = y;
+				bar.style.height = y+'px';
 		}
 	})();
 	
@@ -1281,7 +1161,7 @@ if( Browser.isSafari1 ) {
 			finishDrag.apply( this,$A( arguments ));
 			
 			var bar = $("autoScrollHoldBar");
-			bar.style.height = 1;
+			bar.style.height = '1px';
 			bar.style.display = "none"
 		}
 	})();

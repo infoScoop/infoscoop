@@ -53,9 +53,6 @@
 .topMenuLi{
 	float:left;
 	display:block;
-	background-color:#DDD;
-	padding:0.5px !important;
-	//padding:1px !important;
 }
 
 a.topMenuItem:link,
@@ -70,15 +67,19 @@ a.topMenuItem:active
 
 }
 a.topMenuItem {
+	border: 1px solid #DDD;
+	border-collapse: collapse;
 	white-space: nowrap;
 	background-image:url(./imgs/lev0_bg1.png);
 	background-repeat: repeat-x;
-	padding: 0.25em 1.0em 0.2em 0.5em;
+	padding: 0.25em 1.0em 0.4em 0.5em;
 	display:block;
 }
 
 a.topMenuItem:hover {
-	padding: 0.25em 1.0em 0.2em 0.5em;
+	border: 1px solid #DDD;
+	border-collapse: collapse;
+	padding: 0.25em 1.0em 0.4em 0.5em;
 	BACKGROUND-IMAGE: url(./imgs/lev0_bg2.png);
 	background-repeat: repeat-x;
 	display:block;
@@ -152,7 +153,6 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 }
 
 .menuTitle a:hover,
-.menuTitle .scriptlinkhover{
 	COLOR: #FFFFFF;
 	text-decoration : none;
 }

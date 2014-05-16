@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import net.fortuna.ical4j.data.ContentHandler;
 import net.fortuna.ical4j.model.Component;
@@ -43,6 +44,7 @@ import net.fortuna.ical4j.model.property.RRule;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.json.JSONObject;
 
 public abstract class BasicCalendarHandler implements ContentHandler {
@@ -160,7 +162,7 @@ public abstract class BasicCalendarHandler implements ContentHandler {
 			RRule rule = new RRule();
 			rule.setValue(rruleStr);
 			if (rule.getRecur().getUntil() != null) {
-				DateFormat df = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+				DateFormat df = UserContext.instance().getUserInfo().getClientDateFormat("yyyyMMdd'T'HHmmss'Z'");
 				event.setRruleLimit(df.format(rule.getRecur().getUntil()));
 				event.setRrule(rule.getRecur().getFrequency());
 			} else { 

@@ -17,6 +17,7 @@
 
 package org.infoscoop.dao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -54,10 +55,10 @@ public class HolidaysDAO extends HibernateDaoSupport {
 	}
 	
 	public Collection getHolidayLocales() {
-		String queryString = "select distinct id.Lang,id.Country from Holidays";
+		String queryString = "select distinct id.Lang,id.Country from Holidays order by id.Country,id.Lang";
 		Collection langCountries = super.getHibernateTemplate().find( queryString );
 		
-		Collection locales = new HashSet();
+		Collection locales = new ArrayList();
 		for( Iterator ite=langCountries.iterator();ite.hasNext();) {
 			Object[] langCountry = ( Object[] )ite.next();
 			

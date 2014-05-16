@@ -12,6 +12,10 @@
 	<mvc:annotation-driven/>
 
 	<mvc:view-controller path="/" view-name="redirect:/manager/home/index"/>
+	<mvc:view-controller path="/menu/iframe.jsp" view-name="forward:/iframe.jsp"/>
+	<mvc:view-controller path="/menutree/iframe.jsp" view-name="forward:/iframe.jsp"/>
+	<mvc:view-controller path="/defaultpanel/iframe.jsp" view-name="forward:/iframe.jsp"/>
+	<mvc:view-controller path="/tabadmin/iframe.jsp" view-name="forward:/iframe.jsp"/>
 
 	<context:component-scan base-package="org.infoscoop.manager.controller" />
 	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>

@@ -21,9 +21,9 @@
 
 .infoScoop .user-search {
 	word-break: keep-all;
-	white-space: nowrap;
+	overflow: hidden;
 	
-	font-family:'ƒqƒ‰ƒMƒmŠpƒS Pro W3','Hiragino Kaku Gothic Pro','‚l‚r ‚oƒSƒVƒbƒN',sans-serif;
+	font-family:'ãƒ’ãƒ©ã‚®ãƒŽè§’ã‚´ Pro W3','Hiragino Kaku Gothic Pro','ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯',sans-serif;
 	font-size: 10.5pt;
 }
 
@@ -84,21 +84,21 @@
 
 /* Group Setting Modal */
 
-#modal_container.GroupSchedule {
+div[id^="control_window_"].GroupSchedule {
 	height:auto;
 	overflow:visible;
 	width: 80%;
 }
-#modal_container.GroupSchedule .modal-layout {
+div[id^="control_window_"].GroupSchedule .modal-layout {
 	width: 100%;
 }
-#modal_container.GroupSchedule .user-search {
+div[id^="control_window_"].GroupSchedule .user-search {
 	margin-top: 10px;
 }
 /* Group Setting Panel */
 
 .infoScoop .group-setting {
-	font-family:'ƒqƒ‰ƒMƒmŠpƒS Pro W3','Hiragino Kaku Gothic Pro','‚l‚r ‚oƒSƒVƒbƒN',sans-serif;
+	font-family:'ãƒ’ãƒ©ã‚®ãƒŽè§’ã‚´ Pro W3','Hiragino Kaku Gothic Pro','ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯',sans-serif;
 	font-size: 10.5pt;
 }
 .infoScoop .group-setting,
@@ -152,6 +152,7 @@
 	cursor: move;
 	padding: 2px 0;
 	margin: 2px 0;
+	overflow: hidden;
 }
 .infoScoop .group-setting .contents .content .user.odd {
 	background-color: #F8F8FF;
@@ -161,6 +162,10 @@
 }
 .infoScoop .group-setting .contents .content .user span {
 	padding-right: 5px;
+}
+.infoScoop .group-setting .contents .content .user .delete {
+	position: absolute;
+	right: 0;
 }
 
 .infoScoop .group-setting .user-search {
@@ -265,7 +270,7 @@
 	padding: 5px;
 	font-weight: bold;
 	margin-bottom: 10px;
-	background: url(./imgs/widget_header.png) center bottom;
+	background: url(./imgs/theme/widget_header.png) center bottom;
 }
 .infoScoop .user-search-modal .content {
 	position: relative;

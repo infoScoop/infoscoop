@@ -1,11 +1,11 @@
-infoScoop OpenSource 3.1.1
+infoScoop OpenSource 3.4.0
 ==========================
 
 About infoScoop OpenSource
 --------------------------
-"infoScoop OpenSource" is information portal that evolute according with
+"infoScoop OpenSource" is information portal that evolve according with
  personal work style. This portal provides important information for individuals
- from business system and huge information in or out of the company. It implement
+ from business system and huge information in or out of the company. It implements
  free arrangement of information and fits to individual information processing
  skill and work style.
 
@@ -17,13 +17,13 @@ Installation Requirements
 -------------------------
 These are requirements that needs before the setup of infoScoop OpenSource.
 
-・JDK 5.0
+・Java SE 7.0
 ・MySQL	5.1
 
 
 How to Setup
 ------------
-Unzip infoscoop-3.1.1-quickstart.zip(tar.gz) and follow the steps below.
+Unzip infoscoop-3.4.0-quickstart.zip(tar.gz) and follow the steps below.
 
 1. Create Repository Database
 
@@ -33,22 +33,31 @@ $mysql -uroot
 mysql>create database iscoop character set utf8;
 mysql>exit
 
-2. Import Initial Data to Repository Database
+2. Changing database environmental settings
+* When using MySQL for a repository database, it can certainly carry out. 
+
+Add the following setup to the configuration file "my.cnf" of MySQL.
+***************
+[mysqld]
+lower_case_table_names = 1
+***************
+
+3. Import Initial Data to Repository Database
 
 Execute the following commands which inserts initial data to the created database.
 
-$ mysql -uroot iscoop < infoscoop-3.1.1-quickstart/init_infoscoop.sql
+$ mysql -uroot iscoop < infoscoop-3.4.0-quickstart/init_infoscoop.sql
 
 * Choose 'init_info_infoscoop.ja.sql' file, if you want Japanese sample settings.
 
-3. Settings of database
+4. Settings of database
 
 In default settings, MySQL uses the same server with default port 3306,
 user ID "root" and no password. If other settings are need to change,
 database settings should be changed.
 Database settings can be changed in infoscoop.xml which is in the directory below.
 
-apache-tomcat-6.0.28/conf/Catalina/localhost/infoscoop.xml
+apache-tomcat-7.0.34/conf/Catalina/localhost/infoscoop.xml
 
 Change Resource element of GlobalNamingResources element.
 
@@ -59,7 +68,7 @@ Change Resource element of GlobalNamingResources element.
   a proper host name. Besides, If default port is not used, "3306" must be changed
   to proper value as well.
 
-4. Start up infoScoop OpenSource Server
+5. Start up infoScoop OpenSource Server
 
 Execute the following command.
 
@@ -71,7 +80,7 @@ To stop it, execute the following command.
 
 $ shutdown.bat(sh)
 
-5. Startup infoScoop OpenSource
+6. Startup infoScoop OpenSource
 
 Start a browser, and access to the following url.
 
@@ -86,7 +95,7 @@ How to Add Users
 
 Edit the following file.
 
-infoscoop-3.1.1-quickstart/initdb/data/accounts/import.csv
+infoscoop-3.4.0-quickstart/initdb/data/accounts/import.csv
 
 Add new users with the following format.
 
@@ -96,7 +105,7 @@ Add new users with the following format.
 
 Move to 'initdb' directory, and execute 'addaccount.bat(sh)' file.
 
-$ cd infoscoop-3.1.1-quickstart/initdb
+$ cd infoscoop-3.4.0-quickstart/initdb
 $ addaccount.bat(sh)
 
 
@@ -106,7 +115,7 @@ License and Copyright
 This code is licensed under the **GNU Lesser General Public License (LGPL) v3**.
 Please see LICENSE.txt for licensing and copyright information.
 
-Changes from Version 3.1.0 to 3.1.1
+Changes from Version 3.3.0-beta to 3.4.0
 -----------------------------------
 Refer to the URL below.
-https://github.com/infoScoop/infoscoop/issues?milestone=23&state=closed
+https://github.com/infoScoop/infoscoop/issues?milestone=6&state=closed

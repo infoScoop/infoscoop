@@ -15,6 +15,19 @@ ISA_ProxyConf.prototype.classDef = function() {
 	var self = this;
 	var container;
 	var loadingMessage;
+	var controlModal;
+	var headersModal = new Control.Modal('',{
+		width: 600,
+		afterClose: function(){
+			this.container.update('');
+		}
+	});
+	var caseConfigItemModal = new Control.Modal('', {
+		width: 300,
+		afterClose: function(){
+			this.container.update('');
+		}
+	});
 
 	this.initialize = function() {
 		container = document.getElementById("proxy");
@@ -34,27 +47,15 @@ ISA_ProxyConf.prototype.classDef = function() {
 	this.displayProxyConfig = function() {
 
 		var proxyConfigDiv = document.createElement("div");
-//		proxyConfigDiv.style.width = "1000px";
 
 		container.replaceChild(proxyConfigDiv,loadingMessage);
 		
 		var refreshAllDiv = document.createElement("div");
 		refreshAllDiv.className = "refreshAll";
-//		refreshAllDiv.style.textAlign = "right";
-//		refreshAllDiv.style.width = "1000px";
 
 		var commitDiv = ISA_Admin.createIconButton(ISA_R.alb_changeApply, ISA_R.alb_changeApply, "database_save.gif", "right");
 		refreshAllDiv.appendChild(commitDiv);
-		var currentModal = new Control.Modal(
-			commitDiv,
-			{
-				contents: ISA_R.ams_applyingChanges,
-				opacity: 0.2,
-				containerClassName:"commitDialog",
-				overlayCloseOnClick:false
-			}
-		);
-		IS_Event.observe(commitDiv, 'click', commitProxyConfig.bind(this, currentModal), "_adminProxy");
+		IS_Event.observe(commitDiv, 'click', commitProxyConfig.bind(this), "_adminProxy");
 
 		var refreshDiv = ISA_Admin.createIconButton(ISA_R.alb_refresh, ISA_R.alb_reloadWithourSaving, "refresh.gif", "right");
 		refreshAllDiv.appendChild(refreshDiv);
@@ -67,11 +68,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 			ISA_ProxyConf.proxyConf.build();
 		}, false, "_adminProxy");
 
-//		var titleDiv1 = document.createElement("div");
-//		titleDiv1.id = "proxyCaseTitle";
-//		titleDiv1.className = "proxyTitle";
-//		titleDiv1.appendChild(document.createTextNode(ISA_R.alb_proxyAndURLSettings));
-
 		var titleDiv2 = document.createElement("div");
 		titleDiv2.id = "proxyDefaultTitle";
 		titleDiv2.className = "proxyTitle";
@@ -83,7 +79,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 		var lineHr = document.createElement("hr");
 		lineDiv.appendChild(lineHr);
 		proxyConfigDiv.appendChild(refreshAllDiv);
-//		proxyConfigDiv.appendChild(titleDiv1);
 		proxyConfigDiv.appendChild(self.buildTableControl());
 		proxyConfigDiv.appendChild(self.buildTableHeader());
 
@@ -97,7 +92,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		defaultListDiv = document.createElement("div");
 		defaultListDiv.id = "defaultProxyConfigList";
-//		defaultListDiv.style.width = "900px";
 		defaultListDiv.style.width = $("proxyConfigHeader").offsetWidth;
 		for(var i in ISA_ProxyConf.defaultConf){
 			if( !(ISA_ProxyConf.defaultConf[i] instanceof Function) )
@@ -107,20 +101,26 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 		proxyConfigDiv.appendChild(document.createElement("br"));
 
-//		container.replaceChild(proxyConfigDiv,loadingMessage);
-
 		// Drag&Drop
 		this.dnd = new ISA_DragDrop.ProxyConfigDragDrop("caseProxyConfigList");
 	}
 
-	function commitProxyConfig(currentModal) {
+	function commitProxyConfig() {
+		if(!controlModal){
+			controlModal = new Control.Modal('', {
+					className:"commitDialog",
+					closeOnClick:false
+				});			
+		}
+		controlModal.container.update(ISA_R.ams_applyingChanges);
+		controlModal.open();
 		var url = adminHostPrefix + "/services/proxyConf/commitProxyConf";
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,
 			onSuccess: function(response){
 				ISA_Admin.isUpdated = false;
-				currentModal.update(ISA_R.ams_changeUpdated);
+				controlModal.container.update(ISA_R.ams_changeUpdated);
 			},
 			onFailure: function(t) {
 				alert(ISA_R.ams_failedCommitProxy);
@@ -132,7 +132,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 			},
 			onComplete: function(){
 				setTimeout(function(){
-					currentModal.close();
+					controlModal.close();
 				},500);
 			}
 		};
@@ -153,7 +153,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 				ISA_Admin.replaceUndefinedValue(proxyConf.replacement),
 				ISA_Admin.replaceUndefinedValue(proxyConf.host),
 				ISA_Admin.replaceUndefinedValue(proxyConf.port),
-				ISA_Admin.replaceUndefinedValue(proxyConf.headers),
+				ISA_Admin.replaceUndefinedValue(proxyConf.headers)
 			]),
 			asynchronous:true,
 			onSuccess: function(response){},
@@ -162,6 +162,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 				msg.error(ISA_R.ams_failedAddProxy + t.status + " - " + t.statusText);
 			},
 			onException: function(r, t){
+				console.log(getErrorMessage(t))
 				alert(ISA_R.ams_failedAddProxy);
 				msg.error(ISA_R.ams_failedAddProxy + getErrorMessage(t));
 			}
@@ -174,10 +175,8 @@ ISA_ProxyConf.prototype.classDef = function() {
 		var caseConfigTable = document.createElement("table");
 		caseConfigTable.id = "proxyConfigHeader";
 		caseConfigTable.className = "configTableHeader";
-//		caseConfigTable.style.clear = "both";
 		caseConfigTable.cellSpacing = "0";
 		caseConfigTable.cellPadding = "0";
-//		caseConfigTable.style.width = "900px";
 		var caseConfigTbody = document.createElement("tbody");
 		caseConfigTable.appendChild(caseConfigTbody);
 		var caseConfigTr;
@@ -192,7 +191,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.rowSpan = 2;
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.style.width = "200px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_adressPattern));
 		caseConfigTr.appendChild(caseConfigTh);
@@ -200,7 +198,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.colSpan = 4;
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.style.width = "230px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_proxy));
 		caseConfigTr.appendChild(caseConfigTh);
@@ -208,27 +205,23 @@ ISA_ProxyConf.prototype.classDef = function() {
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.style.width = "50px";
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_enable));
 		caseConfigTr2.appendChild(caseConfigTh);
 
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.style.width = "80px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_host));
 		caseConfigTr2.appendChild(caseConfigTh);
 
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.style.width = "50px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_port));
 		caseConfigTr2.appendChild(caseConfigTh);
 
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.style.width = "50px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_authentication));
 		caseConfigTr2.appendChild(caseConfigTh);
@@ -236,7 +229,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.rowSpan = 2;
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.style.width = "220px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_substitutionURL));
 		caseConfigTr.appendChild(caseConfigTh);
@@ -244,7 +236,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.rowSpan = 2;
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.style.width = "50px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_headerTransmission));
 		caseConfigTr.appendChild(caseConfigTh);
@@ -259,7 +250,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.colSpan = 2;
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.style.width = "120px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_cacheSeetings));
 		caseConfigTr.appendChild(caseConfigTh);
@@ -267,13 +257,11 @@ ISA_ProxyConf.prototype.classDef = function() {
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.style.width = "50px";
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_enable));
 		caseConfigTr2.appendChild(caseConfigTh);
 		
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.style.width = "70px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_durationMinute));
 		caseConfigTr2.appendChild(caseConfigTh);
@@ -281,7 +269,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 		caseConfigTh = document.createElement("td");
 		caseConfigTh.className = "configTableHeaderTd";
 		caseConfigTh.rowSpan = 2;
-//		caseConfigTh.style.whiteSpace = "nowrap";
 		caseConfigTh.style.width = "50px";
 		caseConfigTh.appendChild(document.createTextNode(ISA_R.alb_delete));
 		caseConfigTr.appendChild(caseConfigTh);
@@ -317,7 +304,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 		IS_Event.observe(addCaseDiv, 'click', addAClick.bind(addCaseDiv), false, "_adminProxy");
 
 		caseConfigDiv.appendChild(addCaseDiv);
-		//addCaseDiv.style.width = "400px";
 
 		var annotateDiv = document.createElement("div");
 		annotateDiv.style.cssFloat = "right";
@@ -350,10 +336,8 @@ ISA_ProxyConf.prototype.classDef = function() {
 		configDiv.className = "configTableDiv";
 
 		var configTable = document.createElement("table");
-//		configTable.className = "configTable";
 		configTable.className = "configTableHeader";
 		configTable.id = caseConfigItem.id;
-//		configTable.width = "900px";
 		configTable.style.width = $("proxyConfigHeader").offsetWidth;
 		configTable.style.tableLayout = "fixed";
 		configTable.cellSpacing = "0";
@@ -365,7 +349,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 		configTable.appendChild(configTbody);
 
 		var configTr = document.createElement("tr");
-		//configTr.style.height = "20px";
 		configTbody.appendChild(configTr);
 		var configTd;
 		var contentDiv;
@@ -392,7 +375,7 @@ ISA_ProxyConf.prototype.classDef = function() {
 		// Address Pattern
 		configTd = document.createElement("td");
 		configTd.className = "configTableTd"
-		configTd.style.width = "179";
+		configTd.style.width = "179px";
 		configTr.appendChild(configTd);
 		contentDiv = document.createElement("div");
 		contentDiv.className = "contentsProxyConfig";
@@ -415,7 +398,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 		configTd.style.width = "50px";
 		configTd.style.textAlign = "center";
 		contentDiv = document.createElement("div");
-		//contentDiv.className = "contentsProxyConfig";
 		contentDiv.id = "typ_" + caseConfigItem.id;
 		var useProxyCheckBox = ISA_Admin.createBaseCheckBox(
 			"typeCheckbox_" + caseConfigItem.id,	
@@ -532,18 +514,10 @@ ISA_ProxyConf.prototype.classDef = function() {
 
 				var contentDiv = $("proxyAuthEdit_"+ caseConfigItem.id);
 				contentDiv.style.cursor = "pointer";
-				caseConfigItem.modal = new Control.Modal(contentDiv,
-							  {
-								contents: showProxyAuthEdit.bind(this, caseConfigItem),
-								opacity: 0.5,
-								position: 'relative',
-								width: '300',
-								height:'180'
-							  }
-							  );
-				contentDiv.parentNode.style.backgroundColor= '#ffffff';
-
+				contentDiv.parentNode.style.backgroundColor= '#ffffff';				
 			}else{
+				var contentDiv = $("proxyAuthEdit_"+ caseConfigItem.id);
+				contentDiv.style.cursor = "default";
 				$("hst_"+ caseConfigItem.id).style.cursor = "default";
 				$("prt_" + caseConfigItem.id).style.cursor = "default";
 				
@@ -584,7 +558,6 @@ ISA_ProxyConf.prototype.classDef = function() {
 					  caseConfigItem.password = null;
 					  caseConfigItem.domaincontroller = null;
 					  caseConfigItem.domain = null;
-					  var contentDiv = $("proxyAuthEdit_"+ caseConfigItem.id);
 					  if(contentDiv)contentDiv.onclick = function(){return false;};
 				  },
 				  onFailure: function(t) {
@@ -657,21 +630,23 @@ ISA_ProxyConf.prototype.classDef = function() {
 		editIcon.src = imageURL + "edit.gif";
 		editIconSpan.appendChild(editIcon);
 		if("proxy" == ISA_Admin.replaceUndefinedValue(caseConfigItem.type) ){
-
 			editIconSpan.style.cursor = "pointer";
-			caseConfigItem.modal = new Control.Modal(editIconSpan,
-							  {
-								contents: showProxyAuthEdit.bind(this, caseConfigItem),
-								opacity: 0.5,
-								position: 'relative',
-								width: '300',
-								height: '180'
-							  }
-							  );
 		}else{
 			configTd.style.backgroundColor= '#eeeeee';
 		}
 		configTd.appendChild(editIconSpan);
+		IS_Event.observe(editIcon, "click", function(){
+			var radioElement = document.getElementsByName("typeCheckbox_" + caseConfigItem.id)[0];
+			if(radioElement.checked){
+				if(!caseConfigItem.modal){
+					caseConfigItem.modal = caseConfigItemModal;
+				}
+				var authEditContent = showProxyAuthEdit.bind(this, caseConfigItem);
+				caseConfigItem.modal.container.update(authEditContent());
+				caseConfigItem.modal.open();				
+			}
+		}.bind(this), false, "_adminProxy");
+
 
 		// Replacement
 		configTd = document.createElement("td");
@@ -709,11 +684,13 @@ ISA_ProxyConf.prototype.classDef = function() {
 		headersIcon.src = imageURL + "edit.gif";
 		headersIconSpan.appendChild(headersIcon);
 		headersIconSpan.style.cursor = "pointer";
-		caseConfigItem.headersModal = new Control.Modal(headersIconSpan,{
-				contents: ISA_ProxyConf.HeaderConfigPane.showModal.bind( false,caseConfigItem ),
-				opacity: 0.5,
-				width: 600
-			} );
+
+		caseConfigItem.headersModal = headersModal;
+		IS_Event.observe(headersIcon, "click", function(){
+			var headerConfigPane = ISA_ProxyConf.HeaderConfigPane.showModal.bind( false, caseConfigItem );
+			caseConfigItem.headersModal.container.update(headerConfigPane());
+			caseConfigItem.headersModal.open();
+		}.bind(this, caseConfigItem), false, "_adminProxy");
 
 		configTd.appendChild( headersIconSpan );
 
@@ -1234,18 +1211,21 @@ ISA_ProxyConf.HeaderConfigPane.prototype = {
 	},
 	buildSendingCookiesCustomizePane: function(sendingcookies,allcookies ) {
 		var ul2 = this.sendingCookieUl = $( document.createElement("ul") );
+		var cookieControls = $( document.createElement("div") );
+		ul2.appendChild(cookieControls);
+		
 		ul2.setStyle( this.categoryStyle );
 		var allCookieRadio = this.allCookieRadio = ISA_Admin.createBaseRadio("sending_cookie");
 		allCookieRadio.id = "cookie_sendall";
-		ul2.appendChild( this.wrapLabel("span",allCookieRadio,ISA_R.alb_sendAllCookies,{"padding-right":"10px"}) );
+		cookieControls.appendChild( this.wrapLabel("span",allCookieRadio,ISA_R.alb_sendAllCookies,{"padding-right":"10px"}) );
 		
 		var noCookieRadio = this.noCookieRadio = ISA_Admin.createBaseRadio("sending_cookie");
 		noCookieRadio.id = "cookie_notsending";
-		ul2.appendChild( this.wrapLabel("span",noCookieRadio,ISA_R.alb_sendNoCookie,{"padding-right":"10px"}) );
+		cookieControls.appendChild( this.wrapLabel("span",noCookieRadio,ISA_R.alb_sendNoCookie,{"padding-right":"10px"}) );
 		
 		var specifyCookieRadio = this.specifyCookieRadio = ISA_Admin.createBaseRadio("sending_cookie");
 		specifyCookieRadio.id = "cookie_specify";
-		ul2.appendChild( this.wrapLabel("span",specifyCookieRadio,ISA_R.alb_specifySendingCookies,{"padding-right":"10px"}) );
+		cookieControls.appendChild( this.wrapLabel("span",specifyCookieRadio,ISA_R.alb_specifySendingCookies,{"padding-right":"10px"}) );
 		Event.observe( noCookieRadio,"click",this.sendNoCookie.bind(this,this.sendingCookies));
 		Event.observe( allCookieRadio,"click",this.sendAllCookie.bind(this,this.sendingCookies));	
 		Event.observe( specifyCookieRadio,"click",this.specifySendingCookies.bind(this));		

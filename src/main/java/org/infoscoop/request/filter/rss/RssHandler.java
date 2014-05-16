@@ -30,12 +30,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.util.DateUtility;
 import org.infoscoop.util.XmlUtil;
 import org.json.JSONObject;
@@ -144,8 +146,9 @@ public class RssHandler extends DefaultHandler implements LexicalHandler {
 		
 		try {
 			formatter = new SimpleDateFormat(this.dateTimeFormat, Locale.ENGLISH);
+			formatter.setTimeZone(UserContext.instance().getUserInfo().getClientTimezone());	
 		} catch( Exception ex ) {
-			formatter = new SimpleDateFormat("yyyy/MM/dd");
+			formatter = UserContext.instance().getUserInfo().getClientDateFormat("yyyy/MM/dd");
 		}
 		
 		if( freshDatetime != null ) {

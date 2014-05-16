@@ -68,7 +68,7 @@
 			</div>
 		</div>
 		<%}%>
-		<%if( adminService.isPermitted("defaultPanel") || adminService.isPermitted("portalLayout")){%>
+		<%if( adminService.isPermitted("defaultPanel") || adminService.isPermitted("portalLayout") || adminService.isPermitted("tabAdmin") ){%>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
 				<a href="../defaultpanel/index"><img src="../../skin/imgs/home_icons/mycomputer.gif"></a>
@@ -142,6 +142,17 @@
 			<div class="home-menu-content">
 				<a href="../authentication/index" class="home-menu-header">OAuth</a>
 				<p class="home-menu-definition">%{alb_OAuthDescription}</p>
+			</div>
+		</div>
+		<%}%>
+		<%if( adminService.isPermitted("extapps")){%>
+		<div id="" class="home-menu-box">
+			<div class="home-menu-icon">
+				<a href="../extapps/index"><img src="../../skin/imgs/home_icons/network.gif"></a>
+			</div>
+			<div class="home-menu-content">
+				<a href="../extapps/index" class="home-menu-header">%{alb_extapps}</a>
+				<p class="home-menu-definition">%{alb_extAppsDescription}</p>
 			</div>
 		</div>
 		<%}%>

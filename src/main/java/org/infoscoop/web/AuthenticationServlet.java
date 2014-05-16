@@ -196,7 +196,8 @@ public class AuthenticationServlet extends HttpServlet {
 	}
 
 	private String getCredentialString( String uid,String password ) throws Exception {
-		return "\""+new String( Base64.encodeBase64( uid.getBytes("UTF-8")))
-			+":" +RSAKeyManager.getInstance().encrypt( password )+"\"";
+		String credentialString = new String( Base64.encodeBase64( uid.getBytes("UTF-8")))
+			+ ":" +RSAKeyManager.getInstance().encrypt( password );
+		return credentialString;
 	}
 }

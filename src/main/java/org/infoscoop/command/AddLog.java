@@ -19,6 +19,7 @@ package org.infoscoop.command;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 import org.apache.commons.logging.Log;
@@ -72,6 +73,9 @@ public class AddLog extends XMLCommandProcessor {
         String logType = super.commandXml.getAttribute("logType").trim();
         String url = super.commandXml.getAttribute("url").trim();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHH");
+		// #12480 correspond to timezone
+		TimeZone tz = TimeZone.getTimeZone("UTC");
+		sdf.setTimeZone(tz);	
         String date = sdf.format(new Date());
         String rssUrl = super.commandXml.getAttribute("rssUrl").trim();
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="infoScoop" default="dist" basedir=".">
+<project name="infoScoop" default="dist" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
     <property file="build.properties"/>
 	<property name="basedir" value="." />
 	<!-- main and common properties -->
@@ -14,29 +14,26 @@
 	<property name="src.initdb" value="${basedir}/src/initdb" />
 	<property name="src.remakewar" value="${basedir}/src/remakewar" />
 	<property name="src.shindig" value="${basedir}/src/shindig/java" />
+	<property name="src.api.java" value="${basedir}/src/api/java" />
+	<property name="src.api.resources" value="${basedir}/src/api/resources" />
 	<property name="build.home" value="${basedir}/build" />
 	<property name="dist.home" value="${basedir}/dist" />
 
 	<property name="build.main" value="${build.home}/work/main" />
-	<property name="build.initdb" value="${build.home}//work/initdb" />
+	<property name="build.initdb" value="${build.home}/work/initdb" />
 	<property name="build.migration" value="${build.home}/work/migration" />
-	<property name="googleapps.src" value="${basedir}/src/googleapps/java" />
-	<property name="googleapps.web" value="${basedir}/src/googleapps/web" />
+	<property name="build.gadgets" value="${build.home}/work/infoscoop-gadgets-${gadgets.version}/infoscoop-gadgets" />
 
     <property name="classes.dir" value="${build.main}/WEB-INF/classes"/>
     <property name="release.home" value="${build.home}/release" />
     <property name="install_image.home" value="${release.home}/${archive.filename}" />
-
-    <!--
-    <property name="release.home" value="${build.home}/release/${archive.filename}" />
-    -->
 
 	<!-- admin properties -->
 	<property name="src.admin.web" value="${src.main.web}/admin" />
 	<property name="build.admin" value="${build.main}/admin" />
 	<property name="build.admin.jsp" value="${build.main}/WEB-INF/jsp/admin" />
 	<!-- other properties -->
-	<property name="compile.level" value="1.5" />
+	<property name="compile.level" value="1.6" />
 	<property name="compile.debug" value="true" />
 	<property name="compile.deprecation" value="false" />
 	<property name="compile.optimize" value="true" />
@@ -65,19 +62,19 @@
 			<include name="*.jar" />
 		</fileset>
 	</path>
-	
+
 	<path id="project.classpath">
 		<fileset dir="${basedir}/lib/build">
 			<include name="**/*.jar"/>
 		</fileset>
 	</path> 
+	
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="project.classpath" />
 
     <target name="dist"
-        depends="clean, prepare, build-main, build-admin, build-war,
+        depends="clean, prepare, retrieve, build-main, build-admin, build-war,
         build-install-image, archive-install-image, build-quickstart"
         description="Build disribution files.">
-
     </target>
 
     <target name="clean" description="Delete old build directory">
@@ -95,6 +92,24 @@
         <delete dir="${build.main}" />
     </target>
 
+	<target name="retrieve" description="retrieve dependencies with ivy">
+		<property name="ivy.lib.dir" value="src/main/web/WEB-INF/lib"/>
+	    <delete>
+	      <fileset dir="${ivy.lib.dir}" includes="*.jar"/>
+		  <fileset dir="lib" includes="*.jar"/>	    	
+	    </delete>
+	    <ivy:configure />
+		
+		<ivy:resolve file="pom.xml" conf="provided" />
+		<ivy:retrieve pattern="lib/[artifact]-[revision](-[classifier]).[ext]"/>
+
+	    <ivy:resolve file="pom.xml" conf="compile"/>
+	    <ivy:retrieve pattern="${ivy.lib.dir}/[artifact]-[revision](-[classifier]).[ext]"/>
+		
+	    <ivy:resolve file="pom.xml" conf="system"/>
+	    <ivy:retrieve pattern="${ivy.lib.dir}/[artifact]-[revision].[ext]"/>
+	</target>
+	
     <target name="build-main" depends="clean-main, compile-main,copy-webresouces,replaceTag-main"
         description="Clean build main directory, then main compile">
         <copy todir="${build.home}/work/staticContent" overwrite="true">
@@ -119,23 +134,17 @@
 
     <target name="build-install-image">
         <mkdir dir="${install_image.home}" />
-        <!--mkdir dir="${dist.home}/doc" /-->
         <mkdir dir="${install_image.home}/${app.main.name}" />
         <mkdir dir="${install_image.home}/tools" />
-        <!--copy todir="${release.home}/doc" >
-            <fileset dir="${basedir}/doc">
-                <include name="*.pdf"/>
-            </fileset>
-        </copy-->
 
         <copy todir="${install_image.home}" file="${basedir}/gpl-3.0.txt"/>
         <copy todir="${install_image.home}" file="${basedir}/lgpl-3.0.txt"/>
         <copy todir="${install_image.home}" file="${basedir}/LICENSE.txt"/>
         <copy todir="${install_image.home}" file="${basedir}/README.txt"/>
         <copy todir="${install_image.home}" file="${basedir}/README.ja.txt"/>
-
+		<antcall target="gadgets"/>
         <antcall target="initdb"/>
-        <antcall target="migration"/>
+        <!--antcall target="migration"/-->
 
         <copy todir="${install_image.home}/${app.main.name}" file="${build.home}/work/${app.main.name}.war"/>
         <fixcrlf srcdir="${src.remakewar}/" eol="lf" eof="remove" includes="**/*.sh" />
@@ -145,6 +154,17 @@
                 <filter token="APP.MAIN.NAME" value="${app.main.name}"/>
             </filterset>
         </copy>
+        <mkdir dir="${install_image.home}/${app.main.name}/lib" />
+        <copy todir="${install_image.home}/${app.main.name}/lib" encoding="UTF-8">
+            <fileset dir="${basedir}/lib/build">
+              <include name="**/ant-contrib*.jar"/>
+            </fileset>
+        </copy>
+    	<copy todir="${install_image.home}/${app.main.name}/lib" encoding="UTF-8">
+            <fileset dir="${src.main.web}/WEB-INF/lib">
+              <include name="**/liquibase-core*.jar"/>
+            </fileset>
+		</copy>    		
 
         <mkdir dir="${install_image.home}/${app.main.name}/Customization/WEB-INF/classes" />
         <mkdir dir="${install_image.home}/${app.main.name}/Customization/WEB-INF/lib" />
@@ -188,8 +208,6 @@
 	</target>
 
 	<target name="copy-webresouces" depends="prepare-main,compress-main">
-		<copy todir="${build.main}" file="${src.main.web}/index.jsp"/>
-		<copy todir="${build.main}" file="${src.main.web}/index.html"/>
 		<copy todir="${build.main}" file="${src.main.web}/messageConsole.html" encoding="UTF-8">
 		    <filterset>
 				<filter token="PRODUCT.NAME" value="${product.name}"/>
@@ -197,23 +215,15 @@
 			</filterset>
 		</copy>
 
-		<copy todir="${build.main}" file="${src.main.web}/login.jsp"/>
-		<copy todir="${build.main}" file="${src.main.web}/changePassword.jsp"/>
-		<copy todir="${build.main}" file="${src.main.web}/selectProfile.jsp"/>
-		<copy todir="${build.main}" file="${src.main.web}/logoff.jsp"/>
-		<copy todir="${build.main}" file="${src.main.web}/accessStats.jsp"/>
-		<copy todir="${build.main}" file="${src.main.web}/error.jsp"/>
+		<copy todir="${build.main}">
+			<fileset dir="${src.main.web}" includes="*.jsp, *.html, *.ico" excludes="openid_login.jsp.sample"/>
+		</copy>
 
-		<copy todir="${build.main}" file="${src.main.web}/rpc_relay.html"/>
-		<copy todir="${build.main}" file="${src.main.web}/blank.html"/>
-
+		<copy todir="${build.main}" file="${src.main.web}/admin/role.jsp"/>
 
 		<copy todir="${build.main}/js/resources" file="${src.main.web}/js/resources/resourceBundle.jsp"/>
 		<copy todir="${build.main}/js/search" file="${src.main.web}/js/search/searchEngine.jsp"/>
 
-		<copy todir="${build.main}" file="${src.main.web}/iframe.jsp"/>
-		<copy todir="${build.main}" file="${src.main.web}/admin/role.jsp"/>
-		<copy todir="${build.main}" file="${src.main.web}/admin/blank.html"/>
 
 		<!-- copy javascript without compress -->
 		<copy todir="${build.main}/js/lib">
@@ -232,14 +242,7 @@
 
 		<!-- TODO: require arrangement -->
 		<copy todir="${build.main}/WEB-INF" encoding="UTF-8">
-			<fileset dir="${src.main.web}/WEB-INF"
-				excludes="**/db2jcc_javax-9.1.jar, **/db2jcc_license_cu-9.1.jar, **/db2jcc-9.1.jar,
-						**/exist.jar, **/exist-optional.jar,
-						**/tamino_xmldb.jar, **/TaminoAPI4J.jar,
-						**/catalog.xml, **/conf.xml, **/TMPfile.xml">
-				<exclude name="data/"/>
-				<exclude name="init/"/>
-				<exclude name="logs/"/>
+			<fileset dir="${src.main.web}/WEB-INF">
 				<exclude name="classes/"/>
 				<exclude name="lib/"/>
 			</fileset>
@@ -251,44 +254,34 @@
 		</copy>
 
 		<copy todir="${build.main}/WEB-INF/lib">
-			<fileset dir="${src.main.web}/WEB-INF/lib"
-				excludes="db2jcc_javax-9.1.jar,db2jcc_license_cu-9.1.jar,db2jcc-9.1.jar,
-						exist.jar,exist-optional.jar,
-						tamino_xmldb.jar,TaminoAPI4J.jar,
-						**/catalog.xml, **/conf.xml, **/TMPfile.xml"/>
+			<fileset dir="${src.main.web}/WEB-INF/lib"/>
 		</copy>
 	</target>
 
 	<target name="compress-main" depends="prepare-main">
 
 		<concat destfile="${build.main}/js/dist/Portal.js.tmp" append="false" encoding="utf-8" fixlastline="true">
-			<!--filelist dir="${src.main.web}/js/lib/prototype-1.5.0" files="prototype.js"/-->
-			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
-			<!--filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="slider.js"/-->
-			<!--filelist dir="${src.main.web}/js/utils" files="ajax304.js"/-->
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="controls.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="effects.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="controls.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="resizable.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="window.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="jsbn.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="prng4.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="rng.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa/" files="rsa.js"/>
 			<filelist dir="${src.main.web}/js/lib" files="extras-array.js"/>
 			<filelist dir="${src.main.web}/js/lib" files="html-sanitizer-minified.js"/>
-			<!--filelist dir="${src.main.web}/js/utils" files="utils.js"/-->
 			<filelist dir="${src.main.web}/js/utils/ajaxpool" files="ajax.js"/>
-			<!--filelist dir="${src.main.web}/js" files="properties.js"/-->
 			<filelist dir="${src.main.web}/js/utils" files="Request.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="msg.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="Validator.js"/>
 			<filelist dir="${src.main.web}/js" files="Portal.js"/>
 			<filelist dir="${src.main.web}/js" files="DragWidget.js"/>
-			<!--filelist dir="${src.main.web}/js/lib" files="xpath.js"/-->
 			<filelist dir="${src.main.web}/js/utils" files="CalendarInput.js"/>
 			<filelist dir="${src.main.web}/js/lib/prototype-window-1.3/" files="window.js"/>
-			<!--filelist dir="${src.main.web}/js/lib/prototype-window-1.3/" files="window_ext.js"/-->
 			<filelist dir="${src.main.web}/js/commands" files="UpdatePropertyCommand.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="EventDispatcher.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="groupSettingModal.js"/>
@@ -336,7 +329,7 @@
 		</java>
 
 		<concat destfile="${build.main}/js/dist/Portal-core.js.tmp" append="false" encoding="utf-8" fixlastline="true">
-			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="prototype-1.7.1.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="ajax304.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="utils.js"/>
             <filelist dir="${src.main.web}/js/utils" files="domhelper.js"/>
@@ -350,11 +343,8 @@
 		</java>
 
 		<concat destfile="${build.main}/js/dist/Portal-SearchEngine.js.tmp" append="false" encoding="utf-8" fixlastline="true">
-			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="utils.js"/>
-			<filelist dir="${src.main.web}/js/utils" files="ajax304.js"/>
 			<filelist dir="${src.main.web}/js/utils/ajaxpool" files="ajax.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="Request.js"/>
 			<filelist dir="${src.main.web}/js/utils" files="domhelper.js"/>
@@ -369,10 +359,12 @@
 				<pathelement location="${yuicompressor}"/>
 			</classpath>
 		</java>
-
+		
+		<!--
 		<delete>
 			<fileset dir="${build.main}/js/dist" includes="*.tmp"/>
 		</delete>
+		-->
 
 		<copy todir="${build.main}/js/widgets" includeEmptyDirs="false">
 			<fileset dir="${src.main.web}/js/widgets" excludes="**/*.js,**/imgs/*,**/*.css"/>
@@ -457,13 +449,14 @@
 
 		<concat destfile="${build.admin}/js/dist/PortalMain.js.tmp" append="false" encoding="utf-8" fixlastline="true">
 			<!-- lib -->
-			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="prototype-1.7.1.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="effects.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
 			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="resizable.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="window.js"/>
 			<filelist dir="${src.admin.web}/js/lib" files="popupmenu.js"/>
-			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
 			<filelist dir="${src.main.web}/js/lib/date" files="date.js"/>
             <filelist dir="${src.main.web}/js/lib/rsa" files="jsbn.js"/>
             <filelist dir="${src.main.web}/js/lib/rsa" files="prng4.js"/>
@@ -523,12 +516,14 @@
 			<filelist dir="${src.admin.web}/js" files="AdminGadgetUploadForm.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminWidgetConf.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminEditWidgetConf.js"/>
+            <filelist dir="${src.admin.web}/js" files="AdminExtApps.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminHTMLFragment.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminPortalAdmins.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminMenuExplorer.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminForbiddenURL.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminInformation.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminAuthentication.js"/>
+			<filelist dir="${src.admin.web}/js" files="AdminUtil.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalAdmin-${build.version}.js&quot; &quot;${build.admin}/js/dist/PortalAdmin.js.tmp&quot;"/>
@@ -538,10 +533,13 @@
 		</java>
 		<concat destfile="${build.admin}/js/dist/PortalAdmin-EditRole.js.tmp" append="false" encoding="utf-8" fixlastline="true">
 			<!-- lib -->
-			<filelist dir="${src.main.web}/js/lib" files="prototype-1.6.0.3.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="effects.js"/>
-			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.8.2" files="dragdrop.js"/>
-			<filelist dir="${src.main.web}/js/lib" files="control.modal.js"/>
+			<filelist dir="${src.main.web}/js/lib" files="prototype-1.7.1.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="effects.js"/>
+			<filelist dir="${src.main.web}/js/lib/scriptaculous-js-1.9.0" files="dragdrop.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="livepipe.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="tabs.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="resizable.js"/>
+			<filelist dir="${src.main.web}/js/lib/syntacticx-livepipe-ui/" files="window.js"/>
 			<filelist dir="${src.main.web}/js/lib/date" files="date.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa" files="jsbn.js"/>
 			<filelist dir="${src.main.web}/js/lib/rsa" files="prng4.js"/>
@@ -590,6 +588,7 @@
 			<filelist dir="${src.admin.web}/js" files="AdminHTMLFragment.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminCommonModals.js"/>
 			<filelist dir="${src.admin.web}/js" files="AdminEditRole.js"/>
+			<filelist dir="${src.admin.web}/js" files="AdminUtil.js"/>
 		</concat>
 		<java jar="${yuicompressor}" fork="true">
 			<arg line="--type js --charset UTF-8 -o &quot;${build.admin}/js/dist/PortalAdmin-EditRole-${build.version}.js&quot; &quot;${build.admin}/js/dist/PortalAdmin-EditRole.js.tmp&quot;"/>
@@ -597,7 +596,22 @@
 				<pathelement location="${yuicompressor}"/>
 			</classpath>
 		</java>
-
+		
+		<!-- optimize single js files -->
+		<copy todir="${build.admin}/js">
+			<fileset dir="${src.admin.web}/js">
+				<include name="AdminTabList.js"/>
+				<!-- add js file -->
+			</fileset>
+		</copy>
+		<foreach target="optimize-js" param="js.file">
+			<param name="suffix" value="" />
+			<path>
+				<fileset dir="${build.admin}/js">
+					<include name="*.js"/>
+				</fileset>
+			</path>
+		</foreach>
 		
 		<delete>
 			<fileset dir="${build.admin}/js/dist" includes="*.tmp"/>
@@ -610,26 +624,13 @@
 				<exclude name="messageConsole.html/"/>
 			</fileset>
 		</copy>
-		<copy todir="${build.admin}" file="${src.admin.web}/messageConsole.html" encoding="UTF-8">
-		    <filterset>
-				<filter token="PRODUCT.NAME" value="${product.name}"/>
-				<filter token="BUILD.VERSION" value="${build.version}"/>
-			</filterset>
-		</copy>
-		<!--copy todir="${build.admin}/js" file="${src.admin.web}/js/properties.js"/-->
-		<!-- Copy from main javascript -->
-
 		<copy todir="${build.admin}/js/resources" file="${src.admin.web}/js/resources/resourceBundle.jsp"/>
-		<!-- Copy from main javascript -->
-		<copy todir="${build.admin}/js/lib" file="${src.main.web}/js/lib/prototype-1.6.0.3.js"/>
-
-		<!--copy todir="${build.admin}/js/utils" file="${src.main.web}/js/utils/ajax304.js"/>
-		<copy todir="${build.admin}/js/utils" file="${src.main.web}/js/utils/utils.js"/-->
-		<!-- Copy from main css -->
+		
+		<!-- Copy from main -->
+		<copy todir="${build.admin}/js/lib" file="${src.main.web}/js/lib/prototype-1.7.1.js"/>
 		<copy todir="${build.admin}/skin">
 			<fileset dir="${src.main.web}/skin" includes="**/igtab.css"/>
 		</copy>
-
 		<copy todir="${build.admin}/skin/imgs">
 			<fileset dir="${src.main.web}/skin/imgs"/>
 		</copy>
@@ -645,9 +646,12 @@
             <fileset dir="${src.main.resources}">
 				<exclude name="**/*.java"/>
             </fileset>
+        	<fileset dir="${src.api.resources}">
+        		<exclude name="**/*.java"/>
+        	</fileset>
         </copy>
 
-		<javac srcdir="${src.main}:${src.shindig}" encoding="utf-8" destdir="${build.main}/WEB-INF/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" source="${compile.level}" target="${compile.level}">
+		<javac srcdir="${src.main}:${src.shindig}:${src.api.java}" encoding="utf-8" destdir="${build.main}/WEB-INF/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" source="${compile.level}" target="${compile.level}">
 			<classpath>
 				<path refid="compile.classpath" />
 			</classpath>
@@ -657,22 +661,10 @@
 
 	<target name="replaceTag-main" description="Replace main script tag">
 		<replaceregexp
-			file="${build.main}/WEB-INF/classes/gadget-html.vm"
-			match="&quot;([^&quot;]+)\.js&quot;"
-			replace="&quot;\1.js?${build.timestamp}&quot;"
-			flags="mg"
-			encoding="UTF-8"/>
-		<replaceregexp
 			file="${build.main}/accessStats.jsp"
 			match="&lt;!--start script--&gt;.*&lt;!--end script--&gt;"
 			replace="&lt;script src=&quot;&lt;%=staticContentURL%&gt;/js/dist/Portal-core-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
 			flags="s"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.main}/accessStats.jsp"
-			match="&quot;([^&quot;]+)\.js&quot;"
-			replace="&quot;\1.js?${build.timestamp}&quot;"
-			flags="mg"
 			encoding="UTF-8"/>
 		<replaceregexp
 			file="${build.main}/index.jsp"
@@ -690,19 +682,6 @@
 			encoding="UTF-8"/>
 		<replaceregexp
 			file="${build.main}/index.jsp"
-			match="&lt;!--start widgets css--&gt;.*&lt;!--end widgets css--&gt;"
-			replace="
-&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;&lt;%=staticContentURL%&gt;/skin/widgets.css&quot;&gt;"
-			flags="s"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.main}/index.jsp"
-			match="&quot;([^&quot;]+)\.js&quot;"
-			replace="&quot;\1.js?${build.timestamp}&quot;"
-			flags="mg"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.main}/index.jsp"
 			match="&quot;([^&quot;]+)\.js(\?.*)&quot;"
 			replace="&quot;\1.js\2&amp;${build.timestamp}&quot;"
 			flags="mg"
@@ -717,9 +696,21 @@
 			file="${build.main}/js/search/searchEngine.jsp"
 			match="&lt;!--start script--&gt;.*&lt;!--end script--&gt;"
 			replace="
+&lt;script src=&quot;&lt;%=staticContentURL%&gt;/js/dist/Portal-core-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;&#x0D;&#x0A;
 &lt;script src=&quot;&lt;%=staticContentURL%&gt;/js/dist/Portal-SearchEngine-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
 			flags="s"
 			encoding="UTF-8"/>
+		<replaceregexp
+			match="&quot;([^&quot;]+)\.js&quot;"
+			replace="&quot;\1.js?${build.timestamp}&quot;"
+			flags="mg"
+			encoding="UTF-8">
+			<fileset dir="${build.main}">
+				<include name="WEB-INF/classes/gadget-html.vm"/>
+				<include name="accessStats.jsp"/>
+				<include name="index.jsp"/>
+			</fileset>
+		</replaceregexp>
 	</target>
 
 	<target name="replaceTag-admin" description="Replace admin script tag">
@@ -737,31 +728,6 @@
 &lt;script src=&quot;../../admin/js/dist/PortalAdmin-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
 			flags="s"
 			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.admin.jsp}/tiles/page_head.jsp"
-			match="&quot;([^&quot;]+)\.js&quot;"
-			replace="&quot;\1.js?${build.timestamp}&quot;"
-			flags="mg"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.admin.jsp}/tiles/page_head.jsp"
-			match="&lt;!--start styles css--&gt;.*&lt;!--end styles css--&gt;"
-			replace="&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../../skin/styles.css&quot;&gt;"
-			flags="s"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.admin.jsp}/tiles/page_head.jsp"
-			match="&quot;([^&quot;]+)\.js&quot;"
-			replace="&quot;\1.js?${build.timestamp}&quot;"
-			flags="mg"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.admin.jsp}/tiles/page_head.jsp"
-			match="(href=&quot;[^&quot;]+)\.css&quot;"
-			replace="\1.css?${build.timestamp}&quot;"
-			flags="mg"
-			encoding="UTF-8"/>
-
 
 		<replaceregexp
 			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
@@ -776,30 +742,6 @@
 &lt;script src=&quot;../../admin/js/dist/PortalAdmin-EditRole-${build.version}.js&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;"
 			flags="s"
 			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
-			match="&quot;([^&quot;]+)\.js&quot;"
-			replace="&quot;\1.js?${build.timestamp}&quot;"
-			flags="mg"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
-			match="&lt;!--start styles css--&gt;.*&lt;!--end styles css--&gt;"
-			replace="&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../../skin/styles.css&quot;&gt;"
-			flags="s"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
-			match="&quot;([^&quot;]+)\.js&quot;"
-			replace="&quot;\1.js?${build.timestamp}&quot;"
-			flags="mg"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.admin.jsp}/defaultpanel/editRole.jsp"
-			match="(href=&quot;[^&quot;]+)\.css&quot;"
-			replace="\1.css?${build.timestamp}&quot;"
-			flags="mg"
-			encoding="UTF-8"/>
 		<replace 
 			file="${build.admin.jsp}/home/home.jsp">
 			<replacefilter 
@@ -810,24 +752,47 @@
 				value="${build.version}"/>
 		</replace>
 
-		<antcall target="replaceTag-admin-suitefront"/>
+		<replaceregexp
+			match="&lt;!--start styles css--&gt;.*&lt;!--end styles css--&gt;"
+			replace="&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../../skin/styles.css&quot;&gt;"
+			flags="s"
+			encoding="UTF-8">
+			<fileset dir="${build.admin.jsp}">
+				<include name="tiles/page_head.jsp"/>
+				<include name="defaultpanel/editRole.jsp"/>
+			</fileset>
+		</replaceregexp>
+
+		<replaceregexp
+			match="(href=&quot;[^&quot;]+)\.css&quot;"
+			replace="\1.css?${build.timestamp}&quot;"
+			flags="mg"
+			encoding="UTF-8">
+			<fileset dir="${build.admin.jsp}">
+				<include name="tiles/page_head.jsp"/>
+				<include name="defaultpanel/editRole.jsp"/>
+			</fileset>
+		</replaceregexp>
+
+		<replaceregexp
+			match="&quot;([^&quot;]+)\.js&quot;"
+			replace="&quot;\1.js?${build.timestamp}&quot;"
+			flags="mg"
+			encoding="UTF-8">
+			<fileset dir="${build.admin.jsp}">
+				<include name="tiles/page_head.jsp"/>
+				<include name="defaultpanel/editRole.jsp"/>
+			</fileset>
+		</replaceregexp>
 	</target>
 
-	<target name="replaceTag-admin-suitefront" if="build.suitefront" description="Replace admin menu for SuiteFront">
-		<replaceregexp
-			file="${build.admin}/index.jsp"
-			match="&lt;!--start remove for SuiteFront1--&gt;.*&lt;!--end remove for SuiteFront1--&gt;"
-			replace=""
-			flags="s"
-			encoding="UTF-8"/>
-		<replaceregexp
-			file="${build.admin}/index.jsp"
-			match="&lt;!--start remove for SuiteFront2--&gt;.*&lt;!--end remove for SuiteFront2--&gt;"
-			replace=""
-			flags="s"
-			encoding="UTF-8"/>
-	</target>
-
+	<target name="gadgets">
+		<get src="${gadgets.url}/${gadgets.version}.zip" dest="gadgets.zip" verbose="true" usetimestamp="true" />
+		<unzip src="gadgets.zip" dest="${build.home}/work" overwrite="true"/>
+		<delete file="gadgets.zip"/>
+        <ant antfile="${build.gadgets}/build.xml" target="compress" dir="${build.gadgets}"/>
+    </target>
+	
     <target name="initdb">
     	<ant antfile="${basedir}/build_initdb.xml">
 			<property name="compile.level" value="${compile.level}"/>
@@ -838,7 +803,8 @@
             <fileset dir="${build.home}/work/initdb"/>
         </copy>
     </target>
-
+	
+	<!--
     <target name="migration"  if="withMigration">
     	<ant antfile="${basedir}/build_migration.xml" inheritall="false">
 			<property name="compile.level" value="${compile.level}"/>
@@ -848,20 +814,25 @@
     	<copy todir="${install_image.home}/tools/migration">
     		<fileset dir="${build.migration}"/>
     	</copy>
+
+    	<copy todir="${install_image.home}/tools/migration">
+    		<fileset dir="${build.gadgets}/dist"/>
+    	</copy>
     </target>
+    -->
 
 	<target name="optimize-gadget-features">
 		<delete>
 			<fileset dir="${build.main.features}" includes="**/*test.js"/>
 		</delete>
-
 		<foreach target="optimize-js" param="js.file">
+			<param name="suffix" value=".opt" />
 			<path>
 				<fileset dir="${build.main.features}" includes="*/*.js"/>
 				<fileset dir="${build.main.features}" includes="*/*/*.js" excludes="i18n/data/*.js"/>
 			</path>
 		</foreach>
-	
+
 		<delete>
 			<fileset dir="${build.main.features}" includes="README"/>
 		</delete>
@@ -871,7 +842,7 @@
 		<basename file="${js.file.name}" property="js.file" />
 		<dirname file="${js.file}" property="js.dir.path"/>
 		<basename file="${js.file}" property="js.file.name" suffix=".js" />
-		<macro.compress input="${js.file}" output="${js.dir.path}/${js.file.name}.opt.js" />
+		<macro.compress input="${js.file}" output="${js.dir.path}/${js.file.name}${suffix}.js" />
 	</target>
 	
 	<macrodef name="macro.compress">
@@ -895,35 +866,4 @@
 		</sequential>
 	</macrodef>
 	
-    <!--build for google apps-->
-    <target name="googleapps-prepare">
-        <copy todir="${build.main}" file="${googleapps.web}/gapps_openid_login.jsp"/>
-        <delete>
-            <fileset dir="${build.main}/WEB-INF/lib">
-                <include name="openid4java-*.jar"/>
-            </fileset>
-        </delete>
-        <copy todir="${build.main}/WEB-INF/lib">
-            <fileset dir="${googleapps.web}/WEB-INF/lib">
-                <include name="**/*.jar"/>
-            </fileset>
-        </copy>
-
-        <!--
-        <copy todir="${build.main}/WEB-INF/classes" encoding="UTF-8">
-            <fileset dir="${googleapps.resources}">
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
-        -->
-
-        <javac srcdir="${googleapps.src}" encoding="utf-8" destdir="${build.main}/WEB-INF/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" source="${compile.level}" target="${compile.level}">
-            <classpath>
-                <path refid="compile.build.classpath" />
-            </classpath>
-        </javac>
-    </target>
-
-    <target name="googleapps-dist" depends="build-main,googleapps-prepare,build-admin,build-war,build-install-image, archive-install-image" />
-
 </project>

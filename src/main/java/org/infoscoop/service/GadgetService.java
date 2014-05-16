@@ -84,6 +84,7 @@ public class GadgetService {
 		List<Gadget> gadgetList = gadgetDAO.selectGadgetXMLs();
 		
 		String json = gadget2JSON( gadgetList, false, locale, timeout, true);
+		json = sortByTitle(json);
 		return json;
 	}
 	
@@ -99,6 +100,66 @@ public class GadgetService {
 		Element gadgetEl = gadgetDoc.getDocumentElement();
 		JSONObject confJson = WidgetConfUtil.gadget2JSONObject( gadgetEl,null );
 		return confJson;
+	}
+	
+	/**
+	 * sort by gadget title.
+	 * @param jsonStr
+	 * @return
+	 * @throws JSONException 
+	 */
+	@SuppressWarnings("unchecked")
+	private static String sortByTitle(String jsonStr) throws JSONException{
+		JSONObject json = new JSONObject(jsonStr);
+		List<JSONObject> gadgetJsonList = new ArrayList<JSONObject>();
+		
+		Iterator<String> ite = json.keys();
+		while(ite.hasNext()){
+			String gadgetType = ite.next();
+			JSONObject gadgetJson = json.getJSONObject(gadgetType);
+			gadgetJson.put("gadgetType", gadgetType);
+			gadgetJsonList.add(gadgetJson);
+		}
+		
+		Collections.sort(gadgetJsonList, new Comparator(){
+
+			@Override
+			public int compare(Object arg0, Object arg1) {
+				JSONObject gadget1 = (JSONObject)arg0;
+				JSONObject gadget2 = (JSONObject)arg1;
+				
+				String gadget1Title = getGadgetTitle(gadget1);
+				String gadget2Title = getGadgetTitle(gadget2);
+				
+				return gadget1Title.compareTo(gadget2Title);
+			}
+			
+			private String getGadgetTitle(JSONObject gadgetJson){
+				try {
+					if(gadgetJson.has("ModulePrefs")){
+						JSONObject modulePrefsJson;
+							modulePrefsJson = gadgetJson.getJSONObject("ModulePrefs");
+						if(modulePrefsJson.has("title")){
+							return modulePrefsJson.getString("title");
+						}
+					}
+				} catch (JSONException e) {
+					// ignore
+				}
+				return "";
+			}
+			
+		});
+		
+		JSONObject sortedGadgetJson = new JSONObject();
+		Iterator<JSONObject> sortedGadgetIte = gadgetJsonList.iterator();
+		while(sortedGadgetIte.hasNext()){
+			JSONObject gadgetJson = sortedGadgetIte.next();
+			sortedGadgetJson.put(gadgetJson.getString("gadgetType"), gadgetJson);
+			gadgetJson.remove("gadgetType");
+		}
+		
+		return sortedGadgetJson.toString(1);
 	}
 	
 	private static String gadget2JSON(List<Gadget> gadgetList, boolean isUpdate, Locale locale,

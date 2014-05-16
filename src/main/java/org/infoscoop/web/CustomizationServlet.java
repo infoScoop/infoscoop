@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -37,9 +39,14 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.model.Portallayout;
+import org.infoscoop.dao.model.Preference;
+import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.service.PortalLayoutService;
+import org.infoscoop.service.PreferenceService;
+import org.infoscoop.service.PropertiesService;
 import org.infoscoop.service.TabLayoutService;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
@@ -62,6 +69,7 @@ public class CustomizationServlet extends HttpServlet {
 	private Configuration cfg;
 
 	private static Log log = LogFactory.getLog(CustomizationServlet.class);
+	private static final String SHORT_DATETIME_FORMAT = "yy/MM/dd HH:mm";
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -93,6 +101,24 @@ public class CustomizationServlet extends HttpServlet {
 			Map<String, Object> root = new HashMap<String, Object>();
 			root.put("request", request);
 			root.put("session", request.getSession());
+			
+			String lastAccessTime = PreferenceService.getHandle().getProperty(uid, "lastAccessTime");
+			String format = PropertiesService.getHandle().getProperty("lastAccessTimeFormat");
+			if(format==null || format.equals(""))
+				format = SHORT_DATETIME_FORMAT;
+			if(lastAccessTime!=null && !lastAccessTime.equals("")){
+				Date date = new Date(Long.valueOf(lastAccessTime));
+				SimpleDateFormat sdf;
+				try {
+					sdf = UserContext.instance().getUserInfo().getClientDateFormat(format);
+				} catch(IllegalArgumentException e) {
+					sdf = UserContext.instance().getUserInfo().getClientDateFormat(SHORT_DATETIME_FORMAT);					
+				} catch(Exception e) {
+					throw e;
+				}
+				lastAccessTime = sdf.format(date);		
+			}
+			root.put("lastAccessTime", lastAccessTime);
 
 			String customFtl = getCustomizationFtl( root );
 
@@ -128,8 +154,8 @@ public class CustomizationServlet extends HttpServlet {
 			value.put("layout", layout);
 			value.put("adjustToWindowHeight", tabLayout.isAdjustToWindowHeight());
 
-			if("commandbar".equals(key.toLowerCase())){
-				layoutJson.put("commandbar", applyFreemakerTemplate(root, layout));
+			if(StaticTab.COMMANDBAR_TAB_ID.equals(key.toLowerCase()) || StaticTab.PORTALHEADER_TAB_ID.equals(key.toLowerCase())){
+				layoutJson.put(key.toLowerCase(), applyFreemakerTemplate(root, layout));
 			}else {
 				layoutJson.put("staticPanel" + key, value);
 			}

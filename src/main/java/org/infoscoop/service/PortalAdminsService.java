@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.collections.SequencedHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,6 +33,7 @@ import org.infoscoop.dao.AdminRoleDAO;
 import org.infoscoop.dao.PortalAdminsDAO;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Portaladmins;
+import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,6 +44,11 @@ public class PortalAdminsService {
 
 	private PortalAdminsDAO portalAdminsDAO;
 	private AdminRoleDAO adminRoleDAO;
+	
+	public static final String ADMINROLE_DEFAULTPANEL = "defaultPanel";
+	public static final String ADMINROLE_TAB_ADMIN = "tabAdmin";
+	public static final String ADMINROLE_MENU = "menu";
+	public static final String ADMINROLE_MENU_TREE = "menu_tree";
 	
 	/**
 	 * Constructor
@@ -142,7 +150,7 @@ public class PortalAdminsService {
 	 * @return
 	 * @throws Exception
 	 */
-	public String getPortalAdminsJson() throws Exception {
+	public String getPortalAdminsJson(HttpServletRequest request) throws Exception {
 		JSONObject adminsObj = new JSONObject();
 		JSONObject jobj;
 		
@@ -164,7 +172,7 @@ public class PortalAdminsService {
 			jobj = new JSONObject();
 			
 			jobj.put("id", adminRole.getRoleid());
-			jobj.put("name", adminRole.getName());
+			jobj.put("name", I18NUtil.resolve(I18NUtil.TYPE_ADMINJS, adminRole.getName(), request.getLocale()));
 			jobj.put("permission", adminRole.getPermission());
 			jobj.put("isAllowDelete", adminRole.isAllowDelete());
 			rolesJson.put( jobj );
@@ -182,6 +190,14 @@ public class PortalAdminsService {
 	 */
 	public List<Portaladmins> getPortalAdmins() throws Exception {
 		return portalAdminsDAO.select();
+	}
+	
+	/**
+	 * @return
+	 * @throws Exception
+	 */
+	public Portaladmins getPortalAdmin(String userId) throws Exception {
+		return portalAdminsDAO.selectById(userId);
 	}
 	
 	/**
@@ -210,6 +226,6 @@ public class PortalAdminsService {
 	}
 	
 	public boolean isMenuTreeRoleUser(){
-		return !isPermitted("menu") && isPermitted("menu_tree");
+		return !isPermitted(PortalAdminsService.ADMINROLE_MENU) && isPermitted(PortalAdminsService.ADMINROLE_MENU_TREE);
 	}
 }

@@ -582,7 +582,7 @@ public class ProxyConfService {
 					stringbuffer.append(",password:").append(JSONObject.quote(password));
 				}
 				String domaincontroller = attributes.getValue("domaincontroller");
-				if(port != null){
+				if(domaincontroller != null){
 					stringbuffer.append(",domaincontroller:").append(JSONObject.quote(domaincontroller));
 				}
 				String domain = attributes.getValue("domain");

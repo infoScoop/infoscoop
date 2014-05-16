@@ -12,19 +12,9 @@ ISA_PortalLayout.prototype.classDef = function() {
 	var self = this;
 	var container;
 	var loadingMessage;
-	var controlModal;
+	var controlModal;		// Apply Change dialog
 	
 	this.initialize = function() {
-		controlModal = new Control.Modal(
-			false,
-			{
-				contents: ISA_R.ams_applyingChanges,
-				opacity: 0.2,
-				containerClassName:"commitDialog",
-				overlayCloseOnClick:false
-			}
-		);
-		
 		container = document.getElementById("portalLayout");
 		var len = container.childNodes.length;
 		for(var i = 0; i < len; i++) {
@@ -242,6 +232,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 				editLayoutTextarea = document.createElement("input");
 				editLayoutTextarea.style.width = "99%";
 				editLayoutTextarea.style.margin = "5px";
+				editLayoutTextarea.type = "text";
 				break;
 			default:
 				editLayoutTextarea = document.createElement("textarea");
@@ -277,6 +268,13 @@ ISA_PortalLayout.prototype.classDef = function() {
 		}
 		
 		// Update to DB
+		if(!controlModal){
+			controlModal = new Control.Modal('',{
+				className:"commitDialog",
+				closeOnClick:false
+			});		
+		}
+		controlModal.container.update(ISA_R.ams_applyingChanges);
 		controlModal.open();
 		this.updatePortalLayout(portalLayouts);
 	}
@@ -289,7 +287,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 			postBody: Object.toJSON([portalLayouts]),
 			asynchronous:true,
 			onSuccess: function(response){
-				controlModal.update(ISA_R.ams_changeUpdated);
+				controlModal.container.update(ISA_R.ams_changeUpdated);
 			},
 			onFailure: function(t) {
 				var errormsg = t.responseText && typeof t.responseText == "string" ? t.responseText.substr(0, 100) : "";
@@ -302,7 +300,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 			},
 			onComplete: function(){
 				setTimeout(function(){
-					controlModal.close();
+					Control.Modal.close();
 				},500);
 			}
 		};

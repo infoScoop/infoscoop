@@ -38,6 +38,9 @@ var proxyServerURL = hostPrefix + "/proxy";
 
 var searchEngineURL = searchEngineURL ? is_getProxyUrl( searchEngineURL, "NoOperation") : hostPrefix+"/schsrv";
 
+var d = new Date();
+IS_Portal.clientTimeZone = String(-d.getTimezoneOffset());
+
 IS_Customization = false;
 IS_WidgetConfiguration = [];
 IS_Portal.logoffDateTime = -1;
@@ -57,6 +60,17 @@ IS_Portal.iframeToolBarIconsTable;
 var IS_User = new Object();
 
 IS_Portal.defaultFontSize = "100%";
+
+Event.observe(window, 'resize', function(){
+	var innerHeight = getWindowSize(false);
+	var innerWidth = getWindowSize(true);
+	// The block for the problem which a window resizing event will be called by document size change. (IE8 Only)
+    if (!Browser.isIE8 || innerHeight != IS_Portal.lastWindowHeight || innerWidth != IS_Portal.lastWindowWidth) {
+    	IS_EventDispatcher.newEvent("windowResized");
+    }
+    IS_Portal.lastWindowHeight = innerHeight;
+    IS_Portal.lastWindowWidth = innerWidth;
+}, false);
 
 IS_Portal.start = function() {
 	var self = this;
@@ -94,8 +108,9 @@ IS_Portal.start = function() {
 	document.title = IS_Customization.title;
 
 	var header = document.getElementById("portal-header");
-	header.innerHTML = IS_Customization.header;
-	if(IS_Customization.header.length == 0)
+	var headerHTML = (IS_Customization.header) ? IS_Customization.header : "";
+	header.innerHTML = headerHTML;
+	if(headerHTML.length == 0)
 		header.style.display = "none";
 	
 	IS_Portal.SearchEngines.init();
@@ -119,7 +134,6 @@ IS_Portal.start = function() {
 	if(fixedPortalHeader) {
 		Event.observe(window, 'resize', IS_Portal.adjustPanelHeight, false);
 		IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustPanelHeight);
-		IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustIframeHeight);
 		IS_EventDispatcher.addListener("changeTab","",IS_Portal.adjustPanelHeight);
 	}
 	Event.observe(window, 'resize', IS_Portal.adjustSiteMenuHeight, false);
@@ -127,6 +141,7 @@ IS_Portal.start = function() {
 	Event.observe(window, 'resize', IS_Portal.adjustGadgetHeight , false);
 	Event.observe(window, 'resize', IS_Portal.adjustStaticWidgetHeight, false);
 	IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustStaticWidgetHeight);
+	IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustIframeHeight);
 
 	var messageBarDiv = $('message-bar-controles');
 	var messageMoreBtn = document.createElement('input');
@@ -205,7 +220,7 @@ IS_Portal.start = function() {
 		}
 		
 		if( widget.isGadget()) {
-			if( Browser.isIE ) {
+			if( Browser.isIE8 ) {
 				IS_Portal.adjustGadgetHeight( widget,true );
 			} else {
 				widget.loadContents();
@@ -877,24 +892,13 @@ Event.observe(window, Browser.isIE ? 'beforeunload' : 'unload',  windowUnload );
 
 function windowUnload() {
 	IS_Request.asynchronous = false;
-
-	//Send to Server
-	/*
-	try{
-		IS_Portal.processLogoff();
-	}catch(e){
-		alert(IS_R.getResource(IS_R.ms_logofftimeSavingfailure,[getText(e)]));
-	}
-	*/
 	
 	//Event.unloadCache();
 	// Cache is deleted on loading
-	if( !Browser.isSafari1 )
-		IS_Portal.deleteCache();
+	IS_Portal.deleteCache();
 	
 	for ( var id in IS_Portal.widgetLists){
 		for ( var i in IS_Portal.widgetLists[id] ) {
-//			IS_Portal.widgetLists[id][i] = null;
 			IS_Portal.removeWidget(i, id);
 		}
 	}
@@ -1045,7 +1049,7 @@ IS_Portal.openIframe = function(url){
 IS_Portal.buildIFrame = function (aTag) {
 	if(aTag) {
 		if(/^notes:\/\//i.test( aTag.href )){
-			aTag.target = "_self";
+			aTag.target = "portal-externalExe-ifrm";
 			return;
 		}
 		
@@ -1229,17 +1233,20 @@ IS_Portal.Trash = new function() {
 			delete newwidget.deleteDate;
 			var w = IS_WidgetsContainer.addWidget(IS_Portal.currentTabId, newwidget, false, false, newSubWidgets);
 			IS_Widget.setWidgetLocationCommand(w);
-			emptyWidget(widget)();
-			
 			IS_Portal.widgetDropped( w );
-			
-			newSubWidgets.each( function( subWidget ){
-				var sw = IS_Portal.getWidget( subWidget.id,IS_Portal.curentTabId );
-				IS_Portal.widgetDropped( sw );
-			});
-			
-			if( newwidget.parentId )
-				delete newwidget.parentId;
+			if(typeof w !== "undefined") {
+				emptyWidget(widget)();
+				
+				newSubWidgets.each( function( subWidget ){
+					var sw = IS_Portal.getWidget( subWidget.id,IS_Portal.curentTabId );
+					IS_Portal.widgetDropped( sw );
+				});
+				
+				if( newwidget.parentId )
+					delete newwidget.parentId;
+			}else{
+				hideContextMenu();
+			}
 		}
 	}
 	function existWidget(widgetId, type){
@@ -1351,8 +1358,8 @@ IS_Portal.Trash = new function() {
 				table.replaceChild(tbody, table.firstChild);
 			else
 				table.appendChild(tbody);
-			style.top = Event.pointerY(e);
-			style.left = Event.pointerX(e);
+			style.top = Event.pointerY(e) + 'px';
+			style.left = Event.pointerX(e) + 'px';
 			style.display = "block";
 			titleTd.className = "trashSelectedWidget";
 			self.selectedWidgetTd = titleTd;
@@ -1588,16 +1595,16 @@ IS_Portal.buildFontSelectDiv = function(){
 		
 		IS_Event.observe(fontSizeSelect, "change", function(){
 			var index = fontSizeSelect.selectedIndex;
-			var size;		
+			var size;
 			switch (index){
 				case 0:
-					size = parseInt(IS_Portal.defaultFontSize) - 20 + "%";
+					size = parseInt(IS_Portal.defaultFontSize) -5 + "%";
 					break;
 				case 1:
 					size = parseInt(IS_Portal.defaultFontSize) + "%";
 					break;
 				case 2:
-					size = parseInt(IS_Portal.defaultFontSize) + 20 + "%";
+					size = parseInt(IS_Portal.defaultFontSize) + 10 + "%";
 					break;
 				default:
 					size = parseInt(IS_Portal.defaultFontSize) + "%";
@@ -1606,6 +1613,7 @@ IS_Portal.buildFontSelectDiv = function(){
 			IS_Portal.applyFontSize(size);
 			$('portal-user-menu-body').hide();
 			$('userMenuCloser').hide();
+			IS_Portal.commandBarMenuBehindIframe.hide();
 		}, false, "_fontchange");
 		
 		IS_Event.observe(fontSizeSelect, "click", function(e){
@@ -1647,22 +1655,29 @@ IS_Portal.buildFontSelectDiv = function(){
 		fontEl.appendChild(fontChangeDivAddA);
 		
 		IS_Event.observe(fontChangeDivAdd, "mouseup", function(){
-				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) + 20) + "%");
+				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) + 10) + "%");
 			}, false, "_fontchange");
 		IS_Event.observe(fontChangeDivSta, "mouseup", function(){
 				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize)) + "%");
 			}, false, "_fontchange");
 		IS_Event.observe(fontChangeDivDel, "mouseup", function(){
-				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) - 20) + "%");
+				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) - 5) + "%");
 			}, false, "_fontchange");
 		
 		//Setting width of command bar
-		if(fontEl.parentNode && fontEl.offsetWidth && !Browser.isSafari){
-			Element.setStyle(fontEl, {width: fontEl.offsetWidth * 3});
-			Element.setStyle(fontEl.parentNode, {width: fontEl.style.width});
+		if(fontEl.parentNode && fontEl.offsetWidth){
+			var offset = parseInt(fontEl.offsetWidth);
+			var styleWidth = parseInt(fontEl.style.width);
+			if(!styleWidth) styleWidth = 1;
+
+			offset = (!Browser.isSafari)?offset*3:offset*3.2;
+			styleWidth = styleWidth+1
+			Element.setStyle(fontEl, {width: offset + 'px'});
+			Element.setStyle(fontEl.parentNode, {width: styleWidth+'px'});
 		}else{
-			Element.setStyle(fontEl, {width: fontEl.offsetWidth +1});
-			Element.setStyle(fontEl.parentNode, {width: fontEl.style.width});
+			var styleWidth = parseInt(fontEl.style.width);
+			Element.setStyle(fontEl, {width: "1px" });
+			Element.setStyle(fontEl.parentNode, {width: styleWidth+"px"});
 		}
 	}
 };
@@ -1791,12 +1806,14 @@ IS_Portal.windowOverlay = function(id, tag){
 	var overlay = document.createElement(tag);
 	overlay.className = "windowOverlay";
 	overlay.id = id;
-	if(tag == 'iframe')overlay.src = './blank.html';
+	if(tag == 'iframe'){
+		overlay.setAttribute("frameborder", "0");
+	}
 	document.body.appendChild(overlay);
 	
 	this.show = function(cursorType){
-		overlay.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth);
-		overlay.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight);
+		overlay.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth) + "px";
+		overlay.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight) + "px";
 		
 		if(cursorType)
 			overlay.style.cursor = cursorType;
@@ -2094,6 +2111,7 @@ IS_Portal.buildAdminLink = function(){
 	Event.observe( adminLink, "click", function( e ) {
 		window.open("admin");
 		$('portal-user-menu-body').hide();
+		IS_Portal.commandBarMenuBehindIframe.hide();
 		Event.stop( e )
 	});
 };
@@ -2114,7 +2132,7 @@ IS_Portal.buildLogout = function() {
 	
 	var logoutLabel = $.DIV({id:'logout', className:'portal-user-menu-item-label'}, IS_R.lb_logout);
 	
-	var logoutDiv = $.A({className:'portal-user-menu-link', href:'javascript:void(0);', title:IS_R.lb_logout}
+	var logoutDiv = $.A({className:'portal-user-menu-link', href:'#', title:IS_R.lb_logout}
 		, logoutLabel);
 
 	Event.observe( logout,"click",function( e ) {
@@ -2151,13 +2169,9 @@ IS_Portal.buildLogo = function() {
 }*/
 
 IS_Portal.widgetDropped = function( widget ) {
+	if(!widget) return;
 	if( IS_TreeMenu.isMenuItem( widget.id ) )
 		IS_EventDispatcher.newEvent( IS_Widget.DROP_WIDGET, IS_TreeMenu.getMenuId( widget.id ) );
-	
-//	var url = widget.getUserPref("url");
-//	if( url ) {
-//		IS_EventDispatcher.newEvent( IS_Widget.DROP_URL,url,widget );
-//	}
 }
 
 // create message bar element.
@@ -2173,12 +2187,10 @@ IS_Portal.initMsdBar = function(){
 // set message bar position.
 IS_Portal.setDisplayMsgBarPosition = function(){
 	if($("portal_msgbar").style.display == "none") return;
-	var scrollTop = parseInt(document.body.scrollTop);
+	var scrollTop = parseInt(document.documentElement.scrollTop);
 	var innerHeight = getWindowHeight();
-	var offset = parseInt($("portal_msgbar").offsetHeight);
-	if(!Browser.isIE) offset += 1;
-	
-	$("portal_msgbar").style.top = (scrollTop + innerHeight) - offset;
+	var offset = parseInt($("portal_msgbar").offsetHeight)+1;
+	$("portal_msgbar").style.top = (scrollTop + innerHeight) - offset + 'px';
 }
 
 // display message bar.
@@ -2211,27 +2223,24 @@ IS_Portal.unDisplayMsgBar = function(id){
 
 IS_Portal.behindIframe = {
 	init:function(){
-		//if(!Browser.isIE)return;
 		this.behindIframe = $(document.createElement('iframe'));
-		this.behindIframe.border = 0;
-		this.behindIframe.style.margin = 0;
-		this.behindIframe.style.padding = 0;
+		this.behindIframe.border = 0 + 'px';
+		this.behindIframe.style.margin = 0 + 'px';
+		this.behindIframe.style.padding = 0 + 'px';
 		this.behindIframe.id = "is_portal_behind_iframe";
 		this.behindIframe.frameBorder = 0;
 		this.behindIframe.style.position = "absolute";
-		this.behindIframe.src = "./blank.html";
 		document.getElementsByTagName('body')[0].appendChild(this.behindIframe);
 		this.behindIframe.hide();
 	},
 	
 	show:function(element){
-		//if(!Browser.isIE)return;
 		Position.prepare();
 		var pos = Position.cumulativeOffset(element);
 		this.behindIframe.style.top = pos[1] + "px";
 		this.behindIframe.style.left = pos[0] + "px";
-		this.behindIframe.style.width = element.offsetWidth;
-		this.behindIframe.style.height = element.offsetHeight;
+		this.behindIframe.style.width = element.offsetWidth + 'px';
+		this.behindIframe.style.height = element.offsetHeight + 'px';
 		if(element.style.zIndex)
 			this.behindIframe.style.zIndex = element.style.zIndex -1;
 		else
@@ -2242,11 +2251,48 @@ IS_Portal.behindIframe = {
 	},
 	
 	hide:function(){
-		//if(!Browser.isIE)return;
 		this.behindIframe.style.left = 0 + "px";
 		this.behindIframe.style.top = 0 + "px";
-		this.behindIframe.style.width = 0;
-		this.behindIframe.style.height = 0;
+		this.behindIframe.style.width = 0 + 'px';
+		this.behindIframe.style.height = 0 + 'px';
+		this.behindIframe.hide();
+	}
+}
+
+IS_Portal.commandBarMenuBehindIframe = {
+	init:function(){
+		this.behindIframe = $(document.createElement('iframe'));
+		this.behindIframe.border = 0 + 'px';
+		this.behindIframe.style.margin = 0 + 'px';
+		this.behindIframe.style.padding = 0 + 'px';
+		this.behindIframe.id = "is_portal_comandbar_behind_iframe";
+		this.behindIframe.frameBorder = 0;
+		this.behindIframe.style.position = "absolute";
+		document.getElementsByTagName('body')[0].appendChild(this.behindIframe);
+		this.behindIframe.hide();
+	},
+	
+	show:function(element){
+		Position.prepare();
+		var pos = Position.cumulativeOffset(element);
+		this.behindIframe.style.top = pos[1] + "px";
+		this.behindIframe.style.left = pos[0] + "px";
+		this.behindIframe.style.width = element.offsetWidth + 'px';
+		this.behindIframe.style.height = element.offsetHeight + 'px';
+		if(element.style.zIndex)
+			this.behindIframe.style.zIndex = element.style.zIndex -1;
+		else
+			this.behindIframe.style.zIndex = 0;
+		this.behindIframe.show();
+		
+		this.current = element;
+	},
+	
+	hide:function(){
+		this.behindIframe.style.left = 0 + "px";
+		this.behindIframe.style.top = 0 + "px";
+		this.behindIframe.style.width = 0 + 'px';
+		this.behindIframe.style.height = 0 + 'px';
 		this.behindIframe.hide();
 	}
 }
@@ -2256,23 +2302,21 @@ IS_Portal.CommandBar = {
 	commandbarWidgets : [],
 	init : function(){
 		this.elm_commandbar = $('portal-command');
-		if(Browser.isIE){
-			this.elm_commandbar.childNodes[0].cellSpacing = '0';
-		}
 		var portalUserMenu = $('portal-user-menu');
 		var portalUserMenuLabel = $('portal-user-menu-label');
 		//IE: if user name is long, limit user menu width 150
-		if(Browser.isIE && portalUserMenuLabel.offsetWidth > 150){
-			Element.setStyle(portalUserMenu, {width: '150px'});
-			Element.setStyle(portalUserMenuLabel, {width: '140px'});
+		if(Browser.isIE8 && portalUserMenuLabel.offsetWidth > 150){
+			Element.setStyle(portalUserMenu, {width: '155px'});
+//			Element.setStyle(portalUserMenuLabel, {width: '140px'});
 		}
 		
 		var commandBarItems = $$("#portal-command .commandbar-item");
 		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', style:'display:none;'});
-		
+
 		Event.observe(portalUserMenuBody, "click", function(e){
 			$(this).hide();
 			$('userMenuCloser').hide();
+			IS_Portal.commandBarMenuBehindIframe.hide();
 			Event.stop(e);
 		}.bind(portalUserMenuBody));
 		
@@ -2285,7 +2329,9 @@ IS_Portal.CommandBar = {
 				$(itemDiv).hide();
 			}
 			var itemId = itemDiv.id.replace(/^s_/, "");
-			
+
+			// Exclude Ranking Gadget.
+			itemId = itemId.replace(/_container$/,"");
 			var cmdBarWidget = IS_Portal.getWidget(itemId, IS_Portal.currentTabId);
 			if(cmdBarWidget){
 				this.commandbarWidgets[itemId] = cmdBarWidget;
@@ -2304,8 +2350,7 @@ IS_Portal.CommandBar = {
 			// put into portal user menu
 			if(!itemDiv.getAttribute("outside") && !itemDiv.getAttribute('disabledCommand')){
 				// hide empty td
-				if(!Browser.isIE)
-					$(itemDiv.parentNode).hide();
+				$(itemDiv.parentNode).hide();
 				
 				itemDiv.className = 'portal-user-menu-item';
 				portalUserMenuBody.appendChild(itemDiv);
@@ -2321,6 +2366,7 @@ IS_Portal.CommandBar = {
 						}
 						portalUserMenuBody.hide();
 						$("userMenuCloser").hide();
+						IS_Portal.commandBarMenuBehindIframe.hide();
 					});
 				}
 			}
@@ -2341,6 +2387,7 @@ IS_Portal.CommandBar = {
 
 		if(!this.hasCommandBar){
 			$("command-bar").hide();
+			if(IS_SidePanel.adjustPosition) IS_SidePanel.adjustPosition();
 		}
 		else{
 			IS_Portal.CommandBar.show();
@@ -2394,32 +2441,29 @@ IS_Portal.CommandBar = {
 				
 				$("portal-user-menu-body").hide();
 				$("userMenuCloser").hide();
+				IS_Portal.commandBarMenuBehindIframe.hide();
 				Event.stop( e );
 				Element.setStyle($("portal-user-menu").parentNode, {backgroundColor: ''});
 			};
 			// loginID clicked
 			IS_Event.observe(portalUserMenu, "click", function(e){
 				$("portal-user-menu-body").show();
-				// set width for IE only (do not set width for FF and Webkit to prevent unnecessary gap)
-				if(Browser.isIE){
-					Element.setStyle($("portal-user-menu-body"), {width: $("portal-user-menu-body").offsetWidth});
-				}
 				var targetPosition = Position.page($("portal-user-menu"));
 				Element.setStyle($("portal-user-menu-body"), {
-					left: targetPosition[0] - $("portal-user-menu-body").offsetWidth + $("portal-user-menu").offsetWidth
-					, top: targetPosition[1] + $("portal-user-menu").offsetHeight
+					left: targetPosition[0] - $("portal-user-menu-body").offsetWidth + $("portal-user-menu").offsetWidth + 'px'
+					, top: targetPosition[1] + $("portal-user-menu").offsetHeight +'px'
 				});
+				var winX = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth);
+				var winY = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight);
 				if(!$('userMenuCloser')){
-					var winX = Math.max(document.body.scrollWidth, document.body.clientWidth);
-					var winY = Math.max(document.body.scrollHeight, document.body.clientHeight);
 					var closer = $.DIV({
 						id:'userMenuCloser'
 						, className:'widgetMenuCloser'
 					});
 					document.body.appendChild( closer );
 					Element.setStyle(closer, {
-						width: winX,
-						height: winY,
+						width: winX + 'px',
+						height: winY + 'px',
 						display: ''
 					});
 					
@@ -2430,8 +2474,15 @@ IS_Portal.CommandBar = {
 					}, "_portalUserMenu");
 					Event.observe(window, 'resize', closeMenu, true);
 				}else{
+					Element.setStyle($("userMenuCloser"), {
+						width: winX + 'px',
+						height: winY + 'px'
+					});
 					$("userMenuCloser").show();
 				}
+				if(!$("is_portal_comandbar_behind_iframe"))
+					IS_Portal.commandBarMenuBehindIframe.init();
+				IS_Portal.commandBarMenuBehindIframe.show($("portal-user-menu-body"));
 			});
 		}
 	},
@@ -2545,8 +2596,8 @@ IS_Portal.startIndicator = function(target){
 		divOverlay.style.display = "block";
 	}
 	if(panel.offsetWidth > 0){
-		divOverlay.style.top = findPosY(panel) + 200;
-		divOverlay.style.left = findPosX(panel) + panel.offsetWidth/2 - divOverlay.offsetWidth/2;
+		divOverlay.style.top = findPosY(panel) + 200 + 'px';
+		divOverlay.style.left = findPosX(panel) + panel.offsetWidth/2 - divOverlay.offsetWidth/2  + 'px';
 	}
 	IS_Portal.getPortalOverlay().show("default");
 }

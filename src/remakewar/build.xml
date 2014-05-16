@@ -6,6 +6,17 @@
 	<property name="collect.home" location="${basedir}/collect"/>
 	<property name="dist.home" value="${basedir}/dist" />
 
+	<tstamp>
+		<format property="remake.timestamp" pattern="yyyyMMddHHmmss" locale="ja"/>
+	</tstamp>
+	
+	<path id="project.classpath">
+		<fileset dir="${basedir}/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="project.classpath" />
+	
 	<delete file="${basedir}/build.properties.tmp"/>
 	<copy tofile="${basedir}/build.properties.tmp" file="${basedir}/build.properties" encoding="UTF-8">
 		<filterchain>
@@ -62,6 +73,42 @@
 		<replaceregexp file="${collect.home}/WEB-INF/web.xml"
 			match="&lt;!--start dataSource.jndiName--&gt;.*&lt;!--end dataSource.jndiName--&gt;"
 			replace="${dataSource.jndiName}"
+			flags="s"
+			encoding="UTF-8"/>
+		<replaceregexp file="${collect.home}/WEB-INF/web.xml"
+			match="@WEBAPP.ISCOOP.ROOT.KEY@"
+			replace="${remake.timestamp}"
+			flags="s"
+			encoding="UTF-8"/>
+		<if>
+			<not>
+				<equals arg1="${dataSource.schema}" arg2="" />
+			</not>
+			<then>
+				<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
+					<replacetoken><![CDATA[<!--Migration Database Schema-->]]></replacetoken>
+					<replacevalue><![CDATA[
+	<context-param>
+		<param-name>liquibase.schema.default</param-name>
+		<param-value>]]>@SCHEMA_NAME@<![CDATA[</param-value>
+	</context-param>
+			]]></replacevalue>
+				</replace>			
+			</then>
+		</if>
+		<replaceregexp file="${collect.home}/WEB-INF/web.xml"
+			match="@SCHEMA_NAME@"
+			replace="${dataSource.schema}"
+			flags="s"
+			encoding="UTF-8"/>
+		<replaceregexp file="${collect.home}/WEB-INF/web.xml"
+			match="&lt;!--Migration Database TableSpace--&gt;"
+			replace="${dataSource.tablespace}"
+			flags="s"
+			encoding="UTF-8"/>
+		<replaceregexp file="${collect.home}/WEB-INF/web.xml"
+			match="&lt;!--start migration jndiName--&gt;.*&lt;!--end migration jndiName--&gt;"
+			replace="java:comp/env/${dataSource.jndiName}"
 			flags="s"
 			encoding="UTF-8"/>
 	</target>
@@ -167,32 +214,41 @@
 		</replace>
 	</target>
 	
+	<condition property="doSetCheckDuplicateUidFilterMapping">
+		<istrue value="${sessionCreateConfig.uidIgnoreCase}"/>
+	</condition>
+	
 	<target name="replace-uidIgnoreCase" if="sessionCreateConfig.uidIgnoreCase">
 		<replaceregexp file="${collect.home}/WEB-INF/classes/accountservices.xml"
 			match="&lt;!--start sessionCreateConfig.uidIgnoreCase--&gt;.*&lt;!--end sessionCreateConfig.uidIgnoreCase--&gt;"
 			replace="${sessionCreateConfig.uidIgnoreCase}"
 			flags="s"
 			encoding="UTF-8"/>
+		
+		<antcall target="setCheckDuplicateUidFilterMapping" />
+	</target>
+	
+	<target name="setCheckDuplicateUidFilterMapping" if="doSetCheckDuplicateUidFilterMapping">
 		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
 			<replacetoken><![CDATA[<!--CheckDuplicateUidFilterMapping-->]]></replacetoken>
 			<replacevalue><![CDATA[
-	<filter-mapping>
-		<filter-name>CheckDuplicateUidFilter</filter-name>
-		<url-pattern>/index.jsp</url-pattern>
-	</filter-mapping>
-			]]></replacevalue>
+			<filter-mapping>
+				<filter-name>CheckDuplicateUidFilter</filter-name>
+				<url-pattern>/index.jsp</url-pattern>
+			</filter-mapping>
+					]]></replacevalue>
 		</replace>
 		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
 			<replacetoken><![CDATA[<!--MergeProfileServletMapping-->]]></replacetoken>
 			<replacevalue><![CDATA[
-	<servlet-mapping>
-		<servlet-name>MergeProfileServlet</servlet-name>
-		<url-pattern>/mergeprofile</url-pattern>
-	</servlet-mapping>
-			]]></replacevalue>
+			<servlet-mapping>
+				<servlet-name>MergeProfileServlet</servlet-name>
+				<url-pattern>/mergeprofile</url-pattern>
+			</servlet-mapping>
+					]]></replacevalue>
 		</replace>
 	</target>
-	
+
 	<target name="replace-msd.dataSource" if="msd.dataSource.jndiName">
 		<replace file="${collect.home}/WEB-INF/web.xml" encoding="utf-8" summary="true">
 			<replacetoken><![CDATA[<!--msd.dataSource-->]]></replacetoken>
@@ -208,14 +264,22 @@
 	</target>
 	
 	<target name="replaceDataSourceXml">
+		<if>
+			<not>
+				<equals arg1="${dataSource.schema}" arg2="" />
+			</not>
+			<then>
+				<replaceregexp file="${collect.home}/WEB-INF/classes/datasource.xml"
+					match="&lt;!--Database Schema Name--&gt;"
+					replace="&lt;prop key=&quot;hibernate.default_schema&quot;&gt;${dataSource.schema}&lt;/prop&gt;"
+					flags="s"
+					encoding="UTF-8"/>		
+			</then>
+		</if>
+		
 		<replaceregexp file="${collect.home}/WEB-INF/classes/datasource.xml"
 			match="&lt;!--start dataSource.jndiName--&gt;.*&lt;!--end dataSource.jndiName--&gt;"
 			replace="java:comp/env/${dataSource.jndiName}"
-			flags="s"
-			encoding="UTF-8"/>
-		<replaceregexp file="${collect.home}/WEB-INF/classes/datasource.xml"
-			match="&lt;!--start dataSource.schema--&gt;.*&lt;!--end dataSource.schema--&gt;"
-			replace="${dataSource.schema}"
 			flags="s"
 			encoding="UTF-8"/>
 		<replaceregexp file="${collect.home}/WEB-INF/classes/datasource.xml"

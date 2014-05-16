@@ -89,6 +89,7 @@
 		<property name="notPermittedPatterns">
 			<props>
 				<prop key="defaultPanel"></prop>
+				<prop key="tabAdmin"></prop>
 				<prop key="*">.*</prop>
 			</props>
 		</property>
@@ -108,7 +109,7 @@
 		<property name="notPermittedPatterns">
 			<props>
 				<prop key="widget"></prop>
-				<prop key="*">^update.*|^insert.*</prop>
+				<prop key="*">^update.*|^insert.*|^delete.*</prop>
 			</props>
 		</property>
 	</bean>
@@ -142,6 +143,15 @@
 		<property name="notPermittedPatterns">
 			<props>
 				<prop key="*"></prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="extApps" class="org.infoscoop.admin.command.ServiceCommand">
+		<property name="service"><ref bean="ExtAppsService"/></property>
+		<property name="notPermittedPatterns">
+			<props>
+                <prop key="extapps"></prop>
+				<prop key="*">.*</prop>
 			</props>
 		</property>
 	</bean>

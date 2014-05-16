@@ -135,9 +135,15 @@ IS_Widget.WidgetRanking.prototype.classDef = function() {
 				}
 				IS_Event.observe(addButton, 'click', function(title, menuItem, rank){
 					if(this.disabled) return;
+					
+					if(menuItem && IS_Portal.isChecked(menuItem)){
+						self.disableAddButton(this, menuItem);
+						return;
+					}
+					
 					if(menuItem){
-						IS_TreeMenu.addMenuItem(menuItem);
-						if( !menuItem.multi)
+						var widget = IS_TreeMenu.addMenuItem(menuItem);
+						if( !menuItem.multi && typeof widget !== "undefined")
 							self.disableAddButton(this, menuItem);
 					} else {
 						var widgetId = "w_" + new Date().getTime();

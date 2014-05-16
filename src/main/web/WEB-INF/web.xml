@@ -29,6 +29,46 @@
    		   ,/WEB-INF/classes/accountservices.xml
    		   ,/WEB-INF/classes/org/infoscoop/admin/command/serviceCommands.xml</param-value>
   	</context-param>
+
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/conf/log4j.xml</param-value>
+	</context-param>
+	<context-param>
+	<param-name>webAppRootKey</param-name>
+		<param-value>@WEBAPP.ISCOOP.ROOT.KEY@</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+  	
+  	<context-param>
+	    <param-name>liquibase.changelog</param-name>
+	    <param-value>org/infoscoop/migration/db.changelog-master.xml</param-value>
+	</context-param>
+	<context-param>
+    	<param-name>liquibase.datasource</param-name>
+    	<param-value><!--start migration jndiName-->java:comp/env/jdbc/infoscoop<!--end migration jndiName--></param-value>
+	</context-param>
+	<context-param>
+    	<param-name>liquibase.should.run</param-name>
+    	<param-value>true</param-value>
+	</context-param>
+	<context-param>
+    	<param-name>liquibase.onerror.fail</param-name>
+    	<param-value>true</param-value>
+	</context-param>
+	<context-param>
+    	<param-name>liquibase.parameter.tablespace</param-name>
+    	<param-value><!--Migration Database TableSpace--></param-value>
+	</context-param>
+	<!--Migration Database Schema-->
+	
+	<listener>
+		<listener-class>org.infoscoop.migration.ISMigrationListener</listener-class>
+	</listener>
+ 	
 	<filter>
 		<filter-name>SetCharacterEncodingFilter</filter-name>
 		<filter-class>org.infoscoop.web.SetCharacterEncodingFilter</filter-class>
@@ -42,11 +82,20 @@
 	<!--CustomizeSetRoleHeaderFilter-->
 
 	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<init-param>
+			<param-name>contextAttribute</param-name>
+			<param-value>org.springframework.web.servlet.FrameworkServlet.CONTEXT.OAuthSecurity</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
 		<filter-name>SessionManagerFilter</filter-name>
 		<filter-class>org.infoscoop.web.SessionManagerFilter</filter-class>
 		<init-param>
 			<param-name>excludePath</param-name>
-			<param-value>/xmlrpc,/login.jsp,/changePassword.jsp,/authsrv,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html</param-value>
+			<param-value>/xmlrpc,/login.jsp,/oauth_login.jsp,/access_confirmation.jsp,/changePassword.jsp,/authsrv,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html,/favicon.ico,/isapi*,/oauth*</param-value>
 		</init-param>
 		<init-param>
 			<param-name>redirectPath</param-name>
@@ -130,22 +179,14 @@
 		<filter-class>org.infoscoop.web.TabDispatchFilter</filter-class>
 	</filter>
 
-	<!--filter>
-		<filter-name>MSDRoleFilter</filter-name>
-		<filter-class>org.infoscoop.web.MSDRoleFilter</filter-class>
-		<init-param>
-			<param-name>orgPrefix</param-name>
-			<param-value> </param-value>
-		</init-param>
-		<init-param>
-			<param-name>orgDelimitter</param-name>
-			<param-value>/</param-value>
-		</init-param>
-	</filter-->
-
 	<!--CustomizeSSOFilterMapping-->
 
 	<!--CustomizeSetRoleHeaderFilterMapping-->
+
+	<filter>
+		<filter-name>ApiLogFilter</filter-name>
+		<filter-class>org.infoscoop.api.filter.ApiLogFilter</filter-class>
+	</filter>
 
 	<filter-mapping>
 		<filter-name>SetCharacterEncodingFilter</filter-name>
@@ -211,14 +252,19 @@
 	</filter-mapping>
 
 	<filter-mapping>
+		<filter-name>SetCharacterEncodingFilter</filter-name>
+		<url-pattern>/manager/defaultpanel/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
 		<filter-name>PreviewImpersonationFilter</filter-name>
 		<url-pattern>/adminpreview/*</url-pattern>
 	</filter-mapping>
 
-	<!--filter-mapping>
-		<filter-name>MSDRoleFilter</filter-name>
-		<url-pattern>/index.jsp</url-pattern>
-	</filter-mapping-->
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 	<filter-mapping>
 		<filter-name>SessionManagerFilter</filter-name>
@@ -263,9 +309,13 @@
 
 	<filter-mapping>
 		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/mobile.jsp</url-pattern>
+		<url-pattern>/oauth_login.jsp</url-pattern>
 	</filter-mapping>
 
+	<filter-mapping>
+		<filter-name>I18NFilter_JS</filter-name>
+		<url-pattern>/access_confirmation.jsp</url-pattern>
+	</filter-mapping>
 
 	<filter-mapping>
 		<filter-name>I18NFilter_JS</filter-name>
@@ -334,6 +384,11 @@
 		<url-pattern>/rpc/*</url-pattern>
 	</filter-mapping>
 -->
+	<filter-mapping>
+		<filter-name>ApiLogFilter</filter-name>
+		<url-pattern>/isapi/*</url-pattern>
+	</filter-mapping>
+
 	<listener>
 		<listener-class>org.apache.shindig.common.servlet.GuiceServletContextListener</listener-class>
 	</listener>
@@ -346,11 +401,6 @@
 		<servlet-class>
 			org.infoscoop.web.InitializeServlet
 		</servlet-class>
-
-		<init-param>
-			<param-name>log4j-init-file</param-name>
-			<param-value>/WEB-INF/conf/log4j.xml</param-value>
-		</init-param>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 
@@ -369,6 +419,22 @@
 
 	<servlet>
 		<servlet-name>AdminDispatcher</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>RestApi</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>OAuthSecurity</servlet-name>
 		<servlet-class>
 			org.springframework.web.servlet.DispatcherServlet
 		</servlet-class>
@@ -700,7 +766,17 @@
 
   <servlet-mapping>
   	<servlet-name>GadgetResourceServlet</servlet-name>
+  	<url-pattern>/manager/tabadmin/gadget/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+  	<servlet-name>GadgetResourceServlet</servlet-name>
   	<url-pattern>/manager/menu/gadget/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+  	<servlet-name>GadgetResourceServlet</servlet-name>
+  	<url-pattern>/manager/menutree/gadget/*</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -708,6 +784,16 @@
     <url-pattern>/manager/*</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>RestApi</servlet-name>
+    <url-pattern>/isapi/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>OAuthSecurity</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  
   <servlet-mapping>
   	<servlet-name>AddonServlet</servlet-name>
   	<url-pattern>/addon/*</url-pattern>

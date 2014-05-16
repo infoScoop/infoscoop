@@ -48,6 +48,7 @@ import org.infoscoop.account.SessionCreateConfig;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.web.PreviewImpersonationFilter;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.util.RSAKeyManager;
@@ -181,7 +182,7 @@ public class SessionManagerFilter implements Filter {
 		if (request instanceof javax.servlet.http.HttpServletRequest) {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpServletResponse httpResponse = (HttpServletResponse)response;
-
+			
 			String uid = null;
 			if(SessionCreateConfig.doLogin()){
 				uid = getUidFromSession(httpReq);
@@ -305,10 +306,22 @@ public class SessionManagerFilter implements Filter {
 				session.setAttribute(LOGINUSER_SUBJECT_ATTR_NAME, loginUser);
 			}
 			SecurityController.registerContextSubject(loginUser);
-
+			if(httpRequest.getHeader("X-IS-TIMEZONE") != null){
+				int timeZoneOffset = 0;
+				try{
+					timeZoneOffset = Integer.parseInt(httpRequest.getHeader("X-IS-TIMEZONE"));
+				}catch(NumberFormatException e){
+					if(log.isDebugEnabled())
+						log.debug(httpRequest.getHeader("X-IS-TIMEZONE"),e);
+				}finally{
+					UserContext.instance().getUserInfo().setClientTimezoneOffset(timeZoneOffset);
+				}				
+			}
 		}
 		chain.doFilter(request, response);
 
+		UserContext.destroy();
+		
 		if(log.isDebugEnabled()){
 			log.debug("Exit SessionManagerFilter　form " + httpReq.getRequestURI());
 		}

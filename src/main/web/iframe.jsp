@@ -17,7 +17,7 @@
 # <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 --%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@page import="org.infoscoop.request.ProxyRequest"%>
 <%@page import="java.util.Date"%>
@@ -37,6 +37,7 @@ if( url == null ) {
 %>
 <html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<script>
 		window.onload = function(){
 			var iframe = document.getElementById("ifrm");
@@ -45,11 +46,19 @@ if( url == null ) {
 			iframe.style.display = "";
 		};
 	</script>
+	<style>
+		html {
+			height: 100%;
+		}
+		body {
+			height: 100%;
+		}
+	</style>
 </head>
-<body style="margin:0;padding:0;">
+<body style="margin:0px;padding:0px;">
 
-<iframe id="ifrm" frameBorder="0" style="display:none;margin:0;padding:0;width:100%;height:100%;"
-src="./blank.html"
+<iframe id="ifrm" frameBorder="0" style="display:none;margin:0px;padding:0px;width:100%;height:100%;"
+src="about:blank"
 scrolling="<%=scrolling%>"></iframe>
 
 <%

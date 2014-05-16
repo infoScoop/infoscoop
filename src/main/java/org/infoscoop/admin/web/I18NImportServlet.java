@@ -71,8 +71,8 @@ public class I18NImportServlet extends HttpServlet {
 
 			Map formItemsMap = createFormItemsmap(itemsList);
 			FileItem csvFile = (FileItem) formItemsMap.get("csvFile");
-			
-			if(!csvFile.getName().endsWith(".csv")){
+
+			if(!csvFile.getName().endsWith(".csv") || csvFile.getSize() == 0){
 				w = new PrintWriter(response.getWriter());
 				w.println("Please specify the CSV file. ");
 				return;

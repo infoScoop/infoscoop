@@ -32,11 +32,12 @@ IS_Widget.WidgetEdit = function (widget) {
 			if(this.style.display == "none") return;
 			var target = Event.element(e);
 			while(target != document.body){
-				if(target == this)
+				if(!target || target == this)
 					return;
 				target = target.parentNode;
 			}
-			this.style.display = "none"
+			this.style.display = "none";
+			IS_Portal.behindIframe.hide();
 		}.bind(divWidgetEditHeader), false, this.closeId);
 	}
 	
@@ -57,12 +58,12 @@ IS_Widget.WidgetEdit = function (widget) {
 			var contentWidth = elm_widgetContent.offsetWidth;
 			if(!contentWidth || contentWidth < 200) contentWidth = 200;
 			var editStyle = widget.elm_widgetEditHeader.style;
-			editStyle.width = contentWidth;
+			editStyle.width = contentWidth + 'px';
 			var widgetContentPos = Position.cumulativeOffset(elm_widgetContent);
 			if(fixedPortalHeader) 
 				widgetContentPos[1] -= IS_Portal.tabs[IS_Portal.currentTabId].panel.scrollTop;
-			editStyle.top = widgetContentPos[1];
-			editStyle.left = widgetContentPos[0];
+			editStyle.top = widgetContentPos[1] + 'px';
+			editStyle.left = widgetContentPos[0] + 'px';
 		}
 		
 		var editNode = IS_WidgetConfiguration[widget.widgetType];
@@ -935,7 +936,7 @@ IS_Widget.adjustEditPanelTextWidth = function(element){
 				continue;
 			}
 			
-			adjustItems[i].style.width = resultWidth;
+			adjustItems[i].style.width = resultWidth + 'px';
 			
 			if(!adjustItems[i].orgWidth)
 				adjustItems[i].orgWidth = inputWidth;
@@ -1013,20 +1014,20 @@ IS_Widget.WidgetEdit.makeHelpIcon = function( container,userPref ) {
 	a.observe("mouseover",function( event ) {
 		help.style.display = "block";
 		if( help.offsetWidth > 300 )
-			help.style.width = 300;
-		
+			help.style.width = 300+'px';
+
 		var x = event.pointerX();
 		var y = event.pointerY();
-		var x_limit = getWindowSize(true) +document.body.scrollLeft;
-		var y_limit = getWindowSize(false) +document.body.scrollTop;
+		var x_limit = getWindowSize(true) +document.documentElement.scrollLeft;
+		var y_limit = getWindowSize(false) +document.documentElement.scrollTop;
 		if( x +help.offsetWidth > x_limit )
 			x = x -help.offsetWidth -48;
 		
 		if( y +help.offsetHeight > y_limit )
 			y = y_limit -help.offsetHeight -10;
 		
-		help.style.top = y;
-		help.style.left = x;
+		help.style.top = y + 'px';
+		help.style.left = x + 'px';
 	});
 	a.observe("mouseout",function(){
 		help.style.display = "none";

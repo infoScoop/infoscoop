@@ -37,7 +37,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.base.BaseTablayout;
@@ -53,6 +52,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 
 
 public class TabLayout extends BaseTablayout {
@@ -60,11 +61,10 @@ public class TabLayout extends BaseTablayout {
 
 	private static Log log = LogFactory.getLog(TabLayout.class);
 	
-	public static final Integer DELETEFLAG_TRUE = new Integer(1);
-	public static final Integer DELETEFLAG_FALSE = new Integer(0);
-	
 	public static final Integer TEMP_TRUE = new Integer(1);
 	public static final Integer TEMP_FALSE = new Integer(0);
+	public static final Integer DELETEFLAG_TRUE = new Integer(1);
+	public static final Integer DELETEFLAG_FALSE = new Integer(0);
 	
 /*[CONSTRUCTOR MARKER BEGIN]*/
 	public TabLayout () {
@@ -88,7 +88,6 @@ public class TabLayout extends BaseTablayout {
 		java.lang.String principaltype,
 		java.lang.String widgets,
 		java.lang.String layout,
-		java.lang.Integer deleteflag,
 		java.lang.String workinguid) {
 
 		super (
@@ -98,17 +97,20 @@ public class TabLayout extends BaseTablayout {
 			principaltype,
 			widgets,
 			layout,
-			deleteflag,
 			workinguid);
-		
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	@XStreamOmitField
 	private String staticPanel;
+	@XStreamOmitField
 	private String dynamicPanel;
+	@XStreamOmitField
 	private JSONObject staticPanelJson;
+	@XStreamOmitField
 	private JSONObject dynamicPanelJson;
 	private String tabName;
+	@XStreamOmitField
 	private String columnsWidth;
 	private String numCol;
 	private boolean disabledDynamicPanel;
@@ -133,8 +135,8 @@ public class TabLayout extends BaseTablayout {
 			NodeList panels = widgetsEl.getElementsByTagName("panel");
 			Element staticPanel =(Element)panels.item(0);
 
-			this.adjustToWindowHeight = new Boolean(staticPanel.getAttribute("adjustToWindowHeight"));
-			if("StaticPanel".equals(staticPanel.getAttribute("type"))){
+			this.adjustToWindowHeight = (staticPanel != null)? new Boolean(staticPanel.getAttribute("adjustToWindowHeight")) : false;
+			if(staticPanel != null && "StaticPanel".equals(staticPanel.getAttribute("type"))){
 				NodeList list = staticPanel.getElementsByTagName("widget");
 				this.staticPanel = getNodeListString(list);
 				this.staticPanelJson = getPanelJson(list);
@@ -179,6 +181,9 @@ public class TabLayout extends BaseTablayout {
 			String id = widget.getAttribute("id");
 			if (id != null)
 				widgetJson.put("id", id);
+			String menuId = widget.getAttribute("menuId");
+			if (menuId != null)
+				widgetJson.put("menuId", menuId);
 			String href = widget.getAttribute("href");
 			if (href != null)
 				widgetJson.put("href", href);
@@ -312,7 +317,8 @@ public class TabLayout extends BaseTablayout {
 		Tab tab = new Tab(new TABPK(uid, tabId));
 		tab.setDefaultuid(super.getDefaultuid());
 		tab.setWidgetlastmodified(super.getWidgetslastmodified());
-		tab.setOrder( super.getTabnumber() );
+		StaticTab staticTab = super.getStatictab();
+		tab.setOrder( staticTab != null ? staticTab.getTabnumber() : null );
 		tab.setName( this.getTabName());
 		tab.setType("static");
 		tab.setProperty("numCol", this.getNumCol());
@@ -374,7 +380,11 @@ public class TabLayout extends BaseTablayout {
 				}
 				siblingMap.put(widget.getColumn(), widget.getWidgetid());
 			}
-			widget.setMenuid(isStatic ? "" : widget.getWidgetid().substring(2));
+//			widget.setMenuid(isStatic ? "" : widget.getWidgetid().substring(2));
+			String menuId = widget.getWidgetid().substring(2);
+			if(widgetEl.hasAttribute("menuId"))
+				menuId = widgetEl.getAttribute("menuId");
+			widget.setMenuid(isStatic ? "" : menuId);
 			widget.setParentid(widgetEl.getAttribute("parentId"));
 			widget.setTitle(widgetEl.getAttribute("title"));
 			widget.setHref(widgetEl.getAttribute("href"));

@@ -123,19 +123,18 @@ public abstract class BaseTABLAYOUTPK implements Serializable {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			StringBuffer sb = new StringBuffer();
 			if (null != this.getTabid()) {
-				sb.append(this.getTabid().hashCode());
-				sb.append(":");
-			}
-			else {
-				return super.hashCode();
+				sb.append(this.getTabid().hashCode()).append(":");
 			}
 			if (null != this.getRoleorder()) {
-				sb.append(this.getRoleorder().hashCode());
-				sb.append(":");
+				sb.append(this.getRoleorder().hashCode()).append(":");
 			}
-			else {
+			if (null != this.getTemp()) {
+				sb.append(this.getTemp().hashCode());
+			}
+			
+			if(sb.toString().length() == 0)
 				return super.hashCode();
-			}
+			
 			this.hashCode = sb.toString().hashCode();
 		}
 		return this.hashCode;

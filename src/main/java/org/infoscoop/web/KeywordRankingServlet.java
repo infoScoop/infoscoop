@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -40,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.CacheDAO;
 import org.infoscoop.dao.KeywordLogDAO;
 import org.infoscoop.dao.model.Cache;
@@ -93,14 +95,16 @@ public class KeywordRankingServlet extends HttpServlet {
 		int rankingPeriod;
 		int rankingNum;
 		String endDate;
-		
+		int offset = UserContext.instance().getUserInfo().getClientTimezoneOffset() / 60;
+		String cacheName = "keywordRanking_UTC" + offset;
+
 		try {
 			String param_baseDate = request.getParameter("baseDate");
 			
 			// If baseDate is null, it is behavior of TODAY.
 			endDate = (param_baseDate == null)? TODAY : param_baseDate;
 			
-			Cache cache = CacheDAO.newInstance().getCacheById("keywordRanking");
+			Cache cache = CacheDAO.newInstance().getCacheById(cacheName);
 			
 			String rss;
 			// We do cash only in case that appoined "TODAY".
@@ -141,13 +145,17 @@ public class KeywordRankingServlet extends HttpServlet {
 				rankingNum = (rankingNum > RANKING_NUM_MAX)? RANKING_NUM_MAX : rankingNum;
 				
 				boolean saveCache = true;
+				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+				sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+				
 				if(TODAY.equals(endDate)){
 					Calendar yesterday = Calendar.getInstance();
+					yesterday.setTimeZone(TimeZone.getTimeZone("UTC"));
 					yesterday.set(Calendar.HOUR_OF_DAY, 0);
-					endDate = new SimpleDateFormat( DATE_FORMAT ).format(yesterday.getTime());
+					endDate = sdf.format(yesterday.getTime());
 				}
 				else if(NOW.equals(endDate)){
-					endDate = new SimpleDateFormat( DATE_FORMAT ).format(new Date());
+					endDate = sdf.format(new Date());
 					saveCache = false;	// When it is appointed "NOW", we don't do cash.
 				}
 				
@@ -159,9 +167,9 @@ public class KeywordRankingServlet extends HttpServlet {
 				
 				response.addDateHeader("Last-Modified",new Date().getTime() );
 				rss = makeRss(countMap, rankingPeriod, rankingNum);
-				
+
 				if(saveCache)
-					insertRss("keywordRanking", rss);
+					insertRss(cacheName, rss);
 			}
 			
 			boolean noProxy = false;
@@ -232,13 +240,16 @@ public class KeywordRankingServlet extends HttpServlet {
 	 */
 	private static String getStartDate(String date, int rankingPeriod) {
 		Calendar cal = Calendar.getInstance();
+		cal.setTimeZone(TimeZone.getTimeZone("UTC"));
 		if (date.length() == 10) {
+			SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 			cal.set(Calendar.YEAR, Integer.parseInt(date.substring(0, 4)));
 			cal.set(Calendar.MONTH, Integer.parseInt(date.substring(4, 6)) - 1);
 			cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date.substring(6, 8)));
 			cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(date.substring(8, 10)));
 			cal.add(Calendar.DAY_OF_YEAR, -(rankingPeriod -1));
-			return new SimpleDateFormat(DATE_FORMAT ).format(cal.getTime());
+			return sdf.format(cal.getTime());
 		}
 		throw new  IllegalArgumentException("Illegal Date format.");
 	}
@@ -250,7 +261,8 @@ public class KeywordRankingServlet extends HttpServlet {
 	 * @return
 	 */
 	private static String getW3CDTFDate(Date date) {
-		String str = new SimpleDateFormat(W3CDTF_FORMAT ).format(date);
+		SimpleDateFormat sdf = UserContext.instance().getUserInfo().getClientDateFormat(W3CDTF_FORMAT);
+		String str = sdf.format(date);
 		str = str.substring(0, str.length() - 2) + ":"
 				+ str.substring(str.length() - 2);
 		return str;

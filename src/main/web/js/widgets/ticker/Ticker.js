@@ -95,10 +95,10 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		divParent = document.createElement("div");
 		divParent.style.overflow = "hidden";
 		divParent.style.position = "absolute";
-		divParent.style.width = selfContent.offsetWidth;
-		divParent.style.height = selfContent.offsetHeight;
+		divParent.style.width = selfContent.offsetWidth + 'px';
+		divParent.style.height = selfContent.offsetHeight + 'px';
 		
-		divTicker = document.createElement("div");
+		divTicker = document.createElement("span");
 		if ( Browser.isIE ) {
 			divTicker.className = "ticker-base";
 		}else {
@@ -117,7 +117,6 @@ IS_Widget.Ticker.prototype.classDef = function() {
 			divMarquee = document.createElement("marquee");
 			divMarquee.id = "marquee";
 			divMarquee.width = "100%";
-			//divMarquee.height = "100%";
 			divMarquee.scrollDelay = 50;
 			divMarquee.scrollAmount = copyspeed*2;
 			divMarquee.loop = 1;
@@ -168,7 +167,6 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		//date
 		if(widget.getBoolUserPref("date")) marqueecontent = addMsg(marqueecontent,rssItems[currentRssNum].date);
 		//title
-
 		var itemTitle = (rssItems[currentRssNum].title.length == 0)? IS_R.lb_notitle : escapeHTMLEntity(rssItems[currentRssNum].title);
 		if(widget.getBoolUserPref("title")) marqueecontent = addMsg(marqueecontent,"[" + itemTitle + "]");
 		//description
@@ -179,7 +177,6 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		
 		divTicker.title = rssItems[currentRssNum].title;
 		
-		//divTicker.innerHTML = marqueecontent;
 		divTicker.innerHTML = "";
 		divTicker.appendChild(contentDiv);
 		
@@ -196,26 +193,24 @@ IS_Widget.Ticker.prototype.classDef = function() {
 	}
 	
 	function addURL(url, msg, title, startDateTime) {
-		//var res;
 		var tickerNobr = null;
 		
 		if(!url || url.length == 0){
-			//res = "<nobr id=\"" + widget.id + "_tickerTxt\">" + msg + "</nobr>";
-			tickerNobr = document.createElement("nobr");
+			tickerNobr = document.createElement("span");
 			tickerNobr.id = widget.id + "_tickerTxt";
 			tickerNobr.innerHTML = msg;
 			tickerNobr.style.lineHeight = "1.5em";
+			tickerNobr.style.whiteSpace = "nowrap"
 		}else{
 			
-			tickerNobr = document.createElement("nobr");
+			tickerNobr = document.createElement("span");
 			tickerNobr.id = widget.id + "_tickerTxt";
+			tickerNobr.style.whiteSpace = "nowrap"
 			
 			var aTag = document.createElement("a");
 			aTag.style.lineHeight = "1.5em";
 			aTag.href = url;
 			aTag.innerHTML = msg;
-//			aTag.appendChild(document.createTextNode(msg));
-			//aTag.target = "ifrm";
 			
 			var aTagOnclick =function(aTag){
 				return function(e){
@@ -224,11 +219,9 @@ IS_Widget.Ticker.prototype.classDef = function() {
 			}(aTag);
 			tickerNobr.appendChild(aTag);
 			
-//			Event.observe(aTag, "click", aTagOnclick, false);
 			IS_Event.observe(aTag, "click", aTagOnclick, false, "_tickermessage");
 		}
 		return tickerNobr;
-		//return res;
 	}
 	
 	function addMsg(msg1,msg2) {
@@ -305,8 +298,8 @@ IS_Widget.Ticker.prototype.classDef = function() {
 	
 	this.adjustTickerWidth = function (){
 		if(divParent){
-			divParent.style.width = selfContent.offsetWidth;
-			divParent.style.height = selfContent.offsetHeight;
+			divParent.style.width = selfContent.offsetWidth + 'px';
+			divParent.style.height = selfContent.offsetHeight + 'px';
 		}
 	};
 	

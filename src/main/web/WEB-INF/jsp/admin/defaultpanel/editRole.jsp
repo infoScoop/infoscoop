@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
 --%>
 
-<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <%@page contentType="text/html; charset=UTF-8" %>
 <%@page import="org.infoscoop.service.PropertiesService" %>
 <%@page import="org.infoscoop.util.RSAKeyManager"%>
@@ -33,6 +33,7 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Cache-Control" content="no-cache">
 
@@ -99,7 +100,8 @@
 		commandQueueWait = 15;
 		menuAutoRefresh = false;
 		widgetRefreshInterval = 36000;
-		gadgetProxyURL = localhostPrefix + "/gadgetsrv";
+		if(/^\.\/(.+)$/.test( gadgetProxyURL ) )
+			gadgetProxyURL = hostPrefix +"/" +RegExp.$1;
 		
 		var displayTabOrder = "0";
 		IS_Portal = {
@@ -142,10 +144,12 @@
 	
 	<!--start script-->
 	<!-- lib -->
-	<script src="../../js/lib/prototype-1.6.0.3.js"></script>
-	<script src="../../js/lib/scriptaculous-js-1.8.2/effects.js"></script>
-	<script src="../../js/lib/scriptaculous-js-1.8.2/dragdrop.js"></script>
-	<script src="../../js/lib/control.modal.js"></script>
+	<script src="../../js/lib/prototype-1.7.1.js"></script>
+	<script src="../../js/lib/scriptaculous-js-1.9.0/effects.js"></script>
+	<script src="../../js/lib/scriptaculous-js-1.9.0/dragdrop.js"></script>
+	<script src="../../js/lib/syntacticx-livepipe-ui/livepipe.js"></script>
+	<script src="../../js/lib/syntacticx-livepipe-ui/resizable.js"></script>
+	<script src="../../js/lib/syntacticx-livepipe-ui/window.js"></script>
 	<script src="../../js/lib/date/date.js"></script>
 	<script src="../../js/lib/rsa/jsbn.js"></script>
 	<script src="../../js/lib/rsa/prng4.js"></script>
@@ -194,11 +198,12 @@
 	<script src="../../admin/js/AdminHTMLFragment.js"></script>
 	<script src="../../admin/js/AdminCommonModals.js"></script>
 	<script src="../../admin/js/AdminEditRole.js"></script>
+	<script src="../../admin/js/AdminUtil.js"></script>	
 	<!--end script-->
 	
-	<script src="../../js/lib/jquery-1.5.2.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery-ui-1.8.13.custom.css">
-	<script src="../../js/lib/jquery-ui-1.8.13.custom.min.js"></script>
+	<script src="../../js/lib/jquery-1.9.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../../js/lib/jquery-ui/jquery-ui-1.10.2.custom.css">
+	<script src="../../js/lib/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
 	
 	<script type="text/javascript">
 		jQuery.noConflict();
@@ -206,6 +211,8 @@
 		
 		var rsaPK = new RSAKey();
 		rsaPK.setPublic("<%= RSAKeyManager.getInstance().getModulus() %>", "<%= RSAKeyManager.getInstance().getPublicExponent() %>");
+		
+		var editRoleScreen = true;
 	</script>
 
 	<script type="text/javascript">
@@ -231,7 +238,12 @@
 	</center>
 </div>
 <div style="display:none" id='select_layout_modal' title="%{alb_selectLayout}">
+	<div style="height:25px;">
+		<div style="float:left;padding:3px;">%{alb_number_of_gadgets}</div>
+		<div style="font-size:70%;" id="gadgetsnum_buttonset"></div>
+	</div>
 	<c:import url="/WEB-INF/jsp/admin/defaultpanel/_layoutTemplates.jsp"/>
+	
 	<div style="clear:both;text-align:center;">
 		<input id='select_layout_cancel' type="button" value="%{alb_cancel}"/>
 	</div>

@@ -6,9 +6,12 @@
 	<property name="main.java" value="${basedir}/src/main/java" />
 	<property name="main.resources" value="${basedir}/src/main/resources" />
 	<property name="main.web" value="${basedir}/src/main/web" />
+    <property name="api.java" value="${basedir}/src/api/java" />
+    <property name="api.resources" value="${basedir}/src/api/resources"/>
 	<property name="shindig.java" value="${basedir}/src/shindig/java" />	
 	<property name="build.home" value="${basedir}/build" />
     <property name="build.work" value="${build.home}/work" />
+    <property name="build.gadgets" value="${build.home}/work/infoscoop-gadgets-${gadgets.version}/infoscoop-gadgets" />
 
 	<target name="prepare-compile">
 		<delete dir="${build.work}/initdb"/>
@@ -17,6 +20,7 @@
 		<mkdir dir="${build.work}/initdb/bin"/>
 		<mkdir dir="${build.work}/initdb/infoscoop"/>
 		<mkdir dir="${build.work}/initdb/lib"/>
+        <mkdir dir="${build.work}/initdb/gadget_files"/>
 
 		<copy todir="${build.work}/initdb/schema">
 			<fileset dir="${initdb.home}/schema"/>
@@ -26,8 +30,11 @@
 			<fileset dir="${main.resources}/org/infoscoop/dao/model">
 				<include name="*.hbm.xml"/>
 			</fileset>
+            <fileset dir="${api.resources}/org/infoscoop/api/dao/model">
+                <include name="*.hbm.xml"/>
+            </fileset>
 		</copy>
-		<javac srcdir="${main.java}:${shindig.java}" encoding="utf-8" destdir="${build.work}/initdb/infoscoop" source="${compile.level}" target="${compile.level}">
+		<javac srcdir="${main.java}:${shindig.java}:${api.java}" encoding="utf-8" destdir="${build.work}/initdb/infoscoop" source="${compile.level}" target="${compile.level}">
 			<classpath>
 				<fileset dir="${basedir}/lib" includes="*.jar" />
 				<fileset dir="${main.web}/WEB-INF/lib" includes="*.jar" />
@@ -38,17 +45,18 @@
 
 		<copy todir="${build.work}/initdb/lib">
 			<fileset dir="${main.web}/WEB-INF/lib">
-				<include name="antlr*.jar"/>
-				<include name="cglib*.jar"/>
+				<include name="antlr-*.jar"/>
+				<include name="cglib-*.jar"/>
 				<include name="commons*.jar"/>
-				<include name="dom4j*.jar"/>
-				<include name="hibernate*.jar"/>
-				<include name="jta.jar"/>
+				<include name="dom4j-*.jar"/>
+				<include name="hibernate-*.jar"/>
+				<include name="jta-*.jar"/>
 				<include name="log4j*.jar"/>
-				<include name="opencsv*.jar"/>
-				<include name="org.springframework.*.jar"/>
-				<include name="xercesImpl.jar"/>
-				<include name="json.jar"/>
+				<include name="opencsv-*.jar"/>
+				<include name="spring-*.jar"/>
+				<include name="xercesImpl-*.jar"/>
+				<include name="xml-apis-*.jar"/>
+				<include name="json-*.jar"/>
 			</fileset>
 			<fileset dir="${initdb.home}/importTool/lib" includes="*.jar"/>
 		</copy>
@@ -58,6 +66,11 @@
 				<fileset dir="${build.work}/initdb/lib" includes="*.jar" />
 			</classpath>
 		</javac>
+		<copy todir="${build.work}/initdb/bin/org/infoscoop/initdb/dao/model" includeemptydirs="yes">
+			<fileset dir="${initdb.home}/importTool/src/org/infoscoop/initdb/dao/model">
+				<include name="*.hbm.xml"/>
+			</fileset>
+		</copy>
 		<jar basedir="${build.work}/initdb/bin" jarfile="${build.work}/initdb/lib/importTool.jar" />
 		<delete dir="${build.work}/initdb/bin"/>
 
@@ -73,14 +86,17 @@
 
 		<fixcrlf srcdir="${build.work}/initdb" eol="lf" eof="remove" includes="**/*.sh" />
 
-		<antcall target="download-gadgets"/>
+		<antcall target="copy-gadgets"/>
 	</target>
 
-	<target name="download-gadgets">
-		<get src="${gadgets.url}"
-			dest="gadgets.zip" verbose="true" usetimestamp="true" />
+	<target name="copy-gadgets">
+        <!-- copy gadget_files -->
+        <copy todir="${build.home}/work/initdb/gadget_files" overwrite="true">
+            <fileset dir="${build.gadgets}/dist/gadget_files"/>
+        </copy>
 
-		<unzip src="gadgets.zip" dest="${build.work}/initdb/data/gadget" overwrite="true"/>
-		<delete file="gadgets.zip"/>
+    	<copy todir="${build.work}/initdb/data/gadget" overwrite="true">
+    		<fileset dir="${build.gadgets}/gadgets"/>
+    	</copy>
 	</target>
 </project>

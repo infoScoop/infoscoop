@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 
 import org.apache.commons.logging.Log;
@@ -32,6 +33,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.infoscoop.account.SearchUserService;
 import org.infoscoop.account.IAccount;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.model.Logs;
 import org.infoscoop.dao.model.Properties;
 import org.infoscoop.util.Crypt;
@@ -133,9 +135,11 @@ public class LogDAO extends HibernateDaoSupport {
 
 			if (storagePeriod > 0) {
 				Calendar deleteDate = Calendar.getInstance();
+				deleteDate.setTimeZone(TimeZone.getTimeZone("UTC"));
 				deleteDate.add(Calendar.DATE, -(storagePeriod));
 				String queryString = "delete Logs where Date < ?";
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd00");
+				sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 				String date = sdf.format(deleteDate.getTime());
 				super.getHibernateTemplate().bulkUpdate(queryString, date);
 			}
@@ -193,11 +197,17 @@ public class LogDAO extends HibernateDaoSupport {
 
     		List list = query.list();
     		List entries = new ArrayList();
+    		
+    		SimpleDateFormat parsedf = new SimpleDateFormat("yyyyMMdd");
+    		parsedf.setTimeZone(TimeZone.getTimeZone("UTC"));
+    		SimpleDateFormat sdf = UserContext.instance().getUserInfo().getClientDateFormat("yyyyMMdd");    		
+
     		for (int i = 0; i<list.size(); i++) {
     			Object[] row = ( Object[] )list.get( i );
+    			Date date = parsedf.parse(( String )row[1]);
     			RssAccessStatsEntry entry = new RssAccessStatsEntry();
     			entry.setUid( ( String )row[0]);
-    			entry.setDate( ( String )row[1]);
+    			entry.setDate( sdf.format(date));
     			entry.setCount( (( Long )row[2] ).intValue());
     			entries.add(entry);
     		}

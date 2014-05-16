@@ -98,11 +98,8 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 			} else {
 				widget.iframe.src = fragmentCacheURL;
 			}
-			
-			//widget.iframe.style.height = "auto";
 		},
 		onComplete : function(req){
-			//console.info(req);
 		}
 	};
 	
@@ -189,14 +186,13 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 		
 		if(Browser.isIE){
 			if(iframeDoc && iframeDoc.body){
-				widget.iframe.style.height = (isAuto)? (iframeDoc.body.scrollHeight) + offset : height;
+				widget.iframe.style.height = ((isAuto)? (iframeDoc.body.scrollHeight) + offset : height) + "px";
 			}
 		} else {
 			if(iframeDoc && iframeDoc.body){
-//				widget.iframe.style.height = (isAuto)? parseInt(iframeDoc.height) + offset : height;
 				widget.iframe.style.height = 0;
 				widget.iframe.style.height =
-					(isAuto)? IS_Widget.FragmentMiniBrowser.getMiniBrowserHeight(iframeDoc) + offset: height;
+					((isAuto)? IS_Widget.FragmentMiniBrowser.getMiniBrowserHeight(iframeDoc) + offset: height) + "px";
 			}
 		}
 
@@ -214,25 +210,18 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 			adjustBar.style.display = "block";
 	};
 	
-	/*this.errorCheck = function(){
-		var form = widget.elm_editForm;
-		if(form && form.height){
-			var height = form.height.value;
-			var error = IS_Widget.FragmentMiniBrowser.validateUserPref.height(height);
-			if(error) {
-				alert(error);
-				return false;
-			}
-		}
-		return true;
-	};*/
 	this._IS_Validate = {
 		height: IS_Widget.FragmentMiniBrowser.validateUserPref.height
 	}
 	
 	this.adjustMaximizeHeight = function() {
 		if(widget.iframe)
-			widget.iframe.style.height = getWindowSize(false) - findPosY( widget.elm_widgetContent ) -6;
+			/*
+			 * #506
+			 * Reason keeping this code : It's not clear why overriding from parent class.
+			 */
+//			widget.iframe.style.height = (getWindowSize(false) - findPosY( widget.elm_widgetContent ) -6) + "px";
+			widget.adjustMaximizeHeight();
 	}
 	
 	this.turnBackIconHandler = function (e) {
@@ -248,14 +237,13 @@ IS_Widget.FragmentMiniBrowser.prototype.classDef = function() {
 	}
 }
 
-		// If the function cannot get body height, return available child height
+// If the function cannot get body height, return available child height
 IS_Widget.FragmentMiniBrowser.getMiniBrowserHeight = function( element ) {
-	var height = element.height;
+	var height = element.documentElement.offsetHeight;
 	if (!(!isNaN(height) && height > 0)) {
 		element = element.body? element.body : element;
-		
 		while (element != null) {
-			height = parseInt(element.offsetHeight);
+			height = parseInt(element.offsetHeight) ? parseInt(element.offsetHeight) : parseInt(element.scrollHeight);
 			
 			if (height > 0) 
 				break;
@@ -295,7 +283,6 @@ IS_Widget.FragmentMiniBrowser.validateUserPref = Object.extend(IS_Widget.Fragmen
 	},
 	xPath:function(value){
 		return IS_Validator.validate(value, {
-//			label: 'XPath',
 			label: IS_Widget.getDisplayName('FragmentMiniBrowser', 'xPath'),
 			required: true
 		});

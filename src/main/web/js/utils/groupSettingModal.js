@@ -21,11 +21,14 @@ IS_Portal.groupSettingModal.prototype = {
 	initialize: function( opt ) {
 		this.moduleConfs = opt.moduleConfs || {};
 		this.afterClose = opt.afterClose || function(){}
-		
+
 		//Initialize Modal
-		this.currentModal = new Control.Modal( false,{
-			afterClose: this.afterClose.bind(this),
-			containerClassName:"GroupSchedule user-search-modal"
+		this.currentModal = new Control.Modal('', {
+			className: 'GroupSchedule user-search-modal',
+		    afterClose: function(){
+		    	this.afterClose();
+		    	this.currentModal.container.update('');
+		    }.bind(this)
 		});
 	},
 	getGroupConf: function() {
@@ -60,10 +63,12 @@ IS_Portal.groupSettingModal.prototype = {
 	},
 	//Initialize Modal
 	buildModalBox : function( iconDiv ){
-		if(this.currentModal)this.currentModal.open();
-		  
+		// fix #480/#13731
+//		if(this.currentModal)this.currentModal.open();
+		IS_Widget.WidgetHeader.MenuPullDown.hide;
+
 		var modalDiv = document.createElement("div");
-		this.currentModal.update(modalDiv);
+		this.currentModal.container.update(modalDiv);
 		this.currentModal.open();
 		
 		var header = document.createElement("div");
@@ -89,7 +94,7 @@ IS_Portal.groupSettingModal.prototype = {
 		
 		this.buildContents( content );
 		
-		Control.Modal.center();
+		this.currentModal.position();
 	},
 	buildContents: function( container ) {
 		container.innerHTML = "<table><tbody><tr><td/></tr><tr><td/></tr></tbody></table>";
@@ -521,7 +526,7 @@ IS_Portal.GroupSettingPanel.GroupContent.prototype = {
 				this.makeUser( user,div );
 			}
 			
-			Sortable.create(div, { tag : "div", onUpdate:this.updateUserOrder.bind(this)});
+			Sortable.create(div, {tag : "div", onUpdate:this.updateUserOrder.bind(this)});
 		} else {
 			this.makeNoUser();
 		}
@@ -597,6 +602,7 @@ IS_Portal.GroupSettingPanel.GroupContent.prototype = {
 		u_delButton.title = IS_R.lb_deleteUser;
 		u_delButton.src = imageURL + 'trash.gif';
 		u_delButton.style.cursor = 'pointer';
+		$(u_delButton).addClassName("delete");
 		IS_Event.observe( u_delButton, 'click', this.deleteUser.bind(this,  userObj), false, u_delButton.id, this.group.id + "_userList");
 		return u_delButton;
 	},

@@ -17,17 +17,19 @@
 
 package org.infoscoop.manager.controller;
 
+import org.infoscoop.service.PortalAdminsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+@RequestMapping("/menutree")
 public class MenutreeController implements ControllerInterface{
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/index", method=RequestMethod.GET)
 	public void index() throws Exception {
 	}
 
 	public String getRoleName() {
-		return "menu_tree";
+		return PortalAdminsService.ADMINROLE_MENU_TREE;
 	}
 }

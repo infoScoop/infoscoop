@@ -332,21 +332,21 @@ IS_SidePanel.prototype.classDef = function () {
 				IS_SidePanel.overlayTimer = false;
 			}, 100);
 		}
-		var y = findPosY( container.parentNode ) -document.body.scrollTop;
+		var y = findPosY( container.parentNode ) -(document.documentElement.scrollTop || document.body.scrollTop);
 		if( y < 0 )
 			y = 0;
 		
 		var height = getWindowHeight() -y;
 		if( !isNaN( height ) && height >= 0 )
-			treeOpen.style.height = container.style.height = height;
+			treeOpen.style.height = container.style.height = height + "px";
 		
 		var scrollbarOffset = ( height < container.firstChild.offsetHeight ? 18:0 );
 		var width = container.parentNode.offsetWidth -scrollbarOffset - (Browser.isFirefox ? 15 : 0);
 		if( width > 0 )
-			treeOpen.left = container.firstChild.style.width = width +1;
+			treeOpen.left = container.firstChild.style.width = (width +1) + "px";
 		
-		y += document.body.scrollTop;
-		treeOpen.style.top = container.style.top = y;
+		y += (document.documentElement.scrollTop || document.body.scrollTop);
+		treeOpen.style.top = container.style.top = y + "px";
 	}
 	
 	IS_EventDispatcher.addListener("adjustedMessageBar","",IS_SidePanel.adjustPosition);
@@ -406,10 +406,10 @@ IS_SidePanel.Drag.dragStart = function(e) {
 		document.body.appendChild(barGhost);
 	}
 	barGhost.innerHTML = "";
-	barGhost.style.height = ( !Browser.isSafari1 ? bar.offsetHeight : bar.style.height );
-	barGhost.style.width = bar.offsetWidth;
-	barGhost.style.top = findPosY(bar);
-	barGhost.style.left = findPosX(bar);
+	barGhost.style.height = ( !Browser.isSafari1 ? bar.offsetHeight : bar.style.height ) + "px";
+	barGhost.style.width = bar.offsetWidth + "px";
+	barGhost.style.top = findPosY(bar) + "px";
+	barGhost.style.left = findPosX(bar) + "px";
 	
 	barGhost.innerHTML = bar.firstChild.innerHTML;
 	barGhost.style.filter = "alpha(opacity=50)";
@@ -433,7 +433,7 @@ IS_SidePanel.Drag.dragStart = function(e) {
 IS_SidePanel.Drag.dragging = function(e) {
 	var mousex = Event.pointerX(e);
 	
-	IS_SidePanel.Drag.barGhost.style.left = mousex - 6;
+	IS_SidePanel.Drag.barGhost.style.left = (mousex - 6) + "px";
 }
 
 IS_SidePanel.Drag.dragEnd = function(e) {
@@ -451,10 +451,10 @@ IS_SidePanel.Drag.dragEnd = function(e) {
 	if(nowWidth < IS_SidePanel.defaultWidth){
 		nowWidth = IS_SidePanel.defaultWidth;
 	}
-	list.style.width = nowWidth;
+	list.style.width = nowWidth + "px";
 	
 	var container = $("portal-tree-menucontainer");
-	if(container) $( container.id+"-dummy").style.width = container.style.width = nowWidth;
+	if(container) $( container.id+"-dummy").style.width = container.style.width = nowWidth + "px";
 	
 	IS_SidePanel.currentWidth = nowWidth;
 	

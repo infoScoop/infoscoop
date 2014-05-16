@@ -27,12 +27,15 @@ ISA_DragDrop.SiteAggregationMenu.prototype.classDef = function() {
 				starteffect: function(el) {
 				},
 				constraint:'vertical',
+				ghosting: true,
 				// A function called at finish dragging
 				endeffect: function(element) {
 					// Below is initial diplay setting as position=relative
 					element.style.left = 0;
 					element.style.top = 0;
-					new Effect.Highlight(element, {duration:3});
+					element.style.position = 'relative';
+					//fix #478
+//					new Effect.Highlight(element, {duration:3});
 				}
 			});
 			ISA_DragDrop.draggableList.push(this.draggable);
@@ -181,7 +184,6 @@ ISA_DragDrop.SiteAggregationMenu.prototype.classDef = function() {
 			ISA_SiteAggregationMenu.treeMenu.subMenuOpen(dropLineTd, dropItem,
 				(dropLineTd.className == 'ygtvln' || dropLineTd.className == 'ygtvtn'));
 		}
-		
 		var beforeDepth;
 		if(endProcessMode == "move"){
 			// Update content of item
@@ -533,6 +535,11 @@ ISA_DragDrop.SearchEngineDragDrop.prototype.classDef = function() {
 			{
 				tag: 'div',
 				handle: 'handle',
+				starteffect: function(div) {
+					// opacity effect drag start
+					div.style.opacity = 0.7;
+					div.style.filter = 'alpha(opacity=70)';
+				},
 				onChange: function(div){
 					id = div.firstChild.id;
 					nextsibling = (div.nextSibling) ? div.nextSibling.firstChild.id : "";
@@ -597,6 +604,11 @@ ISA_DragDrop.ProxyConfigDragDrop.prototype.classDef = function() {
 			{
 				tag: 'div',
 				handle: 'handle',
+				starteffect: function(div) {
+					// opacity effect drag start
+					div.style.opacity = 0.7;
+					div.style.filter = 'alpha(opacity=70)';
+				},
 				onChange: function(div){
 					id = div.firstChild.id;
 					nextsibling = (div.nextSibling) ? div.nextSibling.firstChild.id : "";

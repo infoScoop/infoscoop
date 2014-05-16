@@ -83,16 +83,21 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 		
 		if( init ) {
 			this.containerTr = document.createElement("div");
-			this.containerTr.style.paddingLeft = 2;
+			this.containerTr.style.paddingLeft = '2px';
 			this.containerTr.style.paddingBottom = this.containerTr.style.paddingTop = 0;
 			this.containerTr.style.borderBottom = "1px solid #CCC";
 			this.containerTr.__key__ = this.key;
+
+			this.rssItemTitleBox = document.createElement("div");
+			this.rssItemTitleBox.className = "rssItemTitleBox";
+			this.rssItemTitleBox.style.paddingTop = "1.5px";
+			this.rssItemTitleBox.style.paddingRight = "1px";
+			this.containerTr.appendChild( this.rssItemTitleBox);
 			
 			this.imgTd = document.createElement("div");
 			this.imgTd.style.verticalAlign = "top";
 			this.imgTd.width = "1%";
-			this.imgTd.style.cssFloat = this.imgTd.style.styleFloat = "left";
-			this.containerTr.appendChild( this.imgTd);
+			this.rssItemTitleBox.appendChild( this.imgTd);
 		} else {
 			this.removeChildren( this.imgTd );
 		}
@@ -116,7 +121,7 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 				this.imgTd.firstChild.style.width = "auto";
 			}
 			
-			this.imgTd.style.display = "";
+			this.imgTd.style.display = "table-cell";
 		} else {
 			this.imgTd.style.display = "none";
 		}
@@ -135,9 +140,10 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 			
 			this.rssItemTd = document.createElement("div");
 			this.rssItemTd.style.overflow = "hidden";
-			this.rssItemTd.style.width = "100%";
+			this.rssItemTd.style.display = "table-cell";
 			this.rssItemTd.appendChild( this.rssItemDiv );
-			this.containerTr.appendChild( this.rssItemTd );
+
+			this.rssItemTitleBox.appendChild( this.rssItemTd );
 		}
 
 		//if (widget.originalWidget.content.rss.atompub_buttons) {
@@ -158,7 +164,7 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 		if( init ) {
 			this.rssPubDateTd = document.createElement("div");
 //			this.rssPubDateTd.style.textAlign = "right";
-			this.rssPubDateTd.style.paddingLeft = 2;
+			this.rssPubDateTd.style.paddingLeft = '2px';
 			this.rssPubDateTd.style.clear = "both";
 			this.rssPubDateTd.appendChild( this.rssPubDate );
 			this.containerTr.appendChild( this.rssPubDateTd );
@@ -218,23 +224,19 @@ IS_Widget.MaximizeRssReader.RssItemRender.detailIframe = null;
 IS_Widget.MaximizeRssReader.RssItemRender.getDetailIframe = function() {
 	var maxIframe = IS_Widget.MaximizeRssReader.RssItemRender.detailIframe;
 	if( maxIframe ) {
-		maxIframe.src = "./blank.html";
+		maxIframe.src = "about:blank";
 		
 		return maxIframe;
 	}
 	var maxIframe;
-	if(Browser.isIE){
-		maxIframe = document.createElement("<iframe name='maximize_ifrm'>"); // IE specially needs this format of description to set name property
-	}else{
-		maxIframe = document.createElement("iframe");
-		maxIframe.name = "maximize_ifrm";
-	}
+	maxIframe = document.createElement("iframe");
+	maxIframe.name = "maximize_ifrm";
 	maxIframe.style.border = "0px";
 	maxIframe.id = "maximize_ifrm";
 	maxIframe.style.display = "none";
 	maxIframe.style.width = "100%";
 	maxIframe.style.height = "100%";
-	maxIframe.src = "./blank.html";
+	
 	var maxIframeOnload = function(){
 		if(Browser.isIE){
 			if( IS_Widget.MaximizeRssReader.RssItemRender.forceFocusControl )

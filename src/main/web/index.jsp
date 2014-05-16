@@ -17,7 +17,7 @@
 # <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 --%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <%@ page contentType="text/html; charset=UTF8" %>
 <%@page import="org.infoscoop.admin.web.PreviewImpersonationFilter"%>
 <%@page import="org.infoscoop.service.PropertiesService"%>
@@ -46,9 +46,11 @@
 <%@page import="org.apache.commons.logging.Log"%><html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-Control" content="no-cache">
     <meta http-equiv="Expires" content="Thu, 01 Dec 1994 16:00:00 GMT">
+	
 	<title></title>
 	<!--start styles css-->
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/styles.css">
@@ -58,7 +60,6 @@
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/pulldown.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/calendarinput.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/mySiteMap.css">
-    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/treemenu.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/commandbar.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/tab.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/widget.css">
@@ -80,6 +81,9 @@
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/prototype-window-1.3/themes/alphacube.css">
     <link rel="stylesheet" type="text/css" href="portallayout?type=css">
 
+	<!-- favicon.ico -->
+	<link rel="shortcut icon" href="favicon.ico">
+	
     <script src="js/resources/resourceBundle.jsp"></script>
 
     <script src="js/gadget/features/core:rpc:pubsub:pubsub-2:infoscoop.js?c=1"></script>
@@ -107,7 +111,6 @@
 		var is_userId = <%=uid != null ? "\"" + uid.replace("\\", "\\\\") + "\"" : "null" %>;
 		var is_userName = <%=displayName != null ?  "\"" + displayName + "\"" : "null" %>;
 		var is_isAdministrator = <%=isAdmin != null ? isAdmin.booleanValue() : false%>;
-		//dojo.require("dojo.dom");
 
 		var localhostPrefix = "<%=request.getScheme()%>://localhost:<%=request.getServerPort()%><%=request.getContextPath()%>"
 
@@ -116,14 +119,15 @@
 	</script>
 
 	<!--start script-->
-    <script src="<%=staticContentURL%>/js/lib/prototype-1.6.0.3.js"></script>
-    <script src="<%=staticContentURL%>/js/lib/control.modal.js"></script>
+    <script src="<%=staticContentURL%>/js/lib/prototype-1.7.1.js"></script>
     <script src="<%=staticContentURL%>/js/utils/ajax304.js"></script>
-	<script src="<%=staticContentURL%>/js/lib/scriptaculous-js-1.8.2/effects.js"></script>
-	<script src="<%=staticContentURL%>/js/lib/scriptaculous-js-1.8.2/dragdrop.js"></script>
-	<script src="<%=staticContentURL%>/js/lib/scriptaculous-js-1.8.2/controls.js"></script>
+	<script src="<%=staticContentURL%>/js/lib/scriptaculous-js-1.9.0/effects.js"></script>
+	<script src="<%=staticContentURL%>/js/lib/scriptaculous-js-1.9.0/dragdrop.js"></script>
+	<script src="<%=staticContentURL%>/js/lib/scriptaculous-js-1.9.0/controls.js"></script>
 	<script src="<%=staticContentURL%>/js/lib/syntacticx-livepipe-ui/livepipe.js"></script>
 	<script src="<%=staticContentURL%>/js/lib/syntacticx-livepipe-ui/tabs.js"></script>
+	<script src="<%=staticContentURL%>/js/lib/syntacticx-livepipe-ui/resizable.js"></script>
+	<script src="<%=staticContentURL%>/js/lib/syntacticx-livepipe-ui/window.js"></script>
     <!--script src="<%=staticContentURL%>/js/lib/json.js"></script-->
 	<script src="<%=staticContentURL%>/js/lib/date/date.js"></script>
 	<script src="<%=staticContentURL%>/js/lib/rsa/jsbn.js"></script>
@@ -314,7 +318,7 @@
 						  <div id="maximize-panel" style="display:none;"></div>
 						</div>
 						<div id="portal-iframe" style="display:none;">
-							<iframe id="ifrm" name="ifrm" src="./blank.html" FrameBorder="0" style="width:100%;height768px;border:none;scrolling:auto;"></iframe>
+							<iframe id="ifrm" name="ifrm" src="about:blank" FrameBorder="0" style="width:100%;height768px;border:none;scrolling:auto;"></iframe>
 						</div>
 						<div id="iframe-tool-bar"></div>
 						<div id="search-iframe" style="display:none;"></div>
@@ -323,6 +327,7 @@
 			</tbody>
 		</table>
 		</div>
+		<iframe name="portal-externalExe-ifrm" src="about:blank" style="display:none;"></iframe>
 	</body>
 	<script>
 

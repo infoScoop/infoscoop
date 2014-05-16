@@ -193,8 +193,13 @@ CalendarInput.prototype = {
 					xy[1] -= Position.realOffset(input.parentNode)[1];
 				}
 				
+				/*
 				contents.style.top = xy[1] +input.parentNode.offsetHeight;
 				contents.style.left = xy[0] +input.parentNode.offsetWidth-contents.offsetWidth;
+				*/
+				// fix #13565
+				contents.style.top = xy[1] +input.parentNode.offsetHeight + "px";
+				contents.style.left = xy[0] +input.parentNode.offsetWidth-contents.offsetWidth + "px";
 				
 				if( IS_Portal.behindIframe )
 					IS_Portal.behindIframe.show(contents);
@@ -344,7 +349,7 @@ CalendarComponent.prototype = {
 			table = document.createElement("table");
 			table.cellSpacing = 0;
 			table.className = "CalendarComponent_Table";
-			Element.addClassName( table,"calendar" );
+			Element.addClassName( table,"Calendar" );
 			Element.addClassName( table,"widgetContent" );
 			panel.appendChild( table );
 			head = document.createElement("thead");
@@ -619,12 +624,6 @@ CalendarComponent.prototype = {
 			var cm = self.getScrollDate().getMonth();
 			var newDate = new Date();
 			newDate.setFullYear( scrollDate.getFullYear(),cm +step,1 );
-			var sm = newDate.getMonth();
-			newDate.setDate( scrollDate.getDate());
-			
-			var axis = ( step < 0 )? -1:1;
-			while( sm != newDate.getMonth())
-				newDate.setDate( newDate.getDate() +axis );
 			
 			self.setScrollDate( newDate );
 		}

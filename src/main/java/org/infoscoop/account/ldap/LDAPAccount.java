@@ -18,6 +18,8 @@
 
 package org.infoscoop.account.ldap;
 
+import java.util.List;
+
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IGroup;
 
@@ -30,6 +32,7 @@ public class LDAPAccount implements IAccount{
 	private String groupName;
 	// add List of group
 	private IGroup[] groups;
+	private List<String> mails;
 	
 	public LDAPAccount(String dn, String uid, String mail, String displayName, String groupName) {
 		super();
@@ -41,7 +44,7 @@ public class LDAPAccount implements IAccount{
 	}
 	
 	// add the constructor that added groups of List to argument. 
-	public LDAPAccount(String dn, String uid, String mail, String displayName, String groupName, IGroup[] groups) {
+	public LDAPAccount(String dn, String uid, String mail, String displayName, String groupName, IGroup[] groups, List<String> mails) {
 		super();
 		this.dn = dn;
 		this.uid = uid;
@@ -49,6 +52,7 @@ public class LDAPAccount implements IAccount{
 		this.name = displayName;
 		this.groupName = groupName;
 		this.groups = groups;
+		this.mails = mails;
 	}
 	
 	public String getName() {
@@ -106,5 +110,13 @@ public class LDAPAccount implements IAccount{
 	public void setGroups(IGroup[] igroup) {
 		this.groups = igroup;
 		
+	}
+	
+	public void setMails(List<String> mails) {
+		this.mails = mails;
+	}
+	
+	public List<String> getMails() {
+		return mails;
 	}
 }

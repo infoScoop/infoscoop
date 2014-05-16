@@ -116,7 +116,7 @@ function getWindowSize(flag) {
     offset = window["inner" + ((flag)? "Width" : "Height")];
   } else if( document.documentElement &&
       ( document.body.offsetWidth || document.body.offsetHeight ) ) {
-    offset = document.body["offset" + ((flag)? "Width" : "Height")];
+    offset = document.documentElement["offset" + ((flag)? "Width" : "Height")];
   }
 
   return offset;
@@ -155,6 +155,11 @@ function findHostURL(flag) {
 	}else {
 		return host;	
 	}
+}
+
+function setUnitOfLength(length){
+	var unit = (length + "").replace(/^\d+(.*)$/, "$1");
+	return (unit)? length : length + "px";
 }
 
 function is_getProxyUrl(url, filter,opts ) {
@@ -205,9 +210,11 @@ var Browser = new Object();
 
 Browser.isMozilla = (typeof document.implementation != 'undefined') && (typeof document.implementation.createDocument != 'undefined') && (typeof HTMLDocument!='undefined');
 Browser.isIE = window.ActiveXObject ? true : false;
+Browser.isIE8 = Browser.isIE && (navigator.userAgent.toLowerCase().indexOf('msie 8') != -1);
 Browser.isFirefox = (navigator.userAgent.toLowerCase().indexOf("firefox")!=-1);
 Browser.isFirefox3 = (navigator.userAgent.toLowerCase().indexOf('firefox/3.')>-1);
 Browser.isOpera = (navigator.userAgent.toLowerCase().indexOf("opera")!=-1);
+Browser.isChrome = window.chrome;
 
 Browser.isSafari = (navigator.userAgent.toLowerCase().indexOf("safari")!=-1);
 Browser.Safari = {};
@@ -268,22 +275,34 @@ SwappableComponent.build = function (data, id) {
 	}
 	
 	onBeforeClicked = function () {
-		swap(this,div_after);
 		if(onclick_before) onclick_before(this);
+		swap(this,div_after);
 	}
 	
 	onAfterClicked = function () {
-		swap(this,div_before);
 		if(onclick_after) onclick_after(this);
+		swap(this,div_before);
 	}
 	
 	onMouseOut = function () {
-		this.className = style_out;
+		if(this.style){
+			this.style.color = "#7777cc";
+			this.style.textDecoration = "none";
+			this.style.cursor = "auto";			
+		}else{
+			this.className = style_out;
+		}
 		if (this.onMouseOut ) this.onMouseOut();
 	}
 	
 	onMouseOver = function () {
-		this.className = style_over;
+		if(this.style){
+			this.style.color = "#ff0000";
+			this.style.textDecoration = "underline";
+			this.style.cursor = "pointer";
+		}else{
+			this.className = style_over;
+		}
 		if (this.onMouseOver ) this.onMouseOver();
 	}
 	IS_Event.observe(div_before, "click", onBeforeClicked.bind(div_before), false, id);
@@ -549,7 +568,6 @@ function PullDown(opt){
 		this.elm_pulldown = pulldown;
 		
 		this.buildPulldown( pulldown );
-		
 		var list = document.createElement("ul");
 		if( Browser.isIE )
 			list.style.width = opt.width;
@@ -599,7 +617,6 @@ function PullDown(opt){
 		
 		var field = document.createElement("div");
 		labelTd.appendChild(field);
-		field.style.height = "1em";
 		field.style.overflow = "hidden";
 		this.elm_field = field;
 		
@@ -715,16 +732,16 @@ function PullDown(opt){
 		this.adjustItemList();
 	}
 	this.adjustItemList = function() {
-		this.elm_list.style.left = findPosX( this.elm_pulldown );
-		this.elm_list.style.top = findPosY( this.elm_pulldown ) +this.elm_pulldown.offsetHeight;
-		this.elm_list.style.width = this.elm_pulldown.offsetWidth;
+		this.elm_list.style.left = findPosX( this.elm_pulldown ) + 'px';
+		this.elm_list.style.top = findPosY( this.elm_pulldown ) +this.elm_pulldown.offsetHeight + 'px';
+		this.elm_list.style.width = this.elm_pulldown.offsetWidth + 'px';
 		
 		var posY = findPosY( this.elm_list ) -
 			( document.documentElement.scrollTop || document.body.scrollTop );
 		var height = this.elm_list.offsetHeight;
 		var viewportHeight = getWindowSize( false );
 		if( ( posY +height ) > viewportHeight ) {
-			this.elm_list.style.height = viewportHeight -posY -4;
+			this.elm_list.style.height = viewportHeight -posY -4 + 'px';
 			this.elm_list.style.overflowY = "auto";
 			this.elm_list.style.overflowX = "hidden";
 		} else {
@@ -862,7 +879,7 @@ function is_getURLByIFrame(inputUrl, _callback, _eventId, parameters){
 		getTitleIFrame = document.createElement('iframe');
 		getTitleIFrame.name = 'getTitleInnerFrame';
 		getTitleIFrame.id = 'getTitleInnerFrame';
-		getTitleIFrame.src = "./blank.html";
+		
 		if( Browser.isSafari1 ) {
 			getTitleIFrame.style.width = getTitleIFrame.style.height = 0;
 			getTitleIFrame.style.visibility = "hidden";

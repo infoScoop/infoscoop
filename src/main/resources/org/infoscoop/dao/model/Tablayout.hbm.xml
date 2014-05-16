@@ -66,7 +66,6 @@
 			name="layout"
 			column="LAYOUT"
 			type="text"
-			access="field"
 		/>
 		<property
 			name="Widgetslastmodified"
@@ -76,27 +75,43 @@
 			length="24"
 		/>
 		<property
-			name="Tabnumber"
-			column="TABNUMBER"
-			type="integer"
-			not-null="false"
-			length="10"
-		/>
-		<property
-			name="Deleteflag"
-			column="DELETEFLAG"
-			type="integer"
-			not-null="true"
-			length="10"
-		/>
-		<property
 			name="Workinguid"
 			column="WORKINGUID"
 			type="string"
 			not-null="false"
 			length="150"
 		/>
-
-
+		<property
+			name="Templastmodified"
+			column="TEMPLASTMODIFIED"
+			type="timestamp"
+			not-null="false"
+			length="26"
+		/>
+		
+	    <many-to-one
+	    	name="statictab"
+	    	class="StaticTab"
+	    	insert="false"
+	    	update="false"
+	    	not-found="ignore">
+	      <column name="Tabid" />
+	    </many-to-one>
+		<!-- 
+		<many-to-one class="org.infoscoop.dao.model.StaticTab"
+			name="statictab"
+			access="field"
+			cascade="none"
+			outer-join="false"
+			column="Tabid"
+			property-ref="Tabid"
+			not-found="ignore"/>
+		-->
+		<!-- 
+		<set inverse="true" name="TabAdmin" sort="unsorted">
+			<key column="Tabid"/>
+			<many-to-many class="TabAdmin"/>
+		</set>
+		 -->
 	</class>	
 </hibernate-mapping>
