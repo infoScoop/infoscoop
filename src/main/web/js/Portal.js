@@ -1655,7 +1655,7 @@ IS_Portal.buildFontSelectDiv = function(){
 		fontEl.appendChild(fontChangeDivAddA);
 		
 		IS_Event.observe(fontChangeDivAdd, "mouseup", function(){
-				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) + 10) + "%");
+				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) + 20) + "%");
 			}, false, "_fontchange");
 		IS_Event.observe(fontChangeDivSta, "mouseup", function(){
 				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize)) + "%");
@@ -1708,10 +1708,7 @@ IS_Portal.adjustIS_PortalStyle = function(){
 
 IS_Portal.setFontSize = function(e, isInitialize) {
 	is_addCssRule("body", "font-size:" + IS_Portal.fontSize);
-	is_addCssRule("th", "font-size:" + IS_Portal.fontSize);
-	is_addCssRule("td", "font-size:" + IS_Portal.fontSize);
-	
-//	is_addCssRule("table", "font-size:" + IS_Portal.fontSize);
+
 	IS_Portal.widgetDisplayUpdated();
 	
 	if(!isInitialize){
