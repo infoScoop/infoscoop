@@ -99,8 +99,9 @@ IS_Portal.start = function() {
 	  onFailure: function(t) {
 		  alert('Retrieving customization info failed. ' + t.status + ' -- ' + t.statusText);
 	  },
-	  onException: function(t) {
-		  alert('Retrieving customization info failed. ' + t);
+	  onException: function(r, e) {
+		  alert('Retrieving customization info failed. ' + e.message)
+		  msg.error(r.transport.responseText);
 	  }
 	};	
 	AjaxRequest.invoke(hostPrefix +  "/customization", opt);
