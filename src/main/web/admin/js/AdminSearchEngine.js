@@ -4,6 +4,11 @@ ISA_SearchEngine.newwindow = false;
 ISA_SearchEngine.searchEngine = false;
 ISA_SearchEngine.defaultSearchList = false;
 ISA_SearchEngine.rssSearchList = false;
+ISA_SearchEngine.adminSearchEngineModal;
+ISA_SearchEngine.hideAdminSearchEngineModal = function() {
+    IS_Event.unloadCache("_editorForm");
+    Control.Modal.close();
+};
 
 // Called by the value returned from server
 ISA_SearchEngine.setSearchEngine = function(_newwindow, _defaultSearchList, _rssSearchList) {
@@ -20,8 +25,13 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 	this.initialize = function() {
 		container = document.getElementById("searchEngine");
-		
-		/**
+
+        ISA_SearchEngine.adminSearchEngineModal = new Control.Modal("", {
+            className : "adminSearchEngine",
+            afterClose : ISA_SearchEngine.hideAdminSearchEngineModal
+        });
+
+        /**
 		 * Remove trash if it remains
 		 */
 		var len = container.childNodes.length;
@@ -863,7 +873,7 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 					searchEngine.countRule.value = fValue;
 					searchEngine.countRule.useCache = eval(useCache);
 				}
-				self.currentModal.close();
+                ISA_SearchEngine.adminSearchEngineModal.close();
 			},
 			onFailure: function(t) {
 				alert(ISA_R.ams_failedSaveSearchEngine);
@@ -920,7 +930,7 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 			closeButton.type = "button";
 			closeButton.id = "formCancel";
 			closeButton.value = ISA_R.alb_cancel;
-			IS_Event.observe(closeButton, 'click', self.hideTitleEditorForm.bind(self), false, "_adminSearch");
+            IS_Event.observe(closeButton, "click", ISA_SearchEngine.hideAdminSearchEngineModal, false, "_adminSearch");
 			buttonDiv.appendChild(closeButton);
 			return buttonDiv;
 		}
@@ -937,8 +947,9 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 			
 			self.loadEditorForm(editorFormFieldDiv);
 
-			self.currentModal.container.update(editorFormFieldDiv);
-			self.currentModal.open()
+            var modal = ISA_SearchEngine.adminSearchEngineModal;
+			modal.container.update(editorFormFieldDiv);
+			modal.open()
 		}
 
 		setTimeout(viewFormArea, 10);
@@ -947,11 +958,6 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 	this.buildTitleEditorForm = function (){
 		if(editorElement){
 			IS_Event.observe(editorElement, 'click', this.showTitleEditorForm.bind(this), false, "_adminSearch");
-
-			this.currentModal = new Control.Modal('',{
-					className:"adminSearchEngine",
-					afterClose:this.hideTitleEditorForm.bind(this)
-				});
 		}
 	};
 
