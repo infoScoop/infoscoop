@@ -809,6 +809,7 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 	
 	this.submitEditorForm = function() {
 		var updateData;
+        var countRule;
 		if(option.count) {
 			var fMethod = $("formMethod").value;
 			var fValue = $("formValue").value;
@@ -821,18 +822,18 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 					return;
 				}
 			}
-			
+
 			// Disable execute button
 			$("formExec").disabled = true;
 			$("formCancel").disabled = true;
-			
-			updateData = Object.toJSON([
-				ISA_Admin.replaceUndefinedValue(searchEngine.id),{
-					method: fMethod,
-					value: fValue,
-					useCache: useCache
-				},"countRule"
-			]);
+			countRule = {
+                method : fMethod,
+                value : fValue,
+                useCache : useCache
+			};
+			updateData = [
+				ISA_Admin.replaceUndefinedValue(searchEngine.id), countRule, "countRule"
+			];
 		}
 		if(option.acl) {
 			if($("formIsPublic").checked == true){
@@ -841,38 +842,27 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 				searchEngine.auths = authorizations;
 			}
 			$("acl_label_"+searchEngine.id).innerHTML = searchEngine.auths?ISA_R.alb_restricted:ISA_R.alb_public;
-			updateData = Object.toJSON([
+			updateData = [
 				ISA_Admin.replaceUndefinedValue(searchEngine.id),
 				{auths:searchEngine.auths},
 				"auths"
-			]);
+			];
 		}
 
 		var url = adminHostPrefix + "/services/searchEngine/updateSearchEngineItem";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
-			postBody: updateData,
+			postBody : Object.toJSON(updateData),
 			asynchronous:true,
 			onSuccess: function(response){
 				ISA_Admin.isUpdated = true;
-				// Update values of array
-				if(!searchEngine.countRule){
-					var jsonStr,jsonObj;
-					jsonStr = "{";
-					jsonStr += "method:" + "\"" + fMethod + "\"";
-					jsonStr += ",";
-					jsonStr += "value:" + "\"" + fValue + "\"";
-					jsonStr += ",";
-					jsonStr += "useCache:" +  useCache;
-					jsonStr += "}";
-					eval("jsonObj="+jsonStr);
-					searchEngine["countRule"] = jsonObj;
-				}else{
-					searchEngine.countRule.method = fMethod;
-					searchEngine.countRule.value = fValue;
-					searchEngine.countRule.useCache = eval(useCache);
-				}
+
+                // Update values of array
+                if (option.count) {
+                    searchEngine.countRule = countRule;
+                }
+
                 ISA_SearchEngine.adminSearchEngineModal.close();
 			},
 			onFailure: function(t) {
