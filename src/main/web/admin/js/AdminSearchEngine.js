@@ -4,6 +4,11 @@ ISA_SearchEngine.newwindow = false;
 ISA_SearchEngine.searchEngine = false;
 ISA_SearchEngine.defaultSearchList = false;
 ISA_SearchEngine.rssSearchList = false;
+ISA_SearchEngine.adminSearchEngineModal;
+ISA_SearchEngine.hideAdminSearchEngineModal = function() {
+    IS_Event.unloadCache("_editorForm");
+    Control.Modal.close();
+};
 
 // Called by the value returned from server
 ISA_SearchEngine.setSearchEngine = function(_newwindow, _defaultSearchList, _rssSearchList) {
@@ -20,8 +25,13 @@ ISA_SearchEngine.prototype.classDef = function() {
 
 	this.initialize = function() {
 		container = document.getElementById("searchEngine");
-		
-		/**
+
+        ISA_SearchEngine.adminSearchEngineModal = new Control.Modal("", {
+            className : "adminSearchEngine",
+            afterClose : ISA_SearchEngine.hideAdminSearchEngineModal
+        });
+
+        /**
 		 * Remove trash if it remains
 		 */
 		var len = container.childNodes.length;
@@ -799,6 +809,7 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 	
 	this.submitEditorForm = function() {
 		var updateData;
+        var countRule;
 		if(option.count) {
 			var fMethod = $("formMethod").value;
 			var fValue = $("formValue").value;
@@ -811,18 +822,18 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 					return;
 				}
 			}
-			
+
 			// Disable execute button
 			$("formExec").disabled = true;
 			$("formCancel").disabled = true;
-			
-			updateData = Object.toJSON([
-				ISA_Admin.replaceUndefinedValue(searchEngine.id),{
-					method: fMethod,
-					value: fValue,
-					useCache: useCache
-				},"countRule"
-			]);
+			countRule = {
+                method : fMethod,
+                value : fValue,
+                useCache : useCache
+			};
+			updateData = [
+				ISA_Admin.replaceUndefinedValue(searchEngine.id), countRule, "countRule"
+			];
 		}
 		if(option.acl) {
 			if($("formIsPublic").checked == true){
@@ -831,39 +842,28 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 				searchEngine.auths = authorizations;
 			}
 			$("acl_label_"+searchEngine.id).innerHTML = searchEngine.auths?ISA_R.alb_restricted:ISA_R.alb_public;
-			updateData = Object.toJSON([
+			updateData = [
 				ISA_Admin.replaceUndefinedValue(searchEngine.id),
 				{auths:searchEngine.auths},
 				"auths"
-			]);
+			];
 		}
 
 		var url = adminHostPrefix + "/services/searchEngine/updateSearchEngineItem";
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
-			postBody: updateData,
+			postBody : Object.toJSON(updateData),
 			asynchronous:true,
 			onSuccess: function(response){
 				ISA_Admin.isUpdated = true;
-				// Update values of array
-				if(!searchEngine.countRule){
-					var jsonStr,jsonObj;
-					jsonStr = "{";
-					jsonStr += "method:" + "\"" + fMethod + "\"";
-					jsonStr += ",";
-					jsonStr += "value:" + "\"" + fValue + "\"";
-					jsonStr += ",";
-					jsonStr += "useCache:" +  useCache;
-					jsonStr += "}";
-					eval("jsonObj="+jsonStr);
-					searchEngine["countRule"] = jsonObj;
-				}else{
-					searchEngine.countRule.method = fMethod;
-					searchEngine.countRule.value = fValue;
-					searchEngine.countRule.useCache = eval(useCache);
-				}
-				self.currentModal.close();
+
+                // Update values of array
+                if (option.count) {
+                    searchEngine.countRule = countRule;
+                }
+
+                ISA_SearchEngine.adminSearchEngineModal.close();
 			},
 			onFailure: function(t) {
 				alert(ISA_R.ams_failedSaveSearchEngine);
@@ -920,7 +920,7 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 			closeButton.type = "button";
 			closeButton.id = "formCancel";
 			closeButton.value = ISA_R.alb_cancel;
-			IS_Event.observe(closeButton, 'click', self.hideTitleEditorForm.bind(self), false, "_adminSearch");
+            IS_Event.observe(closeButton, "click", ISA_SearchEngine.hideAdminSearchEngineModal, false, "_adminSearch");
 			buttonDiv.appendChild(closeButton);
 			return buttonDiv;
 		}
@@ -937,8 +937,9 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 			
 			self.loadEditorForm(editorFormFieldDiv);
 
-			self.currentModal.container.update(editorFormFieldDiv);
-			self.currentModal.open()
+            var modal = ISA_SearchEngine.adminSearchEngineModal;
+			modal.container.update(editorFormFieldDiv);
+			modal.open()
 		}
 
 		setTimeout(viewFormArea, 10);
@@ -947,11 +948,6 @@ ISA_SearchEngine.EditorForm.prototype.classDef = function() {
 	this.buildTitleEditorForm = function (){
 		if(editorElement){
 			IS_Event.observe(editorElement, 'click', this.showTitleEditorForm.bind(this), false, "_adminSearch");
-
-			this.currentModal = new Control.Modal('',{
-					className:"adminSearchEngine",
-					afterClose:this.hideTitleEditorForm.bind(this)
-				});
 		}
 	};
 
