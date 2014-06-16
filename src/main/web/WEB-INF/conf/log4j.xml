@@ -17,9 +17,9 @@
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
         </layout>
-        <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="LevelMax"  value="WARN" />
-            <param name="AcceptOnMatch"  value="true" />
+        <filter class="org.apache.log4j.varia.LevelMatchFilter">
+            <param name="LevelToMatch"  value="ERROR" />
+            <param name="AcceptOnMatch"  value="false" />
         </filter>
         <filter class="org.infoscoop.log.PortalLogFilter">
             <param name="LogType" value="portal-main"/>
@@ -52,9 +52,9 @@
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ABSOLUTE} %5p [%8X{uid}] %c{1}:%L - %m%n"/>
         </layout>
-        <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="LevelMax"  value="WARN" />
-            <param name="AcceptOnMatch"  value="true" />
+        <filter class="org.apache.log4j.varia.LevelMatchFilter">
+            <param name="LevelToMatch"  value="ERROR" />
+            <param name="AcceptOnMatch"  value="false" />
         </filter>
         <filter class="org.infoscoop.log.PortalLogFilter">
             <param name="LogType" value="portal-admin"/>
