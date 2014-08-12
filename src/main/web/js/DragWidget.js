@@ -893,8 +893,8 @@ IS_Draggable.prototype = {
         p = Position.page(this.options.scroll);
         p[0] += this.options.scroll.scrollLeft + Position.deltaX;
         p[1] += this.options.scroll.scrollTop + Position.deltaY;
-        p.push(p[0]+this.options.scroll.offsetWidth);
-        p.push(p[1]+this.options.scroll.offsetHeight);
+        p[2] = p[0]+this.options.scroll.offsetWidth;
+        p[3] = p[1]+this.options.scroll.offsetHeight;
       }
       var speed = [0,0];
       if(pointer[0] < (p[0]+this.options.scrollSensitivity)) speed[0] = pointer[0]-(p[0]+this.options.scrollSensitivity);
