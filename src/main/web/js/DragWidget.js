@@ -982,7 +982,15 @@ IS_Draggable.prototype = {
   
   //Draw dragging
   draw: function(point, element, dummyElement) {
-  	point = [point[0]-document.documentElement.scrollLeft, point[1]-document.documentElement.scrollTop];
+    var scrollTop
+    if(this.options.scroll == window){
+        scrollTop = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+    }else{
+        scrollTop = this.options.scroll.scrollTop;
+    }
+    scrollTop = parseInt(scrollTop);
+    
+  	point = [point[0]-document.documentElement.scrollLeft, point[1]-scrollTop];
   	if(!element || !dummyElement)
 		element = dummyElement = IS_Draggable.dummyElement;
 

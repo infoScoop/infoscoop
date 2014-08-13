@@ -2185,7 +2185,8 @@ IS_Portal.initMsdBar = function(){
 // set message bar position.
 IS_Portal.setDisplayMsgBarPosition = function(){
 	if($("portal_msgbar").style.display == "none") return;
-	var scrollTop = parseInt(document.documentElement.scrollTop);
+	var scrollTop = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+	scrollTop = parseInt(scrollTop);
 	var innerHeight = getWindowHeight();
 	var offset = parseInt($("portal_msgbar").offsetHeight)+1;
 	$("portal_msgbar").style.top = (scrollTop + innerHeight) - offset + 'px';
