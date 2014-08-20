@@ -26,10 +26,12 @@ ISA_SearchEngine.prototype.classDef = function() {
 	this.initialize = function() {
 		container = document.getElementById("searchEngine");
 
-        ISA_SearchEngine.adminSearchEngineModal = new Control.Modal("", {
-            className : "adminSearchEngine",
-            afterClose : ISA_SearchEngine.hideAdminSearchEngineModal
-        });
+        if (!ISA_SearchEngine.adminSearchEngineModal) {
+            ISA_SearchEngine.adminSearchEngineModal = new Control.Modal("", {
+                className : "adminSearchEngine",
+                afterClose : ISA_SearchEngine.hideAdminSearchEngineModal
+            });
+        }
 
         /**
 		 * Remove trash if it remains
