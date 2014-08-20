@@ -1048,7 +1048,7 @@ ISA_SearchEngine.EditorForm.makeCountEditForm = function(searchEngine){
 	editorFormTbody.appendChild(makeValueText());
 	
 	// Input item:direct
-	var useCacheDefaultChecked = searchEngine.countRule ? searchEngine.countRule.useCache : false;
+	var useCacheDefaultChecked = searchEngine.countRule ? getBooleanValue(searchEngine.countRule.useCache) : false;
 	editorFormTbody.appendChild(
 		$.TR({},
 			 $.TD({style:"textAlign:right;verticalAlign:top;"},ISA_R.alb_useCacheForSearchResults),
