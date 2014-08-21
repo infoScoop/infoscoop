@@ -1605,7 +1605,7 @@ IS_Portal.buildFontSelectDiv = function(){
 					size = parseInt(IS_Portal.defaultFontSize) + "%";
 					break;
 				case 2:
-					size = parseInt(IS_Portal.defaultFontSize) + 10 + "%";
+					size = parseInt(IS_Portal.defaultFontSize) + 20 + "%";
 					break;
 				default:
 					size = parseInt(IS_Portal.defaultFontSize) + "%";
