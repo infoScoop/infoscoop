@@ -122,13 +122,20 @@ gadgets.rpc.register("is_get_login_uid",function() {
 	return is_userId;
 });
 
-gadgets.rpc.register("is_add_widget_to_panel",function(type, url, title, href) {
+gadgets.rpc.register("is_add_widget_to_panel",function(type, url, title, href, userPrefs) {
 	var widgetId = "w_" + new Date().getTime();
 	
 	function dropWidget(title, href){
 		var properties = {
 		  url: url
 		};
+
+		if (userPrefs) {
+		    for (var name in userPrefs) {
+		        properties[name] = userPrefs[name];
+		    }
+		}
+
 		var widgetConf = IS_WidgetsContainer.WidgetConfiguration.getConfigurationJSONObject(type, widgetId, 1, title, href, properties);
 		var widget = IS_WidgetsContainer.addWidget( IS_Portal.currentTabId, widgetConf );
 		IS_Widget.setWidgetLocationCommand(widget);
