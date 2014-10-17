@@ -90,8 +90,8 @@ function _IS_DropMiniBrowser(url, title, href) {
   @param url Gadget URL
   @param title Gadget title
  */
-function _IS_DropGadget(url, title, href) {
-	gadgets.rpc.call( null,"is_add_widget_to_panel",null, 'Gadget', url, title, href );
+function _IS_DropGadget(url, title, href, userPrefs) {
+	gadgets.rpc.call( null,"is_add_widget_to_panel",null, 'Gadget', url, title, href, userPrefs);
 }
 /*
  * Open link in inline frame of infoScoop.
