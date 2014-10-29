@@ -26,6 +26,8 @@ IS_SidePanel.buildAddContents = function() {
 	var _authType;
 	var requiredFormAuthTypes = ['basic','ntlm','postCredential'];
 	
+	var originURL;
+	
 	var rssSearch = document.getElementById("portal-rss-search");
 	var container = document.createElement("div");
 	Element.addClassName( container,"SidePanel_AddContents");
@@ -121,12 +123,23 @@ IS_SidePanel.buildAddContents = function() {
 			alert( IS_R.ms_urlNoInput );
 			return;
 		}
-		
-		if(!/^(http|https|ftp):\/\//.test(inputURL)){
-			inputURL = "http://"+inputURL;
-			inputURLBox.value = inputURL;
+
+		if (!new RegExp("^(http://|https://|ftp://|/|./|../)").test(inputURL)) {
+		    inputURL = "./" + inputURL;
 		}
-		
+
+		originURL = inputURL;
+
+		if (inputURL.indexOf("/") === 0) {
+		    // server root
+		    inputURL = findHostURL(true) + inputURL;
+		} else if (inputURL.indexOf("./") === 0 || inputURL.indexOf("../") === 0) {
+		    // relative path
+		    inputURL = hostPrefix + "/" + inputURL;
+		}
+
+		inputURLBox.value = inputURL;
+
 		var encodedURL = encodeURIComponent( inputURL );
 		if( encodedURL.length > 2000 ) {
 			alert( IS_R.ms_urlTooLong );
@@ -137,7 +150,6 @@ IS_SidePanel.buildAddContents = function() {
 		previewIndicator.style.display = "";
 		
 		is_processUrlContents(inputURL, handleDetect.bind(this, inputURL, false), function(){});
-		
 	}
 
 	/**
@@ -246,7 +258,20 @@ IS_SidePanel.buildAddContents = function() {
 			console.error(e);
 //			return;
 		}
-		
+
+	    // permit mini-browser to use server-root-path or relative-path
+        if (new RegExp("^(/|./|../)").test(originURL)) {
+            var miniBrowser = null;
+            for (var i = 0; i < length; i++) {
+                if (dataList[i].type === "MiniBrowser") {
+                    miniBrowser = dataList[i];
+                    miniBrowser.url = originURL;
+                    break;
+                }
+            }
+            dataList = (miniBrowser) ? [ miniBrowser ] : [ { type : "MiniBrowser", url : null } ];
+        }
+
 		for(var i = 0; i < length; i++){
 			var data = dataList[i];
 			var previewItem = document.createElement("div");
