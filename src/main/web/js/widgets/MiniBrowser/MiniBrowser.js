@@ -76,7 +76,15 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 		if(!widget.getUserPref("url") || widget.getUserPref("url").length == 0){
 			widget.setUserPref("url", widget.widgetConf.href);
 		}
+
 		var url = widget.replaceUserPref(widget.getUserPref("url"));
+		if (url.indexOf("/") === 0) {
+		    // server root path
+		    url = findHostURL(true) + url;
+		} else if (url.indexOf("./") === 0 || url.indexOf("../") === 0) {
+		    url = hostPrefix + "/" + url;
+		}
+
 		var iframeSrc = widget.iframe.src;
 		if( !iframeSrc || iframeSrc != "about:blank"){
 			widget.iframe.contentWindow.location.reload( true );
@@ -363,13 +371,11 @@ IS_Widget.MiniBrowser.validateUserPref = {
 	},
 	url:function(value){
 		return IS_Validator.validate(value, {
-//			label: 'URL',
 			label: IS_Widget.getDisplayName('MiniBrowser', 'url'),
 			required: true,
-			regex: '^((?:http)|(?:https)|(?:ftp))://',
-
+			regex: '^((?:http://)|(?:https://)|(?:ftp://)|(?:/)|(?:./)|(?:../))',
 			regexMsg: IS_R.ms_invalidURL,
 			maxBytes: 1024
 		});
 	}
-}
+};

@@ -497,8 +497,17 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 		textbox.value = prefValue;
 		textbox.size = "74";
 		textbox.maxLength = "1024";
-		
-		IS_Event.observe(textbox, 'change', onChange.bind(textbox, prefConf), false, "_widgetEditForm");
+
+		// convert to same hierarchy path (./xxx)
+        if (widgetType === "MiniBrowser") {
+            IS_Event.observe(textbox, "change", function(event) {
+                if (!new RegExp("^(http://|https://|ftp://|/|./|../)").test(textbox.value)) {
+                    textbox.value = "./" + textbox.value;
+                }
+            }, false, "_widgetEditForm");
+        }
+
+        IS_Event.observe(textbox, 'change', onChange.bind(textbox, prefConf), false, "_widgetEditForm");
 		textboxSpan.appendChild(textbox);
 		formContainer.appendChild(textboxSpan);
 		setDefaultHilight(textbox, prefValue);
@@ -513,7 +522,18 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 			'click',
 			function() {
 				var inputUrl = $F(prefType + "_url");
-				
+
+				// permit mini-browser to use server-root-path or relative-path
+				if (widgetType === "MiniBrowser") {
+				    if (inputUrl.indexOf("/") === 0) {
+				        // server root path
+				        inputUrl = findHostURL(true) + inputUrl;
+				    } else if (inputUrl.indexOf("./") === 0 || inputUrl.indexOf("../") === 0) {
+				        // relative path
+				        inputUrl = hostPrefix + "/" + inputUrl;
+				    }
+				}
+
 				var indicator = $("indicatorMini");
 				if (!indicator) {
 					var indicator = document.createElement("img");

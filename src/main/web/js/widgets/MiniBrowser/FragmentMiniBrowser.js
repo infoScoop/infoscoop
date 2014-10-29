@@ -286,5 +286,14 @@ IS_Widget.FragmentMiniBrowser.validateUserPref = Object.extend(IS_Widget.Fragmen
 			label: IS_Widget.getDisplayName('FragmentMiniBrowser', 'xPath'),
 			required: true
 		});
-	}
+	},
+	url : function(value) {
+        return IS_Validator.validate(value, {
+            label : IS_Widget.getDisplayName('FragmentMiniBrowser', 'url'),
+            required : true,
+            regex : '^((?:http)|(?:https)|(?:ftp))://',
+            regexMsg : IS_R.ms_invalidURL,
+            maxBytes : 1024
+        });
+    }
 });
