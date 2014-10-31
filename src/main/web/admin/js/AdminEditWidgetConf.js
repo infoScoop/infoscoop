@@ -513,7 +513,11 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 			'click',
 			function() {
 				var inputUrl = $F(prefType + "_url");
-				
+				if (widgetType === "MiniBrowser" && !(new RegExp("^(http://|https://|ftp://)").test(inputUrl))) {
+				    inputUrl = (inputUrl.indexOf("/") === 0) ?
+				            findHostURL(true) + inputUrl : hostPrefix + "/" + inputUrl;
+				}
+
 				var indicator = $("indicatorMini");
 				if (!indicator) {
 					var indicator = document.createElement("img");

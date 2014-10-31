@@ -77,6 +77,11 @@ IS_Widget.MiniBrowser.prototype.classDef = function() {
 			widget.setUserPref("url", widget.widgetConf.href);
 		}
 		var url = widget.replaceUserPref(widget.getUserPref("url"));
+		// convert url to absolute-path
+		if (!new RegExp("^(http://|https://|ftp://)").test(url)) {
+		    url = (url.indexOf("/") === 0) ? findHostURL(true) + url : hostPrefix + "/" + url;
+		}
+
 		var iframeSrc = widget.iframe.src;
 		if( !iframeSrc || iframeSrc != "about:blank"){
 			widget.iframe.contentWindow.location.reload( true );
@@ -357,19 +362,16 @@ IS_Widget.MiniBrowser.validateUserPref = {
 			label: IS_Widget.getDisplayName('MiniBrowser', 'height'),
 			required: true,
 			regex: '^(([1-9][0-9]*)|([1-9]))$',
-
 			regexMsg: IS_R.ms_gtOneNum
 		});
 	},
 	url:function(value){
 		return IS_Validator.validate(value, {
-//			label: 'URL',
 			label: IS_Widget.getDisplayName('MiniBrowser', 'url'),
 			required: true,
-			regex: '^((?:http)|(?:https)|(?:ftp))://',
-
+			regex: null,
 			regexMsg: IS_R.ms_invalidURL,
 			maxBytes: 1024
 		});
 	}
-}
+};
