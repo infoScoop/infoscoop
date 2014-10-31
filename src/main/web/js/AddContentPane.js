@@ -121,12 +121,13 @@ IS_SidePanel.buildAddContents = function() {
 			alert( IS_R.ms_urlNoInput );
 			return;
 		}
-		
-		if(!/^(http|https|ftp):\/\//.test(inputURL)){
-			inputURL = "http://"+inputURL;
-			inputURLBox.value = inputURL;
+
+		var prevURL = inputURL;
+		if (!new RegExp("^(http://|https://|ftp://)").test(prevURL)) {
+		    prevURL = (prevURL.indexOf("/") === 0) ?
+		            findHostURL(true) + prevURL : hostPrefix + "/" + prevURL;
 		}
-		
+
 		var encodedURL = encodeURIComponent( inputURL );
 		if( encodedURL.length > 2000 ) {
 			alert( IS_R.ms_urlTooLong );
@@ -136,7 +137,7 @@ IS_SidePanel.buildAddContents = function() {
 		hideAddContentPanel();
 		previewIndicator.style.display = "";
 		
-		is_processUrlContents(inputURL, handleDetect.bind(this, inputURL, false), function(){});
+		is_processUrlContents(prevURL, handleDetect.bind(this, inputURL, false), function(){});
 		
 	}
 
@@ -246,7 +247,22 @@ IS_SidePanel.buildAddContents = function() {
 			console.error(e);
 //			return;
 		}
-		
+
+		// permit mini-browser to use server-root-path or relative-path
+		if (!new RegExp("^(http://|https://|ftp://)").test(url)) {
+		    var miniBrowser = null;
+		    for (var i = 0; i < length; i++) {
+		        var data = dataList[i];
+		        if (data.type === "MiniBrowser") {
+		            miniBrowser = data;
+		            miniBrowser.url = url;
+		            break;
+		        }
+		    }
+		    dataList = (miniBrowser) ? [ miniBrowser ] : [ { type : "MiniBrowser", url : null } ];
+		    length = dataList.length;
+		}
+
 		for(var i = 0; i < length; i++){
 			var data = dataList[i];
 			var previewItem = document.createElement("div");
