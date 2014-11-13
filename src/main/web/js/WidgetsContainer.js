@@ -1042,12 +1042,14 @@ IS_WidgetsContainer.addWidget = function (tabId, widgetConf, isBuild, appendFunc
 }
 
 IS_WidgetsContainer.WidgetConfiguration = {
-	getConfigurationJSONObject: function(type, id, column, title, title_url, properties){
+	getConfigurationJSONObject: function(type, id, column, title, title_url, properties, refreshInterval){
 		var widgetConf = new Object();
 		widgetConf.id = id;
 		widgetConf.column = column;
 		widgetConf.type = type;
 		widgetConf.title = title;
+		if(refreshInterval)
+		    widgetConf.refreshInterval = refreshInterval;
 		if(title_url)
 			widgetConf.href = title_url;
 		

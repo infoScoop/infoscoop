@@ -111,7 +111,7 @@ IS_AutoReload.prototype.classDef = function(){
 			//Reload the number if the widget of nextWidgetId is not found by nextWidgetIndex
 			if(widgetId == null || i == widgetId || counter >= widgetIdx){
 				var reloadWidget = widgets[i];
-				if( !reloadWidget.parent && reloadWidget.autoRefresh) {
+				if( !reloadWidget.parent && reloadWidget.autoRefresh && !reloadWidget.refreshInterval) {
 					self.reloadWidgets[i] = reloadWidget;
 					IS_EventDispatcher.addListener("loadComplete", i, self.endNext.bind(self, i), null, true);
 					

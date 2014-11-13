@@ -16,6 +16,7 @@
 				<xsl:attribute name="href"><xsl:value-of select="@href" /></xsl:attribute>
 				<xsl:attribute name="title"><xsl:value-of select="@title" /></xsl:attribute>
 				<xsl:attribute name="type"><xsl:value-of select="@type"/></xsl:attribute>
+                <xsl:attribute name="refreshInterval"><xsl:value-of select="@refreshInterval"/></xsl:attribute>
 				<xsl:if test="@ignoreHeader='true'">
 					<xsl:attribute name="ignoreHeader"><xsl:value-of select="@ignoreHeader"/></xsl:attribute>
 				</xsl:if>

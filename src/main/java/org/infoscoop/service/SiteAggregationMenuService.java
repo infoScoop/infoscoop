@@ -431,13 +431,13 @@ public class SiteAggregationMenuService {
 	public synchronized void updateMenuItem(String menuId, String title, String href,
 			String display, String type, String serviceURL, String serviceAuthType, Map props, 
 			String alert, String menuType, Collection auths, Collection<String> menuTreeAdmins, Boolean linkDisabled, String directoryTitle, String sitetopId,
-			boolean multi ) throws Exception {
+			boolean multi, Integer refreshInterval ) throws Exception {
 		
 		href = StringUtil.getTruncatedString(href, 1024, "UTF-8");
 		
 		if(log.isInfoEnabled()){
 			log.info("UpdateMenuItem: menuId=" + menuId + ", title=" + title + ", " +
-					title + ", href=" + href + ", display=" + display + ", alert" + alert+ ", properties=" + props);
+					title + ", href=" + href + ", display=" + display + ", alert" + alert+ ", properties=" + props + ", refreshInterval=" + refreshInterval);
 		}
 		// Obtain data and transfer the result to Document.
 		Siteaggregationmenu_temp entity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, sitetopId);
@@ -456,6 +456,13 @@ public class SiteAggregationMenuService {
 		element.setAttribute("href", href);
 		element.setAttribute("display", display);
 		element.setAttribute("link_disabled", linkDisabled.toString());
+		
+		if(refreshInterval != null){
+			element.setAttribute("refreshInterval", refreshInterval.toString());
+		}else if(refreshInterval == null && element.hasAttribute("refreshInterval")){
+			element.removeAttribute("refreshInterval");
+		}
+		
 		if(serviceURL != null)
 			element.setAttribute("serviceURL", serviceURL);
 		if(serviceAuthType != null)
@@ -879,6 +886,13 @@ public class SiteAggregationMenuService {
 			else if("directory_title".equalsIgnoreCase(attr.getNodeName())){
 				json.put("directoryTitle", attr.getNodeValue());
 			}
+			else if("refreshInterval".equalsIgnoreCase(attr.getNodeName())){
+				try{
+					json.put("refreshInterval", Integer.parseInt(attr.getNodeValue()));
+				}catch(NumberFormatException e){
+					json.put("refreshInterval", JSONObject.NULL);
+				}
+			}
 			else{
 				json.put(attr.getNodeName(), attr.getNodeValue());
 			}
@@ -1059,6 +1073,7 @@ public class SiteAggregationMenuService {
 				
 				String title = null;
 				String href = null;
+				Integer refreshInterval = null;
 				Map<String, ForceUpdateUserPref> upPropMap = new HashMap<String, ForceUpdateUserPref>();
 				Set<ForceUpdateUserPref> removePropNames = new HashSet<ForceUpdateUserPref>();
 				for(ForceUpdateUserPref prop: updatePropList){
@@ -1066,6 +1081,13 @@ public class SiteAggregationMenuService {
 						title = site.getAttribute("title");
 					}else if("__MENU_HREF__".equals(prop.name)){
 						href = site.getAttribute("href");			
+					}else if("__MENU_REFRESHINTERVAL__".equals(prop.name)){
+						String refreshIntervalStr = site.getAttribute("refreshInterval");
+						try{
+							refreshInterval = (refreshIntervalStr != null)? Integer.parseInt(refreshIntervalStr) : null;
+						}catch(NumberFormatException e){
+							// ignore
+						}
 					}else{
 						String value = propMap.get(prop.name);
 						prop.value = value;
@@ -1077,8 +1099,8 @@ public class SiteAggregationMenuService {
 					}
 				}
 
-				if(title != null || href != null || upPropMap.size() > 0 || removePropNames.size() > 0)
-					dao.updateWidgetProperties(menuId, title, href, upPropMap, removePropNames);
+				if(title != null || href != null || refreshInterval != null || upPropMap.size() > 0 || removePropNames.size() > 0)
+					dao.updateWidgetProperties(menuId, title, href, refreshInterval, upPropMap, removePropNames);
 			}
 		}
 		

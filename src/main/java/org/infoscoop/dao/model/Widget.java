@@ -97,6 +97,7 @@ public class Widget extends BaseWidget {
 		json.put("deleteDate", this.getDeletedate());
 		json.put("ignoreHeader", this.isIgnoreHeader());
 		json.put("noBorder", this.isNoBorder());
+		json.put("refreshInterval", super.getRefreshinterval());
 		
 		return json;
 	}

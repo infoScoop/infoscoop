@@ -1968,7 +1968,7 @@ IS_SiteAggregationMenu.getConfigurationFromMenuItem = function(menuItem, columnN
 	}
 	var widgetConf;
 	widgetConf = IS_WidgetsContainer.WidgetConfiguration.getConfigurationJSONObject(
-		menuItem.type, w_id, columnNum, menuItem.title, menuItem.href, menuItem.properties);
+		menuItem.type, w_id, columnNum, menuItem.title, menuItem.href, menuItem.properties, menuItem.refreshInterval);
 	widgetConf.menuId = menuItem.id;
 
 	return widgetConf;

@@ -218,6 +218,8 @@ function prepareStaticArea(){
 
 			widgetJSON.title = ISA_Admin.trim($("formTitle").value);
 			widgetJSON.href =  $("formHref").value;
+		    var formUseRefreshInterval = $jq("#formUseRefreshInterval").prop("checked");
+		    widgetJSON.refreshInterval = (formUseRefreshInterval)? parseInt($jq("#formRefreshInterval").val()) : null;
 
 			//delete jsonRole.staticPanel[oldId];
 			is_deleteProperty(jsonRole.staticPanel, oldId);

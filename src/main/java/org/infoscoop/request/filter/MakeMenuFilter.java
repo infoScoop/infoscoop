@@ -34,6 +34,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 
+
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.httpclient.HttpClient;
@@ -281,6 +282,16 @@ public class MakeMenuFilter extends ProxyFilter {
 				String multiString = attributes.getValue("multi");
 				if(multiString!=null ){
 					menuItemArray.append(",multi:").append("true".equalsIgnoreCase(multiString)?"true":"false");
+				}
+				
+				String refreshInterval = attributes.getValue("refreshInterval");
+				if (refreshInterval != null){
+					try{
+						int refreshIntervalInt = Integer.parseInt(refreshInterval); 
+						menuItemArray.append(",refreshInterval:").append(refreshIntervalInt);
+					}catch(NumberFormatException e){
+						menuItemArray.append(",refreshInterval:").append("null");
+					}
 				}
 			}else if(qName.equals("properties")){
 				firstProperty = true;

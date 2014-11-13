@@ -346,6 +346,9 @@ public class TabLayoutService {
 		if ( widget.has("noBorder") && widget.getBoolean("noBorder"))
 			xml.append(" noBorder=\"true\"");
 
+		if ( widget.has("refreshInterval") )
+			xml.append(" refreshInterval=").append("\"").append( widget.getString("refreshInterval")).append("\"");
+
 		xml.append(">").append("\n");
 
 		xml.append("<data>").append("\n");
