@@ -972,7 +972,15 @@ ISA_WidgetConf.validators = {
 			label: ISA_R.alb_titleLink,
 			maxBytes: 1024
 		});
-	}
+	},
+    refreshInterval:function(value){
+        return IS_Validator.validate(value, {
+            label: ISA_R.alb_refreshInterval,
+            required: true,
+            regex: '^[1-9][0-9]*$',
+            regexMsg: ISA_R.ams_typePositiveInt,
+        });
+    }
 }
 ISA_WidgetConf.gadgetValidators = {
 	url:function(value){

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<property name="clob.type" value="clob" dbms="oracle, db2"/>
+    <property name="clob.type" value="text" dbms="mysql"/>
+
+    <!--Issue 583-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_typePositiveInt","ALL","ALL","Type a positive integer value");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_typePositiveInt","ALL","ja","正の整数を入力してください。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_typePositiveInt","ALL","zh","请输入正整数");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_useRefreshInterval","ALL","ALL","Separate setting of Auto refresh interval");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_useRefreshInterval","ALL","ja","個別に自動更新の間隔を設定する");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_useRefreshInterval","ALL","zh","個別設定自動更新的間隔");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_refreshInterval","ALL","ALL","Auto refresh interval(second)");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_refreshInterval","ALL","ja","自動更新間隔(秒）");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_refreshInterval","ALL","zh","自动更新间隔（秒）");-->
+    <changeSet id="infoscoop340_583_1" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop340_583_1">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='ams_typePositiveInt';</sqlCheck>
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_useRefreshInterval';</sqlCheck>
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_refreshInterval';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_typePositiveInt"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Type a positive integer value"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_typePositiveInt"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="正の整数を入力してください。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_typePositiveInt"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="请输入正整数"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_useRefreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Separate setting of Auto refresh interval"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_useRefreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="個別に自動更新の間隔を設定する"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_useRefreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="個別設定自動更新的間隔"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_refreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Auto refresh interval(second)"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_refreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="自動更新間隔（分）"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_refreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="自动更新间隔（秒）"/>
+        </insert>
+    </changeSet>
+
+    <!--Issue 583-->
+    <!--ALTER TABLE [スキーマ].IS_TABLAYOUTS ADD COLUMN TEMPLASTMODIFIED TIMESTAMP;-->
+    <changeSet id="infoscoop340_583_2" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_583_2">
+            <not>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS" columnName="refreshinterval"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="IS_WIDGETS">
+            <column name="refreshinterval" type="integer">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>    
+
+</databaseChangeLog>

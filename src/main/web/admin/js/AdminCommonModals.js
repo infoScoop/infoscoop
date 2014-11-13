@@ -270,6 +270,12 @@ ISA_CommonModals.EditorForm.checkEditorForm = function(){
 			}
 		}
 	}
+
+	var formUseRefreshInterval = $jq("#formUseRefreshInterval").prop("checked");
+	var formRefreshInterval = $jq("#formRefreshInterval").val();
+    if(formUseRefreshInterval && (error = ISA_WidgetConf.validators.refreshInterval(formRefreshInterval)))
+      errorMessages.push(error);
+
 	if(errorMessages.length > 0){
 		alert(errorMessages.join("\n"));
 		return false;
@@ -860,6 +866,40 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 		
 //		var isDefaultPanelTabActive = ($('tab_defaultPanel') && $('tab_defaultPanel').className == 'tab active');
 		var isDefaultPanelTabActive = (window["editRoleScreen"] && window["editRoleScreen"] == true);
+
+        if( widgetType == 'MiniBrowser' ) {
+            var row = $jq("<tr>").addClass("refreshIntervalTr");
+            $jq(editorFormSubTbody).append( row );
+            var lb = $jq("<td>")
+                .css({"text-align":"right", "vertical-align":"top"})
+                .text(ISA_R.alb_useRefreshInterval + ":")
+                .appendTo(row)
+            
+            var field = $jq("<td>").appendTo(row);
+            var isChecked = (menuItem.refreshInterval != null);
+            var checkbox = $jq("<input>").attr({
+                id: "formUseRefreshInterval",
+                type: "checkbox",
+                defaultChecked: isChecked,
+                checked: isChecked,
+                disabled: disabled
+            }).appendTo(field);
+            
+            var refIntervelDiv = $jq("<div>").css({"display": isChecked? "block":"none"});
+            $jq("<label>").text(ISA_R.alb_refreshInterval).appendTo(refIntervelDiv);
+            $jq("<input>")
+                .attr({id:"formRefreshInterval", disabled:disabled})
+                .css({width:"40px"})
+                .val(menuItem.refreshInterval)
+                .appendTo(refIntervelDiv);
+            
+            field.append( refIntervelDiv );
+            
+            checkbox.change(function(){
+                this.toggle();
+            }.bind(refIntervelDiv));
+        }
+		
 		if( !singleton && !(isDefaultPanelTabActive)) {
 			var row = document.createElement("tr");
 			row.className = "multiTr";
@@ -1043,6 +1083,21 @@ ISA_CommonModals.EditorForm.makeMenuUpdateSettingFieldSet = function(disabled, m
 		propSpan.appendChild(document.createTextNode( pref.display_name || pref.name ));
 		userPrefsFieldset.appendChild(propSpan);
 	});
+	
+    if( widgetType == 'MiniBrowser' ) {
+        var refreshIntervalSpan = $jq('<div>').css({
+            "white-space":"nowrap",
+            "float":"left",
+            "padding-right":"5px"
+        });
+        var refreshIntervalCheckBox = $jq("<input>").attr({
+            type:"checkbox",
+            id:"FUP_REFRESHINTERVAL"
+        }).appendTo(refreshIntervalSpan);
+        refreshIntervalSpan.append(document.createTextNode(ISA_R.alb_refreshInterval));
+        $jq(userPrefsFieldset).append(refreshIntervalSpan);
+    }
+	
 	var spaceDiv = document.createElement('div');
 	spaceDiv.style.clear = 'both';
 	userPrefsFieldset.appendChild(spaceDiv);

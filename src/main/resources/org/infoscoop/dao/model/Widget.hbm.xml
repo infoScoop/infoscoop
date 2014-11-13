@@ -131,6 +131,12 @@
 			not-null="false"
 			length="10"
 		/>
+        <property
+            name="Refreshinterval"
+            column="REFRESHINTERVAL"
+            type="integer"
+            not-null="false"
+        />
 
 
 	</class>

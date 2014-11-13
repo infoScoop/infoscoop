@@ -35,19 +35,6 @@ IS_Widget.prototype.classDef = function() {
 	this.initialize = function(draggable, widgetsXml){
 		self = this;
 		
-		// For adding custom widget
-		/*
-		if(widgetsXml.type && widgetsXml.type.indexOf("customWidget_") == 0){
-			var customConf = IS_Widget.getConfiguration( widgetsXml.type );
-			if(customConf){
-				var widgetType = customConf.WidgetPref.widgetType.value;
-				widgetsXml.type = widgetType;
-				widgetsXml.property = IS_Widget.mergePreference( customConf, widgetsXml);
-				if(!widgetsXml.title) widgetsXml.title = customConf.title;
-			}
-		}
-		*/
-		
 		//For a case that it is set as property of menu
 		if(widgetsXml.type && widgetsXml.type == "Gadget"){
 			var url = widgetsXml.property["url"];
@@ -68,6 +55,7 @@ IS_Widget.prototype.classDef = function() {
 		this.column = widgetsXml.column;
 		this.widgetType = widgetsXml.type;
 		this.draggable = (isTabView)? false : draggable;
+		this.refreshInterval = widgetsXml.refreshInterval;
 		
 		//List and status for event
 		this.eventTargetList = [];
@@ -640,6 +628,10 @@ IS_Widget.prototype.classDef = function() {
 					'resetAuthCredential',
 					resetAuthCredential);
 			});
+		}
+		
+		if(this.refreshInterval){
+            this.addCloseListener(this.stopAutoRefresh.bind(this));
 		}
 		
 		//'isLoadPending' stands if loadContents is called before building is completed
@@ -1497,6 +1489,8 @@ IS_Widget.prototype.classDef = function() {
 				IS_Widget.enableIcon(self.eventTargetList[i], self);
 			}
 		}
+		
+		self.startAutoRefresh();
 	}
 	
 	this.setLiteModePreference = function(){
@@ -1694,6 +1688,23 @@ IS_Widget.prototype.classDef = function() {
 		} else if(this.content && this.content.refresh) {
 			this.content.refresh();
 		}
+	}
+	
+	this.startAutoRefresh = function(){
+	    if(!this.refreshInterval)
+	        return;
+	    
+	    this.stopAutoRefresh();
+	    this.autoRefreshTimer = setTimeout(function(){
+	        console.log("autoReload : " + this.id + " on " + new Date() + " interval : " + this.refreshInterval);
+	        this.refresh();
+	    }.bind(this), this.refreshInterval * 1000 * 60);
+	}
+	
+	this.stopAutoRefresh = function(){
+        if(this.autoRefreshTimer){
+            clearTimeout(this.autoRefreshTimer);
+        }
 	}
 }
 

@@ -1096,6 +1096,9 @@ ISA_SiteAggregationMenu.getUpdMenuItem = function(menuItem, menuType){
 	if(typeof menuTreeAdmins != 'undefined')
 		menuItem.menuTreeAdmins = menuTreeAdmins;
 	
+    var formUseRefreshInterval = $jq("#formUseRefreshInterval").prop("checked");
+	menuItem.refreshInterval = (formUseRefreshInterval)? parseInt($jq("#formRefreshInterval").val()) : null;
+    
 	menuItem.menuType = menuType;//For sending to server
 	return menuItem;
 }
@@ -1107,7 +1110,9 @@ ISA_SiteAggregationMenu.getForceUpdPrefs = function(menuItem){
 	var forceUpdateTitle =  $F('FUP_TITLE');
 	if(forceUpdateTitle) forceUpdatePrefs['__MENU_TITLE__'] = {implied:false};
 	var forceUpdateHref = $F('FUP_HREF');
-	if(forceUpdateHref) forceUpdatePrefs['__MENU_HREF__'] = {implied:true}
+	if(forceUpdateHref) forceUpdatePrefs['__MENU_HREF__'] = {implied:true};
+    var forceUpdateRefreshInterval = $F('FUP_REFRESHINTERVAL');
+    if(forceUpdateRefreshInterval) forceUpdatePrefs['__MENU_REFRESHINTERVAL__'] = {implied:true};
 
 	var widgetType = menuItem.type;
 	if(widgetType){
@@ -1416,7 +1421,8 @@ ISA_SiteAggregationMenu.Navigator.prototype.classDef = function() {
 							newMenuItem.linkDisabled, 
 							newMenuItem.directoryTitle || "", 
 							ISA_SiteAggregationMenu.getSitetopId(menuItem),
-							newMenuItem.multi || false
+							newMenuItem.multi || false,
+							newMenuItem.refreshInterval || null
 						]),
 						asynchronous: true,
 						onSuccess: function(response){
