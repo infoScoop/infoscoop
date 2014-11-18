@@ -2331,7 +2331,7 @@ IS_Portal.CommandBar = {
 
 			// Exclude Ranking Gadget.
 			itemId = itemId.replace(/_container$/,"");
-			var cmdBarWidget = IS_Portal.getWidget(itemId, IS_Portal.currentTabId);
+			var cmdBarWidget = IS_Portal.getWidget(itemId, IS_Portal.defaultTabId);
 			if(cmdBarWidget){
 				this.commandbarWidgets[itemId] = cmdBarWidget;
 			}

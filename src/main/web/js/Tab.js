@@ -27,6 +27,7 @@ IS_Portal.tabs = new Object();
 // Tab Div list in order of displaying screen
 IS_Portal.tabList = new Array();
 
+IS_Portal.defaultTabId = "tab0";
 IS_Portal.currentTabId = null;
 IS_Portal.addTabDiv;
 
@@ -1249,36 +1250,6 @@ IS_Portal.changeActiveTab = function( changeTab, isInitialize ){
 		}
 	}
 	changePanel.delay(0.001);
-}
-
-if( Browser.isSafari1 ) {
-	IS_Portal.changeActiveTab = ( function() {
-		var changeActiveTab = IS_Portal.changeActiveTab;
-		
-		return function( changeTab ) {
-			var applyPreference = IS_Portal.tabs[changeTab.id].applyPreference;
-			if( applyPreference )
-				IS_Portal.tabs[changeTab.id].applyPreference = false;
-			
-			changeActiveTab.apply( this,$A( arguments ));
-			
-			if( applyPreference )
-				IS_Portal.applyPreference(changeTab.id, true);
-			
-			$H( IS_Portal.widgetLists[changeTab.id] ).entries().each( function( entry ) {
-				var widget = entry.value;
-				if( widget.content && widget.content.repaint ) {
-					function repaint() {
-						if( widget.elm_widget.offsetHeight == 0 )
-							setTimeout( repaint,100 );
-						
-						widget.content.repaint();
-					}
-					setTimeout( repaint,100 );
-				}
-			});
-		}
-	}).apply( IS_Portal );
 }
 
 IS_Portal.adjustStaticWidgetHeight = function(){
