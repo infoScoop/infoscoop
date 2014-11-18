@@ -20,7 +20,7 @@ var msg=new Object();
 msg.PRIORITY_DEBUG=  { id:1, lifetime:60, icon:imageURL+"debug.gif" };
 msg.PRIORITY_LOW=    { id:2, lifetime:300, icon:imageURL+"information.gif" };
 msg.PRIORITY_DEFAULT={ id:3, lifetime:600, icon:imageURL+"error.gif" };
-msg.PRIORITY_HIGH=   { id:4, lifetime:-1, icon:imageURL+"exclamation.gif" };
+msg.PRIORITY_HIGH=   { id:4, lifetime:-1, icon:imageURL+"info-circle.png" };
 
 msg.messages=new Array();
 msg.currentStatus = 2;

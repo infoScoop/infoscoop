@@ -16,16 +16,17 @@
  */
 
 @charset "UTF-8";
-a:link {color: #0000cc; }
+a:link {color: #014761; }
 a:visited { color: #551a8b; }
 a:active { color: #ff0000; }
 
 body{
  margin: 0;
  padding: 0;
+ color: #404040;
  overflow-y: scroll; 
  font-size: 100%;
- font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','ＭＳ Ｐゴシック',sans-serif;
+ font-family:'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
 }
 
 th{
@@ -552,9 +553,23 @@ div#search-iframe div.search_tabs{
 	padding-left: 18px;
 }
 
+/* Logo */
 .infoScoop #portal-logo {
-	margin: 1px 5px;
-	margin: 1px 5px 0px 5px\9;  /* IE8 and below */
-	width: 99%;
+	margin: 0 32px;
+	margin: 0 32px 0 32px\9;  /* IE8 and below */
 	white-space: nowrap; /* for IE */
+}
+
+.infoScoop #portal-logo a{
+	display: inline-block;
+}
+
+.infoScoop #portal-logo-img {
+	vertical-align: middle;
+	height: 26px;
+}
+
+/* Logo */
+.infoScoop #portal-header-container {
+	background-color: #F7F7F7;
 }

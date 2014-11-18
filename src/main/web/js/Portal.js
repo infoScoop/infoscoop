@@ -2394,8 +2394,7 @@ IS_Portal.CommandBar = {
 		if(portalUserMenuBody.childNodes.length != 0){
 			portalUserMenu.title = is_userName? is_userName : "";
 			Element.setStyle(portalUserMenu, {
-				background: 'url(./skin/imgs/user_menu_collapse.gif) no-repeat center right'
-				, cursor: 'pointer'
+				cursor: 'pointer'
 			});
 			
 			//loginID mouseover and mouseout

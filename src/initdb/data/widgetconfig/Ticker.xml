@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widgetConfiguration displayFlag="false" height="1.2em" type="Ticker" title="!{lb_Ticker}" backgroundColor="#FFF5EE">
+<widgetConfiguration displayFlag="false" height="1.2em" type="Ticker" title="!{lb_Ticker}" backgroundColor="#FFFFFF">
 	<WidgetPref datatype="string" display_name="!{lb_dateTimeFormat}" name="dateTimeFormat" value="yyyy/MM/dd HH:mm:ss"/>
 	<UserPref default_value="" datatype="hidden" name="url" display_name="RSS URL" required="true" admin_datatype="url"/>
 	<UserPref default_value="false" display_name="!{lb_doShowDatetime}" datatype="bool" name="date"/>

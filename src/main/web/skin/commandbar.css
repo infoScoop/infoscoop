@@ -258,12 +258,11 @@ div#portal-command > table{
 
 #command-bar{
 	padding-top: 1px;
-	background-color : #eee;
+	background-color : transparent;
 	height: 24px;
 }
 
 .commandbar-item{
-	margin: auto;
 	width: 99%;
 	white-space: nowrap; /* for IE */
 }
@@ -276,15 +275,22 @@ div#portal-command > table{
 	padding-right: 12px;
 	white-space: nowrap;
 	overflow-x: hidden;
+	position: relative;
+}
+
+div#portal-user-menu:after {
+    content: "";
+    position: absolute;  
+    top: 8px;  
+    right: 2px;  border-width: 4px 4px 0;  border-style: solid;  border-color: #777 transparent;
 }
 
 #portal-user-menu-label{
 	height: 18px;
 	_height: 24px;
 	overflow: hidden;
-	padding: 8px 0 0 20px;
+	padding: 0px 0 0 10px;
 	_padding: 5 0 3px 20px; /* for IE */
-	background: url(./imgs/status_offline.gif) center left no-repeat;
 	max-width: 150px;
 }
 
