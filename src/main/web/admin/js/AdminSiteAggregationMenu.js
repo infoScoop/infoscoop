@@ -1111,7 +1111,7 @@ ISA_SiteAggregationMenu.getForceUpdPrefs = function(menuItem){
 	if(forceUpdateTitle) forceUpdatePrefs['__MENU_TITLE__'] = {implied:false};
 	var forceUpdateHref = $F('FUP_HREF');
 	if(forceUpdateHref) forceUpdatePrefs['__MENU_HREF__'] = {implied:true};
-    var forceUpdateRefreshInterval = $F('FUP_REFRESHINTERVAL');
+	var forceUpdateRefreshInterval = $jq("#FUP_REFRESHINTERVAL").prop("checked");
     if(forceUpdateRefreshInterval) forceUpdatePrefs['__MENU_REFRESHINTERVAL__'] = {implied:true};
 
 	var widgetType = menuItem.type;
