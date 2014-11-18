@@ -342,23 +342,29 @@ IS_Portal.SearchEngines = {
 		var p_searchform = $("portal-searchform");
 		if( !p_searchform || configs.length == 0) 
 			return;
-
-		var editSearchOption = $.IMG({
-			id: 'editsearchoption'
-			, src: './skin/imgs/searchform_left.gif'
-			, title: IS_R.lb_searchOption
-		});
 		
-		var searchForm = $.FORM(
-			{name: 'searchForm', id: 'searchForm'}
-			, editSearchOption
-			, $.IMG({id: 'searchIcon'
-				, src: './skin/imgs/portal_search.gif'
-				, title: IS_R.lb_searchOption
-			})
-			, $.INPUT(
-				{id: 'searchTextInput', type: 'text', value:IS_R.lb_search, style: 'color: #ccc;'}
+		var searchBox = $.DIV({id: 'search-input-container'},
+			$.INPUT({id: 'searchTextInput', type: 'text', value:IS_R.lb_search, style: 'color: #ccc;'})
+		);
+		
+		var editSearchOption = $.DIV({id: 'search-option-button-container', title: IS_R.lb_searchOption},
+			$.DIV({id: 'editsearchoption', class: 'search-option-button'},
+				$.SPAN({id: 'search-option-icon'})
 			)
+		);
+		
+		var searchButton = $.DIV({id: 'search-button-container'},
+			$.BUTTON({id: 'search-button'},
+				$.SPAN({id: 'search-icon'})
+			)
+		);
+		
+		var searchForm = $.FORM({name: 'searchForm', id: 'searchForm'}
+			, $.DIV({id: 'search-box-option-container'}
+				, searchBox
+				, editSearchOption
+			)
+			, searchButton
 		);
 		p_searchform.appendChild(searchForm);
 
@@ -388,7 +394,6 @@ IS_Portal.SearchEngines = {
 		IS_Event.observe(searchForm, 'submit', doSearch, false);
 		IS_Event.observe($('searchTextInput'), 'blur', setInitValue, false);
 		IS_Event.observe($('searchTextInput'), 'focus', remInitValue, false);
-		IS_Event.observe($('searchIcon'), 'click', this._showSearchOption.bind(this), false);
 		IS_Event.observe(editSearchOption, 'click', this._showSearchOption.bind(this), false);
 
 		/*

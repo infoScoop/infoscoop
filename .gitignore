@@ -2,9 +2,12 @@ build/
 dist/
 .classpath
 .project
+.gitignore
 *.iml
 *.ipr
 *.iws
 .idea/
 src/main/web/WEB-INF/lib/*.jar
 src/main/web/WEB-INF/classes/
+src/main/web/tablet/
+work/
