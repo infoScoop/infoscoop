@@ -348,7 +348,7 @@ IS_Portal.SearchEngines = {
 		);
 		
 		var editSearchOption = $.DIV({id: 'search-option-button-container', title: IS_R.lb_searchOption},
-			$.DIV({id: 'editsearchoption', class: 'search-option-button'},
+			$.DIV({id: 'editsearchoption', className: 'search-option-button'},
 				$.SPAN({id: 'search-option-icon'})
 			)
 		);
