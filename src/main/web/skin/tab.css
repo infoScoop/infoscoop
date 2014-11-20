@@ -18,69 +18,57 @@
 
 /* tabs */
 .infoScoop #tab-container {
-	padding-top:3px;
-	padding-bottom:2px;
+	background: #0085BE;  
+	background: -webkit-linear-gradient(top,#008BC7 0,#0081B8 100%);
 }
 
 .infoScoop #tabs{
-      display : inline-block;
-      width:100%;
-      font-size:93%;
-      line-height:normal;
-	  border-bottom:1px solid gray;
+    display : inline-block;
+    width:100%;
+    font-size:93%;
+    line-height:normal;
+	border-bottom: 2px solid rgba(0, 86, 132, 0.4);
 }
 
 .infoScoop #tabs .tablink,
 .infoScoop.admin .tabs .tablink {
-	padding:2px 2px 2px 7px;
 	font-size:83%;
 }
-.infoScoop #tabs .tabsRefresh{
-	background: url( ./imgs/refresh.gif ) no-repeat center left;
-	width:16px;
-	height:16px;
-	display : inline-block;
-	position:relative;
-	bottom:-3px;
+.infoScoop #tabs #tabsRefresh, 
+.infoScoop #tabs #tabsRefreshStop {
 	cursor:pointer;
+	float: right;
 }
 
 .infoScoop #tabs ul {
 	margin:0;
 	padding:0;
 	list-style:none;
+	height: 32px;
 }
 .infoScoop #tabs li {
 	position:relative;
-	display : inline-block;
+	display: inline-block;
 	vertical-align: bottom;
-    margin:0;
-    padding:0;
+	margin:0;
+	line-height: 12px;
+	padding-right: 10px;
 }
+
 .infoScoop #tabs div.outer {
 	display: inline-block;
-    background:url("imgs/tableft.gif") no-repeat left top;
-    width:5px;
-    height:23px;
-    margin:0 0 0 2px;
+	width: 10px;
     text-decoration:none;
+	height: 32px;
 }
 .infoScoop #tabs div.inner {
     display:inline-block;
-    background:url("imgs/tabcontents.gif") center top;
-    padding:2px 3px 3px 7px;
 	white-space:nowrap;
-	height:18px;
 	//height:22px;/* for IE */
 	overflow: hidden;
     text-decoration:none;
-}
-.infoScoop #tabs div.parenthesis {
-	display: inline-block;
-    width:5px;
-    height:23px;
-    background:url("imgs/tabright.gif") no-repeat right top;
-    text-decoration:none;
+    line-height: 16px;
+    padding: 8px 0px 8px 0px;
 }
 
 .infoScoop #tabs div.inner table {
@@ -108,33 +96,20 @@
 
 .infoScoop #tabs .tab div.outer {
 	top:0;
-	background-position:0% -24px;
 	cursor:pointer;
 }
 .infoScoop #tabs .tab.selected {
-	top :1px;
+	background-color: #0097d8;
 }
 .infoScoop #tabs .tab.selected div.outer {
-    background-position:0% 0px;
-	cursor:move;
-}
-
-.infoScoop #tabs .tab div.parenthesis {
-	top:0;
-	background-position:100% -24px;
-	cursor:pointer;
-}
-.infoScoop #tabs .tab.selected div.parenthesis {
-    background-position:100% 0px;
+    cursor:move;
 }
 
 .infoScoop #tabs .tab div.inner {
-    background-position:100% -24px;
     cursor:pointer;
 }
 
 .infoScoop #tabs .tab.selected div.inner {
-    background-position:100% 0px;
     _padding-right: 0px;
 }
 
@@ -142,21 +117,18 @@
 	padding-left: 0px;
 }
 .infoScoop #tabs .tab .tabTitle{
-	padding-top: 4.5px;
-	font-weight:bold;
-	font-size:11px;
-	color:gray;
+	font-size: 12px;
+	color: #ffffff;
 	white-space:nowrap;
 }
 .infoScoop #tabs .tab.selected .tabTitle {
-    color:#627EB7;
 }
 .infoScoop #tabs .tab div.inlineBlock {
 	float:left;
 	vertical-align: middle;
 }
 .infoScoop #tabs .tab div.inlineBlock.tabTitleImg {
-	padding-top: 3px;
+	display: inline-block;              
 }
 
 .infoScoop #tabs .Tab_onHover {
@@ -168,40 +140,44 @@
     padding: 0px 5px 0px 5px;
 }
 
+.infoScoop #tabs .tab-operation-icon-container {
+	cursor:pointer;
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 8px;
+}
+
+.infoScoop #tabs .tab-operation-icon {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	padding: 8px 0px 8px 0px;
+}
+
+.infoScoop #tabs #tabsRefresh a.tab-operation-icon {
+	background: url(./imgs/refresh-white.png ) no-repeat center left;
+}
+
 .infoScoop #tabs .addatab {
-	margin-top:5px;
-	font-size: 10px;
-	display : inline-block;
-	text-align:left;
+	float: none;
+	position: relative;
 	cursor:pointer;
 }
-.infoScoop.admin .tabs .addatab {
-	margin-top:5px;
-	font-size: 10px;
-	float:left;
-	text-align:left;
-	cursor:pointer;
+
+.infoScoop #tabs .addatab a.tab-operation-icon {
+	background: url(./imgs/plus.png ) no-repeat center left;
+	margin-left: 10px;
 }
-html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
+
+/*TODO: DELETE this as it seems not to need any more since addatab button is an icon.*/
+/*html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 	display: inline-block;
 	float: none;
 	position: relative;
 	vertical-align: bottom;
-}
-
-.infoScoop #tabs .addatab a,
-.infoScoop.admin .tabs .addatab a {
-	color:#6677dd;
-}
-
-.infoScoop #tabs #tabsRefreshStop {
-	background: url( ./imgs/stopq.gif ) no-repeat center left;
-	width:16px;
-	height:16px;
-	float:left;
-	position:relative;
-	bottom:-3px;
-	cursor:pointer;
+}*/
+.infoScoop #tabs #tabsRefreshStop a.tab-operation-icon {
+	background: url( ./imgs/times-circle.png ) no-repeat center left;
 }
 /*
 .selectedtab .tabIndicator {
@@ -238,9 +214,9 @@ html:not([lang*=""]) .infoScoop #tabs > #tabsUl > .addatab {
 
 
 .infoScoop #tabs .tab .selectMenu {
-	width: 13px;
-	height: 13px;
-	margin: 0px 1px 0px 4px;
+	width: 16px;
+	height: 16px;
+	padding-left: 4px;
 	cursor:pointer;
 	
 	display: none;

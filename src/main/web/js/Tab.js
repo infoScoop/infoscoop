@@ -43,31 +43,14 @@ IS_Portal.buildTabs = function(){
 	tabsUl.id = "tabsUl";
 	tabsDiv.appendChild(tabsUl);
 
-	//Loading all tabs
-	var tabsRefresh = document.createElement("div");
-	tabsRefresh.id = "tabsRefresh";
-	tabsRefresh.className = "tabsRefresh";
-	tabsRefresh.title = IS_R.ms_tabsRefresh;
-	tabsUl.appendChild(tabsRefresh);
-	
-	Event.observe(tabsRefresh, "click",IS_Portal.buildAllTabsContents, false);
-	
-	var tabsRefreshStop = document.createElement("div");
-	tabsRefreshStop.id = "tabsRefreshStop";
-	tabsRefreshStop.title = IS_R.ms_stopRefresh;
-	tabsRefreshStop.style.display = "none";
-	tabsUl.appendChild( tabsRefreshStop );
-	
-	Event.observe( tabsRefreshStop,"click",IS_Portal.stopLoadWidgets,false );
-
 	// Adding tab
 	var addTab = document.createElement("div");
 	IS_Portal.addTabDiv = addTab;
 	addTab.noWrap = "-1";
-	addTab.className = "tablink addatab";
+	addTab.className = "tablink addatab tab-operation-icon-container";
 	addTab.id = "addTab";
 	var addA = document.createElement("a");
-	addA.innerHTML = IS_R.lb_addTabLink;
+	addA.className = "tab-operation-icon";
 	addTab.appendChild(addA);
 	var addTabWithBuildColumns = function(){
 		if( IS_Portal.isTabLoading() )
@@ -86,6 +69,31 @@ IS_Portal.buildTabs = function(){
 	Event.observe(addA, 'click', addTabWithBuildColumns, false);
 	
 	tabsUl.appendChild(addTab);
+	
+	//Loading all tabs
+	var tabsRefresh = document.createElement("div");
+	tabsRefresh.id = "tabsRefresh";
+	tabsRefresh.className = "tabsRefresh tab-operation-icon-container";
+	tabsRefresh.title = IS_R.ms_tabsRefresh;
+	tabsUl.appendChild(tabsRefresh);
+	var tabsRefreshA = document.createElement("a");
+	tabsRefreshA.className = "tab-operation-icon";
+	tabsRefresh.appendChild(tabsRefreshA);
+	
+	Event.observe(tabsRefresh, "click",IS_Portal.buildAllTabsContents, false);
+	
+	var tabsRefreshStop = document.createElement("div");
+	tabsRefreshStop.id = "tabsRefreshStop";
+	tabsRefreshStop.className = "tabsRefreshStop tab-operation-icon-container";
+	tabsRefreshStop.title = IS_R.ms_stopRefresh;
+	tabsRefreshStop.style.display = "none";
+	tabsUl.appendChild( tabsRefreshStop );
+	var tabsRefreshStopA = document.createElement("a");
+	tabsRefreshStopA.className = "tab-operation-icon";
+	tabsRefreshStop.appendChild(tabsRefreshStopA);
+	
+	Event.observe( tabsRefreshStop,"click",IS_Portal.stopLoadWidgets,false );
+	
 	tabsContainer.appendChild(tabsDiv);
 }
 
@@ -278,7 +286,7 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 			tabObj.refresh();
 		}.bindAsEventListener(tab), false, tab.id);
 	} else {
-		var selectMenuImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"bullet_arrow_down.gif", className:"selectMenu"});
+		var selectMenuImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"arrow-circle-o-down.png", className:"selectMenu"});
 		var menuImgDiv = $.DIV({className:"inlineBlock tabTitleImg"}, selectMenuImg);
 		tabBaseDiv.appendChild(menuImgDiv);
 		IS_Event.observe(selectMenuImg, 'click', IS_Portal.showTabMenu.bind(selectMenuImg, tab), false, tab.id);
@@ -290,16 +298,12 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 	}
 	IS_Event.observe(tab, 'mousedown', tabOnMousedown, false, tab.id);
 
-	var parenthesisSpan = document.createElement('div');
-	parenthesisSpan.className = 'parenthesis';
-
 	var tabBase = document.createElement('div');
-	tabBase.style.height = "23px";
-
+	tabBase.className = "tab-base";
+	
 	innerSpan.appendChild(tabBaseDiv);
 	tabBase.appendChild(outerSpan);
 	tabBase.appendChild(innerSpan);
-	tabBase.appendChild(parenthesisSpan);
 	tab.appendChild(tabBase);
 	
 	IS_Portal.setTabDroppable(tab);
