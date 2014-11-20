@@ -572,4 +572,5 @@ div#search-iframe div.search_tabs{
 /* Logo */
 .infoScoop #portal-header-container {
 	background-color: #F7F7F7;
+	border-bottom: 1px solid #f7f7f7;
 }
