@@ -1446,6 +1446,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		this.stopAutoPageLoad = false;
 		
 		var viewport = document.createElement("div");
+		viewport.className = "viewport";
 		viewport.style.position = "relative";
 		viewport.style.width = "100%";
 		
@@ -1464,6 +1465,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		this.renderContext = Object.extend( opt.renderContext || {},{ widget: widget } );
 		
 		var content = document.createElement("div");
+		content.className = "rss-content";
 		viewport.appendChild( content );
 		this.elm_content = content;
 		

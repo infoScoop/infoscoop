@@ -152,7 +152,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			if(header.refresh != 'off'){
 			  visibleIcons.push({
 				type:	"refresh",
-				imgUrl:	"refresh.gif",
+				imgUrl:	"refresh.png",
 				  
 				alt: IS_R.lb_refresh
 			  });
@@ -161,7 +161,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				visibleIcons.push(
 					{
 					  type:  "minimize",
-					  imgUrl: "_.gif",
+					  imgUrl: "minimize.png",
 					  alt: IS_R.lb_minimize
 					});
 				
@@ -177,7 +177,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				visibleIcons.push(
 					{
 					  type:  "maximize",
-					  imgUrl: "maximum.gif",
+					  imgUrl: "maximize.png",
 					  alt: IS_R.lb_maximize
 					});
 			}
@@ -210,7 +210,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		
 		if(!header.disableMenu && (!widget.originalWidget && hiddenIcons && hiddenIcons.length > 0)){
 			//showToolsButton
-			var div =  this.createIconDiv("showTools", "", "show_hidden_icons.gif", "block");
+			var div =  this.createIconDiv("showTools", "", "show_hidden_icons.png", "block");
 			$(div).setStyle({"float":"left"});
 			headerIconDiv.appendChild( div );
 			this.stockEvents("showTools", div);

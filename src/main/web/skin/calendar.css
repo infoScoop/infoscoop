@@ -23,7 +23,7 @@
 	width:16px;
 	left:2px;
 	cursor:pointer;
-	background:url(./imgs/resultset_previous.gif) center center no-repeat;
+	background:url(./imgs/caret-left.png) center center no-repeat;
 }
 
 .infoScoop .widgetContent.Calendar .calnavright {
@@ -34,7 +34,7 @@
 	width:16px;
 	right:2px;
 	cursor:pointer;
-	background:url(./imgs/resultset_next.gif) center center no-repeat;
+	background:url(./imgs/caret-right.png) center center no-repeat;
 }
 
 /* Calendar element styles */

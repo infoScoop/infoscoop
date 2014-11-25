@@ -104,13 +104,14 @@
 
 .infoScoop .widget .widgetHeader {
 	clear:both;
-	padding-top:0px;
-	padding-bottom:0px;
+	padding-top: 2px;
+	padding-bottom: 1px;
+	padding-left: 5px;
 	margin: 0px;
 	font-size:100%;
 	/*background-image:url(./imgs/widget_header.png);*/
 	background-position:bottom;
-	height: 22px;
+	/* height: 22px; */
 	cursor:move;
 	overflow:hidden;
 }
@@ -155,20 +156,24 @@
 }
 
 .infoScoop .widgetHeader .widgetIndicator {
-/*	float:left;*/
 	border:0;
-/*	margin-top:2px;*/
-	vertical-align: text-bottom;
 	cursor:pointer;
+	padding-right: 5px;
+	padding-top: 2px;
 }
+
+.infoScoop .widgetHeader .gadget-icon-container img{
+	padding-right: 5px;
+	padding-top: 2px;
+}
+
 .infoScoop .widgetHeader .widgetTitle {
-	padding-top:2px;
-	padding-left:3px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 	padding-right:5px;
 	font-weight:bold;
-	font-size:14px;
-	line-height:1.2em;
-	height:1.2em;
+	font-size: 12px;
+	line-height: 16px;
 	overflow:hidden;
 	word-break: break-all;
 }

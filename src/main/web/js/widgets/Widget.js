@@ -471,7 +471,6 @@ IS_Widget.prototype.classDef = function() {
 		indicator.id = self.id + "_widgetIndicator";
 		indicator.className = "widgetIndicator";
 		indicator.style.display = "none";
-		indicator.style.verticalAlign = "top";
 		
 	   	var divWidgetContent = document.createElement("div");
 	   	this.elm_widgetContent = divWidgetContent;
@@ -533,13 +532,11 @@ IS_Widget.prototype.classDef = function() {
 		var icon = IS_Widget.getIcon(this.widgetType, {defaultNull:true});
 		if(icon){
 			var favoriteIconDiv = document.createElement("div");
+			favoriteIconDiv.className = "gadget-icon-container";
 			this.elm_favoriteIcon = favoriteIconDiv;
 			var favoriteIconImg = document.createElement("img");
-			favoriteIconImg.style.width = "14px";
-			favoriteIconImg.style.height = "14px";
-			favoriteIconImg.style.paddingTop = "3px";
-			favoriteIconImg.style.paddingLeft = "3px";
-			favoriteIconImg.style.verticalAlign = "top";
+			favoriteIconImg.style.width = "16px";
+			favoriteIconImg.style.height = "16px";
 			favoriteIconImg.style.border = "0px";
 			favoriteIconImg.src = icon;
 			favoriteIconDiv.appendChild(favoriteIconImg);
