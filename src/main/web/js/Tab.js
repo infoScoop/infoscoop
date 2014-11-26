@@ -1347,6 +1347,7 @@ IS_Portal.buildPanel = function(panelNumber, type){
 	panel.style.clear = "both";
 	
 	var table = document.createElement("table");
+	table.id = "panel-table" + panelNumber;
 	panel.appendChild(table);
 	table.style.width = "100%";
 	table.style.cellpadding = "0";

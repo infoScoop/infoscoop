@@ -100,6 +100,27 @@ img{
 	width: 100%;
 }
 
+table[id^="panel-table"] {
+	padding: 15px 15px 15px 7px;
+	border-spacing: 0;
+}
+
+div[id^="static-panel"] {
+	padding-bottom: 12px;
+	margin-bottom: 12px;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+div[id^="dynamic-portal-widgets"] {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+}
+
+div[id^="columns"] {
+	display: table-row;
+}
+
 #portal-header{
 	width: 100%;
 	margin-top: 0px;
@@ -116,26 +137,25 @@ body.fixedPortalHeader #panels .panel{
 }
 
 .column {
-	float: left;
-	margin-top: 5px;
+	display: table-cell;
+	vertical-align: top;
 }
 
 .adjustBarOver {
-	float: left;
-	width: 1%;
 	height: 150px;
 	background: url(./imgs/line.gif) top center repeat-y;
 	cursor: e-resize;
 }
 
 .adjustBarOut {
-	float: left;
-	width: 1%;
 	height: 150px;
 	cursor: e-resize;
 }
 
-
+.adjustBarOver, .adjustBarOut {
+	width: 14px;
+	display: table-cell;
+}
 .dropToParent {
 	width: auto;
 	overflow: hidden;
