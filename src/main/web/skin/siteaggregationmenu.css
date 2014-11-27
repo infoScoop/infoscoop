@@ -26,7 +26,7 @@
 	z-index:11000;
 }
 
-#portal-site-aggregation-menu ul {
+#portal-site-aggregation-menu > ul {
     padding-left: 28px;
 }
 
@@ -37,30 +37,39 @@
 	overflow: hidden;
 }
 
-.menuRefresh {
-	float:right;
-	border:0;
-	width:16px;
-	height:16px;
-	margin-top:2px;
-	margin-bottom:1px;
-	vertical-align:top;
-	cursor:pointer;
-	background: url(./imgs/refresh.png) top left no-repeat;	
-}
+.menuRefresh,
 .menuIndicator {
 	float:right;
 	border:0;
-	margin-top:2px;
-	margin-bottom:1px;
-	vertical-align:top;
+	width:16px;
+	height:28px;
 	cursor:pointer;
+	position: relative;
 }
+
+.menuRefresh .menu-refresh-icon,
+.menuIndicator .menu-indicator-icon {
+	width:16px;
+	height:16px;
+	display: inline-block;
+	position: absolute;
+	top: 6px;
+	right: 0px;
+}
+
+.menuRefresh .menu-refresh-icon {
+	background: url(./imgs/refresh.png) top left no-repeat;	
+}
+
+.menuIndicator .menu-indicator-icon {
+	background: url(./imgs/indicator.gif) top left no-repeat;
+}
+
 #portal-site-aggregation-menu .topMenuLi{
 	float:left;
 	display:block;
 	padding: 0px 20px 0px 0px;
-	line-height: 34px;
+	line-height: 28px;
 }
 
 a.topMenuItem:link,
@@ -71,31 +80,26 @@ a.topMenuItem:active
 	color: #737373;
 	text-decoration : none;
 	cursor: pointer;
-	font-weight: normal;
-
 }
 a.topMenuItem {
-	border-collapse: collapse;
 	white-space: nowrap;
-	background-repeat: repeat-x;
 	display:block;
 }
 
 a.topMenuItem:hover {
-	border-collapse: collapse;
-	BACKGROUND-IMAGE: url(./imgs/lev0_bg2.png);
-	background-repeat: repeat-x;
+	color: #404040;
 	display:block;
 }
 
-ul.menuGroup,
-ul.menuGroup ul{
+#portal-site-aggregation-menu ul.menuGroup,
+#portal-site-aggregation-menu ul.menuGroup ul{
 	width:100px;
-	background-color:#F6F6F6;
-	border:1px solid #999;
-	border-width: 1px 1px 3px 1px;
-	padding:1px;
+	background-color:#fff;
+	border:1px solid #cccccc;
+	padding: 8px 10px 0px;
 	display:block;
+	box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2);
+	line-height: normal;
 }
 
 ul.floatMenuGroup,
@@ -150,7 +154,7 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 .menuTitle a:link,
 .menuTitle a:visited,
 .menuTitle .scriptlink{
-	COLOR: #5286BB;
+	COLOR: #0085be;
 	text-decoration : none;
 	cursor: pointer;
 }
@@ -175,6 +179,7 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 	background: top left no-repeat;
 	width:16px;
 	height: 16px;
+	margin-right: 3px;
 }
 
 .menuItemIcon_dropped {
@@ -240,7 +245,7 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 }
 
 .menuHeader td{
-	color:#000000;
+	color:#404040;
 	white-space:nowrap;
 }
 .menufolderfeed {

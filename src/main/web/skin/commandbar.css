@@ -257,9 +257,10 @@ div#portal-command > table{
 }
 
 #command-bar{
-	padding-top: 1px;
 	background-color : transparent;
 	height: 24px;
+	color: #737373;
+	padding: 10px 32px 5px 0px;
 }
 
 .commandbar-item{
@@ -278,11 +279,21 @@ div#portal-command > table{
 	position: relative;
 }
 
-div#portal-user-menu:after {
-    content: "";
-    position: absolute;  
-    top: 8px;  
-    right: 2px;  border-width: 4px 4px 0;  border-style: solid;  border-color: #777 transparent;
+#portal-user-menu:after {
+	content: "";
+	position: absolute;  
+	top: 8px;  
+	right: 2px;  border-width: 4px 4px 0;
+	border-style: solid;
+	border-color: #777 transparent;
+}
+
+#portal-user-menu.active {
+	color: #404040;
+}
+
+#portal-user-menu.active:after {
+	border-color: #404040 transparent;
 }
 
 #portal-user-menu-label{
@@ -298,14 +309,15 @@ div#portal-user-menu:after {
 	position: absolute;
 	background-color: #fff;
 	z-index: 100000;
-	border: solid 1px #aaa;
+	border: 1px solid #cccccc;
+	padding: 8px;
+	box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2);  
 }
 
 div.portal-user-menu-item{
 	clear: both;
-	border-bottom: 1px solid #ddd;
 	width: 100%;
-	color: #000;
+	color: #404040;
 }
 
 a.portal-user-menu-link{
@@ -318,18 +330,18 @@ a.portal-user-menu-link{
 }
 
 a.portal-user-menu-link:hover{
-	color: #fff;
-	background-color: #5286BB;
+	color: #404040;
+	background-color: #eeeeee;
 	text-decoration: none;
 	cursor: pointer;
 }
 
 a.portal-user-menu-link:visited{
-	color: #000;
+	color: #404040;
 }
 
 a.portal-user-menu-link:visited:hover{
-	color: #fff;
+	color: #404040;
 }
 
 .portal-user-menu-item-label{
@@ -339,6 +351,7 @@ a.portal-user-menu-link:visited:hover{
 	float: left;
 	white-space: nowrap;
 	line-height: 1.5em;
+	color: #404040;
 }
 
 .user-link{
@@ -375,4 +388,10 @@ select#font-size-select{
 	margin-top: 2px;
 	_margin:1px; /* for IE layout */
 	float: left;
+}
+
+/* message console*/
+#messageIcon {
+	vertical-align: bottom;
+	padding: 4px 0px 4px 5px;
 }

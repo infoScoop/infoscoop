@@ -89,6 +89,7 @@ IS_MySiteMap.prototype = {
 		Event.observe(hideAll, 'click', this.attachShowHideEventHandler.bind(this, false, showAll, hideAll),false,"_widgetsMap");
 	},
 	renderRefreshButton: function( container ) {
+		container.className = "refresh-button-container"
 		var button = document.createElement("div");
 		button.className = "menuRefresh";
 

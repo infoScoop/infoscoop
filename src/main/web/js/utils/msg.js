@@ -17,10 +17,10 @@
 
 var msg=new Object();
 
-msg.PRIORITY_DEBUG=  { id:1, lifetime:60, icon:imageURL+"debug.gif" };
-msg.PRIORITY_LOW=    { id:2, lifetime:300, icon:imageURL+"information.gif" };
-msg.PRIORITY_DEFAULT={ id:3, lifetime:600, icon:imageURL+"error.gif" };
-msg.PRIORITY_HIGH=   { id:4, lifetime:-1, icon:imageURL+"info-circle.png" };
+msg.PRIORITY_DEBUG=  { id:1, lifetime:60, icon:imageURL+"debug.png" };
+msg.PRIORITY_LOW=    { id:2, lifetime:300, icon:imageURL+"information.png" };
+msg.PRIORITY_DEFAULT={ id:3, lifetime:600, icon:imageURL+"warning.png" };
+msg.PRIORITY_HIGH=   { id:4, lifetime:-1, icon:imageURL+"error.png" };
 
 msg.messages=new Array();
 msg.currentStatus = 2;

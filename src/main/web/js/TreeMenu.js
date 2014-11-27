@@ -75,7 +75,12 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 		if(!IS_SidePanel.SiteMap.isInitialize) {
 			refreshButton = document.createElement("div");
 			refreshButton.className = "menuRefresh";
-			container.appendChild( refreshButton );
+			var refreshButtonContainer = document.createElement("div");
+			refreshButtonContainer.className ="refresh-button-container";
+			refreshButtonContainer.appendChild(refreshButton);
+			
+			container.appendChild( refreshButtonContainer );
+			
 			Event.observe(refreshButton,'click',IS_SidePanel.SiteMap.refreshTreeMenu,false,"_sidemenu" );
 
 			showAll = document.createElement("div");
@@ -87,6 +92,7 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 			hideAll.appendChild(document.createTextNode(IS_R.lb_closeAll));
 			hideAll.style.display = "none";
 
+			
 			container.appendChild(showAll);
 			container.appendChild(hideAll);
 

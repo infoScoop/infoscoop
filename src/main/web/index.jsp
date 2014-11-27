@@ -287,7 +287,7 @@
 								</div>
 							</div>
 						</td>
-						<td width="16px"><img id="messageIcon" src="<%=staticContentURL%>/skin/imgs/information.gif" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();"/></td>
+						<td width="16px"><img id="messageIcon" src="<%=staticContentURL%>/skin/imgs/information.png" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();"/></td>
 					</tr>
 				</tbody>
 			</table>

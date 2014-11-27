@@ -2399,21 +2399,12 @@ IS_Portal.CommandBar = {
 			
 			//loginID mouseover and mouseout
 			Event.observe(portalUserMenu, "mouseover", function(){
-				// change background color to white
 				if($("portal-user-menu-body").style.display != 'none') return;
-				//TODO write in css if possible
-				Element.setStyle($("portal-user-menu"),{
-					backgroundColor : '#5286BB'
-					, color : '#fff'
-				});
+				Element.addClassName($("portal-user-menu"), "active");
 			});
 			
 			var menu_mouseout = function(){
-				// change background color to normal
-				Element.setStyle($("portal-user-menu"),{
-					backgroundColor : ''
-					, color : ''
-				});
+				Element.removeClassName($("portal-user-menu"), "active");
 			};
 			Event.observe(portalUserMenu, "mouseout", menu_mouseout);
 			
