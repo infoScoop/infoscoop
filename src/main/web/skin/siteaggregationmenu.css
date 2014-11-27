@@ -27,7 +27,8 @@
 }
 
 #portal-site-aggregation-menu > ul {
-    padding-left: 28px;
+    padding-left: 22px;
+    /* padding-right: 1000px; */
 }
 
 #portal-site-aggregation-menu{
@@ -45,6 +46,7 @@
 	height:28px;
 	cursor:pointer;
 	position: relative;
+	margin-right: 32px;
 }
 
 .menuRefresh .menu-refresh-icon,
@@ -68,7 +70,7 @@
 #portal-site-aggregation-menu .topMenuLi{
 	float:left;
 	display:block;
-	padding: 0px 20px 0px 0px;
+	padding: 0px 10px 0px 10px;
 	line-height: 28px;
 }
 
