@@ -178,6 +178,10 @@
 	word-break: break-all;
 }
 
+.infoScoop .widgetHeader .widgetTitle a {
+	color: #287EB8;
+}
+
 .infoScoop .widgetHeader .headerIcon {
 	border:0;
 	margin-top:2px;
@@ -212,9 +216,11 @@
 
 .infoScoop .widgetMenu {
 	position: absolute;
-	border: 1px solid gray;
+	border: 1px solid rgba(0,0,0,.2);
 	background-color: white;
 	z-index:50;
+	box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2);
+	padding: 8px;
 }
 
 .infoScoop .widgetMenuCloser {

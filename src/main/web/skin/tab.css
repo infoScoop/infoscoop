@@ -38,6 +38,7 @@
 .infoScoop #tabs #tabsRefreshStop {
 	cursor:pointer;
 	float: right;
+	margin-right: 19px;
 }
 
 .infoScoop #tabs ul {
@@ -45,6 +46,7 @@
 	padding:0;
 	list-style:none;
 	height: 32px;
+	padding-left: 30px;
 }
 .infoScoop #tabs li {
 	position:relative;
@@ -237,9 +239,6 @@
 
 .infoScoop .tabMenu {
 	position: absolute;
-	border-left: 1px solid gray;
-	border-right: 1px solid gray;
-	border-bottom: 1px solid gray;
 	background-color: white;
 	z-index:50;
 	overflow: hidden;
@@ -250,6 +249,9 @@
 	padding-left: 0px;
 	margin-top: 0px;
 	margin-left: 0px;
+	border: 1px solid rgba(0,0,0,.2);
+	box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2);
+	padding: 8px;
 }
 
 .infoScoop .tabMenu .item,
@@ -259,7 +261,6 @@
 	line-height: 17px;
 	padding: 2px 1px 1px 1px;
 	text-decoration : none;
-	border-bottom: 1px solid #EEE;
 }
 .infoScoop .tabMenu div.item,
 .infoScoop .widgetMenu div.item {
@@ -268,13 +269,12 @@
 .infoScoop .tabMenu a.item,
 .infoScoop .widgetMenu a.item {
 	display: block;
-	color: #6677DD;
+	color: #404040;
 	cursor: pointer;
 }
 .infoScoop .tabMenu a.item:hover,
 .infoScoop .widgetMenu a.item:hover {
-	color: white;
-	background-color: #5286BB;
+	background-color: #eeeeee;
 }
 .infoScoop .tabMenu .item .content {
 	padding-left: 18px;

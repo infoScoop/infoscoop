@@ -915,7 +915,6 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			var className = opt.className || "";
 			
 			var borderDiv = document.createElement("div");
-			borderDiv.style.borderBottom = '1px solid #EEE';
 			
 			var itemDiv = document.createElement( opt.anchor ? "a":"span");
 			itemDiv.className = className + " item";
