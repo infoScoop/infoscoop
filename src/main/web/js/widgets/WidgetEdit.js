@@ -25,7 +25,6 @@ IS_Widget.WidgetEdit = function (widget) {
 		var divWidgetEditHeader = widget.elm_widgetEditHeader;
 		var editStyle = divWidgetEditHeader.style;
 		editStyle.position = "absolute";
-		editStyle.border = "1px solid gray";
 		divWidgetEditHeader.parentNode.removeChild(divWidgetEditHeader);
 		document.body.appendChild(divWidgetEditHeader);
 		IS_Event.observe(document, "mouseup", function(e){
