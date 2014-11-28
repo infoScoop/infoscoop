@@ -84,10 +84,10 @@
 	cursor: pointer;
 }
 .mySiteMap .tabListItem.openTab .tabName {
-	background: url("./imgs/mysitemap_tab_open.gif") no-repeat scroll left top;
+	background: url("./imgs/caret-down.png") no-repeat scroll left top;
 }
 .mySiteMap .tabListItem.closeTab .tabName {
-	background: url("./imgs/mysitemap_tab_close.gif") no-repeat scroll left top;
+	background: url("./imgs/caret-right.png") no-repeat scroll left top;
 }
 .mySiteMap .tabListItem.emptyTab .tabName {
 	cursor: default;
@@ -95,7 +95,7 @@
 
 .mySiteMap .tabListItem a.label {
 	display: block;
-	color: #6677DD;
+	color: #0285B5;
 }
 
 .mySiteMap .tabWidgetList,.mySiteMap .tabSubWidgetList {
@@ -108,8 +108,7 @@
 	padding-left: 20px;
 }
 .mySiteMap .tabWidgetListItem {
-	margin-top: 2;
-	margin-bottom: 2;
+	margin-bottom: 3px;
 }
 .mySiteMap .tabWidgetListItem .widgetName {
 	cursor: pointer;

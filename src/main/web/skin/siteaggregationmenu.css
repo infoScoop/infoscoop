@@ -41,12 +41,10 @@
 .menuRefresh,
 .menuIndicator {
 	float:right;
-	border:0;
 	width:16px;
-	height:28px;
+	height:16px;
 	cursor:pointer;
 	position: relative;
-	margin-right: 19px;
 }
 
 .menuRefresh .menu-refresh-icon,
@@ -55,8 +53,18 @@
 	height:16px;
 	display: inline-block;
 	position: absolute;
+}
+
+#portal-site-aggregation-menu .menuRefresh,
+#portal-site-aggregation-menu .menuIndicator {
+	margin-right: 19px;
+	height:28px;
+	border:0;
+}
+
+#portal-site-aggregation-menu .menu-refresh-icon,
+#portal-site-aggregation-menu .menu-indicator-icon {
 	top: 6px;
-	right: 0px;
 }
 
 .menuRefresh .menu-refresh-icon {

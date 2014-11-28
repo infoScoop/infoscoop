@@ -74,21 +74,21 @@ IS_SidePanel.SiteMap.prototype.classDef = function () {
 
 		if(!IS_SidePanel.SiteMap.isInitialize) {
 			refreshButton = document.createElement("div");
-			refreshButton.className = "menuRefresh";
-			var refreshButtonContainer = document.createElement("div");
-			refreshButtonContainer.className ="refresh-button-container";
-			refreshButtonContainer.appendChild(refreshButton);
+			refreshButton.className = "menuRefresh is-button";
+			var refreshButtonChild = document.createElement("span");
+			refreshButtonChild.className ="menu-refresh-icon is-button-icon";
+			refreshButton.appendChild(refreshButtonChild);
 			
-			container.appendChild( refreshButtonContainer );
+			container.appendChild( refreshButton );
 			
 			Event.observe(refreshButton,'click',IS_SidePanel.SiteMap.refreshTreeMenu,false,"_sidemenu" );
 
 			showAll = document.createElement("div");
-			showAll.className = "showAll";
+			showAll.className = "showAll is-button";
 			showAll.appendChild(document.createTextNode(IS_R.lb_deployAll));
 
 			hideAll = document.createElement("div");
-			hideAll.className = "hideAll";
+			hideAll.className = "hideAll is-button";
 			hideAll.appendChild(document.createTextNode(IS_R.lb_closeAll));
 			hideAll.style.display = "none";
 

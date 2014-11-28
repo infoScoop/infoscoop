@@ -75,13 +75,13 @@ IS_MySiteMap.prototype = {
 		container.appendChild( refresh );
 				
 		var showAll = document.createElement("div");
-		showAll.className = "showAll";
+		showAll.className = "showAll is-button";
 		showAll.appendChild(document.createTextNode(IS_R.lb_deployAll));
 		showAll.style.display = "none";
 		container.appendChild( showAll );
 		
 		var hideAll = document.createElement("div");
-		hideAll.className = "hideAll";
+		hideAll.className = "hideAll is-button";
 		hideAll.appendChild(document.createTextNode(IS_R.lb_closeAll));
 		container.appendChild( hideAll );
 		
@@ -91,12 +91,15 @@ IS_MySiteMap.prototype = {
 	renderRefreshButton: function( container ) {
 		container.className = "refresh-button-container"
 		var button = document.createElement("div");
-		button.className = "menuRefresh";
-
+		button.className = "menuRefresh is-button";
 		button.title = IS_R.lb_refresh;
+		
+		var buttonChild = document.createElement("span");
+		buttonChild.className = "menu-refresh-icon is-button-icon";
 		
 		Event.observe( button,"click",this.rebuild.bind( this ));
 		
+		button.appendChild(buttonChild);
 		container.appendChild( button );
 	},
 	emptyTabs : [],

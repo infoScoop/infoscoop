@@ -37,8 +37,8 @@ IS_SidePanel.buildAddContents = function() {
 
 	var inputURLBoxDiv = document.createElement("div");
 	var inputURLBox = document.createElement("input");
+	inputURLBox.id = "input-url-box";
 	inputURLBox.type = "text";
-	inputURLBox.style.width = "92%";
 	inputURLBox.maxLength = 2000;
 	inputURLBoxDiv.appendChild(inputURLBox);
 	container.appendChild(inputURLBoxDiv);
@@ -51,10 +51,10 @@ IS_SidePanel.buildAddContents = function() {
 	previewButtonDiv.appendChild( previewIndicator );
 	
 	var previewButton = document.createElement("input");
+	previewButton.id = "preview-button";
 	previewButton.type = "button";
 	previewButton.value = IS_R.lb_preview;
 	previewButtonDiv.appendChild( previewButton );
-	previewButtonDiv.style.width = "92%";
 	container.appendChild(previewButtonDiv);
 
 	//Example of URL input：
@@ -62,13 +62,13 @@ IS_SidePanel.buildAddContents = function() {
 	//Web site：http://www.beacon-it.co.jp/
 	//Google gadget：http://infoscoopdemo.beacon-it.co.jp/HelloGadget.xml
 	var exampleDiv = document.createElement("div");
+	exampleDiv.id = "url-example";
 	exampleDiv.style.overflow = "hidden";
-	exampleDiv.style.color = "black";
 	exampleDiv.appendChild( document.createTextNode(IS_R.lb_urlExample) );
 	
 	function addExample(label ,url){
 		var div = document.createElement("div");
-		div.style.width = "92%";
+		//div.style.width = "92%";
 		div.appendChild(document.createTextNode(label));
 		var input = document.createElement("input");
 		input.value = url;
@@ -87,7 +87,7 @@ IS_SidePanel.buildAddContents = function() {
 	var addContentPanel = document.createElement("div");
 	addContentPanel.style.display = "none";
 	addContentPanel.style.marginTop = "5px";
-	addContentPanel.style.width = "92%";
+	//addContentPanel.style.width = "92%";
 	container.appendChild( addContentPanel );
 	
 	var addContents = document.createElement("div");
@@ -324,7 +324,6 @@ IS_SidePanel.buildAddContents = function() {
 				
 				var menuPathDiv = document.createElement("div");
 				menuPathDiv.style.fontSize = "9pt";
-				menuPathDiv.style.color = "black";
 				menuPathDiv.title = menuItem.getPaths().join("/");
 				menuPathDiv.appendChild(document.createTextNode( IS_R.ms_previewMenuPath));
 				_previewItem.appendChild(menuPathDiv);
@@ -368,7 +367,6 @@ IS_SidePanel.buildAddContents = function() {
 			var widgetBody;
 			if(widget){
 				previewDiv.style.fontSize = "100%";
-				previewDiv.style.color = "#000";
 				widget.elm_widgetHeader.style.fontSize = "16px";
 				widgetBody = widget.elm_widget;
 				IS_SidePanel.previewWidgetList.push( widget );

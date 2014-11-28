@@ -29,6 +29,10 @@ body{
  font-family:'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
 }
 
+input, textarea, keygen, select, button {
+	color: #404040;
+}
+
 th{
  font-size: 100%;
 }
@@ -59,6 +63,28 @@ input[type="text"], input[type="password"], textarea, select {
 	-moz-box-sizing: border-box; /* Firefox */
 	-webkit-box-sizing: border-box; /* Webkit */
 	box-sizing: border-box;
+}
+
+input[type=button], .is-button {
+	color: #737373;
+	padding: 0.4em 0.6em;
+	font-size: 12px;
+	background-color: #f5f5f5;
+	background-image: -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
+	border-radius: 2px;
+	border: 1px solid rgba(0,0,0,0.1);
+}
+
+input[type=text] {
+	padding: 0.4em 0.4em 0.3em;
+	font-size: 13px;
+	background-color: #ffffff;
+	border: 1px solid rgba(0,0,0,0.1);
+}
+
+.is-button > .is-button-icon {
+	top: 5px;
+	right: 7px;
 }
 
 img{
@@ -340,20 +366,40 @@ div[id^="control_window_"] {
 }
 
 .SidePanel_AddContents {
-	margin:		0px;
-	padding:	2px;
+	margin: 8px;
+	padding: 0px;
 	padding-top:	5px;
 	padding-bottom:	5px;
 	padding-right:	2%;
 	font-size: 0.8em;
-	color: #7777cc;
 	/*border-bottom:	1px dashed	#AAA;*/
 }
+
+#input-url-box {
+	margin-top: 0.3em;
+	width: 100%;
+}
+
+#preview-button {
+	margin-top: 0.4em;
+}
+
+#url-example,
+#url-example .addContentsEx {
+	color:#737373;
+}
+
+#url-example {
+margin-top: 2px;
+margin-bottom: 2px;
+}
+
 .addContentsEx {
 	width: 100%;
 	border: 0;
 	padding-left: 5px;
-	background-color: #F8F8FF;
+	background-color: #f7f7f7;
+	font-size: 12px;
 }
 
 
