@@ -75,14 +75,15 @@ Event.observe(window, 'resize', function(){
 IS_Portal.start = function() {
 	var self = this;
 
-	if(defaultTheme){
-		try{
-			IS_Portal.theme.defaultTheme = eval( '(' + defaultTheme + ')' );
-		}catch(e){
-			msg.error('The defaultTheme property is invalid, please contact to administrator:' + e);
-		}
-	}
-	IS_Portal.theme.setTheme(IS_Portal.theme.currentTheme);
+// Disable old theme function #16405
+//	if(defaultTheme){
+//		try{
+//			IS_Portal.theme.defaultTheme = eval( '(' + defaultTheme + ')' );
+//		}catch(e){
+//			msg.error('The defaultTheme property is invalid, please contact to administrator:' + e);
+//		}
+//	}
+//	IS_Portal.theme.setTheme(IS_Portal.theme.currentTheme);
 	
 	IS_Portal.startIndicator('portal-maincontents-table');
 	
