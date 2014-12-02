@@ -28,7 +28,7 @@
 }
 
 .infoScoop .RssReader .rssPubDate {
-	color:gray;
+	color: #999999;
 	font-size:75%;
 	word-break:break-all;
 	padding-left: 7px;

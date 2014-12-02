@@ -33,12 +33,13 @@ input, textarea, keygen, select, button {
 	color: #404040;
 }
 
-th{
- font-size: 100%;
+th {
+	font-size: 100%;
 }
 
-td{
- font-size: 100%;
+td {
+	font-size: 100%;
+	padding: 0px;
 }
 
 a
@@ -96,7 +97,7 @@ img{
 	background-color: #ffffe0;
 	color: olive;
 	font-size: 80%;
-	padding: 2px;
+	padding: 5px 32px;
 }
 #message-bar {
 	background-color: #ffffe0;

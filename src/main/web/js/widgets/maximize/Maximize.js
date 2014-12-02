@@ -279,6 +279,11 @@ IS_Widget.Maximize.setupMaximizeView = function() {
 	//$("panels").style.display = "none";
 	
 	$("maximize-panel").style.display = "block";
+	
+	/* To show a border as a minimizxed tab bar instead */
+	var portalMaincontentsTable = $("portal-maincontents-table");
+	portalMaincontentsTable.className = "maximized";
+	
 	setTimeout( IS_Widget.Maximize.adjustMaximizeHeight.bind( IS_Widget.Maximize ),100);
 	setTimeout( IS_Widget.Maximize.adjustMaximizeWidth.bind( IS_Widget.Maximize ),100);
     
@@ -300,6 +305,11 @@ IS_Widget.Maximize.restoreMaximizeView = function() {
 	    	panel.style.visibility = "visible";
 		}
 	}
+	
+	/* To remove a border, a minimizxed tab bar*/
+	var portalMaincontentsTable = $("portal-maincontents-table");
+	portalMaincontentsTable.removeClassName("maximized");
+	
 	//$("panels").style.display = "";
 	
 //	IS_Portal.setFontSize();

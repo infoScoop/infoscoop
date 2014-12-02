@@ -219,12 +219,12 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		filterContent.id = "filterContent_"+widget.id;
 
 		var filterForm = IS_Widget.RssReader.RssItemRender.createTable(5,2);
-		filterForm.style.backgroundColor = "#eeeeee";
-		filterForm.style.margin = "1px";
-		filterForm.style.height = "auto";
+		filterForm.className = "filter-form";
+		filterForm.style.width = "";
 		filterContent.appendChild( filterForm );
 
 		var titleRow = filterForm.firstChild.childNodes[0];
+		titleRow.childNodes[0].className = "filter-by";
 		titleRow.childNodes[0].style.fontSize = "9pt";
 		titleRow.childNodes[0].style.whiteSpace = "nowrap";
 		titleRow.childNodes[0].appendChild( document.createTextNode(
@@ -237,11 +237,11 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		var titleInput = document.createElement("input");
 		titleInput.id = "filterFormTitle_"+widget.id;
 		titleInput.type = "text";
-		titleInput.style.width = "100%";
 		//titleInput.style.border = "1px solid #666";
 		titleDiv.appendChild( titleInput );
 		
 		var creatorRow = filterForm.firstChild.childNodes[1];
+		creatorRow.childNodes[0].className = "filter-by";
 		creatorRow.childNodes[0].style.fontSize = "9pt";
 		creatorRow.childNodes[0].style.whiteSpace = "nowrap";
 		creatorRow.childNodes[0].appendChild( document.createTextNode(
@@ -255,7 +255,6 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		var creatorInput = document.createElement("input");
 		creatorInput.id = "filterFormCreator_"+widget.id;
 		creatorInput.type = "text";
-		creatorInput.style.width = "100%";
 		//creatorInput.style.border = "1px solid #666";
 		creatorDiv.appendChild( creatorInput );
 		
@@ -276,6 +275,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		});
 		
 		var dateRow = filterForm.firstChild.childNodes[2];
+		dateRow.childNodes[0].className = "filter-by";
 		dateRow.childNodes[0].style.fontSize = "9pt";
 		dateRow.childNodes[0].style.whiteSpace = "nowrap";
 		dateRow.childNodes[0].appendChild( document.createTextNode(
@@ -309,6 +309,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		this.datePulldown = datePulldown;
 		
 		var categoryRow = filterForm.firstChild.childNodes[3];
+		categoryRow.childNodes[0].className = "filter-by";
 		categoryRow.childNodes[0].style.fontSize = "9pt";
 		categoryRow.childNodes[0].style.whiteSpace = "nowrap";
 		categoryRow.childNodes[0].appendChild( document.createTextNode(IS_R.lb_category ));
@@ -319,7 +320,6 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		var categoryInput = document.createElement("input");
 		categoryInput.id = "filterFormCategory_"+widget.id;
 		categoryInput.type = "text";
-		categoryInput.style.width = "100%";
 		//categoryInput.style.border = "1px solid #666";
 		categoryDiv.appendChild( categoryInput );
 		
@@ -327,9 +327,9 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		var okButton = document.createElement("input");
 		okButton.type = "button";
 		okButton.value = 'OK';
+		buttonRow.childNodes[1].className = "button-td"
 		buttonRow.childNodes[1].appendChild(okButton);
 		var saveMessageSpan = document.createElement('span');
-		saveMessageSpan.style.fontSize = '80%';
 		saveMessageSpan.appendChild(document.createTextNode(IS_R.lb_saveFilterSetting));
 		buttonRow.childNodes[1].appendChild(saveMessageSpan);
 		IS_Event.observe(okButton, "click",

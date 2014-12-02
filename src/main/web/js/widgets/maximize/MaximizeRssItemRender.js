@@ -83,14 +83,11 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 		
 		if( init ) {
 			this.containerTr = document.createElement("div");
-			this.containerTr.style.paddingLeft = '2px';
-			this.containerTr.style.paddingBottom = this.containerTr.style.paddingTop = 0;
-			this.containerTr.style.borderBottom = "1px solid #CCC";
+			this.containerTr.className = "entry";
 			this.containerTr.__key__ = this.key;
 
 			this.rssItemTitleBox = document.createElement("div");
 			this.rssItemTitleBox.className = "rssItemTitleBox";
-			this.rssItemTitleBox.style.paddingTop = "1.5px";
 			this.rssItemTitleBox.style.paddingRight = "1px";
 			this.containerTr.appendChild( this.rssItemTitleBox);
 			
@@ -108,7 +105,7 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 		if( rssItem.selected ) {
 			bgColor = "#BCCCE7";
 		} else {
-			bgColor = ( itemNumber %2 == 0 ? "#FFFFFF":"#FFFFFF")
+			//bgColor = ( itemNumber %2 == 0 ? "#FFFFFF":"#FFFFFF")
 		}
 		this.containerTr.style.backgroundColor = bgColor;
 		
@@ -130,9 +127,6 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 		this.buildRssItemDiv( widget,opt,true );
 			
 		if( init ) {
-			this.textTitle.style.cursor = 'pointer';
-			this.textTitle.style.color = '#0000dd';
-			
 			this.atomPubCheckbox = document.createElement("input");
 			this.atomPubCheckbox.type = "checkbox";
 			this.atomPubCheckbox.className = "atomPubCheckbox";
@@ -201,15 +195,13 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 	}
 	this.mouseover = function(){
 		if( this.widget && this.widget.maximizeRender.selectedItem != this.rssItem ){
-			this.tempBgColor = this.containerTr.style.backgroundColor;
-			this.containerTr.style.backgroundColor = '#E0E0F7';
+			this.containerTr.className = "entry hover";
 		}
 	}
 	
 	this.mouseout = function(){
-		if( this.widget && this.widget.maximizeRender.selectedItem != this.rssItem && this.tempBgColor ){
-			this.containerTr.style.backgroundColor = this.tempBgColor;
-			this.tempBgColor = "#E0E0F7";
+		if( this.widget && this.widget.maximizeRender.selectedItem != this.rssItem ){
+			this.containerTr.removeClassName("hover");
 		}
 	}
 	

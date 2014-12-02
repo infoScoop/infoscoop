@@ -209,6 +209,7 @@
 	padding-right: 2px;
 	border: 1px solid #6F7866;;
 	white-space:nowrap;
+	line-height: 22px;
 }
 .infoScoop .widgetHeader .headerIcon_turnbackMaximize span {
 	margin-left: 1px;

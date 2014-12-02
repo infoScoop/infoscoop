@@ -53,15 +53,14 @@
 }
 .pulldown_list {
 	display: none;
-	
-	border: 1px solid black;
+	border: 1px solid rgba(0, 0, 0, 0.3);
 	overflow: hidden;
 	position: absolute;
-	color: black;
 	background-color: white;
 	padding: 1px;
 	cursor: pointer;
 	font-size: 0.8em;
+	z-index: 100;
 }
 .pulldown_list_popup {
 	display: block;
