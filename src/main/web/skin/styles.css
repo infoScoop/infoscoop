@@ -27,6 +27,7 @@ body{
  overflow-y: scroll; 
  font-size: 100%;
  font-family:'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
+ background: #d6d6d6;
 }
 
 input, textarea, keygen, select, button {
@@ -135,7 +136,7 @@ table[id^="panel-table"] {
 div[id^="static-panel"] {
 	padding-bottom: 12px;
 	margin-bottom: 12px;
-	border-bottom: 1px solid #e0e0e0;
+	border-bottom: 1px solid rgba(0, 0, 0,0.04);
 }
 
 div[id^="dynamic-portal-widgets"] {

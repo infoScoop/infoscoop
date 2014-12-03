@@ -67,9 +67,9 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	}
 	this.buildContents = function () {
 		headerDiv = document.createElement("div");
-		headerDiv.style.width = "100%";
+		headerDiv.className = "widget-header-inner";
+		headerDiv.style.height = "28px";
 		headerDiv.style.position = "relative";
-		headerDiv.style.height = "19px";
 		headerDiv.style.overflow = "hidden";
 		widget.elm_widgetHeader.appendChild(headerDiv);
 		
