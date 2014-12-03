@@ -504,10 +504,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			
 			var labelText = document.createElement("span");
 			labelText.appendChild(document.createTextNode( IS_R.lb_turnbackMaximize ));
-				
-			labelText.style.position = "relative";
-			labelText.style.top = "-1px";
-			labelText.style.verticalAlign = "bottom";
 			
 			labelDiv.appendChild(labelText);
 			

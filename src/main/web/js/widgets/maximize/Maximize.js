@@ -249,7 +249,7 @@ IS_Widget.Maximize.getMaximizeConfiguration = function( widgetConf ) {
 	maximizeHeader.icon.push(
 		  {
 			type:	"turnbackMaximize",
-			imgUrl:	"turnback.gif",
+			imgUrl:	"back.png",
 
 			alt: IS_R.lb_turnback
 		  });
