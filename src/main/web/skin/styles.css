@@ -309,6 +309,7 @@ div[id^="control_window_"] {
 	overflow-x: hidden;
 	position: absolute;
 	margin-right: 5px;
+	background-color: #ffffff;
 }
 
 #siteMenuOpenTd {
