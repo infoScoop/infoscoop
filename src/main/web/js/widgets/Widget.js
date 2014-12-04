@@ -445,7 +445,7 @@ IS_Widget.prototype.classDef = function() {
 		//Create edit header
 		var divWidgetEditHeader = document.createElement("div");
 		this.elm_widgetEditHeader = divWidgetEditHeader;
-		divWidgetEditHeader.className = "widgetEditHeader";
+		divWidgetEditHeader.className = "widgetEditHeader is-box";
 		divWidgetEditHeader.style.display = "none";
 	   
 		//Edit Form [frm_<widgetId>]

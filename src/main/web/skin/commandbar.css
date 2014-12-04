@@ -305,13 +305,10 @@ div#portal-command > table{
 	max-width: 150px;
 }
 
-#portal-user-menu-body{
+#portal-user-menu-body {
 	position: absolute;
-	background-color: #fff;
 	z-index: 100000;
-	border: 1px solid #cccccc;
-	padding: 8px;
-	box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2);  
+	padding: 8px;	
 }
 
 div.portal-user-menu-item{

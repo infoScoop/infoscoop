@@ -1011,7 +1011,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 				for(var i = 0; i < colList.length; i++){
 
 					var ul = document.createElement("ul");
-					ul.className = "menuGroup";
+					ul.className = "menuGroup is-box";
 					ul.id = "mg_" + parentMenuItem.id + "_" + i;
 					if(i == 0){
 						var headerDiv = createMenuHeader(ul, parentMenuItem, true);
@@ -1052,7 +1052,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 				for(var i = 0; i < colList.length; i++){
 
 					var ul = document.createElement("ul");
-					ul.className = "menuGroup";
+					ul.className = "menuGroup is-box";
 					ul.id = "mg_" + parentMenuItem.id + "_" + i;
 					if(i == 0){
 						var headerDiv = createMenuHeader(ul, parentMenuItem, true);
@@ -1443,7 +1443,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		if(!parentMenuItem.isChildrenBuild){
 			parentMenuItem.isChildrenBuild = true;
 			var ul = document.createElement("ul");
-			ul.className = "menuGroup";
+			ul.className = "menuGroup is-box";
 
 			var childUls = getChildrenByTagName(parent, 'ul');
 			if(!childUls || childUls.length == 0){

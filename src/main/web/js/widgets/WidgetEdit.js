@@ -77,13 +77,13 @@ IS_Widget.WidgetEdit = function (widget) {
 		var divEditCtrl = document.createElement('div');
 		divEditCtrl.className = 'widgetEditCtrl';
 		var divEditSave = document.createElement("span");
-		divEditSave.className = "widgetSave";
+		divEditSave.className = "widgetSave is-button is-button-primary";
 		divEditSave.innerHTML = 'OK';
 		divEditCtrl.appendChild(divEditSave);
 		
 		var divEditCancel = document.createElement('span');
 		divEditCancel.className = "widgetCancel";
-		divEditCancel.innerHTML = 'CANCEL';
+		divEditCancel.innerHTML = 'Cancel';
 		divEditCtrl.appendChild(divEditCancel);
 		
 		var cancelHandler = this.cancel.bind(this);
@@ -112,13 +112,13 @@ IS_Widget.WidgetEdit = function (widget) {
 		
 		var divEditCancel2 = document.createElement("div");
 		divEditCancel2.className = "widgetCancel";
-		divEditCancel2.innerHTML = 'CANCEL';
+		divEditCancel2.innerHTML = 'Cancel';
 		Event.observe(divEditCancel2, 'click', cancelHandler);
 		//dojo.dom.insertAfter(divEditCancel2, widget.elm_editForm.lastChild);
 		widget.elm_editForm.appendChild(divEditCancel2);
 		
 		var divEditSave2 = document.createElement("div");
-		divEditSave2.className = "widgetSave";
+		divEditSave2.className = "widgetSave is-button is-button-primary";
 		divEditSave2.innerHTML = 'OK';
 		Event.observe(divEditSave2, 'click', saveHandler);
 		//dojo.dom.insertBefore(divEditSave2, widget.elm_editForm.lastChild);

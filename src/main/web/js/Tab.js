@@ -343,7 +343,7 @@ IS_Portal.showTabMenu = function(tabElement, e){
 	function buildTabMenu(tabElement,tabObj ){
 		var menuDiv = document.createElement("ul");
 		menuDiv.id = (tabElement.id + "_menu");
-		menuDiv.className = "tabMenu";
+		menuDiv.className = "tabMenu is-box";
 		
 		// Update
 //		var refreshDiv = createAnchorItem("refresh","Reload",tabObj.refresh.bind( tabObj ));

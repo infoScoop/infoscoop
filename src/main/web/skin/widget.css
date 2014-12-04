@@ -33,15 +33,13 @@
 .infoScoop .widget .widgetBox{
 	clear:both;
 	position: static;
-	/*
-	margin-left : 10px;
-	margin-bottom: 5px;
-	*/
 	width: auto;
 	overflow:hidden;
-
 	background-color:#FFF;
-	box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* Firefox */
+	-webkit-box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* Chrome, Safari */
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=#999999, direction=180, strength=3, enabled=true); /* IE8 */
+	box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* IE9+, Others*/
 	border-radius: 2px;
 }
 
@@ -200,18 +198,13 @@
 .infoScoop .widgetHeader .headerIcon_turnbackMaximize {
 	position: relative;
 	text-align: right;
-	font-size: 12px;
-	color: #fff;
 	cursor: pointer;
 	_margin-top: 1px;
 	margin-left: 2px;
 	margin-right: 2px;
 	white-space:nowrap;
 	line-height: 23px;   
-	padding: 0 0.6em;         
-	background-image: -webkit-linear-gradient(top,#3AA2CF,#3F9CC4);   
-	border-radius: 2px;   
-	border: 1px solid rgba(0,0,0,0.1);
+	padding: 0 0.6em;
 	margin-top: 2px;
 	margin-bottom: 1px;
 }
@@ -227,10 +220,7 @@
 
 .infoScoop .widgetMenu {
 	position: absolute;
-	border: 1px solid rgba(0,0,0,.2);
-	background-color: white;
 	z-index:50;
-	box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2);
 	padding: 8px;
 }
 
@@ -259,7 +249,8 @@
 	margin: 0px;
 	font-size: 80%;
 	overflow: hidden;
-	cursor:default;    box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2);      
+	cursor:default;
+	border-width: 0 0 1px 0;
 }
 
 .infoScoop .widgetEditHeader .widgetEditCtrl{
@@ -307,11 +298,6 @@
 }
 
 .infoScoop .widgetEditHeader .widgetSave {
-	color:#ffffff;
-	border-color: rgba(0,0,0,.1);
-	background-color: #3C9FC9;
-	background-image: -webkit-linear-gradient(top,#3AA2CF,#3F9CC4);
-	border-radius: 2px;
 }
 
 .infoScoop .widgetEditHeader .widgetCheck {

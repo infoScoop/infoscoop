@@ -2311,7 +2311,7 @@ IS_Portal.CommandBar = {
 		}
 		
 		var commandBarItems = $$("#portal-command .commandbar-item");
-		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', style:'display:none;'});
+		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', className: 'is-box', style:'display:none;'});
 
 		Event.observe(portalUserMenuBody, "click", function(e){
 			$(this).hide();

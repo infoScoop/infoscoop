@@ -104,11 +104,8 @@ a.topMenuItem:hover {
 #portal-site-aggregation-menu ul.menuGroup,
 #portal-site-aggregation-menu ul.menuGroup ul{
 	width:100px;
-	background-color:#fff;
-	border:1px solid #cccccc;
 	padding: 8px 10px 0px;
 	display:block;
-	box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2);
 	line-height: normal;
 }
 

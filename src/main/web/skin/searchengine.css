@@ -33,6 +33,7 @@
 	padding: 0 40px 0 8px;
 	height: 26px;
 	border: 1px solid #e0e0e0;
+	border: 1px solid rgba(0,0,0,.1);
 	border-top-right-radius: 2px;
 	border-bottom-right-radius: 2px;
 }
@@ -103,7 +104,10 @@ padding: 0;
 	border-top-right-radius: 2px;
 	border-bottom-right-radius: 2px;
 	background-color: #BACF02;
-	background: -webkit-linear-gradient(top,#C3D900 0,#BBCF06 100%);
+	background: -webkit-linear-gradient(top,#C3D900 0,#BBCF06 100%); /* Chrome10+, Safari5.1+ */
+	background: -moz-linear-gradient(top, #C3D900 0, #BBCF06 100%);/* FF3.6+ */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#C3D900', endColorstr='#BBCF06', GradientType=0)";/* IE8,9 */
+	background: linear-gradient(top, #C3D900 0, #BBCF06 100%);/* IE10+, W3C */
 	border: 1px solid #BACF02;
 	-webkit-appearance: none;
 	width: 36px;

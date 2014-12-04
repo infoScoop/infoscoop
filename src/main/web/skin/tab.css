@@ -18,8 +18,11 @@
 
 /* tabs */
 .infoScoop #tab-container {
-	background: #0085BE;  
-	background: -webkit-linear-gradient(top,#008BC7 0,#0081B8 100%);
+	background-color: #0085BE;
+	background-image: -webkit-linear-gradient(top,#008BC7 0,#0081B8 100%); /* Chrome10+, Safari5.1+ */
+	background-image: -moz-linear-gradient(top, #008BC7 0, #0081B8 100%);/* FF3.6+ */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#008BC7', endColorstr='#0081B8', GradientType=0)";/* IE8,9 */
+	background-image: linear-gradient(top, #008BC7 0, #0081B8 100%);/* IE10+, W3C */
 }
 
 .infoScoop #tabs{
@@ -239,18 +242,14 @@
 
 .infoScoop .tabMenu {
 	position: absolute;
-	background-color: white;
 	z-index:50;
 	overflow: hidden;
-	
 	list-style-image: none;
 	list-style-position: outside;
 	list-style-type: none;
 	padding-left: 0px;
 	margin-top: 0px;
 	margin-left: 0px;
-	border: 1px solid rgba(0,0,0,.2);
-	box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2);
 	padding: 8px;
 }
 

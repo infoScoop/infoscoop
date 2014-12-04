@@ -497,7 +497,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			div.style.margin = "0px";
 			
 			var labelDiv = document.createElement("div");
-			labelDiv.className = 'headerIcon_turnbackMaximize';
+			labelDiv.className = 'headerIcon_turnbackMaximize is-button is-button-primary';
 			labelDiv.href = "javascript:void(0)";
 			
 			labelDiv.appendChild( div );
@@ -894,7 +894,7 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 	this.build = function(){
 		var menuDiv = document.createElement("div");
 		menuDiv.id = (this.eventKey + "_menu");
-		menuDiv.className = "widgetMenu";
+		menuDiv.className = "widgetMenu is-box";
 		menuDiv.style.display = "none";
 		for(var i=0;i<this.menuOptList.length;i++){
 			var itemDiv = createItem(this.eventKey, this.menuOptList[i]);
