@@ -40,6 +40,8 @@
 	-webkit-box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* Chrome, Safari */
 	filter: progid:DXImageTransform.Microsoft.Shadow(color=#999999, direction=180, strength=3, enabled=true); /* IE8 */
 	box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* IE9+, Others*/
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
 	border-radius: 2px;
 }
 
@@ -293,6 +295,7 @@
 }
 
 .infoScoop .widgetEditHeader .widgetCancel {
+	border-color: #f7f7f7;
 	border-color: rgba(0,0,0,0);
 	color: #0285B5;
 }

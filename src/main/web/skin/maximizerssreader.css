@@ -98,7 +98,7 @@
 }
 
 .infoScoop .maximize.RssReader .maximizeFilterStatePanel{
-	border-bottom: 1px solid rgba(0,0,0,0.05);
+	border-bottom: 1px solid #f2f2f2;
 	word-break : break-all;
 	height:20px;
 }
@@ -134,11 +134,10 @@
 
 .infoScoop .maximize.RssReader .filter-form {
 	background-color: #fff;
-	border-bottom: 1px solid rgba(127, 140, 141,0.3);
-	border-right: 1px solid rgba(127, 140, 141,0.3);
+	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px; /* Firefox */
+	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px; /* Chrome, Safari */
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=#999999, direction=135, strength=3, enabled=true); /* IE8 */
 	box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
-	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
-	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
 	width: 150%;
 	position: relative;
 	z-index: 1;
@@ -154,7 +153,8 @@
 	margin-top: 5px;
 	margin-bottom: 5px;
 	width: 98%;
-	border: 1px solid rgba(0, 0, 0, 0.1);
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
 	border-radius: 2px;
 	padding: 3px 5px 1px 5px;
 	line-height: 20px;
@@ -164,7 +164,9 @@
 	margin-top: 5px;
 	margin-bottom: 5px;
 	width: 98%;
-	border: 1px solid rgba(0, 0, 0, 0.1);
+	border: 1px solid #e0e0e0;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
 	border-radius: 2px;
 }
 

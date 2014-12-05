@@ -26,10 +26,11 @@
 }
 
 .infoScoop #tabs{
-    display : inline-block;
-    width:100%;
-    font-size:93%;
-    line-height:normal;
+	display : inline-block;
+	width:100%;
+	font-size:93%;
+	line-height:normal;
+	border-bottom: 2px solid #0A6EA0;
 	border-bottom: 2px solid rgba(0, 86, 132, 0.4);
 }
 
