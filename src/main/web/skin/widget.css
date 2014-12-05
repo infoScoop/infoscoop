@@ -119,12 +119,13 @@
 .infoScoop .subWidget .widgetHeader{
 	clear: both;
 	width: 100%;
-	height: 22px;
+	height: 28px;
 	background-color:#EEEEFF;
 	background-image:none;
 	cursor: move;
 	overflow:hidden;
 	border: none;
+	/* line-height: 16px; */
 }
 
 .infoScoop .widget .widget-header-inner {

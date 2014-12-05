@@ -84,8 +84,7 @@
 }
 .infoScoop .maximize.RssReader .maximizeToggleEditElement {
 	float: right;
-	border: 1px solid gray;
-	color: #7777CC;
+	color: #0285B5;
 	padding: 2px;
 	font-size: 9pt;
 	-moz-border-radius: 2px;
@@ -190,7 +189,6 @@
 	background: #DDD;
 }
 .infoScoop .maximize.RssReader .maximizeToggleEditElement:visited {
-	color: #7777CC;
 }
 
 .infoScoop .maximize.RssReader .MaximizeRssReader_CreatorFilter_Autocomplete {
