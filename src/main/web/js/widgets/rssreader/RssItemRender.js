@@ -139,6 +139,7 @@ IS_Widget.RssReader.RssItemRender.prototype.render = function ( context,rssItem,
 	}
 	
 	this.tr.id = widget.id + '_item_'+itemNumber;
+	this.tr.className = "entry";
 	
 	this.buildTitle( widget,opt );
 	this.buildPubDate( widget,opt );
@@ -477,7 +478,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssDesc = function( widget,opt 
 	if( init ) {
 		// Detail pop up
 		this.rssFloat = document.createElement("div");
-		this.rssFloat.className = 'rssDescFloat';
+		this.rssFloat.className = 'rssDescFloat is-box';
 		
 		this.rssDesc = document.createElement("div");
 		this.rssDesc.className = "rssDesc";
@@ -489,6 +490,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssDesc = function( widget,opt 
 		this.itemTr3.style.clear = "both";
 		
 		this.itemTd3 = document.createElement("div");
+		this.itemTd3.className = "inline-desc-container";
 		this.itemTd3.colSpan = "2";
 		this.itemTd3.cellPadding = "0";
 		this.itemTd3.cellSpacing = "0";
@@ -763,15 +765,16 @@ IS_Widget.RssReader.RssItemRender.prototype.displayInlineDesc = function( widget
 		(widget.getUserPref("scrollMode") == "scroll");
 	
 	var headerDiv = widget.parent ? widget.parent.elm_widgetHeader : widget.elm_widgetHeader;
-	if(headerDiv && headerDiv.offsetWidth > 0){
-		var offset = scrolling ? 16 : 0;
-		if( Browser.isSafari1 )
-			offset += 1;
-		
-		var browserOffset = 1;
-		var width = (headerDiv.offsetWidth - offset - browserOffset);
-		this.rssDesc.style.width = width + "px";
-	}
+	//Delete because seems not to be needed #16405
+//	if(headerDiv && headerDiv.offsetWidth > 0){
+//		var offset = scrolling ? 16 : 0;
+//		if( Browser.isSafari1 )
+//			offset += 1;
+//		
+//		var browserOffset = 1;
+//		var width = (headerDiv.offsetWidth - offset - browserOffset);
+//		this.rssDesc.style.width = width + "px";
+//	}
 	this.itemTr3.style.display= "";
 	
 	if(scrolling)
@@ -1116,7 +1119,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 		
 		descWidth -= 20;
 		
-		rssFloatMark.style.backgroundImage = 'url(' + imageURL + 'resultset_next.gif)';
+		rssFloatMark.style.backgroundImage = 'url(' + imageURL + 'caret-right.png)';
 	}else{
 		// Pop-up on the right
 		if(1 < IS_Portal.tabs[IS_Portal.currentTabId].numCol) {
@@ -1135,7 +1138,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 			descWidth = moreLeft - descLeft - 15;
 		}
 		
-		rssFloatMark.style.backgroundImage = 'url(' + imageURL + 'resultset_previous.gif)';
+		rssFloatMark.style.backgroundImage = 'url(' + imageURL + 'caret-left.png)';
 	}
 	// Modify the lateral location of description
 	rssFloat.style.left = descLeft + 'px';

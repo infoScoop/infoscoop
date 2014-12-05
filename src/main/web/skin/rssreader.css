@@ -16,15 +16,17 @@
  */
 
 .infoScoop .RssReader .rss-content {
-	padding-top: 8px;
-	padding-left: 4px;
-	padding-right: 10px;
+    padding-top: 10px;
+}
+
+.infoScoop .widgetContent.RssReader .entry {
+	
 }
 
 .infoScoop .RssReader .rssItem {
 	word-break: break-all;
 	font-size: 82%;
-	padding-left: 5px;
+	padding-left: 10px;
 	
 }
 
@@ -35,7 +37,7 @@
 	color: #999999;
 	font-size:75%;
 	word-break:break-all;
-	padding-left: 7px;
+	padding-left: 13px;
 }
 .infoScoop .RssReader .rssCategoryList{
 	background:url(./imgs/tag_blue.gif) center left no-repeat;
@@ -54,27 +56,39 @@ color: #737373;
 	cursor:pointer;
 	vertical-align:bottom;
 }
+
+.infoScoop .widgetContent.RssReader .inline-desc-container {
+	padding-left: 10px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+}
+
 .infoScoop .RssReader .rssDesc,
 .infoScoop .rssDescFloat .rssDesc{
 	background-color:#eeeeee;
 	overflow: hidden;
 	width:auto;
-	font-size:80%;
+	font-size: 75%;
 	word-break:break-all;
 	/*margin:0px 4px 4px 4px;*/
+	padding: 5px;
+	border-left: 3px solid #7F8C8D;
+	line-height: 18px;
 }
+
+.infoScoop .rssDescFloat .rssDesc {
+		border-left: none;
+}
+
 .infoScoop .rssDescFloat{
 	position: absolute;
 	z-index: 920;
 	width: 300px;
-	/*max-height: 250px;*/
-	background-color: #fff;
+	/* max-height: 250px; */
 	padding: 5px 3px;
 	overflow-x: hidden;
 	overflow-y: auto;
-	border: 1px solid #888;
-	border-right: 2px solid #777;
-	border-bottom: 2px solid #666;
+	border: 1px solid #bbbbbb;
 }
 .infoScoop .rssDescFloatMark{
 	position: absolute;
