@@ -146,21 +146,21 @@
     padding: 0px 5px 0px 5px;
 }
 
-.infoScoop #tabs .tab-operation-icon-container {
+.infoScoop #tabs .addtab-icon-container {
 	cursor:pointer;
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 8px;
 }
 
-.infoScoop #tabs .tab-operation-icon {
+.infoScoop #tabs .addtab-icon {
 	width: 16px;
 	height: 16px;
 	display: inline-block;
 	padding: 8px 0px 8px 0px;
 }
 
-.infoScoop #tabs #tabsRefresh a.tab-operation-icon {
+.infoScoop #tabs #tabsRefresh a.addtab-icon {
 	background: url(./imgs/refresh-white.png ) no-repeat center left;
 }
 
@@ -170,7 +170,7 @@
 	cursor:pointer;
 }
 
-.infoScoop #tabs .addatab a.tab-operation-icon {
+.infoScoop #tabs .addatab a.addtab-icon {
 	background: url(./imgs/plus.png ) no-repeat center left;
 	margin-left: 10px;
 }
@@ -182,7 +182,7 @@
 	position: relative;
 	vertical-align: bottom;
 }*/
-.infoScoop #tabs #tabsRefreshStop a.tab-operation-icon {
+.infoScoop #tabs #tabsRefreshStop a.addtab-icon {
 	background: url( ./imgs/times-circle.png ) no-repeat center left;
 }
 /*

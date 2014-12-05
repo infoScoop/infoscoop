@@ -30,10 +30,8 @@
 	width:100%;
 }
 
-.infoScoop .widget .widgetBox{
-	clear:both;
-	position: static;
-	width: auto;
+.infoScoop .widget .widgetBox,
+.infoScoop .widget .widgetBoxNoHeader {
 	overflow:hidden;
 	background-color:#FFF;
 	-moz-box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* Firefox */
@@ -45,17 +43,22 @@
 	border-radius: 2px;
 }
 
+.infoScoop .widget .widgetBox{
+	clear:both;
+	position: static;
+	width: auto;
+}
+
+.infoScoop .widgetBoxNoHeader {
+}
+
 .infoScoop .widget .widgetShade {
 /*
 	padding:0 3px 3px 0;
 	background-color: green;
 */
+}
 
-}
-.infoScoop .widgetBoxNoHeader {
-	border: 1px solid #BCBCBC;
-	overflow: hidden;
-}
 #widgetGhost {
 	background-color:#f3f3f3;
 }

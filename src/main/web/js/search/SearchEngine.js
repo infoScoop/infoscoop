@@ -400,12 +400,12 @@ IS_Portal.SearchEngines = {
 		 * build portal search option
 		 */
 		searchTd = editSearchOption.parentNode;
-		var searchoption = $.DIV({id:"searchoption",style:"display:none;"});
+		var searchoption = $.DIV({id:"searchoption", className:"is-box", style:"display:none;"});
 		var selectsearchsitediv = $.DIV({id:"selectsearchsitefieldset", style:"margin:5px;"});
 		searchoption.appendChild(selectsearchsitediv);
 		searchoption.appendChild(
 			$.DIV(
-				{style:"margin:5px; paddingTop:5px; borderTop: 1px solid #aaa;"},
+				{id:"display-search-results-on-new-window-container", style:"margin:5px; paddingTop:5px;"},
 				$.INPUT(
 					{id:"displaySearchResultsOnNewWindow",type:'checkbox' }),
 				IS_R.lb_searchResultsOnNewWindow

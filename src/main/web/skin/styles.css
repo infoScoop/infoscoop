@@ -16,9 +16,10 @@
  */
 
 @charset "UTF-8";
-a:link {color: #014761; }
-a:visited { color: #404040; }
-a:active { color: #ff0000; }
+a:link {color: #0285B5; }
+a:visited { color: #4B2A75; }
+a:hover { color: #016082; }
+a:active { color: #016082; }
 
 body{
  margin: 0;

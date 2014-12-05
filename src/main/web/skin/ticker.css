@@ -15,9 +15,10 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
-.infoScoop .ticker-container {
+.infoScoop .widgetBoxNoHeader.ticker-container {
 	border: 1px solid #e0e0e0;
 	border: 1px solid rgba(0,0,0,.1);
+	box-shadow: none;
 }
 
 .infoScoop .Ticker {

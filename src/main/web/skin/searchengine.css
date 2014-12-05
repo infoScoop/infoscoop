@@ -124,11 +124,13 @@ padding: 0;
 
 #searchoption{
 	font-size: 12px;
-	border: 1px solid #b7b7b7;
 	width: 190px;
-	background-color:#fff;
 	position: absolute;
 	left: 0px;
 	z-index: 80000;
+}
+
+#display-search-results-on-new-window-container {
+	border-top: 1px solid #e0e0e0;
 }
  

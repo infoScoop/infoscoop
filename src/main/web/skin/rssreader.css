@@ -25,7 +25,11 @@
 	word-break: break-all;
 	font-size: 82%;
 	padding-left: 5px;
+	
 }
+
+.infoScoop .RssReader .rssItem a:link    { color: #404040; }
+.infoScoop .RssReader .rssItem a:visited { color: #4B2A75; }
 
 .infoScoop .RssReader .rssPubDate {
 	color: #999999;
@@ -46,9 +50,7 @@ color: #737373;
 	vertical-align:bottom;
 }
 .infoScoop .RssReader .rssMoreOver {
-	color:red;
 	font-size:70%;
-	text-decoration:underline;
 	cursor:pointer;
 	vertical-align:bottom;
 }

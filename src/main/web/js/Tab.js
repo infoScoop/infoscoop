@@ -47,10 +47,11 @@ IS_Portal.buildTabs = function(){
 	var addTab = document.createElement("div");
 	IS_Portal.addTabDiv = addTab;
 	addTab.noWrap = "-1";
-	addTab.className = "tablink addatab tab-operation-icon-container";
+	addTab.className = "tablink addatab addtab-icon-container";
+	addTab.title = IS_R.lb_addTab;
 	addTab.id = "addTab";
 	var addA = document.createElement("a");
-	addA.className = "tab-operation-icon";
+	addA.className = "addtab-icon";
 	addTab.appendChild(addA);
 	var addTabWithBuildColumns = function(){
 		if( IS_Portal.isTabLoading() )
@@ -73,23 +74,23 @@ IS_Portal.buildTabs = function(){
 	//Loading all tabs
 	var tabsRefresh = document.createElement("div");
 	tabsRefresh.id = "tabsRefresh";
-	tabsRefresh.className = "tabsRefresh tab-operation-icon-container";
+	tabsRefresh.className = "tabsRefresh addtab-icon-container";
 	tabsRefresh.title = IS_R.ms_tabsRefresh;
 	tabsUl.appendChild(tabsRefresh);
 	var tabsRefreshA = document.createElement("a");
-	tabsRefreshA.className = "tab-operation-icon";
+	tabsRefreshA.className = "addtab-icon-icon";
 	tabsRefresh.appendChild(tabsRefreshA);
 	
 	Event.observe(tabsRefresh, "click",IS_Portal.buildAllTabsContents, false);
 	
 	var tabsRefreshStop = document.createElement("div");
 	tabsRefreshStop.id = "tabsRefreshStop";
-	tabsRefreshStop.className = "tabsRefreshStop tab-operation-icon-container";
+	tabsRefreshStop.className = "tabsRefreshStop addtab-icon-container";
 	tabsRefreshStop.title = IS_R.ms_stopRefresh;
 	tabsRefreshStop.style.display = "none";
 	tabsUl.appendChild( tabsRefreshStop );
 	var tabsRefreshStopA = document.createElement("a");
-	tabsRefreshStopA.className = "tab-operation-icon";
+	tabsRefreshStopA.className = "addtab-icon";
 	tabsRefreshStop.appendChild(tabsRefreshStopA);
 	
 	Event.observe( tabsRefreshStop,"click",IS_Portal.stopLoadWidgets,false );

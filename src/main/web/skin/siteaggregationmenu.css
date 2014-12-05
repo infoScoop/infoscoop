@@ -27,8 +27,7 @@
 }
 
 #portal-site-aggregation-menu > ul {
-    padding-left: 22px;
-    /* padding-right: 1000px; */
+	padding-left: 22px;
 }
 
 #portal-site-aggregation-menu{
@@ -104,7 +103,7 @@ a.topMenuItem:hover {
 #portal-site-aggregation-menu ul.menuGroup,
 #portal-site-aggregation-menu ul.menuGroup ul{
 	width:100px;
-	padding: 8px 10px 0px;
+	padding-top: 8px;
 	display:block;
 	line-height: normal;
 }
@@ -134,19 +133,17 @@ ul.menuGroup ul, ul.floatMenuGroup ul{
 	top:0;
 }
 
-ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup table{
+#portal-site-aggregation-menu ul.menuGroup li,
+#portal-site-aggregation-menu ul.menuGroup table {
 	list-style-type:none;
-	/*border-top:1px dotted #999;*/
 	display:block;
 	height:20px;
 	//height:16px;
-	font-size:11px;
 	/*vertical-align:bottom;*/
-	COLOR: #5286BB;
 }
 
 .menuItem div{
-	height:16px;
+	/* height:16px; */
 }
 
 .menuCloseDiv{
@@ -186,7 +183,6 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 	background: top left no-repeat;
 	width:16px;
 	height: 16px;
-	margin-right: 3px;
 }
 
 .menuItemIcon_dropped {
@@ -201,12 +197,11 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 	max-height:20px;
 	height:18px;
 	white-space: nowrap;
-	color: #000;
 }
 
 .subMenuIcon {
 	float:right;
-	margin-top:3px;
+	margin-top: 6px;
 	background: url(./imgs/right.gif) top left no-repeat;
 	width: 8px;
 	height: 8px;
