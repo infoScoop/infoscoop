@@ -85,8 +85,8 @@ IS_SidePanel.buildAddContents = function() {
 	container.appendChild(exampleDiv);
 	
 	var addContentPanel = document.createElement("div");
+	addContentPanel.id = "adding-contents-panel"
 	addContentPanel.style.display = "none";
-	addContentPanel.style.marginTop = "5px";
 	//addContentPanel.style.width = "92%";
 	container.appendChild( addContentPanel );
 	
@@ -266,6 +266,7 @@ IS_SidePanel.buildAddContents = function() {
 		for(var i = 0; i < length; i++){
 			var data = dataList[i];
 			var previewItem = document.createElement("div");
+			previewItem.className = "preview-item";
 			addContents.appendChild( previewItem );
 			
 			if( Browser.isSafari1 ) {
@@ -364,6 +365,7 @@ IS_SidePanel.buildAddContents = function() {
 			adjustWidgetATag(widget);
 		
 			var previewDiv = document.createElement("div");
+			previewDiv.className = "preview-widget-container";
 			var widgetBody;
 			if(widget){
 				previewDiv.style.fontSize = "100%";
