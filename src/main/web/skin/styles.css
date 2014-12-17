@@ -403,7 +403,7 @@ div[id^="control_window_"] {
 #siteMenuOpenTd {
 	vertical-align: top;
 	height: 100%;
-	width: 20px;
+	width: 22px;
 }
 #siteMenuOpen {
 	border-left:1px solid #999999;
@@ -429,7 +429,7 @@ div[id^="control_window_"] {
 
 .siteMapClose {
 	position: relative;
-	top: 3px;
+	top: 13px;
 	left: -1px;
 	width: 18px;
 	cursor: pointer;
@@ -439,7 +439,7 @@ div[id^="control_window_"] {
 
 .rssSearchOpen {
 	position: relative;
-	top: 3px;
+	top: 11px;
 	left: -1px;
 	width: 18px;
 	cursor: pointer;
@@ -448,7 +448,7 @@ div[id^="control_window_"] {
 }
 .rssSearchClose {
 	position: relative;
-	top: 3px;
+	top: 11px;
 	left: -1px;
 	width: 18px;
 	/*height:100px;*/

@@ -18,7 +18,7 @@
 
 .mySiteMapOpen {
 	position:relative;
-	top:3px;
+	top:9px;
 	left:-1px;
 	width:18px;
 	cursor:pointer;
@@ -28,7 +28,7 @@
 
 .mySiteMapClose {
 	position:relative;
-	top:3px;
+	top:9px;
 	left:-1px;
 	width:18px;
 	cursor:pointer;
