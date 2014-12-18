@@ -203,7 +203,13 @@ img{
 #tabLoadProgressCount {
 	text-align: right;
 }
-/** message bar */
+
+/** portal contents */
+
+#portal-maincontents-table.maximized,
+#portal-maincontents-table.hiding-tab {
+	border-top: 3px solid #0085be;
+}
 
 #portal-iframe {
 	width : 100%;
@@ -747,7 +753,6 @@ div#search-iframe div.search_tabs{
 	height: 26px;
 }
 
-/* Logo */
 .infoScoop #portal-header-container {
 	background-color: #F7F7F7;
 	border-bottom: 1px solid #f7f7f7;

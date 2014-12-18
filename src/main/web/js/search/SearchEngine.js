@@ -699,6 +699,9 @@ IS_Portal.SearchEngines = {
 			IS_Portal.widgetDisplayUpdated();
 			IS_Portal.closeIFrame();
 			Element.hide('panels');
+			Element.hide('tab-container');
+			var portalMaincontentsTable = document.getElementById("portal-maincontents-table");
+			portalMaincontentsTable.className = "hiding-tab";
 			IS_Portal.refresh.cancel();
 		}
 		

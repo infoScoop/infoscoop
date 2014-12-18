@@ -236,10 +236,6 @@
 	margin: 10px;
 }
 
-#portal-maincontents-table.maximized {
-	border-top: 3px solid #0085be;
-}
-
 .infoScoop .RssReader.maximize .rss-content {
 	padding: 0px;
 }

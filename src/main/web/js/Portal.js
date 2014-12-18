@@ -623,6 +623,15 @@ IS_Portal.closeIFrame = function () {
 	var iframeToolBar = document.getElementById("iframe-tool-bar");
 	iframeToolBar.style.display = "none";
 	
+	var tabContainer = document.getElementById("tab-container");
+	if ( tabContainer) {
+		tabContainer.style.display="";
+	}
+	var portalMaincontentsTable = document.getElementById("portal-maincontents-table");
+	if ( portalMaincontentsTable) {
+		portalMaincontentsTable.removeClassName("hiding-tab");
+	}
+	
 	IS_Event.unloadCache("_search");
 	
 	//Clear iframe in IS_Portal.searchEngines
