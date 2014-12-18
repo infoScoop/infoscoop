@@ -78,7 +78,7 @@ IS_Portal.buildTabs = function(){
 	tabsRefresh.title = IS_R.ms_tabsRefresh;
 	tabsUl.appendChild(tabsRefresh);
 	var tabsRefreshA = document.createElement("a");
-	tabsRefreshA.className = "addtab-icon-icon";
+	tabsRefreshA.className = "addtab-icon";
 	tabsRefresh.appendChild(tabsRefreshA);
 	
 	Event.observe(tabsRefresh, "click",IS_Portal.buildAllTabsContents, false);
