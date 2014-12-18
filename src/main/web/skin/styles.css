@@ -216,7 +216,7 @@ img{
 }
 
 table[id^="panel-table"] {
-	padding: 15px 15px 15px 7px;
+	padding: 15px 15px 15px 10px;
 	border-spacing: 0;
 }
 
@@ -418,11 +418,10 @@ div[id^="control_window_"] {
 
 .siteMapOpen {
 	position: relative;
-	top: 3px;
+	top: 13px;
 	left: -1px;
 	width: 18px;
 	cursor: pointer;
-	border-left: 1px solid gray;
 	padding: 2px 0px;
 	/*background: url(./imgs/siteopen.png) top left no-repeat;*/
 }
@@ -443,7 +442,6 @@ div[id^="control_window_"] {
 	left: -1px;
 	width: 18px;
 	cursor: pointer;
-	border-left: 1px solid gray;
 	/*background: url(./imgs/rssopen.png) top left no-repeat;*/
 }
 .rssSearchClose {
