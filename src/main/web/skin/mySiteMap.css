@@ -54,11 +54,7 @@
 .mySiteMap .controller td.label {
 	width: 2em;
 }
-.mySiteMap .button.refresh {
-	width: 16px;
-	height: 16px;
-	background: url("./imgs/refresh.gif") no-repeat scroll center center;
-}
+
 .mySiteMap .tabList {
 	margin-top: 0;
 	margin-left: 0;
