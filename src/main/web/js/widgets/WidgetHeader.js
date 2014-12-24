@@ -95,7 +95,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			hiddenIcons.push(
 				{
 				  type:  "edit",
-				  imgUrl: "edit.gif",
+				  imgUrl: "edit.png",
 				  alt: IS_R.lb_setting
 				}
 				);
@@ -108,7 +108,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		  hiddenIcons.push(
 			  {
 				type:  "close",
-				imgUrl: "trash.gif",
+				imgUrl: "trash-o.png",
 				alt: IS_R.lb_delete
 			  }
 			  );

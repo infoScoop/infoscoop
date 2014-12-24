@@ -46,19 +46,19 @@
 }
 
 .infoScoop #portal-command #fontChange_large {
-	background:url(./imgs/font.gif) left center no-repeat;
+	background:url(./imgs/font.png) left center no-repeat;
 	_background-position: center;
 	padding-right: 0px;
 }
 
 .infoScoop #portal-command #fontChange_small {
-	background:url(./imgs/font_s.gif) left center no-repeat;
+	background:url(./imgs/font-s.png) left center no-repeat;
 	_background-position: center;
 	padding-right: 0px;
 }
 
 .infoScoop #portal-command #fontChange_standard {
-	background:url(./imgs/font_m.gif) left center no-repeat;
+	background:url(./imgs/font-m.png) left center no-repeat;
 	_background-position: center;
 	padding-right: 0px;
 }
@@ -244,7 +244,7 @@
 }
 
 #authCredentialListDiv{
-	background:url(./imgs/page_user.gif) no-repeat;
+	background:url(./imgs/key.png) no-repeat;
 	background-position: 3px center;
 }
 
@@ -357,27 +357,27 @@ a.portal-user-menu-link:visited:hover{
 }
 
 #trash-icon{
-	background: url(./imgs/trash.gif) no-repeat;
+	background: url(./imgs/trash-o.png) no-repeat;
 	background-position: 3px center;
 }
 
 #allPreference{
-	background: url(./imgs/wrench.gif) no-repeat;
+	background: url(./imgs/wrench.png) no-repeat;
 	background-position: 3px center;
 }
 
 #admin-link{
-	background: url(./imgs/cog.gif) no-repeat;
+	background: url(./imgs/cog.png) no-repeat;
 	background-position: 3px center;
 }
 
 #logout{
-	background: url(./imgs/door_in.gif) no-repeat;
+	background: url(./imgs/sign-out.png) no-repeat;
 	background-position: 3px center;
 }
 
 #font-change-div{
-	background: url(./imgs/font.gif) no-repeat;
+	background: url(./imgs/font.png) no-repeat;
 	background-position: 3px center;
 }
 

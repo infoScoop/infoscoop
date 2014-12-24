@@ -281,26 +281,26 @@
 }
 
 .infoScoop .tabMenu .refresh {
-	background: url( ./imgs/refresh.gif ) no-repeat center left;
+	background: url( ./imgs/refresh.png ) no-repeat center left;
 }
 .infoScoop .tabMenu .close {
-	background: url( ./imgs/trash.gif ) no-repeat center left;
+	background: url( ./imgs/trash-o.png ) no-repeat center left;
 }
 .infoScoop .tabMenu .rename {
-	background: url( ./imgs/edit.gif ) no-repeat center left;
+	background: url( ./imgs/edit.png ) no-repeat center left;
 }
 .infoScoop .tabMenu .rename .nameInput {
 	margin-left: 10px;
 }
 .infoScoop .tabMenu .changeColumnNum {
-	background: url(./imgs/changeColumn.gif ) no-repeat center left;
+	background: url(./imgs/arrows-h.png ) no-repeat center left;
 }
 .infoScoop .tabMenu .changeColumnNum .columnNumSelect {
 	margin-left: 10px;
 }
 .infoScoop .tabMenu .resetColumnWidth {
-	background: url(./imgs/changeColumn2.gif ) no-repeat center left;
+	background: url(./imgs/columns.png ) no-repeat center left;
 }
 .infoScoop .tabMenu .initialize {
-	background: url( ./imgs/init_tab.gif ) no-repeat center left;
+	background: url( ./imgs/undo.png ) no-repeat center left;
 }
