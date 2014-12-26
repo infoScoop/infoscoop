@@ -47,11 +47,11 @@ IS_Portal.buildTabs = function(){
 	var addTab = document.createElement("div");
 	IS_Portal.addTabDiv = addTab;
 	addTab.noWrap = "-1";
-	addTab.className = "tablink addatab addtab-icon-container";
+	addTab.className = "tablink addatab tabbar-icon-container";
 	addTab.title = IS_R.lb_addTab;
 	addTab.id = "addTab";
 	var addA = document.createElement("a");
-	addA.className = "addtab-icon";
+	addA.className = "tabbar-icon";
 	addTab.appendChild(addA);
 	var addTabWithBuildColumns = function(){
 		if( IS_Portal.isTabLoading() )
@@ -74,23 +74,23 @@ IS_Portal.buildTabs = function(){
 	//Loading all tabs
 	var tabsRefresh = document.createElement("div");
 	tabsRefresh.id = "tabsRefresh";
-	tabsRefresh.className = "tabsRefresh addtab-icon-container";
+	tabsRefresh.className = "tabsRefresh tabbar-icon-container";
 	tabsRefresh.title = IS_R.ms_tabsRefresh;
 	tabsUl.appendChild(tabsRefresh);
 	var tabsRefreshA = document.createElement("a");
-	tabsRefreshA.className = "addtab-icon";
+	tabsRefreshA.className = "tabbar-icon";
 	tabsRefresh.appendChild(tabsRefreshA);
 	
 	Event.observe(tabsRefresh, "click",IS_Portal.buildAllTabsContents, false);
 	
 	var tabsRefreshStop = document.createElement("div");
 	tabsRefreshStop.id = "tabsRefreshStop";
-	tabsRefreshStop.className = "tabsRefreshStop addtab-icon-container";
+	tabsRefreshStop.className = "tabsRefreshStop tabbar-icon-container";
 	tabsRefreshStop.title = IS_R.ms_stopRefresh;
 	tabsRefreshStop.style.display = "none";
 	tabsUl.appendChild( tabsRefreshStop );
 	var tabsRefreshStopA = document.createElement("a");
-	tabsRefreshStopA.className = "addtab-icon";
+	tabsRefreshStopA.className = "tabbar-icon";
 	tabsRefreshStop.appendChild(tabsRefreshStopA);
 	
 	Event.observe( tabsRefreshStop,"click",IS_Portal.stopLoadWidgets,false );
@@ -279,19 +279,19 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 
 	//Menu
 	if(disabledDynamicPanel){
-		var refreshImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"refresh.gif", className:"selectMenu"});
-		var refreshImgDiv = $.DIV({className:"inlineBlock tabTitleImg"}, refreshImg);
+		var refresh = $.SPAN({id:tab.id+"_selectMenu",className:"selectMenu refresh"});
+		var refreshImgDiv = $.DIV({className:"inlineBlock tabTitleImg"}, refresh);
 		tabBaseDiv.appendChild(refreshImgDiv);
-		IS_Event.observe(refreshImg, 'click', function(e){
+		IS_Event.observe(refresh, 'click', function(e){
 			var tabObj = IS_Portal.tabs[this.id];
 			tabObj.refresh();
 		}.bindAsEventListener(tab), false, tab.id);
 	} else {
-		var selectMenuImg = $.IMG({id:tab.id+"_selectMenu", src:imageURL+"arrow-circle-o-down.png", className:"selectMenu"});
-		var menuImgDiv = $.DIV({className:"inlineBlock tabTitleImg"}, selectMenuImg);
+		var selectMenu = $.SPAN({id:tab.id+"_selectMenu", className:"selectMenu menu"});
+		var menuImgDiv = $.DIV({className:"inlineBlock tabTitleImg"}, selectMenu);
 		tabBaseDiv.appendChild(menuImgDiv);
-		IS_Event.observe(selectMenuImg, 'click', IS_Portal.showTabMenu.bind(selectMenuImg, tab), false, tab.id);
-		IS_Event.observe(selectMenuImg, 'mousedown', function(e){Event.stop(e);}, false, tab.id);
+		IS_Event.observe(selectMenu, 'click', IS_Portal.showTabMenu.bind(selectMenu, tab), false, tab.id);
+		IS_Event.observe(selectMenu, 'mousedown', function(e){Event.stop(e);}, false, tab.id);
 	}	
 	
 	var tabOnMousedown = function(e){

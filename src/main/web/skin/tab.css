@@ -30,7 +30,7 @@
 	width:100%;
 	font-size:93%;
 	line-height:normal;
-	border-bottom: 2px solid #0A6EA0;
+	border-bottom: 2px solid #0072A7;
 	border-bottom: 2px solid rgba(0, 86, 132, 0.4);
 }
 
@@ -133,6 +133,11 @@
 	float:left;
 	vertical-align: middle;
 }
+
+.infoScoop #tabs .tab.selected div.inlineBlock {
+	padding-left: 4px;
+}
+
 .infoScoop #tabs .tab div.inlineBlock.tabTitleImg {
 	display: inline-block;              
 }
@@ -146,21 +151,21 @@
     padding: 0px 5px 0px 5px;
 }
 
-.infoScoop #tabs .addtab-icon-container {
+.infoScoop #tabs .tabbar-icon-container {
 	cursor:pointer;
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 8px;
 }
 
-.infoScoop #tabs .addtab-icon {
+.infoScoop #tabs .tabbar-icon {
 	width: 16px;
 	height: 16px;
 	display: inline-block;
 	padding: 8px 0px 8px 0px;
 }
 
-.infoScoop #tabs #tabsRefresh a.addtab-icon {
+.infoScoop #tabs #tabsRefresh a.tabbar-icon {
 	background: url(./imgs/refresh-white.png ) no-repeat center left;
 }
 
@@ -170,8 +175,8 @@
 	cursor:pointer;
 }
 
-.infoScoop #tabs .addatab a.addtab-icon {
-	background: url(./imgs/plus.png ) no-repeat center left;
+.infoScoop #tabs .addatab a.tabbar-icon {
+	background: url(./imgs/plus-white.png ) no-repeat center left;
 	margin-left: 10px;
 }
 
@@ -182,7 +187,7 @@
 	position: relative;
 	vertical-align: bottom;
 }*/
-.infoScoop #tabs #tabsRefreshStop a.addtab-icon {
+.infoScoop #tabs #tabsRefreshStop a.tabbar-icon {
 	background: url( ./imgs/times-circle.png ) no-repeat center left;
 }
 /*
@@ -222,15 +227,18 @@
 .infoScoop #tabs .tab .selectMenu {
 	width: 16px;
 	height: 16px;
-	padding-left: 4px;
 	cursor:pointer;
-	
 	display: none;
 }
-.infoScoop #tabs .tab.selected .selectMenu{
+.infoScoop #tabs .tab.selected .selectMenu.menu{
 	display: block;
+	background: url(./imgs/arrow-circle-o-down-white.png ) no-repeat center left;
 }
 
+.infoScoop #tabs .tab.selected .selectMenu.refresh{
+	display: block;
+	background: url(./imgs/refresh-white.png ) no-repeat center left;
+}
 
 .infoScoop #tabs .tab .fixedTab {
 	width: 16px;
