@@ -267,12 +267,6 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 	var indicatorDiv = $.DIV({className:"inlineBlock"},$.IMG({src:imageURL +"indicator.gif", id:tab.id+"_loadingIcon", className:"tabLoadingIcon"}));
 	tabBaseDiv.appendChild(indicatorDiv);
 
-	// static-pin
-	if(disabledDynamicPanel){
-		var pinDiv = $.DIV({width:'6px', className:"inlineBlock"}, $.IMG({src:imageURL+"pin-small.gif", className:"fixedTab", title:IS_R.ms_thisIsFixedTab, style:"left:3px;"}));
-		tabBaseDiv.appendChild(pinDiv);
-	}
-
 	// title
 	var titleDiv = $.DIV({id:tab.id + "_title", className:"tabTitle inlineBlock"}, name);
 	tabBaseDiv.appendChild(titleDiv);

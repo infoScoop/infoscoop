@@ -522,12 +522,16 @@ margin-bottom: 2px;
 
 
 div#search-iframe{
-	padding-top: 2px;
+	padding: 10px;
 	font-size: 15px;
 }
 div#search-iframe div.search_tabs{
 	clear: left;
-	border: 1px solid gray;
+	border-top: 1px solid #fff;
+}
+
+div#search-iframe iframe {
+	background-color: #ffffff;
 }
 
 /* Search Engine */
@@ -546,7 +550,8 @@ div#search-iframe div.search_tabs{
 }
 .infoScoop .SearchEngine ul.search_tabs.tabs a.tab font.hit {
 	font-size: 9pt;
-	color: #F00;
+	color: #e74c3c;
+	padding-right: 1em;
 }
 .infoScoop .SearchEngine ul.search_tabs.tabs a.tab .indicator {
 	float: left;
@@ -601,14 +606,13 @@ div#search-iframe div.search_tabs{
 	position: relative;
     float: left;
 }
-.tabs .tab {
+#search-tabs.tabs .tab {
 	position: relative;
 	float: left;
 	
 	margin: 0;
 	margin-right:  0.4em;
 	
-	border: 1px solid gray;
 	border-bottom: none;
 	line-height: 1.2em;
 	
@@ -619,20 +623,19 @@ div#search-iframe div.search_tabs{
 	top: 0;
 	margin-top: 1px;
 	
-	background-color: #DEDEDE;
+	background-color: #eeeeee;
 }
-.tabs .tab.selected {
+#search-tabs.tabs .tab.selected {
 	top: 1px;
 	margin-top: 0px;
 	padding-bottom: 1px;
-	
 	background-color: white;
 }
-.tabs .tab .title {
+#search-tabs.tabs .tab .title {
 	position: static !important;
 	float: left;
-	color: gray;
 	
+	color: #737373;
 	padding: 0.1em 1em 0;
 	
 	white-space: nowrap;
@@ -641,8 +644,8 @@ div#search-iframe div.search_tabs{
 	font-size: 11px;
 	cursor: pointer;
 }
-.tabs .tab.selected .title {
-	color: #627EB7;
+#search-tabs.tabs .tab.selected .title {
+	color: #0285B5;
 }
 
 
@@ -756,5 +759,4 @@ div#search-iframe div.search_tabs{
 
 .infoScoop #portal-header-container {
 	background-color: #F7F7F7;
-	border-bottom: 1px solid #f7f7f7;
 }

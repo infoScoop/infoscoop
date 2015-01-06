@@ -120,7 +120,6 @@ IS_SearchEngine.prototype.classDef = function() {
 		resultDiv.id = encodeURIComponent( this.name );
 		resultDiv.className="search_tabs";
 		resultDiv.style.display = this.isDisplay;
-		resultDiv.style.border = "1px solid gray";
 		var searchIframe = document.createElement("IFrame");
 		searchIframe.frameBorder = 0;
 		this.iframe = searchIframe;

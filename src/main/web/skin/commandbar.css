@@ -268,6 +268,13 @@ div#portal-command > table{
 	white-space: nowrap; /* for IE */
 }
 
+#command-bar .widgetBoxNoHeader, #command-bar .widgetBox {
+	border: 1px solid #e0e0e0;
+	border: 1px solid rgba(0,0,0,.1);
+	box-shadow: none;
+	filter: none;
+}
+
 /** user menu */
 
 #portal-user-menu{
