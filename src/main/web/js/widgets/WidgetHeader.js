@@ -43,7 +43,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		},
 		{
 		  type:	"turnbackMaximize",
-		  imgUrl:	"turnback.gif",
+		  imgUrl:	"plus-square-o.png",
 
 		  alt: IS_R.lb_turnback
 		}
@@ -168,7 +168,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				visibleIcons.push(
 					{
 					  type:  "turnBack",
-					  imgUrl: "turnback.gif",
+					  imgUrl: "plus-square-o.png",
 					  alt: IS_R.lb_turnback
 					}
 					);
