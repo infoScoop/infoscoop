@@ -108,7 +108,7 @@ IS_Widget.Message.prototype.classDef = function() {
 
 				self.buildRssButton(rssUrl.mylist,IS_R.lb_outboundMessage )
 			),
-			$.LI({style:'backgroundImage:url('+imageURL+'information.gif)'},
+			$.LI({style:'backgroundImage:url('+imageURL+'information.png)'},
 
 				$.SPAN({}, IS_R.lb_information ),
 

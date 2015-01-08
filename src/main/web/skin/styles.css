@@ -606,7 +606,7 @@ div#search-iframe iframe {
 	position: relative;
     float: left;
 }
-#search-tabs.tabs .tab {
+.tabs .tab {
 	position: relative;
 	float: left;
 	
@@ -625,13 +625,13 @@ div#search-iframe iframe {
 	
 	background-color: #eeeeee;
 }
-#search-tabs.tabs .tab.selected {
+.tabs .tab.selected {
 	top: 1px;
 	margin-top: 0px;
 	padding-bottom: 1px;
 	background-color: white;
 }
-#search-tabs.tabs .tab .title {
+.tabs .tab .title {
 	position: static !important;
 	float: left;
 	
@@ -644,7 +644,7 @@ div#search-iframe iframe {
 	font-size: 11px;
 	cursor: pointer;
 }
-#search-tabs.tabs .tab.selected .title {
+.tabs .tab.selected .title {
 	color: #0285B5;
 }
 

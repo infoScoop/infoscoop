@@ -2552,7 +2552,7 @@ IS_Portal.checkSystemMsg = function(){
 						  $.IMG(
 							  {
 								style:'position:relative;top:2px;paddingRight:2px',
-								src:imageURL+"information.gif"
+								src:imageURL+"information.png"
 							  }
 							  ),
 						  IS_R.getResource(IS_R[msg.resourceId], msg.replaceValues)
