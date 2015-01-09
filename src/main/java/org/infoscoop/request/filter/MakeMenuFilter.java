@@ -276,6 +276,7 @@ public class MakeMenuFilter extends ProxyFilter {
 				}
 				String directoryTitle = attributes.getValue("directory_title");
 				if(directoryTitle != null){
+					directoryTitle = I18NUtil.replace(directoryTitle, resMap);
 					menuItemArray.append(",directoryTitle:").append(JSONObject.quote(directoryTitle));
 				}
 				
