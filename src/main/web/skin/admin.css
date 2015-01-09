@@ -670,7 +670,6 @@ div[id^="control_window_"].adminWidgetInstModal {
 div[id^="control_window_"] iframe{
 	width:100%;
 	height:85%;
-	border: 1px outset #ffffff;
 	overflow:visible;
 }
 
@@ -1407,17 +1406,8 @@ a.home-menu-header:visited {
 }
 
 /* default theme */ 
-.infoScoop .widget .widgetHeader {
-    background-image: url("../skin/imgs/theme/widget_header.png");
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-
-.infoScoop .subWidget .widgetHeader {
-    background-color: #EEEEFF;
-    background-image: none;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+.infoScoop .widget .widgetBox {
+	border: 1px solid #ddd;
 }
 
 /* preview widget */

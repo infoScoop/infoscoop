@@ -71,6 +71,7 @@
 	overflow:hidden;
 	/*background-color: white;*/
 	border: none;
+	border-radius: 0;
 }
 
 .infoScoop .subWidget .widgetShade {
