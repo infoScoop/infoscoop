@@ -465,68 +465,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		addDefaultDiv.id = "addDefault";
 		addDefaultDiv.style.cssFloat = "left";
 		addDefaultDiv.style.styleFloat = "left";
-		var addRoleHandler = function(e) {
-			var datetime = new Date().getTime();
-
-			var principalMap = ISA_Principals.get();
-			var jsonObject = {
-				id : String(datetime),
-				tabId : self.displayTabId,
-				tabName : (( self.displayTabId == 0 )? ISA_R.alb_home : ISA_R.alb_newTab),
-				columnsWidth : "",
-				principalType : (principalMap.length > 1) ? principalMap[1].type : principalMap[0].type,
-				role : ISA_R.alb_newRegularExpression,
-				roleName : ISA_R.alb_newRole,
-				roleOrder : ++self.maxRoleOrder,
-				defaultUid : String(datetime),
-				layout : "",
-				staticPanel : {},
-				dynamicPanel : {},
-				widgetsLastmodified : null,
-				tabNumber : displayTabNumber
-//				tabNumber : self.tabNumberJson[self.displayTabId].id
-			};
-			// Defalut fixed area setting.
-			if(jsonObject.tabId == commandBarTabId) {
-				jsonObject = self.templates.setCommandLayout(jsonObject);
-			}
-			else if(jsonObject.tabId == portalHeaderTabId) {
-				jsonObject = self.templates.setPortalHeaderLayout(jsonObject);
-			}
-			else {
-				jsonObject = self.templates.setStaticLayout0(jsonObject);
-				jsonObject = self.setColumnsArray(jsonObject);
-			}
-
-			var newJsons = {};
-			var oldJsons = self.displayRoleJsons;
-			var defaultRole = null;
-			for(var i in oldJsons) {
-				if( !(oldJsons[i] instanceof Function) ){
-					if( oldJsons[i].defaultUid == defaultDefaultUid){
-						defaultRole = oldJsons[i];
-						continue;
-					}
-					newJsons[i] = oldJsons[i];
-				}
-			}
-			newJsons[datetime] = jsonObject;
-			newJsons[defaultRole.id] = defaultRole;
-			self.displayRoleJsons = newJsons;
-
-			var roleParent = document.getElementById("tab_"+self.displayTabId+"_roleGroup");
-			if(!roleParent) return;
-			// Added at last
-			roleParent.appendChild(self.buildRole(jsonObject));
-			// Change display to the permission added at the last minute
-//			self.editRole(jsonObject);
-			
-			self.addSortableEvent();
-			
-			self.isUpdated = true;
-			ISA_Admin.isUpdated = true;
-		};
-		IS_Event.observe(addDefaultDiv, 'click', addRoleHandler, false, ["_adminPanelTab","_adminPanel"]);
+		IS_Event.observe(addDefaultDiv, 'click', this.addRole.bind(this, false), false, ["_adminPanelTab","_adminPanel"]);
 
 		roleListContainer.appendChild(addDefaultDiv);
 
@@ -575,8 +514,8 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 
 		roleListContainer.appendChild(ISA_Admin.buildTableHeader(
-			[ISA_R.alb_order, ISA_R.alb_roleName, ISA_R.alb_subject, ISA_R.alb_regularExpression,ISA_R.alb_edit,ISA_R.alb_delete],
-			['40px', '175px', '85px','350px', '40px', '40px']
+			[ISA_R.alb_order, ISA_R.alb_roleName, ISA_R.alb_subject, ISA_R.alb_regularExpression, ISA_R.alb_edit, ISA_R.alb_copy, ISA_R.alb_delete],
+			['40px', '165px', '85px','320px', '40px', '40px', '40px']
 			));
 
 		var roleListDiv = document.createElement("div");
@@ -610,6 +549,89 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		return roleListContainer;
 	}
 
+	this.addRole = function(copyObject){
+        var datetime = new Date().getTime();
+
+        var principalMap = ISA_Principals.get();
+        var jsonObject;
+        
+        if(copyObject){
+            jsonObject = $jq.extend(true, {}, copyObject);
+            jsonObject.id = String(datetime);
+            jsonObject.defaultUid = String(datetime);
+            jsonObject.isDefault = false;
+            jsonObject.roleName += " - " + ISA_R.alb_copy;
+            
+            var principalExists = $jq.grep(principalMap, function(principal){
+                return principal.type == jsonObject.principalType;
+            }).length > 0;
+            
+            if(!principalExists){
+                jsonObject.principalType = (principalMap.length > 1) ? principalMap[1].type : principalMap[0].type;
+            }
+        }else{
+            jsonObject = {
+                id : String(datetime),
+                tabId : self.displayTabId,
+                tabName : (( self.displayTabId == 0 )? ISA_R.alb_home : ISA_R.alb_newTab),
+                columnsWidth : "",
+                principalType : (principalMap.length > 1) ? principalMap[1].type : principalMap[0].type,
+                role : ISA_R.alb_newRegularExpression,
+                roleName : ISA_R.alb_newRole,
+                roleOrder : ++self.maxRoleOrder,
+                defaultUid : String(datetime),
+                layout : "",
+                staticPanel : {},
+                dynamicPanel : {},
+                widgetsLastmodified : null,
+                tabNumber : displayTabNumber
+            };
+            
+            // Defalut fixed area setting.
+            if(jsonObject.tabId == commandBarTabId) {
+                jsonObject = self.templates.setCommandLayout(jsonObject);
+            }
+            else if(jsonObject.tabId == portalHeaderTabId) {
+                jsonObject = self.templates.setPortalHeaderLayout(jsonObject);
+            }
+            else {
+                jsonObject = self.templates.setStaticLayout0(jsonObject);
+                jsonObject = self.setColumnsArray(jsonObject);
+            }
+        }
+        
+        var newJsons = {};
+        var oldJsons = self.displayRoleJsons;
+        var defaultRole = null;
+        for(var i in oldJsons) {
+            if( !(oldJsons[i] instanceof Function) ){
+                if( oldJsons[i].defaultUid == defaultDefaultUid){
+                    defaultRole = oldJsons[i];
+                    continue;
+                }
+                newJsons[i] = oldJsons[i];
+            }
+        }
+        newJsons[datetime] = jsonObject;
+        newJsons[defaultRole.id] = defaultRole;
+        self.displayRoleJsons = newJsons;
+
+        var roleParent = document.getElementById("tab_"+self.displayTabId+"_roleGroup");
+        if(!roleParent) return;
+        // Added at last
+        roleParent.appendChild(self.buildRole(jsonObject));
+        
+        self.addSortableEvent();
+        
+        self.isUpdated = true;
+        ISA_Admin.isUpdated = true;
+        
+        var rid = "tab_"+self.displayTabId+"_role_" + datetime;
+        if(!ISA_DefaultPanel.updateRaws.contains(rid))
+            ISA_DefaultPanel.updateRaws.push(rid);
+        this.updateRawStyle();
+	}
+	
 	this.addSortableEvent = function(){
 		var draggingDivId = false;
 		Sortable.create($("tab_"+this.displayTabId+"_roleGroup"),
@@ -708,7 +730,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		var roleNameTd = document.createElement("td");
 		roleNameTd.className = "configTableTd";
-		roleNameTd.style.width = "175px";
+		roleNameTd.style.width = "165px";
 		roleNameTd.style.textAlign = "left";
 		tr.appendChild(roleNameTd);
 		var textDiv1 = document.createElement("div");
@@ -763,7 +785,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 
 		var roleTd = document.createElement("td");
 		roleTd.className = "configTableTd";
-		roleTd.style.width = "350px";
+		roleTd.style.width = "320px";
 		roleTd.style.textAlign = "left";
 		tr.appendChild(roleTd);
 		var textDiv2 = document.createElement("div");
@@ -846,8 +868,21 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				this.editRoleWin = window.open("editRole?id=" + jsonRole.id, "editRoleWin", 'width=800, height=600, menubar=no, toolbar=no, scrollbars=yes, resizable=yes');
 			}.bind(this, jsonRole));
 		}
-
-		var deleteTd = document.createElement("td");
+		
+        var copyTd = document.createElement("td");
+        copyTd.className = "configTableTd";
+        copyTd.style.width = "40px";
+        copyTd.style.textAlign = "center";
+        tr.appendChild(copyTd);
+        
+        var copyImg = document.createElement("img");
+        copyImg.src = imageURL + "page_copy.png";
+        copyImg.style.cursor = "pointer";
+        copyImg.title = IS_R.lb_createCopy;
+        copyTd.appendChild(copyImg);
+        IS_Event.observe(copyImg, "click", this.addRole.bind(this, jsonRole), false, ["_adminPanelTab","_adminPanel"]);
+        
+        var deleteTd = document.createElement("td");
 		deleteTd.className = "configTableTd";
 		deleteTd.style.width = "40px";
 		deleteTd.style.textAlign = "center";
@@ -862,7 +897,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		}else if(jsonRole.disabledDefault){
 		  Element.hide(roleDiv);
 		}
-
+		
 		return roleDiv;
 	}
 	
@@ -1651,7 +1686,10 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		IS_Event.observe(editForm, 'mousedown', editFormEventCancel, false, ["_adminPanelTab","_adminPanel"]);
 
 		function editFormOnBlur(e){
-			var nowText = ISA_Admin.trim( editForm.value );
+            IS_Event.stopObserving(editForm, 'keydown', editFormOnKeydown, false);
+            IS_Event.stopObserving(editForm, 'blur', editFormOnBlur, false);
+            
+		    var nowText = ISA_Admin.trim( editForm.value );
 
 			// Turn back to the previous value if empty is entered
 			if(nowText.length == 0) {
@@ -1682,8 +1720,6 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				targetNode.replaceChild( beforeElement, targetNode.firstChild );
 			}
 
-			IS_Event.stopObserving(editForm, 'keydown', editFormOnKeydown, false);
-			IS_Event.stopObserving(editForm, 'blur', editFormOnBlur, false);
 			IS_Event.stopObserving(editForm, 'click', editFormEventCancel, false);
 			IS_Event.stopObserving(editForm, 'mousedown', editFormEventCancel, false);
 			

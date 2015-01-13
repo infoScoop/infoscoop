@@ -19,8 +19,8 @@
     <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_refreshInterval","ALL","ALL","Auto refresh interval(second)");-->
     <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_refreshInterval","ALL","ja","自動更新間隔(秒）");-->
     <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_refreshInterval","ALL","zh","自动更新间隔（秒）");-->
-    <changeSet id="infoscoop340_583_1" author="aknishiumi">
-        <preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop340_583_1">
+    <changeSet id="infoscoop400_583_1" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop400_583_1">
             <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='ams_typePositiveInt';</sqlCheck>
             <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_useRefreshInterval';</sqlCheck>
             <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_refreshInterval';</sqlCheck>
@@ -92,8 +92,8 @@
 
     <!--Issue 583-->
     <!--ALTER TABLE [スキーマ].IS_TABLAYOUTS ADD COLUMN TEMPLASTMODIFIED TIMESTAMP;-->
-    <changeSet id="infoscoop340_583_2" author="aknishiumi">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_583_2">
+    <changeSet id="infoscoop400_583_2" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_583_2">
             <not>
                 <columnExists schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS" columnName="refreshinterval"/>
             </not>
@@ -104,5 +104,36 @@
             </column>
         </addColumn>
     </changeSet>    
+
+    <!--Issue 584-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_copy","ALL","ALL","Copy");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_copy","ALL","ja","コピー");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_copy","ALL","zh","拷贝");-->
+    <changeSet id="infoscoop400_584" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop400_584">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_copy';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_copy"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Copy"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_copy"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="コピー"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_copy"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="拷贝"/>
+        </insert>
+    </changeSet>
 
 </databaseChangeLog>
