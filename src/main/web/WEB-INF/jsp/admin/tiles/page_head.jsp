@@ -16,6 +16,7 @@
 		
 		<link rel="stylesheet" type="text/css" href="../../skin/admin.css">
 		<link rel="stylesheet" type="text/css" href="../../skin/admintreemenu.css">
+		<link rel="stylesheet" type="text/css" href="../../skin/adminotherlayout.css">
 		
 		<!--start styles css-->
 	    <link rel="stylesheet" type="text/css" href="../../skin/styles.css">

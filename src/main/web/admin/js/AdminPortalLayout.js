@@ -224,6 +224,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 		legend.appendChild(document.createTextNode(ISA_R.alb_editSettings));
 		
 		var editLayoutTextareaDiv = document.createElement("div");
+		editLayoutTextareaDiv.className = "modalConfigSetBody";
 		fieldset.appendChild(editLayoutTextareaDiv);
 		
 		var editLayoutTextarea;
@@ -233,6 +234,24 @@ ISA_PortalLayout.prototype.classDef = function() {
 				editLayoutTextarea.style.width = "99%";
 				editLayoutTextarea.style.margin = "5px";
 				editLayoutTextarea.type = "text";
+				break;
+			case "theme":
+				var descDiv = document.createElement("div");
+				descDiv.className = "theme-desc";
+				var seeSampleA = document.createElement("a");
+				seeSampleA.className = "theme-see-sample";
+				seeSampleA.innerHTML = ISA_R.alb_settingExamples;
+				seeSampleA.href = "#"
+				editLayoutTextareaDiv.appendChild(descDiv);
+				descDiv.appendChild(seeSampleA);
+				
+				editLayoutTextarea = document.createElement("textarea");
+				editLayoutTextarea.className = "theme-textarea";
+				editLayoutTextarea.rows = "20";
+				editLayoutTextarea.setAttribute('wrap', 'off');
+				
+				
+				IS_Event.observe(seeSampleA, 'click', this.openViewerOfThemeSamples.bind(this), false, "_adminPortal");
 				break;
 			default:
 				editLayoutTextarea = document.createElement("textarea");
@@ -251,6 +270,11 @@ ISA_PortalLayout.prototype.classDef = function() {
 		IS_Event.observe(editLayoutTextarea, 'change', changeLayoutHandler, false, "_adminPortal");
 		
 		return editLayoutDiv;
+	}
+	
+	this.openViewerOfThemeSamples = function(){
+		this.popupWindow = window.open("../../manager/portallayout/themeSamples", "themeSamples", "width=800, height=600, scrollbars=yes, status=no");
+		this.popupWindow.focus();
 	}
 	
 	this.commitPortalLayout = function() {
