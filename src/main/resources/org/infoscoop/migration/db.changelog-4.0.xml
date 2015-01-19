@@ -363,4 +363,53 @@
             <column name="layout" value=""/>
         </insert>
     </changeSet>
+    
+    <!--Issue 588-->
+    <!--UPDATE IS_I18N SET message = 'Add a tab' WHERE id = 'lb_addTab' AND lang = 'ALL';-->
+    <!--UPDATE IS_I18N SET message = 'タブを追加する' WHERE id = 'lb_addTab' AND lang = 'ja';-->
+    <!--UPDATE IS_I18N SET message = '追加栏标' WHERE id = 'lb_addTab' AND lang = 'zh';-->
+    <!--UPDATE IS_I18N SET message = '<<' WHERE id = 'lb_closeLink' AND lang = 'ALL';-->
+    <!--UPDATE IS_I18N SET message = '<<' WHERE id = 'lb_closeLink' AND lang = 'ja';-->
+    <!--UPDATE IS_I18N SET message = '<<' WHERE id = 'lb_closeLink' AND lang = 'zh';-->
+    <!--UPDATE IS_I18N SET message = '>>' WHERE id = 'lb_descLink' AND lang = 'ALL';-->
+    <!--UPDATE IS_I18N SET message = '>>' WHERE id = 'lb_descLink' AND lang = 'ja';-->
+    <!--UPDATE IS_I18N SET message = '>>' WHERE id = 'lb_descLink' AND lang = 'zh';-->
+    <changeSet id="infoscoop400_588_1" author="muto">
+        <update tableName="IS_I18N">
+        	<column name="message" value="Add a tab"/>
+        	<where>id='lb_addTab' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="タブを追加する"/>
+        	<where>id='lb_addTab' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="追加栏标"/>
+        	<where>id='lb_addTab' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="&lt;&lt;"/>
+        	<where>id='lb_closeLink' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="&lt;&lt;"/>
+        	<where>id='lb_closeLink' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="&lt;&lt;"/>
+        	<where>id='lb_closeLink' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="&gt;&gt;"/>
+        	<where>id='lb_descLink' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="&gt;&gt;"/>
+        	<where>id='lb_descLink' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="&gt;&gt;"/>
+        	<where>id='lb_descLink' AND lang='zh'</where>
+        </update>
+    </changeSet>
 </databaseChangeLog>
