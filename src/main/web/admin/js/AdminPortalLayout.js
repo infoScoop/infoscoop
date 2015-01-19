@@ -235,21 +235,20 @@ ISA_PortalLayout.prototype.classDef = function() {
 				editLayoutTextarea.style.margin = "5px";
 				editLayoutTextarea.type = "text";
 				break;
-			case "theme":
+			case "customtheme":
 				var descDiv = document.createElement("div");
-				descDiv.className = "theme-desc";
+				descDiv.className = "customtheme-desc";
 				var seeSampleA = document.createElement("a");
-				seeSampleA.className = "theme-see-sample";
+				seeSampleA.className = "customtheme-see-sample";
 				seeSampleA.innerHTML = ISA_R.alb_settingExamples;
 				seeSampleA.href = "#"
 				editLayoutTextareaDiv.appendChild(descDiv);
 				descDiv.appendChild(seeSampleA);
 				
 				editLayoutTextarea = document.createElement("textarea");
-				editLayoutTextarea.className = "theme-textarea";
+				editLayoutTextarea.className = "customtheme-textarea";
 				editLayoutTextarea.rows = "20";
 				editLayoutTextarea.setAttribute('wrap', 'off');
-				
 				
 				IS_Event.observe(seeSampleA, 'click', this.openViewerOfThemeSamples.bind(this), false, "_adminPortal");
 				break;

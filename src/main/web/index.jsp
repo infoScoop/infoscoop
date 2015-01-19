@@ -80,6 +80,7 @@
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/prototype-window-1.3/themes/default.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/prototype-window-1.3/themes/alphacube.css">
     <link rel="stylesheet" type="text/css" href="portallayout?type=css">
+    <link rel="stylesheet" type="text/css" href="portallayout?type=customTheme">
 
 	<!-- favicon.ico -->
 	<link rel="shortcut icon" href="favicon.ico">

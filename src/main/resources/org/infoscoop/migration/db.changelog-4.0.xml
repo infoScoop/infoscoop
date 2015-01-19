@@ -136,8 +136,8 @@
     <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleGreen","ALL","ALL","Simple Green");-->
     <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleGreen","ALL","ja","グリーン（シンプル）");-->
     <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleGreen","ALL","zh","简单的绿");-->
-    <changeSet id="infoscoop340_587" author="muto">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_587">
+    <changeSet id="infoscoop400_587_1" author="muto">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_587_1">
             <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_settingExamples';</sqlCheck>
         </preConditions>
         <insert tableName="IS_I18N">
@@ -351,4 +351,16 @@
             <column name="message" value="简单的绿"/>
         </insert>
    </changeSet>
+
+    <!--Issue 587-->
+    <!--INSERT INTO [スキーマ].IS_PORTALLAYOUTS (`name`,`layout`) VALUES ('customTheme','');-->
+    <changeSet id="infoscoop400_587_2" author="muto">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_587_2">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_PORTALLAYOUTS where name='customTheme';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_PORTALLAYOUTS">
+            <column name="name" value="customTheme"/>
+            <column name="layout" value=""/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

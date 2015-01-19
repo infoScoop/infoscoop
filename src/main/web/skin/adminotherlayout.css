@@ -15,14 +15,14 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
  
-#portalLayouts .theme-desc {
+#portalLayouts .customtheme-desc {
 	text-align: right;
 	font-size: 14px;
 	margin-top: 5px;
 	margin-right: 10px;
 }
 
-#portalLayouts .theme-textarea {
+#portalLayouts .customtheme-textarea {
 	width: 98%;
 	margin: 5px;
 }

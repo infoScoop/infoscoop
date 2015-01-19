@@ -23,7 +23,7 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>%{lb_shortcutsKeyList}</title>
+<title>%{alb_settingExamples}</title>
 <style>
 
 /*reset*/
@@ -78,7 +78,7 @@ padding: 10px 0;
 }
 
 .table {
-	height: 320px;
+	height: 340px;
 	display: table;
 	text-align: center;
 }
@@ -185,7 +185,7 @@ padding: 10px 0;
 .json-container textarea {
 	width: 100%;
 	box-sizing: border-box;
-	height: 320px;
+	height: 340px;
 	color: #545454;
 	background-color: #ebebe4;
 }
@@ -417,10 +417,11 @@ padding: 10px 0;
   },
   "commandbar":{
     "searchFormButton":{
-      "backgroundColor":"#Bacf02",
+      "backgroundColor":"#bacf02",
       "backgroundGradationTop":"#c3d900",
       "backgroundGradationBottom":"#bbcf06",
-      "iconClass":"gray"
+      "borderColor":"#bacf02",
+      "iconClass":"white"
     }
   }
 }</textarea>
@@ -485,6 +486,7 @@ padding: 10px 0;
       "backgroundColor":"#e8e8e8",
       "backgroundGradationTop":"#f0f0f0",
       "backgroundGradationBottom":"#e0e0e0",
+      "borderColor":"#e8e8e8",
       "iconClass":"gray"
     }
   }
@@ -550,7 +552,8 @@ padding: 10px 0;
       "backgroundColor":"#e67e22",
       "backgroundGradationTop":"#ed8224",
       "backgroundGradationBottom":"#de7921",
-      "iconClass":"gray"
+      "borderColor":"#e67e22",
+      "iconClass":"white"
     }
   }
 }</textarea>
@@ -612,10 +615,11 @@ padding: 10px 0;
   },
   "commandbar":{
     "searchFormButton":{
-      "backgroundColor":"##0085be",
+      "backgroundColor":"#0085be",
       "backgroundGradationTop":"#008bc7",
       "backgroundGradationBottom":"#0081b8",
-      "iconClass":"gray"
+      "borderColor":"#0085be",
+      "iconClass":"white"
     }
   }
 }</textarea>
@@ -680,7 +684,8 @@ padding: 10px 0;
       "backgroundColor":"#e74c3c",
       "backgroundGradationTop":"#f0503e",
       "backgroundGradationBottom":"#e04b3a",
-      "iconClass":"gray"
+      "borderColor":"#e74c3c",
+      "iconClass":"white"
     }
   }
 }</textarea>
@@ -745,7 +750,8 @@ padding: 10px 0;
       "backgroundColor":"#bacf02",
       "backgroundGradationTop":"#c3d900",
       "backgroundGradationBottom":"#bbcf06",
-      "iconClass":"gray"
+      "borderColor":"#bacf02",
+      "iconClass":"white"
     }
   }
 }</textarea>
@@ -810,6 +816,7 @@ padding: 10px 0;
       "backgroundColor":"transparent",
       "backgroundGradationTop":"",
       "backgroundGradationBottom":"",
+      "borderColor":"transparent",
       "iconClass":"gray"
     }
   }
@@ -875,6 +882,7 @@ padding: 10px 0;
       "backgroundColor":"transparent",
       "backgroundGradationTop":"",
       "backgroundGradationBottom":"",
+      "borderColor":"transparent",
       "iconClass":"gray"
     }
   }
@@ -939,6 +947,7 @@ padding: 10px 0;
       "backgroundColor":"transparent",
       "backgroundGradationTop":"",
       "backgroundGradationBottom":"",
+      "borderColor":"transparent",
       "iconClass":"gray"
     }
   }
