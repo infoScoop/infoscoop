@@ -58,7 +58,6 @@
 	vertical-align: bottom;
 	margin:0;
 	line-height: 11px;
-	padding-right: 10px;
 }
 
 .infoScoop #tabs div.outer {
@@ -74,7 +73,7 @@
 	overflow: hidden;
     text-decoration:none;
     line-height: 16px;
-    padding: 8px 0px 8px 0px;
+    padding: 8px 10px 8px 0px;
 }
 
 .infoScoop #tabs div.inner table {
@@ -96,7 +95,7 @@
 	vertical-align:bottom;
 	border:1px dashed #FF5533;
 	background-color:#FFF;
-	height: 1.85em;
+	height: 2.8em;
 	border-width:1px 1px 0 1px;
 }
 
