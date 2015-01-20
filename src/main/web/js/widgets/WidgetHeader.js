@@ -311,6 +311,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		
 		if(widget.elm_favoriteIcon){
 			var favoriteIconDiv = document.createElement("td");
+			favoriteIconDiv.className = "favoriteIconTd";
 			favoriteIconDiv.appendChild(widget.elm_favoriteIcon);
 			titleHeaderTr.appendChild(favoriteIconDiv);
 		}

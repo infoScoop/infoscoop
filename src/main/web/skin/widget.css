@@ -155,8 +155,9 @@
 .infoScoop .widgetHeader td {
 }
 
-.infoScoop .widgetHeader .latestMarkTd {
-	vertical-align: middle;
+.infoScoop .widgetHeader .favoriteIconTd, .infoScoop .widgetHeader .latestMarkTd {
+    vertical-align: top;
+    padding-top: 2px;
 }
 
 .infoScoop .widgetHeader .widgetIndicator {
