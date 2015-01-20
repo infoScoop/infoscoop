@@ -152,6 +152,9 @@ IS_Widget.Maximize.createMaximizeWidget = function( wigetObj ) {
 			//Refresh immediately if automatic refresh occurs in maximized window
 			IS_Portal.refresh.cancel();
 			IS_Portal.refresh.resume();
+			
+	        if(IS_SidePanel.adjustPosition)
+	            IS_SidePanel.adjustPosition();
 		}
 		
 		this.adjustMaximizeHeight = function() {

@@ -1556,6 +1556,8 @@ IS_Widget.prototype.classDef = function() {
 			
 			this.maximize.changeMaximize(baseWidget);
 		}
+		if(IS_SidePanel.adjustPosition)
+		    IS_SidePanel.adjustPosition();
 	}
 
 	this.adjustMaximizeHeight = function()  {
@@ -1629,6 +1631,9 @@ IS_Widget.prototype.classDef = function() {
 			this.maximize.turnbackMaximize();
 		} else if(!this.hasMaximizeView){
 			this.defaultTurnbackMaximize();
+		}
+		if(IS_SidePanel.adjustPosition){
+		    IS_SidePanel.adjustPosition();
 		}
 	}
 	
