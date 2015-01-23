@@ -465,11 +465,16 @@ IS_Widget.prototype.classDef = function() {
 	   	this.elm_latestMark = divLatestMark;
 		divLatestMark.style.display = "none";
 
-		var indicator = document.createElement("img");
-		indicator.src = imageURL+"indicator.gif";
-	   	this.elm_indicator = indicator;
+		var indicator;
+		if (IS_Portal.isPropertySupported("animation")){
+			indicator = document.createElement("span");	
+		} else {
+			indicator = document.createElement("img");
+			indicator.src = imageURL+"ajax-loader.gif";
+		}
+		this.elm_indicator = indicator;
 		indicator.id = self.id + "_widgetIndicator";
-		indicator.className = "widgetIndicator";
+		indicator.className = "bounce-ball-indicator";
 		indicator.style.display = "none";
 		
 	   	var divWidgetContent = document.createElement("div");
@@ -1429,13 +1434,13 @@ IS_Widget.prototype.classDef = function() {
 	
 	this.startIndicator = function () {
 		this.elm_indicator.style.display = "";
-		if (this.elm_favoriteIcon) 
-			this.elm_favoriteIcon.style.display = "none";
+		/*if (this.elm_favoriteIcon) 
+			this.elm_favoriteIcon.style.display = "none";*/
 	}
 	this.stopIndicator = function () {
-		this.elm_indicator.style.display = "none";
-		if (this.elm_favoriteIcon) 
-			this.elm_favoriteIcon.style.display = "";
+		setTimeout(function(){
+			this.elm_indicator.style.display = "none";
+		}.bind(this), 800);
 	}	
 	
 	var onBlink = false;
@@ -1728,7 +1733,7 @@ IS_Widget.disableIcon = function(icon, widget) {
 	if(icon.element){
 		icon.element.disabled = true;
 		icon.element.className = "headerIcon disable";
-		if (Browser.isIE){
+		if (Browser.isIE8){
 			icon.element.style.filter = icon.element.style.filter.replace("opacity = 90", "opacity = 60");
 		}
 	}
@@ -1743,7 +1748,7 @@ IS_Widget.enableIcon = function(icon, widget) {
 	if(icon.element){
 		icon.element.disabled = false;
 		icon.element.className = "headerIcon";
-		if (Browser.isIE){
+		if (Browser.isIE8){
 			icon.element.style.filter = icon.element.style.filter.replace("opacity = 60", "opacity = 90");
 		}
 	}

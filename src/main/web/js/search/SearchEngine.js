@@ -59,10 +59,16 @@ IS_SearchEngine.prototype.classDef = function() {
 		tabsA.href = "#"+encodeURIComponent( this.name );
 		tabsLi.appendChild(tabsA);
 		
-		var tabsIndicator = document.createElement("img");
-		tabsIndicator.src = imageURL+"indicator.gif";
+		
+		var tabsIndicator;
+		if (IS_Portal.isPropertySupported("animation")){
+			tabsIndicator = document.createElement("span");	
+		} else {
+			tabsIndicator = document.createElement("img");
+			tabsIndicator.src = imageURL+"ajax-loader.gif";
+		}
 		this.indicator = tabsIndicator;
-		tabsIndicator.className = "indicator";
+		tabsIndicator.className = "bounce-ball-indicator";
 		tabsA.appendChild(tabsIndicator);
 		
 		var tabTitle = document.createElement("span");
@@ -196,7 +202,10 @@ IS_SearchEngine.prototype.classDef = function() {
 		}
 	}
 	this.endSearchCommon = function() {
-		this.indicator.style.display = "none";
+		setTimeout(function(){
+			this.indicator.style.display = "none";
+		}.bind(this), 800);
+		
 		this.tabA.style.cursor = "pointer";
 //		IS_Event.observe(this.tabA, "click", IS_SearchEngines.switchTab.bind(this.tabA), false, "_search");
 		Element.remove( this.shield );

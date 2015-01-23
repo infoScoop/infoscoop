@@ -81,11 +81,57 @@
 	//height: 22px;/* for IE */
 }
 
-.infoScoop #tabs li .tabLoadingIcon {
+@keyframes tab-anim-bounce {
+	0% {
+		top: 9px;
+		left: 3px;
+		animation-timing-function: ease-in;
+	}
+	50% {
+		top: 20px;
+		left: 3px;
+		animtion-timing-function: ease-out;
+	}
+	100% {
+		top: 9px;
+		left: 3	px;
+		animation-timing-function: ease-in;
+	}
+}
+@-webkit-keyframes tab-anim-bounce {
+	0% {
+		top: 9px;
+		left: 3px;
+		-webkit-animation-timing-function: ease-in;
+	}
+	50% {
+		top: 20px;
+		left: 3px;
+		-webkit-animtion-timing-function: ease-out;
+	}
+	100% {
+		top: 9px;
+		left: 3px;
+		-webkit-animation-timing-function: ease-in;
+	}
+}
+
+.infoScoop #tabs li .bounce-ball-indicator {
 	display: none;
 }
-.infoScoop #tabs li.loading .tabLoadingIcon {
+
+.infoScoop #tabs li span.bounce-ball-indicator {
+	background-color: #ffffff;
+	animation: anim-bounce 1s infinite;
+	-webkit-animation: tab-anim-bounce 1s infinite;
+}
+.infoScoop #tabs li.loading span.bounce-ball-indicator {
 	display: inline;
+}
+
+.infoScoop #tabs li img.bounce-ball-indicator {
+	top: 8px;
+	left: -3px;
 }
 
 .infoScoop #tabs .tabInsertMark {
@@ -131,10 +177,6 @@
 .infoScoop #tabs .tab div.inlineBlock {
 	float:left;
 	vertical-align: middle;
-}
-
-.infoScoop #tabs .tab.selected div.inlineBlock {
-	padding-left: 4px;
 }
 
 .infoScoop #tabs .tab div.inlineBlock.tabTitleImg {
@@ -194,10 +236,7 @@
 	width: 13px;
 }
 */
-.infoScoop #tabs .tabLoadingIcon {
-	position:relative;
-	margin-right: 4px;
-}
+
 .infoScoop #tabs #tabLoadStopIcon{
 	background: url( ./imgs/stopq.gif ) no-repeat center left;
 	width:16px;

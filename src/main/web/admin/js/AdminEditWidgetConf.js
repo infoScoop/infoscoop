@@ -521,7 +521,7 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 				var indicator = $("indicatorMini");
 				if (!indicator) {
 					var indicator = document.createElement("img");
-					indicator.src = imageURL + "ajax-loader.gif";
+					indicator.src = imageURL + "ajax-loader-blue.gif";
 					indicator.style.top = "3px";
 					indicator.id = "indicatorMini";
 					formContainer.appendChild(indicator);

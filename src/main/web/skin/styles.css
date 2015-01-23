@@ -760,3 +760,18 @@ div#search-iframe iframe {
 .infoScoop #portal-header-container {
 	background-color: #F7F7F7;
 }
+
+/*indicator bounce ball*/
+.infoScoop span.bounce-ball-indicator {
+	border-radius: 50%;
+	background-color: #737373;
+	width: 4px;
+	height: 4px;
+	position: absolute;
+}
+
+.infoScoop img.bounce-ball-indicator {
+	width: 12px;
+	height: 12px;
+	position: absolute;
+}
