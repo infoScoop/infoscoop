@@ -1727,9 +1727,10 @@ IS_Widget.disableIcon = function(icon, widget) {
 	if(!icon) return;
 	if(icon.element){
 		icon.element.disabled = true;
-		icon.element.style.filter = "alpha(opacity=50)";
-		icon.element.style.opacity = 0.5;
-		//icon.element.MozOpacity = 0.5;
+		icon.element.className = "headerIcon disable";
+		if (Browser.isIE){
+			icon.element.style.filter = icon.element.style.filter.replace("opacity = 90", "opacity = 60");
+		}
 	}
 	if(icon.type){
 		var disableFunc = widget.getContentFunction(icon.type +"Disable");
@@ -1741,9 +1742,10 @@ IS_Widget.enableIcon = function(icon, widget) {
 	if(!icon) return;
 	if(icon.element){
 		icon.element.disabled = false;
-		icon.element.style.filter = "1.0";
-		icon.element.style.opacity = "1.0";
-		//icon.element.MozOpacity = "1.0";
+		icon.element.className = "headerIcon";
+		if (Browser.isIE){
+			icon.element.style.filter = icon.element.style.filter.replace("opacity = 60", "opacity = 90");
+		}
 	}
 	if(icon.type){
 		var enableFunc = widget.getContentFunction(icon.type +"Enable");
