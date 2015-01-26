@@ -39,6 +39,7 @@ body{
 }
 
 .static_column {
+	border: dotted 1px #737373;
 	cursor: pointer;
 	position:relative
 }
