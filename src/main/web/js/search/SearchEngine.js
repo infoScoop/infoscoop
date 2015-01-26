@@ -61,7 +61,7 @@ IS_SearchEngine.prototype.classDef = function() {
 		
 		
 		var tabsIndicator;
-		if (IS_Portal.isPropertySupported("animation")){
+		if (is_propertySupported("animation")){
 			tabsIndicator = document.createElement("span");	
 		} else {
 			tabsIndicator = document.createElement("img");

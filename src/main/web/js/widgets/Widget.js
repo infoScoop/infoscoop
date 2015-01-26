@@ -466,7 +466,7 @@ IS_Widget.prototype.classDef = function() {
 		divLatestMark.style.display = "none";
 
 		var indicator;
-		if (IS_Portal.isPropertySupported("animation")){
+		if (is_propertySupported("animation")){
 			indicator = document.createElement("span");	
 		} else {
 			indicator = document.createElement("img");

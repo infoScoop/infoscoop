@@ -84,7 +84,7 @@ try {
 			searchFormButtonBorderColor = searchFormButton.isNull("borderColor") ? "" : (String) searchFormButton.get("borderColor");
 			searchFormButtonIconClass = searchFormButton.isNull("iconClass") ? "" : (String) searchFormButton.get("iconClass");
 			if (!searchFormButtonIconClass.isEmpty()) {
-				searchFormButtonIconSuffix = getIconClassSuffix(tabbarIconClass);
+				searchFormButtonIconSuffix = getIconClassSuffix(searchFormButtonIconClass);
 			}
 		}
 	}

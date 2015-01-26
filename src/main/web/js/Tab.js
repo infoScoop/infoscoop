@@ -267,7 +267,7 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 	var indicatorDiv = $.DIV({className:"inlineBlock"});
 	var indicatorIcon;
 
-	if (IS_Portal.isPropertySupported("animation")){
+	if (is_propertySupported("animation")){
 		indicatorIcon = $.SPAN();
 	} else {
 		indicatorIcon = $.IMG({src:imageURL +"ajax-loader-white.gif"});

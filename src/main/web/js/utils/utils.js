@@ -1192,3 +1192,16 @@ if( !Object.hasOwnProperty ) {
 		return ( this[property] && !this.constructor.prototype[property] );
 	}
 }
+
+is_propertySupported = function (property) {
+	var upperCaseProperty = property.charAt(0).toUpperCase() + property.slice(1);
+	var webkit = "Webkit" + upperCaseProperty;
+	var moz = "Moz" + upperCaseProperty;
+	var supported = [property, webkit, moz];
+	for(var i=0;i<supported.length;i++){
+		if(supported[i] in document.body.style){
+			return true;
+		}
+	}
+	return false;
+}
