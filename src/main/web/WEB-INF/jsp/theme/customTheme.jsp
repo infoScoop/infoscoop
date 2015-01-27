@@ -174,6 +174,9 @@ String getIconClassSuffix (String iconClass){
 .infoScoop #tabs #tabsRefresh a.tabbar-icon {
 	background: url(<%=staticContentURL%>/skin/imgs/refresh<%=tabbarIconSuffix%>.png ) no-repeat center left;
 }
+.infoScoop #tabs #tabsRefreshStop a.tabbar-icon {
+	background: url(<%=staticContentURL%>/skin/imgs/times-circle<%=tabbarIconSuffix%>.png ) no-repeat center left;
+}
 .infoScoop #tabs .tab.selected .selectMenu.refresh {
 	background: url(<%=staticContentURL%>/skin/imgs/refresh<%=tabbarIconSuffix%>.png ) no-repeat center left;
 }

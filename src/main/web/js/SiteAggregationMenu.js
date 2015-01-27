@@ -1076,7 +1076,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 			}
 
 			//Obtain max width of title DIV
-			var ulWidth = 100;
+			var ulWidth = 110;
 			for(var i = 0 ; i < childUls.length; i++){
 				childUls[i].style.display ="block";
 				var lis = getChildrenByTagName(childUls[i], 'li');
@@ -1085,7 +1085,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 					for(var k = 0; k < divs.length; k++){
 						if(divs[k].className=="menuTitle"){
 							var titleWidth = divs[k].offsetWidth;
-							var liWidth = titleWidth + 30;
+							var liWidth = titleWidth + 40;
 							if(ulWidth < liWidth){
 								ulWidth = liWidth;
 							}
@@ -1463,14 +1463,14 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 				parent.appendChild(ul);
 			}
 			//Adjusting width
-			var ulWidth = 100;
+			var ulWidth = 110;
 			var lis = getChildrenByTagName(ul, 'li');
 			for(var j = 0; j < lis.length; j++){
 				var divs = getChildrenByTagName(lis[j].firstChild, "div");
 				for(var k = 0; k < divs.length; k++){
 					if(divs[k].className=="menuTitle"){
 						var titleWidth = divs[k].offsetWidth;
-						var liWidth = titleWidth + 30;
+						var liWidth = titleWidth + 40;
 						if(ulWidth < liWidth){
 							ulWidth = liWidth;
 						}
@@ -1550,7 +1550,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		if(createCloseIcon){
 			var closeIcon = document.createElement("img");
 			closeIcon.className = "closeMenu";
-			closeIcon.src = imageURL+"x.gif";
+			closeIcon.src = imageURL+"times-circle.png";
 
 			if(!appended){
 				var blankTd = document.createElement("td");
