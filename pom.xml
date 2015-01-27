@@ -414,12 +414,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
+		<!--dependency>
 			<groupId>apache</groupId>
 			<artifactId>log4j-datedFileAppender</artifactId>
 			<version>1.0.2</version>
 			<scope>compile</scope>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
