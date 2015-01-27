@@ -114,46 +114,6 @@ input[type=button]:active, .is-button:active {
 	
 }
 
-.is-button-primary {
-	color: #ffffff;
-	border: 1px solid #4593B5;
-	border: 1px solid rgba(0,0,0,0.1);
-	background-color: #3C9FC9;
-	background-image: -webkit-linear-gradient(top,#3AA2CF 0,#3F9CC4 100%); /* Chrome10+, Safari5.1+ */
-	background-image: -moz-linear-gradient(top, #3AA2CF 0, #3F9CC4 100%);/* FF3.6+ */
-	background-image: linear-gradient(top, #3AA2CF 0, #3F9CC4 100%);/* IE10+, W3C */
-	filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#3AA2CF', endColorstr='#3F9CC4', GradientType=0)";/* IE8,9 */
-}
-
-.is-button-primary:hover,
-.is-button-primary:focus {
-	-moz-box-shadow: 0 1px 1px rgba(0,0,0,.1); /* Firefox */
-	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.1); /* Chrome, Safari */
-	box-shadow: 0 1px 1px rgba(0,0,0,.1); /* IE9+, Others*/
-	color: #ffffff;
-	border-color: #499CBF;
-	background-color: #3FA7D4;
-	background-image: -webkit-linear-gradient(top,#3DAAD9 0,#3F9CC4 100%); /* Chrome10+, Safari5.1+ */
-	background-image: -moz-linear-gradient(top, #3DAAD9 0, #3F9CC4 100%);/* FF3.6+ */
-	background-image: linear-gradient(top, #3DAAD9 0, #3F9CC4 100%);/* IE10+, W3C */
-	filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#3DAAD9', endColorstr='#3F9CC4', GradientType=0)";/* IE8,9 */
-	
-}
-
-.is-button-primary:active {
-	-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.1); /* Firefox */
-	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1); /* Chrome, Safari */
-	box-shadow: inset 0 1px 2px rgba(0,0,0,.1); /* IE9+, Others*/
-	color: #ffffff;
-	border-color: #418BAB;
-	background-color: #3997BF;
-	background-image: -webkit-linear-gradient(top,#379AC4 0, #3696BF 100%); /* Chrome10+, Safari5.1+ */
-	background-image: -moz-linear-gradient(top, #379AC4 0, #3696BF 100%);/* FF3.6+ */
-	background-image: linear-gradient(top, #379AC4 0, #3696BF 100%);/* IE10+, W3C */
-	filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#379AC4', endColorstr='#3696BF', GradientType=0)";/* IE8,9 */
-	
-}
-
 input[type=text] {
 	padding: 0.4em 0.4em 0.3em;
 	font-size: 13px;

@@ -505,7 +505,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			div.style.margin = "0px";
 			
 			var labelDiv = document.createElement("div");
-			labelDiv.className = 'headerIcon_turnbackMaximize is-button is-button-primary';
+			labelDiv.className = 'headerIcon_turnbackMaximize is-button';
 			labelDiv.href = "javascript:void(0)";
 			
 			labelDiv.appendChild( div );

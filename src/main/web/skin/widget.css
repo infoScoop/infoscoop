@@ -343,25 +343,17 @@
 .infoScoop .widgetEditHeader .widgetCancel,
 .infoScoop .widgetEditHeader .widgetSave {
 	float:right;
-	padding-left:2px;
-	padding-right:5px;
 	cursor:pointer;
 	border-width: 1px;
 	border-style: solid;
 	font-size: 93%;
-	padding: 1px 6px;
 	min-width: 29px;
 	text-align: center;
 	margin: 2px 1px;
-}
-
-.infoScoop .widgetEditHeader .widgetCancel {
+	
 	border-color: #f7f7f7;
 	border-color: rgba(0,0,0,0);
 	color: #0285B5;
-}
-
-.infoScoop .widgetEditHeader .widgetSave {
 }
 
 .infoScoop .widgetEditHeader .widgetCheck {

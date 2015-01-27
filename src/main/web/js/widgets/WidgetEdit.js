@@ -77,7 +77,7 @@ IS_Widget.WidgetEdit = function (widget) {
 		var divEditCtrl = document.createElement('div');
 		divEditCtrl.className = 'widgetEditCtrl';
 		var divEditSave = document.createElement("span");
-		divEditSave.className = "widgetSave is-button is-button-primary";
+		divEditSave.className = "widgetSave";
 		divEditSave.innerHTML = 'OK';
 		divEditCtrl.appendChild(divEditSave);
 		
@@ -118,7 +118,7 @@ IS_Widget.WidgetEdit = function (widget) {
 		widget.elm_editForm.appendChild(divEditCancel2);
 		
 		var divEditSave2 = document.createElement("div");
-		divEditSave2.className = "widgetSave is-button is-button-primary";
+		divEditSave2.className = "widgetSave";
 		divEditSave2.innerHTML = 'OK';
 		Event.observe(divEditSave2, 'click', saveHandler);
 		//dojo.dom.insertBefore(divEditSave2, widget.elm_editForm.lastChild);
