@@ -46,7 +46,7 @@ IS_SidePanel.buildAddContents = function() {
 	var previewButtonDiv = document.createElement("div");
 	previewButtonDiv.style.textAlign = 'right';
 	var previewIndicator = document.createElement("img");
-	previewIndicator.src = imageURL+"ajax-loader.gif";
+	previewIndicator.src = imageURL+"ajax-loader-blue.gif";
 	previewIndicator.style.display = "none";
 	previewButtonDiv.appendChild( previewIndicator );
 	

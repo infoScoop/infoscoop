@@ -735,7 +735,7 @@ IS_Portal.UserSearchPanel.prototype = {
 		//userSearchImg.style.display = 'none';
 		var userSearchingImg = document.createElement("img");
 		userSearchingImg.id = this.id + '_userSearchingIcon';
-		userSearchingImg.src = imageURL + 'ajax-loader.gif';
+		userSearchingImg.src = imageURL + 'ajax-loader-blue.gif';
 		userSearchingImg.style.display = 'none';
 		userSearchImgTd.appendChild(userSearchImg);
 		userSearchImgTd.appendChild(userSearchingImg);

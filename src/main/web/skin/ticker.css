@@ -30,3 +30,7 @@
 	padding-top:0px;
 	font-size:82%;
 }
+
+.infoScoop .Ticker .ticker a:link{
+	color: #404040;
+}

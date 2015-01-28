@@ -200,7 +200,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				console.error(IS_R.getResource(IS_R.ms_invalidIconType,[widget.widgetType,iconType,alt,imgUrl]));
 			} else {
 				var div = document.createElement("div");
-				$(div).setStyle({"float":"left"});
+				div.className = "icon-container";
 				div.appendChild(iconDiv);
 				headerIconDiv.appendChild(div);
 				this.stockEvents(iconType, iconDiv);
@@ -212,7 +212,10 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			//showToolsButton
 			var div =  this.createIconDiv("showTools", "", "show_hidden_icons.png", "block");
 			$(div).setStyle({"float":"left"});
-			headerIconDiv.appendChild( div );
+			var container = document.createElement("div");
+			container.className = "icon-container";
+			headerIconDiv.appendChild(container);
+			container.appendChild( div );
 			this.stockEvents("showTools", div);
 			
 			visibleCount++;
@@ -475,7 +478,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	}
 	
 	this.createIcon = function(type, alt, imgUrl, omitApplyIconStyle) {
-		var div = document.createElement("img");
+		var div = document.createElement("span");
 		div.border = "0";
 		div.className = 'headerIcon';
 		div.id = "hi_" + widget.id + "_" + type;
@@ -490,7 +493,11 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			}else{
 				url = (!isCommonType(type) && widget.resourceUrl ? widget.resourceUrl : imageURL) + imgUrl;
 			}
-			div.src = url;
+			if (!Browser.isIE8){
+				div.style.backgroundImage = 'url(' + url+ ')';
+			} else {
+				div.style.filter = "filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+ url + "', sizingMethod='crop') alpha(opacity = 90)";
+			}
 		}
 		
 
@@ -498,7 +505,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			div.style.margin = "0px";
 			
 			var labelDiv = document.createElement("div");
-			labelDiv.className = 'headerIcon_turnbackMaximize is-button is-button-primary';
+			labelDiv.className = 'headerIcon_turnbackMaximize is-button';
 			labelDiv.href = "javascript:void(0)";
 			
 			labelDiv.appendChild( div );

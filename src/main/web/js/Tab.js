@@ -264,9 +264,19 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
     
     var tabBaseDiv = $.DIV();
 
-    // indicator
-    var indicatorDiv = $.DIV({className:"inlineBlock"},$.IMG({src:imageURL +"indicator.gif", id:tab.id+"_loadingIcon", className:"tabLoadingIcon"}));
-    tabBaseDiv.appendChild(indicatorDiv);
+	// indicator
+	var indicatorDiv = $.DIV({className:"inlineBlock"});
+	var indicatorIcon;
+
+	if (is_propertySupported("animation")){
+		indicatorIcon = $.SPAN();
+	} else {
+		indicatorIcon = $.IMG({src:imageURL +"ajax-loader-white.gif"});
+	}
+	indicatorIcon.id = tab.id+"_loadingIcon";
+	indicatorIcon.className = "bounce-ball-indicator";
+	indicatorDiv.appendChild(indicatorIcon);
+	tabBaseDiv.appendChild(indicatorDiv);
 
     // title
     var titleDiv = $.DIV({id:tab.id + "_title", className:"tabTitle inlineBlock"}, name);

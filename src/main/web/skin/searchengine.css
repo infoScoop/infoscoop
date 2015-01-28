@@ -136,4 +136,50 @@ padding: 0;
 #display-search-results-on-new-window-container {
 	border-top: 1px solid #e0e0e0;
 }
+
+/*indicator*/
+@keyframes search-anim-bounce {
+	0% {
+		top: 4px;
+		left: 4px;
+		animation-timing-function: ease-in;
+	}
+	50% {
+		top: 12px;
+		left: 4px;
+		animtion-timing-function: ease-out;
+	}
+	100% {
+		top: 4px;
+		left: 4px;
+		animation-timing-function: ease-in;
+	}
+}
+@-webkit-keyframes search-anim-bounce {
+	0% {
+		top: 4px;
+		left: 4px;
+		-webkit-animation-timing-function: ease-in;
+	}
+	50% {
+		top: 12px;
+		left: 4px;
+		-webkit-animtion-timing-function: ease-out;
+	}
+	100% {
+		top: 4px;
+		left: 4px;
+		-webkit-animation-timing-function: ease-in;
+	}
+}
+
+.infoScoop #search-iframe span.bounce-ball-indicator {
+	animation: search-anim-bounce 1s infinite;
+	-webkit-animation: search-anim-bounce 1s infinite;
+}
+
+.infoScoop #search-iframe img.bounce-ball-indicator {
+	top: 3px;
+	left: -2px;
+}
  
