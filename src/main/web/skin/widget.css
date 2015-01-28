@@ -18,7 +18,7 @@
 .infoScoop .widget {
 	clear:both;
 	width:100%;
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 }
 
 .infoScoop #maximize-panel .widget {
@@ -30,18 +30,26 @@
 	width:100%;
 }
 
+.infoScoop .widget .widgetBox,
+.infoScoop .widget .widgetBoxNoHeader {
+	overflow:hidden;
+	background-color:#FFF;
+	-moz-box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* Firefox */
+	-webkit-box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* Chrome, Safari */
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=#999999, direction=180, strength=3, enabled=true); /* IE8 */
+	box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* IE9+, Others*/
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
 .infoScoop .widget .widgetBox{
 	clear:both;
 	position: static;
-	/*
-	margin-left : 10px;
-	margin-bottom: 5px;
-	*/
 	width: auto;
-	overflow:hidden;
+}
 
-	border: 1px solid #BCBCBC;
-	background-color:#FFF;
+.infoScoop .widgetBoxNoHeader {
 }
 
 .infoScoop .widget .widgetShade {
@@ -49,12 +57,8 @@
 	padding:0 3px 3px 0;
 	background-color: green;
 */
+}
 
-}
-.infoScoop .widgetBoxNoHeader {
-	border: 1px solid #BCBCBC;
-	overflow: hidden;
-}
 #widgetGhost {
 	background-color:#f3f3f3;
 }
@@ -67,6 +71,7 @@
 	overflow:hidden;
 	/*background-color: white;*/
 	border: none;
+	border-radius: 0;
 }
 
 .infoScoop .subWidget .widgetShade {
@@ -90,6 +95,10 @@
 	//width:100%;
 }
 
+.infoScoop #portal-maincontents-table.maximized .widgetBox {
+    margin: 10px;
+}
+
 .infoScoop .maximizeButtons{
 }
 
@@ -104,36 +113,37 @@
 
 .infoScoop .widget .widgetHeader {
 	clear:both;
-	padding-top:0px;
-	padding-bottom:0px;
 	margin: 0px;
 	font-size:100%;
-	/*background-image:url(./imgs/widget_header.png);*/
-	background-position:bottom;
-	height: 22px;
 	cursor:move;
 	overflow:hidden;
+	border-bottom: 1px dotted #d8d8d8;  
+	position: relative;
 }
 
 .infoScoop .subWidget .widgetHeader{
 	clear: both;
 	width: 100%;
-	height: 22px;
+	height: 28px;
 	background-color:#EEEEFF;
 	background-image:none;
 	cursor: move;
 	overflow:hidden;
-
 	border: none;
+	/* line-height: 16px; */
+}
 
+.infoScoop .widget .widget-header-inner {
+    padding-left: 5px;
+	
 }
 
 .infoScoop .widget .widgetHeader .rightHeader{
 	position: absolute;
-	top: 1px;
+	top: 0px;
 	_top: 0px;
-	right: 2px;
-	height: 19px;
+	right: 0px;
+	height: 28px;
 }
 .infoScoop .widget .widgetHeader.blink,
 .infoScoop .widget .widgetHeader.blink .rightHeader {
@@ -147,30 +157,39 @@
 }
 
 .infoScoop .widgetHeader td {
-	vertical-align: top;
 }
 
-.infoScoop .widgetHeader .latestMarkTd {
-	vertical-align: middle;
+.infoScoop .widgetHeader .favoriteIconTd, .infoScoop .widgetHeader .latestMarkTd {
+    vertical-align: top;
+    padding-top: 2px;
 }
 
 .infoScoop .widgetHeader .widgetIndicator {
-/*	float:left;*/
 	border:0;
-/*	margin-top:2px;*/
-	vertical-align: text-bottom;
 	cursor:pointer;
+	padding-right: 5px;
+	padding-bottom: 2px;
+	vertical-align: middle;
 }
+
+.infoScoop .widgetHeader .gadget-icon-container img{
+	padding-right: 5px;
+	padding-bottom: 2px;
+	vertical-align: middle;
+}
+
 .infoScoop .widgetHeader .widgetTitle {
-	padding-top:2px;
-	padding-left:3px;
 	padding-right:5px;
 	font-weight:bold;
-	font-size:14px;
-	line-height:1.2em;
-	height:1.2em;
+	font-size: 12px;
+	line-height: 28px;
 	overflow:hidden;
 	word-break: break-all;
+}
+
+.infoScoop .widgetHeader .widgetTitle a {
+	color: #287EB8;
+	text-decoration: none;
 }
 
 .infoScoop .widgetHeader .headerIcon {
@@ -181,6 +200,7 @@
 	cursor:pointer;
 	background-position: top left;
 	background-repeat: no-repeat;
+	padding: 5px 2px;
 }
 
 .infoScoop .widgetHeader .widgetTitle a:hovor {
@@ -190,26 +210,30 @@
 .infoScoop .widgetHeader .headerIcon_turnbackMaximize {
 	position: relative;
 	text-align: right;
-	font-size: 9pt;
-	color: blue;
 	cursor: pointer;
 	_margin-top: 1px;
-	margin-left: 4px;
+	margin-left: 2px;
 	margin-right: 2px;
-	padding-left: 2px;
-	padding-right: 2px;
-	border: 1px solid #6F7866;;
 	white-space:nowrap;
+	line-height: 23px;   
+	padding: 0 0.6em;
+	margin-top: 2px;
+	margin-bottom: 1px;
 }
+
+.infoScoop .widgetHeader .headerIcon_turnbackMaximize > img{
+    padding: 0;
+    vertical-align: text-top;
+}
+
 .infoScoop .widgetHeader .headerIcon_turnbackMaximize span {
-	margin-left: 1px;
+	margin-left: 5px;
 }
 
 .infoScoop .widgetMenu {
 	position: absolute;
-	border: 1px solid gray;
-	background-color: white;
 	z-index:50;
+	padding: 8px;
 }
 
 .infoScoop .widgetMenuCloser {
@@ -231,14 +255,14 @@
 
 .infoScoop .widgetEditHeader {
 	clear:both;
-	width:100%;
-	padding-top:1.3px;
+	padding-top: 5px;
 	padding-bottom:0px;
-	background: #F5F5F5;
+	background: #f7f7f7;
 	margin: 0px;
-	font-size:80%;
+	font-size: 80%;
 	overflow: hidden;
 	cursor:default;
+	border-width: 0 0 1px 0;
 }
 
 .infoScoop .widgetEditHeader .widgetEditCtrl{
@@ -265,22 +289,28 @@
 	cursor:default;
 }
 
-.infoScoop .widgetEditHeader .widgetCancel {
+.infoScoop .widgetEditHeader .widgetCancel,
+.infoScoop .widgetEditHeader .widgetSave {
 	float:right;
-	font-size: 75%;
 	padding-left:2px;
 	padding-right:5px;
-	color:#7777cc;
 	cursor:pointer;
+	border-width: 1px;
+	border-style: solid;
+	font-size: 93%;
+	padding: 1px 6px;
+	min-width: 29px;
+	text-align: center;
+	margin: 2px 1px;
+}
+
+.infoScoop .widgetEditHeader .widgetCancel {
+	border-color: #f7f7f7;
+	border-color: rgba(0,0,0,0);
+	color: #0285B5;
 }
 
 .infoScoop .widgetEditHeader .widgetSave {
-	float:right;
-	font-size: 75%;
-	padding-left:2px;
-	padding-right:5px;
-	color:#7777cc;
-	cursor:pointer;
 }
 
 .infoScoop .widgetEditHeader .widgetCheck {
@@ -322,6 +352,11 @@
 	background-color:	white;
 	text-decoration:	none;
 	cursor: help;
+}
+
+.infoScoop .widgetEditHeader a:link,
+.infoScoop .widgetEditHeader a:visited {
+	color: #0285B5;
 }
 
 .infoScoop .widgetEditHelp {

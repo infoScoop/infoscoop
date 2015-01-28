@@ -39,7 +39,6 @@ body{
 }
 
 .static_column {
-	border : dotted 1px gray;
 	cursor: pointer;
 	position:relative
 }
@@ -86,7 +85,6 @@ body{
 
 
 /*- Form --------------------------- */
-// TODO: this css is contained in manager.css too.
 .cssform{
 	margin-left: 5px;
 	padding: 15px 15px 25px;
@@ -126,20 +124,6 @@ body{
 .cssform textarea{
 	width: 250px;
 	height: 150px;
-}
-
-/* default theme */ 
-.infoScoop .widget .widgetHeader {
-    background-image: url("../skin/imgs/theme/widget_header.png");
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-
-.infoScoop .subWidget .widgetHeader {
-    background-color: #EEEEFF;
-    background-image: none;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
 }
 
 /* disable static widget icons */

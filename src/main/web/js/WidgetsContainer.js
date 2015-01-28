@@ -782,7 +782,6 @@ IS_WidgetsContainer.adjustColumns = {
 		IS_WidgetsContainer.adjustColumns.targetEl2 = targetEl2;
 		IS_WidgetsContainer.adjustColumns.totalWidth = targetEl1.offsetWidth + targetEl2.offsetWidth;
 		IS_WidgetsContainer.adjustColumns.targetEl1_offsetWidth = targetEl1.offsetWidth;
-		IS_WidgetsContainer.adjustColumns.parentWidth = (!Browser.isIE)? targetEl1.parentNode.offsetWidth : $("dynamic-panel" + IS_Portal.currentTabId.substring(3)).parentNode.offsetWidth-2;
 		
 		IS_WidgetsContainer.adjustColumns.startX = Event.pointerX(e);
 		
@@ -794,6 +793,8 @@ IS_WidgetsContainer.adjustColumns = {
 	},
 	move : function(e){
 		if(IS_WidgetsContainer.adjustColumns.isChanging) return;
+		
+		IS_WidgetsContainer.adjustColumns.moved = true;
 		
 		// effect
 		if(IS_WidgetsContainer.adjustColumns.timer){
@@ -813,10 +814,15 @@ IS_WidgetsContainer.adjustColumns = {
 		Event.stopObserving(document, "mousemove", IS_WidgetsContainer.adjustColumns.move, false);
 		Event.stopObserving(document, "mouseup", IS_WidgetsContainer.adjustColumns.end, false);
 		
+		if(!IS_WidgetsContainer.adjustColumns.moved)
+		    return;
+		
+		IS_WidgetsContainer.adjustColumns.moved = false;
+		
 		// Change to '%'
 		var targetEl1 = IS_WidgetsContainer.adjustColumns.targetEl1;
 		var targetEl2 = IS_WidgetsContainer.adjustColumns.targetEl2;
-		var parentWidth = IS_WidgetsContainer.adjustColumns.parentWidth;
+		var parentWidth = IS_WidgetsContainer.adjustColumns.parentWidth = (!Browser.isIE)? targetEl1.parentNode.offsetWidth : $("dynamic-panel" + IS_Portal.currentTabId.substring(3)).parentNode.offsetWidth-2;
 		
 		IS_WidgetsContainer.adjustColumns.isDragging = false;
 		var numCol = IS_Portal.tabs[IS_Portal.currentTabId].numCol;
@@ -835,13 +841,11 @@ IS_WidgetsContainer.adjustColumns = {
 				continue;
 			}
 			columnsWidth.push(columns[i].style.width);
-			sumWidth += parseFloat(columns[i].style.width) + 1;
 		}
-		targetEl2.style.width = (100 - sumWidth) + "%";
+		targetEl2.style.width = ( targetEl2.offsetWidth / parentWidth ) * 100 + "%";
 		columnsWidth[parseInt(targetEl2colnum)-1] = targetEl2.style.width;
 		IS_Portal.tabs[IS_Portal.currentTabId].columnsWidth = columnsWidth;
 		
-		IS_Widget.adjustDescWidth();
 		IS_Portal.adjustGadgetHeight();
 		
 		IS_WidgetsContainer.adjustColumns.hideAdjustDivs(targetEl1.parentNode);
@@ -851,6 +855,7 @@ IS_WidgetsContainer.adjustColumns = {
 		IS_Widget.setTabPreferenceCommand(IS_Portal.currentTabId, "columnsWidth", Object.toJSON(IS_Portal.tabs[IS_Portal.currentTabId].columnsWidth));
 		
 		IS_EventDispatcher.newEvent("adjustedColumnWidth");
+        IS_Widget.adjustDescWidth();
 	},
 	changeWidth : function(e){
 		IS_WidgetsContainer.adjustColumns.isChanging = true;
@@ -863,14 +868,16 @@ IS_WidgetsContainer.adjustColumns = {
 		var startOffsetWidth = IS_WidgetsContainer.adjustColumns.targetEl1_offsetWidth;
 		
 		var setWidth = (endx - startx);
+		var targetEl1Width;
 		if(startOffsetWidth + setWidth < totalWidth-10 && startOffsetWidth + setWidth > 0){
-			targetEl1.style.width = (startOffsetWidth + setWidth) + 'px';
+			targetEl1Width = (startOffsetWidth + setWidth);
 		}else{
 			var wid = (startOffsetWidth + setWidth > 0)? (totalWidth-10) : 10;
-			targetEl1.style.width = wid+'px';
+			targetEl1Width = wid;
 		}
+		targetEl1.style.width = targetEl1Width + 'px';
 		
-		var setWidth2 = (totalWidth - targetEl1.offsetWidth);
+		var setWidth2 = (totalWidth - targetEl1Width);
 		if(totalWidth - setWidth2 > 0){
 			targetEl2.style.width = setWidth2 - 1 + 'px';
 		}

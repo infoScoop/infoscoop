@@ -19,11 +19,12 @@
 .infoScoop .maximize.RssReader .rssItem {
 	word-break: break-all;
 	font-size:85%;
-	padding-left: 2px;
+	padding-left: 0px;
 }
 
 .infoScoop .maximize.RssReader .rssPubDate {
 	padding-left: 3px;
+	padding-top: 3px;
 }
 
 .infoScoop .maximize.RssReader .maximizeRssItemList {
@@ -83,8 +84,7 @@
 }
 .infoScoop .maximize.RssReader .maximizeToggleEditElement {
 	float: right;
-	border: 1px solid gray;
-	color: #7777CC;
+	color: #0285B5;
 	padding: 2px;
 	font-size: 9pt;
 	-moz-border-radius: 2px;
@@ -97,34 +97,30 @@
 }
 
 .infoScoop .maximize.RssReader .maximizeFilterStatePanel{
-	border-bottom : 1px solid gray;
+	border-bottom: 1px solid #f2f2f2;
 	word-break : break-all;
 	height:20px;
 }
 .infoScoop .maximize.RssReader .maximizeFilter{
-	position:relative;
 	float:left;
 	cursor: pointer;
-	top:5px;
-	color: #86A2C0;
+	color: #0285B5;
 	width: 124px;
 	font-size: 9pt;
 	text-align: left;
-	padding-left: 12px;
-	margin-left: 3px;
-	background:url(./imgs/search.gif) no-repeat;
+	padding-left: 10px;
+	line-height: 20px;
 }
 
 .infoScoop .maximize.RssReader .maximizeFilterCloseButton{
-	position:relative;
-	top:5px;
 	float:left;
 	cursor: pointer;
-	color: #86A2C0;
+	color: #0285B5;
 	font-size:9pt;
 	text-align:left;
 	width: 124px;
-	margin-left: 3px;
+	padding-left: 10px;
+	line-height: 20px;
 }
 
 .infoScoop .maximize.RssReader .maximizeRssReaderFilterState{
@@ -135,11 +131,64 @@
 	text-align:left;
 }
 
+.infoScoop .maximize.RssReader .filter-form {
+	background-color: #fff;
+	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px; /* Firefox */
+	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px; /* Chrome, Safari */
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=#999999, direction=135, strength=3, enabled=true); /* IE8 */
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
+	width: 150%;
+	position: relative;
+	z-index: 1;
+	height: auto;
+}
+
+.infoScoop .maximize.RssReader .filter-form .filter-by {
+	padding-left: 10px;
+	padding-right: 5px;
+}
+
+.infoScoop .maximize.RssReader .filter-form input[type="text"] {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	width: 98%;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	padding: 3px 5px 1px 5px;
+	line-height: 20px;
+}
+
+.infoScoop .maximize.RssReader .filter-form .pulldown li {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	width: 98%;
+	border: 1px solid #e0e0e0;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.infoScoop .maximize.RssReader .filter-form .pulldown div {
+	padding: 3px 5px 1px 5px;
+	line-height: 20px;
+}
+
+.infoScoop .maximize.RssReader .filter-form .button-td input[type=button] {
+	margin: 5px 5px 5px 0px;
+	display: block;
+}
+
+.infoScoop .maximize.RssReader .filter-form .button-td span {
+	font-size: 75%;
+	margin-bottom: 5px;
+	display: inline-block;
+}
+
 .infoScoop .maximize.RssReader .maximizeToggleEditElement a:hover {
 	background: #DDD;
 }
 .infoScoop .maximize.RssReader .maximizeToggleEditElement:visited {
-	color: #7777CC;
 }
 
 .infoScoop .maximize.RssReader .MaximizeRssReader_CreatorFilter_Autocomplete {
@@ -181,4 +230,31 @@
 	
 	_font-size: 10pt;
 	_overflow-y: hidden;
+}
+
+.infoScoop .RssReader.maximize .rss-content {
+	padding: 0px;
+}
+
+.maximizeRssItemList .entry {
+	border-bottom:1px solid #d8d8d8;
+	padding-bottom: 0px;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.maximizeRssItemList .selected {
+	background-color: #eeeeee;
+}
+
+.maximizeRssItemList .hover {
+	background-color: #eeeeee;
+}
+
+.maximizeRssItemList .selected > .rssItemTitleBox {
+	font-weight: bolder;
+}
+
+.maximizeRssItemList .rssItemTitleBox {
+	/* padding-top: 8px; */
 }

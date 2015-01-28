@@ -445,7 +445,7 @@ IS_Widget.prototype.classDef = function() {
 		//Create edit header
 		var divWidgetEditHeader = document.createElement("div");
 		this.elm_widgetEditHeader = divWidgetEditHeader;
-		divWidgetEditHeader.className = "widgetEditHeader";
+		divWidgetEditHeader.className = "widgetEditHeader is-box";
 		divWidgetEditHeader.style.display = "none";
 	   
 		//Edit Form [frm_<widgetId>]
@@ -471,7 +471,6 @@ IS_Widget.prototype.classDef = function() {
 		indicator.id = self.id + "_widgetIndicator";
 		indicator.className = "widgetIndicator";
 		indicator.style.display = "none";
-		indicator.style.verticalAlign = "top";
 		
 	   	var divWidgetContent = document.createElement("div");
 	   	this.elm_widgetContent = divWidgetContent;
@@ -533,13 +532,11 @@ IS_Widget.prototype.classDef = function() {
 		var icon = IS_Widget.getIcon(this.widgetType, {defaultNull:true});
 		if(icon){
 			var favoriteIconDiv = document.createElement("div");
+			favoriteIconDiv.className = "gadget-icon-container";
 			this.elm_favoriteIcon = favoriteIconDiv;
 			var favoriteIconImg = document.createElement("img");
-			favoriteIconImg.style.width = "14px";
-			favoriteIconImg.style.height = "14px";
-			favoriteIconImg.style.paddingTop = "3px";
-			favoriteIconImg.style.paddingLeft = "3px";
-			favoriteIconImg.style.verticalAlign = "top";
+			favoriteIconImg.style.width = "16px";
+			favoriteIconImg.style.height = "16px";
 			favoriteIconImg.style.border = "0px";
 			favoriteIconImg.src = icon;
 			favoriteIconDiv.appendChild(favoriteIconImg);
@@ -1559,6 +1556,8 @@ IS_Widget.prototype.classDef = function() {
 			
 			this.maximize.changeMaximize(baseWidget);
 		}
+		if(IS_SidePanel.adjustPosition)
+		    IS_SidePanel.adjustPosition();
 	}
 
 	this.adjustMaximizeHeight = function()  {
@@ -1578,7 +1577,8 @@ IS_Widget.prototype.classDef = function() {
 			IS_Portal.tabs[IS_Portal.currentTabId].panel.style.height = "auto";
 		
 		var pos = Position.cumulativeOffset(panelsDiv);
-		this.elm_widget.style.top = pos[1] + "px";
+		// border offset +3
+		this.elm_widget.style.top = (pos[1]+3) + "px";
 		this.elm_widget.style.left = pos[0] + "px";
 		this.elm_widget.style.width = parseInt(panelsDiv.offsetWidth) + "px";
 		
@@ -1620,6 +1620,9 @@ IS_Widget.prototype.classDef = function() {
 			}
 		}
 		
+		$("tab-container").hide();
+		$("portal-maincontents-table").addClassName("maximized");
+		
 		setTimeout( this._adjustMaximize, 100);
 		
 		IS_Event.observe( window, 'resize', this._adjustMaximize, false,this.closeId );
@@ -1632,6 +1635,9 @@ IS_Widget.prototype.classDef = function() {
 			this.maximize.turnbackMaximize();
 		} else if(!this.hasMaximizeView){
 			this.defaultTurnbackMaximize();
+		}
+		if(IS_SidePanel.adjustPosition){
+		    IS_SidePanel.adjustPosition();
 		}
 	}
 	
@@ -1674,6 +1680,9 @@ IS_Widget.prototype.classDef = function() {
 				this.headerContent.minimize();
 		}
 		
+        $("tab-container").show();
+        $("portal-maincontents-table").removeClassName("maximized");
+        
 		IS_Widget.MaximizeWidget = undefined;
 		
 		IS_Event.stopObserving( window, 'resize', this._adjustMaximize, false,this.closeId )

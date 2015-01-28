@@ -78,8 +78,8 @@ IS_Widget.MaximizeRssCategory.prototype.classDef = function() {
 		var itemNo = widget.content.rssContent.rssItems.indexOf( item );
 		var itemDiv = $( widget.id+"_item_"+itemNo );
 		if( itemDiv  ) {
-			itemDiv.style.backgroundColor =
-				( item.selected ? "#BCCCE7":( itemNo %2 == 0 ? "#FFFFFF":"#FFFFFF"));
+			itemDiv.className =
+				( item.selected ? "entry selected" : "entry");
 		}
 	}
 	

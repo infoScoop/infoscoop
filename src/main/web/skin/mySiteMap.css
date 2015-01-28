@@ -18,17 +18,16 @@
 
 .mySiteMapOpen {
 	position:relative;
-	top:3px;
+	top:9px;
 	left:-1px;
 	width:18px;
 	cursor:pointer;
-	border-left: 1px solid gray;
 	padding: 2px 0px;
 }
 
 .mySiteMapClose {
 	position:relative;
-	top:3px;
+	top:9px;
 	left:-1px;
 	width:18px;
 	cursor:pointer;
@@ -55,11 +54,7 @@
 .mySiteMap .controller td.label {
 	width: 2em;
 }
-.mySiteMap .button.refresh {
-	width: 16px;
-	height: 16px;
-	background: url("./imgs/refresh.gif") no-repeat scroll center center;
-}
+
 .mySiteMap .tabList {
 	margin-top: 0;
 	margin-left: 0;
@@ -84,10 +79,10 @@
 	cursor: pointer;
 }
 .mySiteMap .tabListItem.openTab .tabName {
-	background: url("./imgs/mysitemap_tab_open.gif") no-repeat scroll left top;
+	background: url("./imgs/caret-down.png") no-repeat scroll left top;
 }
 .mySiteMap .tabListItem.closeTab .tabName {
-	background: url("./imgs/mysitemap_tab_close.gif") no-repeat scroll left top;
+	background: url("./imgs/caret-right.png") no-repeat scroll left top;
 }
 .mySiteMap .tabListItem.emptyTab .tabName {
 	cursor: default;
@@ -95,7 +90,7 @@
 
 .mySiteMap .tabListItem a.label {
 	display: block;
-	color: #6677DD;
+	color: #0285B5;
 }
 
 .mySiteMap .tabWidgetList,.mySiteMap .tabSubWidgetList {
@@ -108,8 +103,7 @@
 	padding-left: 20px;
 }
 .mySiteMap .tabWidgetListItem {
-	margin-top: 2;
-	margin-bottom: 2;
+	margin-bottom: 3px;
 }
 .mySiteMap .tabWidgetListItem .widgetName {
 	cursor: pointer;

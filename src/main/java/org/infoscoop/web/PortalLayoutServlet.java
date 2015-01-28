@@ -30,6 +30,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.service.PortalLayoutService;
+import org.infoscoop.service.PropertiesService;
 import org.infoscoop.util.SpringUtil;
 
 public class PortalLayoutServlet extends HttpServlet {
@@ -64,6 +65,25 @@ public class PortalLayoutServlet extends HttpServlet {
 		}
 		else if(Portallayout.LAYOUT_TYPE_JS.equalsIgnoreCase(type)){
 			response.setContentType("text/javascript; charset=UTF-8");
+		}
+		else if(Portallayout.LAYOUT_TYPE_CUSTOMTHEME.equalsIgnoreCase(type)){
+			try {
+				PropertiesService propertiesService = (PropertiesService)SpringUtil.getBean("PropertiesService");
+				String staticContentURL = propertiesService.getProperty("staticContentURL");
+				
+				PortalLayoutService service = (PortalLayoutService)SpringUtil.getBean("PortalLayoutService");
+				String customTheme = service.getPortalLayout(type);
+				
+				request.setAttribute("staticContentURL", staticContentURL);
+				request.setAttribute("customTheme", customTheme);
+				request.getRequestDispatcher("/WEB-INF/jsp/theme/customTheme.jsp")
+					.forward(request, response);
+				
+			} catch (Exception e) {
+				logger.error("--- unexpected error occurred.", e);
+				response.sendError(500);
+			}
+			return;
 		}
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache");

@@ -37,13 +37,13 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	var maximizeIcons = [
 		{
 		  type:	"refresh",
-		  imgUrl:	"refresh.gif",
+		  imgUrl:	"refresh.png",
 
 		  alt: IS_R.lb_refresh
 		},
 		{
 		  type:	"turnbackMaximize",
-		  imgUrl:	"turnback.gif",
+		  imgUrl:	"plus-square-o.png",
 
 		  alt: IS_R.lb_turnback
 		}
@@ -67,9 +67,9 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	}
 	this.buildContents = function () {
 		headerDiv = document.createElement("div");
-		headerDiv.style.width = "100%";
+		headerDiv.className = "widget-header-inner";
+		headerDiv.style.height = "28px";
 		headerDiv.style.position = "relative";
-		headerDiv.style.height = "19px";
 		headerDiv.style.overflow = "hidden";
 		widget.elm_widgetHeader.appendChild(headerDiv);
 		
@@ -95,7 +95,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			hiddenIcons.push(
 				{
 				  type:  "edit",
-				  imgUrl: "edit.gif",
+				  imgUrl: "edit.png",
 				  alt: IS_R.lb_setting
 				}
 				);
@@ -108,7 +108,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		  hiddenIcons.push(
 			  {
 				type:  "close",
-				imgUrl: "trash.gif",
+				imgUrl: "trash-o.png",
 				alt: IS_R.lb_delete
 			  }
 			  );
@@ -152,7 +152,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			if(header.refresh != 'off'){
 			  visibleIcons.push({
 				type:	"refresh",
-				imgUrl:	"refresh.gif",
+				imgUrl:	"refresh.png",
 				  
 				alt: IS_R.lb_refresh
 			  });
@@ -161,14 +161,14 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				visibleIcons.push(
 					{
 					  type:  "minimize",
-					  imgUrl: "_.gif",
+					  imgUrl: "minimize.png",
 					  alt: IS_R.lb_minimize
 					});
 				
 				visibleIcons.push(
 					{
 					  type:  "turnBack",
-					  imgUrl: "turnback.gif",
+					  imgUrl: "plus-square-o.png",
 					  alt: IS_R.lb_turnback
 					}
 					);
@@ -177,7 +177,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				visibleIcons.push(
 					{
 					  type:  "maximize",
-					  imgUrl: "maximum.gif",
+					  imgUrl: "maximize.png",
 					  alt: IS_R.lb_maximize
 					});
 			}
@@ -210,7 +210,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		
 		if(!header.disableMenu && (!widget.originalWidget && hiddenIcons && hiddenIcons.length > 0)){
 			//showToolsButton
-			var div =  this.createIconDiv("showTools", "", "show_hidden_icons.gif", "block");
+			var div =  this.createIconDiv("showTools", "", "show_hidden_icons.png", "block");
 			$(div).setStyle({"float":"left"});
 			headerIconDiv.appendChild( div );
 			this.stockEvents("showTools", div);
@@ -311,6 +311,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		
 		if(widget.elm_favoriteIcon){
 			var favoriteIconDiv = document.createElement("td");
+			favoriteIconDiv.className = "favoriteIconTd";
 			favoriteIconDiv.appendChild(widget.elm_favoriteIcon);
 			titleHeaderTr.appendChild(favoriteIconDiv);
 		}
@@ -497,17 +498,13 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			div.style.margin = "0px";
 			
 			var labelDiv = document.createElement("div");
-			labelDiv.className = 'headerIcon_turnbackMaximize';
+			labelDiv.className = 'headerIcon_turnbackMaximize is-button is-button-primary';
 			labelDiv.href = "javascript:void(0)";
 			
 			labelDiv.appendChild( div );
 			
 			var labelText = document.createElement("span");
 			labelText.appendChild(document.createTextNode( IS_R.lb_turnbackMaximize ));
-				
-			labelText.style.position = "relative";
-			labelText.style.top = "-1px";
-			labelText.style.verticalAlign = "bottom";
 			
 			labelDiv.appendChild(labelText);
 			
@@ -898,7 +895,7 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 	this.build = function(){
 		var menuDiv = document.createElement("div");
 		menuDiv.id = (this.eventKey + "_menu");
-		menuDiv.className = "widgetMenu";
+		menuDiv.className = "widgetMenu is-box";
 		menuDiv.style.display = "none";
 		for(var i=0;i<this.menuOptList.length;i++){
 			var itemDiv = createItem(this.eventKey, this.menuOptList[i]);
@@ -915,7 +912,6 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			var className = opt.className || "";
 			
 			var borderDiv = document.createElement("div");
-			borderDiv.style.borderBottom = '1px solid #EEE';
 			
 			var itemDiv = document.createElement( opt.anchor ? "a":"span");
 			itemDiv.className = className + " item";

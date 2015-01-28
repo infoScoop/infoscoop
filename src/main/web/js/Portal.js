@@ -75,14 +75,15 @@ Event.observe(window, 'resize', function(){
 IS_Portal.start = function() {
 	var self = this;
 
-	if(defaultTheme){
-		try{
-			IS_Portal.theme.defaultTheme = eval( '(' + defaultTheme + ')' );
-		}catch(e){
-			msg.error('The defaultTheme property is invalid, please contact to administrator:' + e);
-		}
-	}
-	IS_Portal.theme.setTheme(IS_Portal.theme.currentTheme);
+// Disable old theme function #16405
+//	if(defaultTheme){
+//		try{
+//			IS_Portal.theme.defaultTheme = eval( '(' + defaultTheme + ')' );
+//		}catch(e){
+//			msg.error('The defaultTheme property is invalid, please contact to administrator:' + e);
+//		}
+//	}
+//	IS_Portal.theme.setTheme(IS_Portal.theme.currentTheme);
 	
 	IS_Portal.startIndicator('portal-maincontents-table');
 	
@@ -621,6 +622,15 @@ IS_Portal.closeIFrame = function () {
 	}
 	var iframeToolBar = document.getElementById("iframe-tool-bar");
 	iframeToolBar.style.display = "none";
+	
+	var tabContainer = document.getElementById("tab-container");
+	if ( tabContainer) {
+		tabContainer.style.display="";
+	}
+	var portalMaincontentsTable = document.getElementById("portal-maincontents-table");
+	if ( portalMaincontentsTable) {
+		portalMaincontentsTable.removeClassName("hiding-tab");
+	}
 	
 	IS_Event.unloadCache("_search");
 	
@@ -2310,7 +2320,7 @@ IS_Portal.CommandBar = {
 		}
 		
 		var commandBarItems = $$("#portal-command .commandbar-item");
-		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', style:'display:none;'});
+		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', className: 'is-box', style:'display:none;'});
 
 		Event.observe(portalUserMenuBody, "click", function(e){
 			$(this).hide();
@@ -2394,27 +2404,17 @@ IS_Portal.CommandBar = {
 		if(portalUserMenuBody.childNodes.length != 0){
 			portalUserMenu.title = is_userName? is_userName : "";
 			Element.setStyle(portalUserMenu, {
-				background: 'url(./skin/imgs/user_menu_collapse.gif) no-repeat center right'
-				, cursor: 'pointer'
+				cursor: 'pointer'
 			});
 			
 			//loginID mouseover and mouseout
 			Event.observe(portalUserMenu, "mouseover", function(){
-				// change background color to white
 				if($("portal-user-menu-body").style.display != 'none') return;
-				//TODO write in css if possible
-				Element.setStyle($("portal-user-menu"),{
-					backgroundColor : '#5286BB'
-					, color : '#fff'
-				});
+				Element.addClassName($("portal-user-menu"), "active");
 			});
 			
 			var menu_mouseout = function(){
-				// change background color to normal
-				Element.setStyle($("portal-user-menu"),{
-					backgroundColor : ''
-					, color : ''
-				});
+				Element.removeClassName($("portal-user-menu"), "active");
 			};
 			Event.observe(portalUserMenu, "mouseout", menu_mouseout);
 			
@@ -2552,7 +2552,7 @@ IS_Portal.checkSystemMsg = function(){
 						  $.IMG(
 							  {
 								style:'position:relative;top:2px;paddingRight:2px',
-								src:imageURL+"information.gif"
+								src:imageURL+"information.png"
 							  }
 							  ),
 						  IS_R.getResource(IS_R[msg.resourceId], msg.replaceValues)
