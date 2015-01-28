@@ -1187,6 +1187,20 @@ is_deleteProperty = function(object, propertyName){
 		delete object[propertyName];
 }
 
+is_getParameterFromHash = function(name){
+    var locationHash = location.hash;
+    if(locationHash && locationHash.length > 0){
+        locationHash = locationHash.substring(1, locationHash.length);
+        var params = locationHash.split("=");
+        
+        for(var i=0;i<params.length;i++){
+            if(name == params[i]){
+                return params[i + 1];
+            }
+        }
+    }
+}
+
 if( !Object.hasOwnProperty ) {
 	Object.prototype.hasOwnProperty = function( property ) {
 		return ( this[property] && !this.constructor.prototype[property] );
