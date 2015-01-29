@@ -431,6 +431,7 @@
 			<fileset dir="${src.main.web}/skin">
 				<include name="admin.css"/>
 				<include name="admintreemenu.css"/>
+				<include name="adminotherlayout.css"/>
 				<include name="editrole.css"/>
 			</fileset>
 		</copy>
