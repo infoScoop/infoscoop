@@ -40,7 +40,7 @@
 	padding-left: 13px;
 }
 .infoScoop .RssReader .rssCategoryList{
-	background:url(./imgs/tag_blue.gif) center left no-repeat;
+	background:url(./imgs/tag.png) center left no-repeat;
 	padding-left:16px;
 }
 .infoScoop .RssReader .rssMore{
@@ -138,7 +138,7 @@ color: #737373;
 .infoScoop .RssReader .RssReader_filter{
 	position:absolute;
 	color:gray;
-	background:url(./imgs/funnel_small.png) center left no-repeat;
+	background:url(./imgs/filter.png) center left no-repeat;
 	padding-left:12px;
 }
 
