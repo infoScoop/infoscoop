@@ -32,7 +32,7 @@ import org.apache.xerces.xni.parser.XMLDocumentFilter;
 import org.cyberneko.html.filters.Writer;
 import org.infoscoop.request.ProxyRequest;
 
-import sun.io.MalformedInputException;
+import java.nio.charset.MalformedInputException;
 
 /**
  * If the site currently displayed is http://aaa/bbb/ccc,<br>
