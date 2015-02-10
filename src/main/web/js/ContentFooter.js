@@ -90,7 +90,7 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 	
 	this.build = function(type, alt, imgUrl) {
 		if (type == 'mail') {
-			var divMail = this.createIcon(type, IS_R.lb_sendMail, 'email.gif');
+			var divMail = this.createIcon(type, IS_R.lb_sendMail, 'envelope-o.png');
 			var td = divMail.parentNode;
 			td.removeChild( divMail );
 			
@@ -106,7 +106,7 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 			td.appendChild(form);
 			
 		} else if( type == "message") {
-			this.createIcon( type,IS_R.lb_sentMessageOfArticle, 'comment.gif');
+			this.createIcon( type,IS_R.lb_sentMessageOfArticle, 'comments-o.png');
 		} else {
 			msg.warn( IS_R.getResource( IS_R.lb_illegalToolbarItem,[type]));
 		}
@@ -124,7 +124,7 @@ IS_Portal.ContentFooter.prototype.classDef = function() {
 	this.createIcon = function(type, alt, imgUrl) {
 		var div = $( document.createElement("div"));
 		div.id = "mti_" + self.id + "_" + type;
-		div.className = "toolbar-item "+type;
+		div.className = "toolbar-item is-button "+type;
 		
 		var img = document.createElement("img");
 		img.className = 'icon';
