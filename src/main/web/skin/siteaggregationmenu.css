@@ -108,6 +108,10 @@ a.topMenuItem:hover {
 	line-height: normal;
 }
 
+#portal-site-aggregation-menu .topMenuLi ul.menuGroup {
+	filter: none;
+} 
+
 ul.floatMenuGroup,
 ul.floatMenuGroup ul{
 	width:100px;
