@@ -995,7 +995,7 @@ IS_Widget.WidgetEdit.makeHelpIcon = function( container,userPref ) {
 	container.appendChild( a );
 	
 	var help = $( document.createElement("div"));
-	help.className = "widgetEditHelp";
+	help.className = "widgetEditHelp is-box";
 	document.body.appendChild( help );
 	
 	var descHeader = $( document.createElement("div"));
