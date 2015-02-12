@@ -130,7 +130,7 @@ IS_Widget.Information.prototype.classDef = function() {
 					}
 					
 					var titleTd = document.createElement("td");
-					rsslink.style.lineHeight = "1.1em";
+					rsslink.style.lineHeight = "1.03em";
 					rsslink.style.height = "1.0em";
 					rsslink.style.overflow = "hidden";
 					rsslink.title = rssItems[i].title;
