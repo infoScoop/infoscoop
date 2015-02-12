@@ -116,10 +116,8 @@ padding: 10px 0;
 .image-container .tabbar .active {
 	width: 20px;
 	height: 13px;
-	display: inline-block;
-	position: relative;
-	top: -4px;
-	left: 6px;
+	display: block;
+	margin-left: 5px;
 }
 
 .image-container .body {
