@@ -256,8 +256,10 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
     innerSpan.className =  'inner';
     
     IS_EventDispatcher.addListener("tabLoadCompleted",tab.id,function() {
+    	setTimeout(function(){
             Element.removeClassName( tab,"loading");
-        },null,false );
+    	}, 800);
+    },null,false );
     IS_EventDispatcher.addListener("tabLoadStart",tab.id,function() {
             Element.addClassName( tab,"loading");
         },null,false );
