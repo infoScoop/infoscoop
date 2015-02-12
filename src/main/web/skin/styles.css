@@ -506,7 +506,7 @@ div#search-iframe iframe {
 }
 .infoScoop .SearchEngine ul.search_tabs.tabs a.tab font.nohit {
 	font-size: 9pt;
-	color: #000;
+	color: #404040;
 }
 .infoScoop .SearchEngine ul.search_tabs.tabs a.tab font.hit {
 	font-size: 9pt;

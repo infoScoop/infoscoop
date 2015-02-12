@@ -25,10 +25,15 @@
 	font-size:85%;
 }
 
+
+.infoScoop .Information .rssItem a:link    { color: #404040; }
+.infoScoop .Information .rssItem a:visited { color: #4B2A75; }
+
 .infoScoop .Information .rssPubDate {
 	color:gray;
 	font-size:80%;
 	word-break:break-all;
+	color: #999999;
 }
 
 .infoScoop .Information .latestMark {
@@ -36,7 +41,7 @@
 	vertical-align: text-bottom;
 }
 .infoScoop .Information .rssMore{
-	color:#7777cc;
+	color: #737373;
 	font-size:70%;
 	text-decoration:none;
 	cursor:auto;

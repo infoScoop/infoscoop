@@ -286,8 +286,6 @@ SwappableComponent.build = function (data, id) {
 	
 	onMouseOut = function () {
 		if(this.style){
-			this.style.color = "#7777cc";
-			this.style.textDecoration = "none";
 			this.style.cursor = "auto";			
 		}else{
 			this.className = style_out;
@@ -297,8 +295,6 @@ SwappableComponent.build = function (data, id) {
 	
 	onMouseOver = function () {
 		if(this.style){
-			this.style.color = "#ff0000";
-			this.style.textDecoration = "underline";
 			this.style.cursor = "pointer";
 		}else{
 			this.className = style_over;

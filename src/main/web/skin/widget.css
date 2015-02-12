@@ -390,20 +390,21 @@
 	vertical-align: middle;
 }
 
+.infoScoop .widgetEditHeader a:link,
+.infoScoop .widgetEditHeader a:visited {
+	color: #0285B5;
+}
+
 .infoScoop .widgetEditHeader a.help {
 	display:	inline-block;
 	text-align:	center;
 	width:	1.25em;
-	border:	1px solid #6677DD;
+	border: 1px solid #d8d8d8;
 	margin-left: 5px;
 	background-color:	white;
 	text-decoration:	none;
 	cursor: help;
-}
-
-.infoScoop .widgetEditHeader a:link,
-.infoScoop .widgetEditHeader a:visited {
-	color: #0285B5;
+	color: #737373;
 }
 
 .infoScoop .widgetEditHelp {
