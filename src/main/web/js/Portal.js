@@ -1451,10 +1451,10 @@ IS_Portal.Trash = new function() {
 			tr.appendChild(titleTd);
 			
 			var type = widgets[i].type;
-			var typeConf = IS_Widget.getConfiguration( type );
 			if(/^g_/.test( type )) {
 				typeName = IS_R.lb_gadget;
 			} else {
+				var typeConf = IS_Widget.getConfiguration( type );
 				typeName = typeConf && typeConf.title ? typeConf.title : type;
 			}
 			tr.appendChild(createElm("td",typeName));
