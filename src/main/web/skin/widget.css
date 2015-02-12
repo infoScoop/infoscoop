@@ -229,8 +229,6 @@
 }
 
 .infoScoop .widgetHeader .rightHeader .icon-container {
-	margin-top: 5px;
-	margin-bottom: 5px;
 	float: left;
 }
 
@@ -239,14 +237,14 @@
 	margin-top:2px;
 	margin-bottom:1px;
 	cursor:pointer;
-	background-position: top left;
 	background-repeat: no-repeat;
 	width: 16px;
-	height: 16px;
+	height: 25px;
 	display: inline-block;
 	padding-left: 2px;
 	padding-right: 2px;
 	vertical-align: text-bottom;
+	background-position: left center;
 }
 
 .infoScoop .headerIcon {
@@ -273,7 +271,10 @@
 	margin-top: 2px;
 	margin-bottom: 1px;
 	padding: 3px 5px;
-	top: -5px;
+}
+
+.infoScoop .widgetHeader .headerIcon_turnbackMaximize > .headerIcon {
+	height: 16px;
 }
 
 .infoScoop .widgetHeader .headerIcon_turnbackMaximize > img{

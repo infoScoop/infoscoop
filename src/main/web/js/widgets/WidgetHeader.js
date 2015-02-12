@@ -43,7 +43,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		},
 		{
 		  type:	"turnbackMaximize",
-		  imgUrl:	"plus-square-o.png",
+		  imgUrl:	"back.png",
 
 		  alt: IS_R.lb_turnback
 		}
@@ -230,6 +230,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		if(!maximizeHeaderDiv){
 			
 			maximizeHeaderDiv = document.createElement("div");
+			maximizeHeaderDiv.className = "maximize-header-div";
 			maximizeHeaderDiv.style.width = "100%";
 			maximizeHeaderDiv.style.cursor = "default";
 			maximizeHeaderDiv.style.position = "relative";
@@ -254,12 +255,13 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				}else{
 					var div = document.createElement("div");
 					$(div).setStyle({"float":"left"});
+					div.className = "icon-container";
 					div.appendChild(iconDiv);
 					headerIconDiv.appendChild(div);
-					IS_Event.observe(div, 'mousedown', this.iconDown.bind(this, div), false, widget.closeId);
-					IS_Event.observe(div, 'mouseup', this.iconUp.bind(this, div), false, widget.closeId);
-					IS_Event.observe(div, 'mouseout', this.iconUp.bind(this, div), false, widget.closeId);
-					IS_Event.observe(div, 'mouseup', this.common.bind(this, this[iconType].bind(this), isEnableLoading(iconType), div), false, widget.closeId);
+					IS_Event.observe(div, 'mousedown', this.iconDown.bind(this, iconDiv), false, widget.closeId);
+					IS_Event.observe(div, 'mouseup', this.iconUp.bind(this, iconDiv), false, widget.closeId);
+					IS_Event.observe(div, 'mouseout', this.iconUp.bind(this, iconDiv), false, widget.closeId);
+					IS_Event.observe(div, 'mouseup', this.common.bind(this, this[iconType].bind(this), isEnableLoading(iconType), iconDiv), false, widget.closeId);
 				}
 			}
 			maximizeHeaderDiv.appendChild(headerIconDiv);
