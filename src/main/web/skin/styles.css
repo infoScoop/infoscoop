@@ -650,10 +650,11 @@ div#search-iframe iframe {
 	word-break: keep-all;
 	cursor: pointer;
 	font-size: 11px;
-	position: relative;
-	top: -6px;
+	/*position: relative;
+	top: -6px;*/
 	line-height: 16px;
 	vertical-align: text-bottom;
+	margin: 3px 4px;
 }
 .infoScoop .iframetoolbar .toolbar-item.pressed {
 	margin-top: 2px;

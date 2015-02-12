@@ -72,6 +72,11 @@
 	padding: 4px 4px 4px 4px;
 /*	overflow: auto;*/
 }
+
+@media all and (-ms-high-contrast:none) {
+	.infoScoop .maximize.RssReader .maximizeRssDesc { margin-top:20px; } /* IE11 */
+}
+
 .infoScoop .maximize.RssReader .maximizeRssDescText{
 	border: 0;
 	margin: 0px 0px 0px 0px;
