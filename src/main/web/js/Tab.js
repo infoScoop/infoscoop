@@ -268,15 +268,16 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
 
 	// indicator
 	var indicatorDiv = $.DIV({className:"inlineBlock"});
-	var indicatorIcon;
+	var indicatorIcon = $.SPAN();;
 
 	if (is_propertySupported("animation")){
-		indicatorIcon = $.SPAN();
+		indicatorIcon.className = "css";
 	} else {
-		indicatorIcon = $.IMG({src:imageURL +"ajax-loader-white.gif"});
+		indicatorIcon.className = "gif";
 	}
+	
 	indicatorIcon.id = tab.id+"_loadingIcon";
-	indicatorIcon.className = "bounce-ball-indicator";
+	indicatorIcon.className = indicatorIcon.className + " bounce-ball-indicator";
 	indicatorDiv.appendChild(indicatorIcon);
 	tabBaseDiv.appendChild(indicatorDiv);
 

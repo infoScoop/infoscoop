@@ -180,6 +180,12 @@ String getIconClassSuffix (String iconClass){
 .infoScoop #tabs .tab.selected .selectMenu.refresh {
 	background: url(<%=staticContentURL%>/skin/imgs/refresh<%=tabbarIconSuffix%>.png ) no-repeat center left;
 }
+.infoScoop #tabs li .css.bounce-ball-indicator {
+	background-color: #737373;
+}
+.infoScoop #tabs li .gif.bounce-ball-indicator {
+	background-image: url(<%=staticContentURL%>/skin/imgs/ajax-loader<%=tabbarIconSuffix%>.gif);
+}
 <%
 	}
 %>

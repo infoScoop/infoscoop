@@ -120,18 +120,19 @@
 	display: none;
 }
 
-.infoScoop #tabs li span.bounce-ball-indicator {
+.infoScoop #tabs li .css.bounce-ball-indicator {
 	background-color: #ffffff;
 	animation: tab-anim-bounce 1s infinite;
 	-webkit-animation: tab-anim-bounce 1s infinite;
 }
-.infoScoop #tabs li.loading span.bounce-ball-indicator {
+.infoScoop #tabs li.loading .css.bounce-ball-indicator {
 	display: inline;
 }
 
-.infoScoop #tabs li img.bounce-ball-indicator {
+.infoScoop #tabs li .gif.bounce-ball-indicator {
 	top: 8px;
 	left: -3px;
+	background-image: url(./imgs/ajax-loader-white.gif);
 }
 
 .infoScoop #tabs .tabInsertMark {

@@ -722,7 +722,7 @@ div#search-iframe iframe {
 }
 
 /*indicator bounce ball*/
-.infoScoop span.bounce-ball-indicator {
+.infoScoop .css.bounce-ball-indicator {
 	border-radius: 50%;
 	background-color: #737373;
 	width: 4px;
@@ -730,8 +730,9 @@ div#search-iframe iframe {
 	position: absolute;
 }
 
-.infoScoop img.bounce-ball-indicator {
+.infoScoop .gif.bounce-ball-indicator {
 	width: 12px;
 	height: 12px;
 	position: absolute;
+	background-size: 12px;
 }

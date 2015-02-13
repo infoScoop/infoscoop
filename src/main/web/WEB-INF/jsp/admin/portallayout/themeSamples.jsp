@@ -410,7 +410,7 @@ padding: 10px 0;
         "type":"fill",
         "fontColor":"#ffffff",
         "backgroundColor":"#0097d8",
-        "fontWeight": "bold"
+        "fontWeight": "normal"
     }
   },
   "commandbar":{
@@ -476,7 +476,7 @@ padding: 10px 0;
         "type":"fill",
         "fontColor":"#ffffff",
         "backgroundColor":"#e74c3c",
-        "fontWeight":"bold"
+        "fontWeight":"normal"
     }
   },
   "commandbar":{
@@ -542,7 +542,7 @@ padding: 10px 0;
         "type":"fill",
         "fontColor":"#ffffff",
         "backgroundColor":"#27a562",
-        "fontWeight":"bold"
+        "fontWeight":"normal"
     }
   },
   "commandbar":{
@@ -608,7 +608,7 @@ padding: 10px 0;
         "type":"fill",
         "fontColor":"#ffffff",
         "backgroundColor":"#e67e22",
-        "fontWeight":"bold"
+        "fontWeight":"normal"
     }
   },
   "commandbar":{
@@ -674,7 +674,7 @@ padding: 10px 0;
         "type":"fill",
         "fontColor":"#ffffff",
         "backgroundColor":"#3c566f",
-        "fontWeight":"bold"
+        "fontWeight":"normal"
     }
   },
   "commandbar":{
@@ -740,7 +740,7 @@ padding: 10px 0;
         "type":"fill",
         "fontColor":"#ffffff",
         "backgroundColor":"#7a3db8",
-        "fontWeight":"bold"
+        "fontWeight":"normal"
     }
   },
   "commandbar":{

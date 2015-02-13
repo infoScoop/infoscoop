@@ -465,16 +465,15 @@ IS_Widget.prototype.classDef = function() {
 	   	this.elm_latestMark = divLatestMark;
 		divLatestMark.style.display = "none";
 
-		var indicator;
+		var indicator = document.createElement("span");
 		if (is_propertySupported("animation")){
-			indicator = document.createElement("span");	
+			indicator.className = "css";
 		} else {
-			indicator = document.createElement("img");
-			indicator.src = imageURL+"ajax-loader.gif";
+			indicator.className = "gif";
 		}
 		this.elm_indicator = indicator;
 		indicator.id = self.id + "_widgetIndicator";
-		indicator.className = "bounce-ball-indicator";
+		indicator.className = indicator.className + " bounce-ball-indicator";
 		indicator.style.display = "none";
 		
 	   	var divWidgetContent = document.createElement("div");
