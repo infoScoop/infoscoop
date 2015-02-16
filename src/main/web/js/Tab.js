@@ -210,6 +210,11 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
     
     
     var panelDiv = IS_Portal.buildPanel( idNumber, type );
+    
+    if (!disabledDynamicPanel){
+    	panelDiv.addClassName("has-dynamic-panel");
+    }
+    
     var panels = $("panels");
     panels.appendChild( panelDiv );
     

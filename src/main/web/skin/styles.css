@@ -186,7 +186,7 @@ table[id^="panel-table"] {
 	border-spacing: 0;
 }
 
-div[id^="static-panel"] {
+#panels .has-dynamic-panel div[id^="static-panel"] {
 	padding-bottom: 12px;
 	margin-bottom: 12px;
 	border-bottom: 1px solid #cccccc;

@@ -1739,9 +1739,6 @@ IS_Widget.disableIcon = function(icon, widget) {
 	if(icon.element && icon.element.className == "headerIcon"){
 		icon.element.disabled = true;
 		icon.element.className = "headerIcon disable";
-		if (Browser.isIE8){
-			icon.element.style.filter = icon.element.style.filter.replace("opacity = 90", "opacity = 60");
-		}
 	}
 	if(icon.type){
 		var disableFunc = widget.getContentFunction(icon.type +"Disable");
@@ -1751,13 +1748,13 @@ IS_Widget.disableIcon = function(icon, widget) {
 
 IS_Widget.enableIcon = function(icon, widget) {
 	if(!icon) return;
-	if(icon.element && icon.element.className == "headerIcon disable"){
-		icon.element.disabled = false;
-		icon.element.className = "headerIcon";
-		if (Browser.isIE8){
-			icon.element.style.filter = icon.element.style.filter.replace("opacity = 60", "opacity = 90");
+	setTimeout(function(){
+		if(icon.element && icon.element.className == "headerIcon disable"){
+			icon.element.disabled = false;
+			icon.element.className = "headerIcon";
 		}
-	}
+	}, 800);
+
 	if(icon.type){
 		var enableFunc = widget.getContentFunction(icon.type +"Enable");
 		if(enableFunc) enableFunc();

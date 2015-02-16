@@ -495,11 +495,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			}else{
 				url = (!isCommonType(type) && widget.resourceUrl ? widget.resourceUrl : imageURL) + imgUrl;
 			}
-			if (!Browser.isIE8){
-				div.style.backgroundImage = 'url(' + url+ ')';
-			} else {
-				div.style.filter = "filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+ url + "', sizingMethod='crop') alpha(opacity = 90)";
-			}
+			div.style.backgroundImage = 'url(' + url+ ')';
 		}
 		
 
