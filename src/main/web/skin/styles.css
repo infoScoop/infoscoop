@@ -136,8 +136,8 @@ img{
 	background-color: #fff;
 	-moz-box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2); /* Firefox */
 	-webkit-box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2); /* Chrome, Safari */
-	filter: progid:DXImageTransform.Microsoft.Shadow(color=#999999, direction=180, strength=3, enabled=true); /* IE8 */
 	box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2); /* IE9+, Others*/
+	border-bottom:2px solid #cccccc\9;  /* IE8 and below */
 }
 
 /** message bar */

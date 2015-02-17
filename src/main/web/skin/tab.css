@@ -186,7 +186,7 @@
 
 .infoScoop #tabs .Tab_onHover {
 	border: 2px dashed #FF5533 !important;
-	border-bottom: 2px solid #E6E6E6 !important;
+	border-bottom-width: 0px!important;
 }
 .infoScoop #tabs .tab span.outer.Tab_onHover .inner {
 	_height: 18px;

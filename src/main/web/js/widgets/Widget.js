@@ -1736,7 +1736,7 @@ IS_Widget.prototype.removeLoadCompleteListener = function( listener ) {
 
 IS_Widget.disableIcon = function(icon, widget) {
 	if(!icon) return;
-	if(icon.element){
+	if(icon.element && icon.element.className == "headerIcon"){
 		icon.element.disabled = true;
 		icon.element.className = "headerIcon disable";
 		if (Browser.isIE8){
@@ -1751,7 +1751,7 @@ IS_Widget.disableIcon = function(icon, widget) {
 
 IS_Widget.enableIcon = function(icon, widget) {
 	if(!icon) return;
-	if(icon.element){
+	if(icon.element && icon.element.className == "headerIcon disable"){
 		icon.element.disabled = false;
 		icon.element.className = "headerIcon";
 		if (Browser.isIE8){

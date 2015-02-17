@@ -230,6 +230,8 @@
 }
 
 .infoScoop .widgetHeader .rightHeader .icon-container {
+	margin-top: 5px;
+	margin-bottom: 5px;
 	float: left;
 }
 
@@ -240,7 +242,7 @@
 	cursor:pointer;
 	background-repeat: no-repeat;
 	width: 16px;
-	height: 25px;
+	height: 16px;
 	display: inline-block;
 	padding-left: 2px;
 	padding-right: 2px;
@@ -272,6 +274,7 @@
 	margin-top: 2px;
 	margin-bottom: 1px;
 	padding: 3px 5px;
+	top: -5px;
 }
 
 .infoScoop .widgetHeader .headerIcon_turnbackMaximize > .headerIcon {

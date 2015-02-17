@@ -133,6 +133,9 @@
 .infoScoop .RssReader .latestMark{
 	display: block;
 }
+.infoScoop .widgetHeader .latestMarkTd img{
+	vertical-align: sub;
+}
 
 .infoScoop .RssReader .RssReader_filter{
 	position:absolute;
