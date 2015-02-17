@@ -794,6 +794,7 @@ IS_Draggable.prototype = {
 	  } else{
 		  var dummyContent = document.createElement(this.element.nodeName? this.element.nodeName : "div");
 		  dummyContent.className = this.element.className;
+		  $(dummyContent).addClassName("dummy");
 		  dummyContent.innerHTML = this.element.innerHTML;
 		  dummyContent.style.height = "100%";
 		  IS_Draggable.dummyElement.appendChild(dummyContent);

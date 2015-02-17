@@ -45,6 +45,10 @@ div.treeMenuTitle{
 	font-size: 82%;
 }
 
+.dummy div.treeMenuTitle{
+	white-space: nowrap;
+}
+
 .treemenuItemIcon_blank {
 	float:left;
 	/*margin-top:4px;
