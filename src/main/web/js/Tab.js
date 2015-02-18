@@ -1353,6 +1353,7 @@ IS_Portal.buildPanel = function(panelNumber, type){
     var staticDiv = document.createElement("div");
     staticPanel.appendChild(staticDiv);
     staticDiv.id = "static-portal-widgets"+panelNumber;
+    staticPanel.className = "is-clearfix";
     
     var staticPanelLayout = IS_Customization["staticPanel"+panelNumber];
     if(type == "static" && staticPanelLayout && staticPanelLayout.layout){

@@ -140,6 +140,17 @@ img{
 	border-bottom:2px solid #cccccc\9;  /* IE8 and below */
 }
 
+/*clearfix*/
+.is-clearfix:before,
+.is-clearfix:after {
+	content: "";
+	display: table;
+	border-collapse: collapse;
+}
+.is-clearfix:after {
+	clear: both;
+}
+
 /** message bar */
 #error-msg-bar {
 	background-color: #ffffe0;
