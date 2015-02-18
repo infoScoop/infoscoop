@@ -68,9 +68,6 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	this.buildContents = function () {
 		headerDiv = document.createElement("div");
 		headerDiv.className = "widget-header-inner";
-		headerDiv.style.height = "28px";
-		headerDiv.style.position = "relative";
-		headerDiv.style.overflow = "hidden";
 		widget.elm_widgetHeader.appendChild(headerDiv);
 		
 		IS_Event.observe( headerDiv, "mouseover", observeEventsFunc, false, widget.closeId);

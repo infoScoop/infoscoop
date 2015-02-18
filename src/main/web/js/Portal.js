@@ -2120,6 +2120,7 @@ IS_Portal.buildAdminLink = function(){
 		window.open("admin");
 		$('portal-user-menu-body').hide();
 		IS_Portal.commandBarMenuBehindIframe.hide();
+		$('userMenuCloser').hide();
 		Event.stop( e )
 	});
 };

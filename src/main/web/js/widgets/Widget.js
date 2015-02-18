@@ -2341,12 +2341,16 @@ IS_Widget.getDragDummy = function(element, widget){
 	  header.className = "widgetHeader";
 	  header.style.fontWeight = "bold";
 	  
+	  var titleInnnerEl = document.createElement("div");
+	  titleInnnerEl.className = "widget-header-inner";
+	  
 	  var titleEl = document.createElement("div");
 	  titleEl.className = "widgetTitle";
 	  titleEl.appendChild( document.createTextNode( IS_Widget.WidgetHeader.getTitle(widget) ));
 	  titleEl.style.padding = "2px";
 	  
-	  header.appendChild( titleEl);
+	  titleInnnerEl.appendChild(titleEl);
+	  header.appendChild(titleInnnerEl);
 	  
 	  box.appendChild( header );
 	  

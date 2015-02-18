@@ -813,6 +813,7 @@ IS_WidgetsContainer.adjustColumns = {
 		IS_Portal.hideDragOverlay();
 		Event.stopObserving(document, "mousemove", IS_WidgetsContainer.adjustColumns.move, false);
 		Event.stopObserving(document, "mouseup", IS_WidgetsContainer.adjustColumns.end, false);
+		IS_WidgetsContainer.adjustColumns.isDragging = false;
 		
 		if(!IS_WidgetsContainer.adjustColumns.moved)
 		    return;
@@ -824,7 +825,6 @@ IS_WidgetsContainer.adjustColumns = {
 		var targetEl2 = IS_WidgetsContainer.adjustColumns.targetEl2;
 		var parentWidth = IS_WidgetsContainer.adjustColumns.parentWidth = (!Browser.isIE)? targetEl1.parentNode.offsetWidth : $("dynamic-panel" + IS_Portal.currentTabId.substring(3)).parentNode.offsetWidth-2;
 		
-		IS_WidgetsContainer.adjustColumns.isDragging = false;
 		var numCol = IS_Portal.tabs[IS_Portal.currentTabId].numCol;
 		
 		var p = ( targetEl1.offsetWidth / parentWidth ) * 100;

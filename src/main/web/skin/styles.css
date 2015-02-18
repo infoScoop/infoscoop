@@ -252,6 +252,7 @@ body.fixedPortalHeader #panels .panel{
 	width: auto;
 /*	margin-left : 10px;*/
 	margin-bottom: 5px;
+	min-height: 1em;
 
 }
 #widgetGhost.noMergeMode {

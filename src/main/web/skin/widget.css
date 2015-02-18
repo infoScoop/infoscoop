@@ -215,6 +215,12 @@
 	vertical-align: middle;
 }
 
+.infoScoop .widgetHeader .widget-header-inner {
+	height: 28px;
+	position: relative;
+	overflow: hidden;
+}
+
 .infoScoop .widgetHeader .widgetTitle {
 	padding-right:5px;
 	font-weight:bold;

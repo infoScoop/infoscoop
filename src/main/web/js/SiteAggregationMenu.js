@@ -686,7 +686,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 	}
 
 	function createMenuRefreshIcon(){
-		if(!refreshIcon) {
+		if(!refreshIcon || (refreshIcon && refreshIcon.childNodes.length == 0)) {
 			refreshIcon = createRefreshIcon();
 		}
 		container.appendChild(refreshIcon);
