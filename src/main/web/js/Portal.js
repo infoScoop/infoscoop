@@ -762,7 +762,7 @@ IS_Portal.adjustPanelHeight = function(e){
 	if(IS_Widget.MaximizeWidget) return;//Fixed Issue 149: Fragment Minibrowser shows a little off from the position whrere it should be when it maximized.
 	var panels = $("panels");
 	if(!panels.visible) return;
-	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - $("tab-container").getHeight() - 5;
+	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - 5;
 	if(Browser.isIE) adjustHeight -= 3;
 	if(IS_Portal.tabs[IS_Portal.currentTabId])
 		IS_Portal.tabs[IS_Portal.currentTabId].panel.style.height = adjustHeight + "px";
