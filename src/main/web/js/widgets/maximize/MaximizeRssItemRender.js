@@ -101,13 +101,8 @@ IS_Widget.MaximizeRssReader.RssItemRender.prototype.classDef = function() {
 		
 		this.containerTr.id = widget.id + '_item_'+itemNumber;
 		
-		var bgColor;
-		if( rssItem.selected ) {
-			bgColor = "#BCCCE7";
-		} else {
-			//bgColor = ( itemNumber %2 == 0 ? "#FFFFFF":"#FFFFFF")
-		}
-		this.containerTr.style.backgroundColor = bgColor;
+		this.containerTr.className =
+            ( rssItem.selected ? "entry selected" : "entry");
 		
 		if(pubDate && rssItem.creatorImg.length > 0 && widget.widgetType == "Information2"){
 			this.imgTd.innerHTML = rssItem.creatorImg;

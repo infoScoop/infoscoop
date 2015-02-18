@@ -1014,7 +1014,20 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 		//this.currentCategory.isComplete = false;
 		//widget.loadContents();
 		
-		 this.loadCategoryContents(this.currentCategory);
+	    var rssReader = this.currentCategory;
+	    if(rssReader){
+            var content = rssReader.content.rssContent;
+            if( content && content.rssItems ) {
+                content.rssItems.each( function( rssItem ) {
+                    if( rssItem ) {
+                        rssItem.selected = false;
+                        rssItem.atompub_checked = false;
+                    }
+                });
+            }
+	    }
+        
+	    this.loadCategoryContents(this.currentCategory);
 		
 		this._getOriginalRssReaders().collect( function( rssReader ) {
 			var url = rssReader.getUserPref("url");
