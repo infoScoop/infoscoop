@@ -104,6 +104,7 @@
 }
 .infoScoop .trashContainer .trashTable td {
 	overflow: hidden;
+	padding: 1.5px;
 }
 .infoScoop #trashContext table{
 	border:1px solid gray;
@@ -143,13 +144,9 @@
 }
 
 .infoScoop div[id^="control_window_"].preference .preferenceTable {
-/*	width:400px;*/
 	min-height:100px;
-	padding:10px;
-	height:auto;
-}
-.infoScoop div[id^="control_window_"].preference .preferenceTable {
-	height: 100px;
+	padding:5px;
+    height: 100px;
 }
 
 .infoScoop div[id^="control_window_"].preference .preferenceTable td{
@@ -161,10 +158,18 @@
 	position: relative;
 }
 .infoScoop div[id^="control_window_"].preference .preferencePage {
+	margin: 5px;
 }
 
 .infoScoop div[id^="control_window_"].preference .preferencePage fieldset {
-	padding: 5px;
+	padding: 10px;
+	margin-bottom:8px;
+	border: 1px solid #CCCCCC;
+}
+
+.infoScoop div[id^="control_window_"].preference .preferencePage fieldset>table {
+	margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 .infoScoop div[id^="control_window_"].preference .preferencePage .preferenceMenu{
@@ -182,10 +187,6 @@
 .infoScoop div[id^="control_window_"].preference .preferencePage .preferenceMenu span{
 	position:relative;
 	top:8px;
-}
-
-.infoScoop div[id^="control_window_"].preference .preferencePage fieldSet{
-	margin-bottom:8px;
 }
 
 .infoScoop div[id^="control_window_"].preference .preferencePage .pageTitle{
@@ -208,9 +209,11 @@
 }
 .infoScoop .authCredentialInfoList .authCredentialInfoTable{
 	width:100%;
+	margin-top:8px;
 }
 .infoScoop .authCredentialInfoList .authCredentialInfoTable th{
 	border:1px solid gray;
+	padding:2.5px;
 }
 
 .infoScoop .authCredentialInfoList .authCredentialInfoTitle{
@@ -241,6 +244,7 @@
 	font-size:110%;
 	text-align:right;
 	vertical-align:top;
+	padding: 1.5px;
 }
 
 #authCredentialListDiv{

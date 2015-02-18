@@ -1020,7 +1020,23 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 				document.body.scrollTop = scrollTop + 'px';
 			}
 		}
-		IS_Event.observe(window, 'resize', this.handleHideMenu, false, this.eventKey);
+		
+		if(Browser.isIE){
+            this.winWidth = getWindowSize(true);
+            this.winHeight = getWindowSize(false);
+		}
+		
+		IS_Event.observe(window, 'resize', function(){
+		    if(Browser.isIE){
+                var winNewWidth = getWindowSize(true), winNewHeight = getWindowSize(false);
+		        if(this.winWidth == winNewWidth &&  this.winHeight == winNewHeight){
+		            return;
+		        }
+		        this.winWidth = winNewWidth;
+		        this.winHeight = winNewHeight;
+		    }
+		    this.handleHideMenu();
+		}.bind(this), false, this.eventKey);
 	}
 	
 	this.hide = function(e) {

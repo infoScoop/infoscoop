@@ -360,7 +360,7 @@ padding: 10px 0;
 		<h1>%{alb_settingExamples}</h1>
 	</div>
 	<div id="theme-samples-container">
-		<section class="theme-sample clearfix">
+		<div class="theme-sample clearfix">
 			<div class="span4 table">
 				<div class="image-container table-cell">
 					<div class="image">
@@ -425,8 +425,8 @@ padding: 10px 0;
 }</textarea>
 				</div>
 			</div>
-		</section>
-				<section class="theme-sample clearfix">
+		</div>
+				<div class="theme-sample clearfix">
 			<div class="span4 table">
 				<div class="image-container table-cell">
 					<div class="image">
@@ -491,8 +491,8 @@ padding: 10px 0;
 }</textarea>
 				</div>
 			</div>
-		</section>
-		<section class="theme-sample clearfix">
+		</div>
+		<div class="theme-sample clearfix">
 			<div class="span4 table">
 				<div class="image-container table-cell">
 					<div class="image">
@@ -557,8 +557,8 @@ padding: 10px 0;
 }</textarea>
 				</div>
 			</div>
-		</section>
-		<section class="theme-sample clearfix">
+		</div>
+		<div class="theme-sample clearfix">
 			<div class="span4 table">
 				<div class="image-container table-cell">
 					<div class="image">
@@ -623,8 +623,8 @@ padding: 10px 0;
 }</textarea>
 				</div>
 			</div>
-		</section>
-		<section class="theme-sample clearfix">
+		</div>
+		<div class="theme-sample clearfix">
 			<div class="span4 table">
 				<div class="image-container table-cell">
 					<div class="image">
@@ -689,8 +689,8 @@ padding: 10px 0;
 }</textarea>
 				</div>
 			</div>
-		</section>
-		<section class="theme-sample clearfix">
+		</div>
+		<div class="theme-sample clearfix">
 			<div class="span4 table">
 				<div class="image-container table-cell">
 					<div class="image">
@@ -755,8 +755,8 @@ padding: 10px 0;
 }</textarea>
 				</div>
 			</div>
-		</section>
-		<section class="theme-sample clearfix">
+		</div>
+		<div class="theme-sample clearfix">
 			<div class="span4 table">
 				<div class="image-container table-cell">
 					<div class="image">
@@ -821,8 +821,8 @@ padding: 10px 0;
 }</textarea>
 				</div>
 			</div>
-		</section>
-		<section class="theme-sample clearfix">
+		</div>
+		<div class="theme-sample clearfix">
 			<div class="span4 table">
 				<div class="image-container table-cell">
 					<div class="image">
@@ -887,8 +887,8 @@ padding: 10px 0;
 }</textarea>
 				</div>
 			</div>
-		</section>
-		<section class="theme-sample clearfix">
+		</div>
+		<div class="theme-sample clearfix">
 			<div class="span4 table">
 				<div class="image-container table-cell">
 					<div class="image">
@@ -952,7 +952,7 @@ padding: 10px 0;
 }</textarea>
 				</div>
 			</div>
-		</section>
+		</div>
 	</div>
 </div>
 </body>

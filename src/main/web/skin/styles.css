@@ -378,6 +378,11 @@ div[id^="control_window_"] {
 	background-color: #ffffff;
 }
 
+/* lt IE8 */
+:root .maximized #portal-tree-menucontainer {
+	margin-top: 3px;
+}
+
 #siteMenuOpenTd {
 	vertical-align: top;
 	height: 100%;
@@ -388,6 +393,12 @@ div[id^="control_window_"] {
 	position: absolute;
 /*	cursor:col-resize;*/
 }
+
+/* lt IE8 */
+:root .maximized #siteMenuOpen {
+    margin-top: 3px;
+}
+
 #siteMenuGhost{
 	border-left: 1px solid #999999;
 	position: absolute;
