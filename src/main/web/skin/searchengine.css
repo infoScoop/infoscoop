@@ -39,12 +39,13 @@
 }
 
 #searchTextInput {
-border: none;
-height: auto;
-margin-top: 6px;
-font-size: 13px;
-color: #999999;
-padding: 0;
+    border: none;
+    width: 152px;
+    height: auto;
+    margin-top: 6px;
+    font-size: 13px;
+    color: #999999;
+    padding: 0;
 }
 /*#searchTextInput{
 	vertical-align: top;
@@ -57,6 +58,10 @@ padding: 0;
 	_position: absolute;*/ /* for IE6 only */
 	/*_top: 0;*/ /* for IE6 only */
 /*}*/
+
+#searchTextInput::-ms-clear {
+    display: none;
+}
 
 #search-option-button-container {
 	position: absolute;
