@@ -376,26 +376,29 @@ IS_Portal.SearchEngines = {
 		);
 		p_searchform.appendChild(searchForm);
 
+		var isPlaceholder = true;
+
 		var doSearch = function(e){
-			var keyword = $F('searchTextInput');
+			var keyword = (isPlaceholder) ? "" : $F('searchTextInput');
 			IS_Portal.SearchEngines.buildSearchTabs(keyword);
 			Event.stop(e);
 		};
 		
 		//show pale 'search' on form background
 		var setInitValue = function(e){
-			if(!$('searchTextInput').value == ""){
-				return;
-			}
-			$('searchTextInput').value = IS_R.lb_search;
-			$('searchTextInput').style.color = '#ccc';
-			Event.stop(e);
+		    isPlaceholder = ($F('searchTextInput') === "");
+            if (isPlaceholder) {
+                $('searchTextInput').value = IS_R.lb_search;
+                $('searchTextInput').style.color = '#ccc';
+                Event.stop(e);
+            }
 		};
 		var remInitValue = function(e){
-			if($('searchTextInput').value == IS_R.lb_search){
+		    if (isPlaceholder) {
 				$('searchTextInput').value = "";
 				$('searchTextInput').style.color = '#000';
 			}
+		    isPlaceholder = false;
 			Event.stop(e);
 		};
 		
