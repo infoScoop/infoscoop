@@ -19,6 +19,10 @@
 .infoScoop #portal-command{
 }
 
+.infoScoop td#portal-site-aggregation-menu + td {
+    width: 150px;
+}
+
 .infoScoop #portal-command .command,
 .infoScoop div[id^="control_window_"].preference .preferenceClose.command,
 .infoScoop #portal-go-home{
