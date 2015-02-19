@@ -185,6 +185,8 @@ String getIconClassSuffix (String iconClass){
 }
 .infoScoop #tabs li .gif.bounce-ball-indicator {
 	background-image: url(<%=staticContentURL%>/skin/imgs/ajax-loader<%=tabbarIconSuffix%>.gif);
+	background-repeat: no-repeat;
+	background-position: top center;
 }
 <%
 	}
