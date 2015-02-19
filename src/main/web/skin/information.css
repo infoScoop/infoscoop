@@ -22,7 +22,7 @@
 
 .infoScoop .Information .rssItem {
 	word-break: break-all;
-	font-size:85%;
+	font-size:82%;
 }
 
 
@@ -38,7 +38,7 @@
 
 .infoScoop .Information .latestMark {
 	border:0;
-	vertical-align: text-bottom;
+	vertical-align: baseline;
 }
 .infoScoop .Information .rssMore{
 	color: #737373;

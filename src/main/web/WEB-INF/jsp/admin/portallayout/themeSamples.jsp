@@ -120,6 +120,10 @@ padding: 10px 0;
 	margin-left: 5px;
 }
 
+.image-container .tabbar.border .active {
+	height: 10px;
+}
+
 .image-container .body {
 	width: 200px;
 	height: 107px;
@@ -769,7 +773,7 @@ padding: 10px 0;
 								<span class="searchbutton"></span>
 							</div>
 						</div>
-						<div class="tabbar borderblue">
+						<div class="tabbar border borderblue">
 							<span class="active"></span>
 						</div>
 						<div class="body">
@@ -835,7 +839,7 @@ padding: 10px 0;
 								<span class="searchbutton"></span>
 							</div>
 						</div>
-						<div class="tabbar borderred">
+						<div class="tabbar border borderred">
 							<span class="active"></span>
 						</div>
 						<div class="body">
@@ -901,7 +905,7 @@ padding: 10px 0;
 								<span class="searchbutton"></span>
 							</div>
 						</div>
-						<div class="tabbar bordergreen">
+						<div class="tabbar border bordergreen">
 							<span class="active"></span>
 						</div>
 						<div class="body">
