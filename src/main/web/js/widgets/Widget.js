@@ -667,7 +667,7 @@ IS_Widget.prototype.classDef = function() {
 		};
 		
 		if( this.view_params )
-			parameters["view-params"] = $H( this.view_params ).toJSON();
+			parameters["view-params"] = JSON.stringify($H( this.view_params ));
 		
 		return parameters;
 	}
