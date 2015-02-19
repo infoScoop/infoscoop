@@ -103,11 +103,11 @@ IS_Widget.RssReader.RssItemRender.getDefaultHeight = function( context ) {
 	
 	var d = context.showDatetime();
 	if( fontSize < 100 ) {
-		h = 15 +( d ?16:2 ) -( Browser.isFirefox? 1:0.0 );
+		h = 15 +( d ?14:2 ) -( Browser.isFirefox? 1:0.0 );
 	} else if( fontSize == 100 ){
-		h = 19 +( d ? 20:2 ) -( Browser.isFirefox ? 1.5:1 );
+		h = 19 +( d ? 18:2 ) -( Browser.isFirefox ? 1.5:1 );
 	} else {
-		h = 21 +( d ? 23:2 ) -( Browser.isFirefox? 0:-0.5 );
+		h = 21 +( d ? 21:2 ) -( Browser.isFirefox? 0:-0.5 );
 	}
 	
 	return h;
