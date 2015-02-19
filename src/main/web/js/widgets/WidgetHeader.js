@@ -492,7 +492,18 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			}else{
 				url = (!isCommonType(type) && widget.resourceUrl ? widget.resourceUrl : imageURL) + imgUrl;
 			}
-			div.style.backgroundImage = 'url(' + url+ ')';
+			if (!Browser.isLtIE8){
+				div.style.backgroundImage = 'url(' + url+ ')';
+			} else {
+				var image = document.createElement("div");
+				image.className = "image";
+				image.style.filter = "filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+ url + "', sizingMethod='crop')";
+				
+				var transparent = document.createElement("div");
+				transparent.className = "transparent";
+				image.appendChild(transparent);
+				div.appendChild(image);
+			}
 		}
 		
 

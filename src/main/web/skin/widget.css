@@ -268,6 +268,31 @@
 	cursor: pointer;
 }
 
+/*for less than IE8*/
+.infoScoop .headerIcon {
+	-ms-filter: alpha( opacity=90 );
+	filter: alpha( opacity=90 );
+}
+
+.infoScoop .headerIcon.disable {
+	-ms-filter: alpha( opacity=60 );
+	filter: alpha( opacity=60 );
+}
+
+.infoScoop .headerIcon > .image {
+	height: 16px;
+	width: 16px;
+	display : block;
+}
+
+.infoScoop .headerIcon > .image,
+.infoScoop .headerIcon > .image > .transparent {
+	background-color : #ffffff;
+	opacity: 0;
+	cursor : pointer;
+}
+/*for less than IE8 end*/
+
 .infoScoop .widgetHeader .headerIcon_turnbackMaximize {
 	position: relative;
 	text-align: right;
