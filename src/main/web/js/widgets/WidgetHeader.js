@@ -143,6 +143,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		}
 		
 		var visibles = header.icon;
+		var hasMinimizeIcon = false;
 
 		var visibleIcons = (visibles) ? [].concat(visibles) : [];
 		if(!widget.originalWidget){
@@ -155,6 +156,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			  });
 			}
 			if(!isStatic && header.minimize != 'off'){
+			    hasMinimizeIcon = true;
 				visibleIcons.push(
 					{
 					  type:  "minimize",
@@ -217,7 +219,10 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			
 			visibleCount++;
 		}
-		titleHeaderDiv.style.marginRight = ((visibleCount - 1) * 16 + 10) + "px";//Minus 1 for maximizing and minimizing, and not consider 'search' and 'access statics' as they are set in menu
+		
+		// Minus 1 for minimizing and turn-back, and not consider 'search' and 'access statics' as they are set in menu
+		visibleCount = (hasMinimizeIcon) ? (visibleCount - 1) : visibleCount;
+		titleHeaderDiv.style.marginRight = (visibleCount * 20) + "px";
 		headerDiv.appendChild(headerIconDiv);
 		self.stockEvent(headerIconDiv, 'mousedown', this.common.bind(this, this.dummy, false, headerIconDiv), false, widget.closeId);
 	}
