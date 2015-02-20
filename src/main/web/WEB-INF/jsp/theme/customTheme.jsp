@@ -181,7 +181,7 @@ String getIconClassSuffix (String iconClass){
 	background: url(<%=staticContentURL%>/skin/imgs/refresh<%=tabbarIconSuffix%>.png ) no-repeat center left;
 }
 .infoScoop #tabs li .css.bounce-ball-indicator {
-	background-color: #737373;
+	background-color: <%=tabbarIconSuffix == "-white"? "#ffffff":"#737373"%>;
 }
 .infoScoop #tabs li .gif.bounce-ball-indicator {
 	background-image: url(<%=staticContentURL%>/skin/imgs/ajax-loader<%=tabbarIconSuffix%>.gif);
