@@ -713,6 +713,7 @@ div#search-iframe iframe {
 	z-index: 10000;
 	*/
 	margin-left: 10px;
+	float: right;
 }
 
 .infoScoop #portal-go-home div.toppage {

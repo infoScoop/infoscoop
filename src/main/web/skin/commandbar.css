@@ -23,6 +23,13 @@
     width: 150px;
 }
 
+.infoScoop td#portal-site-aggregation-menu + td:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+}
+
 .infoScoop #portal-command .command,
 .infoScoop div[id^="control_window_"].preference .preferenceClose.command,
 .infoScoop #portal-go-home{
