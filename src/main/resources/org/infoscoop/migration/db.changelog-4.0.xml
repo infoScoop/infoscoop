@@ -413,4 +413,15 @@
         	<where>id='lb_addTabLink' AND lang='zh'</where>
         </update>
     </changeSet>
+    
+    <!--Issue 592-->
+    <!--DELETE FROM IS_PROPERTIES WHERE id = 'defaultTheme';-->
+    <changeSet id="infoscoop400_592_1" author="muto">
+    	<preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_592_1">
+            <sqlCheck expectedResult="1">select count(*) from ${migration.defaultSchemaWithDot}IS_PROPERTIES where id='defaultTheme';</sqlCheck>
+        </preConditions>
+        <delete tableName="IS_PROPERTIES">
+            <where>id='defaultTheme'</where>
+        </delete>
+    </changeSet>
 </databaseChangeLog>
