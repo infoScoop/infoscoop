@@ -406,15 +406,15 @@
 }
 
 .infoScoop .widgetEditHeader .rssUrl_Icon {
-/*	float:left;*/
-/*	margin-left:2px;*/
+	margin-left:5px;
 	margin-right:2px;
 	border:0px;
 	margin-top:2px;
 	width: 16px;
 	height: 14px;
 	cursor: pointer;
-	background: url(./imgs/rss_url.gif) left no-repeat;
+	text-decoration: none;	
+	background: url(./imgs/rss.png) left no-repeat;
 }
 
 .infoScoop .widgetEditHeader .widget_edit_pref_col_label {
