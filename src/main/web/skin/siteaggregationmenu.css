@@ -36,6 +36,12 @@
 	overflow: hidden;
 }
 
+#portal-site-aggregation-menu .topMenuLi .failed {
+    white-space: nowrap;
+    color: #ff0000;
+    padding: 5px;
+}
+
 .menuRefresh,
 .menuIndicator {
 	float:right;

@@ -620,27 +620,25 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		    on404: function(t) {
 		        msg.error(IS_R.getResource(IS_R.ms_menuNotFound2,[url]));
 		        if(!IS_SiteAggregationMenu.isMenuRefreshed){
-		        	container.firstChild.innerHTML = "<span style='white-space:nowrap;font-size:90%;color:red;padding:5px;'>" + IS_R.ms_menuNotFound + "</span>";
+		        	container.firstChild.innerHTML = "<span class='failed'>" + IS_R.ms_menuNotFound + "</span>";
 		        }
 		    },
 		    on10408: function(req,obj) {
 				msg.error(IS_R.ms_menuLoadon10408 );
 				if(!IS_SiteAggregationMenu.isMenuRefreshed){
-					container.firstChild.innerHTML = "<span style='white-space:nowrap;font-size:90%;color:red;padding:5px;'>" +
-						IS_R.ms_menuLoadon10408
-							+ "</span>";
+					container.firstChild.innerHTML = "<span class='failed'>" + IS_R.ms_menuLoadon10408 + "</span>";
 				}
 		    },
 		    onFailure: function(t) {
 				msg.error(IS_R.getResource(IS_R.ms_menuLoadOnUnSuccess,[t.status,t.statusText]));
 				if(!IS_SiteAggregationMenu.isMenuRefreshed){
-					container.firstChild.innerHTML = "<span style='white-space:nowrap;font-size:90%;color:red;padding:5px;'>" + IS_R.ms_menuLoadonFailure + "</span>";
+					container.firstChild.innerHTML = "<span class='failed'>" + IS_R.ms_menuLoadonFailure + "</span>";
 				}
 		    },
 			onException: function(r, t){
 				msg.error(IS_R.getResource(IS_R.ms_menuLoadonException,[getText(t)] ));
 				if(!IS_SiteAggregationMenu.isMenuRefreshed){
-					container.firstChild.innerHTML = "<span style='white-space:nowrap;font-size:90%;color:red;padding:5px;'>" + IS_R.ms_menuLoadonFailure + "</span>";
+					container.firstChild.innerHTML = "<span class='failed'>" + IS_R.ms_menuLoadonFailure + "</span>";
 				}
 			},
 		    onComplete: function(t) {
@@ -786,24 +784,23 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		  on404: function(t) {
 			  msg.error(IS_R.getResource(IS_R.ms_menuNotFound2,[url]));
 			  if(!IS_SiteAggregationMenu.serviceMenuMap[menuItem.id])
-				  topLi.innerHTML = "<span style='white-space:nowrap;font-size:90%;color:red;padding:5px;'>" + IS_R.ms_menuNotFound + "</span>";
+				  topLi.innerHTML = "<span class='failed'>" + IS_R.ms_menuNotFound + "</span>";
 		  },
 		  on10408: function( req,obj ) {
 			  msg.error(IS_R.ms_menuLoadon10408);
 			  if(!IS_SiteAggregationMenu.serviceMenuMap[menuItem.id]){
-				  topLi.innerHTML = "<span style='white-space:nowrap;font-size:90%;color:red;padding:5px;'>" +
-				  	IS_R.ms_menuLoadon10408 + "</span>";
+				  topLi.innerHTML = "<span class='failed'>" + IS_R.ms_menuLoadon10408 + "</span>";
 				}
 		  },
 		  onFailure: function(t) {
 			  msg.error(IS_R.getResource(IS_R.ms_menuLoadOnUnSuccess,[t.status,t.statusText]));
 			  if(!IS_SiteAggregationMenu.serviceMenuMap[menuItem.id])
-				  topLi.innerHTML = "<span style='white-space:nowrap;font-size:90%;color:red;padding:5px;'>" + IS_R.ms_menuLoadonFailure + "</span>";
+				  topLi.innerHTML = "<span class='failed'>" + IS_R.ms_menuLoadonFailure + "</span>";
 		  },
 		  onException: function(r, t){
 			  msg.error(IS_R.getResource(IS_R.ms_menuLoadonException,[getText(t)] ));
 			  if(!IS_SiteAggregationMenu.serviceMenuMap[menuItem.id])
-				  topLi.innerHTML = "<span style='white-space:nowrap;font-size:90%;color:red;padding:5px;'>" + IS_R.ms_menuLoadonFailure + "</span>";
+				  topLi.innerHTML = "<span class='failed'>" + IS_R.ms_menuLoadonFailure + "</span>";
 		  },
 		  onComplete: function(t) {
 				try{
@@ -825,7 +822,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 					}
 				}catch(t){
 					msg.error(IS_R.getResource(IS_R.ms_menuLoadonException,[getText(t)] ));
-					topLi.innerHTML = "<span style='white-space:nowrap;font-size:90%;color:red;padding:5px;'>" + IS_R.ms_menuLoadonFailure + "</span>";
+					topLi.innerHTML = "<span class='failed'>" + IS_R.ms_menuLoadonFailure + "</span>";
 				}
 
 			  var end = new Date();
