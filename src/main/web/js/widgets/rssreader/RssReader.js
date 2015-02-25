@@ -102,7 +102,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		IS_EventDispatcher.addListener("adjustedColumnWidth", null, this.repaintIfCurrentTab.bind(this,false,false,true ) );
 //		IS_EventDispatcher.addListener("dragWidget", widget.id,this.repaint.bind( this ) );
 		IS_EventDispatcher.addListener("dragWidget", widget.id, function(){
-			if(Browser.isIE8){
+			if(Browser.isLtIE8){
 				setTimeout(this.repaint.bind(this), 50);
 			}else{
 				this.repaint();
@@ -1853,7 +1853,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		}
 		
 		// needs redendering on IE8.
-		if(Browser.isIE8)
+		if(Browser.isLtIE8)
 			$(container).hide().show();
 		
 		var this_ = this;
