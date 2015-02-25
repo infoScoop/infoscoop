@@ -238,6 +238,10 @@ String getIconClassSuffix (String iconClass){
 	border-bottom-width: 3px;
 }
 
+.infoScoop #tabs .tab.selected div.outer {
+	border-bottom: 3px solid <%=activetabBackgroundColor%>;
+	margin-bottom: -3px;
+}
 <%
 		}
 	}

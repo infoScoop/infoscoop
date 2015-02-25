@@ -73,8 +73,8 @@
 /*	overflow: auto;*/
 }
 
-@media all and (-ms-high-contrast:none) {
-	.infoScoop .maximize.RssReader .maximizeRssDesc { margin-top:20px; } /* IE11 */
+_:-ms-fullscreen, :root .infoScoop .maximize.RssReader .maximizeRssDesc {
+	margin-top:20px; /*for IE11*/
 }
 
 .infoScoop .maximize.RssReader .maximizeRssDescText{
