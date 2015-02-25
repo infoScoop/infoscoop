@@ -63,7 +63,7 @@ Event.observe(window, 'resize', function(){
 	var innerHeight = getWindowSize(false);
 	var innerWidth = getWindowSize(true);
 	// The block for the problem which a window resizing event will be called by document size change. (IE8 Only)
-    if (!Browser.isIE8 || innerHeight != IS_Portal.lastWindowHeight || innerWidth != IS_Portal.lastWindowWidth) {
+    if (!Browser.isLtIE8 || innerHeight != IS_Portal.lastWindowHeight || innerWidth != IS_Portal.lastWindowWidth) {
     	IS_EventDispatcher.newEvent("windowResized");
     }
     IS_Portal.lastWindowHeight = innerHeight;
@@ -2471,7 +2471,7 @@ IS_Portal.CommandBar = {
 						// change background color to normal
 						$("portal-user-menu").parentNode.style.backgroundColor = $('portal-user-menu').style.color = '';
 					}, "_portalUserMenu");
-					Event.observe(window, 'resize', closeMenu, true);
+					IS_EventDispatcher.addListener('windowResized', null, closeMenu);
 				}else{
 					Element.setStyle($("userMenuCloser"), {
 						width: winX + 'px',
