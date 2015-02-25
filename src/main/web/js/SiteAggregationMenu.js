@@ -691,7 +691,7 @@ IS_SiteAggregationMenu.prototype.classDef = function () {
 		}
 		container.appendChild(refreshIcon);
 
-		if(!indicatorIcon) {
+		if(!indicatorIcon || (indicatorIcon && indicatorIcon.childNodes.length == 0)) {
 			indicatorIcon = createIndicatorIcon();
 		}
 		container.appendChild(indicatorIcon);
