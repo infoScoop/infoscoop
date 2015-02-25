@@ -379,7 +379,7 @@ div[id^="control_window_"] {
 }
 
 /* lt IE8 */
-:root .maximized #portal-tree-menucontainer {
+:root .maximized #portal-tree-menucontainer, :root .hiding-tab  #portal-tree-menucontainer {
 	margin-top: 3px;
 }
 
@@ -395,7 +395,7 @@ div[id^="control_window_"] {
 }
 
 /* lt IE8 */
-:root .maximized #siteMenuOpen {
+:root .maximized #siteMenuOpen, :root .hiding-tab #siteMenuOpen {
     margin-top: 3px;
 }
 

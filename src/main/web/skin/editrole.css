@@ -151,8 +151,8 @@ body{
 	width: 1px;
 	height: 1px;
 	position: absolute;
-	top: -9999;
-	left: -9999;
+	top: -9999px;
+	left: -9999px;
 	display: none;
 }
 
