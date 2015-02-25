@@ -1091,7 +1091,7 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 	this.adjustMaximizeHeight = function() {
 		this.lazyAdjusting = false;
 		
-		var maximizeHeight = getWindowSize(false) -findPosY( widget.elm_widget ) -65;
+		var maximizeHeight = getWindowSize(false) -findPosY( widget.elm_widget ) - 45;
 		var rssDetailTd = $("maximizeRssDetailTd_" +widget.id);
 		if( !rssDetailTd )
 			return;
@@ -1113,7 +1113,11 @@ IS_Widget.MaximizeRssReader.prototype.classDef = function() {
 				errorPanelHeight = 0;
 			
 			itemListHeight -= errorPanelHeight;
-			
+
+			var filterStatePanel = widget.elm_widgetContent.querySelector(".maximizeFilterStatePanel");
+			if (filterStatePanel)
+			    itemListHeight -= parseInt(filterStatePanel.getStyle("height"));
+
 			var filterContent = $("filterContent_"+widget.id );
 			if( filterContent && filterContent.style.display != "none")
 				itemListHeight -= filterContent.offsetHeight;
