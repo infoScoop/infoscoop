@@ -230,7 +230,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		menuSideBar.appendChild(changeMenuDiv);
 		
 		// Preview the whole
-		var previewDiv = ISA_Admin.createIconButton(ISA_R.alb_previewTop, ISA_R.alb_previewTop, "minibrowser.gif", "right");
+		var previewDiv = ISA_Admin.createIconButton(ISA_R.alb_previewTop, ISA_R.alb_previewTop, "page_world.gif", "right");
 		if(ISA_SiteAggregationMenu.isTreeAdminUser)
 			Element.hide(previewDiv);
 			
