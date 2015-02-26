@@ -134,7 +134,11 @@
 	display: block;
 }
 .infoScoop .widgetHeader .latestMarkTd img{
-	vertical-align: sub;
+	vertical-align: text-bottom;
+}
+
+.infoScoop .widgetHeader .latestMarkTd img:not(*:root) {
+	vertical-align: sub;/*for Chrome and Safari */
 }
 
 .infoScoop .RssReader .RssReader_filter{

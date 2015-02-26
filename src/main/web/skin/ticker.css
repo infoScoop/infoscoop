@@ -27,10 +27,13 @@
 }
 
 .infoScoop .Ticker .ticker-base {
+	position:relative;
+	left:0px;
+	top:-3px;
 	padding-top:0px;
 	font-size:82%;
 }
 
-.infoScoop .Ticker .ticker a:link{
+.infoScoop .Ticker a:link{
 	color: #404040;
 }

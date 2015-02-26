@@ -194,7 +194,7 @@ IS_Widget.Information2.prototype.classDef = function() {
 				var metaDiv = document.createElement("div");
 				metaDiv.className = "rssPubDate";
 				metaDiv.style.lineHeight = "1.03em";
-				metaDiv.style.height = "1.0em";
+				metaDiv.style.height = "1.03em";
 				metaDiv.style.overflow = "hidden";
 				if (rssItems[i].date && rssItems[i].date.length > 0) {
 					metaDiv.innerHTML = rssItems[i].date;
