@@ -198,8 +198,8 @@ table[id^="panel-table"] {
 }
 
 #panels .has-dynamic-panel div[id^="static-panel"] {
-	padding-bottom: 12px;
-	margin-bottom: 12px;
+	padding-bottom: 11px;
+	margin-bottom: 10px;
 	border-bottom: 1px solid #cccccc;
 	border-bottom: 1px solid rgba(0, 0, 0,0.04);
 }
