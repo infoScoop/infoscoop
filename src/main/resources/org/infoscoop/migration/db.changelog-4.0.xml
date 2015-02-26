@@ -424,4 +424,38 @@
             <where>id='defaultTheme'</where>
         </delete>
     </changeSet>
+    
+    <!--Issue 594-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/i/en-news/feed/' WHERE id = 'lb_addContentsExRSS' AND lang = 'ALL';-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/i/ja-news/feed/' WHERE id = 'lb_addContentsExRSS' AND lang = 'ja';-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/i/en-news/feed/' WHERE id = 'lb_addContentsExRSS' AND lang = 'zh';-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/en/' WHERE id = 'lb_addContentsExWebSite' AND lang = 'ALL';-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/ja/' WHERE id = 'lb_addContentsExWebSite' AND lang = 'ja';-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/en/' WHERE id = 'lb_addContentsExWebSite' AND lang = 'zh';-->
+    <changeSet id="infoscoop400_594_1" author="muto">
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/i/en-news/feed/"/>
+        	<where>id='lb_addContentsExRSS' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/i/ja-news/feed/"/>
+        	<where>id='lb_addContentsExRSS' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/i/en-news/feed/"/>
+        	<where>id='lb_addContentsExRSS' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/en/"/>
+        	<where>id='lb_addContentsExWebSite' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/ja/"/>
+        	<where>id='lb_addContentsExWebSite' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/en/"/>
+        	<where>id='lb_addContentsExWebSite' AND lang='zh'</where>
+        </update>
+    </changeSet>
 </databaseChangeLog>
