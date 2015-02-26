@@ -132,6 +132,7 @@
 }
 .infoScoop .RssReader .latestMark{
 	display: block;
+	width: 15px;
 }
 .infoScoop .widgetHeader .latestMarkTd img{
 	vertical-align: text-bottom;

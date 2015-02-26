@@ -684,7 +684,8 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		if( ( this.rssContentView && this.rssContent && this.rssContent.rssItems.length <= itemsnum ))
 			itemsnum = this.rssContent.rssItems.length;
 		
-		var height = itemsnum *this.getHeightChangeUnit();
+		// add padding-top 10px
+		var height = itemsnum *this.getHeightChangeUnit() + 10;
 		
 		return height;
 	}
@@ -857,8 +858,9 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			itemsnum = this.rssContent.rssItems.length;
 		
 		var height = this.rssContentView.getItemPosition( itemsnum );
-		
-		this.rssContentView.setViewportHeight( height );
+	
+		// add padding-top 10px
+		this.rssContentView.setViewportHeight( height + 10 );
 	}
 	
 	this.repaintIfCurrentTab = function(){
