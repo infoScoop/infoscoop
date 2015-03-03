@@ -99,8 +99,6 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		divParent = document.createElement("div");
 		divParent.className = "text-container";
 		divParent.style.overflow = "hidden";
-		divParent.style.position = "absolute";
-		divParent.style.width = selfContent.offsetWidth + 'px';
 		divParent.style.height = selfContent.style.height;
 		
 		divTicker = document.createElement("span");
@@ -300,14 +298,9 @@ IS_Widget.Ticker.prototype.classDef = function() {
 		onException: handleError,
 		onComplete: handleComplete
 	};
-	
-	this.adjustTickerWidth = function (){
-		if(divParent){
-			divParent.style.width = selfContent.offsetWidth + 'px';
-			divParent.style.height = selfContent.offsetHeight + 'px';
-		}
-	};
-	
+
+	this.adjustTickerWidth = function (){};
+
 	Event.observe(window, 'resize', this.adjustTickerWidth.bind(this), false);
 }
 

@@ -17,6 +17,7 @@
 
 .infoScoop .Ticker {
 	padding: 0.25em 0 0.2em;
+	position: relative;
 }
 
 .infoScoop .Ticker .ticker {
@@ -24,6 +25,7 @@
 	left:0px;
 	top:0px;
 	font-size:82%;
+	padding: 0.25em 0;
 }
 
 .infoScoop .Ticker .ticker-base {
