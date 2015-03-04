@@ -673,7 +673,8 @@ if( Browser.isSafari1 ) {
 IS_Portal.goHome = function(){
 	IS_Portal.closeIFrame();
 	IS_Portal.CommandBar.changeDefaultView();
-	IS_Widget.MaximizeWidget.turnbackMaximize();
+	if (IS_Widget.MaximizeWidget)
+	    IS_Widget.MaximizeWidget.turnbackMaximize();
 }
 
 //TODO:This code depend to MultiRssReader.
