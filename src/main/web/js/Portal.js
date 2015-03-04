@@ -806,7 +806,8 @@ IS_Portal.adjustIframeHeight = function(e, iframeObj) {
 //			var adjustHeight = getWindowSize(false) - findPosY(iframe) - 10;
 			var iframeToolBar = document.getElementById("iframe-tool-bar");
 			var offset = ( iframeToolBar && iframeToolBar.style.display != "none") ? iframeToolBar.offsetHeight : 0;
-			var adjustHeight = getWindowSize(false) - findPosY(iframe) - offset - 10 -(Browser.isFirefox ? 10:0);
+			var extra = 20;
+			var adjustHeight = getWindowSize(false) - findPosY(iframe) - offset - extra;
 
 			iframe.style.height = adjustHeight + "px";
 		}catch(e){
