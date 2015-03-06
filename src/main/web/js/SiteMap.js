@@ -332,7 +332,7 @@ IS_SidePanel.prototype.classDef = function () {
 				IS_SidePanel.overlayTimer = false;
 			}, 100);
 		}
-		var y = Position.page(container.parentNode).top - (document.documentElement.scrollTop || document.body.scrollTop);
+		var y = findPosY( container.parentNode ) -(document.documentElement.scrollTop || document.body.scrollTop);
 		if( y < 0 )
 			y = 0;
 		
