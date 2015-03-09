@@ -32,7 +32,6 @@
 	overflow:hidden;
 }
 .infoScoop .handleSideBar {
-    border-top: 1px solid #CCC;
 }
 .infoScoop .adjustMiniBrowserBarOver {
 }
@@ -42,8 +41,8 @@
 .infoScoop .adjustMiniBrowserBarOver .adjustMiniBrowserBarHandle,
 .infoScoop .adjustMiniBrowserBarOut .adjustMiniBrowserBarHandle {
 	position: relative;
-	height: 6px;
-	background: url(./imgs/adjust-bar-handle.gif) top center no-repeat;
+	height: 7px;
+	background: url(./imgs/adjust-bar-handle.png) top center no-repeat;
 	_overflow: hidden;
 	top: -1px;
 }
