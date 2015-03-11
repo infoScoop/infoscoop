@@ -108,7 +108,7 @@ a.topMenuItem:hover {
 #portal-site-aggregation-menu ul.menuGroup,
 #portal-site-aggregation-menu ul.menuGroup ul{
 	width:100px;
-	padding-top: 8px;
+	padding-top: 6px;
 	display:block;
 	line-height: normal;
 }
@@ -154,10 +154,11 @@ ul.menuGroup ul, ul.floatMenuGroup ul{
 #portal-site-aggregation-menu ul.menuGroup .menuHeader {
 	padding-right: 5px;
 	padding-left: 5px;
+	height:20px;
 }
 
 .menuItem div{
-	/* height:16px; */
+	height:16px;
 }
 
 .menuCloseDiv{
@@ -253,8 +254,6 @@ ul.menuGroup ul, ul.floatMenuGroup ul{
 	border:0;
 	width:16px;
 	height:16px;
-	margin-top: 3px;
-	margin-right:2px;
 	float:right;
 	vertical-align:bottom;
 	cursor:pointer;
@@ -269,11 +268,10 @@ ul.menuGroup ul, ul.floatMenuGroup ul{
 }
 
 .menufolderfeed img {
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 .menufolderfeedTitle {
-    margin-top: 3px;
 	margin-left:3px;
 	font-size:11px;
 }
