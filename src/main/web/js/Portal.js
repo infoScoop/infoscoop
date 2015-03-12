@@ -1041,6 +1041,10 @@ IS_Portal.showIframe = function(url){
 
 	divIFrame.style.display="";
 	
+    Element.hide('tab-container');
+    var portalMaincontentsTable = document.getElementById("portal-maincontents-table");
+    portalMaincontentsTable.className = "hiding-tab";
+
 	IS_Portal.CommandBar.changeIframeView();
 	
 	var iframe = $("ifrm");

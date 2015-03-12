@@ -186,6 +186,11 @@ img{
 	width : 100%;
 	vertical-align: top;
 }
+
+#portal-iframe #ifrm {
+    background-color : #FFFFFF;
+}
+
 #panels {
 	clear:both;
 	vertical-align: top;
