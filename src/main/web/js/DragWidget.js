@@ -783,6 +783,7 @@ IS_Draggable.prototype = {
 		document.body.appendChild(dummyElement);
 		dummyElement.style.position = "absolute";
 		dummyElement.style.zIndex = 10000;
+		$(dummyElement).addClassName("drag-dummy");
 		IS_Draggable.dummyElement = dummyElement;
 	  }
 	  
