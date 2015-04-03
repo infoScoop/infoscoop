@@ -28,7 +28,8 @@
       	   ,/WEB-INF/classes/services.xml
       	   ,/WEB-INF/classes/proxyrequest.xml
    		   ,/WEB-INF/classes/accountservices.xml
-   		   ,/WEB-INF/classes/org/infoscoop/admin/command/serviceCommands.xml</param-value>
+   		   ,/WEB-INF/classes/org/infoscoop/admin/command/serviceCommands.xml
+   		   <!--add bean definitions--></param-value>
   	</context-param>
 
 	<context-param>
