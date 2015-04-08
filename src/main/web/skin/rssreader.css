@@ -15,59 +15,79 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
+.infoScoop .RssReader .rss-content {
+    padding-top: 10px;
+}
+
+.infoScoop .widgetContent.RssReader .entry {
+	
+}
 
 .infoScoop .RssReader .rssItem {
 	word-break: break-all;
-	font-size:85%;
-	padding-left: 5px;
+	font-size: 82%;
+	padding-left: 10px;
+	
 }
 
+.infoScoop .RssReader .rssItem a:link    { color: #404040; }
+.infoScoop .RssReader .rssItem a:visited { color: #4B2A75; }
+
 .infoScoop .RssReader .rssPubDate {
-	color:gray;
-	font-size:80%;
+	color: #999999;
+	font-size:75%;
 	word-break:break-all;
-	padding-left: 7px;
+	padding-left: 13px;
 }
 .infoScoop .RssReader .rssCategoryList{
-	background:url(./imgs/tag_blue.gif) center left no-repeat;
+	background:url(./imgs/tag.png) center left no-repeat;
 	padding-left:16px;
 }
 .infoScoop .RssReader .rssMore{
-/*	color:gray;*/
-	color:#7777cc;
+	color: #737373;
 	font-size:70%;
 	text-decoration:none;
 	cursor:auto;
 	vertical-align:bottom;
 }
 .infoScoop .RssReader .rssMoreOver {
-	color:red;
 	font-size:70%;
-	text-decoration:underline;
 	cursor:pointer;
 	vertical-align:bottom;
 }
+
+.infoScoop .widgetContent.RssReader .inline-desc-container {
+	padding-left: 10px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+}
+
 .infoScoop .RssReader .rssDesc,
 .infoScoop .rssDescFloat .rssDesc{
 	background-color:#eeeeee;
 	overflow: hidden;
 	width:auto;
-	font-size:80%;
+	font-size: 75%;
 	word-break:break-all;
 	/*margin:0px 4px 4px 4px;*/
+	padding: 5px;
+	border-left: 3px solid #7F8C8D;
+	line-height: 18px;
 }
+
+.infoScoop .rssDescFloat .rssDesc {
+		border-left: none;
+}
+
 .infoScoop .rssDescFloat{
 	position: absolute;
 	z-index: 920;
 	width: 300px;
-	/*max-height: 250px;*/
-	background-color: #fff;
+	/* max-height: 250px; */
 	padding: 5px 3px;
 	overflow-x: hidden;
 	overflow-y: auto;
-	border: 1px solid #888;
-	border-right: 2px solid #777;
-	border-bottom: 2px solid #666;
+	border: 1px solid #bbbbbb;
 }
 .infoScoop .rssDescFloatMark{
 	position: absolute;
@@ -100,25 +120,32 @@
 .infoScoop .RssReader .RssReader_itemsCountPanel {
 	position:relative;
 	font-size: 9pt;
-	color: #7777CC;
-	background-color: #E2E2E2;
+	color: #737373;
+	background-color: #ffffff;
 	height:12pt;
 	overflow:hidden;
 	//padding-top: 1;
 }
 .infoScoop .RssReader .RssReader_itemsCount{
 	position:absolute;
-	background-color: #EAEAEA;
 	right:0;
 }
 .infoScoop .RssReader .latestMark{
 	display: block;
+	width: 15px;
+}
+.infoScoop .widgetHeader .latestMarkTd img{
+	vertical-align: text-bottom;
+}
+
+.infoScoop .widgetHeader .latestMarkTd img:not(*:root) {
+	vertical-align: sub;/*for Chrome and Safari */
 }
 
 .infoScoop .RssReader .RssReader_filter{
 	position:absolute;
 	color:gray;
-	background:url(./imgs/funnel_small.png) center left no-repeat;
+	background:url(./imgs/filter.png) center left no-repeat;
 	padding-left:12px;
 }
 

@@ -1,13 +1,13 @@
 <DIV>
 	<DIV style="FLOAT: left; WIDTH: 74.5%">
-		<DIV style="HEIGHT: 178px">
+		<DIV style="HEIGHT: 190px">
 			<DIV style="FLOAT: left; WIDTH: 100%; HEIGHT: 100%">
-				<DIV id="p_1_w_1" class="static_column" style="MARGIN-LEFT: 2px; HEIGHT: 170px"></DIV>
+				<DIV id="p_1_w_1" class="static_column" style="MARGIN-LEFT: 2px; HEIGHT: 190px"></DIV>
 			</DIV>
 		</DIV>
 	</DIV>
-	<DIV style="FLOAT: right; WIDTH: 25%; HEIGHT: 178px">
-		<DIV id="p_1_w_5" class="static_column" style="MARGIN-LEFT: 2px; HEIGHT: 170px"></DIV>
+	<DIV style="FLOAT: right; WIDTH: 25%; HEIGHT: 190px">
+		<DIV id="p_1_w_5" class="static_column" style="MARGIN-LEFT: 2px; HEIGHT: 190px"></DIV>
 	</DIV>
 </DIV>
 <DIV style="CLEAR: both; display:none;"/>

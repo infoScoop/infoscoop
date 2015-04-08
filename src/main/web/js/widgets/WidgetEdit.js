@@ -25,7 +25,6 @@ IS_Widget.WidgetEdit = function (widget) {
 		var divWidgetEditHeader = widget.elm_widgetEditHeader;
 		var editStyle = divWidgetEditHeader.style;
 		editStyle.position = "absolute";
-		editStyle.border = "1px solid gray";
 		divWidgetEditHeader.parentNode.removeChild(divWidgetEditHeader);
 		document.body.appendChild(divWidgetEditHeader);
 		IS_Event.observe(document, "mouseup", function(e){
@@ -84,7 +83,7 @@ IS_Widget.WidgetEdit = function (widget) {
 		
 		var divEditCancel = document.createElement('span');
 		divEditCancel.className = "widgetCancel";
-		divEditCancel.innerHTML = 'CANCEL';
+		divEditCancel.innerHTML = 'Cancel';
 		divEditCtrl.appendChild(divEditCancel);
 		
 		var cancelHandler = this.cancel.bind(this);
@@ -113,7 +112,7 @@ IS_Widget.WidgetEdit = function (widget) {
 		
 		var divEditCancel2 = document.createElement("div");
 		divEditCancel2.className = "widgetCancel";
-		divEditCancel2.innerHTML = 'CANCEL';
+		divEditCancel2.innerHTML = 'Cancel';
 		Event.observe(divEditCancel2, 'click', cancelHandler);
 		//dojo.dom.insertAfter(divEditCancel2, widget.elm_editForm.lastChild);
 		widget.elm_editForm.appendChild(divEditCancel2);
@@ -996,7 +995,7 @@ IS_Widget.WidgetEdit.makeHelpIcon = function( container,userPref ) {
 	container.appendChild( a );
 	
 	var help = $( document.createElement("div"));
-	help.className = "widgetEditHelp";
+	help.className = "widgetEditHelp is-box";
 	document.body.appendChild( help );
 	
 	var descHeader = $( document.createElement("div"));

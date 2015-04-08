@@ -368,17 +368,32 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				}
 			}
 			
+			// get targetTabId from location hash
+            var targetTabId = "tab" + is_getParameterFromHash("tabId");
+            targetTabId = IS_Portal.tabs[targetTabId] ? targetTabId : IS_Portal.defaultTabId;
+			
 			if( useTab ) {
-				IS_Portal.controlTabs = new Control.Tabs("tabs",{
+			    IS_Portal.controlTabs = new Control.Tabs("tabs",{
 					linkSelector: "li", // selector bug ?
 					activeClassName: "selected",
 					beforeChange: function (oldTab,newTab){
 						var tabNumber = newTab.id.substring("panel".length);
 						IS_Portal.changeActiveTab( $("tab"+tabNumber ),!oldTab );
-					}
+                        window.location.href = "#tabId=" + tabNumber;
+					},
+					defaultTab: IS_Portal.tabs[targetTabId].tab
 				});
+                Event.observe(window, "hashchange" , function(){
+                    var activeTabId = IS_Portal.controlTabs.activeContainer.id;
+                    activeTabId = "tab" + activeTabId.substring("panel".length);
+                    var targetTabId = "tab" + is_getParameterFromHash("tabId");
+                    
+                    if(IS_Portal.tabs[targetTabId] && (activeTabId != targetTabId)){
+                        IS_Portal.controlTabs.setActiveTab( IS_Portal.tabs[targetTabId].tab );
+                    }
+                }, false);
 			}
-
+			
 			//Holiday information
 			IS_Holiday = new IS_Widget.Calendar.iCalendar(hostPrefix + "/holidaysrv");
 			IS_Holiday.noProxy = true;
@@ -421,7 +436,21 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			if(!isTabView)
 			  IS_Portal.CommandBar.init();
 			
-			var loadWidgets = IS_Portal.getLoadWidgets("tab0");
+			var loadWidgets = IS_Portal.getLoadWidgets(targetTabId);
+			
+			// Add commandBar gadgets to loadWidgets
+            for(var id in IS_Portal.CommandBar.commandbarWidgets){
+                var commandbarWidget = IS_Portal.CommandBar.commandbarWidgets[id];
+                if(typeof commandbarWidget == "function") continue;
+                
+                var container = $("s_"+commandbarWidget.id);
+                if(container && !commandbarWidget.isBuilt){
+                    commandbarWidget.build();
+                    container.appendChild(commandbarWidget.elm_widget);
+                    loadWidgets.push(commandbarWidget);
+                }
+            }
+			
 			if(loadWidgets.length > 0) {
 				var eventTargetList = loadWidgets.collect( function( loadWidget ) {
 					return {type:"loadComplete", id:loadWidget.id}
@@ -435,61 +464,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			setTimeout(loadContents, 1);
 			
 			if(IS_Portal.lastSaveFailed)
-
 				msg.warn(IS_R.ms_lastlogoutSavingfailure);
-			
-			if( Browser.isSafari1 ) {
-				( function() {
-					var commands = [
-						"change-fontsize","widgets-map","trash","preference"
-					].findAll( function( command ) {
-						var div = $("portal-"+command );
-						
-						return ( div && div.style.display != "none");
-					});
-					
-					function createDisableFilter( command ) {
-						var div = $("portal-"+command );
-						
-						var filter = document.createElement("div");
-						filter.id = "portal-"+command+"-disableFilter";
-						filter.style.position = "absolute";
-						filter.style.top = filter.style.left = 0;
-						filter.style.width = div.parentNode.offsetWidth;
-						filter.style.height = div.parentNode.offsetHeight;
-						
-						filter.style.opacity = "0.5";
-						filter.style.backgroundColor = "white"
-						
-						IS_Event.observe( filter,'mousedown',IS_Event.stop );
-						IS_Event.observe( filter,'mouseup',IS_Event.stop );
-						IS_Event.observe( filter,'click',IS_Event.stop )
-						
-						return filter;
-					}
-					
-					commands.each( function( command ) {
-						var div = $("portal-"+command );
-						div.style.position = "relative";
-						
-						var filter = createDisableFilter( command );
-						filter.style.display = "none"
-						
-						div.appendChild( filter );
-					});
-					
-					IS_Portal.disableCommandBar = function() {
-						commands.each( function( command ) {
-							$("portal-"+command+"-disableFilter").style.display = "block";
-						});
-					}
-					IS_Portal.enableCommandBar = function() {
-						commands.each( function( command ) {
-							$("portal-"+command+"-disableFilter").style.display = "none";
-						});
-					}
-				})();
-			}
 			
 			//Check new messages
 			//This line should be here as IS_Portal.msgLastViewTime is needed
@@ -534,9 +509,18 @@ IS_WidgetsContainer.prototype.classDef = function() {
 	}
 
 	function loadContents(){
-		for(id in IS_Portal.widgetLists[IS_Portal.currentTabId]){
+        // load commandbar widgets
+        var commandbarWidgets = IS_Portal.CommandBar.commandbarWidgets;
+        for(var id in commandbarWidgets){
+            var commandbarWidget = commandbarWidgets[id];
+            if(!commandbarWidget.loadContents || typeof commandbarWidget == "function") continue;
+            
+            commandbarWidget.loadContents();
+        }
+        
+	    for(id in IS_Portal.widgetLists[IS_Portal.currentTabId]){
 			var widget = IS_Portal.getWidget(id);
-			if(widget.loadContents && !widget.isSubWidget) {
+			if(widget.loadContents && !widget.isSubWidget && !IS_Portal.CommandBar.isCommandBarWidget(widget)) {
 				widget.loadContents();
 			}
 		}
@@ -546,7 +530,7 @@ IS_Portal.getLoadWidgets = function(tabId, isAllReload){
 	var loadWidgets = [];
 	for(id in IS_Portal.widgetLists[tabId]){
 		var widget = IS_Portal.getWidget(id, tabId);
-		if(widget && !(widget instanceof Function) && !widget.isSubWidget){
+		if(widget && !(widget instanceof Function) && !widget.isSubWidget && !IS_Portal.CommandBar.isCommandBarWidget(widget)){
 			if(!widget.isBuilt){
 				if(widget.panelType == "StaticPanel"){
 					var container = $("s_"+widget.id);
@@ -610,7 +594,8 @@ IS_Portal.buildContents = function( tabId , isAllReload){
 		IS_EventDispatcher.addComplexListener( eventTargetList,function() {
 				IS_EventDispatcher.newEvent("tabLoadCompleted",tabId );
 				IS_Portal.tabs[tabId].isBuilding = false;
-			},null,true);
+				IS_Portal.adjustStaticWidgetHeight();
+		},null,true);
 		
 		for(var i = 0; i < loadWidgets.length; i++) {
 			var widget = loadWidgets[i];
@@ -797,7 +782,6 @@ IS_WidgetsContainer.adjustColumns = {
 		IS_WidgetsContainer.adjustColumns.targetEl2 = targetEl2;
 		IS_WidgetsContainer.adjustColumns.totalWidth = targetEl1.offsetWidth + targetEl2.offsetWidth;
 		IS_WidgetsContainer.adjustColumns.targetEl1_offsetWidth = targetEl1.offsetWidth;
-		IS_WidgetsContainer.adjustColumns.parentWidth = (!Browser.isIE)? targetEl1.parentNode.offsetWidth : $("dynamic-panel" + IS_Portal.currentTabId.substring(3)).parentNode.offsetWidth-2;
 		
 		IS_WidgetsContainer.adjustColumns.startX = Event.pointerX(e);
 		
@@ -809,6 +793,8 @@ IS_WidgetsContainer.adjustColumns = {
 	},
 	move : function(e){
 		if(IS_WidgetsContainer.adjustColumns.isChanging) return;
+		
+		IS_WidgetsContainer.adjustColumns.moved = true;
 		
 		// effect
 		if(IS_WidgetsContainer.adjustColumns.timer){
@@ -827,13 +813,18 @@ IS_WidgetsContainer.adjustColumns = {
 		IS_Portal.hideDragOverlay();
 		Event.stopObserving(document, "mousemove", IS_WidgetsContainer.adjustColumns.move, false);
 		Event.stopObserving(document, "mouseup", IS_WidgetsContainer.adjustColumns.end, false);
+		IS_WidgetsContainer.adjustColumns.isDragging = false;
+		
+		if(!IS_WidgetsContainer.adjustColumns.moved)
+		    return;
+		
+		IS_WidgetsContainer.adjustColumns.moved = false;
 		
 		// Change to '%'
 		var targetEl1 = IS_WidgetsContainer.adjustColumns.targetEl1;
 		var targetEl2 = IS_WidgetsContainer.adjustColumns.targetEl2;
-		var parentWidth = IS_WidgetsContainer.adjustColumns.parentWidth;
+		var parentWidth = IS_WidgetsContainer.adjustColumns.parentWidth = (!Browser.isIE)? targetEl1.parentNode.offsetWidth : $("dynamic-panel" + IS_Portal.currentTabId.substring(3)).parentNode.offsetWidth-2;
 		
-		IS_WidgetsContainer.adjustColumns.isDragging = false;
 		var numCol = IS_Portal.tabs[IS_Portal.currentTabId].numCol;
 		
 		var p = ( targetEl1.offsetWidth / parentWidth ) * 100;
@@ -850,13 +841,11 @@ IS_WidgetsContainer.adjustColumns = {
 				continue;
 			}
 			columnsWidth.push(columns[i].style.width);
-			sumWidth += parseFloat(columns[i].style.width) + 1;
 		}
-		targetEl2.style.width = (100 - sumWidth) + "%";
+		targetEl2.style.width = ( targetEl2.offsetWidth / parentWidth ) * 100 + "%";
 		columnsWidth[parseInt(targetEl2colnum)-1] = targetEl2.style.width;
 		IS_Portal.tabs[IS_Portal.currentTabId].columnsWidth = columnsWidth;
 		
-		IS_Widget.adjustDescWidth();
 		IS_Portal.adjustGadgetHeight();
 		
 		IS_WidgetsContainer.adjustColumns.hideAdjustDivs(targetEl1.parentNode);
@@ -866,6 +855,7 @@ IS_WidgetsContainer.adjustColumns = {
 		IS_Widget.setTabPreferenceCommand(IS_Portal.currentTabId, "columnsWidth", Object.toJSON(IS_Portal.tabs[IS_Portal.currentTabId].columnsWidth));
 		
 		IS_EventDispatcher.newEvent("adjustedColumnWidth");
+        IS_Widget.adjustDescWidth();
 	},
 	changeWidth : function(e){
 		IS_WidgetsContainer.adjustColumns.isChanging = true;
@@ -878,14 +868,16 @@ IS_WidgetsContainer.adjustColumns = {
 		var startOffsetWidth = IS_WidgetsContainer.adjustColumns.targetEl1_offsetWidth;
 		
 		var setWidth = (endx - startx);
+		var targetEl1Width;
 		if(startOffsetWidth + setWidth < totalWidth-10 && startOffsetWidth + setWidth > 0){
-			targetEl1.style.width = (startOffsetWidth + setWidth) + 'px';
+			targetEl1Width = (startOffsetWidth + setWidth);
 		}else{
 			var wid = (startOffsetWidth + setWidth > 0)? (totalWidth-10) : 10;
-			targetEl1.style.width = wid+'px';
+			targetEl1Width = wid;
 		}
+		targetEl1.style.width = targetEl1Width + 'px';
 		
-		var setWidth2 = (totalWidth - targetEl1.offsetWidth);
+		var setWidth2 = (totalWidth - targetEl1Width);
 		if(totalWidth - setWidth2 > 0){
 			targetEl2.style.width = setWidth2 - 1 + 'px';
 		}
@@ -1041,12 +1033,14 @@ IS_WidgetsContainer.addWidget = function (tabId, widgetConf, isBuild, appendFunc
 }
 
 IS_WidgetsContainer.WidgetConfiguration = {
-	getConfigurationJSONObject: function(type, id, column, title, title_url, properties){
+	getConfigurationJSONObject: function(type, id, column, title, title_url, properties, refreshInterval){
 		var widgetConf = new Object();
 		widgetConf.id = id;
 		widgetConf.column = column;
 		widgetConf.type = type;
 		widgetConf.title = title;
+		if(refreshInterval)
+		    widgetConf.refreshInterval = refreshInterval;
 		if(title_url)
 			widgetConf.href = title_url;
 		

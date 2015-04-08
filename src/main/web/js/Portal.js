@@ -31,8 +31,6 @@ var displayInlineHost = is_toUserPrefArray(is_getPropertyString(displayInlineHos
 var accessLogEntry = is_getPropertyBoolean(accessLogEntry, false);
 
 var sideMenuTabs = is_toUserPrefArray(is_getPropertyString(sideMenuTabs, "sidemenu|addContent|mySiteMap"));
-var defaultTheme = is_getPropertyString(defaultTheme, false);
-
 var hostPrefix = (isTabView)? findHostURL(false).replace(/\/tab.*/, "") : findHostURL(false);
 var proxyServerURL = hostPrefix + "/proxy";
 
@@ -65,7 +63,7 @@ Event.observe(window, 'resize', function(){
 	var innerHeight = getWindowSize(false);
 	var innerWidth = getWindowSize(true);
 	// The block for the problem which a window resizing event will be called by document size change. (IE8 Only)
-    if (!Browser.isIE8 || innerHeight != IS_Portal.lastWindowHeight || innerWidth != IS_Portal.lastWindowWidth) {
+    if (!Browser.isLtIE8 || innerHeight != IS_Portal.lastWindowHeight || innerWidth != IS_Portal.lastWindowWidth) {
     	IS_EventDispatcher.newEvent("windowResized");
     }
     IS_Portal.lastWindowHeight = innerHeight;
@@ -75,14 +73,15 @@ Event.observe(window, 'resize', function(){
 IS_Portal.start = function() {
 	var self = this;
 
-	if(defaultTheme){
-		try{
-			IS_Portal.theme.defaultTheme = eval( '(' + defaultTheme + ')' );
-		}catch(e){
-			msg.error('The defaultTheme property is invalid, please contact to administrator:' + e);
-		}
-	}
-	IS_Portal.theme.setTheme(IS_Portal.theme.currentTheme);
+// Disable old theme function #16405
+//	if(defaultTheme){
+//		try{
+//			IS_Portal.theme.defaultTheme = eval( '(' + defaultTheme + ')' );
+//		}catch(e){
+//			msg.error('The defaultTheme property is invalid, please contact to administrator:' + e);
+//		}
+//	}
+//	IS_Portal.theme.setTheme(IS_Portal.theme.currentTheme);
 	
 	IS_Portal.startIndicator('portal-maincontents-table');
 	
@@ -99,8 +98,9 @@ IS_Portal.start = function() {
 	  onFailure: function(t) {
 		  alert('Retrieving customization info failed. ' + t.status + ' -- ' + t.statusText);
 	  },
-	  onException: function(t) {
-		  alert('Retrieving customization info failed. ' + t);
+	  onException: function(r, e) {
+		  alert('Retrieving customization info failed. ' + e.message)
+		  msg.error(r.transport.responseText);
 	  }
 	};	
 	AjaxRequest.invoke(hostPrefix +  "/customization", opt);
@@ -621,6 +621,15 @@ IS_Portal.closeIFrame = function () {
 	var iframeToolBar = document.getElementById("iframe-tool-bar");
 	iframeToolBar.style.display = "none";
 	
+	var tabContainer = document.getElementById("tab-container");
+	if ( tabContainer) {
+		tabContainer.style.display="";
+	}
+	var portalMaincontentsTable = document.getElementById("portal-maincontents-table");
+	if ( portalMaincontentsTable) {
+		portalMaincontentsTable.removeClassName("hiding-tab");
+	}
+	
 	IS_Event.unloadCache("_search");
 	
 	//Clear iframe in IS_Portal.searchEngines
@@ -664,6 +673,8 @@ if( Browser.isSafari1 ) {
 IS_Portal.goHome = function(){
 	IS_Portal.closeIFrame();
 	IS_Portal.CommandBar.changeDefaultView();
+	if (IS_Widget.MaximizeWidget)
+	    IS_Widget.MaximizeWidget.turnbackMaximize();
 }
 
 //TODO:This code depend to MultiRssReader.
@@ -751,7 +762,7 @@ IS_Portal.adjustPanelHeight = function(e){
 	if(IS_Widget.MaximizeWidget) return;//Fixed Issue 149: Fragment Minibrowser shows a little off from the position whrere it should be when it maximized.
 	var panels = $("panels");
 	if(!panels.visible) return;
-	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - $("tab-container").getHeight() - 5;
+	var adjustHeight = getWindowSize(false) - findPosY($("panels")) - 5;
 	if(Browser.isIE) adjustHeight -= 3;
 	if(IS_Portal.tabs[IS_Portal.currentTabId])
 		IS_Portal.tabs[IS_Portal.currentTabId].panel.style.height = adjustHeight + "px";
@@ -795,7 +806,8 @@ IS_Portal.adjustIframeHeight = function(e, iframeObj) {
 //			var adjustHeight = getWindowSize(false) - findPosY(iframe) - 10;
 			var iframeToolBar = document.getElementById("iframe-tool-bar");
 			var offset = ( iframeToolBar && iframeToolBar.style.display != "none") ? iframeToolBar.offsetHeight : 0;
-			var adjustHeight = getWindowSize(false) - findPosY(iframe) - offset - 10 -(Browser.isFirefox ? 10:0);
+			var extra = 20;
+			var adjustHeight = getWindowSize(false) - findPosY(iframe) - offset - extra;
 
 			iframe.style.height = adjustHeight + "px";
 		}catch(e){
@@ -1029,6 +1041,10 @@ IS_Portal.showIframe = function(url){
 
 	divIFrame.style.display="";
 	
+    Element.hide('tab-container');
+    var portalMaincontentsTable = document.getElementById("portal-maincontents-table");
+    portalMaincontentsTable.className = "hiding-tab";
+
 	IS_Portal.CommandBar.changeIframeView();
 	
 	var iframe = $("ifrm");
@@ -1440,10 +1456,10 @@ IS_Portal.Trash = new function() {
 			tr.appendChild(titleTd);
 			
 			var type = widgets[i].type;
-			var typeConf = IS_Widget.getConfiguration( type );
 			if(/^g_/.test( type )) {
 				typeName = IS_R.lb_gadget;
 			} else {
+				var typeConf = IS_Widget.getConfiguration( type );
 				typeName = typeConf && typeConf.title ? typeConf.title : type;
 			}
 			tr.appendChild(createElm("td",typeName));
@@ -1604,7 +1620,7 @@ IS_Portal.buildFontSelectDiv = function(){
 					size = parseInt(IS_Portal.defaultFontSize) + "%";
 					break;
 				case 2:
-					size = parseInt(IS_Portal.defaultFontSize) + 10 + "%";
+					size = parseInt(IS_Portal.defaultFontSize) + 20 + "%";
 					break;
 				default:
 					size = parseInt(IS_Portal.defaultFontSize) + "%";
@@ -1655,7 +1671,7 @@ IS_Portal.buildFontSelectDiv = function(){
 		fontEl.appendChild(fontChangeDivAddA);
 		
 		IS_Event.observe(fontChangeDivAdd, "mouseup", function(){
-				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) + 10) + "%");
+				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) + 20) + "%");
 			}, false, "_fontchange");
 		IS_Event.observe(fontChangeDivSta, "mouseup", function(){
 				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize)) + "%");
@@ -1708,10 +1724,7 @@ IS_Portal.adjustIS_PortalStyle = function(){
 
 IS_Portal.setFontSize = function(e, isInitialize) {
 	is_addCssRule("body", "font-size:" + IS_Portal.fontSize);
-	is_addCssRule("th", "font-size:" + IS_Portal.fontSize);
-	is_addCssRule("td", "font-size:" + IS_Portal.fontSize);
-	
-//	is_addCssRule("table", "font-size:" + IS_Portal.fontSize);
+
 	IS_Portal.widgetDisplayUpdated();
 	
 	if(!isInitialize){
@@ -2112,6 +2125,7 @@ IS_Portal.buildAdminLink = function(){
 		window.open("admin");
 		$('portal-user-menu-body').hide();
 		IS_Portal.commandBarMenuBehindIframe.hide();
+		$('userMenuCloser').hide();
 		Event.stop( e )
 	});
 };
@@ -2187,7 +2201,8 @@ IS_Portal.initMsdBar = function(){
 // set message bar position.
 IS_Portal.setDisplayMsgBarPosition = function(){
 	if($("portal_msgbar").style.display == "none") return;
-	var scrollTop = parseInt(document.documentElement.scrollTop);
+	var scrollTop = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+	scrollTop = parseInt(scrollTop);
 	var innerHeight = getWindowHeight();
 	var offset = parseInt($("portal_msgbar").offsetHeight)+1;
 	$("portal_msgbar").style.top = (scrollTop + innerHeight) - offset + 'px';
@@ -2311,7 +2326,7 @@ IS_Portal.CommandBar = {
 		}
 		
 		var commandBarItems = $$("#portal-command .commandbar-item");
-		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', style:'display:none;'});
+		var portalUserMenuBody = $.DIV({id:'portal-user-menu-body', className: 'is-box', style:'display:none;'});
 
 		Event.observe(portalUserMenuBody, "click", function(e){
 			$(this).hide();
@@ -2332,7 +2347,7 @@ IS_Portal.CommandBar = {
 
 			// Exclude Ranking Gadget.
 			itemId = itemId.replace(/_container$/,"");
-			var cmdBarWidget = IS_Portal.getWidget(itemId, IS_Portal.currentTabId);
+			var cmdBarWidget = IS_Portal.getWidget(itemId, IS_Portal.defaultTabId);
 			if(cmdBarWidget){
 				this.commandbarWidgets[itemId] = cmdBarWidget;
 			}
@@ -2395,27 +2410,17 @@ IS_Portal.CommandBar = {
 		if(portalUserMenuBody.childNodes.length != 0){
 			portalUserMenu.title = is_userName? is_userName : "";
 			Element.setStyle(portalUserMenu, {
-				background: 'url(./skin/imgs/user_menu_collapse.gif) no-repeat center right'
-				, cursor: 'pointer'
+				cursor: 'pointer'
 			});
 			
 			//loginID mouseover and mouseout
 			Event.observe(portalUserMenu, "mouseover", function(){
-				// change background color to white
 				if($("portal-user-menu-body").style.display != 'none') return;
-				//TODO write in css if possible
-				Element.setStyle($("portal-user-menu"),{
-					backgroundColor : '#5286BB'
-					, color : '#fff'
-				});
+				Element.addClassName($("portal-user-menu"), "active");
 			});
 			
 			var menu_mouseout = function(){
-				// change background color to normal
-				Element.setStyle($("portal-user-menu"),{
-					backgroundColor : ''
-					, color : ''
-				});
+				Element.removeClassName($("portal-user-menu"), "active");
 			};
 			Event.observe(portalUserMenu, "mouseout", menu_mouseout);
 			
@@ -2472,7 +2477,7 @@ IS_Portal.CommandBar = {
 						// change background color to normal
 						$("portal-user-menu").parentNode.style.backgroundColor = $('portal-user-menu').style.color = '';
 					}, "_portalUserMenu");
-					Event.observe(window, 'resize', closeMenu, true);
+					IS_EventDispatcher.addListener('windowResized', null, closeMenu);
 				}else{
 					Element.setStyle($("userMenuCloser"), {
 						width: winX + 'px',
@@ -2553,7 +2558,7 @@ IS_Portal.checkSystemMsg = function(){
 						  $.IMG(
 							  {
 								style:'position:relative;top:2px;paddingRight:2px',
-								src:imageURL+"information.gif"
+								src:imageURL+"information.png"
 							  }
 							  ),
 						  IS_R.getResource(IS_R[msg.resourceId], msg.replaceValues)

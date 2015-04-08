@@ -15,44 +15,77 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
-#portal-site-aggregation-menu{
-	background-color:#F6F6F0;
-	height: 1.85em;
-	//height: 1.7em;
-	width: 100%;
-}
 #portal-site-aggregation-menu,
 #portal-site-aggregation-menu ul,
-#portal-site-aggregation-menu li{
+#portal-site-aggregation-menu li
+.drag-dummy ul.menuGroup,
+.drag-dummy ul.menuGroup ul{
 	margin:0;
 	padding:0;
 	list-style-type:none;
-	font-size:13px;
+	font-size: 12px;
 	font-weight:normal;
 	z-index:11000;
 }
-.menuRefresh {
-	float:right;
-	border:0;
-	width:16px;
-	height:16px;
-	margin-top:2px;
-	margin-bottom:1px;
-	vertical-align:top;
-	cursor:pointer;
-	background: url(./imgs/refresh.gif) top left no-repeat;	
+
+#portal-site-aggregation-menu > ul {
+	padding-left: 22px;
 }
+
+#portal-site-aggregation-menu{
+	background-color: transparent;
+	display: block;
+	overflow: hidden;
+}
+
+#portal-site-aggregation-menu .topMenuLi .failed {
+    white-space: nowrap;
+    color: #ff0000;
+    padding: 5px;
+}
+
+.menuRefresh,
 .menuIndicator {
 	float:right;
-	border:0;
-	margin-top:2px;
-	margin-bottom:1px;
-	vertical-align:top;
+	width:16px;
+	height:16px;
 	cursor:pointer;
+	position: relative;
 }
-.topMenuLi{
+
+.menuRefresh .menu-refresh-icon,
+.menuIndicator .menu-indicator-icon {
+	width:16px;
+	height:16px;
+	display: inline-block;
+	position: absolute;
+}
+
+#portal-site-aggregation-menu .menuRefresh,
+#portal-site-aggregation-menu .menuIndicator {
+	margin-right: 19px;
+	height:28px;
+	border:0;
+}
+
+#portal-site-aggregation-menu .menu-refresh-icon,
+#portal-site-aggregation-menu .menu-indicator-icon {
+	top: 6px;
+}
+
+.menuRefresh .menu-refresh-icon {
+	background: url(./imgs/refresh.png) top left no-repeat;	
+}
+
+.menuIndicator .menu-indicator-icon {
+	background: url(./imgs/indicator.gif) top left no-repeat;
+}
+
+#portal-site-aggregation-menu .topMenuLi{
 	float:left;
 	display:block;
+	padding: 0px 10px 0px 10px;
+	line-height: 28px;
 }
 
 a.topMenuItem:link,
@@ -60,40 +93,33 @@ a.topMenuItem:visited,
 a.topMenuItem:hover,
 a.topMenuItem:active
 {
-	COLOR: #5286BB;
+	color: #737373;
 	text-decoration : none;
-	CURSOR: pointer;
-	FONT-WEIGHT: bold;
-
+	cursor: pointer;
 }
 a.topMenuItem {
-	border: 1px solid #DDD;
-	border-collapse: collapse;
 	white-space: nowrap;
-	background-image:url(./imgs/lev0_bg1.png);
-	background-repeat: repeat-x;
-	padding: 0.25em 1.0em 0.4em 0.5em;
 	display:block;
 }
 
 a.topMenuItem:hover {
-	border: 1px solid #DDD;
-	border-collapse: collapse;
-	padding: 0.25em 1.0em 0.4em 0.5em;
-	BACKGROUND-IMAGE: url(./imgs/lev0_bg2.png);
-	background-repeat: repeat-x;
+	color: #404040;
 	display:block;
 }
 
-ul.menuGroup,
-ul.menuGroup ul{
+#portal-site-aggregation-menu ul.menuGroup,
+#portal-site-aggregation-menu ul.menuGroup ul,
+.drag-dummy ul.menuGroup,
+.drag-dummy ul.menuGroup ul {
 	width:100px;
-	background-color:#F6F6F6;
-	border:1px solid #999;
-	border-width: 1px 1px 3px 1px;
-	padding:1px;
+	padding-top: 6px;
 	display:block;
+	line-height: normal;
 }
+
+#portal-site-aggregation-menu .topMenuLi ul.menuGroup {
+	filter: none;
+} 
 
 ul.floatMenuGroup,
 ul.floatMenuGroup ul{
@@ -120,15 +146,25 @@ ul.menuGroup ul, ul.floatMenuGroup ul{
 	top:0;
 }
 
-ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup table{
+ul.menuGroup li,
+ul.menuGroup table {
 	list-style-type:none;
-	/*border-top:1px dotted #999;*/
 	display:block;
 	height:20px;
 	//height:16px;
-	font-size:11px;
-	/*vertical-align:bottom;*/
-	COLOR: #5286BB;
+}
+
+ul.menuGroup li,
+ul.menuGroup .menuHeader {
+	padding-right: 5px;
+	padding-left: 5px;
+	height:20px;
+}
+
+.drag-dummy ul.menuGroup li,
+.drag-dummy ul.menuGroup .menuHeader,
+.drag-dummy .menuItem .menuTitle {
+    font-size: 12px;
 }
 
 .menuItem div{
@@ -147,7 +183,7 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 .menuTitle a:link,
 .menuTitle a:visited,
 .menuTitle .scriptlink{
-	COLOR: #5286BB;
+	COLOR: #0085be;
 	text-decoration : none;
 	cursor: pointer;
 }
@@ -186,12 +222,11 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 	max-height:20px;
 	height:18px;
 	white-space: nowrap;
-	color: #000;
 }
 
 .subMenuIcon {
 	float:right;
-	margin-top:3px;
+	margin-top: 6px;
 	background: url(./imgs/right.gif) top left no-repeat;
 	width: 8px;
 	height: 8px;
@@ -229,23 +264,24 @@ ul.menuGroup li, ul.floatMenuGroup li, ul.menuGroup table, ul.floatMenuGroup tab
 	border:0;
 	width:16px;
 	height:16px;
-	margin-top:2px;
-	margin-right:2px;
 	float:right;
 	vertical-align:bottom;
 	cursor:pointer;
 }
 
 .menuHeader td{
-	color:#000000;
+	color:#404040;
 	white-space:nowrap;
 }
 .menufolderfeed {
 	cursor:move;
 }
 
+.menufolderfeed img {
+    vertical-align: top;
+}
+
 .menufolderfeedTitle {
-	margin-top:3px;
 	margin-left:3px;
 	font-size:11px;
 }

@@ -128,6 +128,10 @@ public class AddWidget extends XMLCommandProcessor{
     			widget.setIgnoreHeader(confJson.getBoolean("ignoreHeader"));
     		if (confJson.has("noBorder"))
     			widget.setIgnoreHeader(confJson.getBoolean("noBorder"));
+    		if (confJson.has("refreshInterval")){
+    			String refreshInterval = confJson.getString("refreshInterval");
+    			widget.setRefreshinterval(Integer.parseInt(refreshInterval));
+    		}
 
     		widget.setIsstatic(new Integer(0));
     		

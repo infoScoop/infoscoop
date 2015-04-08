@@ -193,8 +193,8 @@ IS_Widget.Information2.prototype.classDef = function() {
 				
 				var metaDiv = document.createElement("div");
 				metaDiv.className = "rssPubDate";
-				metaDiv.style.lineHeight = "1.1em";
-				metaDiv.style.height = "1.0em";
+				metaDiv.style.lineHeight = "1.03em";
+				metaDiv.style.height = "1.03em";
 				metaDiv.style.overflow = "hidden";
 				if (rssItems[i].date && rssItems[i].date.length > 0) {
 					metaDiv.innerHTML = rssItems[i].date;
@@ -216,7 +216,7 @@ IS_Widget.Information2.prototype.classDef = function() {
 				if(rssItems[i].description && rssItems[i].description.length > 0){
 					var descDiv = document.createElement("div");
 					descDiv.className = "information2Desc";
-					var descHeightBefore = (parseInt(itemHeight) > 40 ? (parseInt(itemHeight) - 40) : 1);
+					var descHeightBefore = (parseInt(itemHeight) > 43 ? (parseInt(itemHeight) - 43) : 1);
 					descDiv.style.height = descHeightBefore + "px";//"5em";
 					descDiv.update(rssItems[i].description);
 					var descLinks = descDiv.getElementsByTagName("a");

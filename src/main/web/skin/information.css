@@ -22,21 +22,28 @@
 
 .infoScoop .Information .rssItem {
 	word-break: break-all;
-	font-size:85%;
+	font-size:82%;
+	margin-left: 5px;
 }
+
+
+.infoScoop .Information .rssItem a:link    { color: #404040; }
+.infoScoop .Information .rssItem a:visited { color: #4B2A75; }
 
 .infoScoop .Information .rssPubDate {
 	color:gray;
 	font-size:80%;
 	word-break:break-all;
+	color: #999999;
+	margin-left: 5px;
 }
 
 .infoScoop .Information .latestMark {
 	border:0;
-	vertical-align: text-bottom;
+	vertical-align: baseline;
 }
 .infoScoop .Information .rssMore{
-	color:#7777cc;
+	color: #737373;
 	font-size:70%;
 	text-decoration:none;
 	cursor:auto;
@@ -52,6 +59,7 @@
 	font-size: 80%;
 	word-break: break-all;
 	overflow: hidden;
+	margin-left: 5px;
 }
 
 .infoScoop .Information div.information2Desc > p{

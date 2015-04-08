@@ -152,6 +152,9 @@ IS_Widget.Maximize.createMaximizeWidget = function( wigetObj ) {
 			//Refresh immediately if automatic refresh occurs in maximized window
 			IS_Portal.refresh.cancel();
 			IS_Portal.refresh.resume();
+			
+	        if(IS_SidePanel.adjustPosition)
+	            IS_SidePanel.adjustPosition();
 		}
 		
 		this.adjustMaximizeHeight = function() {
@@ -241,7 +244,7 @@ IS_Widget.Maximize.getMaximizeConfiguration = function( widgetConf ) {
 	if( maximizeHeader.refresh != 'off'){
 		maximizeHeader.icon.push({
 		  type:	"refresh",
-		  imgUrl:	"refresh.gif",
+		  imgUrl:	"refresh.png",
 			
 		  alt: IS_R.lb_refreshKey
 		});
@@ -249,7 +252,7 @@ IS_Widget.Maximize.getMaximizeConfiguration = function( widgetConf ) {
 	maximizeHeader.icon.push(
 		  {
 			type:	"turnbackMaximize",
-			imgUrl:	"turnback.gif",
+			imgUrl:	"back.png",
 
 			alt: IS_R.lb_turnback
 		  });
@@ -279,6 +282,11 @@ IS_Widget.Maximize.setupMaximizeView = function() {
 	//$("panels").style.display = "none";
 	
 	$("maximize-panel").style.display = "block";
+	
+	/* To show a border as a minimizxed tab bar instead */
+	var portalMaincontentsTable = $("portal-maincontents-table");
+	portalMaincontentsTable.className = "maximized";
+	
 	setTimeout( IS_Widget.Maximize.adjustMaximizeHeight.bind( IS_Widget.Maximize ),100);
 	setTimeout( IS_Widget.Maximize.adjustMaximizeWidth.bind( IS_Widget.Maximize ),100);
     
@@ -300,6 +308,11 @@ IS_Widget.Maximize.restoreMaximizeView = function() {
 	    	panel.style.visibility = "visible";
 		}
 	}
+	
+	/* To remove a border, a minimizxed tab bar*/
+	var portalMaincontentsTable = $("portal-maincontents-table");
+	portalMaincontentsTable.removeClassName("maximized");
+	
 	//$("panels").style.display = "";
 	
 //	IS_Portal.setFontSize();

@@ -52,6 +52,7 @@ public abstract class BaseWidget  implements Serializable {
 	public static String PROP_UID = "Uid";
 	public static String PROP_MENUID = "Menuid";
 	public static String PROP_CREATEDATE = "Createdate";
+	public static String PROP_REFRESHINTERVAL = "Refreshinterval";
 
 
 	// constructors
@@ -93,6 +94,7 @@ public abstract class BaseWidget  implements Serializable {
 	private java.lang.Integer noborder;
 	private java.lang.String menuid;
 	private java.lang.Long createdate = 0L;
+	private java.lang.Integer refreshinterval;
 
 	/**
 	 * Return the unique identifier of this class
@@ -373,6 +375,14 @@ public abstract class BaseWidget  implements Serializable {
 	 */
 	public void setCreatedate (java.lang.Long createdate) {
 		this.createdate = createdate;
+	}
+
+	public java.lang.Integer getRefreshinterval() {
+		return refreshinterval;
+	}
+
+	public void setRefreshinterval(java.lang.Integer refreshinterval) {
+		this.refreshinterval = refreshinterval;
 	}
 
 	public boolean equals (Object obj) {

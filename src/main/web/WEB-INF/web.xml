@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
-	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+          http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+          version="2.5">
 	<display-name>@APP.MAIN.NAME@</display-name>
 
 	<context-param>
@@ -27,7 +28,8 @@
       	   ,/WEB-INF/classes/services.xml
       	   ,/WEB-INF/classes/proxyrequest.xml
    		   ,/WEB-INF/classes/accountservices.xml
-   		   ,/WEB-INF/classes/org/infoscoop/admin/command/serviceCommands.xml</param-value>
+   		   ,/WEB-INF/classes/org/infoscoop/admin/command/serviceCommands.xml
+   		   <!--add bean definitions--></param-value>
   	</context-param>
 
 	<context-param>
@@ -175,85 +177,22 @@
 	</filter>
 
 	<filter>
-		<filter-name>TabDispatchFilter</filter-name>
-		<filter-class>org.infoscoop.web.TabDispatchFilter</filter-class>
-	</filter>
-
-	<!--CustomizeSSOFilterMapping-->
-
-	<!--CustomizeSetRoleHeaderFilterMapping-->
-
-	<filter>
 		<filter-name>ApiLogFilter</filter-name>
 		<filter-class>org.infoscoop.api.filter.ApiLogFilter</filter-class>
 	</filter>
 
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/proxy</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/rpc</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/jsonproxy</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/gadgetsrv</url-pattern>
-	</filter-mapping>
+    <filter-mapping>
+        <filter-name>SetCharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <!--CustomizeSSOFilterMapping-->
+
+    <!--CustomizeSetRoleHeaderFilterMapping-->
+
 	<filter-mapping>
 		<filter-name>DetectLogTypeFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/comsrv</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/logsrv</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/js/search/searchEngine.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/encsrv</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/grpsrv</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/usersearch</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/admin/adminserv/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/adminpreview/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/adminpreview</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/authsrv/login</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>SetCharacterEncodingFilter</filter-name>
-		<url-pattern>/manager/defaultpanel/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
@@ -261,10 +200,12 @@
 		<url-pattern>/adminpreview/*</url-pattern>
 	</filter-mapping>
 
-	<filter-mapping>
-		<filter-name>springSecurityFilterChain</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/isapi/*</url-pattern>
+        <url-pattern>/oauth/*</url-pattern>
+        <url-pattern>/login.do</url-pattern>
+    </filter-mapping>
 
 	<filter-mapping>
 		<filter-name>SessionManagerFilter</filter-name>
@@ -276,11 +217,7 @@
 	<filter-mapping>
 		<filter-name>CheckAdminFilter</filter-name>
 		<url-pattern>/manager/*</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>CheckAdminFilter</filter-name>
-		<url-pattern>/adminpreview/*</url-pattern>
+        <url-pattern>/adminpreview/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
@@ -303,65 +240,29 @@
 	</filter-mapping>
 
 	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/login.jsp</url-pattern>
+        <filter-name>I18NFilter_JS</filter-name>
+        <url-pattern>/login.jsp</url-pattern>
+        <url-pattern>/oauth_login.jsp</url-pattern>
+        <url-pattern>/access_confirmation.jsp</url-pattern>
+        <url-pattern>/logoff.jsp</url-pattern>
+        <url-pattern>/changePassword.jsp</url-pattern>
+        <url-pattern>/selectProfile.jsp</url-pattern>
+        <url-pattern>/js/widgets/maximize/maximizeForbiddenURL.jsp</url-pattern>
+        <url-pattern>/js/widgets/maximize/maximizeShortcuts.jsp</url-pattern>
+        <url-pattern>/manager/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/oauth_login.jsp</url-pattern>
+        <filter-name>I18NFilter_ADMINJS</filter-name>
+        <url-pattern>/manager/*</url-pattern>
+        <url-pattern>/admin/role.jsp</url-pattern>
+        <url-pattern>/admin/i18nimport</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/access_confirmation.jsp</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/logoff.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/changePassword.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/selectProfile.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/js/widgets/maximize/maximizeForbiddenURL.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/js/widgets/maximize/maximizeShortcuts.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_JS</filter-name>
-		<url-pattern>/manager/*</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<url-pattern>/manager/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<url-pattern>/admin/role.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>I18NFilter_ADMINJS</filter-name>
-		<url-pattern>/admin/i18nimport</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>SetAdminFilter</filter-name>
-		<url-pattern>/index.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SetAdminFilter</filter-name>
-		<url-pattern>/</url-pattern>
+        <filter-name>SetAdminFilter</filter-name>
+        <url-pattern>/index.jsp</url-pattern>
+        <url-pattern>/</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
@@ -374,16 +275,6 @@
 		<url-pattern>/comsrv</url-pattern>
 	</filter-mapping>
 
-	<filter-mapping>
-		<filter-name>TabDispatchFilter</filter-name>
-		<url-pattern>/tab/*</url-pattern>
-	</filter-mapping>
-<!-- 
-	<filter-mapping>
-		<filter-name>authFilter</filter-name>
-		<url-pattern>/rpc/*</url-pattern>
-	</filter-mapping>
--->
 	<filter-mapping>
 		<filter-name>ApiLogFilter</filter-name>
 		<url-pattern>/isapi/*</url-pattern>

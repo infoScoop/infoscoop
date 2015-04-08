@@ -35,19 +35,6 @@ IS_Widget.prototype.classDef = function() {
 	this.initialize = function(draggable, widgetsXml){
 		self = this;
 		
-		// For adding custom widget
-		/*
-		if(widgetsXml.type && widgetsXml.type.indexOf("customWidget_") == 0){
-			var customConf = IS_Widget.getConfiguration( widgetsXml.type );
-			if(customConf){
-				var widgetType = customConf.WidgetPref.widgetType.value;
-				widgetsXml.type = widgetType;
-				widgetsXml.property = IS_Widget.mergePreference( customConf, widgetsXml);
-				if(!widgetsXml.title) widgetsXml.title = customConf.title;
-			}
-		}
-		*/
-		
 		//For a case that it is set as property of menu
 		if(widgetsXml.type && widgetsXml.type == "Gadget"){
 			var url = widgetsXml.property["url"];
@@ -68,6 +55,7 @@ IS_Widget.prototype.classDef = function() {
 		this.column = widgetsXml.column;
 		this.widgetType = widgetsXml.type;
 		this.draggable = (isTabView)? false : draggable;
+		this.refreshInterval = widgetsXml.refreshInterval;
 		
 		//List and status for event
 		this.eventTargetList = [];
@@ -457,7 +445,7 @@ IS_Widget.prototype.classDef = function() {
 		//Create edit header
 		var divWidgetEditHeader = document.createElement("div");
 		this.elm_widgetEditHeader = divWidgetEditHeader;
-		divWidgetEditHeader.className = "widgetEditHeader";
+		divWidgetEditHeader.className = "widgetEditHeader is-box";
 		divWidgetEditHeader.style.display = "none";
 	   
 		//Edit Form [frm_<widgetId>]
@@ -477,13 +465,16 @@ IS_Widget.prototype.classDef = function() {
 	   	this.elm_latestMark = divLatestMark;
 		divLatestMark.style.display = "none";
 
-		var indicator = document.createElement("img");
-		indicator.src = imageURL+"indicator.gif";
-	   	this.elm_indicator = indicator;
+		var indicator = document.createElement("span");
+		if (is_propertySupported("animation")){
+			indicator.className = "css";
+		} else {
+			indicator.className = "gif";
+		}
+		this.elm_indicator = indicator;
 		indicator.id = self.id + "_widgetIndicator";
-		indicator.className = "widgetIndicator";
+		indicator.className = indicator.className + " bounce-ball-indicator";
 		indicator.style.display = "none";
-		indicator.style.verticalAlign = "top";
 		
 	   	var divWidgetContent = document.createElement("div");
 	   	this.elm_widgetContent = divWidgetContent;
@@ -545,13 +536,11 @@ IS_Widget.prototype.classDef = function() {
 		var icon = IS_Widget.getIcon(this.widgetType, {defaultNull:true});
 		if(icon){
 			var favoriteIconDiv = document.createElement("div");
+			favoriteIconDiv.className = "gadget-icon-container";
 			this.elm_favoriteIcon = favoriteIconDiv;
 			var favoriteIconImg = document.createElement("img");
-			favoriteIconImg.style.width = "14px";
-			favoriteIconImg.style.height = "14px";
-			favoriteIconImg.style.paddingTop = "3px";
-			favoriteIconImg.style.paddingLeft = "3px";
-			favoriteIconImg.style.verticalAlign = "top";
+			favoriteIconImg.style.width = "16px";
+			favoriteIconImg.style.height = "16px";
 			favoriteIconImg.style.border = "0px";
 			favoriteIconImg.src = icon;
 			favoriteIconDiv.appendChild(favoriteIconImg);
@@ -642,6 +631,10 @@ IS_Widget.prototype.classDef = function() {
 			});
 		}
 		
+		if(this.refreshInterval){
+            this.addCloseListener(this.stopAutoRefresh.bind(this));
+		}
+		
 		//'isLoadPending' stands if loadContents is called before building is completed
 		if(this.isLoadPending){
 			this.isLoadPending = false;
@@ -674,7 +667,7 @@ IS_Widget.prototype.classDef = function() {
 		};
 		
 		if( this.view_params )
-			parameters["view-params"] = $H( this.view_params ).toJSON();
+			parameters["view-params"] = JSON.stringify($H( this.view_params ));
 		
 		return parameters;
 	}
@@ -899,13 +892,12 @@ IS_Widget.prototype.classDef = function() {
 				this.authToken = Math.ceil( Math.random() * new Date().getTime() );
 			}
 			this.gadgetProxyUrl = this.isUploadGadget() ? proxyServerURL : this.getGadgetProxyUrl();
-			if( !this.isUploadGadget()) {
-				var relayUrl='';
-				if(contentsType == 'url'){
-					relayUrl = contentsDef.href.substring( 0,contentsDef.href.lastIndexOf("/") +1 );
-				}else{
-					relayUrl = this.gadgetProxyUrl.substring( 0,this.gadgetProxyUrl.lastIndexOf("/") +1 );
-				}
+			if(contentsType == 'url') {
+				var relayUrl = contentsDef.href.substring( 0,contentsDef.href.lastIndexOf("/") +1 );
+				gadgets.rpc.setupReceiver(self.iframe.id,relayUrl+"rpc_relay.html",this.authToken);
+			}
+			else if(!this.isUploadGadget()) {
+				var relayUrl = this.gadgetProxyUrl.substring( 0,this.gadgetProxyUrl.lastIndexOf("/") +1 );
 				gadgets.rpc.setupReceiver(self.iframe.id,relayUrl+"rpc_relay.html",this.authToken);
 			} else {
 				gadgets.rpc.setupReceiver(self.iframe.id,hostPrefix+"/rpc_relay.html",this.authToken);
@@ -1441,13 +1433,13 @@ IS_Widget.prototype.classDef = function() {
 	
 	this.startIndicator = function () {
 		this.elm_indicator.style.display = "";
-		if (this.elm_favoriteIcon) 
-			this.elm_favoriteIcon.style.display = "none";
+		/*if (this.elm_favoriteIcon) 
+			this.elm_favoriteIcon.style.display = "none";*/
 	}
 	this.stopIndicator = function () {
-		this.elm_indicator.style.display = "none";
-		if (this.elm_favoriteIcon) 
-			this.elm_favoriteIcon.style.display = "";
+		setTimeout(function(){
+			this.elm_indicator.style.display = "none";
+		}.bind(this), 800);
 	}	
 	
 	var onBlink = false;
@@ -1498,6 +1490,8 @@ IS_Widget.prototype.classDef = function() {
 				IS_Widget.enableIcon(self.eventTargetList[i], self);
 			}
 		}
+		
+		self.startAutoRefresh();
 	}
 	
 	this.setLiteModePreference = function(){
@@ -1566,6 +1560,8 @@ IS_Widget.prototype.classDef = function() {
 			
 			this.maximize.changeMaximize(baseWidget);
 		}
+		if(IS_SidePanel.adjustPosition)
+		    IS_SidePanel.adjustPosition();
 	}
 
 	this.adjustMaximizeHeight = function()  {
@@ -1585,7 +1581,8 @@ IS_Widget.prototype.classDef = function() {
 			IS_Portal.tabs[IS_Portal.currentTabId].panel.style.height = "auto";
 		
 		var pos = Position.cumulativeOffset(panelsDiv);
-		this.elm_widget.style.top = pos[1] + "px";
+		// border offset +3
+		this.elm_widget.style.top = (pos[1]+3) + "px";
 		this.elm_widget.style.left = pos[0] + "px";
 		this.elm_widget.style.width = parseInt(panelsDiv.offsetWidth) + "px";
 		
@@ -1627,6 +1624,9 @@ IS_Widget.prototype.classDef = function() {
 			}
 		}
 		
+		$("tab-container").hide();
+		$("portal-maincontents-table").addClassName("maximized");
+		
 		setTimeout( this._adjustMaximize, 100);
 		
 		IS_Event.observe( window, 'resize', this._adjustMaximize, false,this.closeId );
@@ -1639,6 +1639,9 @@ IS_Widget.prototype.classDef = function() {
 			this.maximize.turnbackMaximize();
 		} else if(!this.hasMaximizeView){
 			this.defaultTurnbackMaximize();
+		}
+		if(IS_SidePanel.adjustPosition){
+		    IS_SidePanel.adjustPosition();
 		}
 	}
 	
@@ -1681,6 +1684,9 @@ IS_Widget.prototype.classDef = function() {
 				this.headerContent.minimize();
 		}
 		
+        $("tab-container").show();
+        $("portal-maincontents-table").removeClassName("maximized");
+        
 		IS_Widget.MaximizeWidget = undefined;
 		
 		IS_Event.stopObserving( window, 'resize', this._adjustMaximize, false,this.closeId )
@@ -1695,6 +1701,23 @@ IS_Widget.prototype.classDef = function() {
 		} else if(this.content && this.content.refresh) {
 			this.content.refresh();
 		}
+	}
+	
+	this.startAutoRefresh = function(){
+	    if(!this.refreshInterval)
+	        return;
+	    
+	    this.stopAutoRefresh();
+	    this.autoRefreshTimer = setTimeout(function(){
+	        console.log("autoReload : " + this.id + " on " + new Date() + " interval : " + this.refreshInterval);
+	        this.refresh();
+	    }.bind(this), this.refreshInterval * 1000 * 60);
+	}
+	
+	this.stopAutoRefresh = function(){
+        if(this.autoRefreshTimer){
+            clearTimeout(this.autoRefreshTimer);
+        }
 	}
 }
 
@@ -1713,11 +1736,9 @@ IS_Widget.prototype.removeLoadCompleteListener = function( listener ) {
 
 IS_Widget.disableIcon = function(icon, widget) {
 	if(!icon) return;
-	if(icon.element){
+	if(icon.element && icon.element.className == "headerIcon"){
 		icon.element.disabled = true;
-		icon.element.style.filter = "alpha(opacity=50)";
-		icon.element.style.opacity = 0.5;
-		//icon.element.MozOpacity = 0.5;
+		icon.element.className = "headerIcon disable";
 	}
 	if(icon.type){
 		var disableFunc = widget.getContentFunction(icon.type +"Disable");
@@ -1727,12 +1748,13 @@ IS_Widget.disableIcon = function(icon, widget) {
 
 IS_Widget.enableIcon = function(icon, widget) {
 	if(!icon) return;
-	if(icon.element){
-		icon.element.disabled = false;
-		icon.element.style.filter = "1.0";
-		icon.element.style.opacity = "1.0";
-		//icon.element.MozOpacity = "1.0";
-	}
+	setTimeout(function(){
+		if(icon.element && icon.element.className == "headerIcon disable"){
+			icon.element.disabled = false;
+			icon.element.className = "headerIcon";
+		}
+	}, 800);
+
 	if(icon.type){
 		var enableFunc = widget.getContentFunction(icon.type +"Enable");
 		if(enableFunc) enableFunc();
@@ -2319,12 +2341,16 @@ IS_Widget.getDragDummy = function(element, widget){
 	  header.className = "widgetHeader";
 	  header.style.fontWeight = "bold";
 	  
+	  var titleInnnerEl = document.createElement("div");
+	  titleInnnerEl.className = "widget-header-inner";
+	  
 	  var titleEl = document.createElement("div");
 	  titleEl.className = "widgetTitle";
 	  titleEl.appendChild( document.createTextNode( IS_Widget.WidgetHeader.getTitle(widget) ));
 	  titleEl.style.padding = "2px";
 	  
-	  header.appendChild( titleEl);
+	  titleInnnerEl.appendChild(titleEl);
+	  header.appendChild(titleInnnerEl);
 	  
 	  box.appendChild( header );
 	  

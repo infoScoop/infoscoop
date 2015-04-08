@@ -21,6 +21,7 @@ IS_Widget.Ticker.prototype.classDef = function() {
 	var self = this;
 	var widget;
 	var id;
+	var selfBox;
 	var selfContent;
 	var ticker_speed;
 	var ticker_pause_onhover = 1;
@@ -50,6 +51,7 @@ IS_Widget.Ticker.prototype.classDef = function() {
 	this.initialize = function(widgetObj){
 		widget = widgetObj;
 		id = widget.id;
+		selfBox = widget.elm_widgetBox;
 		selfContent = widget.elm_widgetContent;
 		selfContent.style.border = '0px';
 		ticker_speed = widget.getUserPref("speed");
@@ -88,15 +90,18 @@ IS_Widget.Ticker.prototype.classDef = function() {
 	this.displayContents = function(response) {
 		self.onMove = true;
 		
+		selfBox.className = selfBox.className + " ticker-container";
+		
 		selfContent.innerHTML = '';
 		selfContent.style.overflow = "hidden";
 		selfContent.style.width = "auto";
 		
 		divParent = document.createElement("div");
+		divParent.className = "text-container";
 		divParent.style.overflow = "hidden";
 		divParent.style.position = "absolute";
 		divParent.style.width = selfContent.offsetWidth + 'px';
-		divParent.style.height = selfContent.offsetHeight + 'px';
+		divParent.style.height = selfContent.style.height;
 		
 		divTicker = document.createElement("span");
 		if ( Browser.isIE ) {

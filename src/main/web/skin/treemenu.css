@@ -15,18 +15,38 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
+#portal-tree-menu > .showAll, 
+#portal-tree-menu > .hideAll,
+#portal-my-sitemap .showAll,
+#portal-my-sitemap .hideAll {
+	margin: 4px 2px;
+	padding: 4px 8px;
+}
+
+#portal-tree-menu > .menuRefresh,
+#portal-my-sitemap .menuRefresh {
+	margin: 4px 4px 4px 2px;
+	padding: 4px 8px;
+}
+
+#portal-tree-menu .menu-refresh-icon,
+#portal-my-sitemap .menu-refresh-icon {  
+    right: 8px;
+}
+
 .showAll, .hideAll {
-	float:left;
-	cursor:pointer;
-	font-size:0.82em;
-	color:#7777cc;
-	margin:2px;	
+	float: right;
+	cursor:pointer;	
 }
 
 div.treeMenuTitle{
 	float:left;
 	margin-left: 2px;
-	font-size:0.9em;
+	font-size: 82%;
+}
+
+.dummy div.treeMenuTitle{
+	white-space: nowrap;
 }
 
 .treemenuItemIcon_blank {

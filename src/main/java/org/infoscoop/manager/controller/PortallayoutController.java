@@ -27,6 +27,11 @@ public class PortallayoutController implements ControllerInterface{
 	@RequestMapping(value="/index", method=RequestMethod.GET)
 	public void index() throws Exception {
 	}
+	
+	@RequestMapping(value="/themeSamples", method=RequestMethod.GET)
+	public String themeSamples() throws Exception {
+		return "portallayout/themeSamples";
+	}
 
 	public String getRoleName() {
 		return null;

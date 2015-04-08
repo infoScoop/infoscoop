@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<property name="clob.type" value="clob" dbms="oracle, db2"/>
+    <property name="clob.type" value="text" dbms="mysql"/>
+
+    <!--Issue 583-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_typePositiveInt","ALL","ALL","Type a positive integer value");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_typePositiveInt","ALL","ja","正の整数を入力してください。");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","ams_typePositiveInt","ALL","zh","请输入正整数");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_useRefreshInterval","ALL","ALL","Separate setting of Auto refresh interval");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_useRefreshInterval","ALL","ja","個別に自動更新の間隔を設定する");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_useRefreshInterval","ALL","zh","個別設定自動更新的間隔");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_refreshInterval","ALL","ALL","Auto refresh interval(second)");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_refreshInterval","ALL","ja","自動更新間隔(秒）");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_refreshInterval","ALL","zh","自动更新间隔（秒）");-->
+    <changeSet id="infoscoop400_583_1" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop400_583_1">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='ams_typePositiveInt';</sqlCheck>
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_useRefreshInterval';</sqlCheck>
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_refreshInterval';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_typePositiveInt"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Type a positive integer value"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_typePositiveInt"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="正の整数を入力してください。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="ams_typePositiveInt"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="请输入正整数"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_useRefreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Separate setting of Auto refresh interval"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_useRefreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="個別に自動更新の間隔を設定する"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_useRefreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="個別設定自動更新的間隔"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_refreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Auto refresh interval(second)"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_refreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="自動更新間隔（分）"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_refreshInterval"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="自动更新间隔（秒）"/>
+        </insert>
+    </changeSet>
+
+    <!--Issue 583-->
+    <!--ALTER TABLE [スキーマ].IS_TABLAYOUTS ADD COLUMN TEMPLASTMODIFIED TIMESTAMP;-->
+    <changeSet id="infoscoop400_583_2" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_583_2">
+            <not>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS" columnName="refreshinterval"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="IS_WIDGETS">
+            <column name="refreshinterval" type="integer">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>    
+
+    <!--Issue 584-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_copy","ALL","ALL","Copy");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_copy","ALL","ja","コピー");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_copy","ALL","zh","拷贝");-->
+    <changeSet id="infoscoop400_584" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop400_584">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_copy';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_copy"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Copy"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_copy"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="コピー"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_copy"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="拷贝"/>
+        </insert>
+    </changeSet>
+
+    <!--Issue 587-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_settingExamples","ALL","ALL","Setting Examples");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_settingExamples","ALL","ja","設定サンプル");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_settingExamples","ALL","zh","设置示例");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_blue","ALL","ALL","Blue");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_blue","ALL","ja","ブルー");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_blue","ALL","zh","蓝色");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_red","ALL","ALL","Red");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_red","ALL","ja","レッド");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_red","ALL","zh","红");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_green","ALL","ALL","Green");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_green","ALL","ja","グリーン");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_green","ALL","zh","绿");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_orange","ALL","ALL","Orange");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_orange","ALL","ja","オレンジ");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_orange","ALL","zh","橙");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_navy","ALL","ALL","Navy");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_navy","ALL","ja","ネイビー");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_navy","ALL","zh","深蓝色");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_purple","ALL","ALL","Purple");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_purple","ALL","ja","パープル");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_purple","ALL","zh","紫");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleBlue","ALL","ALL","Simple Blue");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleBlue","ALL","ja","ブルー（シンプル）");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleBlue","ALL","zh","简单的蓝色");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleRed","ALL","ALL","Simple Red");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleRed","ALL","ja","レッド（シンプル）");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleRed","ALL","zh","简单的红");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleGreen","ALL","ALL","Simple Green");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleGreen","ALL","ja","グリーン（シンプル）");-->
+    <!--INSERT INTO `IS_I18N` VALUES ("adminjs","alb_simpleGreen","ALL","zh","简单的绿");-->
+    <changeSet id="infoscoop400_587_1" author="muto">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop340_587_1">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_settingExamples';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_settingExamples"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Setting Examples"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_settingExamples"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="設定サンプル"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_settingExamples"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="设置示例"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_blue"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Blue"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_blue"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="ブルー"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_blue"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="蓝色"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_red"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Red"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_red"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="レッド"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_red"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="红"/>
+        </insert>
+                <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_green"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Green"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_green"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="グリーン"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_green"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="绿"/>
+        </insert>
+                <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_orange"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Orange"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_orange"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="オレンジ"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_orange"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="橙"/>
+        </insert>
+                <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_navy"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Navy"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_navy"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="ネイビー"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_navy"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="深蓝色"/>
+        </insert>
+                <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_purple"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Purple"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_purple"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="パープル"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_purple"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="紫"/>
+        </insert>
+                <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_simpleBlue"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Simple Blue"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_simpleBlue"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="ブルー（シンプル）"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_simpleBlue"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="简单的蓝色"/>
+        </insert>
+                <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_simpleRed"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Simple Red"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_simpleRed"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="レッド（シンプル）"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_simpleRed"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="简单的红"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_simpleGreen"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="Simple Green"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_simpleGreen"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="グリーン（シンプル）"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_simpleGreen"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="简单的绿"/>
+        </insert>
+   </changeSet>
+
+    <!--Issue 587-->
+    <!--INSERT INTO [スキーマ].IS_PORTALLAYOUTS (`name`,`layout`) VALUES ('customTheme','');-->
+    <changeSet id="infoscoop400_587_2" author="muto">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_587_2">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_PORTALLAYOUTS where name='customTheme';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_PORTALLAYOUTS">
+            <column name="name" value="customTheme"/>
+            <column name="layout" value=""/>
+        </insert>
+    </changeSet>
+    
+    <!--Issue 588-->
+    <!--UPDATE IS_I18N SET message = 'Add tab' WHERE id = 'lb_addTabLink' AND lang = 'ALL';-->
+    <!--UPDATE IS_I18N SET message = 'タブを追加する' WHERE id = 'lb_addTabLink' AND lang = 'ja';-->
+    <!--UPDATE IS_I18N SET message = '追加栏标' WHERE id = 'lb_addTabLink' AND lang = 'zh';-->
+    <changeSet id="infoscoop400_588_1" author="muto">
+        <update tableName="IS_I18N">
+        	<column name="message" value="Add a tab"/>
+        	<where>id='lb_addTabLink' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="タブを追加する"/>
+        	<where>id='lb_addTabLink' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="追加栏标"/>
+        	<where>id='lb_addTabLink' AND lang='zh'</where>
+        </update>
+    </changeSet>
+    
+    <!--Issue 592-->
+    <!--DELETE FROM IS_PROPERTIES WHERE id = 'defaultTheme';-->
+    <changeSet id="infoscoop400_592_1" author="muto">
+    	<preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop400_592_1">
+            <sqlCheck expectedResult="1">select count(*) from ${migration.defaultSchemaWithDot}IS_PROPERTIES where id='defaultTheme';</sqlCheck>
+        </preConditions>
+        <delete tableName="IS_PROPERTIES">
+            <where>id='defaultTheme'</where>
+        </delete>
+    </changeSet>
+    
+    <!--Issue 594-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/i/en-news/feed/' WHERE id = 'lb_addContentsExRSS' AND lang = 'ALL';-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/i/ja-news/feed/' WHERE id = 'lb_addContentsExRSS' AND lang = 'ja';-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/i/en-news/feed/' WHERE id = 'lb_addContentsExRSS' AND lang = 'zh';-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/en/' WHERE id = 'lb_addContentsExWebSite' AND lang = 'ALL';-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/ja/' WHERE id = 'lb_addContentsExWebSite' AND lang = 'ja';-->
+    <!--UPDATE IS_I18N SET message = 'https://www.infoscoop.org/en/' WHERE id = 'lb_addContentsExWebSite' AND lang = 'zh';-->
+    <changeSet id="infoscoop400_594_1" author="muto">
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/i/en-news/feed/"/>
+        	<where>id='lb_addContentsExRSS' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/i/ja-news/feed/"/>
+        	<where>id='lb_addContentsExRSS' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/i/en-news/feed/"/>
+        	<where>id='lb_addContentsExRSS' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/en/"/>
+        	<where>id='lb_addContentsExWebSite' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/ja/"/>
+        	<where>id='lb_addContentsExWebSite' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N">
+        	<column name="message" value="https://www.infoscoop.org/en/"/>
+        	<where>id='lb_addContentsExWebSite' AND lang='zh'</where>
+        </update>
+    </changeSet>
+</databaseChangeLog>

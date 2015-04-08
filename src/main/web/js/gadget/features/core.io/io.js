@@ -245,14 +245,7 @@ gadgets.io = function() {
       switch (params['CONTENT_TYPE']) {
         case 'JSON':
         case 'FEED':
-//        resp['data'] = gadgets.json.parse(resp.text);
-          // Fix #536 avoid memory leak in MSIE 9+.
-          if(window.ActiveXObject && !(/msie 8/i).test(navigator.userAgent)){
-            resp['data'] = evalInIFrame(resp.text);
-          }else{
-            resp['data'] = gadgets.json.parse(resp.text);
-          }
-          
+          resp['data'] = gadgets.json.parse(resp.text);
           if (!resp['data']) {
             resp['errors'].push('500 Failed to parse JSON');
             resp['rc'] = 500;

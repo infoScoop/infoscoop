@@ -18,7 +18,7 @@
 .infoScoop .widget {
 	clear:both;
 	width:100%;
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 }
 
 .infoScoop #maximize-panel .widget {
@@ -30,18 +30,26 @@
 	width:100%;
 }
 
+.infoScoop .widget .widgetBox,
+.infoScoop .widget .widgetBoxNoHeader {
+	overflow:hidden;
+	background-color:#FFF;
+	-moz-box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* Firefox */
+	-webkit-box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* Chrome, Safari */
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=#999999, direction=180, strength=3, enabled=true); /* IE8 */
+	box-shadow: 0px 3px 2px -1px rgba(0, 0, 0, 0.2); /* IE9+, Others*/
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
 .infoScoop .widget .widgetBox{
 	clear:both;
 	position: static;
-	/*
-	margin-left : 10px;
-	margin-bottom: 5px;
-	*/
 	width: auto;
-	overflow:hidden;
+}
 
-	border: 1px solid #BCBCBC;
-	background-color:#FFF;
+.infoScoop .widgetBoxNoHeader {
 }
 
 .infoScoop .widget .widgetShade {
@@ -49,12 +57,8 @@
 	padding:0 3px 3px 0;
 	background-color: green;
 */
+}
 
-}
-.infoScoop .widgetBoxNoHeader {
-	border: 1px solid #BCBCBC;
-	overflow: hidden;
-}
 #widgetGhost {
 	background-color:#f3f3f3;
 }
@@ -67,6 +71,7 @@
 	overflow:hidden;
 	/*background-color: white;*/
 	border: none;
+	border-radius: 0;
 }
 
 .infoScoop .subWidget .widgetShade {
@@ -90,6 +95,10 @@
 	//width:100%;
 }
 
+.infoScoop #portal-maincontents-table.maximized .widgetBox {
+    margin: 10px;
+}
+
 .infoScoop .maximizeButtons{
 }
 
@@ -104,36 +113,36 @@
 
 .infoScoop .widget .widgetHeader {
 	clear:both;
-	padding-top:0px;
-	padding-bottom:0px;
 	margin: 0px;
 	font-size:100%;
-	/*background-image:url(./imgs/widget_header.png);*/
-	background-position:bottom;
-	height: 22px;
 	cursor:move;
 	overflow:hidden;
+	border-bottom: 1px dotted #d8d8d8;  
+	position: relative;
 }
 
 .infoScoop .subWidget .widgetHeader{
 	clear: both;
 	width: 100%;
-	height: 22px;
+	height: 28px;
 	background-color:#EEEEFF;
 	background-image:none;
 	cursor: move;
 	overflow:hidden;
-
 	border: none;
+	/* line-height: 16px; */
+}
 
+.infoScoop .widget .widget-header-inner {
+	padding-left: 6px;
 }
 
 .infoScoop .widget .widgetHeader .rightHeader{
 	position: absolute;
-	top: 1px;
+	top: 0px;
 	_top: 0px;
-	right: 2px;
-	height: 19px;
+	right: 0px;
+	height: 28px;
 }
 .infoScoop .widget .widgetHeader.blink,
 .infoScoop .widget .widgetHeader.blink .rightHeader {
@@ -147,69 +156,175 @@
 }
 
 .infoScoop .widgetHeader td {
-	vertical-align: top;
 }
 
-.infoScoop .widgetHeader .latestMarkTd {
+.infoScoop .widgetHeader .favoriteIconTd, .infoScoop .widgetHeader .latestMarkTd {
+    vertical-align: top;
+    padding-top: 2px;
+}
+
+@keyframes widget-anim-bounce {
+	0% {
+		top: 6px;
+		left: 2px;
+		animation-timing-function: ease-in;
+	}
+	50% {
+		top: 18px;
+		left: 2px;
+		animtion-timing-function: ease-out;
+	}
+	100% {
+		top: 6px;
+		left: 2px;
+		animation-timing-function: ease-in;
+	}
+}
+@-webkit-keyframes widget-anim-bounce {
+	0% {
+		top: 6px;
+		left: 2px;
+		-webkit-animation-timing-function: ease-in;
+	}
+	50% {
+		top: 18px;
+		left: 2px;
+		-webkit-animtion-timing-function: ease-out;
+	}
+	100% {
+		top: 6px;
+		left: 2px;
+		-webkit-animation-timing-function: ease-in;
+	}
+}
+
+.infoScoop .widgetHeader .css.bounce-ball-indicator {
+	animation: widget-anim-bounce 1s infinite;
+	-webkit-animation: widget-anim-bounce 1s infinite;
+}
+
+.infoScoop .widgetHeader .gif.bounce-ball-indicator {
+	top: 8px;
+	left: -3px;
+	background-image: url(./imgs/ajax-loader.gif);
+}
+
+.infoScoop .widgetHeader .gadget-icon-container img{
+	padding-right: 5px;
+	padding-bottom: 2px;
 	vertical-align: middle;
 }
 
-.infoScoop .widgetHeader .widgetIndicator {
-/*	float:left;*/
-	border:0;
-/*	margin-top:2px;*/
-	vertical-align: text-bottom;
-	cursor:pointer;
+.infoScoop .widgetHeader .widget-header-inner {
+	height: 28px;
+	position: relative;
+	overflow: hidden;
 }
+
 .infoScoop .widgetHeader .widgetTitle {
-	padding-top:2px;
-	padding-left:3px;
 	padding-right:5px;
 	font-weight:bold;
-	font-size:14px;
-	line-height:1.2em;
-	height:1.2em;
+	font-size: 12px;
+	line-height: 28px;
 	overflow:hidden;
 	word-break: break-all;
 }
 
-.infoScoop .widgetHeader .headerIcon {
+.infoScoop .widgetHeader .widgetTitle a {
+	color: #287EB8;
+	text-decoration: none;
+}
+
+.infoScoop .widgetHeader .rightHeader .icon-container {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	float: left;
+}
+
+.infoScoop .headerIcon {
 	border:0;
 	margin-top:2px;
 	margin-bottom:1px;
-	vertical-align:top;
 	cursor:pointer;
-	background-position: top left;
 	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	padding-left: 2px;
+	padding-right: 2px;
+	vertical-align: text-bottom;
+	background-position: left center;
+}
+
+.infoScoop .headerIcon {
+	opacity:0.8;
+}
+
+.infoScoop .widgetHeader .headerIcon.disable {
+	opacity:0.4;
 }
 
 .infoScoop .widgetHeader .widgetTitle a:hovor {
 	cursor: pointer;
 }
 
+/*for less than IE8*/
+.infoScoop .headerIcon {
+	-ms-filter: alpha( opacity=90 );
+	filter: alpha( opacity=90 );
+}
+
+.infoScoop .headerIcon.disable {
+	-ms-filter: alpha( opacity=60 );
+	filter: alpha( opacity=60 );
+}
+
+.infoScoop .headerIcon > .image {
+	height: 16px;
+	width: 16px;
+	display : block;
+}
+
+.infoScoop .headerIcon > .image,
+.infoScoop .headerIcon > .image > .transparent {
+	background-color : #ffffff;
+	opacity: 0;
+	cursor : pointer;
+}
+/*for less than IE8 end*/
+
 .infoScoop .widgetHeader .headerIcon_turnbackMaximize {
 	position: relative;
 	text-align: right;
-	font-size: 9pt;
-	color: blue;
 	cursor: pointer;
 	_margin-top: 1px;
-	margin-left: 4px;
+	margin-left: 2px;
 	margin-right: 2px;
-	padding-left: 2px;
-	padding-right: 2px;
-	border: 1px solid #6F7866;;
 	white-space:nowrap;
+	padding: 0 0.6em;
+	margin-top: 2px;
+	margin-bottom: 1px;
+	padding: 3px 5px;
+	top: -5px;
 }
+
+.infoScoop .widgetHeader .headerIcon_turnbackMaximize > .headerIcon {
+	height: 16px;
+}
+
+.infoScoop .widgetHeader .headerIcon_turnbackMaximize > img{
+    padding: 0;
+    vertical-align: text-top;
+}
+
 .infoScoop .widgetHeader .headerIcon_turnbackMaximize span {
-	margin-left: 1px;
+	margin-left: 5px;
 }
 
 .infoScoop .widgetMenu {
 	position: absolute;
-	border: 1px solid gray;
-	background-color: white;
 	z-index:50;
+	padding: 8px;
 }
 
 .infoScoop .widgetMenuCloser {
@@ -231,14 +346,14 @@
 
 .infoScoop .widgetEditHeader {
 	clear:both;
-	width:100%;
-	padding-top:1.3px;
+	padding-top: 5px;
 	padding-bottom:0px;
-	background: #F5F5F5;
+	background: #f7f7f7;
 	margin: 0px;
-	font-size:80%;
+	font-size: 80%;
 	overflow: hidden;
 	cursor:default;
+	border-width: 0 0 1px 0;
 }
 
 .infoScoop .widgetEditHeader .widgetEditCtrl{
@@ -265,22 +380,20 @@
 	cursor:default;
 }
 
-.infoScoop .widgetEditHeader .widgetCancel {
-	float:right;
-	font-size: 75%;
-	padding-left:2px;
-	padding-right:5px;
-	color:#7777cc;
-	cursor:pointer;
-}
-
+.infoScoop .widgetEditHeader .widgetCancel,
 .infoScoop .widgetEditHeader .widgetSave {
 	float:right;
-	font-size: 75%;
-	padding-left:2px;
-	padding-right:5px;
-	color:#7777cc;
 	cursor:pointer;
+	border-width: 1px;
+	border-style: solid;
+	font-size: 93%;
+	min-width: 29px;
+	text-align: center;
+	margin: 2px 1px;
+	
+	border-color: #f7f7f7;
+	border-color: rgba(0,0,0,0);
+	color: #0285B5;
 }
 
 .infoScoop .widgetEditHeader .widgetCheck {
@@ -293,15 +406,15 @@
 }
 
 .infoScoop .widgetEditHeader .rssUrl_Icon {
-/*	float:left;*/
-/*	margin-left:2px;*/
+	margin-left:5px;
 	margin-right:2px;
 	border:0px;
 	margin-top:2px;
 	width: 16px;
 	height: 14px;
 	cursor: pointer;
-	background: url(./imgs/rss_url.gif) left no-repeat;
+	text-decoration: none;	
+	background: url(./imgs/rss.png) left no-repeat;
 }
 
 .infoScoop .widgetEditHeader .widget_edit_pref_col_label {
@@ -313,21 +426,26 @@
 	vertical-align: middle;
 }
 
+.infoScoop .widgetEditHeader a:link,
+.infoScoop .widgetEditHeader a:visited {
+	color: #0285B5;
+}
+
 .infoScoop .widgetEditHeader a.help {
 	display:	inline-block;
 	text-align:	center;
 	width:	1.25em;
-	border:	1px solid #6677DD;
+	border: 1px solid #d8d8d8;
 	margin-left: 5px;
 	background-color:	white;
 	text-decoration:	none;
 	cursor: help;
+	color: #737373;
 }
 
 .infoScoop .widgetEditHelp {
 	display:	none;
 	position:	absolute;
-	border:	1px solid #6677DD;
 	background-color:	white;
 	margin-left: 24px;
 	
@@ -340,12 +458,12 @@
 	font-size: 10.5pt;
 }
 .infoScoop .widgetEditHelp .header {
-	padding: 2px;
-	padding-left: 16px;
-	background: url(./imgs/help.gif) left center no-repeat;
-	background-color: #DDF;
+	padding: 4px;
+	padding-left: 25px;
+	background: url(./imgs/help.gif) 2% center no-repeat;
+	background-color: #eee;
 	font-weight: bold;
 }
 .infoScoop .widgetEditHelp .description {
-	padding: 5px;
+	padding: 10px;
 }

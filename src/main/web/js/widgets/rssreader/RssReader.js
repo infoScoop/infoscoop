@@ -102,7 +102,7 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		IS_EventDispatcher.addListener("adjustedColumnWidth", null, this.repaintIfCurrentTab.bind(this,false,false,true ) );
 //		IS_EventDispatcher.addListener("dragWidget", widget.id,this.repaint.bind( this ) );
 		IS_EventDispatcher.addListener("dragWidget", widget.id, function(){
-			if(Browser.isIE8){
+			if(Browser.isLtIE8){
 				setTimeout(this.repaint.bind(this), 50);
 			}else{
 				this.repaint();
@@ -684,7 +684,8 @@ IS_Widget.RssReader.prototype.classDef = function() {
 		if( ( this.rssContentView && this.rssContent && this.rssContent.rssItems.length <= itemsnum ))
 			itemsnum = this.rssContent.rssItems.length;
 		
-		var height = itemsnum *this.getHeightChangeUnit();
+		// add padding-top 10px
+		var height = itemsnum *this.getHeightChangeUnit() + 10;
 		
 		return height;
 	}
@@ -857,8 +858,9 @@ IS_Widget.RssReader.prototype.classDef = function() {
 			itemsnum = this.rssContent.rssItems.length;
 		
 		var height = this.rssContentView.getItemPosition( itemsnum );
-		
-		this.rssContentView.setViewportHeight( height );
+	
+		// add padding-top 10px
+		this.rssContentView.setViewportHeight( height + 10 );
 	}
 	
 	this.repaintIfCurrentTab = function(){
@@ -1446,6 +1448,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		this.stopAutoPageLoad = false;
 		
 		var viewport = document.createElement("div");
+		viewport.className = "viewport";
 		viewport.style.position = "relative";
 		viewport.style.width = "100%";
 		
@@ -1464,6 +1467,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		this.renderContext = Object.extend( opt.renderContext || {},{ widget: widget } );
 		
 		var content = document.createElement("div");
+		content.className = "rss-content";
 		viewport.appendChild( content );
 		this.elm_content = content;
 		
@@ -1851,7 +1855,7 @@ IS_Widget.RssReader.RssContentView.prototype.classDef = function() {
 		}
 		
 		// needs redendering on IE8.
-		if(Browser.isIE8)
+		if(Browser.isLtIE8)
 			$(container).hide().show();
 		
 		var this_ = this;

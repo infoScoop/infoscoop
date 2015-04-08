@@ -204,6 +204,14 @@ public class TabLayout extends BaseTablayout {
 			if (noBorder != null)
 				widgetJson
 						.put("noBorder", new Boolean(noBorder).booleanValue());
+			String refreshInterval = widget.getAttribute("refreshInterval");
+			if (refreshInterval != null){
+				try{
+					widgetJson.put("refreshInterval", Integer.parseInt(refreshInterval));
+				}catch(NumberFormatException e){
+					widgetJson.put("refreshInterval", JSONObject.NULL);
+				}
+			}
 
 			String disabled = widget.getAttribute("disabled");
 			if (disabled != null)
@@ -392,6 +400,16 @@ public class TabLayout extends BaseTablayout {
 					.getAttribute("ignoreHeader")).booleanValue());
 			widget.setNoBorder(new Boolean(widgetEl.getAttribute("noBorder"))
 					.booleanValue());
+			
+			String refreshInterval = widgetEl.getAttribute("refreshInterval");
+			if (refreshInterval != null){
+				try{
+					widget.setRefreshinterval(Integer.parseInt(refreshInterval));
+				}catch(NumberFormatException e){
+					// ignore
+				}
+			}
+			
 			Element data = (Element)widgetEl.getElementsByTagName("data").item(0);
 			NodeList propertyNodes = data.getElementsByTagName("property");
 			for(int k = 0; k < propertyNodes.getLength(); k++){

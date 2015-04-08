@@ -37,8 +37,8 @@ IS_SidePanel.buildAddContents = function() {
 
 	var inputURLBoxDiv = document.createElement("div");
 	var inputURLBox = document.createElement("input");
+	inputURLBox.id = "input-url-box";
 	inputURLBox.type = "text";
-	inputURLBox.style.width = "92%";
 	inputURLBox.maxLength = 2000;
 	inputURLBoxDiv.appendChild(inputURLBox);
 	container.appendChild(inputURLBoxDiv);
@@ -46,15 +46,15 @@ IS_SidePanel.buildAddContents = function() {
 	var previewButtonDiv = document.createElement("div");
 	previewButtonDiv.style.textAlign = 'right';
 	var previewIndicator = document.createElement("img");
-	previewIndicator.src = imageURL+"ajax-loader.gif";
+	previewIndicator.src = imageURL+"ajax-loader-blue.gif";
 	previewIndicator.style.display = "none";
 	previewButtonDiv.appendChild( previewIndicator );
 	
 	var previewButton = document.createElement("input");
+	previewButton.id = "preview-button";
 	previewButton.type = "button";
 	previewButton.value = IS_R.lb_preview;
 	previewButtonDiv.appendChild( previewButton );
-	previewButtonDiv.style.width = "92%";
 	container.appendChild(previewButtonDiv);
 
 	//Example of URL input：
@@ -62,13 +62,13 @@ IS_SidePanel.buildAddContents = function() {
 	//Web site：http://www.beacon-it.co.jp/
 	//Google gadget：http://infoscoopdemo.beacon-it.co.jp/HelloGadget.xml
 	var exampleDiv = document.createElement("div");
+	exampleDiv.id = "url-example";
 	exampleDiv.style.overflow = "hidden";
-	exampleDiv.style.color = "black";
 	exampleDiv.appendChild( document.createTextNode(IS_R.lb_urlExample) );
 	
 	function addExample(label ,url){
 		var div = document.createElement("div");
-		div.style.width = "92%";
+		//div.style.width = "92%";
 		div.appendChild(document.createTextNode(label));
 		var input = document.createElement("input");
 		input.value = url;
@@ -85,9 +85,9 @@ IS_SidePanel.buildAddContents = function() {
 	container.appendChild(exampleDiv);
 	
 	var addContentPanel = document.createElement("div");
+	addContentPanel.id = "adding-contents-panel"
 	addContentPanel.style.display = "none";
-	addContentPanel.style.marginTop = "5px";
-	addContentPanel.style.width = "92%";
+	//addContentPanel.style.width = "92%";
 	container.appendChild( addContentPanel );
 	
 	var addContents = document.createElement("div");
@@ -121,12 +121,13 @@ IS_SidePanel.buildAddContents = function() {
 			alert( IS_R.ms_urlNoInput );
 			return;
 		}
-		
-		if(!/^(http|https|ftp):\/\//.test(inputURL)){
-			inputURL = "http://"+inputURL;
-			inputURLBox.value = inputURL;
+
+		var prevURL = inputURL;
+		if (!new RegExp("^(http://|https://|ftp://)").test(prevURL)) {
+		    prevURL = (prevURL.indexOf("/") === 0) ?
+		            findHostURL(true) + prevURL : hostPrefix + "/" + prevURL;
 		}
-		
+
 		var encodedURL = encodeURIComponent( inputURL );
 		if( encodedURL.length > 2000 ) {
 			alert( IS_R.ms_urlTooLong );
@@ -136,7 +137,7 @@ IS_SidePanel.buildAddContents = function() {
 		hideAddContentPanel();
 		previewIndicator.style.display = "";
 		
-		is_processUrlContents(inputURL, handleDetect.bind(this, inputURL, false), function(){});
+		is_processUrlContents(prevURL, handleDetect.bind(this, inputURL, false), function(){});
 		
 	}
 
@@ -246,10 +247,26 @@ IS_SidePanel.buildAddContents = function() {
 			console.error(e);
 //			return;
 		}
-		
+
+		// permit mini-browser to use server-root-path or relative-path
+		if (!new RegExp("^(http://|https://|ftp://)").test(url)) {
+		    var miniBrowser = null;
+		    for (var i = 0; i < length; i++) {
+		        var data = dataList[i];
+		        if (data.type === "MiniBrowser") {
+		            miniBrowser = data;
+		            miniBrowser.url = url;
+		            break;
+		        }
+		    }
+		    dataList = (miniBrowser) ? [ miniBrowser ] : [ { type : "MiniBrowser", url : null } ];
+		    length = dataList.length;
+		}
+
 		for(var i = 0; i < length; i++){
 			var data = dataList[i];
 			var previewItem = document.createElement("div");
+			previewItem.className = "preview-item";
 			addContents.appendChild( previewItem );
 			
 			if( Browser.isSafari1 ) {
@@ -308,7 +325,6 @@ IS_SidePanel.buildAddContents = function() {
 				
 				var menuPathDiv = document.createElement("div");
 				menuPathDiv.style.fontSize = "9pt";
-				menuPathDiv.style.color = "black";
 				menuPathDiv.title = menuItem.getPaths().join("/");
 				menuPathDiv.appendChild(document.createTextNode( IS_R.ms_previewMenuPath));
 				_previewItem.appendChild(menuPathDiv);
@@ -349,10 +365,10 @@ IS_SidePanel.buildAddContents = function() {
 			adjustWidgetATag(widget);
 		
 			var previewDiv = document.createElement("div");
+			previewDiv.className = "preview-widget-container";
 			var widgetBody;
 			if(widget){
 				previewDiv.style.fontSize = "100%";
-				previewDiv.style.color = "#000";
 				widget.elm_widgetHeader.style.fontSize = "16px";
 				widgetBody = widget.elm_widget;
 				IS_SidePanel.previewWidgetList.push( widget );

@@ -7,8 +7,7 @@
 		<searchEngine id="bing" defaultSelected="true" title="Bing" retrieveUrl="http://www.bing.com/search?mkt=en-US&amp;setlang=match&amp;q=">
 			<countRule method="regexp" value="([0-9,]+) results"/>
 		</searchEngine>
-		<searchEngine id="yahoo" defaultSelected="true" title="Yahoo!" retrieveUrl="http://search.yahoo.com/search?ei=UTF-8&amp;p=">
-			<countRule method="id" value="resultCount"/>
+		<searchEngine id="excite" defaultSelected="true" title="excite" retrieveUrl="http://msxml.excite.com/search/web?q=">
 		</searchEngine>
 	</defaultSearch>
 	<rssSearch>

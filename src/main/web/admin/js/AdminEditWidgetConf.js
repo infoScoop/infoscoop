@@ -513,11 +513,15 @@ ISA_WidgetConf.makeForm = function(prefType, prefConf, widgetType, prefValue, is
 			'click',
 			function() {
 				var inputUrl = $F(prefType + "_url");
-				
+				if (widgetType === "MiniBrowser" && !(new RegExp("^(http://|https://|ftp://)").test(inputUrl))) {
+				    inputUrl = (inputUrl.indexOf("/") === 0) ?
+				            findHostURL(true) + inputUrl : hostPrefix + "/" + inputUrl;
+				}
+
 				var indicator = $("indicatorMini");
 				if (!indicator) {
 					var indicator = document.createElement("img");
-					indicator.src = imageURL + "ajax-loader.gif";
+					indicator.src = imageURL + "ajax-loader-blue.gif";
 					indicator.style.top = "3px";
 					indicator.id = "indicatorMini";
 					formContainer.appendChild(indicator);
@@ -972,7 +976,15 @@ ISA_WidgetConf.validators = {
 			label: ISA_R.alb_titleLink,
 			maxBytes: 1024
 		});
-	}
+	},
+    refreshInterval:function(value){
+        return IS_Validator.validate(value, {
+            label: ISA_R.alb_refreshInterval,
+            required: true,
+            regex: '^[1-9][0-9]*$',
+            regexMsg: ISA_R.ams_typePositiveInt,
+        });
+    }
 }
 ISA_WidgetConf.gadgetValidators = {
 	url:function(value){

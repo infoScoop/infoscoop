@@ -47,7 +47,7 @@
 		</div>
 		<!--
 		<a class="iconButton" style="float: right;" title="%{alb_previewTop}" href="#">
-			<img src="../../skin/imgs/minibrowser.gif" style="position: relative; top: 2px; margin: 0pt 5px 0pt 0pt;">%{alb_previewTop}</a>
+			<img src="../../skin/imgs/page_world.gif" style="position: relative; top: 2px; margin: 0pt 5px 0pt 0pt;">%{alb_previewTop}</a>
 		-->
 		<a id="changeApply" class="iconButton" style="float: right;" title="%{alb_changeApply}" href="#">
 			<img src="../../skin/imgs/database_save.gif" style="position: relative; top: 2px; margin: 0px 5px 0px 0px;">%{alb_changeApply}</a>

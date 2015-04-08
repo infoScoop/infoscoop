@@ -1,4 +1,4 @@
-"displayTopMenu","menu",0,"true","enum","[{value:'true',display_value:'!{display}'},{value:'false',display_value:'!{notDisplay}'}]",1,"",""
+"displayTopMenu","menu",0,"false","enum","[{value:'true',display_value:'!{display}'},{value:'false',display_value:'!{notDisplay}'}]",1,"",""
 "displaySideMenu","menu",0,"true","enum","[{value:'true',display_value:'!{display}'},{value:'false',display_value:'!{notDisplay}'},{value:'reference_top_menu',display_value:'!{referenceTopMenu}'}]",1,"",""
 "menuAutoRefresh","menu",0,"false","bool","",1,"",""
 "menuLockTimeout","menu",0,"30","int","",1,"^((-?[1-9][0-9]*)|0)$","!{typeInt}"

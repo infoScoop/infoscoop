@@ -142,7 +142,7 @@ public class WidgetDAO extends HibernateDaoSupport{
      * @param setProperties, Set<String> removePropNames
      * @throws Exception
      */
-    public void updateWidgetProperties(final String widgetId, String title, String href, final Map<String, ForceUpdateUserPref> setProperties, Set<ForceUpdateUserPref> removePropNames) throws Exception{
+    public void updateWidgetProperties(final String widgetId, String title, String href, Integer refreshInterval, final Map<String, ForceUpdateUserPref> setProperties, Set<ForceUpdateUserPref> removePropNames) throws Exception{
     	if (log.isInfoEnabled())
 			log.info("updateWidgetProperties : widgetId=" + widgetId
 					+ ", set properties=" + setProperties + ", remove properties:" +  removePropNames);
@@ -166,6 +166,10 @@ public class WidgetDAO extends HibernateDaoSupport{
 			if(href != null)
 				widget.setHref(href);
 
+			if(refreshInterval != null){
+				widget.setRefreshinterval(refreshInterval);
+			}
+			
 			for(Map.Entry<String, ForceUpdateUserPref> pref : setProperties.entrySet()){
 				String oldValue = null;
 				UserPref up = widget.getUserPrefs().get(pref.getKey());

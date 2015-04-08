@@ -26,6 +26,7 @@ public class Portallayout extends BasePortallayout {
 	
 	public static final String LAYOUT_TYPE_CSS = "css";
 	public static final String LAYOUT_TYPE_JS = "javascript";
+	public static final String LAYOUT_TYPE_CUSTOMTHEME = "customTheme";
 	
 /*[CONSTRUCTOR MARKER BEGIN]*/
 	public Portallayout () {

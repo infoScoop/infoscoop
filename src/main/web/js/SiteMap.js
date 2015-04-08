@@ -183,12 +183,12 @@ IS_SidePanel.prototype.classDef = function () {
 		var openImg = document.createElement("img");
 
 		openImg.src = imageURL + opt.image + "_"
-			+ IS_Portal.lang + ((IS_Portal.country == "") ? "" : "_" + IS_Portal.country) + ".gif";
+			+ IS_Portal.lang + ((IS_Portal.country == "") ? "" : "_" + IS_Portal.country) + ".png";
 		openImg.onerror = function(){
-			openImg.src = imageURL + opt.image + "_" + IS_Portal.lang + ".gif";
+			openImg.src = imageURL + opt.image + "_" + IS_Portal.lang + ".png";
 			
 			openImg.onerror = function(){
-				openImg.src = imageURL + opt.image + "_en.gif";
+				openImg.src = imageURL + opt.image + "_en.png";
 			};
 		};
 		

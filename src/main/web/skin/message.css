@@ -62,7 +62,7 @@
 	background: url(./imgs/right.gif) center center no-repeat;
 }
 .infoScoop .Message .messageSelf{
-	background: url(./imgs/comment.gif) 3px center no-repeat;
+	background: url(./imgs/comment_post.gif) 3px center no-repeat;
 	font-size:13px;
 	padding-left:17px;
 	cursor:pointer;

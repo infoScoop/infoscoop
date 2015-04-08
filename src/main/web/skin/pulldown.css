@@ -25,7 +25,6 @@
 .pulldown li{
 	list-style-type: none;
 	border: 1px solid gray;
-	color: black;
 	background-color: #FFF;
 	padding: 0px;
 	white-space: nowrap;
@@ -53,15 +52,14 @@
 }
 .pulldown_list {
 	display: none;
-	
-	border: 1px solid black;
+	border: 1px solid #cccccc;
 	overflow: hidden;
 	position: absolute;
-	color: black;
 	background-color: white;
 	padding: 1px;
 	cursor: pointer;
 	font-size: 0.8em;
+	z-index: 100;
 }
 .pulldown_list_popup {
 	display: block;
@@ -78,7 +76,6 @@
 }
 
 .pulldown{
-	color: black;
 	background-color: #FFF;
 }
 .pulldown_icon{

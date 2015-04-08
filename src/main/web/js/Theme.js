@@ -22,7 +22,7 @@ IS_Portal.theme = {
 	  header:{
 		background:{image: "./skin/imgs/theme/widget_header.png"}
 	  },
-	  border:{color:"#BCBCBC",radius: '0px'},
+	  border:{color:"#000000",radius: '0px'},
 	  shade:{color:"#EEE"},
 	  subheader:{
 		background:{color:"#EEEEFF"}

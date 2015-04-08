@@ -211,6 +211,7 @@ var Browser = new Object();
 Browser.isMozilla = (typeof document.implementation != 'undefined') && (typeof document.implementation.createDocument != 'undefined') && (typeof HTMLDocument!='undefined');
 Browser.isIE = window.ActiveXObject ? true : false;
 Browser.isIE8 = Browser.isIE && (navigator.userAgent.toLowerCase().indexOf('msie 8') != -1);
+Browser.isLtIE8 = document.all && !window.addEventListener;
 Browser.isFirefox = (navigator.userAgent.toLowerCase().indexOf("firefox")!=-1);
 Browser.isFirefox3 = (navigator.userAgent.toLowerCase().indexOf('firefox/3.')>-1);
 Browser.isOpera = (navigator.userAgent.toLowerCase().indexOf("opera")!=-1);
@@ -286,8 +287,6 @@ SwappableComponent.build = function (data, id) {
 	
 	onMouseOut = function () {
 		if(this.style){
-			this.style.color = "#7777cc";
-			this.style.textDecoration = "none";
 			this.style.cursor = "auto";			
 		}else{
 			this.className = style_out;
@@ -297,8 +296,6 @@ SwappableComponent.build = function (data, id) {
 	
 	onMouseOver = function () {
 		if(this.style){
-			this.style.color = "#ff0000";
-			this.style.textDecoration = "underline";
 			this.style.cursor = "pointer";
 		}else{
 			this.className = style_over;
@@ -1187,8 +1184,35 @@ is_deleteProperty = function(object, propertyName){
 		delete object[propertyName];
 }
 
+is_getParameterFromHash = function(name){
+    var locationHash = location.hash;
+    if(locationHash && locationHash.length > 0){
+        locationHash = locationHash.substring(1, locationHash.length);
+        var params = locationHash.split("=");
+        
+        for(var i=0;i<params.length;i++){
+            if(name == params[i]){
+                return params[i + 1];
+            }
+        }
+    }
+}
+
 if( !Object.hasOwnProperty ) {
 	Object.prototype.hasOwnProperty = function( property ) {
 		return ( this[property] && !this.constructor.prototype[property] );
 	}
+}
+
+is_propertySupported = function (property) {
+	var upperCaseProperty = property.charAt(0).toUpperCase() + property.slice(1);
+	var webkit = "Webkit" + upperCaseProperty;
+	var moz = "Moz" + upperCaseProperty;
+	var supported = [property, webkit, moz];
+	for(var i=0;i<supported.length;i++){
+		if(supported[i] in document.body.style){
+			return true;
+		}
+	}
+	return false;
 }

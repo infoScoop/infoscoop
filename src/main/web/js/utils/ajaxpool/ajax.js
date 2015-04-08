@@ -231,7 +231,7 @@ AjaxRpc.prototype = {
 			errorImg.style.position ="relative";
 			errorImg.style.top = "2px";
 			errorImg.style.paddingRight = "2px";
-			errorImg.src = imageURL+"error12.gif";
+			errorImg.src = imageURL+"warning_14.png";
 			errorMsgSpan.appendChild(errorImg);
 			errorMsgSpan.appendChild(document.createTextNode(msg));
 			errorMsgBar.appendChild(errorMsgSpan);

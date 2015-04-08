@@ -80,6 +80,7 @@
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/prototype-window-1.3/themes/default.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/prototype-window-1.3/themes/alphacube.css">
     <link rel="stylesheet" type="text/css" href="portallayout?type=css">
+    <link rel="stylesheet" type="text/css" href="portallayout?type=customTheme">
 
 	<!-- favicon.ico -->
 	<link rel="shortcut icon" href="favicon.ico">
@@ -266,66 +267,70 @@
  </head>
 
 	<body style="margin-top:0;padding-top:0;" class="infoScoop">
-		<table width="100%" border="0" cellspacing="0" cellpadding="0" id="command-bar">
-			<tbody>
-				<tr>
-					<td id="td-portal-logo">
-						<div id="portal-logo" outside="true">
-							<a href="javascript:void(0)"><img id="portal-logo-img" src="<%=staticContentURL%>/skin/imgs/infoscoop_logo.<%= (pngSupport)? "png":"gif" %>" border="0" /></a>
-						</div>
-					</td>
-					<td width="100%"><div id="portal-command" style="visibility:hidden;position:absolute;left:9999px;"></div></td>
-					<td>
-						<div id="portal-user-menu">
-							<div id="portal-user-menu-label">
-							    <% if(uid != null){ %>
-									<%= displayName %>
-								<% } else { %>
-									<a id="portal-loginLink" href="login.jsp"><%= I18NUtil.resolve(I18NUtil.TYPE_JS, "%{lb_login}", request.getLocale()) %></a>
-								<% } %>
+		<div id="portal-header-container">
+			<table id="command-bar" width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr>
+						<td id="td-portal-logo">
+							<div id="portal-logo" outside="true">
+								<a href="javascript:void(0)"><img id="portal-logo-img" src="<%=staticContentURL%>/skin/imgs/infoscoop_logo.<%= (pngSupport)? "png":"gif" %>" border="0" /></a>
 							</div>
-						</div>
-					</td>
-					<td width="16px"><img id="messageIcon" src="<%=staticContentURL%>/skin/imgs/information.gif" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();"/></td>
-				</tr>
-			</tbody>
-		</table>
-		<div id="portal-header"></div>
-		<div id="portal-body">
-		<div id="error-msg-bar" style="display:none;"></div>
-		<div id="message-bar" style="display:none;"><div id="message-list"></div><div id="message-list-more" style="display:none;"></div><div id="message-bar-controles"></div></div>
-		<table width="100%" border="0" cellspacing="0" cellpadding="0"><tbody>
-			<tr>
-				<td id="portal-site-aggregation-menu"></td>
-				<td style="display:none;"><div id="portal-go-home"></div></td>
-			</tr>
-			</tbody></table>
-		<table style="clear:both;" cellpadding="0" cellspacing="0" width="100%" id="portal-maincontents-table">
-			<tbody>
+						</td>
+						<td width="100%"><div id="portal-command" style="visibility:hidden;position:absolute;left:9999px;"></div></td>
+						<td>
+							<div id="portal-user-menu">
+								<div id="portal-user-menu-label">
+								    <% if(uid != null){ %>
+										<%= displayName %>
+									<% } else { %>
+										<a id="portal-loginLink" href="login.jsp"><%= I18NUtil.resolve(I18NUtil.TYPE_JS, "%{lb_login}", request.getLocale()) %></a>
+									<% } %>
+								</div>
+							</div>
+						</td>
+						<td width="16px"><img id="messageIcon" src="<%=staticContentURL%>/skin/imgs/information.png" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();"/></td>
+					</tr>
+				</tbody>
+			</table>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0"><tbody>
 				<tr>
-					<td id="siteMenu" valign="top">
-						<div id="portal-tree-menucontainer">
-							<div id="portal-tree-menu" ></div>
-							<div id="portal-rss-search" style="padding:1px;"></div>
-							<div id="portal-my-sitemap" ></div>
-						</div>
-					</td>
-					<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
-					<td colspan="3" valign="top" align="left">
-						<div id="portal-iframe-url"></div>
-						<div id="panels" style="display:;">
-						  <div id="tab-container"></div>
-						  <div id="maximize-panel" style="display:none;"></div>
-						</div>
-						<div id="portal-iframe" style="display:none;">
-							<iframe id="ifrm" name="ifrm" src="about:blank" FrameBorder="0" style="width:100%;height768px;border:none;scrolling:auto;"></iframe>
-						</div>
-						<div id="iframe-tool-bar"></div>
-						<div id="search-iframe" style="display:none;"></div>
-					</td>
+					<td id="portal-site-aggregation-menu"></td>
+					<td style="display:none;"><div id="portal-go-home"></div></td>
 				</tr>
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+			<div id="portal-header"></div>
+			<div id="error-msg-bar" style="display:none;"></div>
+			<div id="message-bar" style="display:none;"><div id="message-list"></div><div id="message-list-more" style="display:none;"></div><div id="message-bar-controles"></div></div>
+		
+		</div>
+		<div id="portal-body">
+			<div id="tab-container"></div>
+			<table style="clear:both;" cellpadding="0" cellspacing="0" width="100%" id="portal-maincontents-table">
+				<tbody>
+					<tr>
+						<td id="siteMenu" valign="top">
+							<div id="portal-tree-menucontainer">
+								<div id="portal-tree-menu" ></div>
+								<div id="portal-rss-search" style="padding:1px;"></div>
+								<div id="portal-my-sitemap" ></div>
+							</div>
+						</td>
+						<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
+						<td colspan="3" valign="top" align="left" width="100%">
+							<div id="portal-iframe-url"></div>
+							<div id="panels" style="display:;">
+							  <div id="maximize-panel" style="display:none;"></div>
+							</div>
+							<div id="portal-iframe" style="display:none;">
+								<iframe id="ifrm" name="ifrm" src="about:blank" FrameBorder="0" style="width:100%;height768px;border:none;scrolling:auto;"></iframe>
+							</div>
+							<div id="iframe-tool-bar"></div>
+							<div id="search-iframe" style="display:none;"></div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<iframe name="portal-externalExe-ifrm" src="about:blank" style="display:none;"></iframe>
 	</body>

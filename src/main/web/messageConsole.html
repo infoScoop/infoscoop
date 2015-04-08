@@ -37,6 +37,7 @@
 		}
 		img{
 			border:none;
+			vertical-align: bottom;
 		}
 		#msgbar {
 			top:0px;
@@ -105,10 +106,10 @@
 		$("debug").innerHTML = IS_R.lb_debug;
 		
 		$("allImg").src = imageURL + "application_osx_terminal.png";
-		$("errorImg").src = imageURL + "exclamation.gif";
-		$("warnImg").src = imageURL + "error.gif";
-		$("infoImg").src = imageURL + "information.gif";
-		$("debugImg").src = imageURL + "debug.gif";
+		$("errorImg").src = imageURL + "error.png";
+		$("warnImg").src = imageURL + "warning.png";
+		$("infoImg").src = imageURL + "information.png";
+		$("debugImg").src = imageURL + "debug.png";
 		
 		function adjustHeight() {
 			var headerHeight = parseInt($("header").offsetHeight);

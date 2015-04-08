@@ -102,13 +102,13 @@ IS_Widget.RssReader.RssItemRender.getDefaultHeight = function( context ) {
 		fontSize = 100;
 	
 	var d = context.showDatetime();
-	if( fontSize < 100 ) {
-		h = 15 +( d ?16:2 ) -( Browser.isFirefox? 1:0.0 );
-	} else if( fontSize == 100 ){
-		h = 19 +( d ? 20:2 ) -( Browser.isFirefox ? 1.5:1 );
-	} else {
-		h = 21 +( d ? 23:2 ) -( Browser.isFirefox? 0:-0.5 );
-	}
+    if( fontSize < 100 ) {
+        h = 14 +( d ?19:2 );
+    } else if( fontSize == 100 ){
+        h = 15 +( d ? 20:2 );
+    } else {
+        h = 18 +( d ? 24:2 );
+    }
 	
 	return h;
 }
@@ -139,6 +139,7 @@ IS_Widget.RssReader.RssItemRender.prototype.render = function ( context,rssItem,
 	}
 	
 	this.tr.id = widget.id + '_item_'+itemNumber;
+	this.tr.className = "entry";
 	
 	this.buildTitle( widget,opt );
 	this.buildPubDate( widget,opt );
@@ -477,7 +478,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssDesc = function( widget,opt 
 	if( init ) {
 		// Detail pop up
 		this.rssFloat = document.createElement("div");
-		this.rssFloat.className = 'rssDescFloat';
+		this.rssFloat.className = 'rssDescFloat is-box';
 		
 		this.rssDesc = document.createElement("div");
 		this.rssDesc.className = "rssDesc";
@@ -489,6 +490,7 @@ IS_Widget.RssReader.RssItemRender.prototype.buildRssDesc = function( widget,opt 
 		this.itemTr3.style.clear = "both";
 		
 		this.itemTd3 = document.createElement("div");
+		this.itemTd3.className = "inline-desc-container";
 		this.itemTd3.colSpan = "2";
 		this.itemTd3.cellPadding = "0";
 		this.itemTd3.cellSpacing = "0";
@@ -763,21 +765,37 @@ IS_Widget.RssReader.RssItemRender.prototype.displayInlineDesc = function( widget
 		(widget.getUserPref("scrollMode") == "scroll");
 	
 	var headerDiv = widget.parent ? widget.parent.elm_widgetHeader : widget.elm_widgetHeader;
-	if(headerDiv && headerDiv.offsetWidth > 0){
-		var offset = scrolling ? 16 : 0;
-		if( Browser.isSafari1 )
-			offset += 1;
-		
-		var browserOffset = 1;
-		var width = (headerDiv.offsetWidth - offset - browserOffset);
-		this.rssDesc.style.width = width + "px";
-	}
+	//Delete because seems not to be needed #16405
+//	if(headerDiv && headerDiv.offsetWidth > 0){
+//		var offset = scrolling ? 16 : 0;
+//		if( Browser.isSafari1 )
+//			offset += 1;
+//		
+//		var browserOffset = 1;
+//		var width = (headerDiv.offsetWidth - offset - browserOffset);
+//		this.rssDesc.style.width = width + "px";
+//	}
 	this.itemTr3.style.display= "";
 	
-	if(scrolling)
+	if(scrolling){
+	    for(var i=0;i<IS_Widget.RssReaderDescriptionWithScrollList.length;i++){
+	        var listDescObj = IS_Widget.RssReaderDescriptionWithScrollList[i];
+	        if(listDescObj.more.id == descObj.more.id){
+	            IS_Widget.RssReaderDescriptionWithScrollList = IS_Widget.RssReaderDescriptionWithScrollList.without(listDescObj);
+	            break;
+	        }
+	    }
 		IS_Widget.RssReaderDescriptionWithScrollList.push(descObj);
-	else
+	}else{
+        for(var i=0;i<IS_Widget.RssReaderDescriptionList.length;i++){
+            var listDescObj = IS_Widget.RssReaderDescriptionList[i];
+            if(listDescObj.more.id == descObj.more.id){
+                IS_Widget.RssReaderDescriptionList = IS_Widget.RssReaderDescriptionList.without(listDescObj);
+                break;
+            }
+        }
 		IS_Widget.RssReaderDescriptionList.push(descObj);
+	}
 
 	var startDateTime = (rssItem.rssDate)? rssItem.rssDate.getTime() : "";
 	if(rssItem.rssUrls && widget.getUserPref("displayMode") != "category"){
@@ -828,17 +846,22 @@ IS_Widget.RssReader.RssItemRender.prototype.hideInlineDesc = function( widget,rs
 		panelType : widget.panelType
 	};
 	this.itemTr3.style.display = "none";
-	var tmpArray = [];
-	for(var j = 0; j < IS_Widget.RssReaderDescriptionList.length; j++){
-		if( ( IS_Widget.RssReaderDescriptionList[j] == descObj) ){
-		}else{
-			tmpArray.push(IS_Widget.RssReaderDescriptionList[j]);
-		}
-	}
-	IS_Widget.RssReaderDescriptionList = null;
-	IS_Widget.RssReaderDescriptionList = tmpArray;
-			
-
+	
+    for(var i=0;i<IS_Widget.RssReaderDescriptionWithScrollList.length;i++){
+        var listDescObj = IS_Widget.RssReaderDescriptionWithScrollList[i];
+        if(listDescObj.more.id == descObj.more.id){
+            IS_Widget.RssReaderDescriptionWithScrollList = IS_Widget.RssReaderDescriptionWithScrollList.without(listDescObj);
+            break;
+        }
+    }
+    for(var i=0;i<IS_Widget.RssReaderDescriptionList.length;i++){
+        var listDescObj = IS_Widget.RssReaderDescriptionList[i];
+        if(listDescObj.more.id == descObj.more.id){
+            IS_Widget.RssReaderDescriptionList = IS_Widget.RssReaderDescriptionList.without(listDescObj);
+            break;
+        }
+    }
+    
 	[this.rssDetail,this.rssDetail1].each( function( m ){
 		m.firstChild.innerHTML = IS_R.lb_descLink;
 	});
@@ -877,8 +900,6 @@ IS_Widget.RssReader.RssItemRender.prototype.displayPopupDesc = function( widget,
 	IS_Widget.RssReader.RssItemRender.displayedRssDescId = this.descId;
 	if( IS_Widget.RssReader.RssItemRender.adjustRssDesc() )
 		return; // error
-	
-	IS_Widget.adjustDescWidth();
 	
 	this.rssDesc.style.width = "";
 	this.rssFloat.style.display = "";
@@ -1116,7 +1137,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 		
 		descWidth -= 20;
 		
-		rssFloatMark.style.backgroundImage = 'url(' + imageURL + 'resultset_next.gif)';
+		rssFloatMark.style.backgroundImage = 'url(' + imageURL + 'caret-right.png)';
 	}else{
 		// Pop-up on the right
 		if(1 < IS_Portal.tabs[IS_Portal.currentTabId].numCol) {
@@ -1135,7 +1156,7 @@ IS_Widget.RssReader.RssItemRender.adjustRssDesc = function(){
 			descWidth = moreLeft - descLeft - 15;
 		}
 		
-		rssFloatMark.style.backgroundImage = 'url(' + imageURL + 'resultset_previous.gif)';
+		rssFloatMark.style.backgroundImage = 'url(' + imageURL + 'caret-left.png)';
 	}
 	// Modify the lateral location of description
 	rssFloat.style.left = descLeft + 'px';
@@ -1247,9 +1268,8 @@ IS_Widget.adjustDescImgWidth = function(rssDesc, headerWidth, widget) {
 }
 
 IS_Widget.adjustDescWidth = function() {
-	var objList = new Array();
-	
-	var offset = 2;
+    // offset (padding, border)
+	var offset = (10 + 5) + (5 + 5) + 3;
 	for(var j = 0; j < IS_Widget.RssReaderDescriptionList.length; j++){
 		adjustDescObjWidth( IS_Widget.RssReaderDescriptionList[j],0 +offset );
 	}
@@ -1259,13 +1279,7 @@ IS_Widget.adjustDescWidth = function() {
 	
 	function adjustDescObjWidth( obj,offset ) {
 		obj.headerDiv = obj.widget.parent? obj.widget.parent.elm_widgetHeader : obj.widget.elm_widgetHeader;
-		
 		var headerWidth = obj.headerDiv.offsetWidth;
-		if(Browser.isIE && obj.panelType == "StaticPanel"){
-			obj.desc.style.display = "none";
-			obj.headerWidth = headerWidth;
-			objList.push(obj);
-		}
 		
 		if(obj.headerDiv && obj.headerDiv.offsetWidth > 0){
 			if( (headerWidth - offset ) >= 0 ) 
@@ -1275,14 +1289,6 @@ IS_Widget.adjustDescWidth = function() {
 			IS_Widget.adjustDescImgWidth(obj.desc, headerWidth, obj.widget);
 	}
 	IS_Widget.processAdjustRssDesc();
-	
-	var resizeDescs = function(){
-		for(var i=0;i<objList.length;i++){
-			objList[i].desc.style.display = "block";
-//			IS_Widget.adjustDescImgWidth(obj.desc, objList[i].headerWidth, obj.widget);
-			IS_Widget.adjustDescImgWidth(objList[i].desc, objList[i].headerWidth, objList[i].widget);
-		}
-	}
 };
 
 Event.observe(window, 'resize', IS_Widget.adjustDescWidth, false);

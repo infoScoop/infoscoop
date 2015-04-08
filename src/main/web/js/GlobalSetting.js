@@ -63,9 +63,10 @@ IS_Portal.buildGlobalSettingModal = function() {
 
 		prefPage = document.createElement("div");
 		prefPage.style.height = "100%";
-		
-		prefPage.appendChild(buildBackgroundSetting());
-		prefPage.appendChild(buildWidgetThemeSetting());
+
+// Disable old theme function #16405
+//		prefPage.appendChild(buildBackgroundSetting());
+//		prefPage.appendChild(buildWidgetThemeSetting());
 		prefPage.appendChild(buildShowAllSettingBody());
 		prefPage.appendChild(buildRssSettingBody());
 		prefPage.appendChild(buildCustomizeReset());

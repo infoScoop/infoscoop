@@ -783,6 +783,7 @@ IS_Draggable.prototype = {
 		document.body.appendChild(dummyElement);
 		dummyElement.style.position = "absolute";
 		dummyElement.style.zIndex = 10000;
+		$(dummyElement).addClassName("drag-dummy");
 		IS_Draggable.dummyElement = dummyElement;
 	  }
 	  
@@ -794,6 +795,7 @@ IS_Draggable.prototype = {
 	  } else{
 		  var dummyContent = document.createElement(this.element.nodeName? this.element.nodeName : "div");
 		  dummyContent.className = this.element.className;
+		  $(dummyContent).addClassName("dummy");
 		  dummyContent.innerHTML = this.element.innerHTML;
 		  dummyContent.style.height = "100%";
 		  IS_Draggable.dummyElement.appendChild(dummyContent);
@@ -893,8 +895,8 @@ IS_Draggable.prototype = {
         p = Position.page(this.options.scroll);
         p[0] += this.options.scroll.scrollLeft + Position.deltaX;
         p[1] += this.options.scroll.scrollTop + Position.deltaY;
-        p.push(p[0]+this.options.scroll.offsetWidth);
-        p.push(p[1]+this.options.scroll.offsetHeight);
+        p[2] = p[0]+this.options.scroll.offsetWidth;
+        p[3] = p[1]+this.options.scroll.offsetHeight;
       }
       var speed = [0,0];
       if(pointer[0] < (p[0]+this.options.scrollSensitivity)) speed[0] = pointer[0]-(p[0]+this.options.scrollSensitivity);
@@ -982,7 +984,15 @@ IS_Draggable.prototype = {
   
   //Draw dragging
   draw: function(point, element, dummyElement) {
-  	point = [point[0]-document.documentElement.scrollLeft, point[1]-document.documentElement.scrollTop];
+    var scrollTop
+    if(this.options.scroll == window){
+        scrollTop = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+    }else{
+        scrollTop = this.options.scroll.scrollTop;
+    }
+    scrollTop = parseInt(scrollTop);
+    
+  	point = [point[0]-document.documentElement.scrollLeft, point[1]-scrollTop];
   	if(!element || !dummyElement)
 		element = dummyElement = IS_Draggable.dummyElement;
 

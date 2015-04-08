@@ -37,13 +37,13 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	var maximizeIcons = [
 		{
 		  type:	"refresh",
-		  imgUrl:	"refresh.gif",
+		  imgUrl:	"refresh.png",
 
 		  alt: IS_R.lb_refresh
 		},
 		{
 		  type:	"turnbackMaximize",
-		  imgUrl:	"turnback.gif",
+		  imgUrl:	"back.png",
 
 		  alt: IS_R.lb_turnback
 		}
@@ -67,10 +67,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	}
 	this.buildContents = function () {
 		headerDiv = document.createElement("div");
-		headerDiv.style.width = "100%";
-		headerDiv.style.position = "relative";
-		headerDiv.style.height = "19px";
-		headerDiv.style.overflow = "hidden";
+		headerDiv.className = "widget-header-inner";
 		widget.elm_widgetHeader.appendChild(headerDiv);
 		
 		IS_Event.observe( headerDiv, "mouseover", observeEventsFunc, false, widget.closeId);
@@ -95,7 +92,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			hiddenIcons.push(
 				{
 				  type:  "edit",
-				  imgUrl: "edit.gif",
+				  imgUrl: "edit.png",
 				  alt: IS_R.lb_setting
 				}
 				);
@@ -108,7 +105,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		  hiddenIcons.push(
 			  {
 				type:  "close",
-				imgUrl: "trash.gif",
+				imgUrl: "trash-o.png",
 				alt: IS_R.lb_delete
 			  }
 			  );
@@ -146,29 +143,31 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		}
 		
 		var visibles = header.icon;
+		var hasMinimizeIcon = false;
 
 		var visibleIcons = (visibles) ? [].concat(visibles) : [];
 		if(!widget.originalWidget){
 			if(header.refresh != 'off'){
 			  visibleIcons.push({
 				type:	"refresh",
-				imgUrl:	"refresh.gif",
+				imgUrl:	"refresh.png",
 				  
 				alt: IS_R.lb_refresh
 			  });
 			}
 			if(!isStatic && header.minimize != 'off'){
+			    hasMinimizeIcon = true;
 				visibleIcons.push(
 					{
 					  type:  "minimize",
-					  imgUrl: "_.gif",
+					  imgUrl: "minimize.png",
 					  alt: IS_R.lb_minimize
 					});
 				
 				visibleIcons.push(
 					{
 					  type:  "turnBack",
-					  imgUrl: "turnback.gif",
+					  imgUrl: "plus-square-o.png",
 					  alt: IS_R.lb_turnback
 					}
 					);
@@ -177,7 +176,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				visibleIcons.push(
 					{
 					  type:  "maximize",
-					  imgUrl: "maximum.gif",
+					  imgUrl: "maximize.png",
 					  alt: IS_R.lb_maximize
 					});
 			}
@@ -200,7 +199,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				console.error(IS_R.getResource(IS_R.ms_invalidIconType,[widget.widgetType,iconType,alt,imgUrl]));
 			} else {
 				var div = document.createElement("div");
-				$(div).setStyle({"float":"left"});
+				div.className = "icon-container";
 				div.appendChild(iconDiv);
 				headerIconDiv.appendChild(div);
 				this.stockEvents(iconType, iconDiv);
@@ -210,14 +209,20 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		
 		if(!header.disableMenu && (!widget.originalWidget && hiddenIcons && hiddenIcons.length > 0)){
 			//showToolsButton
-			var div =  this.createIconDiv("showTools", "", "show_hidden_icons.gif", "block");
+			var div =  this.createIconDiv("showTools", "", "show_hidden_icons.png", "block");
 			$(div).setStyle({"float":"left"});
-			headerIconDiv.appendChild( div );
+			var container = document.createElement("div");
+			container.className = "icon-container";
+			headerIconDiv.appendChild(container);
+			container.appendChild( div );
 			this.stockEvents("showTools", div);
 			
 			visibleCount++;
 		}
-		titleHeaderDiv.style.marginRight = ((visibleCount - 1) * 16 + 10) + "px";//Minus 1 for maximizing and minimizing, and not consider 'search' and 'access statics' as they are set in menu
+		
+		// Minus 1 for minimizing and turn-back, and not consider 'search' and 'access statics' as they are set in menu
+		visibleCount = (hasMinimizeIcon) ? (visibleCount - 1) : visibleCount;
+		titleHeaderDiv.style.marginRight = (visibleCount * 20) + "px";
 		headerDiv.appendChild(headerIconDiv);
 		self.stockEvent(headerIconDiv, 'mousedown', this.common.bind(this, this.dummy, false, headerIconDiv), false, widget.closeId);
 	}
@@ -227,6 +232,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		if(!maximizeHeaderDiv){
 			
 			maximizeHeaderDiv = document.createElement("div");
+			maximizeHeaderDiv.className = "maximize-header-div";
 			maximizeHeaderDiv.style.width = "100%";
 			maximizeHeaderDiv.style.cursor = "default";
 			maximizeHeaderDiv.style.position = "relative";
@@ -251,12 +257,13 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 				}else{
 					var div = document.createElement("div");
 					$(div).setStyle({"float":"left"});
+					div.className = "icon-container";
 					div.appendChild(iconDiv);
 					headerIconDiv.appendChild(div);
-					IS_Event.observe(div, 'mousedown', this.iconDown.bind(this, div), false, widget.closeId);
-					IS_Event.observe(div, 'mouseup', this.iconUp.bind(this, div), false, widget.closeId);
-					IS_Event.observe(div, 'mouseout', this.iconUp.bind(this, div), false, widget.closeId);
-					IS_Event.observe(div, 'mouseup', this.common.bind(this, this[iconType].bind(this), isEnableLoading(iconType), div), false, widget.closeId);
+					IS_Event.observe(div, 'mousedown', this.iconDown.bind(this, iconDiv), false, widget.closeId);
+					IS_Event.observe(div, 'mouseup', this.iconUp.bind(this, iconDiv), false, widget.closeId);
+					IS_Event.observe(div, 'mouseout', this.iconUp.bind(this, iconDiv), false, widget.closeId);
+					IS_Event.observe(div, 'mouseup', this.common.bind(this, this[iconType].bind(this), isEnableLoading(iconType), iconDiv), false, widget.closeId);
 				}
 			}
 			maximizeHeaderDiv.appendChild(headerIconDiv);
@@ -311,6 +318,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		
 		if(widget.elm_favoriteIcon){
 			var favoriteIconDiv = document.createElement("td");
+			favoriteIconDiv.className = "favoriteIconTd";
 			favoriteIconDiv.appendChild(widget.elm_favoriteIcon);
 			titleHeaderTr.appendChild(favoriteIconDiv);
 		}
@@ -474,7 +482,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	}
 	
 	this.createIcon = function(type, alt, imgUrl, omitApplyIconStyle) {
-		var div = document.createElement("img");
+		var div = document.createElement("span");
 		div.border = "0";
 		div.className = 'headerIcon';
 		div.id = "hi_" + widget.id + "_" + type;
@@ -489,7 +497,18 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			}else{
 				url = (!isCommonType(type) && widget.resourceUrl ? widget.resourceUrl : imageURL) + imgUrl;
 			}
-			div.src = url;
+			if (!Browser.isLtIE8){
+				div.style.backgroundImage = 'url(' + url+ ')';
+			} else {
+				var image = document.createElement("div");
+				image.className = "image";
+				image.style.filter = "filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+ url + "', sizingMethod='crop')";
+				
+				var transparent = document.createElement("div");
+				transparent.className = "transparent";
+				image.appendChild(transparent);
+				div.appendChild(image);
+			}
 		}
 		
 
@@ -497,17 +516,13 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 			div.style.margin = "0px";
 			
 			var labelDiv = document.createElement("div");
-			labelDiv.className = 'headerIcon_turnbackMaximize';
+			labelDiv.className = 'headerIcon_turnbackMaximize is-button';
 			labelDiv.href = "javascript:void(0)";
 			
 			labelDiv.appendChild( div );
 			
 			var labelText = document.createElement("span");
 			labelText.appendChild(document.createTextNode( IS_R.lb_turnbackMaximize ));
-				
-			labelText.style.position = "relative";
-			labelText.style.top = "-1px";
-			labelText.style.verticalAlign = "bottom";
 			
 			labelDiv.appendChild(labelText);
 			
@@ -898,7 +913,7 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 	this.build = function(){
 		var menuDiv = document.createElement("div");
 		menuDiv.id = (this.eventKey + "_menu");
-		menuDiv.className = "widgetMenu";
+		menuDiv.className = "widgetMenu is-box";
 		menuDiv.style.display = "none";
 		for(var i=0;i<this.menuOptList.length;i++){
 			var itemDiv = createItem(this.eventKey, this.menuOptList[i]);
@@ -915,7 +930,6 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 			var className = opt.className || "";
 			
 			var borderDiv = document.createElement("div");
-			borderDiv.style.borderBottom = '1px solid #EEE';
 			
 			var itemDiv = document.createElement( opt.anchor ? "a":"span");
 			itemDiv.className = className + " item";
@@ -1022,7 +1036,23 @@ IS_Widget.WidgetHeader.MenuPullDown = function(element, widgetId, eventKey){
 				document.body.scrollTop = scrollTop + 'px';
 			}
 		}
-		IS_Event.observe(window, 'resize', this.handleHideMenu, false, this.eventKey);
+		
+		if(Browser.isIE){
+            this.winWidth = getWindowSize(true);
+            this.winHeight = getWindowSize(false);
+		}
+		
+		IS_Event.observe(window, 'resize', function(){
+		    if(Browser.isIE){
+                var winNewWidth = getWindowSize(true), winNewHeight = getWindowSize(false);
+		        if(this.winWidth == winNewWidth &&  this.winHeight == winNewHeight){
+		            return;
+		        }
+		        this.winWidth = winNewWidth;
+		        this.winHeight = winNewHeight;
+		    }
+		    this.handleHideMenu();
+		}.bind(this), false, this.eventKey);
 	}
 	
 	this.hide = function(e) {

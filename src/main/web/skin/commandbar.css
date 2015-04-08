@@ -19,6 +19,17 @@
 .infoScoop #portal-command{
 }
 
+.infoScoop td#portal-site-aggregation-menu + td {
+    width: 150px;
+}
+
+.infoScoop td#portal-site-aggregation-menu + td:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+}
+
 .infoScoop #portal-command .command,
 .infoScoop div[id^="control_window_"].preference .preferenceClose.command,
 .infoScoop #portal-go-home{
@@ -26,7 +37,7 @@
 	margin-right: 3px;
 	white-space:nowrap;
 	cursor:pointer;
-	color:#7777cc;
+	color: #0285B5;
 }
 
 .infoScoop #portal-command a.command.manual img {
@@ -46,19 +57,19 @@
 }
 
 .infoScoop #portal-command #fontChange_large {
-	background:url(./imgs/font.gif) left center no-repeat;
+	background:url(./imgs/font.png) left center no-repeat;
 	_background-position: center;
 	padding-right: 0px;
 }
 
 .infoScoop #portal-command #fontChange_small {
-	background:url(./imgs/font_s.gif) left center no-repeat;
+	background:url(./imgs/font-s.png) left center no-repeat;
 	_background-position: center;
 	padding-right: 0px;
 }
 
 .infoScoop #portal-command #fontChange_standard {
-	background:url(./imgs/font_m.gif) left center no-repeat;
+	background:url(./imgs/font-m.png) left center no-repeat;
 	_background-position: center;
 	padding-right: 0px;
 }
@@ -104,6 +115,7 @@
 }
 .infoScoop .trashContainer .trashTable td {
 	overflow: hidden;
+	padding: 1.5px;
 }
 .infoScoop #trashContext table{
 	border:1px solid gray;
@@ -143,13 +155,9 @@
 }
 
 .infoScoop div[id^="control_window_"].preference .preferenceTable {
-/*	width:400px;*/
 	min-height:100px;
-	padding:10px;
-	height:auto;
-}
-.infoScoop div[id^="control_window_"].preference .preferenceTable {
-	height: 100px;
+	padding:5px;
+    height: 100px;
 }
 
 .infoScoop div[id^="control_window_"].preference .preferenceTable td{
@@ -161,10 +169,18 @@
 	position: relative;
 }
 .infoScoop div[id^="control_window_"].preference .preferencePage {
+	margin: 5px;
 }
 
 .infoScoop div[id^="control_window_"].preference .preferencePage fieldset {
-	padding: 5px;
+	padding: 10px;
+	margin-bottom:8px;
+	border: 1px solid #CCCCCC;
+}
+
+.infoScoop div[id^="control_window_"].preference .preferencePage fieldset>table {
+	margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 .infoScoop div[id^="control_window_"].preference .preferencePage .preferenceMenu{
@@ -182,10 +198,6 @@
 .infoScoop div[id^="control_window_"].preference .preferencePage .preferenceMenu span{
 	position:relative;
 	top:8px;
-}
-
-.infoScoop div[id^="control_window_"].preference .preferencePage fieldSet{
-	margin-bottom:8px;
 }
 
 .infoScoop div[id^="control_window_"].preference .preferencePage .pageTitle{
@@ -208,9 +220,11 @@
 }
 .infoScoop .authCredentialInfoList .authCredentialInfoTable{
 	width:100%;
+	margin-top:8px;
 }
 .infoScoop .authCredentialInfoList .authCredentialInfoTable th{
 	border:1px solid gray;
+	padding:2.5px;
 }
 
 .infoScoop .authCredentialInfoList .authCredentialInfoTitle{
@@ -241,10 +255,11 @@
 	font-size:110%;
 	text-align:right;
 	vertical-align:top;
+	padding: 1.5px;
 }
 
 #authCredentialListDiv{
-	background:url(./imgs/page_user.gif) no-repeat;
+	background:url(./imgs/key.png) no-repeat;
 	background-position: 3px center;
 }
 
@@ -257,15 +272,22 @@ div#portal-command > table{
 }
 
 #command-bar{
-	padding-top: 1px;
-	background-color : #eee;
+	background-color : transparent;
 	height: 24px;
+	color: #737373;
+	padding: 10px 19px 5px 0px;
 }
 
 .commandbar-item{
-	margin: auto;
 	width: 99%;
 	white-space: nowrap; /* for IE */
+}
+
+#command-bar .widgetBoxNoHeader, #command-bar .widgetBox {
+	border: 1px solid #e0e0e0;
+	border: 1px solid rgba(0,0,0,.1);
+	box-shadow: none;
+	filter: none;
 }
 
 /** user menu */
@@ -276,30 +298,45 @@ div#portal-command > table{
 	padding-right: 12px;
 	white-space: nowrap;
 	overflow-x: hidden;
+	position: relative;
+}
+
+#portal-user-menu:after {
+	content: "";
+	position: absolute;  
+	top: 8px;  
+	right: 2px;  border-width: 4px 4px 0;
+	border-style: solid;
+	border-color: #777 transparent;
+}
+
+#portal-user-menu.active {
+	color: #404040;
+}
+
+#portal-user-menu.active:after {
+	border-color: #404040 transparent;
 }
 
 #portal-user-menu-label{
 	height: 18px;
 	_height: 24px;
 	overflow: hidden;
-	padding: 8px 0 0 20px;
+	padding: 0px 0 0 10px;
 	_padding: 5 0 3px 20px; /* for IE */
-	background: url(./imgs/status_offline.gif) center left no-repeat;
 	max-width: 150px;
 }
 
-#portal-user-menu-body{
+#portal-user-menu-body {
 	position: absolute;
-	background-color: #fff;
 	z-index: 100000;
-	border: solid 1px #aaa;
+	padding: 8px;	
 }
 
 div.portal-user-menu-item{
 	clear: both;
-	border-bottom: 1px solid #ddd;
 	width: 100%;
-	color: #000;
+	color: #404040;
 }
 
 a.portal-user-menu-link{
@@ -312,18 +349,18 @@ a.portal-user-menu-link{
 }
 
 a.portal-user-menu-link:hover{
-	color: #fff;
-	background-color: #5286BB;
+	color: #404040;
+	background-color: #eeeeee;
 	text-decoration: none;
 	cursor: pointer;
 }
 
 a.portal-user-menu-link:visited{
-	color: #000;
+	color: #404040;
 }
 
 a.portal-user-menu-link:visited:hover{
-	color: #fff;
+	color: #404040;
 }
 
 .portal-user-menu-item-label{
@@ -333,35 +370,36 @@ a.portal-user-menu-link:visited:hover{
 	float: left;
 	white-space: nowrap;
 	line-height: 1.5em;
+	color: #404040;
 }
 
 .user-link{
-	background: url(./imgs/world_link.gif) no-repeat;
+	background: url(./imgs/external-link.png) no-repeat;
 	background-position: 3px center;
 }
 
 #trash-icon{
-	background: url(./imgs/trash.gif) no-repeat;
+	background: url(./imgs/trash-o.png) no-repeat;
 	background-position: 3px center;
 }
 
 #allPreference{
-	background: url(./imgs/wrench.gif) no-repeat;
+	background: url(./imgs/wrench.png) no-repeat;
 	background-position: 3px center;
 }
 
 #admin-link{
-	background: url(./imgs/cog.gif) no-repeat;
+	background: url(./imgs/cog.png) no-repeat;
 	background-position: 3px center;
 }
 
 #logout{
-	background: url(./imgs/door_in.gif) no-repeat;
+	background: url(./imgs/sign-out.png) no-repeat;
 	background-position: 3px center;
 }
 
 #font-change-div{
-	background: url(./imgs/font.gif) no-repeat;
+	background: url(./imgs/font.png) no-repeat;
 	background-position: 3px center;
 }
 
@@ -369,4 +407,10 @@ select#font-size-select{
 	margin-top: 2px;
 	_margin:1px; /* for IE layout */
 	float: left;
+}
+
+/* message console*/
+#messageIcon {
+	vertical-align: bottom;
+	padding: 4px 0px 4px 5px;
 }
