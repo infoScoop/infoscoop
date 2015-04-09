@@ -1,4 +1,4 @@
-infoScoop OpenSource 3.4.0
+infoScoop OpenSource 4.0.0
 ==========================
 
 infoScoop OpenSourceとは
@@ -15,17 +15,17 @@ http://www.infoscoop.org/
 インストール方法
 ----------------
 以下のURLを参照してください。
-http://www.infoscoop.org/index.php/ja/manual/installation-guide.html
+https://github.com/infoScoop/infoscoop-documents/blob/master/ja/index.md
 
 
-バージョン3.1.x、3.3.0-betaからの移行手順
+バージョン3.4.0以前からの移行手順
 --------------------------------------------------
-3.1.x、3.3.0-betaから本バージョンに移行するには以下の手順を実行します。
+3.4.0以前から本バージョンに移行するには以下の手順を実行します。
 
 	1. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
         2. ガジェットの更新を行ってください。更新方法については以下のURLを参照してください。
-           https://www.infoscoop.org/index.php/document-310/administration-guide/gadget-settings.html#5_2_2_________________________
+           https://github.com/infoScoop/infoscoop-documents/blob/master/ja/administration-guide/gadget-settings.md#522-%E3%82%AC%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88%E3%81%AE%E6%9B%B4%E6%96%B0
 
            最新のガジェットは、\tools\initdb\gadget_files 配下にzipファイルとして配置しています。
            ガジェットファイル（ZIP形式）は以下になります。
@@ -93,14 +93,18 @@ http://www.infoscoop.org/index.php/ja/manual/installation-guide.html
 	2. MySQLの設定ファイル「my.cnf」に以下の設定を追加してください。
            変更後はMySQLの再起動が必要です。
 	************************************
+	[mysql]
+	default-character-set = utf8
+
 	[mysqld]
+	default-character-set = utf8
 	lower_case_table_names = 1
 	************************************
 
 	3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
 
         4. ガジェットの更新を行ってください。更新方法については以下のURLを参照してください。
-           https://www.infoscoop.org/index.php/document-310/administration-guide/gadget-settings.html#5_2_2_________________________
+           https://github.com/infoScoop/infoscoop-documents/blob/master/ja/administration-guide/gadget-settings.md#522-%E3%82%AC%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88%E3%81%AE%E6%9B%B4%E6%96%B0
 
            最新のガジェットは、\tools\initdb\gadget_files 配下にzipファイルとして配置しています。
            ガジェットファイル（ZIP形式）は以下になります。
@@ -128,7 +132,7 @@ http://www.infoscoop.org/index.php/ja/manual/installation-guide.html
 ライセンスおよびコピーライト情報は LICENSE.txt を参照ください。
 
 
-3.3.0-betaから3.4.0での変更点
+3.4.0から4.0.0での変更点
 ------------------------
 以下のURLを参照してください。
-https://github.com/infoScoop/infoscoop/issues?milestone=6&state=closed
+https://github.com/infoScoop/infoscoop/issues?q=milestone%3AMilestone-4.0.0+is%3Aclosed

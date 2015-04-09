@@ -1,4 +1,4 @@
-infoScoop OpenSource 3.4.0
+infoScoop OpenSource 4.0.0
 ========================
 
 About infoScoop OpenSource
@@ -16,17 +16,17 @@ http://www.infoscoop.org/.
 How to Install
 --------------
 Refer to the URL below.
-http://www.infoscoop.org/index.php/manual/quick-start.html
+https://github.com/infoScoop/infoscoop-documents/blob/master/en/index.md
 
 
-How to migrate from version 3.1.x, 3.3.0-beta
+How to migrate from version 3.4.0 or earlier
 --------------------------------------------------
-To migrate from version 3.1.x, 3.3.0-beta to 3.4.0, follow the steps below.
+To migrate from version 3.4.0 or earlier to 4.0.0, follow the steps below.
 
 	1. Redeploy infoscoop.war to WebApplication Server.
 
         2. Please refer to the following URL and update gadgets. 
-           https://www.infoscoop.org/index.php/en/document-310/administration-guide/gadget-settings.html#5_2_2_Updating_a_Gadget
+           https://github.com/infoScoop/infoscoop-documents/blob/master/en/administration-guide/gadget-settings.md#522-updating-a-gadget
 
            The following is a ZIP file of a gadget. 
 	************************************
@@ -100,7 +100,7 @@ To migrate from version 3.1.x, 3.3.0-beta to 3.4.0, follow the steps below.
 	3. Redeploy infoscoop.war to WebApplication Server.
 
         4. Please refer to the following URL and update gadgets. 
-           https://www.infoscoop.org/index.php/en/document-310/administration-guide/gadget-settings.html#5_2_2_Updating_a_Gadget
+           https://github.com/infoScoop/infoscoop-documents/blob/master/en/administration-guide/gadget-settings.md#522-updating-a-gadget
 
            The following is a ZIP file of a gadget. 
 	************************************
@@ -126,7 +126,7 @@ This code is licensed under the **GNU Lesser General Public License (LGPL) v3**.
 Please see LICENSE.txt for licensing and copyright information.
 
 
-Changes from Version 3.3.0-beta to 3.4.0
+Changes from Version 3.4.0 to 4.0.0
 -----------------------------------
 Refer to the URL below.
-https://github.com/infoScoop/infoscoop/issues?milestone=6&state=closed
+https://github.com/infoScoop/infoscoop/issues?q=milestone%3AMilestone-4.0.0+is%3Aclosed

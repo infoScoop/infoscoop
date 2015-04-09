@@ -1,4 +1,4 @@
-infoScoop OpenSource 3.4.0
+infoScoop OpenSource 4.0.0
 ==========================
 
 infoScoop OpenSourceとは
@@ -22,7 +22,7 @@ infoScoop OpenSourceのセットアップを行う前に、以下の準備が必
 
 セットアップ方法
 ----------------
-infoscoop-3.4.0-quickstart.zip(tar.gz)を解凍し以下の手順を実行してください。
+infoscoop-4.0.0-quickstart.zip(tar.gz)を解凍し以下の手順を実行してください。
 
 1. リポジトリデータベースの作成
 
@@ -38,7 +38,11 @@ mysql>exit
 
 MySQLの設定ファイル「my.cnf」に以下の設定を追加します。
 ***************
+[mysql]
+default-character-set = utf8
+
 [mysqld]
+default-character-set = utf8
 lower_case_table_names = 1
 ***************
 
@@ -46,7 +50,7 @@ lower_case_table_names = 1
 
 以下のコマンドを実行し、作成したデータベースに初期データを投入します。
 
-$ mysql -uroot iscoop < infoscoop-3.4.0-quickstart/init_infoscoop.ja.sql
+$ mysql -uroot iscoop < infoscoop-4.0.0-quickstart/init_infoscoop.ja.sql
 
 * init_infoscoop.sql を選択した場合はメニュー等のサンプル設定が英語になります。
 
@@ -93,7 +97,7 @@ http://<ホスト名>:8080/infoscoop/
 
 以下のファイルを編集します。
 
-infoscoop-3.4.0-quickstart/initdb/data/accounts/import.csv
+infoscoop-4.0.0-quickstart/initdb/data/accounts/import.csv
 
 <ユーザID>,<ユーザ名>,<パスワード> の形式でユーザを追加します。
 
@@ -101,7 +105,7 @@ infoscoop-3.4.0-quickstart/initdb/data/accounts/import.csv
 
 initdbディレクトリに移動し、addaccount.bat(sh)を実行します。
 
-$ cd infoscoop-3.4.0-quickstart/initdb
+$ cd infoscoop-4.0.0-quickstart/initdb
 $ addaccount.bat(sh)
 
 
@@ -113,7 +117,7 @@ $ addaccount.bat(sh)
 ライセンスおよびコピーライト情報は LICENSE.txt を参照ください。
 
 
-3.3.0-betaから3.4.0での変更点
+3.4.0から4.0.0での変更点
 ------------------------
 以下のURLを参照してください。
-https://github.com/infoScoop/infoscoop/issues?milestone=6&state=closed
+https://github.com/infoScoop/infoscoop/issues?q=milestone%3AMilestone-4.0.0+is%3Aclosed
