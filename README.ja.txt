@@ -1,90 +1,128 @@
-infoScoop OpenSource 3.1.0
+infoScoop OpenSource 4.0.0
 ==========================
 
 infoScoop OpenSourceとは
 ------------------------
 「infoScoop」は個人のワークスタイルに合わせて進化する情報ポータルです。業務シス
 テムや社内外の膨大な情報の中から個人にとって重要な情報の提供や、自由な配置と整理
-を実現し、個人の情報処理スキルやワークスタイルに合わせた 「使いたくなる」 ポータ
-ルを実現します。
+を実現し、個人の情報処理スキルやワークスタイルに合わせた「使いたくなる」ポータル
+を実現します。
 
 詳細な説明は、以下のinfoScoop OpenSource公式サイトをご参照ください。
 http://www.infoscoop.org/
 
-バージョン3.0.0からの移行手順
---------------------------------------------------
-3.0.0から本バージョンに移行するには以下の手順を実行します。
-
-1. staticContentUrlプロパティを設定している場合は静的コンテンツを入れ替えます。
-  静的コンテンツを配置しているディレクトリ以下をinfoscoop/staticContent以下のコ
-  ンテンツに置換します。
-
-2. データベースの内容を更新します。
-  (1). コマンドプロンプトを開き、tools/initdbディレクトリに移動します。
-  (2). 適切なJDBCドライバーをlibディレクトリにコピーします。
-  (3). 以下のコマンドを実行します。
-     >import.sh(bat) I18N
-
-3. tools/migration/migration.propertiesを編集して、データベース接続設定をします。
-
-  DBMS=mysql
-  DATABASE_URL=jdbc:mysql://localhost:3306/iscoop
-  #SCHEMA=iscoop
-  USER=root
-  PASSWORD=
-  #TABLESPACE=
-
-  1)DBMS: mysql、oracle、db2のいずれかを指定します。
-  2)DATABASE_URL: JDBC接続するURLを指定します。
-  3)SCHEMA: 省略した場合は、ユーザ名と同じスキーマに適用されます。MySQLでは指定しないでください。
-  4)USER: 接続ユーザを指定します。
-  5)PASSWORD: 接続パスワードを指定します。
-  6)TABLESPACE: DB2専用のオプションです。テーブルスペースを指定します。
-
-4. 利用しているDMBSのJDBCドライバーをlibディレクトリにコピーします。
-  (MySQLのドライバーは予め含まれて居るのでこの手順は省略してください。)
-
-5. 移行ツールの実行
-
-  $ migration.bat(sh)を実行します。
-
-6. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
-
-7. 本バージョンから検索フォーム、ユーザID(ユーザ名)表示はコマンドバーに移動しています。カスタムヘッダ領域から
-   該当箇所を削除することを推奨いたします。
-   管理画面->レイアウト->画面その他->header から、以下の箇所を削除してください。
-
-   <td>
-	<form name="searchForm" onsubmit="javascript:IS_Portal.SearchEngines.buildSearchTabs(document.getElementById('searchTextForm').value);return false;">
-	<div style="float:right;margin-right:5px">
-		<table>
-			<tbody>
-				<tr>
-					<td colspan="2" align="right" style="font-size:80%;">
-						<#if session.getAttribute("Uid")??>%{lb_welcome}${session.getAttribute("loginUserName")}%{lb_san}
-						<#else><a href="login.jsp">%{lb_login}</a>
-						</#if>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input id="searchTextForm" type="text" style="width:200px;height:23px;float:left;"/>
-						<input type="submit" value="%{lb_search}" style="padding:0 0.4em;"/>
-						<span id="editsearchoption">%{lb_searchOption}</span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	</form>
-   </td>
-
-   上記はデフォルトの場合となりますので、カスタマイズされている場合は該当部分を削除してください。
 
 インストール方法
 ----------------
 以下のURLを参照してください。
-http://www.infoscoop.org/index.php/ja/manual/installation-guide.html
+https://github.com/infoScoop/infoscoop-documents/blob/master/ja/index.md
+
+
+バージョン3.4.0以前からの移行手順
+--------------------------------------------------
+3.4.0以前から本バージョンに移行するには以下の手順を実行します。
+
+	1. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
+
+        2. ガジェットの更新を行ってください。更新方法については以下のURLを参照してください。
+           https://github.com/infoScoop/infoscoop-documents/blob/master/ja/administration-guide/gadget-settings.md#522-%E3%82%AC%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88%E3%81%AE%E6%9B%B4%E6%96%B0
+
+           最新のガジェットは、\tools\initdb\gadget_files 配下にzipファイルとして配置しています。
+           ガジェットファイル（ZIP形式）は以下になります。
+	************************************
+        アラーム
+        \tools\initdb\gadget_files\alarm.zip
+        ブログパーツ
+        \tools\initdb\gadget_files\blogparts.zip
+        電卓
+        \tools\initdb\gadget_files\calc.zip
+        付箋紙
+        \tools\initdb\gadget_files\sticky.zip
+        TODOリスト
+        \tools\initdb\gadget_files\todoList.zip
+        標準時時計
+        \tools\initdb\gadget_files\worldclock.zip
+	************************************
+
+* 運用サーバーがLinuxかつリポジトリデータベースがMySQLの場合、
+  移行手順が以下のように変更されます。
+
+	1. リポジトリデータベースに格納されているテーブルの名前を全て小文字に変更してください。
+	   以下にSQL例を示します。
+	************************************
+	RENAME TABLE IS_ACCESSLOGS TO is_accesslogs;
+	RENAME TABLE IS_ACCOUNTS TO is_accounts;
+	RENAME TABLE IS_ADMINROLES TO is_adminroles;
+	RENAME TABLE IS_AUTHCREDENTIALS TO is_authcredentials;
+	RENAME TABLE IS_CACHES TO is_caches;
+	RENAME TABLE IS_FORBIDDENURLS TO is_forbiddenurls;
+	RENAME TABLE IS_GADGETS TO is_gadgets;
+	RENAME TABLE IS_GADGET_ICONS TO is_gadget_icons;
+	RENAME TABLE IS_HOLIDAYS TO is_holidays;
+	RENAME TABLE IS_I18N TO is_i18n;
+	RENAME TABLE IS_I18NLASTMODIFIED TO is_i18nlastmodified;
+	RENAME TABLE IS_I18NLOCALES TO is_i18nlocales;
+	RENAME TABLE IS_KEYWORDS TO is_keywords;
+	RENAME TABLE IS_LOGS TO is_logs;
+	RENAME TABLE IS_MENUCACHES TO is_menucaches;
+	RENAME TABLE IS_MENUS TO is_menus;
+	RENAME TABLE IS_MENUS_TEMP TO is_menus_temp;
+	RENAME TABLE IS_MESSAGES TO is_messages;
+	RENAME TABLE IS_OAUTH2_TOKENS TO is_oauth2_tokens;
+	RENAME TABLE IS_OAUTH_CERTIFICATE TO is_oauth_certificate;
+	RENAME TABLE IS_OAUTH_CONSUMERS TO is_oauth_consumers;
+	RENAME TABLE IS_OAUTH_GADGET_URLS TO is_oauth_gadget_urls;
+	RENAME TABLE IS_OAUTH_TOKENS TO is_oauth_tokens;
+	RENAME TABLE IS_PORTALADMINS TO is_portaladmins;
+	RENAME TABLE IS_PORTALLAYOUTS TO is_portallayouts;
+	RENAME TABLE IS_PREFERENCES TO is_preferences;
+	RENAME TABLE IS_PROPERTIES TO is_properties;
+	RENAME TABLE IS_PROXYCONFS TO is_proxyconfs;
+	RENAME TABLE IS_RSSCACHES TO is_rsscaches;
+	RENAME TABLE IS_SEARCHENGINES TO is_searchengines;
+	RENAME TABLE IS_SESSIONS TO is_sessions;
+	RENAME TABLE IS_SYSTEMMESSAGES TO is_systemmessages;
+	RENAME TABLE IS_TABLAYOUTS TO is_tablayouts;
+	RENAME TABLE IS_TABS TO is_tabs;
+	RENAME TABLE IS_TAB_ADMINS TO is_tab_admins;
+	RENAME TABLE IS_USERPREFS TO is_userprefs;
+	RENAME TABLE IS_WIDGETCONFS TO is_widgetconfs;
+	RENAME TABLE IS_WIDGETS TO is_widgets;
+	************************************
+
+	2. MySQLの設定ファイル「my.cnf」に以下の設定を追加してください。
+           変更後はMySQLの再起動が必要です。
+	************************************
+	[mysql]
+	default-character-set = utf8
+
+	[mysqld]
+	default-character-set = utf8
+	lower_case_table_names = 1
+	************************************
+
+	3. Webアプリケーションサーバーにinfoscoop.warを再デプロイしてください。
+
+        4. ガジェットの更新を行ってください。更新方法については以下のURLを参照してください。
+           https://github.com/infoScoop/infoscoop-documents/blob/master/ja/administration-guide/gadget-settings.md#522-%E3%82%AC%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88%E3%81%AE%E6%9B%B4%E6%96%B0
+
+           最新のガジェットは、\tools\initdb\gadget_files 配下にzipファイルとして配置しています。
+           ガジェットファイル（ZIP形式）は以下になります。
+	************************************
+        アラーム
+        \tools\initdb\gadget_files\alarm.zip
+        ブログパーツ
+        \tools\initdb\gadget_files\blogparts.zip
+        電卓
+        \tools\initdb\gadget_files\calc.zip
+        付箋紙
+        \tools\initdb\gadget_files\sticky.zip
+        TODOリスト
+        \tools\initdb\gadget_files\todoList.zip
+        標準時時計
+        \tools\initdb\gadget_files\worldclock.zip
+	************************************
+
 
 ライセンス・著作権
 ------------------
@@ -94,7 +132,7 @@ http://www.infoscoop.org/index.php/ja/manual/installation-guide.html
 ライセンスおよびコピーライト情報は LICENSE.txt を参照ください。
 
 
-3.0.0から3.1.0での変更点
+3.4.0から4.0.0での変更点
 ------------------------
 以下のURLを参照してください。
-https://code.google.com/p/infoscoop/issues/list?can=1&q=milestone=3.1.0
+https://github.com/infoScoop/infoscoop/issues?q=milestone%3AMilestone-4.0.0+is%3Aclosed
