@@ -15,7 +15,7 @@ This Software includes the following open source software released by third
 accordance with the respective licenses accompanying the Third Party OSS.
 
 List of Third Party OSS and licenses
-http://www.infoscoop.org/index.php/en/component/content/article/39.html
+https://www.infoscoop.org/en/third-party-software-licenses/
 
 Modification
 
@@ -25,7 +25,7 @@ OSS.  Please see their respective licenses.
 
 Copyright
 
-Beacon Information Technology, Inc. holds the copyright on this Software. 
+UNIRITA Inc. holds the copyright on this Software.
 However, the copyright of the Third Party OSS belongs to its respective
 copyright holders.
 
