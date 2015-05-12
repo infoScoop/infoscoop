@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<property name="clob.type" value="clob" dbms="oracle, db2"/>
+    <property name="clob.type" value="text" dbms="mysql"/>
+
+    <!--Issue 597-->
+    <!--
+    ALTER TABLE IS_WIDGETS ROW_FORMAT=DYNAMIC;
+    ALTER TABLE IS_LOGS ROW_FORMAT=DYNAMIC;
+    ALTER TABLE IS_KEYWORDS ROW_FORMAT=DYNAMIC;
+    ALTER TABLE IS_SESSIONS ROW_FORMAT=DYNAMIC;
+    ALTER TABLE IS_AUTHCREDENTIALS ROW_FORMAT=DYNAMIC;
+    -->
+    <changeSet id="infoscoop_sleepyalpha_597_1" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_597_1">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sql>ALTER TABLE IS_WIDGETS ROW_FORMAT=DYNAMIC;</sql>
+        <sql>ALTER TABLE IS_LOGS ROW_FORMAT=DYNAMIC;</sql>
+        <sql>ALTER TABLE IS_KEYWORDS ROW_FORMAT=DYNAMIC;</sql>
+        <sql>ALTER TABLE IS_SESSIONS ROW_FORMAT=DYNAMIC;</sql>
+        <sql>ALTER TABLE IS_AUTHCREDENTIALS ROW_FORMAT=DYNAMIC;</sql>
+    </changeSet>
+
+    <!--ALTER TABLE IS_USERPREFS DROP INDEX is_userprefs_value;-->
+    <changeSet id="infoscoop_sleepyalpha_597_2" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_597_1">
+            <dbms type="mysql"/>
+            <indexExists indexName="is_userprefs_value"/>
+        </preConditions>
+        <dropIndex indexName="is_userprefs_value" tableName="IS_USERPREFS"/>
+    </changeSet>
+</databaseChangeLog>
