@@ -46,7 +46,7 @@ create table IS_WIDGETS (
   createDate bigint not null default 0,
   deleteDate bigint not null default 0,
   constraint is_widgets_unique unique (`UID`, tabid, widgetId, deleteDate)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;
 
 create index is_widgets_tabId on IS_WIDGETS(tabId);
 create index is_widgets_parentId on IS_WIDGETS(parentId);
@@ -68,7 +68,6 @@ create table IS_USERPREFS (
 
 create index is_userprefs_fk_widget_id on IS_USERPREFS(fk_widget_id);
 create index is_userprefs_name on IS_USERPREFS(name);
-create index is_userprefs_value on IS_USERPREFS(value);
 
 --
 -- CACHE
@@ -113,7 +112,7 @@ create table IS_LOGS (
   rssurl varchar (1024) not null,
   rssurl_key varchar (256)  not null,
   `DATE` varchar (24) not null
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;
 
 create index is_logs_uid on IS_LOGS(`UID`);
 create index is_logs_type on IS_LOGS(type);
@@ -138,7 +137,7 @@ create table IS_KEYWORDS (
   type integer not null,
   keyword varchar(500) not null,
   `DATE` varchar (24) not null
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;
 
 create index is_keywords_uid on IS_KEYWORDS(`UID`);
 create index is_keywords_type on IS_KEYWORDS(type);
@@ -316,7 +315,7 @@ create table IS_SESSIONS (
   sessionId varchar(256) not null,
   LOGINDATETIME TIMESTAMP,
   primary key (`UID`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;
 
 create index is_sessions_sessionId on IS_SESSIONS(sessionId);
 create index is_sessions_loginDateTime on IS_SESSIONS(loginDateTime);
@@ -341,7 +340,7 @@ create table IS_AUTHCREDENTIALS (
   authDomain varchar(64),
   authUid varchar(300) not null,
   authPasswd varchar(512)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;
 
 create index is_authCredentials_uid on IS_AUTHCREDENTIALS(`UID`);
 
