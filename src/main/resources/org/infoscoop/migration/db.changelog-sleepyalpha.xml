@@ -30,10 +30,47 @@
 
     <!--ALTER TABLE IS_USERPREFS DROP INDEX is_userprefs_value;-->
     <changeSet id="infoscoop_sleepyalpha_597_2" author="mikami">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_597_1">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_597_2">
             <dbms type="mysql"/>
             <indexExists indexName="is_userprefs_value"/>
         </preConditions>
         <dropIndex indexName="is_userprefs_value" tableName="IS_USERPREFS"/>
     </changeSet>
+    
+    <!--Issue 598-->
+    <!--CREATE TABLE `is_squares` (id varchar(64) not null, name varchar(256) not null, tabdesc text, lastmodified timestamp not null primary key(id));-->
+    <changeSet id="infoscoop_sleepyalpha_598_1" author="nishiumi">
+        <preConditions onFail="HALT" onFailMessage="skip infoscoop_sleepyalpha_598_1">
+            <not>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="is_squares"/>
+            </not>
+        </preConditions>
+        <createTable tableName="is_squares" tablespace="${.tablespace}">
+            <column name="id" type="varchar(64)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="${clob.type}"/>
+            <column name="templastmodified" type="Timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <!--ALTER TABLE IS_* ADD COLUMN square_id varchar(64);-->
+    <changeSet id="infoscoop_sleepyalpha_598_2" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_2">
+            <not>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCESSLOGS" columnName="square_id"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="IS_ACCESSLOGS">
+            <column name="square_id" type="varchar(64)">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
 </databaseChangeLog>
