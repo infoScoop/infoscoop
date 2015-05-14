@@ -39,6 +39,7 @@
     
     <!--Issue 598-->
     <!--CREATE TABLE `is_squares` (id varchar(64) not null, name varchar(256) not null, tabdesc text, lastmodified timestamp not null primary key(id));-->
+    <!--INSERT INTO `is_squares` VALUES ("default","default","infoScoop Default Square.");-->
     <changeSet id="infoscoop_sleepyalpha_598_1" author="nishiumi">
         <preConditions onFail="HALT" onFailMessage="skip infoscoop_sleepyalpha_598_1">
             <not>
@@ -57,6 +58,11 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <insert tableName="is_squares">
+            <column name="id" value="default"/>
+            <column name="name" value="default"/>
+            <column name="description" value="infoScoop Default Square."/>
+        </insert>
     </changeSet>
     
     <!--ALTER TABLE IS_* ADD COLUMN square_id varchar(64);-->
@@ -66,11 +72,353 @@
                 <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCESSLOGS" columnName="square_id"/>
             </not>
         </preConditions>
-        <addColumn tableName="IS_ACCESSLOGS">
-            <column name="square_id" type="varchar(64)">
-                <constraints primaryKey="true" nullable="false" foreignKeyName="square_id" references="is_squares(id)" deleteCascade="true"/>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_ACCESSLOGS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_accesslogs_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_ADMINROLES">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_adminroles_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_AUTHCREDENTIALS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_authcredentials_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_CACHES">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_caches_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_FORBIDDENURLS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_forbiddenurls_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_GADGETS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_gadgets_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_GADGET_ICONS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_gadgeticons_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_HOLIDAYS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_holiday_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_I18N">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_i18n_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_I18NLASTMODIFIED">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_i18nlastmodified_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_I18NLOCALES">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_i18nlocales_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_KEYWORDS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_keywords_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_LOGS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_logs_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_MENUCACHES">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_menucaches_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_MENUS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_menus_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_MENUS_TEMP">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_menutemp_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_MESSAGES">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_messages_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_OAUTHPROVIDER_ACCESSTOKENS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_opaccesstokens_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_OAUTHPROVIDER_CLIENT">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_opclients_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_OAUTHPROVIDER_REFRESHTOKENS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_oprefreshtokens_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_OAUTH_CERTIFICATE">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_oauthcertificate_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_OAUTH_CONSUMERS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_oauthconsumers_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_OAUTH_GADGET_URLS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_oauthgadgeturls_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_PORTALADMINS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_portaladmins_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_PORTALLAYOUTS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_portallayouts_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_PREFERENCES">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_preferences_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_PROPERTIES">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_properties_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_PROXYCONFS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_proxyconf_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_RSSCACHES">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_rsscaches_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_SEARCHENGINES">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_searchengines_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_SESSIONS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_sessions_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_STATIC_TABS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_statictabs_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_SYSTEMMESSAGES">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_systemmessages_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_TABLAYOUTS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_tablayouts_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_TABS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_tabs_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_TAB_ADMINS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_tabadmins_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_WIDGETCONFS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_widgetconfs_square_id" references="is_squares(id)" deleteCascade="true"/>
+            </column>
+        </addColumn>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS">
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false" foreignKeyName="fk_is_widgets_square_id" references="is_squares(id)" deleteCascade="true"/>
             </column>
         </addColumn>
     </changeSet>
-    
+
+    <!--ALTER TABLE IS_ACCOUNTS ADD COLUMN default_belong_id varchar(64);-->
+    <!--ALTER TABLE IS_ACCOUNTS ADD COLUMN belong_id text;-->
+    <changeSet id="infoscoop_sleepyalpha_598_3" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_3">
+            <not>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS" columnName="default_belong_id"/>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS" columnName="belong_id"/>
+            </not>
+        </preConditions>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS">
+            <column name="default_belong_id" type="varchar(64)"/>
+            <column name="belong_id" type="${clob.type}"/>
+        </addColumn>
+    </changeSet>
+
+    <!--CREATE INDEX is_*_square_id on IS_*(square_id);-->
+    <changeSet id="infoscoop_sleepyalpha_598_4" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_4">
+            <not>
+                <indexExists indexName="is_accesslogs_square_id"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="is_accesslogs_square_id" schemaName="${migration.defaultSchema}" tableName="IS_ACCESSLOGS" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_adminroles_square_id" schemaName="${migration.defaultSchema}" tableName="IS_ADMINROLES" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_authcredentials_square_id" schemaName="${migration.defaultSchema}" tableName="IS_AUTHCREDENTIALS" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_forbiddenurls_square_id" schemaName="${migration.defaultSchema}" tableName="IS_FORBIDDENURLS" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_gadgets_square_id" schemaName="${migration.defaultSchema}" tableName="IS_GADGETS" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_i18nlocales_square_id" schemaName="${migration.defaultSchema}" tableName="IS_I18NLOCALES" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_keywords_square_id" schemaName="${migration.defaultSchema}" tableName="IS_KEYWORDS" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_logs_square_id" schemaName="${migration.defaultSchema}" tableName="IS_LOGS" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_messages_square_id" schemaName="${migration.defaultSchema}" tableName="IS_MESSAGES" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_oauthgadgeturls_square_id" schemaName="${migration.defaultSchema}" tableName="IS_OAUTH_GADGET_URLS" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_portaladmins_square_id" schemaName="${migration.defaultSchema}" tableName="IS_PORTALADMINS" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_systemmessages_square_id" schemaName="${migration.defaultSchema}" tableName="IS_SYSTEMMESSAGES" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <createIndex indexName="is_widgets_square_id" schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- ALTER TABLE IS_* DROP PRIMARY KEY; -->
+    <!-- ALTER TABLE IS_* ADD PRIMARY KEY -->
+    <changeSet id="infoscoop_sleepyalpha_598_5" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_5">
+            <columnExists schemaName="${migration.defaultSchema}" tableName="IS_CACHES" columnName="square_id"/>
+        </preConditions>
+        <dropForeignKeyConstraint constraintName="is_oauth_gadget_urls_ibfk_1" baseTableName="IS_OAUTH_GADGET_URLS"/>
+        <dropForeignKeyConstraint constraintName="is_oauth_tokens_ibfk_1" baseTableName="IS_OAUTH_TOKENS"/>
+        <dropForeignKeyConstraint constraintName="is_oauth2_tokens_ibfk_1" baseTableName="IS_OAUTH2_TOKENS"/>
+        <dropForeignKeyConstraint constraintName="tabid" baseTableName="IS_TAB_ADMINS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_CACHES"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_GADGET_ICONS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_HOLIDAYS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_I18N"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_I18NLASTMODIFIED"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_MENUCACHES"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_MENUS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_MENUS_TEMP"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_ACCESSTOKENS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_CLIENT"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_REFRESHTOKENS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_OAUTH_CERTIFICATE"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_OAUTH_CONSUMERS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_PORTALLAYOUTS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_PREFERENCES"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_PROPERTIES"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_RSSCACHES"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_SESSIONS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_STATIC_TABS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_TABLAYOUTS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_TABS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_TAB_ADMINS"/>
+        <dropPrimaryKey constraintName="PRIMARY" tableName="IS_WIDGETCONFS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="id, square_id" constraintName="PRIMARY" tableName="IS_CACHES"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="type, square_id" constraintName="PRIMARY" tableName="IS_GADGET_ICONS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="country, lang, square_id" constraintName="PRIMARY" tableName="IS_HOLIDAYS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="type, id, country, lang, square_id" constraintName="PRIMARY" tableName="IS_I18N"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="type, square_id" constraintName="PRIMARY" tableName="IS_I18NLASTMODIFIED"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="UID, url_key, square_id" constraintName="PRIMARY" tableName="IS_MENUCACHES"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="type, square_id" constraintName="PRIMARY" tableName="IS_MENUS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="type, siteTopId, square_id" constraintName="PRIMARY" tableName="IS_MENUS_TEMP"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="id, square_id" constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_ACCESSTOKENS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="id, square_id" constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_CLIENT"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="id, square_id" constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_REFRESHTOKENS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="consumer_key, square_id" constraintName="PRIMARY" tableName="IS_OAUTH_CERTIFICATE"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="id, square_id" constraintName="PRIMARY" tableName="IS_OAUTH_CONSUMERS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="name, square_id" constraintName="PRIMARY" tableName="IS_PORTALLAYOUTS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="UID, square_id" constraintName="PRIMARY" tableName="IS_PREFERENCES"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="id, square_id" constraintName="PRIMARY" tableName="IS_PROPERTIES"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="square_id" constraintName="PRIMARY" tableName="IS_PROXYCONFS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="UID, url_key, pageNum, square_id" constraintName="PRIMARY" tableName="IS_RSSCACHES"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="square_id" constraintName="PRIMARY" tableName="IS_SEARCHENGINES"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="UID, square_id" constraintName="PRIMARY" tableName="IS_SESSIONS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="tabid, adminUid, square_id" constraintName="PRIMARY" tableName="IS_TAB_ADMINS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="tabid, square_id" constraintName="PRIMARY" tableName="IS_STATIC_TABS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="tabId, roleOrder, temp, square_id" constraintName="PRIMARY" tableName="IS_TABLAYOUTS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="UID, id, square_id" constraintName="PRIMARY" tableName="IS_TABS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="type, square_id" constraintName="PRIMARY" tableName="IS_WIDGETCONFS"/>
+    </changeSet>
+
+    <!-- ALTER TABLE address ADD IS_* * FOREIGN KEY (*) REFERENCES IS_*(*) ON DELETE CASCADE; -->
+    <changeSet id="infoscoop_sleepyalpha_598_6" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_6">
+            <not>
+                <foreignKeyConstraintExists schemaName="${migration.defaultSchema}" foreignKeyName="tabid"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="is_static_tabs_tabid_square_id" schemaName="${migration.defaultSchema}" tableName="IS_STATIC_TABS" tablespace="${.tablespace}">
+            <column name="tabid" type="varchar(64)"/>
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <addForeignKeyConstraint baseColumnNames="fk_oauth_id" baseTableName="IS_OAUTH_GADGET_URLS" constraintName="is_oauth_gadget_urls_ibfk_1" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="IS_OAUTH_CONSUMERS"/>
+        <addForeignKeyConstraint baseColumnNames="fk_oauth_id" baseTableName="IS_OAUTH_TOKENS" constraintName="is_oauth_tokens_ibfk_1" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="IS_OAUTH_CONSUMERS"/>
+        <addForeignKeyConstraint baseColumnNames="fk_oauth_id" baseTableName="IS_OAUTH2_TOKENS" constraintName="is_oauth2_tokens_ibfk_1" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="IS_OAUTH_CONSUMERS"/>
+        <addForeignKeyConstraint baseColumnNames="tabid, square_id" baseTableName="IS_TAB_ADMINS" constraintName="tabid" onDelete="CASCADE" referencedColumnNames="tabid, square_id" referencedTableName="IS_STATIC_TABS"/>
+    </changeSet>
+
+    <!-- ALTER TABLE IS_* DROP KEY *; -->
+    <!-- ALTER TABLE IS_* ADD CONSTRAINT * UNIQUE (*, square_id); -->
+    <changeSet id="infoscoop_sleepyalpha_598_7" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_7">
+            <columnExists schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS" columnName="square_id"/>
+        </preConditions>
+        <dropUniqueConstraint constraintName="is_widgets_unique" schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS"/>
+        <dropUniqueConstraint constraintName="is_gadgets_uq" schemaName="${migration.defaultSchema}" tableName="IS_GADGETS"/>
+        <dropUniqueConstraint constraintName="is_locales_unique" schemaName="${migration.defaultSchema}" tableName="IS_I18NLOCALES"/>
+        <dropUniqueConstraint constraintName="is_portaladmins_uq" schemaName="${migration.defaultSchema}" tableName="IS_PORTALADMINS"/>
+        <dropUniqueConstraint constraintName="is_accesslogs_uq" schemaName="${migration.defaultSchema}" tableName="IS_ACCESSLOGS"/>
+        <addUniqueConstraint columnNames="UID, tabid, widgetId, deleteDate, square_id" constraintName="is_widgets_unique" schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS" tablespace="${.tablespace}"/>
+        <addUniqueConstraint columnNames="type, path, name, square_id" constraintName="is_gadgets_uq" schemaName="${migration.defaultSchema}" tableName="IS_GADGETS" tablespace="${.tablespace}"/>
+        <addUniqueConstraint columnNames="type, country, lang, square_id" constraintName="is_locales_unique" schemaName="${migration.defaultSchema}" tableName="IS_I18NLOCALES" tablespace="${.tablespace}"/>
+        <addUniqueConstraint columnNames="UID, square_id" constraintName="is_portaladmins_uq" schemaName="${migration.defaultSchema}" tableName="IS_PORTALADMINS" tablespace="${.tablespace}"/>
+        <addUniqueConstraint columnNames="UID, DATE, square_id" constraintName="is_accesslogs_uq" schemaName="${migration.defaultSchema}" tableName="IS_ACCESSLOGS" tablespace="${.tablespace}"/>
+    </changeSet>
 </databaseChangeLog>
