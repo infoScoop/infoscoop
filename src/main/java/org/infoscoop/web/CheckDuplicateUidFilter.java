@@ -70,15 +70,15 @@ public class CheckDuplicateUidFilter implements Filter {
 			if( preferences.size() == 1 ) {
 				Preference pref = ( Preference )preferences.iterator().next();
 				
-				if( !uid.toLowerCase().equals( pref.getUid())) {
-					resp.sendRedirect("mergeprofile?Uid="+pref.getUid() );
+				if( !uid.toLowerCase().equals( pref.getId().getUid())) {
+					resp.sendRedirect("mergeprofile?Uid="+pref.getId().getUid() );
 					return;
 				}
 			} else if( preferences.size() > 1 ) {
 				Map dupeIdMap = new HashMap();
 				for( Iterator ite=preferences.iterator();ite.hasNext();) {
 					Preference pref = ( Preference )ite.next();
-					String dupeId = pref.getUid();
+					String dupeId = pref.getId().getUid();
 					
 					String lastModified = null;
 					try {

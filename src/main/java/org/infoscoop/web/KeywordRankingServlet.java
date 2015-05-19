@@ -159,7 +159,7 @@ public class KeywordRankingServlet extends HttpServlet {
 					saveCache = false;	// When it is appointed "NOW", we don't do cash.
 				}
 				
-				Map countMap = KeywordLogDAO.newInstance().getCountMap(getStartDate(endDate, rankingPeriod), endDate, new Integer(0));
+				Map countMap = KeywordLogDAO.newInstance().getCountMap(getStartDate(endDate, rankingPeriod), endDate, new Integer(0), UserContext.instance().getUserInfo().getCurrentSquareId());
 				if (countMap.size() == 0) {
 					response.setStatus(204);
 					return;
@@ -315,7 +315,7 @@ public class KeywordRankingServlet extends HttpServlet {
 			headerMap.put("Content-Type",Arrays.asList( "text/xml;charset=UTF-8"));
 			headerMap.put("Content-Length",Arrays.asList( String.valueOf(rssBytes.length)));
 			CacheDAO.newInstance().insertUpdateCache(id, "KeywordRankingGenerator", "KeywordRankingGenerator",
-					is, headerMap );
+					is, headerMap, UserContext.instance().getUserInfo().getCurrentSquareId());
 		} catch (UnsupportedEncodingException e) {
 		}
 	}

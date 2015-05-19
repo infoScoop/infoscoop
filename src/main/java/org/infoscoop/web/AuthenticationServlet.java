@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationException;
 import org.infoscoop.account.AuthenticationService;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.dao.model.AuthCredential;
 import org.infoscoop.service.AuthCredentialService;
@@ -153,7 +154,7 @@ public class AuthenticationServlet extends HttpServlet {
 				int keepPeriod = 7;
 				try {
 					keepPeriod = Integer.parseInt( PropertiesDAO.newInstance()
-							.findProperty("loginStateKeepPeriod").getValue());
+							.findProperty("loginStateKeepPeriod", UserContext.instance().getUserInfo().getCurrentSquareId()).getValue());
 				} catch( Exception ex ) {
 					log.warn("",ex );
 				}

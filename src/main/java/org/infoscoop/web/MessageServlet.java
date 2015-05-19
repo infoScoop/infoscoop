@@ -160,7 +160,7 @@ public class MessageServlet extends HttpServlet {
 	private String mylist(String result, long offset, int limit, String uid)
 			throws Exception {
 		List<Message> msgs = MessageDAO.newInstance().selectByUid(uid, offset,
-				limit);
+				limit, UserContext.instance().getUserInfo().getCurrentSquareId());
 		if (result != null && result.equals("json"))
 			return listToJson(msgs);
 		return listToRss("A list of My messages", msgs);
@@ -169,7 +169,7 @@ public class MessageServlet extends HttpServlet {
 	private String recieved(String result, long offset, int limit, String uid)
 			throws Exception {
 		List<Message> msgs = MessageDAO.newInstance().selectByTo(uid, offset,
-				limit);
+				limit, UserContext.instance().getUserInfo().getCurrentSquareId());
 		if (result != null && result.equals("json"))
 			return listToJson(msgs);
 		return listToRss("A list of received messages", msgs);
@@ -178,7 +178,7 @@ public class MessageServlet extends HttpServlet {
 	private String list(String result, long offset, int limit, String myuid,
 			String[] uidArr) throws Exception {
 		List<Message> msgs = MessageDAO.newInstance().selectByUids(myuid,
-				uidArr, offset, limit);
+				uidArr, offset, limit, UserContext.instance().getUserInfo().getCurrentSquareId());
 		if (result != null && result.equals("json"))
 			return listToJson(msgs);
 		return listToRss("A list of follow messages", msgs);
@@ -187,7 +187,7 @@ public class MessageServlet extends HttpServlet {
 	private String all(String result, long offset, int limit, String myuid)
 			throws Exception {
 		List<Message> msgs = MessageDAO.newInstance().selectAll(myuid, offset,
-				limit);
+				limit, UserContext.instance().getUserInfo().getCurrentSquareId());
 		if (result != null && result.equals("json"))
 			return listToJson(msgs);
 		return listToRss("A list of all messages", msgs);
@@ -196,14 +196,14 @@ public class MessageServlet extends HttpServlet {
 	private String broadcast(String result, long offset, int limit)
 			throws Exception {
 		List<Message> msgs = MessageDAO.newInstance().selectByType(
-				Message.MESSAGE_BROADCAST, offset, limit);
+				Message.MESSAGE_BROADCAST, offset, limit, UserContext.instance().getUserInfo().getCurrentSquareId());
 		if (result != null && result.equals("json"))
 			return listToJson(msgs);
 		return listToRss("An information", msgs);
 	}
 
 	private boolean check(String uid, String lastviewtime) throws Exception {
-		List<Message> msgs = MessageDAO.newInstance().selectByTo(uid, Long.MAX_VALUE, 1);
+		List<Message> msgs = MessageDAO.newInstance().selectByTo(uid, Long.MAX_VALUE, 1, UserContext.instance().getUserInfo().getCurrentSquareId());
 		if (msgs.size() == 0)
 			return false;
 		if (Long.parseLong(lastviewtime) < msgs.get(0).getPostedTime()

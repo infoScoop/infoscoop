@@ -51,6 +51,7 @@ import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.RssCacheDAO;
 import org.infoscoop.dao.model.Rsscache;
 import org.infoscoop.request.ProxyRequest;
@@ -184,7 +185,7 @@ public class MultiRssServlet extends HttpServlet{
 				getPageJson(response, uid, widgetId, pageNum);
 			}else{
 				if( clearCache )
-					RssCacheDAO.newInstance().deleteCacheByUrl( uid,widgetId );
+					RssCacheDAO.newInstance().deleteCacheByUrl( uid,widgetId, UserContext.instance().getUserInfo().getCurrentSquareId());
 				
 				mergeRssAnd2JSON(request, response, uid, widgetId, pageSize, urlList);//TODO: Should not be passed by NodeList.....
 			}
@@ -195,7 +196,7 @@ public class MultiRssServlet extends HttpServlet{
 	}
 
 	private void getPageJson(HttpServletResponse response, String uid, String widgetId, int pageNum)throws Exception{
-		InputStream jsonStream = RssCacheDAO.newInstance().getCache(uid, widgetId, pageNum);
+		InputStream jsonStream = RssCacheDAO.newInstance().getCache(uid, widgetId, pageNum, UserContext.instance().getUserInfo().getCurrentSquareId());
 		if(jsonStream != null){
 			response.setHeader("Content-Type", "text/plain; charset=UTF-8");
 			response.setContentLength(getStreamLength(jsonStream));
@@ -429,8 +430,9 @@ public class MultiRssServlet extends HttpServlet{
 				int pageCount = resultBuilder.getPageCount();
 				// We create the result cash by all means.
 				//if( pageCount > 1 ) {
+				String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 					for(int pageNum = 0; pageNum < pageCount;pageNum++){
-						RssCacheDAO.newInstance().insertCache(uid, widgetId, pageNum, resultBuilder.getResult(pageNum));
+						RssCacheDAO.newInstance().insertCache(uid, widgetId, pageNum, resultBuilder.getResult(pageNum),squareId);
 					}
 				//}
 			}
@@ -495,7 +497,7 @@ public class MultiRssServlet extends HttpServlet{
 		
 		RssJsonResultBuilder resultBuilder = new SortedRssJsonResultBuilder( 5 );
 		long start = System.currentTimeMillis();
-		List cacheList = RssCacheDAO.newInstance().getCaches("test", "tab10001_p_nikkeiBP");
+		List cacheList = RssCacheDAO.newInstance().getCaches("test", "tab10001_p_nikkeiBP", "default");
 		start = System.currentTimeMillis();
 		//setOldData(resultBuilder, "test", "tab10001_p_nikkeiBP", 1);
 		System.out.println(System.currentTimeMillis()- start);
@@ -505,7 +507,7 @@ public class MultiRssServlet extends HttpServlet{
 	private static void setOldData(RssJsonResultBuilder resultBuilder,
 			String uid, String widgetId, long freshTime, String titleFilter,
 			String creatorFilter, String categoryFilter) {
-		List cacheList = RssCacheDAO.newInstance().getCaches(uid, widgetId);
+		List cacheList = RssCacheDAO.newInstance().getCaches(uid, widgetId, UserContext.instance().getUserInfo().getCurrentSquareId());
 		
 		for(int i = 0; i < cacheList.size(); i++){
 			Rsscache cache = (Rsscache)cacheList.get(i);

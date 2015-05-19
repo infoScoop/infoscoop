@@ -34,6 +34,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.CommandResult;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.model.Preference;
 import org.infoscoop.service.CommandExecutionService;
@@ -94,7 +95,7 @@ public class CommandServlet extends HttpServlet {
 					CommandExecutionService.getHandle().execute(uid, root, resultList);
 				}else{
 					// a flag of failed
-					Preference entity = PreferenceDAO.newInstance().select(uid);
+					Preference entity = PreferenceDAO.newInstance().select(uid, UserContext.instance().getUserInfo().getCurrentSquareId());
 					if(entity != null){	// When guest user login, this entity is null.
 						Node prefNode = entity.getElement();
 						boolean isChanged = PreferenceService.updateProperty((Element)prefNode, "failed", "true");

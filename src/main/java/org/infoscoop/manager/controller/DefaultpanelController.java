@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.StaticTabDAO;
 import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TabLayout;
@@ -89,7 +90,7 @@ public class DefaultpanelController implements ControllerInterface{
 		String defaultPanelJson = "{}";
 		int displayTabOrder = -1;
 		
-		StaticTab tab = StaticTabDAO.newInstance().getTab(tabId);
+		StaticTab tab = StaticTabDAO.newInstance().getTab(tabId, UserContext.instance().getUserInfo().getCurrentSquareId());
 		if(tab == null){
 			request.setAttribute("errorMessage", "alb_error_tabnotfound");
 			index(request);

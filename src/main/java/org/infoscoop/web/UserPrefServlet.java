@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
@@ -46,7 +47,7 @@ public class UserPrefServlet extends HttpServlet {
 		
 		JSONObject json = new JSONObject();
 		
-		Widget widget = WidgetDAO.newInstance().getWidget( uid,tabId,widgetId );
+		Widget widget = WidgetDAO.newInstance().getWidget( uid,tabId,widgetId, UserContext.instance().getUserInfo().getCurrentSquareId());
 		if( widget != null ) {
 			Map<String,UserPref> prefs = widget.getUserPrefs();
 			for( String prefName : prefNames ) {

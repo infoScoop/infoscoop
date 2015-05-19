@@ -58,7 +58,7 @@ public class ISTokenStore implements TokenStore {
 
 		try {
 			OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-			OAuth2ProviderAccessToken accessToken = providerDao.getAccessTokenById(extractTokenKey(tokenValue));
+			OAuth2ProviderAccessToken accessToken = providerDao.getAccessTokenById(extractTokenKey(tokenValue), "default");
 			if(accessToken!=null)
 				authentication = deserializeAuthentication(accessToken.getAuthentication());
 		} catch (IllegalArgumentException e) {
@@ -83,7 +83,8 @@ public class ISTokenStore implements TokenStore {
 									authentication.isClientOnly() ? null : authentication.getName(),
 									authentication.getAuthorizationRequest().getClientId(),
 									serializeAuthentication(authentication),
-									extractTokenKey(refreshToken));
+									extractTokenKey(refreshToken),
+									"default");
 	}
 
 	@Override
@@ -93,7 +94,7 @@ public class ISTokenStore implements TokenStore {
 		try {
 //			private String selectAccessTokenSql = "select token_id, token from oauth_access_token where token_id = ?";;
 			OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-			OAuth2ProviderAccessToken oat = providerDao.getAccessTokenById(extractTokenKey(tokenValue));
+			OAuth2ProviderAccessToken oat = providerDao.getAccessTokenById(extractTokenKey(tokenValue), "default");
 			if(oat!=null)
 				accessToken = deserializeAccessToken(oat.getToken());
 		} catch (IllegalArgumentException e) {
@@ -112,7 +113,7 @@ public class ISTokenStore implements TokenStore {
 	public void removeAccessToken(String tokenValue) {
 //		private String deleteAccessTokenSql = "delete from oauth_access_token where token_id = ?";
 		OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-		providerDao.deleteOAuth2ProviderAccessToken(extractTokenKey(tokenValue));
+		providerDao.deleteOAuth2ProviderAccessToken(extractTokenKey(tokenValue), "default");
 	}
 
 	@Override
@@ -123,7 +124,7 @@ public class ISTokenStore implements TokenStore {
 	public void removeAccessTokenUsingRefreshToken(String refreshToken) {
 //		private String deleteAccessTokenFromRefreshTokenSql = "delete from oauth_access_token where refresh_token = ?";
 		OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-		providerDao.deleteOAuth2ProviderAccessTokenByRefreshToken(extractTokenKey(refreshToken));
+		providerDao.deleteOAuth2ProviderAccessTokenByRefreshToken(extractTokenKey(refreshToken), "default");
 	}
 	
 	@Override
@@ -133,7 +134,7 @@ public class ISTokenStore implements TokenStore {
 		try {
 //			private String selectRefreshTokenSql = "select token_id, token from oauth_refresh_token where token_id = ?";
 			OAuth2ProviderRefreshTokenDAO providerDao = OAuth2ProviderRefreshTokenDAO.newInstance();
-			OAuth2ProviderRefreshToken ort = providerDao.getRefreshTokenById(extractTokenKey(tokenValue));
+			OAuth2ProviderRefreshToken ort = providerDao.getRefreshTokenById(extractTokenKey(tokenValue), "default");
 			if(ort!=null)
 				refreshToken = deserializeRefreshToken(ort.getToken());
 		} catch (IllegalArgumentException e) {
@@ -155,7 +156,7 @@ public class ISTokenStore implements TokenStore {
 		try {
 //			private String selectRefreshTokenAuthenticationSql = "select token_id, authentication from oauth_refresh_token where token_id = ?";
 			OAuth2ProviderRefreshTokenDAO providerDao = OAuth2ProviderRefreshTokenDAO.newInstance();
-			OAuth2ProviderRefreshToken ort = providerDao.getRefreshTokenById(extractTokenKey(tokenValue));
+			OAuth2ProviderRefreshToken ort = providerDao.getRefreshTokenById(extractTokenKey(tokenValue), "default");
 			if(ort!=null)
 				authentication = deserializeAuthentication(ort.getAuthentication());
 		} catch (IllegalArgumentException e) {
@@ -172,7 +173,9 @@ public class ISTokenStore implements TokenStore {
 		OAuth2ProviderRefreshTokenDAO providerDao = OAuth2ProviderRefreshTokenDAO.newInstance();
 		providerDao.saveRefreshToken(extractTokenKey(refreshToken.getValue()),
 									serializeRefreshToken(refreshToken),
-									serializeAuthentication(authentication));
+									serializeAuthentication(authentication),
+									"default"
+				);
 	}
 
 	@Override
@@ -183,7 +186,7 @@ public class ISTokenStore implements TokenStore {
 	public void removeRefreshToken(String tokenValue) {
 //		private String deleteAccessTokenSql = "delete from oauth_access_token where token_id = ?";
 		OAuth2ProviderRefreshTokenDAO providerDao = OAuth2ProviderRefreshTokenDAO.newInstance();
-		providerDao.deleteOAuth2ProviderRefreshToken(extractTokenKey(tokenValue));
+		providerDao.deleteOAuth2ProviderRefreshToken(extractTokenKey(tokenValue), "default");
 	}
 	
 	@Override
@@ -193,7 +196,7 @@ public class ISTokenStore implements TokenStore {
 
 		try {
 			OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-			OAuth2ProviderAccessToken oat = providerDao.getAccessTokenByAuthenticationId(key);
+			OAuth2ProviderAccessToken oat = providerDao.getAccessTokenByAuthenticationId(key, "default");
 			if(oat != null)
 				accessToken = deserializeAccessToken(oat.getToken());
 		} catch (IllegalArgumentException e) {
@@ -215,7 +218,7 @@ public class ISTokenStore implements TokenStore {
 		try {
 //			private String selectAccessTokensFromUserNameSql = "select token_id, token from oauth_access_token where user_name = ?";
 			OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-			List<OAuth2ProviderAccessToken> oat = providerDao.getAccessTokenByUserId(userId);
+			List<OAuth2ProviderAccessToken> oat = providerDao.getAccessTokenByUserId(userId, "default");
 			
 			if(oat!=null && oat.size()>0){
 				for(Iterator<OAuth2ProviderAccessToken> itr = oat.iterator();itr.hasNext();){
@@ -236,7 +239,7 @@ public class ISTokenStore implements TokenStore {
 		try {
 //			private String selectAccessTokensFromClientIdSql = "select token_id, token from oauth_access_token where client_id = ?";
 			OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-			List<OAuth2ProviderAccessToken> oat = providerDao.getAccessTokenByClientId(clientId);
+			List<OAuth2ProviderAccessToken> oat = providerDao.getAccessTokenByClientId(clientId, "default");
 			
 			if(oat!=null && oat.size()>0){
 				for(Iterator<OAuth2ProviderAccessToken> itr = oat.iterator();itr.hasNext();){

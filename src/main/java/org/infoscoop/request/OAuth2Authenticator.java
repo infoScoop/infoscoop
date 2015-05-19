@@ -38,6 +38,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.OAuth2TokenDAO;
 import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.model.OAuth2Token;
@@ -127,7 +128,7 @@ public class OAuth2Authenticator implements Authenticator {
 					null,
 					oauthConfig.userAuthorizationURL,
 					oauthConfig.accessTokenURL);
-		OAuthConsumerProp consumerProp = OAuthConsumerDAO.newInstance().getConsumer(oauthConfig.getGadgetUrl(), name);
+		OAuthConsumerProp consumerProp = OAuthConsumerDAO.newInstance().getConsumer(oauthConfig.getGadgetUrl(), name, UserContext.instance().getUserInfo().getCurrentSquareId());
 		if(consumerProp == null)
 			throw new ProxyAuthenticationException("Consumer key and secret is not set for " + oauthConfig.getGadgetUrl());
 

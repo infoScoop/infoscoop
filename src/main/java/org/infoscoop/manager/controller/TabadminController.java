@@ -22,6 +22,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.StaticTabDAO;
 import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.service.PortalAdminsService;
@@ -56,7 +57,7 @@ public class TabadminController extends DefaultpanelController implements Contro
 	public String editTab(HttpServletRequest request,
 			HttpServletResponse response, String tabId) throws Exception {
 
-		StaticTab tab = StaticTabDAO.newInstance().getTab(tabId);
+		StaticTab tab = StaticTabDAO.newInstance().getTab(tabId, UserContext.instance().getUserInfo().getCurrentSquareId());
 		if(tab == null){
 			request.setAttribute("errorMessage", "alb_error_tabnotfound");
 			index(request);

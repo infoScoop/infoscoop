@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.AccessLogDAO;
 import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.service.LogService;
@@ -48,11 +49,12 @@ public class CheckSessionIdFilter implements javax.servlet.Filter {
 
 			try{
 				String sessionId = httpReq.getHeader("MSDPortal-SessionId");
+				String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 				SessionDAO dao = SessionDAO.newInstance();
-				String currentId = dao.getSessionId(uid);
+				String currentId = dao.getSessionId(uid, squareId);
 				if( HttpStatusCode.MSD_FORCE_RELOAD.equals( currentId )) {
-					dao.deleteSessionId( uid );
+					dao.deleteSessionId( uid, squareId );
 
 					httpRes.setHeader( HttpStatusCode.HEADER_NAME,
 							HttpStatusCode.MSD_FORCE_RELOAD );

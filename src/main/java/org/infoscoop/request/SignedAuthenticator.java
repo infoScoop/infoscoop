@@ -44,6 +44,7 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.acl.SecurityController;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.model.OAuthCertificate;
 import org.infoscoop.util.RequestUtil;
@@ -113,14 +114,13 @@ public class SignedAuthenticator implements Authenticator {
 	}
 
 	protected OAuthConsumer newConsumer() throws ProxyAuthenticationException {
-		OAuthCertificate certificate = OAuthCertificateDAO.newInstance().get();
+		OAuthCertificate certificate = OAuthCertificateDAO.newInstance().get(UserContext.instance().getUserInfo().getCurrentSquareId());
 		if (certificate == null)
 			throw new ProxyAuthenticationException(
 					"a container's certificate is not set.");
 		OAuthServiceProvider serviceProvider = new OAuthServiceProvider(null,
 				null, null);
-		OAuthConsumer consumer = new OAuthConsumer(null, certificate
-				.getConsumerKey(), null, serviceProvider);
+		OAuthConsumer consumer = new OAuthConsumer(null, certificate.getId().getConsumerKey(), null, serviceProvider);
 		consumer.setProperty("oauth_signature_method", "RSA-SHA1");
 		consumer.setProperty(RSA_SHA1.PRIVATE_KEY, certificate.getPrivateKey());
 

@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Widget;
 import org.json.JSONArray;
@@ -62,7 +63,7 @@ public class TrashWidgetServlet extends HttpServlet {
 		JSONArray responseArray = new JSONArray();
 		try {
 			WidgetDAO dao = WidgetDAO.newInstance();
-			List widgets = dao.getDeletedWidget(uid);
+			List widgets = dao.getDeletedWidget(uid, UserContext.instance().getUserInfo().getCurrentSquareId());
 			for (Iterator it = widgets.iterator(); it.hasNext();) {
 				Widget widget = (Widget) it.next();
 				responseArray.put(widget.toJSONObject());

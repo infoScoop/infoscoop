@@ -169,7 +169,7 @@ public class CustomizationServlet extends HttpServlet {
 		for(Iterator<Portallayout> layoutIt = layoutList.iterator();layoutIt.hasNext();){
 			Portallayout portalLayout = layoutIt.next();
 
-			String name = portalLayout.getName();
+			String name = portalLayout.getId().getName();
 			if(name.equals("javascript"))
 				continue;
 

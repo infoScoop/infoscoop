@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.LogDAO;
 import org.infoscoop.dao.LogDAO.RssAccessStats;
 import org.infoscoop.dao.LogDAO.RssAccessStatsEntry;
@@ -58,7 +59,7 @@ public class AccessStatsListServlet extends HttpServlet {
 		int start = Integer.parseInt(request.getParameter("start"));
 		int limit = Integer.parseInt(request.getParameter("limit"));
 		LogDAO dao = LogDAO.newInstance();
-		RssAccessStats stats = dao.getRssAccessStats(rssUrl, start, limit);
+		RssAccessStats stats = dao.getRssAccessStats(rssUrl, start, limit, UserContext.instance().getUserInfo().getCurrentSquareId());
 		try {
 			JSONObject json = new JSONObject();
 			json.put("results", stats.getCount());

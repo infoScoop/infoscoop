@@ -111,7 +111,7 @@ public class HTMLFragmentFilter extends ProxyFilter {
 							request.putResponseHeader(name, header.getValue());
 					}
 					request.setResponseBody( new ByteArrayInputStream( cache.getBodyBytes()) );
-					request.putResponseHeader("MSDPortal-Cache-ID", cache.getId());
+					request.putResponseHeader("MSDPortal-Cache-ID", cache.getId().getId());
 					//if(log.isInfoEnabled())
 						log.error("use cache " + cacheURL);
 					return 200;

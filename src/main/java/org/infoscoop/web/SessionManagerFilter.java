@@ -21,12 +21,7 @@
 package org.infoscoop.web;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.security.auth.Subject;
 import javax.servlet.Filter;
@@ -139,61 +134,42 @@ public class SessionManagerFilter implements Filter {
 		return uid.trim();
 	}
 
-	private String getUidFromSession(HttpServletRequest req){
+	private Map<String, String> getSquareUidFromSession(HttpServletRequest req) {
 		HttpSession session = req.getSession(true);
 		String uid = (String)session.getAttribute("Uid");
-		String sessionId = req.getHeader("MSDPortal-SessionId");
-		boolean uidIgnoreCase = SessionCreateConfig.getInstance().isUidIgnoreCase();
-
-		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
-			String uidParam = req.getParameter("Uid");
-			if(uid.equalsIgnoreCase(uidParam)){
-				uid = uidParam;
-				session.setAttribute("Uid",uid );
-			}
-		}else if( uidIgnoreCase && uid != null ) {
-			uid = uid.toLowerCase();
-
-			session.setAttribute("Uid",uid );
-		}
-		
-		if (uid == null) {
-			if (sessionId != null) {
-				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
-				return SessionDAO.newInstance().getUid(sessionId);
-			}
-		} else if (sessionId != null) {
-			String oldSessionId = (String) session.getAttribute(LOGINUSER_SESSION_ID_ATTR_NAME);
-			if (oldSessionId != null && !sessionId.equals(oldSessionId)) {
-				session.invalidate();
-				session = req.getSession(true);
-				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
-				return SessionDAO.newInstance().getUid(sessionId);
-			}
-		}
-		return uid;
-	}
-
-	private String getCurrentSquareIdFromSesssion(HttpServletRequest req){
-		HttpSession session = req.getSession(true);
 		String currentSquareId = (String)session.getAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME);
 		String sessionId = req.getHeader("MSDPortal-SessionId");
+		boolean uidIgnoreCase = SessionCreateConfig.getInstance().isUidIgnoreCase();
+		Map<String, String> resultMap = new HashMap<String, String>();
 
+		// 管理画面プレビュー
 		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
-			String squareIdParam = req.getParameter(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME);
-			if(currentSquareId.equalsIgnoreCase(squareIdParam)){
-				currentSquareId = squareIdParam;
-				session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME,currentSquareId );
+			String uidParam = req.getParameter("Uid");
+			String squareidParam = req.getParameter(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME);
+			if(uid.equalsIgnoreCase(uidParam) && currentSquareId.equalsIgnoreCase(squareidParam)){
+				uid = uidParam;
+				session.setAttribute("Uid",uid );
+				session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME,currentSquareId);
 			}
-		}else if( currentSquareId != null ) {
+		}else if( uidIgnoreCase && uid != null && currentSquareId != null) {
+			uid = uid.toLowerCase();
+			session.setAttribute("Uid",uid );
 			session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME,currentSquareId );
 		}
 
-		if (currentSquareId == null) {
+		if(currentSquareId == null) {
+			//ユーザーのデフォルトスクエアを入れる
+			currentSquareId = "default";
+		}
+
+		resultMap.put("Uid", SessionDAO.newInstance().getUid(sessionId, currentSquareId));
+		resultMap.put(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, currentSquareId);
+
+		if (uid == null) {
 			if (sessionId != null) {
 				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
-//				return SessionDAO.newInstance().getSquareId(sessionId);
-				return "default";
+				resultMap.put("Uid", SessionDAO.newInstance().getUid(sessionId, currentSquareId));
+				resultMap.put(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, currentSquareId);
 			}
 		} else if (sessionId != null) {
 			String oldSessionId = (String) session.getAttribute(LOGINUSER_SESSION_ID_ATTR_NAME);
@@ -201,12 +177,48 @@ public class SessionManagerFilter implements Filter {
 				session.invalidate();
 				session = req.getSession(true);
 				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
-//				return SessionDAO.newInstance().getSquareId(sessionId);
-				return "default";
+				resultMap.put("Uid", SessionDAO.newInstance().getUid(sessionId, currentSquareId));
+				resultMap.put(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, currentSquareId);
 			}
 		}
-		return currentSquareId;
+
+		return resultMap;
 	}
+
+//	private String getUidFromSession(HttpServletRequest req){
+//		HttpSession session = req.getSession(true);
+//		String uid = (String)session.getAttribute("Uid");
+//		String sessionId = req.getHeader("MSDPortal-SessionId");
+//		boolean uidIgnoreCase = SessionCreateConfig.getInstance().isUidIgnoreCase();
+//
+//		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
+//			String uidParam = req.getParameter("Uid");
+//			if(uid.equalsIgnoreCase(uidParam)){
+//				uid = uidParam;
+//				session.setAttribute("Uid",uid );
+//			}
+//		}else if( uidIgnoreCase && uid != null ) {
+//			uid = uid.toLowerCase();
+//
+//			session.setAttribute("Uid",uid );
+//		}
+//
+//		if (uid == null) {
+//			if (sessionId != null) {
+//				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
+//				return SessionDAO.newInstance().getUid(sessionId);
+//			}
+//		} else if (sessionId != null) {
+//			String oldSessionId = (String) session.getAttribute(LOGINUSER_SESSION_ID_ATTR_NAME);
+//			if (oldSessionId != null && !sessionId.equals(oldSessionId)) {
+//				session.invalidate();
+//				session = req.getSession(true);
+//				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
+//				return SessionDAO.newInstance().getUid(sessionId);
+//			}
+//		}
+//		return uid;
+//	}
 
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
@@ -222,8 +234,9 @@ public class SessionManagerFilter implements Filter {
 			String uid = null;
 			String currentSquareId = null;
 			if(SessionCreateConfig.doLogin()){
-				uid = getUidFromSession(httpReq);
-				currentSquareId = getCurrentSquareIdFromSesssion(httpReq);
+				Map<String, String> result = getSquareUidFromSession(httpReq);
+				uid = result.get("Uid");
+				currentSquareId = result.get(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME);
 
 	            if (uid != null){
 	                addUidToSession(uid, request);
@@ -247,8 +260,9 @@ public class SessionManagerFilter implements Filter {
 				}
 			}else{
 				uid = getUidFromHeader(httpReq);
+				Map<String, String> result = getSquareUidFromSession(httpReq);
 				if (uid == null) {
-					uid = getUidFromSession(httpReq);
+					uid = result.get("Uid");
 				}
 				if (uid != null) {
 					addUidToSession(uid, request);
@@ -272,7 +286,7 @@ public class SessionManagerFilter implements Filter {
 							int keepPeriod = 7;
 							try {
 								keepPeriod = Integer.parseInt( PropertiesDAO.newInstance()
-										.findProperty("loginStateKeepPeriod").getValue());
+										.findProperty("loginStateKeepPeriod", currentSquareId).getValue());
 							} catch( Exception ex ) {
 								log.warn("",ex );
 							}

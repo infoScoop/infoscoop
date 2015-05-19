@@ -44,10 +44,7 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.api.ISAPIException;
 import org.infoscoop.api.rest.v1.controller.BaseController;
 import org.infoscoop.api.rest.v1.response.TabLayoutsResponse;
-import org.infoscoop.dao.model.StaticTab;
-import org.infoscoop.dao.model.TABLAYOUTPK;
-import org.infoscoop.dao.model.TabAdmin;
-import org.infoscoop.dao.model.TabLayout;
+import org.infoscoop.dao.model.*;
 import org.infoscoop.dao.model.base.BaseStaticTab;
 import org.infoscoop.service.StaticTabService;
 import org.infoscoop.util.spring.TextView;
@@ -103,7 +100,7 @@ public class TabLayoutsController extends BaseController {
 		requestBody = URLDecoder.decode(requestBody, "UTF-8");
 		
 		Document doc = parseTabLayoutsXML(requestBody);
-		List<StaticTab> staticTabList = toTabList(doc);
+		List<StaticTab> staticTabList = toTabList(doc, "default");
 		
 		StaticTabService service = StaticTabService.getHandle();
 		if(staticTabList.size() > 0){
@@ -143,17 +140,18 @@ public class TabLayoutsController extends BaseController {
 		requestBody = URLDecoder.decode(requestBody, "UTF-8");
 		
 		Document doc = parseTabLayoutsXML(requestBody);
-		List<StaticTab> staticTabList = toTabList(doc);
+		List<StaticTab> staticTabList = toTabList(doc, "default");
 		
 		if(staticTabList.size() > 0){
 			StaticTabService service = StaticTabService.getHandle();
 			StaticTab staticTab = staticTabList.get(0);
 			
-			if(singletonTabIdList.contains(staticTab.getTabid()))
-				throw new ISAPIException("tabId=" + staticTab.getTabid() + " cannot be deleted.");
+			if(singletonTabIdList.contains(staticTab.getId().getTabid()))
+				throw new ISAPIException("tabId=" + staticTab.getId().getTabid() + " cannot be deleted.");
 			
-			String tabId = service.getNewTabId();
-			staticTab.setTabid(tabId);
+			String tabId = service.getNewTabId("default");
+			staticTab.getId().setSquareid("default");
+			staticTab.getId().setTabid(tabId);
 			staticTab.setTabnumber(service.getNextTabNumber());
 			StaticTabService.getHandle().saveStaticTab(tabId, staticTab);
 		}
@@ -166,7 +164,7 @@ public class TabLayoutsController extends BaseController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public TextView getTabLayouts() throws Exception {
-		List<StaticTab> staticTabList = StaticTabService.getHandle().getStaticTabList();
+		List<StaticTab> staticTabList = StaticTabService.getHandle().getStaticTabList("default");
 		TextView view = createTabLayoutResponseView(staticTabList);
 		
 		return view;
@@ -183,7 +181,7 @@ public class TabLayoutsController extends BaseController {
 		requestBody = URLDecoder.decode(requestBody, "UTF-8");
 		
 		Document doc = parseTabLayoutsXML(requestBody);
-		List<StaticTab> staticTabList = toTabList(doc);
+		List<StaticTab> staticTabList = toTabList(doc, "default");
 		
 		StaticTabService.getHandle().replaceAllTabs(staticTabList);
 	}
@@ -245,7 +243,7 @@ public class TabLayoutsController extends BaseController {
 	}
 	
 	@SuppressWarnings("unused")
-	private List<StaticTab> toTabList(Document doc) throws TransformerException, SAXException{
+	private List<StaticTab> toTabList(Document doc, String squareId) throws TransformerException, SAXException{
 		List<StaticTab> staticTabList = new ArrayList<StaticTab>();
 		NodeList tabs = doc.getElementsByTagName("tab");
 		NodeIterator tabIte = XPathAPI.selectNodeIterator(doc, "//tab");
@@ -256,7 +254,7 @@ public class TabLayoutsController extends BaseController {
 			String tabNumber = tab.getAttribute("tabNumber");
 			String tabDesc = XPathAPI.selectSingleNode(tab, "tabDesc").getTextContent();
 			
-			StaticTab staticTab = new StaticTab(tabId);
+			StaticTab staticTab = new StaticTab(new StaticTabPK(tabId, squareId));
 			staticTab.setTabdesc(tabDesc);
 			staticTab.setDeleteflag(StaticTab.DELETEFLAG_FALSE);
 			staticTab.setDisabledefault(new Integer(disableDefault));
@@ -268,7 +266,7 @@ public class TabLayoutsController extends BaseController {
 			staticTab.setTabAdmin(new HashSet<TabAdmin>());
 			while((tabAdmin = (Element)tabAdminsIte.nextNode()) != null){
 				String adminUid = tabAdmin.getAttribute("uid");
-				staticTab.getTabAdmin().add(new TabAdmin(tabId, adminUid));
+				staticTab.getTabAdmin().add(new TabAdmin(tabId, adminUid, squareId));
 			}
 			
 			// TabLayouts
@@ -284,7 +282,7 @@ public class TabLayoutsController extends BaseController {
 				String widgets = XPathAPI.selectSingleNode(role, "widgets").getTextContent();
 				String layout = XPathAPI.selectSingleNode(role, "layout").getTextContent();
 
-				TABLAYOUTPK tabLayoutPK = new TABLAYOUTPK(tabId, new Integer(roleOrder), TabLayout.TEMP_FALSE);
+				TABLAYOUTPK tabLayoutPK = new TABLAYOUTPK(tabId, new Integer(roleOrder), TabLayout.TEMP_FALSE, squareId);
 				TabLayout tabLayout = new TabLayout(tabLayoutPK);
 				String widgetsLastmodified = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
 

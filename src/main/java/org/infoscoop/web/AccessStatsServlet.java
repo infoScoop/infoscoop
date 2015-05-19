@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.LogDAO;
 
 public class AccessStatsServlet extends HttpServlet {
@@ -72,7 +73,7 @@ public class AccessStatsServlet extends HttpServlet {
 		cal.add(Calendar.MONTH, -5);
 		int sixmonthcnt = dao.getRssAccessCount(rssUrl, dateFormat.format(cal
 				.getTime()));
-		int allcnt = dao.getRssAccessCount(rssUrl);
+		int allcnt = dao.getRssAccessCount(rssUrl, UserContext.instance().getUserInfo().getCurrentSquareId());
 		request.setAttribute("onedaycnt", new Integer(onedaycnt));
 		request.setAttribute("oneweekcnt", new Integer(oneweekcnt));
 		request.setAttribute("onemonthcnt", new Integer(onemonthcnt));

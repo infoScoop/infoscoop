@@ -38,6 +38,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.model.OAuthCertificate;
@@ -112,15 +113,16 @@ public class OAuthAuthenticator implements Authenticator {
 					oauthConfig.userAuthorizationURL,
 					oauthConfig.accessTokenURL);
 		
-		OAuthConsumerProp consumerProp = OAuthConsumerDAO.newInstance().getConsumer(oauthConfig.getGadgetUrl(), name);
+		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+		OAuthConsumerProp consumerProp = OAuthConsumerDAO.newInstance().getConsumer(oauthConfig.getGadgetUrl(), name, squareId);
 		if(consumerProp == null)
 			throw new ProxyAuthenticationException("Consumer key and secret is not set for " + oauthConfig.getGadgetUrl());
-		OAuthCertificate certificate = OAuthCertificateDAO.newInstance().get();
+		OAuthCertificate certificate = OAuthCertificateDAO.newInstance().get(squareId);
 		
 		String consumerKey;
 		String consumerSecret;
 		if("RSA-SHA1".equals(consumerProp.getSignatureMethod())){
-			consumerKey = certificate.getConsumerKey();
+			consumerKey = certificate.getId().getConsumerKey();
 			consumerSecret = null; 
 		}else{
 			consumerKey = consumerProp.getConsumerKey();

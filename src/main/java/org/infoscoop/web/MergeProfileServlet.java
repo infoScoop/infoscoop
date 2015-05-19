@@ -33,12 +33,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Expression;
-import org.infoscoop.dao.model.Preference;
-import org.infoscoop.dao.model.TABPK;
-import org.infoscoop.dao.model.Tab;
-import org.infoscoop.dao.model.USERPREFPK;
-import org.infoscoop.dao.model.UserPref;
-import org.infoscoop.dao.model.Widget;
+import org.infoscoop.context.UserContext;
+import org.infoscoop.dao.model.*;
 import org.infoscoop.util.SpringUtil;
 
 public class MergeProfileServlet extends HttpServlet {
@@ -82,7 +78,7 @@ public class MergeProfileServlet extends HttpServlet {
 			
 			if( !uid.toLowerCase().equals( uid )) {
 				Preference preference = ( Preference )session.get( Preference.class,uid );
-				Preference newPref = new Preference( uid.toLowerCase() );
+				Preference newPref = new Preference( new PreferencePK(uid.toLowerCase(), UserContext.instance().getUserInfo().getCurrentSquareId()) );
 				newPref.setData( preference.getData());
 				session.save( newPref );
 				session.delete( preference );
@@ -125,7 +121,7 @@ public class MergeProfileServlet extends HttpServlet {
 	}
 	
 	private Tab cloneTab( String uid,Tab tab ) {
-		Tab newTab = new Tab( new TABPK( uid,tab.getId().getId() ) );
+		Tab newTab = new Tab( new TABPK( uid,tab.getId().getId(),UserContext.instance().getUserInfo().getCurrentSquareId() ) );
 		newTab.setData( tab.getData() );
 		newTab.setDefaultuid( tab.getDefaultuid() );
 		newTab.setName( tab.getName() );

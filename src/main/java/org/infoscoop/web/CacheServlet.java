@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.RssCacheDAO;
 import org.infoscoop.dao.model.Cache;
 import org.infoscoop.service.CacheService;
@@ -78,7 +79,7 @@ public class CacheServlet extends HttpServlet {
 	}
 
 	private void deleteCacheByUrl(String uid, String url) {
-		RssCacheDAO.newInstance().deleteCacheByUrl(uid, url);
+		RssCacheDAO.newInstance().deleteCacheByUrl(uid, url, UserContext.instance().getUserInfo().getCurrentSquareId());
 
 		if(log.isInfoEnabled())
 			log.info("delete cache : uid = " + uid + ", url=" + url);
@@ -88,7 +89,7 @@ public class CacheServlet extends HttpServlet {
 	private void deleteCache(String uid) throws IOException {
 
 		CacheService.getHandle().deleteUserCache(uid);
-		RssCacheDAO.newInstance().deleteUserCache(uid);
+		RssCacheDAO.newInstance().deleteUserCache(uid, UserContext.instance().getUserInfo().getCurrentSquareId());
 
 		if(log.isInfoEnabled())
 			log.info("delete cache : uid = " + uid);

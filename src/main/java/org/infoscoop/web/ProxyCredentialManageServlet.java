@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.AuthCredentialDAO;
 import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.model.AuthCredential;
@@ -62,9 +63,10 @@ public class ProxyCredentialManageServlet extends HttpServlet {
 		String uid = (String) request.getSession().getAttribute("Uid");
 		try {
 			if("list".equals(command)){
+				String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 				response.setHeader("Content-Type", "text/xml; charset=UTF-8");
-				List<AuthCredential> credentialList = AuthCredentialDAO.newInstance().select(uid);
-				List<OAuthConsumerProp> consumers = OAuthConsumerDAO.newInstance().getConsumersByUid(uid);
+				List<AuthCredential> credentialList = AuthCredentialDAO.newInstance().select(uid, squareId);
+				List<OAuthConsumerProp> consumers = OAuthConsumerDAO.newInstance().getConsumersByUid(uid, squareId);
 				List<String> idList = new ArrayList<String>();
 				try {
 					JSONArray json = new JSONArray();
@@ -77,7 +79,7 @@ public class ProxyCredentialManageServlet extends HttpServlet {
 					for(Iterator<OAuthConsumerProp> i = consumers.iterator(); i.hasNext();){
 						oauthJSON = new JSONObject();
 						OAuthConsumerProp consumerProp = i.next();
-						String id = consumerProp.getId();
+						String id = consumerProp.getId().getId();
 						if(idList.contains(id))
 							continue;
 

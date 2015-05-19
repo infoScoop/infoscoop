@@ -28,10 +28,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.RssCacheDAO;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.request.filter.rss.AtomHandler;
@@ -72,7 +74,7 @@ public class RssFilter extends ProxyFilter {
 			String uid = request.getPortalUid();
 			if(uid == null)
 				uid = request.getRequestHeader("MSDPortal-SessionId");
-			InputStream jsonStream = RssCacheDAO.newInstance().getCache(uid, request.getTargetURL(), pageNum);
+			InputStream jsonStream = RssCacheDAO.newInstance().getCache(uid, request.getTargetURL(), pageNum, UserContext.instance().getUserInfo().getCurrentSquareId());
 			if(jsonStream != null){
 				request.setResponseBody(jsonStream);
 				request.putResponseHeader("Content-Type", "text/plain; charset=UTF-8");
@@ -222,7 +224,7 @@ public class RssFilter extends ProxyFilter {
 				if (uid == null)
 					uid = request.getRequestHeader("MSDPortal-SessionId");
 				for(int pageNum = 0; pageNum < pageCount;pageNum++){
-					RssCacheDAO.newInstance().insertCache(uid, request.getTargetURL(), pageNum, resultBuilder.getResult(pageNum));
+					RssCacheDAO.newInstance().insertCache(uid, request.getTargetURL(), pageNum, resultBuilder.getResult(pageNum), UserContext.instance().getUserInfo().getCurrentSquareId());
 				}
 			}
 			

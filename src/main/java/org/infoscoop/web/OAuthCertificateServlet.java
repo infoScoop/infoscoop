@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.model.OAuthCertificate;
 
@@ -51,7 +52,7 @@ public class OAuthCertificateServlet extends HttpServlet {
 		Writer writer = response.getWriter();
 		try {
 			OAuthCertificate certificate = OAuthCertificateDAO.newInstance()
-					.get();
+					.get(UserContext.instance().getUserInfo().getCurrentSquareId());
 			writer.write(certificate.getCertificate());
 		} catch (Exception e) {
 			log.error("unexpected error occured.", e);

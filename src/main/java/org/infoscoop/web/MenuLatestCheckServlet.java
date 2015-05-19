@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.MenuCacheDAO;
 import org.infoscoop.dao.model.MENUCACHEPK;
 import org.infoscoop.dao.model.MenuCache;
@@ -61,8 +62,9 @@ public class MenuLatestCheckServlet extends HttpServlet {
 		try {
 			res.setHeader("Content-Type", "text/xml; charset=UTF-8");
 			Writer w = res.getWriter();
+			String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 			MenuCacheDAO dao = MenuCacheDAO.newInstance();
-			MenuCache cache = dao.get(uid,url);
+			MenuCache cache = dao.get(uid, url, squareId);
 			if(cache != null && cache.getMenuIds() != null ){
 				Set oldIds = new HashSet(Arrays.asList(new String(cache.getMenuIds()).split(",")));
 				Set newIds = new HashSet(Arrays.asList(buf.toString().split(",")));
@@ -74,7 +76,7 @@ public class MenuLatestCheckServlet extends HttpServlet {
 				}
 				w.write(array.toString());
 			}else{
-				cache = new MenuCache(new MENUCACHEPK(Crypt.getHash(url),uid ));
+				cache = new MenuCache(new MENUCACHEPK(Crypt.getHash(url),uid, squareId ));
 				w.write("[]");
 			}
 			cache.setMenuIds( buf.toString().getBytes());

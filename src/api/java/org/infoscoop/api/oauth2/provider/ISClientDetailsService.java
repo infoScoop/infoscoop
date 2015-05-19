@@ -41,7 +41,7 @@ public class ISClientDetailsService implements ClientDetailsService {
 	@Override
 	public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
 		OAuth2ProviderClientDetailDAO provider = OAuth2ProviderClientDetailDAO.newInstance();
-		OAuth2ProviderClientDetail pcd = provider.getClientDetailById(clientId);
+		OAuth2ProviderClientDetail pcd = provider.getClientDetailById(clientId, "default");
 		
 		if(pcd == null){
 			throw new ClientRegistrationException("Client Detail not set up.");
