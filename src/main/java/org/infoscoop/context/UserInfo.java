@@ -23,6 +23,7 @@ import java.util.TimeZone;
 public class UserInfo {
 	private int clientTimezoneOffset;
 	private TimeZone clientTimezone = TimeZone.getTimeZone("UTC");
+	private String currentSquareId;
 
 	public int getClientTimezoneOffset(){
 		return this.clientTimezoneOffset;
@@ -35,7 +36,7 @@ public class UserInfo {
 		tz.setRawOffset(offset * 60000);
 		setClientTimezone(tz);
 	}
-	
+
 	public TimeZone getClientTimezone(){
 		return this.clientTimezone;
 	}
@@ -48,5 +49,13 @@ public class UserInfo {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		sdf.setTimeZone(getClientTimezone());
 		return sdf;
-	}	
+	}
+
+	public void setCurrentSquareId(String currentSquareId) {
+		this.currentSquareId = currentSquareId;
+	}
+
+	public String getCurrentSquareId(){
+		return this.currentSquareId;
+	}
 }

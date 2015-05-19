@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -316,6 +317,18 @@ public class SessionManagerFilter implements Filter {
 				}finally{
 					UserContext.instance().getUserInfo().setClientTimezoneOffset(timeZoneOffset);
 				}				
+			}
+
+			String currentSquareId = "default";	// test impl
+			if(httpRequest.getHeader("X-IS-CURRENTAQUAREID") != null){
+				currentSquareId =httpRequest.getHeader("X-IS-CURRENTAQUAREID");
+			} else {
+				// test impl
+//				currentSquareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+			}
+			// set current square id
+			if(currentSquareId != null) {
+				UserContext.instance().getUserInfo().setCurrentSquareId(currentSquareId);
 			}
 		}
 		chain.doFilter(request, response);
