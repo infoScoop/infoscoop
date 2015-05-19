@@ -27,6 +27,7 @@ public abstract class BaseRSSCACHEPK implements Serializable {
 	private java.lang.String urlKey;
 	private java.lang.String uid;
 	private java.lang.Integer pagenum;
+	private java.lang.String squareid;
 
 
 	public BaseRSSCACHEPK () {}
@@ -34,11 +35,13 @@ public abstract class BaseRSSCACHEPK implements Serializable {
 	public BaseRSSCACHEPK (
 		java.lang.String urlKey,
 		java.lang.String uid,
-		java.lang.Integer pagenum) {
+		java.lang.Integer pagenum,
+		java.lang.String squareid) {
 
 		this.setUrlKey(urlKey);
 		this.setUid(uid);
 		this.setPagenum(pagenum);
+		this.setSquareid(squareid);
 	}
 
 
@@ -91,6 +94,13 @@ public abstract class BaseRSSCACHEPK implements Serializable {
 		this.pagenum = pagenum;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
 
 
 
@@ -117,6 +127,14 @@ public abstract class BaseRSSCACHEPK implements Serializable {
 			}
 			if (null != this.getPagenum() && null != mObj.getPagenum()) {
 				if (!this.getPagenum().equals(mObj.getPagenum())) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+			if (null != this.getSquareid() && null != mObj.getSquareid()) {
+				if (!this.getSquareid().equals(mObj.getSquareid())) {
 					return false;
 				}
 			}
@@ -151,7 +169,13 @@ public abstract class BaseRSSCACHEPK implements Serializable {
 			else {
 				return super.hashCode();
 			}
-			this.hashCode = sb.toString().hashCode();
+			if (null != this.getSquareid()) {
+				sb.append(this.getSquareid().hashCode());
+				sb.append(":");
+			}
+			else {
+				return super.hashCode();
+			}			this.hashCode = sb.toString().hashCode();
 		}
 		return this.hashCode;
 	}

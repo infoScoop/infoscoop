@@ -11,6 +11,7 @@
 		<composite-id name="Id" class="TABPK">
 			<key-property name="Uid" column="`UID`" type="string"/>
 			<key-property name="Id"	column="ID"	type="string"/>
+			<key-property name="Squareid" column="square_id" type="string" length="64"/>
 		</composite-id>
 
 		<property

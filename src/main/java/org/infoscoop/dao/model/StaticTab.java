@@ -41,8 +41,8 @@ public class StaticTab extends BaseStaticTab {
 	/**
 	 * Constructor for primary key
 	 */
-	public StaticTab (java.lang.String tabId) {
-		super(tabId);
+	public StaticTab (StaticTabPK id) {
+		super(id);
 	}
 	
 	public List<String> getTabAdminUidList (){

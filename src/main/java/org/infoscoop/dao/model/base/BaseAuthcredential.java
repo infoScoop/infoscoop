@@ -39,7 +39,8 @@ public abstract class BaseAuthcredential  implements Serializable {
 	public static String PROP_AUTHTYPE = "Authtype";
 	public static String PROP_ID = "Id";
 	public static String PROP_UID = "Uid";
-
+	public static String PROP_SQUARE_ID = "Squareid";
+	
 
 	// constructors
 	public BaseAuthcredential () {
@@ -63,7 +64,8 @@ public abstract class BaseAuthcredential  implements Serializable {
 		java.lang.Integer sysnum,
 		java.lang.String authtype,
 		java.lang.String authuid,
-		java.lang.String authpasswd) {
+		java.lang.String authpasswd,
+		java.lang.String squareid) {
 
 		this.setId(id);
 		this.setUid(uid);
@@ -71,6 +73,7 @@ public abstract class BaseAuthcredential  implements Serializable {
 		this.setAuthType(authtype);
 		this.setAuthUid(authuid);
 		this.setAuthPasswd(authpasswd);
+		this.setSquareid(squareid);
 		initialize();
 	}
 
@@ -92,6 +95,7 @@ public abstract class BaseAuthcredential  implements Serializable {
 	private java.lang.String authDomain;
 	private java.lang.String authUid;
 	private java.lang.String authPasswd;
+	private java.lang.String squareid;
 
 	/**
 	 * Return the unique identifier of this class
@@ -210,6 +214,14 @@ public abstract class BaseAuthcredential  implements Serializable {
 	 */
 	public void setAuthPasswd (java.lang.String authpasswd) {
 		this.authPasswd = authpasswd;
+	}
+
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
 	}
 
 

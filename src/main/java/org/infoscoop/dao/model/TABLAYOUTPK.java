@@ -28,12 +28,14 @@ public class TABLAYOUTPK extends BaseTABLAYOUTPK {
 	public TABLAYOUTPK (
 		java.lang.String tabid,
 		java.lang.Integer roleorder,
-		java.lang.Integer temp) {
+		java.lang.Integer temp,
+		java.lang.String squareid) {
 
 		super (
 			tabid,
 			roleorder,
-			temp);
+			temp,
+			squareid);
 	}
 /*[CONSTRUCTOR MARKER END]*/
 

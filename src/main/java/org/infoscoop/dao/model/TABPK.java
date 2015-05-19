@@ -27,11 +27,13 @@ public class TABPK extends BaseTABPK {
 	
 	public TABPK (
 		java.lang.String uid,
-		java.lang.String id) {
+		java.lang.String id,
+		java.lang.String squareid) {
 
 		super (
 			uid,
-			id);
+			id,
+			squareid);
 	}
 /*[CONSTRUCTOR MARKER END]*/
 

@@ -37,6 +37,7 @@ public abstract class BaseAdminrole  implements Serializable {
 	public static String PROP_ALLOWDELETE = "Allowdelete";
 	public static String PROP_NAME = "Name";
 	public static String PROP_ID = "Id";
+	public static String PROP_SQUARE_ID = "Squareid";
 
 
 	// constructors
@@ -82,6 +83,7 @@ public abstract class BaseAdminrole  implements Serializable {
 	private java.lang.String name;
 	private java.lang.String permission;
 	private java.lang.Integer allowdelete;
+	private java.lang.String squareid;
 
 	// collections
 	private java.util.Set<org.infoscoop.dao.model.Portaladmins> portaladmins;
@@ -198,8 +200,13 @@ public abstract class BaseAdminrole  implements Serializable {
 		getPortaladmins().add(portaladmins);
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
 
-
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;

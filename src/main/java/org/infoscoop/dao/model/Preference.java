@@ -42,7 +42,7 @@ public class Preference extends BasePreference {
 	/**
 	 * Constructor for primary key
 	 */
-	public Preference (java.lang.String id) {
+	public Preference (PreferencePK id) {
 		super(id);
 	}
 
@@ -50,7 +50,7 @@ public class Preference extends BasePreference {
 	 * Constructor for required fields
 	 */
 	public Preference (
-		java.lang.String id,
+		PreferencePK id,
 		java.lang.String data) {
 
 		super (

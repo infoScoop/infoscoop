@@ -40,6 +40,7 @@ public abstract class BaseLogs  implements Serializable {
 	public static String PROP_URL = "Url";
 	public static String PROP_ID = "Id";
 	public static String PROP_UID = "Uid";
+	public static String PROP_SQUARE_ID = "Squareid";
 
 
 	// constructors
@@ -66,7 +67,8 @@ public abstract class BaseLogs  implements Serializable {
 		java.lang.String urlKey,
 		java.lang.String rssurl,
 		java.lang.String rssurlKey,
-		java.lang.String date) {
+		java.lang.String date,
+		java.lang.String squareid) {
 
 		this.setId(id);
 		this.setUid(uid);
@@ -76,6 +78,7 @@ public abstract class BaseLogs  implements Serializable {
 		this.setRssurl(rssurl);
 		this.setRssurlKey(rssurlKey);
 		this.setDate(date);
+		this.setSquareid(squareid);
 		initialize();
 	}
 
@@ -96,6 +99,7 @@ public abstract class BaseLogs  implements Serializable {
 	private java.lang.String rssurl;
 	private java.lang.String rssurlKey;
 	private java.lang.String date;
+	private java.lang.String squareid;
 
 
 
@@ -238,6 +242,13 @@ public abstract class BaseLogs  implements Serializable {
 		this.date = date;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
 
 
 

@@ -28,12 +28,14 @@ public class RSSCACHEPK extends BaseRSSCACHEPK {
 	public RSSCACHEPK (
 		java.lang.String urlKey,
 		java.lang.String uid,
-		java.lang.Integer pagenum) {
+		java.lang.Integer pagenum,
+		java.lang.String squareid) {
 
 		super (
 			urlKey,
 			uid,
-			pagenum);
+			pagenum,
+			squareid);
 	}
 /*[CONSTRUCTOR MARKER END]*/
 

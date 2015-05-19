@@ -34,6 +34,8 @@ public class Account implements IAccount {
 	private String password;
 	private String mail;
 	private String groupName;
+	private String belongid;
+	private String defaultbelongid;
 
 	public Account(String uid, String name, String plainTextPassword){
 		this.uid = uid;
@@ -65,6 +67,22 @@ public class Account implements IAccount {
 
 	public String getGroupName() { return this.groupName; }
 	public void setGroupName(String groupName) { this.groupName = groupName; }
+	
+	public String getBelongid() {
+		return belongid;
+	}
+
+	public void setBelongid(String belongid) {
+		this.belongid = belongid;
+	}
+
+	public String getDefaultbelongid() {
+		return defaultbelongid;
+	}
+
+	public void setDefaultbelongid(String defaultbelongid) {
+		this.defaultbelongid = defaultbelongid;
+	}
 
 	public IGroup[] getGroups() { return null; }
 	public List<String> getMails() {

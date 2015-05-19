@@ -43,13 +43,15 @@ public class I18nlocale extends BaseI18nlocale {
 		java.lang.Long id,
 		java.lang.String type,
 		java.lang.String country,
-		java.lang.String lang) {
+		java.lang.String lang,
+		java.lang.String squareid) {
 
 		super (
 			id,
 			type,
 			country,
-			lang);
+			lang,
+			squareid);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

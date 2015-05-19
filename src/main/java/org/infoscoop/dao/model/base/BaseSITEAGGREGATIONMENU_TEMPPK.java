@@ -26,16 +26,19 @@ public abstract class BaseSITEAGGREGATIONMENU_TEMPPK implements Serializable {
 
 	private java.lang.String type;
 	private java.lang.String sitetopid;
+	private java.lang.String squareid;
 
 
 	public BaseSITEAGGREGATIONMENU_TEMPPK () {}
 	
 	public BaseSITEAGGREGATIONMENU_TEMPPK (
 		java.lang.String type,
-		java.lang.String sitetopid) {
+		java.lang.String sitetopid,
+		java.lang.String squareid) {
 
 		this.setType(type);
 		this.setSitetopid(sitetopid);
+		this.setSquareid(squareid);
 	}
 
 
@@ -72,6 +75,13 @@ public abstract class BaseSITEAGGREGATIONMENU_TEMPPK implements Serializable {
 	}
 
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
 
 
 	public boolean equals (Object obj) {
@@ -111,6 +121,10 @@ public abstract class BaseSITEAGGREGATIONMENU_TEMPPK implements Serializable {
 			}
 			if (null != this.getSitetopid()) {
 				sb.append(this.getSitetopid().hashCode());
+				sb.append(":");
+			}
+			if (null != this.getSquareid()) {
+				sb.append(this.getSquareid().hashCode());
 				sb.append(":");
 			}
 			else {

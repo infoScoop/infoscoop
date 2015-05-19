@@ -19,6 +19,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.PortallayoutPK;
+
 
 /**
  * This is an object that contains data related to the PORTALLAYOUT table.
@@ -44,8 +46,8 @@ public abstract class BasePortallayout  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BasePortallayout (java.lang.String name) {
-		this.setName(name);
+	public BasePortallayout (PortallayoutPK id) {
+		this.setId(id);
 		initialize();
 	}
 
@@ -53,10 +55,10 @@ public abstract class BasePortallayout  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BasePortallayout (
-		java.lang.String name,
+		PortallayoutPK id,
 		java.lang.String layout) {
 
-		this.setName(name);
+		this.setId(id);
 		this.setLayout(layout);
 		initialize();
 	}
@@ -68,7 +70,7 @@ public abstract class BasePortallayout  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String name;
+	private PortallayoutPK id;
 
 	// fields
 	private java.lang.String layout;
@@ -81,16 +83,16 @@ public abstract class BasePortallayout  implements Serializable {
      *  generator-class="sequence"
      *  column="NAME"
      */
-	public java.lang.String getName () {
-		return name;
+	public PortallayoutPK getId () {
+		return id;
 	}
 
 	/**
 	 * Set the unique identifier of this class
 	 * @param name the new ID
 	 */
-	public void setName (java.lang.String name) {
-		this.name = name;
+	public void setId (PortallayoutPK id) {
+		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -120,16 +122,16 @@ public abstract class BasePortallayout  implements Serializable {
 		if (!(obj instanceof org.infoscoop.dao.model.Portallayout)) return false;
 		else {
 			org.infoscoop.dao.model.Portallayout portallayout = (org.infoscoop.dao.model.Portallayout) obj;
-			if (null == this.getName() || null == portallayout.getName()) return false;
-			else return (this.getName().equals(portallayout.getName()));
+			if (null == this.getId() || null == portallayout.getId()) return false;
+			else return (this.getId().equals(portallayout.getId()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getName()) return super.hashCode();
+			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getName().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

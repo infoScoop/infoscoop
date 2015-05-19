@@ -49,7 +49,8 @@ public class Logs extends BaseLogs {
 		java.lang.String urlKey,
 		java.lang.String rssurl,
 		java.lang.String rssurlKey,
-		java.lang.String date) {
+		java.lang.String date,
+		java.lang.String squareid) {
 
 		super (
 			id,
@@ -59,7 +60,8 @@ public class Logs extends BaseLogs {
 			urlKey,
 			rssurl,
 			rssurlKey,
-			date);
+			date,
+			squareid);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

@@ -19,6 +19,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.PreferencePK;
+
 
 /**
  * This is an object that contains data related to the PREFERENCE table.
@@ -44,8 +46,8 @@ public abstract class BasePreference  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BasePreference (java.lang.String id) {
-		this.setUid(id);
+	public BasePreference (PreferencePK id) {
+		this.setId(id);
 		initialize();
 	}
 
@@ -53,10 +55,10 @@ public abstract class BasePreference  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BasePreference (
-		java.lang.String uid,
+		PreferencePK id,
 		java.lang.String data) {
 
-		this.setUid(uid);
+		this.setId(id);
 		this.setData(data);
 		initialize();
 	}
@@ -68,7 +70,7 @@ public abstract class BasePreference  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String uid;
+	private PreferencePK id;
 
 	// fields
 	private java.lang.String data;
@@ -81,16 +83,16 @@ public abstract class BasePreference  implements Serializable {
      *  generator-class="sequence"
      *  column="UID"
      */
-	public java.lang.String getUid () {
-		return uid;
+	public PreferencePK getId () {
+		return id;
 	}
 
 	/**
 	 * Set the unique identifier of this class
 	 * @param uid the new ID
 	 */
-	public void setUid (java.lang.String uid) {
-		this.uid = uid;
+	public void setId (PreferencePK id) {
+		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -120,16 +122,16 @@ public abstract class BasePreference  implements Serializable {
 		if (!(obj instanceof org.infoscoop.dao.model.Preference)) return false;
 		else {
 			org.infoscoop.dao.model.Preference preference = (org.infoscoop.dao.model.Preference) obj;
-			if (null == this.getUid() || null == preference.getUid()) return false;
-			else return (this.getUid().equals(preference.getUid()));
+			if (null == this.getId() || null == preference.getId()) return false;
+			else return (this.getId().equals(preference.getId()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getUid()) return super.hashCode();
+			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getUid().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

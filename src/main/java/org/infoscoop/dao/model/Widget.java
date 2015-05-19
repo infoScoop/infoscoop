@@ -48,11 +48,12 @@ public class Widget extends BaseWidget {
 		super(id);
 	}
 	
-	public Widget(String tabId, Long deleteDate, String widgetId, String uid){
+	public Widget(String tabId, Long deleteDate, String widgetId, String uid, String squareid){
 		super.setTabid(tabId);
 		super.setDeletedate(deleteDate);
 		super.setWidgetid(widgetId);
 		super.setUid(uid);
+		super.setSquareid(squareid);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

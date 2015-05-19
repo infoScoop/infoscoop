@@ -38,11 +38,11 @@ public class Proxyconf extends BaseProxyconf {
 	 * Constructor for required fields
 	 */
 	public Proxyconf (
-		java.lang.Integer temp,
+		ProxyconfPK id,
 		java.lang.String data) {
 
 		super (
-			temp,
+			id,
 			data);
 	}
 

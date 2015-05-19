@@ -34,6 +34,7 @@ public abstract class BaseForbiddenurls  implements Serializable {
 	public static String REF = "Forbiddenurls";
 	public static String PROP_ID = "Id";
 	public static String PROP_URL = "Url";
+	public static String PROP_SQUARE_ID = "Squareid";
 
 
 	// constructors
@@ -57,6 +58,7 @@ public abstract class BaseForbiddenurls  implements Serializable {
 
 	// primary key
 	private Long id;
+	private java.lang.String squareid;
 
 
 
@@ -85,6 +87,14 @@ public abstract class BaseForbiddenurls  implements Serializable {
 	}
 	public void setUrl( String url ) {
 		this.url = url;
+	}
+
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
 	}
 
 	public boolean equals (Object obj) {

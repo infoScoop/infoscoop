@@ -19,6 +19,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.ProxyconfPK;
+
 
 /**
  * This is an object that contains data related to the PROXYCONF table.
@@ -46,10 +48,10 @@ public abstract class BaseProxyconf  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseProxyconf (
-		java.lang.Integer temp,
+		ProxyconfPK id,
 		java.lang.String data) {
 
-		this.setTemp(temp);
+		this.setId(id);
 		this.setData(data);
 		initialize();
 	}
@@ -59,7 +61,7 @@ public abstract class BaseProxyconf  implements Serializable {
 
 
 	// fields
-	private java.lang.Integer temp;
+	private ProxyconfPK id;
 	private java.lang.String data;
 	private java.util.Date lastmodified;
 
@@ -71,16 +73,16 @@ public abstract class BaseProxyconf  implements Serializable {
 	/**
 	 * Return the value associated with the column: TEMP
 	 */
-	public java.lang.Integer getTemp () {
-		return temp;
+	public ProxyconfPK getId () {
+		return id;
 	}
 
 	/**
 	 * Set the value related to the column: TEMP
 	 * @param temp the TEMP value
 	 */
-	public void setTemp (java.lang.Integer temp) {
-		this.temp = temp;
+	public void setId (ProxyconfPK id) {
+		this.id = id;
 	}
 
 

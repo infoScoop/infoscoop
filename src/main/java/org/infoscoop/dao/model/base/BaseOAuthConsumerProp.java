@@ -2,6 +2,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.OAuthConsumerPropPK;
+
 
 /**
  * This is an object that contains data related to the IS_OAUTH_CONSUMERS table.
@@ -31,7 +33,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseOAuthConsumerProp (java.lang.String id) {
+	public BaseOAuthConsumerProp (OAuthConsumerPropPK id) {
 		this.setId(id);
 		initialize();
 	}
@@ -40,7 +42,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseOAuthConsumerProp (
-		java.lang.String id,
+		OAuthConsumerPropPK id,
 		java.lang.String serviceName) {
 
 		this.setId(id);
@@ -55,7 +57,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String id;
+	private OAuthConsumerPropPK id;
 
 	// fields
 	private java.lang.String serviceName;
@@ -73,7 +75,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
      * @hibernate.id
      *  column="id"
      */
-	public java.lang.String getId () {
+	public OAuthConsumerPropPK getId () {
 		return id;
 	}
 
@@ -81,7 +83,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (java.lang.String id) {
+	public void setId (OAuthConsumerPropPK id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}

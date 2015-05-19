@@ -322,7 +322,7 @@ public class TabLayout extends BaseTablayout {
 
 	public Tab toTab(String uid){
 		String tabId = super.getId().getTabid();
-		Tab tab = new Tab(new TABPK(uid, tabId));
+		Tab tab = new Tab(new TABPK(uid, tabId, super.getId().getSquareid()));
 		tab.setDefaultuid(super.getDefaultuid());
 		tab.setWidgetlastmodified(super.getWidgetslastmodified());
 		StaticTab staticTab = super.getStatictab();

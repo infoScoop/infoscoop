@@ -15,7 +15,7 @@ public class OAuthConsumerProp extends BaseOAuthConsumerProp {
 	/**
 	 * Constructor for primary key
 	 */
-	public OAuthConsumerProp (java.lang.String id) {
+	public OAuthConsumerProp (OAuthConsumerPropPK id) {
 		super(id);
 	}
 
@@ -23,7 +23,7 @@ public class OAuthConsumerProp extends BaseOAuthConsumerProp {
 	 * Constructor for required fields
 	 */
 	public OAuthConsumerProp (
-		java.lang.String id,
+		OAuthConsumerPropPK id,
 		java.lang.String serviceName) {
 
 		super (

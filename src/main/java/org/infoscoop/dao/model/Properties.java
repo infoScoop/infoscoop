@@ -34,7 +34,7 @@ public class Properties extends BaseProperties {
 	/**
 	 * Constructor for primary key
 	 */
-	public Properties (java.lang.String id) {
+	public Properties (PropertiesPK id) {
 		super(id);
 	}
 
@@ -42,7 +42,7 @@ public class Properties extends BaseProperties {
 	 * Constructor for required fields
 	 */
 	public Properties (
-		java.lang.String id,
+		PropertiesPK id,
 		java.lang.Integer required) {
 
 		super (

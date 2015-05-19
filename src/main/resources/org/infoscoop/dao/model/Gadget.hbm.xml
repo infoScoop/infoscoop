@@ -50,5 +50,14 @@
 			not-null="false"
 			length="26"
 		/>
+
+        <property
+            name="Squareid"
+            column="square_id"
+            type="string"
+            not-null="true"
+            length="64"
+        />
+
 	</class>	
 </hibernate-mapping>

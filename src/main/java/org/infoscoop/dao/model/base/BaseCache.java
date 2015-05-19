@@ -19,6 +19,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.CachePK;
+
 
 /**
  * This is an object that contains data related to the CACHE table.
@@ -49,7 +51,7 @@ public abstract class BaseCache  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseCache (java.lang.String id) {
+	public BaseCache (CachePK id) {
 		this.setId(id);
 		initialize();
 	}
@@ -58,7 +60,7 @@ public abstract class BaseCache  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseCache (
-		java.lang.String id,
+		CachePK id,
 		java.lang.String uid,
 		java.lang.String url,
 		java.lang.String urlKey,
@@ -83,7 +85,7 @@ public abstract class BaseCache  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String id;
+	private CachePK id;
 
 	// fields
 	private java.lang.String uid;
@@ -101,7 +103,7 @@ public abstract class BaseCache  implements Serializable {
      *  generator-class="sequence"
      *  column="ID"
      */
-	public java.lang.String getId () {
+	public CachePK getId () {
 		return id;
 	}
 
@@ -109,7 +111,7 @@ public abstract class BaseCache  implements Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (java.lang.String id) {
+	public void setId (CachePK id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}

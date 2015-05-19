@@ -19,6 +19,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.SiteaggregationmenuPK;
+
 
 /**
  * This is an object that contains data related to the SITEAGGREGATIONMENU table.
@@ -44,8 +46,8 @@ public abstract class BaseSiteaggregationmenu  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseSiteaggregationmenu (java.lang.String type) {
-		this.setType(type);
+	public BaseSiteaggregationmenu (SiteaggregationmenuPK id) {
+		this.setId(id);
 		initialize();
 	}
 
@@ -53,10 +55,10 @@ public abstract class BaseSiteaggregationmenu  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseSiteaggregationmenu (
-		java.lang.String type,
+		SiteaggregationmenuPK id,
 		java.lang.String data) {
 
-		this.setType(type);
+		this.setId(id);
 		this.setData(data);
 		initialize();
 	}
@@ -68,7 +70,7 @@ public abstract class BaseSiteaggregationmenu  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String type;
+	private SiteaggregationmenuPK id;
 
 	// fields
 	private java.lang.String data;
@@ -80,16 +82,16 @@ public abstract class BaseSiteaggregationmenu  implements Serializable {
      * @hibernate.id
      *  column="TYPE"
      */
-	public java.lang.String getType () {
-		return type;
+	public SiteaggregationmenuPK getId () {
+		return id;
 	}
 
 	/**
 	 * Set the unique identifier of this class
 	 * @param type the new ID
 	 */
-	public void setType (java.lang.String type) {
-		this.type = type;
+	public void setId (SiteaggregationmenuPK id) {
+		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -119,16 +121,16 @@ public abstract class BaseSiteaggregationmenu  implements Serializable {
 		if (!(obj instanceof org.infoscoop.dao.model.Siteaggregationmenu)) return false;
 		else {
 			org.infoscoop.dao.model.Siteaggregationmenu siteaggregationmenu = (org.infoscoop.dao.model.Siteaggregationmenu) obj;
-			if (null == this.getType() || null == siteaggregationmenu.getType()) return false;
-			else return (this.getType().equals(siteaggregationmenu.getType()));
+			if (null == this.getId() || null == siteaggregationmenu.getId()) return false;
+			else return (this.getId().equals(siteaggregationmenu.getId()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getType()) return super.hashCode();
+			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getType().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

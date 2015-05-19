@@ -38,6 +38,7 @@ public abstract class BaseSystemMessage  implements Serializable {
 	public static String PROP_RESOURCEID = "ResourceId";
 	public static String PROP_REPLACEVALUES = "ReplaceValues";
 	public static String PROP_ISREAD = "IsRead";
+	public static String PROP_SQUARE_ID = "Squareid";
 
 
 	// constructors
@@ -45,10 +46,11 @@ public abstract class BaseSystemMessage  implements Serializable {
 		initialize();
 	}
 
-	public BaseSystemMessage (String to, String resourceId, String replaceValues) {
+	public BaseSystemMessage (String to, String resourceId, String replaceValues, String squareid) {
 		this.to = to;
 		this.resourceId = resourceId;
 		this.replaceValues = replaceValues;
+		this.squareid = squareid;
 		initialize();
 	}
 
@@ -83,6 +85,7 @@ public abstract class BaseSystemMessage  implements Serializable {
 	private java.lang.String resourceId;
 	private java.lang.String replaceValues;
 	private java.lang.Integer isRead ;
+	private java.lang.String squareid;
 
 
 
@@ -188,6 +191,14 @@ public abstract class BaseSystemMessage  implements Serializable {
 		this.isRead = isRead;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
+	
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.dao.model.Message)) return false;

@@ -37,19 +37,19 @@ public class Siteaggregationmenu extends BaseSiteaggregationmenu {
 	/**
 	 * Constructor for primary key
 	 */
-	public Siteaggregationmenu (java.lang.String type) {
-		super(type);
+	public Siteaggregationmenu (SiteaggregationmenuPK id) {
+		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
 	public Siteaggregationmenu (
-		java.lang.String type,
+		SiteaggregationmenuPK id,
 		java.lang.String data) {
 
 		super (
-			type,
+			id,
 			data);
 	}
 

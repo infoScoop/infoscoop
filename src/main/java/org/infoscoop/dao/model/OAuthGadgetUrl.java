@@ -22,11 +22,13 @@ public class OAuthGadgetUrl extends BaseOAuthGadgetUrl{
 	 */
 	public OAuthGadgetUrl (
 		java.lang.Long id,
-		java.lang.String gadgetUrl) {
+		java.lang.String gadgetUrl,
+		java.lang.String squareid) {
 
 		super (
 			id,
-			gadgetUrl);
+			gadgetUrl,
+			squareid);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

@@ -2,6 +2,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.OAuthCertificatePK;
+
 
 /**
  * This is an object that contains data related to the is_oauth_certificate table.
@@ -28,8 +30,8 @@ public abstract class BaseOAuthCertificate  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseOAuthCertificate (java.lang.String consumerKey) {
-		this.setConsumerKey(consumerKey);
+	public BaseOAuthCertificate (OAuthCertificatePK id) {
+		this.setId(id);
 		initialize();
 	}
 
@@ -40,7 +42,7 @@ public abstract class BaseOAuthCertificate  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String consumerKey;
+	private OAuthCertificatePK id;
 
 	// fields
 	private java.lang.String privateKey;
@@ -53,16 +55,16 @@ public abstract class BaseOAuthCertificate  implements Serializable {
      * @hibernate.id
      *  column="consumer_key"
      */
-	public java.lang.String getConsumerKey () {
-		return consumerKey;
+	public OAuthCertificatePK getId () {
+		return id;
 	}
 
 	/**
 	 * Set the unique identifier of this class
 	 * @param consumerKey the new ID
 	 */
-	public void setConsumerKey (java.lang.String consumerKey) {
-		this.consumerKey = consumerKey;
+	public void setId (OAuthCertificatePK id) {
+		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -109,16 +111,16 @@ public abstract class BaseOAuthCertificate  implements Serializable {
 		if (!(obj instanceof org.infoscoop.dao.model.OAuthCertificate)) return false;
 		else {
 			org.infoscoop.dao.model.OAuthCertificate oAuthCertificate = (org.infoscoop.dao.model.OAuthCertificate) obj;
-			if (null == this.getConsumerKey() || null == oAuthCertificate.getConsumerKey()) return false;
-			else return (this.getConsumerKey().equals(oAuthCertificate.getConsumerKey()));
+			if (null == this.getId() || null == oAuthCertificate.getId()) return false;
+			else return (this.getId().equals(oAuthCertificate.getId()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getConsumerKey()) return super.hashCode();
+			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getConsumerKey().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

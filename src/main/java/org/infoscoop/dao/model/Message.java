@@ -54,13 +54,15 @@ public class Message extends BaseMessage {
 		java.lang.Long id,
 		java.lang.String from,
 		java.util.Date postedTime,
-		java.lang.String type) {
+		java.lang.String type,
+		java.lang.String squareid) {
 
 		super (
 			id,
 			from,
 			postedTime,
-			type);
+			type,
+			squareid);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

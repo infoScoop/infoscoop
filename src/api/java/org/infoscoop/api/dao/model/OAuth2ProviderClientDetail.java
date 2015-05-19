@@ -26,11 +26,11 @@ public class OAuth2ProviderClientDetail extends BaseOAuth2ProviderClientDetail {
 		super();
 	}
 	
-	public OAuth2ProviderClientDetail (String id) {
+	public OAuth2ProviderClientDetail (OAuth2ProviderClientDetailPK id) {
 		super(id);
 	}
 	
-	public OAuth2ProviderClientDetail (String id, String title, String secret) {
+	public OAuth2ProviderClientDetail (OAuth2ProviderClientDetailPK id, String title, String secret) {
 		super(id,title,secret);
 	}
 }

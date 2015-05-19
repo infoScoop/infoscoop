@@ -19,6 +19,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.I18NlastmodifiedPK;
+
 
 /**
  * This is an object that contains data related to the I18NLASTMODIFIED table.
@@ -44,7 +46,7 @@ public abstract class BaseI18nlastmodified  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseI18nlastmodified (java.lang.String id) {
+	public BaseI18nlastmodified (I18NlastmodifiedPK id) {
 		this.setId(id);
 		initialize();
 	}
@@ -56,7 +58,7 @@ public abstract class BaseI18nlastmodified  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String id;
+	private I18NlastmodifiedPK id;
 
 	// fields
 	private java.util.Date lastmodified;
@@ -69,7 +71,7 @@ public abstract class BaseI18nlastmodified  implements Serializable {
      *  generator-class="sequence"
      *  column="TYPE"
      */
-	public java.lang.String getId () {
+	public I18NlastmodifiedPK getId () {
 		return id;
 	}
 
@@ -77,7 +79,7 @@ public abstract class BaseI18nlastmodified  implements Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (java.lang.String id) {
+	public void setId (I18NlastmodifiedPK id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}

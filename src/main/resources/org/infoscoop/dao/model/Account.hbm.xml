@@ -31,5 +31,21 @@
 			length="255"
 			not-null="false"
 		/>
+
+        <property
+            name="Belongid"
+            column="belong_id"
+            type="text"
+            not-null="false"
+        />
+
+        <property
+            name="Defaultbelongid"
+            column="default_belong_id"
+            type="string"
+            not-null="false"
+            length="64"
+        />
+
 	</class>
 </hibernate-mapping>

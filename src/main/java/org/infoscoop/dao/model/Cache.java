@@ -42,7 +42,7 @@ public class Cache extends BaseCache {
 	/**
 	 * Constructor for primary key
 	 */
-	public Cache (java.lang.String id) {
+	public Cache (CachePK id) {
 		super(id);
 	}
 
@@ -50,7 +50,7 @@ public class Cache extends BaseCache {
 	 * Constructor for required fields
 	 */
 	public Cache (
-		java.lang.String id,
+		CachePK id,
 		java.lang.String uid,
 		java.lang.String url,
 		java.lang.String urlKey,

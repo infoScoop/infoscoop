@@ -19,6 +19,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.PropertiesPK;
+
 
 /**
  * This is an object that contains data related to the PROPERTIES table.
@@ -52,7 +54,7 @@ public abstract class BaseProperties  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseProperties (java.lang.String id) {
+	public BaseProperties (PropertiesPK id) {
 		this.setId(id);
 		initialize();
 	}
@@ -61,7 +63,7 @@ public abstract class BaseProperties  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseProperties (
-		java.lang.String id,
+		PropertiesPK id,
 		java.lang.Integer required) {
 
 		this.setId(id);
@@ -76,7 +78,7 @@ public abstract class BaseProperties  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String id;
+	private PropertiesPK id;
 
 	// fields
 	private java.lang.String category;
@@ -97,7 +99,7 @@ public abstract class BaseProperties  implements Serializable {
      *  generator-class="sequence"
      *  column="ID"
      */
-	public java.lang.String getId () {
+	public PropertiesPK getId () {
 		return id;
 	}
 
@@ -105,7 +107,7 @@ public abstract class BaseProperties  implements Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (java.lang.String id) {
+	public void setId (PropertiesPK id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}

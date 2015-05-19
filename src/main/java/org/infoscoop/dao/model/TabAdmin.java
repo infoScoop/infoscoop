@@ -18,8 +18,11 @@ public class TabAdmin extends BaseTabAdmin {
 	/**
 	 * Constructor for primary key
 	 */
-	public TabAdmin (java.lang.String tabId, java.lang.String uid) {
-		super(tabId, uid);
+	public TabAdmin (
+			java.lang.String tabId,
+			java.lang.String uid,
+			java.lang.String squareid) {
+		super(tabId, uid, squareid);
 		this.uid = uid;
 	}
 

@@ -28,6 +28,7 @@ public abstract class BaseI18NPK implements Serializable {
 	private java.lang.String id;
 	private java.lang.String lang;
 	private java.lang.String type;
+	private java.lang.String squareid;
 
 
 	public BaseI18NPK () {}
@@ -36,12 +37,14 @@ public abstract class BaseI18NPK implements Serializable {
 		java.lang.String country,
 		java.lang.String id,
 		java.lang.String lang,
-		java.lang.String type) {
+		java.lang.String type,
+		String squareid) {
 
 		this.setCountry(country);
 		this.setId(id);
 		this.setLang(lang);
 		this.setType(type);
+		this.setSquareid(squareid);
 	}
 
 
@@ -111,6 +114,14 @@ public abstract class BaseI18NPK implements Serializable {
 		this.type = type;
 	}
 
+
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
 
 
 

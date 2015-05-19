@@ -26,14 +26,15 @@ public abstract class BaseHOLIDAYSPK implements Serializable {
 
 	private java.lang.String country;
 	private java.lang.String lang;
-
+	private java.lang.String squareid;
 
 	public BaseHOLIDAYSPK () {}
 	
-	public BaseHOLIDAYSPK ( java.lang.String lang,java.lang.String country ) {
+	public BaseHOLIDAYSPK ( java.lang.String lang,java.lang.String country, String squareid ) {
 
 		this.setCountry(country);
 		this.setLang(lang);
+		this.setSquareid(squareid);
 	}
 
 
@@ -67,11 +68,19 @@ public abstract class BaseHOLIDAYSPK implements Serializable {
 		this.lang = lang;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
+
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof org.infoscoop.dao.model.I18NPK)) return false;
+		if (!(obj instanceof org.infoscoop.dao.model.HOLIDAYSPK)) return false;
 		else {
-			org.infoscoop.dao.model.I18NPK mObj = (org.infoscoop.dao.model.I18NPK) obj;
+			org.infoscoop.dao.model.HOLIDAYSPK mObj = (org.infoscoop.dao.model.HOLIDAYSPK) obj;
 			if (null != this.getCountry() && null != mObj.getCountry()) {
 				if (!this.getCountry().equals(mObj.getCountry())) {
 					return false;
@@ -82,6 +91,11 @@ public abstract class BaseHOLIDAYSPK implements Serializable {
 			}
 			if (null != this.getLang() && null != mObj.getLang()) {
 				if (!this.getLang().equals(mObj.getLang())) {
+					return false;
+				}
+			}
+			if (null != this.getSquareid() && null != mObj.getSquareid()) {
+				if (!this.getSquareid().equals(mObj.getSquareid())) {
 					return false;
 				}
 			}
@@ -104,6 +118,10 @@ public abstract class BaseHOLIDAYSPK implements Serializable {
 			}
 			if (null != this.getLang()) {
 				sb.append(this.getLang().hashCode());
+				sb.append(":");
+			}
+			if (null != this.getSquareid()) {
+				sb.append(this.getSquareid().hashCode());
 				sb.append(":");
 			}
 			else {

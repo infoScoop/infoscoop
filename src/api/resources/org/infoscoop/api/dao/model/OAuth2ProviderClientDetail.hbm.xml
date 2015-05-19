@@ -4,7 +4,20 @@
 <hibernate-mapping package="org.infoscoop.api.dao.model">
  <class name="OAuth2ProviderClientDetail" table="IS_OAUTHPROVIDER_CLIENT">
   <meta attribute="sync-DAO">false</meta>
-  <id column="id" length="255" name="id" type="string"/>
+  <composite-id name="Id" class="OAuth2ProviderAccessTokenPK">
+      <key-property
+          name="id"
+          column="id"
+          type="string"
+          length="255"
+      />
+      <key-property
+          name="Squareid"
+          column="square_id"
+          type="string"
+          length="64"
+      />
+  </composite-id>
   <property column="title" generated="never" lazy="false" length="255"
    name="title" not-null="true" type="string"/>
   <property column="resource_ids" generated="never" lazy="false"

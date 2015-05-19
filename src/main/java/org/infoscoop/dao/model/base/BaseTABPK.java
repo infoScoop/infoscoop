@@ -26,16 +26,19 @@ public abstract class BaseTABPK implements Serializable {
 
 	private java.lang.String uid;
 	private java.lang.String id;
+	private java.lang.String squareid;
 
 
 	public BaseTABPK () {}
 	
 	public BaseTABPK (
 		java.lang.String uid,
-		java.lang.String id) {
+		java.lang.String id,
+		java.lang.String squareid) {
 
 		this.setUid(uid);
 		this.setId(id);
+		this.setSquareid(squareid);
 	}
 
 
@@ -71,6 +74,13 @@ public abstract class BaseTABPK implements Serializable {
 		this.id = id;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
 
 
 
@@ -95,6 +105,14 @@ public abstract class BaseTABPK implements Serializable {
 			else {
 				return false;
 			}
+			if (null != this.getSquareid() && null != mObj.getSquareid()) {
+				if (!this.getSquareid().equals(mObj.getSquareid())) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
 			return true;
 		}
 	}
@@ -111,6 +129,13 @@ public abstract class BaseTABPK implements Serializable {
 			}
 			if (null != this.getId()) {
 				sb.append(this.getId().hashCode());
+				sb.append(":");
+			}
+			else {
+				return super.hashCode();
+			}
+			if (null != this.getSquareid()) {
+				sb.append(this.getSquareid().hashCode());
 				sb.append(":");
 			}
 			else {

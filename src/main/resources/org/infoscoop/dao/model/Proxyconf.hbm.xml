@@ -9,9 +9,19 @@
 		table="IS_PROXYCONFS"
 	>
 		
-		<id name="Temp" column="TEMP" type="integer">
-			<generator class="assigned"/>
-		</id>
+        <composite-id name="Id" class="ProxyconfPK">
+            <key-property
+                name="Temp"
+                column="TEMP"
+                type="integer"
+            />
+            <key-property
+                name="Squareid"
+                column="square_id"
+                type="string"
+                length="64"
+            />
+        </composite-id>
 		
 		
 		<property

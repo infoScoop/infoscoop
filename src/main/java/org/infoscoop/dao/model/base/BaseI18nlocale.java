@@ -36,6 +36,7 @@ public abstract class BaseI18nlocale  implements Serializable {
 	public static String PROP_LANG = "Lang";
 	public static String PROP_COUNTRY = "Country";
 	public static String PROP_ID = "Id";
+	public static String PROP_SQUARE_ID = "Squareid";
 
 
 	// constructors
@@ -58,12 +59,14 @@ public abstract class BaseI18nlocale  implements Serializable {
 		java.lang.Long id,
 		java.lang.String type,
 		java.lang.String country,
-		java.lang.String lang) {
+		java.lang.String lang,
+		java.lang.String squareid) {
 
 		this.setId(id);
 		this.setType(type);
 		this.setCountry(country);
 		this.setLang(lang);
+		this.setSquareid(squareid);
 		initialize();
 	}
 
@@ -80,6 +83,7 @@ public abstract class BaseI18nlocale  implements Serializable {
 	private java.lang.String type;
 	private java.lang.String country;
 	private java.lang.String lang;
+	private java.lang.String squareid;
 
 
 
@@ -154,6 +158,14 @@ public abstract class BaseI18nlocale  implements Serializable {
 		this.lang = lang;
 	}
 
+
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
 
 
 

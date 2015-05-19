@@ -27,11 +27,13 @@ public class SITEAGGREGATIONMENU_TEMPPK extends BaseSITEAGGREGATIONMENU_TEMPPK {
 	
 	public SITEAGGREGATIONMENU_TEMPPK (
 		java.lang.String type,
-		java.lang.String sitetopid) {
+		java.lang.String sitetopid,
+		java.lang.String squareid) {
 
 		super (
 			type,
-			sitetopid);
+			sitetopid,
+			squareid);
 	}
 /*[CONSTRUCTOR MARKER END]*/
 

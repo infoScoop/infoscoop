@@ -32,8 +32,8 @@ public abstract class BaseTabAdmin implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseTabAdmin(java.lang.String tabId, java.lang.String uid) {
-		this.id = new TabAdminPK(tabId, uid);
+	public BaseTabAdmin(java.lang.String tabId, java.lang.String uid, java.lang.String squareid) {
+		this.id = new TabAdminPK(tabId, uid, squareid);
 		initialize();
 	}
 

@@ -41,11 +41,13 @@ public class Portaladmins extends BasePortaladmins {
 	 */
 	public Portaladmins (
 		java.lang.String id,
-		java.lang.String uid) {
+		java.lang.String uid,
+		java.lang.String squareid) {
 
 		super (
 			id,
-			uid);
+			uid,
+			squareid);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

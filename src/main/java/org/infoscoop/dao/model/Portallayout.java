@@ -36,7 +36,7 @@ public class Portallayout extends BasePortallayout {
 	/**
 	 * Constructor for primary key
 	 */
-	public Portallayout (java.lang.String id) {
+	public Portallayout (PortallayoutPK id) {
 		super(id);
 	}
 
@@ -44,7 +44,7 @@ public class Portallayout extends BasePortallayout {
 	 * Constructor for required fields
 	 */
 	public Portallayout (
-		java.lang.String id,
+		PortallayoutPK id,
 		java.lang.String layout) {
 
 		super (

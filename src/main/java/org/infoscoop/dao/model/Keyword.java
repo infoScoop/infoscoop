@@ -44,14 +44,16 @@ public class Keyword extends BaseKeyword {
 		java.lang.String uid,
 		java.lang.Integer type,
 		java.lang.String keyword,
-		java.lang.String date) {
+		java.lang.String date,
+		java.lang.String squareid) {
 
 		super (
 			id,
 			uid,
 			type,
 			keyword,
-			date);
+			date,
+			squareid);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

@@ -27,11 +27,13 @@ public class HOLIDAYSPK extends BaseHOLIDAYSPK {
 	
 	public HOLIDAYSPK (
 		java.lang.String lang,
-		java.lang.String country) {
+		java.lang.String country,
+		java.lang.String squareid) {
 
 		super (
 			lang,
-			country);
+			country,
+			squareid);
 	}
 /*[CONSTRUCTOR MARKER END]*/
 

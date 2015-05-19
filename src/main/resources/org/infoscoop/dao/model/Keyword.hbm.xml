@@ -47,6 +47,13 @@
 			not-null="true"
 			length="24"
 		/>
+        <property
+            name="Squareid"
+            column="square_id"
+            type="string"
+            not-null="true"
+            length="64"
+        />
 
 
 	</class>	

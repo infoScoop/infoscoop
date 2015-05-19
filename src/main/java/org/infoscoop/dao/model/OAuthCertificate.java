@@ -15,8 +15,8 @@ public class OAuthCertificate extends BaseOAuthCertificate {
 	/**
 	 * Constructor for primary key
 	 */
-	public OAuthCertificate (java.lang.String consumerKey) {
-		super(consumerKey);
+	public OAuthCertificate (OAuthCertificatePK id) {
+		super(id);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

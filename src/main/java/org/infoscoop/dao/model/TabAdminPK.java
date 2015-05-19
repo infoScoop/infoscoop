@@ -27,11 +27,13 @@ public class TabAdminPK extends BaseTabAdminPK {
 	
 	public TabAdminPK (
 		java.lang.String tabid,
-		java.lang.String uid) {
+		java.lang.String uid,
+		java.lang.String squareid) {
 
 		super (
 			tabid,
-			uid);
+			uid,
+			squareid);
 	}
 /*[CONSTRUCTOR MARKER END]*/
 

@@ -27,6 +27,7 @@ public abstract class BaseTABLAYOUTPK implements Serializable {
 	private java.lang.String tabid;
 	private java.lang.Integer roleorder;
 	private java.lang.Integer temp;
+	private java.lang.String squareid;
 
 
 	public BaseTABLAYOUTPK () {}
@@ -34,11 +35,13 @@ public abstract class BaseTABLAYOUTPK implements Serializable {
 	public BaseTABLAYOUTPK (
 		java.lang.String tabid,
 		java.lang.Integer roleorder,
-		java.lang.Integer temp) {
+		java.lang.Integer temp,
+		java.lang.String squareid) {
 
 		this.setTabid(tabid);
 		this.setRoleorder(roleorder);
 		this.setTemp(temp);
+		this.setSquareid(squareid);
 	}
 
 
@@ -91,6 +94,14 @@ public abstract class BaseTABLAYOUTPK implements Serializable {
 		this.temp = temp;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
+
 
 
 
@@ -115,7 +126,21 @@ public abstract class BaseTABLAYOUTPK implements Serializable {
 			else {
 				return false;
 			}
-			return true;
+			if (null != this.getTemp() && null != mObj.getTemp()) {
+				if (!this.getTemp().equals(mObj.getTemp())) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}			if (null != this.getSquareid() && null != mObj.getSquareid()) {
+				if (!this.getSquareid().equals(mObj.getSquareid())) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}			return true;
 		}
 	}
 
@@ -130,8 +155,12 @@ public abstract class BaseTABLAYOUTPK implements Serializable {
 			}
 			if (null != this.getTemp()) {
 				sb.append(this.getTemp().hashCode());
+				sb.append(":");
 			}
-			
+			if (null != this.getSquareid()) {
+				sb.append(this.getSquareid().hashCode());
+				sb.append(":");
+			}
 			if(sb.toString().length() == 0)
 				return super.hashCode();
 			

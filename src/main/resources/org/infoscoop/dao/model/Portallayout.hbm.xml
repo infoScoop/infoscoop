@@ -8,13 +8,19 @@
 		name="Portallayout"
 		table="IS_PORTALLAYOUTS"
 	>
-		<id
-			name="name"
-			type="string"
-			column="NAME"
-		>
-			<generator class="assigned"/>
-		</id>
+        <composite-id name="Id" class="PortallayoutPK">
+            <key-property
+                name="name"
+                column="NAME"
+                type="string"
+            />
+            <key-property
+                name="Squareid"
+                column="square_id"
+                type="string"
+                length="64"
+            />
+        </composite-id>
 
 		<property
 			name="Layout"

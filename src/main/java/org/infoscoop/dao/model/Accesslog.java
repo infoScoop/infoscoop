@@ -42,12 +42,14 @@ public class Accesslog extends BaseAccesslog {
 	public Accesslog (
 		java.lang.Long id,
 		java.lang.String uid,
-		java.lang.String date) {
+		java.lang.String date,
+		java.lang.String squareid) {
 
 		super (
 			id,
 			uid,
-			date);
+			date,
+			squareid);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

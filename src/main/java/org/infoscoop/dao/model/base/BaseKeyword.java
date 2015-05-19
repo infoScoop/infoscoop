@@ -37,6 +37,7 @@ public abstract class BaseKeyword  implements Serializable {
 	public static String PROP_DATE = "Date";
 	public static String PROP_ID = "Id";
 	public static String PROP_UID = "Uid";
+	public static String PROP_SQUARE_ID = "Squareid";
 
 
 	// constructors
@@ -60,12 +61,14 @@ public abstract class BaseKeyword  implements Serializable {
 		java.lang.String uid,
 		java.lang.Integer type,
 		java.lang.String keyword,
-		java.lang.String date) {
+		java.lang.String date,
+		java.lang.String squareid) {
 
 		this.setId(id);
 		this.setUid(uid);
 		this.setType(type);
 		this.setKeyword(keyword);
+		this.setSquareid(squareid);
 		this.setDate(date);
 		initialize();
 	}
@@ -84,6 +87,7 @@ public abstract class BaseKeyword  implements Serializable {
 	private java.lang.Integer type;
 	private java.lang.String keyword;
 	private java.lang.String date;
+	private java.lang.String squareid;
 
 
 
@@ -175,7 +179,13 @@ public abstract class BaseKeyword  implements Serializable {
 		this.date = date;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
 
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
 
 
 	public boolean equals (Object obj) {

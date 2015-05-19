@@ -24,7 +24,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class WidgetConf {
-	private String type;
+	private WidgetConfPK id;
 	private String data;
 	
 	public String getData() {
@@ -43,23 +43,23 @@ public class WidgetConf {
 		this.data = XmlUtil.dom2String(conf);
 	}
 	
-	public String getType() {
-		return type;
+	public WidgetConfPK getId() {
+		return id;
 	}
 	
-	public void setType(String type) {
-		this.type = type;
+	public void setId(WidgetConfPK id) {
+		this.id = id;
 	}
 	
 	public boolean equals(Object obj) {
 		if(obj instanceof WidgetConf){
 			WidgetConf conf = (WidgetConf)obj;
-			return this.type.equals(conf.getType());
+			return this.id.equals(conf.getId());
 		}
 		return false;
 	}
 	public int hashCode() {
-		return this.type.hashCode();
+		return this.id.hashCode();
 	}
 	
 

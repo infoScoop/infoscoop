@@ -19,6 +19,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.SessionPK;
+
 
 /**
  * This is an object that contains data related to the `SESSION` table.
@@ -33,7 +35,6 @@ public abstract class BaseSession  implements Serializable {
 
 	public static String REF = "Session";
 	public static String PROP_LOGINDATETIME = "Logindatetime";
-	public static String PROP_UID = "Uid";
 	public static String PROP_SESSIONID = "Sessionid";
 
 
@@ -45,8 +46,8 @@ public abstract class BaseSession  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseSession (java.lang.String uid) {
-		this.setUid(uid);
+	public BaseSession (SessionPK id) {
+		this.setId(id);
 		initialize();
 	}
 
@@ -54,10 +55,10 @@ public abstract class BaseSession  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseSession (
-		java.lang.String uid,
+		SessionPK id,
 		java.lang.String sessionid) {
 
-		this.setUid(uid);
+		this.setId(id);
 		this.setSessionid(sessionid);
 		initialize();
 	}
@@ -69,7 +70,7 @@ public abstract class BaseSession  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String uid;
+	private SessionPK id;
 
 	// fields
 	private java.lang.String sessionid;
@@ -82,16 +83,16 @@ public abstract class BaseSession  implements Serializable {
      * @hibernate.id
      *  column="`UID`"
      */
-	public java.lang.String getUid () {
-		return uid;
+	public SessionPK getId () {
+		return id;
 	}
 
 	/**
 	 * Set the unique identifier of this class
 	 * @param uid the new ID
 	 */
-	public void setUid (java.lang.String uid) {
-		this.uid = uid;
+	public void setId (SessionPK id) {
+		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -138,16 +139,16 @@ public abstract class BaseSession  implements Serializable {
 		if (!(obj instanceof org.infoscoop.dao.model.Session)) return false;
 		else {
 			org.infoscoop.dao.model.Session session = (org.infoscoop.dao.model.Session) obj;
-			if (null == this.getUid() || null == session.getUid()) return false;
-			else return (this.getUid().equals(session.getUid()));
+			if (null == this.getId() || null == session.getId()) return false;
+			else return (this.getId().equals(session.getId()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getUid()) return super.hashCode();
+			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getUid().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

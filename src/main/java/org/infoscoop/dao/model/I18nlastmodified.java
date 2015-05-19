@@ -32,7 +32,7 @@ public class I18nlastmodified extends BaseI18nlastmodified {
 	/**
 	 * Constructor for primary key
 	 */
-	public I18nlastmodified (java.lang.String id) {
+	public I18nlastmodified (I18NlastmodifiedPK id) {
 		super(id);
 	}
 

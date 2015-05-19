@@ -19,6 +19,8 @@ package org.infoscoop.api.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.api.dao.model.OAuth2ProviderAccessTokenPK;
+
 public class BaseOAuth2ProviderAccessToken implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +37,7 @@ public class BaseOAuth2ProviderAccessToken implements Serializable {
 		initialize();
 	}
 
-	public BaseOAuth2ProviderAccessToken (java.lang.String id) {
+	public BaseOAuth2ProviderAccessToken (OAuth2ProviderAccessTokenPK id) {
 		this.setId(id);
 		initialize();
 	}
@@ -45,7 +47,7 @@ public class BaseOAuth2ProviderAccessToken implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String id;
+	private OAuth2ProviderAccessTokenPK id;
 
 	// fields
 	private byte[] token;
@@ -55,11 +57,11 @@ public class BaseOAuth2ProviderAccessToken implements Serializable {
 	private byte[] authentication;
 	private java.lang.String refreshToken;
 
-	public java.lang.String getId() {
+	public OAuth2ProviderAccessTokenPK getId() {
 		return id;
 	}
 
-	public void setId(java.lang.String id) {
+	public void setId(OAuth2ProviderAccessTokenPK id) {
 		this.id = id;
 	}
 

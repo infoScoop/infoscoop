@@ -29,18 +29,20 @@ public class I18NPK extends BaseI18NPK {
 		java.lang.String country,
 		java.lang.String id,
 		java.lang.String lang,
-		java.lang.String type) {
+		java.lang.String type,
+		java.lang.String squareid) {
 
 		super (
 			country,
 			id,
 			lang,
-			type);
+			type,
+			squareid);
 	}
 /*[CONSTRUCTOR MARKER END]*/
 	
 	@Override
 	public String toString() {
-		return getId()+","+getType()+","+getCountry()+","+getLang();
+		return getId()+","+getType()+","+getCountry()+","+getLang()+","+getSquareid();
 	}
 }

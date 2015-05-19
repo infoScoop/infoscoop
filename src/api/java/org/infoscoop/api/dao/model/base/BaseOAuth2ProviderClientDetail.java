@@ -19,6 +19,8 @@ package org.infoscoop.api.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.api.dao.model.OAuth2ProviderClientDetailPK;
+
 public class BaseOAuth2ProviderClientDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -40,12 +42,12 @@ public class BaseOAuth2ProviderClientDetail implements Serializable {
 	public BaseOAuth2ProviderClientDetail() {
 		initialize();
 	}
-	public BaseOAuth2ProviderClientDetail (java.lang.String id) {
+	public BaseOAuth2ProviderClientDetail (OAuth2ProviderClientDetailPK id) {
 		this.setId(id);
 		initialize();
 	}
 	
-	public BaseOAuth2ProviderClientDetail (java.lang.String id, java.lang.String title, java.lang.String secret) {
+	public BaseOAuth2ProviderClientDetail (OAuth2ProviderClientDetailPK id, java.lang.String title, java.lang.String secret) {
 		this.setId(id);
 		this.setTitle(title);
 		this.setSecret(secret);
@@ -57,7 +59,7 @@ public class BaseOAuth2ProviderClientDetail implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String id;
+	private OAuth2ProviderClientDetailPK id;
 
 	// fields
 	private java.lang.String title;
@@ -72,10 +74,10 @@ public class BaseOAuth2ProviderClientDetail implements Serializable {
 	private java.lang.Integer refreshTokenValidity;
 	private java.lang.String additionalInformation;
 
-	public java.lang.String getId() {
+	public OAuth2ProviderClientDetailPK getId() {
 		return id;
 	}
-	public void setId(java.lang.String id) {
+	public void setId(OAuth2ProviderClientDetailPK id) {
 		this.id = id;
 	}
 	public java.lang.String getTitle() {

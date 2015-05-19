@@ -5,9 +5,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import org.infoscoop.dao.model.StaticTabPK;
 import org.infoscoop.dao.model.TabLayout;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -43,8 +44,8 @@ public abstract class BaseStaticTab implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseStaticTab(java.lang.String tabId) {
-		this.setTabid(tabId);
+	public BaseStaticTab(StaticTabPK id) {
+		this.setId(id);
 		initialize();
 	}
 
@@ -56,7 +57,7 @@ public abstract class BaseStaticTab implements Serializable {
 
 	// primary key
     @XStreamAsAttribute
-	private java.lang.String tabId;
+	private StaticTabPK id;
 
 	// fields
     @XStreamAsAttribute
@@ -104,8 +105,8 @@ public abstract class BaseStaticTab implements Serializable {
 	 * 
 	 * @hibernate.id column="id"
 	 */
-	public java.lang.String getTabid() {
-		return tabId;
+	public StaticTabPK getId() {
+		return id;
 	}
 
 	/**
@@ -114,8 +115,8 @@ public abstract class BaseStaticTab implements Serializable {
 	 * @param id
 	 *            the new ID
 	 */
-	public void setTabid(java.lang.String tabId) {
-		this.tabId = tabId;
+	public void setId(StaticTabPK id) {
+		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -162,11 +163,11 @@ public abstract class BaseStaticTab implements Serializable {
 
 	public int hashCode() {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getTabid())
+			if (null == this.getId())
 				return super.hashCode();
 			else {
 				String hashStr = this.getClass().getName() + ":"
-						+ this.getTabid().hashCode();
+						+ this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

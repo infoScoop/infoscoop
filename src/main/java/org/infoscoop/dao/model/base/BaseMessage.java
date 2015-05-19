@@ -41,6 +41,7 @@ public abstract class BaseMessage  implements Serializable {
 	public static String PROP_ID = "Id";
 	public static String PROP_POSTED_TIME = "PostedTime";
 	public static String PROP_FROM = "From";
+	public static String PROP_SQUARE_ID = "Squareid";
 
 
 	// constructors
@@ -63,12 +64,14 @@ public abstract class BaseMessage  implements Serializable {
 		java.lang.Long id,
 		java.lang.String from,
 		java.util.Date postedTime,
-		java.lang.String type) {
+		java.lang.String type,
+		java.lang.String squareid) {
 
 		this.setId(id);
 		this.setFrom(from);
 		this.setPostedTime(postedTime);
 		this.setType(type);
+		this.setSquareid(squareid);
 		initialize();
 	}
 
@@ -90,6 +93,7 @@ public abstract class BaseMessage  implements Serializable {
 	private java.util.Date postedTime;
 	private java.lang.String type;
 	private java.lang.String option;
+	private java.lang.String squareid;
 
 
 
@@ -249,6 +253,13 @@ public abstract class BaseMessage  implements Serializable {
 		this.option = option;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
 
 
 

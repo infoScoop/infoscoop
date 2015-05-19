@@ -53,6 +53,7 @@ public abstract class BaseWidget  implements Serializable {
 	public static String PROP_MENUID = "Menuid";
 	public static String PROP_CREATEDATE = "Createdate";
 	public static String PROP_REFRESHINTERVAL = "Refreshinterval";
+	public static String PROP_SQUARE_ID = "Squareid";
 
 
 	// constructors
@@ -95,6 +96,7 @@ public abstract class BaseWidget  implements Serializable {
 	private java.lang.String menuid;
 	private java.lang.Long createdate = 0L;
 	private java.lang.Integer refreshinterval;
+	private java.lang.String squareid;
 
 	/**
 	 * Return the unique identifier of this class
@@ -385,6 +387,14 @@ public abstract class BaseWidget  implements Serializable {
 		this.refreshinterval = refreshinterval;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
+	
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.dao.model.Widget)) return false;

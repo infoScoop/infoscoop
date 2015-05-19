@@ -51,7 +51,8 @@ public class AuthCredential extends BaseAuthcredential {
 		java.lang.Integer sysNum,
 		java.lang.String authtype,
 		java.lang.String authuid,
-		java.lang.String authpasswd) {
+		java.lang.String authpasswd,
+		java.lang.String squareid) {
 
 		super (
 			id,
@@ -59,7 +60,8 @@ public class AuthCredential extends BaseAuthcredential {
 			sysNum,
 			authtype,
 			authuid,
-			authpasswd);
+			authpasswd,
+			squareid);
 	}
 
 	public Object toJSON() throws JSONException {

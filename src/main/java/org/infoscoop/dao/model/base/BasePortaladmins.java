@@ -36,6 +36,7 @@ public abstract class BasePortaladmins  implements Serializable {
 	public static String PROP_ID = "Id";
 	public static String PROP_ADMINROLE = "adminrole";
 	public static String PROP_UID = "Uid";
+	public static String PROP_SQUARE_ID = "Squareid";
 
 
 	// constructors
@@ -56,10 +57,12 @@ public abstract class BasePortaladmins  implements Serializable {
 	 */
 	public BasePortaladmins (
 		java.lang.String id,
-		java.lang.String uid) {
+		java.lang.String uid,
+		java.lang.String squareid) {
 
 		this.setId(id);
 		this.setUid(uid);
+		this.setSquareid(squareid);
 		initialize();
 	}
 
@@ -75,6 +78,7 @@ public abstract class BasePortaladmins  implements Serializable {
 	// fields
 	private java.lang.String uid;
 	private java.lang.String roleid;
+	private java.lang.String squareid;
 
 	// many to one
 	private org.infoscoop.dao.model.Adminrole adminrole;
@@ -133,6 +137,14 @@ public abstract class BasePortaladmins  implements Serializable {
 	 */
 	public void setRoleid (java.lang.String roleid) {
 		this.roleid = roleid;
+	}
+
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
 	}
 
 

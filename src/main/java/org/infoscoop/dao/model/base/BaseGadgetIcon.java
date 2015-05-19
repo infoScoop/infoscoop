@@ -19,6 +19,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.GadgetIconPK;
+
 
 /**
  * This is an object that contains data related to the IS_GADGET_ICONS table.
@@ -44,8 +46,8 @@ public abstract class BaseGadgetIcon  implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseGadgetIcon (java.lang.String type) {
-		this.setType(type);
+	public BaseGadgetIcon (GadgetIconPK id) {
+		this.setId(id);
 		initialize();
 	}
 
@@ -53,10 +55,10 @@ public abstract class BaseGadgetIcon  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseGadgetIcon (
-		java.lang.String type,
+		GadgetIconPK type,
 		java.lang.String url) {
 
-		this.setType(type);
+		this.setId(id);
 		this.setUrl(url);
 		initialize();
 	}
@@ -68,29 +70,19 @@ public abstract class BaseGadgetIcon  implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String type;
+	private GadgetIconPK id;
 
 	// fields
 	private java.lang.String url;
 
 
 
-	/**
-	 * Return the unique identifier of this class
-     * @hibernate.id
-     *  generator-class="assigned"
-     *  column="TYPE"
-     */
-	public java.lang.String getType () {
-		return type;
+	public GadgetIconPK getId () {
+		return id;
 	}
 
-	/**
-	 * Set the unique identifier of this class
-	 * @param type the new ID
-	 */
-	public void setType (java.lang.String type) {
-		this.type = type;
+	public void setId (GadgetIconPK id) {
+		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
 
@@ -120,16 +112,16 @@ public abstract class BaseGadgetIcon  implements Serializable {
 		if (!(obj instanceof org.infoscoop.dao.model.GadgetIcon)) return false;
 		else {
 			org.infoscoop.dao.model.GadgetIcon gadgetIcon = (org.infoscoop.dao.model.GadgetIcon) obj;
-			if (null == this.getType() || null == gadgetIcon.getType()) return false;
-			else return (this.getType().equals(gadgetIcon.getType()));
+			if (null == this.getId() || null == gadgetIcon.getId()) return false;
+			else return (this.getId().equals(gadgetIcon.getId()));
 		}
 	}
 
 	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getType()) return super.hashCode();
+			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getType().hashCode();
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

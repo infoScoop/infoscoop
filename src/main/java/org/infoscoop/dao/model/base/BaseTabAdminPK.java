@@ -23,9 +23,13 @@ public abstract class BaseTabAdminPK implements Serializable {
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseTabAdminPK(java.lang.String tabId, java.lang.String uid) {
+	public BaseTabAdminPK(
+			java.lang.String tabId,
+			java.lang.String uid,
+			java.lang.String squareid) {
 		this.setTabid(tabId);
 		this.setUid(uid);
+		this.setSquareid(squareid);
 	}
 
 	private int hashCode = Integer.MIN_VALUE;
@@ -35,6 +39,7 @@ public abstract class BaseTabAdminPK implements Serializable {
 
 	// fields
 	private java.lang.String uid;
+	private java.lang.String squareid;
 
 	/**
 	 * Return the unique identifier of this class
@@ -73,6 +78,14 @@ public abstract class BaseTabAdminPK implements Serializable {
 		this.uid = uid;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
+
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.dao.model.TabAdminPK)) return false;
@@ -94,23 +107,46 @@ public abstract class BaseTabAdminPK implements Serializable {
 			else {
 				return false;
 			}
-			return true;
+			if (null != this.getSquareid() && null != mObj.getSquareid()) {
+				if (!this.getSquareid().equals(mObj.getSquareid())) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}			return true;
 		}
 	}
 	
-	public int hashCode() {
+	public int hashCode () {
 		if (Integer.MIN_VALUE == this.hashCode) {
-			if (null == this.getTabid())
-				return super.hashCode();
-			else {
-				String hashStr = this.getClass().getName() + ":"
-						+ this.getTabid().hashCode();
-				this.hashCode = hashStr.hashCode();
+			StringBuffer sb = new StringBuffer();
+			if (null != this.getUid()) {
+				sb.append(this.getUid().hashCode());
+				sb.append(":");
 			}
+			else {
+				return super.hashCode();
+			}
+			if (null != this.getTabid()) {
+				sb.append(this.getTabid().hashCode());
+				sb.append(":");
+			}
+			else {
+				return super.hashCode();
+			}
+			if (null != this.getSquareid()) {
+				sb.append(this.getSquareid().hashCode());
+				sb.append(":");
+			}
+			else {
+				return super.hashCode();
+			}
+			this.hashCode = sb.toString().hashCode();
 		}
 		return this.hashCode;
 	}
-
+	
 	public String toString() {
 		return super.toString();
 	}

@@ -32,19 +32,19 @@ public class Session extends BaseSession {
 	/**
 	 * Constructor for primary key
 	 */
-	public Session (java.lang.String uid) {
-		super(uid);
+	public Session (SessionPK id) {
+		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
 	public Session (
-		java.lang.String uid,
+		SessionPK id,
 		java.lang.String sessionid) {
 
 		super (
-			uid,
+			id,
 			sessionid);
 	}
 

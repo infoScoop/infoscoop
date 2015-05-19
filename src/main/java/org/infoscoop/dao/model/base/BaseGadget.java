@@ -38,6 +38,7 @@ public abstract class BaseGadget  implements Serializable {
 	public static String PROP_PATH = "Path";
 	public static String PROP_NAME = "Name";
 	public static String PROP_ID = "Id";
+	public static String PROP_SQUARE_ID = "Squareid";
 
 
 	// constructors
@@ -68,6 +69,7 @@ public abstract class BaseGadget  implements Serializable {
 	private java.lang.String name;
 	private byte[] data;
 	private java.util.Date lastmodified;
+	private java.lang.String squareid;
 
 
 
@@ -176,6 +178,13 @@ public abstract class BaseGadget  implements Serializable {
 		this.lastmodified = lastmodified;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
 
 
 

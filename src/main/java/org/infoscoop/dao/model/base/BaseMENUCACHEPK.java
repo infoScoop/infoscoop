@@ -26,16 +26,19 @@ public abstract class BaseMENUCACHEPK implements Serializable {
 
 	private java.lang.String urlKey;
 	private java.lang.String uid;
+	private java.lang.String squareid;
 
 
 	public BaseMENUCACHEPK () {}
 	
 	public BaseMENUCACHEPK (
 		java.lang.String urlKey,
-		java.lang.String uid) {
+		java.lang.String uid,
+		java.lang.String squareid) {
 
 		this.setUrlKey(urlKey);
 		this.setUid(uid);
+		this.setSquareid(squareid);
 	}
 
 
@@ -71,6 +74,13 @@ public abstract class BaseMENUCACHEPK implements Serializable {
 		this.uid = uid;
 	}
 
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
+	}
 
 
 
@@ -92,7 +102,11 @@ public abstract class BaseMENUCACHEPK implements Serializable {
 					return false;
 				}
 			}
-			else {
+			if (null != this.getSquareid() && null != mObj.getSquareid()) {
+				if (!this.getSquareid().equals(mObj.getSquareid())) {
+					return false;
+				}
+			}			else {
 				return false;
 			}
 			return true;
@@ -111,6 +125,10 @@ public abstract class BaseMENUCACHEPK implements Serializable {
 			}
 			if (null != this.getUid()) {
 				sb.append(this.getUid().hashCode());
+				sb.append(":");
+			}
+			if (null != this.getSquareid()) {
+				sb.append(this.getSquareid().hashCode());
 				sb.append(":");
 			}
 			else {

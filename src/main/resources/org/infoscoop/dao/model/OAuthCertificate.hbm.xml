@@ -9,12 +9,19 @@
 		table="IS_OAUTH_CERTIFICATE"
 	>
 		<meta attribute="sync-DAO">false</meta>
-		<id
-			name="ConsumerKey"
-			type="string"
-			column="consumer_key"
-		>
-		</id>
+        <composite-id name="Id" class="OAuthCertificatePK">
+            <key-property
+                name="ConsumerKey"
+                column="consumer_key"
+                type="string"
+            />
+            <key-property
+                name="Squareid"
+                column="square_id"
+                type="string"
+                length="64"
+            />
+        </composite-id>
 
 		<property
 			name="PrivateKey"

@@ -33,19 +33,19 @@ public class GadgetIcon extends BaseGadgetIcon {
 	/**
 	 * Constructor for primary key
 	 */
-	public GadgetIcon (java.lang.String type) {
-		super(type);
+	public GadgetIcon (GadgetIconPK id) {
+		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
 	public GadgetIcon (
-		java.lang.String type,
+		GadgetIconPK id,
 		java.lang.String url) {
 
 		super (
-			type,
+			id,
 			url);
 	}
 

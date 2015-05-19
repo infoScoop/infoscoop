@@ -8,6 +8,7 @@ public class BaseOAuthGadgetUrl implements Serializable, Comparable<org.infoscoo
 	public static String PROP_GADGET_URL = "GadgetUrl";
 	public static String PROP_GADGET_URL_KEY = "GadgetUrlKey";		
 	public static String PROP_ID = "Id";
+	public static String PROP_SQUARE_ID = "Squareid";
 
 	// constructors
 	public BaseOAuthGadgetUrl () {
@@ -27,10 +28,12 @@ public class BaseOAuthGadgetUrl implements Serializable, Comparable<org.infoscoo
 	 */
 	public BaseOAuthGadgetUrl (
 		java.lang.Long id,
-		java.lang.String gadgetUrl) {
+		java.lang.String gadgetUrl,
+		java.lang.String squareid) {
 
 		this.setId(id);
 		this.setGadgetUrl(gadgetUrl);
+		this.setSquareid(squareid);
 		initialize();
 	}
 
@@ -47,7 +50,7 @@ public class BaseOAuthGadgetUrl implements Serializable, Comparable<org.infoscoo
 	private java.lang.String fkOauthId;
 	private java.lang.String gadgetUrl;
 	private java.lang.String gadgetUrlKey;
-
+	private java.lang.String squareid;
 
 
 	/**
@@ -94,6 +97,14 @@ public class BaseOAuthGadgetUrl implements Serializable, Comparable<org.infoscoo
 
 	public void setGadgetUrlKey (java.lang.String gadgetUrlKey) {
 		this.gadgetUrlKey = gadgetUrlKey;
+	}
+
+	public java.lang.String getSquareid() {
+		return squareid;
+	}
+
+	public void setSquareid(java.lang.String squareid) {
+		this.squareid = squareid;
 	}
 
 

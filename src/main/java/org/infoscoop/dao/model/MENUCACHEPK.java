@@ -27,11 +27,13 @@ public class MENUCACHEPK extends BaseMENUCACHEPK {
 	
 	public MENUCACHEPK (
 		java.lang.String urlKey,
-		java.lang.String uid) {
+		java.lang.String uid,
+		java.lang.String squareid) {
 
 		super (
 			urlKey,
-			uid);
+			uid,
+			squareid);
 	}
 /*[CONSTRUCTOR MARKER END]*/
 

@@ -39,8 +39,8 @@ public class SystemMessage extends BaseSystemMessage {
 		super(id);
 	}
 
-	public SystemMessage(String to, String resourceId, String replaceValues) {
-		super(to, resourceId, replaceValues);
+	public SystemMessage(String to, String resourceId, String replaceValues, String squareid) {
+		super(to, resourceId, replaceValues, squareid);
 	}
 
 	public Collection<String> getReplaceValueCollection() {
