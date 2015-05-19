@@ -58,11 +58,11 @@ public class AccessLogDAO extends HibernateDaoSupport {
 		return (Integer)super.getHibernateTemplate().execute(new DateAccessCountCallback(uid, date, squareid));
 	}
 	
-	public void deleteOldLog() {
+	public void deleteOldLog(String squareid) {
 		Calendar currentDay = Calendar.getInstance();
 		if (currentDay.get(Calendar.DAY_OF_YEAR) != logDeleteDay.get(Calendar.DAY_OF_YEAR)) {
 			PropertiesDAO pdao = PropertiesDAO.newInstance();
-			Properties property = pdao.findProperty("logStoragePeriod");
+			Properties property = pdao.findProperty("logStoragePeriod", squareid);
 			int storagePeriod = 365;
 			try {
 				storagePeriod = Integer.parseInt(property.getValue());

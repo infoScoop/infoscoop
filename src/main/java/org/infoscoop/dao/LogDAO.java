@@ -125,7 +125,7 @@ public class LogDAO extends HibernateDaoSupport {
 		Calendar currentDay = Calendar.getInstance();
 		if (currentDay.get(Calendar.DAY_OF_YEAR) != logDeleteDay.get(Calendar.DAY_OF_YEAR)) {
 			PropertiesDAO pdao = PropertiesDAO.newInstance();
-			Properties property = pdao.findProperty("logStoragePeriod");
+			Properties property = pdao.findProperty("logStoragePeriod", squareid);
 			int storagePeriod = 365;
 			try {
 				storagePeriod = Integer.parseInt(property.getValue());
