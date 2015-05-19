@@ -19,6 +19,7 @@ package org.infoscoop.dao;
 
 
 import org.infoscoop.dao.model.Siteaggregationmenu;
+import org.infoscoop.dao.model.SiteaggregationmenuPK;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -35,10 +36,10 @@ public class SiteAggregationMenuDAO extends HibernateDaoSupport {
 	 * @return
 	 * @throws DataResourceException
 	 */
-	public Siteaggregationmenu select(String menuType) {
+	public Siteaggregationmenu select(String menuType, String squareid) {
 		return (Siteaggregationmenu) super.getHibernateTemplate().get(
 				Siteaggregationmenu.class,
-				menuType);
+				new SiteaggregationmenuPK(menuType, squareid));
 	}
 
 	/*

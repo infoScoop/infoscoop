@@ -25,9 +25,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.infoscoop.dao.model.Preference;
+import org.infoscoop.dao.model.PreferencePK;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -55,9 +57,9 @@ public class PreferenceDAO extends HibernateDaoSupport{
      *            userID
      * @return A top node Object of DOM that includes include the user setting information of an appointed user. If there is not it, we return the empty DOM.
      */
-    public Preference select(String uid) {
+    public Preference select(String uid, String squareid) {
     	if(uid == null)return null;
-    	return (Preference)super.getHibernateTemplate().get(Preference.class, uid);
+    	return (Preference)super.getHibernateTemplate().get(Preference.class, new PreferencePK(uid, squareid));
     }
 
     /**
@@ -71,11 +73,11 @@ public class PreferenceDAO extends HibernateDaoSupport{
      */
     public void update(Preference entity) {
     	if(log.isInfoEnabled())
-        	log.info("update preference for uid: " + entity.getUid() + ".");
+        	log.info("update preference for uid: " + entity.getId().getUid() +  ", squareid: " + entity.getId().getSquareid() + ".");
     	
     	super.getHibernateTemplate().saveOrUpdate(entity);
     	if(log.isInfoEnabled())
-    		log.info("uid[" + entity.getUid() + "]: Save XML successfully.");
+    		log.info("uid[" + entity.getId().getUid() + "] squareid[" + entity.getId().getSquareid() + "]: Save XML successfully.");
     }
     
     /**
@@ -84,11 +86,11 @@ public class PreferenceDAO extends HibernateDaoSupport{
      */
     public void delete(Preference entity) {
     	if(log.isInfoEnabled())
-        	log.info("delete preference for uid: " + entity.getUid() + ".");
+        	log.info("delete preference for uid: " + entity.getId().getUid() + ", squareid: " + entity.getId().getSquareid() + " .");
     	
     	super.getHibernateTemplate().delete(entity);;
     	if(log.isInfoEnabled())
-    		log.info("uid[" + entity.getUid() + "]: Delete Preference successfully.");
+    		log.info("uid[" + entity.getId().getUid() + "] squareid[" + entity.getId().getSquareid() + "]: Delete Preference successfully.");
     }
 
 	/**
@@ -96,7 +98,7 @@ public class PreferenceDAO extends HibernateDaoSupport{
 	 * 
 	 * @return
 	 */
-	public int getTotalUsersCount() {
+	public int getTotalUsersCount(final String squareid) {
 		return (Integer) super.getHibernateTemplate().execute(
 				new HibernateCallback() {
 
@@ -105,6 +107,8 @@ public class PreferenceDAO extends HibernateDaoSupport{
 
 						Criteria crit = session
 								.createCriteria(Preference.class);
+						
+						crit.add(Expression.eq("Id.Squareid", squareid));
 						crit.setProjection(Projections.rowCount());
 						Integer rowCount = (Integer) crit.uniqueResult();
 
@@ -120,7 +124,7 @@ public class PreferenceDAO extends HibernateDaoSupport{
 	 * 
 	 * @return
 	 */
-	public List<String> getUserIdList() {
+	public List<String> getUserIdList(final String squareid) {
 		return (List) super.getHibernateTemplate().execute(
 				new HibernateCallback() {
 
@@ -130,6 +134,7 @@ public class PreferenceDAO extends HibernateDaoSupport{
 						Criteria crit = session
 								.createCriteria(Preference.class);
 						
+						crit.add(Expression.eq("Id.Squareid", squareid));
 						Projection projection = Projections.property(Preference.PROP_ID);
 						crit.setProjection(projection);
 						

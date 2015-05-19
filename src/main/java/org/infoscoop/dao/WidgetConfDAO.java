@@ -21,12 +21,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.WidgetConf;
+import org.infoscoop.dao.model.WidgetConfPK;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -38,8 +38,9 @@ public class WidgetConfDAO extends HibernateDaoSupport {
 	}
 
 
-	public WidgetConf get(String type) {
-		return (WidgetConf)super.getHibernateTemplate().get(WidgetConf.class, type);
+	public WidgetConf get(String type, String squareid) {
+		WidgetConfPK pk = new WidgetConfPK(type, squareid);
+		return (WidgetConf)super.getHibernateTemplate().get(WidgetConf.class, pk);
 	}
 	
 	/**
@@ -49,9 +50,9 @@ public class WidgetConfDAO extends HibernateDaoSupport {
 	 * @param type Type of widget
 	 * @return WidgetConfiguration document Element
 	 */
-	public Element getElement(String type) {
+	public Element getElement(String type, String squareid) {
 		
-		WidgetConf conf = get(type);
+		WidgetConf conf = get(type, squareid);
 		if(conf != null){
 			try {
 				return conf.getElement();
@@ -62,9 +63,9 @@ public class WidgetConfDAO extends HibernateDaoSupport {
 		return null;
 	}
 	
-	public Element[] getElements(String[] types){
+	public Element[] getElements(String[] types, String squareid){
 		
-		List confs =  selectByTypes(Arrays.asList(types));
+		List confs =  selectByTypes(Arrays.asList(types), squareid);
 		Element[] typeConfs = new Element[confs.size()];
 		try {
 			int i = 0;
@@ -94,10 +95,10 @@ public class WidgetConfDAO extends HibernateDaoSupport {
 	 * delete the data.
 	 * @param type
 	 */
-	public void delete(String type) {
+	public void delete(String type, String squareid) {
 		//getJdbcTemplate().update(getQuery("delete"), new Object[] { type });
 		WidgetConf conf = new WidgetConf();
-		conf.setType(type);
+		conf.setId(new WidgetConfPK(type, squareid));
 		super.getHibernateTemplate().delete(conf);
 	}
 
@@ -105,8 +106,11 @@ public class WidgetConfDAO extends HibernateDaoSupport {
 	 * delete all data.
 	 * @return
 	 */
-	public List<WidgetConf> selectAll() {
-		return  super.getHibernateTemplate().loadAll(WidgetConf.class);
+	public List<WidgetConf> selectAll(String squareid) {
+//		return  super.getHibernateTemplate().loadAll(WidgetConf.class);
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(WidgetConf.class)
+					.add(Expression.eq("Id.Squareid", squareid)));
 	}
 
 	public void insert(WidgetConf conf) {
@@ -114,9 +118,11 @@ public class WidgetConfDAO extends HibernateDaoSupport {
 	}
 
 
-	public List<WidgetConf> selectByTypes(List<String> types) {
+	public List<WidgetConf> selectByTypes(List<String> types, String squareid) {
 		List confs = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(WidgetConf.class).add(Expression.in("type", types))
+				DetachedCriteria.forClass(WidgetConf.class)
+					.add(Expression.in("Id.type", types))
+					.add(Expression.eq("Id.Squareid", squareid))
 				);
 		return confs;
 	}

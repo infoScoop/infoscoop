@@ -69,12 +69,13 @@ public class WidgetDAO extends HibernateDaoSupport{
     public WidgetDAO(){}
 
 
-	public void addWidget( String uid,  String defaultUid,  String tabId, Widget widget,int isStatic ){
+	public void addWidget( String uid,  String defaultUid,  String tabId, Widget widget,int isStatic, String squareid ){
 		widget.setUid( uid );
 		widget.setDefaultuid( defaultUid );
 		widget.setTabid( tabId );
 		widget.setIsstatic( new Integer( isStatic ));
-
+		widget.setSquareid(squareid);
+		
 		addWidget( widget );
 	}
     public void addWidget(Widget widget){
@@ -86,19 +87,20 @@ public class WidgetDAO extends HibernateDaoSupport{
 		updateUserPrefs( widget );
     }
     
-    public List<String> getWidgetTypes(String uid){
-    	String query = "select distinct w.Type from Widget w where Uid = ? and Deletedate = 0";
+    public List<String> getWidgetTypes(String uid, String squareid){
+    	String query = "select distinct w.Type from Widget w where Uid = ? and Deletedate = 0 and Squareid= ?";
 		List result = super.getHibernateTemplate().find(query,
-				new Object[] { uid });
+				new Object[] { uid, squareid });
 		return result;
     }
     
-	public int getWidgetCountByType(final String uid, final String type) {
+	public int getWidgetCountByType(final String uid, final String type, final String squareid) {
 		return (Integer) super.getHibernateTemplate().execute(
 				new HibernateCallback() {
 					public Object doInHibernate(org.hibernate.Session session)
 							throws HibernateException, SQLException {
 						Criteria crit = session.createCriteria(Widget.class);
+						crit.add(Expression.eq(Widget.PROP_SQUARE_ID, squareid));
 						crit.add(Restrictions.eq(Widget.PROP_UID, uid));
 						crit.add(Restrictions.eq(Widget.PROP_TYPE, type));
 						crit.add(Restrictions.eq(Widget.PROP_DELETEDATE, 0L));
@@ -109,22 +111,23 @@ public class WidgetDAO extends HibernateDaoSupport{
 				});
 	}
     
-	public Widget getWidget(String uid, String tabId, String widgetId ){
-		String query = "from Widget where Uid = ? and Tabid = ? and Widgetid = ? and Deletedate = 0";
+	public Widget getWidget(String uid, String tabId, String widgetId, final String squareid ){
+		String query = "from Widget where Uid = ? and Tabid = ? and Widgetid = ? and Deletedate = 0 and Squareid = ?";
 		List result = super.getHibernateTemplate().find(query,
-				new Object[] { uid, tabId, widgetId });
+				new Object[] { uid, tabId, widgetId, squareid });
 		if( !result.isEmpty() )
 			return ( Widget )result.get(0);
 
 		return null;
     }
-	public List getExistsWidgets( String uid,List widgetIds ) {
+	public List getExistsWidgets( String uid,List widgetIds, String squareid ) {
 		if( widgetIds.size() == 0 )
 			return new ArrayList();
 
 		return super.getHibernateTemplate().findByCriteria( DetachedCriteria.forClass( Widget.class )
 				.add( Expression.eq("Uid",uid ))
 				.add( Expression.eq("Deletedate",new Long( 0 )))
+				.add( Expression.eq(Widget.PROP_SQUARE_ID, squareid))
 				.add( Expression.in("Widgetid",widgetIds )));
 	}
 
@@ -142,7 +145,7 @@ public class WidgetDAO extends HibernateDaoSupport{
      * @param setProperties, Set<String> removePropNames
      * @throws Exception
      */
-    public void updateWidgetProperties(final String widgetId, String title, String href, Integer refreshInterval, final Map<String, ForceUpdateUserPref> setProperties, Set<ForceUpdateUserPref> removePropNames) throws Exception{
+    public void updateWidgetProperties(final String widgetId, String title, String href, Integer refreshInterval, final Map<String, ForceUpdateUserPref> setProperties, Set<ForceUpdateUserPref> removePropNames, String squareid) throws Exception{
     	if (log.isInfoEnabled())
 			log.info("updateWidgetProperties : widgetId=" + widgetId
 					+ ", set properties=" + setProperties + ", remove properties:" +  removePropNames);
@@ -150,7 +153,8 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 		List<Widget> widgetList = super.getHibernateTemplate()
 			.findByCriteria(DetachedCriteria.forClass(Widget.class)
-					.add(Expression.eq("Menuid", widgetId)));
+					.add(Expression.eq("Menuid", widgetId))
+					.add(Expression.eq(Widget.PROP_SQUARE_ID, squareid)));
 		SystemMessageDAO sysMessageDao = SystemMessageDAO.newInstance();
 		int i = 0;
 		for( Widget widget : widgetList ) {
@@ -161,7 +165,8 @@ public class WidgetDAO extends HibernateDaoSupport{
 					sysMessageDao.insert(new SystemMessage(
 							widget.getUid(),
 							"ms_title_update_by_admin",
-							oldTitle + "," + title));
+							oldTitle + "," + title,
+							squareid));
 			}
 			if(href != null)
 				widget.setHref(href);
@@ -187,12 +192,14 @@ public class WidgetDAO extends HibernateDaoSupport{
 							sysMessageDao.insert(new SystemMessage(
 									widget.getUid(),
 									"ms_up_update_by_admin",
-									widget.getTitle() + "," + pref.getKey() + "," + oldValue + "," + updatePref.getValue()));
+									widget.getTitle() + "," + pref.getKey() + "," + oldValue + "," + updatePref.getValue(),
+									squareid));
 						}else{
 							sysMessageDao.insert(new SystemMessage(
 									widget.getUid(),
 									"ms_up_update_from_default_by_admin",
-									widget.getTitle() + "," + pref.getKey() + "," + updatePref.getValue()));
+									widget.getTitle() + "," + pref.getKey() + "," + updatePref.getValue(),
+									squareid));
 						}
 					}
 				}
@@ -204,7 +211,8 @@ public class WidgetDAO extends HibernateDaoSupport{
 					sysMessageDao.insert(new SystemMessage(
 							widget.getUid(),
 							"ms_up_revert_by_admin",
-							widget.getTitle() + "," + removeProp.getName()));
+							widget.getTitle() + "," + removeProp.getName(),
+							squareid));
 				}
 
 			}
@@ -228,11 +236,11 @@ public class WidgetDAO extends HibernateDaoSupport{
 	 * @param uid
 	 * @return
 	 */
-	public List getDeletedWidget(String uid) {
-		String queryString = "from Widget where Uid = ? and Deletedate > 0 order by Deletedate desc,Id desc";
+	public List getDeletedWidget(String uid, String squareid) {
+		String queryString = "from Widget where Uid = ? and Deletedate > 0 and Squareid = ? order by Deletedate desc,Id desc";
 
 		return super.getHibernateTemplate().find( queryString,
-				new Object[] { uid });
+				new Object[] { uid, squareid });
 	}
 
 	public void delete(Widget widget) {
@@ -242,107 +250,107 @@ public class WidgetDAO extends HibernateDaoSupport{
 			super.getHibernateTemplate().delete(widget);
 	}
 
-	public int deleteWidget(String uid, String tabId, String widgetId, long deleteDate) {
+	public int deleteWidget(String uid, String tabId, String widgetId, long deleteDate, String squareid) {
 		if(log.isInfoEnabled())
-			log.info("deleteWidget:uid=" + uid +",tabId=" + tabId + ",widgetId=" + widgetId + ",deleteDate=" + deleteDate);
+			log.info("deleteWidget:uid=" + uid +",tabId=" + tabId + ",widgetId=" + widgetId + ",deleteDate=" + deleteDate + ",squareid=" + squareid);
 
-		String updateQuery = "update Widget set Deletedate = ?,Tabid = '-1' where Uid = ? and Tabid = ? and (Widgetid = ? or Parentid = ?) and Deletedate = 0";
+		String updateQuery = "update Widget set Deletedate = ?,Tabid = '-1' where Uid = ? and Tabid = ? and (Widgetid = ? or Parentid = ?) and Deletedate = 0 and Squareid = ?";
 		return super.getHibernateTemplate().bulkUpdate(
 				updateQuery,
-				new Object[]{ new Long(deleteDate), uid, tabId, widgetId, widgetId });
+				new Object[]{ new Long(deleteDate), uid, tabId, widgetId, widgetId, squareid });
 	}
 
-	public void deleteWidget( String uid ) {
+	public void deleteWidget( String uid, String squareid ) {
 		long deleteDate = new Date().getTime();
 
-		String queryString = "update Widget set Deletedate = ? where Uid = ? and deleteDate = 0 and Isstatic = 0";
+		String queryString = "update Widget set Deletedate = ? where Uid = ? and deleteDate = 0 and Isstatic = 0 and Squareid = ? ";
 
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[]{ deleteDate,uid });
+				new Object[]{ deleteDate,uid,squareid });
 
-		queryString = "delete from Widget where Uid = ? and Isstatic = 1";
+		queryString = "delete from Widget where Uid = ? and Isstatic = 1 and Squareid = ?";
 
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[] { uid });
+				new Object[] { uid, squareid });
 	}
 
 
-	public void deleteWidgetByMenuId( String menuId ) {
+	public void deleteWidgetByMenuId( String menuId, String squareid ) {
 
-		String queryString = "delete from Widget where widgetId in (?, ?) or menuid = ?";
+		String queryString = "delete from Widget where widgetId in (?, ?) or menuid = ? and Squareid = ?";
 
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[] { "w_" + menuId, "p_" + menuId, menuId });
+				new Object[] { "w_" + menuId, "p_" + menuId, menuId, squareid });
 	}
 
 
-	public void deleteWidget( String uid, Integer tabId ) {
+	public void deleteWidget( String uid, Integer tabId, String squareid ) {
 		long deleteDate = new Date().getTime();
 
-		String queryString = "update Widget set Deletedate = ? where Uid = ? and tabId = ? and deleteDate = 0 and Isstatic = 0";
+		String queryString = "update Widget set Deletedate = ? where Uid = ? and tabId = ? and deleteDate = 0 and Isstatic = 0 and Squareid = ?";
 
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[]{ deleteDate,uid,tabId.toString() });
+				new Object[]{ deleteDate,uid,tabId.toString(),squareid });
 
-		queryString = "delete from Widget where Uid = ? and tabId = ? and Isstatic = 1";
+		queryString = "delete from Widget where Uid = ? and tabId = ? and Isstatic = 1 and Squareid = ?";
 
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[] { uid, tabId.toString() });
+				new Object[] { uid, tabId.toString(), squareid });
 	}
 
-	public int emptyWidget(String uid, String widgetId, long deleteDate) {
+	public int emptyWidget(String uid, String widgetId, long deleteDate, String squareid) {
 		/*
 		return getJdbcTemplate().update(this.getQuery("emptyWidget"),
 				new Object[] { uid, widgetId, widgetId, new Long(deleteDate) });
 				*/
-		String updateQuery = "delete from Widget where Uid = ? and (Widgetid = ? or Parentid = ?) and Deletedate = ?";
+		String updateQuery = "delete from Widget where Uid = ? and (Widgetid = ? or Parentid = ?) and Deletedate = ? and Squareid = ?";
 		return super.getHibernateTemplate().bulkUpdate(
 				updateQuery,
-				new Object[]{uid, widgetId,widgetId, new Long(deleteDate)});
+				new Object[]{uid, widgetId,widgetId, new Long(deleteDate), squareid});
 
 	}
 
 	public int emptyWidget(String uid, String widgetId, String tabId,
-			long deleteDate) {
+			long deleteDate, String squareid) {
 		/*
 		return getJdbcTemplate().update(
 				this.getQuery("emptyWidgetByTabId"),
 				new Object[] { uid, widgetId, widgetId, tabId,
 						new Long(deleteDate) });
 						*/
-		String updateQuery = "delete from Widget where Uid = ? and (Widgetid = ? or Parentid = ?) and Tabid = ? and Deletedate = ?";
+		String updateQuery = "delete from Widget where Uid = ? and (Widgetid = ? or Parentid = ?) and Tabid = ? and Deletedate = ? and Squareid = ?";
 		return super.getHibernateTemplate().bulkUpdate(
 				updateQuery,
-				new Object[]{uid, widgetId,widgetId, tabId, new Long(deleteDate)});
+				new Object[]{uid, widgetId,widgetId, tabId, new Long(deleteDate), squareid});
 
 	}
 	
-	public void emptyDeletedWidgets(String uid){
+	public void emptyDeletedWidgets(String uid, String squareid){
 //		String queryString = "delete from Widget where Uid = ? and Deletedate > 0";
 //		super.getHibernateTemplate().bulkUpdate( queryString,new Object[]{ uid } );
 
-		super.getHibernateTemplate().deleteAll(getDeletedWidget(uid));
+		super.getHibernateTemplate().deleteAll(getDeletedWidget(uid, squareid));
 	}
 
-	public void emptyWidgets( String uid,String tabId,int isStatic ) {
-		String queryString = "delete from Widget where Uid=? and TabId=? and Isstatic=?";
+	public void emptyWidgets( String uid,String tabId,int isStatic, String squareid ) {
+		String queryString = "delete from Widget where Uid=? and TabId=? and Isstatic=? and Squareid = ?";
 
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[]{ uid,tabId,new Integer( isStatic )});
+				new Object[]{ uid,tabId,new Integer( isStatic ),squareid});
 	}
 
 	/**
 	 * clear all widgets by userId.
 	 * @param uid
 	 */
-	public void clearWidgets( String uid ) {
-		String queryString = "delete from Widget where Uid = ?";
+	public void clearWidgets( String uid, String squareid ) {
+		String queryString = "delete from Widget where Uid = ? and Squareid = ?";
 
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[] { uid });
+				new Object[] { uid, squareid });
 	}
 	
-	public List getWidgetRanking(int maxCount, int freshDay) {
+	public List getWidgetRanking(int maxCount, int freshDay, String squareid) {
 		Session session = null;
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -1 * freshDay);
@@ -354,10 +362,12 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 			Query msql = (Query) session.getNamedQuery(
 					"menuWidgetRanking");
+			msql.setString(0, squareid);
 			List<Object[]> mr = msql.setMaxResults(looseMaxCount).list();
 
 			Query msqll = (Query) session.getNamedQuery(
 					"menuWidgetRankingLast");
+			msqll.setString(0, squareid);
 			List<Object[]> mrl = msqll.setLong("CREATEDATE", lastTime)
 					.setMaxResults(looseMaxCount).list();
 
@@ -365,10 +375,12 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 			Query wsql = (Query) session.getNamedQuery(
 					"widgetRanking");
+			wsql.setString(0, squareid);
 			List<Object[]> wr = wsql.setMaxResults(looseMaxCount).list();
 
 			Query wsall = (Query) session.getNamedQuery(
 					"widgetRankingLast");
+			wsall.setString(0, squareid);
 			List<Object[]> wrl = wsall.setLong("CREATEDATE", lastTime)
 					.setMaxResults(looseMaxCount).list();
 
@@ -376,9 +388,11 @@ public class WidgetDAO extends HibernateDaoSupport{
 
 			Query usql = (Query) session.getNamedQuery(
 					"urlRanking");
+			usql.setString(0, squareid);
 			List<Object[]> ur = usql.setMaxResults(looseMaxCount).list();
 			Query usqll = (Query) session.getNamedQuery(
 					"urlRankingLast");
+			usqll.setString(0, squareid);
 			List<Object[]> url = usqll.setLong("CREATEDATE", lastTime)
 					.setMaxResults(looseMaxCount).list();
 
@@ -446,6 +460,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 		return o1.equals( o2 );
 	}
 
+	/*
 	public static void main(String args[]) throws JSONException{
 		WidgetDAO widgetDAO = WidgetDAO.newInstance();
 		List<Object[]> list = widgetDAO.getWidgetRanking(20, 10);
@@ -457,6 +472,7 @@ public class WidgetDAO extends HibernateDaoSupport{
 		}
 
 	}
+	*/
 
 	public Map<String,UserPref> getUserPrefs( String id ) {
 		Map<String,UserPref> userPrefs = new HashMap<String,UserPref>();

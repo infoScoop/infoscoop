@@ -43,13 +43,15 @@ public class Adminrole extends BaseAdminrole {
 		java.lang.String id,
 		java.lang.String roleid,
 		java.lang.String name,
-		java.lang.String permission) {
+		java.lang.String permission,
+		java.lang.String squareid) {
 
 		super (
 			id,
 			roleid,
 			name,
-			permission);
+			permission,
+			squareid);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

@@ -26,24 +26,24 @@ public abstract class BaseOAuthConsumerPropPK implements Serializable {
 
 	protected int hashCode = Integer.MIN_VALUE;
 
-	private OAuthConsumerPropPK id;
+	private java.lang.String id;
 	private java.lang.String squareid;
 
 
 	public BaseOAuthConsumerPropPK () {}
 	
-	public BaseOAuthConsumerPropPK ( OAuthConsumerPropPK id,java.lang.String squareid ) {
+	public BaseOAuthConsumerPropPK ( String id,java.lang.String squareid ) {
 
 		this.setId(id);
 		this.setSquareid(squareid);
 	}
 
 
-	public OAuthConsumerPropPK getId () {
+	public String getId () {
 		return id;
 	}
 
-	public void setId (OAuthConsumerPropPK id) {
+	public void setId (String id) {
 		this.id = id;
 	}
 

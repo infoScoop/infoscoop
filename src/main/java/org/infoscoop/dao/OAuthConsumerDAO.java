@@ -44,15 +44,15 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-	public OAuthConsumerProp getConsumer(String consumerId) {
+	private OAuthConsumerProp getConsumer(String consumerId, String squareid) {
 		if (consumerId == null) {
 			throw new RuntimeException("consumerId must be set.");
 		}
 
 		Iterator results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthConsumerProp.class).add(
-						Expression.eq(OAuthConsumerProp.PROP_ID,
-								consumerId)))
+				DetachedCriteria.forClass(OAuthConsumerProp.class)
+					.add(Expression.eq(OAuthConsumerProp.PROP_ID, consumerId))
+					.add(Expression.eq("Id.Squareid", squareid)))
 				.iterator();
 		if (results.hasNext()) {
 			return (OAuthConsumerProp) results.next();
@@ -61,7 +61,7 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 		return null;
 	}
 
-	public OAuthConsumerProp getConsumer(String gadgetUrl, String serviceName) {
+	public OAuthConsumerProp getConsumer(String gadgetUrl, String serviceName, String squareid) {
 		if (gadgetUrl == null || serviceName == null) {
 			throw new RuntimeException("gadgetUrl and serviceName must be set.");
 		}
@@ -71,6 +71,7 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 						"OAuthGadgetUrl", "ogu", CriteriaSpecification.LEFT_JOIN)
 						.add(Restrictions.conjunction()
 							.add(Restrictions.eq("ocp.ServiceName", serviceName))
+							.add(Restrictions.eq("ocp.Id.Squareid", squareid))
 							.add(Restrictions.eq("ogu.GadgetUrlKey", Crypt.getHash(gadgetUrl)))))
 				.iterator();
 		
@@ -81,13 +82,14 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 		return null;
 	}
 	
-	public Boolean validateConsumerByIdAndServiceAndURL(String id, String serviceName, String gadgetUrl){
+	public Boolean validateConsumerByIdAndServiceAndURL(String id, String serviceName, String gadgetUrl, String squareid){
 		// Refactoring: create hibernate object (mapping? criteria? and o)
 		Iterator results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthConsumerProp.class,"ocp").createAlias(
 						"OAuthGadgetUrl", "ogu", CriteriaSpecification.LEFT_JOIN).add(
 								Restrictions.conjunction()
-								.add(Restrictions.ne("ocp.Id", id))
+								.add(Restrictions.ne("ocp.Id.Id", id))
+								.add(Restrictions.eq("ocp.Id.Squareid", squareid))
 								.add(Restrictions.eq("ocp.ServiceName", serviceName))
 								.add(Restrictions.eq("ogu.GadgetUrlKey", Crypt.getHash(gadgetUrl)))))
 				.iterator();
@@ -101,8 +103,9 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 	}
 	
 	public void save(OAuthConsumerProp consumer) {		
-		String consumerId = consumer.getId();
-		OAuthConsumerProp newConsumer = getConsumer(consumerId);
+		String consumerId = consumer.getId().getId();
+		String squareid = consumer.getId().getSquareid();
+		OAuthConsumerProp newConsumer = getConsumer(consumerId, squareid);
 		Boolean bool = false;
 		
 		if (newConsumer == null) {
@@ -121,7 +124,7 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 		List<String> gadgetUrlKeyList = new ArrayList<String>();
 		for(Iterator<OAuthGadgetUrl> i = gadgetUrls.iterator();i.hasNext();){
 			OAuthGadgetUrl tmp = i.next();
-			bool = validateConsumerByIdAndServiceAndURL(consumerId, consumer.getServiceName(), tmp.getGadgetUrl());
+			bool = validateConsumerByIdAndServiceAndURL(consumerId, consumer.getServiceName(), tmp.getGadgetUrl(), squareid);
 			gadgetUrlKeyList.add(tmp.getGadgetUrlKey());
 			if(!bool){
 				OAuthGadgetUrlDAO.newInstance().save(tmp);
@@ -129,7 +132,7 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 		}
 		if(gadgetUrlKeyList.size() == 0)
 			gadgetUrlKeyList.add("");
-		OAuthGadgetUrlDAO.newInstance().deleteGadgetUrls(OAuthGadgetUrlDAO.newInstance().getGadgetUrlsNotInUrl(gadgetUrlKeyList, consumerId));			
+		OAuthGadgetUrlDAO.newInstance().deleteGadgetUrls(OAuthGadgetUrlDAO.newInstance().getGadgetUrlsNotInUrl(gadgetUrlKeyList, consumerId, squareid));			
 	}
 
 	public static void main(String args[]) {
@@ -137,14 +140,16 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 				.getHash("http://localhost/oauth_test/twit_oauth2.xml"));
 	}
 
-	public List<OAuthConsumerProp> getConsumers() {
-		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthConsumerProp.class));
-	}
-
-	public List<OAuthConsumerProp> getConsumersByUid(String uid){
+	public List<OAuthConsumerProp> getConsumers(String squareid) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthConsumerProp.class)
+				.add(Expression.eq("Id.Squareid", squareid)));
+	}
+
+	public List<OAuthConsumerProp> getConsumersByUid(String uid, String squareid){
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(OAuthConsumerProp.class)
+				.add(Expression.eq("Id.Squareid", squareid))
 				.createAlias("OAuthToken", "ot", CriteriaSpecification.LEFT_JOIN)
 				.createAlias("OAuth2Token", "o2t", CriteriaSpecification.LEFT_JOIN)
 				.createAlias("OAuthGadgetUrl", "ogu", CriteriaSpecification.LEFT_JOIN)
@@ -163,16 +168,19 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 			);
 	}
 	
-	public List<OAuthConsumerProp> getConsumersJoinGadgetUrl() {
+	public List<OAuthConsumerProp> getConsumersJoinGadgetUrl(String squareid) {
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthConsumerProp.class).createAlias(
-						"OAuthGadgetUrl", "ogu", CriteriaSpecification.LEFT_JOIN));
+				DetachedCriteria.forClass(OAuthConsumerProp.class)
+						.add(Expression.eq("Id.Squareid", squareid))
+						.createAlias("OAuthGadgetUrl", "ogu", CriteriaSpecification.LEFT_JOIN));
 	}
 	
-	public List<OAuthConsumerProp> getConsumersNotInId(List<String> idList){
+	public List<OAuthConsumerProp> getConsumersNotInId(List<String> idList, String squareid){
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthConsumerProp.class).add(
-						Expression.not(Expression.in("id", idList))));
+				DetachedCriteria.forClass(OAuthConsumerProp.class)
+						.add(Expression.not(Expression.in("Id.Id", idList)))
+						.add(Expression.not(Expression.eq("Id.Squareid", squareid)))
+						);
 	}
 	
 	public void saveConsumers(List<OAuthConsumerProp> consumers) {
@@ -180,11 +188,11 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 			this.save(consumer);
 	}
 	
-	public void deleteAll() {
-		super.getHibernateTemplate().deleteAll(getConsumers());
+	public void deleteAll(String squareid) {
+		super.getHibernateTemplate().deleteAll(getConsumers(squareid));
 	}
 	
-	public void deleteUpdate(List<String> idList) {
-		super.getHibernateTemplate().deleteAll(getConsumersNotInId(idList));
+	public void deleteUpdate(List<String> idList, String squareid) {
+		super.getHibernateTemplate().deleteAll(getConsumersNotInId(idList, squareid));
 	}
 }

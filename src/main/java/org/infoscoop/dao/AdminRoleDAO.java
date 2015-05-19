@@ -50,8 +50,12 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 	 * @return List
 	 */
 	@SuppressWarnings("unchecked")
-	public List select() {
-		List result = super.getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(Adminrole.class).addOrder(Order.asc("Id")));
+	public List select(String squareid) {
+		List result = super.getHibernateTemplate()
+				.findByCriteria(
+						DetachedCriteria.forClass(Adminrole.class)
+						.add(Expression.eq("Squareid", squareid))
+						.addOrder(Order.asc("Id")));
 		return result;
 	}
 
@@ -65,9 +69,11 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 		return entity;
 	}
 
-	public Adminrole selectByRoleId(String roleId) {
+	public Adminrole selectByRoleId(String roleId, String squareid) {
 		List<Adminrole> result = (List)super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(Adminrole.class).add(Expression.eq("Roleid", roleId)));
+				DetachedCriteria.forClass(Adminrole.class)
+				.add(Expression.eq("Roleid", roleId))
+				.add(Expression.eq("Squareid", squareid)));
 		return (result.size() > 0)? result.get(0) : null;
 	}
 
@@ -107,24 +113,24 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 	 * delete the data
 	 * 
 	 */
-	public void delete() {
-		String queryString = "delete from Adminrole";
+	public void deleteBySquareId(String squareid) {
+		String queryString = "delete from Adminrole where Squareid = ?";
 		
-		super.getHibernateTemplate().bulkUpdate( queryString );
+		super.getHibernateTemplate().bulkUpdate( queryString, squareid );
 	}
 	/**
 	 * insert the data
 	 * 
 	 * @param uid
 	 */
-	public void insert(String roleId, String name, String authData, boolean allowDelete) {
-		Adminrole adminrole = new Adminrole(null, roleId, name, authData);
+	public void insert(String roleId, String name, String authData, boolean allowDelete, String squareid) {
+		Adminrole adminrole = new Adminrole(null, roleId, name, authData, squareid);
 		
 		adminrole.setAllowdelete((allowDelete)? 1 : 0);
 		super.getHibernateTemplate().save( adminrole );
 		
 		if (log.isInfoEnabled())
-			log.info("param[id=" + roleId + ", name=" + name + ", authData=" + authData + "]: insert successfully.");
+			log.info("param[id=" + roleId + ", name=" + name + ", authData=" + authData + ", squareid= " + squareid + "]: insert successfully.");
 	}
 
 }

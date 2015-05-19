@@ -21,7 +21,7 @@ public abstract class BaseOAuthConsumerProp  implements Serializable {
 	public static String PROP_SIGNATURE_METHOD = "SignatureMethod";
 	public static String PROP_DESCRIPTION = "Description";
 	public static String PROP_CONSUMER_SECRET = "ConsumerSecret";
-	public static String PROP_ID = "Id";
+	public static String PROP_ID = "Id.Id";
 	public static String PROP_CONSUMER_KEY = "ConsumerKey";
 
 

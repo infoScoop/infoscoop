@@ -66,8 +66,8 @@ public class KeywordLogDAO extends HibernateDaoSupport {
 	 * @throws DataResourceException 
 	 */
 	public void insertLog(String uid, String date, String keyword,
-			String keywordLogType) {
-		Keyword bean = new Keyword( null,uid,new Integer( keywordLogType ),keyword,date );
+			String keywordLogType, String squareid) {
+		Keyword bean = new Keyword( null,uid,new Integer( keywordLogType ),keyword,date,squareid );
 		super.getHibernateTemplate().save( bean );
 		
         if(logger.isInfoEnabled()){
@@ -89,11 +89,11 @@ public class KeywordLogDAO extends HibernateDaoSupport {
 	 * 
 	 * @return Whether the same data has already existed(exist:true、not exist:false)
 	 */
-	public boolean getKeyword(String uid, String date, String keyword, String keywordLogType) {
+	public boolean getKeyword(String uid, String date, String keyword, String keywordLogType, String squareid) {
 		//select count(*) from ${schema}.keyword where uid = ? and type = ? and keyword = ? and date = ?
-		String queryString = "from Keyword where Uid = ? and Type = ? and Keyword = ? and Date = ?";
+		String queryString = "from Keyword where Uid = ? and Type = ? and Keyword = ? and Date = ? and Squareid = ?";
 		List result = super.getHibernateTemplate().find( queryString,
-				new Object[] { uid,new Integer( keywordLogType ),keyword,date });
+				new Object[] { uid,new Integer( keywordLogType ),keyword,date,squareid });
 		
 		return result.isEmpty();
 	}
@@ -106,7 +106,7 @@ public class KeywordLogDAO extends HibernateDaoSupport {
 	 * @param keywordLogType
 	 * @return
 	 */
-	public Map getCountMap(final String startDate, final String endDate, final Integer keywordLogType) {
+	public Map getCountMap(final String startDate, final String endDate, final Integer keywordLogType, final String squareid) {
 
 		Map countMap = (Map)super.getHibernateTemplate().execute(new HibernateCallback(){
 			public Object doInHibernate(Session session)
@@ -120,6 +120,8 @@ public class KeywordLogDAO extends HibernateDaoSupport {
 				LogicalExpression le = Expression.and(Expression.ge("Date", startDate), Expression.le("Date", endDate));
 				LogicalExpression le2 = Expression.and(se, le);
 				cri.add(le2);
+				
+				cri.add(Expression.eq("Squareid", squareid));
 				
 				Projection projection = Projections.projectionList()  
 				    .add(Projections.property("Keyword"))
@@ -145,7 +147,7 @@ public class KeywordLogDAO extends HibernateDaoSupport {
 				}
 
 				if (log.isInfoEnabled())
-					log.info("getCountMap successfully. : startDate=" + startDate + ", endDate=" + endDate + ", keywordLogType=" + keywordLogType);
+					log.info("getCountMap successfully. : startDate=" + startDate + ", endDate=" + endDate + ", keywordLogType=" + keywordLogType + ", squareid=" + squareid);
 				
 				return countMap;
 			}

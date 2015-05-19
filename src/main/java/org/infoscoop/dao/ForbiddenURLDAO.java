@@ -31,17 +31,17 @@ public class ForbiddenURLDAO extends HibernateDaoSupport {
         return (ForbiddenURLDAO)SpringUtil.getContext().getBean("forbiddenURLDAO");
 	}
 	
-	public Collection getForbiddenUrls() {
-		String queryString = "from Forbiddenurls order by Id desc";
+	public Collection getForbiddenUrls(String squareid) {
+		String queryString = "from Forbiddenurls where Squareid = ? order by Id desc";
 		
-		return super.getHibernateTemplate().find( queryString );
+		return super.getHibernateTemplate().find( queryString, squareid );
 	}
 	
-	public boolean isForbiddenUrl( String url ){
-		String queryString = "from Forbiddenurls where Url = ?";
+	public boolean isForbiddenUrl( String url, String squareid ){
+		String queryString = "from Forbiddenurls where Squareid = ? Url = ?";
 		
 		return super.getHibernateTemplate().find( queryString,
-				new Object[]{ url }).iterator().hasNext();
+				new Object[]{ url, squareid }).iterator().hasNext();
 	}
 	
 	

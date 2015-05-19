@@ -20,9 +20,10 @@ package org.infoscoop.dao;
 import java.util.List;
 import java.util.regex.Pattern;
 
-
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.GadgetIcon;
+import org.infoscoop.dao.model.GadgetIconPK;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -34,26 +35,27 @@ public class GadgetIconDAO extends HibernateDaoSupport {
 		return (GadgetIconDAO) SpringUtil.getContext().getBean("gadgetIconDAO");
 	}
 
-	public void insertUpdate(String type, String url) {
+	public void insertUpdate(String type, String url, String squareid) {
 		GadgetIcon icon = (GadgetIcon) super.getHibernateTemplate().get(
 				GadgetIcon.class, type);
 		if (icon == null) {
-			icon = new GadgetIcon(type, url);
+			icon = new GadgetIcon(new GadgetIconPK(type, squareid), url);
 		} else {
 			icon.setUrl(url);
 		}
 		super.getHibernateTemplate().saveOrUpdate(icon);
 	}
 	
-	public void deleteByType(String type) {
+	public void deleteByType(String type, String squareid) {
 		GadgetIcon icon = (GadgetIcon) super.getHibernateTemplate().get(
-				GadgetIcon.class, type);
+				GadgetIcon.class, new GadgetIconPK(type, squareid));
 		if (icon != null)
 			super.getHibernateTemplate().delete(icon);
 	}
 
-	public List<GadgetIcon> all() {
+	public List<GadgetIcon> all(String squareid) {
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(GadgetIcon.class));
+				DetachedCriteria.forClass(GadgetIcon.class)
+				.add(Expression.eq("Id.Squareid", squareid)));
 	}
 }

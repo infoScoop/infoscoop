@@ -38,7 +38,7 @@ public class MenuCacheDAO  extends HibernateDaoSupport {
 		super.getHibernateTemplate().saveOrUpdate( cache );
 	}
     
-    public MenuCache get(String uid, String url){
+    public MenuCache get(String uid, String url, String squareid){
     	if(log.isInfoEnabled()){
     		log.info("getCache for uid: " + uid
                 + ", url: " + url + ".");
@@ -49,7 +49,7 @@ public class MenuCacheDAO  extends HibernateDaoSupport {
     	String url_key = Crypt.getHash(url);
     	
     	MenuCache cache = ( MenuCache )super.getHibernateTemplate().get(
-    			MenuCache.class,new MENUCACHEPK( url_key,uid ) );
+    			MenuCache.class,new MENUCACHEPK( url_key,uid,squareid ) );
     	
     	return cache;
     }

@@ -30,7 +30,7 @@ public class OAuthConsumerPropPK extends BaseOAuthConsumerPropPK {
 	/**
 	 * Constructor for primary key
 	 */
-	public OAuthConsumerPropPK (OAuthConsumerPropPK id, String squareid) {
+	public OAuthConsumerPropPK (String id, String squareid) {
 		super(id, squareid);
 	}
 

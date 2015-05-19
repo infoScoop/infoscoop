@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.OAuthCertificate;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -34,13 +36,18 @@ public class OAuthCertificateDAO extends HibernateDaoSupport {
 				"oauthCertificateDAO");
 	}
 	
-	public void save(OAuthCertificate cert) {
-		super.getHibernateTemplate().bulkUpdate("delete OAuthCertificate");
+	public void save(OAuthCertificate cert, String squareid) {
+		String query = "delete OAuthCertificate where Id.Squareid = ?";
+		super.getHibernateTemplate().bulkUpdate(query, squareid);
 		super.getHibernateTemplate().save(cert);
 	}
 
-	public OAuthCertificate get() {
-		List results = super.getHibernateTemplate().loadAll(OAuthCertificate.class);
+	public OAuthCertificate get(String squareid) {
+		List results = super.getHibernateTemplate()
+				.findByCriteria(
+						DetachedCriteria.forClass(OAuthCertificate.class)
+						.add(Expression.eq("Id.Squareid", squareid)));
+		
 		if( results.size() == 0) return null;
 		return (OAuthCertificate)results.get(0);
 	}

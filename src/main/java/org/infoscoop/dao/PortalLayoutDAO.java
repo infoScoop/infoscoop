@@ -21,9 +21,15 @@ import java.io.IOException;
 import java.util.List;
 
 
+
+
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.Portallayout;
+import org.infoscoop.dao.model.PortallayoutPK;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -42,9 +48,9 @@ public class PortalLayoutDAO extends HibernateDaoSupport{
 	 * @throws DataResourceException
 	 * @throws IOException 
 	 */
-	public List select()  {
-		return super.getHibernateTemplate().loadAll(Portallayout.class);
-		
+	public List select(String squareid)  {
+		return super.getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(Portallayout.class)
+				.add(Expression.eq("Id.Squareid", squareid)));
 	}
 	
 	/**
@@ -52,8 +58,8 @@ public class PortalLayoutDAO extends HibernateDaoSupport{
 	 * @param name name of layout
 	 * @return 
 	 */
-	public Portallayout selectByName(String name){
-		return (Portallayout) super.getHibernateTemplate().get(Portallayout.class, name);
+	public Portallayout selectByName(String name, String squareid){
+		return (Portallayout) super.getHibernateTemplate().get(Portallayout.class, new PortallayoutPK(name, squareid));
 
 	}
 	

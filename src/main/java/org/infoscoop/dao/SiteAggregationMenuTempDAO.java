@@ -42,18 +42,20 @@ public class SiteAggregationMenuTempDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Siteaggregationmenu_temp> selectByTypeAndUser(String menuType, String workingUid) {
+	public List<Siteaggregationmenu_temp> selectByTypeAndUser(String menuType, String workingUid, String squareid) {
 		DetachedCriteria crit = DetachedCriteria.forClass(Siteaggregationmenu_temp.class);
 		crit.add(Expression.eq("Id.Type", menuType));
+		crit.add(Expression.eq("Id.Squareid", squareid));
 		crit.add(Expression.eq("Workinguid", workingUid));
 		
 		return super.getHibernateTemplate().findByCriteria(crit);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Siteaggregationmenu_temp selectBySitetopId(String menuType, String sitetopId){
+	public Siteaggregationmenu_temp selectBySitetopId(String menuType, String sitetopId, String squareid){
 		DetachedCriteria crit = DetachedCriteria.forClass(Siteaggregationmenu_temp.class);
 		crit.add(Expression.eq("Id.Type", menuType));
+		crit.add(Expression.eq("Id.Squareid", squareid));
 		crit.add(Expression.eq("Id.Sitetopid", sitetopId));
 		
 		List<Siteaggregationmenu_temp> list = super.getHibernateTemplate().findByCriteria(crit);
@@ -65,22 +67,22 @@ public class SiteAggregationMenuTempDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().flush();
 	}
 	
-	public void deleteByTypeAndUser(String menuType, String workingUid){
-		String query = "delete Siteaggregationmenu_temp where Id.Type=? and Workinguid=?";
-		super.getHibernateTemplate().bulkUpdate(query, new Object[]{menuType, workingUid});
+	public void deleteByTypeAndUser(String menuType, String workingUid, String squareid){
+		String query = "delete Siteaggregationmenu_temp where Id.Type=? and Workinguid=? and Id.Squareid=?";
+		super.getHibernateTemplate().bulkUpdate(query, new Object[]{menuType, workingUid, squareid});
 	}
 	
 	public void evict(Siteaggregationmenu_temp entity){
 		super.getHibernateTemplate().evict(entity);
 	}
 	
-	public void deleteByUser(String workingUid){
-		String query = "delete Siteaggregationmenu_temp where Workinguid=?";
-		super.getHibernateTemplate().bulkUpdate(query, new Object[]{workingUid});
+	public void deleteByUser(String workingUid, String squareid){
+		String query = "delete Siteaggregationmenu_temp where Workinguid=? and Id.Squareid=?";
+		super.getHibernateTemplate().bulkUpdate(query, new Object[]{workingUid, squareid});
 		super.getHibernateTemplate().flush();
 	}
 	
-	public Date findLatestLastModifiedTime(final String menuType, final String workingUid){
+	public Date findLatestLastModifiedTime(final String menuType, final String workingUid, final String squareid){
 
 		Date latestLastModifiedTime = (Date)super.getHibernateTemplate().execute(new HibernateCallback(){
 			public Object doInHibernate(Session session)
@@ -88,6 +90,7 @@ public class SiteAggregationMenuTempDAO extends HibernateDaoSupport {
 				Criteria cri = session.createCriteria(Siteaggregationmenu_temp.class);
 				
 				cri.add(Expression.eq("Id.Type", menuType));
+				cri.add(Expression.eq("Id.Squareid", squareid));
 				cri.add(Expression.eq("Workinguid", workingUid));
 				
 				Projection projection = Projections.projectionList()  

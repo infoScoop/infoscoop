@@ -26,11 +26,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.Cache;
+import org.infoscoop.dao.model.CachePK;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.HtmlUtil;
 import org.infoscoop.util.SpringUtil;
@@ -107,7 +107,7 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @throws DataResourceException
 	 */
 	public String insertCache(String id, String uid,
-			String url,InputStream body,Map headers){
+			String url,InputStream body,Map headers, String squareid){
 		if (uid == null)
 			throw new RuntimeException("uid must be set.");
 		String url_key = Crypt.getHash(url);
@@ -118,7 +118,7 @@ public class CacheDAO extends HibernateDaoSupport {
 			log.error("", e);
 		}
 		
-		Cache cache = new Cache( id,uid,url,url_key,
+		Cache cache = new Cache( new CachePK(id, squareid),uid,url,url_key,
 				new Timestamp( new Date().getTime()),
 				makeHeaderXml( headers ),
 				new String(Base64.encodeBase64( readBytes( body ))) );
@@ -129,7 +129,7 @@ public class CacheDAO extends HibernateDaoSupport {
 	}
 
 	public Cache insertUpdateCache(String id,
-			String uid, String url, InputStream body,Map headers) {
+			String uid, String url, InputStream body,Map headers, String squareid) {
 		if (uid == null)
 			throw new RuntimeException("uid must be set.");
 		String url_key = Crypt.getHash(url);
@@ -141,7 +141,7 @@ public class CacheDAO extends HibernateDaoSupport {
 		}
 		
 		Cache cache = new Cache(
-				id,
+				new CachePK(id, squareid),
 				uid,
 				url,
 				url_key,
@@ -161,12 +161,12 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @throws DataResourceException
 	 * @throws IOException
 	 */
-	public void deleteCacheByUid(String uid) {
+	public void deleteCacheByUid(String uid, String squareid) {
 		//delete from ${schema}.cache where uid = ?
-		String queryString = "delete from Cache where Uid = ?";
+		String queryString = "delete from Cache where Uid = ? and Id.Squareid = ?";
 		
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[] { uid });
+				new Object[] { uid, squareid });
 	}
 
 	/**
@@ -175,11 +175,11 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @param uid
 	 * @throws DBAccessException
 	 */
-	public void deleteCacheById(String id){
-		String queryString = "delete from Cache where Id = ?";
+	public void deleteCacheById(String id, String squareid){
+		String queryString = "delete from Cache where Id = ? and Id.Squareid = ?";
 		
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[] { id });
+				new Object[] { id, squareid });
 	}
 
 	/**
@@ -188,9 +188,9 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @param uid
 	 * @param url
 	 */
-	public void deleteCacheByUrl(String uid, String url){
+	public void deleteCacheByUrl(String uid, String url, String squareid){
 		//delete from ${schema}.cache where id = ?
-		String queryString = "delete from Cache where Uid = ? and UrlKey = ?";
+		String queryString = "delete from Cache where Uid = ? and UrlKey = ? and Id.Squareid = ?";
 		
 		super.getHibernateTemplate().bulkUpdate( queryString,
 				new Object[] { uid, Crypt.getHash(url) });
@@ -213,11 +213,11 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @param url
 	 * @return
 	 */
-	public Cache getCacheByURL(String uid, String url){
+	public Cache getCacheByURL(String uid, String url, String squareid){
 		//select * from ${schema}.cache where url_key=?
-		String queryString = "from Cache where Uid = ? and UrlKey = ?";
+		String queryString = "from Cache where Uid = ? and UrlKey = ? and Id.Squareid = ?";
 		List results = super.getHibernateTemplate()
-				.find( queryString, new Object[]{uid, Crypt.getHash(url)} );
+				.find( queryString, new Object[]{uid, Crypt.getHash(url), squareid} );
 		if(results.isEmpty()){
 			return null;
 		}else{
@@ -230,11 +230,11 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @param uid
 	 * @return
 	 */
-	public List getCaches(String uid){
+	public List getCaches(String uid, String squareid){
 		//select * from ${schema}.cache where url_key=?
-		String queryString = "from Cache where Uid = ?";
+		String queryString = "from Cache where Uid = ? and Id.Squareid = ?";
 		List results = super.getHibernateTemplate()
-				.find( queryString, new Object[]{uid} );
+				.find( queryString, new Object[]{uid, squareid} );
 		
 		return results;
 		
@@ -245,10 +245,10 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @param uid
 	 * @return 
 	 */
-	public List getColumnsTimestamp(String uid){
-		String queryString = "select Id, Timestamp from Cache where Uid = ?";
+	public List getColumnsTimestamp(String uid, String squareid){
+		String queryString = "select Id, Timestamp from Cache where Uid = ? and Id.Squareid = ?";
 		List results = super.getHibernateTemplate()
-				.find( queryString, new Object[]{uid} );
+				.find( queryString, new Object[]{uid, squareid} );
 		
 		return results;
 		

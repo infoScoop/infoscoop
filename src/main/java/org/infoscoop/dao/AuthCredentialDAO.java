@@ -36,13 +36,14 @@ public class AuthCredentialDAO extends HibernateDaoSupport{
 		return (AuthCredential)super.getHibernateTemplate().get(AuthCredential.class, id);
 	}
 
-	public AuthCredential select(String uid, String authType, String authUid){
+	public AuthCredential select(String uid, String authType, String authUid, String squareid){
 		List results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(AuthCredential.class).add(
 						Expression.conjunction()
 						.add(Expression.eq("Uid", uid))
 						.add(Expression.eq("AuthType", authType))
 						.add(Expression.eq("AuthUid", authUid))
+						.add(Expression.eq("Squareid", squareid))
 						)
 						);	
 		if(results.isEmpty()){
@@ -52,12 +53,13 @@ public class AuthCredentialDAO extends HibernateDaoSupport{
 		}
 	}
 
-	public AuthCredential select(String uid, Integer sysNum){
+	public AuthCredential select(String uid, Integer sysNum, String squareid){
 		List results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(AuthCredential.class).add(
 						Expression.conjunction()
 						.add(Expression.eq("Uid", uid))
 						.add(Expression.eq("SysNum", sysNum))
+						.add(Expression.eq("Squareid", squareid))
 						)
 						);	
 		if(results.isEmpty()){
@@ -75,9 +77,12 @@ public class AuthCredentialDAO extends HibernateDaoSupport{
 		super.getHibernateTemplate().update(c);	
 	}
 	
-	public List select(String uid){
+	public List select(String uid, String squareid){
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(AuthCredential.class).add(Expression.eq("Uid", uid)).addOrder(Order.asc("SysNum")).addOrder(Order.asc("id"))
+				DetachedCriteria.forClass(AuthCredential.class)
+				.add(Expression.eq("Uid", uid))
+				.add(Expression.eq("Squareid", squareid))
+				.addOrder(Order.asc("SysNum")).addOrder(Order.asc("id"))
 		);
 	}
 	

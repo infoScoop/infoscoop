@@ -37,8 +37,8 @@ public class GadgetDAO extends HibernateDaoSupport {
 	public static void main(String args[]) throws IOException{
 	}
 	
-	public Gadget select( String type ) {
-		return select( type,"/",type +".xml");
+	public Gadget select( String type, String squareid ) {
+		return select( type,"/",type +".xml",squareid);
 	}
 	public List<Gadget> selectGadgetXMLs() {
 		String queryString = "from Gadget where path = '/' and name in "
@@ -46,12 +46,13 @@ public class GadgetDAO extends HibernateDaoSupport {
 		
 		return super.getHibernateTemplate().find( queryString );
 	}
-	public Gadget select(String type, String path,String name ) {
+	public Gadget select(String type, String path,String name,String squareid) {
 		//select data from ${schema}.gadget where type = ? and fileType = ?
 		List result = ( List )super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass( Gadget.class )
 					.add( Expression.eq( Gadget.PROP_TYPE,type ))
 					.add( Expression.eq( Gadget.PROP_PATH,path ))
+					.add( Expression.eq( Gadget.PROP_SQUARE_ID, squareid ))
 					.add( Expression.eq( Gadget.PROP_NAME,name )));
 		if( result == null || result.size() == 0 )
 			return null;
@@ -59,22 +60,23 @@ public class GadgetDAO extends HibernateDaoSupport {
 		return ( Gadget )result.get(0);
 	}
 	
-	public void insert(String type,String path,String name, byte[] xml) {
-		_insert( type,path,name,xml );
+	public void insert(String type,String path,String name, byte[] xml, String squareid) {
+		_insert( type,path,name,xml,squareid );
 	}
-	public void _insert(String type,String path,String name, byte[] xml) {
+	public void _insert(String type,String path,String name, byte[] xml, String squareid) {
 		Gadget gadget = new Gadget();
 		gadget.setType( type );
 		gadget.setPath( path );
 		gadget.setName( name );
 		gadget.setData( xml );
 		gadget.setLastmodified( new Date());
+		gadget.setSquareid(squareid);
 		
 		super.getHibernateTemplate().save( gadget );
 	}
 	
-	public void update( String type,String path,String name,byte[] data ) {
-		Gadget resource = select( type,path,name );
+	public void update( String type,String path,String name,byte[] data, String squareid ) {
+		Gadget resource = select( type,path,name,squareid );
 		
 		if( resource == null )
 			return;
@@ -85,8 +87,8 @@ public class GadgetDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().update( resource );
 	}
 	
-	public boolean delete( String type,String path,String name ) {
-		Gadget resource = select( type,path,name );
+	public boolean delete( String type,String path,String name, String squareid ) {
+		Gadget resource = select( type,path,name,squareid );
 		
 		if( resource == null )
 			return false;
@@ -95,31 +97,34 @@ public class GadgetDAO extends HibernateDaoSupport {
 		return true;
 	}
 	
-	public int deleteType(String type) {
+	public int deleteType(String type, String squareid) {
 		//delete from ${schema}.gadget where type = ?
-		String queryString = "delete from Gadget where Type = ?";
+		String queryString = "delete from Gadget where Type = ? and Squareid = ?";
 		
 		return super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[] { type } );
+				new Object[] { type, squareid } );
 	}
 	
-	public List<Gadget> list( String type ) {
+	public List<Gadget> list( String type, String squareid ) {
 		return super.getHibernateTemplate().findByCriteria( DetachedCriteria.forClass( Gadget.class )
 				.add( Expression.eq( Gadget.PROP_TYPE,type ))
+				.add( Expression.eq( Gadget.PROP_SQUARE_ID, squareid ))
 				.addOrder( Order.asc( Gadget.PROP_NAME )));
 	}
 	
-	public List<Gadget> list( String type,String path ) {
+	public List<Gadget> list( String type,String path, String squareid ) {
 		return super.getHibernateTemplate().findByCriteria( DetachedCriteria.forClass( Gadget.class )
 				.add( Expression.eq( Gadget.PROP_TYPE,type ))
 				.add( Expression.eq( Gadget.PROP_PATH,path ))
+				.add( Expression.eq( Gadget.PROP_SQUARE_ID, squareid ))
 				.addOrder( Order.asc( Gadget.PROP_NAME )));
 	}
 
-	public List<Gadget> selectConfsByType(List<String> types) {
+	public List<Gadget> selectConfsByType(List<String> types, String squareid) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Gadget.class).add(
 						Expression.in(Gadget.PROP_NAME, types)).add(
-						Expression.eq(Gadget.PROP_PATH, "/")));
+						Expression.eq(Gadget.PROP_PATH, "/")).add(
+						Expression.eq( Gadget.PROP_SQUARE_ID, squareid )));
 	}
 }

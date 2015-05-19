@@ -22,7 +22,7 @@ public class OAuthGadgetUrlDAO extends HibernateDaoSupport{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public OAuthGadgetUrl getGadgetUrl(String oauthId, String gadgetUrl) {
+	public OAuthGadgetUrl getGadgetUrl(String oauthId, String gadgetUrl, String squareid) {
 		if (oauthId == null) {
 			throw new RuntimeException("oauthId and gadgetUrl must be set.");
 		}
@@ -30,6 +30,7 @@ public class OAuthGadgetUrlDAO extends HibernateDaoSupport{
 		Iterator results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthGadgetUrl.class)
 				.add(Expression.eq(OAuthGadgetUrl.PROP_FKOAUTHID,oauthId))
+				.add(Expression.eq(OAuthGadgetUrl.PROP_SQUARE_ID,squareid))
 				.add(Expression.eq(OAuthGadgetUrl.PROP_GADGET_URL_KEY,Crypt.getHash(gadgetUrl))))
 				.iterator();
 		if (results.hasNext()) {
@@ -39,27 +40,32 @@ public class OAuthGadgetUrlDAO extends HibernateDaoSupport{
 		return null;
 	}
 	
-	public List<OAuthGadgetUrl> getGadgetUrls() {
-		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthGadgetUrl.class));
-	}
-
-	public List<OAuthGadgetUrl> getGadgetUrlsById(String fkOauthId) {
+	public List<OAuthGadgetUrl> getGadgetUrls(String squareid) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthGadgetUrl.class)
+				.add(Expression.eq(OAuthGadgetUrl.PROP_SQUARE_ID,squareid))
+				);
+	}
+
+	public List<OAuthGadgetUrl> getGadgetUrlsById(String fkOauthId, String squareid) {
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(OAuthGadgetUrl.class)
+				.add(Expression.eq(OAuthGadgetUrl.PROP_SQUARE_ID,squareid))
 				.add(Restrictions.eq(OAuthGadgetUrl.PROP_FKOAUTHID, fkOauthId)));
 	}	
 	
-	public List<OAuthGadgetUrl> getGadgetUrlsNotInUrl(List<String> urlKeyList, String fkOauthId){
+	public List<OAuthGadgetUrl> getGadgetUrlsNotInUrl(List<String> urlKeyList, String fkOauthId, String squareid){
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuthGadgetUrl.class).add(
+				DetachedCriteria.forClass(OAuthGadgetUrl.class)
+					.add(Expression.eq(OAuthGadgetUrl.PROP_SQUARE_ID,squareid))
+					.add(
 						Restrictions.and(
 							Restrictions.not(Restrictions.in(OAuthGadgetUrl.PROP_GADGET_URL_KEY,urlKeyList)),
 							Restrictions.eq(OAuthGadgetUrl.PROP_FKOAUTHID, fkOauthId))));
 	}
 	
 	public void save(OAuthGadgetUrl gadgetUrl) {
-		OAuthGadgetUrl newGadgetUrl = getGadgetUrl(gadgetUrl.getFkOauthId(), gadgetUrl.getGadgetUrl());
+		OAuthGadgetUrl newGadgetUrl = getGadgetUrl(gadgetUrl.getFkOauthId(), gadgetUrl.getGadgetUrl(), gadgetUrl.getSquareid());
 
 		if (newGadgetUrl == null) {
 			super.getHibernateTemplate().save(gadgetUrl);
@@ -75,12 +81,13 @@ public class OAuthGadgetUrlDAO extends HibernateDaoSupport{
 				.getHash("http://localhost/oauth_test/twit_oauth2.xml"));
 	}
 	
-	public void saveGadgetUrl(String fkOauthId, String gadgetUrl){
-		OAuthGadgetUrl newGadgetUrl = getGadgetUrl(fkOauthId, gadgetUrl);
+	public void saveGadgetUrl(String fkOauthId, String gadgetUrl, String squareid){
+		OAuthGadgetUrl newGadgetUrl = getGadgetUrl(fkOauthId, gadgetUrl, squareid);
 		if (newGadgetUrl == null) {
 			newGadgetUrl = new OAuthGadgetUrl();
 			newGadgetUrl.setFkOauthId(fkOauthId);
 			newGadgetUrl.setGadgetUrl(gadgetUrl);
+			newGadgetUrl.setSquareid(squareid);
 		}
 		super.getHibernateTemplate().saveOrUpdate(newGadgetUrl);
 	}
@@ -90,12 +97,12 @@ public class OAuthGadgetUrlDAO extends HibernateDaoSupport{
 			this.save(url);
 	}
 	
-	public void deleteAll(){
-		super.getHibernateTemplate().deleteAll(getGadgetUrls());
+	public void deleteAll(String squareid){
+		super.getHibernateTemplate().deleteAll(getGadgetUrls(squareid));
 	}
 		
-	public void delete(String fkOauthId) {
-		super.getHibernateTemplate().deleteAll(getGadgetUrlsById(fkOauthId));
+	public void delete(String fkOauthId, String squareid) {
+		super.getHibernateTemplate().deleteAll(getGadgetUrlsById(fkOauthId, squareid));
 	}
 	
 	public void deleteGadgetUrl(OAuthGadgetUrl gadgetUrl){

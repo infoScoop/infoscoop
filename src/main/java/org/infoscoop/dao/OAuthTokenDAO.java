@@ -94,12 +94,12 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 	
 	public void saveAccessToken(String uid, String gadgetUrl,
 			String serviceName, String requestToken, String accessToken,
-			String tokenSecret) {
+			String tokenSecret, String squareid) {
 		OAuthToken token = getAccessToken(uid, gadgetUrl, serviceName);
 		if (token == null) {
-			OAuthConsumerProp oauthConsumer = OAuthConsumerDAO.newInstance().getConsumer(gadgetUrl, serviceName);
+			OAuthConsumerProp oauthConsumer = OAuthConsumerDAO.newInstance().getConsumer(gadgetUrl, serviceName, squareid);
 			oauthConsumer.getId();
-			token = new OAuthToken(new OAUTH_TOKEN_PK(uid, oauthConsumer.getId()));
+			token = new OAuthToken(new OAUTH_TOKEN_PK(uid, oauthConsumer.getId().getId()));
 		}
 		token.setRequestToken(requestToken);
 		token.setAccessToken(accessToken);

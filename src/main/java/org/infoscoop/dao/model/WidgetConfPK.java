@@ -20,7 +20,7 @@ package org.infoscoop.dao.model;
 import java.io.Serializable;
 
 
-public abstract class WidgetConfPK implements Serializable {
+public class WidgetConfPK implements Serializable {
 
 	protected int hashCode = Integer.MIN_VALUE;
 

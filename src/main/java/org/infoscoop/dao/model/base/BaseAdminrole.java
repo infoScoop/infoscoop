@@ -60,12 +60,14 @@ public abstract class BaseAdminrole  implements Serializable {
 		java.lang.String id,
 		java.lang.String roleid,
 		java.lang.String name,
-		java.lang.String permission) {
+		java.lang.String permission,
+		java.lang.String squareid) {
 
 		this.setId(id);
 		this.setRoleid(roleid);
 		this.setName(name);
 		this.setPermission(permission);
+		this.setSquareid(squareid);
 		initialize();
 	}
 

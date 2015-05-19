@@ -42,21 +42,23 @@ public class PortalAdminsDAO extends HibernateDaoSupport {
 	 * 
 	 * @return List
 	 */
-	public List select() {
+	public List select(String squareid) {
 		//select * from ${schema}.portaladmins
 		return super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(Portaladmins.class).addOrder(Order.asc("Id")));
+				DetachedCriteria.forClass(Portaladmins.class)
+				.add(Expression.eq(Portaladmins.PROP_SQUARE_ID, squareid))
+				.addOrder(Order.asc("Id")));
 	}
 
 	/**
 	 * Delete the data.
 	 * 
 	 */
-	public void delete() {
+	public void delete(String squareid) {
 		//delete from ${schema}.portaladmins
-		String queryString = "delete from Portaladmins";
+		String queryString = "delete from Portaladmins where " + Portaladmins.PROP_SQUARE_ID + " = ?";
 		
-		super.getHibernateTemplate().bulkUpdate( queryString );
+		super.getHibernateTemplate().bulkUpdate( queryString, squareid );
 	}
 
 	/**
@@ -64,14 +66,14 @@ public class PortalAdminsDAO extends HibernateDaoSupport {
 	 * 
 	 * @param uid
 	 */
-	public void insert(String uid, String roleId) {
-		Portaladmins portalAdmin = new Portaladmins( null, uid );
+	public void insert(String uid, String roleId, String squareid) {
+		Portaladmins portalAdmin = new Portaladmins( null, uid, squareid );
 		portalAdmin.setRoleid(roleId);
 		
 		super.getHibernateTemplate().save( portalAdmin );
 		
 		if (log.isInfoEnabled())
-			log.info("param[uid=" + uid + ", roleId=" + roleId + "]: insert successfully.");
+			log.info("param[uid=" + uid + ", roleId=" + roleId + ", squareid=" + squareid + "]: insert successfully.");
 	}
 	
 	/**
@@ -81,9 +83,11 @@ public class PortalAdminsDAO extends HibernateDaoSupport {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public Portaladmins selectById(String uid){
+	public Portaladmins selectById(String uid, String squareid){
 		List<Portaladmins> result = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(Portaladmins.class).add(Expression.eq("Uid", uid)));
+				DetachedCriteria.forClass(Portaladmins.class)
+					.add(Expression.eq("Uid", uid))
+					.add(Expression.eq(Portaladmins.PROP_SQUARE_ID, squareid)));
 		
 		return (result.size() > 0)? result.get(0) : null;
 	}

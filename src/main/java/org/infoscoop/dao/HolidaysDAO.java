@@ -37,26 +37,26 @@ public class HolidaysDAO extends HibernateDaoSupport {
         return (HolidaysDAO)SpringUtil.getContext().getBean("holidaysDAO");
 	}
 	
-	public Holidays getHoliday( String lang,String country ) {
-		return ( Holidays )super.getHibernateTemplate().get( Holidays.class,new HOLIDAYSPK( lang,country ));
+	public Holidays getHoliday( String lang, String country, String squareid ) {
+		return ( Holidays )super.getHibernateTemplate().get( Holidays.class,new HOLIDAYSPK( lang,country,squareid ));
 	}
-	public void updateHoliday( String lang,String country,String data ) {
-		Holidays holiday = new Holidays(new HOLIDAYSPK( lang,country ));
+	public void updateHoliday( String lang,String country,String data, String squareid ) {
+		Holidays holiday = new Holidays(new HOLIDAYSPK( lang,country,squareid ));
 		holiday.setData( data );
 		holiday.setUpdatedat( new Date());
 		
 		super.getHibernateTemplate().saveOrUpdate( holiday );
 	}
-	public void deleteHoliday( String lang,String country ) {
+	public void deleteHoliday( String lang,String country, String squareid ) {
 		Holidays holiday = ( Holidays )super.getHibernateTemplate().get(
-				Holidays.class,new HOLIDAYSPK( lang,country ));
+				Holidays.class,new HOLIDAYSPK( lang,country,squareid ));
 		if( holiday != null )
 			super.getHibernateTemplate().delete( holiday );
 	}
 	
-	public Collection getHolidayLocales() {
-		String queryString = "select distinct id.Lang,id.Country from Holidays order by id.Country,id.Lang";
-		Collection langCountries = super.getHibernateTemplate().find( queryString );
+	public Collection getHolidayLocales(String squareid) {
+		String queryString = "select distinct id.Lang,id.Country from Holidays where Id.Squareid = ? order by id.Country,id.Lang";
+		Collection langCountries = super.getHibernateTemplate().find( queryString, squareid );
 		
 		Collection locales = new ArrayList();
 		for( Iterator ite=langCountries.iterator();ite.hasNext();) {

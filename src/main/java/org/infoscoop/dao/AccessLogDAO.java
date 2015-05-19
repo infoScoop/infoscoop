@@ -44,18 +44,18 @@ public class AccessLogDAO extends HibernateDaoSupport {
 		return (AccessLogDAO) SpringUtil.getContext().getBean("accessLogDAO");
 	}
 
-	public void insert(String uid, Date date) {
+	public void insert(String uid, Date date, String squareid) {
 		if (uid == null)
 			throw new RuntimeException("uid must be set.");
 		
 		String dateStr = new SimpleDateFormat( ACCESSLOG_DATE_FORMAT ).format(date);
-		Accesslog entity = new Accesslog(null, uid, dateStr);
+		Accesslog entity = new Accesslog(null, uid, dateStr, squareid);
 		
 		super.getHibernateTemplate().save(entity);
 	}
 	
-	public int selectCountByDate(String uid, Date date){
-		return (Integer)super.getHibernateTemplate().execute(new DateAccessCountCallback(uid, date));
+	public int selectCountByDate(String uid, Date date, String squareid){
+		return (Integer)super.getHibernateTemplate().execute(new DateAccessCountCallback(uid, date, squareid));
 	}
 	
 	public void deleteOldLog() {
@@ -81,17 +81,19 @@ public class AccessLogDAO extends HibernateDaoSupport {
 		}
 	}
 	
-	public int getAccessCountByDate(Date date){
-		return (Integer)super.getHibernateTemplate().execute(new DateAccessCountCallback(null, date));
+	public int getAccessCountByDate(Date date, String squareid){
+		return (Integer)super.getHibernateTemplate().execute(new DateAccessCountCallback(null, date, squareid));
 	}
 	
 	private class DateAccessCountCallback implements HibernateCallback{
 		private String uid;
 		private Date date;
+		private String squareid;
 		
-		public DateAccessCountCallback(String uid, Date date) {
+		public DateAccessCountCallback(String uid, Date date, String squareid) {
 			this.uid = uid;
 			this.date = date;
+			this.squareid = squareid;
 		}
 		
 		public Object doInHibernate(Session session) throws HibernateException,
@@ -103,6 +105,7 @@ public class AccessLogDAO extends HibernateDaoSupport {
 			
 			String dateStr = new SimpleDateFormat( ACCESSLOG_DATE_FORMAT ).format(date);
 			crit.add(Restrictions.eq("Date", dateStr));
+			crit.add(Restrictions.eq("Squareid", squareid));
 			crit.setProjection(Projections.countDistinct("Uid"));
 			Integer rowCount = (Integer)crit.uniqueResult();
 			

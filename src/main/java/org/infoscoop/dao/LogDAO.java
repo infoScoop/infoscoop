@@ -73,16 +73,16 @@ public class LogDAO extends HibernateDaoSupport {
      * @return The top node of DOM including the log information of an appointed key.
      */
     public boolean checkLog(String uid, String logType,
-            String url, String rssUrl, String date) {
+            String url, String rssUrl, String date, String squareid) {
     	
     	String url_key = Crypt.getHash(url);
     	String rssurl_key = Crypt.getHash(rssUrl);
     	
     	//select count(*) from ${schema}.logs where uid=? and type=? and url_key=? and rssurl_key=? and date=?
-    	String queryString = "select count(*) from Logs where uid = ? and Type = ? and urlKey = ? and rssurlKey = ? and Date = ?";
+    	String queryString = "select count(*) from Logs where uid = ? and Type = ? and urlKey = ? and rssurlKey = ? and Date = ? and Squareid = ?";
     	
     	List result = super.getHibernateTemplate().find( queryString,
-    			new Object[]{ uid,new Integer( logType ),url_key,rssurl_key,date });
+    			new Object[]{ uid,new Integer( logType ),url_key,rssurl_key,date,squareid });
     	if (log.isInfoEnabled())
 			log.info("param[]: count successfully.");
 		
@@ -102,18 +102,18 @@ public class LogDAO extends HibernateDaoSupport {
      * @throws IOException
      */
     public void insertLog(String uid, String logType,
-            String url, String rssUrl, String date){
+            String url, String rssUrl, String date, String squareid){
 
     	if(log.isInfoEnabled()){
     		log.info("insertLog for uid: " + uid
-                + ", type: " + logType + ", url: " + url + ", date: " + date
+                + ", type: " + logType + ", url: " + url + ", date: " + date + ", squareid: " + squareid
                 + ".");
     	}
     	
     	String url_key = Crypt.getHash(url);
     	String rssurl_key = Crypt.getHash(rssUrl);
     	
-		Logs logs = new Logs( null,uid,new Integer( logType ),url,url_key,rssUrl,rssurl_key,date );
+		Logs logs = new Logs( null,uid,new Integer( logType ),url,url_key,rssUrl,rssurl_key,date,squareid );
 		super.getHibernateTemplate().save( logs );
 		
 		if(log.isInfoEnabled()){
@@ -121,7 +121,7 @@ public class LogDAO extends HibernateDaoSupport {
         }
     }
     
-    public void deleteOldLog() {
+    public void deleteOldLog(String squareid) {
 		Calendar currentDay = Calendar.getInstance();
 		if (currentDay.get(Calendar.DAY_OF_YEAR) != logDeleteDay.get(Calendar.DAY_OF_YEAR)) {
 			PropertiesDAO pdao = PropertiesDAO.newInstance();
@@ -137,50 +137,50 @@ public class LogDAO extends HibernateDaoSupport {
 				Calendar deleteDate = Calendar.getInstance();
 				deleteDate.setTimeZone(TimeZone.getTimeZone("UTC"));
 				deleteDate.add(Calendar.DATE, -(storagePeriod));
-				String queryString = "delete Logs where Date < ?";
+				String queryString = "delete Logs where Date < ? and Squareid = ?";
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd00");
 				sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 				String date = sdf.format(deleteDate.getTime());
-				super.getHibernateTemplate().bulkUpdate(queryString, date);
+				super.getHibernateTemplate().bulkUpdate(queryString, new Object[]{date, squareid});
 			}
 			logDeleteDay = currentDay;
 		}
 
 	}
     
-    public int getRssAccessCount(String rssUrl, String startDate) {
+    public int getRssAccessCount(String rssUrl, String startDate, String squareid) {
 		if (log.isInfoEnabled())
 			log.info("getRssAccessCount for rssUrl: " + rssUrl
 					+ ", startDate: " + startDate);
 		String rssurl_key = Crypt.getHash(rssUrl);
 		
 		//select count(*) from ${schema}.logs where rssurl_key=? and date>?
-		String queryString = "select count(*) from Logs where rssurlKey = ? and Date > ? and Type != 2";
+		String queryString = "select count(*) from Logs where rssurlKey = ? and Date > ? and Type != 2 and Squareid = ?";
 		
 		List result = super.getHibernateTemplate().find( queryString,
-				new Object[]{ rssurl_key,startDate } );
+				new Object[]{ rssurl_key,startDate,squareid } );
 		if( result.isEmpty() )
 			return 0;
 		
 		return (( Long )result.get(0)).intValue();
 	}
     
-    public int getRssAccessCount(String rssUrl) {
+    public int getRssAccessCount(String rssUrl, String squareid) {
 		if (log.isInfoEnabled())
 			log.info("getRssAccessCount for rssUrl: " + rssUrl);
 		String rssurl_key = Crypt.getHash(rssUrl);
 		
 		//select count(*) from ${schema}.logs where rssurl_key=?
-		String queryString = "select count(*) from Logs where rssurlKey = ? and Type != 2";
+		String queryString = "select count(*) from Logs where rssurlKey = ? and Type != 2 and Squareid = ?";
 		List result = super.getHibernateTemplate().find( queryString,
-				new Object[] { rssurl_key } );
+				new Object[] { rssurl_key, squareid } );
 		if( result.isEmpty())
 			return 0;
 		
 		return (( Long )result.get(0)).intValue();
 	}
     
-    public RssAccessStats getRssAccessStats(String rssUrl, int start, int limit) {
+    public RssAccessStats getRssAccessStats(String rssUrl, int start, int limit, String squareid) {
     	if (log.isInfoEnabled())
     		log.info("getRssAccessStats for rssUrl: " + rssUrl + ", start:"
     				+ start + ", limit:" + limit);
@@ -189,11 +189,12 @@ public class LogDAO extends HibernateDaoSupport {
 		Session session = super.getSession();
     	try{
     		//select uid,substr(date, 1, 8) as date,count(*) as count from ${schema}.logs where rssurl_key=? group by uid, substr(date, 1, 8) order by date desc, uid 
-    		String queryString = "select uid,substring(Date,1,8),count(*) from Logs where rssurlKey = ? and Type != 2 group by uid,substring(Date,1,8) order by substring(Date,1,8) desc,Uid";
+    		String queryString = "select uid,substring(Date,1,8),count(*) from Logs where rssurlKey = ? and Type != 2 and Squareid = ? group by uid,substring(Date,1,8) order by substring(Date,1,8) desc,Uid";
     		Query query = session.createQuery( queryString );
     		query.setFirstResult( start );
     		query.setMaxResults( limit );
     		query.setString( 0,rssurl_key );
+    		query.setString( 1,squareid );
 
     		List list = query.list();
     		List entries = new ArrayList();
@@ -212,8 +213,9 @@ public class LogDAO extends HibernateDaoSupport {
     			entries.add(entry);
     		}
     		
-    		query = session.createQuery("select uid from Logs where rssurl_key = ? and Type != 2 group by uid,substring(Date,1,8)");
+    		query = session.createQuery("select uid from Logs where rssurl_key = ? and Type != 2 and Squareid = ? group by uid,substring(Date,1,8)");
     		query.setString( 0,rssurl_key );
+    		query.setString( 1,squareid );
     		
     		int count = query.list().size();
     		stats.setCount(count);
@@ -322,6 +324,7 @@ public class LogDAO extends HibernateDaoSupport {
 		}
 	}
 
+    /*
     public static void main(String args[]) throws Exception {
 		String rssUrl = "http://nikkeibp.jp/index.rdf";
 		String startDate = "2008012314";
@@ -337,4 +340,5 @@ public class LogDAO extends HibernateDaoSupport {
 			System.out.println(entry);
 		}
 	}
+	*/
 }
