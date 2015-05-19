@@ -18,11 +18,9 @@
 package org.infoscoop.service;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,20 +30,19 @@ import javax.xml.transform.TransformerException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tools.ant.Project;
-import org.apache.xerces.parsers.DOMParser;
 import org.apache.xpath.XPathAPI;
-import org.cyberneko.html.HTMLConfiguration;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.StaticTabDAO;
 import org.infoscoop.dao.TabAdminDAO;
 import org.infoscoop.dao.TabLayoutDAO;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Portaladmins;
 import org.infoscoop.dao.model.StaticTab;
+import org.infoscoop.dao.model.StaticTabPK;
+import org.infoscoop.dao.model.TABPK;
 import org.infoscoop.dao.model.TabAdmin;
-import org.infoscoop.dao.model.TabAdminPK;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.util.HtmlUtil;
 import org.infoscoop.util.SpringUtil;
@@ -53,10 +50,8 @@ import org.infoscoop.util.XmlUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.traversal.NodeIterator;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class StaticTabService {
@@ -92,11 +87,12 @@ public class StaticTabService {
 	 */
 	public String getTabIdListJson() throws Exception {
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		String uid = p.getName();
 		
 		PortalAdminsService service = PortalAdminsService.getHandle();
 		
-		List<StaticTab> result = staticTabDAO.getStaticTabList();
+		List<StaticTab> result = staticTabDAO.getStaticTabList(squareid);
 		boolean isTabAdmin = service.isPermitted(PortalAdminsService.ADMINROLE_TAB_ADMIN)
 				&& !service.isPermitted(PortalAdminsService.ADMINROLE_DEFAULTPANEL);
 
@@ -112,7 +108,7 @@ public class StaticTabService {
 			admins = new JSONArray();
 
 			StaticTab st = (StaticTab) ite.next();
-			String tabId = st.getTabid();
+			String tabId = st.getId().getTabid();
 
 			if (tabIdList.contains(tabId))
 				continue;
@@ -124,7 +120,7 @@ public class StaticTabService {
 			if((isTabAdmin && !tabAdminUidList.contains(uid)))
 				continue;
 			
-			json.put("id", st.getTabid());
+			json.put("id", st.getId().getTabid());
 			json.put("tabDesc", st.getTabdesc());
 
 			for (Iterator<String> ite2=tabAdminUidList.iterator();ite2.hasNext();) {
@@ -137,38 +133,41 @@ public class StaticTabService {
 	}
 
 	public StaticTab getStaticTab(String tabId){
-		return staticTabDAO.getTab(tabId);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return staticTabDAO.getTab(tabId, squareid);
 	}
 	
-	public List<StaticTab> getStaticTabList() {
-		List<StaticTab> result = staticTabDAO.getAllStaicLayoutList();
+	public List<StaticTab> getStaticTabList(String squareid) {
+		List<StaticTab> result = staticTabDAO.getAllStaicLayoutList(squareid);
 		
 		List<String> staticIdList = new ArrayList<String>();
 		List<StaticTab> staticTabList = new ArrayList<StaticTab>();
 		for(StaticTab staticTab : result){
-			if(!staticIdList.contains(staticTab.getTabid()))
+			if(!staticIdList.contains(staticTab.getId().getTabid()))
 				staticTabList.add(staticTab);
 			
-			staticIdList.add(staticTab.getTabid());
+			staticIdList.add(staticTab.getId().getTabid());
 		}
 		return staticTabList;
 	}
 	
 
 	public int getDisplayTabOrder(String tabId) throws Exception {
-		List<String> tabIdList = staticTabDAO.getTabIdList();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		List<String> tabIdList = staticTabDAO.getTabIdList(squareid);
 		return tabIdList.indexOf(tabId);
 	}
 
 	public void deleteTabs(List<String> tabIdList) throws Exception {
 		String tabId;
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		try {
 			for (Iterator<String> ite = tabIdList.iterator(); ite.hasNext();) {
 				tabId = ite.next();
 				if(undeletableTabIdList.contains(tabId))
 					throw new RuntimeException("tabId=" + tabId + " cannot be deleted.");
 				
-				StaticTab staticTab = staticTabDAO.getTab(tabId);
+				StaticTab staticTab = staticTabDAO.getTab(tabId, squareid);
 				tabAdminDAO.delete(staticTab.getTabAdmin());
 				staticTabDAO.updateDeleteFlag(staticTab, StaticTab.DELETEFLAG_TRUE);
 			}
@@ -216,24 +215,26 @@ public class StaticTabService {
 	}
 	
 	public void replaceAdminUidList(String tabId, List adminUidList) throws Exception{
-		tabAdminDAO.deleteByTabId(tabId);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		tabAdminDAO.deleteByTabId(tabId, squareid);
 		for(Iterator<String> ite = adminUidList.iterator();ite.hasNext();){
 			String userId = ite.next();
 			Portaladmins admin = PortalAdminsService.getHandle().getPortalAdmin(userId);
 			if(admin != null)
-				tabAdminDAO.insert(tabId, userId);
+				tabAdminDAO.insert(tabId, userId, squareid);
 		}
 	}
 	
 	public void updateTabNumber(String tabId, int tabNumber) throws Exception {
 		try {
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 			if (undeletableTabIdList.contains(tabId)) {
 				throw new RuntimeException("tabId=" + tabId + " tabNumber cannot be changed.");
 			}
 			if (tabNumber == StaticTab.TABNUMBER_HOME) {
 				throw new RuntimeException("tabId=" + tabId + " cannot be numbered \"" + StaticTab.TABNUMBER_HOME + "\".");
 			}
-			StaticTab staticTab = staticTabDAO.getTab(tabId);
+			StaticTab staticTab = staticTabDAO.getTab(tabId, squareid);
 			staticTabDAO.updateTabNumber(staticTab, tabNumber);
 		} catch(Exception e) {
 			log.error("Unexpected error occurred.", e);
@@ -265,10 +266,11 @@ public class StaticTabService {
 		if(PortalAdminsService.getHandle().isPermitted(PortalAdminsService.ADMINROLE_DEFAULTPANEL))
 			return true;
 		
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String uid = p.getName();
 		
-		StaticTab staticTab = staticTabDAO.getTab(tabId);
+		StaticTab staticTab = staticTabDAO.getTab(tabId, squareid);
 		if(staticTab == null)
 			return false;
 		
@@ -299,10 +301,11 @@ public class StaticTabService {
 	 * @throws TransformerException
 	 */
 	public void replaceStaticTab(StaticTab currentStaticTab, StaticTab newStaticTab) throws SAXException, IOException, TransformerException{
-		String targetTabId = currentStaticTab.getTabid();
+		String targetTabId = currentStaticTab.getId().getTabid();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		// set target tabid to statictab
-		newStaticTab.setTabid(targetTabId);
+		newStaticTab.setId(new StaticTabPK(targetTabId, squareid));
 		newStaticTab.setTabnumber(currentStaticTab.getTabnumber());
 
 		if(targetTabId.equals(StaticTab.TABID_HOME)){
@@ -315,7 +318,7 @@ public class StaticTabService {
 		
 		// clean tablayouts data
 		tabLayoutDAO.delete(currentStaticTab.getTabLayout());
-		tabLayoutDAO.deleteTempByTabId(targetTabId);
+		tabLayoutDAO.deleteTempByTabId(targetTabId, squareid);
 		
 		// clean tabadmin data
 		tadAdminDAO.delete(currentStaticTab.getTabAdmin());
@@ -325,8 +328,9 @@ public class StaticTabService {
 	}
 	
 	public void updateLastmodifiedByTabId(String tabId) throws SAXException, IOException, TransformerException{
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		TabLayoutDAO tabLayoutDAO = TabLayoutDAO.newInstance();
-		tabLayoutDAO.updateLastmodifiedByTabId(tabId);
+		tabLayoutDAO.updateLastmodifiedByTabId(tabId, squareid);
 	}
 	
 	/**
@@ -372,20 +376,22 @@ public class StaticTabService {
 	 * @throws Exception
 	 */
 	public void replaceAllTabs(List<StaticTab> staticTabs) throws Exception{
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+
 		// delete tabLayouts
-		List<StaticTab> currentStaticTabList = getStaticTabList();
+		List<StaticTab> currentStaticTabList = getStaticTabList(squareid);
 		TabLayoutDAO tabLayoutDAO = TabLayoutDAO.newInstance();
 		List<String> currentTabIdList = new ArrayList<String>();
 		for(Iterator<StaticTab> ite=currentStaticTabList.iterator();ite.hasNext();){
 			StaticTab currentStaticTab = ite.next();
 			
-			String currentTabId = currentStaticTab.getTabid();
+			String currentTabId = currentStaticTab.getId().getTabid();
 			
 			tabLayoutDAO.delete(currentStaticTab.getTabLayout());
-			tabLayoutDAO.deleteTempByTabId(currentTabId);
+			tabLayoutDAO.deleteTempByTabId(currentTabId, squareid);
 			
-			if(!undeletableTabIdList.contains(currentStaticTab.getTabid()))
-				currentTabIdList.add(currentStaticTab.getTabid());
+			if(!undeletableTabIdList.contains(currentStaticTab.getId().getTabid()))
+				currentTabIdList.add(currentStaticTab.getId().getTabid());
 		}
 		// delete static tabs without undeletableTabs.
 		StaticTabService.getHandle().deleteTabs(currentTabIdList);
@@ -393,13 +399,13 @@ public class StaticTabService {
 		// insert tabs
 		for(Iterator<StaticTab> ite=staticTabs.iterator();ite.hasNext();){
 			StaticTab staticTab = ite.next();
-			String tabId = staticTab.getTabid();
+			String tabId = staticTab.getId().getTabid();
 			
 			if(undeletableTabIdList.contains(tabId)){
 				replaceStaticTab(tabId, staticTab);
 			}else{
-				tabId = getNewTabId();
-				staticTab.setTabid(tabId);
+				tabId = getNewTabId(squareid);
+				staticTab.setId(new StaticTabPK(tabId, squareid));
 				saveStaticTab(tabId, staticTab);
 			}
 		}
@@ -444,7 +450,8 @@ public class StaticTabService {
 	
 	public Integer getNextTabNumber() throws Exception{
 		synchronized(lock){
-			Map maxMap = staticTabDAO.selectMax();
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			Map maxMap = staticTabDAO.selectMax(squareid);
 			String tabNumber = maxMap.get("tabNumber").toString();
 			if (tabNumber != null && tabNumber.length() != 0) {
 				int newInt = Integer.valueOf(tabNumber).intValue();
@@ -456,9 +463,9 @@ public class StaticTabService {
 		}
 	}
 	
-	public String getNewTabId() throws Exception{
+	public String getNewTabId(String squareid) throws Exception{
 		synchronized(lock){
-			String tabId = staticTabDAO.selectMaxTabId();
+			String tabId = staticTabDAO.selectMaxTabId(squareid);
 			
 			if (tabId != null && tabId.length() != 0) {
 				int newInt = Integer.valueOf(tabId).intValue();

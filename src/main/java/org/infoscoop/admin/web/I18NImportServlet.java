@@ -30,13 +30,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.admin.exception.I18NImportException;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.I18NDAO;
 import org.infoscoop.service.I18NService;
 
@@ -125,6 +125,7 @@ public class I18NImportServlet extends HttpServlet {
 	 * @return
 	 */
 	public List getDefaultIdList(String type){
-		return I18NDAO.newInstance().getIdListByLocale(type, "ALL", "ALL");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return I18NDAO.newInstance().getIdListByLocale(type, "ALL", "ALL", squareid);
 	}
 }

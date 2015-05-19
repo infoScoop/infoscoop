@@ -17,19 +17,25 @@
 
 package org.infoscoop.service;
 
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xpath.XPathAPI;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetIconDAO;
-import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.NoOpEntityResolver;
@@ -67,7 +73,8 @@ public class GadgetService {
 	}
 	
 	public byte[] selectGadget( String type ) {
-		Gadget gadget = gadgetDAO.select( type );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Gadget gadget = gadgetDAO.select( type, squareid );
 		if( gadget == null )
 			return null;
 		
@@ -94,8 +101,9 @@ public class GadgetService {
 
 		DocumentBuilder builder = builderFactory.newDocumentBuilder();
 		builder.setEntityResolver(NoOpEntityResolver.getInstance());
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
-		Gadget gadget = gadgetDAO.select(type);
+		Gadget gadget = gadgetDAO.select(type, squareid);
 		Document gadgetDoc = builder.parse(new ByteArrayInputStream(gadget.getData()));
 		Element gadgetEl = gadgetDoc.getDocumentElement();
 		JSONObject confJson = WidgetConfUtil.gadget2JSONObject( gadgetEl,null );
@@ -203,8 +211,9 @@ public class GadgetService {
 		if( type.startsWith("upload__"))
 			type = type.substring(8);
 		
-		gadgetDAO.deleteType(type);
-		gadgetIconDAO.deleteByType(type);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();		
+		gadgetDAO.deleteType(type, squareid);
+		gadgetIconDAO.deleteByType(type, squareid);
 	}
 	/**
 	 * @param type
@@ -212,6 +221,7 @@ public class GadgetService {
 	 * @throws Exception
 	 */
 	public void updateGadget(String type, String gadgetJSON) throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		if( type.startsWith("upload__"))
 			type = type.substring(8);
 		
@@ -219,7 +229,7 @@ public class GadgetService {
 			log.info("uploadGadget type=" + type);
 		try {
 
-			Gadget gadget = gadgetDAO.select(type );
+			Gadget gadget = gadgetDAO.select(type, squareid);
 			JSONObject json = new JSONObject(gadgetJSON);
 			
 			DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -262,9 +272,9 @@ public class GadgetService {
 
 			if (iconElm != null) {
 				String iconUrl = resourceUrl + iconElm.getTextContent();
-				GadgetIconDAO.newInstance().insertUpdate(type, iconUrl);
+				GadgetIconDAO.newInstance().insertUpdate(type, iconUrl, squareid);
 			} else {
-				GadgetIconDAO.newInstance().insertUpdate(type, "");
+				GadgetIconDAO.newInstance().insertUpdate(type, "", squareid);
 			}
 			
 			updateUserPrefNodes( gadgetDoc,json );
@@ -272,7 +282,7 @@ public class GadgetService {
 			if( json.has("WidgetPref"))
 				WidgetConfService.updateWidgetPrefNode( gadgetDoc,gadgetEl,json.getJSONObject("WidgetPref"));
 			
-			gadgetDAO.update(type,"/",type+".xml", XmlUtil.dom2String(gadgetDoc).getBytes("UTF-8"));
+			gadgetDAO.update(type,"/",type+".xml", XmlUtil.dom2String(gadgetDoc).getBytes("UTF-8"), squareid);
 		} catch (Exception e) {
 			log.error("update of widet configuration \"" + type + "\" failed.",
 					e);

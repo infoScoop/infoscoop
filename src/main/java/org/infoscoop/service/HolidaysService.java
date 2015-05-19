@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
-
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.HolidaysDAO;
 import org.infoscoop.dao.model.Holidays;
 import org.infoscoop.util.SpringUtil;
@@ -48,6 +48,7 @@ public class HolidaysService {
 	}
 	
 	public Holidays getHoliday( Locale locale ) {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		String lang = locale.getLanguage();
 		if( lang == null )
 			lang = "ALL";
@@ -56,34 +57,38 @@ public class HolidaysService {
 		if( country == null )
 			country = "ALL";
 		
-		Holidays holiday = holidaysDAO.getHoliday( lang,country );
+		Holidays holiday = holidaysDAO.getHoliday( lang,country,squareid );
 		if( holiday == null && !country.equalsIgnoreCase("ALL"))
-			holiday = holidaysDAO.getHoliday( lang,"ALL");
+			holiday = holidaysDAO.getHoliday( lang,"ALL",squareid );
 		
 		if( holiday == null && !lang.equalsIgnoreCase("ALL"))
-			holiday = holidaysDAO.getHoliday("ALL",country );
+			holiday = holidaysDAO.getHoliday("ALL",country,squareid );
 		
 		if( holiday == null )
-			holiday = holidaysDAO.getHoliday("ALL","ALL");
+			holiday = holidaysDAO.getHoliday("ALL","ALL",squareid);
 		
 		return holiday;
 	}
 	public Holidays getHoliday( String lang,String country ) {
-		return holidaysDAO.getHoliday( lang,country );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return holidaysDAO.getHoliday( lang,country,squareid );
 	}
 	public String getHolidayData( String lang,String country ) {
 		return getHoliday( lang,country ).getData();
 	}
 	
 	public void updateHoliday( String lang,String country,String data ) {
-		holidaysDAO.updateHoliday(lang, country, data);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		holidaysDAO.updateHoliday(lang, country, data, squareid);
 	}
 	public void deleteHoliday( String lang,String country ) {
-		holidaysDAO.deleteHoliday(lang, country );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		holidaysDAO.deleteHoliday(lang, country, squareid);
 	}
 	
 	public JSONArray getHolidayLocalesJSON() throws JSONException {
-		Collection locales = holidaysDAO.getHolidayLocales();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Collection locales = holidaysDAO.getHolidayLocales(squareid);
 		
 		JSONArray localeArray = new JSONArray();
 		for (Iterator it = locales.iterator(); it.hasNext();) {

@@ -21,6 +21,7 @@ package org.infoscoop.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Widget;
@@ -44,6 +45,7 @@ public class EmptyWidget extends XMLCommandProcessor {
 		String tabId = super.commandXml.getAttribute("tabId").trim();
 		String widgetId = super.commandXml.getAttribute("widgetId").trim();
 		String deleteDateStr = super.commandXml.getAttribute("deleteDate").trim();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		long deleteDate = 0;
 		try {
 			deleteDate = Long.parseLong(deleteDateStr);
@@ -68,18 +70,18 @@ public class EmptyWidget extends XMLCommandProcessor {
 			TabDAO tabDAO = TabDAO.newInstance();
 			WidgetDAO widgetDAO = WidgetDAO.newInstance();
 			
-        	Widget widget = widgetDAO.getWidget( uid,tabId,widgetId );
+        	Widget widget = widgetDAO.getWidget( uid,tabId,widgetId,squareid );
         	
 			//TODO:check whether a widget is null or not;
-			Widget nextSibling = tabDAO.getWidgetBySibling( uid,tabId,widgetId);
+			Widget nextSibling = tabDAO.getWidgetBySibling( uid,tabId,widgetId,squareid );
 			if(nextSibling != null){
 				nextSibling.setSiblingid(widget.getSiblingid());
 			}
 			
 			if (tabId != null && tabId.length() > 0) {
-				result = widgetDAO.emptyWidget(uid, widgetId,tabId, deleteDate);
+				result = widgetDAO.emptyWidget(uid, widgetId,tabId, deleteDate, squareid);
 			} else {
-				result = widgetDAO.emptyWidget(uid, widgetId,deleteDate);
+				result = widgetDAO.emptyWidget(uid, widgetId,deleteDate, squareid);
 			}
 			if (result == 0) {
 				this.result = XMLCommandUtil.createResultElement(uid,

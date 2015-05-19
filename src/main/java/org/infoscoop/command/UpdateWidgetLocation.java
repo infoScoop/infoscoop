@@ -21,6 +21,7 @@ package org.infoscoop.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Widget;
@@ -64,6 +65,7 @@ public class UpdateWidgetLocation extends XMLCommandProcessor {
         String targetColumn = super.commandXml.getAttribute("targetColumn").trim();
         String parent = super.commandXml.getAttribute("parent").trim();
         String sibling = super.commandXml.getAttribute("sibling").trim();
+        String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
         
         if(log.isInfoEnabled()){
         	String logMsg = "uid:[" + uid + "]: processXML: tabId:[" + tabId
@@ -88,7 +90,7 @@ public class UpdateWidgetLocation extends XMLCommandProcessor {
         TabDAO tabDAO = TabDAO.newInstance();
         WidgetDAO widgetDAO = WidgetDAO.newInstance();
         
-        Widget widget = widgetDAO.getWidget( uid,tabId,widgetId);
+        Widget widget = widgetDAO.getWidget( uid,tabId,widgetId,squareid );
         if (widget == null) {
             String reason = "Not found the information of the widget(wigetID) that is origin of movement．widgetId:["
                     + widgetId + "]";
@@ -97,7 +99,7 @@ public class UpdateWidgetLocation extends XMLCommandProcessor {
             return;
         }
         
-        Widget oldNextSibling = tabDAO.getWidgetBySibling( uid,tabId,widget.getWidgetid() );            	
+        Widget oldNextSibling = tabDAO.getWidgetBySibling( uid,tabId,widget.getWidgetid(),squareid );            	
         if(oldNextSibling != null){
         	oldNextSibling.setSiblingid(widget.getSiblingid());
         	widgetDAO.updateWidget(oldNextSibling);
@@ -105,9 +107,9 @@ public class UpdateWidgetLocation extends XMLCommandProcessor {
 
         Widget newNextSibling;
         if(parent != null && !"".equals(parent)){
-			newNextSibling = tabDAO.getSubWidgetBySibling( uid,tabId,sibling,parent,widgetId );
+			newNextSibling = tabDAO.getSubWidgetBySibling( uid,tabId,sibling,parent,widgetId,squareid );
 		} else {
-			newNextSibling = tabDAO.getColumnWidgetBySibling( uid,tabId,sibling,Integer.valueOf( targetColumn ),widgetId );
+			newNextSibling = tabDAO.getColumnWidgetBySibling( uid,tabId,sibling,Integer.valueOf( targetColumn ),widgetId,squareid );
 		}
         
         if(newNextSibling != null){

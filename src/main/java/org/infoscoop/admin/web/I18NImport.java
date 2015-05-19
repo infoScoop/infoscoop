@@ -20,6 +20,7 @@ package org.infoscoop.admin.web;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.I18NDAO;
 import org.infoscoop.dao.model.I18NPK;
 import org.infoscoop.dao.model.I18n;
@@ -91,7 +92,8 @@ public class I18NImport {
 			
 			message = csvRecord[1];
 			this.i18n = new I18n();
-			this.i18n.setId(new I18NPK(country, this.id, lang, type));
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			this.i18n.setId(new I18NPK(country, this.id, lang, type, squareid));
 			this.i18n.setMessage(message);
 		}
 		

@@ -41,8 +41,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.xml.serializer.dom3.LSSerializerImpl;
 import org.apache.xpath.XPathAPI;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.GadgetIconDAO;
 import org.infoscoop.dao.model.Gadget;
@@ -54,7 +54,6 @@ import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.ls.LSSerializer;
 
 public class GadgetResourceService {
 	private static Log log = LogFactory.getLog(GadgetResourceService.class);
@@ -81,10 +80,12 @@ public class GadgetResourceService {
 	}
 	
 	public Gadget getResource( String type,String path,String name ) {
-		return gadgetDAO.select( type,path,name );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return gadgetDAO.select( type,path,name,squareid );
 	}
 	public byte[] selectResource( String type,String path,String name ) {
-		Gadget gadget = gadgetDAO.select( type,path,name );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Gadget gadget = gadgetDAO.select( type,path,name,squareid );
 		if( gadget == null )
 			return null;
 
@@ -99,7 +100,8 @@ public class GadgetResourceService {
 	}
 	public Collection<JSONObject> getResourceListJson( String type ) {
 		Collection<JSONObject> resources = new ArrayList<JSONObject>();
-		for( Gadget resource : gadgetDAO.list( type ) ) {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		for( Gadget resource : gadgetDAO.list( type, squareid ) ) {
 			JSONObject rMap = new JSONObject();
 
 			try {
@@ -117,14 +119,17 @@ public class GadgetResourceService {
 
 	public void deleteResource( String type,String path,String name ) {
 		List<Gadget> list = gadgetDAO.list( type,path );
-
-		if( gadgetDAO.delete( type, path, name ) && list.size() == 1 )
-			gadgetDAO._insert( type,path,"",new byte[0]);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		
+		if( gadgetDAO.delete( type, path, name, squareid ) && list.size() == 1 )
+			gadgetDAO._insert( type,path,"",new byte[0], squareid );
 		
 		log.info("delete gadget resource ["+type+"] "+path+name );
 	}
 
 	public void insertResource( String type,String path,String name,byte[] data ) throws GadgetResourceException {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		
 		if( !REGEX_NAME.matcher( type ).matches() )
 			throw new GadgetResourceException( 
 					"invalid type: "+type,
@@ -150,12 +155,12 @@ public class GadgetResourceService {
 					"too long path,path must be under 512 byte: "+path,
 					"ams_gadgetResourceTooLongPath");
 		
-		if( gadgetDAO.select( type,path,name ) != null )
+		if( gadgetDAO.select( type,path,name,squareid ) != null )
 			throw new GadgetResourceException( 
 					"already existed resource at ["+path+"/"+name+"]",
 					"ams_gadgetResourceNameAlreadyExisted");
 		
-		gadgetDAO.insert( type,path,name,data );
+		gadgetDAO.insert( type,path,name,data,squareid );
 		
 		log.info("insert gadget resource ["+type+"] "+path+name );
 	}
@@ -170,13 +175,14 @@ public class GadgetResourceService {
 	public void updateResource( String type,String path,String name,byte[] data ) throws GadgetResourceException {
 		if( name.equals( type+".xml") && "/".equals( path ))
 			validateGadgetData( type,path,name, data );
-		
-		gadgetDAO.update( type,path,name,data );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		gadgetDAO.update( type,path,name,data,squareid );
 		
 		log.info("update gadget resource ["+type+"] "+path+name );
 	}
 	public void updateResources( String type,InputStream in ) throws GadgetResourceException {
-		gadgetDAO.deleteType( type );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		gadgetDAO.deleteType( type, squareid );
 		//gadgetIconDAO.deleteByType(type);
 
 		byte[] data;
@@ -197,7 +203,8 @@ public class GadgetResourceService {
 		insertResource( type,"/",type+".xml",data );
 	}
 	public void updateResources( String type,String moduleName,ZipInputStream zin ) throws GadgetResourceException {
-		gadgetDAO.deleteType( type );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		gadgetDAO.deleteType( type, squareid );
 		//gadgetIconDAO.deleteByType(type);
 
 		boolean findModule = false;
@@ -265,6 +272,7 @@ public class GadgetResourceService {
 
 	private byte[] validateGadgetData( String type,String path,String name,byte[] data ) {
 		Document gadgetDoc;
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		try {
 			DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -298,9 +306,9 @@ public class GadgetResourceService {
 						break;
 					}
 				}
-				gadgetIconDAO.insertUpdate(type, iconUrl);
+				gadgetIconDAO.insertUpdate(type, iconUrl, squareid);
 			} else {
-				gadgetIconDAO.insertUpdate(type, "");
+				gadgetIconDAO.insertUpdate(type, "", squareid);
 			}
 			
 			return XmlUtil.dom2String( gadgetDoc ).getBytes("UTF-8");
@@ -315,7 +323,8 @@ public class GadgetResourceService {
 
 	public byte[] selectResourcesZip( String type ) throws GadgetResourceException {
 		Map<String,Object> tree = new TreeMap<String,Object>();
-		for( Gadget gadget : gadgetDAO.list( type ) ) {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		for( Gadget gadget : gadgetDAO.list( type, squareid ) ) {
 			Stack<String> path = new Stack<String>();
 			List<String> pl = Arrays.asList( gadget.getPath().substring(1).split("/"));
 			Collections.reverse( pl );

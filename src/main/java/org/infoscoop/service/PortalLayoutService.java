@@ -28,9 +28,9 @@ import java.util.Stack;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PortalLayoutDAO;
 import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.util.SpringUtil;
@@ -80,6 +80,8 @@ public class PortalLayoutService {
 	 */
 	public synchronized void updatePortalLayout(String name, String layout)
 			throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		
 		// fix 28  A check of the injustice value in case of the XML
 		if( name.toLowerCase().equals("contentfooter")) {
 			try {
@@ -91,7 +93,7 @@ public class PortalLayoutService {
 			}
 		}
 		
-		Portallayout entity = this.portalLayoutDAO.selectByName(name);
+		Portallayout entity = this.portalLayoutDAO.selectByName(name, squareid);
 		entity.setLayout(layout);
 		this.portalLayoutDAO.update(entity);
 	}
@@ -114,15 +116,16 @@ public class PortalLayoutService {
 	 * @throws Exception
 	 */
 	private String getPortalLayout() throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		StringBuffer sb = new StringBuffer();
 		sb.append("<portalLayouts>");
 
-		List layoutList = this.portalLayoutDAO.select();
+		List layoutList = this.portalLayoutDAO.select(squareid);
 		for(Iterator layoutIt = layoutList.iterator();layoutIt.hasNext();){
 			Portallayout portalLayout = (Portallayout)layoutIt.next();
 			
 			sb.append("<portallayout>");
-			sb.append("<name>").append(portalLayout.getName()).append("</name>");
+			sb.append("<name>").append(portalLayout.getId().getName()).append("</name>");
 			
 			String layout = (portalLayout.getLayout()!=null) ? portalLayout.getLayout(): "" ;
 			String layoutData = XmlUtil.escapeXmlEntities(layout);
@@ -138,7 +141,8 @@ public class PortalLayoutService {
 	}
 	
 	public String getPortalLayout(String name){
-		Portallayout layout = this.portalLayoutDAO.selectByName(name);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Portallayout layout = this.portalLayoutDAO.selectByName(name, squareid);
 		if(layout == null){
 			log.error("Layout " + name + " is not found.");
 			return "";
@@ -147,7 +151,8 @@ public class PortalLayoutService {
 	}
 
 	public List getPortalLayoutList(){
-		return this.portalLayoutDAO.select();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return this.portalLayoutDAO.select(squareid);
 	}
 	
 	/**

@@ -33,6 +33,7 @@ import javax.xml.parsers.FactoryConfigurationError;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.TabDAO;
@@ -151,8 +152,9 @@ public class TabService {
 	 *
 	 */
 	private Collection syncPanels(Map tabLayoutMap, String uid) throws FactoryConfigurationError, Exception{
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		// Delete StaticPanel if the tab is not found in tabLayout information. Change tabType to dynamic.
-		Collection currentTabList = TabDAO.newInstance().getTabs(uid);
+		Collection currentTabList = TabDAO.newInstance().getTabs(uid, squareid);
 		
 		// The currentTabList is updated. Dynamic tab conversion of the erased tab and renewal of display sequence is performed.
 		obsoleteStaticTabToDynamicTab( tabLayoutMap,currentTabList,uid  );
@@ -182,7 +184,7 @@ public class TabService {
 				widgetMap.put( widget.getWidgetid(),widget );
 			}
 			
-			List<Widget> exists = WidgetDAO.newInstance().getExistsWidgets( uid,new ArrayList( widgetMap.keySet()) );
+			List<Widget> exists = WidgetDAO.newInstance().getExistsWidgets( uid,new ArrayList( widgetMap.keySet()),squareid );
 			for( Widget widget : exists){
 				if(tab.getTabId().equals(widget.getTabid())){
 					widgetMap.remove( widget.getWidgetid());
@@ -192,10 +194,10 @@ public class TabService {
 					if(childrenPref != null){
 						JSONArray children = new JSONArray(childrenPref.getValue());
 						for(int j = 0; j < children.length(); j++){
-							WidgetDAO.newInstance().deleteWidget(uid, widget.getTabid(), children.getString(j), now);
+							WidgetDAO.newInstance().deleteWidget(uid, widget.getTabid(), children.getString(j), now, squareid);
 						}
 					}
-					WidgetDAO.newInstance().deleteWidget(uid, widget.getTabid(), widget.getWidgetid(), now);
+					WidgetDAO.newInstance().deleteWidget(uid, widget.getTabid(), widget.getWidgetid(), now, squareid);
 				}
 			}
 			
@@ -257,12 +259,13 @@ public class TabService {
 	
 	private boolean trashDynamicPanelWidgets(Tab tab) {
 		List<Widget> widgets = tabDAO.getDynamicWidgetList(tab);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		if (widgets.size() == 0)
 			return false;
 		long now = new Date().getTime();
 		for (Widget widget : widgets) {
 			widgetDAO.deleteWidget(widget.getUid(), widget.getTabid(), widget
-					.getWidgetid(), now);
+					.getWidgetid(), now, squareid);
 		}
 		return true;
 	}
@@ -414,12 +417,13 @@ public class TabService {
 	 */
 	private Tab convertStaticToDynamic( List dynamicTabIdList,Tab staticTab ) {
 		Tab newTab = null;
-		Collection<Widget> dynamicWidgets = tabDAO.getDynamicWidgetList(staticTab.getUid(),staticTab.getTabId() );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Collection<Widget> dynamicWidgets = tabDAO.getDynamicWidgetList(staticTab.getUid(),staticTab.getTabId(), squareid );
 		if(!staticTab.isDisabledDynamicPanel() && dynamicWidgets.size() > 0){
 			// Processing of allocating tab ID again.
 			int newTabId = getNextNumber(dynamicTabIdList);
 			
-			newTab = new Tab(new TABPK(staticTab.getUid(), String.valueOf(newTabId)));
+			newTab = new Tab(new TABPK(staticTab.getUid(), String.valueOf(newTabId), squareid));
 			
 			//Delete StaticPanel, tabType=dynamic
 			newTab.setType("dynamic");
@@ -439,7 +443,7 @@ public class TabService {
 		}
 		
 		WidgetDAO widgetDAO = WidgetDAO.newInstance();
-		Collection<Widget> staticWidgets = tabDAO.getStaticWidgetList(staticTab.getUid(),staticTab.getTabId() );
+		Collection<Widget> staticWidgets = tabDAO.getStaticWidgetList(staticTab.getUid(),staticTab.getTabId(), squareid );
 		for( Widget widget : staticWidgets) {
 			widgetDAO.delete(widget);
 		}
@@ -521,7 +525,9 @@ public class TabService {
 		
 		widgetDAO.getHibernateTemplate().flush();
 
-		widgetDAO.emptyWidgets( uid,tab.getTabId(),1 );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+
+		widgetDAO.emptyWidgets( uid,tab.getTabId(),1,squareid );
 		widgetDAO.getHibernateTemplate().saveOrUpdateAll( widgets );
 		widgetDAO.updateUserPrefs( widgets );
 	}
@@ -571,21 +577,23 @@ public class TabService {
 		if( uid == null )
 			return;
 		
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		
 		if(tabId == null){
-			Preference preference = PreferenceDAO.newInstance().select(uid);
+			Preference preference = PreferenceDAO.newInstance().select(uid, squareid);
 			Element prefEl = preference.getElement();
 			PreferenceService.removeProperty(prefEl, "freshDays");
 			PreferenceService.removeProperty(prefEl, "mergeconfirm");
 			PreferenceService.removeProperty(prefEl, "searchOption");
 			PreferenceService.removeProperty(prefEl, "theme");
 			preference.setElement(prefEl);
-			WidgetDAO.newInstance().deleteWidget( uid );
-			TabDAO.newInstance().deleteTab( uid );
+			WidgetDAO.newInstance().deleteWidget( uid, squareid );
+			TabDAO.newInstance().deleteTab( uid, squareid );
 		}else{
-			WidgetDAO.newInstance().deleteWidget( uid, tabId );
-			TabDAO.newInstance().deleteTab( uid, tabId );	
+			WidgetDAO.newInstance().deleteWidget( uid, tabId, squareid );
+			TabDAO.newInstance().deleteTab( uid, tabId, squareid );	
 		}
-		SessionDAO.newInstance().setForceReload( uid );
+		SessionDAO.newInstance().setForceReload( uid, squareid );
 		
 		log.info("reset user data ["+uid+"]");
 	}
@@ -599,12 +607,14 @@ public class TabService {
 		if( uid == null )
 			return;
 		
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		
 		PreferenceDAO preferenceDAO = PreferenceDAO.newInstance();
-		Preference preference = preferenceDAO.select(uid);
+		Preference preference = preferenceDAO.select(uid, squareid);
 		if(preference != null)
 			preferenceDAO.delete(preference);
-		WidgetDAO.newInstance().clearWidgets( uid );
-		TabDAO.newInstance().deleteTab( uid );
+		WidgetDAO.newInstance().clearWidgets( uid, squareid );
+		TabDAO.newInstance().deleteTab( uid, squareid );
 		
 		log.info("clear user profile ["+uid+"]");
 	}

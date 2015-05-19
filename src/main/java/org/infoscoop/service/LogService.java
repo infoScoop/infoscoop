@@ -21,6 +21,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.AccessLogDAO;
 import org.infoscoop.dao.LogDAO;
 import org.infoscoop.util.SpringUtil;
@@ -46,10 +47,11 @@ public class LogService {
 
 	public void insertLog(String uid, String logType, String url,
 			String rssUrl, String date) {
-		logDAO.deleteOldLog();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		logDAO.deleteOldLog(squareid);
 
-		if (!logDAO.checkLog(uid, logType, url, rssUrl, date)) {
-			logDAO.insertLog(uid, logType, url, rssUrl, date);
+		if (!logDAO.checkLog(uid, logType, url, rssUrl, date, squareid)) {
+			logDAO.insertLog(uid, logType, url, rssUrl, date, squareid);
 		}
 
 		if (log.isInfoEnabled())
@@ -59,11 +61,12 @@ public class LogService {
 
 
 	public void insertDailyAccessLog(String uid) {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		Date today = new Date();
-		this.accessLogDAO.deleteOldLog();
+		this.accessLogDAO.deleteOldLog(squareid);
 
-		if (this.accessLogDAO.selectCountByDate(uid, today) == 0) {
-			this.accessLogDAO.insert(uid, new Date());
+		if (this.accessLogDAO.selectCountByDate(uid, today, squareid) == 0) {
+			this.accessLogDAO.insert(uid, new Date(), squareid);
 		}
 	}
 }

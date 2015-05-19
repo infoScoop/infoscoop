@@ -25,6 +25,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xpath.XPathAPI;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.SearchEngineDAO;
 import org.infoscoop.dao.model.Searchengine;
 import org.infoscoop.util.RoleUtil;
@@ -64,9 +65,10 @@ public class SearchEngineService {
 				+ ", retrieveUrl=" + retrieveUrl + ", encoding="
 				+ encoding);
 		}
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		// Obtain data and transfer the result to Document.
-		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp();
+		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp(squareid);
 		Document document = temp.getDocument();
 
 		// Search for child node.
@@ -108,8 +110,9 @@ public class SearchEngineService {
 			log.info("updateSearchEngineAttr: name=" + name + ", value=" + value);
 		}
 
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		// Obtain data and transfer the result to Document.
-		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp();
+		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp(squareid);
 		Document document = temp.getDocument();
 
 		// Search for node matches engineId
@@ -128,9 +131,10 @@ public class SearchEngineService {
 	 * @throws Exception 
 	 */
 	public synchronized void updateSearchEngineItem(String engineId, Map itemsMap, String childTag) throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		// Obtain data and transfer the result to Document.
-		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp();
+		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp(squareid);
 		Document document = temp.getDocument();
 
 		// Search for node matches engineId
@@ -189,9 +193,10 @@ public class SearchEngineService {
 			log.info("updateSearchEngineItem: engineId=" + engineId
 					+ ", itemsMap=" + itemsMap);
 		}
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		// Obtain data and transfer the result to Document.
-		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp();
+		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp(squareid);
 		Document document = temp.getDocument();
 
 		// Search for node matches engineId
@@ -221,7 +226,8 @@ public class SearchEngineService {
 	 */
 	public synchronized void removeSearchEngine(String engineId) throws Exception {
 		// Obtain data and transfer the result to Document.
-		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp(squareid);
 		Document document = temp.getDocument();
 
 		// Search for node matches engineId
@@ -247,9 +253,10 @@ public class SearchEngineService {
 	 */
 	public synchronized void replaceSort(String engineId, String siblingId)
 	throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		// Obtain data and transfer the result to Document.
-		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp();
+		Searchengine temp = (Searchengine)this.searchEngineDAO.selectTemp(squareid);
 		Document document = temp.getDocument();
 
 		// Search for node matches engineId
@@ -287,14 +294,15 @@ public class SearchEngineService {
 	 * @throws Exception
 	 */
 	public String getSearchEngineJson() throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		// Obtain data
-		Searchengine entity =  this.searchEngineDAO.select(SearchEngineDAO.SEARCHENGINE_FLAG_NOT_TEMP);
+		Searchengine entity =  this.searchEngineDAO.select(SearchEngineDAO.SEARCHENGINE_FLAG_NOT_TEMP, squareid);
 		if (entity== null) {
 			log.error("searchengine not found.");
 			return "";
 		}
 		// Overwrite to temporary
-		Searchengine tempEntity =  this.searchEngineDAO.select(SearchEngineDAO.SEARCHENGINE_FLAG_TEMP);
+		Searchengine tempEntity =  this.searchEngineDAO.select(SearchEngineDAO.SEARCHENGINE_FLAG_TEMP,squareid);
 		if(tempEntity == null)
 			tempEntity = new Searchengine(new Integer(
 					SearchEngineDAO.SEARCHENGINE_FLAG_TEMP), entity.getData());
@@ -321,8 +329,9 @@ public class SearchEngineService {
 	}
 	
 	public String getSearchEngineXmlWithAcl() throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		Searchengine entity = this.searchEngineDAO
-				.select(SearchEngineDAO.SEARCHENGINE_FLAG_NOT_TEMP);
+				.select(SearchEngineDAO.SEARCHENGINE_FLAG_NOT_TEMP,squareid);
 		if (entity == null) {
 			log.error("searchengine not found.");
 			return "";
@@ -345,10 +354,11 @@ public class SearchEngineService {
 	 * @throws Exception
 	 */
 	public void commitSearch() throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		// Obtain data
-		Searchengine tempEntity =  this.searchEngineDAO.selectTemp();
-		Searchengine entity = this.searchEngineDAO.selectEntity();
+		Searchengine tempEntity =  this.searchEngineDAO.selectTemp(squareid);
+		Searchengine entity = this.searchEngineDAO.selectEntity(squareid);
 		if (tempEntity == null) {
 			log.error("searchengine not found.");
 		}

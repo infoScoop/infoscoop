@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.AccessLogDAO;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.SessionDAO;
@@ -52,13 +53,15 @@ public class InformationService {
 	}
 
 	public int getTodayAccessCount() {
-		return accessLogDAO.getAccessCountByDate(new Date());
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return accessLogDAO.getAccessCountByDate(new Date(), squareid);
 	}
 	
 	public String getUserCountListJSON() throws Exception {
 		try {
-			int activeUsersCount = sessionDAO.getActiveSessionsCount();
-			int totalUsersCount = preferenceDAO.getTotalUsersCount();
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			int activeUsersCount = sessionDAO.getActiveSessionsCount(squareid);
+			int totalUsersCount = preferenceDAO.getTotalUsersCount(squareid);
 			int todayAccessCount = getTodayAccessCount();
 			
 			JSONObject json = new JSONObject();
@@ -74,6 +77,7 @@ public class InformationService {
 	}
 	
 	public List<String> getUserIdList() {
-		return preferenceDAO.getUserIdList();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return preferenceDAO.getUserIdList(squareid);
 	}
 }

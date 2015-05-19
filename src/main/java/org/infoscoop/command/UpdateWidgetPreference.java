@@ -21,6 +21,7 @@ package org.infoscoop.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Widget;
 
@@ -50,6 +51,7 @@ public class UpdateWidgetPreference extends XMLCommandProcessor {
         String widgetId = super.commandXml.getAttribute("widgetId").trim();
         String field = super.commandXml.getAttribute("field").trim();
         String value = super.commandXml.getAttribute("value").trim();
+        String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
         if(logger.isInfoEnabled()){
         	String logMsg = "uid:[" + uid + "]: processXML: tabId:[" + tabId
@@ -64,7 +66,7 @@ public class UpdateWidgetPreference extends XMLCommandProcessor {
             return;
         }
 		
-        Widget widget = WidgetDAO.newInstance().getWidget(uid, tabId, widgetId);
+        Widget widget = WidgetDAO.newInstance().getWidget(uid, tabId, widgetId, squareid);
         if("title".equals(field)){
         	widget.setTitle(value);
         }

@@ -21,6 +21,7 @@ package org.infoscoop.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Widget;
@@ -62,6 +63,7 @@ public class UpdateWidgetTabLocation extends XMLCommandProcessor {
         String widgetId = super.commandXml.getAttribute("widgetId").trim();
         String tabIdFrom = super.commandXml.getAttribute("tabIdFrom").trim();
         String tabIdTo = super.commandXml.getAttribute("tabIdTo").trim();
+        String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
         
         if(log.isInfoEnabled()){
         	String logMsg = "uid:[" + uid + "]: processXML: tabIdFrom:[" + tabIdFrom
@@ -78,7 +80,7 @@ public class UpdateWidgetTabLocation extends XMLCommandProcessor {
         TabDAO tabDAO = TabDAO.newInstance();
         WidgetDAO widgetDAO = WidgetDAO.newInstance();
         
-        Widget widget = widgetDAO.getWidget( uid,tabIdFrom,widgetId);
+        Widget widget = widgetDAO.getWidget( uid,tabIdFrom,widgetId,squareid );
         if (widget == null) {
             String reason = "Not found the information of the widget(wigetID) that is origin of movement．widgetId:["
                     + widgetId + "]";
@@ -86,7 +88,7 @@ public class UpdateWidgetTabLocation extends XMLCommandProcessor {
                     log, commandId, false, reason);
             return;
         }
-        Widget oldNextSibling = tabDAO.getWidgetBySibling( uid,tabIdFrom,widgetId );            	
+        Widget oldNextSibling = tabDAO.getWidgetBySibling( uid,tabIdFrom,widgetId,squareid );            	
         if(oldNextSibling != null){
         	oldNextSibling.setSiblingid(widget.getSiblingid());
 //        	widgetDAO.updateWidget(oldNextSibling);

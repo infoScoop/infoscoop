@@ -17,21 +17,16 @@
 
 package org.infoscoop.command;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
-import org.infoscoop.dao.OAuthConsumerDAO;
-import org.infoscoop.dao.OAuthTokenDAO;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
-import org.infoscoop.dao.model.OAuthConsumerProp;
-import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.dao.model.UserPref;
 import org.infoscoop.dao.model.Widget;
-import org.infoscoop.request.OAuthAuthenticator;
 import org.infoscoop.service.AuthCredentialService;
 
 /**
@@ -60,6 +55,7 @@ public class RemoveWidget extends XMLCommandProcessor {
         String widgetId = super.commandXml.getAttribute("widgetId").trim();
         String parent = super.commandXml.getAttribute("parent").trim();
         String deleteDate = super.commandXml.getAttribute("deleteDate").trim();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
         
         if(log.isInfoEnabled()){
         	String logMsg = "uid:[" + uid + "]: processXML: tabId:[" + tabId + "], widgetId:[" + widgetId + "], parent:[" + parent + "], deleteDate:[" + deleteDate + "]";
@@ -76,7 +72,7 @@ public class RemoveWidget extends XMLCommandProcessor {
         	TabDAO tabDAO = TabDAO.newInstance();
         	WidgetDAO widgetDAO = WidgetDAO.newInstance();
         	
-        	Widget widget = widgetDAO.getWidget( uid,tabId,widgetId );
+        	Widget widget = widgetDAO.getWidget( uid,tabId,widgetId,squareid );
         	
         	if(widget == null || deleteDate == null || "".equals(deleteDate)){
                 this.result = XMLCommandUtil.createResultElement(uid, "processXML",
@@ -85,7 +81,7 @@ public class RemoveWidget extends XMLCommandProcessor {
         	}
         	
         	//TODO:check whether the widget is null or not;
-        	Widget nextSibling = tabDAO.getWidgetBySibling( uid,tabId,widgetId );
+        	Widget nextSibling = tabDAO.getWidgetBySibling( uid,tabId,widgetId,squareid );
         	if(nextSibling != null){
         		nextSibling.setSiblingid(widget.getSiblingid());
 //        		WidgetDAO.newInstance().updateWidget(nextSibling);

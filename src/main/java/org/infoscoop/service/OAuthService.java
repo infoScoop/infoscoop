@@ -25,16 +25,19 @@ import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.OAuth2TokenDAO;
 import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.OAuthConsumerDAO;
 import org.infoscoop.dao.OAuthGadgetUrlDAO;
 import org.infoscoop.dao.OAuthTokenDAO;
+import org.infoscoop.dao.model.OAuth2Token;
 import org.infoscoop.dao.model.OAuthCertificate;
+import org.infoscoop.dao.model.OAuthCertificatePK;
 import org.infoscoop.dao.model.OAuthConsumerProp;
+import org.infoscoop.dao.model.OAuthConsumerPropPK;
 import org.infoscoop.dao.model.OAuthGadgetUrl;
 import org.infoscoop.dao.model.OAuthToken;
-import org.infoscoop.dao.model.OAuth2Token;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,7 +84,7 @@ public class OAuthService {
 		JSONArray cunsumerList = new JSONArray();
 		ArrayList<String> idList = new ArrayList<String>();
 		for(OAuthConsumerProp prop: consumerPropList){
-			String id = prop.getId();
+			String id = prop.getId().getId();
 			if(!idList.contains(id)){
 				JSONObject obj = new JSONObject();
 				obj.put("id", id);
@@ -109,11 +112,13 @@ public class OAuthService {
 		return cunsumerList.toString();
 	}
 	public String getOAuthConsumerListJson() throws Exception{
-		return buildJsonArray( this.oauthConsumerDAO.getConsumersJoinGadgetUrl() );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return buildJsonArray( this.oauthConsumerDAO.getConsumersJoinGadgetUrl(squareid) );
 	}
 
 	public void saveOAuthConsumerList(String saveArray) throws Exception{
 		JSONArray consumerJsonList = new JSONArray(saveArray);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		List<OAuthConsumerProp> consumers = new ArrayList<OAuthConsumerProp>();
 		List<String> idList = new ArrayList<String>();
@@ -126,7 +131,7 @@ public class OAuthService {
 				id = new UUID().toString();
 			}
 			idList.add(id);
-			consumer.setId(id);
+			consumer.setId(new OAuthConsumerPropPK(id, squareid));
 			consumer.setServiceName(obj.getString("serviceName"));
 			
 			consumer.setConsumerKey(
@@ -154,23 +159,26 @@ public class OAuthService {
 		}
 		if(idList.isEmpty())
 			idList.add("");
-		this.oauthConsumerDAO.deleteUpdate(idList);
+		this.oauthConsumerDAO.deleteUpdate(idList, squareid);
 		this.oauthConsumerDAO.saveConsumers(consumers);
 	}
 
 	public void saveOAuthGadgetUrl(String fkOauthId, String gadgetUrl) {
-		this.oauthGadgetUrlDAO.saveGadgetUrl(fkOauthId, gadgetUrl);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		this.oauthGadgetUrlDAO.saveGadgetUrl(fkOauthId, gadgetUrl, squareid);
 	}
 	
 	public void deleteOAuthGadgetUrl(String fkOAuthId, String serviceName){
-		this.oauthGadgetUrlDAO.deleteGadgetUrl(this.oauthGadgetUrlDAO.getGadgetUrl(fkOAuthId, serviceName));
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		this.oauthGadgetUrlDAO.deleteGadgetUrl(this.oauthGadgetUrlDAO.getGadgetUrl(fkOAuthId, serviceName, squareid));
 	}
 	
 	public void saveOAuthToken(String uid, String gadgetUrl,
 			String serviceName, String requestToken, String accessToken,
 			String tokenSecret) {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		this.oauthTokenDAO.saveAccessToken(uid, gadgetUrl, serviceName,
-				requestToken, accessToken, tokenSecret);
+				requestToken, accessToken, tokenSecret, squareid);
 	}
 	
 	public void deleteOAuthToken(String uid, String gadgetUrl, String serviceName){
@@ -189,7 +197,8 @@ public class OAuthService {
 	public void saveOAuth2Token(String uid, String gadgetUrl,
 			String serviceName, String tokenType, String authCode, String accessToken,
 			String refreshToken, Long validityPeriodUTC) {
-		this.oauth2TokenDAO.saveAccessToken(uid, gadgetUrl, serviceName, tokenType, authCode, accessToken, refreshToken, validityPeriodUTC);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		this.oauth2TokenDAO.saveAccessToken(uid, gadgetUrl, serviceName, tokenType, authCode, accessToken, refreshToken, validityPeriodUTC, squareid);
 	}
 	
 	public void deleteOAuth2Token(String uid, String gadgetUrl, String serviceName){
@@ -207,17 +216,19 @@ public class OAuthService {
 	
 	public String getContainerCertificateJson()throws Exception{
 		JSONObject obj = new JSONObject();
-		OAuthCertificate cert = this.oauthCertificateDAO.get();
-		obj.put("consumerKey", (cert != null ? cert.getConsumerKey() : ""));
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		OAuthCertificate cert = this.oauthCertificateDAO.get(squareid);
+		obj.put("consumerKey", (cert != null ? cert.getId().getConsumerKey() : ""));
 		obj.put("privateKey", (cert != null ? new String(cert.getPrivateKey()) : ""));
 		obj.put("certificate", (cert != null ? new String(cert.getCertificate()) : ""));
 		return obj.toString();
 	}
 	
 	public void saveContainerCertificate(String consumerKey, String privateKey, String certificate){
-		OAuthCertificate cert = new OAuthCertificate(consumerKey);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		OAuthCertificate cert = new OAuthCertificate(new OAuthCertificatePK(consumerKey, squareid));
 		cert.setPrivateKey(privateKey);
 		cert.setCertificate(certificate);
-		this.oauthCertificateDAO.save(cert);
+		this.oauthCertificateDAO.save(cert, squareid);
 	}
 }

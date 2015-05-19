@@ -23,8 +23,10 @@ import java.util.Calendar;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.model.Preference;
+import org.infoscoop.dao.model.PreferencePK;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.util.Xml2Json;
 import org.json.JSONObject;
@@ -53,10 +55,11 @@ public class PreferenceService{
 	}
 	
 	public Preference getPreferenceEntity(String uid) throws Exception{
-		Preference entity = preferenceDAO.select(uid);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Preference entity = preferenceDAO.select(uid, squareid);
 		if(entity == null){
 			entity = new Preference();
-			entity.setUid(uid);
+			entity.setId(new PreferencePK(uid, squareid));
 			entity.setElement(Preference.newElement(uid));
 		}
 		
@@ -148,7 +151,8 @@ public class PreferenceService{
 	 * get the property of preference.
 	 */
 	public String getProperty(String uid, String field) throws Exception {
-		Preference entity = preferenceDAO.select(uid);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Preference entity = preferenceDAO.select(uid, squareid);
 		String propValue = new String();
 		if(entity != null){
 			Node node = entity.getElement();

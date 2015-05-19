@@ -21,6 +21,7 @@ package org.infoscoop.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.model.Widget;
 import org.json.JSONArray;
@@ -52,6 +53,7 @@ public class AddMultiWidget extends XMLCommandProcessor{
         String parent = super.commandXml.getAttribute("parent").trim();
         String sibling = super.commandXml.getAttribute("sibling").trim();
         String menuId = super.commandXml.getAttribute("menuId").trim();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
         if (log.isInfoEnabled()) {
 			log.info("uid:[" + uid + "]: processXML: widgetId:["
@@ -97,7 +99,7 @@ public class AddMultiWidget extends XMLCommandProcessor{
     	try{
     		TabDAO tabDAO = TabDAO.newInstance();
     		
-    		Widget newNextSibling = tabDAO.getColumnWidgetBySibling( uid,tabId,sibling,Integer.valueOf( targetColumn ),parentWidgetId );
+    		Widget newNextSibling = tabDAO.getColumnWidgetBySibling( uid,tabId,sibling,Integer.valueOf( targetColumn ),parentWidgetId, squareid );
         	if(newNextSibling != null){
         		newNextSibling.setSiblingid( parentWidgetId );
         		log.info("Replace siblingId of [" + newNextSibling.getWidgetid() + "] to " + parentWidgetId );
@@ -107,7 +109,7 @@ public class AddMultiWidget extends XMLCommandProcessor{
     		// insert parent
     		Widget widget = 
     			createWidget(tabId, parent, parentWidgetId, targetColumn, sibling, menuId, parentConfJSON);
-    		tabDAO.addDynamicWidget( uid,"defaultUid",tabId, widget);
+    		tabDAO.addDynamicWidget( uid,"defaultUid",tabId, widget, squareid);
     		
     		// insert subWidgets
 			String subCategorySibling = "";
@@ -121,7 +123,7 @@ public class AddMultiWidget extends XMLCommandProcessor{
 				Widget subWidget = createWidget(tabId, parentWidgetId,
 						subWidgetId, targetColumn, subCategorySibling,
 						subWidgetMenuId, confJson);
-				tabDAO.addDynamicWidget(uid, "defaultUid", tabId, subWidget);
+				tabDAO.addDynamicWidget(uid, "defaultUid", tabId, subWidget, squareid);
     			
     			subCategorySibling = subWidgetId;
 			}
@@ -142,7 +144,8 @@ public class AddMultiWidget extends XMLCommandProcessor{
 	private Widget createWidget(String tabId, String parentId, String widgetId,
 			String targetColumn, String sibling, String menuId,
 			JSONObject confJson) throws JSONException {
-		Widget widget = new Widget(tabId, new Long(0), widgetId, uid);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Widget widget = new Widget(tabId, new Long(0), widgetId, uid, squareid);
 		if(targetColumn != null && !"".equals(targetColumn)){
 			widget.setColumn(new Integer(targetColumn));
 		}

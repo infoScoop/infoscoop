@@ -19,10 +19,10 @@ package org.infoscoop.command;
 
 import javax.xml.parsers.FactoryConfigurationError;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.model.TABPK;
 import org.infoscoop.dao.model.Tab;
@@ -40,13 +40,15 @@ public class AddTab extends XMLCommandProcessor {
         if(tabType == null) tabType = "static";
         String numCol = super.commandXml.getAttribute("numCol").trim();
         
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+        
         if(log.isInfoEnabled()){
         	log.info("uid:[" + uid + "]: processXML: tabId:[" + tabId + "], tabName:[" + tabName + 
                 	"], tabType:[" + tabType + "], numCol:[" + numCol + "]");
         }
         
         try {
-			Tab tab = new Tab( new TABPK( uid,tabId));
+			Tab tab = new Tab( new TABPK( uid,tabId, squareid));
 			tab.setName(tabName);
 			tab.setType(tabType);
 			tab.setProperty("numCol", numCol);

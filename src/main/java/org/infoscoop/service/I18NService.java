@@ -23,12 +23,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.admin.exception.I18NImportException;
 import org.infoscoop.admin.web.I18NImport;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.I18NDAO;
 import org.infoscoop.dao.model.I18n;
 import org.infoscoop.dao.model.I18nlocale;
@@ -53,7 +53,8 @@ public class I18NService {
 	}
 
 	public String getLocales() throws Exception {
-		List locales = i18NDAO.selectLocales();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		List locales = i18NDAO.selectLocales(squareid);
 		JSONObject localesJson = new JSONObject();
 		JSONArray localeArray = null;
 		String type = null;
@@ -73,6 +74,7 @@ public class I18NService {
 	}
 
 	public String getJson(String type) throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		try {
 			List locales = i18NDAO.selectLocales(type);
 			JSONArray localeArray = new JSONArray();
@@ -84,7 +86,7 @@ public class I18NService {
 				localeArray.put(obj);
 			}
 
-			List msgs = i18NDAO.selectByType(type);
+			List msgs = i18NDAO.selectByType(type, squareid);
 			JSONArray jsonArray = new JSONArray();
 			JSONObject preObj = null;
 			for (Iterator it = msgs.iterator(); it.hasNext();) {
@@ -140,7 +142,8 @@ public class I18NService {
 	}
 
 	private Map findI18nAsMap(String type, String country, String lang) {
-		List resourceMapI18n = i18NDAO.findI18n(type, country, lang);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		List resourceMapI18n = i18NDAO.findI18n(type, country, lang, squareid);
 
 		Map resourceMap = new HashMap();
 		for (int i = 0; i < resourceMapI18n.size(); i++) {
@@ -153,14 +156,16 @@ public class I18NService {
 	}
 
 	public void insertI18nLocale(String type, String country, String lang) {
-		i18NDAO.insertLocale(type, country, lang);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		i18NDAO.insertLocale(type, country, lang, squareid);
 	}
 
 	public void removeI18nLocale(String type, String country, String lang) {
-		i18NDAO.deleteI18NLocale(type, country, lang);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		i18NDAO.deleteI18NLocale(type, country, lang, squareid);
 		
 		// fix #56 delete the related i18n date.
-		i18NDAO.deleteI18NByLocale(type, country, lang);
+		i18NDAO.deleteI18NByLocale(type, country, lang, squareid);
 	}
 
 	/**
@@ -174,7 +179,7 @@ public class I18NService {
 			FileItem csvFile, String mode, Map countMap, List errorList, List defaultIdList) throws Exception {
 		CSVReader csvReader = null;
 		InputStreamReader is;
-		
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		boolean isSuccess = true;
 
 		int insertCount = 0;
@@ -182,7 +187,7 @@ public class I18NService {
 
 		// In the case of all substitution, we delete all once.
 		if (mode.equalsIgnoreCase("replace")) {
-			this.i18NDAO.deleteI18NByLocale(type, country, lang);
+			this.i18NDAO.deleteI18NByLocale(type, country, lang, squareid);
 		}
 
 		try {
@@ -225,11 +230,11 @@ public class I18NService {
 			String removeID;
 			for(Iterator ite=defaultIdList.iterator();ite.hasNext();){
 				 removeID = (String)ite.next();
-				 i18NDAO.deleteI18NByIDWithoutDefault(type, removeID);
+				 i18NDAO.deleteI18NByIDWithoutDefault(type, removeID, squareid);
 			}
 		}
 		
-		this.i18NDAO.updateLastmodified(type);
+		this.i18NDAO.updateLastmodified(type, squareid);
 		countMap.put("insertCount", new Integer(insertCount));
 		countMap.put("updateCount", new Integer(updateCount));
 	}

@@ -20,6 +20,7 @@ package org.infoscoop.service;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.util.SpringUtil;
 
@@ -38,7 +39,7 @@ public class SessionService {
 
 
 	public String newSessionId(String uid) throws Exception{
-
-		return this.sessionDAO.newSessionId(uid);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return this.sessionDAO.newSessionId(uid, squareid);
 	}
 }

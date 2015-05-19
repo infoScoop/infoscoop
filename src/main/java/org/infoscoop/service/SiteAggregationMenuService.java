@@ -40,6 +40,7 @@ import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.exception.MenusIllegalEditException;
 import org.infoscoop.admin.exception.MenusTimeoutException;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.SiteAggregationMenuDAO;
 import org.infoscoop.dao.SiteAggregationMenuTempDAO;
 import org.infoscoop.dao.WidgetDAO;
@@ -92,9 +93,10 @@ public class SiteAggregationMenuService {
 	public String menuLock(String menuType, String targetSiteTopId, boolean isForce, List<String> editSitetopIdList) throws Exception{
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String myUid = p.getName();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		// check whether it is already locked
-		Siteaggregationmenu_temp tempMenu = siteAggregationMenuTempDAO.selectBySitetopId(menuType, targetSiteTopId);
+		Siteaggregationmenu_temp tempMenu = siteAggregationMenuTempDAO.selectBySitetopId(menuType, targetSiteTopId, squareid);
 		
 		if(tempMenu != null){
 			this.siteAggregationMenuTempDAO.evict(tempMenu);
@@ -107,7 +109,7 @@ public class SiteAggregationMenuService {
 				
 				if(isForce && PortalAdminsService.getHandle().isPermitted("menu")){
 					// delete all the temporary which the competing person has.
-					this.siteAggregationMenuTempDAO.deleteByTypeAndUser(menuType, tempMenu.getWorkinguid());
+					this.siteAggregationMenuTempDAO.deleteByTypeAndUser(menuType, tempMenu.getWorkinguid(), squareid);
 				}
 				else{
 					JSONObject conflictJson = new JSONObject();
@@ -119,7 +121,7 @@ public class SiteAggregationMenuService {
 		}
 		
 		// get siteTop of the targetID by the main body.
-		Siteaggregationmenu entity = this.siteAggregationMenuDAO.select(menuType);
+		Siteaggregationmenu entity = this.siteAggregationMenuDAO.select(menuType, squareid);
 		Element menuEl = entity.getElement();
 		
 		String path = "site-top[@id=\"" + targetSiteTopId + "\"]";
@@ -129,12 +131,12 @@ public class SiteAggregationMenuService {
 			throw new Exception("element not found [" + path + "]");
 		
 		// register a record
-		tempMenu = new Siteaggregationmenu_temp(new SITEAGGREGATIONMENU_TEMPPK(menuType, targetSiteTopId));
+		tempMenu = new Siteaggregationmenu_temp(new SITEAGGREGATIONMENU_TEMPPK(menuType, targetSiteTopId, squareid));
 		tempMenu.setElement(targetEl);
 		tempMenu.setWorkinguid(myUid);
 		this.siteAggregationMenuTempDAO.update(tempMenu);
 		
-		checkError(this.siteAggregationMenuTempDAO.selectByTypeAndUser(menuType, myUid), editSitetopIdList, menuType);
+		checkError(this.siteAggregationMenuTempDAO.selectByTypeAndUser(menuType, myUid, squareid), editSitetopIdList, menuType);
 		
 		JSONObject json = new JSONObject();
 		JSONObject menuItemsJson = new JSONObject();
@@ -160,9 +162,10 @@ public class SiteAggregationMenuService {
 	public String orderLock(String menuType, boolean isForce, List<String> editSitetopIdList) throws Exception{
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String myUid = p.getName();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		// check whether it is already locked
-		Siteaggregationmenu_temp tempMenu = siteAggregationMenuTempDAO.selectBySitetopId(menuType, SiteAggregationMenuTempDAO.SITEMENU_ORDER_TEMP_ID);
+		Siteaggregationmenu_temp tempMenu = siteAggregationMenuTempDAO.selectBySitetopId(menuType, SiteAggregationMenuTempDAO.SITEMENU_ORDER_TEMP_ID, squareid);
 		if(tempMenu != null){
 			this.siteAggregationMenuTempDAO.evict(tempMenu);
 			// check the timeout
@@ -181,7 +184,7 @@ public class SiteAggregationMenuService {
 		}
 		
 		// Obtain order of sitetop
-		Siteaggregationmenu entity = this.siteAggregationMenuDAO.select(menuType);
+		Siteaggregationmenu entity = this.siteAggregationMenuDAO.select(menuType, squareid);
 		Element menuEl = entity.getElement();
 		
 		// Create order element
@@ -197,12 +200,12 @@ public class SiteAggregationMenuService {
 		}
 		
 		// Entry record
-		tempMenu = new Siteaggregationmenu_temp(new SITEAGGREGATIONMENU_TEMPPK(menuType, SiteAggregationMenuTempDAO.SITEMENU_ORDER_TEMP_ID));
+		tempMenu = new Siteaggregationmenu_temp(new SITEAGGREGATIONMENU_TEMPPK(menuType, SiteAggregationMenuTempDAO.SITEMENU_ORDER_TEMP_ID, squareid));
 		tempMenu.setElement(orderRoot);
 		tempMenu.setWorkinguid(myUid);
 		this.siteAggregationMenuTempDAO.update(tempMenu);
 		
-		checkError(this.siteAggregationMenuTempDAO.selectByTypeAndUser(menuType, myUid), editSitetopIdList, menuType);
+		checkError(this.siteAggregationMenuTempDAO.selectByTypeAndUser(menuType, myUid, squareid), editSitetopIdList, menuType);
 		
 		return "true";
 	}
@@ -216,8 +219,9 @@ public class SiteAggregationMenuService {
 	 * @throws Exception 
 	 */
 	private boolean deleteTimeoutTemp(String menuType, String workingUid) throws Exception{
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		// Obtain the latest last modified date.
-		Date latestLastModifiedTime = this.siteAggregationMenuTempDAO.findLatestLastModifiedTime(menuType, workingUid);
+		Date latestLastModifiedTime = this.siteAggregationMenuTempDAO.findLatestLastModifiedTime(menuType, workingUid, squareid);
 
 		if(latestLastModifiedTime == null)
 			return true;
@@ -233,7 +237,7 @@ public class SiteAggregationMenuService {
 	    if(diffMinute >= menuLockTimeout){
 	    	// If time out
 			log.info("Because the time that can be edited passes, temporary data is deleted. [" + menuLockTimeout + "min]");
-	    	this.siteAggregationMenuTempDAO.deleteByTypeAndUser(menuType, workingUid);
+	    	this.siteAggregationMenuTempDAO.deleteByTypeAndUser(menuType, workingUid, squareid);
 	    	return true;
 	    }
 	    return false;
@@ -313,6 +317,7 @@ public class SiteAggregationMenuService {
 	throws Exception {
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String myUid = p.getName();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		href = StringUtil.getTruncatedString(href, 1024, "UTF-8");
 		
@@ -349,7 +354,7 @@ public class SiteAggregationMenuService {
 		
 		document.appendChild(element);
 		
-		Siteaggregationmenu_temp entity = new Siteaggregationmenu_temp(new SITEAGGREGATIONMENU_TEMPPK(menuType, id));
+		Siteaggregationmenu_temp entity = new Siteaggregationmenu_temp(new SITEAGGREGATIONMENU_TEMPPK(menuType, id, squareid));
 		entity.setElement(document.getDocumentElement());
 		entity.setWorkinguid(myUid);
 		
@@ -357,7 +362,7 @@ public class SiteAggregationMenuService {
 		this.siteAggregationMenuTempDAO.update(entity);
 		
 		// Add newly if there is changing order temp.
-		Siteaggregationmenu_temp orderTemp = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, SiteAggregationMenuTempDAO.SITEMENU_ORDER_TEMP_ID);
+		Siteaggregationmenu_temp orderTemp = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, SiteAggregationMenuTempDAO.SITEMENU_ORDER_TEMP_ID, squareid);
 		if(orderTemp != null){
 			Element orderEl = orderTemp.getElement();
 			Element orderSiteTop = orderEl.getOwnerDocument().createElement("site-top");
@@ -382,12 +387,13 @@ public class SiteAggregationMenuService {
 			boolean multi ) throws Exception {
 
 		href = StringUtil.getTruncatedString(href, 1024, "UTF-8");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		if(log.isInfoEnabled()){
 			log.info("AddMenuItem: title=" + title + ", href=" + href + ", display=" + display + ", type=" + type+ ", alert" + alert+ ", properties=" + props ); 
 		}
 		// Obtain data and transfer the result to Document.
-		Siteaggregationmenu_temp entity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, sitetopId);
+		Siteaggregationmenu_temp entity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, sitetopId, squareid);
 
 		Node node = getTargetElement(entity, parentId);
 		
@@ -434,13 +440,14 @@ public class SiteAggregationMenuService {
 			boolean multi, Integer refreshInterval ) throws Exception {
 		
 		href = StringUtil.getTruncatedString(href, 1024, "UTF-8");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		if(log.isInfoEnabled()){
 			log.info("UpdateMenuItem: menuId=" + menuId + ", title=" + title + ", " +
 					title + ", href=" + href + ", display=" + display + ", alert" + alert+ ", properties=" + props + ", refreshInterval=" + refreshInterval);
 		}
 		// Obtain data and transfer the result to Document.
-		Siteaggregationmenu_temp entity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, sitetopId);
+		Siteaggregationmenu_temp entity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, sitetopId, squareid);
 		Node node = getTargetElement(entity, menuId);
 		
 		// Error
@@ -510,8 +517,9 @@ public class SiteAggregationMenuService {
 		if(log.isInfoEnabled()){
 			log.info("UpdateMenuItemAttr: menuType=" +  menuType + ", menuId=" + menuId + ", attr=" + attrName + ", value=" + value);
 		}
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		// Obtain data and transfer the result to Document.
-		Siteaggregationmenu_temp entity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, sitetopId);
+		Siteaggregationmenu_temp entity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, sitetopId, squareid);
 
 		Node node = getTargetElement(entity, menuId);
 
@@ -581,8 +589,9 @@ public class SiteAggregationMenuService {
 		if(log.isInfoEnabled()){
 			log.info("RemoveMenuItem: menuId=" + menuId); 
 		}
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		// Obtain data and transfer the result to Document.
-		Siteaggregationmenu_temp entity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, sitetopId);
+		Siteaggregationmenu_temp entity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, sitetopId, squareid);
 		Node node = getTargetElement(entity, menuId, true);
 
 		// Error
@@ -618,8 +627,9 @@ public class SiteAggregationMenuService {
 		if(log.isInfoEnabled()){
 			log.info("RemovTopMenuItem: menuId=" + menuId); 
 		}
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		// Obtain data and transfer the result to Document.
-		Siteaggregationmenu_temp entity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, sitetopId);
+		Siteaggregationmenu_temp entity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, sitetopId, squareid);
 		Element siteTop = getTargetElement(entity, menuId);
 
 		// Error
@@ -645,10 +655,11 @@ public class SiteAggregationMenuService {
 		}
 		
 		boolean isSameTree = fromSitetopId.equals(toSitetopId);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		// Obtain data and transfer the result to Document.
-		Siteaggregationmenu_temp fromEntity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, fromSitetopId);
-		Siteaggregationmenu_temp toEntity = (isSameTree)? fromEntity : this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, toSitetopId);
+		Siteaggregationmenu_temp fromEntity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, fromSitetopId, squareid);
+		Siteaggregationmenu_temp toEntity = (isSameTree)? fromEntity : this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, toSitetopId, squareid);
 
 		Element menuNode = getTargetElement(fromEntity, menuId);
 		
@@ -698,9 +709,10 @@ public class SiteAggregationMenuService {
 		if(log.isInfoEnabled()){
 			log.info("MoveMenuItem: menuId=" + menuId + ", siblingId=" + siblingId + ", menuType=" + menuType); 
 		}
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		// Obtain data and transfer the result to Document.
-		Siteaggregationmenu_temp orderEntity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, SiteAggregationMenuTempDAO.SITEMENU_ORDER_TEMP_ID);
+		Siteaggregationmenu_temp orderEntity = this.siteAggregationMenuTempDAO.selectBySitetopId(menuType, SiteAggregationMenuTempDAO.SITEMENU_ORDER_TEMP_ID, squareid);
 		Element orderEl = orderEntity.getElement();
 		Element siteTopEl = (Element)AdminServiceUtil.getNodeById(orderEl.getOwnerDocument(), "//site-top", menuId);
 		
@@ -955,7 +967,8 @@ public class SiteAggregationMenuService {
 	private void removeTempMenu(String uid) throws Exception{
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String myUid = p.getName();
-		this.siteAggregationMenuTempDAO.deleteByUser(myUid);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		this.siteAggregationMenuTempDAO.deleteByUser(myUid, squareid);
 	}
 	
 	public synchronized void removeTempMenu() throws Exception {
@@ -994,15 +1007,16 @@ public class SiteAggregationMenuService {
 	 */
 	public synchronized void commitMenu(String menuType, Map<String, List<ForceUpdateUserPref>> forceUpdateMap, List<String> forceDeleteList, List<String> editSitetopIdList) throws Exception{
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		String myUid = p.getName();
 		
-		Siteaggregationmenu currentEntity = this.siteAggregationMenuDAO.select(menuType);
+		Siteaggregationmenu currentEntity = this.siteAggregationMenuDAO.select(menuType, squareid);
 
 		Element currentMenuEl = currentEntity.getElement();
 		Document currentDoc = currentMenuEl.getOwnerDocument();
 		
 		// Get the tree that the user edited
-		List<Siteaggregationmenu_temp> myTempList = this.siteAggregationMenuTempDAO.selectByTypeAndUser(menuType, myUid);
+		List<Siteaggregationmenu_temp> myTempList = this.siteAggregationMenuTempDAO.selectByTypeAndUser(menuType, myUid, squareid);
 		
 		checkError(myTempList, editSitetopIdList, menuType);
 		
@@ -1100,12 +1114,12 @@ public class SiteAggregationMenuService {
 				}
 
 				if(title != null || href != null || refreshInterval != null || upPropMap.size() > 0 || removePropNames.size() > 0)
-					dao.updateWidgetProperties(menuId, title, href, refreshInterval, upPropMap, removePropNames);
+					dao.updateWidgetProperties(menuId, title, href, refreshInterval, upPropMap, removePropNames, squareid);
 			}
 		}
 		
 		for(String menuId :forceDeleteList){
-			dao.deleteWidgetByMenuId(menuId);
+			dao.deleteWidgetByMenuId(menuId, squareid);
 		}
 		// Deleting tree
 		for(Element deleteSiteTop : deleteSiteTopList){
@@ -1138,8 +1152,9 @@ public class SiteAggregationMenuService {
 	 * @return
 	 */
 	public Siteaggregationmenu getMenuEntity(String menuType){
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		// Obtain data
-		Siteaggregationmenu entity = this.siteAggregationMenuDAO.select(menuType);
+		Siteaggregationmenu entity = this.siteAggregationMenuDAO.select(menuType, squareid);
 		if(log.isDebugEnabled())log.debug(entity.getData());
 		if (entity == null) {
 			log.error("siteaggregationmenu not found.");
@@ -1151,9 +1166,10 @@ public class SiteAggregationMenuService {
 	
 	public String getMenuTreeXml(String menuType, boolean ignoreAccessControl) throws Exception {
 		try {
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 			
 			// Obtain data
-			Siteaggregationmenu entity = this.siteAggregationMenuDAO.select(menuType);
+			Siteaggregationmenu entity = this.siteAggregationMenuDAO.select(menuType, squareid);
 			if (entity == null) {
 				log.error("siteaggregationmenu not found.");
 				return "";

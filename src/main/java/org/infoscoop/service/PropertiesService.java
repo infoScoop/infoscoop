@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.dao.model.Properties;
 import org.infoscoop.util.I18NUtil;
@@ -54,11 +54,12 @@ public class PropertiesService{
 	 * @throws Exception
 	 */
 	public synchronized void updateProperties(Map propsMap) throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		for (Iterator it = propsMap.keySet().iterator(); it.hasNext();) {
 			String id = (String) it.next();
 			String value = (String) propsMap.get(id);
 			if (id != null) {
-				propertiesDAO.update(id, value);
+				propertiesDAO.update(id, value, squareid);
 			}
 		}
 	}
@@ -69,7 +70,8 @@ public class PropertiesService{
 	 */
 	public String getPropertiesJson(Locale locale) throws Exception {
 		JSONObject propertiesJson = new JSONObject();
-		List propList = propertiesDAO.findAllProperties();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		List propList = propertiesDAO.findAllProperties(squareid);
 		for(Iterator propIt = propList.iterator(); propIt.hasNext();){
 			Properties prop = (Properties)propIt.next();//Key become capital if Map is passed to constructor of JSONObject without change.
 			JSONObject propJson = new JSONObject();
@@ -92,14 +94,15 @@ public class PropertiesService{
 				propJson.put("regex", prop.getRegex());
 			if (prop.getRegexmsg() != null && prop.getRegexmsg().length() > 0)
 				propJson.put("regexMsg", prop.getRegexmsg() );
-			propertiesJson.put( prop.getId(), propJson);
+			propertiesJson.put( prop.getId().getId(), propJson);
 		}
 		String json = propertiesJson.toString();
 		return I18NUtil.resolve(I18NUtil.TYPE_PROPERTY, json, locale, true);
 	}
 	
 	public String getProperty( String name ) throws Exception {
-		Properties property = propertiesDAO.findProperty( name );
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Properties property = propertiesDAO.findProperty( name, squareid );
 		if( property == null )
 			return null;
 		
@@ -107,7 +110,8 @@ public class PropertiesService{
 	}
 	
 	public Map getPropertiesMap() throws Exception {
-		List properties = propertiesDAO.findAllProperties();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		List properties = propertiesDAO.findAllProperties(squareid);
 		
 		Map result = new HashMap();
 		for( int i=0;i<properties.size();i++ ) {

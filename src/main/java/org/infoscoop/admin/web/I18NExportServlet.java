@@ -29,8 +29,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.I18NDAO;
 import org.infoscoop.dao.model.I18n;
 
@@ -64,7 +66,9 @@ public class I18NExportServlet extends HttpServlet
 			response.setHeader("Cache-Control", "no-cache");
 			
 			w = new OutputStreamWriter(response.getOutputStream(), "Windows-31J");
-			List i18nList = I18NDAO.newInstance().findI18n(type, country, lang);
+			
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			List i18nList = I18NDAO.newInstance().findI18n(type, country, lang, squareid);
 			
 			I18n i18n;
 			CSVWriter csvWriter = new CSVWriter(w);

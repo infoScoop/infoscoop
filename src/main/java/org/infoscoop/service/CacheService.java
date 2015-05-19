@@ -24,8 +24,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-
 import org.apache.commons.codec.binary.Base64;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.CacheDAO;
 import org.infoscoop.dao.model.Cache;
 import org.infoscoop.util.SpringUtil;
@@ -49,7 +49,8 @@ public class CacheService {
 	}
 
 	public Cache getCacheByUrl(String uid, String url){
-		return cacheDAO.getCacheByURL(PUBLIC_CACHE_USERID, url);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return cacheDAO.getCacheByURL(PUBLIC_CACHE_USERID, url, squareid);
 	}
 
 	public Cache getCacheById(String id){
@@ -58,7 +59,8 @@ public class CacheService {
 
 	public String insertCache(String id, String uid,
 			String url,InputStream body,Map<String, List<String>> headers){
-		return cacheDAO.insertCache(id, uid, url, body, headers);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return cacheDAO.insertCache(id, uid, url, body, headers, squareid);
 	}
 
 	/**
@@ -90,24 +92,28 @@ public class CacheService {
 	}
 
 	public void deleteCacheById(String id){
-		cacheDAO.deleteCacheById(id);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		cacheDAO.deleteCacheById(id, squareid);
 	}
 
 	public void deleteUserCache(String uid){
-		cacheDAO.deleteCacheByUid(uid);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		cacheDAO.deleteCacheByUid(uid, squareid);
 	}
 
 	public void deleteCacheByUrl(String url){
-		cacheDAO.deleteCacheByUrl(PUBLIC_CACHE_USERID, url);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		cacheDAO.deleteCacheByUrl(PUBLIC_CACHE_USERID, url, squareid);
 	}
 	
 	public void deleteOldPublicCaches(){
-		List list = cacheDAO.getColumnsTimestamp(PUBLIC_CACHE_USERID);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		List list = cacheDAO.getColumnsTimestamp(PUBLIC_CACHE_USERID, squareid);
 		long currentTime = new Date().getTime();
 		for(java.util.Iterator it= list.iterator();it.hasNext();){
 			Object[] cache = (Object[])it.next();
 			if( currentTime - ((Date)cache[1]).getTime() > 86400000 ){
-				cacheDAO.deleteCacheById((String)cache[0]);
+				cacheDAO.deleteCacheById((String)cache[0], squareid);
 			}
 		}
 	}
@@ -118,6 +124,7 @@ public class CacheService {
 
 	public String insertUpdateCache(String uid, String url, ByteArrayInputStream body, Map<String, List<String>> headers) {
 		Cache cache = getCacheByUrl(url);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		if(cache == null){
 			String id = new UUID().toString();
 			return insertCache(id, uid, url, body, headers);
@@ -126,7 +133,7 @@ public class CacheService {
 			cache.setHeaders(CacheDAO.makeHeaderXml(headers));
 			cache.setTimestamp( new Date() );
 
-			return cache.getId();
+			return cache.getId().getId();
 		}
 	}
 

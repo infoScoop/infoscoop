@@ -26,14 +26,15 @@ import java.util.Locale;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.GadgetDAO;
 import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Gadget;
 import org.infoscoop.dao.model.WidgetConf;
+import org.infoscoop.dao.model.WidgetConfPK;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.NoOpEntityResolver;
 import org.infoscoop.util.SpringUtil;
@@ -66,7 +67,8 @@ public class WidgetConfService {
 
 	public String getWidgetConfsJson( String uid, Locale locale) throws Exception{
 		try {
-			List<String> useTypes = WidgetDAO.newInstance().getWidgetTypes(uid);
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			List<String> useTypes = WidgetDAO.newInstance().getWidgetTypes(uid, squareid);
 			List<String> widgetTypes = new ArrayList<String>();
 			List<String> gadgetTypes = new ArrayList<String>();
 			for(String type : useTypes){
@@ -80,11 +82,11 @@ public class WidgetConfService {
 					widgetTypes.add(type);
 				}
 			}
-			List<WidgetConf> widgetConfs = widgetConfDAO.selectAll();
+			List<WidgetConf> widgetConfs = widgetConfDAO.selectAll(squareid);
 			
 			JSONObject json = new JSONObject();
 			for (WidgetConf widgetConf : widgetConfs) {
-				String type = widgetConf.getType();
+				String type = widgetConf.getId().getType();
 
 				json.put(type, WidgetConfUtil.widgetConf2JSONObject(widgetConf
 						.getElement(), null, true));
@@ -95,7 +97,7 @@ public class WidgetConfService {
 				builderFactory.setValidating(false);
 				DocumentBuilder builder = builderFactory.newDocumentBuilder();
 				builder.setEntityResolver(NoOpEntityResolver.getInstance());
-				List<Gadget> gadgets = GadgetDAO.newInstance().selectConfsByType(gadgetTypes);
+				List<Gadget> gadgets = GadgetDAO.newInstance().selectConfsByType(gadgetTypes, squareid);
 				for(Gadget gadget: gadgets){
 					if (!gadget.getName().equalsIgnoreCase(
 							gadget.getType() + ".xml"))
@@ -121,11 +123,12 @@ public class WidgetConfService {
 	
 	public String getWidgetConfsJson( Locale locale, boolean useClient ) throws Exception{
 		try {
-			List<WidgetConf> widgetConfs = widgetConfDAO.selectAll();
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			List<WidgetConf> widgetConfs = widgetConfDAO.selectAll(squareid);
 
 			JSONObject json = new JSONObject();
 			for (WidgetConf widgetConf : widgetConfs) {
-				String type = widgetConf.getType();
+				String type = widgetConf.getId().getType();
 
 				json.put(type, WidgetConfUtil.widgetConf2JSONObject(widgetConf
 						.getElement(), null, useClient));
@@ -156,7 +159,8 @@ public class WidgetConfService {
 	public Element getWidgetConfByType(String type)
 			throws Exception {
 		try {
-			return widgetConfDAO.getElement(type);
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			return widgetConfDAO.getElement(type, squareid);
 		} catch (Exception e) {
 			log.error("Unexpected error occurred.", e);
 			throw e;
@@ -166,7 +170,8 @@ public class WidgetConfService {
 	public String getWidgetConfJsonByType(String type, Locale locale,
 			boolean useClient) throws Exception {
 		try {
-			Element widgetConf = widgetConfDAO.getElement(type);
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			Element widgetConf = widgetConfDAO.getElement(type, squareid);
 			if (widgetConf == null)
 				return "{}";
 
@@ -190,7 +195,8 @@ public class WidgetConfService {
 			throws Exception {
 
 		try {
-			Element widgetConf = widgetConfDAO.getElement(type);
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			Element widgetConf = widgetConfDAO.getElement(type, squareid);
 			if (widgetConf == null)
 				return "{}";
 
@@ -210,7 +216,8 @@ public class WidgetConfService {
 	 */
 	public void updateWidgetConf(String type, String widgetConfJSON) throws Exception {
 		try {
-			WidgetConf conf = widgetConfDAO.get(type);
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			WidgetConf conf = widgetConfDAO.get(type, squareid);
 			Element confEl = conf.getElement();
 			JSONObject json = new JSONObject(widgetConfJSON);
 			if(json.has("autoRefresh")){
@@ -416,7 +423,8 @@ public class WidgetConfService {
 	public void updateWidgetDisplay(String type, String displayFlag)
 			throws Exception {
 		try {
-			WidgetConf conf = widgetConfDAO.get(type);
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			WidgetConf conf = widgetConfDAO.get(type, squareid);
 			Element confEl = conf.getElement();
 
 			if ("true".equals(displayFlag.toLowerCase())) {
@@ -442,7 +450,8 @@ public class WidgetConfService {
 	 */
 	public void updateWidgetTitle(String type, String title) throws Exception {
 		try {
-			WidgetConf conf = widgetConfDAO.get( type );
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			WidgetConf conf = widgetConfDAO.get( type, squareid );
 			Element confEl = conf.getElement();
 			confEl.setAttribute("title", title);
 
@@ -464,7 +473,8 @@ public class WidgetConfService {
 	public void insertGadgetConf(String type, String xml) throws Exception {
 		try {
 			WidgetConf conf = new WidgetConf();
-			conf.setType(type);
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			conf.setId(new WidgetConfPK(type, squareid));
 			conf.setData(xml);
 			widgetConfDAO.insert(conf);
 		} catch (Exception e) {
@@ -482,7 +492,8 @@ public class WidgetConfService {
 	 */
 	public void insertGadgetConf(String type, Node node){
 		WidgetConf conf = new WidgetConf();
-		conf.setType(type);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		conf.setId(new WidgetConfPK(type, squareid));
 		conf.setData(XmlUtil.dom2String(node));
 		widgetConfDAO.insert(conf);
 	}

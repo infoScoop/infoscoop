@@ -30,11 +30,12 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.ProxyConfDAO;
 import org.infoscoop.dao.model.Proxyconf;
+import org.infoscoop.dao.model.ProxyconfPK;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONObject;
@@ -85,8 +86,9 @@ public class ProxyConfService {
 		}
 
 		try {
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 			// Obtain data and transfer the result to Document.
-			Proxyconf entity = this.proxyConfDAO.select();
+			Proxyconf entity = this.proxyConfDAO.select(squareid);
 			Document document = entity.getElement().getOwnerDocument();
 
 			// Search for top Node.
@@ -175,8 +177,9 @@ public class ProxyConfService {
 			String attributeName, String value) throws Exception {
 
 		try {
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 			// Obtain data and transfer the result to Document.
-			Proxyconf entity = this.proxyConfDAO.select();
+			Proxyconf entity = this.proxyConfDAO.select(squareid);
 			Document document = entity.getElement().getOwnerDocument();
 
 			// Search for the Node matches id.
@@ -209,7 +212,8 @@ public class ProxyConfService {
 
 	public void updateProxyConfHeaders( String id,Collection<String> headers,
 			Collection<String> sendingCookies) {
-		Proxyconf proxyconf = proxyConfDAO.select();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Proxyconf proxyconf = proxyConfDAO.select(squareid);
 
 		try {
 			XPath xpath = XPathFactory.newInstance().newXPath();
@@ -267,9 +271,10 @@ public class ProxyConfService {
 			throws Exception {
 
 		try {
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 			// Obtain data and transfer the result to Document.
-			Proxyconf entity = this.proxyConfDAO.select();
+			Proxyconf entity = this.proxyConfDAO.select(squareid);
 			Document document = entity.getElement().getOwnerDocument();
 
 			// Search for node matches id
@@ -305,9 +310,10 @@ public class ProxyConfService {
 			throws Exception {
 
 		try {
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 			// Obtain data and transfer the result to Document.
-			Proxyconf entity = this.proxyConfDAO.select();
+			Proxyconf entity = this.proxyConfDAO.select(squareid);
 			Document document = entity.getElement().getOwnerDocument();
 
 			// Search for default
@@ -374,9 +380,10 @@ public class ProxyConfService {
 	public String getLastModifiedDate() throws Exception {
 
 		try {
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 			// Obtain data
-			String result = proxyConfDAO.selectLastModified(ProxyConfDAO.PROXYCONF_FLAG_NOT_TEMP);
+			String result = proxyConfDAO.selectLastModified(ProxyConfDAO.PROXYCONF_FLAG_NOT_TEMP, squareid);
 			if (result == null || result.length() == 0) {
 				log.error("proxyconf-lastmodified not found.");
 				return "";
@@ -409,9 +416,10 @@ public class ProxyConfService {
 	private String getProxyConfXml() throws Exception {
 
 		try {
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 			// Obtain data
-			Proxyconf entity = this.proxyConfDAO.select(ProxyConfDAO.PROXYCONF_FLAG_NOT_TEMP);
+			Proxyconf entity = this.proxyConfDAO.select(ProxyConfDAO.PROXYCONF_FLAG_NOT_TEMP, squareid);
 			if (entity == null) {
 				log.error("proxyconf not found.");
 				return "";
@@ -433,8 +441,9 @@ public class ProxyConfService {
 	 */
 	private String getProxyConf() throws Exception {
 		try {
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 			// Obtain data
-			Proxyconf entity = this.proxyConfDAO.select(ProxyConfDAO.PROXYCONF_FLAG_NOT_TEMP);
+			Proxyconf entity = this.proxyConfDAO.select(ProxyConfDAO.PROXYCONF_FLAG_NOT_TEMP, squareid);
 			if (entity == null) {
 				log.error("proxyconf not found.");
 				return "";
@@ -442,7 +451,7 @@ public class ProxyConfService {
 			String result = entity.getData();
 			// Overwrite on temporary
 			Proxyconf temp = new Proxyconf(
-					new Integer( ProxyConfDAO.PROXYCONF_FLAG_TEMP),entity.getData());
+					new ProxyconfPK(new Integer( ProxyConfDAO.PROXYCONF_FLAG_TEMP), squareid),entity.getData());
 			this.proxyConfDAO.update(temp);
 
 			return result;
@@ -460,14 +469,15 @@ public class ProxyConfService {
 	public void commitProxyConf() throws Exception {
 
 		try {
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 			// Obtain data
-			Proxyconf tempEntity = this.proxyConfDAO.select(ProxyConfDAO.PROXYCONF_FLAG_TEMP);
+			Proxyconf tempEntity = this.proxyConfDAO.select(ProxyConfDAO.PROXYCONF_FLAG_TEMP, squareid);
 			if (tempEntity == null) {
 				log.error("temp proxyconf not found.");
 				return;
 			}
 			// Overwrite from temporary
-			Proxyconf entity = proxyConfDAO.select(ProxyConfDAO.PROXYCONF_FLAG_NOT_TEMP);
+			Proxyconf entity = proxyConfDAO.select(ProxyConfDAO.PROXYCONF_FLAG_NOT_TEMP, squareid);
 			entity.setData(tempEntity.getData());
 			this.proxyConfDAO.update(entity);
 		} catch (Exception e) {

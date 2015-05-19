@@ -29,6 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.AdminRoleDAO;
 import org.infoscoop.dao.PortalAdminsDAO;
 import org.infoscoop.dao.model.Adminrole;
@@ -89,10 +90,11 @@ public class PortalAdminsService {
 		
 		boolean myIdExists = true;
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		List getNotAllowDeleteRoleIds = adminRoleDAO.getNotAllowDeleteRoleIds();
 		
-		adminRoleDAO.delete();
+		adminRoleDAO.delete(squareid);
 		
 		List rolesList = (List)adminsMap.get("roles");
 		List roleIdList = new ArrayList();
@@ -104,7 +106,7 @@ public class PortalAdminsService {
 			String name = (String)map.get("name");
 			String permission = (String)map.get("permission");
 			
-			adminRoleDAO.insert(roleId, name, permission, !getNotAllowDeleteRoleIds.contains(roleId));
+			adminRoleDAO.insert(roleId, name, permission, !getNotAllowDeleteRoleIds.contains(roleId), squareid);
 			roleIdList.add(roleId);
 		}
 
@@ -129,7 +131,7 @@ public class PortalAdminsService {
 		if(!myIdExists)
 			throw new Exception("Same ID as oneself cannot be deleted.");
 		
-		portalAdminsDAO.delete();
+		portalAdminsDAO.delete(squareid);
 
 		// insert admins
 		for(Iterator ite=adminsData.keySet().iterator();ite.hasNext();){
@@ -137,7 +139,7 @@ public class PortalAdminsService {
 			String roleId = (String)adminsData.get(uid);
 			roleId = (roleIdList.contains(roleId))? roleId : null;
 			
-			portalAdminsDAO.insert(uid, roleId);
+			portalAdminsDAO.insert(uid, roleId, squareid);
 		}
 		
 		if(!roleIdList.contains(myRoleId) || !roleIdList.containsAll(getNotAllowDeleteRoleIds)){
@@ -153,6 +155,7 @@ public class PortalAdminsService {
 	public String getPortalAdminsJson(HttpServletRequest request) throws Exception {
 		JSONObject adminsObj = new JSONObject();
 		JSONObject jobj;
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		List adminsList = getPortalAdmins();
 		JSONArray adminsJson = new JSONArray();
@@ -165,7 +168,7 @@ public class PortalAdminsService {
 			adminsJson.put( jobj );
 		}
 		
-		List roleList = adminRoleDAO.select();
+		List roleList = adminRoleDAO.select(squareid);
 		JSONArray rolesJson = new JSONArray();
 		for (Iterator it = roleList.iterator(); it.hasNext();) {
 			Adminrole adminRole = (Adminrole) it.next();
@@ -189,7 +192,8 @@ public class PortalAdminsService {
 	 * @throws Exception
 	 */
 	public List<Portaladmins> getPortalAdmins() throws Exception {
-		return portalAdminsDAO.select();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return portalAdminsDAO.select(squareid);
 	}
 	
 	/**
@@ -197,7 +201,8 @@ public class PortalAdminsService {
 	 * @throws Exception
 	 */
 	public Portaladmins getPortalAdmin(String userId) throws Exception {
-		return portalAdminsDAO.selectById(userId);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return portalAdminsDAO.selectById(userId, squareid);
 	}
 	
 	/**
@@ -210,9 +215,10 @@ public class PortalAdminsService {
 	}
 	
 	public List getMyPermissionList(){
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		List permissionList = new ArrayList();
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
-		Portaladmins pa = portalAdminsDAO.selectById(p.getName());
+		Portaladmins pa = portalAdminsDAO.selectById(p.getName(), squareid);
 		
 		try {
 			JSONArray jArray = new JSONArray(pa.getAdminrole().getPermission());

@@ -22,6 +22,7 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.SystemMessageDAO;
 import org.infoscoop.dao.model.SystemMessage;
 import org.infoscoop.util.SpringUtil;
@@ -43,8 +44,9 @@ public class SystemMessageService {
 
 
 	public String getNonReadMessagesJson(String uid) throws Exception{
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
-		Collection<SystemMessage> msgs = this.systemMessageDAO.selectByToAndNoRead(uid);
+		Collection<SystemMessage> msgs = this.systemMessageDAO.selectByToAndNoRead(uid, squareid);
 		JSONArray msgJsons = new JSONArray();
 		for(SystemMessage msg : msgs){
 			JSONObject obj = new JSONObject();

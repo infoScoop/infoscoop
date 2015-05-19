@@ -23,9 +23,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.ForbiddenURLDAO;
 import org.infoscoop.dao.model.Forbiddenurls;
 import org.infoscoop.util.SpringUtil;
@@ -51,7 +51,8 @@ public class ForbiddenURLService {
 	}
 
 	public void updateForbiddenURLs( Map forbiddenUrls ){
-		Collection oldForbiddenUrls = this.forbiddenUrlDAO.getForbiddenUrls();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Collection oldForbiddenUrls = this.forbiddenUrlDAO.getForbiddenUrls(squareid);
 		Set oldIds = new HashSet();
 		for( Iterator it = oldForbiddenUrls.iterator(); it.hasNext();){
 			Forbiddenurls forbiddenurl = (Forbiddenurls)it.next();
@@ -87,8 +88,9 @@ public class ForbiddenURLService {
 	
 	public String getForbiddenURLsJSON(){
 		StringBuffer buf = new StringBuffer();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		buf.append("{\n");
-		for( java.util.Iterator forbiddenURLs=this.forbiddenUrlDAO.getForbiddenUrls().iterator();forbiddenURLs.hasNext();) {
+		for( java.util.Iterator forbiddenURLs=this.forbiddenUrlDAO.getForbiddenUrls(squareid).iterator();forbiddenURLs.hasNext();) {
 			Forbiddenurls forbiddenURL = ( Forbiddenurls )( forbiddenURLs.next());
 			int id = forbiddenURL.getId().intValue();
 			String url = forbiddenURL.getUrl();

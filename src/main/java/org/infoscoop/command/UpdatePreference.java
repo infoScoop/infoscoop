@@ -21,6 +21,7 @@ package org.infoscoop.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.model.Preference;
 import org.infoscoop.service.PreferenceService;
@@ -50,13 +51,14 @@ public class UpdatePreference extends XMLCommandProcessor {
 		
 		String field = super.commandXml.getAttribute("field").trim();
 		String value = super.commandXml.getAttribute("value").trim();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("uid:[" + uid + "]: processXML: field:[" + field
 					+ "], value:[" + value + "]");
 		}
 		
-		Preference entity = PreferenceDAO.newInstance().select(uid);
+		Preference entity = PreferenceDAO.newInstance().select(uid, squareid);
 		Element prefEl = null;
 		try {
 			prefEl = entity.getElement();

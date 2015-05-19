@@ -32,6 +32,8 @@ import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.account.AuthenticationException;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.AuthCredentialDAO;
 import org.infoscoop.dao.model.AuthCredential;
 import org.infoscoop.request.ProxyAuthenticationException;
@@ -80,7 +82,8 @@ public class AuthCredentialService {
 	
 	public AuthCredential getLoginCredential(
 			String uid) throws ProxyAuthenticationException{
-		return authCredentialDAO.select(uid, AuthCredential.LOGIN_AUTH_CREDENTIAL);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return authCredentialDAO.select(uid, AuthCredential.LOGIN_AUTH_CREDENTIAL, squareid);
 	}
 
 	public void addLoginCredential(String uid, String authType, String authPasswd, String authDomain) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalStateException, IllegalBlockSizeException, BadPaddingException{
@@ -89,8 +92,9 @@ public class AuthCredentialService {
 			authUid = authUid.toLowerCase();
 
 		authPasswd = RSAKeyManager.getInstance().encrypt(authPasswd);
-
-		AuthCredential c = authCredentialDAO.select(uid, AuthCredential.LOGIN_AUTH_CREDENTIAL);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		
+		AuthCredential c = authCredentialDAO.select(uid, AuthCredential.LOGIN_AUTH_CREDENTIAL, squareid);
 
 		if(c != null && !c.getAuthType().equals(authType)){
 			c.setSysNum(AuthCredential.COMMON_AUTH_CREDENTIAL);
@@ -176,7 +180,8 @@ public class AuthCredentialService {
 			String uid,
 			String authType,
 			String authUrl) throws Exception{
-		List credentialList = authCredentialDAO.select(uid);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		List credentialList = authCredentialDAO.select(uid, squareid);
 		if(log.isInfoEnabled())
 			log.info("Try valid authentication information for " + authType + " and " + authUrl + ".");
 

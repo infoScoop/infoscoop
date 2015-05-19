@@ -21,10 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.KeywordLogDAO;
 
 /**
@@ -70,6 +70,7 @@ public class AddKeyword extends XMLCommandProcessor {
 
 		String commandId = super.commandXml.getAttribute("id").trim();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHH");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 		//String keyword = XmlUtil.escapeXmlEntities(el.getAttributeValue("keyword").trim());
 		String keyword = super.commandXml.getAttribute("keyword").trim();
@@ -98,7 +99,7 @@ public class AddKeyword extends XMLCommandProcessor {
 		// register all of the content of input.
 		boolean key = true;
 		KeywordLogDAO keywordLogDAO = KeywordLogDAO.newInstance();
-		key = keywordLogDAO.getKeyword(uid, date, keyword, "1");
+		key = keywordLogDAO.getKeyword(uid, date, keyword, "1", squareid);
 		
 		if (key) {
 			isOK = updateDB(keywordLogDAO, uid, date, keyword, "1");
@@ -111,7 +112,7 @@ public class AddKeyword extends XMLCommandProcessor {
 		}
 		//register each word
 		for (int i=0; i<keywords.length; i++) {
-			key = keywordLogDAO.getKeyword(uid, date, keywords[i], "0");
+			key = keywordLogDAO.getKeyword(uid, date, keywords[i], "0", squareid);
 			if (key) {
 				isOK = updateDB(keywordLogDAO, uid, date, keywords[i], "0");
 				if (!isOK) {
@@ -139,8 +140,9 @@ public class AddKeyword extends XMLCommandProcessor {
 			String keyword, String keywordLogType) {
 
 		boolean result = false;
-
-		keywordLogDAO.insertLog(uid, date, keyword, keywordLogType);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		
+		keywordLogDAO.insertLog(uid, date, keyword, keywordLogType, squareid);
 		result = true;
 		
 		return result;

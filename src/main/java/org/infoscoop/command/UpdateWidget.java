@@ -22,6 +22,7 @@ package org.infoscoop.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Widget;
 import org.json.JSONObject;
@@ -50,6 +51,7 @@ public class UpdateWidget extends XMLCommandProcessor{
         String targetColumn = super.commandXml.getAttribute("targetColumn").trim();
         String parent = super.commandXml.getAttribute("parent").trim();
         String sibling = super.commandXml.getAttribute("sibling").trim();
+        String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
         if(log.isInfoEnabled()){
         	log.info("uid:[" + uid + "]: processXML: widgetId:[" + widgetId
@@ -88,7 +90,7 @@ public class UpdateWidget extends XMLCommandProcessor{
 		}
     	
     	try{
-    		Widget widget = WidgetDAO.newInstance().getWidget( uid,tabId,widgetId );
+    		Widget widget = WidgetDAO.newInstance().getWidget( uid,tabId,widgetId,squareid );
 			if( widget == null ) {
 				log.error("Failed to execute the command of UpdateWidget： " + widgetId);
 				this.result = XMLCommandUtil.createResultElement(uid, "processXML",

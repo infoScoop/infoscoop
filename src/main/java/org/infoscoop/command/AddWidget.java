@@ -21,6 +21,7 @@ package org.infoscoop.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.TabDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.Widget;
@@ -52,6 +53,7 @@ public class AddWidget extends XMLCommandProcessor{
         String parent = super.commandXml.getAttribute("parent").trim();
         String sibling = super.commandXml.getAttribute("sibling").trim();
         String menuid = super.commandXml.getAttribute("menuId").trim();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
         if(log.isInfoEnabled()){
         	log.info("uid:[" + uid + "]: processXML: widgetId:[" + widgetId
@@ -99,7 +101,7 @@ public class AddWidget extends XMLCommandProcessor{
         		newNextSibling = null;
         	} else {
         		log.info("Find sibling: "+sibling+" of "+targetColumn );
-        		newNextSibling = tabDAO.getColumnWidgetBySibling( uid,tabId,sibling,Integer.valueOf( targetColumn ),widgetId );
+        		newNextSibling = tabDAO.getColumnWidgetBySibling( uid,tabId,sibling,Integer.valueOf( targetColumn ),widgetId, squareid );
         	}
         	
         	if(newNextSibling != null){
@@ -108,7 +110,7 @@ public class AddWidget extends XMLCommandProcessor{
  //       		WidgetDAO.newInstance().updateWidget(uid, tabId, newNextSibling);
         	}
         	
-    		Widget widget = new Widget( tabId, new Long(0), widgetId, uid);
+    		Widget widget = new Widget( tabId, new Long(0), widgetId, uid, squareid);
     		
     		if(targetColumn != null && !"".equals(targetColumn)){
     			widget.setColumn(new Integer(targetColumn));

@@ -29,6 +29,7 @@ import org.infoscoop.api.dao.OAuth2ProviderRefreshTokenDAO;
 import org.infoscoop.api.dao.model.OAuth2ProviderAccessToken;
 import org.infoscoop.api.dao.model.OAuth2ProviderClientDetail;
 import org.infoscoop.api.oauth2.provider.ISClientDetailsService;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -111,6 +112,7 @@ public class ExtAppsService {
 		String grantType = decodeGrantTypes(obj.getString("grantType"));
 		String redirectUrl = obj.getString("redirectUrl");
 		String additionalInformation = obj.getString("explain");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		if(obj.getString("clientId").isEmpty()){
 			// new
@@ -118,7 +120,7 @@ public class ExtAppsService {
 			secret = createUUID();
 		}
 
-		oauth2ProviderClientDetailDAO.saveClientDetail(clientId, title, ISClientDetailsService.getResouceId(), secret, SCOPE_USERPROFILE, grantType, redirectUrl, null, null, null, null, additionalInformation);
+		oauth2ProviderClientDetailDAO.saveClientDetail(clientId, title, ISClientDetailsService.getResouceId(), secret, SCOPE_USERPROFILE, grantType, redirectUrl, null, null, null, null, additionalInformation, squareid);
 		
 		// response JSON
 		JSONObject obj2 = new JSONObject();
@@ -140,9 +142,10 @@ public class ExtAppsService {
 	public void deleteExtApps(String parameters) throws Exception{
 		JSONObject obj = new JSONObject(parameters);
 		String clientId = obj.getString("clientId");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		// delete client detail
-		oauth2ProviderClientDetailDAO.deleteClientDetail(clientId);
+		oauth2ProviderClientDetailDAO.deleteClientDetail(clientId, squareid);
 
 		//delete access token and refresh token
 		deleteTokens(clientId);
@@ -152,9 +155,10 @@ public class ExtAppsService {
 		JSONObject obj = new JSONObject(parameters);
 		String clientId = obj.getString("clientId");
 		String clientSecret = createUUID();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		// rewrite secret
-		OAuth2ProviderClientDetail clientDetail = oauth2ProviderClientDetailDAO.getClientDetailById(clientId);
+		OAuth2ProviderClientDetail clientDetail = oauth2ProviderClientDetailDAO.getClientDetailById(clientId, squareid);
 		clientDetail.setSecret(clientSecret);
 		oauth2ProviderClientDetailDAO.saveClientDetail(clientDetail);
 
@@ -167,9 +171,10 @@ public class ExtAppsService {
 	}
 	
 	private void deleteTokens(String clientId) {
-		List<OAuth2ProviderAccessToken> tokenList = oauth2ProviderAccessTokenDAO.getAccessTokenByClientId(clientId);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		List<OAuth2ProviderAccessToken> tokenList = oauth2ProviderAccessTokenDAO.getAccessTokenByClientId(clientId, squareid);
 		for(OAuth2ProviderAccessToken token : tokenList){
-			oauth2ProviderRefreshTokenDAO.deleteOAuth2ProviderRefreshToken(token.getRefreshToken());
+			oauth2ProviderRefreshTokenDAO.deleteOAuth2ProviderRefreshToken(token.getRefreshToken(), squareid);
 			oauth2ProviderAccessTokenDAO.deleteOAuth2ProviderAccessToken(token);
 		}		
 	}

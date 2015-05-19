@@ -21,6 +21,7 @@ package org.infoscoop.command;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.WidgetDAO;
 
 /**
@@ -39,12 +40,13 @@ public class EmptyAllWidget extends XMLCommandProcessor {
 
 	public void execute() throws Exception {
 		String commandId = super.commandXml.getAttribute("id").trim();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		if (log.isInfoEnabled()) {
 			String logMsg = "uid:[" + uid + "]";
 			log.info(logMsg);
 		}
 		try {
-			WidgetDAO.newInstance().emptyDeletedWidgets(uid);
+			WidgetDAO.newInstance().emptyDeletedWidgets(uid, squareid);
 		} catch (Exception e) {
 			String reason = "failed to execute the command of EmptyAllWidget";
 			log.error(reason, e);

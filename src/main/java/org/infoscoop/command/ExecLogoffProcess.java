@@ -21,10 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.command.util.XMLCommandUtil;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PreferenceDAO;
 import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.model.Preference;
@@ -59,15 +59,16 @@ public class ExecLogoffProcess extends XMLCommandProcessor {
 		SimpleDateFormat sdf = new SimpleDateFormat( FORMAT_W3C );
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 		String value = sdf.format(new Date());
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("uid:[" + uid + "]: processXML: field:[" + field
 					+ "], value:[" + value + "]");
 		}
 
-		SessionDAO.newInstance().deleteSessionId(uid);
+		SessionDAO.newInstance().deleteSessionId(uid, squareid);
 		
-		Preference entity = PreferenceDAO.newInstance().select(uid);
+		Preference entity = PreferenceDAO.newInstance().select(uid, squareid);
 		Element prefEl;
 		try {
 			prefEl = entity.getElement();

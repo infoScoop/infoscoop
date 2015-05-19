@@ -36,10 +36,12 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.exception.TabTimeoutException;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.StaticTabDAO;
 import org.infoscoop.dao.TabLayoutDAO;
 import org.infoscoop.dao.WidgetDAO;
 import org.infoscoop.dao.model.StaticTab;
+import org.infoscoop.dao.model.StaticTabPK;
 import org.infoscoop.dao.model.Tab;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.dao.model.Widget;
@@ -86,13 +88,14 @@ public class TabLayoutService {
 	 * @throws Exception 
 	 */
 	public synchronized void commitDefaultPanel(String tabId, String tabDesc, boolean disableDefault) throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		String myUid = checkLoginUid(tabId);
 //		tabLayoutDAO.copy(myUid, false);
-		tabLayoutDAO.copyByTabId(myUid, tabId, false);
+		tabLayoutDAO.copyByTabId(myUid, tabId, false, squareid);
 		
-		StaticTab staticTab = staticTabDAO.getTab(tabId);
+		StaticTab staticTab = staticTabDAO.getTab(tabId, squareid);
 		if(staticTab == null){
-			staticTab = new StaticTab(tabId);
+			staticTab = new StaticTab(new StaticTabPK(tabId, squareid));
 			
 			Integer tabNumber = StaticTabService.getHandle().getNextTabNumber();
 			staticTab.setTabnumber(tabNumber);
@@ -108,14 +111,16 @@ public class TabLayoutService {
 	
 	public void copyToTemp(String tabId){
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		String uid = p.getName();
-		tabLayoutDAO.copyByTabId(uid, tabId, true);
+		tabLayoutDAO.copyByTabId(uid, tabId, true, squareid);
 	}
 	
 	public synchronized void deleteTemp(String tabId) throws Exception{
 		try{
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 			checkLoginUid(tabId);
-			tabLayoutDAO.deleteByTemp(tabId, TabLayout.TEMP_TRUE);
+			tabLayoutDAO.deleteByTemp(tabId, TabLayout.TEMP_TRUE, squareid);
 			log.info("Success to delete Tempolary TabLayouts.");
 		}catch(IllegalAccessException e){
 			// ignore
@@ -133,17 +138,18 @@ public class TabLayoutService {
 		if(!StaticTabService.getHandle().isTabAdmin(tabId)){
 			throw new IllegalAccessException("You have no authority to edit this.");
 		}
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		if(checkTimeout(tabId)){
 	    	// If time out
-			tabLayoutDAO.deleteByTemp(tabId, TabLayout.TEMP_TRUE);
+			tabLayoutDAO.deleteByTemp(tabId, TabLayout.TEMP_TRUE, squareid);
 			String message = "Operation timed out";
 			throw new TabTimeoutException(message);
 		}
 		
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String myUid = p.getName();
-		String lockingUid = tabLayoutDAO.selectLockingUid(tabId);
+		String lockingUid = tabLayoutDAO.selectLockingUid(tabId, squareid);
 		
 		if (myUid != null && !myUid.equals(lockingUid)) {
 			if(lockingUid != null){
@@ -173,10 +179,11 @@ public class TabLayoutService {
 			ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 			myUid = p.getName();
 		}
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		try {
-			List oldTabList = tabLayoutDAO.selectByTabId(tabId,
-					TabLayout.TEMP_TRUE);
+			List oldTabList = tabLayoutDAO.selectByTempTabId(TabLayout.TEMP_TRUE, tabId,
+					squareid);
 			Map oldDynamicPanelMap = new HashMap();
 			for(Iterator it = oldTabList.iterator(); it.hasNext();){
 				TabLayout tab = (TabLayout)it.next();
@@ -186,7 +193,7 @@ public class TabLayoutService {
 				oldDynamicPanelMap.put(tab.getId().getRoleorder(), json);
 			}
 			// Delete
-			tabLayoutDAO.deleteTempByTabId(tabId);
+			tabLayoutDAO.deleteTempByTabId(tabId, squareid);
 
 			Map newDynamicPanelMap = new HashMap();
 			// Insert
@@ -304,14 +311,14 @@ public class TabLayoutService {
 					map.put("temp", "1");
 					map.put("workinguid", myUid);
 				}
-				tabLayoutDAO.insert(map);
+				tabLayoutDAO.insert(map, squareid);
 			}
 
 			updateWidgets(oldDynamicPanelMap, newDynamicPanelMap);
 
 			// Update last modified date of tab0 if it is commandbar
 			if (StaticTab.COMMANDBAR_TAB_ID.equals(tabId)) {
-				tabLayoutDAO.updateLastmodifiedByTabId("0");
+				tabLayoutDAO.updateLastmodifiedByTabId("0", squareid);
 			}
 
 			return "[" + JSONObject.quote(tabId) + "]";
@@ -393,13 +400,15 @@ public class TabLayoutService {
 	 * @return
 	 */
 	public String getLockingUid(String tabId){
-		return tabLayoutDAO.selectLockingUid(tabId);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return tabLayoutDAO.selectLockingUid(tabId, squareid);
 	}
 
 
 	public JSONObject getTabJson(String uid, String tabId, Integer roleOrder, Integer temp) throws Exception{
-		TabLayout tabLayout = tabLayoutDAO.selectByPK(tabId, roleOrder, temp);
-		Tab tab = tabLayoutDAO.selectByPK(tabId, roleOrder, temp).toTab(uid);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		TabLayout tabLayout = tabLayoutDAO.selectByPK(tabId, roleOrder, temp, squareid);
+		Tab tab = tabLayoutDAO.selectByPK(tabId, roleOrder, temp, squareid).toTab(uid);
 
 		Collection<Widget> dynamicPanel = tabLayout.getDynamicPanelXmlWidgets(uid);
 		Collection<Widget> staticPanel = tabLayout.getStaticPanelXmlWidgets(uid);
@@ -413,7 +422,8 @@ public class TabLayoutService {
 	 * @throws Exception
 	 */
 	public String getDefaultPanelJson(String tabId) throws Exception {
-		List tabLayoutList = this.tabLayoutDAO.selectByTabId(tabId);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		List tabLayoutList = this.tabLayoutDAO.selectByTabId(tabId, squareid);
 		JSONObject result = new JSONObject();
 		JSONObject value = null;
 		for(Iterator it = tabLayoutList.iterator(); it.hasNext();){
@@ -504,12 +514,13 @@ public class TabLayoutService {
 	public Map getMyTabLayout(String tabId) {
 		Map resultMap = new HashMap();
 		Subject loginUser = SecurityController.getContextSubject();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		if(loginUser == null){
 			// Return default
 			resultMap = getDefaultTabLayout(null);
 		}else{
 			long start = System.currentTimeMillis();
-			MultiHashMap map = this.tabLayoutDAO.getTabLayout(tabId);
+			MultiHashMap map = this.tabLayoutDAO.getTabLayout(tabId, squareid);
 			Iterator ite = map.keySet().iterator();
 
 			while(ite.hasNext()){
@@ -560,8 +571,9 @@ public class TabLayoutService {
 	 */
 	public Map getDefaultTabLayout(MultiHashMap layoutMap) {
 		Map resultMap = new HashMap();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		if(layoutMap == null){
-			layoutMap = this.tabLayoutDAO.getTabLayout(null);
+			layoutMap = this.tabLayoutDAO.getTabLayout(null, squareid);
 //			layoutMap = TabLayoutDAO.newInstance().getTabLayout(null);
 		}
 
@@ -627,8 +639,9 @@ public class TabLayoutService {
 	}
 
 	public boolean checkTimeout(String tabId) throws Exception{
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		// Obtain the latest last modified date.
-		Date latestLastModifiedTime = tabLayoutDAO.findLatestLastModifiedTime(tabId);
+		Date latestLastModifiedTime = tabLayoutDAO.findLatestLastModifiedTime(tabId, squareid);
 
 		if(latestLastModifiedTime == null)
 			return true;
