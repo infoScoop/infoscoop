@@ -71,6 +71,7 @@ public class SessionManagerFilter implements Filter {
 	public static String LOGINUSER_NAME_ATTR_NAME = "loginUserName";
 	public static String LOGINUSER_SUBJECT_ATTR_NAME = "loginUser";
 	public static String LOGINUSER_SESSION_ID_ATTR_NAME = "SessionId";
+	public static String LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME = "CurrentSquareId";
 
 	private Collection excludePaths = new HashSet();
 	private Collection<String> excludePathx = new HashSet<String>();
@@ -173,6 +174,40 @@ public class SessionManagerFilter implements Filter {
 		return uid;
 	}
 
+	private String getCurrentSquareIdFromSesssion(HttpServletRequest req){
+		HttpSession session = req.getSession(true);
+		String currentSquareId = (String)session.getAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME);
+		String sessionId = req.getHeader("MSDPortal-SessionId");
+
+		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
+			String squareIdParam = req.getParameter(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME);
+			if(currentSquareId.equalsIgnoreCase(squareIdParam)){
+				currentSquareId = squareIdParam;
+				session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME,currentSquareId );
+			}
+		}else if( currentSquareId != null ) {
+			session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME,currentSquareId );
+		}
+
+		if (currentSquareId == null) {
+			if (sessionId != null) {
+				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
+//				return SessionDAO.newInstance().getSquareId(sessionId);
+				return "default";
+			}
+		} else if (sessionId != null) {
+			String oldSessionId = (String) session.getAttribute(LOGINUSER_SESSION_ID_ATTR_NAME);
+			if (oldSessionId != null && !sessionId.equals(oldSessionId)) {
+				session.invalidate();
+				session = req.getSession(true);
+				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
+//				return SessionDAO.newInstance().getSquareId(sessionId);
+				return "default";
+			}
+		}
+		return currentSquareId;
+	}
+
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest) request;
@@ -185,12 +220,17 @@ public class SessionManagerFilter implements Filter {
 			HttpServletResponse httpResponse = (HttpServletResponse)response;
 			
 			String uid = null;
+			String currentSquareId = null;
 			if(SessionCreateConfig.doLogin()){
 				uid = getUidFromSession(httpReq);
+				currentSquareId = getCurrentSquareIdFromSesssion(httpReq);
 
 	            if (uid != null){
 	                addUidToSession(uid, request);
 	            }
+				if (currentSquareId != null){
+					addCurrentSquareIdToSession(currentSquareId, request);
+				}
 				
 				if(redirectPaths.contains(httpReq.getServletPath())){
 					httpResponse.addCookie(new Cookie("redirect_path", httpReq.getServletPath()));
@@ -207,11 +247,21 @@ public class SessionManagerFilter implements Filter {
 				}
 			}else{
 				uid = getUidFromHeader(httpReq);
-				if (uid == null)
+				if (uid == null) {
 					uid = getUidFromSession(httpReq);
+				}
 				if (uid != null) {
 					addUidToSession(uid, request);
 				}
+
+				// Headeによるログイン（あとで
+//				currentSquareId = getCurrentSquareIdFromHeader(httpReq);
+//				if (currentSquareId == null) {
+//					currentSquareId = getCurrentSquareIdFromSesssion(httpReq);
+//				}
+//				if (currentSquareId != null) {
+//					addCurrentSquareIdToSession(currentSquareId, request);
+//				}
 			}
 
 			if( uid == null ) {
@@ -263,7 +313,6 @@ public class SessionManagerFilter implements Filter {
 			// fix #42
 //			setUserInfo2Cookie(httpReq, (HttpServletResponse)response, uid);
 			HttpSession session = httpRequest.getSession();
-
 
 			Subject loginUser = (Subject)session.getAttribute(LOGINUSER_SUBJECT_ATTR_NAME);
 
@@ -319,13 +368,6 @@ public class SessionManagerFilter implements Filter {
 				}				
 			}
 
-			String currentSquareId = "default";	// test impl
-			if(httpRequest.getHeader("X-IS-CURRENTAQUAREID") != null){
-				currentSquareId =httpRequest.getHeader("X-IS-CURRENTAQUAREID");
-			} else {
-				// test impl
-//				currentSquareId = UserContext.instance().getUserInfo().getCurrentSquareId();
-			}
 			// set current square id
 			if(currentSquareId != null) {
 				UserContext.instance().getUserInfo().setCurrentSquareId(currentSquareId);
@@ -346,8 +388,7 @@ public class SessionManagerFilter implements Filter {
 	 * @param httpRequest
 	 * @param loginUser
 	 */
-	private void setLoginUserName(HttpServletRequest httpRequest,
-			Subject loginUser) {
+	private void setLoginUserName(HttpServletRequest httpRequest, Subject loginUser) {
 		String loginUserName = null;
 		String usernameHeader = SessionCreateConfig.getInstance().getUsernameHeader();
 		if(usernameHeader != null)
@@ -418,6 +459,16 @@ public class SessionManagerFilter implements Filter {
 		session.setAttribute("Uid", uid);
 		if(log.isInfoEnabled()){
 			log.info("Add Uid To session : [" + uid + "]");
+		}
+	}
+
+	private void addCurrentSquareIdToSession(String currentSquareId, ServletRequest request) {
+		HttpSession session = ((HttpServletRequest) request).getSession();
+		if (session.getAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME) != null)
+			return;
+		session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, currentSquareId);
+		if(log.isInfoEnabled()){
+			log.info("Add SquareId To session : [" + currentSquareId + "]");
 		}
 	}
 
