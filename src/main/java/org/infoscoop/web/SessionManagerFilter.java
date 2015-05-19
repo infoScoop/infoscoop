@@ -21,7 +21,13 @@
 package org.infoscoop.web;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import javax.security.auth.Subject;
 import javax.servlet.Filter;
@@ -35,7 +41,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,8 +50,8 @@ import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.web.PreviewImpersonationFilter;
 import org.infoscoop.context.UserContext;
-import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.PropertiesDAO;
+import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.util.RSAKeyManager;
 
 /**
@@ -184,41 +189,6 @@ public class SessionManagerFilter implements Filter {
 
 		return resultMap;
 	}
-
-//	private String getUidFromSession(HttpServletRequest req){
-//		HttpSession session = req.getSession(true);
-//		String uid = (String)session.getAttribute("Uid");
-//		String sessionId = req.getHeader("MSDPortal-SessionId");
-//		boolean uidIgnoreCase = SessionCreateConfig.getInstance().isUidIgnoreCase();
-//
-//		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
-//			String uidParam = req.getParameter("Uid");
-//			if(uid.equalsIgnoreCase(uidParam)){
-//				uid = uidParam;
-//				session.setAttribute("Uid",uid );
-//			}
-//		}else if( uidIgnoreCase && uid != null ) {
-//			uid = uid.toLowerCase();
-//
-//			session.setAttribute("Uid",uid );
-//		}
-//
-//		if (uid == null) {
-//			if (sessionId != null) {
-//				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
-//				return SessionDAO.newInstance().getUid(sessionId);
-//			}
-//		} else if (sessionId != null) {
-//			String oldSessionId = (String) session.getAttribute(LOGINUSER_SESSION_ID_ATTR_NAME);
-//			if (oldSessionId != null && !sessionId.equals(oldSessionId)) {
-//				session.invalidate();
-//				session = req.getSession(true);
-//				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
-//				return SessionDAO.newInstance().getUid(sessionId);
-//			}
-//		}
-//		return uid;
-//	}
 
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {

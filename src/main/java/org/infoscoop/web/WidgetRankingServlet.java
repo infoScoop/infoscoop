@@ -32,9 +32,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.CacheDAO;
 import org.infoscoop.dao.SiteAggregationMenuDAO;
 import org.infoscoop.dao.WidgetDAO;
@@ -151,6 +151,7 @@ public class WidgetRankingServlet extends HttpServlet {
 				int freshDay, Cache cache, HttpServletRequest request)
 				throws Exception {
 			inProcess = true;
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 			try {
 				// When new cash was create during the wait of the synchronized block by the other thread, we return the cash.
@@ -163,15 +164,15 @@ public class WidgetRankingServlet extends HttpServlet {
 						+ "minutses)passed, I recount the widget-ranking.");
 				WidgetDAO widgetDao = WidgetDAO.newInstance();
 				List<Object[]> ranks = widgetDao.getWidgetRanking(maxCount,
-						freshDay);
+						freshDay, squareid);
 				JSONObject cacheJson = null;
 				if (cache != null)
 					cacheJson = new JSONObject(new String(cache.getBodyBytes(),
 							"UTF-8"));
 				SiteAggregationMenuDAO menuDao = SiteAggregationMenuDAO
 						.newInstance();
-				Siteaggregationmenu topmenu = menuDao.select("topmenu");
-				Siteaggregationmenu sidemenu = menuDao.select("sidemenu");
+				Siteaggregationmenu topmenu = menuDao.select("topmenu", squareid);
+				Siteaggregationmenu sidemenu = menuDao.select("sidemenu", squareid);
 				Map i18nMap = I18NUtil.getResourceMap(I18NUtil.TYPE_MENU,
 						request.getLocale());
 				JSONObject rankJson = new JSONObject();
@@ -254,9 +255,10 @@ public class WidgetRankingServlet extends HttpServlet {
 
 		private Cache saveCache(String rankStr) throws Exception {
 			byte[] rssBytes = rankStr.getBytes("utf-8");
+			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 			ByteArrayInputStream is = new ByteArrayInputStream(rssBytes);
 			return CacheDAO.newInstance().insertUpdateCache(CACHE_ID,
-					CACHE_USER_ID, CACHE_USER_ID, is, new HashMap());
+					CACHE_USER_ID, CACHE_USER_ID, is, new HashMap(), squareid);
 		}
 
 		private TitleInfo getTitleAndHrefFromCache(String type, String url,

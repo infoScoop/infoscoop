@@ -60,6 +60,7 @@ public class DefaultpanelController implements ControllerInterface{
 			HttpServletResponse response, 
 			@RequestParam String addTabJson) throws Exception {
 		String defaultPanelJson = "{}";
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		Map emptyDataMap = new HashMap();
 		Map emptyDataMapWrapper = new HashMap();
@@ -72,7 +73,7 @@ public class DefaultpanelController implements ControllerInterface{
 		emptyDataMap.put("roleOrder", 0);
 		emptyDataMapWrapper.put("emptyDataMap", emptyDataMap);
 		
-		String tabId = StaticTabService.getHandle().getNewTabId();
+		String tabId = StaticTabService.getHandle().getNewTabId(squareid);
 		TabLayoutService.getHandle().updateDefaultPanel(tabId, emptyDataMapWrapper, true);
 		request.setAttribute("tabId", tabId);
 		request.setAttribute("isNew", true);
