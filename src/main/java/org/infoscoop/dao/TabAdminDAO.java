@@ -47,10 +47,10 @@ public class TabAdminDAO extends HibernateDaoSupport {
 	public TabAdminDAO() {
 	}
 
-	public void deleteByTabId(String tabId) {
-		String queryString = "delete from TabAdmin where Tabid = ?";
+	public void deleteByTabId(String tabId, String squareId) {
+		String queryString = "delete from TabAdmin where Id.Tabid = ? and Id.SquareId = ?";
 		super.getHibernateTemplate().bulkUpdate(queryString,
-				new Object[] { tabId });
+				new Object[] { tabId, squareId });
 	}
 
 	public void delete(Collection<TabAdmin> entities) {
@@ -61,20 +61,13 @@ public class TabAdminDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().save(entity);
 	}
 
-	public void insert(String tabId, String userId) {
-		TabAdmin entity = new TabAdmin(tabId, userId);
+	public void insert(String tabId, String userId, String squareId) {
+		TabAdmin entity = new TabAdmin(tabId, userId, squareId);
 		super.getHibernateTemplate().save(entity);
 	}
 
-	public TabAdmin get(String tabId, String userId) {
+	public TabAdmin get(String tabId, String userId, String squareId) {
 		return super.getHibernateTemplate().get(TabAdmin.class,
-				new TabAdminPK(tabId, userId));
+				new TabAdminPK(tabId, userId, squareId));
 	}
-	
-	public List<TabAdmin> getTabAdmins(String tabId) {
-		return super
-				.getHibernateTemplate()
-				.findByCriteria(DetachedCriteria.forClass(TabAdmin.class));
-	}
-	
 }

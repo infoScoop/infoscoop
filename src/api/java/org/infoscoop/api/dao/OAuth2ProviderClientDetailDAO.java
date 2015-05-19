@@ -27,6 +27,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.infoscoop.api.dao.model.OAuth2ProviderClientDetail;
+import org.infoscoop.api.dao.model.OAuth2ProviderClientDetailPK;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -51,14 +52,15 @@ public class OAuth2ProviderClientDetailDAO extends HibernateDaoSupport {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public OAuth2ProviderClientDetail getClientDetailById(String clientId){
+	public OAuth2ProviderClientDetail getClientDetailById(String clientId, String squareId){
 		if (clientId == null) {
 			throw new RuntimeException("clientId must be set.");
 		}
 		
 		Iterator<OAuth2ProviderClientDetail> results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuth2ProviderClientDetail.class,"ocd")
-				.add(Restrictions.eq("ocd.id", clientId)))
+				DetachedCriteria.forClass(OAuth2ProviderClientDetail.class, "ocd")
+						.add(Restrictions.eq("ocd.Id.id", clientId))
+						.add(Restrictions.eq("ocd.Id.Squareid", squareId)))
 				.iterator();
 
 		if(results.hasNext()) {
@@ -73,11 +75,11 @@ public class OAuth2ProviderClientDetailDAO extends HibernateDaoSupport {
 			super.getHibernateTemplate().saveOrUpdate(clientDetail);
 	}
 
-	public void saveClientDetail(String clientId, String title, String resourceIds, String secret, String scope, String grantType, String redirectUrl, String authorities, Boolean deleteFlg, Integer accessTokenValidity, Integer refreshTokenValidity, String additionalInformation) {
-		OAuth2ProviderClientDetail clientDetail = getClientDetailById(clientId);
+	public void saveClientDetail(String clientId, String title, String resourceIds, String secret, String scope, String grantType, String redirectUrl, String authorities, Boolean deleteFlg, Integer accessTokenValidity, Integer refreshTokenValidity, String additionalInformation, String squareId) {
+		OAuth2ProviderClientDetail clientDetail = getClientDetailById(clientId, squareId);
 		
 		if(clientDetail == null){
-			clientDetail = new OAuth2ProviderClientDetail(clientId);
+			clientDetail = new OAuth2ProviderClientDetail(new OAuth2ProviderClientDetailPK(clientId, squareId));
 		}
 		
 		clientDetail.setTitle(title);
@@ -104,15 +106,15 @@ public class OAuth2ProviderClientDetailDAO extends HibernateDaoSupport {
 		if(refreshTokenValidity!=null){
 			clientDetail.setRefreshTokenValidity(refreshTokenValidity.intValue());
 		}else{
-			clientDetail.setRefreshTokenValidity(DEFAULT_REFRESHTOKEN_VALIDITY);			
+			clientDetail.setRefreshTokenValidity(DEFAULT_REFRESHTOKEN_VALIDITY);
 		}
 		clientDetail.setAdditionalInformation(additionalInformation);
 		
 		super.getHibernateTemplate().saveOrUpdate(clientDetail);
 	}
 
-	public void deleteClientDetail(String clientId) {
-		OAuth2ProviderClientDetail clientDetail = getClientDetailById(clientId);
+	public void deleteClientDetail(String clientId, String squareId) {
+		OAuth2ProviderClientDetail clientDetail = getClientDetailById(clientId, squareId);
 		
 		if(clientDetail != null)
 			super.getHibernateTemplate().delete(clientDetail);

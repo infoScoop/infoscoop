@@ -33,10 +33,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.SimpleExpression;
-import org.infoscoop.dao.model.I18NPK;
-import org.infoscoop.dao.model.I18n;
-import org.infoscoop.dao.model.I18nlastmodified;
-import org.infoscoop.dao.model.I18nlocale;
+import org.infoscoop.dao.model.*;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -75,40 +72,36 @@ public class I18NDAO extends HibernateDaoSupport {
 			log.info("insertUpdate successfully. : " + msg);
 	}
 
-	public void insertLocale(String type,
-			String country, String lang) {
+	public void insertLocale(String type, String country, String lang, String squareId) {
 		//insert into ${schema}.i18nLocale(type, country, lang) values (?, ?, ?)
 		
-		super.getHibernateTemplate().save( new I18nlocale( null,type,country,lang ));
+		super.getHibernateTemplate().save( new I18nlocale( null,type,country,lang, squareId));
 		
 		if (log.isInfoEnabled())
 			log.info("update successfully. : country=" + country
-					+ ", lang=" + lang);
+					+ ", lang=" + lang + ", squareId=" + squareId);
 	}
 
-	public void deleteByType(String type){
-		deleteI18NByType( type );
-		deleteI18NLocaleByType( type );
+	public void deleteByType(String type, String squareId){
+		deleteI18NByType( type, squareId );
+		deleteI18NLocaleByType( type, squareId );
 	}
-	private void deleteI18NByType( String type ) {
+	private void deleteI18NByType( String type, String squareId ) {
 		//delete from ${schema}.i18n where type = ?
-		String queryString = "delete from I18n where Id.Type = ?";
+		String queryString = "delete from I18n where Id.Type = ? and Id.Squareid = ?";
 		
-		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[]{ type } );
-		
+		super.getHibernateTemplate().bulkUpdate(queryString, new Object[]{type,squareId});
 		if (log.isInfoEnabled())
-			log.info("deleteByType successfully. : type=" + type);
+			log.info("deleteByType successfully. : type=" + type + " , squareId=" + squareId);
 	}
-	private void deleteI18NLocaleByType( String type ) {
+	private void deleteI18NLocaleByType( String type, String squareId ) {
 		//delete from ${schema}.i18nLocale where type = ?
-		String queryString = "delete from I18nlocale where Type = ?";
+		String queryString = "delete from I18nlocale where Type = ? and Squareid = ?";
 		
-		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[]{ type } );
+		super.getHibernateTemplate().bulkUpdate( queryString, new Object[]{ type, squareId } );
 		
 		if (log.isInfoEnabled())
-			log.info("deleteI18NLocaleByType successfully. : type=" + type);
+			log.info("deleteI18NLocaleByType successfully. : type=" + type + " , squareId=" + squareId);
 	}
 	
 	/**
@@ -116,29 +109,27 @@ public class I18NDAO extends HibernateDaoSupport {
 	 * @param type
 	 * @param id
 	 */
-	public void deleteI18NByIDWithoutDefault( String type, String id ) {
+	public void deleteI18NByIDWithoutDefault( String type, String id, String squareId ) {
 		//delete from ${schema}.i18nLocale where type = ?
-		String queryString = "delete from I18n where Id.Type = ? and Id.Id = ? and not(Id.Country = ? and Id.Lang = ?)";
+		String queryString = "delete from I18n where Id.Type = ? and Id.Id = ? and Id.Squareid and not(Id.Country = ? and Id.Lang = ?)";
 		
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[]{ type, id, "ALL", "ALL" } );
+				new Object[]{ type, id, squareId, "ALL", "ALL" } );
 		
 		if (log.isInfoEnabled())
-			log.info("deleteI18NByIDWithoutDefault successfully. : type=" + type + " ,id=" + id);
+			log.info("deleteI18NByIDWithoutDefault successfully. : type=" + type + " ,id=" + id + " ,squareId=" + squareId);
 	}
 
 	/**
 	 * Get the data.
 	 * 
-	 * @param res
 	 * @return
-	 * @throws DataResourceException
 	 */
-	public List selectAll() {
+	public List selectAll(String squareId) {
 		//select * from ${schema}.i18n order by type, number, id, country, lang
-		String queryString = "from I18n order by Id.Type,Number,Id.Id,Id.Country,Id.Lang";
+		String queryString = "from I18n where Id.squareId = ? order by Id.Type,Number,Id.Id,Id.Country,Id.Lang,Id.Squareid";
 		
-		return getHibernateTemplateLimited().find( queryString );
+		return getHibernateTemplateLimited().find( queryString, squareId );
 	}
 	
 	public I18n selectByPK(I18NPK pk) {
@@ -151,13 +142,13 @@ public class I18NDAO extends HibernateDaoSupport {
 	 * @param lang
 	 * @return
 	 */
-	public List getIdListByLocale(final String type, final String country, final String lang){
+	public List getIdListByLocale(final String type, final String country, final String lang, final String squareId){
 		return (List)getHibernateTemplateLimited().execute(new HibernateCallback(){
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				
 				Criteria cri = session.createCriteria(I18n.class);
-				
-				SimpleExpression se = Expression.eq("Id.Type", type);
+
+				LogicalExpression se = Expression.and(Expression.eq("Id.Type", type), Expression.eq("Id.SquareId", squareId));
 				LogicalExpression le = Expression.and(Expression.eq("Id.Country", country), Expression.eq("Id.Lang", lang));
 				LogicalExpression le2 = Expression.and(se, le);
 				
@@ -180,54 +171,49 @@ public class I18NDAO extends HibernateDaoSupport {
 	
 	/**
 	 * Get the data.
-	 * 
-	 * @param res
-	 * @return
-	 * @throws DataResourceException
 	 */
-	public List selectByType(String type){
+	public List selectByType(String type, String squareId){
 		//select * from ${schema}.i18n where type = ? order by number, id, country, lang
-		String queryString = "from I18n where Id.Type = ? order by Id.Type,Number,Id.Id,Id.Country,Id.Lang";
+		String queryString = "from I18n where Id.Type = ? and Id.Squareid order by Id.Type,Number,Id.Id,Id.Country,Id.Lang,Id.Squareid";
 		
-		List result = getHibernateTemplateLimited().find( queryString,
-				new Object[] { type });
+		List result = getHibernateTemplateLimited().find( queryString, new Object[] { type, squareId });
 		if (log.isInfoEnabled())
-			log.info("selectByType successfully. : type=" + type);
+			log.info("selectByType successfully. : type=" + type + " ,squareId=" + squareId);
 		
 		return result;
 	}
 
-	public List selectLocales() {
-		String queryString = "from I18nlocale order by Type,Country,Lang";
+	public List selectLocales(String squareId) {
+		String queryString = "from I18nlocale where Squareid = ? order by Type,Country,Lang,Squareid";
 
-		List result = super.getHibernateTemplate().find(queryString);
+		List result = super.getHibernateTemplate().find(queryString, squareId);
 		if (log.isInfoEnabled())
 			log.info("selectLocales successfully");
 		
 		return result;
 	}
 
-	public List selectLocales(String type) {
+	public List selectLocales(String type, String squareId) {
 		//select * from ${schema}.i18nLocale where type = ? order by country, lang
-		String queryString = "from I18nlocale where Type = ? order by Country,Lang";
+		String queryString = "from I18nlocale where Type = ? and Squareid = ? order by Country,Lang,Squareid";
 
 		List result = super.getHibernateTemplate().find( queryString,
-				new Object[] { type });
+				new Object[] { type, squareId });
 		if (log.isInfoEnabled())
-			log.info("selectLocales successfully. : type=" + type);
+			log.info("selectLocales successfully. : type=" + type + " ,squareId=" + squareId);
 		
 		return result;
 	}
 
-	public void updateLastmodified(String type){
+	public void updateLastmodified(String type, String squareId){
 		//update ${schema}.i18nlastmodified set lastmodified = ? where type = ?
 		//insert into ${schema}.i18nlastmodified(lastmodified, type) values (?, ?)
 		
 		I18nlastmodified lastmodified = ( I18nlastmodified )super.getHibernateTemplate().get(
-				I18nlastmodified.class,type );
+				I18nlastmodified.class, new I18NlastmodifiedPK(type, squareId));
 		boolean isUpdate = true;
 		if( lastmodified == null ) {
-			lastmodified = new I18nlastmodified( type );
+			lastmodified = new I18nlastmodified( new I18NlastmodifiedPK(type, squareId) );
 			isUpdate = false;
 		}
 		
@@ -237,67 +223,67 @@ public class I18NDAO extends HibernateDaoSupport {
 		
 		if( log.isInfoEnabled() ) {
 			if( isUpdate ) {
-				log.info("updateLastmodified successfully. : type=" + type);
+				log.info("updateLastmodified successfully. : type=" + type + " ,squareId=" + squareId);
 			} else {
-				log.info("insertLastmodified successfully. : type=" + type);
+				log.info("insertLastmodified successfully. : type=" + type + " ,squareId=" + squareId);
 			}
 		}
 	}
 
-	public String getLastmodified(String type){
-		I18nlastmodified lastModified = findI18nlastmodified( type );
+	public String getLastmodified(String type, String squareId){
+		I18nlastmodified lastModified = findI18nlastmodified( type, squareId );
 		if( lastModified == null )
 			return null;
 		
 		return new SimpleDateFormat( TIMESTAMP_FORMAT ).format( lastModified.getLastmodified());
 	}
-	public I18nlastmodified findI18nlastmodified( String type ) {
+	public I18nlastmodified findI18nlastmodified( String type, String squareId ) {
 		//select * from ${schema}.i18nlastmodified where type = ?
-		String queryString = "from I18nlastmodified where Id = ?";
+		String queryString = "from I18nlastmodified where Id.Id = ? and Id.Squareid = ?";
 		
 		List result = super.getHibernateTemplate().find( queryString,
-				new Object[] { type });
+				new Object[] { type, squareId });
 		if (log.isInfoEnabled())
-			log.info("selectByType successfully. : type=" + type);
+			log.info("selectByType successfully. : type=" + type + " ,squareId=" + squareId);
 		
 		if( result.isEmpty() )
 			return null;
 		
 		return ( I18nlastmodified )result.get(0);
 	}
-	public List findI18n( String type,String country,String lang ) {
+	public List findI18n( String type, String country, String lang, String squareId ) {
 		//select * from ${schema}.i18n where type = ? and country = ? and lang = ? order by number
-		String queryString = "from I18n where Id.Type = ? and Id.Country = ? and Id.Lang = ? order by Id.Id";
+		String queryString = "from I18n where Id.Type = ? and Id.Country = ? and Id.Lang = ? and Id.Squareid = ? order by Id.Id";
 		
 		List result = getHibernateTemplateLimited().find( queryString,
-				new Object[] { type,country,lang } );
+				new Object[] { type,country,lang,squareId } );
 		if (log.isInfoEnabled())
-			log.info("getResourceMap successfully : country=" + country+ ",lang=" + lang );
+			log.info("getResourceMap successfully : country=" + country+ ",lang=" + lang + " ,squareId=" + squareId );
 		
 		return result;
 	}
 	
-	public void deleteI18NByLocale( String type, String country, String lang ) {
-		String queryString = "delete from I18n where Type = ? and Country = ? and Lang = ?";
+	public void deleteI18NByLocale( String type, String country, String lang, String squareId ) {
+		String queryString = "delete from I18n where Id.Type = ? and Id.Country = ? and Id.Lang = ? and Id.Squareid = ?";
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[]{ type, country, lang } );
+				new Object[]{ type, country, lang, squareId } );
 		
 		if (log.isInfoEnabled())
-			log.info("deleteI18NByLocale successfully. : type=" + type + " country=" + country + " lang=" + lang);
+			log.info("deleteI18NByLocale successfully. : type=" + type + " country=" + country + " ,lang=" + lang + " ,squareId=" + squareId);
 	}
 	
-	public void deleteI18NLocale( String type, String country, String lang ) {
-		String queryString = "delete from I18nlocale where Type = ? and Country = ? and Lang = ?";
+	public void deleteI18NLocale( String type, String country, String lang, String squareId) {
+		String queryString = "delete from I18nlocale where Type = ? and Country = ? and Lang = ? and Squareid = ?";
 		
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[]{ type, country, lang } );
+				new Object[]{ type, country, lang, squareId } );
 		
 		if (log.isInfoEnabled())
-			log.info("deleteI18NLocale successfully. : type=" + type);
+			log.info("deleteI18NLocale successfully. : type=" + type + " ,squareId=" + squareId);
 	}
 	
 	public static void main(String[] args) {
-		List list = newInstance().selectAll();
+		List list = newInstance().selectAll("default");
 		Iterator ite = list.iterator();
 		while(ite.hasNext()){
 			System.out.println(ite.next());

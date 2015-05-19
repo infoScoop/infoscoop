@@ -40,13 +40,14 @@ public class SystemMessageDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().save(msg);
 	}
 
-	public Collection<SystemMessage> selectByToAndNoRead(String uid) {
+	public Collection<SystemMessage> selectByToAndNoRead(String uid, String squareId) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(SystemMessage.class).add(
 						Expression.and(
 								Expression.eq(SystemMessage.PROP_TO, uid),
-								Expression.eq(SystemMessage.PROP_ISREAD, Integer.valueOf(0)))).addOrder(
-										Order.desc(SystemMessage.PROP_ID)));
+								Expression.eq(SystemMessage.PROP_ISREAD, Integer.valueOf(0)))).add(
+						Expression.eq(SystemMessage.PROP_SQUARE_ID, squareId)).addOrder(
+						Order.desc(SystemMessage.PROP_ID)));
 	}
 
 }

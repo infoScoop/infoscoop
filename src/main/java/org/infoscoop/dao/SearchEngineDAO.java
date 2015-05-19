@@ -21,6 +21,7 @@ package org.infoscoop.dao;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.Searchengine;
+import org.infoscoop.dao.model.SearchenginePK;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class SearchEngineDAO extends HibernateDaoSupport{
@@ -40,15 +41,15 @@ public class SearchEngineDAO extends HibernateDaoSupport{
 	 * @return
 	 * @throws DataResourceException
 	 */
-	public Searchengine select(int tempFlag) {
-		return (Searchengine) super.getHibernateTemplate().get(Searchengine.class, new Integer(tempFlag));
+	public Searchengine select(int tempFlag, String squareId) {
+		return (Searchengine) super.getHibernateTemplate().get(Searchengine.class, new SearchenginePK(new Integer(tempFlag), squareId));
 	}
 	
-	public Searchengine selectTemp() {
-		return (Searchengine)select(SEARCHENGINE_FLAG_TEMP);
+	public Searchengine selectTemp(String squareId) {
+		return (Searchengine)select(SEARCHENGINE_FLAG_TEMP, squareId);
 	}
-	public Searchengine selectEntity() {
-		return (Searchengine)select(SEARCHENGINE_FLAG_NOT_TEMP);
+	public Searchengine selectEntity(String squareId) {
+		return (Searchengine)select(SEARCHENGINE_FLAG_NOT_TEMP, squareId);
 	}
 	
 	/**

@@ -34,12 +34,12 @@ public class PropertiesDAO extends HibernateDaoSupport {
         return (PropertiesDAO)SpringUtil.getContext().getBean("propertiesDAO");
 	}
 	
-	public Properties findProperty( String name ) {
+	public Properties findProperty( String name, String squareId ) {
 		//select value from ${schema}.properties where id=?
-		String queryString = "from Properties where Id=?";
+		String queryString = "from Properties where Id.Id =? and Id.Squareid = ?";
 		
 		List properties = super.getHibernateTemplate().find( queryString,
-				new Object[]{ name });
+				new Object[]{ name, squareId });
 		if( properties.isEmpty() )
 			return null;
 		
@@ -51,23 +51,18 @@ public class PropertiesDAO extends HibernateDaoSupport {
 	 * The list includes Map(id, value, desc).
 	 * @return
 	 */
-	public List findAllProperties(){
+	public List findAllProperties(String squareId){
 		//select * from ${schema}.properties
-		String queryString = "from Properties order by Advanced";
+		String queryString = "from Properties where Id.Squareid = ? order by Advanced";
 		
-		return super.getHibernateTemplate().find( queryString );
+		return super.getHibernateTemplate().find( queryString, squareId );
 	}
 	
 	/**
 	 * Update the data.
-	 * 
-	 * @param res
-	 * @param id
-	 * @param value
-	 * @throws DataResourceException
 	 */
-	public void update(String id, String value) {
-		Properties property = findProperty( id );
+	public void update(String id, String value, String squareId) {
+		Properties property = findProperty( id, squareId );
 		if( property == null )
 			return;
 		
@@ -78,6 +73,6 @@ public class PropertiesDAO extends HibernateDaoSupport {
 	}
 	
 	public static void main(String args[]){
-		System.out.println(newInstance().findAllProperties());
+		System.out.println(newInstance().findAllProperties("default"));
 	}
 }

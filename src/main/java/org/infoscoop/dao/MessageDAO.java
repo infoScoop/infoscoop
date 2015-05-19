@@ -44,61 +44,65 @@ public class MessageDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().save(msg);
 	}
 
-	public List<Message> selectAll(String myuid, long offset, int limit) {
+	public List<Message> selectAll(String myuid, long offset, int limit, String squareId) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Message.class)
-					.add( Expression.or(
-							Expression.in(Message.PROP_TYPE,new String[] {
-									Message.MESSAGE_PUBLIC,
-									Message.FYI_PUBLIC
-							}),
-							Expression.eq(Message.PROP_TO, myuid)
-					)).add( Expression.lt( Message.PROP_ID,offset ))
-					.addOrder( Order.desc(Message.PROP_POSTED_TIME)), 0, limit);
+						.add(Expression.or(
+								Expression.in(Message.PROP_TYPE, new String[]{
+										Message.MESSAGE_PUBLIC,
+										Message.FYI_PUBLIC
+								}),
+								Expression.eq(Message.PROP_TO, myuid)
+						)).add(Expression.eq(Message.PROP_SQUARE_ID, squareId))
+						.add(Expression.lt(Message.PROP_ID, offset))
+						.addOrder(Order.desc(Message.PROP_POSTED_TIME)), 0, limit);
 	}
 
-	public List<Message> selectByUid(String uid, long offset, int limit) {
+	public List<Message> selectByUid(String uid, long offset, int limit, String squareId) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Message.class).add(
 						Expression.eq(Message.PROP_FROM, uid)).add(
-						Expression.in(Message.PROP_TYPE, new String[] {
+						Expression.in(Message.PROP_TYPE, new String[]{
 								Message.MESSAGE_PUBLIC, Message.MESSAGE_FROM,
 								Message.FYI_PUBLIC, Message.FYI_PUBLIC,
-								Message.MESSAGE_BROADCAST })).add(
+								Message.MESSAGE_BROADCAST})).add(
+						Expression.eq(Message.PROP_SQUARE_ID, squareId)).add(
 						Expression.lt(Message.PROP_ID, offset)).addOrder(
-						Order.desc(Message.PROP_POSTED_TIME)),0, limit);
+						Order.desc(Message.PROP_POSTED_TIME)), 0, limit);
 	}
 
-	public List<Message> selectByTo(String to, long offset, int limit) {
+	public List<Message> selectByTo(String to, long offset, int limit, String squareId) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Message.class).add(
 						Expression.or(Expression.eq(Message.PROP_TO, to),
 								Expression.eq(Message.PROP_TYPE,
 										Message.MESSAGE_BROADCAST))).add(
+						Expression.eq(Message.PROP_SQUARE_ID, squareId)).add(
 						Expression.lt(Message.PROP_ID, offset)).addOrder(
 						Order.desc(Message.PROP_POSTED_TIME)), 0, limit);
 	}
 
-	public List<Message> selectByUids(String myuid, String[] uidArr,
-			long offset, int limit) {
+	public List<Message> selectByUids(String myuid, String[] uidArr, long offset, int limit, String squareId) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Message.class)
-						.add( Expression.and(
-								Expression.in( Message.PROP_FROM,uidArr),
+						.add(Expression.and(
+								Expression.in(Message.PROP_FROM, uidArr),
 								Expression.or(
-										Expression.in( Message.PROP_TYPE, new String[] {
+										Expression.in(Message.PROP_TYPE, new String[]{
 												Message.MESSAGE_PUBLIC,
-												Message.FYI_PUBLIC }),
-										Expression.eq(Message.PROP_TO,myuid)
+												Message.FYI_PUBLIC}),
+										Expression.eq(Message.PROP_TO, myuid)
 								)
-						)).add( Expression.lt( Message.PROP_ID,offset ))
-						.addOrder(Order.desc(Message.PROP_POSTED_TIME)),0, limit);
+						)).add(Expression.eq(Message.PROP_SQUARE_ID, squareId)
+				).add(Expression.lt(Message.PROP_ID, offset))
+						.addOrder(Order.desc(Message.PROP_POSTED_TIME)), 0, limit);
 	}
 
-	public List<Message> selectByType(String type, long offset, int limit) {
+	public List<Message> selectByType(String type, long offset, int limit, String squareId) {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Message.class).add(
 						Expression.eq(Message.PROP_TYPE, type)).add(
+						Expression.eq(Message.PROP_SQUARE_ID, squareId)).add(
 						Expression.lt(Message.PROP_ID, offset)).addOrder(
 						Order.desc(Message.PROP_POSTED_TIME)), 0, limit);
 	}

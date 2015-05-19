@@ -32,6 +32,7 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.Session;
+import org.infoscoop.dao.model.SessionPK;
 import org.infoscoop.util.SpringUtil;
 import org.infoscoop.web.HttpStatusCode;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -47,59 +48,61 @@ public class SessionDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-    public String getUid(String sessionId) {
+    public String getUid(String sessionId, String squareId) {
 		Iterator<Session> results = super
 				.getHibernateTemplate()
 				.findByCriteria(
 						DetachedCriteria.forClass(Session.class).add(
-								Expression
-										.eq(Session.PROP_SESSIONID, sessionId)))
+								Expression.eq(Session.PROP_SESSIONID, sessionId)).add(
+								Expression.eq("Id.Squareid", squareId)))
 				.iterator();
 		if (results.hasNext()) {
 			Session session = results.next();
-			return session.getUid();
+			return session.getId().getUid();
 		}
 		return null;
 	}
 	
-	public String getSessionId(String uid) {
+	public String getSessionId(String uid, String squareId) {
 		if (uid == null)
 			throw new RuntimeException("uid must be set.");
-		
+
 		Iterator results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Session.class).add(
-						Expression.eq("Uid", uid))
-						).iterator();
+						Expression.eq("Id.Uid", uid)).add(
+						Expression.eq("Id.Squareid", squareId))
+				).iterator();
 		if( results.hasNext() ){
 			Session session = ( Session )results.next();
 			return session.getSessionid();
-		}else
+		}else {
 			return null;
+		}
 	}
 
-	private Session findSessionByUid(String uid) {
+	private Session findSessionByUid(String uid, String squareId) {
 		if (uid == null)
 			throw new RuntimeException("uid must be set.");
-		
+
 		//select sessionId from ${schema}.session where uid=?
-		String queryString = "from Session where Uid = ?";
+		String queryString = "from Session where Id.Uid = ? and Id.Squareid";
 		Iterator results = super.getHibernateTemplate().find( queryString,
-				new Object[] { uid } ).iterator();
+				new Object[] { uid, squareId } ).iterator();
 		if(results.hasNext())
 			return ( Session )results.next();
 		return null;
 	}
 
-	public String newSessionId(String uid) {
+	public String newSessionId(String uid, String squareId) {
 		if (uid == null)
 			throw new RuntimeException("uid must be set.");
 		String newSessionId = numberSessionId(uid);
 		if (log.isInfoEnabled())
-			log.info("newSessionId: uid=" + uid + ", sessionId="+ newSessionId);
+			log.info("newSessionId: uid=" + uid + ", sessionId="+ newSessionId + ", squareId=" + squareId);
 		
-		Session session = findSessionByUid(uid);
+		Session session = findSessionByUid(uid, squareId);
 		if (session == null)
-			session = new Session(uid);
+			session = new Session(new SessionPK(uid, squareId));
 		session.setSessionid( newSessionId );
 		
 		session.setLogindatetime(new Date());
@@ -112,9 +115,9 @@ public class SessionDAO extends HibernateDaoSupport {
 		return uid + System.currentTimeMillis();
 	}
 	
-	public void deleteSessionId(String uid) {
-		String queryString = "delete from Session where Uid = ?";
-		super.getHibernateTemplate().bulkUpdate(queryString, new Object[] { uid });
+	public void deleteSessionId(String uid, String squareId) {
+		String queryString = "delete from Session where Id.Uid = ? and Id.Squareid";
+		super.getHibernateTemplate().bulkUpdate(queryString, new Object[] { uid, squareId });
 	}
 	
 	/**
@@ -122,13 +125,14 @@ public class SessionDAO extends HibernateDaoSupport {
 	 * @param period
 	 * @return
 	 */
-	public int getActiveSessionsCount(final int period){
+	public int getActiveSessionsCount(final int period, final String squareId){
 		return (Integer)super.getHibernateTemplate().execute(new HibernateCallback(){
 
 			public Object doInHibernate(org.hibernate.Session session)
 					throws HibernateException, SQLException {
 				
 				Criteria crit = session.createCriteria(Session.class);
+				crit.add(Expression.eq("Id.Squareid", squareId));
 				
 				Calendar cal = Calendar.getInstance();
 				cal.add(Calendar.DATE, period);
@@ -150,12 +154,12 @@ public class SessionDAO extends HibernateDaoSupport {
 	 * Get the count, regarding the past one week as an effective session.
 	 * @return
 	 */
-	public int getActiveSessionsCount(){
-		return getActiveSessionsCount(-7);
+	public int getActiveSessionsCount(String squareId){
+		return getActiveSessionsCount(-7, squareId);
 	}
 	
-	public void setForceReload( String uid ) {
-		Session session = findSessionByUid( uid );
+	public void setForceReload( String uid, String squareId ) {
+		Session session = findSessionByUid( uid, squareId );
 		if( session == null )
 			return;
 		

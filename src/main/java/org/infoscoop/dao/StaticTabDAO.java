@@ -59,9 +59,10 @@ public class StaticTabDAO extends HibernateDaoSupport {
 	public StaticTabDAO() {
 	}
 
-	public StaticTab getTab(String tabId) {
+	public StaticTab getTab(String tabId, String squareId) {
 		DetachedCriteria c = DetachedCriteria.forClass(StaticTab.class);
-		c.add(Expression.eq(StaticTab.PROP_ID, tabId));
+		c.add(Expression.eq("Id.Tabid", tabId));
+		c.add(Expression.eq("Id.Squareid", squareId));
 		c.add(Expression.eq(StaticTab.PROP_DELETEFLAG,
 				StaticTab.DELETEFLAG_FALSE));
 
@@ -79,12 +80,13 @@ public class StaticTabDAO extends HibernateDaoSupport {
 	 * Get all static tabs without commandBar and portalHeader. 
 	 * @return
 	 */
-	public List getStaticTabList() {
+	public List getStaticTabList(String squareId) {
 		DetachedCriteria c = DetachedCriteria.forClass(StaticTab.class);
 		c.add(Expression.eq(StaticTab.PROP_DELETEFLAG,
 				StaticTab.DELETEFLAG_FALSE));
-		c.add(Expression.ne(StaticTab.PROP_ID, StaticTab.COMMANDBAR_TAB_ID));
-		c.add(Expression.ne(StaticTab.PROP_ID, StaticTab.PORTALHEADER_TAB_ID));
+		c.add(Expression.eq("Id.Squareid", squareId));
+		c.add(Expression.ne("Id.Tabid", StaticTab.COMMANDBAR_TAB_ID));
+		c.add(Expression.ne("Id.Tabid", StaticTab.PORTALHEADER_TAB_ID));
 
 		c.createAlias(TabAdmin.REF, "ta", CriteriaSpecification.LEFT_JOIN);
 		c.addOrder(Order.asc(StaticTab.PROP_TABNUMBER));
@@ -96,8 +98,9 @@ public class StaticTabDAO extends HibernateDaoSupport {
 	 * Get all static tabs with commandBar and portalHeader. 
 	 * @return
 	 */
-	public List getAllStaicLayoutList() {
+	public List getAllStaicLayoutList(String squareId) {
 		DetachedCriteria c = DetachedCriteria.forClass(StaticTab.class);
+		c.add(Expression.eq("Id.Squareid", squareId));
 		c.add(Expression.eq(StaticTab.PROP_DELETEFLAG,
 				StaticTab.DELETEFLAG_FALSE));
 		
@@ -112,22 +115,24 @@ public class StaticTabDAO extends HibernateDaoSupport {
 	 * 
 	 * @return
 	 */
-	public List getTabIdList() {
+	public List getTabIdList(String squareId) {
 		DetachedCriteria c = DetachedCriteria.forClass(StaticTab.class);
-		c.add(Expression.ne(StaticTab.PROP_ID, StaticTab.COMMANDBAR_TAB_ID));
-		c.add(Expression.ne(StaticTab.PROP_ID, StaticTab.PORTALHEADER_TAB_ID));
+		c.add(Expression.eq("Id.Squareid", squareId));
+		c.add(Expression.ne("Id.Tabid", StaticTab.COMMANDBAR_TAB_ID));
+		c.add(Expression.ne("Id.Tabid", StaticTab.PORTALHEADER_TAB_ID));
 		c.add(Expression.eq(StaticTab.PROP_DELETEFLAG,
 				StaticTab.DELETEFLAG_FALSE));
-		c.setProjection(Projections.property("Tabid"));
+		c.setProjection(Projections.property("Id.Tabid"));
 		c.addOrder(Order.asc(StaticTab.PROP_TABNUMBER));
 
 		return super.getHibernateTemplate().findByCriteria(c);
 	}
 
-	public Collection getAllTabs(String uid) throws Exception {
+	public Collection getAllTabs(String uid, String squareId) throws Exception {
 		Collection tabs = (Collection) super.getHibernateTemplate()
 				.findByCriteria(
-						DetachedCriteria.forClass(StaticTab.class).addOrder(
+						DetachedCriteria.forClass(StaticTab.class).add(
+								Expression.eq("Id.Squareid", squareId)).addOrder(
 								Order.asc("tabNumber")));
 
 		return tabs;
@@ -136,15 +141,15 @@ public class StaticTabDAO extends HibernateDaoSupport {
 	 * @param res
 	 * @return
 	 */
-	public Map selectMax() {
+	public Map selectMax(String squareId) {
 		HibernateTemplate templete = super.getHibernateTemplate();
-		List staticTabs = templete.findByCriteria(DetachedCriteria.forClass(
-				StaticTab.class).add(
-				Expression.not(Expression.eq("Tabid", StaticTab.COMMANDBAR_TAB_ID))).add(
-				Expression.not(Expression.eq("Tabid", StaticTab.PORTALHEADER_TAB_ID)))
+		List staticTabs = templete.findByCriteria(DetachedCriteria.forClass(StaticTab.class).add(
+				Expression.eq("Id.Squareid", squareId)).add(
+				Expression.not(Expression.eq("Id.Tabid", StaticTab.COMMANDBAR_TAB_ID))).add(
+				Expression.not(Expression.eq("Id.Tabid", StaticTab.PORTALHEADER_TAB_ID)))
 				.setProjection(
 						Projections.projectionList().add(
-								Projections.max("Tabid")).add(
+								Projections.max("Id.Tabid")).add(
 								Projections.max(StaticTab.PROP_TABNUMBER))));
 
 		Map resultMap = new HashMap();
@@ -162,15 +167,15 @@ public class StaticTabDAO extends HibernateDaoSupport {
 	 * @param res
 	 * @return
 	 */
-	public String selectMaxTabId() {
+	public String selectMaxTabId(String squareId) {
 		HibernateTemplate templete = super.getHibernateTemplate();
-		List tabIdList = templete.findByCriteria(DetachedCriteria.forClass(
-				StaticTab.class).add(
-				Expression.not(Expression.eq("Tabid", StaticTab.COMMANDBAR_TAB_ID))).add(
-				Expression.not(Expression.eq("Tabid", StaticTab.PORTALHEADER_TAB_ID)))
+		List tabIdList = templete.findByCriteria(DetachedCriteria.forClass(StaticTab.class).add(
+				Expression.eq("Id.Squareid", squareId)).add(
+				Expression.not(Expression.eq("Id.Tabid", StaticTab.COMMANDBAR_TAB_ID))).add(
+				Expression.not(Expression.eq("Id.Tabid", StaticTab.PORTALHEADER_TAB_ID)))
 				.setProjection(
 						Projections.projectionList().add(
-								Projections.max("Tabid"))));
+								Projections.max("Id.Tabid"))));
 		
 		String tabId = null;
 		for (int i = 0; i < tabIdList.size(); i++) {
@@ -188,8 +193,8 @@ public class StaticTabDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().delete(tab);
 	}
 
-	public void deleteTab(String tabId) {
-		super.getHibernateTemplate().delete(getTab(tabId));
+	public void deleteTab(String tabId, String squareId) {
+		super.getHibernateTemplate().delete(getTab(tabId, squareId));
 	}
 	
 

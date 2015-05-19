@@ -24,6 +24,7 @@ import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.Proxyconf;
+import org.infoscoop.dao.model.ProxyconfPK;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class ProxyConfDAO extends HibernateDaoSupport {
@@ -35,27 +36,17 @@ public class ProxyConfDAO extends HibernateDaoSupport {
 
 	/**
 	 * Get the data.
-	 * 
-	 * @param res
-	 * @param tempFlag
-	 * @return
-	 * @throws DataResourceException
 	 */
-	public Proxyconf select(int tempFlag){
-		return (Proxyconf) super.getHibernateTemplate().get(Proxyconf.class, new Integer(tempFlag));		
+	public Proxyconf select(int tempFlag, String squareId){
+		return (Proxyconf) super.getHibernateTemplate().get(Proxyconf.class, new ProxyconfPK(new Integer(tempFlag), squareId));
 	}
 
-	public Proxyconf select() {
-		return select(PROXYCONF_FLAG_TEMP);
+	public Proxyconf select(String squareId) {
+		return select(PROXYCONF_FLAG_TEMP, squareId);
 	}
 
 	/**
 	 * Update the data.
-	 * 
-	 * @param res
-	 * @param node
-	 * @param tempFlag
-	 * @throws DataResourceException
 	 */
 	public void update(Proxyconf entity){
 		
@@ -66,15 +57,10 @@ public class ProxyConfDAO extends HibernateDaoSupport {
 
 	/**
 	 * Get the update date.
-	 * 
-	 * @param res
-	 * @param tempFlag
-	 * @return
-	 * @throws DataResourceException
 	 */
-	public String selectLastModified(int tempFlag){
-		Proxyconf entity = (Proxyconf)super.getHibernateTemplate().load(Proxyconf.class, new Integer(tempFlag));
-		
+	public String selectLastModified(int tempFlag, String squareId){
+		Proxyconf entity = (Proxyconf)super.getHibernateTemplate().load(Proxyconf.class, new ProxyconfPK(new Integer(tempFlag), squareId));
+
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(entity.getLastmodified());
 		
 	}
