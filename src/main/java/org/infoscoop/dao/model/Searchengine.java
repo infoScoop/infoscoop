@@ -37,11 +37,11 @@ public class Searchengine extends BaseSearchengine {
 	 * Constructor for required fields
 	 */
 	public Searchengine (
-		java.lang.Integer temp,
+		SearchenginePK id,
 		java.lang.String data) {
 
 		super (
-			temp,
+			id,
 			data);
 	}
 

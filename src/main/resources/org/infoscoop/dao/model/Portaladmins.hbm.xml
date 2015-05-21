@@ -50,7 +50,6 @@
 			outer-join="auto"
 			not-found="ignore">
 			<column name="Roleid" />
-			<column name="Squareid" />
 		</many-to-one>
 
 	</class>	

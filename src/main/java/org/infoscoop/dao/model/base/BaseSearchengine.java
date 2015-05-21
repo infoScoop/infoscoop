@@ -19,6 +19,8 @@ package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
 
+import org.infoscoop.dao.model.SearchenginePK;
+
 
 /**
  * This is an object that contains data related to the SEARCHENGINE table.
@@ -45,10 +47,10 @@ public abstract class BaseSearchengine  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseSearchengine (
-		java.lang.Integer temp,
+		SearchenginePK id,
 		java.lang.String data) {
 
-		this.setTemp(temp);
+		this.setId(id);
 		this.setData(data);
 		initialize();
 	}
@@ -57,22 +59,22 @@ public abstract class BaseSearchengine  implements Serializable {
 
 
 	// fields
-	private java.lang.Integer temp;
+	private SearchenginePK id;
 	private java.lang.String data;
 
 	/**
 	 * Return the value associated with the column: TEMP
 	 */
-	public java.lang.Integer getTemp () {
-		return temp;
+	public SearchenginePK getId () {
+		return id;
 	}
 
 	/**
 	 * Set the value related to the column: TEMP
 	 * @param temp the TEMP value
 	 */
-	public void setTemp (java.lang.Integer temp) {
-		this.temp = temp;
+	public void setId (SearchenginePK id) {
+		this.id = id;
 	}
 
 

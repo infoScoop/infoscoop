@@ -26,7 +26,10 @@
   <property column="disabledefault" generated="never" lazy="false"
    length="10" name="Disabledefault" not-null="true" type="integer"/>
   <set inverse="true" name="TabAdmin" sort="unsorted" lazy="false">
-   <key column="Tabid"/>
+   <key>
+    <column name="Tabid"/>
+    <column name="Squareid"/>
+   </key>
    <one-to-many class="TabAdmin"/>
   </set>
   <set name="TabLayout" inverse="true" lazy="false">

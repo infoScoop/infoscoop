@@ -28,6 +28,7 @@ import org.apache.xpath.XPathAPI;
 import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.SearchEngineDAO;
 import org.infoscoop.dao.model.Searchengine;
+import org.infoscoop.dao.model.SearchenginePK;
 import org.infoscoop.util.RoleUtil;
 import org.infoscoop.util.XmlUtil;
 import org.json.JSONObject;
@@ -303,9 +304,12 @@ public class SearchEngineService {
 		}
 		// Overwrite to temporary
 		Searchengine tempEntity =  this.searchEngineDAO.select(SearchEngineDAO.SEARCHENGINE_FLAG_TEMP,squareid);
-		if(tempEntity == null)
-			tempEntity = new Searchengine(new Integer(
-					SearchEngineDAO.SEARCHENGINE_FLAG_TEMP), entity.getData());
+		if(tempEntity == null){
+			Integer temp = new Integer(SearchEngineDAO.SEARCHENGINE_FLAG_TEMP);
+			SearchenginePK pk = new SearchenginePK(temp, squareid);
+			
+			tempEntity = new Searchengine(pk, entity.getData());
+		}
 		else
 			tempEntity.setData(entity.getData());
 		this.searchEngineDAO.update(tempEntity);

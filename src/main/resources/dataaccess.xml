@@ -414,7 +414,7 @@
    	   		<ref bean="sessionFactory"/>
    	 	</property>
 	</bean>
-    <bean id="squareDAO" class="org.infoscoop.api.dao.SquareDAO">
+    <bean id="squareDAO" class="org.infoscoop.dao.SquareDAO">
         <property name="sessionFactory">
             <ref bean="sessionFactory"/>
         </property>

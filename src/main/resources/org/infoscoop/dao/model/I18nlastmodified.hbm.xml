@@ -9,7 +9,7 @@
 		table="IS_I18NLASTMODIFIED"
 	>
 		<meta attribute="sync-DAO">false</meta>
-        <composite-id name="Id" class="I18nlastmodifiedPK">
+        <composite-id name="Id" class="I18NlastmodifiedPK">
             <key-property
                 name="Id"
                 column="TYPE"
