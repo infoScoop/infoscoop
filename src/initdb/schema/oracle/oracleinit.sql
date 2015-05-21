@@ -432,7 +432,9 @@ create index is_systemmessages on is_systemmessages(isread);
 create table IS_ACCOUNTS (
   "UID" varchar(150 BYTE ) not null primary key,
   name varchar(255 BYTE ),
-  password varchar(255 BYTE )
+  password varchar(255 BYTE ),
+  default_belong_id varchar(64 BYTE),
+  belong_id clob
 );
 
 --

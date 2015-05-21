@@ -414,7 +414,9 @@ create index is_systemmessages on is_systemmessages(isread);
 create table is_accounts (
   uid varchar(150) not null primary key,
   name varchar(255),
-  password varchar(255)
+  password varchar(255),
+    default_belong_id varchar(64),
+    belong_id clob
 ) compress yes;
 
 --

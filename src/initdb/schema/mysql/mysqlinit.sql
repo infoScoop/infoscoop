@@ -405,7 +405,9 @@ create index is_systemmessages on IS_SYSTEMMESSAGES(isread);
 create table IS_ACCOUNTS (
   uid varchar(150) not null primary key,
   name varchar(255),
-  password varchar(255)
+  password varchar(255),
+  default_belong_id varchar(64),
+  belong_id text
 ) ENGINE=InnoDB;
 
 --

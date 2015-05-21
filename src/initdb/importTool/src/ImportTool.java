@@ -31,23 +31,23 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.Account;
-import org.infoscoop.dao.model.Adminrole;
-import org.infoscoop.dao.model.Forbiddenurls;
-import org.infoscoop.dao.model.Gadget;
-import org.infoscoop.dao.model.GadgetIcon;
-import org.infoscoop.dao.model.HOLIDAYSPK;
-import org.infoscoop.dao.model.Holidays;
-import org.infoscoop.dao.model.I18NPK;
-import org.infoscoop.dao.model.I18n;
-import org.infoscoop.dao.model.I18nlocale;
-import org.infoscoop.dao.model.OAuthCertificate;
-import org.infoscoop.dao.model.Portaladmins;
-import org.infoscoop.dao.model.Portallayout;
-import org.infoscoop.dao.model.Properties;
-import org.infoscoop.dao.model.Proxyconf;
-import org.infoscoop.dao.model.Searchengine;
-import org.infoscoop.dao.model.Siteaggregationmenu;
-import org.infoscoop.dao.model.WidgetConf;
+import org.infoscoop.initdb.dao.model.Adminrole;
+import org.infoscoop.initdb.dao.model.Forbiddenurls;
+import org.infoscoop.initdb.dao.model.Gadget;
+import org.infoscoop.initdb.dao.model.GadgetIcon;
+import org.infoscoop.initdb.dao.model.HOLIDAYSPK;
+import org.infoscoop.initdb.dao.model.Holidays;
+import org.infoscoop.initdb.dao.model.I18NPK;
+import org.infoscoop.initdb.dao.model.I18n;
+import org.infoscoop.initdb.dao.model.I18nlocale;
+import org.infoscoop.initdb.dao.model.OAuthCertificate;
+import org.infoscoop.initdb.dao.model.Portaladmins;
+import org.infoscoop.initdb.dao.model.Portallayout;
+import org.infoscoop.initdb.dao.model.Properties;
+import org.infoscoop.initdb.dao.model.Proxyconf;
+import org.infoscoop.initdb.dao.model.Searchengine;
+import org.infoscoop.initdb.dao.model.Siteaggregationmenu;
+import org.infoscoop.initdb.dao.model.WidgetConf;
 import org.infoscoop.initdb.dao.model.TABLAYOUTPK;
 import org.infoscoop.initdb.dao.model.TabLayout;
 import org.springframework.context.ApplicationContext;
@@ -383,7 +383,7 @@ abstract class CSVBeanFactory<T> {
 class I18nFactory extends CSVBeanFactory<I18n>{
 	public I18n newBean( CSVField[] values ) {
 		I18NPK pk = new I18NPK();
-		pk.setType( values[0].toString() );
+		pk.setType(values[0].toString() );
 		pk.setId( values[1].toString() );
 		pk.setCountry( values[2].toString() );
 		pk.setLang( values[3].toString() );
@@ -399,7 +399,7 @@ class I18nFactory extends CSVBeanFactory<I18n>{
 
 // type,country,lang
 class I18nLocaleFactory extends CSVBeanFactory<I18nlocale> {
-	public I18nlocale newBean( CSVField[] values ) {
+	public I18nlocale newBean( CSVField[] values) {
 		I18nlocale i18nLocale = new I18nlocale();
 		i18nLocale.setType( values[1].toString() );
 		i18nLocale.setCountry( values[2].toString() );
@@ -410,11 +410,11 @@ class I18nLocaleFactory extends CSVBeanFactory<I18nlocale> {
 
 	@Override
 	public Criteria createUniqueCriteria(Session session, Object obj) {
-		I18nlocale i18nlocale = (I18nlocale)obj;
+		I18nlocale i18nlocale = (I18nlocale) obj;
 		Criteria c = session.createCriteria(I18nlocale.class);
 		c.add(Expression.conjunction()
-		    	.add( Expression.eq(I18nlocale.PROP_TYPE, i18nlocale.getType() ) )
-		    	.add( Expression.eq(I18nlocale.PROP_COUNTRY, i18nlocale.getCountry() ) )
+						.add(Expression.eq(I18nlocale.PROP_TYPE, i18nlocale.getType()))
+						.add(Expression.eq(I18nlocale.PROP_COUNTRY, i18nlocale.getCountry() ) )
 		    	.add( Expression.eq(I18nlocale.PROP_LANG, i18nlocale.getLang() ) )
 		    	);
 
@@ -440,7 +440,7 @@ class I18nLocaleFactory extends CSVBeanFactory<I18nlocale> {
 class AdminroleFactory extends CSVBeanFactory<Adminrole> {
 	public Adminrole newBean( CSVField[] values ) {
 		Adminrole adminrole = new Adminrole();
-		adminrole.setRoleid( values[1].toString() );
+		adminrole.setRoleid( values[1].toString());
 		adminrole.setName(values[2].toString());
 		adminrole.setPermission( values[3].toString() );
 		adminrole.setAllowdelete( values[4].toInt());
@@ -461,7 +461,7 @@ class AdminroleFactory extends CSVBeanFactory<Adminrole> {
 		return true;
 	}
 	public Criteria createUniqueCriteria(org.hibernate.Session session, Object obj){
-		Adminrole adminrole = (Adminrole)obj;
+		Adminrole adminrole = (Adminrole) obj;
 		Criteria c = session.createCriteria(Adminrole.class);
 		c.add(Expression.eq(Adminrole.PROP_ROLEID,  adminrole.getRoleid()));
 
@@ -490,8 +490,8 @@ class PortalAdminsFactory extends CSVBeanFactory<Portaladmins> {
 	public boolean isPKAutoIncrement() {
 		return true;
 	}
-	public Criteria createUniqueCriteria(org.hibernate.Session session, Object obj){
-		Portaladmins portaladmins = (Portaladmins)obj;
+	public Criteria createUniqueCriteria(org.hibernate.Session session, Object obj) {
+		Portaladmins portaladmins = (Portaladmins) obj;
 		Criteria c = session.createCriteria(Portaladmins.class);
 		c.add(Expression.eq(Portaladmins.PROP_UID,  portaladmins.getUid()));
 
@@ -501,7 +501,7 @@ class PortalAdminsFactory extends CSVBeanFactory<Portaladmins> {
 
 // name,layout
 class PortalLayoutFactory extends CSVBeanFactory<Portallayout> {
-	public Portallayout newBean( CSVField[] values ) {
+	public Portallayout newBean( CSVField[] values) {
 		Portallayout portalLayout = new Portallayout();
 		portalLayout.setName( values[0].toString() );
 		portalLayout.setLayout( values[1].toString() );
@@ -522,10 +522,11 @@ class PropertiesFactory extends CSVBeanFactory<Properties> {
 
 			privateKey = ( RSAPrivateKey )keyPair.getPrivate();
 		} catch( Exception ex ) {
-			throw new RuntimeException( ex );
+			throw new RuntimeException(ex);
 		}
 	}
-	public Properties newBean( CSVField[] values ) {
+
+	public Properties newBean( CSVField[] values) {
 		Properties property = new Properties();
 		property.setId( values[0].toString() );
 		property.setCategory( values[1].toString() );
@@ -632,7 +633,7 @@ class WidgetConfFactory extends CSVBeanFactory<WidgetConf> {
 
 class HolidaysFactory extends CSVBeanFactory<Holidays> {
 	public Holidays newBean( CSVField[] values ) {
-		HOLIDAYSPK key = new HOLIDAYSPK( values[0].toString(),values[1].toString() );
+		HOLIDAYSPK key = new HOLIDAYSPK(values[0].toString(),values[1].toString() );
 		Holidays holiday = new Holidays( key );
 		holiday.setData( values[2].toString() );
 
@@ -680,8 +681,8 @@ class GadgetFactory extends CSVBeanFactory<Gadget> {
 	
 	@Override
 	public void setData(Object obj, Object bean) {
-		Gadget _obj = (Gadget)obj;
-		Gadget _bean = (Gadget)bean;
+		Gadget _obj = (Gadget) obj;
+		Gadget _bean = (Gadget) bean;
 		_obj.setName(_bean.getName());
 		_obj.setType(_bean.getType());
 		_obj.setPath(_bean.getPath());
@@ -691,11 +692,13 @@ class GadgetFactory extends CSVBeanFactory<Gadget> {
 }
 
 class AccountFactory extends CSVBeanFactory<Account> {
-	public Account newBean( CSVField[] values ) {
+	public Account newBean(CSVField[] values ) {
 		Account account = new Account();
 		account.setUid( values[0].toString() );
-		account.setName( values[1].toString() );
-		account.setPasswordPlainText( values[2].toString() );
+		account.setName(values[1].toString());
+		account.setPasswordPlainText(values[2].toString());
+		account.setBelongid( values[3].toString() );
+		account.setDefaultbelongid( values[4].toString() );
 
 		return account;
 	}

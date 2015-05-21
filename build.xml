@@ -33,7 +33,7 @@
 	<property name="build.admin" value="${build.main}/admin" />
 	<property name="build.admin.jsp" value="${build.main}/WEB-INF/jsp/admin" />
 	<!-- other properties -->
-	<property name="compile.level" value="1.6" />
+	<property name="compile.level" value="1.7" />
 	<property name="compile.debug" value="true" />
 	<property name="compile.deprecation" value="false" />
 	<property name="compile.optimize" value="true" />
