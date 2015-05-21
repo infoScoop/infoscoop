@@ -48,9 +48,10 @@
 			update="false"
 			insert="false"
 			outer-join="auto"
-			column="Roleid"
-			property-ref="Roleid"
-			not-found="ignore"/>
+			not-found="ignore">
+			<column name="Roleid" />
+			<column name="Squareid" />
+		</many-to-one>
 
 	</class>	
 </hibernate-mapping>

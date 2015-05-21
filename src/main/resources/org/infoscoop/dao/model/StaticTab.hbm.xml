@@ -30,7 +30,10 @@
    <one-to-many class="TabAdmin"/>
   </set>
   <set name="TabLayout" inverse="true" lazy="false">
-   <key column="Tabid"/>
+   <key>
+    <column name="Tabid"/>
+    <column name="Squareid"/>
+   </key>
    <one-to-many class="TabLayout"/>
   </set>
 
