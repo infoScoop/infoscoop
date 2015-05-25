@@ -66,7 +66,7 @@ public class PortalAdminsDAO extends HibernateDaoSupport {
 	 * 
 	 * @param uid
 	 */
-	public void insert(String uid, String roleId, String squareid) {
+	public void insert(String uid, Integer roleId, String squareid) {
 		Portaladmins portalAdmin = new Portaladmins( null, uid, squareid );
 		portalAdmin.setRoleid(roleId);
 		

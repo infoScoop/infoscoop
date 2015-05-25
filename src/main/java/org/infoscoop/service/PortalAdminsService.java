@@ -94,7 +94,7 @@ public class PortalAdminsService {
 
 		List getNotAllowDeleteRoleIds = adminRoleDAO.getNotAllowDeleteRoleIds();
 		
-		adminRoleDAO.delete(squareid);
+		adminRoleDAO.deleteBySquareId(squareid);
 		
 		List rolesList = (List)adminsMap.get("roles");
 		List roleIdList = new ArrayList();
@@ -139,7 +139,7 @@ public class PortalAdminsService {
 			String roleId = (String)adminsData.get(uid);
 			roleId = (roleIdList.contains(roleId))? roleId : null;
 			
-			portalAdminsDAO.insert(uid, roleId, squareid);
+			portalAdminsDAO.insert(uid, Integer.parseInt(roleId), squareid);
 		}
 		
 		if(!roleIdList.contains(myRoleId) || !roleIdList.containsAll(getNotAllowDeleteRoleIds)){
@@ -174,7 +174,7 @@ public class PortalAdminsService {
 			Adminrole adminRole = (Adminrole) it.next();
 			jobj = new JSONObject();
 			
-			jobj.put("id", adminRole.getRoleid());
+			jobj.put("id", adminRole.getId());
 			jobj.put("name", I18NUtil.resolve(I18NUtil.TYPE_ADMINJS, adminRole.getName(), request.getLocale()));
 			jobj.put("permission", adminRole.getPermission());
 			jobj.put("isAllowDelete", adminRole.isAllowDelete());

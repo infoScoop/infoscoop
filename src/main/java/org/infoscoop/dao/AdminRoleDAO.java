@@ -91,7 +91,7 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 				List<Adminrole> resultList = crit.list();
 				for(Iterator<Adminrole> ite=resultList.iterator();ite.hasNext();){
 					Adminrole adminRole = ite.next();
-					roleIdsList.add(adminRole.getRoleid());
+					roleIdsList.add(adminRole.getId());
 				}
 						
 				return roleIdsList;

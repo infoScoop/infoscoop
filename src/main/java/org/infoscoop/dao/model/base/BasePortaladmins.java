@@ -77,7 +77,7 @@ public abstract class BasePortaladmins  implements Serializable {
 
 	// fields
 	private java.lang.String uid;
-	private java.lang.String roleid;
+	private java.lang.Integer roleid;
 	private java.lang.String squareid;
 
 	// many to one
@@ -127,7 +127,7 @@ public abstract class BasePortaladmins  implements Serializable {
 	/**
 	 * Return the value associated with the column: ROLEID
 	 */
-	public java.lang.String getRoleid () {
+	public java.lang.Integer getRoleid () {
 		return roleid;
 	}
 
@@ -135,7 +135,7 @@ public abstract class BasePortaladmins  implements Serializable {
 	 * Set the value related to the column: ROLEID
 	 * @param roleid the ROLEID value
 	 */
-	public void setRoleid (java.lang.String roleid) {
+	public void setRoleid (java.lang.Integer roleid) {
 		this.roleid = roleid;
 	}
 

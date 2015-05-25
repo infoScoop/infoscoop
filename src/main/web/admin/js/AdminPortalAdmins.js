@@ -577,6 +577,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 			roleOption.value = role.id;
 			roleOption.appendChild(document.createTextNode(role.name));
 			this.appendChild(roleOption);
+			console.log(role);
 			roleIdList.push(role.id);
 		}.bind(roleSelect));
 		

@@ -58,13 +58,11 @@ public abstract class BaseAdminrole  implements Serializable {
 	 */
 	public BaseAdminrole (
 		java.lang.String id,
-		java.lang.String roleid,
 		java.lang.String name,
 		java.lang.String permission,
 		java.lang.String squareid) {
 
 		this.setId(id);
-		this.setRoleid(roleid);
 		this.setName(name);
 		this.setPermission(permission);
 		this.setSquareid(squareid);
@@ -110,26 +108,6 @@ public abstract class BaseAdminrole  implements Serializable {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
-
-
-
-
-	/**
-	 * Return the value associated with the column: ROLEID
-	 */
-	public java.lang.String getRoleid () {
-		return roleid;
-	}
-
-	/**
-	 * Set the value related to the column: ROLEID
-	 * @param roleid the ROLEID value
-	 */
-	public void setRoleid (java.lang.String roleid) {
-		this.roleid = roleid;
-	}
-
-
 
 	/**
 	 * Return the value associated with the column: NAME

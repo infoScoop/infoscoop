@@ -38,6 +38,18 @@
     </changeSet>
     
     <!--Issue 598-->
+    <!--
+        UPDATE [スキーマ].is_portaladmins p
+         SET p.roleid = (select id from [スキーマ].is_adminroles where roleid = p.roleid);
+    -->
+    <changeSet id="infoscoop_sleepyalpha_598_1" author="nishiumi">
+        <dropAllForeignKeyConstraints baseTableName="IS_PORTALADMINS"/>
+        <sql>
+UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
+ SET p.roleid = (select id from ${migration.defaultSchemaWithDot}is_adminroles where roleid = p.roleid);
+        </sql>
+    </changeSet>
+    
     <!--CREATE TABLE `is_squares` (id varchar(64) not null, name varchar(256) not null, tabdesc text, lastmodified timestamp not null primary key(id));-->
     <!--INSERT INTO `is_squares` VALUES ("default","default","infoScoop Default Square.");-->
     <changeSet id="infoscoop_sleepyalpha_598_2" author="nishiumi">
@@ -485,7 +497,6 @@
         <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_11">
             <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ADMINROLES" columnName="roleid"/>
         </preConditions>
-        <dropAllForeignKeyConstraints baseTableName="IS_PORTALADMINS"/>
         <dropColumn schemaName="${migration.defaultSchema}" tableName="IS_ADMINROLES" columnName="roleid" />
         <modifyDataType columnName="ROLEID" newDataType="bigint" schemaName="${migration.defaultSchema}" tableName="IS_PORTALADMINS"/>
         <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_PORTALADMINS" constraintName="fk_is_portaladmins_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>

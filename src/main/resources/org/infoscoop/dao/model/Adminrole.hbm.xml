@@ -20,13 +20,6 @@
 		</id>
 
 		<property
-			name="Roleid"
-			column="ROLEID"
-			type="string"
-			not-null="true"
-			length="256"
-		/>
-		<property
 			name="Name"
 			column="NAME"
 			type="string"
@@ -57,7 +50,7 @@
 
 		<set name="Portaladmins" inverse="true">
 			<key>
-				<column name="Roleid"/>
+				<column name="id"/>
 			</key>
 			<one-to-many class="Portaladmins"/>
 		</set>

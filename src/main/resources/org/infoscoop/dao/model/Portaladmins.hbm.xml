@@ -29,9 +29,9 @@
 		<property
 			name="Roleid"
 			column="ROLEID"
-			type="string"
+			type="integer"
 			not-null="false"
-			length="256"
+			length="20"
 		/>
         <property
             name="Squareid"
@@ -48,8 +48,7 @@
 			update="false"
 			insert="false"
 			outer-join="auto"
-			not-found="ignore"
-			property-ref="Roleid">
+			not-found="ignore">
 			<column name="Roleid"/>
 		</many-to-one>
 

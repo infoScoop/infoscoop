@@ -48,7 +48,6 @@ public class Adminrole extends BaseAdminrole {
 
 		super (
 			id,
-			roleid,
 			name,
 			permission,
 			squareid);
