@@ -40,8 +40,8 @@
     <!--Issue 598-->
     <!--CREATE TABLE `is_squares` (id varchar(64) not null, name varchar(256) not null, tabdesc text, lastmodified timestamp not null primary key(id));-->
     <!--INSERT INTO `is_squares` VALUES ("default","default","infoScoop Default Square.");-->
-    <changeSet id="infoscoop_sleepyalpha_598_1" author="nishiumi">
-        <preConditions onFail="HALT" onFailMessage="skip infoscoop_sleepyalpha_598_1">
+    <changeSet id="infoscoop_sleepyalpha_598_2" author="nishiumi">
+        <preConditions onFail="HALT" onFailMessage="skip infoscoop_sleepyalpha_598_2">
             <not>
                 <tableExists schemaName="${migration.defaultSchema}" tableName="is_squares"/>
             </not>
@@ -66,8 +66,8 @@
     </changeSet>
     
     <!--ALTER TABLE IS_* ADD COLUMN square_id varchar(64);-->
-    <changeSet id="infoscoop_sleepyalpha_598_2" author="mikami">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_2">
+    <changeSet id="infoscoop_sleepyalpha_598_3" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_3">
             <not>
                 <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCESSLOGS" columnName="square_id"/>
             </not>
@@ -266,8 +266,8 @@
     </changeSet>
 
     <!--ALTER TABLE IS_* ADD FOREIGN KEY;-->
-    <changeSet id="infoscoop_sleepyalpha_598_3" author="mikami">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_3">
+    <changeSet id="infoscoop_sleepyalpha_598_4" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_4">
             <not>
                 <foreignKeyConstraintExists schemaName="${migration.defaultSchema}" foreignKeyName="fk_is_accesslogs_square_id"/>
             </not>
@@ -294,7 +294,6 @@
         <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_OAUTHPROVIDER_REFRESHTOKENS" constraintName="fk_is_oprefreshtokens_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
         <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_OAUTH_CERTIFICATE" constraintName="fk_is_oauthcertificate_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
         <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_OAUTH_CONSUMERS" constraintName="fk_is_oauthconsumers_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
-        <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_PORTALADMINS" constraintName="fk_is_portaladmins_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
         <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_PORTALLAYOUTS" constraintName="fk_is_portallayouts_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
         <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_PREFERENCES" constraintName="fk_is_preferences_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
         <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_PROPERTIES" constraintName="fk_is_properties_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
@@ -313,8 +312,8 @@
 
     <!--ALTER TABLE IS_ACCOUNTS ADD COLUMN default_belong_id varchar(64);-->
     <!--ALTER TABLE IS_ACCOUNTS ADD COLUMN belong_id text;-->
-    <changeSet id="infoscoop_sleepyalpha_598_4" author="mikami">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_4">
+    <changeSet id="infoscoop_sleepyalpha_598_5" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_5">
             <not>
                 <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS" columnName="default_belong_id"/>
                 <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS" columnName="belong_id"/>
@@ -327,8 +326,8 @@
     </changeSet>
 
     <!--CREATE INDEX is_*_square_id on IS_*(square_id);-->
-    <changeSet id="infoscoop_sleepyalpha_598_5" author="mikami">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_5">
+    <changeSet id="infoscoop_sleepyalpha_598_6" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_6">
             <not>
                 <indexExists indexName="is_accesslogs_square_id"/>
             </not>
@@ -373,8 +372,8 @@
 
     <!-- ALTER TABLE IS_* DROP PRIMARY KEY; -->
     <!-- ALTER TABLE IS_* ADD PRIMARY KEY -->
-    <changeSet id="infoscoop_sleepyalpha_598_6" author="mikami">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_6">
+    <changeSet id="infoscoop_sleepyalpha_598_7" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_7">
             <columnExists schemaName="${migration.defaultSchema}" tableName="IS_CACHES" columnName="square_id"/>
         </preConditions>
         <dropAllForeignKeyConstraints baseTableName="IS_OAUTH_GADGET_URLS"/>
@@ -432,8 +431,8 @@
     </changeSet>
 
     <!-- ALTER TABLE address ADD IS_* * FOREIGN KEY (*) REFERENCES IS_*(*) ON DELETE CASCADE; -->
-    <changeSet id="infoscoop_sleepyalpha_598_7" author="mikami">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_7">
+    <changeSet id="infoscoop_sleepyalpha_598_8" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_8">
             <not>
                 <foreignKeyConstraintExists schemaName="${migration.defaultSchema}" foreignKeyName="tabid"/>
             </not>
@@ -449,8 +448,8 @@
     </changeSet>
 
     <!-- target is_oauth_gadget_urls. 他のカラム都合によりここにしかいれられない -->
-    <changeSet id="infoscoop_sleepyalpha_598_8" author="mikami">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_8">
+    <changeSet id="infoscoop_sleepyalpha_598_9" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_9">
             <not>
                 <foreignKeyConstraintExists schemaName="${migration.defaultSchema}" foreignKeyName="fk_is_oauthgadgeturls_square_id"/>
             </not>
@@ -463,8 +462,8 @@
 
     <!-- ALTER TABLE IS_* DROP KEY *; -->
     <!-- ALTER TABLE IS_* ADD CONSTRAINT * UNIQUE (*, square_id); -->
-    <changeSet id="infoscoop_sleepyalpha_598_9" author="mikami">
-        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_9">
+    <changeSet id="infoscoop_sleepyalpha_598_10" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_10">
             <columnExists schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS" columnName="square_id"/>
         </preConditions>
         <dropUniqueConstraint constraintName="is_widgets_unique" schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS"/>
@@ -472,12 +471,24 @@
         <dropUniqueConstraint constraintName="is_locales_unique" schemaName="${migration.defaultSchema}" tableName="IS_I18NLOCALES"/>
         <dropUniqueConstraint constraintName="is_portaladmins_uq" schemaName="${migration.defaultSchema}" tableName="IS_PORTALADMINS"/>
         <dropUniqueConstraint constraintName="is_accesslogs_uq" schemaName="${migration.defaultSchema}" tableName="IS_ACCESSLOGS"/>
-        <dropUniqueConstraint constraintName="is_adminRoles_unique" schemaName="${migration.defaultSchema}" tableName="IS_ADMINROLES"/>
         <addUniqueConstraint columnNames="UID, tabid, widgetId, deleteDate, square_id" constraintName="is_widgets_unique" schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS" tablespace="${.tablespace}"/>
         <addUniqueConstraint columnNames="type, path, name, square_id" constraintName="is_gadgets_uq" schemaName="${migration.defaultSchema}" tableName="IS_GADGETS" tablespace="${.tablespace}"/>
         <addUniqueConstraint columnNames="type, country, lang, square_id" constraintName="is_locales_unique" schemaName="${migration.defaultSchema}" tableName="IS_I18NLOCALES" tablespace="${.tablespace}"/>
         <addUniqueConstraint columnNames="UID, square_id" constraintName="is_portaladmins_uq" schemaName="${migration.defaultSchema}" tableName="IS_PORTALADMINS" tablespace="${.tablespace}"/>
         <addUniqueConstraint columnNames="UID, DATE, square_id" constraintName="is_accesslogs_uq" schemaName="${migration.defaultSchema}" tableName="IS_ACCESSLOGS" tablespace="${.tablespace}"/>
-        <addUniqueConstraint columnNames="roleid, square_id" constraintName="is_adminRoles_unique" schemaName="${migration.defaultSchema}" tableName="IS_ADMINROLES" tablespace="${.tablespace}"/>
+    </changeSet>
+
+    <!-- ALTER TABLE IS_PORTALADMINS DROP KEY *; -->
+    <!-- ALTER TABLE .IS_PORTALADMINS DROP COLUMN roleid; -->
+    <!-- ALTER TABLE address ADD CONSTRAINT fk_address_person FOREIGN KEY (person_id) REFERENCES person (id) ON UPDATE RESTRICT ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED; -->
+    <changeSet id="infoscoop_sleepyalpha_598_11" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_11">
+            <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ADMINROLES" columnName="roleid"/>
+        </preConditions>
+        <dropAllForeignKeyConstraints baseTableName="IS_PORTALADMINS"/>
+        <dropColumn schemaName="${migration.defaultSchema}" tableName="IS_ADMINROLES" columnName="roleid" />
+        <modifyDataType columnName="ROLEID" newDataType="bigint" schemaName="${migration.defaultSchema}" tableName="IS_PORTALADMINS"/>
+        <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_PORTALADMINS" constraintName="fk_is_portaladmins_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
+        <addForeignKeyConstraint baseColumnNames="ROLEID" baseTableName="IS_PORTALADMINS" constraintName="fk_is_portaladmins_roleid" onDelete="SET NULL" referencedColumnNames="id" referencedTableName="IS_ADMINROLES"/>
     </changeSet>
 </databaseChangeLog>
