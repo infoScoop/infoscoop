@@ -69,7 +69,7 @@
 int keepPeriod = 14;
 try {
 	keepPeriod = Integer.parseInt( PropertiesDAO.newInstance()
-			.findProperty("loginStateKeepPeriod").getValue());
+			.findProperty("loginStateKeepPeriod", "default").getValue());
 } catch( Exception ex ) {
 }
 

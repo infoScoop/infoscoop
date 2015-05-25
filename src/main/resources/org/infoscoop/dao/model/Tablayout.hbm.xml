@@ -102,7 +102,7 @@
 	    	update="false"
 	    	not-found="ignore">
 	      <column name="Tabid" />
-	      <column name="Squareid" />
+	      <column name="square_id" />
 	    </many-to-one>
 		<!-- 
 		<many-to-one class="org.infoscoop.dao.model.StaticTab"

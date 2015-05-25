@@ -167,7 +167,7 @@ public class SessionManagerFilter implements Filter {
 			currentSquareId = "default";
 		}
 
-		resultMap.put("Uid", SessionDAO.newInstance().getUid(sessionId, currentSquareId));
+		resultMap.put("Uid", uid);
 		resultMap.put(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, currentSquareId);
 
 		if (uid == null) {

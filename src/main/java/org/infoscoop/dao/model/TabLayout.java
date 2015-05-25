@@ -366,6 +366,7 @@ public class TabLayout extends BaseTablayout {
 			Element widgetEl = (Element)widgetNodeList.item(i);
 			Widget widget = new Widget();
 			widget.setTabid( tabId );
+			widget.setSquareid(getId().getSquareid());
 			widget.setDeletedate(new Long(0));
 			widget.setWidgetid(widgetEl.getAttribute("widgetId"));
 			widget.setUid( uid );

@@ -119,7 +119,7 @@ public class PropertiesService{
 			if("hidden".equals( property.getDatatype().toLowerCase()))
 				continue;
 			
-			result.put( property.getId(),property.getValue() );
+			result.put( property.getId().getId(),property.getValue() );
 		}
 		
 		return result;
