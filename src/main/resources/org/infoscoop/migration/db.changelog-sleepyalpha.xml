@@ -472,10 +472,12 @@
         <dropUniqueConstraint constraintName="is_locales_unique" schemaName="${migration.defaultSchema}" tableName="IS_I18NLOCALES"/>
         <dropUniqueConstraint constraintName="is_portaladmins_uq" schemaName="${migration.defaultSchema}" tableName="IS_PORTALADMINS"/>
         <dropUniqueConstraint constraintName="is_accesslogs_uq" schemaName="${migration.defaultSchema}" tableName="IS_ACCESSLOGS"/>
+        <dropUniqueConstraint constraintName="is_adminRoles_unique" schemaName="${migration.defaultSchema}" tableName="IS_ADMINROLES"/>
         <addUniqueConstraint columnNames="UID, tabid, widgetId, deleteDate, square_id" constraintName="is_widgets_unique" schemaName="${migration.defaultSchema}" tableName="IS_WIDGETS" tablespace="${.tablespace}"/>
         <addUniqueConstraint columnNames="type, path, name, square_id" constraintName="is_gadgets_uq" schemaName="${migration.defaultSchema}" tableName="IS_GADGETS" tablespace="${.tablespace}"/>
         <addUniqueConstraint columnNames="type, country, lang, square_id" constraintName="is_locales_unique" schemaName="${migration.defaultSchema}" tableName="IS_I18NLOCALES" tablespace="${.tablespace}"/>
         <addUniqueConstraint columnNames="UID, square_id" constraintName="is_portaladmins_uq" schemaName="${migration.defaultSchema}" tableName="IS_PORTALADMINS" tablespace="${.tablespace}"/>
         <addUniqueConstraint columnNames="UID, DATE, square_id" constraintName="is_accesslogs_uq" schemaName="${migration.defaultSchema}" tableName="IS_ACCESSLOGS" tablespace="${.tablespace}"/>
+        <addUniqueConstraint columnNames="roleid, square_id" constraintName="is_adminRoles_unique" schemaName="${migration.defaultSchema}" tableName="IS_ADMINROLES" tablespace="${.tablespace}"/>
     </changeSet>
 </databaseChangeLog>
