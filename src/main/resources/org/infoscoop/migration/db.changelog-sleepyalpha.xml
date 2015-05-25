@@ -420,7 +420,7 @@
         <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="name, square_id" constraintName="PRIMARY" tableName="IS_PORTALLAYOUTS"/>
         <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="UID, square_id" constraintName="PRIMARY" tableName="IS_PREFERENCES"/>
         <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="id, square_id" constraintName="PRIMARY" tableName="IS_PROPERTIES"/>
-        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="square_id" constraintName="PRIMARY" tableName="IS_PROXYCONFS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="temp, square_id" constraintName="PRIMARY" tableName="IS_PROXYCONFS"/>
         <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="UID, url_key, pageNum, square_id" constraintName="PRIMARY" tableName="IS_RSSCACHES"/>
         <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="temp, square_id" constraintName="PRIMARY" tableName="IS_SEARCHENGINES"/>
         <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="UID, square_id" constraintName="PRIMARY" tableName="IS_SESSIONS"/>
