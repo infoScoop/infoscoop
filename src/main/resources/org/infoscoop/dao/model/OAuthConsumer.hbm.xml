@@ -58,21 +58,21 @@
 		<set name="OAuthGadgetUrl" lazy="true" inverse="true">  
             <key>  
                 <column name="fk_oauth_id" not-null="true" />  
-                <column name="Squareid"/>
+                <column name="square_id"/>
             </key>  
             <one-to-many class="OAuthGadgetUrl" />  
         </set>
         <set name="OAuthToken" lazy="true" inverse="true">  
             <key>  
                 <column name="fk_oauth_id" not-null="true" />  
-                <column name="Squareid"/>
+                <column name="square_id"/>
             </key>
             <one-to-many class="OAuthToken" />  
         </set>
         <set name="OAuth2Token" lazy="true" inverse="true">  
             <key>  
                 <column name="fk_oauth_id" not-null="true" />  
-                <column name="Squareid"/>
+                <column name="square_id"/>
             </key>
             <one-to-many class="OAuth2Token" />  
         </set>      

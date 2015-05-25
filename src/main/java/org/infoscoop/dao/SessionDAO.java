@@ -85,7 +85,7 @@ public class SessionDAO extends HibernateDaoSupport {
 			throw new RuntimeException("uid must be set.");
 
 		//select sessionId from ${schema}.session where uid=?
-		String queryString = "from Session where Id.Uid = ? and Id.Squareid";
+		String queryString = "from Session where Id.Uid = ? and Id.Squareid = ?";
 		Iterator results = super.getHibernateTemplate().find( queryString,
 				new Object[] { uid, squareId } ).iterator();
 		if(results.hasNext())
@@ -116,7 +116,7 @@ public class SessionDAO extends HibernateDaoSupport {
 	}
 	
 	public void deleteSessionId(String uid, String squareId) {
-		String queryString = "delete from Session where Id.Uid = ? and Id.Squareid";
+		String queryString = "delete from Session where Id.Uid = ? and Id.Squareid = ?";
 		super.getHibernateTemplate().bulkUpdate(queryString, new Object[] { uid, squareId });
 	}
 	

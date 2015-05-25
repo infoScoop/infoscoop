@@ -56,7 +56,9 @@
         />
 
 		<set name="Portaladmins" inverse="true">
-			<key column="ROLEID"/>
+			<key>
+				<column name="Roleid"/>
+			</key>
 			<one-to-many class="Portaladmins"/>
 		</set>
 

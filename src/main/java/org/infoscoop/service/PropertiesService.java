@@ -75,7 +75,7 @@ public class PropertiesService{
 		for(Iterator propIt = propList.iterator(); propIt.hasNext();){
 			Properties prop = (Properties)propIt.next();//Key become capital if Map is passed to constructor of JSONObject without change.
 			JSONObject propJson = new JSONObject();
-			propJson.put("id", prop.getId());
+			propJson.put("id", prop.getId().getId());
 			propJson.put("category", prop.getCategory());
 			if (prop.getAdvanced() != null && prop.getAdvanced() == 1)
 				propJson.put("advanced", true);
