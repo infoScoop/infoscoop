@@ -179,7 +179,7 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthConsumerProp.class)
 						.add(Expression.not(Expression.in("Id.Id", idList)))
-						.add(Expression.not(Expression.eq("Id.Squareid", squareid)))
+						.add(Expression.eq("Id.Squareid", squareid))
 						);
 	}
 	
@@ -193,6 +193,7 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 	}
 	
 	public void deleteUpdate(List<String> idList, String squareid) {
+		List<OAuthConsumerProp> list = getConsumersNotInId(idList, squareid);
 		super.getHibernateTemplate().deleteAll(getConsumersNotInId(idList, squareid));
 	}
 }

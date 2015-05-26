@@ -78,6 +78,7 @@ public class ForbiddenURLService {
 				String url = ( String )(( Map )forbiddenUrls.get(id)).get("url");
 				if(log.isInfoEnabled())log.info("Insert forbiddenurl: id=" + id + ", url=" + url);
 
+				forbiddenurl.setSquareid(squareid);
 				forbiddenurl.setUrl(url);
 
 				this.forbiddenUrlDAO.insert(forbiddenurl);
