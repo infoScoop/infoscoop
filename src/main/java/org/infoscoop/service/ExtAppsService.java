@@ -86,13 +86,14 @@ public class ExtAppsService {
 	}
 
 	public String getExtAppsList() throws Exception {
-		ArrayList<OAuth2ProviderClientDetail> clientDetailList = (ArrayList<OAuth2ProviderClientDetail>)oauth2ProviderClientDetailDAO.getClientDetails();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		ArrayList<OAuth2ProviderClientDetail> clientDetailList = (ArrayList<OAuth2ProviderClientDetail>)oauth2ProviderClientDetailDAO.getClientDetails(squareid);
 		
 		JSONArray arr = new JSONArray();
 		for(OAuth2ProviderClientDetail clientDetail : clientDetailList){
 			JSONObject obj = new JSONObject();
 			obj.put("appName", clientDetail.getTitle());
-			obj.put("clientId", clientDetail.getId());
+			obj.put("clientId", clientDetail.getId().getId());
 			obj.put("clientSecret", clientDetail.getSecret());
 			obj.put("redirectUrl", clientDetail.getRedirectUrl());
 			obj.put("grantType", encodeGrantTypes(clientDetail.getGrantTypes()));

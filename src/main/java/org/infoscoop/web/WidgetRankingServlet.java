@@ -77,6 +77,7 @@ public class WidgetRankingServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		String uid = (String) request.getSession().getAttribute("Uid");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		if (log.isInfoEnabled()) {
 			log.info("uid:[" + uid + "]: doPost");
@@ -97,7 +98,7 @@ public class WidgetRankingServlet extends HttpServlet {
 		Writer out = response.getWriter();
 
 		try {
-			Cache cache = CacheDAO.newInstance().getCacheById(CACHE_ID);
+			Cache cache = CacheDAO.newInstance().getCacheById(CACHE_ID, squareid);
 
 			// If there is the cash, and when we are generating ranking, we return the cash even if the cash is old.
 			// If it is in validity of the cash, naturally we  return the cash.

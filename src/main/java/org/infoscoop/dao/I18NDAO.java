@@ -148,7 +148,7 @@ public class I18NDAO extends HibernateDaoSupport {
 				
 				Criteria cri = session.createCriteria(I18n.class);
 
-				LogicalExpression se = Expression.and(Expression.eq("Id.Type", type), Expression.eq("Id.SquareId", squareId));
+				LogicalExpression se = Expression.and(Expression.eq("Id.Type", type), Expression.eq("Id.Squareid", squareId));
 				LogicalExpression le = Expression.and(Expression.eq("Id.Country", country), Expression.eq("Id.Lang", lang));
 				LogicalExpression le2 = Expression.and(se, le);
 				

@@ -193,7 +193,7 @@ public class CacheDAO extends HibernateDaoSupport {
 		String queryString = "delete from Cache where Uid = ? and UrlKey = ? and Id.Squareid = ?";
 		
 		super.getHibernateTemplate().bulkUpdate( queryString,
-				new Object[] { uid, Crypt.getHash(url) });
+				new Object[] { uid, Crypt.getHash(url), squareid });
 	}
 	
 	/**
@@ -202,9 +202,9 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @param id
 	 * @return
 	 */
-	public Cache getCacheById(String id){
+	public Cache getCacheById(String id, String squareid){
 		//select * from ${schema}.cache where id=?
-		return ( Cache )super.getHibernateTemplate().get( Cache.class,id );
+		return ( Cache )super.getHibernateTemplate().get( Cache.class, new CachePK(id, squareid) );
 	}
 
 	/**

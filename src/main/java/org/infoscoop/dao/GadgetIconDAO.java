@@ -37,7 +37,7 @@ public class GadgetIconDAO extends HibernateDaoSupport {
 
 	public void insertUpdate(String type, String url, String squareid) {
 		GadgetIcon icon = (GadgetIcon) super.getHibernateTemplate().get(
-				GadgetIcon.class, type);
+				GadgetIcon.class, new GadgetIconPK(type, squareid));
 		if (icon == null) {
 			icon = new GadgetIcon(new GadgetIconPK(type, squareid), url);
 		} else {

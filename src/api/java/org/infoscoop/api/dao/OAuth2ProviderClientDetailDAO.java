@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.infoscoop.api.dao.model.OAuth2ProviderClientDetail;
@@ -44,9 +45,11 @@ public class OAuth2ProviderClientDetailDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<OAuth2ProviderClientDetail> getClientDetails(){
+	public Collection<OAuth2ProviderClientDetail> getClientDetails(String squareid){
 		List<OAuth2ProviderClientDetail> results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuth2ProviderClientDetail.class,"ocd").addOrder(Order.asc("ocd.title")));
+				DetachedCriteria.forClass(OAuth2ProviderClientDetail.class,"ocd")
+					.add(Expression.eq("Id.Squareid", squareid))
+					.addOrder(Order.asc("ocd.title")));
 		
 		return results; 
 	}

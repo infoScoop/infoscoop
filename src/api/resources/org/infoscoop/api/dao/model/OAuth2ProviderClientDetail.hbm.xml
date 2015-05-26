@@ -4,7 +4,7 @@
 <hibernate-mapping package="org.infoscoop.api.dao.model">
  <class name="OAuth2ProviderClientDetail" table="IS_OAUTHPROVIDER_CLIENT">
   <meta attribute="sync-DAO">false</meta>
-  <composite-id name="Id" class="OAuth2ProviderAccessTokenPK">
+  <composite-id name="Id" class="OAuth2ProviderClientDetailPK">
       <key-property
           name="id"
           column="id"

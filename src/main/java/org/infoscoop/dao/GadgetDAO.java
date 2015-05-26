@@ -40,11 +40,11 @@ public class GadgetDAO extends HibernateDaoSupport {
 	public Gadget select( String type, String squareid ) {
 		return select( type,"/",type +".xml",squareid);
 	}
-	public List<Gadget> selectGadgetXMLs() {
+	public List<Gadget> selectGadgetXMLs(String squareid) {
 		String queryString = "from Gadget where path = '/' and name in "
-			+"( select concat(type,'.xml') from Gadget ) and name = concat(type,'.xml')";
+			+"( select concat(type,'.xml') from Gadget ) and name = concat(type,'.xml') and Squareid=?";
 		
-		return super.getHibernateTemplate().find( queryString );
+		return super.getHibernateTemplate().find( queryString, squareid );
 	}
 	public Gadget select(String type, String path,String name,String squareid) {
 		//select data from ${schema}.gadget where type = ? and fileType = ?

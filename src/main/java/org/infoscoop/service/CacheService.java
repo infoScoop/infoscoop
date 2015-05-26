@@ -54,7 +54,8 @@ public class CacheService {
 	}
 
 	public Cache getCacheById(String id){
-		return cacheDAO.getCacheById(id);
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return cacheDAO.getCacheById(id, squareid);
 	}
 
 	public String insertCache(String id, String uid,

@@ -82,6 +82,7 @@ public class KeywordRankingServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		String uid = (String) request.getSession().getAttribute("Uid");
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		if (log.isInfoEnabled()) {
 			log.info("uid:[" + uid + "]: doPost");
@@ -104,7 +105,7 @@ public class KeywordRankingServlet extends HttpServlet {
 			// If baseDate is null, it is behavior of TODAY.
 			endDate = (param_baseDate == null)? TODAY : param_baseDate;
 			
-			Cache cache = CacheDAO.newInstance().getCacheById(cacheName);
+			Cache cache = CacheDAO.newInstance().getCacheById(cacheName, squareid);
 			
 			String rss;
 			// We do cash only in case that appoined "TODAY".

@@ -162,6 +162,14 @@ public abstract class BaseI18NPK implements Serializable {
 			else {
 				return false;
 			}
+			if (null != this.getSquareid() && null != mObj.getSquareid()) {
+				if (!this.getSquareid().equals(mObj.getSquareid())) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
 			return true;
 		}
 	}
@@ -197,7 +205,13 @@ public abstract class BaseI18NPK implements Serializable {
 			else {
 				return super.hashCode();
 			}
-			this.hashCode = sb.toString().hashCode();
+			if (null != this.getSquareid()) {
+				sb.append(this.getSquareid().hashCode());
+				sb.append(":");
+			}
+			else {
+				return super.hashCode();
+			}			this.hashCode = sb.toString().hashCode();
 		}
 		return this.hashCode;
 	}

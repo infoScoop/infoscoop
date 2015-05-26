@@ -55,7 +55,7 @@ public abstract class BaseGadgetIcon  implements Serializable {
 	 * Constructor for required fields
 	 */
 	public BaseGadgetIcon (
-		GadgetIconPK type,
+		GadgetIconPK id,
 		java.lang.String url) {
 
 		this.setId(id);

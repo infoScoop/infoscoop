@@ -87,8 +87,8 @@ public class GadgetService {
 	 * @throws Exception 
 	 */
 	public String getGadgetJson( Locale locale,int timeout ) throws Exception {
-		
-		List<Gadget> gadgetList = gadgetDAO.selectGadgetXMLs();
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		List<Gadget> gadgetList = gadgetDAO.selectGadgetXMLs(squareid);
 		
 		String json = gadget2JSON( gadgetList, false, locale, timeout, true);
 		json = sortByTitle(json);
