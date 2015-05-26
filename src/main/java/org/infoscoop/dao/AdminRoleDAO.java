@@ -123,14 +123,14 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 	 * 
 	 * @param uid
 	 */
-	public void insert(String roleId, String name, String authData, boolean allowDelete, String squareid) {
-		Adminrole adminrole = new Adminrole(null, roleId, name, authData, squareid);
+	public void insert(String name, String authData, boolean allowDelete, String squareid) {
+		Adminrole adminrole = new Adminrole(null, name, authData, squareid);
 		
 		adminrole.setAllowdelete((allowDelete)? 1 : 0);
 		super.getHibernateTemplate().save( adminrole );
 		
 		if (log.isInfoEnabled())
-			log.info("param[id=" + roleId + ", name=" + name + ", authData=" + authData + ", squareid= " + squareid + "]: insert successfully.");
+			log.info("param[name=" + name + ", authData=" + authData + ", squareid= " + squareid + "]: insert successfully.");
 	}
 
 }

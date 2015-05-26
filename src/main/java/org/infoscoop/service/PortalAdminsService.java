@@ -106,7 +106,7 @@ public class PortalAdminsService {
 			String name = (String)map.get("name");
 			String permission = (String)map.get("permission");
 			
-			adminRoleDAO.insert(roleId, name, permission, !getNotAllowDeleteRoleIds.contains(roleId), squareid);
+			adminRoleDAO.insert(name, permission, !getNotAllowDeleteRoleIds.contains(roleId), squareid);
 			roleIdList.add(roleId);
 		}
 

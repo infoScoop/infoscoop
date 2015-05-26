@@ -85,6 +85,7 @@ public class AuthenticationServlet extends HttpServlet {
 
 		String action = ((HttpServletRequest)request).getPathInfo();
 		String uid = request.getParameter("uid");
+		String squareid = request.getParameter("squareid");
 		if (uid != null) {
 			uid = uid.trim();
 		}
@@ -138,6 +139,7 @@ public class AuthenticationServlet extends HttpServlet {
 				service.login( uid, password);
 				
 				request.getSession().setAttribute("Uid",uid );
+				request.getSession().setAttribute(SessionManagerFilter.LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, squareid);
 				//request.getSession().setAttribute(AuthenticationServlet.TMP_LOGINUSER_SUBJECT_ATTR_NAME, loginUser );
 				String authType = PropertiesService.getHandle().getProperty("loginCredentialAuthType");
 				if(authType != null){
