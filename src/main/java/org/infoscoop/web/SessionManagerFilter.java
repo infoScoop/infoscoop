@@ -72,6 +72,7 @@ public class SessionManagerFilter implements Filter {
 	public static String LOGINUSER_SUBJECT_ATTR_NAME = "loginUser";
 	public static String LOGINUSER_SESSION_ID_ATTR_NAME = "SessionId";
 	public static String LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME = "CurrentSquareId";
+	public static String CURRENT_SQUARE_ID_DEFAULT = "default";
 
 	private Collection excludePaths = new HashSet();
 	private Collection<String> excludePathx = new HashSet<String>();
@@ -164,7 +165,7 @@ public class SessionManagerFilter implements Filter {
 
 		if(currentSquareId == null) {
 			//ユーザーのデフォルトスクエアを入れる
-			currentSquareId = "default";
+			currentSquareId = CURRENT_SQUARE_ID_DEFAULT;
 		}
 
 		resultMap.put("Uid", uid);
@@ -230,6 +231,7 @@ public class SessionManagerFilter implements Filter {
 				}
 			}else{
 				uid = getUidFromHeader(httpReq);
+				currentSquareId = CURRENT_SQUARE_ID_DEFAULT;
 				Map<String, String> result = getSquareUidFromSession(httpReq);
 				if (uid == null) {
 					uid = result.get("Uid");
