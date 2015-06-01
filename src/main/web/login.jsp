@@ -57,15 +57,6 @@
 					<tr class="form">
 						<td>
 							<table border="0" cellpadding="3" cellspacing="0">
-                                <tr>
-                                    <td align="right">スクエア&nbsp;</td>
-                                    <td align="left">
-                                        <select id="squareid" name="squareid">
-                                            <option value="default">デフォルト</option>
-                                            <option value="unirita">UNIRITA</option>
-                                        </select>
-                                    </td>
-                                </tr>
 								<tr>
 									<td align="right">%{lb_userID}&nbsp;</td>
 									<td align="left"><input type="text" id="uid" name="uid"/></td>

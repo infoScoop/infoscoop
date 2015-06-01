@@ -32,6 +32,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationException;
 import org.infoscoop.account.AuthenticationService;
+import org.infoscoop.account.IAccount;
+import org.infoscoop.account.saas.SaaSAccount;
 import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.dao.model.AuthCredential;
@@ -85,7 +87,7 @@ public class AuthenticationServlet extends HttpServlet {
 
 		String action = ((HttpServletRequest)request).getPathInfo();
 		String uid = request.getParameter("uid");
-		String squareid = request.getParameter("squareid");
+		String squareId = "default";
 		if (uid != null) {
 			uid = uid.trim();
 		}
@@ -139,7 +141,12 @@ public class AuthenticationServlet extends HttpServlet {
 				service.login( uid, password);
 				
 				request.getSession().setAttribute("Uid",uid );
-				request.getSession().setAttribute(SessionManagerFilter.LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, squareid);
+
+				IAccount account = service.getAccountManager().getUser(uid);
+				if(account instanceof SaaSAccount) {
+					squareId = ((SaaSAccount) account).getDefaultSquareId();
+				}
+				request.getSession().setAttribute(SessionManagerFilter.LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, squareId);
 				//request.getSession().setAttribute(AuthenticationServlet.TMP_LOGINUSER_SUBJECT_ATTR_NAME, loginUser );
 				String authType = PropertiesService.getHandle().getProperty("loginCredentialAuthType");
 				if(authType != null){
