@@ -52,6 +52,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class MakeMenuFilter extends ProxyFilter {
 	private static Log log = LogFactory.getLog(MakeMenuFilter.class);
 	private static String MENUTYPE_SIDEMENU = "sidemenu";
+	private static String MENUTYPE_GUIDANCE = "guidance";
 	
 	private static SAXParserFactory factory;
 	static{
@@ -120,11 +121,17 @@ public class MakeMenuFilter extends ProxyFilter {
 		}
 		try {
 			String json = null;
-			boolean isSidePanel = ( menuType.equals( MENUTYPE_SIDEMENU ));
+			String functionName;
 			if(!isExternalService){
-				json = handler.getJSONPString(isSidePanel);
+				functionName = menuType.equals( MENUTYPE_SIDEMENU )?
+						"IS_SidePanel.setMenu" : menuType.equals( MENUTYPE_GUIDANCE )?
+								"IS_Guidance.setMenu" : "IS_SiteAggregationMenu.setMenu";
+				json = handler.getJSONPString(functionName);
 			}else{
-				json = handler.getSiteTopJSONPString( isSidePanel );
+				functionName = menuType.equals( MENUTYPE_SIDEMENU )?
+						"IS_SidePanel.setServiceMenu" : menuType.equals( MENUTYPE_GUIDANCE )?
+								"IS_Guidance.setServiceMenu" : "IS_SiteAggregationMenu.setServiceMenu";
+				json = handler.getSiteTopJSONPString( functionName );
 			}
 			return json.getBytes("UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -160,14 +167,12 @@ public class MakeMenuFilter extends ProxyFilter {
 			siteTopArray.append("[");
 		}
 		
-		public String getJSONPString(boolean isSidePanel){
-			String functionName = (isSidePanel)? "IS_SidePanel.setMenu" : "IS_SiteAggregationMenu.setMenu";
+		public String getJSONPString(String functionName){
 			return functionName +"(" + JSONObject.quote(menuUrl) + ","+ menuItemArray.toString() + "," +  siteTopArray + "," + makeTreeMapJSON() + ");";
 			//return functionName +"("+ menuItemArray.toString() + "," +  siteTopArray + "," + makeTreeMapJSON() + ");";
 		}
 		
-		public String getSiteTopJSONPString( boolean isSidePanel ){
-			String functionName = ((isSidePanel)? "IS_SidePanel":"IS_SiteAggregationMenu")+".setServiceMenu";
+		public String getSiteTopJSONPString(String functionName){
 			return functionName+"(" + JSONObject.quote(menuUrl) + "," + menuItemArray.toString() + "," +  makeTreeMapJSON() + "," + siteTopArray + ");";	
 		}
 		
@@ -293,6 +298,11 @@ public class MakeMenuFilter extends ProxyFilter {
 					}catch(NumberFormatException e){
 						menuItemArray.append(",refreshInterval:").append("null");
 					}
+				}
+				
+				String thumbnail = attributes.getValue("thumbnail");
+				if(thumbnail!=null ){
+					menuItemArray.append(",thumbnail:").append(JSONObject.quote(thumbnail));
 				}
 			}else if(qName.equals("properties")){
 				firstProperty = true;

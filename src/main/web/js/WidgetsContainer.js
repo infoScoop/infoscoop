@@ -477,6 +477,9 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			//refs#3864 stop indicator anyway when widgets are end of load.
 			IS_Portal.endIndicator();
 			IS_Portal.tabs[IS_Portal.currentTabId].isBuilt = true;
+			
+			if(IS_Portal.isFirstLogin)
+			    IS_GuidanceInstance = new IS_Guidance();
 		}
 	}
 	

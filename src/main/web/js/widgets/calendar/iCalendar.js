@@ -59,7 +59,8 @@ IS_Widget.Calendar.iCalendar.prototype.classDef = function() {
 			}
 			
 			var statusCode = base_node.getAttribute('statusCode');
-			var jsonObj = (base_node.firstChild) ? base_node.firstChild.nodeValue : "";
+//			var jsonObj = (base_node.firstChild) ? base_node.firstChild.nodeValue : "";
+			var jsonObj = (base_node.firstChild) ? base_node.textContent : "";
 			
 			if (statusCode == 0) {
 				try {

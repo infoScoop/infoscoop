@@ -166,6 +166,7 @@
     <script src="<%=staticContentURL%>/js/ContentFooter.js"></script>
     <script src="<%=staticContentURL%>/js/GlobalSetting.js"></script>
     <script src="<%=staticContentURL%>/js/Theme.js"></script>
+    <script src="<%=staticContentURL%>/js/guidance/Guidance.js"></script>
     <!-- prototype-window -->
     <script type="text/javascript" src="<%=staticContentURL%>/js/lib/prototype-window-1.3/window.js"></script>
     <script type="text/javascript" src="<%=staticContentURL%>/js/lib/prototype-window-1.3/window_ext.js"></script>
@@ -199,6 +200,7 @@
 		IS_WidgetIcons = <jsp:include page="/gadgeticon" flush="true" />;
 
 		var preference = <%= PreferenceService.getHandle().getPreferenceJSON(uid) %>
+		IS_Portal.isFirstLogin = preference.isFirstLogin;
 		if(preference.property){
 			IS_Portal.logoffDateTime = new Date( preference.property.logoffDateTime ? preference.property.logoffDateTime : "").getTime();
 			IS_Portal.fontSize = preference.property.fontSize ? preference.property.fontSize : IS_Portal.defaultFontSize;
@@ -333,6 +335,8 @@
 			</table>
 		</div>
 		<iframe name="portal-externalExe-ifrm" src="about:blank" style="display:none;"></iframe>
+		
+		<a id="is-guidence" href="http://p01289/UI/setup-modal.html"></a>
 	</body>
 	<script>
 
@@ -353,5 +357,6 @@
 		var scriptElm = document.createElement('script');
 		scriptElm.src = 'portallayout?type=javascript';
 		document.getElementsByTagName('head')[0].appendChild(scriptElm);
+		
 	</script>
 </html>

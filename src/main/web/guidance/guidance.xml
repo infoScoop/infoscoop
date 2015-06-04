@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sites>
+	<site-top id="gaibu_atIT" title="IT" 
+	          display="inline" 
+	          href="http://www.atmarkit.co.jp/"
+	          >
+	    
+  	    <site thumbnail="imgs/numberweb.PNG" id="menu2_１２３４５９０" title="RSSリーダーシングル" display="inline" href="http://p01289:8080/infoscoop/filterTest.html" type="RssReader">
+	    	<properties>
+	    		<property name="url">http://localhost:8080/infoscoop/informations_rss.xml?aaa=eee&amp;fff=ggg&amp;fff=www	</property>
+	    		<property name="uruguai">ウルグアイ</property>
+	    	</properties>
+	    </site>
+  	    <site thumbnail="imgs/nikkansports.PNG" id="gaibu_umau5" title="RSS_外部!!太陽 マーク テスト2" display="inline" href="http://p01289:8080/infoscoop/filterTest.html" type="RssReader">
+	    	<properties>
+	    		<property name="url">http://localhost:8080/infoscoop/informations_rss.xml?aaa=eee&amp;fff=ggg&amp;fff=www</property>
+	    	</properties>
+	    </site>
+
+		<site thumbnail="imgs/excite_news.PNG" id="gadget_1" title="ガジェット（指定なし）" display="inline" type="Gadget">
+			<properties>
+				<property name="url">http://www.infoscoop.org/gadgets/hello.xml?hoge=1</property>
+			</properties>
+    	</site>	    	
+
+		<site thumbnail="imgs/goalcom.PNG" id="gadget_2" title="ガジェット（multi）" display="inline" type="Gadget" multi="true">
+			<properties>
+				<property name="url">http://www.infoscoop.org/gadgets/hello.xml?hoge=1</property>
+			</properties>
+    	</site>	    	
+
+		<site thumbnail="imgs/excite_news.PNG" id="gadget_3" title="ガジェット（singleton and multi）" display="inline" type="Gadget" multi="true">
+			<properties>
+				<property name="url">http://p01289/aaa.xml</property>
+			</properties>
+	    	</site>	    	
+    </site-top>
+
+	<site-top id="guidance_sport" title="スポーツ" 
+	          display="inline" 
+	          href="http://www.atmarkit.co.jp/"
+	          >
+		<site thumbnail="imgs/excite_news.PNG" id="guidance_sport_rss1" title="スポーツ系RSS1" display="inline" href="http://www.atmarkit.co.jp/fembedded" type="RssReader">	    	
+			<properties>
+				<property name="url">http://www.atmarkit.co.jp/rss/fembedded/rss.xml</property>
+			</properties>
+    	</site>	
+	</site-top>
+	<site-top id="guidance_news" title="政治経済" 
+	          display="inline" 
+	          href="http://www.atmarkit.co.jp/"
+	          >
+		<site thumbnail="imgs/excite_news.PNG" id="guidance_news_rss1" title="ニュース系RSS1" display="inline" href="http://www.atmarkit.co.jp/fembedded" type="RssReader">	    	
+			<properties>
+				<property name="url">http://www.atmarkit.co.jp/rss/fembedded/rss.xml</property>
+			</properties>
+    	</site>	
+	</site-top>
+
+	<site-top id="guidance_service" title="サービス" 
+	          display="inline" 
+	          href="http://www.atmarkit.co.jp/"
+	          >
+		<site thumbnail="imgs/excite_news.PNG" id="guidance_service_twitter" title="Twitter" display="inline" type="Gadget" multi="true">
+			<properties>
+				<property name="url">http://www.infoscoop.org/gadgets/hello.xml?hoge=1</property>
+			</properties>
+    	</site>	    	
+		<site thumbnail="imgs/excite_news.PNG" id="guidance_service_facebook" title="FaceBook" display="inline" type="Gadget" multi="true">
+			<properties>
+				<property name="url">http://www.infoscoop.org/gadgets/hello.xml?hoge=1</property>
+			</properties>
+    	</site>	    	
+	</site-top>
+
+	<site-top id="guidance_science" title="サイエンス" 
+	          display="inline" 
+	          href="http://www.atmarkit.co.jp/"
+	          >
+		<site thumbnail="imgs/excite_news.PNG" id="guidance_science_rss1" title="サイエンス系RSS1" display="inline" href="http://www.atmarkit.co.jp/fembedded" type="RssReader">	    	
+			<properties>
+				<property name="url">http://www.atmarkit.co.jp/rss/fembedded/rss.xml</property>
+			</properties>
+    	</site>	
+	</site-top>
+
+	<site-top id="guidance_tiiki" title="地域" 
+	          display="inline" 
+	          href="http://www.atmarkit.co.jp/"
+	          >
+		<site thumbnail="imgs/excite_news.PNG" id="guidance_tiiki_rss" title="地域系RSS" display="inline" href="http://www.atmarkit.co.jp/fembedded" type="RssReader">	    	
+			<properties>
+				<property name="url">http://feed.rssad.jp/rss/gigazine/rss_2.0</property>
+			</properties>
+    	</site>	    
+	</site-top>
+
+	<site-top id="guidance_animal" title="動物" 
+	          display="inline" 
+	          href="http://www.atmarkit.co.jp/"
+	          >
+		<site thumbnail="imgs/excite_news.PNG" id="guidance_animal_animal" title="アニマル系RSS" display="inline" href="http://www.atmarkit.co.jp/fembedded" type="RssReader">	    	
+			<properties>
+				<property name="url">http://feed.rssad.jp/rss/gigazine/rss_2.0</property>
+			</properties>
+    	</site>	    
+	</site-top>
+
+</sites>

@@ -70,6 +70,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 		prefPage.appendChild(buildShowAllSettingBody());
 		prefPage.appendChild(buildRssSettingBody());
 		prefPage.appendChild(buildCustomizeReset());
+        prefPage.appendChild(buildGuidanceSet());
 
 		
 		prefTable.appendChild(prefTBody);
@@ -248,6 +249,28 @@ IS_Portal.buildGlobalSettingModal = function() {
 		return fs;
 	}
 
+	function buildGuidanceSet() {
+        var fs = createFieldSet( "ガイダンス" );
+        
+        var description = document.createElement("div");
+        description.innerHTML = "ガイダンスを表示します。";
+        fs.appendChild( description );
+        
+        var initButton = document.createElement("input");
+        initButton.type = "button";
+        initButton.value = "ガイダンスを表示する";
+        IS_Event.observe( initButton,"click",function() {
+            Control.Modal.close();
+            if(!window["IS_GuidanceInstance"]){
+                IS_GuidanceInstance = new IS_Guidance()
+            }
+        });
+        var initField = createField("",initButton );
+        fs.appendChild( initField );
+        
+        return fs;
+	}
+	
 	function buildBackgroundSetting() {
 		var fs = createFieldSet( IS_R.lb_wallPaperSetting );
 		var backgroundSettingDiv = $.DIV({id:'backgroundSettingDiv'}, $.DIV({}, IS_R.lb_selectWallPaperImage ) );

@@ -54,15 +54,18 @@ public class PreferenceService{
 		this.preferenceDAO = preferenceDAO;
 	}
 	
-	public Preference getPreferenceEntity(String uid) throws Exception{
+	private Preference createPreferenceEntity(String uid) throws Exception{
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		Preference entity = new Preference();
+		entity.setId(new PreferencePK(uid, squareid));
+		entity.setElement(Preference.newElement(uid));
+		
+		return entity;
+	}
+	
+	public Preference getPreference(String uid) throws Exception{
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		Preference entity = preferenceDAO.select(uid, squareid);
-		if(entity == null){
-			entity = new Preference();
-			entity.setId(new PreferencePK(uid, squareid));
-			entity.setElement(Preference.newElement(uid));
-		}
-		
 		return entity;
 	}
 	
@@ -75,7 +78,13 @@ public class PreferenceService{
 	 * @throws Exception
 	 */
 	public String getPreferenceJSON(String uid) throws Exception{
-		Preference entity = getPreferenceEntity(uid);
+		Preference entity = getPreference(uid);
+		boolean isFirstLogin = false;
+		if(entity == null){
+			entity = createPreferenceEntity(uid);
+			isFirstLogin = true;
+		}
+			
 		Node node = entity.getElement();
 		
 		JSONObject prefObj;
@@ -86,7 +95,7 @@ public class PreferenceService{
 			x2j.addPathRule(rootPath + "/property", "name", true, true);
 			String prefJsonStr = x2j.xml2json((Element)node);
 			prefObj = new JSONObject(prefJsonStr);
-
+			
 			// convert the logoffDateTime to the format for javascript.
 			if(prefObj.has("property")){
 				JSONObject prefPropObj = prefObj.getJSONObject("property");
@@ -106,6 +115,10 @@ public class PreferenceService{
 		}else{
 			prefObj = new JSONObject();
 		}
+		
+		if(isFirstLogin)
+			prefObj.put("isFirstLogin", true);
+			
 		return prefObj.toString();
 	}
 	
@@ -114,7 +127,10 @@ public class PreferenceService{
 	 * set access time
 	 */
 	public void setAccessTime(String uid) throws Exception {
-		Preference entity = getPreferenceEntity(uid);
+		Preference entity = getPreference(uid);
+		if(entity == null)
+			entity = createPreferenceEntity(uid);
+		
 		Node node = entity.getElement();
 		
 		JSONObject prefObj;
