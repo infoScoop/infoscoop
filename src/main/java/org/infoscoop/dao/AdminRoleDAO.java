@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -110,25 +111,25 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 	}
 
 	/**
-	 * delete the data
-	 * 
-	 */
-	public void deleteBySquareId(String squareid) {
-		String queryString = "delete from Adminrole where Squareid = ?";
-		
-		super.getHibernateTemplate().bulkUpdate( queryString, squareid );
-	}
-	/**
 	 * insert the data
 	 * 
 	 * @param uid
 	 */
-	public void insert(String name, String authData, boolean allowDelete, String squareid) {
-		Adminrole adminrole = new Adminrole(null, name, authData, squareid);
-		
-		adminrole.setAllowdelete((allowDelete)? 1 : 0);
-		super.getHibernateTemplate().save( adminrole );
-		
+	public void insert(String roleId, String name, String authData, boolean allowDelete, String squareid, Boolean isNew) {
+		Adminrole adminrole =  new Adminrole();
+
+		if(BooleanUtils.isTrue(isNew)) {
+			adminrole.setAllowdelete((allowDelete)? 1 : 0);
+			adminrole.setSquareid(squareid);
+		} else {
+			adminrole = selectById(roleId);
+		}
+
+		adminrole.setName(name);
+		adminrole.setPermission(authData);
+
+		super.getHibernateTemplate().saveOrUpdate(adminrole);
+
 		if (log.isInfoEnabled())
 			log.info("param[name=" + name + ", authData=" + authData + ", squareid= " + squareid + "]: insert successfully.");
 	}

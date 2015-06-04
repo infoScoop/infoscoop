@@ -3,6 +3,7 @@ var ISA_PortalAdmins = IS_Class.create();
 ISA_PortalAdmins.portalAdmins = false;
 
 ISA_PortalAdmins.portalRolesList = [];
+ISA_PortalAdmins.deletePortalRolesList = [];
 ISA_PortalAdmins.myRoleId;
 
 // Permission(Supporsed to be in DB)
@@ -308,12 +309,16 @@ ISA_PortalAdmins.prototype.classDef = function() {
 			IS_Event.observe(deleteImg, 'click', function(tr){
 				ISA_Admin.isUpdated = true;
 				Element.remove(tr);
+				if(!this.isNew) {
+					ISA_PortalAdmins.deletePortalRolesList.push(this);
+				}
 				ISA_PortalAdmins.portalRolesList.remove(this);
 			}.bind(role, tr), false, "_adminAdmins");
 			deleteTd.appendChild(deleteImg);
 		}
 		
 		if (isNew) {
+			role.isNew = true;
 			ISA_PortalAdmins.portalRolesList.push(role);
 		}
 		
@@ -577,7 +582,6 @@ ISA_PortalAdmins.prototype.classDef = function() {
 			roleOption.value = role.id;
 			roleOption.appendChild(document.createTextNode(role.name));
 			this.appendChild(roleOption);
-			console.log(role);
 			roleIdList.push(role.id);
 		}.bind(roleSelect));
 		
@@ -605,6 +609,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 		var sendData = {};
 		sendData.admins = [];
 		sendData.roles = ISA_PortalAdmins.portalRolesList;
+		sendData.deleteRoles = ISA_PortalAdmins.deletePortalRolesList;
 		
 		var valuesArray = [];
 		var inputs = $$(".portalAdmins .portalAdminInput");
@@ -724,6 +729,7 @@ ISA_PortalAdmins.prototype.classDef = function() {
 				var adminsData = eval("(" + response.responseText + ")");
 				
 				ISA_PortalAdmins.portalRolesList = adminsData.roles;
+				ISA_PortalAdmins.deletePortalRolesList = [];
 				self.displayPortalAdmins(adminsData.admins);
 			},
 			on404: function(t) {

@@ -79,7 +79,7 @@ public class PortalAdminsService {
 	}
 
 	/**
-	 * @param adminsList
+	 * @param adminsMap
 	 * @throws Exception 
 	 * @throws Exception
 	 */
@@ -93,9 +93,13 @@ public class PortalAdminsService {
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		List getNotAllowDeleteRoleIds = adminRoleDAO.getNotAllowDeleteRoleIds();
-		
-		adminRoleDAO.deleteBySquareId(squareid);
-		
+
+		List deleteRolesList = (List)adminsMap.get("deleteRoles");
+		for(Iterator itr=deleteRolesList.iterator();itr.hasNext();){
+			Map map = (Map)itr.next();
+			adminRoleDAO.delete( (String)map.get("id"));
+		}
+
 		List rolesList = (List)adminsMap.get("roles");
 		List roleIdList = new ArrayList();
 		
@@ -105,8 +109,9 @@ public class PortalAdminsService {
 			String roleId = (String)map.get("id");
 			String name = (String)map.get("name");
 			String permission = (String)map.get("permission");
-			
-			adminRoleDAO.insert(name, permission, !getNotAllowDeleteRoleIds.contains(roleId), squareid);
+			Boolean isNew = (Boolean)map.get("isNew");
+
+			adminRoleDAO.insert(roleId, name, permission, !getNotAllowDeleteRoleIds.contains(roleId), squareid, isNew);
 			roleIdList.add(roleId);
 		}
 
@@ -138,8 +143,12 @@ public class PortalAdminsService {
 			String uid = (String)ite.next();
 			String roleId = (String)adminsData.get(uid);
 			roleId = (roleIdList.contains(roleId))? roleId : null;
-			
-			portalAdminsDAO.insert(uid, Integer.parseInt(roleId), squareid);
+			Integer id = null;
+
+			if(roleId != null){
+				id = Integer.parseInt(roleId);
+			}
+			portalAdminsDAO.insert(uid, id, squareid);
 		}
 		
 		if(!roleIdList.contains(myRoleId) || !roleIdList.containsAll(getNotAllowDeleteRoleIds)){
