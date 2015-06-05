@@ -26,6 +26,7 @@
 <%@page import="org.infoscoop.util.RSAKeyManager"%>
 <%@page import="org.infoscoop.web.SessionManagerFilter"%>
 <%@page import="org.infoscoop.util.I18NUtil"%>
+<%@page import="org.infoscoop.properties.InfoScoopProperties"%>
 <%
 	response.setHeader("Pragma","no-cache");
 	response.setHeader("Cache-Control","no-cache");
@@ -107,7 +108,8 @@
 		var IS_Portal = {
 			lang : "<%=request.getLocale().getLanguage() %>",
 			country : "<%=request.getLocale().getCountry() %>",
-			japaneseOnly : false
+			japaneseOnly : false,
+			useMultitenantMode : <%= InfoScoopProperties.getInstance().isUseMultitenantMode() %>
 		};
 		var is_userId = <%=uid != null ? "\"" + uid.replace("\\", "\\\\") + "\"" : "null" %>;
 		var is_userName = <%=displayName != null ?  "\"" + displayName + "\"" : "null" %>;

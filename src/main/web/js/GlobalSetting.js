@@ -70,7 +70,9 @@ IS_Portal.buildGlobalSettingModal = function() {
 		prefPage.appendChild(buildShowAllSettingBody());
 		prefPage.appendChild(buildRssSettingBody());
 		prefPage.appendChild(buildCustomizeReset());
-        prefPage.appendChild(buildGuidanceSet());
+		if(IS_Portal.useMultitenantMode){
+		    prefPage.appendChild(buildGuidanceSet());
+		}
 
 		
 		prefTable.appendChild(prefTBody);
@@ -263,6 +265,8 @@ IS_Portal.buildGlobalSettingModal = function() {
             Control.Modal.close();
             if(!window["IS_GuidanceInstance"]){
                 IS_GuidanceInstance = new IS_Guidance()
+            }else{
+                IS_GuidanceInstance.start();
             }
         });
         var initField = createField("",initButton );

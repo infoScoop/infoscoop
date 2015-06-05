@@ -18,6 +18,9 @@
 IS_Guidance = Class.create();
 IS_Guidance.prototype = {
     initialize: function() {
+        if(!IS_Portal.useMultitenantMode)
+            return;
+        
         IS_TreeMenu.types.guidance = new IS_TreeMenu("guidance");
         
         //Call return value of MakeMenuFilter
@@ -76,11 +79,15 @@ IS_Guidance.prototype = {
     },
     
     start: function() {
-        this.guidanceModal.open();
+        if(this.guidanceModal){
+            this.guidanceModal.open();
+            this.resizeModal()
+        }
     },
     
     finish: function() {
-        this.guidanceModal.close();
+        if(this.guidanceModal)
+            this.guidanceModal.close();
     },
     
     setMenu: function( url,a,b,c,clear ) {

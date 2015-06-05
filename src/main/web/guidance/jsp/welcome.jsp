@@ -17,7 +17,6 @@
 # <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
 --%>
 
-<!DOCTYPE HTML>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <h1 class="text-primary">infoScoop for Team へようこそ。</h1>
 <blockquote>

@@ -36,14 +36,14 @@
 	<link href="<%=staticContentURL%>/js/lib/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="<%=staticContentURL%>/js/lib/bootstrap-3.3.4-dist/css/bootstrap-theme.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/twitter-bootstrap-wizard/prettify.css">
-    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/guidance.css?Aaafe">
+    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/guidance.css">
 
 <!--start script-->
 <script src="<%=staticContentURL%>/js/lib/jquery-1.9.1.min.js"></script>
 <script src="<%=staticContentURL%>/js/lib/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
 <script src="<%=staticContentURL%>/js/lib/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 <script src="<%=staticContentURL%>/js/lib/twitter-bootstrap-wizard/prettify.js"></script>
-<script src="<%=staticContentURL%>/js/guidance/GuidanceWindow.js?esesasa"></script>
+<script src="<%=staticContentURL%>/js/guidance/GuidanceWindow.js"></script>
 <!--end script-->
 <script src="../js/resources/resourceBundle.jsp"></script>
 <script type="text/javascript">
@@ -89,8 +89,12 @@ $(document).ready(function() {
             $('#rootwizard').find('.pager .previous').show();
         }
     }});
-    $('#rootwizard .finish').click(function() {
+    $('#rootwizard .finish').click(function(e) {
         parent.IS_GuidanceInstance.finish();
+        setTimeout(function(){
+            var wizard = $('#rootwizard').data("bootstrapWizard");
+            wizard.first(e);
+        }, 300);
     });
 });
 </script>
@@ -128,7 +132,7 @@ $(document).ready(function() {
         <ul class="pager wizard">
             <li class="previous"><a href="javascript:;">Previous</a></li>
             <li class="next"><a href="javascript:;">Next</a></li>
-            <li class="next finish" style="display:none;"><a href="javascript:;">Finish</a></li>
+            <li class="finish" style="display:none;"><a href="javascript:;">Finish</a></li>
         </ul>
     </div>  
 </div>
