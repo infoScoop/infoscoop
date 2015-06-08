@@ -438,6 +438,7 @@
 				<include name="admintreemenu.css"/>
 				<include name="adminotherlayout.css"/>
 				<include name="editrole.css"/>
+				<include name="guidance.css"/>
 			</fileset>
 		</copy>
 
