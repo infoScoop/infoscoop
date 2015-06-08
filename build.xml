@@ -223,11 +223,14 @@
 
 		<copy todir="${build.main}/js/resources" file="${src.main.web}/js/resources/resourceBundle.jsp"/>
 		<copy todir="${build.main}/js/search" file="${src.main.web}/js/search/searchEngine.jsp"/>
-
-
-		<!-- copy javascript without compress -->
+		
 		<copy todir="${build.main}/js/lib">
 			<fileset dir="${src.main.web}/js/lib" />
+		</copy>
+
+		<!-- copy javascript without compress -->
+		<copy todir="${build.main}/guidance">
+			<fileset dir="${src.main.web}/guidance" />
 		</copy>
 
 		<mkdir dir="${build.main}/js/gadget" />
@@ -239,7 +242,8 @@
 
 		<copy todir="${build.main}/js/utils" file="${src.main.web}/js/utils/ajax304.js"/>
 		<copy todir="${build.main}/js/utils" file="${src.main.web}/js/utils/utils.js"/>
-
+        <copy todir="${build.main}/js/guidance" file="${src.main.web}/js/guidance/GuidanceWindow.js"/>
+		
 		<!-- TODO: require arrangement -->
 		<copy todir="${build.main}/WEB-INF" encoding="UTF-8">
 			<fileset dir="${src.main.web}/WEB-INF">
@@ -296,6 +300,7 @@
 			<filelist dir="${src.main.web}/js" files="ContentFooter.js"/>
 			<filelist dir="${src.main.web}/js" files="GlobalSetting.js"/>
 			<filelist dir="${src.main.web}/js" files="Theme.js"/>
+			<filelist dir="${src.main.web}/js/guidance" files="Guidance.js"/>
 			<filelist dir="${src.main.web}/js/search" files="SearchEngine.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="Widget.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="WidgetHeader.js"/>
