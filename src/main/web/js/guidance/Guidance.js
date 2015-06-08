@@ -70,9 +70,15 @@ IS_Guidance.prototype = {
             onSuccess: function(response) {
                 this.start();
             }.bind(this),
-            on404: function(t) {},
-            onFailure: function(t) {},
-            onException: function(r, t){}
+            on404: function(t) {
+                msg.error("ガイダンス情報が見つかりません - [" +  t.status + "]" + t.statusText);
+            },
+            onFailure: function(t) {
+                msg.error("ガイダンス情報の読み込みに失敗しました - [" +  t.status + "]" + t.statusText);
+            },
+            onException: function(r, t){
+                msg.error("ガイダンス情報の表示に失敗しました - " + getText(t));
+            }
         };
         
         this.guidanceMenuItem.loadServiceMenu(opt);
