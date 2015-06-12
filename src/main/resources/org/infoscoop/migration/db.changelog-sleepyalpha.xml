@@ -502,4 +502,24 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
         <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_PORTALADMINS" constraintName="fk_is_portaladmins_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
         <addForeignKeyConstraint baseColumnNames="ROLEID" baseTableName="IS_PORTALADMINS" constraintName="fk_is_portaladmins_roleid" onDelete="SET NULL" referencedColumnNames="id" referencedTableName="IS_ADMINROLES"/>
     </changeSet>
+    
+    <!--CREATE TABLE `is_externakapi_keys` (id varchar(64) not null, name varchar(256) not null, tabdesc text, lastmodified timestamp not null primary key(id));-->
+    <changeSet id="infoscoop_sleepyalpha_598_12" author="nishiumi">
+        <preConditions onFail="HALT" onFailMessage="skip infoscoop_sleepyalpha_6xx">
+            <not>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="is_externalapi_keys"/>
+            </not>
+        </preConditions>
+        <createTable tableName="is_externalapi_keys" tablespace="${.tablespace}">
+            <column name="id" type="varchar(64)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="api_key" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="api_secret" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

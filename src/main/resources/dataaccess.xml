@@ -419,4 +419,9 @@
             <ref bean="sessionFactory"/>
         </property>
     </bean>
+    <bean id="externalApiKeyDAO" class="org.infoscoop.dao.ExternalAPIKeyDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
 </beans>
