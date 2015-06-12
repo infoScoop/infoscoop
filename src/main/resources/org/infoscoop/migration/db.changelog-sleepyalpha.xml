@@ -505,7 +505,7 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
     
     <!--CREATE TABLE `is_externakapi_keys` (id varchar(64) not null, name varchar(256) not null, tabdesc text, lastmodified timestamp not null primary key(id));-->
     <changeSet id="infoscoop_sleepyalpha_598_12" author="nishiumi">
-        <preConditions onFail="HALT" onFailMessage="skip infoscoop_sleepyalpha_6xx">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_12">
             <not>
                 <tableExists schemaName="${migration.defaultSchema}" tableName="is_externalapi_keys"/>
             </not>
