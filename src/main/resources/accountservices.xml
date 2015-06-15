@@ -134,7 +134,7 @@
 	<!-- for SaaS -->
 	<!--
 	<bean id="SaaSAccountManager" singleton="true"
-		  class="org.infoscoop.account.saas.SaaSAccountManager">
+		  class="jp.co.unirita.saas.account.SaaSAccountManager">
 		<constructor-arg>
 			<value>ldap://test.infoscoop.org:389</value>
 		</constructor-arg><constructor-arg>
@@ -147,6 +147,8 @@
 		<property name="userSearchAttr">
 			<map>
 				<entry key="user_id"><value>uid</value></entry>
+				<entry key="user_firstname"><value>cn</value></entry>
+				<entry key="user_givenname"><value>sn</value></entry>
 				<entry key="user_name"><value>displayName</value></entry>
 				<entry key="user_email"><value>mail</value></entry>
 				<entry key="user_default_square"><value>o</value></entry>
