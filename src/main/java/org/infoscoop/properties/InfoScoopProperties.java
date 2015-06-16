@@ -21,7 +21,6 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.infoscoop.admin.web.AuthenticationServlet;
 
 public class InfoScoopProperties {
 	private static Log logger = LogFactory.getLog(InfoScoopProperties.class);
