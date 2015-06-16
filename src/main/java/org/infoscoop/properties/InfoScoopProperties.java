@@ -24,17 +24,16 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.admin.web.AuthenticationServlet;
 
 public class InfoScoopProperties {
-	private static Log logger = LogFactory.getLog(AuthenticationServlet.class);
+	private static Log logger = LogFactory.getLog(InfoScoopProperties.class);
 	private static InfoScoopProperties singleInstance = new InfoScoopProperties();
 	private boolean useMultitenantMode = false;
-	private String notificationEmail;
+	private ResourceBundle bundle;
 	
 	private InfoScoopProperties() {
 		try {
-			ResourceBundle bundle = ResourceBundle.getBundle("infoscoop");
+			this.bundle = ResourceBundle.getBundle("infoscoop");
 			String useMultitenantModeStr = bundle.getString("useMultitenantMode");
 			this.useMultitenantMode = new Boolean(useMultitenantModeStr);
-			this.notificationEmail = bundle.getString("notification.email");
 		} catch (Exception ex) {
 			logger.error("Failed to load infoscoop.properties.", ex);
 		}
@@ -44,11 +43,11 @@ public class InfoScoopProperties {
 		return singleInstance;
 	}
 
+	public String getProperty(String key) {
+		return bundle.getString(key);
+	}
+
 	public boolean isUseMultitenantMode() {
 		return useMultitenantMode;
-	}
-	
-	public String getNotificationEmail() {
-		return notificationEmail;
 	}
 }
