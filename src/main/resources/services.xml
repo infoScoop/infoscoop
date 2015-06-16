@@ -619,4 +619,24 @@
 			</props>
 		</property>
 	</bean>
+    <bean id="RestrictionKeyService"
+        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="target">
+            <bean class="org.infoscoop.service.RestrictionKeyService">
+                <property name="restrictionKeyDAO">
+                    <ref bean="restrictionKeyDAO" />
+                </property>
+            </bean>
+        </property>
+        <property name="transactionManager">
+            <ref bean="hibernateTransactionManger" />
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="create*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+                <prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+            </props>
+        </property>
+    </bean>
 </beans>

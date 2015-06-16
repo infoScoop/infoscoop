@@ -424,4 +424,9 @@
             <ref bean="sessionFactory"/>
         </property>
     </bean>
+    <bean id="restrictionKeyDAO" class="org.infoscoop.dao.RestrictionKeyDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
 </beans>

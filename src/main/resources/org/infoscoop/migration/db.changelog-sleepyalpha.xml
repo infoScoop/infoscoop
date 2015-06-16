@@ -522,4 +522,25 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
             </column>
         </createTable>
     </changeSet>
+    
+    <!--CREATE TABLE `is_restriction_keys` (id varchar(64) not null, expired timestamp DEFAULT '0000-00-00 00:00:00' not null, uid varchar(150));-->
+    <changeSet id="infoscoop_sleepyalpha_598_13" author="nishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_13">
+            <not>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="is_restriction_keys"/>
+            </not>
+        </preConditions>
+        <createTable tableName="is_restriction_keys" tablespace="${.tablespace}">
+            <column name="id" type="varchar(64)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="expired" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uid" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
