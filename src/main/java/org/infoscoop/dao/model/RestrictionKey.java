@@ -31,7 +31,7 @@ public class RestrictionKey extends BaseRestrictionKey{
 		super(id, expired, uid);
 	}
 	
-	public boolean isExpired(){
+	public boolean isExpiredKey(){
 		Date now = new Date();
 		return now.after(this.getExpired());
 	}
