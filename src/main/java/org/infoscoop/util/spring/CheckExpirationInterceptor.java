@@ -44,7 +44,7 @@ public class CheckExpirationInterceptor extends HandlerInterceptorAdapter {
 		if(keyEntity == null){
 			log.info("The key was not found : " + key);
 		}
-		else if(keyEntity.isExpired()){
+		else if(keyEntity.isExpiredKey()){
 			log.info("The key has expired : " + key + ", uid : " + keyEntity.getUid());
 			keyService.deleteRestrictionEntity(keyEntity);
 		}
