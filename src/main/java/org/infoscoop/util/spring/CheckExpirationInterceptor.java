@@ -30,6 +30,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class CheckExpirationInterceptor extends HandlerInterceptorAdapter {
 	private static Log log = LogFactory.getLog(CheckExpirationInterceptor.class);
+	private String expiredPath;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request,
@@ -53,9 +54,19 @@ public class CheckExpirationInterceptor extends HandlerInterceptorAdapter {
 		}
 		
 		if(isExpired){
-			request.getRequestDispatcher("/prepare/urlExpired").forward(request, response);
+			request.getRequestDispatcher(this.expiredPath).forward(request, response);
 			return false;
 		};
 		return super.preHandle(request, response, handler);
 	}
+
+	public String getExpiredPath() {
+		return expiredPath;
+	}
+
+	public void setExpiredPath(String expiredPath) {
+		this.expiredPath = expiredPath;
+	}
+	
+	
 }
