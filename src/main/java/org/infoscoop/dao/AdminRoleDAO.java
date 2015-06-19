@@ -115,7 +115,7 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 	 * 
 	 * @param uid
 	 */
-	public void insert(String roleId, String name, String authData, boolean allowDelete, String squareid, Boolean isNew) {
+	public String insert(String roleId, String name, String authData, boolean allowDelete, String squareid, Boolean isNew) {
 		Adminrole adminrole =  new Adminrole();
 
 		if(BooleanUtils.isTrue(isNew)) {
@@ -132,6 +132,8 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 
 		if (log.isInfoEnabled())
 			log.info("param[name=" + name + ", authData=" + authData + ", squareid= " + squareid + "]: insert successfully.");
+		
+		return adminrole.getId();
 	}
 
 }

@@ -17,14 +17,37 @@
 
 package org.infoscoop.service;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.api.dao.OAuth2ProviderClientDetailDAO;
-import org.infoscoop.dao.*;
+import org.infoscoop.dao.AdminRoleDAO;
+import org.infoscoop.dao.ForbiddenURLDAO;
+import org.infoscoop.dao.GadgetDAO;
+import org.infoscoop.dao.GadgetIconDAO;
+import org.infoscoop.dao.HolidaysDAO;
+import org.infoscoop.dao.I18NDAO;
+import org.infoscoop.dao.OAuthCertificateDAO;
+import org.infoscoop.dao.PortalAdminsDAO;
+import org.infoscoop.dao.PortalLayoutDAO;
+import org.infoscoop.dao.PropertiesDAO;
+import org.infoscoop.dao.ProxyConfDAO;
+import org.infoscoop.dao.SearchEngineDAO;
+import org.infoscoop.dao.SquareDAO;
+import org.infoscoop.dao.StaticTabDAO;
+import org.infoscoop.dao.TabLayoutDAO;
+import org.infoscoop.dao.WidgetConfDAO;
+import org.infoscoop.dao.model.Adminrole;
+import org.infoscoop.dao.model.Portaladmins;
 import org.infoscoop.util.SpringUtil;
 
 public class SquareService {
 	private static Log log = LogFactory.getLog(SquareService.class);
+	private static final String SQUAREID_DEFAULT = "default";
 
 	// DAO
 	private SquareDAO squareDAO;
@@ -190,11 +213,34 @@ public class SquareService {
 		return (SquareService) SpringUtil.getBean("SquareService");
 	}
 
+	@SuppressWarnings("unchecked")
 	public void createSquare(String squareId) {
 		this.squareDAO.create(squareId, squareId, "");
-		this.forbiddenURLDAO.copySquare(squareId, "default");
-		this.gadgetDAO.copySquare(squareId, "default");
-		this.gadgetIconDAO.copySquare(squareId, "default");
-		System.out.println("hoge");
+		this.forbiddenURLDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.gadgetDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.gadgetIconDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		
+		Map<Integer, Integer> roleIdMap = new HashMap<Integer, Integer>();
+		
+		// copy Adminrole
+		List<Adminrole> adminRoleList = adminRoleDAO.select(SQUAREID_DEFAULT);
+		Iterator<Adminrole> rolesIte = adminRoleList.iterator();
+		while(rolesIte.hasNext()){
+			Adminrole adminRole = rolesIte.next();
+			String orgId = adminRole.getId();
+			String newId = adminRoleDAO.insert(null, adminRole.getName(), adminRole.getPermission(), adminRole.isAllowDelete(), squareId, new Boolean(true));
+			roleIdMap.put(new Integer(orgId), new Integer(newId));
+		}
+		
+		// copy PortalAdmins
+		List<Portaladmins> portalAdminList = portalAdminsDAO.select(SQUAREID_DEFAULT);
+		Iterator<Portaladmins> adminsIte = portalAdminList.iterator();
+		while(adminsIte.hasNext()){
+			Portaladmins portalAdmin = adminsIte.next();
+			Integer orgRoleId = portalAdmin.getRoleid();
+			portalAdminsDAO.insert(portalAdmin.getUid(), roleIdMap.get(orgRoleId), squareId);
+		}
+		
 	}
+	
 }
