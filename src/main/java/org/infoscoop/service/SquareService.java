@@ -193,6 +193,8 @@ public class SquareService {
 	public void createSquare(String squareId) {
 		this.squareDAO.create(squareId, squareId, "");
 		this.forbiddenURLDAO.copySquare(squareId, "default");
+		this.gadgetDAO.copySquare(squareId, "default");
+		this.gadgetIconDAO.copySquare(squareId, "default");
 		System.out.println("hoge");
 	}
 }

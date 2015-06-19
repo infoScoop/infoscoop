@@ -20,6 +20,8 @@ package org.infoscoop.dao;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.GadgetIcon;
@@ -57,5 +59,13 @@ public class GadgetIconDAO extends HibernateDaoSupport {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(GadgetIcon.class)
 				.add(Expression.eq("Id.Squareid", squareid)));
+	}
+
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session = super.getSession();
+		Query sq = session.getNamedQuery("is_gadget_icons.copySquare");
+		sq.setString("squareId", squareId);
+		sq.setString("defaultSquareId", defaultSquareId);
+		sq.executeUpdate();
 	}
 }

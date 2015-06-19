@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -126,5 +128,13 @@ public class GadgetDAO extends HibernateDaoSupport {
 						Expression.in(Gadget.PROP_NAME, types)).add(
 						Expression.eq(Gadget.PROP_PATH, "/")).add(
 						Expression.eq( Gadget.PROP_SQUARE_ID, squareid )));
+	}
+
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session = super.getSession();
+		Query q = (Query)session.getNamedQuery("is_gadgets.copySquare");
+		q.setString("squareId", squareId);
+		q.setString("defaultSquareId", defaultSquareId);
+		q.executeUpdate();
 	}
 }

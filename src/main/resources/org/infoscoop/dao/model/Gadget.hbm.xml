@@ -59,5 +59,30 @@
             length="64"
         />
 
-	</class>	
+	</class>
+	<query name="is_gadgets.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		Gadget(
+			Type,
+			Path,
+			Name,
+			Data,
+			Lastmodified,
+			Squareid
+		)
+	SELECT
+		g.Type,
+		g.Path,
+		g.Name,
+		g.Data,
+		g.Lastmodified,
+		cast(:squareId as string)
+	FROM
+		Gadget as g
+	WHERE
+		g.Squareid = :defaultSquareId
+		]]>
+	</query>
 </hibernate-mapping>

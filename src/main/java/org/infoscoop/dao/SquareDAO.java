@@ -47,5 +47,6 @@ public class SquareDAO extends HibernateDaoSupport {
 		square.setLastmodified(new Date());
 
 		super.getHibernateTemplate().save(square);
+		super.getHibernateTemplate().flush();
 	}
 }

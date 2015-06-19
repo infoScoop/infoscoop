@@ -63,10 +63,10 @@ public class ForbiddenURLDAO extends HibernateDaoSupport {
 	public void copySquare(String squareId, String defaultSquareId) {
 		Session session  = super.getSession();
 
-			Query q = (Query)session.getNamedQuery("copySquare");
-			q.setString("squareId", squareId);
-			q.setString("defaultSquareId", defaultSquareId);
-			q.executeUpdate();
+		Query q = (Query)session.getNamedQuery("is_forbiddenurls.copySquare");
+		q.setString("squareId", squareId);
+		q.setString("defaultSquareId", defaultSquareId);
+		q.executeUpdate();
 
 	}
 }

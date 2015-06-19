@@ -35,7 +35,7 @@
         />
 
 	</class>
-	<query name="copySquare">
+	<query name="is_forbiddenurls.copySquare">
 		<![CDATA[
 INSERT
 	INTO

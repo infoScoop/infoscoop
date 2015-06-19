@@ -30,6 +30,28 @@
 			length="1024"
 		/>
 
-
 	</class>
+	<sql-query name="is_gadget_icons.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		is_gadget_icons(
+			TYPE,
+			URL,
+			square_id
+		)
+	SELECT
+		g.TYPE,
+		g.URL,
+		:squareId
+	FROM
+		is_gadget_icons as g
+	WHERE
+		g.square_id = :defaultSquareId
+		]]>
+	</sql-query>
+
+	<!--<query name="is_gadget_icons.copySquare">-->
+
+	<!--</query>-->
 </hibernate-mapping>
