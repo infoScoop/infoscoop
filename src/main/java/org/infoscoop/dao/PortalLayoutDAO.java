@@ -26,6 +26,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.Portallayout;
@@ -75,5 +77,12 @@ public class PortalLayoutDAO extends HibernateDaoSupport{
 		if(log.isInfoEnabled())
 				log.info("param[]: update successfully.");
 	}
-	
+
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session = super.getSession();
+		Query sq = session.getNamedQuery("is_portallayouts.copySquare");
+		sq.setString("squareId", squareId);
+		sq.setString("defaultSquareId", defaultSquareId);
+		sq.executeUpdate();
+	}
 }

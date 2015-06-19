@@ -54,7 +54,7 @@ INSERT
 		h.country,
 		h.lang,
 		h.data,
-		h.updated_at
+		h.updated_at,
 		:squareId
 	FROM
 		IS_HOLIDAYS as h

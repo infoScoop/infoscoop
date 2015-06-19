@@ -23,6 +23,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -121,5 +123,13 @@ public class OAuth2ProviderClientDetailDAO extends HibernateDaoSupport {
 		
 		if(clientDetail != null)
 			super.getHibernateTemplate().delete(clientDetail);
+	}
+
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session = super.getSession();
+		Query sq = session.getNamedQuery("is_oauthprovider_client.copySquare");
+		sq.setString("squareId", squareId);
+		sq.setString("defaultSquareId", defaultSquareId);
+		sq.executeUpdate();
 	}
 }

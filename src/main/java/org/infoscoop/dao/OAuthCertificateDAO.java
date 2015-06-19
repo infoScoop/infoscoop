@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.OAuthCertificate;
@@ -52,4 +54,11 @@ public class OAuthCertificateDAO extends HibernateDaoSupport {
 		return (OAuthCertificate)results.get(0);
 	}
 
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session = super.getSession();
+		Query sq = session.getNamedQuery("is_oauth_certificate.copySquare");
+		sq.setString("squareId", squareId);
+		sq.setString("defaultSquareId", defaultSquareId);
+		sq.executeUpdate();
+	}
 }

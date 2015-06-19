@@ -20,11 +20,12 @@ package org.infoscoop.dao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 
 
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.infoscoop.dao.model.HOLIDAYSPK;
 import org.infoscoop.dao.model.Holidays;
 import org.infoscoop.util.SpringUtil;
@@ -66,5 +67,13 @@ public class HolidaysDAO extends HibernateDaoSupport {
 		}
 		
 		return locales;
+	}
+
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session = super.getSession();
+		Query sq = session.getNamedQuery("is_holidays.copySquare");
+		sq.setString("squareId", squareId);
+		sq.setString("defaultSquareId", defaultSquareId);
+		sq.executeUpdate();
 	}
 }

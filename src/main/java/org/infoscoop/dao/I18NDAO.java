@@ -29,6 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.LogicalExpression;
@@ -281,7 +282,20 @@ public class I18NDAO extends HibernateDaoSupport {
 		if (log.isInfoEnabled())
 			log.info("deleteI18NLocale successfully. : type=" + type + " ,squareId=" + squareId);
 	}
-	
+
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session = super.getSession();
+		Query sq = session.getNamedQuery("is_i18n.copySquare");
+		sq.setString("squareId", squareId);
+		sq.setString("defaultSquareId", defaultSquareId);
+		sq.executeUpdate();
+
+		Query q = session.getNamedQuery("is_i18nlocales.copySquare");
+		q.setString("squareId", squareId);
+		q.setString("defaultSquareId", defaultSquareId);
+		q.executeUpdate();
+	}
+
 	public static void main(String[] args) {
 		List list = newInstance().selectAll("default");
 		Iterator ite = list.iterator();

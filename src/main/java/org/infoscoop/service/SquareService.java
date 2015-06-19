@@ -25,22 +25,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.api.dao.OAuth2ProviderClientDetailDAO;
-import org.infoscoop.dao.AdminRoleDAO;
-import org.infoscoop.dao.ForbiddenURLDAO;
-import org.infoscoop.dao.GadgetDAO;
-import org.infoscoop.dao.GadgetIconDAO;
-import org.infoscoop.dao.HolidaysDAO;
-import org.infoscoop.dao.I18NDAO;
-import org.infoscoop.dao.OAuthCertificateDAO;
-import org.infoscoop.dao.PortalAdminsDAO;
-import org.infoscoop.dao.PortalLayoutDAO;
-import org.infoscoop.dao.PropertiesDAO;
-import org.infoscoop.dao.ProxyConfDAO;
-import org.infoscoop.dao.SearchEngineDAO;
-import org.infoscoop.dao.SquareDAO;
-import org.infoscoop.dao.StaticTabDAO;
-import org.infoscoop.dao.TabLayoutDAO;
-import org.infoscoop.dao.WidgetConfDAO;
+import org.infoscoop.dao.*;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Portaladmins;
 import org.infoscoop.util.SpringUtil;
@@ -57,6 +42,7 @@ public class SquareService {
 	private GadgetIconDAO gadgetIconDAO;
 	private HolidaysDAO holidaysDAO;
 	private I18NDAO i18NDAO;
+	private SiteAggregationMenuDAO siteAggregationMenuDAO;
 	private OAuthCertificateDAO oauthCertificateDAO;
 	private PortalAdminsDAO portalAdminsDAO;
 	private PortalLayoutDAO portalLayoutDAO;
@@ -127,6 +113,14 @@ public class SquareService {
 
 	public void setI18NDAO(I18NDAO i18NDAO) {
 		this.i18NDAO = i18NDAO;
+	}
+
+	public SiteAggregationMenuDAO getSiteAggregationMenuDAO() {
+		return siteAggregationMenuDAO;
+	}
+
+	public void setSiteAggregationMenuDAO(SiteAggregationMenuDAO siteAggregationMenuDAO) {
+		this.siteAggregationMenuDAO = siteAggregationMenuDAO;
 	}
 
 	public OAuthCertificateDAO getOauthCertificateDAO() {
@@ -219,7 +213,19 @@ public class SquareService {
 		this.forbiddenURLDAO.copySquare(squareId, SQUAREID_DEFAULT);
 		this.gadgetDAO.copySquare(squareId, SQUAREID_DEFAULT);
 		this.gadgetIconDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		
+		this.holidaysDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.i18NDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.siteAggregationMenuDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.oauthCertificateDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.portalLayoutDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.propertiesDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.proxyConfDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.searchEngineDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.tabLayoutDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.widgetConfDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.staticTabDAO.copySquare(squareId, SQUAREID_DEFAULT);
+		this.oauth2ProviderClientDetailDAO.copySquare(squareId, SQUAREID_DEFAULT);
+
 		Map<Integer, Integer> roleIdMap = new HashMap<Integer, Integer>();
 		
 		// copy Adminrole

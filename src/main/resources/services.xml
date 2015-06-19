@@ -664,6 +664,9 @@
 				<property name="i18NDAO">
 					<ref bean="i18NDAO" />
 				</property>
+				<property name="siteAggregationMenuDAO">
+					<ref bean="siteAggregationMenuDAO" />
+				</property>
 				<property name="oauthCertificateDAO">
 					<ref bean="oauthCertificateDAO" />
 				</property>
