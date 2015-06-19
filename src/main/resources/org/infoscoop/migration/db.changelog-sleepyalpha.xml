@@ -53,7 +53,7 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
     <!--CREATE TABLE `is_squares` (id varchar(64) not null, name varchar(256) not null, tabdesc text, lastmodified timestamp not null primary key(id));-->
     <!--INSERT INTO `is_squares` VALUES ("default","default","infoScoop Default Square.");-->
     <changeSet id="infoscoop_sleepyalpha_598_2" author="nishiumi">
-        <preConditions onFail="HALT" onFailMessage="skip infoscoop_sleepyalpha_598_2">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_2">
             <not>
                 <tableExists schemaName="${migration.defaultSchema}" tableName="is_squares"/>
             </not>
@@ -66,7 +66,7 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
                 <constraints nullable="false"/>
             </column>
             <column name="description" type="${clob.type}"/>
-            <column name="templastmodified" type="Timestamp">
+            <column name="lastmodified" type="Timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -74,6 +74,7 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
             <column name="id" value="default"/>
             <column name="name" value="default"/>
             <column name="description" value="infoScoop Default Square."/>
+            <column name="lastmodified" valueDate="CURRENT_TIMESTAMP"/>
         </insert>
     </changeSet>
     
