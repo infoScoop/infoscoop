@@ -20,9 +20,10 @@ package org.infoscoop.dao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.infoscoop.dao.model.Proxyconf;
 import org.infoscoop.dao.model.ProxyconfPK;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -65,4 +66,12 @@ public class ProxyConfDAO extends HibernateDaoSupport {
 		
 	}
 
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session  = super.getSession();
+
+		Query q = (Query)session.getNamedQuery("is_proxyconfs.copySquare");
+		q.setString("squareId", squareId);
+		q.setString("defaultSquareId", defaultSquareId);
+		q.executeUpdate();
+	}
 }

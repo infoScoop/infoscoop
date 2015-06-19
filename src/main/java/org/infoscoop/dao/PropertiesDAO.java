@@ -19,9 +19,10 @@ package org.infoscoop.dao;
 
 import java.util.List;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.infoscoop.dao.model.Properties;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -74,5 +75,14 @@ public class PropertiesDAO extends HibernateDaoSupport {
 	
 	public static void main(String args[]){
 		System.out.println(newInstance().findAllProperties("default"));
+	}
+	
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session  = super.getSession();
+
+		Query q = (Query)session.getNamedQuery("is_properties.copySquare");
+		q.setString("squareId", squareId);
+		q.setString("defaultSquareId", defaultSquareId);
+		q.executeUpdate();
 	}
 }

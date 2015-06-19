@@ -18,6 +18,8 @@
 package org.infoscoop.dao;
 
 
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.infoscoop.dao.model.Siteaggregationmenu;
 import org.infoscoop.dao.model.SiteaggregationmenuPK;
 import org.infoscoop.util.SpringUtil;
@@ -60,4 +62,12 @@ public class SiteAggregationMenuDAO extends HibernateDaoSupport {
 		
 	}
 	
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session  = super.getSession();
+
+		Query q = (Query)session.getNamedQuery("is_menus.copySquare");
+		q.setString("squareId", squareId);
+		q.setString("defaultSquareId", defaultSquareId);
+		q.executeUpdate();
+	}
 }

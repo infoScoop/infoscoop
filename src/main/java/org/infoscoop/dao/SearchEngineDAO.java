@@ -20,6 +20,8 @@ package org.infoscoop.dao;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.infoscoop.dao.model.Searchengine;
 import org.infoscoop.dao.model.SearchenginePK;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -63,4 +65,12 @@ public class SearchEngineDAO extends HibernateDaoSupport{
 		super.getHibernateTemplate().saveOrUpdate(entity);
 	}
 	
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session  = super.getSession();
+
+		Query q = (Query)session.getNamedQuery("is_searchengines.copySquare");
+		q.setString("squareId", squareId);
+		q.setString("defaultSquareId", defaultSquareId);
+		q.executeUpdate();
+	}
 }

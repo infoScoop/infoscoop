@@ -31,6 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -423,5 +424,14 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 		});
 		
 		return latestLastModifiedTime;
+	}
+	
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session  = super.getSession();
+
+		Query q = (Query)session.getNamedQuery("is_tablayouts.copySquare");
+		q.setString("squareId", squareId);
+		q.setString("defaultSquareId", defaultSquareId);
+		q.executeUpdate();
 	}
 }
