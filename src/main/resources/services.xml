@@ -639,4 +639,72 @@
             </props>
         </property>
     </bean>
+	<bean id="SquareService"
+		  class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean class="org.infoscoop.service.SquareService">
+				<property name="squareDAO">
+					<ref bean="squareDAO" />
+				</property>
+				<property name="adminRoleDAO">
+					<ref bean="adminRoleDAO" />
+				</property>
+				<property name="forbiddenURLDAO">
+					<ref bean="forbiddenURLDAO" />
+				</property>
+				<property name="gadgetDAO">
+					<ref bean="gadgetDAO" />
+				</property>
+				<property name="gadgetIconDAO">
+					<ref bean="gadgetIconDAO" />
+				</property>
+				<property name="holidaysDAO">
+					<ref bean="holidaysDAO" />
+				</property>
+				<property name="i18NDAO">
+					<ref bean="i18NDAO" />
+				</property>
+				<property name="oauthCertificateDAO">
+					<ref bean="oauthCertificateDAO" />
+				</property>
+				<property name="portalAdminsDAO">
+					<ref bean="portalAdminsDAO" />
+				</property>
+				<property name="portalLayoutDAO">
+					<ref bean="portalLayoutDAO" />
+				</property>
+				<property name="propertiesDAO">
+					<ref bean="propertiesDAO" />
+				</property>
+				<property name="proxyConfDAO">
+					<ref bean="proxyConfDAO" />
+				</property>
+				<property name="searchEngineDAO">
+					<ref bean="searchEngineDAO" />
+				</property>
+				<property name="tabLayoutDAO">
+					<ref bean="tabLayoutDAO" />
+				</property>
+				<property name="widgetConfDAO">
+					<ref bean="widgetConfDAO" />
+				</property>
+				<property name="staticTabDAO">
+					<ref bean="staticTabDAO" />
+				</property>
+				<property name="oauth2ProviderClientDetailDAO">
+					<ref bean="oauth2ProviderClientDetailDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="create*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
 </beans>

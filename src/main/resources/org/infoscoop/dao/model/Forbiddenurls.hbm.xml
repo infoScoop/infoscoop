@@ -34,5 +34,22 @@
             length="64"
         />
 
-	</class>	
+	</class>
+	<query name="copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		Forbiddenurls(
+			Url,
+			Squareid
+		)
+	SELECT
+		f2.Url,
+		cast(:squareId as string)
+	FROM
+		Forbiddenurls as f2
+	WHERE
+		f2.Squareid = :defaultSquareId
+		]]>
+	</query>
 </hibernate-mapping>

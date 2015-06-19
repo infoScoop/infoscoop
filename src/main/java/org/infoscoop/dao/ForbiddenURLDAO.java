@@ -20,6 +20,8 @@ package org.infoscoop.dao;
 import java.util.Collection;
 
 
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.infoscoop.dao.model.Forbiddenurls;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -56,5 +58,15 @@ public class ForbiddenURLDAO extends HibernateDaoSupport {
 	public void insert(Forbiddenurls forbiddenUrl) {
 		super.getHibernateTemplate().save( forbiddenUrl );
 		
+	}
+
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session  = super.getSession();
+
+			Query q = (Query)session.getNamedQuery("copySquare");
+			q.setString("squareId", squareId);
+			q.setString("defaultSquareId", defaultSquareId);
+			q.executeUpdate();
+
 	}
 }

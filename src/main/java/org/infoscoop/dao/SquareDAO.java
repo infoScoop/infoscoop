@@ -23,6 +23,8 @@ import org.infoscoop.dao.model.Square;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import java.util.Date;
+
 /**
  * The DAO class to get and update the information of square.
  */
@@ -31,10 +33,19 @@ public class SquareDAO extends HibernateDaoSupport {
 	private static Log log = LogFactory.getLog(SquareDAO.class);
 	
 	public static SquareDAO newInstance() {
-        return (SquareDAO)SpringUtil.getContext().getBean("cacheDAO");
+        return (SquareDAO)SpringUtil.getContext().getBean("squareDAO");
 	}
 	
 	public Square get(String id){
 		return ( Square )super.getHibernateTemplate().get( Square.class, id );
+	}
+
+	public void create(String id, String name, String description) {
+		Square square = new Square(id);
+		square.setName(name);
+		square.setDescription(description);
+		square.setLastmodified(new Date());
+
+		super.getHibernateTemplate().save(square);
 	}
 }
