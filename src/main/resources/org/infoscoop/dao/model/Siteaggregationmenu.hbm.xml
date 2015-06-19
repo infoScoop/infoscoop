@@ -29,5 +29,24 @@
 			type="java.lang.String"
 			not-null="true"
 		/>
-	</class>	
+	</class>
+	<sql-query name="is_menus.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		IS_MENUS(
+			type,
+			data,
+			square_id
+		)
+	SELECT
+		m.type,
+		m.data,
+		:squareId
+	FROM
+		IS_MENUS as m
+	WHERE
+		m.square_id = :defaultSquareId
+		]]>
+	</sql-query>
 </hibernate-mapping>

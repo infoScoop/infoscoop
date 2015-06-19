@@ -48,5 +48,26 @@
             length="64"
         />
 
-	</class>	
+	</class>
+	<sql-query name="is_i18nlocales.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		IS_I18NLOCALES(
+			type,
+			country,
+			lang,
+			square_id
+		)
+	SELECT
+		il.type,
+		il.country,
+		il.lang,
+		:squareId
+	FROM
+		IS_I18NLOCALES as il
+	WHERE
+		il.square_id = :defaultSquareId
+		]]>
+	</sql-query>
 </hibernate-mapping>

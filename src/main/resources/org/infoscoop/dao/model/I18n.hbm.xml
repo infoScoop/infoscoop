@@ -47,7 +47,30 @@
 			type="string"
 			not-null="true"
 		/>
-
-
-	</class>	
+	</class>
+	<sql-query name="is_i18n.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		IS_I18N(
+			type,
+			id,
+			country,
+			lang,
+			message,
+			square_id
+		)
+	SELECT
+		i.type,
+		i.id,
+		i.country,
+		i.lang,
+		i.message,
+		:squareId
+	FROM
+		IS_I18N as i
+	WHERE
+		i.square_id = :defaultSquareId
+		]]>
+	</sql-query>
 </hibernate-mapping>

@@ -28,7 +28,24 @@
 			type="text"
 			not-null="true"
 		/>
-
-
-	</class>	
+	</class>
+	<sql-query name="is_portallayouts.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		IS_PORTALLAYOUTS(
+			name,
+			layout,
+			square_id
+		)
+	SELECT
+		p.name,
+		p.layout,
+		:squareId
+	FROM
+		IS_PORTALLAYOUTS as p
+	WHERE
+		p.square_id = :defaultSquareId
+		]]>
+	</sql-query>
 </hibernate-mapping>

@@ -120,5 +120,44 @@
 			<many-to-many class="TabAdmin"/>
 		</set>
 		 -->
-	</class>	
+	</class>
+	<sql-query name="is_tablayouts.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		IS_TABLAYOUTS(
+			tabId,
+			roleOrder,
+			role,
+			rolename,
+			principalType,
+			defaultUid,
+			widgets,
+			layout,
+			widgetsLastmodified,
+			temp,
+			workingUid,
+			templastmodified,
+			square_id
+		)
+	SELECT
+		t.tabId,
+		t.roleOrder,
+		t.role,
+		t.rolename,
+		t.principalType,
+		t.defaultUid,
+		t.widgets,
+		t.layout,
+		t.widgetsLastmodified,
+		t.temp,
+		t.workingUid,
+		t.templastmodified,
+		:squareId
+	FROM
+		IS_TABLAYOUTS as t
+	WHERE
+		t.square_id = :defaultSquareId
+		]]>
+	</sql-query>
 </hibernate-mapping>

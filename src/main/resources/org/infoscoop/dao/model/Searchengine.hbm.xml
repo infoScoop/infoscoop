@@ -29,7 +29,24 @@
 			type="text"
 			not-null="true"
 		/>
-
-
-	</class>	
+	</class>
+	<sql-query name="is_searchengines.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		IS_SEARCHENGINES(
+			temp,
+			data,
+			square_id
+		)
+	SELECT
+		s.temp,
+		s.data,
+		:squareId
+	FROM
+		IS_SEARCHENGINES as s
+	WHERE
+		s.square_id = :defaultSquareId
+		]]>
+	</sql-query>
 </hibernate-mapping>

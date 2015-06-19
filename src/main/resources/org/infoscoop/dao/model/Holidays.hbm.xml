@@ -38,5 +38,28 @@
 			column="UPDATED_AT"
 			type="timestamp"
 		/>
-	</class>	
+	</class>
+	<sql-query name="is_holidays.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		IS_HOLIDAYS(
+			country,
+			lang,
+			data,
+			updated_at,
+			square_id
+		)
+	SELECT
+		h.country,
+		h.lang,
+		h.data,
+		h.updated_at
+		:squareId
+	FROM
+		IS_HOLIDAYS as h
+	WHERE
+		h.square_id = :defaultSquareId
+		]]>
+	</sql-query>
 </hibernate-mapping>

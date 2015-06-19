@@ -20,8 +20,26 @@
                 length="64"
             />
         </composite-id>
-        
+
         <property name="data" column="data" type="text"/>
     </class>
-    
+    <sql-query name="is_widgetconfs.copySquare">
+        <![CDATA[
+INSERT
+	INTO
+		IS_WIDGETCONFS(
+			type,
+			data,
+			square_id
+		)
+	SELECT
+		w.type,
+		w.data,
+		:squareId
+	FROM
+		IS_WIDGETCONFS as w
+	WHERE
+		w.square_id = :defaultSquareId
+		]]>
+    </sql-query>
 </hibernate-mapping>

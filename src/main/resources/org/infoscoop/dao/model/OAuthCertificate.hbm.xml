@@ -35,7 +35,26 @@
 			type="string"
 			not-null="false"
 		/>
-
-
-	</class>	
+	</class>
+	<sql-query name="is_oauth_certificate.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		IS_OAUTH_CERTIFICATE(
+			consumer_key,
+			private_key,
+			certificate,
+			square_id
+		)
+	SELECT
+		oc.consumer_key,
+		oc.private_key,
+		oc.certificate,
+		:squareId
+	FROM
+		IS_OAUTH_CERTIFICATE as oc
+	WHERE
+		oc.square_id = :defaultSquareId
+		]]>
+	</sql-query>
 </hibernate-mapping>

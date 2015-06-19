@@ -80,7 +80,38 @@
 			not-null="false"
 			length="1024"
 		/>
-
-
 	</class>
+	<sql-query name="is_properties.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		IS_PROPERTIES(
+			id,
+			category,
+			advanced,
+			value,
+			datatype,
+			enumvalue,
+			required,
+			regex,
+			regexmsg,
+			square_id
+		)
+	SELECT
+		p.id,
+		p.category,
+		p.advanced,
+		p.value,
+		p.datatype,
+		p.enumvalue,
+		p.required,
+		p.regex,
+		p.regexmsg,
+		:squareId
+	FROM
+		IS_PROPERTIES as p
+	WHERE
+		p.square_id = :defaultSquareId
+		]]>
+	</sql-query>
 </hibernate-mapping>

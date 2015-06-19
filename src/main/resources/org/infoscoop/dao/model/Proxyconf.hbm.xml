@@ -37,7 +37,26 @@
 			not-null="false"
 			length="26"
 		/>
-
-
-	</class>	
+	</class>
+	<sql-query name="is_proxyconfs.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		IS_PROXYCONFS(
+			temp,
+			data,
+			lastmodified,
+			square_id
+		)
+	SELECT
+		p.temp,
+		p.data,
+		p.lastmodified,
+		:squareId
+	FROM
+		IS_PROXYCONFS as p
+	WHERE
+		p.square_id = :defaultSquareId
+		]]>
+	</sql-query>
 </hibernate-mapping>

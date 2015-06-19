@@ -41,4 +41,43 @@
   <property column="additional_information" generated="never"
    lazy="false" name="additionalInformation" type="string"/>
  </class>
+    <sql-query name="is_oauthprovider_client.copySquare">
+        <![CDATA[
+INSERT
+	INTO
+		IS_OAUTHPROVIDER_CLIENT(
+			id,
+			title,
+			resource_ids,
+			secret,
+			scope,
+			grant_types,
+			redirect_url,
+			authorities,
+			delete_flg,
+			access_token_validity,
+			refresh_token_validity,
+			additional_information,
+			square_id
+		)
+	SELECT
+		opc.id,
+		opc.title,
+		opc.resource_ids,
+		opc.secret,
+		opc.scope,
+		opc.grant_types,
+		opc.redirect_url,
+		opc.authorities,
+		opc.delete_flg,
+		opc.access_token_validity,
+		opc.refresh_token_validity,
+		opc.additional_information,
+		:squareId
+	FROM
+		IS_OAUTHPROVIDER_CLIENT as opc
+	WHERE
+		opc.square_id = :defaultSquareId
+		]]>
+    </sql-query>
 </hibernate-mapping>

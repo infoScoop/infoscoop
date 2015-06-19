@@ -41,4 +41,29 @@
   </set>
 
  </class>
+	<sql-query name="is_static_tabs.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		is_static_tabs(
+			tabid,
+			tabnumber,
+			tabdesc,
+			deleteflag,
+			disabledefault,
+			square_id
+		)
+	SELECT
+		st.tabid,
+		st.tabnumber,
+		st.tabdesc,
+		st.deleteflag,
+		st.disabledefault,
+		:squareId
+	FROM
+		is_static_tabs as st
+	WHERE
+		st.square_id = :defaultSquareId
+		]]>
+	</sql-query>
 </hibernate-mapping>
