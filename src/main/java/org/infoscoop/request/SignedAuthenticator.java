@@ -17,10 +17,6 @@
 
 package org.infoscoop.request;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -52,6 +48,7 @@ import org.infoscoop.util.RequestUtil;
 public class SignedAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
 	private static final String PUBLIC_KEY_NAME = "public.cer";
+	private static final String DEFAULT_SQUARE_ID = "default";
 
 	private static Log log = LogFactory.getLog(SignedAuthenticator.class);
 
@@ -62,7 +59,7 @@ public class SignedAuthenticator implements Authenticator {
 			HttpMethod method, String uid, String pwd)
 			throws ProxyAuthenticationException {
 		try {
-			OAuthConsumer consumer = newConsumer();
+			OAuthConsumer consumer = newConsumer(request.getRequestHeader("x-is-useglobalkey"));
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 
 			Map<String, String> optionParams = new HashMap<String, String>(
@@ -110,13 +107,18 @@ public class SignedAuthenticator implements Authenticator {
 		return 3;
 	}
 
-	protected OAuthConsumer newConsumer() throws ProxyAuthenticationException {
-		OAuthCertificate certificate = OAuthCertificateDAO.newInstance().get(UserContext.instance().getUserInfo().getCurrentSquareId());
+	protected OAuthConsumer newConsumer(String globalKeyFlg) throws ProxyAuthenticationException {
+		boolean useGlobalKey = Boolean.valueOf(globalKeyFlg);
+		OAuthCertificate certificate;
+
+		if(useGlobalKey) {
+			certificate = OAuthCertificateDAO.newInstance().get(DEFAULT_SQUARE_ID);
+		} else {
+			certificate = OAuthCertificateDAO.newInstance().get(UserContext.instance().getUserInfo().getCurrentSquareId());
+		}
 		if (certificate == null)
-			throw new ProxyAuthenticationException(
-					"a container's certificate is not set.");
-		OAuthServiceProvider serviceProvider = new OAuthServiceProvider(null,
-				null, null);
+			throw new ProxyAuthenticationException("a container's certificate is not set.");
+		OAuthServiceProvider serviceProvider = new OAuthServiceProvider(null, null, null);
 		OAuthConsumer consumer = new OAuthConsumer(null, certificate.getId().getConsumerKey(), null, serviceProvider);
 		consumer.setProperty("oauth_signature_method", "RSA-SHA1");
 		consumer.setProperty(RSA_SHA1.PRIVATE_KEY, certificate.getPrivateKey());
@@ -157,7 +159,7 @@ public class SignedAuthenticator implements Authenticator {
 					if (name.startsWith("oauth") || name.startsWith("xoauth")
 							|| name.startsWith("opensocial"))
 						continue;
-					optionParams.put(name, URLDecoder.decode(param[1], "UTF-8"));						
+					optionParams.put(name, URLDecoder.decode(param[1], "UTF-8"));
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}

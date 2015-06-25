@@ -9,5 +9,8 @@ dist/
 .idea/
 src/main/web/WEB-INF/lib/*.jar
 src/main/web/WEB-INF/classes/
+src/main/web/WEB-INF/jsp/saas/
+src/main/web/WEB-INF/PrepareApp-servlet.xml
+src/main/resources/saas_service.xml
 src/main/web/tablet/
 work/
