@@ -337,8 +337,6 @@
 			</table>
 		</div>
 		<iframe name="portal-externalExe-ifrm" src="about:blank" style="display:none;"></iframe>
-		
-		<a id="is-guidence" href="http://p01289/UI/setup-modal.html"></a>
 	</body>
 	<script>
 

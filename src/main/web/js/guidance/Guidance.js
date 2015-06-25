@@ -66,7 +66,7 @@ IS_Guidance.prototype = {
     loadGuidance: function(){
         var opt = {
             method: 'get',
-            requestHeaders:["siteTopId",this.guidanceMenuItem.id,　"menuType","guidance"],
+            requestHeaders:["siteTopId",this.guidanceMenuItem.id, "menuType","guidance"],
             onSuccess: function(response) {
                 this.start();
             }.bind(this),
