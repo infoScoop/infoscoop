@@ -71,16 +71,13 @@ public class SignedAuthenticator implements Authenticator {
 			String targetUrlPath = analyzeUrl(request.getTargetURL(),
 					optionParams);
 
-			String userId = SecurityController.getPrincipalByType(
-					"UIDPrincipal").getName();
+			String userId = SecurityController.getPrincipalByType("UIDPrincipal").getName();
 			optionParams.put("opensocial_viewer_id", userId);
 			optionParams.put("opensocial_owner_id", userId);
-			optionParams.put("opensocial_app_url", request
-					.getRequestHeader("gadgetUrl"));
-			optionParams.put("opensocial_app_id", request
-					.getRequestHeader("moduleId"));
-			optionParams.put("opensocial_instance_id", request
-					.getRequestHeader("moduleId"));
+			optionParams.put("opensocial_app_url", request.getRequestHeader("gadgetUrl"));
+			optionParams.put("opensocial_app_id", request.getRequestHeader("moduleId"));
+			optionParams.put("opensocial_instance_id", request.getRequestHeader("moduleId"));
+			optionParams.put("x_is_square_id", UserContext.instance().getUserInfo().getCurrentSquareId());
 			optionParams.put("xoauth_signature_publickey", PUBLIC_KEY_NAME);
 			optionParams.put("xoauth_public_key", PUBLIC_KEY_NAME);
 
