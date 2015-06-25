@@ -33,6 +33,7 @@ import org.infoscoop.util.SpringUtil;
 public class SquareService {
 	private static Log log = LogFactory.getLog(SquareService.class);
 	private static final String SQUAREID_DEFAULT = "default";
+	private static final String SQUARE_ADMIN_NAME = "%{alb_role_squareAdmin}";
 
 	// DAO
 	private SquareDAO squareDAO;
@@ -53,11 +54,6 @@ public class SquareService {
 	private WidgetConfDAO widgetConfDAO;
 	private StaticTabDAO staticTabDAO;
 	private OAuth2ProviderClientDetailDAO oauth2ProviderClientDetailDAO;
-
-
-//	insert into iscoop.IS_I18NLOCALES (type, country, lang, square_id) SELECT type, country, lang, "unirita" from iscoop.IS_I18NLOCALES;
-//	insert into iscoop.IS_MENUS (type, data, square_id) SELECT type, data, "unirita" from iscoop.IS_MENUS;
-
 
 	public SquareDAO getSquareDAO() {
 		return squareDAO;
@@ -208,7 +204,7 @@ public class SquareService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void createSquare(String squareId) {
+	public void createSquare(String squareId, String userId) {
 		this.squareDAO.create(squareId, squareId, "");
 		this.forbiddenURLDAO.copySquare(squareId, SQUAREID_DEFAULT);
 		this.gadgetDAO.copySquare(squareId, SQUAREID_DEFAULT);
@@ -231,10 +227,15 @@ public class SquareService {
 		// copy Adminrole
 		List<Adminrole> adminRoleList = adminRoleDAO.select(SQUAREID_DEFAULT);
 		Iterator<Adminrole> rolesIte = adminRoleList.iterator();
+		String squareAdminRoleId = null;
 		while(rolesIte.hasNext()){
 			Adminrole adminRole = rolesIte.next();
 			String orgId = adminRole.getId();
 			String newId = adminRoleDAO.insert(null, adminRole.getName(), adminRole.getPermission(), adminRole.isAllowDelete(), squareId, new Boolean(true));
+
+			if (SQUARE_ADMIN_NAME.equals(adminRole.getName())) {
+				squareAdminRoleId = newId;
+			}
 			roleIdMap.put(new Integer(orgId), new Integer(newId));
 		}
 		
@@ -246,7 +247,9 @@ public class SquareService {
 			Integer orgRoleId = portalAdmin.getRoleid();
 			portalAdminsDAO.insert(portalAdmin.getUid(), roleIdMap.get(orgRoleId), squareId);
 		}
-		
+
+		// add Square Adminirstrator
+		portalAdminsDAO.insert(userId, new Integer(squareAdminRoleId), squareId);
 	}
 	
 }
