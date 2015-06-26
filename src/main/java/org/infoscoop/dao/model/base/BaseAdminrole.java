@@ -58,11 +58,13 @@ public abstract class BaseAdminrole  implements Serializable {
 	 */
 	public BaseAdminrole (
 		java.lang.String id,
+		java.lang.String roleid,
 		java.lang.String name,
 		java.lang.String permission,
 		java.lang.String squareid) {
 
 		this.setId(id);
+		this.setRoleid(roleid);
 		this.setName(name);
 		this.setPermission(permission);
 		this.setSquareid(squareid);
@@ -141,8 +143,6 @@ public abstract class BaseAdminrole  implements Serializable {
 		this.permission = permission;
 	}
 
-
-
 	/**
 	 * Return the value associated with the column: ALLOWDELETE
 	 */
@@ -157,8 +157,6 @@ public abstract class BaseAdminrole  implements Serializable {
 	public void setAllowdelete (java.lang.Integer allowdelete) {
 		this.allowdelete = allowdelete;
 	}
-
-
 
 	/**
 	 * Return the value associated with the column: Portaladmins
@@ -186,6 +184,14 @@ public abstract class BaseAdminrole  implements Serializable {
 
 	public void setSquareid(java.lang.String squareid) {
 		this.squareid = squareid;
+	}
+
+	public String getRoleid() {
+		return roleid;
+	}
+
+	public void setRoleid(String roleid) {
+		this.roleid = roleid;
 	}
 
 	public boolean equals (Object obj) {

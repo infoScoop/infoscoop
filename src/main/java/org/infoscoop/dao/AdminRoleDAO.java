@@ -112,8 +112,7 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 
 	/**
 	 * insert the data
-	 * 
-	 * @param uid
+	 *
 	 */
 	public String insert(String roleId, String name, String authData, boolean allowDelete, String squareid, Boolean isNew) {
 		Adminrole adminrole =  new Adminrole();

@@ -33,7 +33,7 @@ import org.infoscoop.util.SpringUtil;
 public class SquareService {
 	private static Log log = LogFactory.getLog(SquareService.class);
 	private static final String SQUAREID_DEFAULT = "default";
-	private static final String SQUARE_ADMIN_NAME = "%{alb_role_squareAdmin}";
+	private static final String SQUARE_ADMIN_ROLE_NAME = "squareAdmin";
 
 	// DAO
 	private SquareDAO squareDAO;
@@ -233,9 +233,6 @@ public class SquareService {
 			String orgId = adminRole.getId();
 			String newId = adminRoleDAO.insert(null, adminRole.getName(), adminRole.getPermission(), adminRole.isAllowDelete(), squareId, new Boolean(true));
 
-			if (SQUARE_ADMIN_NAME.equals(adminRole.getName())) {
-				squareAdminRoleId = newId;
-			}
 			roleIdMap.put(new Integer(orgId), new Integer(newId));
 		}
 		
@@ -249,7 +246,11 @@ public class SquareService {
 		}
 
 		// add Square Adminirstrator
-		portalAdminsDAO.insert(userId, new Integer(squareAdminRoleId), squareId);
+		Adminrole adminRole = adminRoleDAO.selectByRoleId(SQUARE_ADMIN_ROLE_NAME, SQUAREID_DEFAULT);
+		if(adminRole == null) {
+			adminRole = adminRoleDAO.selectByRoleId("root", SQUAREID_DEFAULT);
+		}
+		portalAdminsDAO.insert(userId, new Integer(adminRole.getId()), squareId);
 	}
 	
 }

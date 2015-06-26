@@ -20,6 +20,12 @@
 		</id>
 
 		<property
+				name="Roleid"
+				column="roleid"
+				type="string"
+				length="64"
+				/>
+		<property
 			name="Name"
 			column="NAME"
 			type="string"
