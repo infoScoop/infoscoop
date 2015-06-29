@@ -101,6 +101,10 @@
 			<a href="../extapps/index" class="tab <c:if test="${type == 'extapps'}">active</c:if>" id="tab_extapps"><span>%{alb_extapps}</span></a>
 		</li>
 		<%}%>
+
+        <!-- ext_menu.jsp -->
+        <jsp:include page="ext_menu.jsp" />
+
 		<li>
 			<div id="admin-message-icon">
 				<img id="messageIcon" title="%{alb_messageConsole}" src="../../skin/imgs/information3.gif" style="cursor:pointer;">
