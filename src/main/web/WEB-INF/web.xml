@@ -645,6 +645,11 @@
   	<servlet-class>org.infoscoop.web.OAuthCertificateServlet</servlet-class>
   </servlet>
 
+	<servlet>
+		<servlet-name>SquareServlet</servlet-name>
+		<servlet-class>org.infoscoop.web.SquareServlet</servlet-class>
+	</servlet>
+
   <servlet-mapping>
   	<servlet-name>OAuthCertificateServlet</servlet-name>
   	<url-pattern>/opensocial/certificates/public.cer</url-pattern>
@@ -938,6 +943,11 @@
 	<servlet-mapping>
 		<servlet-name>GadgetIconServlet</servlet-name>
 		<url-pattern>/gadgeticon</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>SquareServlet</servlet-name>
+		<url-pattern>/squaresrv/*</url-pattern>
 	</servlet-mapping>
 
 	<!--MergeProfileServletMapping-->

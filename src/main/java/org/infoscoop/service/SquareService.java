@@ -17,22 +17,18 @@
 
 package org.infoscoop.service;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.api.dao.OAuth2ProviderClientDetailDAO;
 import org.infoscoop.dao.*;
 import org.infoscoop.dao.model.Adminrole;
-import org.infoscoop.dao.model.Portaladmins;
 import org.infoscoop.util.SpringUtil;
 
 public class SquareService {
 	private static Log log = LogFactory.getLog(SquareService.class);
-	private static final String SQUAREID_DEFAULT = "default";
 	private static final String SQUARE_ADMIN_ROLE_NAME = "squareAdmin";
 
 	// DAO
@@ -204,53 +200,62 @@ public class SquareService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void createSquare(String squareId, String userId) {
-		this.squareDAO.create(squareId, squareId, "");
-		this.forbiddenURLDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.gadgetDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.gadgetIconDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.holidaysDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.i18NDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.siteAggregationMenuDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.oauthCertificateDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.portalLayoutDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.propertiesDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.proxyConfDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.searchEngineDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.tabLayoutDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.widgetConfDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.staticTabDAO.copySquare(squareId, SQUAREID_DEFAULT);
-		this.oauth2ProviderClientDetailDAO.copySquare(squareId, SQUAREID_DEFAULT);
+	public void createSquare(String squareId, String squareName, String desc,  String sourceSquareId, String userId) {
+		if(!existsSquare(sourceSquareId)) {
+			log.error("Not exist source square.");
+			throw new IllegalArgumentException();
+		}
 
-		Map<Integer, Integer> roleIdMap = new HashMap<Integer, Integer>();
-		
+		this.squareDAO.create(squareId, squareName, desc);
+		this.forbiddenURLDAO.copySquare(squareId, sourceSquareId);
+		this.gadgetDAO.copySquare(squareId, sourceSquareId);
+		this.gadgetIconDAO.copySquare(squareId, sourceSquareId);
+		this.holidaysDAO.copySquare(squareId, sourceSquareId);
+		this.i18NDAO.copySquare(squareId, sourceSquareId);
+		this.siteAggregationMenuDAO.copySquare(squareId, sourceSquareId);
+		this.oauthCertificateDAO.copySquare(squareId, sourceSquareId);
+		this.portalLayoutDAO.copySquare(squareId, sourceSquareId);
+		this.propertiesDAO.copySquare(squareId, sourceSquareId);
+		this.proxyConfDAO.copySquare(squareId, sourceSquareId);
+		this.searchEngineDAO.copySquare(squareId, sourceSquareId);
+		this.tabLayoutDAO.copySquare(squareId, sourceSquareId);
+		this.widgetConfDAO.copySquare(squareId, sourceSquareId);
+		this.staticTabDAO.copySquare(squareId, sourceSquareId);
+		this.oauth2ProviderClientDetailDAO.copySquare(squareId, sourceSquareId);
+
+//		Map<Integer, Integer> roleIdMap = new HashMap<Integer, Integer>();
 		// copy Adminrole
-		List<Adminrole> adminRoleList = adminRoleDAO.select(SQUAREID_DEFAULT);
+		List<Adminrole> adminRoleList = adminRoleDAO.select(sourceSquareId);
 		Iterator<Adminrole> rolesIte = adminRoleList.iterator();
 		String squareAdminRoleId = null;
 		while(rolesIte.hasNext()){
 			Adminrole adminRole = rolesIte.next();
-			String orgId = adminRole.getId();
-			String newId = adminRoleDAO.insert(null, adminRole.getName(), adminRole.getPermission(), adminRole.isAllowDelete(), squareId, new Boolean(true));
-
-			roleIdMap.put(new Integer(orgId), new Integer(newId));
+//			String orgId = adminRole.getId();
+			String newId = adminRoleDAO.insert(adminRole.getRoleid(), adminRole.getName(), adminRole.getPermission(), adminRole.isAllowDelete(), squareId, new Boolean(true));
+			if(SQUARE_ADMIN_ROLE_NAME.equals(adminRole.getRoleid()))
+				squareAdminRoleId = newId;
+//			roleIdMap.put(new Integer(orgId), new Integer(newId));
 		}
 		
 		// copy PortalAdmins
-		List<Portaladmins> portalAdminList = portalAdminsDAO.select(SQUAREID_DEFAULT);
-		Iterator<Portaladmins> adminsIte = portalAdminList.iterator();
-		while(adminsIte.hasNext()){
-			Portaladmins portalAdmin = adminsIte.next();
-			Integer orgRoleId = portalAdmin.getRoleid();
-			portalAdminsDAO.insert(portalAdmin.getUid(), roleIdMap.get(orgRoleId), squareId);
-		}
+//		List<Portaladmins> portalAdminList = portalAdminsDAO.select(sourceSquareId);
+//		Iterator<Portaladmins> adminsIte = portalAdminList.iterator();
+//		while(adminsIte.hasNext()){
+//			Portaladmins portalAdmin = adminsIte.next();
+//			Integer orgRoleId = portalAdmin.getRoleid();
+//			portalAdminsDAO.insert(portalAdmin.getUid(), roleIdMap.get(orgRoleId), squareId);
+//		}
 
 		// add Square Adminirstrator
-		Adminrole adminRole = adminRoleDAO.selectByRoleId(SQUARE_ADMIN_ROLE_NAME, SQUAREID_DEFAULT);
-		if(adminRole == null) {
-			adminRole = adminRoleDAO.selectByRoleId("root", SQUAREID_DEFAULT);
-		}
-		portalAdminsDAO.insert(userId, new Integer(adminRole.getId()), squareId);
+		portalAdminsDAO.insert(userId, new Integer(squareAdminRoleId), squareId);
 	}
-	
+
+	public boolean existsSquare(String squareId) {
+		boolean result = false;
+		if(squareDAO.get(squareId) != null) {
+			result = true;
+		}
+
+		return result;
+	}
 }

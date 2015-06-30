@@ -169,6 +169,7 @@
     <script src="<%=staticContentURL%>/js/GlobalSetting.js"></script>
     <script src="<%=staticContentURL%>/js/Theme.js"></script>
     <script src="<%=staticContentURL%>/js/guidance/Guidance.js"></script>
+    <script src="<%=staticContentURL%>/js/square/Square.js"></script>
     <!-- prototype-window -->
     <script type="text/javascript" src="<%=staticContentURL%>/js/lib/prototype-window-1.3/window.js"></script>
     <script type="text/javascript" src="<%=staticContentURL%>/js/lib/prototype-window-1.3/window_ext.js"></script>

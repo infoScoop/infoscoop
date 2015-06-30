@@ -134,4 +134,8 @@ public class SimpleAccountManager implements IAccountManager{
 		return new ArrayList<PrincipalDef>();
 	}
 
+	@Override
+	public void addSquareId(String userid, String squareId) {
+		throw new UnsupportedOperationException();
+	}
 }

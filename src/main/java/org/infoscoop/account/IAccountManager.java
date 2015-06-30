@@ -74,4 +74,6 @@ public interface IAccountManager {
 	 * @throws Exception
 	 */
 	public IAccount getUser(String uid) throws Exception;
+
+	public void addSquareId(String userid, String squareId) throws Exception;
 }

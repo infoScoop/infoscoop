@@ -233,6 +233,10 @@
 			<fileset dir="${src.main.web}/guidance" />
 		</copy>
 
+		<copy todir="${build.main}/square">
+			<fileset dir="${src.main.web}/square" />
+		</copy>
+
 		<mkdir dir="${build.main}/js/gadget" />
 		<copy todir="${build.main}/js/gadget">
 			<fileset dir="${src.main.web}/js/gadget">
@@ -301,6 +305,7 @@
 			<filelist dir="${src.main.web}/js" files="GlobalSetting.js"/>
 			<filelist dir="${src.main.web}/js" files="Theme.js"/>
 			<filelist dir="${src.main.web}/js/guidance" files="Guidance.js"/>
+			<filelist dir="${src.main.web}/js/square" files="Square.js"/>
 			<filelist dir="${src.main.web}/js/search" files="SearchEngine.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="Widget.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="WidgetHeader.js"/>

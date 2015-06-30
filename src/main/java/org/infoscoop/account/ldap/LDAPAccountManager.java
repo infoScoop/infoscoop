@@ -551,4 +551,9 @@ public class LDAPAccountManager implements IAccountManager{
 	public Collection<PrincipalDef> getPrincipalDefs() {
 		return principalDefs;
 	}
+
+	@Override
+	public void addSquareId(String userid, String squareId) {
+		throw new UnsupportedOperationException();
+	}
 }

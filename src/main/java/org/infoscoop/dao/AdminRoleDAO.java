@@ -120,6 +120,7 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 		if(BooleanUtils.isTrue(isNew)) {
 			adminrole.setAllowdelete((allowDelete)? 1 : 0);
 			adminrole.setSquareid(squareid);
+			adminrole.setRoleid(roleId);
 		} else {
 			adminrole = selectById(roleId);
 		}
