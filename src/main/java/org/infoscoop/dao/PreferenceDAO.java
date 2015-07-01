@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
@@ -60,6 +61,22 @@ public class PreferenceDAO extends HibernateDaoSupport{
     public Preference select(String uid, String squareid) {
     	if(uid == null)return null;
     	return (Preference)super.getHibernateTemplate().get(Preference.class, new PreferencePK(uid, squareid));
+    }
+
+    /**
+     * Get the DOM of an appointed user.
+     * 
+     * @param uid
+     *            userID
+     * @return A top node Object of DOM that includes include the user setting information of an appointed user. If there is not it, we return the empty DOM.
+     */
+    @SuppressWarnings("unchecked")
+	public List<Preference> selectByUidAllSquare(String uid) {
+    	if(uid == null)return null;
+    	
+    	return super.getHibernateTemplate().findByCriteria(
+    			DetachedCriteria.forClass(Preference.class)
+    				.add(Expression.eq("Id.Uid", uid)));
     }
 
     /**
