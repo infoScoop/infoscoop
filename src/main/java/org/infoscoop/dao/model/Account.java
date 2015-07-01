@@ -68,8 +68,10 @@ public class Account implements IAccount {
 	public String getGroupName() { return this.groupName; }
 	public void setGroupName(String groupName) { this.groupName = groupName; }
 	
-	public String getBelongid() {
-		return belongid;
+	public List<String> getBelongid() {
+		List<String> belongIds = new ArrayList<String>();
+		if(this.belongid!=null) belongIds.add(this.belongid);
+		return belongIds;
 	}
 
 	public void setBelongid(String belongid) {

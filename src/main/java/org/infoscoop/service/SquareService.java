@@ -17,14 +17,16 @@
 
 package org.infoscoop.service;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.account.AuthenticationService;
+import org.infoscoop.account.IAccount;
 import org.infoscoop.api.dao.OAuth2ProviderClientDetailDAO;
 import org.infoscoop.dao.*;
 import org.infoscoop.dao.model.Adminrole;
+import org.infoscoop.dao.model.Square;
 import org.infoscoop.util.SpringUtil;
 
 public class SquareService {
@@ -248,6 +250,38 @@ public class SquareService {
 
 		// add Square Adminirstrator
 		portalAdminsDAO.insert(userId, new Integer(squareAdminRoleId), squareId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getBelongSquaresNames(String userId, String currentSquareId) throws Exception{
+		IAccount account = AuthenticationService.getInstance().getAccountManager().getUser(userId);
+		List<Square> squares = squareDAO.getSquares(account.getBelongid());
+		List<Map<String, String>> belongSquaresName = new ArrayList<Map<String, String>>();
+		Map<String, Object> squareNameMap = new HashMap<String, Object>();
+
+		for(Iterator<Square> itr = squares.iterator();itr.hasNext();) {
+			Square square = itr.next();
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("id", square.getId());
+			map.put("name", square.getName());
+
+			if(currentSquareId.equals(square.getId())){
+				squareNameMap.put("current", map);
+			}else {
+				belongSquaresName.add(map);
+			}
+		}
+
+		if(belongSquaresName.size() > 0)
+			squareNameMap.put("belong", belongSquaresName);
+
+		return squareNameMap;
+	}
+
+	@SuppressWarnings("unchecked")
+	public String getSquareName(String squareId) {
+		Square sq = squareDAO.get(squareId);
+		return sq.getName();
 	}
 
 	public boolean existsSquare(String squareId) {

@@ -290,8 +290,59 @@ div#portal-command > table{
 	filter: none;
 }
 
-/** user menu */
+/** square menu */
+#portal-square-menu{
+	float: right;
+	font-size: 12px;
+	width: 200px;
+	padding-right: 12px;
+	white-space: nowrap;
+	overflow-x: hidden;
+	position: relative;
+	cursor: pointer;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #e0e0e0;
+	border-radius: 50px;
+}
 
+#portal-square-menu:after {
+	content: "";
+	position: absolute;
+	top: 8px;
+	right: 2px;  border-width: 4px 4px 0;
+	border-style: solid;
+	border-color: #777 transparent;
+}
+
+#portal-square-menu-label{
+	background: url("./imgs/square.png") no-repeat scroll 3px center rgba(0, 0, 0, 0);
+	height: 18px;
+	_height: 24px;
+	overflow: hidden;
+    padding: 2px 0 0 24px;
+	_padding: 5 0 3px 48px; /* for IE */
+	max-width: 200px;
+	text-overflow: ellipsis;
+}
+
+#add-square{
+	background: url("./imgs/plus.png") no-repeat scroll 3px center rgba(0, 0, 0, 0);
+	background-position: 3px center;
+}
+
+#belong-square{
+	background: url("./imgs/group.gif") no-repeat scroll 3px center rgba(0, 0, 0, 0);
+	background-position: 3px center;
+}
+
+.portal-square-menu-hr{
+	float: left;
+	color: #e0e0e0;
+	width: 100%;
+}
+
+/** user menu */
 #portal-user-menu{
 	float: right;
 	font-size: 12px;
@@ -310,11 +361,11 @@ div#portal-command > table{
 	border-color: #777 transparent;
 }
 
-#portal-user-menu.active {
+#portal-user-menu.active, #portal-square-menu.active {
 	color: #404040;
 }
 
-#portal-user-menu.active:after {
+#portal-user-menu.active:after, #portal-user-menu.active:after {
 	border-color: #404040 transparent;
 }
 
@@ -327,13 +378,13 @@ div#portal-command > table{
 	max-width: 150px;
 }
 
-#portal-user-menu-body {
+#portal-user-menu-body, #portal-square-menu-body {
 	position: absolute;
 	z-index: 100000;
 	padding: 8px;	
 }
 
-div.portal-user-menu-item{
+div.portal-user-menu-item, div.portal-user-menu-item{
 	clear: both;
 	width: 100%;
 	color: #404040;

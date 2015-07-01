@@ -18,6 +18,7 @@
 
 package org.infoscoop.account.ldap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.infoscoop.account.IAccount;
@@ -122,5 +123,10 @@ public class LDAPAccount implements IAccount{
 
 	public String getDefaultbelongid() {
 		return "default";
+	}
+	public List<String > getBelongid() {
+		List<String> belongIds = new ArrayList<String>();
+		belongIds.add("default");
+		return belongIds;
 	}
 }

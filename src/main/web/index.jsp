@@ -93,6 +93,7 @@
 		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_ID_ATTR_NAME
 		String displayName = (String) session.getAttribute("loginUserName");
 		String uid = (String) session.getAttribute("Uid");
+		String squareId = (String) session.getAttribute("CurrentSquareId");
 		if(displayName == null || "".equals(displayName)){
 			displayName = uid;
 		}
@@ -282,6 +283,13 @@
 							</div>
 						</td>
 						<td width="100%"><div id="portal-command" style="visibility:hidden;position:absolute;left:9999px;"></div></td>
+						<% if(squareId != null){ %>
+						<td style="padding-left: 10px;">
+							<div id="portal-square-menu">
+									<div id="portal-square-menu-label"></div>
+							</div>
+						</td>
+						<% } %>
 						<td>
 							<div id="portal-user-menu">
 								<div id="portal-user-menu-label">
