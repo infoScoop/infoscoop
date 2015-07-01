@@ -62,6 +62,17 @@ public class PortalAdminsDAO extends HibernateDaoSupport {
 	}
 
 	/**
+	 * Delete the data.
+	 * 
+	 */
+	public void deleteByRoleId(String squareid, Integer roleId) {
+		//delete from ${schema}.portaladmins
+		String queryString = "delete from Portaladmins where " + Portaladmins.PROP_SQUARE_ID + " = ? and Roleid = ?";
+		
+		super.getHibernateTemplate().bulkUpdate( queryString, new Object[]{squareid, roleId} );
+	}
+
+	/**
 	 * Insert the data.
 	 * 
 	 * @param uid
@@ -91,4 +102,21 @@ public class PortalAdminsDAO extends HibernateDaoSupport {
 		
 		return (result.size() > 0)? result.get(0) : null;
 	}
+	
+	/**
+	 * Get the entitiy of Portaladmins by a key.
+	 * 
+	 * @param uid
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Portaladmins> selectByRoleId(Integer roleId, String squareid){
+		List<Portaladmins> result = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Portaladmins.class)
+					.add(Expression.eq("Roleid", roleId))
+					.add(Expression.eq(Portaladmins.PROP_SQUARE_ID, squareid)));
+		
+		return result;
+	}
+
 }

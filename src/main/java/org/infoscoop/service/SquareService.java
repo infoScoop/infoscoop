@@ -29,7 +29,7 @@ import org.infoscoop.util.SpringUtil;
 
 public class SquareService {
 	private static Log log = LogFactory.getLog(SquareService.class);
-	private static final String SQUARE_ADMIN_ROLE_NAME = "squareAdmin";
+	public static final String SQUARE_ADMIN_ROLE_NAME = "squareAdmin";
 
 	// DAO
 	private SquareDAO squareDAO;

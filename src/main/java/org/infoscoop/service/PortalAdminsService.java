@@ -204,6 +204,15 @@ public class PortalAdminsService {
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		return portalAdminsDAO.select(squareid);
 	}
+
+	/**
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Portaladmins> getPortalAdminsByRoleId(Integer roleId) throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return portalAdminsDAO.selectByRoleId(roleId, squareid);
+	}
 	
 	/**
 	 * @return
@@ -242,5 +251,21 @@ public class PortalAdminsService {
 	
 	public boolean isMenuTreeRoleUser(){
 		return !isPermitted(PortalAdminsService.ADMINROLE_MENU) && isPermitted(PortalAdminsService.ADMINROLE_MENU_TREE);
+	}
+	
+	public void replaceSquareAdmins(List<Portaladmins> newAdminList, Integer squareAdminRoleId){
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		portalAdminsDAO.deleteByRoleId(squareid, squareAdminRoleId);
+		
+		for( Portaladmins admin : newAdminList ) {
+			Portaladmins exists = portalAdminsDAO.selectById(admin.getUid(), squareid);
+			if(exists == null)
+				portalAdminsDAO.insert(admin.getUid(), admin.getRoleid(), squareid);
+		}
+	}
+	
+	public Adminrole getAdminRole(String roleId){
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return adminRoleDAO.selectByRoleId(roleId, squareid);
 	}
 }
