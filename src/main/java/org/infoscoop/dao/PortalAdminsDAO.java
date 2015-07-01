@@ -65,6 +65,16 @@ public class PortalAdminsDAO extends HibernateDaoSupport {
 	 * Delete the data.
 	 * 
 	 */
+	public void deleteByUid(String squareid, String uid) {
+		String queryString = "delete from Portaladmins where " + Portaladmins.PROP_SQUARE_ID + " = ? and Uid = ?";
+		
+		super.getHibernateTemplate().bulkUpdate( queryString, new Object[]{squareid, uid} );
+	}
+
+	/**
+	 * Delete the data.
+	 * 
+	 */
 	public void deleteByRoleId(String squareid, Integer roleId) {
 		//delete from ${schema}.portaladmins
 		String queryString = "delete from Portaladmins where " + Portaladmins.PROP_SQUARE_ID + " = ? and Roleid = ?";

@@ -268,4 +268,9 @@ public class PortalAdminsService {
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		return adminRoleDAO.selectByRoleId(roleId, squareid);
 	}
+	
+	public void deletePortalAdminByUid(String uid){
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		portalAdminsDAO.deleteByUid(squareid, uid);
+	}
 }
