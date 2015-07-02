@@ -2494,157 +2494,159 @@ IS_Portal.CommandBar = {
 			});
 		}
 
-		// get square name
-		var opt = {
-		  method:'get',
-		  asynchronous:true,
-		  onSuccess:function(req){
-			  var results = req.responseText.evalJSON();
-			  $('portal-square-menu-label').update(results.current.name);
+		if(portalSquareMenu) {
+			// get square name
+			var opt = {
+			  method:'get',
+			  asynchronous:true,
+			  onSuccess:function(req){
+				  var results = req.responseText.evalJSON();
+				  $('portal-square-menu-label').update(results.current.name);
 
-			// add field
-			for(var i = 0; i < results.belong.length; i++) {
-				var belongSquare = results.belong[i];
-				var title = belongSquare.name;
-				var item = $.DIV({
-					class: 'portal-user-menu-item',
-					style: 'cursor: pointer;'
-				});
-				var itemLink = $.A({
-					id: belongSquare.id,
-					class: 'portal-user-menu-link',
-					href: 'javascript.void(0);',
-					title: title
-				});
-				var itemLabel = $.DIV({
-					id: 'belong-square',
-					class: 'portal-user-menu-item-label'
-				});
-				itemLabel.innerHTML = title;
-				itemLabel.innerHTML = title;
-				itemLink.appendChild(itemLabel);
-				item.appendChild(itemLink);
-				portalSquareMenuBody.appendChild(item);
+				// add field
+				for(var i = 0; i < results.belong.length; i++) {
+					var belongSquare = results.belong[i];
+					var title = belongSquare.name;
+					var item = $.DIV({
+						class: 'portal-user-menu-item',
+						style: 'cursor: pointer;'
+					});
+					var itemLink = $.A({
+						id: belongSquare.id,
+						class: 'portal-user-menu-link',
+						href: 'javascript.void(0);',
+						title: title
+					});
+					var itemLabel = $.DIV({
+						id: 'belong-square',
+						class: 'portal-user-menu-item-label'
+					});
+					itemLabel.innerHTML = title;
+					itemLabel.innerHTML = title;
+					itemLink.appendChild(itemLabel);
+					item.appendChild(itemLink);
+					portalSquareMenuBody.appendChild(item);
 
-				var changeSq = {
-					method:'post',
-					asynchronous: true,
-					postBody: "square-id="+ belongSquare.id,
-					onSuccess: function(){
-						location.reload();
+					var changeSq = {
+						method:'post',
+						asynchronous: true,
+						postBody: "square-id="+ belongSquare.id,
+						onSuccess: function(){
+							location.reload();
+						}
 					}
+
+					Event.observe( $(belongSquare.id),"click",function() {
+						AjaxRequest.invoke(hostPrefix + '/squaresrv/doChange', $(this));
+					}.bind(changeSq));
 				}
+			  },
+			  onFailure: function(t) {
+				// TODO
+				  msg.error(IS_R.getResource('スクエア一覧を取得できませんでした：{0}',[getErrorMessage(t)]));
+			  },
+			  onException: function(r, t){
+				// TODO
+				  msg.error(IS_R.getResource( 'サーバで予期せぬエラーが発生しました：{0}',[getErrorMessage(t)]));
+			  }
+			};
+			AjaxRequest.invoke(hostPrefix + '/squaresrv/doGetBelongSquare', opt);
 
-				Event.observe( $(belongSquare.id),"click",function() {
-					AjaxRequest.invoke(hostPrefix + '/squaresrv/doChange', $(this));
-				}.bind(changeSq));
-			}
-		  },
-		  onFailure: function(t) {
-		  	// TODO
-			  msg.error(IS_R.getResource('スクエア一覧を取得できませんでした：{0}',[getErrorMessage(t)]));
-		  },
-		  onException: function(r, t){
-		  	// TODO
-			  msg.error(IS_R.getResource( 'サーバで予期せぬエラーが発生しました：{0}',[getErrorMessage(t)]));
-		  }
-		};
-		AjaxRequest.invoke(hostPrefix + '/squaresrv/doGetBelongSquare', opt);
-
-		// square body
-		portalSquareMenu.parentNode.appendChild(portalSquareMenuBody);
-		var title = '新しいスクエアを作成する';
-		var item = $.DIV({
-			class: 'portal-user-menu-item',
-			style: 'cursor: pointer;'
-		});
-		var itemLink = $.A({
-			class: 'portal-user-menu-link',
-			href: 'javascript.void(0);',
-			title: title
-		});
-		var itemLabel = $.DIV({
-			id: 'add-square',
-			class: 'portal-user-menu-item-label'
-		});
-		itemLabel.innerHTML = title;
-		itemLink.appendChild(itemLabel);
-		item.appendChild(itemLink);
-		portalSquareMenuBody.appendChild(item);
-		portalSquareMenuBody.appendChild($.HR({class: 'portal-square-menu-hr'}));
-
-		Event.observe(portalSquareMenuBody, "click", function(e){
-			$(this).hide();
-			$('squareMenuCloser').hide();
-			IS_Portal.commandBarMenuBehindIframe.hide();
-			Event.stop(e);
-		}.bind(portalSquareMenuBody));
-
-		// add square click
-		Event.observe( itemLink,"click",function() {
-			Control.Modal.close();
-			if(!window["IS_SquareInstance"]){
-				IS_SquareInstance = new IS_Square();
-				IS_SquareInstance.start();
-			}else{
-				IS_SquareInstance.start();
-			}
-		});
-
-		//square menu mouseover and mouseout
-		Event.observe(portalSquareMenu, "mouseover", function(){
-			Element.addClassName($("portal-square-menu"), "active");
-		});
-		Event.observe(portalSquareMenu, "mouseout", function(){
-			Element.removeClassName($("portal-square-menu"), "active");
-		});
-
-		// squareid clicked
-		var closeSquareMenu = function(e){
-			$("portal-square-menu-body").hide();
-			$("squareMenuCloser").hide();
-			IS_Portal.commandBarMenuBehindIframe.hide();
-			Event.stop( e );
-			Element.setStyle($("portal-square-menu").parentNode, {backgroundColor: ''});
-		};
-		IS_Event.observe(portalSquareMenu, "click", function(e){
-			$("portal-square-menu-body").show();
-			var targetPosition = Position.page($("portal-square-menu"));
-			Element.setStyle($("portal-square-menu-body"), {
-				left: targetPosition[0] - $("portal-square-menu-body").offsetWidth + $("portal-square-menu").offsetWidth + 'px'
-				, top: targetPosition[1] + $("portal-square-menu").offsetHeight +'px'
+			// square body
+			portalSquareMenu.parentNode.appendChild(portalSquareMenuBody);
+			var title = '新しいスクエアを作成する';
+			var item = $.DIV({
+				class: 'portal-user-menu-item',
+				style: 'cursor: pointer;'
 			});
-			var winX = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth);
-			var winY = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight);
-			if(!$('squareMenuCloser')){
-				var closer = $.DIV({
-					id:'squareMenuCloser'
-					, className:'widgetMenuCloser'
-				});
-				document.body.appendChild( closer );
-				Element.setStyle(closer, {
-					width: winX + 'px',
-					height: winY + 'px',
-					display: ''
-				});
+			var itemLink = $.A({
+				class: 'portal-user-menu-link',
+				href: 'javascript.void(0);',
+				title: title
+			});
+			var itemLabel = $.DIV({
+				id: 'add-square',
+				class: 'portal-user-menu-item-label'
+			});
+			itemLabel.innerHTML = title;
+			itemLink.appendChild(itemLabel);
+			item.appendChild(itemLink);
+			portalSquareMenuBody.appendChild(item);
+			portalSquareMenuBody.appendChild($.HR({class: 'portal-square-menu-hr'}));
 
-				IS_Event.observe(closer, 'mousedown', closeSquareMenu, true);
-				IS_Event.observe($("portal-square-menu-body"), "mouseover", function(){
-					// change background color to normal
-					$("portal-square-menu").parentNode.style.backgroundColor = $('portal-square-menu').style.color = '';
-				}, "_portalSquareMenu");
-				IS_EventDispatcher.addListener('windowResized', null, closeSquareMenu);
-			}else{
-				Element.setStyle($("squareMenuCloser"), {
-					width: winX + 'px',
-					height: winY + 'px'
+			Event.observe(portalSquareMenuBody, "click", function(e){
+				$(this).hide();
+				$('squareMenuCloser').hide();
+				IS_Portal.commandBarMenuBehindIframe.hide();
+				Event.stop(e);
+			}.bind(portalSquareMenuBody));
+
+			// add square click
+			Event.observe( itemLink,"click",function() {
+				Control.Modal.close();
+				if(!window["IS_SquareInstance"]){
+					IS_SquareInstance = new IS_Square();
+					IS_SquareInstance.start();
+				}else{
+					IS_SquareInstance.start();
+				}
+			});
+
+			//square menu mouseover and mouseout
+			Event.observe(portalSquareMenu, "mouseover", function(){
+				Element.addClassName($("portal-square-menu"), "active");
+			});
+			Event.observe(portalSquareMenu, "mouseout", function(){
+				Element.removeClassName($("portal-square-menu"), "active");
+			});
+
+			// squareid clicked
+			var closeSquareMenu = function(e){
+				$("portal-square-menu-body").hide();
+				$("squareMenuCloser").hide();
+				IS_Portal.commandBarMenuBehindIframe.hide();
+				Event.stop( e );
+				Element.setStyle($("portal-square-menu").parentNode, {backgroundColor: ''});
+			};
+			IS_Event.observe(portalSquareMenu, "click", function(e){
+				$("portal-square-menu-body").show();
+				var targetPosition = Position.page($("portal-square-menu"));
+				Element.setStyle($("portal-square-menu-body"), {
+					left: targetPosition[0] - $("portal-square-menu-body").offsetWidth + $("portal-square-menu").offsetWidth + 'px'
+					, top: targetPosition[1] + $("portal-square-menu").offsetHeight +'px'
 				});
-				$("squareMenuCloser").show();
-			}
-			if(!$("is_portal_comandbar_behind_iframe"))
-				IS_Portal.commandBarMenuBehindIframe.init();
-			IS_Portal.commandBarMenuBehindIframe.show($("portal-square-menu-body"));
-		});
+				var winX = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth);
+				var winY = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight);
+				if(!$('squareMenuCloser')){
+					var closer = $.DIV({
+						id:'squareMenuCloser'
+						, className:'widgetMenuCloser'
+					});
+					document.body.appendChild( closer );
+					Element.setStyle(closer, {
+						width: winX + 'px',
+						height: winY + 'px',
+						display: ''
+					});
+
+					IS_Event.observe(closer, 'mousedown', closeSquareMenu, true);
+					IS_Event.observe($("portal-square-menu-body"), "mouseover", function(){
+						// change background color to normal
+						$("portal-square-menu").parentNode.style.backgroundColor = $('portal-square-menu').style.color = '';
+					}, "_portalSquareMenu");
+					IS_EventDispatcher.addListener('windowResized', null, closeSquareMenu);
+				}else{
+					Element.setStyle($("squareMenuCloser"), {
+						width: winX + 'px',
+						height: winY + 'px'
+					});
+					$("squareMenuCloser").show();
+				}
+				if(!$("is_portal_comandbar_behind_iframe"))
+					IS_Portal.commandBarMenuBehindIframe.init();
+				IS_Portal.commandBarMenuBehindIframe.show($("portal-square-menu-body"));
+			});
+		}
 	},
 	show : function(){
 		IS_Widget.Ticker.adjustTickerWidth();

@@ -255,7 +255,7 @@ public class SquareService {
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getBelongSquaresNames(String userId, String currentSquareId) throws Exception{
 		IAccount account = AuthenticationService.getInstance().getAccountManager().getUser(userId);
-		List<Square> squares = squareDAO.getSquares(account.getBelongid());
+		List<Square> squares = squareDAO.getSquares(account.getBelongids());
 		List<Map<String, String>> belongSquaresName = new ArrayList<Map<String, String>>();
 		Map<String, Object> squareNameMap = new HashMap<String, Object>();
 

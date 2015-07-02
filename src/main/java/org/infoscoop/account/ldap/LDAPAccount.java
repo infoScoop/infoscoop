@@ -124,7 +124,7 @@ public class LDAPAccount implements IAccount{
 	public String getDefaultbelongid() {
 		return "default";
 	}
-	public List<String > getBelongid() {
+	public List<String > getBelongids() {
 		List<String> belongIds = new ArrayList<String>();
 		belongIds.add("default");
 		return belongIds;
