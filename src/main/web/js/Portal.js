@@ -2500,28 +2500,27 @@ IS_Portal.CommandBar = {
 			  method:'get',
 			  asynchronous:true,
 			  onSuccess:function(req){
-				  var results = req.responseText.evalJSON();
-				  $('portal-square-menu-label').update(results.current.name);
+				var results = req.responseText.evalJSON();
+				$('portal-square-menu-label').update(results.current.name);
 
 				// add field
 				for(var i = 0; i < results.belong.length; i++) {
 					var belongSquare = results.belong[i];
 					var title = belongSquare.name;
 					var item = $.DIV({
-						class: 'portal-user-menu-item',
-						style: 'cursor: pointer;'
+						className: 'portal-user-menu-item',
+						'style': 'cursor: pointer;'
 					});
 					var itemLink = $.A({
 						id: belongSquare.id,
-						class: 'portal-user-menu-link',
+						className: 'portal-user-menu-link',
 						href: 'javascript.void(0);',
 						title: title
 					});
 					var itemLabel = $.DIV({
 						id: 'belong-square',
-						class: 'portal-user-menu-item-label'
+						className: 'portal-user-menu-item-label'
 					});
-					itemLabel.innerHTML = title;
 					itemLabel.innerHTML = title;
 					itemLink.appendChild(itemLabel);
 					item.appendChild(itemLink);
@@ -2549,30 +2548,30 @@ IS_Portal.CommandBar = {
 				// TODO
 				  msg.error(IS_R.getResource( 'サーバで予期せぬエラーが発生しました：{0}',[getErrorMessage(t)]));
 			  }
-			};
+			}
 			AjaxRequest.invoke(hostPrefix + '/squaresrv/doGetBelongSquare', opt);
 
 			// square body
 			portalSquareMenu.parentNode.appendChild(portalSquareMenuBody);
 			var title = '新しいスクエアを作成する';
 			var item = $.DIV({
-				class: 'portal-user-menu-item',
+				className: 'portal-user-menu-item',
 				style: 'cursor: pointer;'
 			});
 			var itemLink = $.A({
-				class: 'portal-user-menu-link',
+				className: 'portal-user-menu-link',
 				href: 'javascript.void(0);',
 				title: title
 			});
 			var itemLabel = $.DIV({
 				id: 'add-square',
-				class: 'portal-user-menu-item-label'
+				className: 'portal-user-menu-item-label'
 			});
 			itemLabel.innerHTML = title;
 			itemLink.appendChild(itemLabel);
 			item.appendChild(itemLink);
 			portalSquareMenuBody.appendChild(item);
-			portalSquareMenuBody.appendChild($.HR({class: 'portal-square-menu-hr'}));
+			portalSquareMenuBody.appendChild($.HR({className: 'portal-square-menu-hr'}));
 
 			Event.observe(portalSquareMenuBody, "click", function(e){
 				$(this).hide();
