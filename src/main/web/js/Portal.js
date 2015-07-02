@@ -2519,7 +2519,7 @@ IS_Portal.CommandBar = {
 					});
 					var itemLabel = $.DIV({
 						id: 'belong-square',
-						className: 'portal-user-menu-item-label'
+						className: 'portal-user-menu-item-label portal-square-menu-item-label'
 					});
 					itemLabel.innerHTML = title;
 					itemLink.appendChild(itemLabel);
@@ -2565,7 +2565,7 @@ IS_Portal.CommandBar = {
 			});
 			var itemLabel = $.DIV({
 				id: 'add-square',
-				className: 'portal-user-menu-item-label'
+				className: 'portal-user-menu-item-label portal-square-menu-item-label'
 			});
 			itemLabel.innerHTML = title;
 			itemLink.appendChild(itemLabel);

@@ -326,6 +326,12 @@ div#portal-command > table{
 	text-overflow: ellipsis;
 }
 
+.portal-square-menu-item-label{
+	overflow: hidden;
+	max-width: 170px;
+	text-overflow: ellipsis;
+}
+
 #add-square{
 	background: url("./imgs/plus.png") no-repeat scroll 3px center rgba(0, 0, 0, 0);
 	background-position: 3px center;
