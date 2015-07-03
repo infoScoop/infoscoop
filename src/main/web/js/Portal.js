@@ -2501,43 +2501,48 @@ IS_Portal.CommandBar = {
 			  asynchronous:true,
 			  onSuccess:function(req){
 				var results = req.responseText.evalJSON();
-				$('portal-square-menu-label').update(results.current.name);
+				if(results.current) {
+					$('portal-square-menu-label').update(results.current.name);
+				}
 
 				// add field
-				for(var i = 0; i < results.belong.length; i++) {
-					var belongSquare = results.belong[i];
-					var title = belongSquare.name;
-					var item = $.DIV({
-						className: 'portal-user-menu-item',
-						'style': 'cursor: pointer;'
-					});
-					var itemLink = $.A({
-						id: belongSquare.id,
-						className: 'portal-user-menu-link',
-						href: 'javascript.void(0);',
-						title: title
-					});
-					var itemLabel = $.DIV({
-						id: 'belong-square',
-						className: 'portal-user-menu-item-label portal-square-menu-item-label'
-					});
-					itemLabel.innerHTML = title;
-					itemLink.appendChild(itemLabel);
-					item.appendChild(itemLink);
-					portalSquareMenuBody.appendChild(item);
+				if(results.belong) {
+					portalSquareMenuBody.appendChild($.HR({className: 'portal-square-menu-hr'}));
+					for(var i = 0; i < results.belong.length; i++) {
+						var belongSquare = results.belong[i];
+						var title = belongSquare.name;
+						var item = $.DIV({
+							className: 'portal-user-menu-item',
+							'style': 'cursor: pointer;'
+						});
+						var itemLink = $.A({
+							id: belongSquare.id,
+							className: 'portal-user-menu-link',
+							href: 'javascript.void(0);',
+							title: title
+						});
+						var itemLabel = $.DIV({
+							id: 'belong-square',
+							className: 'portal-user-menu-item-label portal-square-menu-item-label'
+						});
+						itemLabel.innerHTML = title;
+						itemLink.appendChild(itemLabel);
+						item.appendChild(itemLink);
+						portalSquareMenuBody.appendChild(item);
 
-					var changeSq = {
-						method:'post',
-						asynchronous: true,
-						postBody: "square-id="+ belongSquare.id,
-						onSuccess: function(){
-							location.reload();
+						var changeSq = {
+							method:'post',
+							asynchronous: true,
+							postBody: "square-id="+ belongSquare.id,
+							onSuccess: function(){
+								location.reload();
+							}
 						}
-					}
 
-					Event.observe( $(belongSquare.id),"click",function() {
-						AjaxRequest.invoke(hostPrefix + '/squaresrv/doChange', $(this));
-					}.bind(changeSq));
+						Event.observe( $(belongSquare.id),"click",function() {
+							AjaxRequest.invoke(hostPrefix + '/squaresrv/doChange', $(this));
+						}.bind(changeSq));
+					}
 				}
 			  },
 			  onFailure: function(t) {
@@ -2571,7 +2576,6 @@ IS_Portal.CommandBar = {
 			itemLink.appendChild(itemLabel);
 			item.appendChild(itemLink);
 			portalSquareMenuBody.appendChild(item);
-			portalSquareMenuBody.appendChild($.HR({className: 'portal-square-menu-hr'}));
 
 			Event.observe(portalSquareMenuBody, "click", function(e){
 				$(this).hide();
