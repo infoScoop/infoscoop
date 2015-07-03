@@ -46,6 +46,18 @@ public class InfoScoopProperties {
 		return bundle.getString(key);
 	}
 
+	public int getIntProperty(String key) {
+		String value = bundle.getString(key);
+		int intValue;
+		try{
+			String expiredPeriodStr = InfoScoopProperties.getInstance().getProperty(key);
+			intValue = Integer.parseInt(expiredPeriodStr);
+		}catch(NumberFormatException e){
+			throw new RuntimeException(e);
+		}
+		return intValue;
+	}
+
 	public boolean isUseMultitenantMode() {
 		return useMultitenantMode;
 	}

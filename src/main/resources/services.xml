@@ -711,4 +711,5 @@
 			</props>
 		</property>
 	</bean>
+    <bean id="InvitationService" class="org.infoscoop.service.InvitationService"></bean>
 </beans>

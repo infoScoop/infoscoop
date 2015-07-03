@@ -45,17 +45,9 @@ public class RestrictionKeyService {
 		this.restrictionKeyDAO = restrictionKeyDAO;
 	}
 	
-	public String createRestrictionKey(String uid){
+	public String createRestrictionKey(String uid, int expiredPeriod){
 		String key = RandomStringUtils.randomAlphabetic(60);
 		RestrictionKey entity = this.restrictionKeyDAO.getById(key);
-		int expiredPeriod = KEY_EXPIRED_DEFAULT;
-		
-		try{
-			String expiredPeriodStr = InfoScoopProperties.getInstance().getProperty(PROPERTY_KEY_EXPIRED);
-			expiredPeriod = Integer.parseInt(expiredPeriodStr);
-		}catch(NumberFormatException e){
-			// ignore
-		}
 		
 		if(entity == null){
 			Calendar calendar = Calendar.getInstance();
@@ -65,7 +57,7 @@ public class RestrictionKeyService {
 			return key;
 		}
 		
-		return createRestrictionKey(uid);
+		return createRestrictionKey(uid, expiredPeriod);
 	}
 	
 	public RestrictionKey getRestrictionEntity(String key){
