@@ -2540,6 +2540,8 @@ IS_Portal.CommandBar = {
 						}
 
 						Event.observe( $(belongSquare.id),"click",function() {
+							IS_Request.asynchronous = false;
+							IS_Request.CommandQueue.fireRequest();
 							AjaxRequest.invoke(hostPrefix + '/squaresrv/doChange', $(this));
 						}.bind(changeSq));
 					}
