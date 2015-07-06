@@ -2588,6 +2588,10 @@ IS_Portal.CommandBar = {
 
 			// add square click
 			Event.observe( itemLink,"click",function() {
+
+				IS_Request.asynchronous = false;
+				IS_Request.CommandQueue.fireRequest();
+
 				Control.Modal.close();
 				if(!window["IS_SquareInstance"]){
 					IS_SquareInstance = new IS_Square();
