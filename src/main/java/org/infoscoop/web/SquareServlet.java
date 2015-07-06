@@ -5,14 +5,23 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccountManager;
+import org.infoscoop.service.InvitationService;
 import org.infoscoop.service.SquareService;
+import org.infoscoop.util.StringUtil;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -61,6 +70,7 @@ public class SquareServlet extends HttpServlet {
 			String squareName = request.getParameter("square-name");
 			String squareDesc = request.getParameter("square-description");
 			String squareSource = request.getParameter("square-source");
+			String squareMember = request.getParameter("square-member");
 
 			if(squareSource == null
 					|| squareSource.length() == 0
@@ -71,15 +81,39 @@ public class SquareServlet extends HttpServlet {
 			// create square
 			String squareId = (UUID.randomUUID().toString()).replaceAll("-", "");
 			try {
-				SquareService.getHandle().createSquare(squareId, squareName, squareDesc, squareSource, uid);
-
-				// relation user - square
-				AuthenticationService service = AuthenticationService.getInstance();
-				IAccountManager manager = service.getAccountManager();
-				manager.addSquareId(uid, squareId);
-
-				// move created square
-				changeCurrentSquare(squareId, request);
+//				SquareService.getHandle().createSquare(squareId, squareName, squareDesc, squareSource, uid);
+//
+//				// relation user - square
+//				AuthenticationService service = AuthenticationService.getInstance();
+//				IAccountManager manager = service.getAccountManager();
+//				manager.addSquareId(uid, squareId);
+//
+//				// mail invitation user
+//				List<String> emailList = new ArrayList<String>();
+//				List<String> errorEmailList = new ArrayList<String>();
+//				BufferedReader reader = new BufferedReader(new StringReader(squareMember));
+//				String email;
+//				while((email = reader.readLine()) != null){
+//					if(!StringUtil.isValidEmail(email)){
+//						errorEmailList.add(email);
+//					}
+//					emailList.add(email.trim());
+//				}
+//
+//				if(errorEmailList.size() > 0){
+//					JSONObject json = new JSONObject();
+//					json.put("errorEmails", new JSONArray(errorEmailList));
+//					response.setStatus(HttpStatus.BAD_REQUEST.value());
+//					response.setHeader("Pragma", "no-cache");
+//					response.setHeader("Cache-Control", "no-cache");
+//					return;
+//				}
+//
+//				// mail invitation user
+//				InvitationService.getHandle().doInvitation(emailList, request);
+//
+//				// move created square
+//				changeCurrentSquare(squareId, request);
 			} catch( Exception e ) {
 				log.error("",e);
 				response.sendError(500, e.getMessage());

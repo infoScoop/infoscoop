@@ -122,4 +122,15 @@ public class StringUtil {
 		hex = "\\u" + hex;
 		return hex;
 	}
+
+
+	/**
+	 * メールアドレス構文チェック
+	 * @param mail
+	 * @return
+	 */
+	public static boolean isValidEmail(String email){
+		String mailFormat = "^[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+(\\.[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+)*+(.*)@[a-zA-Z0-9][a-zA-Z0-9\\-]*(\\.[a-zA-Z0-9\\-]+)+$";
+		return email.matches(mailFormat);
+	}
 }

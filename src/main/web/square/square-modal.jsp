@@ -52,6 +52,7 @@ $(document).ready(function() {
 	$('#quick-build').submit(function(event){
 		event.preventDefault();
 		$(this).find('button[type=submit]').attr('disabled', 'disabled');
+		parent.IS_Portal.startIndicator();
 
 		var deferred = $.post("../squaresrv/doCreate",{
 			'square-name': $('#square-name').val(),
@@ -65,8 +66,21 @@ $(document).ready(function() {
 			parent.location.reload();
 		});
 
-		deferred.error(function () {
-			$('#alert').addClass("alert alert-danger").attr('role', 'alert').text("サーバでエラーが発生しました。");
+		deferred.error(function (error) {
+			var errorMessage;
+			switch(error.status){
+				case 400:
+					errorMessage = '不正なメールアドレスが入力されています。';
+					break;
+				case 500:
+					errorMessage = 'サーバーでエラーが発生しました。';
+					break;
+			}
+			$('#alert').addClass("alert alert-danger").attr('role', 'alert').text(errorMessage);
+		});
+
+		deferred.complete(function() {
+			parent.IS_Portal.endIndicator();
 			enabledBtn();
 		});
 	});

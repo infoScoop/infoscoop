@@ -1825,8 +1825,8 @@ IS_Portal.windowOverlay = function(id, tag){
 	document.body.appendChild(overlay);
 	
 	this.show = function(cursorType){
-		overlay.style.width = Math.max(document.body.scrollWidth, document.body.clientWidth) + "px";
-		overlay.style.height = Math.max(document.body.scrollHeight, document.body.clientHeight) + "px";
+		overlay.style.width = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth) + "px";
+		overlay.style.height = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight) + "px";
 		
 		if(cursorType)
 			overlay.style.cursor = cursorType;
