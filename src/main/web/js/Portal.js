@@ -897,7 +897,8 @@ function windowBeforeUnload() {
 	}catch(e){
 		alert(IS_R.getResource(IS_R.ms_customizeSavingFailure1,[getText(e)]));
 	}
-	
+	IS_Request.LogCommandQueue.freeze = true;
+	IS_Request.CommandQueue.freeze = true;
 }
 
 Event.observe(window, Browser.isIE ? 'beforeunload' : 'unload',  windowUnload );
@@ -2540,8 +2541,7 @@ IS_Portal.CommandBar = {
 						}
 
 						Event.observe( $(belongSquare.id),"click",function() {
-							IS_Request.asynchronous = false;
-							IS_Request.CommandQueue.fireRequest();
+						    windowBeforeUnload();
 							AjaxRequest.invoke(hostPrefix + '/squaresrv/doChange', $(this));
 						}.bind(changeSq));
 					}
