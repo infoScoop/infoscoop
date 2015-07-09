@@ -1,10 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" errorPage="/jspError.jsp" %>
 <%@ page import="org.infoscoop.util.RSAKeyManager"%>
 <%@ page import="org.infoscoop.service.ForbiddenURLService" %>
+<%@ page import="org.infoscoop.properties.InfoScoopProperties"%>
+<%@ page import="org.infoscoop.service.SquareService"%>
+<%@page import="org.infoscoop.context.UserContext"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 	String uid = (String) session.getAttribute("Uid");
+	boolean useMultitenantMode = Boolean.valueOf(InfoScoopProperties.getInstance().getProperty("useMultitenantMode"));
+	request.setAttribute("useMultitenantMode", useMultitenantMode);
+	String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+	String squareName = SquareService.getHandle().getSquareName(squareId);
 %>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -12,7 +19,13 @@
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-Control" content="no-cache">
 
-		<title>infoscoop %{alb_administration} - %{${title}}</title>
+		<title>
+	    <c:choose>
+	        <c:when test="${useMultitenantMode}"><%= squareName %></c:when>
+	        <c:otherwise>infoScoop</c:otherwise>
+	    </c:choose>
+		 %{alb_administration} - %{${title}}
+		 </title>
 		
 		<link rel="stylesheet" type="text/css" href="../../skin/admin.css">
 		<link rel="stylesheet" type="text/css" href="../../skin/admintreemenu.css">

@@ -17,10 +17,24 @@
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="org.infoscoop.properties.InfoScoopProperties"%>
+<%@ page import="org.infoscoop.service.SquareService"%>
+<%@page import="org.infoscoop.context.UserContext"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<% 
+    boolean useMultitenantMode = Boolean.valueOf(InfoScoopProperties.getInstance().getProperty("useMultitenantMode"));
+    request.setAttribute("useMultitenantMode", useMultitenantMode);
+    String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+    String squareName = SquareService.getHandle().getSquareName(squareId);
+%>
 
 	<a id="admin-header-title" style="float:left;cursor:pointer;" href="../home/index">
-		<!--start of product name-->infoScoop<!--end of product name-->%{alb_administration}
+	<c:choose>
+	    <c:when test="${useMultitenantMode}"><%= squareName %></c:when>
+	    <c:otherwise><!--start of product name-->infoScoop<!--end of product name--></c:otherwise>
+	</c:choose>
+		%{alb_administration}
 	</a>
 <!-- 	<div id="admin-message-icon"> -->
 <!-- 		<img id="messageIcon" title="%{lb_messageConsole}" src="../../skin/imgs/information3.gif" style="cursor:pointer;"> -->
