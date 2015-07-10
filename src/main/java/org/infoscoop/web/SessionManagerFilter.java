@@ -164,7 +164,7 @@ public class SessionManagerFilter implements Filter {
 			session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME,currentSquareId );
 		}
 
-		if(!InfoScoopProperties.getInstance().isUseMultitenantMode()) {
+		if(!InfoScoopProperties.getInstance().isUseMultitenantMode() || currentSquareId == null) {
 			// シングルテナント時、ユーザーのデフォルトスクエアを入れる
 			currentSquareId = CURRENT_SQUARE_ID_DEFAULT;
 		}
