@@ -429,4 +429,9 @@
             <ref bean="sessionFactory"/>
         </property>
     </bean>
+	<bean id="logoDAO" class="org.infoscoop.dao.LogoDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+	</bean>
 </beans>

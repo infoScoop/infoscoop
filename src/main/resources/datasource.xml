@@ -69,6 +69,7 @@
 					<value>org/infoscoop/dao/model/I18nlocale.hbm.xml</value>
 					<value>org/infoscoop/dao/model/I18nlastmodified.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Gadget.hbm.xml</value>
+					<value>org/infoscoop/dao/model/Logo.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Logs.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Cache.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Rsscache.hbm.xml</value>

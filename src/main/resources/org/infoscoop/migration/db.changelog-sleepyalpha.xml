@@ -8,6 +8,8 @@
 
 	<property name="clob.type" value="clob" dbms="oracle, db2"/>
     <property name="clob.type" value="text" dbms="mysql"/>
+    <property name="autoIncrement" value="true" dbms="mysql, db2"/>
+    <property name="autoIncrement" value="false" dbms="oracle"/>
 
     <!--Issue 597-->
     <!--
@@ -553,5 +555,35 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
         <createIndex indexName="is_adminRoles_role_id" schemaName="${migration.defaultSchema}" tableName="IS_ADMINROLES" tablespace="${.tablespace}">
             <column name="roleid" type="varchar(255)"/>
         </createIndex>
+    </changeSet>
+
+    <!-- CREATE TABLE IS_LOGOS; -->
+    <changeSet id="infoscoop_sleepyalpha_598_15" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_15">
+            <not>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="is_logos"/>
+            </not>
+        </preConditions>
+        <createTable tableName="is_logos" tablespace="${.tablespace}">
+            <column name="id" type="int" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false"/>
+            </column>
+            <column name="logo" type="mediumblob">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="is_logos" constraintName="fk_is_logos_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
+    </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha_598_16" author="mikami" dbms="oracle">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_16">
+            <not>
+                <sequenceExists sequenceName="is_logos_id_seq" schemaName="${migration.defaultSchema}"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="is_logos_id_seq" schemaName="${migration.defaultSchema}"/>
     </changeSet>
 </databaseChangeLog>

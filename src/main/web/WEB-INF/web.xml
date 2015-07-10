@@ -516,6 +516,13 @@
 	</servlet>
 
 	<servlet>
+		<servlet-name>LogoImageServlet</servlet-name>
+		<servlet-class>
+			org.infoscoop.web.LogoImageServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
 		<servlet-name>I18NServlet</servlet-name>
 		<servlet-class>
 			org.infoscoop.web.I18NServlet
@@ -908,6 +915,11 @@
 	<servlet-mapping>
 		<servlet-name>UploadGadgetServlet</servlet-name>
 		<url-pattern>/admin/uploadgadget</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>LogoImageServlet</servlet-name>
+		<url-pattern>/logosrv</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

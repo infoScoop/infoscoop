@@ -66,6 +66,27 @@ ISA_PortalLayout.prototype.classDef = function() {
 			break;
 		}
 		this.changeLayout();
+
+		// upload form
+		var iframe = $("upLoadDummyFrame");
+		Event.observe( iframe,"load",function() {
+			var result = $jq(this.contentWindow.document.body).text();
+			if(result) {
+				var status = eval("("+result+")").status;
+				if(status == 500){
+					alert(ISA_R.ams_gadgetResourceUpdateFailed);
+					msg.error(ISA_R.ams_gadgetResourceUpdateFailed + " - " +" | 500");
+					Control.Modal.close();
+				}
+			} else {
+				setTimeout(function(){
+					Control.Modal.close();
+				},500);
+			}
+			$jq('#upload-logo-form').empty()
+			$jq('#logo-image').removeAttr('src');
+			$jq('#portalLayoutTextarea[name=data]').val('');
+		} );
 	}
 	
 	this.buildPortalLayouts = function() {
@@ -91,7 +112,6 @@ ISA_PortalLayout.prototype.classDef = function() {
 		
 		var portalLayoutsTdRight = document.createElement("td");
 		portalLayoutsTdRight.id = "layoutEditTd";
-//		portalLayoutsTdRight.style.width = "70%";
 		portalLayoutsTdRight.style.verticalAlign = "top";
 		portalLayoutsTr.appendChild(portalLayoutsTdRight);
 		
@@ -122,7 +142,10 @@ ISA_PortalLayout.prototype.classDef = function() {
 			var div = this.buildLayout(i);
 			layoutGroupDiv.appendChild(div);
 		}
-		
+
+		ISA_PortalLayout.portalLayoutList['logo'] = {'name': 'logo', 'layout':''};
+		layoutGroupDiv.appendChild(this.buildLayout('logo'));
+
 		return layoutListDiv;
 	}
 	
@@ -249,8 +272,38 @@ ISA_PortalLayout.prototype.classDef = function() {
 				editLayoutTextarea.className = "customtheme-textarea";
 				editLayoutTextarea.rows = "20";
 				editLayoutTextarea.setAttribute('wrap', 'off');
-				
+
 				IS_Event.observe(seeSampleA, 'click', this.openViewerOfThemeSamples.bind(this), false, "_adminPortal");
+				break;
+			case 'logo':
+				editLayoutTextarea = document.createElement("div");
+				editLayoutTextarea.style.width = "99%";
+				editLayoutTextarea.style.margin = "10px";
+
+				var detailDiv = document.createElement("div");
+				detailDiv.style.width = "99%";
+				detailDiv.style.margin = "10px";
+				detailDiv.innerHTML = "ポータル画面に表示されるロゴ画像の設定を行います。<br>設定できるロゴ画像はPNG/JPG/GIFになります。（1MBまで）<br>Tips： 画像サイズが200×25の場合、最もきれいに表示できます。）"
+				editLayoutTextarea.appendChild(detailDiv);
+
+				var logoImage = document.createElement("img");
+				logoImage.id = "logo-image";
+				logoImage.src = '../../skin/imgs/infoscoop_logo.png'
+				logoImage.style.maxHeight = "25px";
+				logoImage.style.maxWidth = "200px";
+				logoImage.style.verticalAlign = "middle";
+				logoImage.style.marginRight = "20px";
+
+				var fileInput = document.createElement("input");
+				fileInput.id = "portalLayoutTextarea";
+				fileInput.name = "data";
+				fileInput.type = "file";
+				fileInput.accept="image/gif,image/jpeg,image/png"
+
+				editLayoutTextarea.appendChild(logoImage);
+				editLayoutTextarea.appendChild(fileInput);
+
+				IS_Event.observe(fileInput, 'change', this.setLogoImage.bind(fileInput), false, "_adminPortal");
 				break;
 			default:
 				editLayoutTextarea = document.createElement("textarea");
@@ -267,7 +320,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 			ISA_PortalLayout.portalLayoutList[self.displayLayoutId].layout = editLayoutTextarea.value;
 		};
 		IS_Event.observe(editLayoutTextarea, 'change', changeLayoutHandler, false, "_adminPortal");
-		
+
 		return editLayoutDiv;
 	}
 	
@@ -304,24 +357,34 @@ ISA_PortalLayout.prototype.classDef = function() {
 	
 	this.updatePortalLayout = function(portalLayouts) {
 		var url = adminHostPrefix + "/services/portalLayout/updatePortalLayout";
+		delete portalLayouts['logo'];
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
 			postBody: Object.toJSON([portalLayouts]),
 			asynchronous:true,
 			onSuccess: function(response){
+				var form = $jq('#upload-logo-form');
+				if(form.children().length == 1) {
+					form.submit();
+				} else {
+					setTimeout(function(){
+						Control.Modal.close();
+					},500);
+				}
 				controlModal.container.update(ISA_R.ams_changeUpdated);
 			},
 			onFailure: function(t) {
 				var errormsg = t.responseText && typeof t.responseText == "string" ? t.responseText.substr(0, 100) : "";
 				alert(ISA_R.ams_failedUpdateOtherPotal+'\n' + errormsg );
 				msg.error(ISA_R.ams_failedUpdateOtherPotal + t.status + " - " +" | " + t.statusText + errormsg );
+				setTimeout(function(){
+					Control.Modal.close();
+				},500);
 			},
 			onException: function(r, t){
 				alert(ISA_R.ams_failedUpdateOtherPotal);
 				msg.error(ISA_R.ams_failedUpdateOtherPotal + getErrorMessage(t));
-			},
-			onComplete: function(){
 				setTimeout(function(){
 					Control.Modal.close();
 				},500);
@@ -359,4 +422,32 @@ ISA_PortalLayout.prototype.classDef = function() {
 		AjaxRequest.invoke(url, opt);
 	};
 
+	/**
+	Set and Preview logo
+	*/
+	this.setLogoImage = function() {
+		// set
+		var file = this.files[0];
+		var formInput = $jq('#upload-logo-form');
+		formInput.empty();
+		if(file.type.match(/^(image\/(jpeg|png|gif))/)) {
+			formInput.append(this.clone());
+		} else {
+			alert("お前は間違いを犯した");
+			$jq(this).val('');
+			imageEle.removeAttr('src');
+		}
+
+		// preview
+		if(!window.File || !window.FileReader || !this.files || !this.files.length) return;
+		var file = this.files[0];
+		var imageEle = $jq("#logo-image");
+		if(file.type.match(/^(image\/(jpeg|png|gif))/)) {
+			var fileReader = new FileReader();
+			fileReader.onload = function(e) {
+				imageEle.attr('src', e.target.result);
+			}
+			fileReader.readAsDataURL(file);
+		}
+	}
 };

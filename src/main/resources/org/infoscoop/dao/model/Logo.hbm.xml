@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+			name="Logo"
+			table="IS_LOGOS"
+			>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+				name="Id"
+				type="java.lang.Long"
+				column="ID"
+		>
+			<generator class="native">
+				<param name="sequence">is_logos_id_seq</param>
+			</generator>
+		</id>
+
+		<property
+				name="Squareid"
+				column="square_id"
+				type="string"
+				not-null="true"
+				length="64"
+				/>
+		<property
+				name="Logo"
+				column="logo"
+				type="binary"
+				not-null="true"
+				/>
+	</class>
+</hibernate-mapping>

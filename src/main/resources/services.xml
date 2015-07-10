@@ -712,5 +712,25 @@
 			</props>
 		</property>
 	</bean>
+	<bean id="LogoService"
+		  class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="target">
+			<bean class="org.infoscoop.service.LogoService">
+				<property name="logoDAO">
+					<ref bean="logoDAO" />
+				</property>
+			</bean>
+		</property>
+		<property name="transactionManager">
+			<ref bean="hibernateTransactionManger" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+			</props>
+		</property>
+	</bean>
     <bean id="InvitationService" class="org.infoscoop.service.InvitationService"></bean>
 </beans>
