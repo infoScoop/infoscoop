@@ -574,6 +574,9 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
             <column name="logo" type="mediumblob">
                 <constraints nullable="false"/>
             </column>
+            <column name="type" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="is_logos" constraintName="fk_is_logos_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
     </changeSet>

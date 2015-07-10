@@ -13,6 +13,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 	var container;
 	var loadingMessage;
 	var controlModal;		// Apply Change dialog
+	var logoImgSrc;
 	
 	this.initialize = function() {
 		container = document.getElementById("portalLayout");
@@ -78,15 +79,26 @@ ISA_PortalLayout.prototype.classDef = function() {
 					msg.error(ISA_R.ams_gadgetResourceUpdateFailed + " - " +" | 500");
 					Control.Modal.close();
 				}
+				$jq('#logo-image').removeAttr('src');
 			} else {
+				logoImgSrc = '../../logosrv/get';
 				setTimeout(function(){
 					Control.Modal.close();
 				},500);
 			}
 			$jq('#upload-logo-form').empty()
-			$jq('#logo-image').removeAttr('src');
 			$jq('#portalLayoutTextarea[name=data]').val('');
-		} );
+		});
+
+		$jq.ajax({
+			method: 'get',
+			url: '../../logosrv/existsImage',
+			success: function(data) {
+				logoImgSrc = staticContentURL + '/skin/imgs/infoscoop_logo.png';
+				if(data == 'true')
+					logoImgSrc = '../../logosrv/get';
+			}
+		});
 	}
 	
 	this.buildPortalLayouts = function() {
@@ -283,15 +295,19 @@ ISA_PortalLayout.prototype.classDef = function() {
 				var detailDiv = document.createElement("div");
 				detailDiv.style.width = "99%";
 				detailDiv.style.margin = "10px";
-				detailDiv.innerHTML = "ポータル画面に表示されるロゴ画像の設定を行います。<br>設定できるロゴ画像はPNG/JPG/GIFになります。（1MBまで）<br>Tips： 画像サイズが200×25の場合、最もきれいに表示できます。）"
+				detailDiv.style.marginBottom = "30px";
+				detailDiv.innerHTML = "ポータル画面に表示されるロゴ画像の設定を行います。<br>設定できるロゴ画像はPNG/JPG/GIFになります。（1MBまで）<br>Tips： 画像サイズが200×25の場合、最もきれいに表示できます。"
 				editLayoutTextarea.appendChild(detailDiv);
+
+
 
 				var logoImage = document.createElement("img");
 				logoImage.id = "logo-image";
-				logoImage.src = '../../skin/imgs/infoscoop_logo.png'
+				logoImage.src = logoImgSrc;
 				logoImage.style.maxHeight = "25px";
 				logoImage.style.maxWidth = "200px";
 				logoImage.style.verticalAlign = "middle";
+				logoImage.style.marginLeft = "20px";
 				logoImage.style.marginRight = "20px";
 
 				var fileInput = document.createElement("input");

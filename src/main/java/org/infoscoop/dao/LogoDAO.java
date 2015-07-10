@@ -48,9 +48,9 @@ public class LogoDAO extends HibernateDaoSupport {
 	}
 
 	//insert
-	public void insert(String squareId, byte[] logo) {
+	public void insert(String squareId, byte[] logo, String type) {
 		// initial temp true
-		Logo l = new Logo(squareId, logo);
+		Logo l = new Logo(squareId, logo, type);
 		super.getHibernateTemplate().save(l);
 	}
 

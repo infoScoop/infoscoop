@@ -43,7 +43,7 @@ public class LogoService {
 		this.logoDAO = logoDAO;
 	}
 
-	public void saveLogo(byte[] image) {
+	public void saveLogo(byte[] image, String type) {
 		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		Logo logo = this.logoDAO.getBySquareId(squareId);
@@ -54,50 +54,14 @@ public class LogoService {
 			this.logoDAO.update(logo);
 		} else {
 			// insert
-			this.logoDAO.insert(squareId, image);
+			this.logoDAO.insert(squareId, image, type);
 		}
 	}
 
-	public byte[] getLogo() {
+	public Logo getLogo() {
 		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 		Logo logo = this.logoDAO.getBySquareId(squareId);
 
-		if(logo != null)
-			return logo.getLogo();
-
-		return new byte[0];
-	}
-
-	public static class LogoImageException extends RuntimeException {
-		private static final long serialVersionUID = 1L;
-
-		public LogoImageException() {
-			this( null );
-		}
-		public LogoImageException( Throwable cause ) {
-			this("unexcepted error","ams_gadgetResourceUnknownError",cause );
-		}
-		public LogoImageException( String message,String id ) {
-			this( message,id,null );
-		}
-		public LogoImageException( String message,String id,Throwable cause ) {
-			super( message,cause );
-
-			this.id = id;
-		}
-
-		private String id;
-		public String getId() { return id; }
-
-		public JSONObject toJSON() {
-			JSONObject json = new JSONObject();
-			try {
-				json.put("message",getId() );
-			} catch( JSONException ex ) {
-				// ignore
-			}
-
-			return json;
-		}
+		return logo;
 	}
 }

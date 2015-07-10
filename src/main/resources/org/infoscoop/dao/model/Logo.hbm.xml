@@ -32,5 +32,12 @@
 				type="binary"
 				not-null="true"
 				/>
+		<property
+				name="Type"
+				column="type"
+				type="string"
+				not-null="true"
+				length="64"
+				/>
 	</class>
 </hibernate-mapping>
