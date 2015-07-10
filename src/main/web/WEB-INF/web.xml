@@ -935,7 +935,7 @@
 
 	<servlet-mapping>
 		<servlet-name>LogoImageServlet</servlet-name>
-		<url-pattern>/logosrv</url-pattern>
+		<url-pattern>/logosrv/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
