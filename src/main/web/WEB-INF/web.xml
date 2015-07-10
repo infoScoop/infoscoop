@@ -97,13 +97,22 @@
 		<filter-class>org.infoscoop.web.SessionManagerFilter</filter-class>
 		<init-param>
 			<param-name>excludePath</param-name>
-			<param-value>/xmlrpc,/login.jsp,/oauth_login.jsp,/access_confirmation.jsp,/changePassword.jsp,/authsrv,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html,/favicon.ico,/isapi*,/oauth*</param-value>
+			<param-value>/xmlrpc,/login.jsp,/oauth_login.jsp,/access_confirmation.jsp,/changePassword.jsp,/authsrv,/gadgetsrv,/jsonproxy,/proxy,/js*,/rpc_relay.html,/favicon.ico,/isapi*,/oauth*,/prepare*</param-value>
 		</init-param>
 		<init-param>
 			<param-name>redirectPath</param-name>
 			<param-value>/index.jsp,/messageConsole.html</param-value>
 		</init-param>
 	</filter>
+
+    <filter>
+        <filter-name>CheckSquareFilter</filter-name>
+        <filter-class>org.infoscoop.web.CheckSquareFilter</filter-class>
+        <init-param>
+            <param-name>excludePath</param-name>
+            <param-value>/login.jsp,/oauth_login.jsp,/access_confirmation.jsp,/changePassword.jsp,/square/closed.jsp,/prepare*</param-value>
+        </init-param>
+    </filter>
 
 	<filter>
 		<filter-name>CheckAdminFilter</filter-name>
@@ -219,6 +228,13 @@
 		<url-pattern>/manager/*</url-pattern>
         <url-pattern>/adminpreview/*</url-pattern>
 	</filter-mapping>
+
+    <filter-mapping>
+        <filter-name>CheckSquareFilter</filter-name>
+        <url-pattern>/</url-pattern>
+        <url-pattern>/comsrv</url-pattern>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
 
 	<filter-mapping>
 		<filter-name>PreviewNullUidFilter</filter-name>

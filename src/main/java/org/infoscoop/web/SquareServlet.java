@@ -1,22 +1,5 @@
 package org.infoscoop.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.infoscoop.account.AuthenticationService;
-import org.infoscoop.account.IAccountManager;
-import org.infoscoop.service.InvitationService;
-import org.infoscoop.service.SquareService;
-import org.infoscoop.util.StringUtil;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -25,6 +8,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.infoscoop.account.AuthenticationService;
+import org.infoscoop.account.IAccount;
+import org.infoscoop.account.IAccountManager;
+import org.infoscoop.service.InvitationService;
+import org.infoscoop.service.SquareService;
+import org.infoscoop.util.StringUtil;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class SquareServlet extends HttpServlet {
 	private static Log log = LogFactory.getLog(SquareServlet.class);
 
@@ -32,6 +35,7 @@ public class SquareServlet extends HttpServlet {
 	private static final String CREATE_PATH = "/doCreate";
 	private static final String GET_PATH = "/doGetBelongSquare";
 	private static final String CHANGE_PATH = "/doChange";
+	private static final String MYSQUARE_PATH = "/mySquare";
 
 	public void init() {}
 
@@ -56,6 +60,18 @@ public class SquareServlet extends HttpServlet {
 				log.error("Failed getting Square names", e);
 				response.sendError(500, e.getMessage());
 			}
+		}
+		else if(MYSQUARE_PATH.equals(action)){
+			IAccount account;
+			try {
+				account = AuthenticationService.getInstance().getAccountManager().getUser(uid);
+			} catch (Exception e) {
+				log.error("Get account information failed. " + e.getMessage(), e);
+				throw new RuntimeException(e);
+			}
+			String defaultSquareId = account.getDefaultbelongid();
+			changeCurrentSquare(defaultSquareId, request);
+			response.sendRedirect("../index.jsp");
 		}
 	}
 
