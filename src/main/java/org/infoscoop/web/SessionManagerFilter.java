@@ -52,6 +52,7 @@ import org.infoscoop.admin.web.PreviewImpersonationFilter;
 import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.dao.SessionDAO;
+import org.infoscoop.properties.InfoScoopProperties;
 import org.infoscoop.util.RSAKeyManager;
 
 /**
@@ -163,8 +164,8 @@ public class SessionManagerFilter implements Filter {
 			session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME,currentSquareId );
 		}
 
-		if(currentSquareId == null) {
-			//ユーザーのデフォルトスクエアを入れる
+		if(!InfoScoopProperties.getInstance().isUseMultitenantMode()) {
+			// シングルテナント時、ユーザーのデフォルトスクエアを入れる
 			currentSquareId = CURRENT_SQUARE_ID_DEFAULT;
 		}
 
