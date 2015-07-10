@@ -60,4 +60,12 @@ public class SquareDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().save(square);
 		super.getHibernateTemplate().flush();
 	}
+
+	public void update(Square entity) {
+		super.getHibernateTemplate().update(entity);
+	}
+
+	public void delete(Square entity) {
+		super.getHibernateTemplate().delete(entity);
+	}
 }

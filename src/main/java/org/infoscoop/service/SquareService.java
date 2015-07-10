@@ -17,14 +17,35 @@
 
 package org.infoscoop.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.api.dao.OAuth2ProviderClientDetailDAO;
-import org.infoscoop.dao.*;
+import org.infoscoop.dao.AdminRoleDAO;
+import org.infoscoop.dao.ForbiddenURLDAO;
+import org.infoscoop.dao.GadgetDAO;
+import org.infoscoop.dao.GadgetIconDAO;
+import org.infoscoop.dao.HolidaysDAO;
+import org.infoscoop.dao.I18NDAO;
+import org.infoscoop.dao.OAuthCertificateDAO;
+import org.infoscoop.dao.PortalAdminsDAO;
+import org.infoscoop.dao.PortalLayoutDAO;
+import org.infoscoop.dao.PropertiesDAO;
+import org.infoscoop.dao.ProxyConfDAO;
+import org.infoscoop.dao.SearchEngineDAO;
+import org.infoscoop.dao.SiteAggregationMenuDAO;
+import org.infoscoop.dao.SquareDAO;
+import org.infoscoop.dao.StaticTabDAO;
+import org.infoscoop.dao.TabLayoutDAO;
+import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Square;
 import org.infoscoop.util.SpringUtil;
@@ -252,7 +273,6 @@ public class SquareService {
 		portalAdminsDAO.insert(userId, new Integer(squareAdminRoleId), squareId);
 	}
 
-	@SuppressWarnings("unchecked")
 	public Map<String, Object> getBelongSquaresNames(String userId, String currentSquareId) throws Exception{
 		IAccount account = AuthenticationService.getInstance().getAccountManager().getUser(userId);
 		List<Square> squares = squareDAO.getSquares(account.getBelongids());
@@ -278,7 +298,10 @@ public class SquareService {
 		return squareNameMap;
 	}
 
-	@SuppressWarnings("unchecked")
+	public Square getEntity(String squareId) {
+		return squareDAO.get(squareId);
+	}
+
 	public String getSquareName(String squareId) {
 		Square sq = squareDAO.get(squareId);
 		return sq.getName();
@@ -291,5 +314,18 @@ public class SquareService {
 		}
 
 		return result;
+	}
+	
+	public void updateSquare(String squareId, String name, String description){
+		Square square = squareDAO.get(squareId);
+		square.setName(name);
+		square.setDescription(description);
+		square.setLastmodified(new Date());
+		squareDAO.update(square);
+	}
+	
+	public void deleteSquare(String squareId){
+		Square square = squareDAO.get(squareId);
+		squareDAO.delete(square);
 	}
 }
