@@ -19,7 +19,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="org.infoscoop.properties.InfoScoopProperties"%>
 <%@ page import="org.infoscoop.service.SquareService"%>
-<%@page import="org.infoscoop.context.UserContext"%>
+<%@ page import="org.infoscoop.context.UserContext"%>
+<%@ page import="org.infoscoop.util.HtmlUtil"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <% 
@@ -31,7 +32,7 @@
 
 	<a id="admin-header-title" style="float:left;cursor:pointer;" href="../home/index">
 	<c:choose>
-	    <c:when test="${useMultitenantMode}"><%= squareName %></c:when>
+	    <c:when test="${useMultitenantMode}"><%= HtmlUtil.escapeHtmlEntities(squareName) %></c:when>
 	    <c:otherwise><!--start of product name-->infoScoop<!--end of product name--></c:otherwise>
 	</c:choose>
 		%{alb_administration}
