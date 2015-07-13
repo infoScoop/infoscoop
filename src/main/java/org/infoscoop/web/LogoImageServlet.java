@@ -72,7 +72,7 @@ public class LogoImageServlet extends HttpServlet {
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
 			factory.setSizeThreshold(1048576);
-			upload.setSizeMax(-1);
+			upload.setSizeMax(1048576);
 			upload.setHeaderEncoding("UTF-8");
 
 			List list = upload.parseRequest(request);

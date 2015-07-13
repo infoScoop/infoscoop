@@ -734,6 +734,7 @@ div#search-iframe iframe {
 .infoScoop #portal-logo-img {
 	vertical-align: middle;
 	height: 26px;
+	max-width: 200px;
 }
 
 .infoScoop #portal-header-container {

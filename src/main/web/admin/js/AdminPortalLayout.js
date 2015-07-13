@@ -306,7 +306,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 				var logoImage = document.createElement("img");
 				logoImage.id = "logo-image";
 				logoImage.src = logoImgSrc;
-				logoImage.style.maxHeight = "25px";
+				logoImage.style.height = "26px";
 				logoImage.style.maxWidth = "200px";
 				logoImage.style.verticalAlign = "middle";
 				logoImage.style.marginLeft = "20px";
@@ -451,7 +451,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 		if(file.type.match(/^(image\/(jpeg|png|gif))/)) {
 			formInput.append(this.clone());
 		} else {
-			alert("お前は間違いを犯した");
+			alert("ファイル形式が異なります。\nJPG/PNG/GIF画像を選択してください。");
 			$jq(this).val('');
 			imageEle.removeAttr('src');
 		}
