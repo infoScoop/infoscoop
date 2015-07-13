@@ -81,7 +81,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 				}
 				$jq('#logo-image').removeAttr('src');
 			} else {
-				logoImgSrc = '../../logosrv/get';
+				logoImgSrc = hostPrefix + '/logosrv/get';
 				setTimeout(function(){
 					Control.Modal.close();
 				},500);
@@ -92,11 +92,13 @@ ISA_PortalLayout.prototype.classDef = function() {
 
 		$jq.ajax({
 			method: 'get',
-			url: '../../logosrv/existsImage',
+			url: hostPrefix + '/logosrv/existsImage',
 			success: function(data) {
-				logoImgSrc = staticContentURL + '/skin/imgs/infoscoop_logo.png';
-				if(data == 'true')
-					logoImgSrc = '../../logosrv/get';
+				if(data == 'true') {
+					logoImgSrc = hostPrefix + '/logosrv/get';
+				} else {
+					logoImgSrc = staticContentURL + '/skin/imgs/infoscoop_logo.png';
+				}
 			}
 		});
 	}

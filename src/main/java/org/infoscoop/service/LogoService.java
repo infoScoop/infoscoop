@@ -23,8 +23,6 @@ import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.LogoDAO;
 import org.infoscoop.dao.model.Logo;
 import org.infoscoop.util.SpringUtil;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class LogoService {
 	private static Log log = LogFactory.getLog(LogoService.class);
@@ -63,5 +61,13 @@ public class LogoService {
 		Logo logo = this.logoDAO.getBySquareId(squareId);
 
 		return logo;
+	}
+
+	public boolean isExistsLogoImage() {
+		boolean result = false;
+		Logo logo = this.getLogo();
+		if(logo != null)
+			result = true;
+		return result;
 	}
 }
