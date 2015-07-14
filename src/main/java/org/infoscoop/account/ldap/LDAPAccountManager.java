@@ -556,4 +556,9 @@ public class LDAPAccountManager implements IAccountManager{
 	public void addSquareId(String userid, String squareId) {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public String getAccountManagerForm(String userId) {
+		throw new UnsupportedOperationException();
+	}
 }

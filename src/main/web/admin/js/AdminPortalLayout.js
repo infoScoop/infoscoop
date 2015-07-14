@@ -301,8 +301,6 @@ ISA_PortalLayout.prototype.classDef = function() {
 				detailDiv.innerHTML = "ポータル画面に表示されるロゴ画像の設定を行います。<br>設定できるロゴ画像はPNG/JPG/GIFになります。（1MBまで）<br>Tips： 画像サイズが200×25の場合、最もきれいに表示できます。"
 				editLayoutTextarea.appendChild(detailDiv);
 
-
-
 				var logoImage = document.createElement("img");
 				logoImage.id = "logo-image";
 				logoImage.src = logoImgSrc;

@@ -33,15 +33,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.account.AuthenticationService;
+import org.infoscoop.account.IAccountManager;
 import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.model.Portallayout;
-import org.infoscoop.dao.model.Preference;
 import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.service.PortalLayoutService;
@@ -112,18 +114,21 @@ public class CustomizationServlet extends HttpServlet {
 				try {
 					sdf = UserContext.instance().getUserInfo().getClientDateFormat(format);
 				} catch(IllegalArgumentException e) {
-					sdf = UserContext.instance().getUserInfo().getClientDateFormat(SHORT_DATETIME_FORMAT);					
+					sdf = UserContext.instance().getUserInfo().getClientDateFormat(SHORT_DATETIME_FORMAT);
 				} catch(Exception e) {
 					throw e;
 				}
-				lastAccessTime = sdf.format(date);		
+				lastAccessTime = sdf.format(date);
 			}
 			root.put("lastAccessTime", lastAccessTime);
 
-			String customFtl = getCustomizationFtl( root );
+			HttpSession session = request.getSession();
+			String userId = null;
+			if(session != null)
+				userId = (String)session.getAttribute("Uid");
+			String customFtl = getCustomizationFtl( root, userId );
 
-			customFtl = I18NUtil.resolve(I18NUtil.TYPE_LAYOUT,
-					customFtl, request.getLocale());
+			customFtl = I18NUtil.resolve(I18NUtil.TYPE_LAYOUT, customFtl, request.getLocale());
 
 			writer.write( customFtl );
 		} catch (Exception e){
@@ -137,7 +142,7 @@ public class CustomizationServlet extends HttpServlet {
 
 	}
 
-	private String getCustomizationFtl( Map<String,Object> root ) throws ParserConfigurationException, Exception{
+	private String getCustomizationFtl( Map<String,Object> root, String userId ) throws ParserConfigurationException, Exception{
 		JSONObject layoutJson = new JSONObject();
 		Map<String, TabLayout> CustomizationMap = TabLayoutService.getHandle().getMyTabLayoutHTML();
 
@@ -210,7 +215,14 @@ public class CustomizationServlet extends HttpServlet {
 			layoutJson.put( name,(isIframeToolBar)? new JSONArray(layout) : layout );
 		}
 
-		return "IS_Customization = " + layoutJson.toString() + ";";
+		String formDef = ", \"accountManagerForm\":{}";
+		String layout = layoutJson.toString();
+		if(userId != null) {
+			IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
+			formDef = ", \"accountManagerForm\":"  + accountManager.getAccountManagerForm(userId);
+		}
+
+		return "IS_Customization = " +  layout.substring(0, layout.length()-1) +formDef  + "};";
 	}
 
 	private String applyFreemakerTemplate(Map<String, Object> root, String value)  {
@@ -237,5 +249,4 @@ public class CustomizationServlet extends HttpServlet {
 		}
 		return value;
 	}
-
 }
