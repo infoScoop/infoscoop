@@ -85,6 +85,7 @@ public class LogoImageServlet extends HttpServlet {
 			if(result != null)
 				LogoService.getHandle().saveLogo(result, contentType);
 		}catch (Exception e) {
+			log.error("Exception Image Upload.", e);
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			JSONObject json = new JSONObject();
 			try {
