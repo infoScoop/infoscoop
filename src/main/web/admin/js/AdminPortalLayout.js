@@ -81,13 +81,12 @@ ISA_PortalLayout.prototype.classDef = function() {
 				}
 				$jq('#logo-image').removeAttr('src');
 			} else {
+				$jq('#logo-image-input').attr('upload', 'true');
 				logoImgSrc = hostPrefix + '/logosrv/get';
 				setTimeout(function(){
 					Control.Modal.close();
 				},500);
 			}
-			$jq('#upload-logo-form').empty()
-			$jq('#portalLayoutTextarea[name=data]').val('');
 		});
 
 		$jq.ajax({
@@ -301,6 +300,13 @@ ISA_PortalLayout.prototype.classDef = function() {
 				detailDiv.innerHTML = "ポータル画面に表示されるロゴ画像の設定を行います。<br>設定できるロゴ画像はPNG/JPG/GIFになります。（1MBまで）<br>Tips： 画像サイズが200×25の場合、最もきれいに表示できます。"
 				editLayoutTextarea.appendChild(detailDiv);
 
+				var form = document.createElement("form");
+				form.id = "upload-logo-form";
+				form.enctype = "multipart/form-data";
+				form.action = hostPrefix + "/logosrv";
+				form.target = "upLoadDummyFrame";
+				form.method = "POST";
+
 				var logoImage = document.createElement("img");
 				logoImage.id = "logo-image";
 				logoImage.src = logoImgSrc;
@@ -311,13 +317,15 @@ ISA_PortalLayout.prototype.classDef = function() {
 				logoImage.style.marginRight = "20px";
 
 				var fileInput = document.createElement("input");
-				fileInput.id = "portalLayoutTextarea";
+				fileInput.id = 'logo-image-input'
+				fileInput.style.fontSize = '13px';
 				fileInput.name = "data";
 				fileInput.type = "file";
 				fileInput.accept="image/gif,image/jpeg,image/png"
+				form.appendChild(logoImage);
+				form.appendChild(fileInput);
 
-				editLayoutTextarea.appendChild(logoImage);
-				editLayoutTextarea.appendChild(fileInput);
+				editLayoutTextarea.appendChild(form);
 
 				IS_Event.observe(fileInput, 'change', this.setLogoImage.bind(fileInput), false, "_adminPortal");
 				break;
@@ -381,13 +389,12 @@ ISA_PortalLayout.prototype.classDef = function() {
 			asynchronous:true,
 			onSuccess: function(response){
 				var form = $jq('#upload-logo-form');
-				
 		        if(window.is_squareId){
 		            var orgAction = form.attr("action");
 		            form.attr("action", orgAction + "?MSDPortal-SquareId="+is_squareId);
 		        }
-				
-				if(form.children().length == 1) {
+				var input = form.children('input');
+				if(!input.attr('upload')) {
 					form.submit();
 				} else {
 					setTimeout(function(){
@@ -448,13 +455,11 @@ ISA_PortalLayout.prototype.classDef = function() {
 	Set and Preview logo
 	*/
 	this.setLogoImage = function() {
+		$jq('#logo-image-input').removeAttr('upload');
+
 		// set
 		var file = this.files[0];
-		var formInput = $jq('#upload-logo-form');
-		formInput.empty();
-		if(file.type.match(/^(image\/(jpeg|png|gif))/)) {
-			formInput.append(this.clone());
-		} else {
+		if(!file.type.match(/^(image\/(jpeg|png|gif))/)) {
 			alert("ファイル形式が異なります。\nJPG/PNG/GIF画像を選択してください。");
 			$jq(this).val('');
 			imageEle.removeAttr('src');

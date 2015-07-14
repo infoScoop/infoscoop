@@ -29,7 +29,6 @@
 	<tiles:putAttribute name="side_body" type="string">
 
 <div id="portalLayout"></div>
-<form id="upload-logo-form" enctype="multipart/form-data" action="../../logosrv" target="upLoadDummyFrame" method="POST" style="display:none;"></form>
 <iframe id="upLoadDummyFrame" name="upLoadDummyFrame"></iframe>
 <script>
 	$jq(function(){
