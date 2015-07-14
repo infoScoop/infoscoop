@@ -38,4 +38,9 @@ public interface HttpStatusCode {
 	 * An error code when session time-out occurred.
 	 */
 	String MSD_SESSION_TIMEOUT = "10999";
+
+	/**
+	 * An error code when square changed (admin only).
+	 */
+	String MSD_SQUARE_CHANGED = "11000";
 }

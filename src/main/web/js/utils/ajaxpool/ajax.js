@@ -51,6 +51,10 @@ var AjaxRequest = {
 			headers.push("MSDPortal-SessionId");
 			headers.push( is_sessionId );
 		}
+        if( window.is_squareId ){
+            headers.push("MSDPortal-SquareId");
+            headers.push( is_squareId );
+        }
 		if(options.requestHeaders){
 			for(var i=0;i<headers.length;i++){
 				options.requestHeaders.push(headers[i]);
@@ -170,6 +174,7 @@ AjaxRpc.prototype = {
 				case "10997": // infoscoop auto reload status code
 				case "10998": // infoscoop auto logoff status code
 				case "10999": // infoscoop auto logoff status code
+                case "11000": // infoscoop square changed status code (admin only)
 					handleLogoff(status, exception);
 					return;
 				default:
@@ -202,9 +207,13 @@ AjaxRpc.prototype = {
 		}
 		
 		function handleLogoff(status, exception){
-			if( window["ISA_Admin"] ) {
+			if( window["ISA_Admin"] && status != "11000") {
 				alert( IS_R.ms_sessionTimeoutReLogin);
 				return;
+			}
+			if( window["ISA_Admin"] && status == "11000") {
+			    alert( "スクエアが変更されているため、リロードを行います。" );
+			    window.location.reload( true );
 			}
 			
 			if(AjaxRequest.isAutoLogoff) return;

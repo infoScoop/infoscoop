@@ -91,9 +91,7 @@
 	<div style="display:none;">
 		<form id="addTabForm" action="addTab" method="post">
 			<input type="hidden" id="addTabJson" name="addTabJson"></input>
-		</form>
-		<form id="commitForm" action="commitTab" method="post">
-			<input type="hidden" id="updateDataJson" name="updateDataJson"></input>
+			<input type="hidden" name="MSDPortal-SquareId" value="${squareId}"></input>
 		</form>
 		<div id="defaultPanel"></div>
 		<div id='select_layout_modal'>

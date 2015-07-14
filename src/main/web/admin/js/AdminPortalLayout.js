@@ -381,6 +381,12 @@ ISA_PortalLayout.prototype.classDef = function() {
 			asynchronous:true,
 			onSuccess: function(response){
 				var form = $jq('#upload-logo-form');
+				
+		        if(window.is_squareId){
+		            var orgAction = form.attr("action");
+		            form.attr("action", orgAction + "?MSDPortal-SquareId="+is_squareId);
+		        }
+				
 				if(form.children().length == 1) {
 					form.submit();
 				} else {

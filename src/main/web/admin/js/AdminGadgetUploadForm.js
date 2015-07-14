@@ -102,6 +102,10 @@ ISA_GadgetUpload.buildForm = function( opt ) {
 	fileInput.name = "data";
 	form.appendChild( fileInput );
 	
+	if(window.is_squareId){
+	    form.action = adminHostPrefix + "/uploadgadget?MSDPortal-SquareId="+is_squareId;
+	}
+	
 	for( var i in opt.parameters ) if( opt.parameters.hasOwnProperty( i )) {
 		var input = document.createElement("input");
 		input.name = i;

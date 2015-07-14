@@ -51,6 +51,7 @@ public class DefaultpanelController implements ControllerInterface{
 		request.setAttribute("isDefaultPanelAdmin", true);
 		request.setAttribute("tabAdminsJSON", StaticTabService.getHandle().getTabAdminsJSON());
 		request.setAttribute("tabListJSON", StaticTabService.getHandle().getTabIdListJson());
+		request.setAttribute("squareId", UserContext.instance().getUserInfo().getCurrentSquareId());
 		return "defaultpanel/index";
 	}
 

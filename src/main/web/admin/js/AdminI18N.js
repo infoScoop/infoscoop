@@ -294,6 +294,10 @@ ISA_I18N.prototype.classDef = function() {
 			form.action = adminHostPrefix + "/services/holidays/uploadHoliday?country=" + country + "&lang=" + lang;
 		}
 		
+		if(window.is_squareId){
+		    form.action += "&MSDPortal-SquareId="+is_squareId;
+		}
+		
 		fileForm.style.height = "25px"
 		fileForm.style.marginRight = "30px";
 		

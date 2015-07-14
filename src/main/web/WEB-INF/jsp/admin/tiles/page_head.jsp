@@ -58,6 +58,7 @@
 			<jsp:include page="/prpsrv" flush="true" />
 			var isTabView = false;
 			var is_sessionId = null;
+			var is_squareId = "<%= squareId %>";
 
 			function getInfoScoopURL() {
 				var currentUrl = location.href;
