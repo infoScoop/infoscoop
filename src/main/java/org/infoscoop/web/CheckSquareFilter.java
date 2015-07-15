@@ -29,6 +29,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import jp.co.unirita.saas.helper.SaaSAccountHelper;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
@@ -46,24 +48,33 @@ public class CheckSquareFilter implements javax.servlet.Filter {
 		HttpServletResponse httpRes = (HttpServletResponse) res;
 		String uid = (String) httpReq.getSession().getAttribute("Uid");
 		
-		//If an uid is empty, we don't check.
-		if (!isExcludePath(httpReq.getServletPath()) && (uid != null || !"true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW )))) {
-			String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
-			if(!SquareService.getHandle().existsSquare(squareId)){
+		try{
+			//If an uid is empty, we don't check.
+			if (!isExcludePath(httpReq.getServletPath()) && (uid != null || !"true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW )))) {
+				String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 				
-				httpRes.setHeader( HttpStatusCode.HEADER_NAME,
-						HttpStatusCode.MSD_FORCE_RELOAD );
-				if (log.isInfoEnabled())
-					log.info("squareId: " + squareId + " is not exists. status="
-							+ HttpStatusCode.MSD_FORCE_RELOAD);
-				
-				if("/comsrv".equals(httpReq.getServletPath())){
-					httpRes.sendError(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-				}else{
-					httpRes.sendRedirect(httpReq.getContextPath() + "/square/closed.jsp");
+				if(!SquareService.getHandle().existsSquare(squareId)){
+					
+					httpRes.setHeader( HttpStatusCode.HEADER_NAME,
+							HttpStatusCode.MSD_FORCE_RELOAD );
+					if (log.isInfoEnabled())
+						log.info("squareId: " + squareId + " is not exists. status="
+								+ HttpStatusCode.MSD_FORCE_RELOAD);
+					
+					if("/comsrv".equals(httpReq.getServletPath())){
+						httpRes.sendError(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+					}else{
+						httpRes.sendRedirect(httpReq.getContextPath() + "/square/closed.jsp");
+					}
+					return;
 				}
-				return;
+				else if(!SaaSAccountHelper.isExistsUserInSquare(uid, squareId)){
+					httpRes.sendRedirect(httpReq.getContextPath() + "/square/forbidden.jsp");
+				}
 			}
+		}catch(Exception e){
+			log.error("unexpected error occurred.", e);
+			throw new ServletException(e);
 		}
 
 		chain.doFilter(req, res);
