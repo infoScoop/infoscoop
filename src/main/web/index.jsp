@@ -61,6 +61,7 @@
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/tab.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/widget.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/groupsettingmodal.css">
+    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/accountmanagermodal.css">
 
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/message.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/minibrowser.css">
@@ -163,6 +164,7 @@
     <script src="<%=staticContentURL%>/js/widgets/WidgetEdit.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/maximize/Maximize.js"></script>
     <script src="<%=staticContentURL%>/js/ContentFooter.js"></script>
+    <script src="<%=staticContentURL%>/js/AccountManager.js"></script>
     <script src="<%=staticContentURL%>/js/GlobalSetting.js"></script>
     <script src="<%=staticContentURL%>/js/Theme.js"></script>
     <script src="<%=staticContentURL%>/js/guidance/Guidance.js"></script>

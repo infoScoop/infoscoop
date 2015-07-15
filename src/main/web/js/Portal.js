@@ -124,7 +124,6 @@ IS_Portal.start = function() {
 	IS_Portal.buildAdminLink();
 	IS_Portal.buildCredentialList();
 	IS_Portal.buildLogout();
-	
 	IS_Portal.buildTabs();
 	new IS_WidgetsContainer();
 	new IS_SiteAggregationMenu();
@@ -2340,6 +2339,12 @@ IS_Portal.CommandBar = {
 		}.bind(portalUserMenuBody));
 		
 		portalUserMenu.parentNode.appendChild(portalUserMenuBody);
+
+		// account manager
+		if(Object.keys(IS_Customization.accountManagerForm).length != 0) {
+			IS_Portal.buildAccountManagerModal(portalUserMenuBody);
+		}
+
 		for(var i = 0; i < commandBarItems.length; i++){
 			var itemDiv = commandBarItems[i];
 			if(!/^disabled/.test(itemDiv.id)){

@@ -1,0 +1,88 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
+.infoScoop div.is-account-manager[id^="control_window_"] {
+    overflow: visible;
+}
+
+div.account-manager-contents {
+	margin: 0;
+	padding: 0;
+	position: relative;
+	min-height: 100%;
+	height: 100%;
+	width: 100%;
+}
+
+div.account-manager-header-bk{
+	background-color: #F7F7F7;
+	padding-top: 1px;
+	width:100%;
+}
+
+div.account-manager-header{
+	color: #404040;
+	font-weight: bold;
+	font-size: 18px;
+	padding: 10px 0;
+	margin: 0 0 10px 10px;
+}
+
+div.account-manager-header>div.account-manager-cancel-image{
+	background: url("./imgs/times.png") no-repeat scroll 3px center rgba(0, 0, 0, 0);
+	height: 32px;
+	width: 32px;
+	overflow: hidden;
+	position: absolute;
+	top: 5px;
+	right: 15px;
+}
+
+div.account-manager-footer-bk{
+	width:100%;
+	position: absolute;
+	bottom: 0px;
+	padding: 10px 0;
+}
+
+div.account-manager-footer{
+	color: #777;
+	margin-left: 10px;
+}
+
+div.account-manager-form-table{
+	display:table;
+	width: 100%;
+ }
+
+ div.account-manager-form-row{
+	display:table-row;
+ }
+
+div.account-manager-form-row>div{
+	 display:table-cell;
+	 padding: 5px 20px;
+}
+
+div.account-manager-form-row>div:nth-child(2n-1){
+	 font-weight:bold;
+	 font-size:13px;
+}
+
+div.account-manager-form-row>div:nth-child(2n){
+	 text-align: right;
+}
