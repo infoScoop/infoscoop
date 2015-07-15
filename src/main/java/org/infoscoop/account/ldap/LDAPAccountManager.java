@@ -48,6 +48,7 @@ import org.infoscoop.account.IAccountManager;
 import org.infoscoop.account.IGroup;
 import org.infoscoop.account.PrincipalDef;
 import org.infoscoop.acl.ISPrincipal;
+import org.json.JSONObject;
 
 /**
  * @author hr-endoh
@@ -558,7 +559,7 @@ public class LDAPAccountManager implements IAccountManager{
 	}
 
 	@Override
-	public String getAccountManagerForm(String userId) {
+	public JSONObject getAccountManagerForm(String userId) {
 		throw new UnsupportedOperationException();
 	}
 }

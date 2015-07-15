@@ -144,6 +144,9 @@
 	</constructor-arg><constructor-arg>
 		<value>o=infoScoop.org,dc=infoscoop,dc=org</value>
 	</constructor-arg>
+		<property name="accountManagerFormDef">
+			<value>{"profile":{"firstname":{type:"text"},"givenname":{type:"text"},"displayname":{type:"text"}}}</value>
+		</property>
 		<property name="userSearchAttr">
 			<map>
 				<entry key="user_id"><value>uid</value></entry>

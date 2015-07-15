@@ -218,8 +218,21 @@ public class CustomizationServlet extends HttpServlet {
 		String formDef = ", \"accountManagerForm\":{}";
 		String layout = layoutJson.toString();
 		if(userId != null) {
-			IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
-			formDef = ", \"accountManagerForm\":"  + accountManager.getAccountManagerForm(userId);
+			AuthenticationService authServ = AuthenticationService.getInstance();
+			JSONObject obj = new JSONObject();
+			try {
+				IAccountManager accountManager = authServ.getAccountManager();
+				obj = accountManager.getAccountManagerForm(userId);
+			} catch (UnsupportedOperationException e) {
+				log.error("Unsupported Operation", e);
+			}
+
+			// password
+			boolean isChangePW = authServ.enableChangePassword();
+			if(isChangePW || obj.length() != 0) {
+				obj.put("password", isChangePW);
+			}
+			formDef = ", \"accountManagerForm\":"  + obj.toString();
 		}
 
 		return "IS_Customization = " +  layout.substring(0, layout.length()-1) +formDef  + "};";

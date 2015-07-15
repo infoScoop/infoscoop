@@ -17,7 +17,7 @@
 
 package org.infoscoop.account;
 
-import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Collection;
 import java.util.List;
@@ -79,5 +79,5 @@ public interface IAccountManager {
 
 	public void addSquareId(String userid, String squareId) throws Exception;
 
-	public String getAccountManagerForm(String userId) throws Exception;
+	public JSONObject getAccountManagerForm(String userId) throws Exception;
 }

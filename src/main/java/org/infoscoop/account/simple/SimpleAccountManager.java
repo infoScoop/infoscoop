@@ -35,6 +35,7 @@ import org.infoscoop.account.PrincipalDef;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.dao.AccountDAO;
 import org.infoscoop.dao.model.Account;
+import org.json.JSONObject;
 
 /**
  * @author hr-endoh
@@ -140,7 +141,7 @@ public class SimpleAccountManager implements IAccountManager{
 	}
 
 	@Override
-	public String getAccountManagerForm(String userId) {
+	public JSONObject getAccountManagerForm(String userId) {
 		throw new UnsupportedOperationException();
 	}
 }
