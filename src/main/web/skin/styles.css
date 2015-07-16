@@ -114,7 +114,7 @@ input[type=button]:active, .is-button:active {
 	
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
 	padding: 0.4em 0.4em 0.3em;
 	font-size: 13px;
 	background-color: #ffffff;

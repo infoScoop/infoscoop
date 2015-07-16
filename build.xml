@@ -303,6 +303,7 @@
 			<filelist dir="${src.main.web}/js" files="AddContentPane.js"/>
 			<filelist dir="${src.main.web}/js" files="ContentFooter.js"/>
 			<filelist dir="${src.main.web}/js" files="GlobalSetting.js"/>
+			<filelist dir="${src.main.web}/js" files="AccountManager.js"/>
 			<filelist dir="${src.main.web}/js" files="Theme.js"/>
 			<filelist dir="${src.main.web}/js/guidance" files="Guidance.js"/>
 			<filelist dir="${src.main.web}/js/square" files="Square.js"/>

@@ -172,7 +172,8 @@
 	margin: 5px;
 }
 
-.infoScoop div[id^="control_window_"].preference .preferencePage fieldset {
+.infoScoop div[id^="control_window_"].preference .preferencePage fieldset,
+.infoScoop div[id^="control_window_"].is-account-manager .account-manager-contents fieldset{
 	padding: 10px;
 	margin-bottom:8px;
 	border: 1px solid #CCCCCC;
@@ -433,6 +434,11 @@ a.portal-user-menu-link:visited:hover{
 .user-link{
 	background: url(./imgs/external-link.png) no-repeat;
 	background-position: 3px center;
+}
+
+#account-manager-icon{
+	background: url(./imgs/account.png) no-repeat;
+	background-position: 2px center;
 }
 
 #trash-icon{

@@ -215,6 +215,7 @@ public class CustomizationServlet extends HttpServlet {
 			layoutJson.put( name,(isIframeToolBar)? new JSONArray(layout) : layout );
 		}
 
+		// form definition
 		String formDef = ", \"accountManagerForm\":{}";
 		String layout = layoutJson.toString();
 		if(userId != null) {
