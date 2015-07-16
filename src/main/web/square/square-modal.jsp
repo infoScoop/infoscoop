@@ -61,9 +61,10 @@ $(document).ready(function() {
 			'square-member': $('#square-member').val()
 		});
 
-		deferred.success(function () {
+		deferred.success(function (data, status, xhr) {
 			parent.IS_SquareInstance.finish();
-			parent.location.reload();
+			var squareId = xhr.getResponseHeader("X-IS-SQUAREID");
+			parent.location.href = '../squaresrv/doChange?square-id=' + squareId;
 		});
 
 		deferred.error(function (error) {

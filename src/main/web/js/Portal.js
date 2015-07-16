@@ -2517,9 +2517,8 @@ IS_Portal.CommandBar = {
 							'style': 'cursor: pointer;'
 						});
 						var itemLink = $.A({
-							id: belongSquare.id,
 							className: 'portal-user-menu-link',
-							href: 'javascript.void(0);',
+							href: 'javascript:void(0);',
 							title: title
 						});
 						var itemLabel = $.DIV({
@@ -2531,19 +2530,9 @@ IS_Portal.CommandBar = {
 						item.appendChild(itemLink);
 						portalSquareMenuBody.appendChild(item);
 
-						var changeSq = {
-							method:'post',
-							asynchronous: true,
-							postBody: "square-id="+ belongSquare.id,
-							onSuccess: function(){
-								location.reload();
-							}
-						}
-
-						Event.observe( $(belongSquare.id),"click",function() {
-						    windowBeforeUnload();
-							AjaxRequest.invoke(hostPrefix + '/squaresrv/doChange', $(this));
-						}.bind(changeSq));
+						Event.observe(itemLink, "click",function() {
+						    location.href = 'squaresrv/doChange?square-id=' + this.id;
+						}.bind(belongSquare));
 					}
 				}
 			  },
@@ -2588,10 +2577,6 @@ IS_Portal.CommandBar = {
 
 			// add square click
 			Event.observe( itemLink,"click",function() {
-
-				IS_Request.asynchronous = false;
-				IS_Request.CommandQueue.fireRequest();
-
 				Control.Modal.close();
 				if(!window["IS_SquareInstance"]){
 					IS_SquareInstance = new IS_Square();

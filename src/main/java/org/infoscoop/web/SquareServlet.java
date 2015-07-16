@@ -61,6 +61,12 @@ public class SquareServlet extends HttpServlet {
 				response.sendError(500, e.getMessage());
 			}
 		}
+		// move
+		if(CHANGE_PATH.equals(action)) {
+			String squareId =  request.getParameter("square-id");
+			changeCurrentSquare(squareId, request);
+			response.sendRedirect("../index.jsp");
+		}
 		else if(MYSQUARE_PATH.equals(action)){
 			IAccount account;
 			try {
@@ -129,7 +135,7 @@ public class SquareServlet extends HttpServlet {
 				InvitationService.getHandle().doInvitation(emailList, request);
 
 				// move created square
-				changeCurrentSquare(squareId, request);
+				response.setHeader("X-IS-SQUAREID", squareId);
 			} catch( Exception e ) {
 				log.error("",e);
 				response.sendError(500, e.getMessage());
@@ -137,12 +143,6 @@ public class SquareServlet extends HttpServlet {
 		}
 
 		// update
-
-		// move
-		if(CHANGE_PATH.equals(action)) {
-			String squareId =  request.getParameter("square-id");
-			changeCurrentSquare(squareId, request);
-		}
 
 		// delete
 	}
