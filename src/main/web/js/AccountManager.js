@@ -289,6 +289,6 @@ IS_AccountManager.prototype = {
 				msg.error(IS_R.getResource('変更の適用に失敗しました。',[getErrorMessage(t)]));
 			},
 		}
-//		AjaxRequest.invoke(hostPrefix + '/accountmanagersrv/doChange', opt);
+		AjaxRequest.invoke(hostPrefix + '/accountmanagersrv/doChange', opt);
 	}
 }
