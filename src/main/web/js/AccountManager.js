@@ -129,11 +129,14 @@ IS_AccountManager.prototype = {
 			this._createFormRow(formTable, {title:'新しいパスワード', type:'password'}, 'pass');
 			this._createFormRow(formTable, {title:'新しいパスワード(確認用)', type:'password'}, 'confirm-pass');
 
-			var formRow = $.DIV({
-				className:'account-manager-form-caption'
-			});
-			formRow.innerHTML = "パスワードに設定できる文字列は、8〜32文の半角英数および !#$%&'-+*_? となります。";
-			formTable.appendChild(formRow);
+			// ToDo
+			if(IS_Portal.passwordPolicy) {
+				var formRow = $.DIV({
+					className:'account-manager-form-caption'
+				});
+				formRow.innerHTML = "パスワードに設定できる文字列は、8〜32文字の半角英数および !#$%&'-+*_? となります。";
+				formTable.appendChild(formRow);
+			}
 
 			this._createSubmitBtnRow(formTable, this._submitPW, 'account-manager-password');
 		}
@@ -217,6 +220,16 @@ IS_AccountManager.prototype = {
 			return false;
 		}
 
+		// check space
+		if(/\s/.test(pwVal)) {
+			var message = "空白文字を設定することはできません。";
+			alert(message);
+			$('pass').setCustomValidity(message);
+			$('pass').value = '';
+			$('confirm-pass').value = '';
+			return false;
+		}
+
 		// check agree
 		if(pwVal !== confirm){
 			var message = "パスワードと確認用パスワードが一致しません。";
@@ -227,10 +240,12 @@ IS_AccountManager.prototype = {
 		}
 
 		// check policy
-		if(!IS_Portal.passwordPolicy.test(pwVal)){
+		if(IS_Portal.passwordPolicy && !IS_Portal.passwordPolicy.test(pwVal)){
+			// ToDo
 			var message = "パスワードを8〜32文字で入力してください。\nパスワードに設定できる文字列は、半角英数および !#$%&'-+*_? となります。";
 			alert(message);
 			$('pass').setCustomValidity(message);
+			$('pass').value = '';
 			$('confirm-pass').value = '';
 			return false;
 		}
@@ -241,7 +256,9 @@ IS_AccountManager.prototype = {
 			postBody: "password=" + pwVal,
 			onSuccess: function(){
 				alert("パスワードが変更されました。");
-				this.finish();
+				$('pass').setCustomValidity("");
+				$('pass').value = '';
+				$('confirm-pass').value = '';
 			}.bind(this),
 			onFailure  : function(t) {
 				alert("パスワードの変更に失敗しました。")
@@ -265,7 +282,7 @@ IS_AccountManager.prototype = {
 				return false;
 			}
 
-			if(/(\S*)/.test(value)) {
+			if(/\s/.test(value)) {
 				var message = formDef[inputForm[i].id].title + "に空白を設定することはできません。";
 				alert(message);
 				return false;
@@ -273,7 +290,6 @@ IS_AccountManager.prototype = {
 
 			body += inputForm[i].id + '=' + inputForm[i].value + '&';
 		}
-
 
 		var opt = {
 			method:'post',
