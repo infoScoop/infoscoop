@@ -107,7 +107,8 @@
 			lang : "<%=request.getLocale().getLanguage() %>",
 			country : "<%=request.getLocale().getCountry() %>",
 			japaneseOnly : false,
-			useMultitenantMode : <%= InfoScoopProperties.getInstance().isUseMultitenantMode() %>
+			useMultitenantMode : <%= InfoScoopProperties.getInstance().isUseMultitenantMode() %>,
+			passwordPolicy: /<%= InfoScoopProperties.getInstance().getProperty("password.policy") %>/
 		};
 		var is_userId = <%=uid != null ? "\"" + uid.replace("\\", "\\\\") + "\"" : "null" %>;
 		var is_userName = <%=displayName != null ?  "\"" + displayName + "\"" : "null" %>;

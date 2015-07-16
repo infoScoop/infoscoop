@@ -322,6 +322,11 @@ public class LDAPAccountManager implements IAccountManager{
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public void updatePassword(String userid, String password) {
+		throw new UnsupportedOperationException();
+	}
+
 	private void setGroup(DirContext context, LDAPAccount user) throws NamingException{
 
 		SearchControls searchControls = new SearchControls();
@@ -560,6 +565,11 @@ public class LDAPAccountManager implements IAccountManager{
 
 	@Override
 	public JSONObject getAccountManagerForm(String userId) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String updateUserProfile(String userId, Map<String, String[]> map) {
 		throw new UnsupportedOperationException();
 	}
 }

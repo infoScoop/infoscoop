@@ -131,6 +131,11 @@ public class SimpleAccountManager implements IAccountManager{
 
 	}
 
+	@Override
+	public void updatePassword(String userid, String password) throws AuthenticationException {
+		throw new UnsupportedOperationException();
+	}
+
 	public Collection<PrincipalDef> getPrincipalDefs() {
 		return new ArrayList<PrincipalDef>();
 	}
@@ -142,6 +147,11 @@ public class SimpleAccountManager implements IAccountManager{
 
 	@Override
 	public JSONObject getAccountManagerForm(String userId) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String updateUserProfile(String userId, Map<String, String[]> map) {
 		throw new UnsupportedOperationException();
 	}
 }

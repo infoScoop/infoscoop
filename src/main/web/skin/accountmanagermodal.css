@@ -16,6 +16,7 @@
  */
 
 .infoScoop div.is-account-manager[id^="control_window_"] {
+	height: auto;
     overflow: visible;
 }
 
@@ -68,6 +69,14 @@ div.account-manager-form-table{
 	display:table;
 	width: 100%;
  }
+
+div.account-manager-form-caption{
+	display: table-caption;
+	caption-side: bottom;
+	color: #ff0000;
+	margin-top: 10px;
+	margin-left: 18px;
+}
 
  div.account-manager-form-row{
 	display:table-row;

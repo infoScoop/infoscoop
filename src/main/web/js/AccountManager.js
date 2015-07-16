@@ -48,7 +48,6 @@ IS_AccountManager.prototype = {
 		this.accountManagerModal = new Control.Modal('', {
 			overlayOpacity: 0.55,
 			className: 'is-account-manager',
-			height: 400,
 			width: 600,
 			fade: true,
 			afterClose: function(){
@@ -121,14 +120,21 @@ IS_AccountManager.prototype = {
 				var item = profileDef[i];
 				this._createFormRow(formTable, item, i);
 			}
-			this._createSubmitBtnRow(formTable, this._submit, 'account-manager-profile');
+			this._createSubmitBtnRow(formTable, this._submit, 'account-manager-profile', profileDef);
 		}
 
 		// create password form
 		if(formDef.password) {
 			var formTable = this._createCategoryFieldSet(formDiv, 'パスワード設定', 'account-manager-password');
 			this._createFormRow(formTable, {title:'新しいパスワード', type:'password'}, 'pass');
-			this._createFormRow(formTable, {title:'新しいパスワード(確認用)', type:'password'}, 'ispass');
+			this._createFormRow(formTable, {title:'新しいパスワード(確認用)', type:'password'}, 'confirm-pass');
+
+			var formRow = $.DIV({
+				className:'account-manager-form-caption'
+			});
+			formRow.innerHTML = "パスワードに設定できる文字列は、8〜32文の半角英数および !#$%&'-+*_? となります。";
+			formTable.appendChild(formRow);
+
 			this._createSubmitBtnRow(formTable, this._submitPW, 'account-manager-password');
 		}
 	},
@@ -148,7 +154,7 @@ IS_AccountManager.prototype = {
 		return formTable;
 	},
 
-	_createFormRow: function(formTable, item, key){
+	_createFormRow: function(formTable, item, key, inputFunc){
 		var formRow = $.DIV({
 			className:'account-manager-form-row'
 		});
@@ -157,11 +163,13 @@ IS_AccountManager.prototype = {
 		var formInputDiv = $.DIV();
 
 		// switch types
+		// constraint max length 100 for type-text
 		// TODO
 		var formInput = $.INPUT({
 			id: key,
 			name: key,
-			type: item.type
+			type: item.type,
+			maxLength: 100
 		});
 		if(item.value)
 			formInput.value = item.value;
@@ -170,59 +178,117 @@ IS_AccountManager.prototype = {
 		formRow.appendChild(label);
 		formRow.appendChild(formInputDiv);
 		formTable.appendChild(formRow);
+
+		if(inputFunc)
+			IS_Event.observe(formInput, "input", inputFunc.bind(formInput), false);
 	},
 
-	_createSubmitBtnRow: function(formTable, func, mapKey){
+	_createSubmitBtnRow: function(formTable, clickFunc, mapKey, formDef){
 		var formRow = $.DIV({
 			className:'account-manager-form-row'
 		});
 		var dummyDiv = $.DIV();
 		var btnDiv = $.DIV();
 		var okBtn = $.BUTTON({
-			className: 'is-button',
+			className: 'is-button'
 		}, IS_R.lb_changeApply);
-
 		formRow.appendChild(dummyDiv);
 		formRow.appendChild(btnDiv);
 		btnDiv.appendChild(okBtn);
 		formTable.appendChild(formRow);
 
-		IS_Event.observe(okBtn, "click", func.bind(this, mapKey), false);
+		IS_Event.observe(okBtn, "click", clickFunc.bind(this, mapKey, formDef), false);
 	},
-
 
 	_submitPW: function() {
 		var pwVal = $('pass').value;
+		var confirm = $('confirm-pass').value;
+
 		// validation
+		$('pass').setCustomValidity("");
+
+		// check null
+		if(!pwVal) {
+			var message = "新しいパスワードを入力してください。";
+			alert(message);
+			$('pass').setCustomValidity(message);
+			$('pass').value = '';
+			$('confirm-pass').value = '';
+			return false;
+		}
+
+		// check agree
+		if(pwVal !== confirm){
+			var message = "パスワードと確認用パスワードが一致しません。";
+			alert(message);
+			$('pass').setCustomValidity(message);
+			$('confirm-pass').value = '';
+			return false;
+		}
+
+		// check policy
+		if(!IS_Portal.passwordPolicy.test(pwVal)){
+			var message = "パスワードを8〜32文字で入力してください。\nパスワードに設定できる文字列は、半角英数および !#$%&'-+*_? となります。";
+			alert(message);
+			$('pass').setCustomValidity(message);
+			$('confirm-pass').value = '';
+			return false;
+		}
 
 		var opt = {
 			method:'post',
 			asynchronous: true,
 			postBody: "password=" + pwVal,
 			onSuccess: function(){
+				alert("パスワードが変更されました。");
 				this.finish();
-			}.bind(this)
+			}.bind(this),
+			onFailure  : function(t) {
+				alert("パスワードの変更に失敗しました。")
+				// TODO
+				msg.error(IS_R.getResource('パスワードの変更に失敗しました。',[getErrorMessage(t)]));
+			},
 		}
 		AjaxRequest.invoke(hostPrefix + '/accountmanagersrv/doChangePW', opt);
 	},
 
-	_submit: function(formKey) {
+	_submit: function(formKey, formDef) {
 		var inputForm = $(formKey).getElementsByTagName('input');
 		var body = '';
 		for(var i = 0; i < inputForm.length; i++) {
+			var value = inputForm[i].value;
+
+			// validation
+			if(!value) {
+				var message = formDef[inputForm[i].id].title + "を入力してください。";
+				alert(message);
+				return false;
+			}
+
+			if(/(\S*)/.test(value)) {
+				var message = formDef[inputForm[i].id].title + "に空白を設定することはできません。";
+				alert(message);
+				return false;
+			}
+
 			body += inputForm[i].id + '=' + inputForm[i].value + '&';
 		}
 
-		// validation
 
 		var opt = {
 			method:'post',
 			asynchronous: true,
 			postBody: body,
 			onSuccess: function(){
+				alert("変更を適用しました。");
 				location.reload();
-			}
+			},
+			onFailure  : function(t) {
+				alert("変更の適用に失敗しました。");
+				// TODO
+				msg.error(IS_R.getResource('変更の適用に失敗しました。',[getErrorMessage(t)]));
+			},
 		}
-		AjaxRequest.invoke(hostPrefix + '/accountmanagersrv/doChange', opt);
+//		AjaxRequest.invoke(hostPrefix + '/accountmanagersrv/doChange', opt);
 	}
 }

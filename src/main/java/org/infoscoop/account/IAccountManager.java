@@ -77,7 +77,15 @@ public interface IAccountManager {
 	 */
 	public IAccount getUser(String uid) throws Exception;
 
+	/**
+	 * @param userid
+	 * @param password
+	 */
+	public void updatePassword(String userid, String password) throws Exception;
+
 	public void addSquareId(String userid, String squareId) throws Exception;
 
 	public JSONObject getAccountManagerForm(String userId) throws Exception;
+
+	public String updateUserProfile(String userId, Map<String, String[]> map) throws Exception;
 }
