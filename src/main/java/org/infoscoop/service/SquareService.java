@@ -48,6 +48,7 @@ import org.infoscoop.dao.TabLayoutDAO;
 import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Square;
+import org.infoscoop.util.HtmlUtil;
 import org.infoscoop.util.SpringUtil;
 
 public class SquareService {
@@ -284,7 +285,6 @@ public class SquareService {
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("id", square.getId());
 			map.put("name", square.getName());
-
 			if(currentSquareId.equals(square.getId())){
 				squareNameMap.put("current", map);
 			}else {
@@ -292,8 +292,7 @@ public class SquareService {
 			}
 		}
 
-		if(belongSquaresName.size() > 0)
-			squareNameMap.put("belong", belongSquaresName);
+		squareNameMap.put("belong", belongSquaresName);
 
 		return squareNameMap;
 	}

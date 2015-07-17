@@ -2508,7 +2508,7 @@ IS_Portal.CommandBar = {
 			  onSuccess:function(req){
 				var results = req.responseText.evalJSON();
 				if(results.current) {
-					$('portal-square-menu-label').update(results.current.name);
+					$('portal-square-menu-label').appendChild(document.createTextNode(results.current.name));
 				}
 
 				// add field
@@ -2530,7 +2530,7 @@ IS_Portal.CommandBar = {
 							id: 'belong-square',
 							className: 'portal-user-menu-item-label portal-square-menu-item-label'
 						});
-						itemLabel.innerHTML = title;
+						itemLabel.appendChild(document.createTextNode(title));
 						itemLink.appendChild(itemLabel);
 						item.appendChild(itemLink);
 						portalSquareMenuBody.appendChild(item);
