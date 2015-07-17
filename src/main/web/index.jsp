@@ -108,7 +108,7 @@
 			country : "<%=request.getLocale().getCountry() %>",
 			japaneseOnly : false,
 			useMultitenantMode : <%= InfoScoopProperties.getInstance().isUseMultitenantMode() %>,
-			<%if(InfoScoopProperties.getInstance().getProperty("password.policy").length() > 0){%>
+			<%if(InfoScoopProperties.getInstance().getProperty("password.policy") != null && InfoScoopProperties.getInstance().getProperty("password.policy").length() > 0){%>
 				passwordPolicy: /<%= InfoScoopProperties.getInstance().getProperty("password.policy") %>/
 			<%}%>
 		};
