@@ -589,4 +589,226 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
         </preConditions>
         <createSequence sequenceName="is_logos_id_seq" schemaName="${migration.defaultSchema}"/>
     </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha_598_17" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop_sleepyalpha_598_17">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_square';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_square" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Square" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_square" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="スクエア" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_square" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="广场" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_square" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Square" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_square" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="スクエア" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_square" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="广场" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_unexpected_error" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="An unexpected problem occurred." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_unexpected_error" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="予期しない問題が発生しました。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_unexpected_error" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="发生意外的问题。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_plz_contect_systemadmin" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Please contact a system administrator." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_plz_contect_systemadmin" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="システム管理者にご連絡ください。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_plz_contect_systemadmin" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="请与系统管理员联系。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_disabled_url" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Invalid URL" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_disabled_url" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="無効なURL" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_disabled_url" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="无效的URL" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_incorrect_url" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="The expiration date curves to whether URL is wrong." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_incorrect_url" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="URLが間違っているか、有効期限が切れています。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_incorrect_url" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="在到期日曲线是否URL是错误的。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_do_submit" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Send" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_do_submit" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="送信する" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_do_submit" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="发送" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_email_address" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Mail address" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_email_address" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="メールアドレス" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_email_address" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="邮件地址" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_required" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Required" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_required" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="必須" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_required" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="需要" />
+            <column name="square_id" value="default" />
+        </insert>
+    </changeSet>
 </databaseChangeLog>
