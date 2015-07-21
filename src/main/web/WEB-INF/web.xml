@@ -270,6 +270,8 @@
         <url-pattern>/js/widgets/maximize/maximizeForbiddenURL.jsp</url-pattern>
         <url-pattern>/js/widgets/maximize/maximizeShortcuts.jsp</url-pattern>
         <url-pattern>/manager/*</url-pattern>
+		<url-pattern>/guidance/*</url-pattern>
+		<url-pattern>/square/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
