@@ -19,7 +19,10 @@ package org.infoscoop.web;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -34,6 +37,9 @@ import jp.co.unirita.saas.helper.SaaSAccountHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
+import org.infoscoop.account.AuthenticationService;
+import org.infoscoop.account.IAccount;
+import org.infoscoop.account.IAccountManager;
 import org.infoscoop.context.UserContext;
 import org.infoscoop.service.SquareService;
 
@@ -95,7 +101,24 @@ public class CheckSquareFilter implements javax.servlet.Filter {
 			}
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param mail
+	 * @param square
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean isExistsUserInSquare(String uid, String squareid) throws Exception{
+		Map<String, String> searchConditionMap = new HashMap<String, String>();
+		searchConditionMap.put("user_id", uid);
+		searchConditionMap.put("user_belong_square", squareid);
+		AuthenticationService authService = AuthenticationService.getInstance();
+		IAccountManager accountManager = ( IAccountManager )authService.getAccountManager();
+		List<IAccount> users = accountManager.searchUser(searchConditionMap);
+		return users.size() > 0;
+	}
+	
 	public void destroy() {
 	}
 
