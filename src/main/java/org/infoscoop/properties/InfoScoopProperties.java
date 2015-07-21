@@ -17,6 +17,7 @@
 
 package org.infoscoop.properties;
 
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.apache.commons.logging.Log;
@@ -43,7 +44,11 @@ public class InfoScoopProperties {
 	}
 
 	public String getProperty(String key) {
-		return bundle.getString(key);
+		try{
+			return bundle.getString(key);
+		} catch(MissingResourceException e) {
+			return null;
+		}
 	}
 
 	public int getIntProperty(String key) {
