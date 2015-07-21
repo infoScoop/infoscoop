@@ -679,7 +679,12 @@
 		<servlet-class>org.infoscoop.web.SquareServlet</servlet-class>
 	</servlet>
 
-  <servlet-mapping>
+	<servlet>
+		<servlet-name>AccountManagerServlet</servlet-name>
+		<servlet-class>org.infoscoop.web.AccountManagerServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
   	<servlet-name>OAuthCertificateServlet</servlet-name>
   	<url-pattern>/opensocial/certificates/public.cer</url-pattern>
   </servlet-mapping>
@@ -982,6 +987,11 @@
 	<servlet-mapping>
 		<servlet-name>SquareServlet</servlet-name>
 		<url-pattern>/squaresrv/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AccountManagerServlet</servlet-name>
+		<url-pattern>/accountmanagersrv/*</url-pattern>
 	</servlet-mapping>
 
 	<!--MergeProfileServletMapping-->
