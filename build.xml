@@ -413,6 +413,7 @@
 			<filelist dir="${src.main.web}/skin" files="treemenu.css"/>
 			<filelist dir="${src.main.web}/skin" files="widget.css"/>
 			<filelist dir="${src.main.web}/skin" files="groupsettingmodal.css"/>
+			<filelist dir="${src.main.web}/skin" files="accountmanagermodal.css"/>
 			<filelist dir="${src.main.web}/skin" files="message.css"/>
 			<filelist dir="${src.main.web}/skin" files="minibrowser.css"/>
 			<filelist dir="${src.main.web}/skin" files="ranking.css"/>
