@@ -79,7 +79,10 @@ public class PreferenceService{
 	 */
 	public String getPreferenceJSON(String uid) throws Exception{
 		Preference entity = getPreference(uid);
-		boolean isFirstLogin = (preferenceDAO.selectByUidAllSquare(uid).size() == 0);
+		
+		boolean isFirstLogin = false;
+		if(uid != null)
+			isFirstLogin = (preferenceDAO.selectByUidAllSquare(uid).size() == 0);
 		
 		if(entity == null)
 			entity = createPreferenceEntity(uid);
