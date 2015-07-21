@@ -13,7 +13,7 @@ public class InvitationService implements InvitationServiceInterface {
 	}
 	
 	@Override
-	public void doInvitation(List<String> uidList, HttpServletRequest request) {
+	public void doInvitation(List<String> uidList, HttpServletRequest request, String squareId) {
 		throw new UnsupportedOperationException();
 	}
 	
