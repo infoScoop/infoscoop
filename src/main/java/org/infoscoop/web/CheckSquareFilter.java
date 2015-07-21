@@ -32,8 +32,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jp.co.unirita.saas.helper.SaaSAccountHelper;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
@@ -74,7 +72,7 @@ public class CheckSquareFilter implements javax.servlet.Filter {
 					}
 					return;
 				}
-				else if(!SaaSAccountHelper.isExistsUserInSquare(uid, squareId)){
+				else if(!isExistsUserInSquare(uid, squareId)){
 					httpRes.sendRedirect(httpReq.getContextPath() + "/square/forbidden.jsp");
 				}
 			}
