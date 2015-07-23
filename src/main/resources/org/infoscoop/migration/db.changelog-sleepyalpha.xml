@@ -811,4 +811,23 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
             <column name="square_id" value="default" />
         </insert>
     </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha_598_18" author="mikami">
+		<preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop_sleepyalpha_598_18">
+			<not>
+				<columnExists schemaName="${migration.defaultSchema}" tableName="IS_SQUARES" columnName="owner"/>
+			</not>
+		</preConditions>
+		<addColumn schemaName="${migration.defaultSchema}" tableName="IS_SQUARES">
+			<column name="owner" type="varchar(150)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+		<addColumn schemaName="${migration.defaultSchema}" tableName="IS_SQUARES">
+			<column name="restriction" type="integer"/>
+		</addColumn>
+		<createIndex indexName="is_squares_owner_idx" schemaName="${migration.defaultSchema}" tableName="IS_SQIARES" tablespace="${.tablespace}">
+			<column name="owner" type="varchar(150)"/>
+		</createIndex>
+	</changeSet>
 </databaseChangeLog>

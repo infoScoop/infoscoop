@@ -17,21 +17,7 @@
 
 package org.infoscoop.dao.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.httpclient.Header;
-import org.infoscoop.dao.model.base.BaseCache;
 import org.infoscoop.dao.model.base.BaseSquare;
-import org.infoscoop.util.StringUtil;
-import org.infoscoop.util.XmlUtil;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 public class Square extends BaseSquare {
 	private static final long serialVersionUID = 1L;
@@ -55,13 +41,17 @@ public class Square extends BaseSquare {
 		java.lang.String id,
 		java.lang.String name,
 		java.lang.String description,
-		java.util.Date lastmodified) {
+		java.util.Date lastmodified,
+		java.lang.String owner,
+		java.lang.Integer maxUserNum) {
 
 		super (
 			id,
 			name,
 			description,
-			lastmodified);
+			lastmodified,
+			owner,
+			maxUserNum);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/

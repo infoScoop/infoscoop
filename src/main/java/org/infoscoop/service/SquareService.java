@@ -48,12 +48,14 @@ import org.infoscoop.dao.TabLayoutDAO;
 import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Square;
-import org.infoscoop.util.HtmlUtil;
+import org.infoscoop.properties.InfoScoopProperties;
 import org.infoscoop.util.SpringUtil;
 
 public class SquareService {
 	private static Log log = LogFactory.getLog(SquareService.class);
 	public static final String SQUARE_ADMIN_ROLE_NAME = "squareAdmin";
+	private static final String SQUARE_MAX_USER_NUMBER = "square.max.user.number";
+	private static final String DEFAULT_MAX_USER = "10";
 
 	// DAO
 	private SquareDAO squareDAO;
@@ -230,7 +232,10 @@ public class SquareService {
 			throw new IllegalArgumentException();
 		}
 
-		this.squareDAO.create(squareId, squareName, desc);
+		String maxUser = InfoScoopProperties.getInstance().getProperty(SQUARE_MAX_USER_NUMBER);
+		if(maxUser == null || maxUser.length() == 0) maxUser = DEFAULT_MAX_USER;
+
+		this.squareDAO.create(squareId, squareName, desc, userId, Integer.parseInt(maxUser));
 		this.forbiddenURLDAO.copySquare(squareId, sourceSquareId);
 		this.gadgetDAO.copySquare(squareId, sourceSquareId);
 		this.gadgetIconDAO.copySquare(squareId, sourceSquareId);
