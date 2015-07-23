@@ -23,12 +23,12 @@ IS_Portal.buildAccountManagerModal = function(parent) {
 	var accountManagerA = $.A({
 		className: 'portal-user-menu-link',
 		href: '#',
-		title: 'アカウント管理'
+		title: IS_R.lb_account_setting
 	});
 	var accountManagerLabel = $.DIV({
 		id: 'account-manager-icon',
 		className: 'portal-user-menu-item-label'
-	}, 'アカウント管理');
+	}, IS_R.lb_account_setting);
 	accountManagerA.appendChild(accountManagerLabel);
 	accountManagerDiv.appendChild(accountManagerA);
 	parent.appendChild(accountManagerDiv);
@@ -86,7 +86,7 @@ IS_AccountManager.prototype = {
 		});
 		var titleDiv = $.DIV({
 			className: 'account-manager-header'
-		},'アカウント管理');
+		},IS_R.lb_account_setting);
 
 		var cancelImg = $.DIV({
 			className: 'account-manager-cancel-image'
@@ -114,7 +114,7 @@ IS_AccountManager.prototype = {
 		// create profile form
 		if(formDef.profile) {
 			var profileDef = formDef.profile
-			var formTable = this._createCategoryFieldSet(formDiv, 'プロフィール設定', 'account-manager-profile');
+			var formTable = this._createCategoryFieldSet(formDiv, IS_R.lb_account_setting_profile, 'account-manager-profile');
 
 			for(var i in profileDef) {
 				var item = profileDef[i];
@@ -125,16 +125,16 @@ IS_AccountManager.prototype = {
 
 		// create password form
 		if(formDef.password) {
-			var formTable = this._createCategoryFieldSet(formDiv, 'パスワード設定', 'account-manager-password');
-			this._createFormRow(formTable, {title:'新しいパスワード', type:'password'}, 'pass');
-			this._createFormRow(formTable, {title:'新しいパスワード(確認用)', type:'password'}, 'confirm-pass');
+			var formTable = this._createCategoryFieldSet(formDiv, IS_R.lb_account_setting_password, 'account-manager-password');
+			this._createFormRow(formTable, {title:IS_R.lb_new_password, type:'password'}, 'pass');
+			this._createFormRow(formTable, {title:IS_R.lb_new_password_confirm, type:'password'}, 'confirm-pass');
 
 			// ToDo
 			if(IS_Portal.passwordPolicy) {
 				var formRow = $.DIV({
 					className:'account-manager-form-caption'
 				});
-				formRow.innerHTML = "パスワードに設定できる文字列は、8〜32文字の半角英数および !#$%&'-+*_? となります。";
+				formRow.innerHTML = IS_R.lb_password_policy;
 				formTable.appendChild(formRow);
 			}
 
@@ -212,7 +212,7 @@ IS_AccountManager.prototype = {
 
 		// check null
 		if(!pwVal) {
-			var message = "新しいパスワードを入力してください。";
+			var message = IS_R.ms_plz_input_new_password;
 			alert(message);
 			$('pass').setCustomValidity(message);
 			$('pass').value = '';
@@ -222,7 +222,7 @@ IS_AccountManager.prototype = {
 
 		// check space
 		if(/\s/.test(pwVal)) {
-			var message = "空白文字を設定することはできません。";
+			var message = IS_R.ms_blank_not_allow;
 			alert(message);
 			$('pass').setCustomValidity(message);
 			$('pass').value = '';
@@ -232,7 +232,7 @@ IS_AccountManager.prototype = {
 
 		// check agree
 		if(pwVal !== confirm){
-			var message = "パスワードと確認用パスワードが一致しません。";
+			var message = IS_R.ms_password_and_confirm_not_match;
 			alert(message);
 			$('pass').setCustomValidity(message);
 			$('confirm-pass').value = '';
@@ -242,7 +242,7 @@ IS_AccountManager.prototype = {
 		// check policy
 		if(IS_Portal.passwordPolicy && !IS_Portal.passwordPolicy.test(pwVal)){
 			// ToDo
-			var message = "パスワードを8〜32文字で入力してください。\nパスワードに設定できる文字列は、半角英数および !#$%&'-+*_? となります。";
+			var message = IS_R.ms_password_policy_alert;
 			alert(message);
 			$('pass').setCustomValidity(message);
 			$('pass').value = '';
@@ -255,15 +255,15 @@ IS_AccountManager.prototype = {
 			asynchronous: true,
 			postBody: "password=" + pwVal,
 			onSuccess: function(){
-				alert("パスワードが変更されました。");
+				alert(IS_R.ms_password_change_on_success);
 				$('pass').setCustomValidity("");
 				$('pass').value = '';
 				$('confirm-pass').value = '';
 			}.bind(this),
 			onFailure  : function(t) {
-				alert("パスワードの変更に失敗しました。")
+				alert(IS_R.ms_password_change_on_failure)
 				// TODO
-				msg.error(IS_R.getResource('パスワードの変更に失敗しました。',[getErrorMessage(t)]));
+				msg.error(IS_R.getResource(IS_R.ms_password_change_on_failure,[getErrorMessage(t)]));
 			},
 		}
 		AjaxRequest.invoke(hostPrefix + '/accountmanagersrv/doChangePW', opt);
@@ -277,13 +277,13 @@ IS_AccountManager.prototype = {
 
 			// validation
 			if(!value) {
-				var message = formDef[inputForm[i].id].title + "を入力してください。";
+			    var message = IS_R.getResource(IS_R.ms_plz_input_any, [formDef[inputForm[i].id].title]);
 				alert(message);
 				return false;
 			}
 
 			if(/\s/.test(value)) {
-				var message = formDef[inputForm[i].id].title + "に空白を設定することはできません。";
+				var message = IS_R.getResource(IS_R.ms_blank_not_allow_any, [formDef[inputForm[i].id].title]);
 				alert(message);
 				return false;
 			}
@@ -296,13 +296,13 @@ IS_AccountManager.prototype = {
 			asynchronous: true,
 			postBody: body,
 			onSuccess: function(){
-				alert("変更を適用しました。");
+				alert(IS_R.ms_change_apply_on_success);
 				location.reload();
 			},
 			onFailure  : function(t) {
-				alert("変更の適用に失敗しました。");
+				alert(IS_R.ms_change_apply_on_failure);
 				// TODO
-				msg.error(IS_R.getResource('変更の適用に失敗しました。',[getErrorMessage(t)]));
+				msg.error(IS_R.getResource(IS_R.ms_change_apply_on_failure,[getErrorMessage(t)]));
 			},
 		}
 		AjaxRequest.invoke(hostPrefix + '/accountmanagersrv/doChange', opt);

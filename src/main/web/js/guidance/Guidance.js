@@ -71,13 +71,13 @@ IS_Guidance.prototype = {
                 this.start();
             }.bind(this),
             on404: function(t) {
-                msg.error("ガイダンス情報が見つかりません - [" +  t.status + "]" + t.statusText);
+                msg.error(IS_R.lb_guidance_notfound + " - [" +  t.status + "]" + t.statusText);
             },
             onFailure: function(t) {
-                msg.error("ガイダンス情報の読み込みに失敗しました - [" +  t.status + "]" + t.statusText);
+                msg.error(IS_R.lb_guidance_on_failure + " - [" +  t.status + "]" + t.statusText);
             },
             onException: function(r, t){
-                msg.error("ガイダンス情報の表示に失敗しました - " + getText(t));
+                msg.error(IS_R.lb_guidance_on_exception + " - " + getText(t));
             }
         };
         

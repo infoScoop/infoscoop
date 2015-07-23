@@ -44,7 +44,7 @@ IS_Guidance.GuidanceWindow = {
                     "aria-expanded": "false",
                     "role": "button"
                 })
-                .text("その他")
+                .text(IS_R.lb_others)
                 .append(
                     $("<span>").attr("class", "caret")
                 )
