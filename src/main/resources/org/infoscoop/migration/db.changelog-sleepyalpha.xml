@@ -824,7 +824,7 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
 			</column>
 		</addColumn>
 		<addColumn schemaName="${migration.defaultSchema}" tableName="IS_SQUARES">
-			<column name="restriction" type="integer"/>
+			<column name="max_user_num" type="integer"/>
 		</addColumn>
 		<createIndex indexName="is_squares_owner_idx" schemaName="${migration.defaultSchema}" tableName="IS_SQIARES" tablespace="${.tablespace}">
 			<column name="owner" type="varchar(150)"/>
