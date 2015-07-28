@@ -5,7 +5,6 @@
 <%@ page import="org.infoscoop.service.SquareService"%>
 <%@page import="org.infoscoop.context.UserContext"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 	String uid = (String) session.getAttribute("Uid");
 	boolean useMultitenantMode = Boolean.valueOf(InfoScoopProperties.getInstance().getProperty("useMultitenantMode"));
