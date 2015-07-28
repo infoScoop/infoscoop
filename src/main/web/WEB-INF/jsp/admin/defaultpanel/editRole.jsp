@@ -21,6 +21,7 @@
 <%@page import="org.infoscoop.service.PropertiesService" %>
 <%@page import="org.infoscoop.util.RSAKeyManager"%>
 <%@page import="org.infoscoop.service.ForbiddenURLService" %>
+<%@page import="org.infoscoop.context.UserContext"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
@@ -29,6 +30,8 @@
 	String staticContentURL = PropertiesService.getHandle().getProperty("staticContentURL");
 	if(!staticContentURL.matches("^(http|https)://.*"))
 		staticContentURL = "../..";
+	
+	String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 %>
 <html>
 <head>
@@ -75,6 +78,7 @@
 		<jsp:include page="/prpsrv" flush="true" />
 		var isTabView = false;
 		var is_sessionId = null;
+		var is_squareId = "<%= squareId %>";
 		
 		var IS_forbiddenURLs = <%= ForbiddenURLService.getHandle().getForbiddenURLsJSON() %>;
 		
