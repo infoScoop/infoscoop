@@ -1,109 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sites>
-	<site-top id="gaibu_atIT" title="IT" 
-	          display="inline" 
-	          href="http://www.atmarkit.co.jp/"
-	          >
-	    
-  	    <site thumbnail="imgs/numberweb.PNG" id="menu2_１２３４５９０" title="RSSリーダーシングル" display="inline" href="http://p01289:8080/infoscoop/filterTest.html" type="RssReader">
-	    	<properties>
-	    		<property name="url">http://localhost:8080/infoscoop/informations_rss.xml?aaa=eee&amp;fff=ggg&amp;fff=www	</property>
-	    		<property name="uruguai">ウルグアイ</property>
-	    	</properties>
-	    </site>
-  	    <site thumbnail="imgs/nikkansports.PNG" id="gaibu_umau5" title="RSS_外部!!太陽 マーク テスト2" display="inline" href="http://p01289:8080/infoscoop/filterTest.html" type="RssReader">
-	    	<properties>
-	    		<property name="url">http://localhost:8080/infoscoop/informations_rss.xml?aaa=eee&amp;fff=ggg&amp;fff=www</property>
-	    	</properties>
-	    </site>
+    <site-top id="news" title="ニュース総合" 
+              display="inline">
+        
+        <site thumbnail="imgs/asahicom.png" id="news_asahicom" title="asahi.com" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://rss.asahi.com/f/asahi_newsheadlines</property>
+            </properties>
+        </site>
+        <site thumbnail="imgs/jcast.png" id="news_jcast" title="J-CAST" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://feed.rssad.jp/rss/jcast/index.xml</property>
+            </properties>
+        </site>
+        <site thumbnail="imgs/slashdotjp.png" id="news_slashdotjp" title="Slashdot JP" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://rss.rssad.jp/rss/slashdot/slashdot.rss</property>
+            </properties>
+        </site>         
 
-		<site thumbnail="imgs/excite_news.PNG" id="gadget_1" title="ガジェット（指定なし）" display="inline" type="Gadget">
-			<properties>
-				<property name="url">http://www.infoscoop.org/gadgets/hello.xml?hoge=1</property>
-			</properties>
-    	</site>	    	
-
-		<site thumbnail="imgs/goalcom.PNG" id="gadget_2" title="ガジェット（multi）" display="inline" type="Gadget" multi="true">
-			<properties>
-				<property name="url">http://www.infoscoop.org/gadgets/hello.xml?hoge=1</property>
-			</properties>
-    	</site>	    	
-
-		<site thumbnail="imgs/excite_news.PNG" id="gadget_3" title="ガジェット（singleton and multi）" display="inline" type="Gadget" multi="true">
-			<properties>
-				<property name="url">http://p01289/aaa.xml</property>
-			</properties>
-	    	</site>	    	
+        <site thumbnail="imgs/maicomi.png" id="news_maicomi" title="マイコミジャーナル" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://feeds.journal.mycom.co.jp/rss/mycom/index</property>
+            </properties>
+        </site>         
     </site-top>
 
-	<site-top id="guidance_sport" title="スポーツ" 
-	          display="inline" 
-	          href="http://www.atmarkit.co.jp/"
-	          >
-		<site thumbnail="imgs/excite_news.PNG" id="guidance_sport_rss1" title="スポーツ系RSS1" display="inline" href="http://www.atmarkit.co.jp/fembedded" type="RssReader">	    	
-			<properties>
-				<property name="url">http://www.atmarkit.co.jp/rss/fembedded/rss.xml</property>
-			</properties>
-    	</site>	
-	</site-top>
-	<site-top id="guidance_news" title="政治経済" 
-	          display="inline" 
-	          href="http://www.atmarkit.co.jp/"
-	          >
-		<site thumbnail="imgs/excite_news.PNG" id="guidance_news_rss1" title="ニュース系RSS1" display="inline" href="http://www.atmarkit.co.jp/fembedded" type="RssReader">	    	
-			<properties>
-				<property name="url">http://www.atmarkit.co.jp/rss/fembedded/rss.xml</property>
-			</properties>
-    	</site>	
-	</site-top>
+    <site-top id="it" title="IT" display="inline">
+        <site thumbnail="imgs/cnetjapan.png" id="it_cnetjapan" title="CNET Japan" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://feeds.japan.cnet.com/cnet/rss</property>
+            </properties>
+        </site>
+        <site thumbnail="imgs/gigazine.png" id="it_gigazine" title="GIGAZINE" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://feed.rssad.jp/rss/gigazine/rss_2.0</property>
+            </properties>
+        </site>
+        <site thumbnail="imgs/k-taiwatch.png" id="it_k_tai" title="ケータイ Watch" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://rss.rssad.jp/rss/k-taiwatch/k-tai.rdf</property>
+            </properties>
+        </site>
+        <site thumbnail="imgs/atmarkit.png" id="it_atmarkit" title="＠IT" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://rss.rssad.jp/rss/itmatmarkit/rss2dc.xml</property>
+            </properties>
+        </site>
+    </site-top>
 
-	<site-top id="guidance_service" title="サービス" 
-	          display="inline" 
-	          href="http://www.atmarkit.co.jp/"
-	          >
-		<site thumbnail="imgs/excite_news.PNG" id="guidance_service_twitter" title="Twitter" display="inline" type="Gadget" multi="true">
-			<properties>
-				<property name="url">http://www.infoscoop.org/gadgets/hello.xml?hoge=1</property>
-			</properties>
-    	</site>	    	
-		<site thumbnail="imgs/excite_news.PNG" id="guidance_service_facebook" title="FaceBook" display="inline" type="Gadget" multi="true">
-			<properties>
-				<property name="url">http://www.infoscoop.org/gadgets/hello.xml?hoge=1</property>
-			</properties>
-    	</site>	    	
-	</site-top>
+    <site-top id="sport" title="スポーツ" display="inline" >
+        <site thumbnail="imgs/nikkansportscom.png" id="sport_nikkansportscom" title="nikkansports.com" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://www.nikkansports.com/sports/index.rdf</property>
+            </properties>
+        </site>         
+        <site thumbnail="imgs/numberweb.png" id="sport_numberweb" title="Number Web" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://feed.ismedia.jp/rss/number/rsscolumn</property>
+            </properties>
+        </site>
+        <site thumbnail="imgs/sportswatchertalker.png" id="sport_sportswatchertalker" title="スポーツ見るもの語る者～フモフモコラム" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://blog.livedoor.jp/vitaminw/index.rdf</property>
+            </properties>
+        </site>
+        <site thumbnail="imgs/goalcom.png" id="sport_goalcom" title="Goal.com News" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://www.goal.com/jp/feeds/news</property>
+            </properties>
+        </site>
+        <site thumbnail="imgs/golfportal.png" id="sport_golfportal" title="ゴルフポータルサイト ALBA.Net" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://www.alba.co.jp/tour/rss/</property>
+            </properties>
+        </site>
+        <site thumbnail="imgs/rugby.png" id="sport_rugby" title="ラグビー愛好日記" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://koichi-murakami.cocolog-nifty.com/loverugby/atom.xml</property>
+            </properties>
+        </site>
+        
+    </site-top>
 
-	<site-top id="guidance_science" title="サイエンス" 
-	          display="inline" 
-	          href="http://www.atmarkit.co.jp/"
-	          >
-		<site thumbnail="imgs/excite_news.PNG" id="guidance_science_rss1" title="サイエンス系RSS1" display="inline" href="http://www.atmarkit.co.jp/fembedded" type="RssReader">	    	
-			<properties>
-				<property name="url">http://www.atmarkit.co.jp/rss/fembedded/rss.xml</property>
-			</properties>
-    	</site>	
-	</site-top>
+    <site-top id="economy" title="政治経済" display="inline">
+        <site thumbnail="imgs/yahoo-economy.png" id="economy_yahoo_economy" title="Yahoo!ニュース・トピックス - 経済" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://rss.dailynews.yahoo.co.jp/fc/economy/rss.xml</property>
+            </properties>
+        </site> 
+        <site thumbnail="imgs/seikeidenron.png" id="economy_seikeidenron" title="政経電論" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://seikeidenron.jp/atom.xml</property>
+            </properties>
+        </site> 
+        <site thumbnail="imgs/goo-economy.png" id="economy_goo_economy" title="goo 政治注目のニュース" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://news.goo.ne.jp/rss/topstories/politics/</property>
+            </properties>
+        </site>
+        <site thumbnail="imgs/toyokeizai.png" id="economy_toyokeizai" title="東洋経済オンライン" display="inline" type="RssReader">
+            <properties>
+                <property name="url">http://toyokeizai.net/list/feed/rss</property>
+            </properties>
+        </site>
 
-	<site-top id="guidance_tiiki" title="地域" 
-	          display="inline" 
-	          href="http://www.atmarkit.co.jp/"
-	          >
-		<site thumbnail="imgs/excite_news.PNG" id="guidance_tiiki_rss" title="地域系RSS" display="inline" href="http://www.atmarkit.co.jp/fembedded" type="RssReader">	    	
-			<properties>
-				<property name="url">http://feed.rssad.jp/rss/gigazine/rss_2.0</property>
-			</properties>
-    	</site>	    
-	</site-top>
-
-	<site-top id="guidance_animal" title="動物" 
-	          display="inline" 
-	          href="http://www.atmarkit.co.jp/"
-	          >
-		<site thumbnail="imgs/excite_news.PNG" id="guidance_animal_animal" title="アニマル系RSS" display="inline" href="http://www.atmarkit.co.jp/fembedded" type="RssReader">	    	
-			<properties>
-				<property name="url">http://feed.rssad.jp/rss/gigazine/rss_2.0</property>
-			</properties>
-    	</site>	    
-	</site-top>
-
+    </site-top>
 </sites>

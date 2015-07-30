@@ -52,10 +52,10 @@
 
 </head>
 <body>
-    <h2 class="text-primary">スクエアが見つかりません。</h2>
-    <p>スクエアが存在しないか、管理者によって削除された可能性があります。</p>
+    <h2 class="text-primary">%{lb_square_not_found}</h2>
+    <p>%{lb_square_not_found_desc}</p>
 	<div style="text-align:center;">
-	    <button style="margin:50px;" onclick="toTop();">マイスクエアに戻る</button>
+	    <button style="margin:50px;" onclick="toTop();">%{lb_return_to_my_square}</button>
 	</div>
 </body>
 </html>

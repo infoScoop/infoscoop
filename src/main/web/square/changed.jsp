@@ -29,10 +29,10 @@
     <script type="text/javascript">
     function reload(){
         if(top != window.self){
-            alert( "スクエアが変更されているため、リロードを行います。" );
+            alert( "%{ms_on11000}" );
             top.window.location.reload( true );
         }else{
-            alert( "スクエアが変更されています。管理画面を開きなおしてください。" );
+            alert( "%{ms_square_changed_reload_adminpage}" );
         }
     }
     </script>

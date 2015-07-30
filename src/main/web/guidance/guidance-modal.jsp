@@ -106,8 +106,8 @@ $(document).ready(function() {
       <div class="navbar-inner">
         <div class="container">
 		    <ul>
-		        <li><a href="#tab1" data-toggle="tab">ようこそ</a></li>
-		        <li><a href="#tab2" data-toggle="tab">コンテンツの追加</a></li>
+		        <li><a href="#tab1" data-toggle="tab">%{lb_welcome}</a></li>
+		        <li><a href="#tab2" data-toggle="tab">%{lb_addContents}</a></li>
 		        <jsp:include page="jsp/navbar.jsp" flush="true"/>
 		    </ul>
          </div>
@@ -119,7 +119,7 @@ $(document).ready(function() {
         </div>
         <div class="tab-pane" id="tab2">
 
-<h2 class="text-primary">興味のあるコンテンツをポータルに追加してみましょう。</h2>
+<h2 class="text-primary">%{lb_add_interested_contents}</h2>
 <div id="contents-main">
     <div data-example-id="nav-tabs-with-dropdown" class="tab-bar">
         <ul class="nav nav-tabs"></ul>
