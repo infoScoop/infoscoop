@@ -71,10 +71,10 @@ $(document).ready(function() {
 			var errorMessage;
 			switch(error.status){
 				case 400:
-					errorMessage = '不正なメールアドレスが入力されています。';
+					errorMessage = '%{lb_error_invalid_email}';
 					break;
 				case 500:
-					errorMessage = 'サーバーでエラーが発生しました。';
+					errorMessage = '%{lb_error_on_server}';
 					break;
 			}
 			$('#alert').addClass("alert alert-danger").attr('role', 'alert').text(errorMessage);
@@ -114,17 +114,14 @@ function close() {
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
-				<h2>スクエアの作成</h2>
-				<p>
-				****************スクエアの説明*****************
-				</p>
+				<h2>%{lb_create_square2}</h2>
 				<hr style="margin-top:10px">
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-3">
 			    <ul class="nav nav-pills nav-stacked" role="tablist">
-					<li class="active"><a href="#tab1" data-toggle="pill">クイックビルド</a></li>
+					<li class="active"><a href="#tab1" data-toggle="pill">%{lb_quick_build}</a></li>
 					<jsp:include page="jsp/navbar.jsp" flush="true"/>
 			    </ul>
 			</div>

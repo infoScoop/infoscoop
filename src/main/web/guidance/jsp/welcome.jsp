@@ -18,7 +18,15 @@
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" %>
-<h1 class="text-primary">infoScoop for Team へようこそ。</h1>
+<h1 class="text-primary">%{lb_ee_guidance_welcome_1}</h1>
 <blockquote>
-<p>infoScoop for Teamは業務システムや社内外の様々なサービス、情報システムの中から個人にとって重要な情報の提供や、自由な配置と整理を実現し、個人の情報処理スキルやワークスタイルに合わせた 「使いたくなる」 ポータルを実現します。</p>
+<p>%{lb_ee_guidance_welcome_2}
+
+
+<h2 class="text-primary">%{lb_ee_guidance_welcome_3}</h2>
+<p>%{lb_ee_guidance_welcome_4}</p>
+
+<h2 class="text-primary">%{lb_ee_guidance_welcome_5}</h2>
+<p>%{lb_ee_guidance_welcome_6}</p>
+</p>
 </blockquote>

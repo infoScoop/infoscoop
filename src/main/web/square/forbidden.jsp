@@ -52,10 +52,10 @@
 
 </head>
 <body>
-    <h2 class="text-primary">スクエアにアクセスできません。</h2>
-    <p>スクエアに所属していないため、アクセスできません。</p>
+    <h2 class="text-primary">%{lb_square_forbidden}</h2>
+    <p>%{lb_square_forbidden_desc}</p>
 	<div style="text-align:center;">
-	    <button style="margin:50px;" onclick="toTop();">マイスクエアに戻る</button>
+	    <button style="margin:50px;" onclick="toTop();">%{lb_return_to_my_square}</button>
 	</div>
 </body>
 </html>

@@ -21,21 +21,21 @@
 <form  id="quick-build" action="../squaresrv/doCreate" method="post">
 	<div class="well col-sm-12">
 		<div class="form-group">
-			<label>スクエア名</label>
-			<span class="required-label">［必須］</span>
-			<input type="text" id="square-name" name="square-name" class="form-control" placeholder="UNIRITAスクエア"maxlength="100" onChange="checkValue(this)"/>
+			<label>%{lb_square_name}</label>
+			<span class="required-label">［%{lb_required}］</span>
+			<input type="text" id="square-name" name="square-name" class="form-control" placeholder="%{lb_square_name}"maxlength="100" onChange="checkValue(this)"/>
 		</div>
 		<div class="form-group">
-			<label>スクエアの説明</label>
-			<textarea id="square-description" class="form-control"name="square-description" placeholder="スクエアの説明を記入してください。"></textarea>
+			<label>%{lb_square_desc}</label>
+			<textarea id="square-description" class="form-control"name="square-description" placeholder="%{lb_plz_input_square_desc}"></textarea>
 		</div>
 		<div class="form-group">
-			<label>スクエアのメンバー（メールアドレスを1行ごとに記入）</label>
-			<textarea id="square-member" class="form-control" name="square-member" placeholder="unirita@unirita.co.jp"></textarea>
+			<label>%{lb_input_square_member_per_line}</label>
+			<textarea id="square-member" class="form-control" name="square-member" placeholder="%{lb_email_address}"></textarea>
 		</div>
 	</div>
 	<div class="form-group col-sm-12">
 		<input type="hidden" id="square-source" name="square-source" />
-		<button type="submit" class="btn btn-primary col-sm-12">スクエアを作成する</button>
+		<button type="submit" class="btn btn-primary col-sm-12">%{lb_create_square}</button>
 	</div>
 </form>
