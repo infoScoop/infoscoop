@@ -28,6 +28,7 @@
 <%@page import="org.infoscoop.web.SessionManagerFilter"%>
 <%@page import="org.infoscoop.util.I18NUtil"%>
 <%@page import="org.infoscoop.properties.InfoScoopProperties"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 	response.setHeader("Pragma","no-cache");
 	response.setHeader("Cache-Control","no-cache");
@@ -59,6 +60,7 @@
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/mySiteMap.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/commandbar.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/tab.css">
+    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/commonarea-design.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/widget.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/groupsettingmodal.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/accountmanagermodal.css">
@@ -170,6 +172,7 @@
     <script src="<%=staticContentURL%>/js/AccountManager.js"></script>
     <script src="<%=staticContentURL%>/js/GlobalSetting.js"></script>
     <script src="<%=staticContentURL%>/js/Theme.js"></script>
+    <script src="<%=staticContentURL%>/js/CommonAreaDesign.js"></script>
     <script src="<%=staticContentURL%>/js/guidance/Guidance.js"></script>
     <script src="<%=staticContentURL%>/js/square/Square.js"></script>
     <!-- prototype-window -->
@@ -197,7 +200,17 @@
     <script src="<%=staticContentURL%>/js/widgets/Message/MaximizeMessage.js"></script>
     <!--end script-->
     
-   	<script type="text/javascript">
+    <!-- jQuery -->
+    <script src="<%=staticContentURL%>/js/lib/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/jquery-ui/jquery-ui-1.10.2.custom.css">
+    <script src="<%=staticContentURL%>/js/lib/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
+    <link href="<%=staticContentURL%>/js/lib/evol.colorpicker/css/evol.colorpicker.min.css" rel="stylesheet" />
+    <script src="<%=staticContentURL%>/js/lib/evol.colorpicker/js/evol.colorpicker.min.js" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+        jQuery.noConflict();
+        $jq = jQuery;
+        
 		var rsaPK = new RSAKey();
 		rsaPK.setPublic("<%= RSAKeyManager.getInstance().getModulus() %>", "<%= RSAKeyManager.getInstance().getPublicExponent() %>");
 
@@ -338,6 +351,51 @@
 						</td>
 						<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
 						<td colspan="3" valign="top" align="left" width="100%">
+						    <div id="common-design-panel">
+						        <div class="design-option">
+							        <div class="design-set color-setting">
+							             <div class="title">背景</div>
+							            <div class="contents">
+							                <label>色番号 : </label><input class="color-picker" value="#92cddc" />
+							            </div>
+							        </div>
+							        <div class="design-set layout-setting">
+							            <div class="title">レイアウト</div>
+							            <div class="contents">
+							                <div class="gadgetsnum_buttonset"></div>
+							                <div class="layout-list">
+    							                <c:import url="/WEB-INF/jsp/admin/defaultpanel/_layoutTemplates.jsp"/>
+							                </div>
+							            </div>
+							        </div>
+						        </div>
+						        <div class="static-degign-area">
+						            
+						        </div>
+						    </div>
+
+<!-- 
+<div style="height: 183px;">
+        <div class="options-group" id="tabGlobalOption" style="float:left;margin-right:10px;">
+             <div class="title">背景色</div>
+            <div class="content autoclear" style="height:118px;padding:10px;background:#666;color:#FFF;z-index:auto;">
+                                            <label>色番号 : </label><input class="color-picker" value="#92cddc" />
+            </div>
+        </div>
+        <div class="options-group" id="tabLayout" style="overflow:hidden">
+            <div class="title">レイアウト</div>
+            <div class="content autoclear" style="height:118px;padding:10px;background:#666;color:#FFF;z-index:auto;">
+                <ul class="option" id="tabLayout-gallery" style="overflow:auto;height:83px;margin-top:12px;display: block;list-style-type: disc;">
+                    <li style="display:inline-block"><a href="#_" id="flexilayout-4-0" class="selected">AAA</a></li>
+                    <li style="display:inline-block"><a href="#_" id="flexilayout-4-1" class="">BBBBBBBBBBBBBBBBBBBBBBBBBBB</a></li>
+                    <li style="display:inline-block"><a href="#_" id="flexilayout-4-2" class="">CCCCCCCCCCCCCCCCCCCCCCCCCCC</a></li>
+                    <li style="display:inline-block"><a href="#_" id="flexilayout-4-3" class="">DDDDDDDDDDDDDDDDDDDDDDDDDDD</a></li>
+               </ul>
+            </div>
+        </div>
+</div>
+-->
+						    
 							<div id="portal-iframe-url"></div>
 							<div id="panels" style="display:;">
 							  <div id="maximize-panel" style="display:none;"></div>

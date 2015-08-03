@@ -351,3 +351,7 @@
 .infoScoop .tabMenu .initialize {
 	background: url( ./imgs/undo.png ) no-repeat center left;
 }
+.infoScoop .tabMenu .commonAreaDesign {
+    background: url( ./imgs/commonarea_design.png ) no-repeat center left;
+}
+

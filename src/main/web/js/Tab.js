@@ -196,6 +196,13 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
             IS_WidgetsContainer.rebuildColumns(this.id, this.numCol, false, true);
             return false;
         }
+        this.changeDesignMode = function(){
+            if(!IS_Portal.CommonAreaDesign)
+                IS_Portal.CommonAreaDesign = new IS_CommonAreaDesign("common-design-panel");
+            
+            IS_Portal.CommonAreaDesign.changeDesignMode();
+            hideTabMenu.bind( tabObj )();
+        }.bind(this);
     }
     
     var addTabDiv = document.getElementById("addTab");
@@ -359,8 +366,19 @@ IS_Portal.showTabMenu = function(tabElement, e){
         menuDiv.id = (tabElement.id + "_menu");
         menuDiv.className = "tabMenu is-box";
         
+        // Common Area Design
+        if(tabObj.type == 'static' && !tabObj.disabledDynamicPanel){
+            var refreshDiv = createItem({
+                anchor: true,
+                className: "commonAreaDesign",
+                label: "共通エリアのデザイン",
+                handler: tabObj.changeDesignMode.bind( tabObj )
+            });
+            refreshDiv.id = tabObj.id +"_menu_refresh";
+            menuDiv.appendChild( refreshDiv );
+        }
+        
         // Update
-//      var refreshDiv = createAnchorItem("refresh","Reload",tabObj.refresh.bind( tabObj ));
         var refreshDiv = createItem({
             anchor: true,
             className: "refresh",
