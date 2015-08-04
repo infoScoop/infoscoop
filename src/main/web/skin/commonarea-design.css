@@ -58,6 +58,7 @@
 .infoScoop #common-design-panel .design-option .design-set .contents .layout-list {
 	overflow: auto;
 	height: 80%;
+	clear: both;
 }
 
 /* color picker */
@@ -74,7 +75,7 @@
     margin-top: 5px;
     margin-left: 5px;
     padding: 5px;
-    border: solid 1px #444;
+    border: solid 1px #999999;
     cursor: pointer;
     width:80px;
     height:60px;
@@ -96,28 +97,36 @@
     height:100%;
 }
 
-.infoScoop #common-design-panel .staticLayout:hover, .infoScoop #common-design-panel .staticLayoutAdjustHeight:hover {
-    background-color: #999999;
-}
-
-.infoScoop #common-design-panel .staticLayout, .infoScoop #common-design-panel .template, .infoScoop #common-design-panel .staticLayoutAdjustHeight .template{
-    display:none;
-}
-
 .infoScoop #common-design-panel .layout-list td {
 	padding: 0px;
 	vertical-align: top;
 }
 
-.infoScoop #common-design-panel .static_column {
-    border: solid 1px #737373;
-    background-color: #888888;
-    cursor: pointer;
-    position:relative;
+.infoScoop #common-design-panel .ui-buttonset {
+	margin: 0px 5px 10px;
+	float: left;
 }
 
+.infoScoop #common-design-panel .design-control {
+	text-align: right;
+}
+
+.infoScoop #common-design-panel .design-control div {
+    display: inline-block;
+}
+
+/* static degign area */
+
 .infoScoop #common-design-panel .static-degign-area {
+    display: none;
 	padding: 10px;
+	overflow: auto;
+}
+
+.infoScoop #common-design-panel .static_column {
+    background-color: #cccccc;
+    cursor: pointer;
+    position:relative;
 }
 
 .infoScoop #common-design-panel .static-degign-area .static_column {
@@ -127,18 +136,17 @@
 }
 
 .infoScoop #common-design-panel .staticLayout:hover .static_column, .infoScoop #common-design-panel .staticLayoutAdjustHeight:hover .static_column{
-	border: solid 1px #8c8c8c;
-    background-color: #777777
+    background-color: #eeeeee;
 }
 
 .infoScoop #common-design-panel .staticLayoutAdjustHeight .static_column{
     height:57px;
 }
 
-/* static degign area */
-
-.infoScoop #common-design-panel .static-degign-area {
-	display: none;
+.infoScoop #common-design-panel .staticLayout:hover, .infoScoop #common-design-panel .staticLayoutAdjustHeight:hover {
+    background-color: #cccccc;
 }
 
-
+.infoScoop #common-design-panel .staticLayout, .infoScoop #common-design-panel .template, .infoScoop #common-design-panel .staticLayoutAdjustHeight .template{
+    display:none;
+}

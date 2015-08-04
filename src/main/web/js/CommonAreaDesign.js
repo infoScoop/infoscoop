@@ -15,61 +15,14 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
-var is_jsonRole = {
-    "id":"1a997cf0d575ac445da7a6b63e029d30b3cbd796e0c9d64ac54d3bc864d33d79",
-    "tabId":"0",
-    "tabName":"Home",
-    "columnsWidth":"",
-    "tabNumber":0,
-    "role":"default",
-    "principalType":"OrganizationPrincipal",
-    "roleOrder":0,
-    "roleName":"defaultRole",
-    "defaultUid":"default",
-    "widgetsLastmodified":"-",
-    "staticPanel":{
-        "p_1_w_1":{
-            "id":"p_1_w_1",
-            "menuId":"",
-            "href":"",
-            "title":"はてなブックマーク - 人気エントリー",
-            "type":"RssReader",
-            "column":"1",
-            "ignoreHeader":false,
-            "noBorder":false,
-            "refreshInterval":null,
-            "disabled":false,
-            "properties":{
-                "url":"http://b.hatena.ne.jp/hotentry.rss"
-            }
-        },
-        "p_1_w_5":{
-            "id":"p_1_w_5",
-            "menuId":"",
-            "href":"",
-            "title":"Calendar",
-            "type":"Calendar",
-            "column":"3",
-            "ignoreHeader":true,
-            "noBorder":false,
-            "refreshInterval":null,
-            "disabled":false,
-            "properties":{}
-        }
-    },
-    "layout":"<DIV>\r\n\t<DIV style=\"FLOAT: left; WIDTH: 74.5%\">\r\n\t\t<DIV style=\"HEIGHT: 190px\">\r\n\t\t\t<DIV style=\"FLOAT: left; WIDTH: 100%; HEIGHT: 100%\">\r\n\t\t\t\t<DIV id=\"p_1_w_1\" class=\"static_column\" style=\"MARGIN-LEFT: 2px; HEIGHT: 190px\"><\/DIV>\r\n\t\t\t<\/DIV>\r\n\t\t<\/DIV>\r\n\t<\/DIV>\r\n\t<DIV style=\"FLOAT: right; WIDTH: 25%; HEIGHT: 190px\">\r\n\t\t<DIV id=\"p_1_w_5\" class=\"static_column\" style=\"MARGIN-LEFT: 2px; HEIGHT: 190px\"><\/DIV>\r\n\t<\/DIV>\r\n<\/DIV>\r\n<DIV style=\"CLEAR: both; display:none;\"/>\r\n",
-    "dynamicPanel":{},
-    "adjustToWindowHeight":false,
-    "disabledDynamicPanel":false,
-    "isDefault":"true"
-}
-
 IS_CommonAreaDesign = Class.create();
 IS_CommonAreaDesign.prototype = {
     initialize: function(renderTo) {
         this.content = $jq("#" + renderTo);
         this.colorPicker = $jq(".color-picker", this.content).colorpicker({showOn:'button'});
-        this.jsonRole = $jq.extend(true,{}, is_jsonRole);
+        this.colorPicker.on("change.color", function(){
+            $jq(".static-degign-area", this.content).css("background-color", this.colorPicker.val());
+        }.bind(this));
         
         // adjust static layouts
         $jq(".staticLayout>[class!=template] .static_column, .staticLayout>[class!=template] div", this.content).each(function(){
@@ -80,14 +33,20 @@ IS_CommonAreaDesign.prototype = {
             }
         });
         
+        $jq(".design-control .save", this.content).click(this.save.bind(this));
+        $jq(".design-control .cancel", this.content).click(this.cancel.bind(this));
+    },
+    initLayoutSelect: function(){
         /** init layoutSelect **/
         
-        var tabNumber = IS_Portal.currentTabId.substr(3);
-        var adjustToWindowHeight = IS_Customization["staticPanel"+tabNumber].adjustToWindowHeight;
-        
-//      var currentStaticColCount = $jq("#staticAreaContainer .static_column").length;
-        // TODO: debug
-        var currentStaticColCount = 3;
+        var tabId = this.currentTabObj.id.substr(3);
+       
+        // static design area
+        var staticDesignArea = $jq(".static-degign-area", this.content);
+        staticDesignArea.html(this.jsonRole.layout);
+       
+        var adjustToWindowHeight = IS_Customization["staticPanel"+tabId].adjustToWindowHeight;
+        var currentStaticColCount = $jq(".static-degign-area .static_column", this.content).length;
         
         $jq("#staticLayouts"+(!adjustToWindowHeight ? "AdjustHeight":"")).hide();
         var targetAreaId = "staticLayouts"+(adjustToWindowHeight ? "AdjustHeight":"");
@@ -107,6 +66,8 @@ IS_CommonAreaDesign.prototype = {
         });
         
         columnsCountList.sort(function(a,b){return a>b});
+        
+        $jq(".gadgetsnum_buttonset", this.content).empty();
         
         $jq.each(columnsCountList, function(idx, gadgetsNum){
             var parent = $jq(".gadgetsnum_buttonset", this.content);
@@ -159,39 +120,43 @@ IS_CommonAreaDesign.prototype = {
             self.jsonRole.staticPanel = {};
             
             $jq(".static-degign-area", self.content).html(self.jsonRole.layout);
-            
             self.prepareStaticArea();
-            
-//            reloadStaticGadgets();
-//            adjustStaticWidgetHeight();
         });
     },
-    setIdentifier: function(htmlEl){
-        htmlEl = $jq(htmlEl);
-        $jq(".static_column", htmlEl).each(function(idx, el){
-            el = $jq(el);
-            if(!el.attr("id")){
-                var datetime = new Date().getTime();
-                var idPrefix = "p_" + datetime + "_w_";
-                
-                el.attr("id", idPrefix + idx);
+    changeDesignMode: function(tabObj){
+        // get current json role.
+        var tabId = tabObj.id.substring(3);
+        this.currentTabObj = tabObj;
+        
+        var opt = {
+            method: "get",
+            asynchronous: true,
+            parameters: "tabId=" + tabId,
+            onSuccess: function( response ) {
+                this.jsonRole = eval("("+response.responseText+")");
+                this.initLayoutSelect();
+                this.content.show();
+                this.displayDesignPanel();
+            }.bind(this),
+            onFailure: function( resp,obj ) {
+                msg.error(IS_R.getResource(IS_R.ms_widgetonFailureAt, [self.widgetType, self.title,req.status,req.statusText]));
+            },
+            onException: function( resp,obj ) {
+                msg.error(IS_R.getResource(IS_R.ms_widgetonExceptionAt, [self.widgetType, self.title,getText(obj)]));
             }
-        });
-        return htmlEl;
+        }
+        AjaxRequest.invoke("designsrv", opt );
     },
-    changeDesignMode: function(){
-        this.content.show();
-        this.displayDesignOptionPanel();
+    changeNormalMode: function(){
+        this.hideDesignPanel();
     },
     showStaticDesignArea: function(){
-        var panelNumber = IS_Portal.currentTabId.substring(3);
+        var panelNumber = this.currentTabObj.id.substring(3);
         var staticPanel = $jq("#static-panel" + panelNumber);
         staticPanel.hide();
         
         var staticDesignArea = $jq(".static-degign-area", this.content);
-        var currentStaticPanel = $jq(this.jsonRole.staticPanel);
         
-        staticDesignArea.html(this.jsonRole.layout);
         this.prepareStaticArea();
         
         for(var i in this.jsonRole.staticPanel){
@@ -201,14 +166,35 @@ IS_CommonAreaDesign.prototype = {
             this.displayStaticGadget(widgetOpt);
         }
         
-        staticDesignArea.animate({opacity: "toggle"});
+        staticDesignArea.show();
     },
-    displayDesignOptionPanel: function(){
+    hideStaticDesignArea: function(){
+        var panelNumber = this.currentTabObj.id.substring(3);
+        var staticPanel = $jq("#static-panel" + panelNumber);
+        staticPanel.show();
+        
+        var staticDesignArea = $jq(".static-degign-area", this.content);
+        staticDesignArea.empty();
+        staticDesignArea.hide();
+    },
+    displayDesignPanel: function(){
         $jq(".design-option", this.content).animate(
-            {height: "toggle", opacity: "toggle"},
+            {height: "show", opacity: "toggle"},
             {
                 duration: "slow",
                 complete: this.showStaticDesignArea.bind(this)
+            }
+        );
+    },
+    hideDesignPanel: function(){
+        $jq(".design-option", this.content).animate(
+            {height: "hide", opacity: "toggle"},
+            {
+                duration: "slow",
+                complete: function(){
+                    this.hideStaticDesignArea();
+                    this.content.hide();
+                }.bind(this)
             }
         );
     },
@@ -230,7 +216,7 @@ IS_CommonAreaDesign.prototype = {
         
         var widget = new IS_Widget(false, widgetOpt);
         widget.panelType = "StaticPanel";
-        widget.tabId = IS_Portal.currentTabId;
+        widget.tabId = this.currentTabObj.id;
         
         widget.build();
         container.append(widget.elm_widget);
@@ -238,7 +224,7 @@ IS_CommonAreaDesign.prototype = {
         widget.loadContents();
     },
     prepareStaticArea: function(){
-        var tabId = IS_Portal.currentTabId.replace("tab","");
+        var tabId = this.currentTabObj.id.replace("tab","");
         
         if($jq('.static-degign-area .static_column', this.content).size() == 0){
             var modified = false;
@@ -284,10 +270,44 @@ IS_CommonAreaDesign.prototype = {
         }.bind(this));
         $jq("#layout").val($jq(".static-degign-area", this.content).html());
     },
-    apply: function(){
+    save: function(){
         // TODO: save common area design.
+        var tabId = this.currentTabObj.id.substring(3);
+        
+        var opt = {
+            method: "post",
+            asynchronous: true,
+            parameters: "tabId=" + tabId + "&" + Object.toJSON(this.jsonRole),
+            onSuccess: function( response ) {
+                this.jsonRole = eval("("+response.responseText+")");
+                this.content.show();
+                this.displayDesignPanel();
+            }.bind(this),
+            onFailure: function( resp,obj ) {
+                msg.error(IS_R.getResource(IS_R.ms_widgetonFailureAt, [self.widgetType, self.title,req.status,req.statusText]));
+            },
+            onException: function( resp,obj ) {
+                msg.error(IS_R.getResource(IS_R.ms_widgetonExceptionAt, [self.widgetType, self.title,getText(obj)]));
+            }
+        }
+        AjaxRequest.invoke("designsrv", opt );
+        
+        this.changeNormalMode();
     },
     cancel: function(){
-        // TODO: change normal mode.
+        this.changeNormalMode();
+    },
+    setIdentifier: function(htmlEl){
+        htmlEl = $jq(htmlEl);
+        $jq(".static_column", htmlEl).each(function(idx, el){
+            el = $jq(el);
+            if(!el.attr("id")){
+                var datetime = new Date().getTime();
+                var idPrefix = "p_" + datetime + "_w_";
+                
+                el.attr("id", idPrefix + idx);
+            }
+        });
+        return htmlEl;
     }
 }

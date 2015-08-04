@@ -200,8 +200,8 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
             if(!IS_Portal.CommonAreaDesign)
                 IS_Portal.CommonAreaDesign = new IS_CommonAreaDesign("common-design-panel");
             
-            IS_Portal.CommonAreaDesign.changeDesignMode();
-            hideTabMenu.bind( tabObj )();
+            IS_Portal.CommonAreaDesign.changeDesignMode(this);
+            hideTabMenu.bind( this )();
         }.bind(this);
     }
     

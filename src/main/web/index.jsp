@@ -366,15 +366,17 @@
 							            <div class="title">レイアウト</div>
 							            <div class="contents">
 							                <div class="gadgetsnum_buttonset"></div>
+							                <div class="design-control">
+							                    <input type="button" class="save is-button" value="保存">
+							                    <input type="button" class="cancel is-button" value="キャンセル">
+							                </div>
 							                <div class="layout-list">
     							                <c:import url="/WEB-INF/jsp/admin/defaultpanel/_layoutTemplates.jsp"/>
 							                </div>
 							            </div>
 							        </div>
 						        </div>
-						        <div class="static-degign-area">
-						            
-						        </div>
+						        <div class="static-degign-area"></div>
 								<div id="is-commonarea-widgetmodal" style="display:none">
 									<div class="commonarea-widgetmodal-header-bk">
 										<div class="commonarea-widgetmodal-header">ガジェット設定
@@ -435,28 +437,6 @@
 
 								</div>
 						    </div>
-
-<!-- 
-<div style="height: 183px;">
-        <div class="options-group" id="tabGlobalOption" style="float:left;margin-right:10px;">
-             <div class="title">背景色</div>
-            <div class="content autoclear" style="height:118px;padding:10px;background:#666;color:#FFF;z-index:auto;">
-                                            <label>色番号 : </label><input class="color-picker" value="#92cddc" />
-            </div>
-        </div>
-        <div class="options-group" id="tabLayout" style="overflow:hidden">
-            <div class="title">レイアウト</div>
-            <div class="content autoclear" style="height:118px;padding:10px;background:#666;color:#FFF;z-index:auto;">
-                <ul class="option" id="tabLayout-gallery" style="overflow:auto;height:83px;margin-top:12px;display: block;list-style-type: disc;">
-                    <li style="display:inline-block"><a href="#_" id="flexilayout-4-0" class="selected">AAA</a></li>
-                    <li style="display:inline-block"><a href="#_" id="flexilayout-4-1" class="">BBBBBBBBBBBBBBBBBBBBBBBBBBB</a></li>
-                    <li style="display:inline-block"><a href="#_" id="flexilayout-4-2" class="">CCCCCCCCCCCCCCCCCCCCCCCCCCC</a></li>
-                    <li style="display:inline-block"><a href="#_" id="flexilayout-4-3" class="">DDDDDDDDDDDDDDDDDDDDDDDDDDD</a></li>
-               </ul>
-            </div>
-        </div>
-</div>
--->
 						    
 							<div id="portal-iframe-url"></div>
 							<div id="panels" style="display:;">
