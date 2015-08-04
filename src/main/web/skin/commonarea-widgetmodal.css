@@ -31,14 +31,13 @@ div.is-commonarea-widgetmodal {
     color: #000000;
 }
 div.commonarea-widgetmodal-menu {
-	display: table-cell;
 	width: 20%;
 	padding-right: 10px;
 	vertical-align: top;
+	float: left;
 }
 div.commonarea-widgetmodal-display {
-	display: table-cell;
-	width: 100000px;
+	overflow: hidden;
 }
 
 /* menu */
@@ -103,7 +102,7 @@ div.commonarea-widgetmodal-preview {
 	padding: 1px 15px 20px;
 }
 div.commonarea-widgetmodal-preview-item {
-	display:table-cell;
 	text-align:center;
 	padding-right:20px;
+	float: left;
 }
