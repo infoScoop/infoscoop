@@ -267,7 +267,11 @@ IS_CommonAreaDesign.prototype = {
                 .click(function(e){
                     return function(){
                         // TODO: モーダルを開く
-                        alert(e.value);
+                         if(!window["IS_CommonAreaWidgetModalInstance"]){
+                            IS_CommonAreaWidgetModalInstance = new IS_CommonAreaWidgetModal();
+                        }else{
+                            IS_CommonAreaWidgetModalInstance.start();
+                        }
                     }
                 }({value:widgetJSON})).appendTo(staticColumn);
             staticColumn.mouseover(function(){

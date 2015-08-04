@@ -1,0 +1,109 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
+/* contents */
+div.is-commonarea-widgetmodal {
+	height: auto;
+	overflow: visible;
+	background-color:#fff;
+	padding: 5px;
+	border:1px solid #333;
+}
+#commonarea-widgetmodal-contents {
+	padding: 10px 20px 20px;
+}
+#commonarea-widgetmodal-contents.ui-widget-content {
+    border: none;
+    color: #000000;
+}
+div.commonarea-widgetmodal-menu {
+	display: table-cell;
+	width: 20%;
+	padding-right: 10px;
+	vertical-align: top;
+}
+div.commonarea-widgetmodal-display {
+	display: table-cell;
+	width: 100000px;
+}
+
+/* menu */
+.ui-tabs-vertical .ui-tabs-nav {
+	border: none;
+	color: #000000;
+	background: #fff;
+}
+.ui-tabs-vertical .ui-tabs-nav li {
+	margin-bottom: 5px;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+.ui-tabs-vertical .ui-tabs-nav li a {
+	display:block;
+	padding: 10px 15px;
+	font-size: 14px;
+}
+.ui-tabs-vertical .ui-tabs-panel {
+	padding: 1em;
+}
+
+/* header */
+div.commonarea-widgetmodal-header-bk{
+	background-color: #F7F7F7;
+	padding-top: 1px;
+	width:100%;
+}
+div.commonarea-widgetmodal-header{
+	color: #404040;
+	font-weight: bold;
+	font-size: 18px;
+	padding: 10px 0;
+	margin: 0 0 10px 10px;
+}
+div.commonarea-widgetmodal-header>div.commonarea-widgetmodal-cancel-image{
+	background: url("./imgs/times.png") no-repeat scroll 3px center rgba(0, 0, 0, 0);
+	height: 32px;
+	width: 32px;
+	overflow: hidden;
+	position: absolute;
+	top: 10px;
+	right: 15px;
+}
+
+div.commonarea-widgetmodal-footer-bk{
+	width:100%;
+	position: absolute;
+	bottom: 0px;
+	padding: 10px 0;
+}
+
+/* add content */
+div.commonarea-widgetmodal-addcontent {
+	background: url("images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #e6e6e6;
+	color: #404040;
+	padding: 1px 15px 20px;
+	border-radius: 4px;
+}
+div.commonarea-widgetmodal-preview {
+	color: #404040;
+	padding: 1px 15px 20px;
+}
+div.commonarea-widgetmodal-preview-item {
+	display:table-cell;
+	text-align:center;
+	padding-right:20px;
+}

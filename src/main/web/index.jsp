@@ -61,6 +61,7 @@
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/commandbar.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/tab.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/commonarea-design.css">
+    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/commonarea-widgetmodal.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/widget.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/groupsettingmodal.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/accountmanagermodal.css">
@@ -173,6 +174,7 @@
     <script src="<%=staticContentURL%>/js/GlobalSetting.js"></script>
     <script src="<%=staticContentURL%>/js/Theme.js"></script>
     <script src="<%=staticContentURL%>/js/CommonAreaDesign.js"></script>
+    <script src="<%=staticContentURL%>/js/CommonAreaWidgetModal.js"></script>
     <script src="<%=staticContentURL%>/js/guidance/Guidance.js"></script>
     <script src="<%=staticContentURL%>/js/square/Square.js"></script>
     <!-- prototype-window -->
@@ -204,6 +206,7 @@
     <script src="<%=staticContentURL%>/js/lib/jquery-1.9.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/jquery-ui/jquery-ui-1.10.2.custom.css">
     <script src="<%=staticContentURL%>/js/lib/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
+    <script src="<%=staticContentURL%>/js/lib/jquery-ui/jquery.ui.tabs.min.js"></script>
     <link href="<%=staticContentURL%>/js/lib/evol.colorpicker/css/evol.colorpicker.min.css" rel="stylesheet" />
     <script src="<%=staticContentURL%>/js/lib/evol.colorpicker/js/evol.colorpicker.min.js" type="text/javascript"></script>
     
@@ -372,6 +375,65 @@
 						        <div class="static-degign-area">
 						            
 						        </div>
+								<div id="is-commonarea-widgetmodal" style="display:none">
+									<div class="commonarea-widgetmodal-header-bk">
+										<div class="commonarea-widgetmodal-header">ガジェット設定
+											<div id="commonarea-widgetmodal-cancel-image" class="commonarea-widgetmodal-cancel-image"></div>
+										</div>
+									</div>
+
+									<div id="commonarea-widgetmodal-contents">
+										<div class="commonarea-widgetmodal-menu">
+											<ul>
+												<li><a href="#commonarea-widgetmodal-item-1">New</a></li>
+												<li><a href="#commonarea-widgetmodal-item-2">Apps</a></li>
+											</ul>
+										</div>
+										<div class="commonarea-widgetmodal-display">
+											<div id="commonarea-widgetmodal-item-1">
+												<div class="commonarea-widgetmodal-addcontent">
+													<h2><img src="<%=staticContentURL%>/skin/imgs/rss.png" ></img>&nbspAdd new feeds</h2>
+													<p>フィードのアドレス、または自動検出用の Web サイトの URL を入力してください。</p>
+													<input type="text" size="50" placeholder="https://www.infoscoop.org/i/en-news/feed/"></input>
+													<input id="preview-button" type="button" value="プレビュー">
+												</div>
+												<div class="commonarea-widgetmodal-preview">
+													<h2>Preview</h2>
+													<div style="display: table;">
+														<div class="commonarea-widgetmodal-preview-item">
+															<div style="border: 1px solid #000000;width:200px;height:150px;">プレビュー</div>
+															<input id="preview-button" type="button" value="Add it now">
+														</div>
+														<div class="commonarea-widgetmodal-preview-item">
+															<div style="border: 1px solid #000000;width:200px;height:150px;">プレビュー</div>
+															<input id="preview-button" type="button" value="Add it now">
+														</div>
+														<div class="commonarea-widgetmodal-preview-item">
+															<div style="border: 1px solid #000000;width:200px;height:150px;">プレビュー</div>
+															<input id="preview-button" type="button" value="Add it now">
+														</div>
+													</div>
+												</div>
+											</div>
+											<div id="commonarea-widgetmodal-item-2">
+												<div class="commonarea-widgetmodal-addcontent">
+													<h2><img src="<%=staticContentURL%>/skin/imgs/plus.png" ></img>&nbspAdd new gadgets</h2>
+													<p>ガジェットを選択してください。</p>
+													<select style="width: 300px">
+														<option>付箋</option>
+													</select>
+												</div>
+												<div class="commonarea-widgetmodal-preview">
+													<h2>Gadget Settings</h2>
+													<div class="commonarea-widgetmodal-preview-item">
+														UserPrefs
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
 						    </div>
 
 <!-- 
