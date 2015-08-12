@@ -27,10 +27,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.infoscoop.dao.model.TabLayout;
+import org.infoscoop.service.StaticTabService;
 import org.infoscoop.service.TabLayoutService;
+import org.json.JSONObject;
 
 public class DesignServlet extends HttpServlet {
 	private static final long serialVersionUID = "org.infoscoop.web.DesignServlet"
@@ -62,22 +66,35 @@ public class DesignServlet extends HttpServlet {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		
+				
 		// save role layout.
-		String tabId = request.getParameter("tabId");
-		String layoutParamsStr = request.getParameter("layoutParams");
-		System.out.println(layoutParamsStr);
+		String layoutParamsStr = request.getParameter("data");
 		
 		PrintWriter out = null;
 		try {
-			Map layoutParams = new HashMap();
+			ObjectMapper mapper = new ObjectMapper();
+			Map layoutParams = mapper.readValue(layoutParamsStr, HashMap.class);
+			String tabId = (String)layoutParams.get("tabId");
+			
+			boolean isTabAdmin =  StaticTabService.getHandle().isTabAdmin(tabId);
+			if(!isTabAdmin){
+				response.sendError(HttpStatus.SC_FORBIDDEN, "You are not administrator.");
+				return;
+			}
+			
+			// adjust tabLayoutService process
+			JSONObject staticPanelJson = new JSONObject((Map)layoutParams.get("staticPanel"));
+			layoutParams.put("staticPanel", staticPanelJson.toString());
+			JSONObject dynamicPanelJson = new JSONObject((Map)layoutParams.get("dynamicPanel"));
+			layoutParams.put("dynamicPanel", dynamicPanelJson.toString());
 			
 			TabLayoutService service = TabLayoutService.getHandle();
 			Integer currentRoleOrder = getCurrentOrder(tabId);
 			
-//			service.updateRoleLayout(tabId, currentRoleOrder, layoutParams);
+			service.updateRoleLayout(tabId, currentRoleOrder, layoutParams);
 			
 			response.setHeader("Cache-Control","no-cache");
 			response.setContentType("text/plain;charset=UTF-8");

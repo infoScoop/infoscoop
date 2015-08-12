@@ -28,6 +28,7 @@
 <%@page import="org.infoscoop.web.SessionManagerFilter"%>
 <%@page import="org.infoscoop.util.I18NUtil"%>
 <%@page import="org.infoscoop.properties.InfoScoopProperties"%>
+<%@page import="org.infoscoop.context.UserContext"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 	response.setHeader("Pragma","no-cache");
@@ -93,7 +94,9 @@
 		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_ID_ATTR_NAME
 		String displayName = (String) session.getAttribute("loginUserName");
 		String uid = (String) session.getAttribute("Uid");
-		boolean squareId =Boolean.valueOf(InfoScoopProperties.getInstance().getProperty("useMultitenantMode"));
+		boolean useMultitenantMode = Boolean.valueOf(InfoScoopProperties.getInstance().getProperty("useMultitenantMode"));
+		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+		
 		if(displayName == null || "".equals(displayName)){
 			displayName = uid;
 		}
@@ -118,6 +121,7 @@
 		var is_userId = <%=uid != null ? "\"" + uid.replace("\\", "\\\\") + "\"" : "null" %>;
 		var is_userName = <%=displayName != null ?  "\"" + displayName + "\"" : "null" %>;
 		var is_isAdministrator = <%=isAdmin != null ? isAdmin.booleanValue() : false%>;
+		var is_squareId = "<%= squareId %>";
 
 		var localhostPrefix = "<%=request.getScheme()%>://localhost:<%=request.getServerPort()%><%=request.getContextPath()%>"
 
@@ -306,7 +310,7 @@
 							</div>
 						</td>
 						<td width="100%"><div id="portal-command" style="visibility:hidden;position:absolute;left:9999px;"></div></td>
-						<% if(squareId){ %>
+						<% if(useMultitenantMode){ %>
 						<td style="padding-left: 10px;">
 							<div id="portal-square-menu">
 									<div id="portal-square-menu-label"></div>
@@ -359,7 +363,7 @@
 							        <div class="design-set color-setting">
 							             <div class="title">背景</div>
 							            <div class="contents">
-							                <label>色番号 : </label><input class="color-picker" value="#92cddc" />
+							                <label>色番号 : </label><input class="color-picker" value="" />
 							            </div>
 							        </div>
 							        <div class="design-set layout-setting">
@@ -387,49 +391,27 @@
 									<div id="commonarea-widgetmodal-contents">
 										<div class="commonarea-widgetmodal-menu">
 											<ul>
-												<li><a href="#commonarea-widgetmodal-item-1">New</a></li>
-												<li><a href="#commonarea-widgetmodal-item-2">Apps</a></li>
+												<li><a href="#commonarea-widgetmodal-item-1">WebサイトURLから設定</a></li>
+												<li><a href="#commonarea-widgetmodal-item-2">ガジェット一覧から設定</a></li>
 											</ul>
 										</div>
 										<div class="commonarea-widgetmodal-display">
 											<div id="commonarea-widgetmodal-item-1">
 												<div class="commonarea-widgetmodal-addcontent">
 													<h2><img src="<%=staticContentURL%>/skin/imgs/rss.png" ></img>&nbspAdd new feeds</h2>
-													<p>フィードのアドレス、または自動検出用の Web サイトの URL を入力してください。</p>
-													<input type="text" size="50" placeholder="https://www.infoscoop.org/i/en-news/feed/"></input>
-													<input id="preview-button" type="button" value="プレビュー">
+													<p>RSSフィードのURL、またはWeb サイトの URL を入力してください。</p>
+													<input class="preview-form" type="text" placeholder="https://www.infoscoop.org/i/en-news/feed/"></input>
+													<input class="preview-button" type="button" value="プレビュー">
+													<img class="preview-indicator" src="<%=staticContentURL%>/skin/imgs/ajax-loader-blue.gif" style="display:none;">
 												</div>
 												<div class="commonarea-widgetmodal-preview">
-													<h2>Preview</h2>
-													<div style="display: table;">
-														<div class="commonarea-widgetmodal-preview-item">
-															<div style="border: 1px solid #000000;width:200px;height:150px;">プレビュー</div>
-															<input id="preview-button" type="button" value="Add it now">
-														</div>
-														<div class="commonarea-widgetmodal-preview-item">
-															<div style="border: 1px solid #000000;width:200px;height:150px;">プレビュー</div>
-															<input id="preview-button" type="button" value="Add it now">
-														</div>
-														<div class="commonarea-widgetmodal-preview-item">
-															<div style="border: 1px solid #000000;width:200px;height:150px;">プレビュー</div>
-															<input id="preview-button" type="button" value="Add it now">
-														</div>
-													</div>
+													<div class="preview-list"></div>
 												</div>
 											</div>
 											<div id="commonarea-widgetmodal-item-2">
 												<div class="commonarea-widgetmodal-addcontent">
 													<h2><img src="<%=staticContentURL%>/skin/imgs/plus.png" ></img>&nbspAdd new gadgets</h2>
-													<p>ガジェットを選択してください。</p>
-													<select style="width: 300px">
-														<option>付箋</option>
-													</select>
-												</div>
-												<div class="commonarea-widgetmodal-preview">
-													<h2>Gadget Settings</h2>
-													<div class="commonarea-widgetmodal-preview-item">
-														UserPrefs
-													</div>
+													<iframe class="gadget-settings" src="manager/defaultpanel/gadget-settings"></iframe>
 												</div>
 											</div>
 										</div>

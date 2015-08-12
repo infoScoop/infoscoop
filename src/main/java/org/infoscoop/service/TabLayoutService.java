@@ -17,6 +17,7 @@
 
 package org.infoscoop.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -239,7 +240,9 @@ public class TabLayoutService {
 			updateTarget.setWidgets(xml);
 			
 			String layout = (String) layoutParams.get("layout");
+			String widgetsLastmodified = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
 			updateTarget.setLayout(layout);
+			updateTarget.setWidgetslastmodified(widgetsLastmodified);
 			tabLayoutDAO.update(updateTarget);
 			
 			return "[" + JSONObject.quote(tabId) + "]";
@@ -604,6 +607,13 @@ public class TabLayoutService {
 		xml.append(XmlUtil.escapeXmlEntities(tabTitle)).append("\"");
 		xml.append(" tabType=").append("\"");
 		xml.append("static").append("\"");
+		
+		String bgColor = (String) layoutParams.get("bgColor");
+		if(bgColor != null){
+			xml.append(" bgColor=").append("\"");
+			xml.append(XmlUtil.escapeXmlEntities(bgColor)).append("\"");
+		}
+		
 		// columnsWidth attribute is not needed if it is commandbar
 		if (!StaticTab.COMMANDBAR_TAB_ID.equals(tabId)) {
 			xml.append(" columnsWidth=").append("\"").append(

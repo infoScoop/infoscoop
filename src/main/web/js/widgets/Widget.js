@@ -1624,6 +1624,7 @@ IS_Widget.prototype.classDef = function() {
 			}
 		}
 		
+		if(IS_CommonAreaDesign.current) IS_CommonAreaDesign.current.changeNormalMode(true);
 		$("tab-container").hide();
 		$("portal-maincontents-table").addClassName("maximized");
 		

@@ -23,19 +23,34 @@
 
 <!-- one box -->
 <div class="staticLayout">
-<table cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td width="75%">
-			<table cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td>
-						<div class="static_column" style="width: 99%; height:82px; min-height: 1px;"></div>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
+	<table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+			<td width="75%">
+				<table cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td>
+							<div class="static_column" style="width: 99%; height:82px; min-height: 1px;"></div>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<div class="template">
+	    <table cellpadding="0" cellspacing="0" width="100%">
+	        <tr>
+	            <td width="75%">
+	                <table cellpadding="0" cellspacing="0" width="100%">
+	                    <tr>
+	                        <td>
+	                            <div class="static_column" style="width: 99%; height:190px; min-height: 1px;"></div>
+	                        </td>
+	                    </tr>
+	                </table>
+	            </td>
+	        </tr>
+	    </table>
+	</div>
 </div>
 
 <!-- 2 boxes -->

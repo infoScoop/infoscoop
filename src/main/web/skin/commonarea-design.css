@@ -29,6 +29,7 @@
     padding: 5px;
     height: 180px;
     display: none;
+    border: 1px inset #ffffff;
 }
 
 .infoScoop #common-design-panel .design-option .design-set {

@@ -711,6 +711,7 @@ IS_Portal.SearchEngines = {
 			IS_Portal.closeIFrame();
 			Element.hide('panels');
 			Element.hide('tab-container');
+			if(IS_CommonAreaDesign.current) IS_CommonAreaDesign.current.changeNormalMode(true);
 			var portalMaincontentsTable = document.getElementById("portal-maincontents-table");
 			portalMaincontentsTable.className = "hiding-tab";
 			IS_Portal.refresh.cancel();

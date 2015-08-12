@@ -30,8 +30,12 @@ div.is-commonarea-widgetmodal {
     border: none;
     color: #000000;
 }
+#commonarea-widgetmodal-contents.ui-widget-content .gadget-settings {
+    border: none;
+    width: 100%;
+    height: 500px;
+}
 div.commonarea-widgetmodal-menu {
-	width: 20%;
 	padding-right: 10px;
 	vertical-align: top;
 	float: left;
@@ -99,10 +103,34 @@ div.commonarea-widgetmodal-addcontent {
 }
 div.commonarea-widgetmodal-preview {
 	color: #404040;
-	padding: 1px 15px 20px;
+	display: none;
 }
-div.commonarea-widgetmodal-preview-item {
-	text-align:center;
+
+div.commonarea-widgetmodal-preview .preview-list {
+	height: 240px;
+	overflow: auto;
+	margin-top: 10px;
+}
+
+div.commonarea-widgetmodal-preview .preview-item {
 	padding-right:20px;
-	float: left;
+	display: inline-block;
+    width:200px;
+    height:235px;
+    overflow: hidden;
+    font-size: 14px;
 }
+div.commonarea-widgetmodal-preview .preview-item .gadget-desc {
+}
+
+div.commonarea-widgetmodal-preview .preview-item .apply-button {
+    text-align: center;
+    margin: 10px;
+}
+
+div.commonarea-widgetmodal-preview .preview-item .preview-widget-container {
+    margin-top: 3px;
+    border: 1px solid #e6e6e6;
+    height:180px;
+}
+

@@ -216,4 +216,15 @@ public class DefaultpanelController implements ControllerInterface{
 		view.setContentType("application/json; charset=UTF-8");
 		return view;
 	}
+	
+	/**
+	 * Common area design GadgetSettings function in portal.
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/gadget-settings", method=RequestMethod.GET)
+	public String gadget_settings(HttpServletRequest request) throws Exception {
+		return "defaultpanel/gadget_settings";
+	}
 }

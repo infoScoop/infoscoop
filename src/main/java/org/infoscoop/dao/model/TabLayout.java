@@ -113,6 +113,7 @@ public class TabLayout extends BaseTablayout {
 	@XStreamOmitField
 	private String columnsWidth;
 	private String numCol;
+	private String bgColor;
 	private boolean disabledDynamicPanel;
 
 	private Boolean adjustToWindowHeight;
@@ -132,6 +133,7 @@ public class TabLayout extends BaseTablayout {
 			this.tabName = widgetsEl.getAttribute("tabName");
 			this.columnsWidth = widgetsEl.getAttribute("columnsWidth");
 			this.numCol = widgetsEl.getAttribute("numCol");
+			this.bgColor = widgetsEl.getAttribute("bgColor");
 			NodeList panels = widgetsEl.getElementsByTagName("panel");
 			Element staticPanel =(Element)panels.item(0);
 
@@ -308,6 +310,10 @@ public class TabLayout extends BaseTablayout {
 		return numCol;
 	}
 
+	public String getBgColor() {
+		return bgColor;
+	}
+
 	public boolean isAdjustToWindowHeight() {
 		return adjustToWindowHeight;
 	}
@@ -330,6 +336,7 @@ public class TabLayout extends BaseTablayout {
 		tab.setName( this.getTabName());
 		tab.setType("static");
 		tab.setProperty("numCol", this.getNumCol());
+		tab.setProperty("bgColor", this.getBgColor());
 		tab.setDisabledDynamicPanelBool(this.isDisabledDynamicPanel());
 		
 		return tab;
