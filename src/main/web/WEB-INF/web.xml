@@ -231,6 +231,7 @@
         <url-pattern>/admin/i18n</url-pattern>
         <url-pattern>/admin/uploadgadget</url-pattern>
         <url-pattern>/admin/services/*</url-pattern>
+        <servlet-name>DesignServlet</servlet-name>
 	</filter-mapping>
 
     <filter-mapping>
