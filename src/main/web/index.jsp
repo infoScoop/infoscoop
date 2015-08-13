@@ -29,6 +29,7 @@
 <%@page import="org.infoscoop.util.I18NUtil"%>
 <%@page import="org.infoscoop.properties.InfoScoopProperties"%>
 <%@page import="org.infoscoop.context.UserContext"%>
+<%@page import="java.util.Map"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 	response.setHeader("Pragma","no-cache");
@@ -102,6 +103,8 @@
 		}
 		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_NAME_ATTR_NAME
 		Boolean isAdmin = (Boolean) request.getAttribute("isAdministrator");
+		
+		Map i18n = I18NUtil.getResourceMap(I18NUtil.TYPE_JS, request.getLocale());
 	%>
     <script>
 		<jsp:include page="/prpsrv" flush="true" />
@@ -361,18 +364,21 @@
 						    <div id="common-design-panel">
 						        <div class="design-option">
 							        <div class="design-set color-setting">
-							             <div class="title">背景</div>
+							             <div class="title"><%= i18n.get("lb_background") %></div>
 							            <div class="contents">
-							                <label>色番号 : </label><input class="color-picker" value="" />
+							                <label><%= i18n.get("lb_colorNumber") %> : </label><input class="color-picker" value="" />
 							            </div>
 							        </div>
 							        <div class="design-set layout-setting">
-							            <div class="title">レイアウト</div>
+							            <div class="title"><%= i18n.get("lb_layout") %></div>
 							            <div class="contents">
-							                <div class="gadgetsnum_buttonset"></div>
+							                <div class="buttonset-wrapper">
+							                    <span class="gadgetsnum_buttonset-label"><%= i18n.get("lb_number_of_gadgets") %></span>
+							                    <div class="gadgetsnum_buttonset"></div>
+							                </div>
 							                <div class="design-control">
-							                    <input type="button" class="save is-button" value="保存">
-							                    <input type="button" class="cancel is-button" value="キャンセル">
+							                    <input type="button" class="save is-button" value="<%= i18n.get("lb_changeApply") %>">
+							                    <input type="button" class="cancel is-button" value="<%= i18n.get("lb_cancel") %>">
 							                </div>
 							                <div class="layout-list">
     							                <c:import url="/WEB-INF/jsp/admin/defaultpanel/_layoutTemplates.jsp"/>
@@ -383,7 +389,7 @@
 						        <div class="static-degign-area"></div>
 								<div id="is-commonarea-widgetmodal" style="display:none">
 									<div class="commonarea-widgetmodal-header-bk">
-										<div class="commonarea-widgetmodal-header">ガジェット設定
+										<div class="commonarea-widgetmodal-header"><%= i18n.get("lb_widgetSettings") %>
 											<div id="commonarea-widgetmodal-cancel-image" class="commonarea-widgetmodal-cancel-image"></div>
 										</div>
 									</div>
@@ -391,17 +397,16 @@
 									<div id="commonarea-widgetmodal-contents">
 										<div class="commonarea-widgetmodal-menu">
 											<ul>
-												<li><a href="#commonarea-widgetmodal-item-1">WebサイトURLから設定</a></li>
-												<li><a href="#commonarea-widgetmodal-item-2">ガジェット一覧から設定</a></li>
+												<li><a href="#commonarea-widgetmodal-item-1"><%= i18n.get("lb_setting_from_website_url") %></a></li>
+												<li><a href="#commonarea-widgetmodal-item-2"><%= i18n.get("lb_setting_from_gadgets") %></a></li>
 											</ul>
 										</div>
 										<div class="commonarea-widgetmodal-display">
 											<div id="commonarea-widgetmodal-item-1">
 												<div class="commonarea-widgetmodal-addcontent">
-													<h2><img src="<%=staticContentURL%>/skin/imgs/rss.png" ></img>&nbspAdd new feeds</h2>
-													<p>RSSフィードのURL、またはWeb サイトの URL を入力してください。</p>
+													<p><%= i18n.get("lb_setting_from_website_url_desc") %></p>
 													<input class="preview-form" type="text" placeholder="https://www.infoscoop.org/i/en-news/feed/"></input>
-													<input class="preview-button" type="button" value="プレビュー">
+													<input class="preview-button" type="button" value="<%= i18n.get("lb_preview") %>">
 													<img class="preview-indicator" src="<%=staticContentURL%>/skin/imgs/ajax-loader-blue.gif" style="display:none;">
 												</div>
 												<div class="commonarea-widgetmodal-preview">
@@ -410,7 +415,6 @@
 											</div>
 											<div id="commonarea-widgetmodal-item-2">
 												<div class="commonarea-widgetmodal-addcontent">
-													<h2><img src="<%=staticContentURL%>/skin/imgs/plus.png" ></img>&nbspAdd new gadgets</h2>
 													<iframe class="gadget-settings" src="manager/defaultpanel/gadget-settings"></iframe>
 												</div>
 											</div>

@@ -237,7 +237,7 @@ IS_CommonAreaWidgetModal.prototype = {
         
         if(widget){
             var addButtonDiv = $jq("<div>").addClass("apply-button").appendTo(_previewItem);
-            var addButton = $jq("<input>").attr("type", "button").addClass("is-button").val("設定する").appendTo(addButtonDiv);
+            var addButton = $jq("<input>").attr("type", "button").addClass("is-button").val(IS_R.lb_do_save).appendTo(addButtonDiv);
             
             addButton.click(function(widgetJSON){
                 widgetJSON.properties = widgetJSON.property;

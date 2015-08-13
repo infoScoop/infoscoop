@@ -377,7 +377,7 @@ IS_Portal.showTabMenu = function(tabElement, e){
             var designDiv = createItem({
                 anchor: true,
                 className: "commonAreaDesign",
-                label: "共通エリアのデザイン",
+                label: IS_R.lb_common_area_design,
                 handler: tabObj.changeDesignMode.bind( tabObj )
             });
             designDiv.id = tabObj.id +"_menu_design";

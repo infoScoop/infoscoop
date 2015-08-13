@@ -23,13 +23,13 @@
 }
 
 .infoScoop #common-design-panel .design-option {
-	background-color: #333333;
-	color: #AAAAAA;
+	background-color: #666666;
+	color: #dddddd;
     font-size: 12px;
     padding: 5px;
     height: 180px;
     display: none;
-    border: 1px inset #ffffff;
+    border: 1px solid #aaaaaa;
 }
 
 .infoScoop #common-design-panel .design-option .design-set {
@@ -39,6 +39,7 @@
 .infoScoop #common-design-panel .design-option .design-set.color-setting {
     float:left;
     margin-right:10px;
+    width: 200px;
 }
 
 .infoScoop #common-design-panel .design-option .design-set.layout-setting {
@@ -46,13 +47,15 @@
 }
 
 .infoScoop #common-design-panel .design-option .design-set .title {
-    padding: 0px 3px 5px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 0px 3px 5px;
 }
 
 .infoScoop #common-design-panel .design-option .design-set .contents {
     height: 130px;
     padding: 10px;
-    background: #666;
+    background: #333333;
     color: #FFF;
 }
 
@@ -65,7 +68,7 @@
 /* color picker */
 
 .infoScoop #common-design-panel .design-option .design-set .color-picker {
-    width: 100px;
+    width: 150px;
 }
 
 /* static layouts */
@@ -103,9 +106,19 @@
 	vertical-align: top;
 }
 
+.infoScoop #common-design-panel .buttonset-wrapper {
+    float: left;
+    display: inline-block;
+}
+
 .infoScoop #common-design-panel .ui-buttonset {
 	margin: 0px 5px 10px;
-	float: left;
+	display: inline-block;
+}
+
+.infoScoop #common-design-panel .gadgetsnum_buttonset-label{
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .infoScoop #common-design-panel .design-control {

@@ -38,7 +38,7 @@ IS_CommonAreaDesign.prototype = {
         
 
         $jq(".staticLayout, .staticLayoutAdjustHeight", this.content).on("click", {self:this}, function(e){
-            if(!confirm("テンプレートを選択すると、今までの設定は破棄されます。"))
+            if(!confirm(IS_R.lb_destroyOldSettings))
                 return;
             
             var self = e.data.self;
@@ -318,7 +318,7 @@ IS_CommonAreaDesign.prototype = {
         $jq("#layout").val($jq(".static-degign-area", this.content).html());
     },
     save: function(){
-        if(!confirm("保存を行うと画面がリロードされます。よろしいですか？")){
+        if(!confirm(IS_R.lb_apply_and_reload_confirm)){
             return;
         }
         
