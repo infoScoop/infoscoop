@@ -576,7 +576,7 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 		
 		var trs = editorFormSubTbody.childNodes;
 		for(var i = 0; i < trs.length; i++){
-			if(trs[i].className == "propertyTr" || trs[i].className == "multiTr"){
+			if(trs[i].className == "propertyTr" || trs[i].className == "multiTr" || trs[i].className == "refreshIntervalTr"){
 				editorFormSubTbody.removeChild(trs[i]);
 				i--;
 			}
