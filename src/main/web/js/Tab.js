@@ -444,7 +444,9 @@ IS_Portal.showTabMenu = function(tabElement, e){
             var renameDiv = createItem( { className:"rename",content: titleDiv });
             renameDiv.id = tabObj.id +"_menu_rename";
             menuDiv.appendChild( renameDiv );
-            
+        }
+
+        if(!tabObj.disabledDynamicPanel){
             // Change number of column
             titleDiv = document.createElement("div");
             titleDiv.style.cursor = "normal";
