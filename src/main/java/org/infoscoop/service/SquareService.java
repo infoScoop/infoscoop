@@ -252,28 +252,16 @@ public class SquareService {
 		this.staticTabDAO.copySquare(squareId, sourceSquareId);
 		this.oauth2ProviderClientDetailDAO.copySquare(squareId, sourceSquareId);
 
-//		Map<Integer, Integer> roleIdMap = new HashMap<Integer, Integer>();
 		// copy Adminrole
 		List<Adminrole> adminRoleList = adminRoleDAO.select(sourceSquareId);
 		Iterator<Adminrole> rolesIte = adminRoleList.iterator();
 		String squareAdminRoleId = null;
 		while(rolesIte.hasNext()){
 			Adminrole adminRole = rolesIte.next();
-//			String orgId = adminRole.getId();
 			String newId = adminRoleDAO.insert(adminRole.getRoleid(), adminRole.getName(), adminRole.getPermission(), adminRole.isAllowDelete(), squareId, new Boolean(true));
 			if(SQUARE_ADMIN_ROLE_NAME.equals(adminRole.getRoleid()))
 				squareAdminRoleId = newId;
-//			roleIdMap.put(new Integer(orgId), new Integer(newId));
 		}
-		
-		// copy PortalAdmins
-//		List<Portaladmins> portalAdminList = portalAdminsDAO.select(sourceSquareId);
-//		Iterator<Portaladmins> adminsIte = portalAdminList.iterator();
-//		while(adminsIte.hasNext()){
-//			Portaladmins portalAdmin = adminsIte.next();
-//			Integer orgRoleId = portalAdmin.getRoleid();
-//			portalAdminsDAO.insert(portalAdmin.getUid(), roleIdMap.get(orgRoleId), squareId);
-//		}
 
 		// add Square Adminirstrator
 		portalAdminsDAO.insert(userId, new Integer(squareAdminRoleId), squareId);
@@ -327,9 +315,13 @@ public class SquareService {
 		square.setLastmodified(new Date());
 		squareDAO.update(square);
 	}
-	
+
 	public void deleteSquare(String squareId){
 		Square square = squareDAO.get(squareId);
 		squareDAO.delete(square);
+	}
+
+	public void deleteOwnerSquare(String userId) {
+		squareDAO.deleteByOwner(userId);
 	}
 }

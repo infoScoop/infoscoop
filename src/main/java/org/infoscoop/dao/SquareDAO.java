@@ -41,7 +41,7 @@ public class SquareDAO extends HibernateDaoSupport {
 	}
 	
 	public Square get(String id){
-		return ( Square )super.getHibernateTemplate().get( Square.class, id );
+		return ( Square )super.getHibernateTemplate().get(Square.class, id);
 	}
 
 	public List<Square> getSquares(List<String> ids){
@@ -69,5 +69,10 @@ public class SquareDAO extends HibernateDaoSupport {
 
 	public void delete(Square entity) {
 		super.getHibernateTemplate().delete(entity);
+	}
+
+	public void deleteByOwner(String userId) {
+		String queryString = "delete from " + Square.REF + " where "+ Square.PROP_OWNER + " = ?";
+		super.getHibernateTemplate().bulkUpdate(queryString, userId);
 	}
 }
