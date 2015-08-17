@@ -291,6 +291,10 @@ public class SquareService {
 		return sq.getName();
 	}
 
+	public List<Square> getOwnerSquare(String userId) {
+		return squareDAO.getByOwner(userId);
+	}
+
 	public boolean existsSquare(String squareId) {
 		boolean result = false;
 		if(squareDAO.get(squareId) != null) {
@@ -313,7 +317,15 @@ public class SquareService {
 		squareDAO.delete(square);
 	}
 
-	public void deleteOwnerSquare(String userId) {
+	public List<String> deleteOwnerSquare(String userId) {
+		List<String> idList = new ArrayList<String>();
+		List<Square> squareList = this.getOwnerSquare(userId);
+
+		for(Square square : squareList) {
+			idList.add(square.getId());
+		}
+
 		squareDAO.deleteByOwner(userId);
+		return idList;
 	}
 }
