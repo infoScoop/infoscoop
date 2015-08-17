@@ -53,6 +53,7 @@ import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.properties.InfoScoopProperties;
+import org.infoscoop.service.SquareService;
 import org.infoscoop.util.RSAKeyManager;
 
 /**
@@ -73,7 +74,6 @@ public class SessionManagerFilter implements Filter {
 	public static String LOGINUSER_SUBJECT_ATTR_NAME = "loginUser";
 	public static String LOGINUSER_SESSION_ID_ATTR_NAME = "SessionId";
 	public static String LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME = "CurrentSquareId";
-	public static String CURRENT_SQUARE_ID_DEFAULT = "default";
 
 	private Collection excludePaths = new HashSet();
 	private Collection<String> excludePathx = new HashSet<String>();
@@ -166,7 +166,7 @@ public class SessionManagerFilter implements Filter {
 
 		if(!InfoScoopProperties.getInstance().isUseMultitenantMode() || currentSquareId == null) {
 			// シングルテナント時、ユーザーのデフォルトスクエアを入れる
-			currentSquareId = CURRENT_SQUARE_ID_DEFAULT;
+			currentSquareId = SquareService.SQUARE_ID_DEFAULT;
 		}
 
 		resultMap.put("Uid", uid);
@@ -232,7 +232,7 @@ public class SessionManagerFilter implements Filter {
 				}
 			}else{
 				uid = getUidFromHeader(httpReq);
-				currentSquareId = CURRENT_SQUARE_ID_DEFAULT;
+				currentSquareId = SquareService.SQUARE_ID_DEFAULT;
 				Map<String, String> result = getSquareUidFromSession(httpReq);
 				if (uid == null) {
 					uid = result.get("Uid");

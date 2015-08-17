@@ -56,6 +56,7 @@ public class SquareService {
 	public static final String SQUARE_ADMIN_ROLE_NAME = "squareAdmin";
 	private static final String SQUARE_MAX_USER_NUMBER = "square.max.user.number";
 	private static final String DEFAULT_MAX_USER = "10";
+	public static String SQUARE_ID_DEFAULT = "default";
 
 	// DAO
 	private SquareDAO squareDAO;
@@ -64,7 +65,6 @@ public class SquareService {
 	private GadgetDAO gadgetDAO;
 	private GadgetIconDAO gadgetIconDAO;
 	private HolidaysDAO holidaysDAO;
-	private I18NDAO i18NDAO;
 	private SiteAggregationMenuDAO siteAggregationMenuDAO;
 	private OAuthCertificateDAO oauthCertificateDAO;
 	private PortalAdminsDAO portalAdminsDAO;
@@ -123,14 +123,6 @@ public class SquareService {
 
 	public void setHolidaysDAO(HolidaysDAO holidaysDAO) {
 		this.holidaysDAO = holidaysDAO;
-	}
-
-	public I18NDAO getI18NDAO() {
-		return i18NDAO;
-	}
-
-	public void setI18NDAO(I18NDAO i18NDAO) {
-		this.i18NDAO = i18NDAO;
 	}
 
 	public SiteAggregationMenuDAO getSiteAggregationMenuDAO() {
@@ -240,7 +232,7 @@ public class SquareService {
 		this.gadgetDAO.copySquare(squareId, sourceSquareId);
 		this.gadgetIconDAO.copySquare(squareId, sourceSquareId);
 		this.holidaysDAO.copySquare(squareId, sourceSquareId);
-		this.i18NDAO.copySquare(squareId, sourceSquareId);
+//		this.i18NDAO.copySquare(squareId, sourceSquareId);
 		this.siteAggregationMenuDAO.copySquare(squareId, sourceSquareId);
 		this.oauthCertificateDAO.copySquare(squareId, sourceSquareId);
 		this.portalLayoutDAO.copySquare(squareId, sourceSquareId);

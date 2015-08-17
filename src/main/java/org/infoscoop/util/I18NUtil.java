@@ -24,11 +24,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.I18NDAO;
 import org.infoscoop.service.I18NService;
+import org.infoscoop.service.SquareService;
 
 public class I18NUtil {
 	public static final String TYPE_JS = "js";
@@ -64,7 +66,8 @@ public class I18NUtil {
 		
 		I18NDAO i18NDAO = I18NDAO.newInstance();
 		
-		String lastmodified = i18NDAO.getLastmodified(type, UserContext.instance().getUserInfo().getCurrentSquareId());
+//		String lastmodified = i18NDAO.getLastmodified(type, UserContext.instance().getUserInfo().getCurrentSquareId());
+		String lastmodified = i18NDAO.getLastmodified(type, SquareService.SQUARE_ID_DEFAULT);
 		String key = type + "_" + country + "_" + lang;
 		ResourceMap rm = (ResourceMap) i18nMap.get(key);
 		if (rm != null) {

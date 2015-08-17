@@ -43,12 +43,12 @@ import org.infoscoop.acl.SecurityController;
 import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.OAuthCertificateDAO;
 import org.infoscoop.dao.model.OAuthCertificate;
+import org.infoscoop.service.SquareService;
 import org.infoscoop.util.RequestUtil;
 
 public class SignedAuthenticator implements Authenticator {
 	public static final OAuthClient CLIENT = new OAuthClient(new HttpClient3());
 	private static final String PUBLIC_KEY_NAME = "public.cer";
-	private static final String DEFAULT_SQUARE_ID = "default";
 
 	private static Log log = LogFactory.getLog(SignedAuthenticator.class);
 
@@ -112,7 +112,7 @@ public class SignedAuthenticator implements Authenticator {
 		OAuthCertificate certificate;
 
 		if(useGlobalKey) {
-			certificate = OAuthCertificateDAO.newInstance().get(DEFAULT_SQUARE_ID);
+			certificate = OAuthCertificateDAO.newInstance().get(SquareService.SQUARE_ID_DEFAULT);
 		} else {
 			certificate = OAuthCertificateDAO.newInstance().get(UserContext.instance().getUserInfo().getCurrentSquareId());
 		}
