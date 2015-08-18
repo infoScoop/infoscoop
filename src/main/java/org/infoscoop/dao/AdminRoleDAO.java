@@ -73,35 +73,60 @@ public class AdminRoleDAO extends HibernateDaoSupport {
 	public Adminrole selectByRoleId(String roleId, String squareid) {
 		List<Adminrole> result = (List)super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Adminrole.class)
-				.add(Expression.eq("Roleid", roleId))
-				.add(Expression.eq("Squareid", squareid)));
+						.add(Expression.eq("Roleid", roleId))
+						.add(Expression.eq("Squareid", squareid)));
 		return (result.size() > 0)? result.get(0) : null;
 	}
 
 	public List<String> getNotAllowDeleteRoleIds() {
-		
+
 		List<String> result = (List)super.getHibernateTemplate().executeFind(new HibernateCallback() {
-			
+
 			public Object doInHibernate(Session session) throws HibernateException,
 					SQLException {
-				
+
 				Criteria crit = session.createCriteria(Adminrole.class).add(
 						Expression.eq("Allowdelete", new Integer(0)));
-				
+
+				List roleIdsList = new ArrayList();
+				List<Adminrole> resultList = crit.list();
+				for (Iterator<Adminrole> ite = resultList.iterator(); ite.hasNext(); ) {
+					Adminrole adminRole = ite.next();
+					roleIdsList.add(adminRole.getId());
+				}
+
+				return roleIdsList;
+			}
+		});
+
+		return result;
+	}
+
+	public List<String> getNotAllowDeleteRoleIds(final String squareId) {
+
+		List<String> result = (List)super.getHibernateTemplate().executeFind(new HibernateCallback() {
+
+			public Object doInHibernate(Session session) throws HibernateException,
+					SQLException {
+
+				Criteria crit = session.createCriteria(Adminrole.class)
+						.add(Expression.eq("Allowdelete", new Integer(0)))
+						.add(Expression.eq(Adminrole.PROP_SQUARE_ID, squareId));
+
 				List roleIdsList = new ArrayList();
 				List<Adminrole> resultList = crit.list();
 				for(Iterator<Adminrole> ite=resultList.iterator();ite.hasNext();){
 					Adminrole adminRole = ite.next();
 					roleIdsList.add(adminRole.getId());
 				}
-						
+
 				return roleIdsList;
 			}
 		});
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * delete the data.
 	 * 

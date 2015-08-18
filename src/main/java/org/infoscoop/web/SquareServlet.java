@@ -97,7 +97,7 @@ public class SquareServlet extends HttpServlet {
 			if(squareSource == null
 					|| squareSource.length() == 0
 					|| !SquareService.getHandle().existsSquare(squareSource)) {
-				squareSource = "default";
+				squareSource = SquareService.SQUARE_ID_DEFAULT;
 			}
 
 			// create square

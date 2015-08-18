@@ -129,7 +129,7 @@ IS_Portal.getNextTabNumber = function(){
     @param numCol Column number of the tab adding.
     @disabledDynamicPanel disable dynamic panel.
 */
-IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disabledDynamicPanel, isInitialize){
+IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disabledDynamicPanel, isInitialize, isTabAdmin, property){
     /**
         For managing tab information object
         @param id id of tab
@@ -139,7 +139,7 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
         @param panel Div element of panel that correspond tab
         @param tabNumber Number of displaying order of tab.
     */
-    var Tab = function(id, name, type, tab, panel, tabNumber, columnsWidth, disabledDynamicPanel){
+    var Tab = function(id, name, type, tab, panel, tabNumber, columnsWidth, disabledDynamicPanel, isTabAdmin, property){
         this.id = id;
         this.name = name;
         this.type = type;
@@ -148,6 +148,12 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
         this.tabNumber = tabNumber;
         this.numCol = 0;
         this.isColumnBuilt = false;
+        this.isTabAdmin = isTabAdmin;
+        if(!property){
+            this.property = {};
+        }else{
+            this.property = property;
+        }
         if(columnsWidth)
             this.columnsWidth = columnsWidth;
         this.disabledDynamicPanel = disabledDynamicPanel;
@@ -196,10 +202,17 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
             IS_WidgetsContainer.rebuildColumns(this.id, this.numCol, false, true);
             return false;
         }
+        this.changeDesignMode = function(){
+            if(!IS_Portal.CommonAreaDesign)
+                IS_Portal.CommonAreaDesign = new IS_CommonAreaDesign("common-design-panel");
+            
+            IS_Portal.CommonAreaDesign.changeDesignMode(this);
+            hideTabMenu.bind( this )();
+        }.bind(this);
     }
     
     var addTabDiv = document.getElementById("addTab");
-    var tabDiv = IS_Portal.buildTab( idNumber, name, disabledDynamicPanel);
+    var tabDiv = IS_Portal.buildTab( idNumber, name, disabledDynamicPanel, isTabAdmin);
     
     if(useTab){
 //      var tabsContiner = addTabDiv.previousSibling;
@@ -209,7 +222,7 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
     }
     
     
-    var panelDiv = IS_Portal.buildPanel( idNumber, type );
+    var panelDiv = IS_Portal.buildPanel( idNumber, type, property );
     
     if (!disabledDynamicPanel){
     	panelDiv.addClassName("has-dynamic-panel");
@@ -222,7 +235,7 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
 //  IS_Portal.subWidgetLists[tabDiv.id] = new Object();
     IS_Portal.columnsObjs[tabDiv.id] = {};
     
-    var tabObj = new Tab(tabDiv.id, name, type, tabDiv, panelDiv, IS_Portal.tabList.length, columnsWidth, disabledDynamicPanel);
+    var tabObj = new Tab(tabDiv.id, name, type, tabDiv, panelDiv, IS_Portal.tabList.length, columnsWidth, disabledDynamicPanel, isTabAdmin, property);
     IS_Portal.tabs[tabObj.id] = tabObj;
     
     IS_Portal.tabList.push(tabDiv);
@@ -248,7 +261,7 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
     @param tabNumber ID numebr of creating tab
     @param name Name of creating tab
 */
-IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
+IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel, isTabAdmin){
     // Creating tab
     var tab = document.createElement("li");
     tab.id = "tab"+tabNumber;
@@ -291,7 +304,7 @@ IS_Portal.buildTab = function( tabNumber, name, disabledDynamicPanel){
     tabBaseDiv.appendChild(titleDiv);
 
     //Menu
-    if(disabledDynamicPanel){
+    if(disabledDynamicPanel && !isTabAdmin){
         var refresh = $.SPAN({id:tab.id+"_selectMenu",className:"selectMenu refresh"});
         var refreshImgDiv = $.DIV({className:"inlineBlock tabTitleImg"}, refresh);
         tabBaseDiv.appendChild(refreshImgDiv);
@@ -359,8 +372,19 @@ IS_Portal.showTabMenu = function(tabElement, e){
         menuDiv.id = (tabElement.id + "_menu");
         menuDiv.className = "tabMenu is-box";
         
+        // Common Area Design
+        if(tabObj.type == 'static' && tabObj.isTabAdmin){
+            var designDiv = createItem({
+                anchor: true,
+                className: "commonAreaDesign",
+                label: IS_R.lb_common_area_design,
+                handler: tabObj.changeDesignMode.bind( tabObj )
+            });
+            designDiv.id = tabObj.id +"_menu_design";
+            menuDiv.appendChild( designDiv );
+        }
+        
         // Update
-//      var refreshDiv = createAnchorItem("refresh","Reload",tabObj.refresh.bind( tabObj ));
         var refreshDiv = createItem({
             anchor: true,
             className: "refresh",
@@ -421,42 +445,44 @@ IS_Portal.showTabMenu = function(tabElement, e){
             renameDiv.id = tabObj.id +"_menu_rename";
             menuDiv.appendChild( renameDiv );
         }
-        
-        // Change number of column
-        titleDiv = document.createElement("div");
-        titleDiv.style.cursor = "normal";
-        titleDiv.appendChild( document.createTextNode( IS_R.lb_changeColumn ));
-        var select = document.createElement("select");
-        select.id = tabObj.id +"_menu_changeColumnNum_select";
-        select.className = "columnNumSelect";
-        for(var i=1;i<=maxColumnNum;i++){
-            var option = document.createElement("option");
-            option.innerHTML = i;
-            option.value = i;
-            if(i == tabObj.numCol)
-                option.selected = true;
-            select.appendChild(option);
+
+        if(!tabObj.disabledDynamicPanel){
+            // Change number of column
+            titleDiv = document.createElement("div");
+            titleDiv.style.cursor = "normal";
+            titleDiv.appendChild( document.createTextNode( IS_R.lb_changeColumn ));
+            var select = document.createElement("select");
+            select.id = tabObj.id +"_menu_changeColumnNum_select";
+            select.className = "columnNumSelect";
+            for(var i=1;i<=maxColumnNum;i++){
+                var option = document.createElement("option");
+                option.innerHTML = i;
+                option.value = i;
+                if(i == tabObj.numCol)
+                    option.selected = true;
+                select.appendChild(option);
+            }
+            var changeColumnNumTimer;
+            Event.observe(select, "change", function(){
+                if( changeColumnNumTimer ) clearTimeout( changeColumnNumTimer );
+                changeColumnNumTimer = setTimeout( tabObj.changeColumnNum.bind( tabObj,select.value ),300 );
+            }, false, tabObj.id );
+            titleDiv.appendChild(select);
+            
+            var changeColumnNumDiv = createItem({ className:"changeColumnNum",content: titleDiv });
+            changeColumnNumDiv.id = tabObj.id +"_menu_changeColumnNum";
+            menuDiv.appendChild( changeColumnNumDiv );
+            
+            // Reset the width of column
+            var resetColumnWidthDiv = createItem({
+                anchor:true,
+                className: "resetColumnWidth",
+                label: IS_R.lb_resetColumnWidth,
+                handler: tabObj.resetColumnWidth.bind( tabObj )
+            });
+            resetColumnWidthDiv.id = tabObj.id +"_menu_resetColumnWidthDiv";
+            menuDiv.appendChild( resetColumnWidthDiv );
         }
-        var changeColumnNumTimer;
-        Event.observe(select, "change", function(){
-            if( changeColumnNumTimer ) clearTimeout( changeColumnNumTimer );
-            changeColumnNumTimer = setTimeout( tabObj.changeColumnNum.bind( tabObj,select.value ),300 );
-        }, false, tabObj.id );
-        titleDiv.appendChild(select);
-        
-        var changeColumnNumDiv = createItem({ className:"changeColumnNum",content: titleDiv });
-        changeColumnNumDiv.id = tabObj.id +"_menu_changeColumnNum";
-        menuDiv.appendChild( changeColumnNumDiv );
-        
-        // Reset the width of column
-        var resetColumnWidthDiv = createItem({
-            anchor:true,
-            className: "resetColumnWidth",
-            label: IS_R.lb_resetColumnWidth,
-            handler: tabObj.resetColumnWidth.bind( tabObj )
-        });
-        resetColumnWidthDiv.id = tabObj.id +"_menu_resetColumnWidthDiv";
-        menuDiv.appendChild( resetColumnWidthDiv );
 
         var initTab = function(tabId){
             if( !confirm( IS_R.ms_clearTabConfigurationConfirm ))
@@ -1322,7 +1348,7 @@ IS_Portal.endChangeTab = function(e){
     @param panelNumber ID number of panel.
     @param type The type of adding panel(Include static panel:static/Exclude:dynamic)
 */
-IS_Portal.buildPanel = function(panelNumber, type){
+IS_Portal.buildPanel = function(panelNumber, type, property){
     // Create panel
     var panel = document.createElement("div");
     panel.id = "panel"+panelNumber;
@@ -1354,6 +1380,9 @@ IS_Portal.buildPanel = function(panelNumber, type){
     staticPanel.appendChild(staticDiv);
     staticDiv.id = "static-portal-widgets"+panelNumber;
     staticPanel.className = "is-clearfix";
+    
+    if(property && property.bgColor)
+        $jq(staticPanel).css("background-color", property.bgColor);
     
     var staticPanelLayout = IS_Customization["staticPanel"+panelNumber];
     if(type == "static" && staticPanelLayout && staticPanelLayout.layout){

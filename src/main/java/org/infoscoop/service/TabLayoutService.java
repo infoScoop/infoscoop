@@ -17,6 +17,7 @@
 
 package org.infoscoop.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -182,123 +183,20 @@ public class TabLayoutService {
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		
 		try {
-			List oldTabList = tabLayoutDAO.selectByTempTabId(TabLayout.TEMP_TRUE, tabId,
-					squareid);
-			Map oldDynamicPanelMap = new HashMap();
-			for(Iterator it = oldTabList.iterator(); it.hasNext();){
-				TabLayout tab = (TabLayout)it.next();
-
-				JSONObject json = tab.getDynamicPanelJson();
-
-				oldDynamicPanelMap.put(tab.getId().getRoleorder(), json);
-			}
 			// Delete
 			tabLayoutDAO.deleteTempByTabId(tabId, squareid);
-
-			Map newDynamicPanelMap = new HashMap();
+			
 			// Insert
 			for (Iterator it = panelMap.keySet().iterator(); it.hasNext();) {
 				String id = (String) it.next();
 				Map map = null;
 				if (panelMap.get(id) instanceof Map) {
 					map = (Map) panelMap.get(id);
-
-					// Transfer to document
-					StringBuffer xml = new StringBuffer();
-					xml.append("<widgets");
-					xml.append(" tabId=").append("\"");
-					xml.append(tabId).append("\"");
-					xml.append(" tabName=").append("\"");
-					String tabTitle = (String) map.get("tabName");
-					xml.append(XmlUtil.escapeXmlEntities(tabTitle)).append("\"");
-					xml.append(" tabType=").append("\"");
-					xml.append("static").append("\"");
-					// columnsWidth attribute is not needed if it is commandbar
-					if (!StaticTab.COMMANDBAR_TAB_ID.equals(tabId)) {
-						xml.append(" columnsWidth=").append("\"").append(
-								(String) map.get("columnsWidth")).append("\"");
-						xml.append(" numCol=").append("\"").append(
-								(String) map.get("numCol")).append("\"");
-					}
-					xml.append(">");
-					xml.append("\n");
 					
-					// StaticPanel tab is not needed if it is commandbar and header
-					if (!StaticTab.PORTALHEADER_TAB_ID.equals(tabId)) {
-						Boolean adjustToWindowHeight = (Boolean) map
-						.get("adjustToWindowHeight");
-						xml.append("<panel type=\"StaticPanel\"" +
-								(adjustToWindowHeight != null && adjustToWindowHeight ? " adjustToWindowHeight=\"true\"" : "") +
-								">");
-						xml.append("\n");
-						JSONObject staticJson = new JSONObject((String)map.get("staticPanel"));
-						for (Iterator widgetsIt = staticJson.keys(); widgetsIt.hasNext();) {
-							String widgetId = (String) widgetsIt.next();
-							JSONObject widgetJSON = staticJson.getJSONObject(widgetId);
-	
-							xml.append( widgetJSONtoString( widgetJSON ));
-						}
-						xml.append("</panel>");
-						xml.append("\n");
-					}
-					// DynamicPanel tab is not needed if it is commandbar and header
-					if (!StaticTab.COMMANDBAR_TAB_ID.equals(tabId) && !StaticTab.PORTALHEADER_TAB_ID.equals(tabId)) {
-						xml.append("<panel type=\"DynamicPanel\"");
-						Boolean disabledDynamicPanel = (Boolean) map
-								.get("disabledDynamicPanel");
-						if (disabledDynamicPanel != null
-								&& disabledDynamicPanel)
-							xml.append(" disabled=\"true\"");
-						xml.append(">");
-						JSONObject dynamicJson = new JSONObject((String) map
-								.get("dynamicPanel"));
-						newDynamicPanelMap.put(map.get("roleOrder"), dynamicJson);
-						for (Iterator widgetsIt = dynamicJson.keys(); widgetsIt
-								.hasNext();) {
-							String widgetId = (String) widgetsIt.next();
-							JSONObject widget = dynamicJson
-									.getJSONObject(widgetId);
-							if (widget.get("id") == null
-									|| widget.get("id").equals(""))
-								continue;
-
-							xml.append("<widget");
-							xml.append(" id=").append("\"");
-							xml.append((String) widget.get("id")).append("\"");
-							if(widget.has("menuId")){
-								xml.append(" menuId=").append("\"");
-								xml.append((String) widget.getString("menuId")).append("\"");
-							}
-							xml.append(" column=").append("\"");
-							xml.append((String) widget.get("column")).append("\"");
-
-							if( widget.has("properties")) {
-								xml.append(">");
-								JSONObject properties = ( JSONObject )widget.get("properties");
-								xml.append("<data>");
-								for( Iterator keys=properties.keys();keys.hasNext();) {
-									String key = ( String )keys.next();
-
-									xml.append("<property name=\"").append( key ).append("\">");
-									xml.append( XmlUtil.escapeXmlEntities( properties.get( key ).toString()));
-									xml.append("</property>");
-								}
-								xml.append("</data>");
-								xml.append("</widget>");
-							} else {
-								xml.append("/>");
-							}
-						}
-						xml.append("</panel>");
-						xml.append("\n");
-					}
-					xml.append("</widgets>");
-//					Document doc = AdminServiceUtil.stringToDocument(xml
-//							.toString());
-
+					String xml = createWidgetsXml(tabId, map);
+					
 					// Setting again
-//					map.put("widgets", doc);
-					map.put("widgets", xml.toString());
+					map.put("widgets", xml);
 					map.put("tabId", tabId);
 
 					String roleName = (String)map.get("roleName");
@@ -313,9 +211,7 @@ public class TabLayoutService {
 				}
 				tabLayoutDAO.insert(map, squareid);
 			}
-
-			updateWidgets(oldDynamicPanelMap, newDynamicPanelMap);
-
+			
 			// Update last modified date of tab0 if it is commandbar
 			if (StaticTab.COMMANDBAR_TAB_ID.equals(tabId)) {
 				tabLayoutDAO.updateLastmodifiedByTabId("0", squareid);
@@ -328,6 +224,34 @@ public class TabLayoutService {
 		}
 	}
 
+	/**
+	 * @param tabId
+	 * @param tabNumber
+	 * @param panelMap
+	 * @return
+	 * @throws Exception
+	 */
+	public synchronized String updateRoleLayout(String tabId, Integer roleOrder, Map layoutParams) throws Exception {
+		
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		try {
+			TabLayout updateTarget = tabLayoutDAO.selectByPK(tabId, roleOrder, TabLayout.TEMP_FALSE, squareid);
+			String xml = createWidgetsXml(tabId, layoutParams);
+			updateTarget.setWidgets(xml);
+			
+			String layout = (String) layoutParams.get("layout");
+			String widgetsLastmodified = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+			updateTarget.setLayout(layout);
+			updateTarget.setWidgetslastmodified(widgetsLastmodified);
+			tabLayoutDAO.update(updateTarget);
+			
+			return "[" + JSONObject.quote(tabId) + "]";
+		} catch (Exception e) {
+			log.error("Unexpected error occurred.", e);
+			throw e;
+		}
+	}
+	
 	private static String widgetJSONtoString( JSONObject widget ) throws JSONException {
 		StringBuffer xml = new StringBuffer();
 
@@ -378,23 +302,6 @@ public class TabLayoutService {
 		return xml.toString();
 	}
 
-	private void updateWidgets(Map oldDynamicPanelMap, Map newDynamicPanelMap) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * for debug
-	 *
-	 * @param args
-	 * @throws Exception
-	 */
-	public static void main(String args[]) throws Exception {
-		//System.out.println(getHandle().getDefaultPanelJson(COMMANDBAR_TAB_ID));
-//		System.out.println(getHandle().getTabIdListJson());
-		System.out.println(getHandle().getDefaultPanelJson(StaticTab.COMMANDBAR_TAB_ID));
-	}
-
 	/**
 	 * Obtain user who is editing
 	 * @return
@@ -423,32 +330,13 @@ public class TabLayoutService {
 	 */
 	public String getDefaultPanelJson(String tabId) throws Exception {
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
-		List tabLayoutList = this.tabLayoutDAO.selectByTabId(tabId, squareid);
+		List<TabLayout> tabLayoutList = this.tabLayoutDAO.selectByTabId(tabId, squareid);
 		JSONObject result = new JSONObject();
 		JSONObject value = null;
-		for(Iterator it = tabLayoutList.iterator(); it.hasNext();){
+		for(Iterator<TabLayout> it = tabLayoutList.iterator(); it.hasNext();){
 			TabLayout tablayout = (TabLayout)it.next();
 			StaticTab staticTab = tablayout.getStatictab();
-			value = new JSONObject();
-//			value.put("id", Tablayout.getId().getTabid() + "_" + Tablayout.getRole());	// tabId+role can not be unique
-//			value.put("id", tablayout.getId().getTabid() + "_" + tablayout.getId().getRoleorder() + "_" + tablayout.getRole());	// fix #174
-			value.put("id", Crypt.getHash(tablayout.getId().getTabid() + "_" + tablayout.getId().getRoleorder() + "_" + tablayout.getRole()));	// fix #174
-			value.put("tabId", tablayout.getId().getTabid());
-			value.put("tabName", tablayout.getTabName());
-			value.put("columnsWidth", tablayout.getColumnsWidth());
-			value.put("tabNumber", staticTab != null ? staticTab.getTabnumber(): null);
-			value.put("role", tablayout.getRole());
-			value.put("principalType", tablayout.getPrincipaltype());
-			value.put("roleOrder", tablayout.getId().getRoleorder().intValue() );
-			value.put("roleName", tablayout.getRolename());
-			value.put("defaultUid", tablayout.getDefaultuid());
-			value.put("widgetsLastmodified", tablayout.getWidgetslastmodified());
-			value.put("staticPanel", (tabId.equalsIgnoreCase(StaticTab.COMMANDBAR_TAB_ID))?
-					tablayout.getStaticPanelJsonWithComment() : tablayout.getStaticPanelJson());
-			value.put("layout", tablayout.getLayout());
-			value.put("dynamicPanel", tablayout.getDynamicPanelJson());
-			value.put("adjustToWindowHeight", tablayout.isAdjustToWindowHeight());
-			value.put("disabledDynamicPanel", tablayout.isDisabledDynamicPanel());
+			value = toJsonObject(tabId, tablayout, staticTab);
 
 			result.put(value.getString("id"), value);
 
@@ -467,7 +355,33 @@ public class TabLayoutService {
 
 		return result.toString();
 	}
+	
+	/**
+	 * @param tabId
+	 * @return
+	 * @throws Exception
+	 */
+	public String getDefaultPanelJson(String tabId, Integer roleOrder) throws Exception {
+		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		TabLayout tablayout = this.tabLayoutDAO.selectByPK(tabId, roleOrder, TabLayout.TEMP_FALSE, squareid);
+		
+		StaticTab staticTab = tablayout.getStatictab();
+		JSONObject value = toJsonObject(tabId, tablayout, staticTab);
 
+		if(DEFAULT_ROLE_NAME.equals(
+				tablayout.getRolename())
+				&& staticTab != null
+				&& staticTab.getDisabledefault().intValue() == StaticTab.DISABLE_DEFAULT_TRUE)
+			value.put("disabledDefault", true);
+
+		if(roleOrder.intValue() == 0){
+			// At the end of roleOrde is default(This is is only way to determine as regular expression is not unique because of handling ecah subject)
+			value.put("isDefault", "true");
+		}
+
+		return value.toString();
+	}
+	
 	/**
 	 * Return map of Customization information related to role information.
 	 * Return default Customization information if role can not be found.
@@ -658,5 +572,129 @@ public class TabLayoutService {
 	    	return true;
 	    }
 	    return false;
+	}
+	
+	private JSONObject toJsonObject(String tabId, TabLayout tablayout, StaticTab staticTab) throws Exception{
+		JSONObject value = new JSONObject();
+		value.put("id", Crypt.getHash(tablayout.getId().getTabid() + "_" + tablayout.getId().getRoleorder() + "_" + tablayout.getRole()));	// fix #174
+		value.put("tabId", tablayout.getId().getTabid());
+		value.put("tabName", tablayout.getTabName());
+		value.put("columnsWidth", tablayout.getColumnsWidth());
+		value.put("tabNumber", staticTab != null ? staticTab.getTabnumber(): null);
+		value.put("role", tablayout.getRole());
+		value.put("principalType", tablayout.getPrincipaltype());
+		value.put("roleOrder", tablayout.getId().getRoleorder().intValue() );
+		value.put("roleName", tablayout.getRolename());
+		value.put("defaultUid", tablayout.getDefaultuid());
+		value.put("widgetsLastmodified", tablayout.getWidgetslastmodified());
+		value.put("staticPanel", (tabId.equalsIgnoreCase(StaticTab.COMMANDBAR_TAB_ID))?
+				tablayout.getStaticPanelJsonWithComment() : tablayout.getStaticPanelJson());
+		value.put("layout", tablayout.getLayout());
+		value.put("dynamicPanel", tablayout.getDynamicPanelJson());
+		value.put("adjustToWindowHeight", tablayout.isAdjustToWindowHeight());
+		value.put("disabledDynamicPanel", tablayout.isDisabledDynamicPanel());
+		return value;
+	}
+	
+	private String createWidgetsXml(String tabId, Map layoutParams) throws JSONException{
+		// Transfer to document
+		StringBuffer xml = new StringBuffer();
+		xml.append("<widgets");
+		xml.append(" tabId=").append("\"");
+		xml.append(tabId).append("\"");
+		xml.append(" tabName=").append("\"");
+		String tabTitle = (String) layoutParams.get("tabName");
+		xml.append(XmlUtil.escapeXmlEntities(tabTitle)).append("\"");
+		xml.append(" tabType=").append("\"");
+		xml.append("static").append("\"");
+		
+		String bgColor = (String) layoutParams.get("bgColor");
+		if(bgColor != null){
+			xml.append(" bgColor=").append("\"");
+			xml.append(XmlUtil.escapeXmlEntities(bgColor)).append("\"");
+		}
+		
+		// columnsWidth attribute is not needed if it is commandbar
+		if (!StaticTab.COMMANDBAR_TAB_ID.equals(tabId)) {
+			xml.append(" columnsWidth=").append("\"").append(
+					(String) layoutParams.get("columnsWidth")).append("\"");
+			xml.append(" numCol=").append("\"").append(
+					(String) layoutParams.get("numCol")).append("\"");
+		}
+		xml.append(">");
+		xml.append("\n");
+		
+		// StaticPanel tab is not needed if it is commandbar and header
+		if (!StaticTab.PORTALHEADER_TAB_ID.equals(tabId)) {
+			Boolean adjustToWindowHeight = (Boolean) layoutParams
+			.get("adjustToWindowHeight");
+			xml.append("<panel type=\"StaticPanel\"" +
+					(adjustToWindowHeight != null && adjustToWindowHeight ? " adjustToWindowHeight=\"true\"" : "") +
+					">");
+			xml.append("\n");
+			JSONObject staticJson = new JSONObject((String)layoutParams.get("staticPanel"));
+			for (Iterator widgetsIt = staticJson.keys(); widgetsIt.hasNext();) {
+				String widgetId = (String) widgetsIt.next();
+				JSONObject widgetJSON = staticJson.getJSONObject(widgetId);
+
+				xml.append( widgetJSONtoString( widgetJSON ));
+			}
+			xml.append("</panel>");
+			xml.append("\n");
+		}
+		// DynamicPanel tab is not needed if it is commandbar and header
+		if (!StaticTab.COMMANDBAR_TAB_ID.equals(tabId) && !StaticTab.PORTALHEADER_TAB_ID.equals(tabId)) {
+			xml.append("<panel type=\"DynamicPanel\"");
+			Boolean disabledDynamicPanel = (Boolean) layoutParams
+					.get("disabledDynamicPanel");
+			if (disabledDynamicPanel != null
+					&& disabledDynamicPanel)
+				xml.append(" disabled=\"true\"");
+			xml.append(">");
+			JSONObject dynamicJson = new JSONObject((String) layoutParams
+					.get("dynamicPanel"));
+			
+			for (Iterator widgetsIt = dynamicJson.keys(); widgetsIt
+					.hasNext();) {
+				String widgetId = (String) widgetsIt.next();
+				JSONObject widget = dynamicJson
+						.getJSONObject(widgetId);
+				if (widget.get("id") == null
+						|| widget.get("id").equals(""))
+					continue;
+
+				xml.append("<widget");
+				xml.append(" id=").append("\"");
+				xml.append((String) widget.get("id")).append("\"");
+				if(widget.has("menuId")){
+					xml.append(" menuId=").append("\"");
+					xml.append((String) widget.getString("menuId")).append("\"");
+				}
+				xml.append(" column=").append("\"");
+				xml.append((String) widget.get("column")).append("\"");
+
+				if( widget.has("properties")) {
+					xml.append(">");
+					JSONObject properties = ( JSONObject )widget.get("properties");
+					xml.append("<data>");
+					for( Iterator keys=properties.keys();keys.hasNext();) {
+						String key = ( String )keys.next();
+
+						xml.append("<property name=\"").append( key ).append("\">");
+						xml.append( XmlUtil.escapeXmlEntities( properties.get( key ).toString()));
+						xml.append("</property>");
+					}
+					xml.append("</data>");
+					xml.append("</widget>");
+				} else {
+					xml.append("/>");
+				}
+			}
+			xml.append("</panel>");
+			xml.append("\n");
+		}
+		xml.append("</widgets>");
+		
+		return xml.toString();
 	}
 }

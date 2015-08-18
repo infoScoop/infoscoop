@@ -252,15 +252,15 @@ IS_Portal.buildGlobalSettingModal = function() {
 	}
 
 	function buildGuidanceSet() {
-        var fs = createFieldSet( "ガイダンス" );
+        var fs = createFieldSet( IS_R.lb_guidance );
         
         var description = document.createElement("div");
-        description.innerHTML = "ガイダンスを表示します。";
+        description.innerHTML = IS_R.lb_display_guidance_desc;
         fs.appendChild( description );
         
         var initButton = document.createElement("input");
         initButton.type = "button";
-        initButton.value = "ガイダンスを表示する";
+        initButton.value = IS_R.lb_display_guidance;
         IS_Event.observe( initButton,"click",function() {
             Control.Modal.close();
             if(!window["IS_GuidanceInstance"]){

@@ -231,6 +231,7 @@
         <url-pattern>/admin/i18n</url-pattern>
         <url-pattern>/admin/uploadgadget</url-pattern>
         <url-pattern>/admin/services/*</url-pattern>
+        <servlet-name>DesignServlet</servlet-name>
 	</filter-mapping>
 
     <filter-mapping>
@@ -684,6 +685,11 @@
 		<servlet-class>org.infoscoop.web.AccountManagerServlet</servlet-class>
 	</servlet>
 
+    <servlet>
+        <servlet-name>DesignServlet</servlet-name>
+        <servlet-class>org.infoscoop.web.DesignServlet</servlet-class>
+    </servlet>
+
 	<servlet-mapping>
   	<servlet-name>OAuthCertificateServlet</servlet-name>
   	<url-pattern>/opensocial/certificates/public.cer</url-pattern>
@@ -993,6 +999,11 @@
 		<servlet-name>AccountManagerServlet</servlet-name>
 		<url-pattern>/accountmanagersrv/*</url-pattern>
 	</servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DesignServlet</servlet-name>
+        <url-pattern>/designsrv</url-pattern>
+    </servlet-mapping>
 
 	<!--MergeProfileServletMapping-->
 	<!-- ===================== Default MIME Type Mappings =================== -->

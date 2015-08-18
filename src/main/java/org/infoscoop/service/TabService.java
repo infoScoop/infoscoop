@@ -246,6 +246,9 @@ public class TabService {
 							//notify user of putting all gadgets of the dynamic panel in the trash box.
 							tab.setTrashDynamicPanelWidgets(true);
 						}
+						if(layout.getBgColor() != null)
+							tab.setProperty("bgColor", layout.getBgColor());
+							
 						replaceStaticPanel( uid, tab, staticPanelWidgets );
 //						tab.setStaticPanelXml(layout.getStaticPanel());
 						break;

@@ -218,7 +218,11 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 		if (log.isInfoEnabled())
 			log.info("insert successfully.");
 	}
-
+	
+	public void update(TabLayout entity){
+		super.getHibernateTemplate().update(entity);
+	}
+	
 	/**
 	 * Update the data of the last update day of the tab.
 	 */

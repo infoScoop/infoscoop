@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.base.BaseTab;
+import org.infoscoop.service.StaticTabService;
 import org.infoscoop.util.I18NUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -120,6 +120,9 @@ public class Tab extends BaseTab {
 			dynamicPanel.put(widget.getWidgetid(), widget.toJSONObject());
 		}
 		json.put("dynamicPanel", dynamicPanel);
+		
+		if("static".equals(super.getType()))
+			json.put("isTabAdmin", StaticTabService.getHandle().isTabAdmin(getTabId()));
 		
 		return json;
 	}

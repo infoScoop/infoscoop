@@ -1042,6 +1042,7 @@ IS_Portal.showIframe = function(url){
 	divIFrame.style.display="";
 	
     Element.hide('tab-container');
+    if(IS_CommonAreaDesign.current) IS_CommonAreaDesign.current.changeNormalMode(true);
     var portalMaincontentsTable = document.getElementById("portal-maincontents-table");
     portalMaincontentsTable.className = "hiding-tab";
 
@@ -2543,18 +2544,18 @@ IS_Portal.CommandBar = {
 			  },
 			  onFailure: function(t) {
 				// TODO
-				  msg.error(IS_R.getResource('スクエア一覧を取得できませんでした：{0}',[getErrorMessage(t)]));
+				  msg.error(IS_R.getResource(IS_R.ms_get_square_list_on_failure,[getErrorMessage(t)]));
 			  },
 			  onException: function(r, t){
 				// TODO
-				  msg.error(IS_R.getResource( 'サーバで予期せぬエラーが発生しました：{0}',[getErrorMessage(t)]));
+				  msg.error(IS_R.getResource(IS_R.ms_unexpected_error_on_server,[getErrorMessage(t)]));
 			  }
 			}
 			AjaxRequest.invoke(hostPrefix + '/squaresrv/doGetBelongSquare', opt);
 
 			// square body
 			portalSquareMenu.parentNode.appendChild(portalSquareMenuBody);
-			var title = '新しいスクエアを作成する';
+			var title = IS_R.lb_create_new_square;
 			var item = $.DIV({
 				className: 'portal-user-menu-item',
 				style: 'cursor: pointer;'

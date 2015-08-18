@@ -48,12 +48,15 @@ import org.infoscoop.dao.TabLayoutDAO;
 import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Square;
-import org.infoscoop.util.HtmlUtil;
+import org.infoscoop.properties.InfoScoopProperties;
 import org.infoscoop.util.SpringUtil;
 
 public class SquareService {
 	private static Log log = LogFactory.getLog(SquareService.class);
 	public static final String SQUARE_ADMIN_ROLE_NAME = "squareAdmin";
+	private static final String SQUARE_MAX_USER_NUMBER = "square.max.user.number";
+	private static final String DEFAULT_MAX_USER = "10";
+	public static String SQUARE_ID_DEFAULT = "default";
 
 	// DAO
 	private SquareDAO squareDAO;
@@ -62,7 +65,6 @@ public class SquareService {
 	private GadgetDAO gadgetDAO;
 	private GadgetIconDAO gadgetIconDAO;
 	private HolidaysDAO holidaysDAO;
-	private I18NDAO i18NDAO;
 	private SiteAggregationMenuDAO siteAggregationMenuDAO;
 	private OAuthCertificateDAO oauthCertificateDAO;
 	private PortalAdminsDAO portalAdminsDAO;
@@ -121,14 +123,6 @@ public class SquareService {
 
 	public void setHolidaysDAO(HolidaysDAO holidaysDAO) {
 		this.holidaysDAO = holidaysDAO;
-	}
-
-	public I18NDAO getI18NDAO() {
-		return i18NDAO;
-	}
-
-	public void setI18NDAO(I18NDAO i18NDAO) {
-		this.i18NDAO = i18NDAO;
 	}
 
 	public SiteAggregationMenuDAO getSiteAggregationMenuDAO() {
@@ -230,12 +224,15 @@ public class SquareService {
 			throw new IllegalArgumentException();
 		}
 
-		this.squareDAO.create(squareId, squareName, desc);
+		String maxUser = InfoScoopProperties.getInstance().getProperty(SQUARE_MAX_USER_NUMBER);
+		if(maxUser == null || maxUser.length() == 0) maxUser = DEFAULT_MAX_USER;
+
+		this.squareDAO.create(squareId, squareName, desc, userId, Integer.parseInt(maxUser));
 		this.forbiddenURLDAO.copySquare(squareId, sourceSquareId);
 		this.gadgetDAO.copySquare(squareId, sourceSquareId);
 		this.gadgetIconDAO.copySquare(squareId, sourceSquareId);
 		this.holidaysDAO.copySquare(squareId, sourceSquareId);
-		this.i18NDAO.copySquare(squareId, sourceSquareId);
+//		this.i18NDAO.copySquare(squareId, sourceSquareId);
 		this.siteAggregationMenuDAO.copySquare(squareId, sourceSquareId);
 		this.oauthCertificateDAO.copySquare(squareId, sourceSquareId);
 		this.portalLayoutDAO.copySquare(squareId, sourceSquareId);
@@ -247,28 +244,16 @@ public class SquareService {
 		this.staticTabDAO.copySquare(squareId, sourceSquareId);
 		this.oauth2ProviderClientDetailDAO.copySquare(squareId, sourceSquareId);
 
-//		Map<Integer, Integer> roleIdMap = new HashMap<Integer, Integer>();
 		// copy Adminrole
 		List<Adminrole> adminRoleList = adminRoleDAO.select(sourceSquareId);
 		Iterator<Adminrole> rolesIte = adminRoleList.iterator();
 		String squareAdminRoleId = null;
 		while(rolesIte.hasNext()){
 			Adminrole adminRole = rolesIte.next();
-//			String orgId = adminRole.getId();
 			String newId = adminRoleDAO.insert(adminRole.getRoleid(), adminRole.getName(), adminRole.getPermission(), adminRole.isAllowDelete(), squareId, new Boolean(true));
 			if(SQUARE_ADMIN_ROLE_NAME.equals(adminRole.getRoleid()))
 				squareAdminRoleId = newId;
-//			roleIdMap.put(new Integer(orgId), new Integer(newId));
 		}
-		
-		// copy PortalAdmins
-//		List<Portaladmins> portalAdminList = portalAdminsDAO.select(sourceSquareId);
-//		Iterator<Portaladmins> adminsIte = portalAdminList.iterator();
-//		while(adminsIte.hasNext()){
-//			Portaladmins portalAdmin = adminsIte.next();
-//			Integer orgRoleId = portalAdmin.getRoleid();
-//			portalAdminsDAO.insert(portalAdmin.getUid(), roleIdMap.get(orgRoleId), squareId);
-//		}
 
 		// add Square Adminirstrator
 		portalAdminsDAO.insert(userId, new Integer(squareAdminRoleId), squareId);
@@ -306,6 +291,10 @@ public class SquareService {
 		return sq.getName();
 	}
 
+	public List<Square> getOwnerSquare(String userId) {
+		return squareDAO.getByOwner(userId);
+	}
+
 	public boolean existsSquare(String squareId) {
 		boolean result = false;
 		if(squareDAO.get(squareId) != null) {
@@ -322,9 +311,21 @@ public class SquareService {
 		square.setLastmodified(new Date());
 		squareDAO.update(square);
 	}
-	
+
 	public void deleteSquare(String squareId){
 		Square square = squareDAO.get(squareId);
 		squareDAO.delete(square);
+	}
+
+	public List<String> deleteOwnerSquare(String userId) {
+		List<String> idList = new ArrayList<String>();
+		List<Square> squareList = this.getOwnerSquare(userId);
+
+		for(Square square : squareList) {
+			idList.add(square.getId());
+		}
+
+		squareDAO.deleteByOwner(userId);
+		return idList;
 	}
 }

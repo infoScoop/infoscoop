@@ -28,6 +28,9 @@
 <%@page import="org.infoscoop.web.SessionManagerFilter"%>
 <%@page import="org.infoscoop.util.I18NUtil"%>
 <%@page import="org.infoscoop.properties.InfoScoopProperties"%>
+<%@page import="org.infoscoop.context.UserContext"%>
+<%@page import="java.util.Map"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 	response.setHeader("Pragma","no-cache");
 	response.setHeader("Cache-Control","no-cache");
@@ -59,6 +62,8 @@
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/mySiteMap.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/commandbar.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/tab.css">
+    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/commonarea-design.css">
+    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/commonarea-widgetmodal.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/widget.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/groupsettingmodal.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/accountmanagermodal.css">
@@ -90,12 +95,16 @@
 		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_ID_ATTR_NAME
 		String displayName = (String) session.getAttribute("loginUserName");
 		String uid = (String) session.getAttribute("Uid");
-		boolean squareId =Boolean.valueOf(InfoScoopProperties.getInstance().getProperty("useMultitenantMode"));
+		boolean useMultitenantMode = Boolean.valueOf(InfoScoopProperties.getInstance().getProperty("useMultitenantMode"));
+		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+		
 		if(displayName == null || "".equals(displayName)){
 			displayName = uid;
 		}
 		//org.infoscoop.web.SessionManagerFilter.LOGINUSER_NAME_ATTR_NAME
 		Boolean isAdmin = (Boolean) request.getAttribute("isAdministrator");
+		
+		Map i18n = I18NUtil.getResourceMap(I18NUtil.TYPE_JS, request.getLocale());
 	%>
     <script>
 		<jsp:include page="/prpsrv" flush="true" />
@@ -115,6 +124,7 @@
 		var is_userId = <%=uid != null ? "\"" + uid.replace("\\", "\\\\") + "\"" : "null" %>;
 		var is_userName = <%=displayName != null ?  "\"" + displayName + "\"" : "null" %>;
 		var is_isAdministrator = <%=isAdmin != null ? isAdmin.booleanValue() : false%>;
+		var is_squareId = "<%= squareId %>";
 
 		var localhostPrefix = "<%=request.getScheme()%>://localhost:<%=request.getServerPort()%><%=request.getContextPath()%>"
 
@@ -170,6 +180,8 @@
     <script src="<%=staticContentURL%>/js/AccountManager.js"></script>
     <script src="<%=staticContentURL%>/js/GlobalSetting.js"></script>
     <script src="<%=staticContentURL%>/js/Theme.js"></script>
+    <script src="<%=staticContentURL%>/js/CommonAreaDesign.js"></script>
+    <script src="<%=staticContentURL%>/js/CommonAreaWidgetModal.js"></script>
     <script src="<%=staticContentURL%>/js/guidance/Guidance.js"></script>
     <script src="<%=staticContentURL%>/js/square/Square.js"></script>
     <!-- prototype-window -->
@@ -197,7 +209,18 @@
     <script src="<%=staticContentURL%>/js/widgets/Message/MaximizeMessage.js"></script>
     <!--end script-->
     
-   	<script type="text/javascript">
+    <!-- jQuery -->
+    <script src="<%=staticContentURL%>/js/lib/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/jquery-ui/jquery-ui-1.10.2.custom.css">
+    <script src="<%=staticContentURL%>/js/lib/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
+    <script src="<%=staticContentURL%>/js/lib/jquery-ui/jquery.ui.tabs.min.js"></script>
+    <link href="<%=staticContentURL%>/js/lib/evol.colorpicker/css/evol.colorpicker.min.css" rel="stylesheet" />
+    <script src="<%=staticContentURL%>/js/lib/evol.colorpicker/js/evol.colorpicker.min.js" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+        jQuery.noConflict();
+        $jq = jQuery;
+        
 		var rsaPK = new RSAKey();
 		rsaPK.setPublic("<%= RSAKeyManager.getInstance().getModulus() %>", "<%= RSAKeyManager.getInstance().getPublicExponent() %>");
 
@@ -290,7 +313,7 @@
 							</div>
 						</td>
 						<td width="100%"><div id="portal-command" style="visibility:hidden;position:absolute;left:9999px;"></div></td>
-						<% if(squareId){ %>
+						<% if(useMultitenantMode){ %>
 						<td style="padding-left: 10px;">
 							<div id="portal-square-menu">
 									<div id="portal-square-menu-label"></div>
@@ -338,6 +361,69 @@
 						</td>
 						<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
 						<td colspan="3" valign="top" align="left" width="100%">
+						    <div id="common-design-panel">
+						        <div class="design-option">
+							        <div class="design-set color-setting">
+							             <div class="title"><%= i18n.get("lb_background") %></div>
+							            <div class="contents">
+							                <label><%= i18n.get("lb_colorNumber") %> : </label><input class="color-picker" value="" />
+							            </div>
+							        </div>
+							        <div class="design-set layout-setting">
+							            <div class="title"><%= i18n.get("lb_layout") %></div>
+							            <div class="contents">
+							                <div class="buttonset-wrapper">
+							                    <span class="gadgetsnum_buttonset-label"><%= i18n.get("lb_number_of_gadgets") %></span>
+							                    <div class="gadgetsnum_buttonset"></div>
+							                </div>
+							                <div class="design-control">
+							                    <input type="button" class="save is-button" value="<%= i18n.get("lb_changeApply") %>">
+							                    <input type="button" class="cancel is-button" value="<%= i18n.get("lb_cancel") %>">
+							                </div>
+							                <div class="layout-list">
+    							                <c:import url="/WEB-INF/jsp/admin/defaultpanel/_layoutTemplates.jsp"/>
+							                </div>
+							            </div>
+							        </div>
+						        </div>
+						        <div class="static-degign-area"></div>
+								<div id="is-commonarea-widgetmodal" style="display:none">
+									<div class="commonarea-widgetmodal-header-bk">
+										<div class="commonarea-widgetmodal-header"><%= i18n.get("lb_widgetSettings") %>
+											<div id="commonarea-widgetmodal-cancel-image" class="commonarea-widgetmodal-cancel-image"></div>
+										</div>
+									</div>
+
+									<div id="commonarea-widgetmodal-contents">
+										<div class="commonarea-widgetmodal-menu">
+											<ul>
+												<li><a href="#commonarea-widgetmodal-item-1"><%= i18n.get("lb_setting_from_website_url") %></a></li>
+												<li><a href="#commonarea-widgetmodal-item-2"><%= i18n.get("lb_setting_from_gadgets") %></a></li>
+											</ul>
+										</div>
+										<div class="commonarea-widgetmodal-display">
+											<div id="commonarea-widgetmodal-item-1">
+												<div class="commonarea-widgetmodal-addcontent">
+													<p><%= i18n.get("lb_setting_from_website_url_desc") %></p>
+													<input class="preview-form" type="text" placeholder="https://www.infoscoop.org/i/en-news/feed/"></input>
+													<input class="preview-button" type="button" value="<%= i18n.get("lb_preview") %>">
+													<img class="preview-indicator" src="<%=staticContentURL%>/skin/imgs/ajax-loader-blue.gif" style="display:none;">
+												</div>
+												<div class="commonarea-widgetmodal-preview">
+													<div class="preview-list"></div>
+												</div>
+											</div>
+											<div id="commonarea-widgetmodal-item-2">
+												<div class="commonarea-widgetmodal-addcontent">
+													<iframe class="gadget-settings" src="manager/defaultpanel/gadget-settings"></iframe>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+						    </div>
+						    
 							<div id="portal-iframe-url"></div>
 							<div id="panels" style="display:;">
 							  <div id="maximize-panel" style="display:none;"></div>

@@ -283,6 +283,8 @@ IS_Widget.Maximize.setupMaximizeView = function() {
 	
 	$("maximize-panel").style.display = "block";
 	
+	if(IS_CommonAreaDesign.current) IS_CommonAreaDesign.current.changeNormalMode(true);
+	
 	/* To show a border as a minimizxed tab bar instead */
 	var portalMaincontentsTable = $("portal-maincontents-table");
 	portalMaincontentsTable.className = "maximized";

@@ -142,7 +142,8 @@ public class I18NService {
 	}
 
 	private Map findI18nAsMap(String type, String country, String lang) {
-		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+//		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		String squareid = SquareService.SQUARE_ID_DEFAULT;
 		List resourceMapI18n = i18NDAO.findI18n(type, country, lang, squareid);
 
 		Map resourceMap = new HashMap();

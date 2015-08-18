@@ -394,7 +394,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 		            form.attr("action", orgAction + "?MSDPortal-SquareId="+is_squareId);
 		        }
 				var input = form.children('input');
-				if(!input.attr('upload')) {
+				if(form.length != 0 && !input.attr('upload')) {
 					form.submit();
 				} else {
 					setTimeout(function(){

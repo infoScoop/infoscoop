@@ -212,7 +212,7 @@ AjaxRpc.prototype = {
 				return;
 			}
 			if( window["ISA_Admin"] && status == "11000") {
-			    alert( "スクエアが変更されているため、リロードを行います。" );
+			    alert( IS_R.ms_on11000 );
 			    window.location.reload( true );
 			}
 			

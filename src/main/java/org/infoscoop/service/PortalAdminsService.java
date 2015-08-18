@@ -88,11 +88,11 @@ public class PortalAdminsService {
 		if (adminsMap == null)
 			return;
 		
-		boolean myIdExists = true;
+		boolean myIdExists = false;
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
-		List getNotAllowDeleteRoleIds = adminRoleDAO.getNotAllowDeleteRoleIds();
+		List getNotAllowDeleteRoleIds = adminRoleDAO.getNotAllowDeleteRoleIds(squareid);
 
 		List deleteRolesList = (List)adminsMap.get("deleteRoles");
 		for(Iterator itr=deleteRolesList.iterator();itr.hasNext();){
@@ -150,7 +150,7 @@ public class PortalAdminsService {
 			}
 			portalAdminsDAO.insert(uid, id, squareid);
 		}
-		
+
 		if(!roleIdList.contains(myRoleId) || !roleIdList.containsAll(getNotAllowDeleteRoleIds)){
 			throw new Exception("The roll that cannot be deleted is contained.");
 		}

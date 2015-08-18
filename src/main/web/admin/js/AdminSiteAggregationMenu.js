@@ -74,7 +74,7 @@ ISA_SiteAggregationMenu.mergeMenu = function(menuItems, mapJson){
 ISA_SiteAggregationMenu.forceUpdatePrefMap = {};
 ISA_SiteAggregationMenu.forceDeleteList = [];
 
-ISA_SiteAggregationMenu.setWidgetConf = function(_widgetConfList, isAddMulti) {
+ISA_SiteAggregationMenu.setWidgetConf = function(_widgetConfList, isAddMulti, callback) {
 	ISA_SiteAggregationMenu.widgetConfs = _widgetConfList;
 	
 	function sortConf(a, b){
@@ -102,6 +102,8 @@ ISA_SiteAggregationMenu.setWidgetConf = function(_widgetConfList, isAddMulti) {
 				  }
 			}
 		}
+		if(callback)
+		    callback();
 	}
 	
 	var url = adminHostPrefix + "/services/gadget/getGadgetJson";

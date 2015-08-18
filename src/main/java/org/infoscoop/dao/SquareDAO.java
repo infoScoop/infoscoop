@@ -41,7 +41,7 @@ public class SquareDAO extends HibernateDaoSupport {
 	}
 	
 	public Square get(String id){
-		return ( Square )super.getHibernateTemplate().get( Square.class, id );
+		return ( Square )super.getHibernateTemplate().get(Square.class, id);
 	}
 
 	public List<Square> getSquares(List<String> ids){
@@ -51,11 +51,20 @@ public class SquareDAO extends HibernateDaoSupport {
 						.addOrder(Order.asc(Square.PROP_NAME)));
 	}
 
-	public void create(String id, String name, String description) {
+	public List<Square> getByOwner(String userId) {
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Square.class)
+						.add(Restrictions.eq(Square.PROP_OWNER, userId))
+						.addOrder(Order.asc(Square.PROP_NAME)));
+	}
+
+	public void create(String id, String name, String description, String owner, int maxUserNum) {
 		Square square = new Square(id);
 		square.setName(name);
 		square.setDescription(description);
 		square.setLastmodified(new Date());
+		square.setOwner(owner);
+		square.setMaxUserNum(Integer.valueOf(maxUserNum));
 
 		super.getHibernateTemplate().save(square);
 		super.getHibernateTemplate().flush();
@@ -67,5 +76,10 @@ public class SquareDAO extends HibernateDaoSupport {
 
 	public void delete(Square entity) {
 		super.getHibernateTemplate().delete(entity);
+	}
+
+	public void deleteByOwner(String userId) {
+		String queryString = "delete from " + Square.REF + " where "+ Square.PROP_OWNER + " = ?";
+		super.getHibernateTemplate().bulkUpdate(queryString, userId);
 	}
 }

@@ -32,6 +32,8 @@ public abstract class BaseSquare  implements Serializable {
 	public static String PROP_NAME = "name";
 	public static String PROP_DESCRIPTION = "description";
 	public static String PROP_LASTMODIFIED = "lastmodified";
+	public static String PROP_OWNER ="owner";
+	public static String PROP_MAX_USER_NUM = "maxUserNum";
 
 
 	// constructors
@@ -54,18 +56,20 @@ public abstract class BaseSquare  implements Serializable {
 		java.lang.String id,
 		java.lang.String name,
 		java.lang.String description,
-		java.util.Date lastmodified) {
+		java.util.Date lastmodified,
+		java.lang.String owner,
+		java.lang.Integer maxUserNum) {
 
 		this.setId(id);
 		this.setName(name);
 		this.setDescription(description);
 		this.setLastmodified(lastmodified);
+		this.setOwner(owner);
+		this.
 		initialize();
 	}
 
 	protected void initialize () {}
-
-
 
 	private int hashCode = Integer.MIN_VALUE;
 
@@ -76,8 +80,8 @@ public abstract class BaseSquare  implements Serializable {
 	private java.lang.String name;
 	private java.lang.String description;
 	private java.util.Date lastmodified;
-
-
+	private java.lang.String owner;
+	private java.lang.Integer maxUserNum;
 
 	/**
 	 * Return the unique identifier of this class
@@ -97,9 +101,7 @@ public abstract class BaseSquare  implements Serializable {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
-	
-	
-	
+
 	public int getHashCode() {
 		return hashCode;
 	}
@@ -130,6 +132,22 @@ public abstract class BaseSquare  implements Serializable {
 
 	public void setLastmodified(java.util.Date lastmodified) {
 		this.lastmodified = lastmodified;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	public Integer getMaxUserNum() {
+		return maxUserNum;
+	}
+
+	public void setMaxUserNum(Integer maxUserNum) {
+		this.maxUserNum = maxUserNum;
 	}
 
 	public boolean equals (Object obj) {

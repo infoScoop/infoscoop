@@ -812,6 +812,25 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
         </insert>
     </changeSet>
 
+    <changeSet id="infoscoop_sleepyalpha_598_18" author="mikami">
+		<preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop_sleepyalpha_598_18">
+			<not>
+				<columnExists schemaName="${migration.defaultSchema}" tableName="IS_SQUARES" columnName="owner"/>
+			</not>
+		</preConditions>
+		<addColumn schemaName="${migration.defaultSchema}" tableName="IS_SQUARES">
+			<column name="owner" type="varchar(150)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+		<addColumn schemaName="${migration.defaultSchema}" tableName="IS_SQUARES">
+			<column name="max_user_num" type="integer"/>
+		</addColumn>
+		<createIndex indexName="is_squares_owner_idx" schemaName="${migration.defaultSchema}" tableName="IS_SQUARES" tablespace="${.tablespace}">
+			<column name="owner" type="varchar(150)"/>
+		</createIndex>
+	</changeSet>
+
 <changeSet id="infoscoop_sleepyalpha_598_19" author="mikami">
   <preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop_sleepyalpha_598_19">
      <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='lb_guidance_notfound';</sqlCheck>
@@ -1874,4 +1893,297 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
   </insert>
 </changeSet>
 
+<changeSet id="infoscoop_sleepyalpha_601" author="aknishiumi">
+  <preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop_sleepyalpha_601">
+     <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='lb_background';</sqlCheck>
+  </preConditions>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_background" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="Back ground" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_background" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="背景" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_background" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="背景" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_colorNumber" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="Color number" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_colorNumber" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="色番号" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_colorNumber" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="颜色号码" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_layout" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="Layout" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_layout" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="レイアウト" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_layout" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="布局" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_number_of_gadgets" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="Number of Gadgets" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_number_of_gadgets" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="配置するガジェット数" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_number_of_gadgets" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="配置的小工具數" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_widgetSettings" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="Gadget settings" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_widgetSettings" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="ガジェット設定" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_widgetSettings" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="小工具设定" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_setting_from_website_url" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="Set from URL" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_setting_from_website_url" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="WebサイトURLから設定" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_setting_from_website_url" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="从网站URL设定" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_setting_from_gadgets" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="Set from the gadget list" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_setting_from_gadgets" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="ガジェット一覧から設定" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_setting_from_gadgets" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="从小工具一览组套" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_setting_from_website_url_desc" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="Please input URL of a RSS feed or Uniform Resource Locator of a Web site." />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_setting_from_website_url_desc" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="RSSフィードのURL、またはWeb サイトの URL を入力してください。" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_setting_from_website_url_desc" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="请输入RSSfeed的URL，或Web 网站的 URL 。" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_destroyOldSettings" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="The old settings are lost if a template is selected." />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_destroyOldSettings" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="テンプレートを選択すると、今までの設定は破棄されます。" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_destroyOldSettings" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="选择模板时，现在的设置将废弃。" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_apply_and_reload_confirm" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="When change is applied, a page is refreshed. Would that be OK?" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_apply_and_reload_confirm" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="変更の適用を行うと画面がリロードされます。よろしいですか？" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_apply_and_reload_confirm" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="进行变更的适用的话画面被刷新。好吗？" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_do_save" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="Save" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_do_save" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="設定する" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_do_save" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="设定" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_common_area_design" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="The design of the common area" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_common_area_design" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="共通エリアのデザイン" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_common_area_design" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="共通区域的设计" />
+    <column name="square_id" value="default" />
+  </insert>
+</changeSet>
 </databaseChangeLog>

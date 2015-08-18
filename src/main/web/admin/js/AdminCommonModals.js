@@ -45,7 +45,8 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 		  disableURL: false,
 		  disableDetailDisplayMode: false,
 		  disablePreview: false,
-		  disableDisplayRadio:false
+		  disableDisplayRadio:false,
+		  renderTo: false
 		};
 		editorElement = _editorElement;
 		
@@ -68,6 +69,9 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 	};
 	
 	this.initModal = function(){
+	    if(options.renderTo)
+	        return;
+	        
 		this.currentModal = new Control.Modal('', {
 		  className:"adminTreeMenu",
 		  afterClose: function(){
@@ -195,8 +199,13 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 			var editorFormFieldDiv = document.createElement("div");
 			editorFormFieldDiv.id = 'editorFormFieldDiv';
 			self.loadEditorForm(editorFormFieldDiv);
-			self.currentModal.container.update(editorFormFieldDiv);
-			self.currentModal.open();
+			
+			if(options.renderTo){
+			    $jq(options.renderTo).append(editorFormFieldDiv);
+			}else{
+			    self.currentModal.container.update(editorFormFieldDiv);
+			    self.currentModal.open();
+			}
 		}
 
 		setTimeout(viewFormArea, 10);
@@ -567,7 +576,7 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 		
 		var trs = editorFormSubTbody.childNodes;
 		for(var i = 0; i < trs.length; i++){
-			if(trs[i].className == "propertyTr" || trs[i].className == "multiTr"){
+			if(trs[i].className == "propertyTr" || trs[i].className == "multiTr" || trs[i].className == "refreshIntervalTr"){
 				editorFormSubTbody.removeChild(trs[i]);
 				i--;
 			}

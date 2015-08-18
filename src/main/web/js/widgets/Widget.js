@@ -1565,7 +1565,7 @@ IS_Widget.prototype.classDef = function() {
 	}
 
 	this.adjustMaximizeHeight = function()  {
-		var height = getWindowSize(false) - findPosY(this.elm_widgetBox) - (Browser.isFirefox ? 28 : 32);
+		var height = getWindowSize(false) - findPosY(this.elm_widgetBox) - 40;
 		if (height < 0) {
 			height = 0;
 		}
@@ -1624,6 +1624,7 @@ IS_Widget.prototype.classDef = function() {
 			}
 		}
 		
+		if(IS_CommonAreaDesign.current) IS_CommonAreaDesign.current.changeNormalMode(true);
 		$("tab-container").hide();
 		$("portal-maincontents-table").addClassName("maximized");
 		
