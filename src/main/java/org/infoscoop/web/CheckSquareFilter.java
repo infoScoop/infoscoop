@@ -68,6 +68,13 @@ public class CheckSquareFilter implements javax.servlet.Filter {
 					if("/comsrv".equals(httpReq.getServletPath())){
 						httpRes.sendError(HttpStatus.SC_INTERNAL_SERVER_ERROR);
 					}else{
+						// not exist default square
+						IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
+						IAccount account = accountManager.getUser(uid);
+						String defaultId = account.getDefaultbelongid();
+						if(defaultId.equals(squareId))
+							accountManager.updateDefaultSquare(uid, uid);
+
 						httpRes.sendRedirect(httpReq.getContextPath() + "/square/closed.jsp");
 					}
 					return;

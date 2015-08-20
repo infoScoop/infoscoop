@@ -85,6 +85,8 @@ public interface IAccountManager {
 
 	public void addSquareId(String userid, String squareId) throws Exception;
 
+	public void updateDefaultSquare(String userid, String defaultSquareId) throws Exception;
+
 	public JSONObject getAccountManagerForm(String userId) throws Exception;
 
 	public String updateUserProfile(String userId, Map<String, String[]> map) throws Exception;

@@ -564,6 +564,11 @@ public class LDAPAccountManager implements IAccountManager{
 	}
 
 	@Override
+	public void updateDefaultSquare(String userid, String defaultSquareId) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public JSONObject getAccountManagerForm(String userId) {
 		throw new UnsupportedOperationException();
 	}
