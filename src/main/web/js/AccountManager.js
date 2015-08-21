@@ -118,16 +118,57 @@ IS_AccountManager.prototype = {
 
 			for(var i in profileDef) {
 				var item = profileDef[i];
-				this._createFormRow(formTable, item, i);
+				var formInput = $.INPUT({
+					id: i,
+					name: i,
+					type: item.type,
+					maxLength: 100
+				});
+				if(item.value)
+					formInput.value = item.value;
+				this._createFormRow(formTable, item.title, formInput);
 			}
 			this._createSubmitBtnRow(formTable, this._submit, 'account-manager-profile', profileDef);
+		}
+
+		// create default square form
+		if(IS_Portal.useMultitenantMode && formDef.defaultsquare) {
+			var squareDef = formDef.defaultsquare;
+			var formTable = this._createCategoryFieldSet(formDiv,  IS_R.lb_account_setting_default_square, 'account-manager-default-square');
+
+			var defaultSquare = squareDef.defaultSq;
+			var select = $.SELECT({id: 'default-square-selecter', name: 'default-square-selecter', style: 'width: 150px;'});
+			var defaultSquareOption = $.OPTION({value: defaultSquare.id}, defaultSquare.name);
+			select.appendChild(defaultSquareOption);
+
+			var belongSquare = squareDef.belong;
+			if(belongSquare.length > 0) {
+				for(var i = 0; i < belongSquare.length; i++) {
+					var item = belongSquare[i];
+					var squareOption = $.OPTION({value: item.id}, item.name);
+					select.appendChild(squareOption);
+				}
+			}
+
+			this._createFormRow(formTable, IS_R.lb_default_square, select);
+			this._createSubmitBtnRow(formTable, this._submitSelect, 'default-square-selecter', defaultSquare);
 		}
 
 		// create password form
 		if(formDef.password) {
 			var formTable = this._createCategoryFieldSet(formDiv, IS_R.lb_account_setting_password, 'account-manager-password');
-			this._createFormRow(formTable, {title:IS_R.lb_new_password, type:'password'}, 'pass');
-			this._createFormRow(formTable, {title:IS_R.lb_new_password_confirm, type:'password'}, 'confirm-pass');
+			var passInput = $.INPUT({
+				id: 'pass',
+				name: 'pass',
+				type:'password'
+			});
+			var confirmInput = $.INPUT({
+				id: 'confirm-pass',
+				name: 'confirm-pass',
+				type:'password'
+			});
+			this._createFormRow(formTable, IS_R.lb_new_password, passInput);
+			this._createFormRow(formTable, IS_R.lb_new_password_confirm, confirmInput);
 
 			// ToDo
 			if(IS_Portal.passwordPolicy) {
@@ -157,25 +198,13 @@ IS_AccountManager.prototype = {
 		return formTable;
 	},
 
-	_createFormRow: function(formTable, item, key, inputFunc){
+	_createFormRow: function(formTable, title, formInput, inputFunc){
 		var formRow = $.DIV({
 			className:'account-manager-form-row'
 		});
 
-		var label = $.DIV({}, item.title);
+		var label = $.DIV({}, title);
 		var formInputDiv = $.DIV();
-
-		// switch types
-		// constraint max length 100 for type-text
-		// TODO
-		var formInput = $.INPUT({
-			id: key,
-			name: key,
-			type: item.type,
-			maxLength: 100
-		});
-		if(item.value)
-			formInput.value = item.value;
 		formInputDiv.appendChild(formInput);
 
 		formRow.appendChild(label);
@@ -267,6 +296,40 @@ IS_AccountManager.prototype = {
 			},
 		}
 		AjaxRequest.invoke(hostPrefix + '/accountmanagersrv/doChangePW', opt);
+	},
+
+	// ToDo
+	// Limitation Default square change
+	_submitSelect: function(formKey, formDef) {
+		var val = $(formKey).value;
+		if(val == formDef.id) return;
+
+		var opt = {
+			method:'post',
+			asynchronous: true,
+			postBody: 'square='+val,
+			onSuccess: function(){
+				var selectedSquare = $(formKey).options[$(formKey).selectedIndex];
+				var defaultSquare = IS_Customization.accountManagerForm.defaultsquare;
+				defaultSquare.belong.push({id: defaultSquare.defaultSq.id, name:defaultSquare.defaultSq.name});
+				defaultSquare.defaultSq.id = selectedSquare.value;
+				defaultSquare.defaultSq.name = selectedSquare.text;
+				for(var i = 0; i < defaultSquare.belong.length; i++) {
+					var item = defaultSquare.belong[i];
+					if(item.id == selectedSquare.value) {
+						defaultSquare.belong.splice(i, 1);
+						break;
+					}
+				}
+				alert(IS_R.ms_change_apply_on_success);
+			},
+			onFailure  : function(t) {
+				alert(IS_R.ms_change_apply_on_failure);
+				// TODO
+				msg.error(IS_R.getResource(IS_R.ms_change_apply_on_failure,[getErrorMessage(t)]));
+			},
+		}
+		AjaxRequest.invoke(hostPrefix + '/accountmanagersrv/doChangeSQ', opt);
 	},
 
 	_submit: function(formKey, formDef) {

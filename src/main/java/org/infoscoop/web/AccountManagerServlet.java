@@ -3,6 +3,7 @@ package org.infoscoop.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
+import org.infoscoop.account.IAccountManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +18,7 @@ public class AccountManagerServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1646514470595445974L;
 	private static final String CHANGEPW_PATH = "/doChangePW";
+	private static final String CHANGESQ_PATH = "/doChangeSQ";
 	private static final String CHANGE_PATH = "/doChange";
 
 	public void init() {}
@@ -24,6 +26,7 @@ public class AccountManagerServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest request,
 						  HttpServletResponse response) throws ServletException, IOException {
 		String action = ((HttpServletRequest) request).getPathInfo();
+		IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
 		HttpSession session = request.getSession();
 		String uid = (String)session.getAttribute("Uid");
 
@@ -31,7 +34,7 @@ public class AccountManagerServlet extends HttpServlet{
 			// change
 			Map<String, String[]> map = request.getParameterMap();
 			try {
-				String loginUserName = AuthenticationService.getInstance().getAccountManager().updateUserProfile(uid, map);
+				String loginUserName = accountManager.updateUserProfile(uid, map);
 				if(loginUserName != null)
 					session.setAttribute("loginUserName", loginUserName);
 			} catch(Exception e) {
@@ -42,9 +45,18 @@ public class AccountManagerServlet extends HttpServlet{
 			// change password
 			String password = request.getParameter("password");
 			try {
-				AuthenticationService.getInstance().getAccountManager().updatePassword(uid, password);
+				accountManager.updatePassword(uid, password);
 			} catch(Exception e) {
 				log.error("error update password.", e);
+				response.sendError(500);
+			}
+		} else if(CHANGESQ_PATH.equals(action)) {
+			// change default square
+			String squareId = request.getParameter("square");
+			try {
+				accountManager.updateDefaultSquare(uid, squareId);
+			} catch (Exception e) {
+				log.error("error update default square.", e);
 				response.sendError(500);
 			}
 		}
