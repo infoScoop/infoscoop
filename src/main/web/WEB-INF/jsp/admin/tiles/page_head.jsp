@@ -18,6 +18,9 @@
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-Control" content="no-cache">
 
+	<!-- favicon.ico -->
+	<link rel="shortcut icon" href="../../favicon.ico">
+
 		<title>
 	    <c:choose>
 	        <c:when test="${useMultitenantMode}"><%= squareName %></c:when>
