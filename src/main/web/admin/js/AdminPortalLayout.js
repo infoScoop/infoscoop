@@ -187,8 +187,9 @@ ISA_PortalLayout.prototype.classDef = function() {
 		tr.appendChild(layoutNameTd);
 		var layoutNameDiv = document.createElement("div");
 		layoutNameTd.appendChild(layoutNameDiv);
-		layoutNameDiv.appendChild(document.createTextNode(jsonLayout.name));
-		
+		layoutNameDiv.appendChild(document.createTextNode(ISA_R["alb_"+jsonLayout.name]));
+		layoutNameDiv.setAttribute("title", ISA_R["alb_"+jsonLayout.name+"_desc"]);
+
 		var changeLayoutHandler = function(e){
 			self.displayLayoutId = layoutId;
 			self.changeLayout();
@@ -264,14 +265,26 @@ ISA_PortalLayout.prototype.classDef = function() {
 		fieldset.appendChild(editLayoutTextareaDiv);
 		
 		var editLayoutTextarea;
+		var detailDiv = document.createElement("div");
+		detailDiv.style.width = "99%";
+		detailDiv.style.margin = "10px";
+		detailDiv.style.marginBottom = "20px";
+		detailDiv.style.fontSize = "14px";
 		switch (String(layoutName).toLowerCase()) {
 			case "title":
+				detailDiv.innerHTML = ISA_R.alb_title_desc;
+				editLayoutTextareaDiv.appendChild(detailDiv);
+
 				editLayoutTextarea = document.createElement("input");
 				editLayoutTextarea.style.width = "99%";
 				editLayoutTextarea.style.margin = "5px";
 				editLayoutTextarea.type = "text";
 				break;
 			case "customtheme":
+				detailDiv.style.textAlign = "left"
+				detailDiv.style.marginBottom = "0";
+				detailDiv.innerHTML = ISA_R.alb_customTheme_desc;
+
 				var descDiv = document.createElement("div");
 				descDiv.className = "customtheme-desc";
 				var seeSampleA = document.createElement("a");
@@ -279,6 +292,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 				seeSampleA.innerHTML = ISA_R.alb_settingExamples;
 				seeSampleA.href = "#"
 				editLayoutTextareaDiv.appendChild(descDiv);
+				descDiv.appendChild(detailDiv);
 				descDiv.appendChild(seeSampleA);
 				
 				editLayoutTextarea = document.createElement("textarea");
@@ -293,11 +307,9 @@ ISA_PortalLayout.prototype.classDef = function() {
 				editLayoutTextarea.style.width = "99%";
 				editLayoutTextarea.style.margin = "10px";
 
-				var detailDiv = document.createElement("div");
-				detailDiv.style.width = "99%";
-				detailDiv.style.margin = "10px";
-				detailDiv.style.marginBottom = "30px";
-				detailDiv.innerHTML = "ポータル画面に表示されるロゴ画像の設定を行います。<br>設定できるロゴ画像はPNG/JPG/GIFになります。（1MBまで）<br>Tips： 画像サイズが200×25の場合、最もきれいに表示できます。"
+				detailDiv.style.margin = "0";
+				detailDiv.style.marginBottom= "20px";
+				detailDiv.innerHTML = ISA_R.alb_logo_desc + ISA_R.alb_logo_desc2
 				editLayoutTextarea.appendChild(detailDiv);
 
 				var form = document.createElement("form");
@@ -330,6 +342,9 @@ ISA_PortalLayout.prototype.classDef = function() {
 				IS_Event.observe(fileInput, 'change', this.setLogoImage.bind(fileInput), false, "_adminPortal");
 				break;
 			default:
+				detailDiv.innerHTML = ISA_R["alb_"+layoutName+"_desc"];
+				editLayoutTextareaDiv.appendChild(detailDiv);
+
 				editLayoutTextarea = document.createElement("textarea");
 				editLayoutTextarea.rows = "20";
 				editLayoutTextarea.style.width = "99%";

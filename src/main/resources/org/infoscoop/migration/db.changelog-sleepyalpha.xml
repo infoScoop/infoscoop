@@ -2243,4 +2243,273 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
   </insert>
 </changeSet>
 
+    <changeSet id="infoscoop_sleepyalpha_598_21" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop_sleepyalpha_598_21">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_contentFooter';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_contentFooter" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Contents Footer" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_contentFooter" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="コンテンツフッター" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_contentFooter" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="内容页脚" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_css" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Custumize CSS" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_css" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="カスタムCSS" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_css" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="自定义CSS" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_customTheme" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Theme" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_customTheme" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="テーマ" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_customTheme" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="议题" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_javascript" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Custumize JavaScript" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_javascript" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="カスタムJavaScript" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_javascript" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="自定义JavaScript" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_contentFooter_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="The footer of contents indicated at the time of RSS leader maximization is established." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_contentFooter_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="RSSリーダー最大化時に表示されるフッターを設定します。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_contentFooter_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="在对RSS领导人最大化时表示内容页脚成立。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_css_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Available CSS is set on the portal screen." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_css_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="ポータル画面で利用可能なCSSを設定します。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_css_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="可用CSS设置门户屏幕上。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_customTheme_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="A theme of a portal screen is established." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_customTheme_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="ポータル画面のテーマを設定します。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_customTheme_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="门户画面的主题是建立。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_javascript_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Available JavaScript is set on the portal screen." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_javascript_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="ポータル画面で利用可能なJavaScriptを設定します。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_javascript_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="可用的JavaScript设置门户屏幕上。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_title_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="The title used at the whole portal is established." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_title_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="ポータル全体で使われるタイトルを設定します。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_title_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="在整个门户中使用的标题成立。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_logo_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="The logo picture shown to a portal screen is established." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_logo_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="ポータル画面に表示されるロゴ画像の設定を行います。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_logo_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="显示门户画面的标志图像成立。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_logo_desc2" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="&lt;br&gt;The logo picture which can be established will be PNG/JPG/GIF. (To 1MB)&lt;br&gt;Tips:  In case of 200 x 25, the picture size can be indicated most beautifully." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_logo_desc2" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="&lt;br&gt;設定できるロゴ画像はPNG/JPG/GIFになります。（1MBまで）&lt;br&gt;Tips： 画像サイズが200×25の場合、最もきれいに表示できます。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_logo_desc2" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="&lt;br&gt;可以建立的标志画面将PNG/JPG/GIF 。（为1MB ）&lt;br&gt;温馨提示：如果是200×25 ，画面大小可以最漂亮的指示。" />
+            <column name="square_id" value="default" />
+        </insert>
+    </changeSet>
 </databaseChangeLog>
