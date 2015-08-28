@@ -14,7 +14,9 @@ ISA_PortalLayout.prototype.classDef = function() {
 	var loadingMessage;
 	var controlModal;		// Apply Change dialog
 	var logoImgSrc;
-	
+	var isUpdatedLogoImage;
+	var currentDispSettings;
+
 	this.initialize = function() {
 		container = document.getElementById("portalLayout");
 		var len = container.childNodes.length;
@@ -48,8 +50,9 @@ ISA_PortalLayout.prototype.classDef = function() {
 		IS_Event.observe(refreshDiv, 'click', function(){
 			if( !ISA_Admin.checkUpdated() )
 				return;
-			
+
 			ISA_Admin.isUpdate = false;
+			isUpdatedLogoImage = false;
 			ISA_PortalLayout.portalLayout = new ISA_PortalLayout();
 			ISA_PortalLayout.portalLayout.build();
 		}, false, "_adminPortal");
@@ -148,10 +151,15 @@ ISA_PortalLayout.prototype.classDef = function() {
 		var layoutGroupDiv = document.createElement("div");
 		layoutGroupDiv.id = "layoutGroup";
 		layoutListDiv.appendChild(layoutGroupDiv);
-		
+
+		var initDispFlg = false;
 		for(var i in ISA_PortalLayout.portalLayoutList) {
 			if( (ISA_PortalLayout.portalLayoutList[i] instanceof Function) ) continue;
-			
+
+			if(!initDispFlg) {
+				currentDispSettings = i;
+				initDispFlg = true;
+			}
 			var div = this.buildLayout(i);
 			layoutGroupDiv.appendChild(div);
 		}
@@ -191,6 +199,13 @@ ISA_PortalLayout.prototype.classDef = function() {
 		layoutNameDiv.setAttribute("title", ISA_R["alb_"+jsonLayout.name+"_desc"]);
 
 		var changeLayoutHandler = function(e){
+			if(currentDispSettings=='logo' && isUpdatedLogoImage) {
+				if( !confirm(ISA_R.ams_confirmChangeLost) ) {
+					return false;
+				}
+			}
+			isUpdatedLogoImage = false;
+			currentDispSettings = layoutId;
 			self.displayLayoutId = layoutId;
 			self.changeLayout();
 		};
@@ -336,7 +351,6 @@ ISA_PortalLayout.prototype.classDef = function() {
 				form.appendChild(logoImage);
 				form.appendChild(fileInput);
 				editLayoutTextarea.appendChild(form);
-
 				IS_Event.observe(fileInput, 'change', this.setLogoImage.bind(fileInput), false, "_adminPortal");
 				break;
 			default:
@@ -376,6 +390,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 			// PostData
 			var name = ISA_PortalLayout.portalLayoutList[i].name;
 			ISA_Admin.isUpdated = false;
+			isUpdatedLogoImage = false;
 			portalLayouts[ name ] = layout;
 		}
 		
@@ -488,5 +503,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 			}
 			fileReader.readAsDataURL(file);
 		}
+
+		isUpdatedLogoImage = true;
 	}
 };
