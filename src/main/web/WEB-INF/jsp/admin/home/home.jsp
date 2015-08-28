@@ -140,7 +140,7 @@
 				<a href="../authentication/index"><img src="../../skin/imgs/home_icons/unlock.gif"></a>
 			</div>
 			<div class="home-menu-content">
-				<a href="../authentication/index" class="home-menu-header">OAuth</a>
+				<a href="../authentication/index" class="home-menu-header">%{alb_appsCollaboration}</a>
 				<p class="home-menu-definition">%{alb_OAuthDescription}</p>
 			</div>
 		</div>

@@ -2512,4 +2512,214 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
             <column name="square_id" value="default" />
         </insert>
     </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha_598_22" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="failed infoscoop_sleepyalpha_598_22">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_appsCollaboration';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_appsCollaboration" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Apps collaboration" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_appsCollaboration" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="アプリ連携" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs" />
+            <column name="id" value="alb_appsCollaboration" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="应用合作" />
+            <column name="square_id" value="default" />
+        </insert>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Configure collaboration with external services.&lt;br&gt;You can set the gadget's signed request(acquisition of certificate) and OAuth client settings." />
+            <where>id='alb_OAuthDescription' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="外部サービスに連携するための設定を行います。&lt;br&gt;ガジェットからの署名付きリクエスト（証明書の取得）、OAuthクライアント設定を行うことができます。" />
+            <where>id='alb_OAuthDescription' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="配置与外部服务的协作。&lt;br&gt;您可以设置小工具的签名的请求（获取证书）和OAuth的客户端设置。" />
+            <where>id='alb_OAuthDescription' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Screen design" />
+            <where>id='alb_generalLayout' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="画面デザイン" />
+            <where>id='alb_generalLayout' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="屏幕设计上" />
+            <where>id='alb_generalLayout' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Initialization of portal" />
+            <where>id='alb_clearConfigurationButton' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="ポータルを初期状態に戻す" />
+            <where>id='alb_clearConfigurationButton' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="门户的初始化" />
+            <where>id='alb_clearConfigurationButton' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Initialization of portal" />
+            <where>id='lb_clearConfigurationButton' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="ポータルを初期状態に戻す" />
+            <where>id='lb_clearConfigurationButton' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="门户的初始化" />
+            <where>id='lb_clearConfigurationButton' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="The design and input information of the specified user is initialized" />
+            <where>id='alb_clearConfigurationDesc' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="指定したユーザのデザインと入力情報を初期化します" />
+            <where>id='alb_clearConfigurationDesc' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="指定的用户的设计和输入信息被初始化" />
+            <where>id='alb_clearConfigurationDesc' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Please specify the user whose portal is to be initialized." />
+            <where>id='alb_clearConfigurationChooseUser' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="ポータルを初期状態に戻すユーザを指定してください。" />
+            <where>id='alb_clearConfigurationChooseUser' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="请指定其门户网站将被初始化用户。" />
+            <where>id='alb_clearConfigurationChooseUser' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="All the added tabs and gadgets, and the input information will be deleted." />
+            <where>id='lb_clearConfigurationDesc2' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="追加したタブとガジェット、および入力情報は全て削除されます。" />
+            <where>id='lb_clearConfigurationDesc2' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="所有添加的选项卡和小工具，和输入信息将被删除。" />
+            <where>id='lb_clearConfigurationDesc2' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Common area settings" />
+            <where>id='alb_fixedArea' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="共通エリア設定" />
+            <where>id='alb_fixedArea' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="共通领域设定" />
+            <where>id='alb_fixedArea' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Both display common area and personalized area" />
+            <where>id='alb_useBothArea' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="共通エリアとパーソナライズエリアをどちらも表示する" />
+            <where>id='alb_useBothArea' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="共通领域和个性化领域都表示" />
+            <where>id='alb_useBothArea' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Display the height of a common area to the height of the browser" />
+            <where>id='alb_adjustToWindowHeight' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="共通エリアの高さをブラウザの高さに合わせて表示する" />
+            <where>id='alb_adjustToWindowHeight' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="以浏览器的适合高度来表示共通领域的高度" />
+            <where>id='alb_adjustToWindowHeight' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Templates of common area is not found." />
+            <where>id='ams_fixedAreaTemplateNF' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="共通エリアテンプレートが見つかりません。" />
+            <where>id='ams_fixedAreaTemplateNF' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="未能找到共通领域模板。" />
+            <where>id='ams_fixedAreaTemplateNF' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Failed to load templates of common area." />
+            <where>id='ams_fixedAreaTemplateNR' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="共通エリアテンプレートの読み込みに失敗しました。" />
+            <where>id='ams_fixedAreaTemplateNR' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="共通领域模板读取失败。" />
+            <where>id='ams_fixedAreaTemplateNR' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="The settings of the current common area will be lost. Are you sure?" />
+            <where>id='ams_confirmClearStaticAreaSetting' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="現在の共通エリアの設定が破棄されますがよろしいですか？" />
+            <where>id='ams_confirmClearStaticAreaSetting' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="现在的共通领域的设定被破坏，可以么？" />
+            <where>id='ams_confirmClearStaticAreaSetting' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Other screen settings" />
+            <where>id='alb_otherLayout' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="その他の画面設定" />
+            <where>id='alb_otherLayout' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="其他屏幕设置" />
+            <where>id='alb_otherLayout' AND lang='zh'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="Failed to load other screen settings." />
+            <where>id='ams_failedToloadPortalLayout' AND lang='ALL'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="その他の画面設定の読み込みに失敗しました。" />
+            <where>id='ams_failedToloadPortalLayout' AND lang='ja'</where>
+        </update>
+        <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+            <column name="message" value="它无法读取其他屏幕设置。" />
+            <where>id='ams_failedToloadPortalLayout' AND lang='zh'</where>
+        </update>
+    </changeSet>
 </databaseChangeLog>

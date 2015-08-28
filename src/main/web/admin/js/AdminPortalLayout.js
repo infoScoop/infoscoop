@@ -268,11 +268,11 @@ ISA_PortalLayout.prototype.classDef = function() {
 		var detailDiv = document.createElement("div");
 		detailDiv.style.width = "99%";
 		detailDiv.style.margin = "10px";
-		detailDiv.style.marginBottom = "20px";
+		detailDiv.style.marginBottom = "10px";
 		detailDiv.style.fontSize = "14px";
+		detailDiv.innerHTML = ISA_R["alb_"+layoutName+"_desc"];
 		switch (String(layoutName).toLowerCase()) {
 			case "title":
-				detailDiv.innerHTML = ISA_R.alb_title_desc;
 				editLayoutTextareaDiv.appendChild(detailDiv);
 
 				editLayoutTextarea = document.createElement("input");
@@ -283,7 +283,6 @@ ISA_PortalLayout.prototype.classDef = function() {
 			case "customtheme":
 				detailDiv.style.textAlign = "left"
 				detailDiv.style.marginBottom = "0";
-				detailDiv.innerHTML = ISA_R.alb_customTheme_desc;
 
 				var descDiv = document.createElement("div");
 				descDiv.className = "customtheme-desc";
@@ -309,7 +308,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 
 				detailDiv.style.margin = "0";
 				detailDiv.style.marginBottom= "20px";
-				detailDiv.innerHTML = ISA_R.alb_logo_desc + ISA_R.alb_logo_desc2
+				detailDiv.innerHTML = detailDiv.innerHTML + ISA_R.alb_logo_desc2
 				editLayoutTextarea.appendChild(detailDiv);
 
 				var form = document.createElement("form");
@@ -336,13 +335,11 @@ ISA_PortalLayout.prototype.classDef = function() {
 				fileInput.accept="image/gif,image/jpeg,image/png"
 				form.appendChild(logoImage);
 				form.appendChild(fileInput);
-
 				editLayoutTextarea.appendChild(form);
 
 				IS_Event.observe(fileInput, 'change', this.setLogoImage.bind(fileInput), false, "_adminPortal");
 				break;
 			default:
-				detailDiv.innerHTML = ISA_R["alb_"+layoutName+"_desc"];
 				editLayoutTextareaDiv.appendChild(detailDiv);
 
 				editLayoutTextarea = document.createElement("textarea");
