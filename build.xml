@@ -307,6 +307,7 @@
 			<filelist dir="${src.main.web}/js" files="Theme.js"/>
 			<filelist dir="${src.main.web}/js" files="CommonAreaDesign.js"/>
 			<filelist dir="${src.main.web}/js" files="CommonAreaWidgetModal.js"/>
+			<filelist dir="${src.main.web}/js" files="GlobalMessages.js"/>
 			<filelist dir="${src.main.web}/js/guidance" files="Guidance.js"/>
 			<filelist dir="${src.main.web}/js/square" files="Square.js"/>
 			<filelist dir="${src.main.web}/js/search" files="SearchEngine.js"/>

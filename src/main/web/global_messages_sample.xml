@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>Galobal Messages</title>
+        <description></description>
+        <pubDate>2015-08-28T13:13:48+09:00</pubDate>
+        <image>
+            <title>GPUpdate.net</title>
+            <link>http://www.gpupdate.net/ja/</link>
+            <url>http://images.gpupdate.net/if/rss/rsslogo.jpg</url>
+        </image>
+        <item>
+            <title>information 3</title>
+            <link>http://www.infoscoop.org/</link>  
+            <pubDate>2015-08-28T13:37:51+09:00</pubDate>
+        </item>
+        <item>
+            <title>information 2</title>
+            <link>http://www.infoscoop.org/</link>  
+            <pubDate>2015-08-28T13:37:50+09:00</pubDate>
+        </item>
+        <item>
+            <title>information 1</title>
+            <link>http://www.infoscoop.org/</link>
+            <pubDate>2015-08-28T13:37:48+09:00</pubDate>
+        </item>
+    </channel>
+</rss>

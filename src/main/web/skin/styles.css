@@ -164,6 +164,15 @@ img{
 	font-size: 80%;
 	padding: 2px;
 }
+#message-bar .msg-item{
+	padding-left: 18px;
+}
+#message-bar .msg-item.information{
+	background: url(./imgs/information.gif) top left no-repeat;
+}
+#message-bar .msg-item a{
+    margin-left: 5px;
+}
 #message-bar-controles{
 	text-align:center;
 	padding: 2px;
