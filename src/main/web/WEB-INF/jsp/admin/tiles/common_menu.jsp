@@ -93,7 +93,7 @@
 		
 		<%if( adminService.isPermitted("authentication")){%>
 		<li>
-			<a href="../authentication/index" class="tab <c:if test="${type == 'authentication'}">active</c:if>" id="tab_authentication"><span>OAuth</span></a>
+			<a href="../authentication/index" class="tab <c:if test="${type == 'authentication'}">active</c:if>" id="tab_authentication"><span>%{alb_appsCollaboration}</span></a>
 		</li>
 		<%}%>
 		<%if( adminService.isPermitted("extapps")){%>

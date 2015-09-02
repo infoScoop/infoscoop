@@ -46,10 +46,7 @@ import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TabLayout;
-import org.infoscoop.service.PortalLayoutService;
-import org.infoscoop.service.PreferenceService;
-import org.infoscoop.service.PropertiesService;
-import org.infoscoop.service.TabLayoutService;
+import org.infoscoop.service.*;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
@@ -124,9 +121,12 @@ public class CustomizationServlet extends HttpServlet {
 
 			HttpSession session = request.getSession();
 			String userId = null;
-			if(session != null)
-				userId = (String)session.getAttribute("Uid");
-			String customFtl = getCustomizationFtl( root, userId );
+			String currentSquareId = null;
+			if(session != null) {
+				userId = (String) session.getAttribute("Uid");
+				currentSquareId = (String)session.getAttribute("CurrentSquareId");
+			}
+			String customFtl = getCustomizationFtl(root, userId, currentSquareId);
 
 			customFtl = I18NUtil.resolve(I18NUtil.TYPE_LAYOUT, customFtl, request.getLocale());
 
@@ -142,7 +142,7 @@ public class CustomizationServlet extends HttpServlet {
 
 	}
 
-	private String getCustomizationFtl( Map<String,Object> root, String userId ) throws ParserConfigurationException, Exception{
+	private String getCustomizationFtl( Map<String,Object> root, String userId, String currentSquareId ) throws ParserConfigurationException, Exception{
 		JSONObject layoutJson = new JSONObject();
 		Map<String, TabLayout> CustomizationMap = TabLayoutService.getHandle().getMyTabLayoutHTML();
 
@@ -226,6 +226,12 @@ public class CustomizationServlet extends HttpServlet {
 				obj = accountManager.getAccountManagerForm(userId);
 			} catch (UnsupportedOperationException e) {
 				log.error("Unsupported Operation", e);
+			}
+
+			// default square
+			if(currentSquareId != null) {
+				Map<String, Object> map = SquareService.getHandle().getBelongSquaresNamesWithDefault(userId);
+				obj.put("defaultsquare", map);
 			}
 
 			// password

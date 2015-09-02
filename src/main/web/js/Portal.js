@@ -127,6 +127,9 @@ IS_Portal.start = function() {
 	IS_Portal.buildTabs();
 	new IS_WidgetsContainer();
 	new IS_SiteAggregationMenu();
+	if(IS_Portal.globalMessages.enable){
+	    new IS_GlobalMessages();
+	}
 	IS_Portal.sidePanel = new IS_SidePanel();
 	IS_Portal.refresh = new IS_AutoReload();
 	

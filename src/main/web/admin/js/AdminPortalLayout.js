@@ -14,7 +14,9 @@ ISA_PortalLayout.prototype.classDef = function() {
 	var loadingMessage;
 	var controlModal;		// Apply Change dialog
 	var logoImgSrc;
-	
+	var isUpdatedLogoImage;
+	var currentDispSettings;
+
 	this.initialize = function() {
 		container = document.getElementById("portalLayout");
 		var len = container.childNodes.length;
@@ -48,8 +50,9 @@ ISA_PortalLayout.prototype.classDef = function() {
 		IS_Event.observe(refreshDiv, 'click', function(){
 			if( !ISA_Admin.checkUpdated() )
 				return;
-			
+
 			ISA_Admin.isUpdate = false;
+			isUpdatedLogoImage = false;
 			ISA_PortalLayout.portalLayout = new ISA_PortalLayout();
 			ISA_PortalLayout.portalLayout.build();
 		}, false, "_adminPortal");
@@ -148,10 +151,15 @@ ISA_PortalLayout.prototype.classDef = function() {
 		var layoutGroupDiv = document.createElement("div");
 		layoutGroupDiv.id = "layoutGroup";
 		layoutListDiv.appendChild(layoutGroupDiv);
-		
+
+		var initDispFlg = false;
 		for(var i in ISA_PortalLayout.portalLayoutList) {
 			if( (ISA_PortalLayout.portalLayoutList[i] instanceof Function) ) continue;
-			
+
+			if(!initDispFlg) {
+				currentDispSettings = i;
+				initDispFlg = true;
+			}
 			var div = this.buildLayout(i);
 			layoutGroupDiv.appendChild(div);
 		}
@@ -187,9 +195,17 @@ ISA_PortalLayout.prototype.classDef = function() {
 		tr.appendChild(layoutNameTd);
 		var layoutNameDiv = document.createElement("div");
 		layoutNameTd.appendChild(layoutNameDiv);
-		layoutNameDiv.appendChild(document.createTextNode(jsonLayout.name));
-		
+		layoutNameDiv.appendChild(document.createTextNode(ISA_R["alb_"+jsonLayout.name]));
+		layoutNameDiv.setAttribute("title", ISA_R["alb_"+jsonLayout.name+"_desc"]);
+
 		var changeLayoutHandler = function(e){
+			if(currentDispSettings=='logo' && isUpdatedLogoImage) {
+				if( !confirm(ISA_R.ams_confirmChangeLost) ) {
+					return false;
+				}
+			}
+			isUpdatedLogoImage = false;
+			currentDispSettings = layoutId;
 			self.displayLayoutId = layoutId;
 			self.changeLayout();
 		};
@@ -264,14 +280,25 @@ ISA_PortalLayout.prototype.classDef = function() {
 		fieldset.appendChild(editLayoutTextareaDiv);
 		
 		var editLayoutTextarea;
+		var detailDiv = document.createElement("div");
+		detailDiv.style.width = "99%";
+		detailDiv.style.margin = "10px";
+		detailDiv.style.marginBottom = "10px";
+		detailDiv.style.fontSize = "14px";
+		detailDiv.innerHTML = ISA_R["alb_"+layoutName+"_desc"];
 		switch (String(layoutName).toLowerCase()) {
 			case "title":
+				editLayoutTextareaDiv.appendChild(detailDiv);
+
 				editLayoutTextarea = document.createElement("input");
 				editLayoutTextarea.style.width = "99%";
 				editLayoutTextarea.style.margin = "5px";
 				editLayoutTextarea.type = "text";
 				break;
 			case "customtheme":
+				detailDiv.style.textAlign = "left"
+				detailDiv.style.marginBottom = "0";
+
 				var descDiv = document.createElement("div");
 				descDiv.className = "customtheme-desc";
 				var seeSampleA = document.createElement("a");
@@ -279,6 +306,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 				seeSampleA.innerHTML = ISA_R.alb_settingExamples;
 				seeSampleA.href = "#"
 				editLayoutTextareaDiv.appendChild(descDiv);
+				descDiv.appendChild(detailDiv);
 				descDiv.appendChild(seeSampleA);
 				
 				editLayoutTextarea = document.createElement("textarea");
@@ -293,11 +321,9 @@ ISA_PortalLayout.prototype.classDef = function() {
 				editLayoutTextarea.style.width = "99%";
 				editLayoutTextarea.style.margin = "10px";
 
-				var detailDiv = document.createElement("div");
-				detailDiv.style.width = "99%";
-				detailDiv.style.margin = "10px";
-				detailDiv.style.marginBottom = "30px";
-				detailDiv.innerHTML = "ポータル画面に表示されるロゴ画像の設定を行います。<br>設定できるロゴ画像はPNG/JPG/GIFになります。（1MBまで）<br>Tips： 画像サイズが200×25の場合、最もきれいに表示できます。"
+				detailDiv.style.margin = "0";
+				detailDiv.style.marginBottom= "20px";
+				detailDiv.innerHTML = detailDiv.innerHTML + ISA_R.alb_logo_desc2
 				editLayoutTextarea.appendChild(detailDiv);
 
 				var form = document.createElement("form");
@@ -324,12 +350,12 @@ ISA_PortalLayout.prototype.classDef = function() {
 				fileInput.accept="image/gif,image/jpeg,image/png"
 				form.appendChild(logoImage);
 				form.appendChild(fileInput);
-
 				editLayoutTextarea.appendChild(form);
-
 				IS_Event.observe(fileInput, 'change', this.setLogoImage.bind(fileInput), false, "_adminPortal");
 				break;
 			default:
+				editLayoutTextareaDiv.appendChild(detailDiv);
+
 				editLayoutTextarea = document.createElement("textarea");
 				editLayoutTextarea.rows = "20";
 				editLayoutTextarea.style.width = "99%";
@@ -364,6 +390,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 			// PostData
 			var name = ISA_PortalLayout.portalLayoutList[i].name;
 			ISA_Admin.isUpdated = false;
+			isUpdatedLogoImage = false;
 			portalLayouts[ name ] = layout;
 		}
 		
@@ -476,5 +503,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 			}
 			fileReader.readAsDataURL(file);
 		}
+
+		isUpdatedLogoImage = true;
 	}
 };

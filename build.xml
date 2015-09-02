@@ -216,7 +216,7 @@
 		</copy>
 
 		<copy todir="${build.main}">
-			<fileset dir="${src.main.web}" includes="*.jsp, *.html, *.ico" excludes="openid_login.jsp.sample"/>
+			<fileset dir="${src.main.web}" includes="*.jsp, *.html, *.ico, *.xml" excludes="openid_login.jsp.sample"/>
 		</copy>
 
 		<copy todir="${build.main}" file="${src.main.web}/admin/role.jsp"/>
@@ -307,6 +307,7 @@
 			<filelist dir="${src.main.web}/js" files="Theme.js"/>
 			<filelist dir="${src.main.web}/js" files="CommonAreaDesign.js"/>
 			<filelist dir="${src.main.web}/js" files="CommonAreaWidgetModal.js"/>
+			<filelist dir="${src.main.web}/js" files="GlobalMessages.js"/>
 			<filelist dir="${src.main.web}/js/guidance" files="Guidance.js"/>
 			<filelist dir="${src.main.web}/js/square" files="Square.js"/>
 			<filelist dir="${src.main.web}/js/search" files="SearchEngine.js"/>

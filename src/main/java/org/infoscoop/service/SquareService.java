@@ -259,6 +259,30 @@ public class SquareService {
 		portalAdminsDAO.insert(userId, new Integer(squareAdminRoleId), squareId);
 	}
 
+	public Map<String, Object> getBelongSquaresNamesWithDefault(String userId) throws Exception{
+		IAccount account = AuthenticationService.getInstance().getAccountManager().getUser(userId);
+		String defaultSquareId = account.getDefaultbelongid();
+		List<Square> squares = squareDAO.getSquares(account.getBelongids());
+		List<Map<String, String>> belongSquaresName = new ArrayList<Map<String, String>>();
+		Map<String, Object> squareNameMap = new HashMap<String, Object>();
+
+		for(Iterator<Square> itr = squares.iterator();itr.hasNext();) {
+			Square square = itr.next();
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("id", square.getId());
+			map.put("name", square.getName());
+			if(defaultSquareId.equals(square.getId())){
+				squareNameMap.put("defaultSq", map);
+			}else {
+				belongSquaresName.add(map);
+			}
+		}
+
+		squareNameMap.put("belong", belongSquaresName);
+
+		return squareNameMap;
+	}
+
 	public Map<String, Object> getBelongSquaresNames(String userId, String currentSquareId) throws Exception{
 		IAccount account = AuthenticationService.getInstance().getAccountManager().getUser(userId);
 		List<Square> squares = squareDAO.getSquares(account.getBelongids());

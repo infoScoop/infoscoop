@@ -277,7 +277,7 @@ function prepareStaticArea(){
 		div.mouseover(function(){
 			var $this = $jq(this);
 			edit_cover
-				.text(($this.attr("id") == $this.data("containerId")) ? "New" : "Edit")
+				.text(($this.attr("id") == $this.data("containerId")) ? "Add" : "Edit")
 				.show();
 		})
 		.mouseout(function(){

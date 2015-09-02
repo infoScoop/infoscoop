@@ -117,6 +117,12 @@
 			country : "<%=request.getLocale().getCountry() %>",
 			japaneseOnly : false,
 			useMultitenantMode : <%= InfoScoopProperties.getInstance().isUseMultitenantMode() %>,
+			globalMessages : {
+			    enable: <%= InfoScoopProperties.getInstance().isGlobalmessagesEnable() %>,
+			    rssUrl: "<%= InfoScoopProperties.getInstance().getGlobalmessagesRssUrl() %>",
+			    rssMaxCount: <%= InfoScoopProperties.getInstance().getGlobalmessagesRssMaxcount() %>,
+			    pollingRate: <%= InfoScoopProperties.getInstance().getGlobalmessagesPollingRate() %>
+			},
 			<%if(InfoScoopProperties.getInstance().getProperty("password.policy") != null && InfoScoopProperties.getInstance().getProperty("password.policy").length() > 0){%>
 				passwordPolicy: /<%= InfoScoopProperties.getInstance().getProperty("password.policy") %>/
 			<%}%>
@@ -182,6 +188,7 @@
     <script src="<%=staticContentURL%>/js/Theme.js"></script>
     <script src="<%=staticContentURL%>/js/CommonAreaDesign.js"></script>
     <script src="<%=staticContentURL%>/js/CommonAreaWidgetModal.js"></script>
+    <script src="<%=staticContentURL%>/js/GlobalMessages.js"></script>
     <script src="<%=staticContentURL%>/js/guidance/Guidance.js"></script>
     <script src="<%=staticContentURL%>/js/square/Square.js"></script>
     <!-- prototype-window -->

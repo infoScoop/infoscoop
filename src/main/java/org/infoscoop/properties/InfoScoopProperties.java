@@ -20,6 +20,7 @@ package org.infoscoop.properties;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -27,6 +28,11 @@ public class InfoScoopProperties {
 	private static Log logger = LogFactory.getLog(InfoScoopProperties.class);
 	private static InfoScoopProperties singleInstance = new InfoScoopProperties();
 	private boolean useMultitenantMode = false;
+	private String globalmessagesRssUrl;
+	private boolean globalmessagesEnable;
+	private int globalmessagesRssMaxcount = 5;
+	private int globalmessagesPollingRate = 30000;
+	
 	private ResourceBundle bundle;
 	
 	private InfoScoopProperties() {
@@ -34,6 +40,20 @@ public class InfoScoopProperties {
 			this.bundle = ResourceBundle.getBundle("infoscoop");
 			String useMultitenantModeStr = bundle.getString("useMultitenantMode");
 			this.useMultitenantMode = new Boolean(useMultitenantModeStr);
+			
+			String globalmessagesEnableStr = bundle.getString("globalmessages.enable");
+			this.globalmessagesEnable = new Boolean(globalmessagesEnableStr);
+			
+			this.globalmessagesRssUrl = bundle.getString("globalmessages.rss.url");
+			String globalmessagesRssMaxcountStr = bundle.getString("globalmessages.rss.maxcount");
+			String globalmessagesPollingRateStr = bundle.getString("globalmessages.polling.rate");
+			
+			if(NumberUtils.isNumber(globalmessagesRssMaxcountStr))
+				this.globalmessagesRssMaxcount = Integer.parseInt(globalmessagesRssMaxcountStr);
+
+			if(NumberUtils.isNumber(globalmessagesPollingRateStr))
+				this.globalmessagesPollingRate = Integer.parseInt(globalmessagesPollingRateStr);
+
 		} catch (Exception ex) {
 			logger.error("Failed to load infoscoop.properties.", ex);
 		}
@@ -52,7 +72,6 @@ public class InfoScoopProperties {
 	}
 
 	public int getIntProperty(String key) {
-		String value = bundle.getString(key);
 		int intValue;
 		try{
 			String expiredPeriodStr = InfoScoopProperties.getInstance().getProperty(key);
@@ -66,4 +85,21 @@ public class InfoScoopProperties {
 	public boolean isUseMultitenantMode() {
 		return useMultitenantMode;
 	}
+
+	public boolean isGlobalmessagesEnable() {
+		return globalmessagesEnable;
+	}
+
+	public String getGlobalmessagesRssUrl() {
+		return globalmessagesRssUrl;
+	}
+
+	public int getGlobalmessagesRssMaxcount() {
+		return globalmessagesRssMaxcount;
+	}
+
+	public int getGlobalmessagesPollingRate() {
+		return globalmessagesPollingRate;
+	}
+
 }
