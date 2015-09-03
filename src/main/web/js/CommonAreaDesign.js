@@ -329,6 +329,8 @@ IS_CommonAreaDesign.prototype = {
         if(/^#([\da-fA-F]{6}|[\da-fA-F]{3})$/.test(bgColor) || bgColor.length == 0)
             this.jsonRole.bgColor = bgColor;
         
+        this.jsonRole.numCol = this.currentTabObj.numCol;
+        
         var opt = {
             method: "post",
             asynchronous: true,
