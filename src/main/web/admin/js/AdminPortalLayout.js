@@ -69,6 +69,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 			this.displayLayoutId = i;
 			break;
 		}
+//		this.displayLayoutId = 'customTheme';
 		this.changeLayout();
 
 		// upload form
@@ -276,7 +277,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 		legend.appendChild(document.createTextNode(ISA_R.alb_editSettings));
 		
 		var editLayoutTextareaDiv = document.createElement("div");
-		editLayoutTextareaDiv.className = "modalConfigSetBody";
+		editLayoutTextareaDiv.className = "modalConfigSetBody modalConfigSetBody_" + this.displayLayoutId;
 		fieldset.appendChild(editLayoutTextareaDiv);
 		
 		var editLayoutTextarea;
