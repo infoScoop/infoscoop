@@ -19,6 +19,7 @@ package org.infoscoop.command;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.apache.commons.logging.Log;
@@ -34,7 +35,6 @@ import org.xml.sax.SAXException;
 
 public class ExecLogoffProcess extends XMLCommandProcessor {
 	private Log logger = LogFactory.getLog(this.getClass());
-	private static final String FORMAT_W3C = "yyyy-MM-dd'T'HH:mm:ssZ";
 
 	/**
 	 * 
@@ -56,7 +56,7 @@ public class ExecLogoffProcess extends XMLCommandProcessor {
 
         String commandId = super.commandXml.getAttribute("id").trim();
 		String field = super.commandXml.getAttribute("field").trim();
-		SimpleDateFormat sdf = new SimpleDateFormat( FORMAT_W3C );
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 		String value = sdf.format(new Date());
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
