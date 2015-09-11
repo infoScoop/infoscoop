@@ -309,7 +309,7 @@ IS_CommonAreaDesign.prototype = {
                 var $this = $jq(this);
                 var isNew = ($this.attr("id") == $this.data("containerId"));
                 edit_cover.data("isNew", isNew)
-                edit_cover.text(isNew ? "New" : "Edit").show();
+                edit_cover.text(isNew ? "ADD" : "Edit").show();
             })
             .mouseout(function(){
                 edit_cover.hide();
