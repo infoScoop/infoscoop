@@ -1214,7 +1214,7 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
   </insert>
   <insert tableName="IS_I18N">
     <column name="type" value="js" />
-    <column name="id" value="ms_password_change_on_success" />
+    <column name="id" value="ms_password_change_complete" />
     <column name="country" value="ALL" />
     <column name="lang" value="zh" />
     <column name="message" value="密码已被更改。" />

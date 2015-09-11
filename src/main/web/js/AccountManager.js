@@ -284,7 +284,7 @@ IS_AccountManager.prototype = {
 			asynchronous: true,
 			postBody: "password=" + pwVal,
 			onSuccess: function(){
-				alert(IS_R.ms_password_change_on_success);
+				alert(IS_R.ms_password_change_complete);
 				$('pass').setCustomValidity("");
 				$('pass').value = '';
 				$('confirm-pass').value = '';
