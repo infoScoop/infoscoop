@@ -38,6 +38,12 @@ IS_CommonAreaWidgetModal.prototype = {
 		
 		// init WebSiteURL Form
 		$jq(".preview-button", this.content).click(this.previewButtonClicked.bind(this));
+		$jq(".preview-form", this.content).keypress(function(e){
+		    if ( e.which == 13 ){
+		        this.previewButtonClicked();
+		        return false;
+		    }
+		}.bind(this));
 		
 		 IS_EventDispatcher.addListener('windowResized', null, this.resizeModal.bind(this));
 	},
