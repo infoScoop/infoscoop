@@ -250,11 +250,20 @@ IS_CommonAreaWidgetModal.prototype = {
             this.freezeGadget(widget);
     },
     
+    adjustWidgetATag: function( widget ){
+        if(!(widget && widget.elm_widget)) return;
+        var aTags = widget.elm_widget.getElementsByTagName( "a" );
+        if(!aTags) return;
+        for(var i=0; i < aTags.length; i++){
+            aTags[i].target = "_blank";
+        }
+    },
+    
     freezeGadget: function(widget){
         IS_EventDispatcher.addListener('loadComplete', widget.id, function(){
             IS_Event.unloadCache(widget.id);
             IS_Event.unloadCache(widget.closeId);
-            
+            this.adjustWidgetATag(widget);
             if(!widget.iframe){
                 IS_Event.observe(widget.elm_widgetContent, 'click', function(e){Event.stop(e);return false;},true);
                 IS_Event.observe(widget.elm_widgetContent, 'mousedown', function(e){Event.stop(e);return false;},true);
@@ -262,7 +271,7 @@ IS_CommonAreaWidgetModal.prototype = {
                 delete IS_Portal.widgetLists[IS_Portal.currentTabId][widget.id];
             }
         
-        }, null, true);
+        }.bind(this), null, true);
         
         widget.loadContents();
         
