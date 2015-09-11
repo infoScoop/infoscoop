@@ -159,7 +159,7 @@ SELECT
         Widget
     WHERE
         Isstatic = 0
-        AND Squareid = ?
+        AND square_id = ?
         AND Deletedate = 0
         AND ( Menuid != '' OR Menuid IS NOT NULL )
         AND NOT Type IN (
@@ -192,7 +192,7 @@ SELECT
         Widget AS w
     WHERE
         Isstatic = 0
-        AND Squareid = ?
+        AND square_id = ?
         AND Deletedate = 0
         AND ( Menuid != '' OR Menuid IS NOT NULL )
         AND CreateDate > :CREATEDATE
@@ -215,7 +215,7 @@ SELECT
         Widget
     WHERE
         Isstatic = 0
-        AND Squareid = ?
+        AND square_id = ?
         AND Deletedate = 0
         AND ( Menuid = '' OR Menuid IS NULL )
         AND NOT Type IN (
@@ -251,7 +251,7 @@ SELECT
         Widget as w
     WHERE
         Isstatic = 0
-        AND Squareid = ?
+        AND square_id = ?
         AND Deletedate = 0
         AND ( Menuid = '' OR Menuid IS NULL )
         AND Createdate > :CREATEDATE
@@ -283,7 +283,7 @@ SELECT
             ,'MiniBrowser'
         )
         AND Isstatic = 0
-        AND Squareid = ?
+        AND square_id = ?
         AND Deletedate = 0
         AND ( Menuid = '' OR Menuid IS NULL )
         AND Name = 'url'
@@ -322,7 +322,7 @@ SELECT
             ,'MiniBrowser'
         )
         AND Isstatic = 0
-        AND Squareid = ?
+        AND square_id = ?
         AND Deletedate = 0
         AND ( Menuid = '' OR Menuid IS NULL )
         AND Createdate > :CREATEDATE
