@@ -331,7 +331,7 @@
 							<div id="portal-user-menu">
 								<div id="portal-user-menu-label">
 								    <% if(uid != null){ %>
-										<%= displayName %>
+										<c:out escapeXml="true" value="<%= displayName %>"/>
 									<% } else { %>
 										<a id="portal-loginLink" href="login.jsp"><%= I18NUtil.resolve(I18NUtil.TYPE_JS, "%{lb_login}", request.getLocale()) %></a>
 									<% } %>
