@@ -31,7 +31,7 @@
             padding: 0px;
         }
         td {
-            white-space: nowrap;
+            min-width: 200px;
         }
         input, textarea {
             max-width: 280px;
