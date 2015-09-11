@@ -197,6 +197,10 @@ IS_CommonAreaDesign.prototype = {
         $jq("#staticLayouts"+(this.adjustToWindowHeight ? "AdjustHeight":"")).show();
         $jq("#staticLayouts"+(!this.adjustToWindowHeight ? "AdjustHeight":"")).hide();
         
+        if(this.adjustToWindowHeight){
+            this.adjustStaticWidgetHeight()
+        }
+        
         $jq(".design-option", this.content).animate(
             {height: "show", opacity: "toggle"},
             {
