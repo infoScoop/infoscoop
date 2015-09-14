@@ -44,6 +44,10 @@ td {
 	padding: 0px;
 }
 
+td.td-main {
+	display: block;
+}
+
 a
 {
 	text-decoration: none;
