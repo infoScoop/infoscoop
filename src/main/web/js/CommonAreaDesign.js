@@ -29,7 +29,10 @@ IS_CommonAreaDesign.prototype = {
             var heightStr = $jq(this).css("height");
             var height = parseInt(heightStr);
             if(!isNaN(height)){
-                $jq(this).css("height", (height*0.3) + "px");
+                $jq(this).css({
+                    "height": (height*0.3) + "px",
+                    "clear": ""
+                });
             }
         });
         
