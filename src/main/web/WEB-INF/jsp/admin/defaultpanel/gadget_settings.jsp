@@ -42,7 +42,6 @@
     </style>
 	<script>
 	    window["editRoleScreen"] = true;
-	    var widgetJSON = {"id":"w_1438933992534","menuId":"","href":"http://portal.nifty.com/","title":"デイリーポータルＺ：ヘッドライン","type":"RssReader","column":"","ignoreHeader":false,"noBorder":false,"refreshInterval":null,"disabled":false,"properties":{"url":"http://portal.nifty.com/rss/headline.rdf","doLineFeed":"false","showDatetime":"true","itemsnum":"3","showLatestNews":"false","openWidget":"true","scrollMode":"scroll","detailDisplayMode":"inline","itemDisplay":"auto","iframeview":"false","authType":"","titleFilter":"","creatorFilter":"","categoryFilter":""}};
 	    $jq(function(){
 	        var gadgetSettings = new ISA_GadgetSettings();
 	        IS_SiteAggregationMenu.init();
