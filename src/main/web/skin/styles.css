@@ -218,6 +218,10 @@ table[id^="panel-table"] {
     padding: 0px 15px 0px 10px;
 }
 
+#panels .hidden-static-panel div[id^="dynamic-panel"] {
+    padding: 15px 15px 0px 10px;
+}
+
 #panels .has-dynamic-panel div[id^="static-panel"] {
 	padding-bottom: 11px;
 	margin-bottom: 10px;
