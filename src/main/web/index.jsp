@@ -367,7 +367,7 @@
 							</div>
 						</td>
 						<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
-						<td colspan="3" valign="top" align="left" width="100%">
+						<td class="td-main" colspan="3" valign="top" align="left" width="100%">
 						    <div id="common-design-panel">
 						        <div class="design-option">
 							        <div class="design-set color-setting">
