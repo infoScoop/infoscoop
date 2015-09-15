@@ -443,7 +443,6 @@ ISA_PortalLayout.prototype.classDef = function() {
 				},500);
 			},
 			onException: function(r, t){
-				alert(ISA_R.ams_failedUpdateOtherPotal);
 				msg.error(ISA_R.ams_failedUpdateOtherPotal + getErrorMessage(t));
 				setTimeout(function(){
 					Control.Modal.close();
