@@ -75,21 +75,24 @@ ISA_PortalLayout.prototype.classDef = function() {
 		// upload form
 		var iframe = $("upLoadDummyFrame");
 		Event.observe( iframe,"load",function() {
-			var result = $jq(this.contentWindow.document.body).text();
-			if(result) {
-				var status = eval("("+result+")").status;
-				if(status == 500){
+			try {
+				var result = $jq(this.contentWindow.document.body).text();
+				if(result) {
+					var status = eval("("+result+")").status;
+					if(status == 500)
+						throw new Error();
+				} else {
+					$jq('#logo-image-input').attr('upload', 'true');
+					logoImgSrc = hostPrefix + '/logosrv/get';
+					setTimeout(function(){
+						Control.Modal.close();
+					},500);
+				}
+			} catch(e) {
 					alert(ISA_R.ams_gadgetResourceUpdateFailed);
 					msg.error(ISA_R.ams_gadgetResourceUpdateFailed + " - " +" | 500");
 					Control.Modal.close();
-				}
-				$jq('#logo-image').removeAttr('src');
-			} else {
-				$jq('#logo-image-input').attr('upload', 'true');
-				logoImgSrc = hostPrefix + '/logosrv/get';
-				setTimeout(function(){
-					Control.Modal.close();
-				},500);
+					$jq('#logo-image').removeAttr('src');
 			}
 		});
 
