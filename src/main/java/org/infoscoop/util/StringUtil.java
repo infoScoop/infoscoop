@@ -123,14 +123,34 @@ public class StringUtil {
 		return hex;
 	}
 
-
 	/**
 	 * メールアドレス構文チェック
-	 * @param mail
+	 * @param email
 	 * @return
 	 */
 	public static boolean isValidEmail(String email){
 		String mailFormat = "^[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+(\\.[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+)*+(.*)@[a-zA-Z0-9][a-zA-Z0-9\\-]*(\\.[a-zA-Z0-9\\-]+)+$";
 		return email.matches(mailFormat);
+	}
+
+	/**
+	 * 全角スペース対応trim
+	 * @param orgStr
+	 * @return
+	 */
+	public static String trimSpace(String orgStr) {
+		char[] value = orgStr.toCharArray();
+		int len = value.length;
+		int st = 0;
+		char[] val = value;
+
+		while ((st < len) && (val[st] <= ' ' || val[st] == '　')) {
+			st++;
+		}
+		while ((st < len) && (val[len - 1] <= ' ' || val[len - 1] == '　')) {
+			len--;
+		}
+
+		return ((st>0) || (len<value.length)) ? orgStr.substring(st,len):orgStr;
 	}
 }

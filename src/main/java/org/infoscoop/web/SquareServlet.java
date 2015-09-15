@@ -103,23 +103,19 @@ public class SquareServlet extends HttpServlet {
 			// create square
 			String squareId = (UUID.randomUUID().toString()).replaceAll("-", "");
 			try {
-				SquareService.getHandle().createSquare(squareId, squareName, squareDesc, squareSource, uid);
-
-				// relation user - square
-				AuthenticationService service = AuthenticationService.getInstance();
-				IAccountManager manager = service.getAccountManager();
-				manager.addSquareId(uid, squareId);
-
 				// mail invitation user
 				List<String> emailList = new ArrayList<String>();
 				List<String> errorEmailList = new ArrayList<String>();
 				BufferedReader reader = new BufferedReader(new StringReader(squareMember));
 				String email;
 				while((email = reader.readLine()) != null){
-					if(!StringUtil.isValidEmail(email)){
-						errorEmailList.add(email);
+					String emailTrim = StringUtil.trimSpace(email);
+					if(emailTrim.length() > 0) {
+						if(!StringUtil.isValidEmail(emailTrim)){
+							errorEmailList.add(emailTrim);
+						}
+						emailList.add(emailTrim);
 					}
-					emailList.add(email.trim());
 				}
 
 				if(errorEmailList.size() > 0){
@@ -130,6 +126,13 @@ public class SquareServlet extends HttpServlet {
 					response.setHeader("Cache-Control", "no-cache");
 					return;
 				}
+
+				SquareService.getHandle().createSquare(squareId, squareName, squareDesc, squareSource, uid);
+
+				// relation user - square
+				AuthenticationService service = AuthenticationService.getInstance();
+				IAccountManager manager = service.getAccountManager();
+				manager.addSquareId(uid, squareId);
 
 				// mail invitation user
 				InvitationService.getHandle().doInvitation(emailList, request, squareId);
