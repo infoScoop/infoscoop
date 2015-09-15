@@ -71,6 +71,10 @@ IS_Widget.MultiRssReader.prototype.classDef = function() {
 		IS_EventDispatcher.addListener("dragWidget",widget.id,this.repaint.bind( this ) );
 		
 		$( widget.elm_widgetContent ).addClassName("RssReader");
+		
+        while(widget.elm_widgetContent.firstChild.nodeType == 3){
+            $jq(widget.elm_widgetContent.firstChild).remove();
+        }
 	}
 	
 	this.droppableOption = {};
