@@ -2722,4 +2722,31 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
             <where>id='ams_failedToloadPortalLayout' AND lang='zh'</where>
         </update>
     </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha_598_23" author="nishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_23">
+            <not>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTH_TOKENS" columnName="square_id"/>
+            </not>
+        </preConditions>
+		<addColumn schemaName="${migration.defaultSchema}" tableName="IS_OAUTH_TOKENS">
+		    <column name="square_id" type="varchar(64)" defaultValue="default">
+		        <constraints nullable="false"/>
+		    </column>
+		</addColumn>
+		<addColumn schemaName="${migration.defaultSchema}" tableName="IS_OAUTH2_TOKENS">
+		    <column name="square_id" type="varchar(64)" defaultValue="default">
+		        <constraints nullable="false"/>
+		    </column>
+		</addColumn>
+        <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_OAUTH_TOKENS" constraintName="fk_is_oauthtokens_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
+		<addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_OAUTH2_TOKENS" constraintName="fk_is_oauth2tokens_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
+        <createIndex indexName="is_oauthtokens_square_id" schemaName="${migration.defaultSchema}" tableName="IS_OAUTH_TOKENS" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+		<createIndex indexName="is_oauth2tokens_square_id" schemaName="${migration.defaultSchema}" tableName="IS_OAUTH2_TOKENS" tablespace="${.tablespace}">
+		    <column name="square_id" type="varchar(64)"/>
+		</createIndex>
+    </changeSet>
+
 </databaseChangeLog>

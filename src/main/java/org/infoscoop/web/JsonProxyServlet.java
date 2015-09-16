@@ -39,6 +39,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.OAuth2TokenDAO;
 import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.dao.model.OAuth2Token;
@@ -225,8 +226,9 @@ public class JsonProxyServlet extends HttpServlet {
 			oauthConfig.setGadgetUrl(gadgetUrl);
 			oauthConfig.setHostPrefix(params.get("hostPrefix"));
 			
+			String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 			OAuthToken token = OAuthTokenDAO.newInstance().getAccessToken(uid,
-					gadgetUrl, oauthServiceName);
+					gadgetUrl, oauthServiceName, squareId);
 			if(token != null){
 				oauthConfig.setAccessToken(token.getAccessToken());
 				oauthConfig.setTokenSecret(token.getTokenSecret());

@@ -59,7 +59,7 @@ public abstract class BaseOAuthToken  implements Serializable {
 	private java.lang.String requestToken;
 	private java.lang.String accessToken;
 	private java.lang.String tokenSecret;
-
+	private java.lang.String squareId;
 
 
 	/**
@@ -131,8 +131,13 @@ public abstract class BaseOAuthToken  implements Serializable {
 		this.tokenSecret = tokenSecret;
 	}
 
+	public String getSquareid() {
+		return squareId;
+	}
 
-
+	public void setSquareid(String squareId) {
+		this.squareId = squareId;
+	}
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
