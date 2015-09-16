@@ -168,6 +168,12 @@ IS_SidePanel.prototype.classDef = function () {
 		
 		Event.observe( window,"scroll",IS_SidePanel.adjustPosition );
 		Event.observe( window,"resize",IS_SidePanel.adjustPosition );
+		
+        IS_EventDispatcher.addListener("portalLoaded", null, function() {
+            setTimeout(function(){
+                $jq("td.sidepanel-ui").css("visibility", "visible");
+            }, 10);
+        }, null, true );
 	}
 	
 	function makeTabButton( opt ) {

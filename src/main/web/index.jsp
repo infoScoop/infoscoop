@@ -359,14 +359,14 @@
 			<table style="clear:both;" cellpadding="0" cellspacing="0" width="100%" id="portal-maincontents-table">
 				<tbody>
 					<tr>
-						<td id="siteMenu" valign="top">
+						<td id="siteMenu" class="sidepanel-ui" valign="top">
 							<div id="portal-tree-menucontainer">
 								<div id="portal-tree-menu" ></div>
 								<div id="portal-rss-search" style="padding:1px;"></div>
 								<div id="portal-my-sitemap" ></div>
 							</div>
 						</td>
-						<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
+						<td id="siteMenuOpenTd" class="sidepanel-ui" align="left"><div id="siteMenuOpen"/></td>
 						<td class="td-main" colspan="3" valign="top" align="left" width="100%">
 						    <div id="common-design-panel">
 						        <div class="design-option">

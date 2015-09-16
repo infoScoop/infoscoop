@@ -476,4 +476,6 @@ select#font-size-select{
 #messageIcon {
 	vertical-align: bottom;
 	padding: 4px 0px 4px 5px;
+	max-height: 16px;
+	overflow: hidden;
 }
