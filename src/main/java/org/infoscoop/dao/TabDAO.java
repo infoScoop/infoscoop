@@ -86,7 +86,7 @@ public class TabDAO extends HibernateDaoSupport{
 				new Object[]{ uid, squareId });
 	}
 	public void deleteTab( String uid, Integer tabId, String squareId ) {
-		String queryString = "delete from Tab where Id.Uid=? and Id.Id = ? and Squareid = ?";
+		String queryString = "delete from Tab where Id.Uid=? and Id.Id = ? and Id.Squareid = ?";
 		
 		super.getHibernateTemplate().bulkUpdate( queryString,
 				new Object[]{ uid, tabId.toString(), squareId });

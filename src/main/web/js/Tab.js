@@ -1388,6 +1388,8 @@ IS_Portal.buildPanel = function(panelNumber, type, property){
     if(type == "static" && staticPanelLayout && staticPanelLayout.layout){
         staticPanel.innerHTML = IS_Customization["staticPanel"+panelNumber].layout;
         td.appendChild(staticPanel);
+    }else{
+        panel.addClassName("hidden-static-panel");
     }
     
     // dynamic

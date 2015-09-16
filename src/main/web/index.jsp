@@ -331,7 +331,7 @@
 							<div id="portal-user-menu">
 								<div id="portal-user-menu-label">
 								    <% if(uid != null){ %>
-										<%= displayName %>
+										<c:out escapeXml="true" value="<%= displayName %>"/>
 									<% } else { %>
 										<a id="portal-loginLink" href="login.jsp"><%= I18NUtil.resolve(I18NUtil.TYPE_JS, "%{lb_login}", request.getLocale()) %></a>
 									<% } %>
@@ -367,7 +367,7 @@
 							</div>
 						</td>
 						<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
-						<td colspan="3" valign="top" align="left" width="100%">
+						<td class="td-main" colspan="3" valign="top" align="left" width="100%">
 						    <div id="common-design-panel">
 						        <div class="design-option">
 							        <div class="design-set color-setting">
@@ -422,7 +422,9 @@
 											</div>
 											<div id="commonarea-widgetmodal-item-2">
 												<div class="commonarea-widgetmodal-addcontent">
+												    <% if(isAdmin != null &&  isAdmin.booleanValue()){ %>
 													<iframe class="gadget-settings" src="manager/defaultpanel/gadget-settings"></iframe>
+													<% } %>
 												</div>
 											</div>
 										</div>

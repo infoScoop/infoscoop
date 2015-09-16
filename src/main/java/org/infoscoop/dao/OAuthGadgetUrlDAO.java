@@ -72,6 +72,7 @@ public class OAuthGadgetUrlDAO extends HibernateDaoSupport{
 		} else {
 			newGadgetUrl.setFkOauthId(gadgetUrl.getFkOauthId());
 			newGadgetUrl.setGadgetUrl(gadgetUrl.getGadgetUrl());
+			newGadgetUrl.setSquareid(gadgetUrl.getSquareid());
 			super.getHibernateTemplate().saveOrUpdate(newGadgetUrl);
 		}
 	}

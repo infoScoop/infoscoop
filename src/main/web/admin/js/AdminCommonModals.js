@@ -560,7 +560,7 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 	
 	widgetFieldSet.appendChild(contentSubDiv);
 	
-	if(menuItem.type){ 
+	if(menuItem.type && menuItem.type != "notAvailable"){ 
 		buildPropertyField();
 		makePreviewButton();
 		if(!disabled)

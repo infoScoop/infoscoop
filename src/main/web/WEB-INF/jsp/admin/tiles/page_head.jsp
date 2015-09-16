@@ -55,6 +55,7 @@
 	    <link rel="stylesheet" type="text/css" href="../../skin/information.css">
 	    <link rel="stylesheet" type="text/css" href="../../skin/ticker.css">
 		<!--end styles css-->
+	    <link rel="stylesheet" type="text/css" href="../../skin/customize.css">
 
 		<script>
 			<jsp:include page="/prpsrv" flush="true" />

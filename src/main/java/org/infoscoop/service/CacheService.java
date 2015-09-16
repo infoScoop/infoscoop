@@ -28,6 +28,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.CacheDAO;
 import org.infoscoop.dao.model.Cache;
+import org.infoscoop.dao.model.CachePK;
 import org.infoscoop.util.SpringUtil;
 import org.w3c.util.UUID;
 
@@ -114,7 +115,8 @@ public class CacheService {
 		for(java.util.Iterator it= list.iterator();it.hasNext();){
 			Object[] cache = (Object[])it.next();
 			if( currentTime - ((Date)cache[1]).getTime() > 86400000 ){
-				cacheDAO.deleteCacheById((String)cache[0], squareid);
+				CachePK pk = (CachePK)cache[0];
+				cacheDAO.deleteCacheById(pk.getId(), squareid);
 			}
 		}
 	}

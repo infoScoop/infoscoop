@@ -1044,7 +1044,9 @@ Window.prototype = {
   },
 
   _checkIEOverlapping: function() {
-    if(!this.iefix && (navigator.appVersion.indexOf('MSIE')>0) && (navigator.userAgent.indexOf('Opera')<0) && (this.element.getStyle('position')=='absolute')) {
+    // 2015.09.15 iefix for IE11 mofidied by unirita  
+//  if(!this.iefix && (navigator.appVersion.indexOf('MSIE')>0) && (navigator.userAgent.indexOf('Opera')<0) && (this.element.getStyle('position')=='absolute')) {
+    if(!this.iefix && (navigator.appVersion.indexOf('MSIE')>0 || navigator.appVersion.indexOf("trident/7.0")) && (navigator.userAgent.indexOf('Opera')<0) && (this.element.getStyle('position')=='absolute')) {
         new Insertion.After(this.element.id, '<iframe id="' + this.element.id + '_iefix" '+ 'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' + 'src="javascript:false;" frameborder="0" scrolling="no"></iframe>');
         this.iefix = $(this.element.id+'_iefix');
     }

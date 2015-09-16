@@ -29,7 +29,10 @@ IS_CommonAreaDesign.prototype = {
             var heightStr = $jq(this).css("height");
             var height = parseInt(heightStr);
             if(!isNaN(height)){
-                $jq(this).css("height", (height*0.3) + "px");
+                $jq(this).css({
+                    "height": (height*0.3) + "px",
+                    "clear": ""
+                });
             }
         });
         
@@ -197,6 +200,10 @@ IS_CommonAreaDesign.prototype = {
         $jq("#staticLayouts"+(this.adjustToWindowHeight ? "AdjustHeight":"")).show();
         $jq("#staticLayouts"+(!this.adjustToWindowHeight ? "AdjustHeight":"")).hide();
         
+        if(this.adjustToWindowHeight){
+            this.adjustStaticWidgetHeight()
+        }
+        
         $jq(".design-option", this.content).animate(
             {height: "show", opacity: "toggle"},
             {
@@ -309,7 +316,7 @@ IS_CommonAreaDesign.prototype = {
                 var $this = $jq(this);
                 var isNew = ($this.attr("id") == $this.data("containerId"));
                 edit_cover.data("isNew", isNew)
-                edit_cover.text(isNew ? "New" : "Edit").show();
+                edit_cover.text(isNew ? "ADD" : "Edit").show();
             })
             .mouseout(function(){
                 edit_cover.hide();
@@ -328,6 +335,8 @@ IS_CommonAreaDesign.prototype = {
         var bgColor = this.colorPicker.val();
         if(/^#([\da-fA-F]{6}|[\da-fA-F]{3})$/.test(bgColor) || bgColor.length == 0)
             this.jsonRole.bgColor = bgColor;
+        
+        this.jsonRole.numCol = new String(this.currentTabObj.numCol);
         
         var opt = {
             method: "post",

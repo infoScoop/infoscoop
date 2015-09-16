@@ -18,7 +18,12 @@
 --%>
 <!DOCTYPE HTML>
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.util.Map"%>
+<%@page import="org.infoscoop.util.I18NUtil"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+    Map i18n = I18NUtil.getResourceMap(I18NUtil.TYPE_JS, request.getLocale());
+%>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -29,10 +34,10 @@
     <script type="text/javascript">
     function reload(){
         if(top != window.self){
-            alert( "%{ms_on11000}" );
+            alert( "<%= i18n.get("ms_on11000") %>" );
             top.window.location.reload( true );
         }else{
-            alert( "%{ms_square_changed_reload_adminpage}" );
+            alert( "<%= i18n.get("ms_square_changed_reload_adminpage") %>" );
         }
     }
     </script>

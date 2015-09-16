@@ -48,7 +48,8 @@ public class HolidaysService {
 	}
 	
 	public Holidays getHoliday( Locale locale ) {
-		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+//		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		String squareid = SquareService.SQUARE_ID_DEFAULT;
 		String lang = locale.getLanguage();
 		if( lang == null )
 			lang = "ALL";
@@ -70,7 +71,8 @@ public class HolidaysService {
 		return holiday;
 	}
 	public Holidays getHoliday( String lang,String country ) {
-		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+//		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		String squareid = SquareService.SQUARE_ID_DEFAULT;
 		return holidaysDAO.getHoliday( lang,country,squareid );
 	}
 	public String getHolidayData( String lang,String country ) {

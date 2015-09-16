@@ -151,6 +151,7 @@ public class OAuthService {
 				OAuthGadgetUrl gadgetUrl = new OAuthGadgetUrl();
 				gadgetUrl.setFkOauthId(id);
 				gadgetUrl.setGadgetUrl(gadgetUrlArr.getString(j));
+				gadgetUrl.setSquareid(squareid);
 				gadgetUrlSet.add(gadgetUrl);
 			}
 			

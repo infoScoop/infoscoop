@@ -30,9 +30,6 @@
             background-color: transparent;
             padding: 0px;
         }
-        td {
-            white-space: nowrap;
-        }
         input, textarea {
             max-width: 280px;
         }
@@ -44,7 +41,7 @@
         }
     </style>
 	<script>
-	    var widgetJSON = {"id":"w_1438933992534","menuId":"","href":"http://portal.nifty.com/","title":"デイリーポータルＺ：ヘッドライン","type":"RssReader","column":"","ignoreHeader":false,"noBorder":false,"refreshInterval":null,"disabled":false,"properties":{"url":"http://portal.nifty.com/rss/headline.rdf","doLineFeed":"false","showDatetime":"true","itemsnum":"3","showLatestNews":"false","openWidget":"true","scrollMode":"scroll","detailDisplayMode":"inline","itemDisplay":"auto","iframeview":"false","authType":"","titleFilter":"","creatorFilter":"","categoryFilter":""}};
+	    window["editRoleScreen"] = true;
 	    $jq(function(){
 	        var gadgetSettings = new ISA_GadgetSettings();
 	        IS_SiteAggregationMenu.init();

@@ -69,26 +69,30 @@ ISA_PortalLayout.prototype.classDef = function() {
 			this.displayLayoutId = i;
 			break;
 		}
+//		this.displayLayoutId = 'customTheme';
 		this.changeLayout();
 
 		// upload form
 		var iframe = $("upLoadDummyFrame");
 		Event.observe( iframe,"load",function() {
-			var result = $jq(this.contentWindow.document.body).text();
-			if(result) {
-				var status = eval("("+result+")").status;
-				if(status == 500){
+			try {
+				var result = $jq(this.contentWindow.document.body).text();
+				if(result) {
+					var status = eval("("+result+")").status;
+					if(status == 500)
+						throw new Error();
+				} else {
+					$jq('#logo-image-input').attr('upload', 'true');
+					logoImgSrc = hostPrefix + '/logosrv/get';
+					setTimeout(function(){
+						Control.Modal.close();
+					},500);
+				}
+			} catch(e) {
 					alert(ISA_R.ams_gadgetResourceUpdateFailed);
 					msg.error(ISA_R.ams_gadgetResourceUpdateFailed + " - " +" | 500");
 					Control.Modal.close();
-				}
-				$jq('#logo-image').removeAttr('src');
-			} else {
-				$jq('#logo-image-input').attr('upload', 'true');
-				logoImgSrc = hostPrefix + '/logosrv/get';
-				setTimeout(function(){
-					Control.Modal.close();
-				},500);
+					$jq('#logo-image').removeAttr('src');
 			}
 		});
 
@@ -276,7 +280,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 		legend.appendChild(document.createTextNode(ISA_R.alb_editSettings));
 		
 		var editLayoutTextareaDiv = document.createElement("div");
-		editLayoutTextareaDiv.className = "modalConfigSetBody";
+		editLayoutTextareaDiv.className = "modalConfigSetBody modalConfigSetBody_" + this.displayLayoutId;
 		fieldset.appendChild(editLayoutTextareaDiv);
 		
 		var editLayoutTextarea;
@@ -439,7 +443,6 @@ ISA_PortalLayout.prototype.classDef = function() {
 				},500);
 			},
 			onException: function(r, t){
-				alert(ISA_R.ams_failedUpdateOtherPotal);
 				msg.error(ISA_R.ams_failedUpdateOtherPotal + getErrorMessage(t));
 				setTimeout(function(){
 					Control.Modal.close();

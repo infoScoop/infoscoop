@@ -176,7 +176,7 @@ public class CacheDAO extends HibernateDaoSupport {
 	 * @throws DBAccessException
 	 */
 	public void deleteCacheById(String id, String squareid){
-		String queryString = "delete from Cache where Id = ? and Id.Squareid = ?";
+		String queryString = "delete from Cache where Id.Id = ? and Id.Squareid = ?";
 		
 		super.getHibernateTemplate().bulkUpdate( queryString,
 				new Object[] { id, squareid });
