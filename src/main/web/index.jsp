@@ -123,6 +123,9 @@
 			    rssMaxCount: <%= InfoScoopProperties.getInstance().getGlobalmessagesRssMaxcount() %>,
 			    pollingRate: <%= InfoScoopProperties.getInstance().getGlobalmessagesPollingRate() %>
 			},
+			guidance : {
+			    rssUrl: "<%= InfoScoopProperties.getInstance().getGuidanceRssUrl() %>"
+			},
 			<%if(InfoScoopProperties.getInstance().getProperty("password.policy") != null && InfoScoopProperties.getInstance().getProperty("password.policy").length() > 0){%>
 				passwordPolicy: /<%= InfoScoopProperties.getInstance().getProperty("password.policy") %>/
 			<%}%>
