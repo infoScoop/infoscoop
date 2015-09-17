@@ -32,6 +32,7 @@ public class InfoScoopProperties {
 	private boolean globalmessagesEnable;
 	private int globalmessagesRssMaxcount = 5;
 	private int globalmessagesPollingRate = 30000;
+	private String guidanceRssUrl;
 	
 	private ResourceBundle bundle;
 	
@@ -47,6 +48,8 @@ public class InfoScoopProperties {
 			this.globalmessagesRssUrl = bundle.getString("globalmessages.rss.url");
 			String globalmessagesRssMaxcountStr = bundle.getString("globalmessages.rss.maxcount");
 			String globalmessagesPollingRateStr = bundle.getString("globalmessages.polling.rate");
+			
+			this.guidanceRssUrl = bundle.getString("guidance.rss.url");
 			
 			if(NumberUtils.isNumber(globalmessagesRssMaxcountStr))
 				this.globalmessagesRssMaxcount = Integer.parseInt(globalmessagesRssMaxcountStr);
@@ -102,4 +105,8 @@ public class InfoScoopProperties {
 		return globalmessagesPollingRate;
 	}
 
+	public String getGuidanceRssUrl() {
+		return guidanceRssUrl;
+	}
+	
 }
