@@ -157,7 +157,7 @@
 		</div>
 		<%}%>
 
-	<p id="" class="homeTitle">%{alb_infoscoopInfo}</p>
+	<p id="" class="homeTitle information">%{alb_infoscoopInfo}</p>
 		<div id="" class="home-menu-box">
 			<div class="home-menu-icon">
 				<img src="../../skin/imgs/home_icons/goto.gif">
@@ -167,7 +167,7 @@
 			</div>
 		</div>
 
-		<div id="" class="home-menu-box">
+		<div id="" class="home-menu-box version">
 			<div class="home-menu-icon">
 				<img src="../../skin/imgs/home_icons/info.gif">
 			</div>
