@@ -28,7 +28,7 @@ IS_Guidance.GuidanceWindow = {
     },
     
     render: function(renderTo){
-        var displayLimit = 5;
+        var displayLimit = 7;
         var tabCategory = $("#" + this.id + " .nav.nav-tabs");
         var tabContents = $("#" + this.id + " .tab-content");
         
