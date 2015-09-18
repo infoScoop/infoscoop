@@ -41,7 +41,7 @@ public class BaseOAuth2Token implements Serializable {
 	private java.lang.String accessToken;
 	private java.lang.String refreshToken;
 	private java.lang.Long validityPeriodUTC;
-
+	private java.lang.String squareId;
 
 
 	/**
@@ -111,7 +111,14 @@ public class BaseOAuth2Token implements Serializable {
 		this.validityPeriodUTC = validityPeriodUTC;
 	}
 
+	public String getSquareid() {
+		return squareId;
+	}
 
+	public void setSquareid(String squareId) {
+		this.squareId = squareId;
+	}
+	
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.dao.model.OAuth2Token)) return false;

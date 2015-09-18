@@ -36,8 +36,7 @@ IS_Guidance.prototype = {
         IS_Guidance.menuItemTreeMap = this.menuItemTreeMap = [];
         IS_Guidance.serviceMenuMap = this.serviceMenuMap = [];
         
-        var guidancePath = "/guidance/guidance.xml";
-        var guidanceXmlUrl = (staticContentURL == ".") ? hostPrefix + guidancePath : staticContentURL + guidancePath;
+        var guidanceXmlUrl = IS_Portal.guidance.rssUrl;
         this.guidanceMenuItem = new IS_TreeMenu.MenuItem({
                 id:"_is_guidance",
                 serviceURL: guidanceXmlUrl

@@ -418,6 +418,10 @@ div[id^="control_window_"] {
 /*	cursor:col-resize;*/
 }
 
+td.sidepanel-ui {
+	visibility: hidden
+}
+
 #siteMenuGhost{
 	border-left: 1px solid #999999;
 	position: absolute;

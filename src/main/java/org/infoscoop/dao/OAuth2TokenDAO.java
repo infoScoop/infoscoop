@@ -83,6 +83,7 @@ public class OAuth2TokenDAO extends HibernateDaoSupport {
 			OAuthConsumerProp oauthConsumer = OAuthConsumerDAO.newInstance().getConsumer(gadgetUrl, serviceName, squareid);
 			oauthConsumer.getId();
 			token = new OAuth2Token(new OAUTH2_TOKEN_PK(uid, oauthConsumer.getId().getId()));
+			token.setSquareid(squareid);
 		}
 		token.setTokenType(tokenType);
 		token.setAuthCode(authCode);

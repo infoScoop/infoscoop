@@ -20,6 +20,7 @@ import net.oauth.server.OAuthServlet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.OAuthTokenDAO;
 import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.OAuthAuthenticator;
@@ -43,13 +44,14 @@ public class OAuthCallbackServlet extends HttpServlet {
 		String uid = (String) session.getAttribute("Uid");
 		String consumerName = request.getParameter("consumer");
 		String gadgetUrl = request.getParameter("__GADGET_URL__");
+		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 		try {
 			final OAuthMessage requestMessage = OAuthServlet.getMessage(
 					request, null);
 			OAuthConsumer consumer = OAuthAuthenticator.getConsumer(gadgetUrl, consumerName);
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 			OAuthToken token = OAuthTokenDAO.newInstance().getAccessToken(uid,
-					gadgetUrl, consumerName);
+					gadgetUrl, consumerName, squareId);
 			accessor.requestToken = token.getRequestToken();
 			accessor.tokenSecret = token.getTokenSecret();
 
@@ -92,6 +94,9 @@ public class OAuthCallbackServlet extends HttpServlet {
 			out.println("<html><head><script> window.close();</script></head></html>");
 			out.flush();
 		} catch (Exception e) {
+			e.printStackTrace();
+			
+			
 			OAuthService.getHandle().deleteOAuthToken(uid, gadgetUrl,
 					consumerName);
 			log.error("unexpected error has occured.", e);

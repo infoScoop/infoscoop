@@ -43,11 +43,12 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-	public OAuthToken getAccessToken(String uid, String gadgetUrl, String serviceName) {
+	public OAuthToken getAccessToken(String uid, String gadgetUrl, String serviceName, String squareId) {
 		if (uid == null || gadgetUrl == null || serviceName == null) {
 			throw new RuntimeException(
 					"uid, gadgetUrl and serviceName must be set.");
 		}
+		
 		Iterator results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuthConsumerProp.class,"ocp")
 				.createAlias("OAuthGadgetUrl", "ogu", CriteriaSpecification.LEFT_JOIN)
@@ -55,6 +56,7 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 				.add(Restrictions.conjunction()
 					.add(Restrictions.eq("ot.Id.Uid", uid))
 					.add(Restrictions.eq("ocp.ServiceName", serviceName))
+					.add(Restrictions.eq("ocp.Id.Squareid", squareId))
 					.add(Restrictions.eq("ogu.GadgetUrlKey", Crypt.getHash(gadgetUrl)))))
 				.iterator();
 		
@@ -69,7 +71,7 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<OAuthToken> getAccessTokens(String uid, String serviceName) {
+	public List<OAuthToken> getAccessTokens(String uid, String serviceName, String squareId) {
 		if (uid == null || serviceName == null) {
 			throw new RuntimeException(
 					"uid and serviceName must be set.");
@@ -80,6 +82,7 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 				.createAlias("OAuthToken", "ot", CriteriaSpecification.LEFT_JOIN)
 				.add(Restrictions.conjunction()
 					.add(Restrictions.eq("ot.Id.Uid", uid))
+					.add(Restrictions.eq("ocp.Id.Squareid", squareId))
 					.add(Restrictions.eq("ocp.ServiceName", serviceName))))
 				.iterator();
 		
@@ -95,11 +98,12 @@ public class OAuthTokenDAO extends HibernateDaoSupport {
 	public void saveAccessToken(String uid, String gadgetUrl,
 			String serviceName, String requestToken, String accessToken,
 			String tokenSecret, String squareid) {
-		OAuthToken token = getAccessToken(uid, gadgetUrl, serviceName);
+		OAuthToken token = getAccessToken(uid, gadgetUrl, serviceName, squareid);
 		if (token == null) {
 			OAuthConsumerProp oauthConsumer = OAuthConsumerDAO.newInstance().getConsumer(gadgetUrl, serviceName, squareid);
 			oauthConsumer.getId();
 			token = new OAuthToken(new OAUTH_TOKEN_PK(uid, oauthConsumer.getId().getId()));
+			token.setSquareid(squareid);
 		}
 		token.setRequestToken(requestToken);
 		token.setAccessToken(accessToken);

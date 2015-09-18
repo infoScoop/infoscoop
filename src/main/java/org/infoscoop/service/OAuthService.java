@@ -183,11 +183,13 @@ public class OAuthService {
 	}
 	
 	public void deleteOAuthToken(String uid, String gadgetUrl, String serviceName){
-		this.oauthTokenDAO.deleteOAuthToken(this.oauthTokenDAO.getAccessToken(uid, gadgetUrl, serviceName));
+		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+		this.oauthTokenDAO.deleteOAuthToken(this.oauthTokenDAO.getAccessToken(uid, gadgetUrl, serviceName, squareId));
 	}	
 
 	public boolean deleteOAuthTokens(String uid, String serviceName){
-		List<OAuthToken> tokens = this.oauthTokenDAO.getAccessTokens(uid, serviceName);
+		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+		List<OAuthToken> tokens = this.oauthTokenDAO.getAccessTokens(uid, serviceName, squareId);
 		if(tokens != null && tokens.size() > 0){
 			this.oauthTokenDAO.deleteOAuthToken(tokens);
 			return true;
