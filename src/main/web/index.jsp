@@ -445,6 +445,7 @@
 							</div>
 							<div id="iframe-tool-bar"></div>
 							<div id="search-iframe" style="display:none;"></div>
+							<div id="panel-dummy">&nbsp;</div>
 						</td>
 					</tr>
 				</tbody>

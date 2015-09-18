@@ -229,8 +229,9 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
     }
     
     var panels = $("panels");
+    setTimeout(function(){$jq("#panel-dummy").remove()},0);
     panels.appendChild( panelDiv );
-    
+
     IS_Portal.widgetLists[tabDiv.id] = new Object();
 //  IS_Portal.subWidgetLists[tabDiv.id] = new Object();
     IS_Portal.columnsObjs[tabDiv.id] = {};
