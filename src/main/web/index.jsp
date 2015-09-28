@@ -426,7 +426,7 @@
 											<div id="commonarea-widgetmodal-item-2">
 												<div class="commonarea-widgetmodal-addcontent">
 												    <% if(isAdmin != null &&  isAdmin.booleanValue()){ %>
-													<iframe class="gadget-settings" src="manager/defaultpanel/gadget-settings"></iframe>
+													<iframe class="gadget-settings" src="about:blank"></iframe>
 													<% } %>
 												</div>
 											</div>
