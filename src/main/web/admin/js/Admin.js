@@ -104,9 +104,12 @@ ISA_Admin.clearAdminCache = function() {
 		Sortable.destroy(Sortable.sortables[0].element);
 	}
 	var navigatorContainer = $("admin-menu-navigator");
-	loopCount = navigatorContainer.childNodes.length;
-	for(var i=0; i<loopCount; i++) {
-		navigatorContainer.removeChild(navigatorContainer.lastChild);
+	
+	if(navigatorContainer){
+    	loopCount = navigatorContainer.childNodes.length;
+    	for(var i=0; i<loopCount; i++) {
+    		navigatorContainer.removeChild(navigatorContainer.lastChild);
+    	}
 	}
 	
 	if(ISA_SiteAggregationMenu && ISA_SiteAggregationMenu.treeMenu){
