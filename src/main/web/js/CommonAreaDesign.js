@@ -57,6 +57,9 @@ IS_CommonAreaDesign.prototype = {
             self.adjustStaticWidgetHeight();
         });
         
+        // load gadget-settings in iframe
+        $jq(".gadget-settings", this.content).attr("src", "manager/defaultpanel/gadget-settings");
+        
         IS_EventDispatcher.addListener("changeTab", null, this.changeNormalMode.bind(this,true));
     },
     initLayoutSelect: function(){

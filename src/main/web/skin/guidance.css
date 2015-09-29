@@ -33,6 +33,10 @@ html, body, table {
 }
 
 #contents-main .thumbnail .caption {
+    overflow: hidden;
+}
+
+#contents-main .thumbnail .caption {
     text-align: center;
 }
 
@@ -40,7 +44,12 @@ html, body, table {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    margin-top: 10px;
+    margin: 0px;
+    font-size: 16px;
+}
+
+#contents-main .thumbnail .caption>p {
+    margin: 10px 0 0;
 }
 
 #contents-main .thumbnail>img {
