@@ -20,11 +20,15 @@ package org.infoscoop.service;
 
 
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.context.UserContext;
+import org.infoscoop.dao.GlobalPreferenceDAO;
 import org.infoscoop.dao.PreferenceDAO;
+import org.infoscoop.dao.model.GlobalPreference;
 import org.infoscoop.dao.model.Preference;
 import org.infoscoop.dao.model.PreferencePK;
 import org.infoscoop.util.SpringUtil;
@@ -42,6 +46,7 @@ public class PreferenceService{
 	private static final String formatW3C = "yyyy-MM-dd'T'HH:mm:ssZ";
 
 	private PreferenceDAO preferenceDAO;
+	private GlobalPreferenceDAO globalPreferenceDAO;
 	
 	public PreferenceService() {
 	}
@@ -52,6 +57,10 @@ public class PreferenceService{
 	
 	public void setPreferenceDAO(PreferenceDAO preferenceDAO) {
 		this.preferenceDAO = preferenceDAO;
+	}
+	
+	public void setGlobalPreferenceDAO(GlobalPreferenceDAO globalPreferenceDAO) {
+		this.globalPreferenceDAO = globalPreferenceDAO;
 	}
 	
 	private Preference createPreferenceEntity(String uid) throws Exception{
@@ -124,6 +133,16 @@ public class PreferenceService{
 		return prefObj.toString();
 	}
 	
+	public String getGlobalPreferenceJSON(String uid) throws Exception{
+		JSONObject json = new JSONObject();
+		List<GlobalPreference> list = this.globalPreferenceDAO.getByUid(uid);
+		
+		for(Iterator<GlobalPreference> ite=list.iterator();ite.hasNext();){
+			GlobalPreference preference = ite.next();
+			json.put(preference.getName(), preference.getValue());
+		}
+		return json.toString();
+	}
 	
 	/** 
 	 * set access time
@@ -192,6 +211,20 @@ public class PreferenceService{
 		}
 
 		return propValue;
+	}
+	
+	public void updateLogoffDateTime(Preference preference, Element node, String uid, String field, String value){
+   		updateProperty(node, field, value);
+   		preference.setElement(node);
+   		update(preference);
+   		
+   		GlobalPreference globalPreference = globalPreferenceDAO.getByUidKey(uid, field);
+   		if(globalPreference != null){
+   			globalPreference.setValue(value);
+   			globalPreferenceDAO.update(globalPreference);
+   		}else{
+   			globalPreferenceDAO.insert(uid, field, value);
+   		}
 	}
 	
 	/**

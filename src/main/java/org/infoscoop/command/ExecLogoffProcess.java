@@ -78,9 +78,7 @@ public class ExecLogoffProcess extends XMLCommandProcessor {
 			 return;
 		}
         if(prefEl != null){
-       		PreferenceService.updateProperty(prefEl, field, value);
-       		entity.setElement(prefEl);
-       		PreferenceService.getHandle().update(entity);
+        	PreferenceService.getHandle().updateLogoffDateTime(entity, prefEl, uid, field, value);
        	}
         this.result = XMLCommandUtil.createResultElement(uid, "processXML",
                 logger, commandId, true, null);

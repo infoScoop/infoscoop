@@ -251,6 +251,9 @@
 			IS_Portal.preference = preference.property;
 			IS_Portal.SearchEngines.searchOption = preference.property.searchOption ? eval('(' + preference.property.searchOption+ ')') : {};
 		}
+		IS_Portal.globalProperties = <%= PreferenceService.getHandle().getGlobalPreferenceJSON(uid) %>;
+		if(IS_Portal.globalProperties.logoffDateTime)
+		    IS_Portal.globalProperties.logoffDateTime = new Date( IS_Portal.globalProperties.logoffDateTime ? IS_Portal.globalProperties.logoffDateTime : "").getTime();
 	</script>
 
     <%
