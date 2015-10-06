@@ -2763,7 +2763,7 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
             <column name="uid" type="varchar(150)">
                 <constraints nullable="false"/>
             </column>
-            <column name="name" type="varchar(256)">
+            <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="value" type="varchar(512)">
