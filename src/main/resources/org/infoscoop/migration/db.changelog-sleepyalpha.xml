@@ -2774,7 +2774,7 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
             <column name="uid" type="varchar(150)"/>
         </createIndex>
         <createIndex indexName="is_globalpreferences_name_idx" schemaName="${migration.defaultSchema}" tableName="is_globalpreferences" tablespace="${.tablespace}">
-            <column name="name" type="varchar(256)"/>
+            <column name="name" type="varchar(255)"/>
         </createIndex>
     </changeSet>
 
