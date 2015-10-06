@@ -130,6 +130,9 @@
 				<property name="preferenceDAO">
 					<ref bean="preferenceDAO" />
 				</property>
+                <property name="globalPreferenceDAO">
+                    <ref bean="globalPreferenceDAO" />
+                </property>
 			</bean>
 		</property>
 		<property name="transactionManager">

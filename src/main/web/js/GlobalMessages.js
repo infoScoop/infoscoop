@@ -37,15 +37,14 @@ IS_GlobalMessages.prototype.classDef = function(){
     
     this.checkMessages = function(){
         var nowDate = new Date();
-        var logoffDatetime = parseInt( IS_Portal.logoffDateTime );
-        var freshTime = (logoffDatetime <= 0 || isNaN( logoffDatetime ))? 0 : nowDate.getTime() - logoffDatetime;
+        var freshTime;
         
         var freshTime = nowDate.getTime();
         if(this.latestDateTime){
             freshTime = this.latestDateTime;
         } else {
             // 1st request
-            var logoffDatetime = parseInt( IS_Portal.logoffDateTime );
+            var logoffDatetime = parseInt( IS_Portal.globalProperties.logoffDateTime );
             freshTime = (logoffDatetime <= 0 || isNaN( logoffDatetime ))? 0 : nowDate.getTime() - logoffDatetime;
             freshTime = nowDate.getTime() - freshTime;
         }
@@ -84,12 +83,16 @@ IS_GlobalMessages.prototype.classDef = function(){
                     }
                     
                     $jq("<span>").text(rssItem.date).appendTo(msg);
-                    $jq("<a>").attr({
-                            href : rssItem.link,
-                            target : "_blank"
-                        })
-                        .text(rssItem.title)
-                        .appendTo(msg);
+                    if(rssItem.link){
+                        $jq("<a>").attr({
+                                href : rssItem.link,
+                                target : "_blank"
+                            })
+                            .text(rssItem.title)
+                            .appendTo(msg);
+                    }else{
+                        $jq("<span>").addClass("nolink-title").text(rssItem.title).appendTo(msg);
+                    }
                 }
                 
                 $jq("#message-bar").show();

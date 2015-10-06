@@ -434,4 +434,9 @@
 			<ref bean="sessionFactory"/>
 		</property>
 	</bean>
+    <bean id="globalPreferenceDAO" class="org.infoscoop.dao.GlobalPreferenceDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
 </beans>

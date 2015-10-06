@@ -174,7 +174,7 @@ img{
 #message-bar .msg-item.information{
 	background: url(./imgs/information.gif) top left no-repeat;
 }
-#message-bar .msg-item a{
+#message-bar .msg-item a, #message-bar .msg-item .nolink-title{
     margin-left: 5px;
 }
 #message-bar-controles{
