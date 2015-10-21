@@ -643,6 +643,10 @@ public class ProxyRequest{
 					this.targetJSessionId = nameValue[1].trim();
 					return;
 				}
+				// ignore AWSELB sticky session cookie
+				else if("AWSELB".equals(nameValue[0].trim())){
+					return;
+				}
 			}
 		}
 
