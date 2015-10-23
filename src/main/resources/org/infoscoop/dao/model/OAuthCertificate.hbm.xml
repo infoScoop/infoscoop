@@ -48,8 +48,8 @@ INSERT
 		)
 	SELECT
 		oc.consumer_key,
-		oc.private_key,
-		oc.certificate,
+		"",
+		"",
 		:squareId
 	FROM
 		IS_OAUTH_CERTIFICATE as oc
