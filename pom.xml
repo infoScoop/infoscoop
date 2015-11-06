@@ -7,12 +7,25 @@
 	<name>infoScoop OpenSource</name>
 	<url>http://www.infoscoop.org</url>
   	<dependencies>
+      <dependency>
+        <groupId>javax.transaction</groupId>
+        <artifactId>jta</artifactId>
+        <version>1.1</version>
+      </dependency>
   		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
 			<version>3.2.6.ga</version>
 			<scope>compile</scope>
 			<exclusions>
+			  <exclusion>
+			   <groupId>javax.transaction</groupId>
+			   <artifactId>jta</artifactId>
+			  </exclusion>
+			  <exclusion>
+          <groupId>asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
 				<exclusion>
 					<groupId>asm</groupId>
 					<artifactId>asm</artifactId>
@@ -20,15 +33,15 @@
 				<exclusion>
 					<groupId>asm</groupId>
 					<artifactId>asm-attrs</artifactId>
-				</exclusion>				
+				</exclusion>
 				<exclusion>
 					<groupId>cglib</groupId>
 					<artifactId>cglib</artifactId>
-				</exclusion>				
+				</exclusion>
 				<exclusion>
 					<groupId>net.sf.ehcache</groupId>
 					<artifactId>ehcache</artifactId>
-				</exclusion>				
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -83,7 +96,7 @@
 				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>jcl-over-slf4j</artifactId>
-				</exclusion>				
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -330,7 +343,7 @@
 					<groupId>org.openid4java</groupId>
 					<artifactId>openid4java-server-SampleServer</artifactId>
 				</exclusion>
-			</exclusions>			
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>xml-resolver</groupId>
@@ -418,7 +431,8 @@
 			<groupId>apache</groupId>
 			<artifactId>log4j-datedFileAppender</artifactId>
 			<version>1.0.2</version>
-			<scope>compile</scope>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/main/log4j-datedFileAppender-1.0.2.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
@@ -482,7 +496,7 @@
 			<version>2.1.5</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/main/uuid-2.1.5.jar</systemPath>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -544,11 +558,6 @@
 			<name>Java.net Snapshot Repository for Maven</name>
 			<url>https://maven.java.net/content/repositories/snapshots/</url>
 			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>log4j-datedFileAppender</id>
-			<name>datedFileAppender</name>
-			<url>http://maven.cloudhopper.com/repos/third-party/</url>		
 		</repository>
 		<repository>
 			<id>caja</id>
