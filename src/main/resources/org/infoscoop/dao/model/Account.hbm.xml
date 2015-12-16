@@ -33,7 +33,7 @@
 		/>
 
         <property
-            name="Defaultsquareid"
+            name="defaultSquareId"
             column="default_square_id"
             type="string"
             not-null="false"
@@ -41,7 +41,7 @@
         />
 
 		<property
-				name="Givenname"
+				name="givenName"
 				column="given_name"
 				type="string"
 				not-null="false"
@@ -49,7 +49,7 @@
 				/>
 
 		<property
-				name="Familyname"
+				name="familyName"
 				column="family_name"
 				type="string"
 				not-null="false"
@@ -64,14 +64,14 @@
 				length="150"
 				/>
 
-		<set name="AccountAttr" lazy="true" inverse="true">
+		<set name="AccountAttrs" lazy="true" inverse="true">
 			<key>
 				<column name="uid" not-null="true" />
 			</key>
 			<one-to-many class="AccountAttr" />
 		</set>
 
-		<set name="AccountSquare" lazy="true" inverse="true">
+		<set name="AccountSquares" lazy="true" inverse="true">
 			<key>
 				<column name="uid" not-null="true" />
 			</key>

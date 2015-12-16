@@ -17,7 +17,7 @@
 		/>
 
         <property
-            name="Squareid"
+            name="squareId"
             column="square_id"
             type="string"
             not-null="false"
