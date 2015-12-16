@@ -24,7 +24,7 @@ public class BaseAccountSquare implements Serializable {
 
 	public static String REF = "AccountSquare";
 	public static String PROP_UID = "Uid";
-	public static String PROP_SQUARE_ID = "Squareid";
+	public static String PROP_SQUARE_ID = "squareId";
 
 	public BaseAccountSquare() {
 		initialize();

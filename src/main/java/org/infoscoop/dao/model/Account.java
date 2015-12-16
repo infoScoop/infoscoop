@@ -22,6 +22,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
 import org.infoscoop.account.IAccount;
@@ -37,6 +38,9 @@ public class Account implements IAccount {
 	private String givenName;
 	private String familyName;
 	private String mail;
+
+	private Set<org.infoscoop.dao.model.AccountAttr> accountAttrs;
+	private Set<AccountSquare> accountSquares;
 
 	public Account(String uid, String name, String plainTextPassword){
 		this.uid = uid;
@@ -103,5 +107,21 @@ public class Account implements IAccount {
 		List<String> belongIds = new ArrayList<String>();
 //		if(this.belongid!=null) belongIds.add(this.belongid);
 		return belongIds;
+	}
+
+	public Set<AccountAttr> getAccountAttrs() {
+		return accountAttrs;
+	}
+
+	public void setAccountAttrs(Set<AccountAttr> accountAttrs) {
+		this.accountAttrs = accountAttrs;
+	}
+
+	public Set<AccountSquare> getAccountSquares() {
+		return accountSquares;
+	}
+
+	public void setAccountSquares(Set<AccountSquare> accountSquares) {
+		this.accountSquares = accountSquares;
 	}
 }
