@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<property name="clob.type" value="clob" dbms="oracle, db2"/>
+    <property name="clob.type" value="mediumtext" dbms="mysql"/>
+
+    <!--Issue 609-->
+    <changeSet id="infoscoop_sleepyalpha2_609_1" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_609_1">
+            <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS" columnName="default_belong_id"/>
+        </preConditions>
+        <dropColumn columnName="default_belong_id"  schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS"/>
+        <dropColumn columnName="belong_id"  schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS"/>
+    </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha2_609_2" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_609_2">
+            <not>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS" columnName="default_square_id"/>
+            </not>
+        </preConditions>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS">
+            <column name="default_square_id" type="varchar(64)" defaultValue="default">
+                <constraints nullable="false"/>
+            </column>
+            <column name="given_name" type="varchar(128)"/>
+            <column name="family_name" type="varchar(128)"/>
+            <column name="email" type="varchar(150)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha2_609_3" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_609_3">
+            <not>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNT_ATTRS"/>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNT_SQUARES"/>
+            </not>
+        </preConditions>
+        <createTable tableName="IS_ACCOUNT_ATTRS" tablespace="${.tablespace}">
+            <column name="uid" type="varchar(150)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="${clob.type}"/>
+        </createTable>
+        <createTable tableName="IS_ACCOUNT_SQUARES" tablespace="${.tablespace}">
+            <column name="uid" type="varchar(150)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="square_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha2_609_4" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_609_4">
+            <not>
+                <indexExists indexName="is_account_attrs_name_idx"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="is_account_attrs_name_idx" schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNT_ATTRS" tablespace="${.tablespace}">
+            <column name="name" type="varchar(255)"/>
+        </createIndex>
+        <createIndex indexName="is_account_squares_square_idx" schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNT_SQUARES" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+        <addForeignKeyConstraint baseColumnNames="default_square_id" baseTableName="IS_ACCOUNTS" constraintName="fk_is_accounts_id" referencedColumnNames="id" referencedTableName="IS_SQUARES"/>
+        <addForeignKeyConstraint baseColumnNames="uid" baseTableName="IS_ACCOUNT_ATTRS" constraintName="fk_is_account_attrs_uid" onDelete="CASCADE" referencedColumnNames="uid" referencedTableName="IS_ACCOUNTS"/>
+        <addForeignKeyConstraint baseColumnNames="uid" baseTableName="IS_ACCOUNT_SQUARES" constraintName="fk_is_account_squares_uid" onDelete="CASCADE" referencedColumnNames="uid" referencedTableName="IS_ACCOUNTS"/>
+        <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_ACCOUNT_SQUARES" constraintName="fk_is_account_squares_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="IS_SQUARES"/>
+    </changeSet>
+</databaseChangeLog>
