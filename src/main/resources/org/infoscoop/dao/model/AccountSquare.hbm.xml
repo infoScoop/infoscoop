@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="AccountSquare"
+		table="IS_ACCOUNT_SQUARES"
+	>
+		<meta attribute="sync-DAO">false</meta>
+		<id
+			name="Uid"
+			type="string"
+			column="`UID`"
+			length="150"
+		/>
+
+        <property
+            name="Squareid"
+            column="square_id"
+            type="string"
+            not-null="false"
+            length="64"
+        />
+
+	</class>
+</hibernate-mapping>

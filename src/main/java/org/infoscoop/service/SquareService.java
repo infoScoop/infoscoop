@@ -261,7 +261,7 @@ public class SquareService {
 
 	public Map<String, Object> getBelongSquaresNamesWithDefault(String userId) throws Exception{
 		IAccount account = AuthenticationService.getInstance().getAccountManager().getUser(userId);
-		String defaultSquareId = account.getDefaultbelongid();
+		String defaultSquareId = account.getDefaultSquareId();
 		List<Square> squares = squareDAO.getSquares(account.getBelongids());
 		List<Map<String, String>> belongSquaresName = new ArrayList<Map<String, String>>();
 		Map<String, Object> squareNameMap = new HashMap<String, Object>();

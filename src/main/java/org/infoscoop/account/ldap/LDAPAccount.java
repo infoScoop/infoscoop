@@ -121,7 +121,7 @@ public class LDAPAccount implements IAccount{
 		return mails;
 	}
 
-	public String getDefaultbelongid() {
+	public String getDefaultSquareId() {
 		return "default";
 	}
 	public List<String > getBelongids() {

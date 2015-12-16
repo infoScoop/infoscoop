@@ -32,10 +32,11 @@ public class Account implements IAccount {
 	private String uid;
 	private String name;
 	private String password;
-	private String mail;
 	private String groupName;
-	private String belongid;
-	private String defaultbelongid;
+	private String defaultSquareId;
+	private String givenName;
+	private String familyName;
+	private String mail;
 
 	public Account(String uid, String name, String plainTextPassword){
 		this.uid = uid;
@@ -67,21 +68,29 @@ public class Account implements IAccount {
 
 	public String getGroupName() { return this.groupName; }
 	public void setGroupName(String groupName) { this.groupName = groupName; }
-	
-	public String getBelongid() {
-		return this.belongid;
+
+	public String getDefaultSquareId() {
+		return defaultSquareId;
 	}
 
-	public void setBelongid(String belongid) {
-		this.belongid = belongid;
+	public void setDefaultSquareId(String defaultSquareId) {
+		this.defaultSquareId = defaultSquareId;
 	}
 
-	public String getDefaultbelongid() {
-		return defaultbelongid;
+	public String getGivenName() {
+		return givenName;
 	}
 
-	public void setDefaultbelongid(String defaultbelongid) {
-		this.defaultbelongid = defaultbelongid;
+	public void setGivenName(String givenName) {
+		this.givenName = givenName;
+	}
+
+	public String getFamilyName() {
+		return familyName;
+	}
+
+	public void setFamilyName(String familyName) {
+		this.familyName = familyName;
 	}
 
 	public IGroup[] getGroups() { return null; }
@@ -92,7 +101,7 @@ public class Account implements IAccount {
 	}
 	public List<String> getBelongids() {
 		List<String> belongIds = new ArrayList<String>();
-		if(this.belongid!=null) belongIds.add(this.belongid);
+//		if(this.belongid!=null) belongIds.add(this.belongid);
 		return belongIds;
 	}
 }

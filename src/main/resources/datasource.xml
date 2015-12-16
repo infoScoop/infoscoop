@@ -85,6 +85,8 @@
 					<value>org/infoscoop/dao/model/Message.hbm.xml</value>
 					<value>org/infoscoop/dao/model/SystemMessage.hbm.xml</value>
 					<value>org/infoscoop/dao/model/Account.hbm.xml</value>
+					<value>org/infoscoop/dao/model/AccountAttr.hbm.xml</value>
+					<value>org/infoscoop/dao/model/AccountSquare.hbm.xml</value>
 					<value>org/infoscoop/dao/model/GadgetIcon.hbm.xml</value>
 					<value>org/infoscoop/dao/model/OAuthToken.hbm.xml</value>
 					<value>org/infoscoop/dao/model/OAuth2Token.hbm.xml</value>

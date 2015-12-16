@@ -71,7 +71,7 @@ public class CheckSquareFilter implements javax.servlet.Filter {
 						// not exist default square
 						IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
 						IAccount account = accountManager.getUser(uid);
-						String defaultId = account.getDefaultbelongid();
+						String defaultId = account.getDefaultSquareId();
 						if(defaultId.equals(squareId))
 							accountManager.updateDefaultSquare(uid, uid);
 

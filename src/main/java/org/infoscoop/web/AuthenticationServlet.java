@@ -141,7 +141,7 @@ public class AuthenticationServlet extends HttpServlet {
 				request.getSession().setAttribute("Uid",uid );
 
 				IAccount account = service.getAccountManager().getUser(uid);
-				String squareId = account.getDefaultbelongid();
+				String squareId = account.getDefaultSquareId();
 				request.getSession().setAttribute(SessionManagerFilter.LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, squareId);
 				//request.getSession().setAttribute(AuthenticationServlet.TMP_LOGINUSER_SUBJECT_ATTR_NAME, loginUser );
 				String authType = PropertiesService.getHandle().getProperty("loginCredentialAuthType");

@@ -33,19 +33,49 @@
 		/>
 
         <property
-            name="Belongid"
-            column="belong_id"
-            type="text"
-            not-null="false"
-        />
-
-        <property
-            name="Defaultbelongid"
-            column="default_belong_id"
+            name="Defaultsquareid"
+            column="default_square_id"
             type="string"
             not-null="false"
             length="64"
         />
 
+		<property
+				name="Givenname"
+				column="given_name"
+				type="string"
+				not-null="false"
+				length="128"
+				/>
+
+		<property
+				name="Familyname"
+				column="family_name"
+				type="string"
+				not-null="false"
+				length="128"
+				/>
+
+		<property
+				name="mail"
+				column="email"
+				type="string"
+				not-null="false"
+				length="150"
+				/>
+
+		<set name="AccountAttr" lazy="true" inverse="true">
+			<key>
+				<column name="uid" not-null="true" />
+			</key>
+			<one-to-many class="AccountAttr" />
+		</set>
+
+		<set name="AccountSquare" lazy="true" inverse="true">
+			<key>
+				<column name="uid" not-null="true" />
+			</key>
+			<one-to-many class="AccountSquare" />
+		</set>
 	</class>
 </hibernate-mapping>
