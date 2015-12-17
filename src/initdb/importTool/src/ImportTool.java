@@ -22,6 +22,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +33,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.Account;
+import org.infoscoop.dao.model.AccountSquare;
 import org.infoscoop.initdb.dao.model.Adminrole;
 import org.infoscoop.initdb.dao.model.Forbiddenurls;
 import org.infoscoop.initdb.dao.model.Gadget;
@@ -147,7 +150,8 @@ public class ImportTool {
 
 		if( accepts.size() == 0 ) {
 			System.out.println("import ALL tables.");
-			accepts.addAll( Arrays.asList( TABLES.values() ));
+			accepts.addAll(Arrays.asList(TABLES.values()));
+			accepts.remove(TABLES.ACCOUNT);
 		}
 
 		if( lang != null )
@@ -694,11 +698,15 @@ class GadgetFactory extends CSVBeanFactory<Gadget> {
 class AccountFactory extends CSVBeanFactory<Account> {
 	public Account newBean(CSVField[] values ) {
 		Account account = new Account();
-		account.setUid( values[0].toString() );
+		AccountSquare accountSquare = new AccountSquare(values[0].toString(), values[3].toString());
+		Set<AccountSquare> accountSquareSet = new HashSet<AccountSquare>();
+		accountSquareSet.add(accountSquare);
+
+		account.setUid(values[0].toString());
 		account.setName(values[1].toString());
 		account.setPasswordPlainText(values[2].toString());
-		account.setBelongid( values[3].toString() );
-		account.setDefaultbelongid( values[4].toString() );
+		account.setDefaultSquareId(values[4].toString());
+		account.setAccountSquares(accountSquareSet);
 
 		return account;
 	}
