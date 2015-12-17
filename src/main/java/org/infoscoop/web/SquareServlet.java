@@ -101,7 +101,7 @@ public class SquareServlet extends HttpServlet {
 			}
 
 			// create square
-			String squareId = (UUID.randomUUID().toString()).replaceAll("-", "");
+			String squareId = SquareService.generateSquareId();
 			try {
 				// mail invitation user
 				List<String> emailList = new ArrayList<String>();

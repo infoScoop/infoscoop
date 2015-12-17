@@ -577,4 +577,20 @@ public class LDAPAccountManager implements IAccountManager{
 	public String updateUserProfile(String userId, Map<String, String[]> map) {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public void deleteUser(String userId) throws Exception {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void registUser(String userid, String password, String firstName,
+			String familyName, String defaultSquareId, String email) throws Exception {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void removeSquareId(String userid, String squareId) throws Exception {
+		throw new UnsupportedOperationException();
+	}
 }

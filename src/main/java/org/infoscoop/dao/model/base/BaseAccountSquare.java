@@ -31,7 +31,7 @@ public class BaseAccountSquare implements Serializable {
 	}
 
 	public BaseAccountSquare(String uid, String squareId) {
-		this.setUid(uid);
+		this.setAccountId(uid);
 		this.setSquareId(squareId);
 	}
 
@@ -40,17 +40,26 @@ public class BaseAccountSquare implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String uid;
+	private Long id;
 
 	// fields
+	private java.lang.String accountId;
 	private java.lang.String squareId;
 
-	public String getUid() {
-		return uid;
+	public Long getId() {
+		return id;
 	}
 
-	public void setUid(String uid) {
-		this.uid = uid;
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public java.lang.String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(java.lang.String accountId) {
+		this.accountId = accountId;
 	}
 
 	public String getSquareId() {
@@ -63,10 +72,13 @@ public class BaseAccountSquare implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		BaseAccountSquare that = (BaseAccountSquare) o;
-		return Objects.equals(hashCode, that.hashCode);
+		if (null == o) return false;
+		if (!(o instanceof org.infoscoop.dao.model.AccountAttr)) return false;
+		else {
+			org.infoscoop.dao.model.AccountSquare accountSquare = (org.infoscoop.dao.model.AccountSquare) o;
+			if (null == this.getId() || null == accountSquare.getId()) return false;
+			else return (this.getId().equals(accountSquare.getId()));
+		}
 	}
 
 	@Override

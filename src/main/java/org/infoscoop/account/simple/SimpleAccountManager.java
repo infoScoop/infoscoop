@@ -22,19 +22,26 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.security.auth.Subject;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationException;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IAccountManager;
 import org.infoscoop.account.PrincipalDef;
+import org.infoscoop.account.helper.AccountHelper;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.dao.AccountDAO;
 import org.infoscoop.dao.model.Account;
+import org.infoscoop.dao.model.AccountSquare;
 import org.json.JSONObject;
 
 /**
@@ -42,9 +49,17 @@ import org.json.JSONObject;
  *
  */
 public class SimpleAccountManager implements IAccountManager{
-
+	private static Log log = LogFactory.getLog(SimpleAccountManager.class);
 	private AccountDAO dao;
 
+	private static final String DISPLAY_NAME_PARAM = "displayname";
+	private static final String FIRST_NAME_PARAM = "firstname";
+	private static final String GIVEN_NAME_PARAM = "givenname";
+	
+	/**
+	 * Account manager form.
+	 */
+	private String accountManagerFormDef = null;
 	public void setAccountDAO(AccountDAO dao){
 		this.dao = dao;
 	}
@@ -57,8 +72,7 @@ public class SimpleAccountManager implements IAccountManager{
 	 * @see org.infoscoop.searchuid.ISearchModule#search(java.util.Map)
 	 */
 	public List searchUser(Map searchConditionMap) throws Exception {
-		String name = (String)searchConditionMap.get("user_name");
-		return this.dao.selectByName(name);
+		return this.dao.selectByMap(searchConditionMap);
 	}
 
 	public void login(String userid, String password) throws AuthenticationException {
@@ -91,17 +105,7 @@ public class SimpleAccountManager implements IAccountManager{
 	}
 
 	private void checkCredentials(String password, String digest) throws AuthenticationException {
-		MessageDigest md;
-		try {
-			md = MessageDigest.getInstance("SHA");
-		} catch (NoSuchAlgorithmException e) {
-			throw new AuthenticationException(e);
-		}
-		try {
-			password = new String(Base64.encodeBase64(md.digest(password.getBytes("iso-8859-1"))));
-		} catch (UnsupportedEncodingException e) {
-			throw new AuthenticationException(e);
-		}
+		password = getCryptoHash(password);
 		if(!digest.equals(password)){
 			throw new AuthenticationException("invalid password.");
 		}
@@ -133,7 +137,20 @@ public class SimpleAccountManager implements IAccountManager{
 
 	@Override
 	public void updatePassword(String userid, String password) throws AuthenticationException {
-		throw new UnsupportedOperationException();
+		if(StringUtils.isBlank(password)) {
+			log.error("blank password.");
+			throw new IllegalArgumentException();
+		}
+
+		String policy = AccountHelper.getPasswordPolicy();
+		if(StringUtils.isNotBlank(policy) && !password.matches(policy)){
+			log.error("unmatch password policy.");
+			throw new IllegalArgumentException();
+		}
+		
+		Account account = dao.get(userid);
+		account.setPasswordPlainText(password);
+		dao.update(account);
 	}
 
 	public Collection<PrincipalDef> getPrincipalDefs() {
@@ -142,21 +159,112 @@ public class SimpleAccountManager implements IAccountManager{
 
 	@Override
 	public void addSquareId(String userid, String squareId) {
-		throw new UnsupportedOperationException();
+		AccountSquare entity = new AccountSquare(userid, squareId);
+		dao.insertAccountSquare(entity);
 	}
 
 	@Override
 	public void updateDefaultSquare(String userid, String defaultSquareId) {
-		throw new UnsupportedOperationException();
+		if(StringUtils.isBlank(defaultSquareId)) {
+			log.error("blank Square ID.");
+			throw new IllegalArgumentException();
+		}
+		
+		Account account = dao.get(userid);
+		account.setDefaultSquareId(defaultSquareId);
+		dao.update(account);
 	}
 
 	@Override
-	public JSONObject getAccountManagerForm(String userId) {
-		throw new UnsupportedOperationException();
+	public JSONObject getAccountManagerForm(String userId) throws Exception {
+		Account account = (Account)this.getUser(userId);
+
+		String formDef = this.accountManagerFormDef;
+		JSONObject object = new JSONObject(formDef);
+
+		// profile
+		JSONObject profileObj = object.getJSONObject("profile");
+		JSONObject firstNameObj = profileObj.getJSONObject(FIRST_NAME_PARAM);
+		firstNameObj.put("title", "%{lb_ee_firstName}");
+		firstNameObj.put("value", account.getGivenName());
+
+		JSONObject givenNameObj = profileObj.getJSONObject(GIVEN_NAME_PARAM);
+		givenNameObj.put("title", "%{lb_ee_familyName}");
+		givenNameObj.put("value", account.getFamilyName());
+
+		JSONObject displayNameObj = profileObj.getJSONObject(DISPLAY_NAME_PARAM);
+		displayNameObj.put("title", "%{lb_ee_displayName}");
+		displayNameObj.put("value", account.getName());
+
+		return object;
 	}
 
 	@Override
 	public String updateUserProfile(String userId, Map<String, String[]> map) {
-		throw new UnsupportedOperationException();
+		String displayName = map.get(DISPLAY_NAME_PARAM)[0];
+		String firstName = map.get(FIRST_NAME_PARAM)[0];
+		String familyName = map.get(GIVEN_NAME_PARAM)[0];
+
+		if(StringUtils.isBlank(displayName)
+				|| StringUtils.isBlank(firstName)
+				|| StringUtils.isBlank(familyName)) {
+			log.error("blank profiles.");
+			throw new IllegalArgumentException();
+		}
+		
+		Account account = dao.get(userId);
+		account.setName(displayName);
+		account.setFamilyName(familyName);
+		account.setGivenName(firstName);
+		dao.update(account);
+		
+		return displayName;
 	}
+
+	@Override
+	public void deleteUser(String userId) throws Exception {
+		dao.delete(userId);
+	}
+
+	@Override
+	public void registUser(String userid, String password, String firstName,
+			String familyName, String defaultSquareId, String email) throws Exception {
+		String displayName = firstName + " " + familyName;
+		Account account = new Account(userid, displayName, password);
+		account.setFamilyName(familyName);
+		account.setGivenName(firstName);
+		account.setDefaultSquareId(defaultSquareId);
+		account.setMail(email);
+		
+		AccountSquare accountSquare = new AccountSquare(userid, defaultSquareId);
+		
+		dao.insert(account);
+		dao.insertAccountSquare(accountSquare);
+	}
+
+	@Override
+	public void removeSquareId(String userid, String squareId) throws Exception {
+		AccountSquare accountSquare = dao.getAccountSquare(userid, squareId);
+		dao.deleteAccountSquare(accountSquare);
+	}
+	
+	private String getCryptoHash(String password) throws AuthenticationException{
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA");
+		} catch (NoSuchAlgorithmException e) {
+			throw new AuthenticationException(e);
+		}
+		try {
+			password = new String(Base64.encodeBase64(md.digest(password.getBytes("iso-8859-1"))));
+		} catch (UnsupportedEncodingException e) {
+			throw new AuthenticationException(e);
+		}
+		return password;
+	}
+	
+	public void setAccountManagerFormDef(String accountManagerFormDef) {
+		this.accountManagerFormDef = accountManagerFormDef;
+	}
+
 }

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -351,5 +352,9 @@ public class SquareService {
 
 		squareDAO.deleteByOwner(userId);
 		return idList;
+	}
+	
+	public static String generateSquareId(){
+		return (UUID.randomUUID().toString()).replaceAll("-", "");
 	}
 }

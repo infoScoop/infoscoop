@@ -38,7 +38,9 @@ public class Account implements IAccount {
 	private String givenName;
 	private String familyName;
 	private String mail;
-
+	private boolean isAdmin;
+	List<String> belongIds = new ArrayList<String>();
+	
 	private Set<org.infoscoop.dao.model.AccountAttr> accountAttrs;
 	private Set<AccountSquare> accountSquares;
 
@@ -104,7 +106,13 @@ public class Account implements IAccount {
 		return mails;
 	}
 	public List<String> getBelongids() {
-		List<String> belongIds = new ArrayList<String>();
+		if(belongIds.size() == 0){
+			Set<AccountSquare> accountSquares = getAccountSquares();
+			for(AccountSquare accountSquare : accountSquares){
+				belongIds.add(accountSquare.getSquareId());
+			}
+		}
+		
 //		if(this.belongid!=null) belongIds.add(this.belongid);
 		return belongIds;
 	}
@@ -123,5 +131,15 @@ public class Account implements IAccount {
 
 	public void setAccountSquares(Set<AccountSquare> accountSquares) {
 		this.accountSquares = accountSquares;
+	}
+
+	@Override
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	@Override
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 }

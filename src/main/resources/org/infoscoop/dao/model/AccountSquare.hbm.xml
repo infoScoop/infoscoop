@@ -9,10 +9,20 @@
 		table="IS_ACCOUNT_SQUARES"
 	>
 		<meta attribute="sync-DAO">false</meta>
-		<id
-			name="Uid"
+        <id
+                name="Id"
+                type="java.lang.Long"
+                column="ID"
+        >
+            <generator class="native">
+                <param name="sequence">is_account_squares_id_seq</param>
+            </generator>
+        </id>
+
+		<property
+			name="accountId"
 			type="string"
-			column="`UID`"
+			column="fk_account_id"
 			length="150"
 		/>
 

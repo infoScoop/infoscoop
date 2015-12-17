@@ -34,6 +34,7 @@ public class LDAPAccount implements IAccount{
 	// add List of group
 	private IGroup[] groups;
 	private List<String> mails;
+	private boolean isAdmin;
 	
 	public LDAPAccount(String dn, String uid, String mail, String displayName, String groupName) {
 		super();
@@ -128,5 +129,15 @@ public class LDAPAccount implements IAccount{
 		List<String> belongIds = new ArrayList<String>();
 		belongIds.add("default");
 		return belongIds;
+	}
+
+	@Override
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	@Override
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 }

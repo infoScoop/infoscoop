@@ -28,4 +28,6 @@ public interface IAccount {
 	IGroup[] getGroups();
 	List<String> getMails();
 	List<String> getBelongids();
+	public boolean isAdmin();
+	public void setAdmin(boolean isAdmin);
 }

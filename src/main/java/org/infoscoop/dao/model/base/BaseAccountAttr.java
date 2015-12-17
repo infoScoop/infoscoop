@@ -32,7 +32,7 @@ public class BaseAccountAttr implements Serializable {
 	}
 
 	public BaseAccountAttr(String uid, String name, String value) {
-		this.setUid(uid);
+		this.setAccountId(uid);
 		this.setName(name);
 		this.setValue(value);
 		initialize();
@@ -43,18 +43,27 @@ public class BaseAccountAttr implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.String uid;
+	private Long id;
 
 	// fields
+	private java.lang.String accountId;
 	private java.lang.String name;
 	private java.lang.String value;
 
-	public String getUid() {
-		return uid;
+	public Long getId() {
+		return id;
 	}
 
-	public void setUid(String uid) {
-		this.uid = uid;
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public java.lang.String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(java.lang.String accountId) {
+		this.accountId = accountId;
 	}
 
 	public String getName() {
@@ -75,14 +84,24 @@ public class BaseAccountAttr implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		BaseAccountAttr that = (BaseAccountAttr) o;
-		return Objects.equals(hashCode, that.hashCode);
+		if (null == o) return false;
+		if (!(o instanceof org.infoscoop.dao.model.AccountAttr)) return false;
+		else {
+			org.infoscoop.dao.model.AccountAttr accountAttr = (org.infoscoop.dao.model.AccountAttr) o;
+			if (null == this.getId() || null == accountAttr.getId()) return false;
+			else return (this.getId().equals(accountAttr.getId()));
+		}
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(hashCode);
+		if (Integer.MIN_VALUE == this.hashCode) {
+			if (null == this.getId()) return super.hashCode();
+			else {
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
+				this.hashCode = hashStr.hashCode();
+			}
+		}
+		return this.hashCode;
 	}
 }

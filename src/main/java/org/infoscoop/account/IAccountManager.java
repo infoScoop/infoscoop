@@ -90,4 +90,10 @@ public interface IAccountManager {
 	public JSONObject getAccountManagerForm(String userId) throws Exception;
 
 	public String updateUserProfile(String userId, Map<String, String[]> map) throws Exception;
+	
+	public void deleteUser(String userId) throws Exception;
+	
+	public void registUser(String userid, String password, String firstName, String familyName, String defaultSquareId, String email) throws Exception;
+	
+	public void removeSquareId(String userid, String squareId) throws Exception;
 }

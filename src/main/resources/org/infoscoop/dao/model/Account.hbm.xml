@@ -66,14 +66,14 @@
 
 		<set name="AccountAttrs" lazy="true" inverse="true">
 			<key>
-				<column name="uid" not-null="true" />
+				<column name="fk_account_id" not-null="true" />
 			</key>
 			<one-to-many class="AccountAttr" />
 		</set>
 
 		<set name="AccountSquares" lazy="true" inverse="true">
 			<key>
-				<column name="uid" not-null="true" />
+				<column name="fk_account_id" not-null="true" />
 			</key>
 			<one-to-many class="AccountSquare" />
 		</set>
