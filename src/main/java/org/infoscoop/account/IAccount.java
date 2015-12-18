@@ -25,6 +25,7 @@ public interface IAccount {
 	String getMail();
 	String getGroupName();
 	String getDefaultSquareId();
+	String getMySquareId();
 	IGroup[] getGroups();
 	List<String> getMails();
 	List<String> getBelongids();

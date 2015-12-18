@@ -234,6 +234,7 @@ public class SimpleAccountManager implements IAccountManager{
 		account.setFamilyName(familyName);
 		account.setGivenName(firstName);
 		account.setDefaultSquareId(defaultSquareId);
+		account.setMySquareId(defaultSquareId);
 		account.setMail(email);
 		
 		AccountSquare accountSquare = new AccountSquare(userid, defaultSquareId);

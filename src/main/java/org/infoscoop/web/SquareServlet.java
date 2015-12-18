@@ -75,8 +75,8 @@ public class SquareServlet extends HttpServlet {
 				log.error("Get account information failed. " + e.getMessage(), e);
 				throw new RuntimeException(e);
 			}
-			String defaultSquareId = account.getDefaultSquareId();
-			changeCurrentSquare(defaultSquareId, request);
+			String mySquareId = account.getMySquareId();
+			changeCurrentSquare(mySquareId, request);
 			response.sendRedirect("../index.jsp");
 		}
 	}

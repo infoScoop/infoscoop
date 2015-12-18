@@ -64,6 +64,14 @@
 				length="150"
 				/>
 
+        <property
+            name="mySquareId"
+            column="my_square_id"
+            type="string"
+            not-null="false"
+            length="64"
+        />
+
 		<set name="AccountAttrs" lazy="true" inverse="true">
 			<key>
 				<column name="fk_account_id" not-null="true" />

@@ -35,6 +35,7 @@ public class Account implements IAccount {
 	private String password;
 	private String groupName;
 	private String defaultSquareId;
+	private String mySquareId;
 	private String givenName;
 	private String familyName;
 	private String mail;
@@ -142,4 +143,14 @@ public class Account implements IAccount {
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
+
+	@Override
+	public String getMySquareId() {
+		return this.mySquareId;
+	}
+
+	public void setMySquareId(String mySquareId) {
+		this.mySquareId = mySquareId;
+	}
+	
 }

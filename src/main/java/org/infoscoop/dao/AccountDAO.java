@@ -55,7 +55,7 @@ public class AccountDAO extends HibernateDaoSupport {
 	
 	public AccountSquare getAccountSquare(String uid, String squareId){
 		List<AccountSquare> result = super.getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(AccountSquare.class)
-				.add(Expression.eq("Uid", uid))
+				.add(Expression.eq("accountId", uid))
 				.add(Expression.eq("squareId", squareId)));
 		
 		if( result == null || result.size() == 0 )
@@ -92,7 +92,7 @@ public class AccountDAO extends HibernateDaoSupport {
 			criteria.add(Expression.eq("Uid", uid));
 
 		if(name != null)
-			criteria.add(Expression.eq("name", name));
+			criteria.add(Expression.like("name", "%" + name + "%"));
 
 		if(defaultSquareId != null)
 			criteria.add(Expression.eq("defaultSquareId", defaultSquareId));
@@ -104,7 +104,7 @@ public class AccountDAO extends HibernateDaoSupport {
 			criteria.add(Expression.eq("familyName", familyName));
 
 		if(email != null)
-			criteria.add(Expression.eq("mail", email));
+			criteria.add(Expression.like("mail", "%" + email + "%"));
 
 		if(squareId != null)
 			criteria.add(Expression.eq("as.squareId", squareId));

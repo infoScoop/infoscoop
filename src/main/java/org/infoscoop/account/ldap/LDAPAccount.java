@@ -140,4 +140,9 @@ public class LDAPAccount implements IAccount{
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
+
+	@Override
+	public String getMySquareId() {
+		return "default";
+	}
 }
