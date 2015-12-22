@@ -25,6 +25,7 @@ public class Portallayout extends BasePortallayout {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String LAYOUT_TYPE_CSS = "css";
+	public static final String LAYOUT_TYPE_CSS_MOBILE = "css_mobile";
 	public static final String LAYOUT_TYPE_JS = "javascript";
 	public static final String LAYOUT_TYPE_CUSTOMTHEME = "customTheme";
 	

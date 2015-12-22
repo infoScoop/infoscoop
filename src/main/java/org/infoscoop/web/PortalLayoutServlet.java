@@ -60,7 +60,7 @@ public class PortalLayoutServlet extends HttpServlet {
 			response.sendError(500);
 		}
 		
-		if(Portallayout.LAYOUT_TYPE_CSS.equalsIgnoreCase(type)){
+		if(Portallayout.LAYOUT_TYPE_CSS.equalsIgnoreCase(type) || Portallayout.LAYOUT_TYPE_CSS_MOBILE.equalsIgnoreCase(type)){
 			response.setContentType("text/css; charset=UTF-8");
 		}
 		else if(Portallayout.LAYOUT_TYPE_JS.equalsIgnoreCase(type)){
