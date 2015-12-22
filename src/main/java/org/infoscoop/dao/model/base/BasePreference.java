@@ -35,7 +35,7 @@ public abstract class BasePreference  implements Serializable {
 
 	public static String REF = "Preference";
 	public static String PROP_DATA = "Data";
-	public static String PROP_ID = "Uid";
+	public static String PROP_ID = "Id.Uid";
 
 
 	// constructors

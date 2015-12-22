@@ -26,7 +26,11 @@ public class OAuth2ProviderAccessToken extends BaseOAuth2ProviderAccessToken {
 		super();
 	}
 
-	public OAuth2ProviderAccessToken(OAuth2ProviderAccessTokenPK id) {
+	public OAuth2ProviderAccessToken(String id) {
 		super(id);
+	}
+
+	public OAuth2ProviderAccessToken(String id, String squareId) {
+		super(id, squareId);
 	}
 }

@@ -59,11 +59,11 @@
 								<table border="0" cellpadding="3" cellspacing="0">
 									<tr>
 										<td align="right">%{lb_userID}&nbsp;</td>
-										<td align="left"><input type="text" id="uid" name="j_username" value="admin" /></td>
+										<td align="left"><input type="text" id="uid" name="j_username" /></td>
 									</tr>
 									<tr>
 										<td align="right">%{lb_password}&nbsp;</td>
-										<td align="left"><input type="password" id="password" name="j_password" value="admin" /></td>
+										<td align="left"><input type="password" id="password" name="j_password" /></td>
 									</tr>
 								</table>
 							</td>

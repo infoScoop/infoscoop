@@ -10,20 +10,27 @@
 	>
 		<meta attribute="sync-DAO">false</meta>
 
-		<composite-id name="Id" class="OAuth2ProviderAccessTokenPK">
-		    <key-property
-		        name="id"
-		        column="id"
-		        type="string"
-		        length="255"
-		    />
-		    <key-property
-		        name="Squareid"
-		        column="square_id"
-		        type="string"
-		        length="64"
-		    />
-		</composite-id>
+		<id
+				name="id"
+				column="id"
+				type="string"
+				length="255"
+		/>
+
+		<!--<composite-id name="Id" class="OAuth2ProviderAccessTokenPK">-->
+		    <!--<key-property-->
+		        <!--name="Id"-->
+		        <!--column="id"-->
+		        <!--type="string"-->
+		        <!--length="255"-->
+		    <!--/>-->
+		    <!--<key-property-->
+		        <!--name="Squareid"-->
+		        <!--column="square_id"-->
+		        <!--type="string"-->
+		        <!--length="64"-->
+		    <!--/>-->
+		<!--</composite-id>-->
 
 		<property
 			name="token"
@@ -36,5 +43,7 @@
 			column="authentication"
 			type="binary"
 		/>
-	</class>	
+
+		<property column="square_id" generated="never" lazy="false" name="squareId" type="string"/>
+	</class>
 </hibernate-mapping>

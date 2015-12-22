@@ -43,9 +43,9 @@ public class OAuth2ProviderRefreshTokenDAO extends HibernateDaoSupport {
 		}
 		
 		Iterator<OAuth2ProviderRefreshToken> results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuth2ProviderRefreshToken.class,"ort")
-				.add(Restrictions.eq("ort.Id.id", tokenId))
-				.add(Restrictions.eq("ort.Id.Squareid", squareId)))
+				DetachedCriteria.forClass(OAuth2ProviderRefreshToken.class)
+				.add(Restrictions.eq(OAuth2ProviderRefreshToken.PROP_ID, tokenId))
+				.add(Restrictions.eq(OAuth2ProviderRefreshToken.PROP_SQUARE_ID, squareId)))
 				.iterator();
 
 		if(results.hasNext()) {
@@ -57,13 +57,14 @@ public class OAuth2ProviderRefreshTokenDAO extends HibernateDaoSupport {
 	
 	public void saveRefreshToken(String tokenId, byte[] token, byte[] authentication, String squareId) {
 		OAuth2ProviderRefreshToken refreshToken = getRefreshTokenById(tokenId, squareId);
-	
+
 		if(refreshToken == null){
-			refreshToken = new OAuth2ProviderRefreshToken(new OAuth2ProviderRefreshTokenPK(tokenId, squareId));
+			refreshToken = new OAuth2ProviderRefreshToken(tokenId, squareId);
 		}
 		refreshToken.setToken(token);
 		refreshToken.setAuthentication(authentication);
 		super.getHibernateTemplate().saveOrUpdate(refreshToken);
+		super.getHibernateTemplate().flush();
 	}
 
 	public void deleteOAuth2ProviderRefreshToken(String tokenId, String squareId) {

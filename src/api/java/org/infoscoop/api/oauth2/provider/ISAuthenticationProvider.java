@@ -53,7 +53,6 @@ public class ISAuthenticationProvider implements AuthenticationProvider {
         	// authority
             List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
             PortalAdminsService portalService = PortalAdminsService.getHandle();
-        	portalService.getPortalAdmins();
         	Portaladmins admin = portalService.getPortalAdmin(userid);
         	if(admin != null){
         		grantedAuths.add(new SimpleGrantedAuthority(ROLE_ADMIN));
@@ -63,7 +62,7 @@ public class ISAuthenticationProvider implements AuthenticationProvider {
         	
         	if(log.isDebugEnabled())
         		log.debug("complete login "+userid+" - authotiry:" + grantedAuths.toString());
-        	
+
             return new UsernamePasswordAuthenticationToken(userid, password, grantedAuths);
         } catch(AuthenticationException e) {
         	// login error

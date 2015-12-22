@@ -243,7 +243,6 @@ public class SquareService {
 		this.tabLayoutDAO.copySquare(squareId, sourceSquareId);
 		this.widgetConfDAO.copySquare(squareId, sourceSquareId);
 		this.staticTabDAO.copySquare(squareId, sourceSquareId);
-		this.oauth2ProviderClientDetailDAO.copySquare(squareId, sourceSquareId);
 
 		// copy Adminrole
 		List<Adminrole> adminRoleList = adminRoleDAO.select(sourceSquareId);

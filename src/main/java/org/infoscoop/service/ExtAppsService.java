@@ -93,7 +93,7 @@ public class ExtAppsService {
 		for(OAuth2ProviderClientDetail clientDetail : clientDetailList){
 			JSONObject obj = new JSONObject();
 			obj.put("appName", clientDetail.getTitle());
-			obj.put("clientId", clientDetail.getId().getId());
+			obj.put("clientId", clientDetail.getId());
 			obj.put("clientSecret", clientDetail.getSecret());
 			obj.put("redirectUrl", clientDetail.getRedirectUrl());
 			obj.put("grantType", encodeGrantTypes(clientDetail.getGrantTypes()));
@@ -159,7 +159,7 @@ public class ExtAppsService {
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		// rewrite secret
-		OAuth2ProviderClientDetail clientDetail = oauth2ProviderClientDetailDAO.getClientDetailById(clientId, squareid);
+		OAuth2ProviderClientDetail clientDetail = oauth2ProviderClientDetailDAO.getClientDetailById(clientId);
 		clientDetail.setSecret(clientSecret);
 		oauth2ProviderClientDetailDAO.saveClientDetail(clientDetail);
 

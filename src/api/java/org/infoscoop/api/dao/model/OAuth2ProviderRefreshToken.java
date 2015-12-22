@@ -26,8 +26,11 @@ public class OAuth2ProviderRefreshToken extends BaseOAuth2ProviderRefreshToken {
 		super();
 	}
 
-	public OAuth2ProviderRefreshToken(OAuth2ProviderRefreshTokenPK id) {
+	public OAuth2ProviderRefreshToken(String id) {
 		super(id);
 	}
 
+	public OAuth2ProviderRefreshToken(String id, String squareId) {
+		super(id, squareId);
+	}
 }

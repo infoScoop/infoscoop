@@ -4,20 +4,12 @@
 <hibernate-mapping package="org.infoscoop.api.dao.model">
  <class name="OAuth2ProviderClientDetail" table="IS_OAUTHPROVIDER_CLIENT">
   <meta attribute="sync-DAO">false</meta>
-  <composite-id name="Id" class="OAuth2ProviderClientDetailPK">
-      <key-property
-          name="id"
-          column="id"
-          type="string"
-          length="255"
-      />
-      <key-property
-          name="Squareid"
-          column="square_id"
-          type="string"
-          length="64"
-      />
-  </composite-id>
+     <id
+             name="id"
+             column="id"
+             type="string"
+             length="255"
+    />
   <property column="title" generated="never" lazy="false" length="255"
    name="title" not-null="true" type="string"/>
   <property column="resource_ids" generated="never" lazy="false"
@@ -40,44 +32,7 @@
    lazy="false" name="refreshTokenValidity" type="integer"/>
   <property column="additional_information" generated="never"
    lazy="false" name="additionalInformation" type="string"/>
+	 <property column="square_id" generated="never"
+			   lazy="false" name="squareId" type="string"/>
  </class>
-    <sql-query name="is_oauthprovider_client.copySquare">
-        <![CDATA[
-INSERT
-	INTO
-		IS_OAUTHPROVIDER_CLIENT(
-			id,
-			title,
-			resource_ids,
-			secret,
-			scope,
-			grant_types,
-			redirect_url,
-			authorities,
-			delete_flg,
-			access_token_validity,
-			refresh_token_validity,
-			additional_information,
-			square_id
-		)
-	SELECT
-		opc.id,
-		opc.title,
-		opc.resource_ids,
-		opc.secret,
-		opc.scope,
-		opc.grant_types,
-		opc.redirect_url,
-		opc.authorities,
-		opc.delete_flg,
-		opc.access_token_validity,
-		opc.refresh_token_validity,
-		opc.additional_information,
-		:squareId
-	FROM
-		IS_OAUTHPROVIDER_CLIENT as opc
-	WHERE
-		opc.square_id = :defaultSquareId
-		]]>
-    </sql-query>
 </hibernate-mapping>

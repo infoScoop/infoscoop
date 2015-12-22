@@ -32,22 +32,30 @@ public class BaseOAuth2ProviderAccessToken implements Serializable {
 	public static String PROP_CLIENT_ID = "clientId";
 	public static String PROP_AUTHENTICATION = "authentication";
 	public static String PROP_REFRESH_TOKEN = "refreshToken";
+	public static String PROP_SQUARE_ID = "squareId";
 
 	public BaseOAuth2ProviderAccessToken() {
 		initialize();
 	}
 
-	public BaseOAuth2ProviderAccessToken (OAuth2ProviderAccessTokenPK id) {
+	public BaseOAuth2ProviderAccessToken (java.lang.String id) {
 		this.setId(id);
 		initialize();
 	}
+
+	public BaseOAuth2ProviderAccessToken (java.lang.String id, java.lang.String squareId) {
+		this.setId(id);
+		this.setSquareId(squareId);
+		initialize();
+	}
+
 
 	protected void initialize () {}
 	
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private OAuth2ProviderAccessTokenPK id;
+	private java.lang.String id;
 
 	// fields
 	private byte[] token;
@@ -56,12 +64,13 @@ public class BaseOAuth2ProviderAccessToken implements Serializable {
 	private java.lang.String clientId;
 	private byte[] authentication;
 	private java.lang.String refreshToken;
+	private java.lang.String squareId;
 
-	public OAuth2ProviderAccessTokenPK getId() {
+	public java.lang.String getId() {
 		return id;
 	}
 
-	public void setId(OAuth2ProviderAccessTokenPK id) {
+	public void setId(java.lang.String id) {
 		this.id = id;
 	}
 
@@ -112,7 +121,15 @@ public class BaseOAuth2ProviderAccessToken implements Serializable {
 	public void setRefreshToken(java.lang.String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
-	
+
+	public java.lang.String getSquareId() {
+		return squareId;
+	}
+	public void setSquareId(java.lang.String squareId) {
+		this.squareId = squareId;
+	}
+
+
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.api.dao.model.OAuth2ProviderAccessToken)) return false;

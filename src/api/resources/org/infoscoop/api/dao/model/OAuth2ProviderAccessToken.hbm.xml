@@ -4,25 +4,32 @@
 <hibernate-mapping package="org.infoscoop.api.dao.model">
  <class name="OAuth2ProviderAccessToken" table="IS_OAUTHPROVIDER_ACCESSTOKENS">
   <meta attribute="sync-DAO">false</meta>
-  <composite-id name="Id" class="OAuth2ProviderAccessTokenPK">
-      <key-property
-          name="id"
-          column="id"
-          type="string"
-          length="255"
-      />
-      <key-property
-          name="Squareid"
-          column="square_id"
-          type="string"
-          length="64"
-      />
-  </composite-id>
+     <id
+             name="id"
+             column="id"
+             type="string"
+             length="255"
+     />
+  <!--<composite-id name="Id" class="OAuth2ProviderAccessTokenPK">-->
+      <!--<key-property-->
+          <!--name="Id"-->
+          <!--column="id"-->
+          <!--type="string"-->
+          <!--length="255"-->
+      <!--/>-->
+      <!--<key-property-->
+          <!--name="Squareid"-->
+          <!--column="square_id"-->
+          <!--type="string"-->
+          <!--length="64"-->
+      <!--/>-->
+  <!--</composite-id>-->
   <property column="token" generated="never" lazy="false" name="token" type="binary"/>
   <property column="authentication_id" generated="never" lazy="false" length="255" name="authenticationId" type="string"/>
   <property column="user_id" generated="never" lazy="false" length="255" name="userId" type="string"/>
   <property column="client_id" generated="never" lazy="false" length="255" name="clientId" type="string"/>
   <property column="authentication" generated="never" lazy="false" name="authentication" type="binary"/>
   <property column="refresh_token" generated="never" lazy="false" length="255" name="refreshToken" type="string"/>
+  <property column="square_id" generated="never" lazy="false" name="squareId" type="string"/>
  </class>
 </hibernate-mapping>

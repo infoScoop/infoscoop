@@ -118,6 +118,18 @@ UPDATE ${migration.defaultSchemaWithDot}IS_ACCOUNTS SET my_square_id=uid WHERE m
         ]]></sql>
     </changeSet>
 
+    <changeSet id="infoscoop_sleepyalpha2_610" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_610">
+            <primaryKeyExists schemaName="${migration.defaultSchema}" tableName="IS_OAUTHPROVIDER_CLIENT" primaryKeyName="PRIMARY"/>
+        </preConditions>
+        <dropPrimaryKey schemaName="${migration.defaultSchema}" constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_CLIENT"/>
+        <dropPrimaryKey schemaName="${migration.defaultSchema}" constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_ACCESSTOKENS"/>
+        <dropPrimaryKey schemaName="${migration.defaultSchema}" constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_REFRESHTOKENS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="id" constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_CLIENT"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="id" constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_ACCESSTOKENS"/>
+        <addPrimaryKey schemaName="${migration.defaultSchema}" columnNames="id" constraintName="PRIMARY" tableName="IS_OAUTHPROVIDER_REFRESHTOKENS"/>
+    </changeSet>
+
     <changeSet id="infoscoop_sleepyalpha2_611_1" author="aknishiumi">
         <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_611">
             <not>

@@ -43,9 +43,9 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 		}
 		
 		Iterator<OAuth2ProviderAccessToken> results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class,"oat")
-				.add(Restrictions.eq("oat.Id.id", tokenId))
-				.add(Restrictions.eq("oat.Id.Squareid", squareId)))
+				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class)
+						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_ID, tokenId))
+						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_SQUARE_ID, squareId)))
 				.iterator();
 
 		if(results.hasNext()) {
@@ -62,9 +62,9 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 		}
 		
 		Iterator<OAuth2ProviderAccessToken> results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class,"oat")
-				.add(Restrictions.eq("oat.authenticationId", authenticationId))
-				.add(Restrictions.eq("oat.Id.squareId", squareId)))
+				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class)
+						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_AUTHENTICATION_ID, authenticationId))
+						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_SQUARE_ID, squareId)))
 				.iterator();
 
 		if(results.hasNext()) {
@@ -81,9 +81,9 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 		}
 		
 		Iterator<OAuth2ProviderAccessToken> results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class,"oat")
-				.add(Restrictions.eq("oat.refreshToken", refreshToken))
-				.add(Restrictions.eq("oat.Id.Squareid", squareId)))
+				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class)
+						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_REFRESH_TOKEN, refreshToken))
+						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_SQUARE_ID, squareId)))
 				.iterator();
 
 		if(results.hasNext()) {
@@ -100,9 +100,9 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 		}
 		
 		List<OAuth2ProviderAccessToken> results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class,"oat")
-				.add(Restrictions.eq("oat.userId", userId))
-				.add(Restrictions.eq("oat.Id.Squareid", squareId)));
+				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class)
+				.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_USER_ID, userId))
+				.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_SQUARE_ID, squareId)));
 		
 		return results;
 	}
@@ -114,9 +114,9 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 		}
 		
 		List<OAuth2ProviderAccessToken> results = super.getHibernateTemplate().findByCriteria(
-				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class,"oat")
-				.add(Restrictions.eq("oat.clientId", clientId))
-				.add(Restrictions.eq("oat.Id.Squareid", squareId)));
+				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class)
+				.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_CLIENT_ID, clientId))
+				.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_SQUARE_ID, squareId)));
 		
 		return results;
 	}
@@ -125,7 +125,7 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 		OAuth2ProviderAccessToken accessToken = getAccessTokenById(tokenId, squareId);
 	
 		if(accessToken == null){
-			accessToken = new OAuth2ProviderAccessToken(new OAuth2ProviderAccessTokenPK(tokenId, squareId));
+			accessToken = new OAuth2ProviderAccessToken(tokenId, squareId);
 		}
 		accessToken.setToken(token);
 		accessToken.setAuthenticationId(authenticationId);
@@ -134,6 +134,7 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 		accessToken.setAuthentication(authentication);
 		accessToken.setRefreshToken(refreshToken);
 		super.getHibernateTemplate().saveOrUpdate(accessToken);
+		super.getHibernateTemplate().flush();
 	}
 
 	public void deleteOAuth2ProviderAccessToken(OAuth2ProviderAccessToken tokenObj) {

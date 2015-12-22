@@ -28,13 +28,20 @@ public class BaseOAuth2ProviderRefreshToken implements Serializable {
 	public static String PROP_ID = "id";
 	public static String PROP_TOKEN = "token";
 	public static String PROP_AUTHENTICATION = "authentication";
+	public static String PROP_SQUARE_ID = "squareId";
 	
 	public BaseOAuth2ProviderRefreshToken() {
 		initialize();
 	}
 
-	public BaseOAuth2ProviderRefreshToken (OAuth2ProviderRefreshTokenPK id) {
+	public BaseOAuth2ProviderRefreshToken (java.lang.String id) {
 		this.setId(id);
+		initialize();
+	}
+
+	public BaseOAuth2ProviderRefreshToken (java.lang.String id, java.lang.String squareId) {
+		this.setId(id);
+		this.setSquareId(squareId);
 		initialize();
 	}
 
@@ -43,17 +50,18 @@ public class BaseOAuth2ProviderRefreshToken implements Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private OAuth2ProviderRefreshTokenPK id;
+	private java.lang.String id;
 
 	// fields
 	private byte[] token;
 	private byte[] authentication;
+	private java.lang.String squareId;
 
-	public OAuth2ProviderRefreshTokenPK getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(OAuth2ProviderRefreshTokenPK id) {
+	public void setId(java.lang.String id) {
 		this.id = id;
 	}
 
@@ -72,7 +80,14 @@ public class BaseOAuth2ProviderRefreshToken implements Serializable {
 	public void setAuthentication(byte[] authentication) {
 		this.authentication = authentication;
 	}
-	
+
+	public java.lang.String getSquareId() {
+		return squareId;
+	}
+	public void setSquareId(java.lang.String squareId) {
+		this.squareId = squareId;
+	}
+
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
 		if (!(obj instanceof org.infoscoop.api.dao.model.OAuth2ProviderRefreshToken)) return false;

@@ -48,7 +48,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 public class ISOAuth2ExceptionRenderer implements OAuth2ExceptionRenderer{
 	private static Log log = LogFactory.getLog(ISOAuth2ExceptionRenderer.class);
 	
-	private List<HttpMessageConverter<?>> messageConverters = geDefaultMessageConverters();
+	private List<HttpMessageConverter<?>> messageConverters = getDefaultMessageConverters();
 
 	public void setMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
 		this.messageConverters = messageConverters;
@@ -111,7 +111,7 @@ public class ISOAuth2ExceptionRenderer implements OAuth2ExceptionRenderer{
 		throw new HttpMediaTypeNotAcceptableException(allSupportedMediaTypes);
 	}
 
-	private List<HttpMessageConverter<?>> geDefaultMessageConverters() {
+	private List<HttpMessageConverter<?>> getDefaultMessageConverters() {
 		List<HttpMessageConverter<?>> result = new ArrayList<HttpMessageConverter<?>>();
 		result.addAll(new RestTemplate().getMessageConverters());
 		result.add(new JaxbOAuth2ExceptionMessageConverter());
