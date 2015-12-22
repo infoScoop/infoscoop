@@ -57,6 +57,12 @@ ISA_PortalLayout.prototype.classDef = function() {
 			ISA_PortalLayout.portalLayout.build();
 		}, false, "_adminPortal");
 		
+        var advancedDiv = ISA_Admin.createIconButton(ISA_R.alb_advancedSettings, ISA_R.alb_advancedSettings, "wrench.gif", "right");
+        refreshAllDiv.appendChild(advancedDiv);
+        IS_Event.observe(advancedDiv, 'click', function(){
+            $jq(".advanced").show();
+        }, false, "_adminPortal");
+		
 		portalLayoutDiv.appendChild(refreshAllDiv);
 		portalLayoutDiv.appendChild(self.buildPortalLayouts());
 		
@@ -181,6 +187,8 @@ ISA_PortalLayout.prototype.classDef = function() {
 		var jsonLayout = ISA_PortalLayout.portalLayoutList[layoutId];
 		var layoutDiv = document.createElement("div");
 		layoutDiv.id = "layout_" + jsonLayout.name;
+		if(jsonLayout.advanced)
+		    $jq(layoutDiv).addClass("advanced");
 		
 		var table = document.createElement("table");
 		table.className = "portalLayoutTable";

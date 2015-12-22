@@ -129,8 +129,10 @@ public class PortalLayoutService {
 			
 			String layout = (portalLayout.getLayout()!=null) ? portalLayout.getLayout(): "" ;
 			String layoutData = XmlUtil.escapeXmlEntities(layout);
+			Integer advanced = portalLayout.getAdvanced();
 			
 			sb.append("<layout>").append(layoutData).append("</layout>");
+			sb.append("<advanced>").append(advanced).append("</advanced>");
 			
 			sb.append("</portallayout>");
 		}
@@ -214,6 +216,9 @@ public class PortalLayoutService {
 			} else if (qName.equals("layout")) {
 				stringbuffer.append(",").append(qName).append(":");
 				appendDivision(stringbuffer);
+			} else if (qName.equals("advanced")) {
+				stringbuffer.append(",").append(qName).append(":");
+				appendDivision(stringbuffer);
 			}
 		}
 
@@ -242,6 +247,8 @@ public class PortalLayoutService {
 				appendDivision(JSONObject.quote(buf.toString()));
 			} else if (qName.equals("layout")) {
 				appendDivision(JSONObject.quote(buf.toString()));
+			} else if (qName.equals("advanced")) {
+				appendDivision(buf.toString());
 			}
 			buf.reset();
 		}

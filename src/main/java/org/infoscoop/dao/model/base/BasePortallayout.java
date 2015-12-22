@@ -36,6 +36,7 @@ public abstract class BasePortallayout  implements Serializable {
 	public static String REF = "Portallayout";
 	public static String PROP_NAME = "Name";
 	public static String PROP_LAYOUT = "Layout";
+	public static String PROP_ADVANCED = "advanced";
 
 
 	// constructors
@@ -74,6 +75,7 @@ public abstract class BasePortallayout  implements Serializable {
 
 	// fields
 	private java.lang.String layout;
+	private java.lang.Integer advanced;
 
 
 
@@ -114,7 +116,20 @@ public abstract class BasePortallayout  implements Serializable {
 		this.layout = layout;
 	}
 
+	/**
+	 * Return the value associated with the column: ADVANCED
+	 */
+	public java.lang.Integer getAdvanced () {
+		return advanced;
+	}
 
+	/**
+	 * Set the value related to the column: ADVANCED
+	 * @param advanced the ADVANCED value
+	 */
+	public void setAdvanced (java.lang.Integer advanced) {
+		this.advanced = advanced;
+	}
 
 
 	public boolean equals (Object obj) {

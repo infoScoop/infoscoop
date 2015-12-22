@@ -30,3 +30,7 @@
 #portalLayouts .customtheme-see-sample {
 	color: #0285B5;
 }
+
+#portalLayouts .advanced {
+    display: none;
+}

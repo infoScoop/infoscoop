@@ -28,6 +28,15 @@
 			type="text"
 			not-null="true"
 		/>
+		
+		<property
+            name="Advanced"
+            column="ADVANCED"
+            type="integer"
+            not-null="true"
+            length="10"
+        />
+		
 	</class>
 	<sql-query name="is_portallayouts.copySquare">
 		<![CDATA[
