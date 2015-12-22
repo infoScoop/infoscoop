@@ -26,7 +26,7 @@
 		<anonymous enabled="false" />
 		<intercept-url pattern="/isapi/v1/admin/profiles/**" access="ROLE_ADMIN,SCOPE_USERPROFILE" />
 		<intercept-url pattern="/isapi/v1/admin/tablayouts/**" access="ROLE_ADMIN,SCOPE_TABLAYOUT" />
-		<intercept-url pattern="/isapi/v1/user/menus/**" access="ROLE_USER,SCOPE_MENU" />
+		<intercept-url pattern="/isapi/v1/user/menus/**" access="ROLE_ADMIN,SCOPE_MENU" />
 		<custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
 		<access-denied-handler ref="oauthAccessDeniedHandler" />
 	</http>
@@ -64,7 +64,6 @@
     	<property name="hierarchy">
     	    <value>
     	    	ROLE_CLIENT > ROLE_ADMIN
-    	        ROLE_ADMIN > ROLE_USER
     	    </value>
     	</property>
 	</bean>
