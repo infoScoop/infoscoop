@@ -31,6 +31,15 @@
 	color: #0285B5;
 }
 
-#portalLayouts .advanced {
+.advanced-message {
+	margin: 5px 15px;
+}
+
+#portalLayouts .advanced, .advanced-message.advanced {
     display: none;
+    white-space: nowrap;
+}
+
+#portalLayouts .advanced div {
+    color: #FF0000;
 }

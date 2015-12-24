@@ -63,7 +63,12 @@ ISA_PortalLayout.prototype.classDef = function() {
             $jq(".advanced").show();
         }, false, "_adminPortal");
 		
+        var advancedMsg = document.createElement("div");
+        $jq(advancedMsg).addClass("advanced-message").addClass("advanced");
+        $jq(advancedMsg).append("<span>" + ISA_R.alb_notSupportedMessage + "</span>");
+        
 		portalLayoutDiv.appendChild(refreshAllDiv);
+		portalLayoutDiv.appendChild(advancedMsg);
 		portalLayoutDiv.appendChild(self.buildPortalLayouts());
 		
 		container.replaceChild(portalLayoutDiv, loadingMessage);
@@ -246,10 +251,11 @@ ISA_PortalLayout.prototype.classDef = function() {
 	*/
 	var currentSelectedLayout = false;
 	this.selectLayout = function() {
-		if(currentSelectedLayout)
-			currentSelectedLayout.className = "";
+		if(currentSelectedLayout){
+		    $jq(currentSelectedLayout).removeClass("portalLayoutSelected");
+		}
 		currentSelectedLayout = document.getElementById("layout_" + this.displayLayoutId);
-		currentSelectedLayout.className = "portalLayoutSelected";
+		$jq(currentSelectedLayout).addClass("portalLayoutSelected");
 	}
 	
 	/**
