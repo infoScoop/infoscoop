@@ -175,7 +175,7 @@ public class ExtAppsService {
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
 		List<OAuth2ProviderAccessToken> tokenList = oauth2ProviderAccessTokenDAO.getAccessTokenByClientId(clientId, squareid);
 		for(OAuth2ProviderAccessToken token : tokenList){
-			oauth2ProviderRefreshTokenDAO.deleteOAuth2ProviderRefreshToken(token.getRefreshToken(), squareid);
+			oauth2ProviderRefreshTokenDAO.deleteOAuth2ProviderRefreshToken(token.getRefreshToken());
 			oauth2ProviderAccessTokenDAO.deleteOAuth2ProviderAccessToken(token);
 		}		
 	}

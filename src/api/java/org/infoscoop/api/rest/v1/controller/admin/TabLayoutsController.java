@@ -100,7 +100,7 @@ public class TabLayoutsController extends BaseController {
 		requestBody = URLDecoder.decode(requestBody, "UTF-8");
 		
 		Document doc = parseTabLayoutsXML(requestBody);
-		List<StaticTab> staticTabList = toTabList(doc, "default");
+		List<StaticTab> staticTabList = toTabList(doc, getSquareId());
 		
 		StaticTabService service = StaticTabService.getHandle();
 		if(staticTabList.size() > 0){
@@ -138,9 +138,10 @@ public class TabLayoutsController extends BaseController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createTabLayout(@RequestBody String requestBody) throws Exception {
 		requestBody = URLDecoder.decode(requestBody, "UTF-8");
-		
+		String squareId = getSquareId();
+
 		Document doc = parseTabLayoutsXML(requestBody);
-		List<StaticTab> staticTabList = toTabList(doc, "default");
+		List<StaticTab> staticTabList = toTabList(doc, squareId);
 		
 		if(staticTabList.size() > 0){
 			StaticTabService service = StaticTabService.getHandle();
@@ -149,8 +150,8 @@ public class TabLayoutsController extends BaseController {
 			if(singletonTabIdList.contains(staticTab.getId().getTabid()))
 				throw new ISAPIException("tabId=" + staticTab.getId().getTabid() + " cannot be deleted.");
 			
-			String tabId = service.getNewTabId("default");
-			staticTab.getId().setSquareid("default");
+			String tabId = service.getNewTabId(squareId);
+			staticTab.getId().setSquareid(squareId);
 			staticTab.getId().setTabid(tabId);
 			staticTab.setTabnumber(service.getNextTabNumber());
 			StaticTabService.getHandle().saveStaticTab(tabId, staticTab);
@@ -164,7 +165,7 @@ public class TabLayoutsController extends BaseController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public TextView getTabLayouts() throws Exception {
-		List<StaticTab> staticTabList = StaticTabService.getHandle().getStaticTabList("default");
+		List<StaticTab> staticTabList = StaticTabService.getHandle().getStaticTabList(getSquareId());
 		TextView view = createTabLayoutResponseView(staticTabList);
 		
 		return view;
@@ -181,7 +182,7 @@ public class TabLayoutsController extends BaseController {
 		requestBody = URLDecoder.decode(requestBody, "UTF-8");
 		
 		Document doc = parseTabLayoutsXML(requestBody);
-		List<StaticTab> staticTabList = toTabList(doc, "default");
+		List<StaticTab> staticTabList = toTabList(doc, getSquareId());
 		
 		StaticTabService.getHandle().replaceAllTabs(staticTabList);
 	}

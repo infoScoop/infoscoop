@@ -76,8 +76,7 @@ public class InformationService {
 		}
 	}
 	
-	public List<String> getUserIdList() {
-		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
-		return preferenceDAO.getUserIdList(squareid);
+	public List<String> getUserIdList(String squareId) {
+		return preferenceDAO.getUserIdList(squareId);
 	}
 }

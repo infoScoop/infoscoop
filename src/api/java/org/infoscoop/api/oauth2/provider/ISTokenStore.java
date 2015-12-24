@@ -60,7 +60,7 @@ public class ISTokenStore implements TokenStore {
 
 		try {
 			OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-			OAuth2ProviderAccessToken accessToken = providerDao.getAccessTokenById(extractTokenKey(tokenValue), "unirita@unirita.co.jp");
+			OAuth2ProviderAccessToken accessToken = providerDao.getAccessTokenById(extractTokenKey(tokenValue));
 			if(accessToken!=null)
 				authentication = deserializeAuthentication(accessToken.getAuthentication());
 		} catch (IllegalArgumentException e) {
@@ -99,7 +99,7 @@ public class ISTokenStore implements TokenStore {
 		try {
 //			private String selectAccessTokenSql = "select token_id, token from oauth_access_token where token_id = ?";;
 			OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-			OAuth2ProviderAccessToken oat = providerDao.getAccessTokenById(extractTokenKey(tokenValue), "unirita@unirita.co.jp");
+			OAuth2ProviderAccessToken oat = providerDao.getAccessTokenById(extractTokenKey(tokenValue));
 			if(oat!=null)
 				accessToken = deserializeAccessToken(oat.getToken());
 		} catch (IllegalArgumentException e) {
@@ -118,7 +118,7 @@ public class ISTokenStore implements TokenStore {
 	public void removeAccessToken(String tokenValue) {
 //		private String deleteAccessTokenSql = "delete from oauth_access_token where token_id = ?";
 		OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-		providerDao.deleteOAuth2ProviderAccessToken(extractTokenKey(tokenValue), "unirita@unirita.co.jp");
+		providerDao.deleteOAuth2ProviderAccessToken(extractTokenKey(tokenValue));
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class ISTokenStore implements TokenStore {
 	public void removeAccessTokenUsingRefreshToken(String refreshToken) {
 //		private String deleteAccessTokenFromRefreshTokenSql = "delete from oauth_access_token where refresh_token = ?";
 		OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-		providerDao.deleteOAuth2ProviderAccessTokenByRefreshToken(extractTokenKey(refreshToken), "unirita@unirita.co.jp");
+		providerDao.deleteOAuth2ProviderAccessTokenByRefreshToken(extractTokenKey(refreshToken));
 	}
 	
 	@Override
@@ -139,7 +139,7 @@ public class ISTokenStore implements TokenStore {
 		try {
 //			private String selectRefreshTokenSql = "select token_id, token from oauth_refresh_token where token_id = ?";
 			OAuth2ProviderRefreshTokenDAO providerDao = OAuth2ProviderRefreshTokenDAO.newInstance();
-			OAuth2ProviderRefreshToken ort = providerDao.getRefreshTokenById(extractTokenKey(tokenValue), "unirita@unirita.co.jp");
+			OAuth2ProviderRefreshToken ort = providerDao.getRefreshTokenById(extractTokenKey(tokenValue));
 			if(ort!=null)
 				refreshToken = deserializeRefreshToken(ort.getToken());
 		} catch (IllegalArgumentException e) {
@@ -161,7 +161,7 @@ public class ISTokenStore implements TokenStore {
 		try {
 //			private String selectRefreshTokenAuthenticationSql = "select token_id, authentication from oauth_refresh_token where token_id = ?";
 			OAuth2ProviderRefreshTokenDAO providerDao = OAuth2ProviderRefreshTokenDAO.newInstance();
-			OAuth2ProviderRefreshToken ort = providerDao.getRefreshTokenById(extractTokenKey(tokenValue), "unirita@unirita.co.jp");
+			OAuth2ProviderRefreshToken ort = providerDao.getRefreshTokenById(extractTokenKey(tokenValue));
 			if(ort!=null)
 				authentication = deserializeAuthentication(ort.getAuthentication());
 		} catch (IllegalArgumentException e) {
@@ -194,19 +194,17 @@ public class ISTokenStore implements TokenStore {
 	public void removeRefreshToken(String tokenValue) {
 //		private String deleteAccessTokenSql = "delete from oauth_access_token where token_id = ?";
 		OAuth2ProviderRefreshTokenDAO providerDao = OAuth2ProviderRefreshTokenDAO.newInstance();
-		providerDao.deleteOAuth2ProviderRefreshToken(extractTokenKey(tokenValue), "unirita@unirita.co.jp");
+		providerDao.deleteOAuth2ProviderRefreshToken(extractTokenKey(tokenValue));
 	}
 	
 	@Override
 	public OAuth2AccessToken getAccessToken(OAuth2Authentication authentication) {
 		OAuth2AccessToken accessToken = null;
 		String key = authenticationKeyGenerator.extractKey(authentication);
-		String clientId = authentication.getAuthorizationRequest().getClientId();
-		OAuth2ProviderClientDetail cd = OAuth2ProviderClientDetailDAO.newInstance().getClientDetailById(clientId);
 
 		try {
 			OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-			OAuth2ProviderAccessToken oat = providerDao.getAccessTokenByAuthenticationId(key, cd.getSquareId());
+			OAuth2ProviderAccessToken oat = providerDao.getAccessTokenByAuthenticationId(key);
 			if(oat != null)
 				accessToken = deserializeAccessToken(oat.getToken());
 		} catch (IllegalArgumentException e) {
@@ -223,23 +221,7 @@ public class ISTokenStore implements TokenStore {
 
 	@Override
 	public Collection<OAuth2AccessToken> findTokensByUserName(String userId) {
-		List<OAuth2AccessToken> accessTokens = new ArrayList<OAuth2AccessToken>();
-
-		try {
-//			private String selectAccessTokensFromUserNameSql = "select token_id, token from oauth_access_token where user_name = ?";
-			OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-			List<OAuth2ProviderAccessToken> oat = providerDao.getAccessTokenByUserId(userId, "unirita@unirita.co.jp");
-			
-			if(oat!=null && oat.size()>0){
-				for(Iterator<OAuth2ProviderAccessToken> itr = oat.iterator();itr.hasNext();){
-					accessTokens.add(deserializeAccessToken(itr.next().getToken()));
-				}
-			}
-		} catch (EmptyResultDataAccessException e) {
-			log.info("Failed to find access token for userId " + userId);
-		}
-		accessTokens = removeNulls(accessTokens);
-		return accessTokens;
+		throw new UnsupportedOperationException("Unsupport find token by user id");
 	}
 
 	@Override
@@ -248,8 +230,9 @@ public class ISTokenStore implements TokenStore {
 
 		try {
 //			private String selectAccessTokensFromClientIdSql = "select token_id, token from oauth_access_token where client_id = ?";
+			OAuth2ProviderClientDetail cd = OAuth2ProviderClientDetailDAO.newInstance().getClientDetailById(clientId);
 			OAuth2ProviderAccessTokenDAO providerDao = OAuth2ProviderAccessTokenDAO.newInstance();
-			List<OAuth2ProviderAccessToken> oat = providerDao.getAccessTokenByClientId(clientId, "unirita@unirita.co.jp");
+			List<OAuth2ProviderAccessToken> oat = providerDao.getAccessTokenByClientId(clientId, cd.getSquareId());
 			
 			if(oat!=null && oat.size()>0){
 				for(Iterator<OAuth2ProviderAccessToken> itr = oat.iterator();itr.hasNext();){

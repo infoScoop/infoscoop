@@ -24,8 +24,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
-import org.infoscoop.dao.model.Portaladmins;
-import org.infoscoop.service.PortalAdminsService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,7 +35,6 @@ public class ISAuthenticationProvider implements AuthenticationProvider {
 	private static Log log = LogFactory.getLog(ISAuthenticationProvider.class);
 
 	private static final String ROLE_ADMIN = "ROLE_ADMIN";
-	private static final String ROLE_USER = "ROLE_USER";
 	private static final String ROLE_CLIENT = "ROLE_CLIENT";
 	
 	@Override

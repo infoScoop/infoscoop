@@ -121,7 +121,7 @@ public class MenusController extends BaseController{
 				}else if(key2.equals(ITEM_ATTR_MENUTREEADMINS) || key2.equals(ITEM_ATTR_AUTHS)){
 					itemMap.put(key2, deserializeJSONArrayToList(obj.getJSONArray(key2)));
 				}else{
-					itemMap.put(key2, obj.get(key2).toString());					
+					itemMap.put(key2, obj.get(key2).toString());
 				}	
 			}
 

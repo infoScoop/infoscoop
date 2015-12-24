@@ -26,7 +26,6 @@ import org.infoscoop.api.rest.v1.response.UserProfilesResponse;
 import org.infoscoop.api.rest.v1.response.model.UserProfile;
 import org.infoscoop.service.InformationService;
 import org.infoscoop.service.TabService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,13 +39,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ProfilesController extends BaseController{
 	private static Log log = LogFactory.getLog(ProfilesController.class);
 
-	@Autowired
-	private InformationService informationService;
-	
 	/**
 	 * delete user profile
-	 * 
-	 * @param target_uid
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -67,7 +62,7 @@ public class ProfilesController extends BaseController{
 	public UserProfilesResponse getUidList(){
 		UserProfilesResponse profiles = new UserProfilesResponse();
 
-		List<String> uidList = InformationService.getHandle().getUserIdList();
+		List<String> uidList = InformationService.getHandle().getUserIdList(getSquareId());
 		for(Iterator<String> ite=uidList.iterator();ite.hasNext();){
 			profiles.add(new UserProfile(ite.next()));
 		}

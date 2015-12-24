@@ -25,7 +25,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.infoscoop.api.dao.model.OAuth2ProviderAccessToken;
-import org.infoscoop.api.dao.model.OAuth2ProviderAccessTokenPK;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -37,15 +36,14 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public OAuth2ProviderAccessToken getAccessTokenById(String tokenId, String squareId){
+	public OAuth2ProviderAccessToken getAccessTokenById(String tokenId){
 		if (tokenId == null) {
 			throw new RuntimeException("tokenId must be set.");
 		}
 		
 		Iterator<OAuth2ProviderAccessToken> results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class)
-						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_ID, tokenId))
-						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_SQUARE_ID, squareId)))
+						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_ID, tokenId)))
 				.iterator();
 
 		if(results.hasNext()) {
@@ -56,15 +54,14 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-	public OAuth2ProviderAccessToken getAccessTokenByAuthenticationId(String authenticationId, String squareId){
+	public OAuth2ProviderAccessToken getAccessTokenByAuthenticationId(String authenticationId){
 		if (authenticationId == null) {
 			throw new RuntimeException("authenticationId must be set.");
 		}
 		
 		Iterator<OAuth2ProviderAccessToken> results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class)
-						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_AUTHENTICATION_ID, authenticationId))
-						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_SQUARE_ID, squareId)))
+						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_AUTHENTICATION_ID, authenticationId)))
 				.iterator();
 
 		if(results.hasNext()) {
@@ -75,15 +72,14 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 	}
 
 	@SuppressWarnings("unchecked")
-	public OAuth2ProviderAccessToken getAccessTokenByRefreshToken(String refreshToken, String squareId){
+	public OAuth2ProviderAccessToken getAccessTokenByRefreshToken(String refreshToken){
 		if (refreshToken == null) {
 			throw new RuntimeException("refreshToken must be set.");
 		}
 		
 		Iterator<OAuth2ProviderAccessToken> results = super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(OAuth2ProviderAccessToken.class)
-						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_REFRESH_TOKEN, refreshToken))
-						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_SQUARE_ID, squareId)))
+						.add(Restrictions.eq(OAuth2ProviderAccessToken.PROP_REFRESH_TOKEN, refreshToken)))
 				.iterator();
 
 		if(results.hasNext()) {
@@ -122,7 +118,7 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 	}
 	
 	public void saveAccessToken(String tokenId, byte[] token, String authenticationId, String userId, String clientId, byte[] authentication, String refreshToken, String squareId) {
-		OAuth2ProviderAccessToken accessToken = getAccessTokenById(tokenId, squareId);
+		OAuth2ProviderAccessToken accessToken = getAccessTokenById(tokenId);
 	
 		if(accessToken == null){
 			accessToken = new OAuth2ProviderAccessToken(tokenId, squareId);
@@ -142,15 +138,15 @@ public class OAuth2ProviderAccessTokenDAO extends HibernateDaoSupport {
 			super.getHibernateTemplate().delete(tokenObj);
 	}
 	
-	public void deleteOAuth2ProviderAccessToken(String tokenId, String squareId) {
-		OAuth2ProviderAccessToken accessToken = getAccessTokenById(tokenId, squareId);
+	public void deleteOAuth2ProviderAccessToken(String tokenId) {
+		OAuth2ProviderAccessToken accessToken = getAccessTokenById(tokenId);
 		
 		if (accessToken != null)
 			super.getHibernateTemplate().delete(accessToken);
 	}
 
-	public void deleteOAuth2ProviderAccessTokenByRefreshToken(String refreshToken, String squareId) {
-		OAuth2ProviderAccessToken accessToken = getAccessTokenByRefreshToken(refreshToken, squareId);
+	public void deleteOAuth2ProviderAccessTokenByRefreshToken(String refreshToken) {
+		OAuth2ProviderAccessToken accessToken = getAccessTokenByRefreshToken(refreshToken);
 
 		if (accessToken != null)
 			super.getHibernateTemplate().delete(accessToken);

@@ -19,8 +19,6 @@ package org.infoscoop.api.dao.model.base;
 
 import java.io.Serializable;
 
-import org.infoscoop.api.dao.model.OAuth2ProviderRefreshTokenPK;
-
 public class BaseOAuth2ProviderRefreshToken implements Serializable {
 	private static final long serialVersionUID = 1L;
 
