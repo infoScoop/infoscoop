@@ -45,11 +45,13 @@ INSERT
 		IS_PORTALLAYOUTS(
 			name,
 			layout,
+			advanced,
 			square_id
 		)
 	SELECT
 		p.name,
 		p.layout,
+		p.advanced,
 		:squareId
 	FROM
 		IS_PORTALLAYOUTS as p
