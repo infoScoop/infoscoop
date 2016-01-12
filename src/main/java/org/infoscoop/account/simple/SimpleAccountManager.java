@@ -22,10 +22,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.security.auth.Subject;
 
@@ -41,6 +39,7 @@ import org.infoscoop.account.helper.AccountHelper;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.dao.AccountDAO;
 import org.infoscoop.dao.model.Account;
+import org.infoscoop.dao.model.AccountAttr;
 import org.infoscoop.dao.model.AccountSquare;
 import org.json.JSONObject;
 
@@ -228,7 +227,7 @@ public class SimpleAccountManager implements IAccountManager{
 
 	@Override
 	public void registUser(String userid, String password, String firstName,
-			String familyName, String defaultSquareId, String email) throws Exception {
+			String familyName, String defaultSquareId, String email, String ownedSquareNum) throws Exception {
 		String displayName = firstName + " " + familyName;
 		Account account = new Account(userid, displayName, password);
 		account.setFamilyName(familyName);
@@ -238,9 +237,10 @@ public class SimpleAccountManager implements IAccountManager{
 		account.setMail(email);
 		
 		AccountSquare accountSquare = new AccountSquare(userid, defaultSquareId);
-		
+		AccountAttr accountAttr = new AccountAttr(userid, AccountAttributeName.OWNED_SQUARE_NUMBER, ownedSquareNum);
 		dao.insert(account);
 		dao.insertAccountSquare(accountSquare);
+		dao.insertAccountAttr(accountAttr);
 	}
 
 	@Override
@@ -268,4 +268,8 @@ public class SimpleAccountManager implements IAccountManager{
 		this.accountManagerFormDef = accountManagerFormDef;
 	}
 
+	@Override
+	public String getAccountAttributeValue(String userid, String name) throws Exception {
+		return dao.getAccountAttr(userid, name);
+	}
 }

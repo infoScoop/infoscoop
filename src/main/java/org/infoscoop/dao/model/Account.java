@@ -152,5 +152,5 @@ public class Account implements IAccount {
 	public void setMySquareId(String mySquareId) {
 		this.mySquareId = mySquareId;
 	}
-	
+
 }

@@ -93,7 +93,9 @@ public interface IAccountManager {
 	
 	public void deleteUser(String userId) throws Exception;
 	
-	public void registUser(String userid, String password, String firstName, String familyName, String defaultSquareId, String email) throws Exception;
+	public void registUser(String userid, String password, String firstName, String familyName, String defaultSquareId, String email, String ownedSquareNum) throws Exception;
 	
 	public void removeSquareId(String userid, String squareId) throws Exception;
+
+	public String getAccountAttributeValue(String userid, String name) throws Exception;
 }

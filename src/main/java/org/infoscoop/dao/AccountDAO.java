@@ -25,6 +25,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.MatchMode;
 import org.infoscoop.dao.model.Account;
+import org.infoscoop.dao.model.AccountAttr;
 import org.infoscoop.dao.model.AccountSquare;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -71,7 +72,36 @@ public class AccountDAO extends HibernateDaoSupport {
 	public void deleteAccountSquare(AccountSquare accountSquare){
 		super.getHibernateTemplate().delete(accountSquare);
 	}
-	
+
+	public List<AccountAttr> getAccountAttrList(String uid) {
+		List<AccountAttr> result = super.getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(AccountAttr.class)
+				.add(Expression.eq(AccountAttr.PROP_UID, uid)));
+
+		if(result == null || result.size() == 0)
+			return null;
+
+		return result;
+	}
+
+	public String getAccountAttr(String uid, String key) {
+		List<AccountAttr> result = super.getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(AccountAttr.class)
+				.add(Expression.eq(AccountAttr.PROP_UID, uid))
+				.add(Expression.eq(AccountAttr.PROP_NAME, key)));
+
+		if(result == null || result.size() == 0)
+				return null;
+
+		return result.get(0).getValue();
+	}
+
+	public void insertAccountAttr(AccountAttr accountAttr) {
+		super.getHibernateTemplate().save(accountAttr);
+	}
+
+	public void deleteAccountAttr(AccountAttr accountAttr) {
+		super.getHibernateTemplate().delete(accountAttr);
+	}
+
 	public void delete(String uid){
 		Account entity = get(uid);
 		super.getHibernateTemplate().delete(entity);

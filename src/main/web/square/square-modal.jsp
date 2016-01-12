@@ -20,10 +20,13 @@
 <!DOCTYPE HTML>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@page import="org.infoscoop.service.PropertiesService"%>
+<%@page import="org.infoscoop.service.SquareService"%>
 <%
     String staticContentURL = PropertiesService.getHandle().getProperty("staticContentURL");
     if(".".equals(staticContentURL))
     	staticContentURL = "../";
+	String uid = (String) session.getAttribute("Uid");
+	boolean isReachMaxSquare = SquareService.getHandle().isReachMaxSquare(uid);
 %>
 <html>
 <head>
@@ -49,6 +52,10 @@
 <script src="../js/resources/resourceBundle.jsp"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+	if(<%=isReachMaxSquare%>) {
+		$('#alert').addClass("alert alert-danger").attr('role', 'alert').text('%{lb_error_max_square}');
+	}
+
 	$('#quick-build').submit(function(event){
 		event.preventDefault();
 		$(this).find('button[type=submit]').attr('disabled', 'disabled');
@@ -74,7 +81,11 @@ $(document).ready(function() {
 					errorMessage = '%{lb_error_invalid_email}';
 					break;
 				case 500:
-					errorMessage = '%{lb_error_on_server}';
+					if(error.responseText == '500_01') {
+						errorMessage = '%{lb_error_max_square}';
+					} else {
+						errorMessage = '%{lb_error_on_server}';
+					}
 					break;
 			}
 			$('#alert').addClass("alert alert-danger").attr('role', 'alert').text(errorMessage);
@@ -89,7 +100,7 @@ $(document).ready(function() {
 });
 
 function checkValue($this) {
-	if(!$this.value){
+	if(!$this.value || <%=isReachMaxSquare%>){
 		disabledBtn();
 	} else {
 		enabledBtn();

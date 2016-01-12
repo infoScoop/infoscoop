@@ -23,7 +23,7 @@ import java.util.Objects;
 public class BaseAccountAttr implements Serializable {
 
 	public static String REF = "AccountAttr";
-	public static String PROP_UID = "Uid";
+	public static String PROP_UID = "accountId";
 	public static String PROP_NAME = "name";
 	public static String PROP_VALUE = "value";
 
