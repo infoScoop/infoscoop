@@ -219,7 +219,6 @@ public class SquareService {
 		this.gadgetDAO.copySquare(squareId, sourceSquareId);
 		this.gadgetIconDAO.copySquare(squareId, sourceSquareId);
 		this.holidaysDAO.copySquare(squareId, sourceSquareId);
-//		this.i18NDAO.copySquare(squareId, sourceSquareId);
 		this.siteAggregationMenuDAO.copySquare(squareId, sourceSquareId);
 		this.oauthCertificateDAO.copySquare(squareId, sourceSquareId);
 		this.portalLayoutDAO.copySquare(squareId, sourceSquareId);
