@@ -212,4 +212,82 @@ UPDATE ${migration.defaultSchemaWithDot}IS_ACCOUNTS SET my_square_id=uid WHERE m
             <column name="square_id" value="default" />
         </insert>
     </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha2_612_2" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_612_2">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='lb_square_maxuser';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_square_maxuser" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Reached the number of users upper limit of the Square." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_square_maxuser" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="スクエアのユーザ数上限に達しました。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_square_maxuser" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="达到的广场用户上限数。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_square_maxuser_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Because it has reached the upper limit of the number of users who can belong to the Square, it will not be able to participate." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_square_maxuser_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="スクエアに所属できるユーザ数の上限に達したため、参加することができません。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_square_maxuser_desc" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="因为它已经达到谁可以属于广场的用户数量的上限，它将不能够参加员。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_call_square_admin" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Please contact your Square administrator." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_call_square_admin" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="スクエア管理者にお問い合わせ下さい。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_call_square_admin" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="请联系您的广场管理员。" />
+            <column name="square_id" value="default" />
+        </insert>
+    </changeSet>
 </databaseChangeLog>
