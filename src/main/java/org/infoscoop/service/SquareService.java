@@ -339,13 +339,16 @@ public class SquareService {
 	}
 
 	public boolean isReachMaxSquare(String userId) throws Exception {
-		String maxNum = AuthenticationService.getInstance().getAccountManager().getAccountAttributeValue(userId, AccountAttributeName.OWNED_SQUARE_NUMBER);
-		List<Square> squares = getOwnerSquare(userId);
 		boolean result = false;
+		String maxNum = AuthenticationService.getInstance().getAccountManager().getAccountAttributeValue(userId, AccountAttributeName.OWNED_SQUARE_NUMBER);
 
-		if(Integer.parseInt(maxNum) <= squares.size()) {
-			result = true;
+		if(maxNum != null && Integer.parseInt(maxNum) > 0) {
+			List<Square> squares = getOwnerSquare(userId);
+			if(Integer.parseInt(maxNum) <= squares.size()) {
+				result = true;
+			}
 		}
+
 		return result;
 	}
 
