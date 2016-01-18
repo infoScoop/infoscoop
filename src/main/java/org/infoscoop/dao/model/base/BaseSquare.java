@@ -34,7 +34,7 @@ public abstract class BaseSquare  implements Serializable {
 	public static String PROP_LASTMODIFIED = "lastmodified";
 	public static String PROP_OWNER ="owner";
 	public static String PROP_MAX_USER_NUM = "maxUserNum";
-
+	public static String PROP_PARENT_SQUARE_ID = "parentSquareId";
 
 	// constructors
 	public BaseSquare () {
@@ -58,14 +58,17 @@ public abstract class BaseSquare  implements Serializable {
 		java.lang.String description,
 		java.util.Date lastmodified,
 		java.lang.String owner,
-		java.lang.Integer maxUserNum) {
+		java.lang.Integer maxUserNum,
+		java.lang.String parentSquareId) {
 
 		this.setId(id);
 		this.setName(name);
 		this.setDescription(description);
 		this.setLastmodified(lastmodified);
 		this.setOwner(owner);
-		this.
+		this.setMaxUserNum(maxUserNum);
+		this.setParentSquareId(parentSquareId);
+
 		initialize();
 	}
 
@@ -82,6 +85,7 @@ public abstract class BaseSquare  implements Serializable {
 	private java.util.Date lastmodified;
 	private java.lang.String owner;
 	private java.lang.Integer maxUserNum;
+	private java.lang.String parentSquareId;
 
 	/**
 	 * Return the unique identifier of this class
@@ -148,6 +152,14 @@ public abstract class BaseSquare  implements Serializable {
 
 	public void setMaxUserNum(Integer maxUserNum) {
 		this.maxUserNum = maxUserNum;
+	}
+
+	public String getParentSquareId() {
+		return parentSquareId;
+	}
+
+	public void setParentSquareId(String parentSquareId) {
+		this.parentSquareId = parentSquareId;
 	}
 
 	public boolean equals (Object obj) {

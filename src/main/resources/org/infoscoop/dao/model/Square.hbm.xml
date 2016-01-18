@@ -49,5 +49,11 @@
 				type="int"
 				not-null="true"
 				/>
+		<property
+				name="parentSquareId"
+				column="parent_square_id"
+				type="string"
+				length="64"
+				/>
 	</class>
 </hibernate-mapping>

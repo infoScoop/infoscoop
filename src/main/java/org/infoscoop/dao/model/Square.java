@@ -43,7 +43,8 @@ public class Square extends BaseSquare {
 		java.lang.String description,
 		java.util.Date lastmodified,
 		java.lang.String owner,
-		java.lang.Integer maxUserNum) {
+		java.lang.Integer maxUserNum,
+		java.lang.String parentSquareId) {
 
 		super (
 			id,
@@ -51,7 +52,8 @@ public class Square extends BaseSquare {
 			description,
 			lastmodified,
 			owner,
-			maxUserNum);
+			maxUserNum,
+			parentSquareId);
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
