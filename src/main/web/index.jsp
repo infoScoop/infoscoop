@@ -310,7 +310,7 @@
  </head>
  	<%
 		String backgroundImg = PreferenceService.getHandle().getProperty(uid, "backgroundImage");
-		if(backgroundImg != null || !backgroundImg.equals("")){
+		if(backgroundImg != null && !backgroundImg.equals("")){
 	%>
 	<body style="margin-top:0;padding-top:0;background-image: url(<%=backgroundImg%>);background-size: 100% auto;" class="infoScoop">
 	<%}else{%>
