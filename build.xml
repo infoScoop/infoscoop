@@ -38,7 +38,7 @@
 	<property name="compile.deprecation" value="false" />
 	<property name="compile.optimize" value="true" />
 	<property name="build.main.features" value="${build.main}/WEB-INF/classes/features" />
-	<property name="yuicompressor" value="${basedir}/lib/build/yuicompressor-2.4.2.jar" />
+	<property name="yuicompressor" value="${basedir}/lib/build/yuicompressor-2.4.7.jar" />
 
 	<tstamp>
 		<format property="build.timestamp" pattern="yyyyMMddHHmmss" locale="ja"/>
