@@ -336,7 +336,8 @@ IS_AccountManager.prototype = {
 		var inputForm = $(formKey).getElementsByTagName('input');
 		var body = '';
 		for(var i = 0; i < inputForm.length; i++) {
-			var value = inputForm[i].value;
+			var value = inputForm[i].value.trim();
+			var type = inputForm[i].type;
 
 			// validation
 			if(!value) {
@@ -345,8 +346,8 @@ IS_AccountManager.prototype = {
 				return false;
 			}
 
-			if(/\s/.test(value)) {
-				var message = IS_R.getResource(IS_R.ms_blank_not_allow_any, [formDef[inputForm[i].id].title]);
+			if(type == 'email' && !/^[A-Za-z0-9]+[\w-]+@[\w\.-]+\.\w{2,}$/.test(value)) {
+				var message = IS_R.getResource(IS_R.ms_invalidValue3, [formDef[inputForm[i].id].title]);
 				alert(message);
 				return false;
 			}

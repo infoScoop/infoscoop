@@ -172,7 +172,7 @@
                     <ref bean="accountDAO" />
                 </property>
                 <property name="accountManagerFormDef">
-                    <value>{"profile":{"firstname":{type:"text"},"givenname":{type:"text"},"displayname":{type:"text"}}}</value>
+                    <value>{"profile":{"firstname":{type:"text"},"givenname":{type:"text"},"displayname":{type:"text"},"email":{type:"email"}}}</value>
                 </property>
             </bean>
         </property>

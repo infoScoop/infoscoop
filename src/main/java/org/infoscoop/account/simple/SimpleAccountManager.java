@@ -54,7 +54,8 @@ public class SimpleAccountManager implements IAccountManager{
 	private static final String DISPLAY_NAME_PARAM = "displayname";
 	private static final String FIRST_NAME_PARAM = "firstname";
 	private static final String GIVEN_NAME_PARAM = "givenname";
-	
+	private static final String EMAIL_PARAM = "email";
+
 	/**
 	 * Account manager form.
 	 */
@@ -136,17 +137,11 @@ public class SimpleAccountManager implements IAccountManager{
 
 	@Override
 	public void updatePassword(String userid, String password) throws AuthenticationException {
-		if(StringUtils.isBlank(password)) {
-			log.error("blank password.");
+		if(AccountHelper.isNotValidPassword(password)) {
+			log.error("invalid password.");
 			throw new IllegalArgumentException();
 		}
 
-		String policy = AccountHelper.getPasswordPolicy();
-		if(StringUtils.isNotBlank(policy) && !password.matches(policy)){
-			log.error("unmatch password policy.");
-			throw new IllegalArgumentException();
-		}
-		
 		Account account = dao.get(userid);
 		account.setPasswordPlainText(password);
 		dao.update(account);
@@ -195,6 +190,10 @@ public class SimpleAccountManager implements IAccountManager{
 		displayNameObj.put("title", "%{lb_ee_displayName}");
 		displayNameObj.put("value", account.getName());
 
+		JSONObject emailObj = profileObj.getJSONObject(EMAIL_PARAM);
+		emailObj.put("title", "%{lb_email_address}");
+		emailObj.put("value", account.getMail());
+
 		return object;
 	}
 
@@ -203,18 +202,21 @@ public class SimpleAccountManager implements IAccountManager{
 		String displayName = map.get(DISPLAY_NAME_PARAM)[0];
 		String firstName = map.get(FIRST_NAME_PARAM)[0];
 		String familyName = map.get(GIVEN_NAME_PARAM)[0];
+		String email = map.get(EMAIL_PARAM)[0];
 
 		if(StringUtils.isBlank(displayName)
-				|| StringUtils.isBlank(firstName)
-				|| StringUtils.isBlank(familyName)) {
-			log.error("blank profiles.");
+				|| AccountHelper.isNotValidFirstName(firstName)
+				|| AccountHelper.isNotValidGivenName(familyName)
+				|| AccountHelper.isNotValidEmail(email)) {
+			log.error("invalid profiles.");
 			throw new IllegalArgumentException();
 		}
-		
+
 		Account account = dao.get(userId);
 		account.setName(displayName);
 		account.setFamilyName(familyName);
 		account.setGivenName(firstName);
+		account.setMail(email);
 		dao.update(account);
 		
 		return displayName;

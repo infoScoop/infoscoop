@@ -65,7 +65,7 @@ fieldset {
 	border-radius: 7px;
 }
 
-input[type="text"], input[type="password"], textarea, select { 
+input[type="text"], input[type="password"], input[type="email"], textarea, select {
 	outline: none;
 	-moz-box-sizing: border-box; /* Firefox */
 	-webkit-box-sizing: border-box; /* Webkit */
@@ -118,7 +118,7 @@ input[type=button]:active, .is-button:active {
 	
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=email]{
 	padding: 0.4em 0.4em 0.3em;
 	font-size: 13px;
 	background-color: #ffffff;

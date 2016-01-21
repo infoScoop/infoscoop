@@ -21,7 +21,7 @@ public class AccountHelper {
 		return InfoScoopProperties.getInstance().getProperty(PASSWORD_POLICY);
 	}
 
-	public static boolean isValidPassword(String password) {
+	public static boolean isNotValidPassword(String password) {
 		boolean result = false;
 
 		if(password != null && password.length() > 0){
@@ -35,7 +35,7 @@ public class AccountHelper {
 		return result;
 	}
 
-	public static boolean isValidFirstName(String firstName) {
+	public static boolean isNotValidFirstName(String firstName) {
 		boolean result = false;
 
 		// 文字列チェック
@@ -51,22 +51,39 @@ public class AccountHelper {
 		return result;
 	}
 
-	public static boolean isValidGivenName(String givenName) {
-		boolean result = false;
+	public static boolean isNotValidGivenName(String givenName) {
+		boolean result = true;
 
 		// 文字列チェック
 		if(givenName != null && givenName.length() > 0 && givenName.length() < 101) {
 			// 空白チェック
 			Pattern ptn = Pattern.compile("\\(\\S*\\)");
 			Matcher mc = ptn.matcher(givenName);
-			if(mc.matches()) {
+			if(!mc.matches()) {
+				result = false;
+			}
+		}
+
+		return result;
+	}
+
+	public static boolean isNotValidEmail(String email) {
+		boolean result = false;
+
+		// 文字列チェック
+		if(email != null && email.length() > 0 && email.length() < 151) {
+			// メールアドレスの正しさ
+			String mailFormat = "^[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+(\\.[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+)*+(.*)@[a-zA-Z0-9][a-zA-Z0-9\\-]*(\\.[a-zA-Z0-9\\-]+)+$";
+			Pattern ptn = Pattern.compile(mailFormat);
+			Matcher mc = ptn.matcher(email);
+			if(!mc.matches()) {
 				result = true;
 			}
 		}
 
 		return result;
 	}
-	
+
 	/**
 	 * 指定メールアドレスのユーザがスクエアに存在するかチェック
 	 * 

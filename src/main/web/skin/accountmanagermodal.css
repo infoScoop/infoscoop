@@ -95,3 +95,7 @@ div.account-manager-form-row>div:nth-child(2n-1){
 div.account-manager-form-row>div:nth-child(2n){
 	 text-align: right;
 }
+
+div.account-manager-form-row>div>input{
+	width: 75%;
+}
