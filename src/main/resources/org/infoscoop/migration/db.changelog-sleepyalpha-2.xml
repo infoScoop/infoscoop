@@ -84,7 +84,7 @@
         <addForeignKeyConstraint baseColumnNames="fk_account_id" baseTableName="IS_ACCOUNT_SQUARES" constraintName="fk_is_account_squares_uid" onDelete="CASCADE" referencedColumnNames="uid" referencedTableName="IS_ACCOUNTS"/>
         <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_ACCOUNT_SQUARES" constraintName="fk_is_account_squares_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="IS_SQUARES"/>
     </changeSet>
-    
+
     <changeSet id="infoscoop_sleepyalpha2_609_5" author="aknishiumi" dbms="oracle">
         <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_609_5">
             <not>
@@ -108,7 +108,7 @@
             </column>
         </addColumn>
     </changeSet>
-    
+
     <changeSet id="infoscoop_sleepyalpha2_609_7" author="aknishiumi">
         <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_609_6">
             <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS" columnName="my_square_id"/>
@@ -315,5 +315,27 @@ UPDATE ${migration.defaultSchemaWithDot}IS_ACCOUNTS SET my_square_id=uid WHERE m
             <column name="parent_square_id" type="varchar(64)"/>
             <where>id='default'</where>
         </update>
+    </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha2_615_1" author="y.momose">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_615_1">
+            <not>
+              <tableExists schemaName="${migration.defaultSchema}" tableName="IS_PRINCIPALS"/>
+            </not>
+        </preConditions>
+        <createTable tableName="IS_PRINCIPALS">
+            <column name="id" type="int" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_attr_name" type="${clob.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="square_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
 </databaseChangeLog>
