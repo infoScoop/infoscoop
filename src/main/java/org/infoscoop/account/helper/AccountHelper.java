@@ -21,7 +21,7 @@ public class AccountHelper {
 		return InfoScoopProperties.getInstance().getProperty(PASSWORD_POLICY);
 	}
 
-	public static boolean isNotValidPassword(String password) {
+	public static boolean isValidPassword(String password) {
 		boolean result = false;
 
 		if(password != null && password.length() > 0){

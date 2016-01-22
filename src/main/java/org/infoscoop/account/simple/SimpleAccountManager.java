@@ -137,7 +137,7 @@ public class SimpleAccountManager implements IAccountManager{
 
 	@Override
 	public void updatePassword(String userid, String password) throws AuthenticationException {
-		if(AccountHelper.isNotValidPassword(password)) {
+		if(!AccountHelper.isValidPassword(password)) {
 			log.error("invalid password.");
 			throw new IllegalArgumentException();
 		}
