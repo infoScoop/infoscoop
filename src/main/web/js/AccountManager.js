@@ -124,6 +124,9 @@ IS_AccountManager.prototype = {
 					type: item.type,
 					maxLength: 100
 				});
+
+				if(item.type == 'email')
+					formInput.setAttribute("maxLength", 150);
 				if(item.value)
 					formInput.value = item.value;
 				this._createFormRow(formTable, item.title, formInput);
