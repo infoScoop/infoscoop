@@ -24,7 +24,10 @@ ISA_Properties.prototype.classDef = function() {
 		system: ISA_R.alb_systemSetup
 	});
 	
-	this.initialize = function() {
+	this.initialize = function(category) {
+	    if(category)
+	        this.targetCategory = category;
+	    
 		container = document.getElementById("properties");
 		
 		var len = container.childNodes.length;
@@ -34,10 +37,15 @@ ISA_Properties.prototype.classDef = function() {
 		
 		loadingMessage = document.createElement('div');
 		loadingMessage.innerHTML = "Loading...";
+		loadingMessage.className = "loading-message";
 		loadingMessage.style.clear = "both";
 		loadingMessage.style.cssFloat = "left";
 		container.appendChild(loadingMessage);
 	};
+	
+	this.setCategoryList = function(categoryList) {
+	    CATEGORY_LIST = categoryList;
+	}
 	
 	this.displayProperties = function() {
 		
@@ -58,9 +66,10 @@ ISA_Properties.prototype.classDef = function() {
 				return;
 			
 			ISA_Admin.isUpdate = false;
-			ISA_Properties.properties = new ISA_Properties();
+			ISA_Properties.properties = new ISA_Properties(this.targetCategory);
+			ISA_Properties.properties.setCategoryList(CATEGORY_LIST);
 			ISA_Properties.properties.build();
-		}, false, "_adminProperties");
+		}.bind(this), false, "_adminProperties");
 		
 		var advancedDiv = ISA_Admin.createIconButton(ISA_R.alb_advancedSettings, ISA_R.alb_advancedSettings, "wrench.gif", "right");
 		refreshAllDiv.appendChild(advancedDiv);
@@ -161,7 +170,8 @@ ISA_Properties.prototype.classDef = function() {
 		td.style.whiteSpace = "nowrap";
 		
 		var span = document.createElement("span");
-		span.appendChild(document.createTextNode(ISA_Admin.replaceUndefinedValue(property.id)));
+		var propName = ISA_R["alb_prop_title_"+property.id]? ISA_R["alb_prop_title_"+property.id] : ISA_Admin.replaceUndefinedValue(property.id);
+		span.appendChild(document.createTextNode(propName));
 		
 		td.appendChild(span);
 		tr.appendChild(td);
@@ -193,7 +203,9 @@ ISA_Properties.prototype.classDef = function() {
 		
 		span = document.createElement("span");
 		span.style.fontSize = "90%";
-		span.appendChild(document.createTextNode(ISA_R["alb_desc_"+property.id]+ "　"));
+		$jq(span).html(ISA_R["alb_desc_"+property.id]+ "　");
+		// decode br tags
+		$jq(span).html($jq(span).text());
 		
 		td.appendChild(span);
 		tr.appendChild(td);
@@ -295,6 +307,9 @@ ISA_Properties.prototype.classDef = function() {
 	
 	this.build = function() {
 		var url = adminHostPrefix + "/services/properties/getPropertiesJson";
+		if(this.targetCategory)
+		    url += ("?category=" + this.targetCategory);
+		
 		var opt = {
 			method: 'get' ,
 			asynchronous:true,

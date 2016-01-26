@@ -68,10 +68,15 @@ public class PropertiesService{
 	 * @return String
 	 * @throws Exception
 	 */
-	public String getPropertiesJson(Locale locale) throws Exception {
+	public String getPropertiesJson(Locale locale, String category) throws Exception {
 		JSONObject propertiesJson = new JSONObject();
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
-		List propList = propertiesDAO.findAllProperties(squareid);
+		List propList;
+		if(category != null){
+			propList = propertiesDAO.findAllPropertiesByCategory(squareid, category);
+		}else{
+			propList = propertiesDAO.findAllProperties(squareid);
+		}
 		for(Iterator propIt = propList.iterator(); propIt.hasNext();){
 			Properties prop = (Properties)propIt.next();//Key become capital if Map is passed to constructor of JSONObject without change.
 			JSONObject propJson = new JSONObject();
@@ -124,6 +129,5 @@ public class PropertiesService{
 		
 		return result;
 	}
-	
 
 }

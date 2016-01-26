@@ -38,8 +38,9 @@ public class PropertiesServiceCommand extends ServiceCommand {
 	public CommandResponse getPropertiesJson(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		Locale locale = request.getLocale();
+		String category = request.getParameter("category");
 
 		return new CommandResponse(true, ((PropertiesService) service)
-				.getPropertiesJson(locale));
+				.getPropertiesJson(locale, category));
 	}
 }

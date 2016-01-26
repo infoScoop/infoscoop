@@ -58,6 +58,14 @@ public class PropertiesDAO extends HibernateDaoSupport {
 		
 		return super.getHibernateTemplate().find( queryString, squareId );
 	}
+    
+	@SuppressWarnings("unchecked")
+	public List<Properties> findAllPropertiesByCategory(String squareId, String category){
+		//select * from ${schema}.properties
+		String queryString = "from Properties where Id.Squareid = ? and Category = ? order by Advanced, Id.Id";
+		
+		return super.getHibernateTemplate().find( queryString, squareId, category);
+	}
 	
 	/**
 	 * Update the data.
