@@ -3,6 +3,7 @@
 <%@ page import="org.infoscoop.service.ForbiddenURLService" %>
 <%@ page import="org.infoscoop.properties.InfoScoopProperties"%>
 <%@ page import="org.infoscoop.service.SquareService"%>
+<%@ page import="org.infoscoop.service.LogoService"%>
 <%@page import="org.infoscoop.context.UserContext"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
@@ -19,7 +20,12 @@
 		<meta http-equiv="Cache-Control" content="no-cache">
 
 	<!-- favicon.ico -->
-	<link rel="shortcut icon" href="../../favicon.ico">
+	<!-- favicon.ico -->
+	<% if(LogoService.getHandle().isExistsLogoImage("favicon")) {%>
+		<link rel="shortcut icon" href="../../logosrv/getFavicon">
+	<%}else{%>
+		<link rel="shortcut icon" href="../../favicon.ico">
+	<%}%>
 
 		<title>
 	    <c:choose>
