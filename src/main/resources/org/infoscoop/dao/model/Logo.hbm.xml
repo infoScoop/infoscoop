@@ -39,5 +39,12 @@
 				not-null="true"
 				length="64"
 				/>
+		<property
+				name="Kind"
+				column="kind"
+				type="string"
+				not-null="true"
+				length="64"
+				/>
 	</class>
 </hibernate-mapping>

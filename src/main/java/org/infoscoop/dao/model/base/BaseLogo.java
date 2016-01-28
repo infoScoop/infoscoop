@@ -28,6 +28,7 @@ public abstract class BaseLogo implements Serializable {
 	public static String PROP_SQUAREID = "Squareid";
 	public static String PROP_LOGO = "Logo";
 	public static String PROP_TYPE = "Type";
+	public static String PROP_KIND = "Kind";
 
 	// primary key
 	private Long id;
@@ -36,15 +37,17 @@ public abstract class BaseLogo implements Serializable {
 	private String squareId;
 	private byte[] logo;
 	private String type;
+	private String kind;
 
 	public BaseLogo() {
 		initialize();
 	}
 
-	public BaseLogo(String squareId, byte[] logo, String type) {
+	public BaseLogo(String squareId, byte[] logo, String type, String kind) {
 		this.setSquareid(squareId);
 		this.setLogo(logo);
 		this.setType(type);
+		this.setKind(kind);
 	}
 
 	protected void initialize () {}
@@ -79,6 +82,14 @@ public abstract class BaseLogo implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getKind() {
+		return kind;
+	}
+
+	public void setKind(String kind) {
+		this.kind = kind;
 	}
 
 	public boolean equals (Object obj) {

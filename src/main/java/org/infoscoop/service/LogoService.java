@@ -41,10 +41,9 @@ public class LogoService {
 		this.logoDAO = logoDAO;
 	}
 
-	public void saveLogo(byte[] image, String type) {
+	public void saveLogo(byte[] image, String type, String kind) {
 		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
-
-		Logo logo = this.logoDAO.getBySquareId(squareId);
+		Logo logo = this.logoDAO.getBySquareIdAndKind(squareId, kind);
 
 		if(logo != null) {
 			// update
@@ -52,20 +51,20 @@ public class LogoService {
 			this.logoDAO.update(logo);
 		} else {
 			// insert
-			this.logoDAO.insert(squareId, image, type);
+			this.logoDAO.insert(squareId, image, type, kind);
 		}
 	}
 
-	public Logo getLogo() {
+	public Logo getLogo(String kind) {
 		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
-		Logo logo = this.logoDAO.getBySquareId(squareId);
+		Logo logo = this.logoDAO.getBySquareIdAndKind(squareId, kind);
 
 		return logo;
 	}
 
-	public boolean isExistsLogoImage() {
+	public boolean isExistsLogoImage(String kind) {
 		boolean result = false;
-		Logo logo = this.getLogo();
+		Logo logo = this.getLogo(kind);
 		if(logo != null)
 			result = true;
 		return result;

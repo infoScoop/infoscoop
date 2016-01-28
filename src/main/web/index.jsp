@@ -86,8 +86,12 @@
     <link rel="stylesheet" type="text/css" href="portallayout?type=customTheme">
 
 	<!-- favicon.ico -->
-	<link rel="shortcut icon" href="favicon.ico">
-	
+	<% if(LogoService.getHandle().isExistsLogoImage("favicon")) {%>
+		<link rel="shortcut icon" href="logosrv/getFavicon">
+	<%}else{%>
+		<link rel="shortcut icon" href="favicon.ico">
+	<%}%>
+
     <script src="js/resources/resourceBundle.jsp"></script>
 
     <script src="js/gadget/features/core:rpc:pubsub:pubsub-2:infoscoop.js?c=1"></script>
@@ -323,8 +327,8 @@
 						<td id="td-portal-logo">
 							<div id="portal-logo" outside="true">
 								<a href="javascript:void(0)">
-								<% if(LogoService.getHandle().isExistsLogoImage()) {%>
-									<img id="portal-logo-img" src="logosrv/get"  border="0" />
+								<% if(LogoService.getHandle().isExistsLogoImage("portal_logo")) {%>
+									<img id="portal-logo-img" src="logosrv/getPortalLogo"  border="0" />
 								<%}else{%>
 									<img id="portal-logo-img" src="<%=staticContentURL%>/skin/imgs/infoscoop_logo.png"  border="0" /-->
 								<%}%>

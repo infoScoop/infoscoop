@@ -29,7 +29,7 @@ public class Logo extends BaseLogo{
 		super();
 	}
 
-	public Logo(String squareId, byte[] logo, String type) {
-		super(squareId, logo, type);
+	public Logo(String squareId, byte[] logo, String type, String kind) {
+		super(squareId, logo, type, kind);
 	}
 }

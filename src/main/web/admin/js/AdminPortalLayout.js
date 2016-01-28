@@ -14,6 +14,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 	var loadingMessage;
 	var controlModal;		// Apply Change dialog
 	var logoImgSrc;
+	var faviconSrc;
 	var isUpdatedLogoImage;
 	var currentDispSettings;
 
@@ -84,42 +85,61 @@ ISA_PortalLayout.prototype.classDef = function() {
 		this.changeLayout();
 
 		// upload form
-		var iframe = $("upLoadDummyFrame");
-		Event.observe( iframe,"load",function() {
-			try {
-				var result = $jq(this.contentWindow.document.body).text();
-				if(result) {
-					var status = eval("("+result+")").status;
-					if(status == 500)
-						throw new Error();
-				} else {
-					$jq('#logo-image-input').attr('upload', 'true');
-					logoImgSrc = hostPrefix + '/logosrv/get';
-					setTimeout(function(){
-						Control.Modal.close();
-					},500);
-				}
-			} catch(e) {
-					alert(ISA_R.ams_gadgetResourceUpdateFailed);
-					msg.error(ISA_R.ams_gadgetResourceUpdateFailed + " - " +" | 500");
-					Control.Modal.close();
-					$jq('#logo-image').removeAttr('src');
-			}
-		});
+		this.buildUploadForm('upLoadDummyFrame', 'getPortalLogo');
+		this.buildUploadForm('upLoadFaviconDummyFrame', 'getFavicon');
 
+		// portal logo
 		$jq.ajax({
 			method: 'get',
-			url: hostPrefix + '/logosrv/existsImage',
+			url: hostPrefix + '/logosrv/existsPortalLogo',
 			success: function(data) {
 				if(data == 'true') {
-					logoImgSrc = hostPrefix + '/logosrv/get';
+					logoImgSrc = hostPrefix + '/logosrv/getPortalLogo';
 				} else {
 					logoImgSrc = staticContentURL + '/skin/imgs/infoscoop_logo.png';
 				}
 			}
 		});
+
+		// favicon
+		$jq.ajax({
+			method: 'get',
+			url: hostPrefix + '/logosrv/existsFavicon',
+			success: function(data) {
+				if(data == 'true') {
+					faviconSrc = hostPrefix + '/logosrv/getFavicon';
+				} else {
+					faviconSrc = hostPrefix + '/favicon.ico';
+				}
+			}
+		});
 	}
-	
+
+	this.buildUploadForm = function(iframeId, imgUrl) {
+			var iframe = $(iframeId);
+			Event.observe( iframe,"load",function() {
+				try {
+					var result = $jq(this.contentWindow.document.body).text();
+					if(result) {
+						var status = eval("("+result+")").status;
+						if(status == 500)
+							throw new Error();
+					} else {
+						$jq('#logo-image-input').attr('upload', 'true');
+						logoImgSrc = hostPrefix + '/logosrv/' + imgUrl;
+						setTimeout(function(){
+							Control.Modal.close();
+						},500);
+					}
+				} catch(e) {
+						alert(ISA_R.ams_gadgetResourceUpdateFailed);
+						msg.error(ISA_R.ams_gadgetResourceUpdateFailed + " - " +" | 500");
+						Control.Modal.close();
+						$jq('#logo-image').removeAttr('src');
+				}
+			});
+	}
+
 	this.buildPortalLayouts = function() {
 		var portalLayoutsDiv = document.createElement("div");
 		portalLayoutsDiv.id = "portalLayouts";
@@ -180,7 +200,9 @@ ISA_PortalLayout.prototype.classDef = function() {
 		}
 
 		ISA_PortalLayout.portalLayoutList['logo'] = {'name': 'logo', 'layout':''};
+		ISA_PortalLayout.portalLayoutList['favicon'] = {'name': 'favicon', 'layout': ''};
 		layoutGroupDiv.appendChild(this.buildLayout('logo'));
+		layoutGroupDiv.appendChild(this.buildLayout('favicon'));
 
 		return layoutListDiv;
 	}
@@ -216,7 +238,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 		layoutNameDiv.setAttribute("title", ISA_R["alb_"+jsonLayout.name+"_desc"]);
 
 		var changeLayoutHandler = function(e){
-			if(currentDispSettings=='logo' && isUpdatedLogoImage) {
+			if((currentDispSettings=='logo' || currentDispSettings=='favicon') && isUpdatedLogoImage) {
 				if( !confirm(ISA_R.ams_confirmChangeLost) ) {
 					return false;
 				}
@@ -347,7 +369,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 				var form = document.createElement("form");
 				form.id = "upload-logo-form";
 				form.enctype = "multipart/form-data";
-				form.action = hostPrefix + "/logosrv";
+				form.action = hostPrefix + "/logosrv/postPortalLogo";
 				form.target = "upLoadDummyFrame";
 				form.method = "POST";
 
@@ -369,7 +391,44 @@ ISA_PortalLayout.prototype.classDef = function() {
 				form.appendChild(logoImage);
 				form.appendChild(fileInput);
 				editLayoutTextarea.appendChild(form);
-				IS_Event.observe(fileInput, 'change', this.setLogoImage.bind(fileInput), false, "_adminPortal");
+				IS_Event.observe(fileInput, 'change', this.setLogoImage.bind(fileInput, '^(image\\/(jpeg|png|gif))'), false, "_adminPortal");
+				break;
+			case 'favicon':
+				editLayoutTextarea = document.createElement("div");
+				editLayoutTextarea.style.width = "99%";
+				editLayoutTextarea.style.margin = "10px";
+
+				detailDiv.style.margin = "0";
+				detailDiv.style.marginBottom= "20px";
+				detailDiv.innerHTML = detailDiv.innerHTML + ISA_R.alb_favicon_desc2
+				editLayoutTextarea.appendChild(detailDiv);
+
+				var form = document.createElement("form");
+				form.id = "upload-logo-form";
+				form.enctype = "multipart/form-data";
+				form.action = hostPrefix + "/logosrv/postFavicon";
+				form.target = "upLoadFaviconDummyFrame";
+				form.method = "POST";
+
+				var logoImage = document.createElement("img");
+				logoImage.id = "logo-image";
+				logoImage.src = faviconSrc;
+				logoImage.style.height = "64px";
+				logoImage.style.maxWidth = "200px";
+				logoImage.style.verticalAlign = "middle";
+				logoImage.style.marginLeft = "20px";
+				logoImage.style.marginRight = "20px";
+
+				var fileInput = document.createElement("input");
+				fileInput.id = 'logo-image-input'
+				fileInput.style.fontSize = '13px';
+				fileInput.name = "data";
+				fileInput.type = "file";
+				fileInput.accept="image/vnd.microsoft.icon,image/gif,image/png"
+				form.appendChild(logoImage);
+				form.appendChild(fileInput);
+				editLayoutTextarea.appendChild(form);
+				IS_Event.observe(fileInput, 'change', this.setLogoImage.bind(fileInput, "^(image\\/(png|gif|x-icon|vnd\\.microsoft\\.icon))"), false, "_adminPortal");
 				break;
 			default:
 				editLayoutTextareaDiv.appendChild(detailDiv);
@@ -427,6 +486,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 	this.updatePortalLayout = function(portalLayouts) {
 		var url = adminHostPrefix + "/services/portalLayout/updatePortalLayout";
 		delete portalLayouts['logo'];
+		delete portalLayouts['favicon'];
 		var opt = {
 			method: 'post' ,
 			contentType: "application/json",
@@ -498,22 +558,22 @@ ISA_PortalLayout.prototype.classDef = function() {
 	/**
 	Set and Preview logo
 	*/
-	this.setLogoImage = function() {
+	this.setLogoImage = function(expr) {
 		$jq('#logo-image-input').removeAttr('upload');
+		var regExp = new RegExp(expr);
 
 		// set
 		var file = this.files[0];
-		if(!file.type.match(/^(image\/(jpeg|png|gif))/)) {
-			alert("ファイル形式が異なります。\nJPG/PNG/GIF画像を選択してください。");
+		if(!file.type.match(regExp)) {
+			alert(ISA_R.ams_differentFileFormat);
 			$jq(this).val('');
-			imageEle.removeAttr('src');
 		}
 
 		// preview
 		if(!window.File || !window.FileReader || !this.files || !this.files.length) return;
 		var file = this.files[0];
-		var imageEle = $jq("#logo-image");
-		if(file.type.match(/^(image\/(jpeg|png|gif))/)) {
+		if(file.type.match(regExp)) {
+			var imageEle = $jq("#logo-image");
 			var fileReader = new FileReader();
 			fileReader.onload = function(e) {
 				imageEle.attr('src', e.target.result);

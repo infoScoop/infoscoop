@@ -30,6 +30,7 @@
 
 <div id="portalLayout"></div>
 <iframe id="upLoadDummyFrame" name="upLoadDummyFrame"></iframe>
+<iframe id="upLoadFaviconDummyFrame" name="upLoadFaviconDummyFrame"></iframe>
 <script>
 	$jq(function(){
 		ISA_PortalLayout.portalLayout = new ISA_PortalLayout();

@@ -1,3 +1,20 @@
+/* infoScoop OpenSource
+ * Copyright (C) 2010 Beacon IT Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
+ */
+
 package org.infoscoop.web;
 
 import org.apache.commons.fileupload.FileItem;
@@ -24,40 +41,31 @@ public class LogoImageServlet extends HttpServlet {
 	private static final long serialVersionUID = 6201737862447826027L;
 	private static Log log = LogFactory.getLog(LogoImageServlet.class);
 
-	private static final String EXIST_PATH = "/existsImage";
-	private static final String GET_PATH = "/get";
+	private static final String EXIST_PORTAL_LOGO_PATH = "/existsPortalLogo";
+	private static final String EXIST_FAVICON_PATH = "/existsFavicon";
+	private static final String GET_PORTAL_LOGO_PATH = "/getPortalLogo";
+	private static final String GET_FAVICON_PATH = "/getFavicon";
+	private static final String POST_PORTAL_LOGO_PATH = "/postPortalLogo";
+	private static final String POST_FAVICON_PATH = "/postFavicon";
 
 	public void doGet( HttpServletRequest req,HttpServletResponse resp ) throws ServletException,IOException {
 		String action = ((HttpServletRequest)req).getPathInfo();
-		Logo logo = LogoService.getHandle().getLogo();
-
 		resp.setHeader("Pragma", "no-cache");
 		resp.setHeader("Cache-Control", "no-cache");
 
-		// get square name
-		if(GET_PATH.equals(action)) {
-			byte[] data = new byte[0];
-			try {
-				if(logo != null) {
-					resp.setContentType(logo.getType() + ";");
-					data = logo.getLogo();
-				}
-			} catch( Exception ex ) {
-				throw new RuntimeException( ex );
-			}
-			resp.getOutputStream().write( data );
-			resp.getOutputStream().flush();
-		} else if(EXIST_PATH.equals(action)) {
-			resp.setContentType("text/plain;charset=utf-8");
-			boolean result = false;
-			if(logo != null)
-				result = true;
-
-			resp.getWriter().write(String.valueOf(result));
+		if(GET_PORTAL_LOGO_PATH.equals(action)) {
+			getAction(resp, "portal_logo");
+		} else if(GET_FAVICON_PATH.equals(action)) {
+			getAction(resp, "favicon");
+		} else if(EXIST_PORTAL_LOGO_PATH.equals(action)) {
+			existsAction(resp, "portal_logo");
+		} else if(EXIST_FAVICON_PATH.equals(action)) {
+			existsAction(resp, "favicon");
 		}
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action = ((HttpServletRequest)request).getPathInfo();
 		request.setCharacterEncoding("UTF-8");
 
 		response.setContentType("text/html;charset=utf-8");
@@ -65,6 +73,39 @@ public class LogoImageServlet extends HttpServlet {
 		response.setHeader("Cache-Control", "no-cache");
 		response.setStatus(200);
 
+		if(POST_PORTAL_LOGO_PATH.equals(action)) {
+			postAction(request, response, "portal_logo");
+		} else if(POST_FAVICON_PATH.equals(action)) {
+			postAction(request, response, "favicon");
+		}
+	}
+
+	private void getAction(HttpServletResponse response, String kind) throws IOException {
+		Logo logo = LogoService.getHandle().getLogo(kind);
+		byte[] data = new byte[0];
+		try {
+			if(logo != null) {
+				response.setContentType(logo.getType() + ";");
+				data = logo.getLogo();
+			}
+		} catch( Exception ex ) {
+			throw new RuntimeException( ex );
+		}
+		response.getOutputStream().write(data);
+		response.getOutputStream().flush();
+	}
+
+	private void existsAction(HttpServletResponse response, String kind) throws IOException {
+		Logo logo = LogoService.getHandle().getLogo(kind);
+		response.setContentType("text/plain;charset=utf-8");
+		boolean result = false;
+		if(logo != null)
+			result = true;
+
+		response.getWriter().write(String.valueOf(result));
+	}
+
+	private void postAction(HttpServletRequest request, HttpServletResponse response, String kind) throws IOException{
 		try {
 			byte[] result = null;
 			String contentType = null;
@@ -83,7 +124,7 @@ public class LogoImageServlet extends HttpServlet {
 				contentType = fItem.getContentType();
 			}
 			if(result != null)
-				LogoService.getHandle().saveLogo(result, contentType);
+				LogoService.getHandle().saveLogo(result, contentType, kind);
 		}catch (Exception e) {
 			log.error("Exception Image Upload.", e);
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -99,7 +140,7 @@ public class LogoImageServlet extends HttpServlet {
 
 	private byte[] extractLogoImage(FileItem fItem) throws Exception{
 		byte[] result = null;
-		if(!(fItem.isFormField()) && fItem.getContentType().matches("image/(jpeg|png|gif)")){
+		if(!(fItem.isFormField()) && fItem.getContentType().matches("image/(jpeg|png|gif|x-icon|vnd\\.microsoft\\.icon)")) {
 			InputStream is = fItem.getInputStream();
 			ByteArrayOutputStream b = new ByteArrayOutputStream();
 			OutputStream os = new BufferedOutputStream(b);

@@ -685,7 +685,7 @@ div[id^="control_window_"].commitDialog {
 	vertical-align: middle;
 }
 
-#upLoadDummyFrame {
+#upLoadDummyFrame, #upLoadFaviconDummyFrame {
 	display: none;
 }
 

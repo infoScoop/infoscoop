@@ -35,10 +35,11 @@ public class LogoDAO extends HibernateDaoSupport {
 	}
 
 	//get
-	public Logo getBySquareId(String squareId) {
+	public Logo getBySquareIdAndKind(String squareId, String kind) {
 		List<Logo> logoList = super.getHibernateTemplate()
-																.findByCriteria(DetachedCriteria.forClass(Logo.class)
-																		.add(Expression.eq(Logo.PROP_SQUAREID, squareId)));
+				.findByCriteria(DetachedCriteria.forClass(Logo.class)
+						.add(Expression.eq(Logo.PROP_SQUAREID, squareId))
+						.add(Expression.eq(Logo.PROP_KIND, kind)));
 
 		if(logoList != null && logoList.size() > 0) {
 			return logoList.get(0);
@@ -47,10 +48,11 @@ public class LogoDAO extends HibernateDaoSupport {
 		}
 	}
 
+
 	//insert
-	public void insert(String squareId, byte[] logo, String type) {
+	public void insert(String squareId, byte[] logo, String type, String kind) {
 		// initial temp true
-		Logo l = new Logo(squareId, logo, type);
+		Logo l = new Logo(squareId, logo, type, kind);
 		super.getHibernateTemplate().save(l);
 	}
 
