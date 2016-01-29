@@ -22,8 +22,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.security.auth.Subject;
 
@@ -101,6 +103,14 @@ public class SimpleAccountManager implements IAccountManager{
 		ISPrincipal p = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, account.getUid());
 		p.setDisplayName(account.getName());
 		loginUser.getPrincipals().add(p);
+		
+		Set<AccountAttr> accountAttrs = account.getAccountAttrs();
+		for(Iterator<AccountAttr> ite = accountAttrs.iterator();ite.hasNext();){
+			AccountAttr attr =  ite.next();
+			ISPrincipal attrPrincipal = new ISPrincipal(attr.getName(), attr.getValue());
+			loginUser.getPrincipals().add(attrPrincipal);
+		}
+		
 		return loginUser;
 	}
 

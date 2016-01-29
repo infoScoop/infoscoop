@@ -732,5 +732,23 @@
 			</props>
 		</property>
 	</bean>
+    <bean id="PrincipalService"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="target">
+            <bean class="org.infoscoop.service.PrincipalService">
+                <property name="principalDAO">
+                    <ref bean="principalDAO" />
+                </property>
+            </bean>
+        </property>
+        <property name="transactionManager">
+            <ref bean="hibernateTransactionManger" />
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>
+            </props>
+        </property>
+    </bean>
     <bean id="InvitationService" class="org.infoscoop.service.InvitationService"></bean>
 </beans>

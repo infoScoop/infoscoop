@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.infoscoop.dao.model">
+	<class
+		name="Principal"
+		table="IS_PRINCIPALS"
+	>
+		<meta attribute="sync-DAO">false</meta>
+        <id
+                name="Id"
+                type="java.lang.Long"
+                column="ID"
+        >
+            <generator class="native">
+                <param name="sequence">is_principals_id_seq</param>
+            </generator>
+        </id>
+
+        <property
+            name="name"
+            type="string"
+            column="name"
+            length="128"
+            not-null="true"
+        />
+
+		<property
+			name="accountAttrName"
+			column="account_attr_name"
+			type="text"
+            not-null="true"
+		/>
+
+        <property
+            name="squareId"
+            column="square_id"
+            type="string"
+            length="64"
+            not-null="true"
+        />
+
+	</class>
+</hibernate-mapping>
