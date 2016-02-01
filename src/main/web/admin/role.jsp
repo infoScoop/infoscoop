@@ -18,9 +18,13 @@
 --%>
 
 [
+<%@page import="org.json.JSONObject"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="org.infoscoop.account.*"%>
 <%@page import="org.infoscoop.util.*"%>
+<%@page import="org.infoscoop.service.PrincipalService"%>
+<%@page import="java.util.List"%>
+<%@page import="org.infoscoop.dao.model.Principal"%>
 <%@page contentType="text/plain; charset=UTF-8" %>
 <%
 //	out.print("[");
@@ -48,6 +52,19 @@
 			out.print("}");
 		}
 	}
+	
+    // from is_principals table
+	List<Principal> principals = PrincipalService.getHandle().getPrincipals();
+    for( Iterator ite=principals.iterator();ite.hasNext();){
+        Principal p = ( Principal )ite.next();
+        out.println(",");
+        out.print("{");
+        out.print("type:" + JSONObject.quote(p.getAccountAttrName()));
+        out.print(",");
+        out.print("displayName:" + JSONObject.quote(p.getName()));
+        out.print("}");
+    }
+	
 //	out.print("]");
 %>
 ]
