@@ -160,7 +160,6 @@ ISA_Properties.prototype.classDef = function() {
 		if(!property) return tr;
 
 		tr.className = "standardProperty " + property.id + " " + property.category;
-		console.log(property);
 		if(property.advanced){
 			tr.className = "advancedProperty";
 			tr.style.display = "none";
