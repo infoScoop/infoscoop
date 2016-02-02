@@ -17,6 +17,7 @@
 
 package org.infoscoop.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -48,7 +49,15 @@ public class PrincipalService {
 		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 		Square currentSquare = SquareService.getHandle().getEntity(squareId);
 		String parentSquareId = currentSquare.getParentSquareId();
-		String targetSquareId = (parentSquareId != null && parentSquareId.length() == 0)? parentSquareId : squareId;
-		return principalDAO.getBySquareId(targetSquareId);
+		
+		List<Principal> principals = new ArrayList<Principal>();
+		if(parentSquareId != null && parentSquareId.length() > 0){
+			principals = principalDAO.getBySquareId(parentSquareId);
+		}
+		if(principals.size() == 0){
+			principals = principalDAO.getBySquareId(squareId);
+		}
+		return principals;
 	}
+	
 }
