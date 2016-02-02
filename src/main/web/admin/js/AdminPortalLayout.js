@@ -129,7 +129,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 
 						if(imgUrl == 'getFavicon') {
 							faviconSrc = hostPrefix + '/logosrv/' + imgUrl + '?' + (new Date()).getTime();
-						} else if(imgUrl == '') {
+						} else if(imgUrl == 'getPortalLogo') {
 							logoImgSrc = hostPrefix + '/logosrv/' + imgUrl + '?' + (new Date()).getTime();
 						}
 
