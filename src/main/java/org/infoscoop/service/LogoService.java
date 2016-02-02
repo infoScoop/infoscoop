@@ -47,6 +47,7 @@ public class LogoService {
 
 		if(logo != null) {
 			// update
+			logo.setType(type);
 			logo.setLogo(image);
 			this.logoDAO.update(logo);
 		} else {
