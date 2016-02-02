@@ -45,14 +45,18 @@ public class LogoService {
 		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 		Logo logo = this.logoDAO.getBySquareIdAndKind(squareId, kind);
 
+		String typeRef = type;
+		if(typeRef.equals("image/x-icon"))
+			typeRef = "image/vnd.microsoft.icon";
+
 		if(logo != null) {
 			// update
-			logo.setType(type);
+			logo.setType(typeRef);
 			logo.setLogo(image);
 			this.logoDAO.update(logo);
 		} else {
 			// insert
-			this.logoDAO.insert(squareId, image, type, kind);
+			this.logoDAO.insert(squareId, image, typeRef, kind);
 		}
 	}
 

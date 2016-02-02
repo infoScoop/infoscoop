@@ -85,14 +85,7 @@
     <link rel="stylesheet" type="text/css" href="portallayout?type=css">
     <link rel="stylesheet" type="text/css" href="portallayout?type=customTheme">
 
-	<!-- favicon.ico -->
-	<% if(LogoService.getHandle().isExistsLogoImage("favicon")) {%>
-		<link rel="shortcut icon" href="logosrv/getFavicon">
-	<%}else{%>
-		<link rel="shortcut icon" href="favicon.ico">
-	<%}%>
-
-    <script src="js/resources/resourceBundle.jsp"></script>
+	<script src="js/resources/resourceBundle.jsp"></script>
 
     <script src="js/gadget/features/core:rpc:pubsub:pubsub-2:infoscoop.js?c=1"></script>
 	<%
@@ -110,6 +103,16 @@
 		
 		Map i18n = I18NUtil.getResourceMap(I18NUtil.TYPE_JS, request.getLocale());
 	%>
+
+	<!-- favicon.ico -->
+    <%
+        if(LogoService.getHandle().isExistsLogoImage("favicon")) {
+    %>
+		<link rel="shortcut icon" href="logosrv/getFavicon?<%=squareId%>">
+	<%}else{%>
+		<link rel="shortcut icon" href="favicon.ico">
+	<%}%>
+
     <script>
 		<jsp:include page="/prpsrv" flush="true" />
 		
