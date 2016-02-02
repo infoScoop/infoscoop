@@ -94,7 +94,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 			url: hostPrefix + '/logosrv/existsPortalLogo',
 			success: function(data) {
 				if(data == 'true') {
-					logoImgSrc = hostPrefix + '/logosrv/getPortalLogo';
+					logoImgSrc = hostPrefix + '/logosrv/getPortalLogo?' + (new Date()).getTime();
 				} else {
 					logoImgSrc = staticContentURL + '/skin/imgs/infoscoop_logo.png';
 				}
@@ -107,7 +107,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 			url: hostPrefix + '/logosrv/existsFavicon',
 			success: function(data) {
 				if(data == 'true') {
-					faviconSrc = hostPrefix + '/logosrv/getFavicon';
+					faviconSrc = hostPrefix + '/logosrv/getFavicon?' + (new Date()).getTime();
 				} else {
 					faviconSrc = hostPrefix + '/favicon.ico';
 				}
@@ -126,7 +126,13 @@ ISA_PortalLayout.prototype.classDef = function() {
 							throw new Error();
 					} else {
 						$jq('#logo-image-input').attr('upload', 'true');
-						logoImgSrc = hostPrefix + '/logosrv/' + imgUrl;
+
+						if(imgUrl == 'getFavicon') {
+							faviconSrc = hostPrefix + '/logosrv/' + imgUrl + '?' + (new Date()).getTime();
+						} else if(imgUrl == '') {
+							logoImgSrc = hostPrefix + '/logosrv/' + imgUrl + '?' + (new Date()).getTime();
+						}
+
 						setTimeout(function(){
 							Control.Modal.close();
 						},500);
@@ -375,7 +381,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 
 				var logoImage = document.createElement("img");
 				logoImage.id = "logo-image";
-				logoImage.src = logoImgSrc;
+				logoImage.src = logoImgSrc+'?'+(new Date()).getTime();
 				logoImage.style.height = "26px";
 				logoImage.style.maxWidth = "200px";
 				logoImage.style.verticalAlign = "middle";
@@ -412,7 +418,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 
 				var logoImage = document.createElement("img");
 				logoImage.id = "logo-image";
-				logoImage.src = faviconSrc;
+				logoImage.src = faviconSrc+'?'+(new Date()).getTime();
 				logoImage.style.height = "64px";
 				logoImage.style.maxWidth = "64px";
 				logoImage.style.verticalAlign = "middle";
@@ -424,7 +430,7 @@ ISA_PortalLayout.prototype.classDef = function() {
 				fileInput.style.fontSize = '13px';
 				fileInput.name = "data";
 				fileInput.type = "file";
-				fileInput.accept="image/vnd.microsoft.icon,image/gif,image/png"
+				fileInput.accept="image/vnd.microsoft.icon,image/x-icon,image/gif,image/png"
 				form.appendChild(logoImage);
 				form.appendChild(fileInput);
 				editLayoutTextarea.appendChild(form);
