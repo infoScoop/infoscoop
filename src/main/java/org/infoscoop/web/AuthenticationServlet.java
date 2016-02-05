@@ -102,7 +102,10 @@ public class AuthenticationServlet extends HttpServlet {
 		if(new_password != null){
 			new_password = new_password.trim();
 		}
-		String squareId = ((String)request.getAttribute("squareId")).trim();
+		String squareId = (String)request.getAttribute("squareId");
+		if(squareId != null){
+			squareId = squareId.trim();
+		}
 
 		if(log.isDebugEnabled()){
 			log.debug("uid=" + uid + ",password=" + password);
