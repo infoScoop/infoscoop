@@ -28,6 +28,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.security.auth.Subject;
 import javax.servlet.Filter;
@@ -75,11 +77,16 @@ public class SessionManagerFilter implements Filter {
 	public static String LOGINUSER_SESSION_ID_ATTR_NAME = "SessionId";
 	public static String LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME = "CurrentSquareId";
 
+	private String loginPath = "login.jsp";
 	private Collection excludePaths = new HashSet();
 	private Collection<String> excludePathx = new HashSet<String>();
 	private Collection redirectPaths = new HashSet();
 
 	public void init(FilterConfig config) throws ServletException {
+
+		String loginPathStr = config.getInitParameter("loginUrl");
+		if(loginPathStr != null && loginPathStr.trim().length() > 0)
+			loginPath = loginPathStr.trim();
 
 		String excludePathStr = config.getInitParameter("excludePath");
 		if(excludePathStr != null){
@@ -133,7 +140,7 @@ public class SessionManagerFilter implements Filter {
 			String uidParam = req.getParameter("Uid");
 			if(uidParam.equalsIgnoreCase(sessionUid)){
 				uid = uidParam;
-				session.setAttribute("Uid",uid );
+				session.setAttribute("Uid", uid);
 			}
 		}else if( uidIgnoreCase && uid != null )
 			uid = uid.toLowerCase();
@@ -150,7 +157,7 @@ public class SessionManagerFilter implements Filter {
 		Map<String, String> resultMap = new HashMap<String, String>();
 
 		// 管理画面プレビュー
-		if("true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW ))){
+		if("true".equalsIgnoreCase(req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW))){
 			String uidParam = req.getParameter("Uid");
 			String squareidParam = req.getParameter(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME);
 			if(uid.equalsIgnoreCase(uidParam) && currentSquareId.equalsIgnoreCase(squareidParam)){
@@ -288,10 +295,30 @@ public class SessionManagerFilter implements Filter {
 
 			if( uid == null && SessionCreateConfig.doLogin() && !isExcludePath(httpReq.getServletPath())) {
 				String requestUri = httpReq.getRequestURI();
-				String loginUrl = requestUri.lastIndexOf("/manager/") > 0 ?
-					requestUri.substring( 0,requestUri.lastIndexOf("/"))+"/../login.jsp" : "login.jsp";
+				String param = httpReq.getServletPath();
+				Pattern pattern = Pattern.compile("^/(.+)");
+				Matcher matcher = pattern.matcher(param);
+				if(matcher.find()) {
+					param = matcher.group(1);
+				}
 
-				httpResponse.sendRedirect(loginUrl);
+				String url = loginPath;
+				if(requestUri.lastIndexOf("/manager/") > 0
+						|| requestUri.lastIndexOf("/admin/") > 0
+						|| requestUri.lastIndexOf("/skin/") > 0
+						|| requestUri.lastIndexOf("/guidance/") > 0
+						|| requestUri.lastIndexOf("/square/") > 0) {
+					url = requestUri.substring( 0,requestUri.lastIndexOf("/"))+"/../login.jsp";
+				}
+
+				Pattern p = Pattern.compile(".+\\.(jsp|html)");
+				Matcher m1 = p.matcher(url);
+				Matcher m2 = p.matcher(param);
+				if(!m1.find() && !m2.find()){
+					url = url + param + "/";
+				}
+
+				httpResponse.sendRedirect(url);
 				return;
 			}
 

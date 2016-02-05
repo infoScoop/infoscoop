@@ -46,6 +46,7 @@ public class AuthenticationServlet extends HttpServlet {
 
 	private boolean isDenyEmptyPassword;
 	private String logoutUrl;
+	private String loginPath = "login.jsp";
 
 	private static final long serialVersionUID = 1646514470595445974L;
 
@@ -57,6 +58,10 @@ public class AuthenticationServlet extends HttpServlet {
 		String logoutUrlParam = conf.getInitParameter("logoutUrl");
 		if(logoutUrlParam != null && !"".equals(logoutUrlParam.trim())){
 			logoutUrl = logoutUrlParam;
+		}
+		String loginUrlParam = conf.getInitParameter("loginUrl");
+		if(loginUrlParam != null && !"".equals(loginUrlParam.trim())){
+			loginPath = loginUrlParam;
 		}
 	}
 
@@ -97,13 +102,18 @@ public class AuthenticationServlet extends HttpServlet {
 		if(new_password != null){
 			new_password = new_password.trim();
 		}
+		String squareId = ((String)request.getAttribute("squareId")).trim();
 
 		if(log.isDebugEnabled()){
 			log.debug("uid=" + uid + ",password=" + password);
 		}
-		String errorPath = "/login.jsp";
+		String errorPath = loginPath;
+		if(squareId != null && squareId.length() > 0) {
+			errorPath = loginPath + squareId + "/";
+		}
+
 		if("/changePassword".equals(action))
-			errorPath = "/changePassword.jsp";
+			errorPath = "changePassword.jsp";
 		
 		HttpSession session = request.getSession();
 		try{
@@ -113,35 +123,41 @@ public class AuthenticationServlet extends HttpServlet {
 						+ " When loginAuthentication property is true,"
 						+ " authenticationService must be defined.");
 				session.setAttribute("errorMsg", "ms_authServiceAccessFailed");
-				((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
+				((HttpServletResponse)response).sendRedirect(request.getContextPath() + "/" + errorPath);
 				return;
 			}
 
 			if(isDenyEmptyPassword&&"".equals(password)){
 				session.setAttribute("errorMsg", "ms_noInputPassword");
-				((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
+				((HttpServletResponse)response).sendRedirect(request.getContextPath() + "/" + errorPath);
 				return;
 			}
 
 			if("/changePassword".equals(action)){
 				if(isDenyEmptyPassword && "".equals( new_password )){
 					session.setAttribute("errorMsg", "ms_noInputPassword");
-					((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
+					((HttpServletResponse)response).sendRedirect(request.getContextPath() + "/" + errorPath);
 					return;
 				}
 				
 				service.changePassword(uid, new_password, password);
 
 				session.setAttribute("errorMsg", "ms_passwordChanged");
-				((HttpServletResponse)response).sendRedirect(request.getContextPath() +"/login.jsp");
+				String loginUrl = "/" + loginPath;
+				if(squareId != null && squareId.length() > 0) {
+					loginUrl = loginUrl + squareId + "/";
+				}
+				((HttpServletResponse)response).sendRedirect(request.getContextPath() + loginUrl);
 				return;
 			}else{
-				service.login( uid, password);
+				service.login(uid, password);
 				
 				request.getSession().setAttribute("Uid",uid );
 
 				IAccount account = service.getAccountManager().getUser(uid);
-				String squareId = account.getDefaultSquareId();
+				if(squareId == null || squareId.equals("") || squareId.length() < 0)
+					squareId = account.getDefaultSquareId();
+
 				request.getSession().setAttribute(SessionManagerFilter.LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, squareId);
 				//request.getSession().setAttribute(AuthenticationServlet.TMP_LOGINUSER_SUBJECT_ATTR_NAME, loginUser );
 				String authType = PropertiesService.getHandle().getProperty("loginCredentialAuthType");
@@ -191,13 +207,13 @@ public class AuthenticationServlet extends HttpServlet {
 			String resourceId = e.getResourceId();
 			session.setAttribute("errorMsg", (resourceId != null)? resourceId : "ms_invalidUsernameOrPassword");
 			//getServletContext().getRequestDispatcher(errorPath).forward(request, response);
-			((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
+			((HttpServletResponse)response).sendRedirect(request.getContextPath() + "/" + errorPath);
 		} catch (Exception e) {
 			String logMsg = "unexpected error occured. ";
 			log.error(logMsg, e);
 			session.setAttribute("errorMsg", "ms_authServiceAccessFailed");
 			//getServletContext().getRequestDispatcher(errorPath).forward(request, response);
-			((HttpServletResponse)response).sendRedirect(request.getContextPath() + errorPath);
+			((HttpServletResponse)response).sendRedirect(request.getContextPath() + "/" + errorPath);
 		}
 	}
 
