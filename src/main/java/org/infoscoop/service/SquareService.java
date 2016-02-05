@@ -312,7 +312,24 @@ public class SquareService {
 
 		return result;
 	}
-	
+
+	public String getParentSquareId(String squareId) {
+		Square square = this.getEntity(squareId);
+		String parentSquareId = square.getParentSquareId();
+		return parentSquareId;
+	}
+
+	public boolean comparisonParentSquare(String child, String parent) {
+		String parentSquareId = this.getParentSquareId(child);
+		boolean result = true;
+
+		// do not null
+		if(parentSquareId != null && parentSquareId.length() > 0)
+			result = parentSquareId.equals(parentSquareId);
+
+		return result;
+	}
+
 	public void updateSquare(String squareId, String name, String description){
 		Square square = squareDAO.get(squareId);
 		square.setName(name);

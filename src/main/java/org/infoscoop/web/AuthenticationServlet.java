@@ -38,6 +38,7 @@ import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.dao.model.AuthCredential;
 import org.infoscoop.service.AuthCredentialService;
 import org.infoscoop.service.PropertiesService;
+import org.infoscoop.service.SquareService;
 import org.infoscoop.util.RSAKeyManager;
 
 public class AuthenticationServlet extends HttpServlet {
@@ -71,14 +72,22 @@ public class AuthenticationServlet extends HttpServlet {
 
 		// process to logout
 		if( url.endsWith("/logout")){
+			// get default square
+			String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+			String logoutUrlStr = "index.jsp";
+
 			request.getSession().invalidate();
 
 			Cookie credentialCookie = new Cookie("portal-credential","");
-			credentialCookie.setMaxAge( 0 );
+			credentialCookie.setMaxAge(0);
 			credentialCookie.setPath("/");
-			response.addCookie( credentialCookie );
+			response.addCookie(credentialCookie);
 
-			response.sendRedirect( logoutUrl != null ? logoutUrl : "index.jsp" );
+			if(logoutUrl != null) {
+				logoutUrlStr = logoutUrl + "?squareId=" +squareId;
+			}
+
+			response.sendRedirect(logoutUrlStr);
 			return;
 		}
 
