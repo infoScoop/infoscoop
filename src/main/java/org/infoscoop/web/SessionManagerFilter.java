@@ -302,6 +302,18 @@ public class SessionManagerFilter implements Filter {
 					param = matcher.group(1);
 				}
 
+				Cookie[] cookies = httpReq.getCookies();
+				String cookieVal = "";
+				for(Cookie cookie : cookies) {
+					if("is-current-square-id".equals(cookie.getName())){
+						cookieVal = cookie.getValue();
+						int test =  param.lastIndexOf("index.jsp");
+						if(param.lastIndexOf("index.jsp") >= 0)
+							param = "".equals(cookieVal) ? param : cookieVal;
+						break;
+					}
+				}
+
 				String url = loginPath;
 				if(requestUri.lastIndexOf("/manager/") > 0
 						|| requestUri.lastIndexOf("/admin/") > 0
@@ -317,7 +329,6 @@ public class SessionManagerFilter implements Filter {
 				if(!m1.find() && !m2.find()){
 					url = url + param + "/";
 				}
-
 				httpResponse.sendRedirect(url);
 				return;
 			}

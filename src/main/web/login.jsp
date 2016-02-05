@@ -42,6 +42,17 @@
   font-weight:bold;
 }
 		</style>
+	<%
+		Cookie[] cookies = request.getCookies();
+		for(Cookie cookie : cookies) {
+			if("is-current-square-id".equals(cookie.getName())) {
+				cookie.setMaxAge(0);
+				cookie.setPath("/");
+				response.addCookie(cookie);
+				break;
+			}
+		}
+	%>
  	</head>
 	<body style="margin-top:0;padding-top:160px;">
 		<center>
