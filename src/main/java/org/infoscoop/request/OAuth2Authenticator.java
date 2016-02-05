@@ -24,7 +24,9 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.oauth.OAuth;
 import net.oauth.OAuthConsumer;
@@ -84,7 +86,7 @@ public class OAuth2Authenticator implements Authenticator {
 	            }
 			}
 			
-			Map<String, String> parameters = null;
+			List<Entry<String, String>> parameters = null;
 			String contentType = request.getRequestHeader("Content-Type");
 			if (contentType != null
 					&& contentType

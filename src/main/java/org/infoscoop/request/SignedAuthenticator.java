@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
@@ -62,23 +63,31 @@ public class SignedAuthenticator implements Authenticator {
 			OAuthConsumer consumer = newConsumer(request.getRequestHeader("x-is-useglobalkey"));
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
 
-			Map<String, String> optionParams = new HashMap<String, String>(
-					request.getFilterParameters());
-
+			List<Entry<String, String>> optionParams = null;
+			Map<String, String> filterParameters = request.getFilterParameters();
+			if(filterParameters != null){
+			    optionParams = new ArrayList<Map.Entry<String,String>>(filterParameters.entrySet());
+			}else{
+			    optionParams = new ArrayList<Map.Entry<String,String>>();
+			}
 			String targetUrlPath = analyzeUrl(request.getTargetURL(),
 					optionParams);
 
+			Map<String, String> signedRequestParams = new HashMap<String, String>();
+			
 			String userId = SecurityController.getPrincipalByType("UIDPrincipal").getName();
-			optionParams.put("opensocial_viewer_id", userId);
-			optionParams.put("opensocial_owner_id", userId);
-			optionParams.put("opensocial_app_url", request.getRequestHeader("gadgetUrl"));
-			optionParams.put("opensocial_app_id", request.getRequestHeader("moduleId"));
-			optionParams.put("opensocial_instance_id", request.getRequestHeader("moduleId"));
-			optionParams.put("x_is_square_id", UserContext.instance().getUserInfo().getCurrentSquareId());
-			optionParams.put("xoauth_signature_publickey", PUBLIC_KEY_NAME);
-			optionParams.put("xoauth_public_key", PUBLIC_KEY_NAME);
+			signedRequestParams.put("opensocial_viewer_id", userId);
+			signedRequestParams.put("opensocial_owner_id", userId);
+			signedRequestParams.put("opensocial_app_url", request.getRequestHeader("gadgetUrl"));
+			signedRequestParams.put("opensocial_app_id", request.getRequestHeader("moduleId"));
+			signedRequestParams.put("opensocial_instance_id", request.getRequestHeader("moduleId"));
+			signedRequestParams.put("x_is_square_id", UserContext.instance().getUserInfo().getCurrentSquareId());
+			signedRequestParams.put("xoauth_signature_publickey", PUBLIC_KEY_NAME);
+			signedRequestParams.put("xoauth_public_key", PUBLIC_KEY_NAME);
 
-			Map<String, String> postParams = new HashMap<String, String>();
+			optionParams.addAll(signedRequestParams.entrySet());
+
+			List<Entry<String, String>> postParams = new ArrayList<Map.Entry<String,String>>();
 			String contentType = request.getRequestHeader("Content-Type");
 			if (contentType != null
 					&& contentType
@@ -87,10 +96,10 @@ public class SignedAuthenticator implements Authenticator {
 				
 				String charset = RequestUtil.getCharset(contentType);
 				postParams = RequestUtil.parseRequestBody(request.getRequestBody(), charset);
-				optionParams.putAll(postParams);
+				optionParams.addAll(postParams);
 			}
 			
-			OAuthMessage message = new OAuthMessage(method.getName(), targetUrlPath, optionParams.entrySet());
+			OAuthMessage message = new OAuthMessage(method.getName(), targetUrlPath, optionParams);
 			message.addRequiredParameters(accessor);
 			List<Map.Entry<String, String>> authParams = message
 					.getParameters();
@@ -146,7 +155,7 @@ public class SignedAuthenticator implements Authenticator {
 		return requestUrl.toString();
 	}
 
-	private String analyzeUrl(String url, Map<String, String> optionParams)
+	private String analyzeUrl(String url, List<Entry<String, String>> optionParams)
 			throws MalformedURLException {
 		URL u = new URL(url);
 		String query = u.getQuery();
@@ -157,9 +166,15 @@ public class SignedAuthenticator implements Authenticator {
 					String[] param = splitParameter(params[i].split("="));
 					String name = URLDecoder.decode(param[0], "UTF-8");
 					if (name.startsWith("oauth") || name.startsWith("xoauth")
-							|| name.startsWith("opensocial"))
+							|| name.startsWith("opensocial")){
 						continue;
-					optionParams.put(name, URLDecoder.decode(param[1], "UTF-8"));
+					}
+	
+					String value = URLDecoder.decode(param[1], "UTF-8");
+					
+					Map<String, String> tmp = new HashMap<String, String>();
+					tmp.put(name, value);
+					optionParams.addAll(tmp.entrySet());
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
@@ -169,13 +184,17 @@ public class SignedAuthenticator implements Authenticator {
 	}
 
 	private List<NameValuePair> buildQueryParams(
-			List<Map.Entry<String, String>> authParams, Map<String, String> postParams) {
+			List<Map.Entry<String, String>> authParams, List<Entry<String, String>> postParams) {
 		
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		
+		authParams:
 		for (Map.Entry<String, String> entry : authParams) {
-			if(postParams.keySet().contains(entry.getKey())){
-				postParams.remove(entry.getKey());
-				continue;
+			for (Entry<String, String> param : postParams) {
+				if(param.getKey() == entry.getKey()){
+					postParams.remove(param);
+					continue authParams;
+				}
 			}
 			
 			params.add(new NameValuePair(entry.getKey(), entry.getValue()));

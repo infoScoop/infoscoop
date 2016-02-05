@@ -22,13 +22,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TimeZone;
 
 import javax.servlet.http.Cookie;
 
@@ -330,11 +330,11 @@ public final class RequestUtil {
 	 * @return 
 	 * @throws IOException
 	 */
-	public static Map<String, String> parseRequestBody(InputStream requestBody, String charset)
+	public static List<Entry<String, String>> parseRequestBody(InputStream requestBody, String charset)
 			throws IOException {
 		if (charset == null)
 			charset = "UTF-8";
-		Map<String, String> params = new HashMap<String, String>();
+		List<Entry<String, String>> params = new ArrayList<Map.Entry<String,String>>();
 		if (requestBody != null) {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					requestBody));
@@ -346,7 +346,10 @@ public final class RequestUtil {
 			String[] keyvalues = postBodyStr.split("&");
 			for (int i = 0; i < keyvalues.length; i++) {
 				String[] keyvalue = splitParameter(keyvalues[i].split("="));
-				params.put(keyvalue[0].trim(), URLDecoder.decode(keyvalue[1].trim(), charset));					
+				
+				Map<String, String> tmp = new HashMap<String, String>();
+				tmp.put(keyvalue[0].trim(), URLDecoder.decode(keyvalue[1].trim(), charset));
+				params.addAll(tmp.entrySet());
 			}
 			requestBody.reset();
 		}

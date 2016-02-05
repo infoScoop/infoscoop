@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
@@ -74,7 +75,7 @@ public class OAuthAuthenticator implements Authenticator {
 				getRequestToken(request, accessor);
 			}
 
-			Map<String, String> parameters = null;
+			List<Entry<String, String>> parameters = null;
 			String contentType = request.getRequestHeader("Content-Type");
 			if (contentType != null
 					&& contentType
@@ -86,8 +87,7 @@ public class OAuthAuthenticator implements Authenticator {
 						.getRequestBody(), charset);
 			}
 			OAuthMessage message = accessor.newRequestMessage(method.getName(),
-					method.getURI().toString(), parameters != null ? parameters
-							.entrySet() : null);
+					method.getURI().toString(), parameters != null ? parameters : null);
 			String authHeader = message.getAuthorizationHeader(null);
 			request.setRequestHeader("Authorization", authHeader);
 			// Find the non-OAuth parameters:
