@@ -325,7 +325,7 @@ public class SquareService {
 
 		// do not null
 		if(parentSquareId != null && parentSquareId.length() > 0)
-			result = parentSquareId.equals(child);
+			result = parentSquareId.equals(parent);
 
 		return result;
 	}
