@@ -40,5 +40,10 @@
             not-null="false"
         />
 
+        <property
+                column="system"
+                name="system"
+                type="boolean"
+         />
 	</class>
 </hibernate-mapping>

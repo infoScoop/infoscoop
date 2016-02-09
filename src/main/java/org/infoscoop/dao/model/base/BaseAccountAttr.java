@@ -26,15 +26,17 @@ public class BaseAccountAttr implements Serializable {
 	public static String PROP_UID = "accountId";
 	public static String PROP_NAME = "name";
 	public static String PROP_VALUE = "value";
+	public static String PROP_SYSTEM = "system";
 
 	public BaseAccountAttr() {
 		initialize();
 	}
 
-	public BaseAccountAttr(String uid, String name, String value) {
+	public BaseAccountAttr(String uid, String name, String value, Boolean system) {
 		this.setAccountId(uid);
 		this.setName(name);
 		this.setValue(value);
+		this.setSystem(system);
 		initialize();
 	}
 
@@ -49,6 +51,7 @@ public class BaseAccountAttr implements Serializable {
 	private java.lang.String accountId;
 	private java.lang.String name;
 	private java.lang.String value;
+	private java.lang.Boolean system;
 
 	public Long getId() {
 		return id;
@@ -80,6 +83,14 @@ public class BaseAccountAttr implements Serializable {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public Boolean getSystem() {
+		return system;
+	}
+
+	public void setSystem(Boolean system) {
+		this.system = system;
 	}
 
 	@Override

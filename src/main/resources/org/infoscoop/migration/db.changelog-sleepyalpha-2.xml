@@ -513,4 +513,27 @@ UPDATE ${migration.defaultSchemaWithDot}IS_ACCOUNTS SET my_square_id=uid WHERE m
             <column name="square_id" value="default" />
         </insert>
     </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha2_619_1" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_619_1">
+            <not>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNT_ATTRS" columnName="system"/>
+            </not>
+        </preConditions>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNT_ATTRS">
+            <column name="system" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha2_619_2" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_619_2">
+            <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNT_ATTRS" columnName="system"/>
+        </preConditions>
+        <update schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNT_ATTRS">
+            <column name="system" type="boolean" valueBoolean="true"/>
+            <where>name='owned_square_number'</where>
+        </update>
+    </changeSet>
 </databaseChangeLog>

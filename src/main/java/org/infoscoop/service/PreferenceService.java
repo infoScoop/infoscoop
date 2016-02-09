@@ -65,19 +65,27 @@ public class PreferenceService{
 	
 	private Preference createPreferenceEntity(String uid) throws Exception{
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+		return createPreferenceEntity(uid, squareid);
+	}
+
+	private Preference createPreferenceEntity(String uid, String squareId) throws Exception{
 		Preference entity = new Preference();
-		entity.setId(new PreferencePK(uid, squareid));
+		entity.setId(new PreferencePK(uid, squareId));
 		entity.setElement(Preference.newElement(uid));
-		
+
 		return entity;
 	}
-	
+
 	public Preference getPreference(String uid) throws Exception{
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
-		Preference entity = preferenceDAO.select(uid, squareid);
+		return getPreference(uid, squareid);
+	}
+
+	private Preference getPreference(String uid, String squareId) throws Exception{
+		Preference entity = preferenceDAO.select(uid, squareId);
 		return entity;
 	}
-	
+
 	/**
 	 * We return an entity of Preference related to uid. <BR>
 	 * When there is not it, we return an empty entity. <BR>
@@ -183,7 +191,49 @@ public class PreferenceService{
 			prefObj = new JSONObject();
 		}
 	}
-	
+
+	/**
+	 * set access time
+	 */
+	public void setBackgroundImage(String uid, String squareId, String ref) throws Exception {
+		Preference entity = getPreference(uid, squareId);
+		if(entity == null)
+			entity = createPreferenceEntity(uid, squareId);
+
+		Node node = entity.getElement();
+
+		JSONObject prefObj;
+		if(node != null) {
+			Xml2Json x2j = new Xml2Json();
+			String rootPath = "/preference";
+			x2j.addSkipRule(rootPath);
+			x2j.addPathRule(rootPath + "/property", "name", true, true);
+			String prefJsonStr = x2j.xml2json((Element) node);
+			prefObj = new JSONObject(prefJsonStr);
+
+			// create/update
+			boolean result = false;
+//			if (prefObj.has("property")) {
+//				JSONObject prefPropObj = prefObj.getJSONObject("property");
+//				if (prefPropObj.has("backgroundImage")) {
+//					result = updateProperty((Element) node, "backgroundImage", ref);
+//				} else {
+//					result = updateProperty((Element) node, "backgroundImage", ref);
+//				}
+//				if (result) {
+//					entity.setElement((Element) node);
+//					update(entity);
+//				}
+//			}
+
+			result = updateProperty((Element) node, "backgroundImage", ref);
+			if (result) {
+				entity.setElement((Element) node);
+				update(entity);
+			}
+		}
+	}
+
 	/**
 	 * get the property of preference.
 	 */

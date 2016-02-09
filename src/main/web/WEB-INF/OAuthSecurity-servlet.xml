@@ -26,6 +26,7 @@
 		<anonymous enabled="false" />
 		<intercept-url pattern="/isapi/v1/admin/profiles/**" access="ROLE_ADMIN,SCOPE_USERPROFILE" />
 		<intercept-url pattern="/isapi/v1/admin/tablayouts/**" access="ROLE_ADMIN,SCOPE_TABLAYOUT" />
+		<intercept-url pattern="/isapi/v1/admin/provisioning/**" access="ROLE_ADMIN,SCOPE_PROVISIONING" />
 		<intercept-url pattern="/isapi/v1/user/menus/**" access="ROLE_ADMIN,SCOPE_MENU" />
 		<custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
 		<access-denied-handler ref="oauthAccessDeniedHandler" />

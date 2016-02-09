@@ -239,7 +239,7 @@ public class SimpleAccountManager implements IAccountManager{
 
 	@Override
 	public void registUser(String userid, String password, String firstName,
-			String familyName, String defaultSquareId, String email, String ownedSquareNum) throws Exception {
+			String familyName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission) throws Exception {
 		String displayName = firstName + " " + familyName;
 		Account account = new Account(userid, displayName, password);
 		account.setFamilyName(familyName);
@@ -249,10 +249,12 @@ public class SimpleAccountManager implements IAccountManager{
 		account.setMail(email);
 		
 		AccountSquare accountSquare = new AccountSquare(userid, defaultSquareId);
-		AccountAttr accountAttr = new AccountAttr(userid, AccountAttributeName.OWNED_SQUARE_NUMBER, ownedSquareNum);
+		AccountAttr ownedNum = new AccountAttr(userid, AccountAttributeName.OWNED_SQUARE_NUMBER, ownedSquareNum, true);
+		AccountAttr permission = new AccountAttr(userid, AccountAttributeName.UPDATE_PERMISSION,  updatePermission, true);
 		dao.insert(account);
 		dao.insertAccountSquare(accountSquare);
-		dao.insertAccountAttr(accountAttr);
+		dao.insertAccountAttr(ownedNum);
+		dao.insertAccountAttr(permission);
 	}
 
 	@Override
@@ -278,6 +280,12 @@ public class SimpleAccountManager implements IAccountManager{
 	
 	public void setAccountManagerFormDef(String accountManagerFormDef) {
 		this.accountManagerFormDef = accountManagerFormDef;
+	}
+
+	@Override
+	public void setAccountAttributeValue(String userid, String name, String value, Boolean system) {
+		AccountAttr entity = new AccountAttr(userid, name, value, system);
+		dao.insertAccountAttr(entity);
 	}
 
 	@Override

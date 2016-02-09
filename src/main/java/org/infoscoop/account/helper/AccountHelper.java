@@ -100,7 +100,22 @@ public class AccountHelper {
 		List<IAccount> users = searchUser(searchConditionMap);
 		return users.size() > 0;
 	}
-	
+
+	/**
+	 * ユーザが存在するかチェック
+	 *
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean isExistsUser(String uid) throws Exception{
+		Map<String, String> searchConditionMap = new HashMap<String, String>();
+		searchConditionMap.put("user_id", uid);
+
+		List<IAccount> users = searchUser(searchConditionMap);
+		return users.size() > 0;
+	}
+
 	/**
 	 * 指定メールアドレスのユーザが存在するかチェック
 	 * 

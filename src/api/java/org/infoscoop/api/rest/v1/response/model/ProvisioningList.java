@@ -15,18 +15,12 @@
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
  */
 
-package org.infoscoop.dao.model;
+package org.infoscoop.api.rest.v1.response.model;
 
-import org.infoscoop.dao.model.base.BaseAccountAttr;
+import javax.validation.Valid;
+import java.util.List;
 
-public class AccountAttr extends BaseAccountAttr{
-	private static final long serialVersionUID = 1L;
-
-	public AccountAttr() {
-		super();
-	}
-
-	public AccountAttr(String uid, String name, String value, Boolean system) {
-		super(uid, name, value, system);
-	}
+public class ProvisioningList {
+	@Valid
+	public List<Provisioning> users;
 }
