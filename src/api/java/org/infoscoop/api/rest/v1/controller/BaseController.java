@@ -50,7 +50,7 @@ public abstract class BaseController{
 	}
 
 	@ExceptionHandler(PermissionDeniedDataAccessException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
 	public @ResponseBody ErrorResponse handlePermissionDeniedDataAccessException(PermissionDeniedDataAccessException ex) throws JSONException {
 		log.error("Permission denied.", ex);
 		return new ErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN.value());

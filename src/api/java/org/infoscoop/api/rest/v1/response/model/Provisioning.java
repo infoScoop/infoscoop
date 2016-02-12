@@ -17,6 +17,7 @@
 
 package org.infoscoop.api.rest.v1.response.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -40,36 +41,80 @@ public class Provisioning{
 	@Pattern(regexp = "^[a-zA-Z0-9\\-_\\~\\.@]+$", groups = { Create.class, Update.class })
 	public String uid;
 
+	@JsonIgnore
 	@NotBlank(groups = { Create.class })
 	@Size(min = 8, max = 32, groups = { Create.class, Update.class })
 	@Pattern(regexp = "^[a-zA-Z0-9!#\\$%&'\\-\\+\\*_\\?]+$", groups = { Create.class, Update.class })
 	public String password;
 
+	@JsonIgnore
 	@NotBlank(groups = { Create.class })
 	@Email(groups = { Create.class, Update.class })
 	@Size(min = 1, max = 150, groups = { Create.class, Update.class })
 	public String email;
 
-	@JsonProperty("given_name")
+	@JsonIgnore
 	@NotBlank(groups = { Create.class })
 	@Size(max = 128, groups = { Create.class, Update.class })
 	public String givenName;
 
-	@JsonProperty("family_name")
+	@JsonIgnore
 	@NotNull(groups = { Create.class })
 	@Size(max = 128, groups = { Create.class, Update.class })
 	public String familyName;
 
+	@JsonIgnore
 	@Size(max = 255, groups = { Create.class, Update.class })
 	public String name;
 
-	@JsonProperty("default_square_id")
+	@JsonIgnore
 	@Size(max = 64, groups = { Create.class, Update.class })
 	public String defaultSquareId;
 
-	@JsonProperty("belong_square")
+	@JsonIgnore
 	public List<Map<String, String>> belongSquare;
 
+	@JsonIgnore
 	public List<Map<String, String>> attrs;
 
+
+	@JsonProperty("password")
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@JsonProperty("email")
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@JsonProperty("given_name")
+	public void setGivenName(String givenName) {
+		this.givenName = givenName;
+	}
+
+	@JsonProperty("family_name")
+	public void setFamilyName(String familyName) {
+		this.familyName = familyName;
+	}
+
+	@JsonProperty("name")
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@JsonProperty("default_square_id")
+	public void setDefaultSquareId(String defaultSquareId) {
+		this.defaultSquareId = defaultSquareId;
+	}
+
+	@JsonProperty("belong_square")
+	public void setBelongSquare(List<Map<String, String>> belongSquare) {
+		this.belongSquare = belongSquare;
+	}
+
+	@JsonProperty("attrs")
+	public void setAttrs(List<Map<String, String>> attrs) {
+		this.attrs = attrs;
+	}
 }
