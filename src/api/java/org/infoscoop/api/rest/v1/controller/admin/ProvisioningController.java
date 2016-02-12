@@ -100,18 +100,31 @@ public class ProvisioningController extends BaseController{
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE
 					+ ";charset=utf-8")
-	@ResponseStatus(HttpStatus.CREATED)
-	public void createAccounts(@RequestBody @Validated(Provisioning.Create.class) ProvisioningList provisioningList) throws Exception {
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<String> createAccounts(@RequestBody @Validated(Provisioning.Create.class) ProvisioningList provisioningList) throws Exception {
 		List<Provisioning> provisioning = provisioningList.users;
 		String execSquareId = getSquareId();
+		List<String> results = new ArrayList<>();
+
 		for(int i = 0; i < provisioning.size(); i++){
 			Provisioning user = provisioning.get(i);
 			// validation
-			service.checkParameterForRegistration(user, i, execSquareId);
+			try{
+				service.checkParameterForRegistration(user, i, execSquareId);
+			} catch(Exception e) {
+				results.add(e.getMessage());
+				continue;
+			}
 
 			// registration
 			service.registAccount(user, execSquareId);
 		}
+
+		if(results != null && results.size() < 1)
+			results.add("All Account Created.");
+
+		return results;
 	}
 
 	/**
@@ -123,19 +136,29 @@ public class ProvisioningController extends BaseController{
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE
 					+ ";charset=utf-8")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateAccounts(@RequestBody @Validated(Provisioning.Update.class) ProvisioningList provisioningList) throws Exception {
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<String> updateAccounts(@RequestBody @Validated(Provisioning.Update.class) ProvisioningList provisioningList) throws Exception {
 		List<Provisioning> provisioning = provisioningList.users;
 		String execSquareId = getSquareId();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		List<String> results = new ArrayList<>();
 
 		for(int i = 0; i < provisioning.size(); i++){
 			Provisioning user = provisioning.get(i);
 			// validation
-			service.checkParameterForUpdate(user, i, execSquareId);
-
+			try{
+				service.checkParameterForUpdate(user, i, execSquareId);
+			} catch(Exception e) {
+				results.add(e.getMessage());
+				continue;
+			}
 			// registration
 			service.updateAccount(user, execSquareId);
 		}
+
+		if(results != null && results.size() < 1)
+			results.add("All Account Updated.");
+
+		return results;
 	}
 }

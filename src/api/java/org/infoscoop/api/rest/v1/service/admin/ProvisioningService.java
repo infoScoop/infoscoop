@@ -156,8 +156,15 @@ public class ProvisioningService {
 	}
 
 	public void checkParameterForUpdate(Provisioning user, int index, String execSquareId) throws Exception {
+		String uid = user.uid;
+
+		// permission check
+		if(!AccountHelper.isUpdateUser(uid, execSquareId)) {
+			throw new PermissionDeniedDataAccessException("Permission denied", new Throwable());
+		}
+
 		// uid:
-		if(!AccountHelper.isExistsUser(user.uid)){
+		if(!AccountHelper.isExistsUser(uid)){
 			throw new IllegalArgumentException("users[" + index + "].uid is not exists.");
 		}
 
@@ -218,11 +225,6 @@ public class ProvisioningService {
 
 	public void updateAccount(Provisioning user, String execSquareId) throws Exception {
 		String uid = user.uid;
-
-		// permission check
-		if(!AccountHelper.isUpdateUser(uid, execSquareId)) {
-			throw new PermissionDeniedDataAccessException("Permission denied", new Throwable());
-		}
 
 		IAccountManager manager = AuthenticationService.getInstance().getAccountManager();
 		Map<String, Object> map = new HashMap<>();
