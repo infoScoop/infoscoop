@@ -23,6 +23,7 @@ import org.infoscoop.api.dao.model.OAuth2ProviderAccessToken;
 import org.infoscoop.api.rest.v1.response.ErrorResponse;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -30,6 +31,7 @@ import org.springframework.security.oauth2.provider.token.AuthenticationKeyGener
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
@@ -40,9 +42,23 @@ public abstract class BaseController{
 	@Autowired
 	private OAuth2ProviderAccessTokenDAO oAuth2ProviderAccessTokenDAO;
 
+	@ExceptionHandler(IllegalArgumentException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public @ResponseBody ErrorResponse handleIllegalArgumentException(IllegalArgumentException ex) throws JSONException {
+		log.error("Illegal Parameter.", ex);
+		return new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+	}
+
+	@ExceptionHandler(PermissionDeniedDataAccessException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public @ResponseBody ErrorResponse handlePermissionDeniedDataAccessException(PermissionDeniedDataAccessException ex) throws JSONException {
+		log.error("Permission denied.", ex);
+		return new ErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN.value());
+	}
+
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public ErrorResponse handleException(Exception ex) throws JSONException {
+	public @ResponseBody ErrorResponse handleException(Exception ex) throws JSONException {
 		log.error("unexpected error occurred.", ex);
 		
 		// TODO: アプリケーションのエラーコードを返すかどうか

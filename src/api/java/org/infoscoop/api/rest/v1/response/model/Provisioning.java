@@ -20,44 +20,51 @@ package org.infoscoop.api.rest.v1.response.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 
 import java.util.List;
 import java.util.Map;
 
 public class Provisioning{
 
-	@NotBlank
-	@Size(min = 1, max = 150)
-	@Pattern(regexp = "^[a-zA-Z0-9\\-_\\~\\.@]+$")
+	public interface ProvDefault extends Default{}
+	public interface Create extends Update{}
+	public interface Update{}
+
+	@NotBlank(groups = { Create.class, Update.class })
+	@Size(min = 1, max = 150, groups = { Create.class, Update.class })
+	@Pattern(regexp = "^[a-zA-Z0-9\\-_\\~\\.@]+$", groups = { Create.class, Update.class })
 	public String uid;
 
-	@NotBlank
-	@Size(min = 8, max = 32)
-	@Pattern(regexp = "^[a-zA-Z0-9!#\\$%&'\\-\\+\\*_\\?]+$")
+	@NotBlank(groups = { Create.class })
+	@Size(min = 8, max = 32, groups = { Create.class, Update.class })
+	@Pattern(regexp = "^[a-zA-Z0-9!#\\$%&'\\-\\+\\*_\\?]+$", groups = { Create.class, Update.class })
 	public String password;
 
-	@NotBlank
-	@Email
-	@Size(min = 1, max = 150)
+	@NotBlank(groups = { Create.class })
+	@Email(groups = { Create.class, Update.class })
+	@Size(min = 1, max = 150, groups = { Create.class, Update.class })
 	public String email;
 
 	@JsonProperty("given_name")
-	@NotBlank
-	@Size(max = 128)
+	@NotBlank(groups = { Create.class })
+	@Size(max = 128, groups = { Create.class, Update.class })
 	public String givenName;
 
 	@JsonProperty("family_name")
-	@NotBlank
-	@Size(max = 128)
+	@NotNull(groups = { Create.class })
+	@Size(max = 128, groups = { Create.class, Update.class })
 	public String familyName;
 
-	@Size(max = 255)
+	@Size(max = 255, groups = { Create.class, Update.class })
 	public String name;
 
 	@JsonProperty("default_square_id")
-	@Size(max = 64)
+	@Size(max = 64, groups = { Create.class, Update.class })
 	public String defaultSquareId;
 
 	@JsonProperty("belong_square")

@@ -18,9 +18,15 @@
 package org.infoscoop.api.rest.v1.response.model;
 
 import javax.validation.Valid;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.util.List;
 
 public class ProvisioningList {
 	@Valid
+	@ConvertGroup.List({
+			@ConvertGroup(from = Provisioning.ProvDefault.class, to=Provisioning.Create.class),
+			@ConvertGroup(from = Default.class, to=Provisioning.Update.class)
+	})
 	public List<Provisioning> users;
 }

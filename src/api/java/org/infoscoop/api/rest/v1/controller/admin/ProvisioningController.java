@@ -26,7 +26,10 @@ import org.infoscoop.api.rest.v1.service.admin.ProvisioningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
@@ -49,16 +52,16 @@ public class ProvisioningController extends BaseController{
 			produces = MediaType.APPLICATION_JSON_VALUE
 					+ ";charset=utf-8")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createAccounts(@RequestBody @Valid ProvisioningList provisioningList) throws Exception {
+	public void createAccounts(@RequestBody @Validated(Provisioning.Create.class) ProvisioningList provisioningList) throws Exception {
 		List<Provisioning> provisioning = provisioningList.users;
-
+		String execSquareId = getSquareId();
 		for(int i = 0; i < provisioning.size(); i++){
 			Provisioning user = provisioning.get(i);
 			// validation
-			service.checkParameterForRegistration(user, i);
+			service.checkParameterForRegistration(user, i, execSquareId);
 
 			// registration
-			service.registAccount(user);
+			service.registAccount(user, execSquareId);
 		}
 	}
 
@@ -67,14 +70,23 @@ public class ProvisioningController extends BaseController{
 	 *
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/users", method = RequestMethod.PUT)
+	@RequestMapping(value="/users", method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE
+					+ ";charset=utf-8")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateAccounts(){
-//		UserProfilesResponse profiles = new UserProfilesResponse();
-//
-//		List<String> uidList = InformationService.getHandle().getUserIdList(getSquareId());
-//		for(Iterator<String> ite=uidList.iterator();ite.hasNext();){
-//			profiles.add(new UserProfile(ite.next()));
-//		}
+	public void updateAccounts(@RequestBody @Validated(Provisioning.Update.class) ProvisioningList provisioningList) throws Exception {
+		List<Provisioning> provisioning = provisioningList.users;
+		String execSquareId = getSquareId();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		for(int i = 0; i < provisioning.size(); i++){
+			Provisioning user = provisioning.get(i);
+			// validation
+			service.checkParameterForUpdate(user, i, execSquareId);
+
+			// registration
+			service.updateAccount(user, execSquareId);
+		}
 	}
 }

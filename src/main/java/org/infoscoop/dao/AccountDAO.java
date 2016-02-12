@@ -47,7 +47,7 @@ public class AccountDAO extends HibernateDaoSupport {
 
 	public void update(Account account){
 		super.getHibernateTemplate().update(account);
-
+		super.getHibernateTemplate().flush();
 	}
 
 	public List<Account> selectByName(String name){
@@ -66,9 +66,17 @@ public class AccountDAO extends HibernateDaoSupport {
 	}
 	
 	public void insertAccountSquare(AccountSquare accountSquare){
-		super.getHibernateTemplate().save(accountSquare);
+		super.getHibernateTemplate().saveOrUpdate(accountSquare);
 	}
-	
+
+	public void saveAccountSquare(String uid, String squareId) {
+		AccountSquare square = getAccountSquare(uid, squareId);
+		if(square == null)
+			square = new AccountSquare(uid, squareId);
+		super.getHibernateTemplate().saveOrUpdate(square);
+		super.getHibernateTemplate().flush();
+	}
+
 	public void deleteAccountSquare(AccountSquare accountSquare){
 		super.getHibernateTemplate().delete(accountSquare);
 	}
@@ -83,19 +91,27 @@ public class AccountDAO extends HibernateDaoSupport {
 		return result;
 	}
 
-	public String getAccountAttr(String uid, String key) {
+	public AccountAttr getAccountAttr(String uid, String key) {
 		List<AccountAttr> result = super.getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(AccountAttr.class)
 				.add(Expression.eq(AccountAttr.PROP_UID, uid))
 				.add(Expression.eq(AccountAttr.PROP_NAME, key)));
 
 		if(result == null || result.size() == 0)
-				return null;
+			return null;
 
-		return result.get(0).getValue();
+		return result.get(0);
 	}
 
 	public void insertAccountAttr(AccountAttr accountAttr) {
-		super.getHibernateTemplate().save(accountAttr);
+		super.getHibernateTemplate().saveOrUpdate(accountAttr);
+	}
+
+	public void saveAccountAttr(String uid, String name, String value, Boolean system) {
+		AccountAttr attr = getAccountAttr(uid, name);
+		if(attr == null)
+			attr = new AccountAttr(uid, name, value, system);
+		super.getHibernateTemplate().saveOrUpdate(attr);
+		super.getHibernateTemplate().flush();
 	}
 
 	public void deleteAccountAttr(AccountAttr accountAttr) {

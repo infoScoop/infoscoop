@@ -20,12 +20,7 @@ package org.infoscoop.account.simple;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.security.auth.Subject;
 
@@ -43,6 +38,8 @@ import org.infoscoop.dao.AccountDAO;
 import org.infoscoop.dao.model.Account;
 import org.infoscoop.dao.model.AccountAttr;
 import org.infoscoop.dao.model.AccountSquare;
+import org.infoscoop.service.PreferenceService;
+import org.infoscoop.service.SquareService;
 import org.json.JSONObject;
 
 /**
@@ -68,6 +65,49 @@ public class SimpleAccountManager implements IAccountManager{
 
 	public IAccount getUser(String uid) throws Exception {
 		return dao.get(uid);
+	}
+
+	@Override
+	public void updateUser(Map<String, Object> user) throws Exception {
+		String uid = (String)user.get("uid");
+		Account account = (Account)getUser(uid);
+
+		// password
+		String password = (String) user.get("password");
+		if(password != null)
+			account.setPasswordPlainText(password);
+
+		// email
+		String email = (String) user.get("email");
+		if(email != null)
+			account.setMail(email);
+
+		// given name
+		String givenName = (String) user.get("givenName");
+		if(givenName != null && givenName.trim().length() > 0)
+			account.setGivenName(givenName);
+
+		// family name
+		String familyName = (String) user.get("familyName");
+		if(familyName != null && familyName.trim().length() > 0)
+			account.setFamilyName(familyName);
+
+		// name
+		String name = (String) user.get("name");
+		if(name != null)
+			account.setName(name);
+
+		// default square
+		String defaultSquareId = (String)user.get("defaultSquareId");
+		if(defaultSquareId != null) {
+			if(defaultSquareId.trim().length() > 0) {
+				account.setDefaultSquareId(defaultSquareId);
+			} else {
+				account.setDefaultSquareId(account.getMySquareId());
+			}
+		}
+
+		dao.update(account);
 	}
 
 	/* (non-Javadoc)
@@ -163,8 +203,7 @@ public class SimpleAccountManager implements IAccountManager{
 
 	@Override
 	public void addSquareId(String userid, String squareId) {
-		AccountSquare entity = new AccountSquare(userid, squareId);
-		dao.insertAccountSquare(entity);
+		dao.saveAccountSquare(userid, squareId);
 	}
 
 	@Override
@@ -283,13 +322,29 @@ public class SimpleAccountManager implements IAccountManager{
 	}
 
 	@Override
-	public void setAccountAttributeValue(String userid, String name, String value, Boolean system) {
-		AccountAttr entity = new AccountAttr(userid, name, value, system);
-		dao.insertAccountAttr(entity);
+	public void setAccountAttribute(String userid, String name, String value, Boolean system) {
+		dao.saveAccountAttr(userid, name, value, system);
 	}
 
 	@Override
 	public String getAccountAttributeValue(String userid, String name) throws Exception {
-		return dao.getAccountAttr(userid, name);
+		Map<String, Object> entity = getAccountAttribute(userid, name);
+		return (String)entity.get("value");
+	}
+
+	@Override
+	public Map<String, Object> getAccountAttribute(String userid, String name) throws Exception {
+		AccountAttr attr = dao.getAccountAttr(userid, name);
+		Map<String, Object> map = new HashMap<>();
+		map.put("name", attr.getName());
+		map.put("value", attr.getValue());
+		map.put("system", attr.getSystem());
+		map.put("account", attr.getAccountId());
+		return map;
+	}
+
+	@Override
+	public void setAccountOwner(String userid, String value) throws Exception {
+		setAccountAttribute(userid, AccountAttributeName.REGISTERED_SQUARE, value, true);
 	}
 }

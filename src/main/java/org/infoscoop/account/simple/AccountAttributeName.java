@@ -12,4 +12,6 @@ public class AccountAttributeName {
 		2: All users.
 	 */
 	public static final String UPDATE_PERMISSION = "update_permission";
+
+	public static final String REGISTERED_SQUARE = "registered_square";
 }

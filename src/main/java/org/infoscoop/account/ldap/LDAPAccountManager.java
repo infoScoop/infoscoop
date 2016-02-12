@@ -221,6 +221,11 @@ public class LDAPAccountManager implements IAccountManager{
 		}
 	}
 
+	@Override
+	public void updateUser(Map<String, Object> user) throws Exception {
+		throw new UnsupportedOperationException();
+	}
+
 	public List searchUser(Map searchConditionMap) throws Exception {
 		Map confitionForBase = getConditionForSearchBase(searchConditionMap);
 
@@ -595,12 +600,22 @@ public class LDAPAccountManager implements IAccountManager{
 	}
 
 	@Override
-	public void setAccountAttributeValue(String userid, String name, String value, Boolean system) throws Exception {
+	public void setAccountAttribute(String userid, String name, String value, Boolean system) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getAccountAttributeValue(String userid, String name) throws Exception {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Map<String, Object> getAccountAttribute(String userid, String name) throws Exception {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setAccountOwner(String userid, String value) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 }

@@ -11,7 +11,10 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IAccountManager;
+import org.infoscoop.account.simple.AccountAttributeName;
+import org.infoscoop.dao.model.Square;
 import org.infoscoop.properties.InfoScoopProperties;
+import org.infoscoop.service.SquareService;
 
 public class AccountHelper {
 	private static Log log = LogFactory.getLog(AccountHelper.class);
@@ -163,5 +166,22 @@ public class AccountHelper {
 		for( IAccount user : users ) {
 			accountManager.removeSquareId(user.getUid(), squareId);
 		}
+	}
+
+	public static boolean isUpdateUser(String uid, String squareId) throws Exception {
+		IAccountManager manager = AuthenticationService.getInstance().getAccountManager();
+		String updatePermission = manager.getAccountAttributeValue(uid, AccountAttributeName.UPDATE_PERMISSION);
+		String registeredSquare = manager.getAccountAttributeValue(uid, AccountAttributeName.REGISTERED_SQUARE);
+		boolean result = false;
+
+		switch (updatePermission) {
+			case "2":
+				result = true;
+				break;
+			case "1":
+				if(squareId.equals(registeredSquare)) result = true;
+		}
+
+		return result;
 	}
 }

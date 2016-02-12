@@ -72,14 +72,14 @@
             length="64"
         />
 
-		<set name="AccountAttrs" lazy="true" inverse="true">
+		<set name="AccountAttrs" lazy="false" inverse="true">
 			<key>
 				<column name="fk_account_id" not-null="true" />
 			</key>
 			<one-to-many class="AccountAttr" />
 		</set>
 
-		<set name="AccountSquares" lazy="true" inverse="true">
+		<set name="AccountSquares" lazy="false" inverse="true">
 			<key>
 				<column name="fk_account_id" not-null="true" />
 			</key>

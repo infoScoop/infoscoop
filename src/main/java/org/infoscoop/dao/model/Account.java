@@ -20,9 +20,7 @@ package org.infoscoop.dao.model;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.codec.binary.Base64;
 import org.infoscoop.account.IAccount;
@@ -41,6 +39,7 @@ public class Account implements IAccount {
 	private String mail;
 	private boolean isAdmin;
 	List<String> belongIds = new ArrayList<String>();
+	List<Map<String, String>> attributes= new ArrayList<Map<String, String>>();
 	
 	private Set<org.infoscoop.dao.model.AccountAttr> accountAttrs;
 	private Set<AccountSquare> accountSquares;
@@ -113,9 +112,19 @@ public class Account implements IAccount {
 				belongIds.add(accountSquare.getSquareId());
 			}
 		}
-		
-//		if(this.belongid!=null) belongIds.add(this.belongid);
 		return belongIds;
+	}
+
+	public List<Map<String, String>> getAttributes() {
+		if(attributes.size() == 0) {
+			for(AccountAttr accountAttr : accountAttrs) {
+				Map<String, String> map = new HashMap<>();
+				map.put("name", accountAttr.getName());
+				map.put("value", accountAttr.getValue());
+				attributes.add(map);
+			}
+		}
+		return attributes;
 	}
 
 	public Set<AccountAttr> getAccountAttrs() {
@@ -152,5 +161,4 @@ public class Account implements IAccount {
 	public void setMySquareId(String mySquareId) {
 		this.mySquareId = mySquareId;
 	}
-
 }

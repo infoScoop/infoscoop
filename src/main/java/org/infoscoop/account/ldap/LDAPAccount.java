@@ -20,6 +20,7 @@ package org.infoscoop.account.ldap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IGroup;
@@ -130,6 +131,8 @@ public class LDAPAccount implements IAccount{
 		belongIds.add("default");
 		return belongIds;
 	}
+
+	public List<Map<String, String>> getAttributes(){return null;}
 
 	@Override
 	public boolean isAdmin() {

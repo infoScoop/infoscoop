@@ -214,7 +214,7 @@ public class SquareService {
 		String maxUser = InfoScoopProperties.getInstance().getProperty(SQUARE_MAX_USER_NUMBER);
 		if(maxUser == null || maxUser.length() == 0) maxUser = DEFAULT_MAX_USER;
 
-		this.squareDAO.create(squareId, squareName, desc, userId, Integer.parseInt(maxUser));
+		this.squareDAO.create(squareId, squareName, desc, userId, Integer.parseInt(maxUser), sourceSquareId);
 		this.forbiddenURLDAO.copySquare(squareId, sourceSquareId);
 		this.gadgetDAO.copySquare(squareId, sourceSquareId);
 		this.gadgetIconDAO.copySquare(squareId, sourceSquareId);

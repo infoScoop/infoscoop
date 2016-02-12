@@ -58,13 +58,14 @@ public class SquareDAO extends HibernateDaoSupport {
 						.addOrder(Order.asc(Square.PROP_NAME)));
 	}
 
-	public void create(String id, String name, String description, String owner, int maxUserNum) {
+	public void create(String id, String name, String description, String owner, int maxUserNum, String parentSquareId) {
 		Square square = new Square(id);
 		square.setName(name);
 		square.setDescription(description);
 		square.setLastmodified(new Date());
 		square.setOwner(owner);
 		square.setMaxUserNum(Integer.valueOf(maxUserNum));
+		square.setParentSquareId(parentSquareId);
 
 		super.getHibernateTemplate().save(square);
 		super.getHibernateTemplate().flush();

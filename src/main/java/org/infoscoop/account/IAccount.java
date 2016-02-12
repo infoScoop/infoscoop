@@ -18,6 +18,7 @@
 package org.infoscoop.account;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IAccount {
 	String getUid();
@@ -29,6 +30,7 @@ public interface IAccount {
 	IGroup[] getGroups();
 	List<String> getMails();
 	List<String> getBelongids();
+	List<Map<String, String>> getAttributes();
 	public boolean isAdmin();
 	public void setAdmin(boolean isAdmin);
 }
