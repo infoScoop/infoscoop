@@ -158,14 +158,14 @@ public class ProvisioningService {
 	public void checkParameterForUpdate(Provisioning user, int index, String execSquareId) throws Exception {
 		String uid = user.uid;
 
-		// permission check
-		if(!AccountHelper.isUpdateUser(uid, execSquareId)) {
-			throw new PermissionDeniedDataAccessException("Permission denied", new Throwable());
-		}
-
 		// uid:
 		if(!AccountHelper.isExistsUser(uid)){
 			throw new IllegalArgumentException("users[" + index + "].uid is not exists.");
+		}
+
+		// permission check
+		if(!AccountHelper.isUpdateUser(uid, execSquareId)) {
+			throw new PermissionDeniedDataAccessException("Permission denied", new Throwable());
 		}
 
 		// default_square_id
