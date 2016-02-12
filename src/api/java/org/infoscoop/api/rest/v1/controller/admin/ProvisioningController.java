@@ -140,8 +140,7 @@ public class ProvisioningController extends BaseController{
 	@ResponseBody
 	public List<String> updateAccounts(@RequestBody @Validated(Provisioning.Update.class) ProvisioningList provisioningList) throws Exception {
 		List<Provisioning> provisioning = provisioningList.users;
-//		String execSquareId = getSquareId();
-		String execSquareId = "unirita@unirita.co.jp";
+		String execSquareId = getSquareId();
 		List<String> results = new ArrayList<>();
 
 		for(int i = 0; i < provisioning.size(); i++){
