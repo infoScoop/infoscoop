@@ -47,10 +47,22 @@ public class ProvisioningService {
 		}
 
 		// default_square_id
-		if(user.defaultSquareId != null
-				&& user.defaultSquareId.length() > 0
-				&& !SquareService.getHandle().existsSquare(user.defaultSquareId)){
-			throw new IllegalArgumentException("users[" + index + "].default_square_id is not exists.");
+		String defaultSquareId = user.defaultSquareId;
+		if(defaultSquareId != null && defaultSquareId.length() > 0){
+			// exists
+			if(!SquareService.getHandle().existsSquare(defaultSquareId))
+				throw new IllegalArgumentException("users[" + index + "].default_square_id is not exists.");
+
+			// owned
+			/*
+				System knows squareid, beacause system has token.
+				If system knows squareid, executor is owner its square.
+				Pat.1: sent squareid == getSquareId (OK)
+				Pat.2: sent squareid == getSquareId.childSquareId (OK)
+			 */
+			if(!defaultSquareId.equals(execSquareId) && !SquareService.getHandle().comparisonParentSquare(defaultSquareId, execSquareId))
+				throw new IllegalArgumentException("users[" + index + "].default_square_id is not owned square.");
+
 		}
 
 		// belong_square
@@ -169,10 +181,22 @@ public class ProvisioningService {
 		}
 
 		// default_square_id
-		if(user.defaultSquareId != null
-				&& user.defaultSquareId.length() > 0
-				&& !SquareService.getHandle().existsSquare(user.defaultSquareId)){
-			throw new IllegalArgumentException("users[" + index + "].default_square_id is not exists.");
+		String defaultSquareId = user.defaultSquareId;
+		if(defaultSquareId != null && defaultSquareId.length() > 0){
+
+			// exists
+			if(!SquareService.getHandle().existsSquare(defaultSquareId))
+				throw new IllegalArgumentException("users[" + index + "].default_square_id is not exists.");
+
+			// owned
+			/*
+				System knows squareid, beacause system has token.
+				If system knows squareid, executor is owner its square.
+				Pat.1: sent squareid == getSquareId (OK)
+				Pat.2: sent squareid == getSquareId.childSquareId (OK)
+			*/
+			if(!defaultSquareId.equals(execSquareId) && !SquareService.getHandle().comparisonParentSquare(defaultSquareId, execSquareId))
+				throw new IllegalArgumentException("users[" + index + "].default_square_id is not owned square.");
 		}
 
 		// belong_square
