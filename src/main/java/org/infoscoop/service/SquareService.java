@@ -320,12 +320,22 @@ public class SquareService {
 	}
 
 	public boolean comparisonParentSquare(String child, String parent) {
-		String parentSquareId = this.getParentSquareId(child);
 		boolean result = true;
+		String parentSquareId = this.getParentSquareId(child);
 
 		// do not null
 		if(parentSquareId != null && parentSquareId.length() > 0)
 			result = parentSquareId.equals(parent);
+
+		return result;
+	}
+
+	public boolean isNotDefaultUntilAncient(String child, String parent) {
+		boolean result = true;
+		String parentSquareId = this.getParentSquareId(child);
+
+		if(child.equals(SQUARE_ID_DEFAULT) || "".equals(parentSquareId) || SQUARE_ID_DEFAULT.equals(parentSquareId))
+			result = false;
 
 		return result;
 	}

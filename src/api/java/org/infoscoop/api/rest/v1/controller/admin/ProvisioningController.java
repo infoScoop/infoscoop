@@ -17,6 +17,7 @@
 
 package org.infoscoop.api.rest.v1.controller.admin;
 
+import com.google.caja.service.InvalidArgumentsException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.IAccount;
@@ -25,6 +26,7 @@ import org.infoscoop.api.rest.v1.controller.BaseController;
 import org.infoscoop.api.rest.v1.response.model.Provisioning;
 import org.infoscoop.api.rest.v1.response.model.ProvisioningList;
 import org.infoscoop.api.rest.v1.service.admin.ProvisioningService;
+import org.infoscoop.dao.model.Square;
 import org.infoscoop.service.SquareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PermissionDeniedDataAccessException;
@@ -76,8 +78,12 @@ public class ProvisioningController extends BaseController{
 		List<Provisioning> list = new ArrayList<>();
 		provisioningList.users = list;
 
-	if(!squareId.equals(execSquareId) && !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId))
-		throw new PermissionDeniedDataAccessException(squareId + " is not owned square.", new Throwable());
+		if(!SquareService.getHandle().existsSquare(squareId))
+			throw new IllegalArgumentException(squareId + " is not exists.");
+
+		if(!squareId.equals(execSquareId)
+				&& (!SquareService.getHandle().isNotDefaultUntilAncient(squareId, execSquareId) || !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId)))
+				throw new PermissionDeniedDataAccessException(squareId + " is not owned square.", new Throwable());
 
 		List<IAccount> accounts = AccountHelper.searchUsersBySquareId(squareId);
 		for(IAccount account : accounts) {

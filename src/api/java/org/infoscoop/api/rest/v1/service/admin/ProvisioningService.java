@@ -60,7 +60,8 @@ public class ProvisioningService {
 				Pat.1: sent squareid == getSquareId (OK)
 				Pat.2: sent squareid == getSquareId.childSquareId (OK)
 			 */
-			if(!defaultSquareId.equals(execSquareId) && !SquareService.getHandle().comparisonParentSquare(defaultSquareId, execSquareId))
+			if(!defaultSquareId.equals(execSquareId)
+					&& (!SquareService.getHandle().isNotDefaultUntilAncient(defaultSquareId, execSquareId) || !SquareService.getHandle().comparisonParentSquare(defaultSquareId, execSquareId)))
 				throw new IllegalArgumentException("users[" + index + "].default_square_id is not owned square.");
 
 		}
@@ -87,7 +88,8 @@ public class ProvisioningService {
 					Pat.1: sent squareid == getSquareId (OK)
 					Pat.2: sent squareid == getSquareId.childSquareId (OK)
 				 */
-				if(!squareId.equals(execSquareId) && !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId))
+				if(!squareId.equals(execSquareId)
+						&& (!SquareService.getHandle().isNotDefaultUntilAncient(squareId, execSquareId) || !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId)))
 					throw new IllegalArgumentException("users[" + index + "].belong_square[" + i +"].id[" + squareId + "] is not owned square.");
 			}
 		}
@@ -140,14 +142,16 @@ public class ProvisioningService {
 		);
 
 		// set square
-		for(Map<String, String> map : user.belongSquare) {
-			String belongSquareId = map.get("id");
-			manager.addSquareId(uid, belongSquareId);
+		if(user.belongSquare != null) {
+			for(Map<String, String> map : user.belongSquare) {
+				String belongSquareId = map.get("id");
+				manager.addSquareId(uid, belongSquareId);
 
-			// set background-image
-			String bgImg = map.get("background_image");
-			if(bgImg != null && bgImg.length() > 0)
-				PreferenceService.getHandle().setBackgroundImage(uid, belongSquareId, bgImg);
+				// set background-image
+				String bgImg = map.get("background_image");
+				if(bgImg != null && bgImg.length() > 0)
+					PreferenceService.getHandle().setBackgroundImage(uid, belongSquareId, bgImg);
+			}
 		}
 
 		// set default Square
@@ -155,12 +159,14 @@ public class ProvisioningService {
 			manager.updateDefaultSquare(uid, user.defaultSquareId);
 
 		// set attrs
-		for(Map<String, String> map : user.attrs) {
-			String key = map.get("key");
-			String val = map.get("value");
+		if(user.attrs != null) {
+			for(Map<String, String> map : user.attrs) {
+				String key = map.get("key");
+				String val = map.get("value");
 
-			if(key != null && key.length() > 0)
-				manager.setAccountAttribute(uid, key, val, false);
+				if(key != null && key.length() > 0)
+					manager.setAccountAttribute(uid, key, val, false);
+			}
 		}
 
 		// set owner
@@ -195,7 +201,8 @@ public class ProvisioningService {
 				Pat.1: sent squareid == getSquareId (OK)
 				Pat.2: sent squareid == getSquareId.childSquareId (OK)
 			*/
-			if(!defaultSquareId.equals(execSquareId) && !SquareService.getHandle().comparisonParentSquare(defaultSquareId, execSquareId))
+			if(!defaultSquareId.equals(execSquareId)
+					&& (!SquareService.getHandle().isNotDefaultUntilAncient(defaultSquareId, execSquareId) || !SquareService.getHandle().comparisonParentSquare(defaultSquareId, execSquareId)))
 				throw new IllegalArgumentException("users[" + index + "].default_square_id is not owned square.");
 		}
 
@@ -221,7 +228,8 @@ public class ProvisioningService {
 					Pat.1: sent squareid == getSquareId (OK)
 					Pat.2: sent squareid == getSquareId.childSquareId (OK)
 				*/
-				if(!squareId.equals(execSquareId) && !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId))
+				if(!squareId.equals(execSquareId)
+						&& (!SquareService.getHandle().isNotDefaultUntilAncient(squareId, execSquareId) || !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId)))
 					throw new IllegalArgumentException("users[" + index + "].belong_square[" + i +"].id[" + squareId + "] is not owned square.");
 			}
 		}
@@ -262,7 +270,7 @@ public class ProvisioningService {
 
 		// belong square
 		List<Map<String, String>> belongSquareList = (List<Map<String, String>>)user.belongSquare;
-		if(belongSquareList != null && belongSquareList.size() > 0) {
+		if(belongSquareList != null) {
 			updateAccountSquare(belongSquareList, uid, execSquareId);
 		}
 
