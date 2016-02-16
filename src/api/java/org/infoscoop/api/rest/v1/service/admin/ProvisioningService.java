@@ -266,7 +266,7 @@ public class ProvisioningService {
 
 		// belong square
 		List<Map<String, String>> belongSquareList = (List<Map<String, String>>)user.belongSquare;
-		if(belongSquareList != null && belongSquareList.size() > 0) {
+		if(belongSquareList != null) {
 			updateAccountSquare(belongSquareList, uid, execSquareId);
 		}
 
