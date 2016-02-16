@@ -336,10 +336,13 @@ public class SimpleAccountManager implements IAccountManager{
 	public Map<String, Object> getAccountAttribute(String userid, String name) throws Exception {
 		AccountAttr attr = dao.getAccountAttr(userid, name);
 		Map<String, Object> map = new HashMap<>();
-		map.put("name", attr.getName());
-		map.put("value", attr.getValue());
-		map.put("system", attr.getSystem());
-		map.put("account", attr.getAccountId());
+		
+		if(attr != null){
+			map.put("name", attr.getName());
+			map.put("value", attr.getValue());
+			map.put("system", attr.getSystem());
+			map.put("account", attr.getAccountId());
+		}
 		return map;
 	}
 
