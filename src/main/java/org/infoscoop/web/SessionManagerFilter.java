@@ -304,13 +304,14 @@ public class SessionManagerFilter implements Filter {
 
 				Cookie[] cookies = httpReq.getCookies();
 				String cookieVal = "";
-				for(Cookie cookie : cookies) {
-					if("is-current-square-id".equals(cookie.getName())){
-						cookieVal = cookie.getValue();
-						int test =  param.lastIndexOf("index.jsp");
-						if(param.lastIndexOf("index.jsp") >= 0)
-							param = "".equals(cookieVal) ? param : cookieVal;
-						break;
+				if(cookies != null){
+					for(Cookie cookie : cookies) {
+						if("is-current-square-id".equals(cookie.getName())){
+							cookieVal = cookie.getValue();
+							if(param.lastIndexOf("index.jsp") >= 0)
+								param = "".equals(cookieVal) ? param : cookieVal;
+							break;
+						}
 					}
 				}
 
