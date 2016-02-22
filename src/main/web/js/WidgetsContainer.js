@@ -458,6 +458,7 @@ IS_WidgetsContainer.prototype.classDef = function() {
 				IS_EventDispatcher.addComplexListener( eventTargetList,function() {
 					console.log("Sitemap is auto loaded on startup.");
 					new IS_SidePanel.SiteMap();
+					IS_Portal.adjustStaticWidgetHeight();
 				},null,true);
 			}
 			
@@ -564,7 +565,7 @@ IS_Portal.getLoadWidgets = function(tabId, isAllReload){
 					loadWidgets.push(widget);
 				}
 			}else {
-				if(widget.content && !widget.isSuccess && !widget.isLoading)
+				if(!widget.isSuccess && !widget.isLoading)
 					loadWidgets.push(widget);
 				
 				if(isAllReload || widget.onTabChangeReload){
