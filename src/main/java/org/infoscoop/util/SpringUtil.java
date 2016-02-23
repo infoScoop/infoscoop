@@ -31,6 +31,10 @@ public class SpringUtil {
 		return context.getBean(name);
 	}
 
+	public static Object getBean(Class c) {
+		return context.getBean(c);
+	}
+
 	/**
 	 * Initializing application context for a batch program, for example the migration tools 
 	 * @param definitions Array of beacn definition files in classpath
