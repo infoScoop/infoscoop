@@ -212,6 +212,12 @@ public class SessionManagerFilter implements Filter {
 			
 			String uid = null;
 			String currentSquareId = null;
+			String requestUri = httpReq.getRequestURI();
+			String param = httpReq.getServletPath();
+			String context = httpReq.getContextPath();
+			Pattern pattern = Pattern.compile("^/s/(.+)");
+			Matcher matcher = pattern.matcher(param);
+
 			if(SessionCreateConfig.doLogin()){
 				Map<String, String> result = getSquareUidFromSession(httpReq);
 				uid = result.get("Uid");
@@ -294,12 +300,10 @@ public class SessionManagerFilter implements Filter {
 			}
 
 			if( uid == null && SessionCreateConfig.doLogin() && !isExcludePath(httpReq.getServletPath())) {
-				String requestUri = httpReq.getRequestURI();
-				String param = httpReq.getServletPath();
-				Pattern pattern = Pattern.compile("^/(.+)");
-				Matcher matcher = pattern.matcher(param);
+				boolean squareFlg = false;
 				if(matcher.find()) {
 					param = matcher.group(1);
+					squareFlg = true;
 				}
 
 				Cookie[] cookies = httpReq.getCookies();
@@ -324,11 +328,14 @@ public class SessionManagerFilter implements Filter {
 					url = requestUri.substring( 0,requestUri.lastIndexOf("/"))+"/../login.jsp";
 				}
 
-				Pattern p = Pattern.compile(".+\\.(jsp|html)");
-				Matcher m1 = p.matcher(url);
-				Matcher m2 = p.matcher(param);
-				if(!m1.find() && !m2.find()){
-					url = url + param + "/";
+				if(squareFlg) {
+					url = context + "/" + url + param + "/";
+				} else {
+					Pattern p = Pattern.compile(".+\\.(jsp|html)");
+					Matcher m1 = p.matcher(url);
+					if(!m1.find()){
+						url = context + "/" + url;
+					}
 				}
 				httpResponse.sendRedirect(url);
 				return;
@@ -397,6 +404,11 @@ public class SessionManagerFilter implements Filter {
 			// set current square id
 			if(currentSquareId != null) {
 				UserContext.instance().getUserInfo().setCurrentSquareId(currentSquareId);
+			}
+
+			if(matcher.find()) {
+				httpResponse.sendRedirect(context + "/index.jsp");
+				return;
 			}
 		}
 		chain.doFilter(request, response);
