@@ -329,7 +329,10 @@ public class SessionManagerFilter implements Filter {
 				}
 
 				if(squareFlg) {
-					url = context + "/" + url + param + "/";
+					url = "/" + url + param + "/";
+					RequestDispatcher dispatcher = httpReq.getRequestDispatcher(url);
+					dispatcher.forward(httpReq, httpResponse);
+					return;
 				} else {
 					Pattern p = Pattern.compile(".+\\.(jsp|html)");
 					Matcher m1 = p.matcher(url);
