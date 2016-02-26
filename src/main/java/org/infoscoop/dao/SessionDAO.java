@@ -18,11 +18,10 @@
 package org.infoscoop.dao;
 
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.*;
 
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -47,14 +46,34 @@ public class SessionDAO extends HibernateDaoSupport {
 		return (SessionDAO) SpringUtil.getContext().getBean("sessionDAO");
 	}
 
+	public Map<String, String> getEntity(String sessionId) {
+		List<Session> results = (List<Session>)super
+				.getHibernateTemplate()
+				.findByCriteria(
+						DetachedCriteria.forClass(Session.class).add(
+								Expression.eq(Session.PROP_SESSIONID, sessionId)));
+
+		Map<String, String> returnMap = new HashMap<String, String>();
+		if(results.size() > 0) {
+			Session session = results.get(0);
+			if(session != null) {
+				returnMap.put("uid", session.getId().getUid());
+				returnMap.put("squareId", session.getId().getSquareid());
+				returnMap.put("sessionId", session.getSessionid());
+				returnMap.put("logindatetime", session.getLogindatetime().toString());
+			}
+		}
+
+		return returnMap;
+	}
+
 	@SuppressWarnings("unchecked")
-    public String getUid(String sessionId, String squareId) {
+    public String getUid(String sessionId) {
 		Iterator<Session> results = super
 				.getHibernateTemplate()
 				.findByCriteria(
 						DetachedCriteria.forClass(Session.class).add(
-								Expression.eq(Session.PROP_SESSIONID, sessionId)).add(
-								Expression.eq("Id.Squareid", squareId)))
+								Expression.eq(Session.PROP_SESSIONID, sessionId)))
 				.iterator();
 		if (results.hasNext()) {
 			Session session = results.next();
@@ -96,7 +115,7 @@ public class SessionDAO extends HibernateDaoSupport {
 	public String newSessionId(String uid, String squareId) {
 		if (uid == null)
 			throw new RuntimeException("uid must be set.");
-		String newSessionId = numberSessionId(uid);
+		String newSessionId = numberSessionId(uid, squareId);
 		if (log.isInfoEnabled())
 			log.info("newSessionId: uid=" + uid + ", sessionId="+ newSessionId + ", squareId=" + squareId);
 		
@@ -111,8 +130,8 @@ public class SessionDAO extends HibernateDaoSupport {
 		return newSessionId;
 	}
 
-	private String numberSessionId(String uid) {
-		return uid + System.currentTimeMillis();
+	private String numberSessionId(String uid, String squareId) {
+		return uid + System.currentTimeMillis() + squareId;
 	}
 	
 	public void deleteSessionId(String uid, String squareId) {

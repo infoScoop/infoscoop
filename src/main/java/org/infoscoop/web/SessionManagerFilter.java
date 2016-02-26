@@ -57,6 +57,7 @@ import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.properties.InfoScoopProperties;
 import org.infoscoop.service.SquareService;
 import org.infoscoop.util.RSAKeyManager;
+import org.infoscoop.util.RequestUtil;
 
 /**
  * The filter which manages the login state.
@@ -155,6 +156,7 @@ public class SessionManagerFilter implements Filter {
 		String sessionId = req.getHeader("MSDPortal-SessionId");
 		boolean uidIgnoreCase = SessionCreateConfig.getInstance().isUidIgnoreCase();
 		Map<String, String> resultMap = new HashMap<String, String>();
+		Map<String, String> sessionMap = SessionDAO.newInstance().getEntity(sessionId);
 
 		// 管理画面プレビュー
 		if("true".equalsIgnoreCase(req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW))){
@@ -171,7 +173,11 @@ public class SessionManagerFilter implements Filter {
 			session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME,currentSquareId );
 		}
 
-		if(!InfoScoopProperties.getInstance().isUseMultitenantMode() || currentSquareId == null) {
+		if(currentSquareId == null) {
+			currentSquareId = sessionMap.get("squareId");
+		}
+
+		if(!InfoScoopProperties.getInstance().isUseMultitenantMode()) {
 			// シングルテナント時、ユーザーのデフォルトスクエアを入れる
 			currentSquareId = SquareService.SQUARE_ID_DEFAULT;
 		}
@@ -182,7 +188,7 @@ public class SessionManagerFilter implements Filter {
 		if (uid == null) {
 			if (sessionId != null) {
 				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
-				resultMap.put("Uid", SessionDAO.newInstance().getUid(sessionId, currentSquareId));
+				resultMap.put("Uid", sessionMap.get("uid"));
 				resultMap.put(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, currentSquareId);
 			}
 		} else if (sessionId != null) {
@@ -191,7 +197,7 @@ public class SessionManagerFilter implements Filter {
 				session.invalidate();
 				session = req.getSession(true);
 				session.setAttribute(LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
-				resultMap.put("Uid", SessionDAO.newInstance().getUid(sessionId, currentSquareId));
+				resultMap.put("Uid", sessionMap.get("uid"));
 				resultMap.put(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, currentSquareId);
 			}
 		}
@@ -306,17 +312,9 @@ public class SessionManagerFilter implements Filter {
 					squareFlg = true;
 				}
 
-				Cookie[] cookies = httpReq.getCookies();
-				String cookieVal = "";
-				if(cookies != null){
-					for(Cookie cookie : cookies) {
-						if("is-current-square-id".equals(cookie.getName())){
-							cookieVal = cookie.getValue();
-							if(param.lastIndexOf("index.jsp") >= 0)
-								param = "".equals(cookieVal) ? param : cookieVal;
-							break;
-						}
-					}
+				String cookieVal = RequestUtil.getCookieValue(httpReq.getCookies(), "is-current-square-id");
+				if(param.lastIndexOf("index.jsp") >= 0) {
+					param = "".equals(cookieVal) ? param : cookieVal;
 				}
 
 				String url = loginPath;

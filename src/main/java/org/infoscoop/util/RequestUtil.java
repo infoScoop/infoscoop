@@ -34,6 +34,26 @@ import javax.servlet.http.Cookie;
 
 public final class RequestUtil {
 	/**
+	 * get a cookie value
+	 *
+	 * @param cookies
+	 * @param key
+	 * @return
+	 */
+	public static String getCookieValue(Cookie[] cookies, String key) {
+		String value = null;
+		if(cookies != null){
+			for(Cookie cookie : cookies) {
+				if(key.equals(cookie.getName())) {
+					value = cookie.getValue();
+					break;
+				}
+			}
+		}
+		return value;
+	}
+
+	/**
 	 * Delete a cookie except the designated variable name from CookieString
 	 * 
 	 * @param cookieString
@@ -307,7 +327,7 @@ public final class RequestUtil {
 	/**
 	 * get a value of charset in Content-Type
 	 * 
-	 * @param str
+	 * @param content_type
 	 * @return charset
 	 */
 	public static String getCharset(String content_type){

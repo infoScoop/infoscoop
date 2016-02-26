@@ -109,8 +109,8 @@ public class CheckSquareFilter implements javax.servlet.Filter {
 
 	/**
 	 *
-	 * @param mail
-	 * @param square
+	 * @param uid
+	 * @param squareid
 	 * @return
 	 * @throws Exception
 	 */

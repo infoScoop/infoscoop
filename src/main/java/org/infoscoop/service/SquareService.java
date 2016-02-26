@@ -324,7 +324,7 @@ public class SquareService {
 
 	public boolean existsSquare(String squareId) {
 		boolean result = false;
-		if(squareDAO.get(squareId) != null) {
+		if(squareId != null && squareDAO.get(squareId) != null) {
 			result = true;
 		}
 
