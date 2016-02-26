@@ -29,10 +29,24 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
-import org.infoscoop.account.IAccountManager;
 import org.infoscoop.account.simple.AccountAttributeName;
 import org.infoscoop.api.dao.OAuth2ProviderClientDetailDAO;
-import org.infoscoop.dao.*;
+import org.infoscoop.dao.AdminRoleDAO;
+import org.infoscoop.dao.ForbiddenURLDAO;
+import org.infoscoop.dao.GadgetDAO;
+import org.infoscoop.dao.GadgetIconDAO;
+import org.infoscoop.dao.HolidaysDAO;
+import org.infoscoop.dao.OAuthCertificateDAO;
+import org.infoscoop.dao.PortalAdminsDAO;
+import org.infoscoop.dao.PortalLayoutDAO;
+import org.infoscoop.dao.PropertiesDAO;
+import org.infoscoop.dao.ProxyConfDAO;
+import org.infoscoop.dao.SearchEngineDAO;
+import org.infoscoop.dao.SiteAggregationMenuDAO;
+import org.infoscoop.dao.SquareDAO;
+import org.infoscoop.dao.StaticTabDAO;
+import org.infoscoop.dao.TabLayoutDAO;
+import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Square;
 import org.infoscoop.properties.InfoScoopProperties;
@@ -203,9 +217,13 @@ public class SquareService {
 	public static SquareService getHandle() {
 		return (SquareService) SpringUtil.getBean("SquareService");
 	}
-
-	@SuppressWarnings("unchecked")
+	
 	public void createSquare(String squareId, String squareName, String desc,  String sourceSquareId, String userId) {
+		createSquare(squareId, squareName, desc, sourceSquareId, userId, SQUARE_ADMIN_ROLE_NAME);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void createSquare(String squareId, String squareName, String desc,  String sourceSquareId, String userId, String roleId) {
 		if(!existsSquare(sourceSquareId)) {
 			log.error("Not exist source square.");
 			throw new IllegalArgumentException();
@@ -230,13 +248,13 @@ public class SquareService {
 		this.staticTabDAO.copySquare(squareId, sourceSquareId);
 
 		// copy Adminrole
-		List<Adminrole> adminRoleList = adminRoleDAO.select(sourceSquareId);
+		List<Adminrole> adminRoleList = adminRoleDAO.select(SQUARE_ID_DEFAULT);
 		Iterator<Adminrole> rolesIte = adminRoleList.iterator();
 		String squareAdminRoleId = null;
 		while(rolesIte.hasNext()){
 			Adminrole adminRole = rolesIte.next();
 			String newId = adminRoleDAO.insert(adminRole.getRoleid(), adminRole.getName(), adminRole.getPermission(), adminRole.isAllowDelete(), squareId, new Boolean(true));
-			if(SQUARE_ADMIN_ROLE_NAME.equals(adminRole.getRoleid()))
+			if(roleId.equals(adminRole.getRoleid()))
 				squareAdminRoleId = newId;
 		}
 

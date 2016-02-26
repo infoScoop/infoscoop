@@ -238,6 +238,9 @@ public class PortalAdminsService {
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		Portaladmins pa = portalAdminsDAO.selectById(p.getName(), squareid);
 		
+		if(pa == null)
+			return permissionList;
+			
 		try {
 			JSONArray jArray = new JSONArray(pa.getAdminrole().getPermission());
 			for(int i=0;i<jArray.length();i++){
