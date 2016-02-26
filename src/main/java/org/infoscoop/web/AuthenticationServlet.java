@@ -40,6 +40,7 @@ import org.infoscoop.service.AuthCredentialService;
 import org.infoscoop.service.PropertiesService;
 import org.infoscoop.service.SquareService;
 import org.infoscoop.util.RSAKeyManager;
+import org.infoscoop.util.RequestUtil;
 
 public class AuthenticationServlet extends HttpServlet {
 
@@ -73,8 +74,11 @@ public class AuthenticationServlet extends HttpServlet {
 		// process to logout
 		if( url.endsWith("/logout")){
 			// get default square
-			String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 			String logoutUrlStr = "index.jsp";
+			String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+			if(squareId == null) {
+				squareId = RequestUtil.getCookieValue(request.getCookies(), "is-current-square-id");
+			}
 
 			request.getSession().invalidate();
 
@@ -83,7 +87,7 @@ public class AuthenticationServlet extends HttpServlet {
 			credentialCookie.setPath("/");
 			response.addCookie(credentialCookie);
 
-			if(logoutUrl != null) {
+			if(logoutUrl != null && squareId != null) {
 				logoutUrlStr = logoutUrl + "?squareId=" +squareId;
 			}
 
