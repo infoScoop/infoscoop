@@ -219,11 +219,14 @@ public class SquareService {
 	}
 	
 	public void createSquare(String squareId, String squareName, String desc,  String sourceSquareId, String userId) {
-		createSquare(squareId, squareName, desc, sourceSquareId, userId, SQUARE_ADMIN_ROLE_NAME);
+		String maxUser = InfoScoopProperties.getInstance().getProperty(SQUARE_MAX_USER_NUMBER);
+		if(maxUser == null || maxUser.length() == 0) maxUser = DEFAULT_MAX_USER;
+		
+		createSquare(squareId, squareName, desc, sourceSquareId, userId, SQUARE_ADMIN_ROLE_NAME, Integer.parseInt(maxUser));
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void createSquare(String squareId, String squareName, String desc,  String sourceSquareId, String userId, String roleId) {
+	public void createSquare(String squareId, String squareName, String desc,  String sourceSquareId, String userId, String roleId, int maxUserNum) {
 		if(!existsSquare(sourceSquareId)) {
 			log.error("Not exist source square.");
 			throw new IllegalArgumentException();
@@ -232,7 +235,7 @@ public class SquareService {
 		String maxUser = InfoScoopProperties.getInstance().getProperty(SQUARE_MAX_USER_NUMBER);
 		if(maxUser == null || maxUser.length() == 0) maxUser = DEFAULT_MAX_USER;
 
-		this.squareDAO.create(squareId, squareName, desc, userId, Integer.parseInt(maxUser), sourceSquareId);
+		this.squareDAO.create(squareId, squareName, desc, userId, maxUserNum, sourceSquareId);
 		this.forbiddenURLDAO.copySquare(squareId, sourceSquareId);
 		this.gadgetDAO.copySquare(squareId, sourceSquareId);
 		this.gadgetIconDAO.copySquare(squareId, sourceSquareId);
