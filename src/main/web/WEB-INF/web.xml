@@ -101,7 +101,7 @@
 		</init-param>
 		<init-param>
 			<param-name>redirectPath</param-name>
-			<param-value>/index.jsp,/messageConsole.html</param-value>
+			<param-value>/index.jsp</param-value>
 		</init-param>
 	</filter>
 
