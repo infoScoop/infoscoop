@@ -58,6 +58,13 @@ public class SquareDAO extends HibernateDaoSupport {
 						.addOrder(Order.asc(Square.PROP_NAME)));
 	}
 
+	public List<Square> getByParentSquareId(String parentSquareId) {
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Square.class)
+						.add(Restrictions.eq(Square.PROP_PARENT_SQUARE_ID, parentSquareId))
+						.addOrder(Order.asc(Square.PROP_NAME)));
+	}
+
 	public void create(String id, String name, String description, String owner, int maxUserNum, String parentSquareId) {
 		Square square = new Square(id);
 		square.setName(name);

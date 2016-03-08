@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping auto-import="false" package="org.infoscoop.dao.model">
+<hibernate-mapping package="org.infoscoop.dao.model">
  <class name="StaticTab" table="is_static_tabs">
   <meta attribute="sync-DAO">false</meta>
   <composite-id name="Id" class="StaticTabPK">

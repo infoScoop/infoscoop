@@ -85,6 +85,13 @@ public class PropertiesDAO extends HibernateDaoSupport {
 		System.out.println(newInstance().findAllProperties("default"));
 	}
 	
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from Properties where Id.Squareid = ?";
+		
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
+	
 	public void copySquare(String squareId, String defaultSquareId) {
 		Session session  = super.getSession();
 

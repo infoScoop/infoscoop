@@ -57,4 +57,25 @@ INSERT
 		oc.square_id = :defaultSquareId
 		]]>
 	</sql-query>
+    <sql-query name="is_oauth_certificate.copySquareWithKeys">
+        <![CDATA[
+INSERT
+    INTO
+        IS_OAUTH_CERTIFICATE(
+            consumer_key,
+            private_key,
+            certificate,
+            square_id
+        )
+    SELECT
+        oc.consumer_key,
+        private_key,
+        certificate,
+        :squareId
+    FROM
+        IS_OAUTH_CERTIFICATE as oc
+    WHERE
+        oc.square_id = :defaultSquareId
+        ]]>
+    </sql-query>
 </hibernate-mapping>

@@ -24,6 +24,8 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -196,4 +198,18 @@ public class OAuthConsumerDAO extends HibernateDaoSupport {
 		List<OAuthConsumerProp> list = getConsumersNotInId(idList, squareid);
 		super.getHibernateTemplate().deleteAll(getConsumersNotInId(idList, squareid));
 	}
-}
+	
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from OAuthConsumerProp where Id.Squareid = ?";
+		
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
+	
+	public void copySquare(String squareId, String sourceSquareId) {
+		Session session = super.getSession();
+		Query sq = session.getNamedQuery("is_oauth_consumer.copySquare");
+		sq.setString("squareId", squareId);
+		sq.setString("sourceSquareId", sourceSquareId);
+		sq.executeUpdate();
+	}}

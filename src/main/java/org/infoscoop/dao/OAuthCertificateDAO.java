@@ -54,9 +54,25 @@ public class OAuthCertificateDAO extends HibernateDaoSupport {
 		return (OAuthCertificate)results.get(0);
 	}
 
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from OAuthCertificate where Id.Squareid = ?";
+		
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
+	
 	public void copySquare(String squareId, String defaultSquareId) {
 		Session session = super.getSession();
 		Query sq = session.getNamedQuery("is_oauth_certificate.copySquare");
+		sq.setString("squareId", squareId);
+		sq.setString("defaultSquareId", defaultSquareId);
+		sq.executeUpdate();
+	}
+	
+	
+	public void copySquareWithKeys(String squareId, String defaultSquareId) {
+		Session session = super.getSession();
+		Query sq = session.getNamedQuery("is_oauth_certificate.copySquareWithKeys");
 		sq.setString("squareId", squareId);
 		sq.setString("defaultSquareId", defaultSquareId);
 		sq.executeUpdate();

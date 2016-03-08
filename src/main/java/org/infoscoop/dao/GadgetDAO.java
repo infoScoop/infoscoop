@@ -107,6 +107,13 @@ public class GadgetDAO extends HibernateDaoSupport {
 				new Object[] { type, squareid } );
 	}
 	
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from Gadget where Squareid = ?";
+		
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
+	
 	public List<Gadget> list( String type, String squareid ) {
 		return super.getHibernateTemplate().findByCriteria( DetachedCriteria.forClass( Gadget.class )
 				.add( Expression.eq( Gadget.PROP_TYPE,type ))

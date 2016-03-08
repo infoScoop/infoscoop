@@ -60,6 +60,13 @@ public class GadgetIconDAO extends HibernateDaoSupport {
 				DetachedCriteria.forClass(GadgetIcon.class)
 				.add(Expression.eq("Id.Squareid", squareid)));
 	}
+	
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from GadgetIcon where Id.Squareid = ?";
+		
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
 
 	public void copySquare(String squareId, String defaultSquareId) {
 		Session session = super.getSession();

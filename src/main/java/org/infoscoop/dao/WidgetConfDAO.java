@@ -129,6 +129,12 @@ public class WidgetConfDAO extends HibernateDaoSupport {
 		return confs;
 	}
 
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from WidgetConf where Id.Squareid = ?";
+		
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
 
 	public void copySquare(String squareId, String defaultSquareId) {
 		Session session  = super.getSession();

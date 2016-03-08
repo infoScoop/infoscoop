@@ -76,5 +76,32 @@
             </key>
             <one-to-many class="OAuth2Token" />  
         </set>      
-	</class>	
+	</class>
+    <sql-query name="is_oauth_consumer.copySquare">
+        <![CDATA[
+INSERT
+    INTO
+        IS_OAUTH_CONSUMERS(
+            id,
+            service_name,
+            consumer_key,
+            consumer_secret,
+            signature_method,
+            description,
+            square_id
+        )
+    SELECT
+        oc.id,
+        oc.service_name,
+        oc.consumer_key,
+        oc.consumer_secret,
+        oc.signature_method,
+        oc.description,
+        :squareId
+    FROM
+        IS_OAUTH_CONSUMERS as oc
+    WHERE
+        oc.square_id = :sourceSquareId
+        ]]>
+    </sql-query>
 </hibernate-mapping>

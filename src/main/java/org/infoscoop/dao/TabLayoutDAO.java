@@ -430,6 +430,13 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 		return latestLastModifiedTime;
 	}
 	
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from TabLayout where Id.Squareid = ?";
+		
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
+	
 	public void copySquare(String squareId, String defaultSquareId) {
 		Session session  = super.getSession();
 
