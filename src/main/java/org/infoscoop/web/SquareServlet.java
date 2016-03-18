@@ -7,7 +7,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +19,6 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IAccountManager;
-import org.infoscoop.account.simple.AccountAttributeName;
 import org.infoscoop.service.InvitationService;
 import org.infoscoop.service.SquareService;
 import org.infoscoop.util.StringUtil;
@@ -71,15 +69,20 @@ public class SquareServlet extends HttpServlet {
 			response.sendRedirect("../index.jsp");
 		}
 		else if(MYSQUARE_PATH.equals(action)){
+			IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
 			IAccount account;
 			try {
-				account = AuthenticationService.getInstance().getAccountManager().getUser(uid);
+				account = accountManager.getUser(uid);
+				String mySquareId = account.getMySquareId();
+
+				// set mysquare id to default square id
+				accountManager.updateDefaultSquare(uid, mySquareId);
+				changeCurrentSquare(mySquareId, request);
 			} catch (Exception e) {
 				log.error("Get account information failed. " + e.getMessage(), e);
 				throw new RuntimeException(e);
 			}
-			String mySquareId = account.getMySquareId();
-			changeCurrentSquare(mySquareId, request);
+
 			response.sendRedirect("../index.jsp");
 		}
 	}

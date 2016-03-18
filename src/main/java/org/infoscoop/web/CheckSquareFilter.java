@@ -71,8 +71,11 @@ public class CheckSquareFilter implements javax.servlet.Filter {
 						IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
 						IAccount account = accountManager.getUser(uid);
 						String defaultId = account.getDefaultSquareId();
-						if(defaultId.equals(squareId))
-							accountManager.updateDefaultSquare(uid, uid);
+						if(defaultId.equals(squareId)) {
+							// set mysquare id to default square id
+							String mySquareId = account.getMySquareId();
+							accountManager.updateDefaultSquare(uid, mySquareId);
+						}
 
 						httpRes.sendRedirect(httpReq.getContextPath() + "/square/closed.jsp");
 					}
