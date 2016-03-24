@@ -292,23 +292,32 @@ public class SquareService {
 	public Map<String, Object> getBelongSquaresNames(String userId, String currentSquareId) throws Exception{
 		IAccount account = AuthenticationService.getInstance().getAccountManager().getUser(userId);
 		List<Square> squares = squareDAO.getSquares(account.getBelongids());
-		List<Map<String, String>> belongSquaresName = new ArrayList<Map<String, String>>();
+		List<Map<String, Object>> belongUserSquaresName = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> belongServiceSquaresName = new ArrayList<Map<String, Object>>();
 		Map<String, Object> squareNameMap = new HashMap<String, Object>();
 
 		for(Iterator<Square> itr = squares.iterator();itr.hasNext();) {
 			Square square = itr.next();
-			Map<String, String> map = new HashMap<String, String>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("id", square.getId());
 			map.put("name", square.getName());
+			
 			if(currentSquareId.equals(square.getId())){
 				squareNameMap.put("current", map);
+			}
+			
+			if(!SQUARE_ID_DEFAULT.equals(square.getParentSquareId())){
+				// service square
+				belongServiceSquaresName.add(map);
 			}else {
-				belongSquaresName.add(map);
+				// user square
+				belongUserSquaresName.add(map);
 			}
 		}
 
-		squareNameMap.put("belong", belongSquaresName);
-
+		squareNameMap.put("belong", belongUserSquaresName);
+		squareNameMap.put("belongService", belongServiceSquaresName);
+		
 		return squareNameMap;
 	}
 
@@ -323,6 +332,16 @@ public class SquareService {
 
 	public List<Square> getOwnerSquare(String userId) {
 		return squareDAO.getByOwner(userId);
+	}
+
+	/**
+	 * Only user squares.
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public List<Square> getOwnerUserSquare(String userId) {
+		return squareDAO.getByOwnerAndSquareId(userId, SQUARE_ID_DEFAULT);
 	}
 
 	public boolean existsSquare(String squareId) {
@@ -391,7 +410,8 @@ public class SquareService {
 		String maxNum = AuthenticationService.getInstance().getAccountManager().getAccountAttributeValue(userId, AccountAttributeName.OWNED_SQUARE_NUMBER);
 
 		if(maxNum != null && Integer.parseInt(maxNum) > 0) {
-			List<Square> squares = getOwnerSquare(userId);
+			List<Square> squares = getOwnerUserSquare(userId);
+			
 			if(Integer.parseInt(maxNum) <= squares.size()) {
 				result = true;
 			}

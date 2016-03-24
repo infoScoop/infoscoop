@@ -17,6 +17,9 @@
 
 package org.infoscoop.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
@@ -25,9 +28,6 @@ import org.hibernate.criterion.Restrictions;
 import org.infoscoop.dao.model.Square;
 import org.infoscoop.util.SpringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * The DAO class to get and update the information of square.
@@ -55,6 +55,14 @@ public class SquareDAO extends HibernateDaoSupport {
 		return super.getHibernateTemplate().findByCriteria(
 				DetachedCriteria.forClass(Square.class)
 						.add(Restrictions.eq(Square.PROP_OWNER, userId))
+						.addOrder(Order.asc(Square.PROP_NAME)));
+	}
+
+	public List<Square> getByOwnerAndSquareId(String ownerId, String squareId) {
+		return super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(Square.class)
+						.add(Restrictions.eq(Square.PROP_OWNER, ownerId))
+						.add(Restrictions.eq(Square.PROP_PARENT_SQUARE_ID, squareId))
 						.addOrder(Order.asc(Square.PROP_NAME)));
 	}
 

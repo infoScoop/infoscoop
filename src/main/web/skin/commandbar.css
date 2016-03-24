@@ -338,15 +338,20 @@ div#portal-command > table{
 	background-position: 3px center;
 }
 
-#belong-square{
-	background: url("./imgs/group.gif") no-repeat scroll 3px center rgba(0, 0, 0, 0);
-	background-position: 3px center;
-}
-
 .portal-square-menu-hr{
 	float: left;
 	color: #e0e0e0;
 	width: 100%;
+}
+
+#portal-square-menu-body .portal-user-menu-item-label.belong-square{
+    background: url("./imgs/group.gif") no-repeat scroll 3px center rgba(0, 0, 0, 0);
+    background-position: 3px center;
+}
+
+#portal-square-menu-body .portal-user-menu-item-label.belong-service-square{
+    background: url("./imgs/s-square.png") no-repeat scroll 3px center rgba(0, 0, 0, 0);
+    background-position: 3px center;
 }
 
 /** user menu */
