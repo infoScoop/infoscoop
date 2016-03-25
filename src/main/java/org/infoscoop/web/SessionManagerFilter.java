@@ -47,6 +47,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
+import org.infoscoop.account.IAccount;
 import org.infoscoop.account.SessionCreateConfig;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
@@ -78,6 +79,8 @@ public class SessionManagerFilter implements Filter {
 	public static String LOGINUSER_SESSION_ID_ATTR_NAME = "SessionId";
 	public static String LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME = "CurrentSquareId";
 
+	public static String COOKIE_SQUARE_ID_CURRENT =  "is-current-square-id";
+	
 	private String loginPath = "login.jsp";
 	private Collection excludePaths = new HashSet();
 	private Collection<String> excludePathx = new HashSet<String>();
@@ -278,7 +281,7 @@ public class SessionManagerFilter implements Filter {
 							int keepPeriod = 7;
 							try {
 								keepPeriod = Integer.parseInt( PropertiesDAO.newInstance()
-										.findProperty("loginStateKeepPeriod", currentSquareId).getValue());
+										.findProperty("loginStateKeepPeriod", SquareService.SQUARE_ID_DEFAULT).getValue());
 							} catch( Exception ex ) {
 								log.warn("",ex );
 							}
@@ -294,7 +297,15 @@ public class SessionManagerFilter implements Filter {
 								try {
 									uid = tryAutoLogin( cookie );
 									httpReq.getSession().setAttribute("Uid",uid );
-
+									
+									currentSquareId = RequestUtil.getCookieValue(httpReq.getCookies(), COOKIE_SQUARE_ID_CURRENT);
+									if(currentSquareId == null || currentSquareId.length() == 0){
+										IAccount account = AuthenticationService.getInstance().getAccountManager().getUser(uid);
+										currentSquareId = account.getDefaultSquareId();
+									}
+									
+									addCurrentSquareIdToSession(currentSquareId, request);
+									
 									log.info("auto login success.");
 								} catch( Exception ex ) {
 									log.info("auto login failed.",ex );
@@ -306,13 +317,13 @@ public class SessionManagerFilter implements Filter {
 			}
 
 			if( uid == null && SessionCreateConfig.doLogin() && !isExcludePath(httpReq.getServletPath())) {
-				String cookieVal = RequestUtil.getCookieValue(httpReq.getCookies(), "is-current-square-id");
+				String cookieCurrentSquareId = RequestUtil.getCookieValue(httpReq.getCookies(), COOKIE_SQUARE_ID_CURRENT);
 				boolean squareFlg = false;
 				if(matcher.find()) {
 					param = matcher.group(1);
 					squareFlg = true;
-				}else if(cookieVal != null && cookieVal.length() > 0){
-					param = cookieVal;
+				}else if(cookieCurrentSquareId != null && cookieCurrentSquareId.length() > 0){
+					param = cookieCurrentSquareId;
 					squareFlg = true;
 				}
 

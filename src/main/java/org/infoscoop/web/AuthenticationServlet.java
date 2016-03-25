@@ -190,9 +190,7 @@ public class AuthenticationServlet extends HttpServlet {
 
 				int keepPeriod = 7;
 				try {
-					String currentSquareId = UserContext.instance().getUserInfo().getCurrentSquareId();
-					if(currentSquareId != null)
-						keepPeriod = Integer.parseInt( PropertiesDAO.newInstance().findProperty("loginStateKeepPeriod", currentSquareId).getValue());
+					keepPeriod = Integer.parseInt( PropertiesDAO.newInstance().findProperty("loginStateKeepPeriod", SquareService.SQUARE_ID_DEFAULT).getValue());
 				} catch( Exception ex ) {
 					log.warn("",ex );
 				}
