@@ -306,15 +306,14 @@ public class SessionManagerFilter implements Filter {
 			}
 
 			if( uid == null && SessionCreateConfig.doLogin() && !isExcludePath(httpReq.getServletPath())) {
+				String cookieVal = RequestUtil.getCookieValue(httpReq.getCookies(), "is-current-square-id");
 				boolean squareFlg = false;
 				if(matcher.find()) {
 					param = matcher.group(1);
 					squareFlg = true;
-				}
-
-				String cookieVal = RequestUtil.getCookieValue(httpReq.getCookies(), "is-current-square-id");
-				if(param.lastIndexOf("index.jsp") >= 0) {
-					param = "".equals(cookieVal) ? param : cookieVal;
+				}else if(cookieVal != null && cookieVal.length() > 0){
+					param = cookieVal;
+					squareFlg = true;
 				}
 
 				String url = loginPath;
