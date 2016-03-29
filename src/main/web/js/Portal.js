@@ -2515,6 +2515,32 @@ IS_Portal.CommandBar = {
 					$('portal-square-menu-label').appendChild(document.createTextNode(results.current.name));
 				}
 
+                var createSquareUI = function(belongSquare, isServiceSquare){
+                    var title = belongSquare.name;
+                    var labelCss = isServiceSquare ? "belong-service-square":"belong-square";
+                    var item = $.DIV({
+                        className: 'portal-user-menu-item',
+                        'style': 'cursor: pointer;'
+                    });
+                    var itemLink = $.A({
+                        className: 'portal-user-menu-link',
+                        href: 'javascript:void(0);',
+                        title: title
+                    });
+                    var itemLabel = $.DIV({
+                        className: 'portal-user-menu-item-label portal-square-menu-item-label ' + labelCss
+                    });
+                    itemLabel.appendChild(document.createTextNode(title));
+                    itemLink.appendChild(itemLabel);
+                    item.appendChild(itemLink);
+
+                    Event.observe(itemLink, "click",function() {
+                        location.href = 'squaresrv/doChange?square-id=' + this.id;
+                    }.bind(belongSquare));
+                    
+                    return item;
+                }
+				
 				// add field
 				if(results.belong) {
 					portalSquareMenuBody.appendChild($.HR({className: 'portal-square-menu-hr'}));
@@ -2526,32 +2552,6 @@ IS_Portal.CommandBar = {
                         if(results.current.id != results.belongService[i].id)
                             portalSquareMenuBody.appendChild(createSquareUI(results.belongService[i], true));
                     }
-					
-					function createSquareUI(belongSquare, isServiceSquare){
-                        var title = belongSquare.name;
-                        var labelCss = isServiceSquare ? "belong-service-square":"belong-square";
-                        var item = $.DIV({
-                            className: 'portal-user-menu-item',
-                            'style': 'cursor: pointer;'
-                        });
-                        var itemLink = $.A({
-                            className: 'portal-user-menu-link',
-                            href: 'javascript:void(0);',
-                            title: title
-                        });
-                        var itemLabel = $.DIV({
-                            className: 'portal-user-menu-item-label portal-square-menu-item-label ' + labelCss
-                        });
-                        itemLabel.appendChild(document.createTextNode(title));
-                        itemLink.appendChild(itemLabel);
-                        item.appendChild(itemLink);
-
-                        Event.observe(itemLink, "click",function() {
-                            location.href = 'squaresrv/doChange?square-id=' + this.id;
-                        }.bind(belongSquare));
-                        
-                        return item;
-					}
 				}
 			  },
 			  onFailure: function(t) {
