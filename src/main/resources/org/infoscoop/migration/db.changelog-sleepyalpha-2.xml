@@ -536,4 +536,28 @@ UPDATE ${migration.defaultSchemaWithDot}IS_ACCOUNTS SET my_square_id=uid WHERE m
             <where>name='owned_square_number'</where>
         </update>
     </changeSet>
+    
+<changeSet id="infoscoop_sleepyalpha2_621_1" author="aknishiumi">
+    <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_621_1">
+        <not>
+          <tableExists schemaName="${migration.defaultSchema}" tableName="IS_NOTIFICATIONS"/>
+        </not>
+    </preConditions>
+    <createTable tableName="IS_NOTIFICATIONS" schemaName="${migration.defaultSchema}">
+        <column name="ID" autoIncrement="true" type="INT">
+            <constraints primaryKey="true" />
+        </column>
+        <column name="SQUARE_ID" type="VARCHAR(64)">
+            <constraints nullable="false" />
+        </column>
+        <column name="BODY" type="VARCHAR(256)" />
+        <column name="TYPE" type="VARCHAR(32)">
+            <constraints nullable="false" />
+        </column>
+        <column name="LASTMODIFIED" type="TIMESTAMP">
+            <constraints nullable="false" />
+        </column>
+    </createTable>
+</changeSet>
+
 </databaseChangeLog>
