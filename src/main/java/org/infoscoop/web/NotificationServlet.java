@@ -20,19 +20,27 @@ public class NotificationServlet extends HttpServlet {
 	public void init() {}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		String startDateStr = request.getParameter("startDate");
+		String startDateStr = request.getParameter("referenceDate");
+		String offsetStr = request.getParameter("offset");
+		String limitStr = request.getParameter("limit");
 		long startDateLong = 0;
+		int offset = 0;
+		int limit = -1;
 		
 		try{
 			if(startDateStr != null)
 				startDateLong = Long.parseLong(startDateStr);
+			if(offsetStr != null)
+				offset = Integer.parseInt(offsetStr);
+			if(limitStr != null)
+				limit = Integer.parseInt(limitStr);
 		}catch(NumberFormatException e){
-			log.error("invalid startDate [" + startDateStr + "]", e);
+			log.error("invalid parameter.", e);
 			throw new ServletException(e);
 		}
 		Date startDate = new Date(startDateLong);
 		
-		String resultJSON = NotificationService.getHandle().getMyNotificationsJSON(0, -1, startDate);
+		String resultJSON = NotificationService.getHandle().getMyNotificationsJSON(offset, limit, startDate);
 		
 		response.setContentType("text/plain; charset=UTF-8");
 		response.setHeader("Pragma", "no-cache");
