@@ -63,7 +63,7 @@ $.widget("infoscoop.NotificationCenter", {
 			method:'get',
 			asynchronous:true,
 			requestHeaders: headers.flatten(),
-			onSuccess: defer.resolve,
+			onSuccess: defer.resolve.bind(this),
 			onFailure: function(t) {
 				msg.error(IS_R.getResource( IS_R.lb_checkNewArriedMessageFailure +'{0} -- {1}',[t.status, t.statusText]));
 			},
@@ -101,7 +101,8 @@ $.widget("infoscoop.NotificationCenter", {
 
 		promise.done(function(response){
 			var data = $jq.parseJSON(response.responseText);
-			if(label.length > 0) {
+			if((data.length > 0 || this._oldArrivalArray.length > 0)
+				&& label.length > 0) {
 				label.remove();
 				$jq('#notification_noitem_label_hr').remove();
 			}
