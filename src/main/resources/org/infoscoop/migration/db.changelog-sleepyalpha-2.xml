@@ -558,6 +558,7 @@ UPDATE ${migration.defaultSchemaWithDot}IS_ACCOUNTS SET my_square_id=uid WHERE m
             <constraints nullable="false" />
         </column>
     </createTable>
+    <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_NOTIFICATIONS" constraintName="fk_is_notifications_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
 </changeSet>
 
 </databaseChangeLog>

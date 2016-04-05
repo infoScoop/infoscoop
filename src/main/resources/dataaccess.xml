@@ -444,4 +444,9 @@
             <ref bean="sessionFactory"/>
         </property>
     </bean>
+    <bean id="notificationDAO" class="org.infoscoop.dao.NotificationDAO">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
 </beans>

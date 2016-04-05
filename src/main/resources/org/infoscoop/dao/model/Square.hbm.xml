@@ -56,4 +56,13 @@
 				length="64"
 				/>
 	</class>
+	
+    <query name="is_squares.serviceIdList">
+        <![CDATA[
+select distinct sq.parentSquareId
+  from Square as sq, AccountSquare as acsq
+  where sq.parentSquareId=acsq.squareId
+  and acsq.accountId=:accountId
+        ]]>
+    </query>
 </hibernate-mapping>

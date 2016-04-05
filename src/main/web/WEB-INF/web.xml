@@ -689,6 +689,15 @@
         <servlet-name>DesignServlet</servlet-name>
         <servlet-class>org.infoscoop.web.DesignServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NotificationServlet</servlet-name>
+        <servlet-class>org.infoscoop.web.NotificationServlet</servlet-class>
+    </servlet>
+
+  <servlet-mapping>
+    <servlet-name>NotificationServlet</servlet-name>
+    <url-pattern>/notification</url-pattern>
+  </servlet-mapping>
 
 	<servlet-mapping>
   	<servlet-name>OAuthCertificateServlet</servlet-name>

@@ -22,6 +22,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -71,6 +73,13 @@ public class SquareDAO extends HibernateDaoSupport {
 				DetachedCriteria.forClass(Square.class)
 						.add(Restrictions.eq(Square.PROP_PARENT_SQUARE_ID, parentSquareId))
 						.addOrder(Order.asc(Square.PROP_NAME)));
+	}
+
+	public List<String> getParentSquaresIDByUid(String uid) {
+		Session session = super.getSession();
+		Query query = session.getNamedQuery("is_squares.serviceIdList");
+		query.setString("accountId", uid);
+		return query.list();
 	}
 
 	public void create(String id, String name, String description, String owner, int maxUserNum, String parentSquareId) {

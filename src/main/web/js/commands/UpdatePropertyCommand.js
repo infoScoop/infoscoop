@@ -629,6 +629,31 @@ IS_Commands.ExecLogoffProcessCommand.prototype.toRequestString = function(){
 };
 
 /**
+ * ExecNoticeConfirmCommand
+ */
+IS_Commands.UpdateNoticeConfirmDateCommand = function(){
+    this.type = "UpdateNoticeConfirmDate";
+    this.id = this.type;
+    this.field = "noticeConfirmDateTime";
+};
+
+IS_Commands.UpdateNoticeConfirmDateCommand.prototype.parseResponse = function(docEl){
+    var attrs=docEl.attributes;
+    var status=attrs.getNamedItem("status").value;
+    if(status != "ok"){
+        var reason = attrs.getNamedItem("message").value;
+        msg.error("execute noticeConfirmProcess "+ this.id +" is failed.\n\n" + reason);
+    }
+};
+
+IS_Commands.UpdateNoticeConfirmDateCommand.prototype.toRequestString = function(){
+    return is_simpleXmlify({
+        type:this.type,
+        id:this.id,
+        field:this.field
+    }, "command");
+};
+/**
  * UpdateRssMetaCommand
  */
 IS_Commands.UpdateRssMetaCommand = function(contentType, url, rssUrl, title, pubDate){
