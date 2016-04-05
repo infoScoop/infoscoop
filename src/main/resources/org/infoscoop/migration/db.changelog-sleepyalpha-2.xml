@@ -561,4 +561,17 @@ UPDATE ${migration.defaultSchemaWithDot}IS_ACCOUNTS SET my_square_id=uid WHERE m
     <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_NOTIFICATIONS" constraintName="fk_is_notifications_square_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="is_squares"/>
 </changeSet>
 
+<changeSet id="infoscoop_sleepyalpha2_598_3" author="aknishiumi">
+    <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_598_1">
+        <not>
+            <columnExists schemaName="${migration.defaultSchema}" tableName="IS_SQUARES" columnName="square_status"/>
+        </not>
+    </preConditions>
+    <addColumn schemaName="${migration.defaultSchema}" tableName="IS_SQUARES">
+        <column name="square_status" type="varchar(64)">
+            <constraints nullable="true"/>
+        </column>
+    </addColumn>
+</changeSet>
+
 </databaseChangeLog>
