@@ -77,6 +77,7 @@
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/information.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/ticker.css">
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/searchengine.css">
+    <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/skin/notification-center.css">
 	<!--end styles css-->
 
 	<!-- prototype-window -->
@@ -128,6 +129,7 @@
 			country : "<%=request.getLocale().getCountry() %>",
 			japaneseOnly : false,
 			useMultitenantMode : <%= InfoScoopProperties.getInstance().isUseMultitenantMode() %>,
+			notificationPollingRate : <%= InfoScoopProperties.getInstance().getGlobalmessagesPollingRate() %>,
 			globalMessages : {
 			    enable: <%= InfoScoopProperties.getInstance().isGlobalmessagesEnable() %>,
 			    rssUrl: "<%= InfoScoopProperties.getInstance().getGlobalmessagesRssUrl() %>",
@@ -203,6 +205,7 @@
     <script src="<%=staticContentURL%>/js/CommonAreaDesign.js"></script>
     <script src="<%=staticContentURL%>/js/CommonAreaWidgetModal.js"></script>
     <script src="<%=staticContentURL%>/js/GlobalMessages.js"></script>
+    <script src="<%=staticContentURL%>/js/Notification.js"></script>
     <script src="<%=staticContentURL%>/js/guidance/Guidance.js"></script>
     <script src="<%=staticContentURL%>/js/square/Square.js"></script>
     <!-- prototype-window -->
@@ -237,7 +240,8 @@
     <script src="<%=staticContentURL%>/js/lib/jquery-ui/jquery.ui.tabs.min.js"></script>
     <link href="<%=staticContentURL%>/js/lib/evol.colorpicker/css/evol.colorpicker.min.css" rel="stylesheet" />
     <script src="<%=staticContentURL%>/js/lib/evol.colorpicker/js/evol.colorpicker.min.js" type="text/javascript"></script>
-    
+    <script src="<%=staticContentURL%>/js/utils/NotificationCenter.js"></script>
+
     <script type="text/javascript">
         jQuery.noConflict();
         $jq = jQuery;
@@ -327,6 +331,7 @@
 	<%}else{%>
 	<body style="margin-top:0;padding-top:0;" class="infoScoop">
 	<%}%>
+		<div id="notification-center" class="notification_center"></div>
 		<div id="portal-header-container">
 			<table id="command-bar" width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tbody>
@@ -361,7 +366,11 @@
 								</div>
 							</div>
 						</td>
-						<td width="16px"><img id="messageIcon" src="<%=staticContentURL%>/skin/imgs/information.png" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();"/></td>
+						<!--td width="16px"><img id="messageIcon" src="<%=staticContentURL%>/skin/imgs/information.png" style="cursor:pointer;" onclick="javascript:msg.showPopupDialog();"/></td-->
+						<td width="20px" onclick="IS_Notification.clickNotificationIcon();">
+							<div class="notification_icon_badge" style="display:none;"></div>
+							<img class="notification_icon" src="<%=staticContentURL%>/skin/imgs/bell-white.png"/>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -375,7 +384,6 @@
 			<div id="portal-header"></div>
 			<div id="error-msg-bar" style="display:none;"></div>
 			<div id="message-bar" style="display:none;"><div id="message-list"></div><div id="message-list-more" style="display:none;"></div><div id="message-bar-controles"></div></div>
-		
 		</div>
 		<div id="portal-body">
 			<div id="tab-container"></div>

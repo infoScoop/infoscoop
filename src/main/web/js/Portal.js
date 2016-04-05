@@ -130,9 +130,10 @@ IS_Portal.start = function() {
 	if(IS_Portal.globalMessages.enable){
 	    new IS_GlobalMessages();
 	}
+	IS_Notification = new IS_Notification();
 	IS_Portal.sidePanel = new IS_SidePanel();
 	IS_Portal.refresh = new IS_AutoReload();
-	
+
 	if(fixedPortalHeader) {
 		Event.observe(window, 'resize', IS_Portal.adjustPanelHeight, false);
 		IS_EventDispatcher.addListener("adjustedMessageBar","",IS_Portal.adjustPanelHeight);
