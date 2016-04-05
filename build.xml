@@ -397,6 +397,7 @@
 		<copy todir="${build.main}/skin">
 			<fileset dir="${src.main.web}/skin" includes="**/igtab.css"/>
 		</copy>
+		<copy todir="${build.main}/js/utils" file="${src.main.web}/js/utils/NotificationCenter.js" />
 
 		<move todir="${build.main}/skin">
 			<fileset dir="${build.main}/skin">
