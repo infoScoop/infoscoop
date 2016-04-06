@@ -29,18 +29,21 @@ public class NotificationDAO extends HibernateDaoSupport  {
     	Session session = super.getSession();
     	Criteria criteria = session.createCriteria(Notification.class);
     	criteria.setFirstResult(offset);
-    	
-    	SimpleExpression typeGlobalExp = Restrictions.eq(Notification.PROP_TYPE, BaseNotification.NOTIFICATION_TYPE.GLOBAL.name());
-    	Criterion inSquareExp = Restrictions.in(Notification.PROP_SQUARE_ID, squareIdList);
-    	
-    	criteria.add(Restrictions.or(typeGlobalExp, inSquareExp));
-    	
+
+		SimpleExpression typeGlobalExp = Restrictions.eq(Notification.PROP_TYPE, BaseNotification.NOTIFICATION_TYPE.GLOBAL.name());
+		if(squareIdList.size() > 0) {
+			Criterion inSquareExp = Restrictions.in(Notification.PROP_SQUARE_ID, squareIdList);
+			criteria.add(Restrictions.or(typeGlobalExp, inSquareExp));
+		} else {
+			criteria.add(typeGlobalExp);
+		}
+
         if(limit >= 0){
         	criteria.setMaxResults(limit);
     	}
     	
         if(startDate != null){
-        	criteria.add(Restrictions.ge(Notification.PROP_LASTMODIFIED, startDate)); 
+        	criteria.add(Restrictions.ge(Notification.PROP_LASTMODIFIED, startDate));
         }
         
         criteria.addOrder(Order.desc(Notification.PROP_LASTMODIFIED));
