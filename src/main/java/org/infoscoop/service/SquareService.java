@@ -49,6 +49,7 @@ import org.infoscoop.dao.TabLayoutDAO;
 import org.infoscoop.dao.WidgetConfDAO;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Square;
+import org.infoscoop.dao.model.base.BaseSquare;
 import org.infoscoop.properties.InfoScoopProperties;
 import org.infoscoop.util.SpringUtil;
 
@@ -420,6 +421,22 @@ public class SquareService {
 		return result;
 	}
 
+	public boolean isMaintenanceStatus(String squareid){
+		if(squareid == null)
+			return false;
+		
+		Square square = squareDAO.get(squareid);
+		if(square == null)
+			return false;
+		
+		String status = square.getSquareStatus();
+		
+		if(status == null){
+			return isMaintenanceStatus(square.getParentSquareId());
+		}
+		return square.getSquareStatus().equals(BaseSquare.STATUS_TYPE.MAINTENANCE.name());
+	}
+	
 	public static String generateSquareId(){
 		return (UUID.randomUUID().toString()).replaceAll("-", "");
 	}

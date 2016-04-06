@@ -35,7 +35,13 @@ public abstract class BaseSquare  implements Serializable {
 	public static String PROP_OWNER ="owner";
 	public static String PROP_MAX_USER_NUM = "maxUserNum";
 	public static String PROP_PARENT_SQUARE_ID = "parentSquareId";
+	public static String PROP_SQUARE_STATUS = "squareStatus";
 
+    public static enum STATUS_TYPE {
+    	MAINTENANCE,
+    	RUNNING
+    }
+	
 	// constructors
 	public BaseSquare () {
 		initialize();
@@ -86,6 +92,7 @@ public abstract class BaseSquare  implements Serializable {
 	private java.lang.String owner;
 	private java.lang.Integer maxUserNum;
 	private java.lang.String parentSquareId;
+	private java.lang.String squareStatus;
 
 	/**
 	 * Return the unique identifier of this class
@@ -160,6 +167,14 @@ public abstract class BaseSquare  implements Serializable {
 
 	public void setParentSquareId(String parentSquareId) {
 		this.parentSquareId = parentSquareId;
+	}
+
+	public java.lang.String getSquareStatus() {
+		return squareStatus;
+	}
+
+	public void setSquareStatus(java.lang.String squareStatus) {
+		this.squareStatus = squareStatus;
 	}
 
 	public boolean equals (Object obj) {
