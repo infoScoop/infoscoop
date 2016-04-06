@@ -56,6 +56,7 @@ IS_Notification.prototype.classDef = function(){
 
 			var commnad = new IS_Commands.UpdateNoticeConfirmDateCommand();
 			IS_Request.CommandQueue.addCommand(commnad);
+			IS_Request.CommandQueue.fireRequest();
 
 			var hideBox = $jq('<div/>').attr({id: 'notification-hide-box'}).css({
 				position: 'fixed',
@@ -85,6 +86,7 @@ IS_Notification.prototype.classDef = function(){
 			this.lastNoticeDate = new Date();
 			var commnad = new IS_Commands.UpdateNoticeConfirmDateCommand();
 			IS_Request.CommandQueue.addCommand(commnad);
+			IS_Request.CommandQueue.fireRequest();
 		}
 
 		// Request
