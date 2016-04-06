@@ -627,4 +627,33 @@ UPDATE ${migration.defaultSchemaWithDot}IS_ACCOUNTS SET my_square_id=uid WHERE m
             <column name="square_id" value="default" />
         </insert>
     </changeSet>
+    <changeSet id="infoscoop_sleepyalpha2_621_3" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_621_3">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='lb_notification_system_notice' and type='js';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_notification_system_notice" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Global Notification" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_notification_system_notice" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="システムからのお知らせ" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_notification_system_notice" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="全局通知" />
+            <column name="square_id" value="default" />
+        </insert>
+    </changeSet>
 </databaseChangeLog>

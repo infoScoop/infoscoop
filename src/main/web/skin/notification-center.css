@@ -1,24 +1,39 @@
 .notification_center {
 	display:none;
-	width: 300px;
+	width: 320px;
 	height: 100%;
 	margin-left: 100%;
 	position: absolute;
 	background-color: #404040;
 	color: #fff;
 	z-index: 100000;
+	overflow-x: auto;
 }
 
 .notification_item {
 	margin: 10px;
 }
 
+.notification_item div {
+	width: 100%;
+	font-size: 14px;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+
+.notification_item div img {
+	margin-right: 2px;
+	border-radius: 3px;
+}
+
 .notification_post_date, .notification_content {
 	font-size: 12px;
 	color: #ddd;
 	margin-left: 5px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
+}
+
+.notification_content {
+	margin-top: 5px;
 }
 
 .notification_old_view_btn {
@@ -40,7 +55,8 @@
 .notification_noitem_label {
 	text-align: center;
 	color: #ddd;
-	padding: 10px 0;
+	padding: 10px 0 0 0;
+	font-size: 14px;
 }
 
 .notification_center_slidein {
@@ -63,21 +79,21 @@
 
 @keyframes slidein {
 	0% { margin-left: 0; margin-right: 0; }
-	100% { margin-left: -300px; margin-right: 300px; }
+	100% { margin-left: -320px; margin-right: 320px; }
 }
 
 @-webkit-keyframes slidein {
 	0% { margin-left: 0; margin-right: 0; }
-	100% { margin-left: -300px; margin-right: 300px; }
+	100% { margin-left: -320px; margin-right: 320px; }
 }
 
 @keyframes slideout {
-	0% { margin-left: -300px; margin-right: 300px; }
+	0% { margin-left: -320px; margin-right: 320px; }
 	100% { margin-left: 0; margin-right: 0; }
 }
 
 @-webkit-keyframes slideout {
-	0% { margin-left: -300px; margin-right: 300px; }
+	0% { margin-left: -320px; margin-right: 320px; }
 	100% { margin-left: 0; margin-right: 0; }
 }
 

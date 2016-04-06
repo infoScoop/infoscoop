@@ -32,20 +32,23 @@ IS_Notification.prototype.classDef = function(){
 	this.clickNotificationIcon = function() {
 		if(!this.notificationCenter.NotificationCenter('option', 'disabled')) {
 			//hide
+			this.notificationCenter.NotificationCenter('disable');
+
 			$jq('body').addClass('notification_center_slideout').one('webkitAnimationEnd mozAnimationEnd oAnimationEnd oanimationend animationend',function(){
 				$jq('body').removeClass('notification_center_slidein').removeClass('notification_center_slideout');
 				$jq("#notification-center").hide();
 			});
 			this.notificationCenter.NotificationCenter('clearList');
-			this.notificationCenter.NotificationCenter('disable');
+			$jq('#notification-hide-box').remove();
 		} else {
 			// show
+			this.notificationCenter.NotificationCenter('enable');
+
 			this.lastNoticeDate = new Date();
 			this.notificationCenter.NotificationCenter('loadContents');
 
 			$jq("#notification-center").css({
-				display: "block",
-				height: $jq(window).height()+'px'
+				display: "block"
 			});
 			$jq('body').addClass('notification_center_slidein');
 			$jq('.notification_icon_badge').hide();
@@ -54,14 +57,26 @@ IS_Notification.prototype.classDef = function(){
 			var commnad = new IS_Commands.UpdateNoticeConfirmDateCommand();
 			IS_Request.CommandQueue.addCommand(commnad);
 
-//			$jq(window).on('resize', this._resizeHeight)
-			this.notificationCenter.NotificationCenter('enable');
+			var hideBox = $jq('<div/>').attr({id: 'notification-hide-box'}).css({
+				position: 'fixed',
+				top: '0',
+				left: '0',
+				zIndex: '10000',
+			});
+			hideBox.one('tap click', this.clickNotificationIcon.bind(this));
+			$jq('body').append(hideBox);
+
+			this._ajustSize();
+			$jq(window).on('resize', this._ajustSize);
 		}
 	}
 
-	this._resizeHeight = function() {
+	this._ajustSize = function() {
 		var h = Math.max.apply( null, [document.body.clientHeight , document.body.scrollHeight, document.documentElement.scrollHeight, document.documentElement.clientHeight] );
+		var w = (Math.max.apply( null, [document.body.clientWidth , document.documentElement.clientWidth] )) - 320;
 		$jq('#notification-center').css('height', h+'px');
+		$jq('#notification-hide-box').css('height', h+'px');
+		$jq('#notification-hide-box').css('width', w+'px');
 	}
 
 	this.checkNotifications = function() {

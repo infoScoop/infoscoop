@@ -7,19 +7,27 @@ $.widget("infoscoop.NotificationCenter", {
 
 	_createContent: function(content) {
 		var base = $jq('<div/>').addClass('notification_item');
-		var serviceTitle = $jq('<div/>');
+		var titleBase = $jq('<div/>');
+		var title = $jq('<span/>')
+		var logo = $jq('<img/>');
 		switch(content.type){
 			case 'SERVICE':
-				serviceTitle.text(content.square.name);
+				logo.attr({src: 'logosrv/getFavicon?' + content.squareId}).error(function(){
+					$jq(this).attr({ src: 'favicon.ico'});
+				});
+				title.text(content.square.name);
 				break;
 			default:
-				serviceTitle.text('Global Notification');
+				logo.attr({src: 'favicon.ico'});
+				title.text(IS_R.lb_notification_system_notice);
 		}
+		titleBase.append(logo);
+		titleBase.append(title);
 
 		var date = new Date(content.lastmodified);
 		var postDate = $jq('<span/>').addClass('notification_post_date').text(date.toLocaleString());
 		var content = $jq('<div/>').addClass('notification_content').text(content.body);
-		base.append(serviceTitle.append(postDate));
+		base.append(titleBase.append(postDate));
 		base.append(content);
 
 		return base;
