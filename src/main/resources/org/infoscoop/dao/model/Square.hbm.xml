@@ -55,13 +55,20 @@
 				type="string"
 				length="64"
 				/>
+        <property
+                name="squareStatus"
+                column="square_status"
+                type="string"
+                length="64"
+                />
 	</class>
 	
     <query name="is_squares.serviceIdList">
         <![CDATA[
 select distinct sq.parentSquareId
   from Square as sq, AccountSquare as acsq
-  where sq.parentSquareId=acsq.squareId
+  where sq.Id=acsq.squareId
+  and sq.parentSquareId<>'default'
   and acsq.accountId=:accountId
         ]]>
     </query>
