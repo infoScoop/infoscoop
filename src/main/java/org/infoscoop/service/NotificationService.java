@@ -1,6 +1,7 @@
 package org.infoscoop.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -59,6 +60,9 @@ public class NotificationService {
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String uid = p.getName();
 		List<String> serviceIds = squareDAO.getParentSquaresIDByUid(uid);
+		
+		if(serviceIds.size() == 0)
+			return new ArrayList<Notification>();
 		
 		return notificationDAO.select(offset, limit, startDate, serviceIds);
 	}
