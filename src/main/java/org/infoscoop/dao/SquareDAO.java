@@ -75,7 +75,7 @@ public class SquareDAO extends HibernateDaoSupport {
 						.addOrder(Order.asc(Square.PROP_NAME)));
 	}
 
-	public List<String> getParentSquaresIDByUid(String uid) {
+	public List<Object[]> getParentSquaresInfoByUid(String uid) {
 		Session session = super.getSession();
 		Query query = session.getNamedQuery("is_squares.serviceIdList");
 		query.setString("accountId", uid);

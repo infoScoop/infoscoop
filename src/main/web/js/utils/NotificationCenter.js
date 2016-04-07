@@ -15,7 +15,7 @@ $.widget("infoscoop.NotificationCenter", {
 				logo.attr({src: 'logosrv/getFavicon?' + content.squareId}).error(function(){
 					$jq(this).attr({ src: 'favicon.ico'});
 				});
-				title.text(content.square.name);
+				title.text(content.serviceSquareName);
 				break;
 			default:
 				logo.attr({src: 'favicon.ico'});

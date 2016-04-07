@@ -65,7 +65,7 @@
 	
     <query name="is_squares.serviceIdList">
         <![CDATA[
-select distinct sq.parentSquareId
+select distinct sq.parentSquareId, sq.name
   from Square as sq, AccountSquare as acsq
   where sq.Id=acsq.squareId
   and sq.parentSquareId<>'default'

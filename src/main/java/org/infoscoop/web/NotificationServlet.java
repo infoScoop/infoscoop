@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.service.NotificationService;
+import org.json.JSONException;
 
 public class NotificationServlet extends HttpServlet {
 	private static final long serialVersionUID = "org.infoscoop.web.NotificationServlet".hashCode();
@@ -39,8 +40,14 @@ public class NotificationServlet extends HttpServlet {
 			throw new ServletException(e);
 		}
 		Date startDate = new Date(startDateLong);
-		
-		String resultJSON = NotificationService.getHandle().getMyNotificationsJSON(offset, limit, startDate);
+
+		String resultJSON;
+		try{
+			resultJSON = NotificationService.getHandle().getMyNotificationsJSON(offset, limit, startDate);
+		} catch (JSONException e) {
+			log.error("invalid json.", e);
+			throw new ServletException(e);
+		}
 		
 		response.setContentType("text/plain; charset=UTF-8");
 		response.setHeader("Pragma", "no-cache");
