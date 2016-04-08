@@ -130,12 +130,6 @@
 			japaneseOnly : false,
 			useMultitenantMode : <%= InfoScoopProperties.getInstance().isUseMultitenantMode() %>,
 			notificationPollingRate : <%= InfoScoopProperties.getInstance().getGlobalmessagesPollingRate() %>,
-			globalMessages : {
-			    enable: <%= InfoScoopProperties.getInstance().isGlobalmessagesEnable() %>,
-			    rssUrl: "<%= InfoScoopProperties.getInstance().getGlobalmessagesRssUrl() %>",
-			    rssMaxCount: <%= InfoScoopProperties.getInstance().getGlobalmessagesRssMaxcount() %>,
-			    pollingRate: <%= InfoScoopProperties.getInstance().getGlobalmessagesPollingRate() %>
-			},
 			guidance : {
 			    rssUrl: "<%= InfoScoopProperties.getInstance().getGuidanceRssUrl() %>"
 			},
