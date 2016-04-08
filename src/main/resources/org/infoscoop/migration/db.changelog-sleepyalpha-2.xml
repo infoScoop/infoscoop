@@ -656,4 +656,33 @@ UPDATE ${migration.defaultSchemaWithDot}IS_ACCOUNTS SET my_square_id=uid WHERE m
             <column name="square_id" value="default" />
         </insert>
     </changeSet>
+    <changeSet id="infoscoop_sleepyalpha2_621_3" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_621_2">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='lb_notification' and type='js';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_notification" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Notifications" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_notification" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="通知" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_notification" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="通知" />
+            <column name="square_id" value="default" />
+        </insert>
+    </changeSet>
 </databaseChangeLog>
