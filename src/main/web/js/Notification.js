@@ -30,26 +30,28 @@ IS_Notification.prototype.classDef = function(){
     }
 
 	this.clickNotificationIcon = function() {
-		if(!this.notificationCenter.NotificationCenter('option', 'disabled')) {
+		var notificationCenter = this.notificationCenter;
+		if(!notificationCenter.NotificationCenter('option', 'disabled')) {
 			//hide
-			this.notificationCenter.NotificationCenter('disable');
-
 			$jq('body').addClass('notification_center_slideout').one('webkitAnimationEnd mozAnimationEnd oAnimationEnd oanimationend animationend',function(){
-				$jq('body').removeClass('notification_center_slidein').removeClass('notification_center_slideout');
-				$jq("#notification-center").hide();
+				var notifCenter = $jq("#notification-center");
+				// target: webkit
+				if(notificationCenter.NotificationCenter('option', 'disabled')) {
+					$jq('body').removeClass('notification_center_slidein').removeClass('notification_center_slideout');
+					$jq("#notification-center").hide();
+					$jq('#notification-hide-box').remove();
+					notificationCenter.NotificationCenter('clearList');
+				}
 			});
-			this.notificationCenter.NotificationCenter('clearList');
-			$jq('#notification-hide-box').remove();
+			notificationCenter.NotificationCenter('disable');
 		} else {
 			// show
-			this.notificationCenter.NotificationCenter('enable');
+			notificationCenter.NotificationCenter('enable');
 
 			this.lastNoticeDate = new Date();
-			this.notificationCenter.NotificationCenter('loadContents');
+			notificationCenter.NotificationCenter('loadContents');
 
-			$jq("#notification-center").css({
-				display: "block"
-			});
+			$jq("#notification-center").show();
 			$jq('body').addClass('notification_center_slidein');
 			$jq('.notification_icon_badge').hide();
 			$jq('.notification_icon').removeClass('notification_icon_arrival').attr({src: hostPrefix+'/skin/imgs/bell-white.png'});
@@ -58,12 +60,7 @@ IS_Notification.prototype.classDef = function(){
 			IS_Request.CommandQueue.addCommand(commnad);
 			IS_Request.CommandQueue.fireRequest();
 
-			var hideBox = $jq('<div/>').attr({id: 'notification-hide-box'}).css({
-				position: 'fixed',
-				top: '0',
-				left: '0',
-				zIndex: '10000',
-			});
+			var hideBox = $jq('<div/>').attr({id: 'notification-hide-box'});
 			hideBox.one('tap click', this.clickNotificationIcon.bind(this));
 			$jq('body').append(hideBox);
 

@@ -61,6 +61,14 @@
 	font-size: 14px;
 }
 
+#notification-hide-box {
+	position: fixed;
+	top: 0;
+	left: 0;
+	zIndex: 10000;
+	cursor: pointer;
+}
+
 .notification_center_slidein {
 	animation: slidein 0.5s;
 	animation-iteration-count: 1;
