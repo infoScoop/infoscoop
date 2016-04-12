@@ -73,10 +73,7 @@ public class NotificationService {
 		ISPrincipal p = SecurityController.getPrincipalByType("UIDPrincipal");
 		String uid = p.getName();
 		List<Object[]> serviceInfos = squareDAO.getParentSquaresInfoByUid(uid);
-		
-		if(serviceInfos.size() == 0)
-			return "[]";
-		
+
 		List<String> serviceIds = new ArrayList<String>();
 		Map<String, String> squareNameMap = new HashMap<String, String>();
 		for (Object[] row : serviceInfos) {

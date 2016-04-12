@@ -198,7 +198,6 @@
     <script src="<%=staticContentURL%>/js/Theme.js"></script>
     <script src="<%=staticContentURL%>/js/CommonAreaDesign.js"></script>
     <script src="<%=staticContentURL%>/js/CommonAreaWidgetModal.js"></script>
-    <script src="<%=staticContentURL%>/js/GlobalMessages.js"></script>
     <script src="<%=staticContentURL%>/js/Notification.js"></script>
     <script src="<%=staticContentURL%>/js/guidance/Guidance.js"></script>
     <script src="<%=staticContentURL%>/js/square/Square.js"></script>
