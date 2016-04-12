@@ -48,9 +48,8 @@
 	background-color: #787878;
 }
 
-.notification_old_view_btn a {
+.notification_old_view_btn span {
 	color: #eeeeee;
-	text-decoration: none;
 }
 
 .notification_noitem_label {
