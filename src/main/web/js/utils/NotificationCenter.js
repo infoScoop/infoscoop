@@ -88,8 +88,9 @@ $.widget("infoscoop.NotificationCenter", {
 		var base = $jq('<div/>').attr({'id': 'notification_old_view_btn'}).addClass('notification_old_view_btn');
 		var btn = $jq('<a/>').attr({'href': '#'}).text(IS_R.lb_notification_load_olditem);
 		base.append(btn);
-		base.on('tap click', this._loadOldContents.bind(this));
-
+		var _tap = ("ontouchstart" in document) ? "tap" : "click";
+		base.on(_tap, this._loadOldContents.bind(this));
+		
 		return base;
 	},
 
