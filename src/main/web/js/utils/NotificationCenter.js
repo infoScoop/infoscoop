@@ -131,7 +131,7 @@ $.widget("infoscoop.NotificationCenter", {
 	ajustHeight: function() {
 		var element = this.element;
 		var h = Math.max.apply( null, [document.body.clientHeight , document.body.scrollHeight, document.documentElement.scrollHeight, document.documentElement.clientHeight] );
-		element.css('min-height', h+'px');
+		element.css('height', h+'px');
 	},
 
 	loadContents: function() {
