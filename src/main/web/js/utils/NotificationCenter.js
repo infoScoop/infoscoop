@@ -151,7 +151,6 @@ $.widget("infoscoop.NotificationCenter", {
 
 	clearList: function() {
 		var self = this;
-		self._newArrivalArray.clear();
 		self._oldArrivalArray.clear();
 	}
 });
