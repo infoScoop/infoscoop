@@ -72,8 +72,8 @@ IS_Notification.prototype.classDef = function(){
 	this._ajustSize = function() {
 		var h = Math.max.apply( null, [document.body.clientHeight , document.body.scrollHeight, document.documentElement.scrollHeight, document.documentElement.clientHeight] );
 		var w = (Math.max.apply( null, [document.body.clientWidth , document.documentElement.clientWidth] )) - 320;
-		$jq('#notification-center').css('height', h+'px');
-		$jq('#notification-hide-box').css('height', h+'px');
+		$jq('#notification-center').css('min-height', h+'px');
+		$jq('#notification-hide-box').css('min-height', h+'px');
 		$jq('#notification-hide-box').css('width', w+'px');
 	}
 
