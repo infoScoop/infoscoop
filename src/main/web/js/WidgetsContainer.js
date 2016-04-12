@@ -483,7 +483,8 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			if(IS_Portal.isFirstLogin)
 			    IS_GuidanceInstance = new IS_Guidance();
 			
-			IS_Notification = new IS_Notification();
+			if(window["IS_Notification"])
+			    IS_Notification = new IS_Notification();
 			
 			IS_EventDispatcher.newEvent("portalLoaded");
 		}
