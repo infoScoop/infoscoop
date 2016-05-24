@@ -110,6 +110,7 @@ public class AccountDAO extends HibernateDaoSupport {
 		AccountAttr attr = getAccountAttr(uid, name);
 		if(attr == null)
 			attr = new AccountAttr(uid, name, value, system);
+		attr.setValue(value);
 		super.getHibernateTemplate().saveOrUpdate(attr);
 		super.getHibernateTemplate().flush();
 	}
