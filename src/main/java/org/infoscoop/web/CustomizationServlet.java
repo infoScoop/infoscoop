@@ -50,6 +50,7 @@ import org.infoscoop.service.PropertiesService;
 import org.infoscoop.service.TabLayoutService;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
+import org.infoscoop.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
@@ -148,7 +149,7 @@ public class CustomizationServlet extends HttpServlet {
 			TabLayout tabLayout = (TabLayout)entry.getValue();
 			JSONObject value = new JSONObject();
 			
-			String layout = tabLayout.getLayout();
+			String layout = StringUtil.getNullSafe(tabLayout.getLayout());
 			if( layout == null )
 				layout = "";
 			value.put("layout", layout);

@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.context.UserContext;
@@ -35,6 +36,7 @@ import org.infoscoop.dao.MessageDAO;
 import org.infoscoop.dao.model.Message;
 import org.infoscoop.service.MessageService;
 import org.infoscoop.util.DateUtility;
+import org.infoscoop.util.StringUtil;
 import org.infoscoop.util.XmlUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -219,7 +221,7 @@ public class MessageServlet extends HttpServlet {
 		for (Message msg : msgs) {
 			JSONObject obj = new JSONObject();
 			obj.put("id",msg.getId());
-			obj.put("from", msg.getFrom());
+			obj.put("from", StringUtil.getNullSafe(msg.getFrom()));
 			obj.put("displayFrom", msg.getDisplayfrom());
 			obj.put("body", msg.getHtmlBody());
 			obj.put("postedtime", df.format(msg.getPostedTime()));
@@ -229,7 +231,7 @@ public class MessageServlet extends HttpServlet {
 			if (msg.getOption() != null) {
 				obj.put("option", msg.getOption());
 			}
-			obj.put("type", msg.getType());
+			obj.put("type", StringUtil.getNullSafe(msg.getType()));
 			result.put(obj);
 		}
 		return result.toString();
@@ -263,7 +265,7 @@ public class MessageServlet extends HttpServlet {
 				.append("</dc:creator>");
 			xml.append("<description>");
 			xml.append("<![CDATA[");
-			if (msg.getType().equals(Message.FYI_FROM)
+			if (StringUtil.getNullSafe(msg.getType()).equals(Message.FYI_FROM)
 					|| msg.getType().equals(Message.FYI_PUBLIC)
 					|| msg.getType().equals(Message.FYI_TO)) {
 				String option = msg.getOption();

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
@@ -39,6 +40,7 @@ import org.infoscoop.dao.model.Properties;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.JSONScript;
 import org.infoscoop.util.SpringUtil;
+import org.infoscoop.util.StringUtil;
 import org.json.JSONObject;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -128,7 +130,7 @@ public class LogDAO extends HibernateDaoSupport {
 			Properties property = pdao.findProperty("logStoragePeriod");
 			int storagePeriod = 365;
 			try {
-				storagePeriod = Integer.parseInt(property.getValue());
+				storagePeriod = Integer.parseInt(StringUtil.getNullSafe(property.getValue()));
 			} catch (NumberFormatException ex) {
 				log.error("Invalid logStoragePeriod property.", ex);
 			}

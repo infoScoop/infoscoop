@@ -44,6 +44,7 @@ import org.infoscoop.dao.model.TABLAYOUTPK;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.service.TabLayoutService;
 import org.infoscoop.util.SpringUtil;
+import org.infoscoop.util.StringUtil;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -351,7 +352,7 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 					: TabLayout.TEMP_FALSE);
 			TabLayout newTabLayout = new TabLayout(newid, tabLayout.getRole(),
 					tabLayout.getRolename(), tabLayout.getPrincipaltype(),
-					tabLayout.getWidgets(), tabLayout.getLayout(), uid);
+					tabLayout.getWidgets(), StringUtil.getNullSafe(tabLayout.getLayout()), uid);
 			newTabLayout.setDefaultuid(tabLayout.getDefaultuid());
 			newTabLayout.setWidgetslastmodified(tabLayout
 					.getWidgetslastmodified());

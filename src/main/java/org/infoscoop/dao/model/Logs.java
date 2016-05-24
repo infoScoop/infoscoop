@@ -64,19 +64,4 @@ public class Logs extends BaseLogs {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-	public String getUid() {
-		return StringUtil.getNullSafe( super.getUid() );
-	}
-	public String getUrl() {
-		return StringUtil.getNullSafe( super.getUrl() );
-	}
-	public String getUrlKey() {
-		return StringUtil.getNullSafe( super.getUrlKey() );
-	}
-	public String getRssurl() {
-		return StringUtil.getNullSafe( super.getRssurl() );
-	}
-	public String getRssurlKey() {
-		return StringUtil.getNullSafe( super.getRssurlKey() );
-	}
 }

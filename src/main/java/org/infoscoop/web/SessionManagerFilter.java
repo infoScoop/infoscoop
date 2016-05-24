@@ -52,6 +52,7 @@ import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.util.RSAKeyManager;
+import org.infoscoop.util.StringUtil;
 
 /**
  * The filter which manages the login state.
@@ -220,8 +221,8 @@ public class SessionManagerFilter implements Filter {
 						if( cookie.getName().equals("portal-credential")) {
 							int keepPeriod = 7;
 							try {
-								keepPeriod = Integer.parseInt( PropertiesDAO.newInstance()
-										.findProperty("loginStateKeepPeriod").getValue());
+								keepPeriod = Integer.parseInt( StringUtil.getNullSafe(PropertiesDAO.newInstance()
+										.findProperty("loginStateKeepPeriod").getValue()));
 							} catch( Exception ex ) {
 								log.warn("",ex );
 							}
