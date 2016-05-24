@@ -2,7 +2,10 @@ gadgets.rpc.register("resize_iframe",function( height, heightAutoCalculated ) {
 	var widget = IS_Portal.getWidget( this.mid,this.tid );
 	if( widget.authToken != this.t ) return;
 	if(widget.isStaticHeight) return;
-	
+
+    var staticPanel = IS_Customization["staticPanel" + IS_Portal.currentTabId.substr(3)];
+    if( staticPanel && staticPanel.adjustToWindowHeight ) return;
+    
 	if( IS_Widget.MaximizeWidget == widget )
 		return;
 	
