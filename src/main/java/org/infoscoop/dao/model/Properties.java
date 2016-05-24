@@ -52,7 +52,4 @@ public class Properties extends BaseProperties {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-	public String getValue() {
-		return StringUtil.getNullSafe( super.getValue() ); 
-	}
 }

@@ -68,7 +68,7 @@ public class AuthCredential extends BaseAuthcredential {
 		json.put("authType", this.getAuthType());
 		json.put("sysNum", this.getSysNum());
 		json.put("authUid", this.getAuthUid());
-		json.put("authPasswd", this.getAuthPasswd());
+		json.put("authPasswd", StringUtil.getNullSafe(this.getAuthPasswd()));
 		if(this.getAuthDomain() != null){
 			json.put("authDomain", this.getAuthDomain());
 		}
@@ -77,7 +77,4 @@ public class AuthCredential extends BaseAuthcredential {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-	public String getAuthPasswd() {
-		return StringUtil.getNullSafe( super.getAuthPasswd() );
-	}
 }

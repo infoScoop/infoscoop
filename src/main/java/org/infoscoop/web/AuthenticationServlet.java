@@ -37,6 +37,7 @@ import org.infoscoop.dao.model.AuthCredential;
 import org.infoscoop.service.AuthCredentialService;
 import org.infoscoop.service.PropertiesService;
 import org.infoscoop.util.RSAKeyManager;
+import org.infoscoop.util.StringUtil;
 
 public class AuthenticationServlet extends HttpServlet {
 
@@ -152,8 +153,8 @@ public class AuthenticationServlet extends HttpServlet {
 
 				int keepPeriod = 7;
 				try {
-					keepPeriod = Integer.parseInt( PropertiesDAO.newInstance()
-							.findProperty("loginStateKeepPeriod").getValue());
+					keepPeriod = Integer.parseInt( StringUtil.getNullSafe(PropertiesDAO.newInstance()
+							.findProperty("loginStateKeepPeriod").getValue()));
 				} catch( Exception ex ) {
 					log.warn("",ex );
 				}

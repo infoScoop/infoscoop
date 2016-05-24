@@ -24,12 +24,14 @@ import java.util.Locale;
 import java.util.Map;
 
 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.PropertiesDAO;
 import org.infoscoop.dao.model.Properties;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
+import org.infoscoop.util.StringUtil;
 import org.json.JSONObject;
 
 public class PropertiesService{
@@ -82,7 +84,7 @@ public class PropertiesService{
 				continue;
 			
 			propJson.put("datatype", prop.getDatatype());
-			propJson.put("value", prop.getValue());
+			propJson.put("value", StringUtil.getNullSafe(prop.getValue()));
 			propJson.put("description", prop.getDescription());
 			if (prop.getEnumvalue() != null && prop.getEnumvalue().length() > 0)
 				propJson.put("enumValue", prop.getEnumvalue());
@@ -103,7 +105,7 @@ public class PropertiesService{
 		if( property == null )
 			return null;
 		
-		return property.getValue();
+		return StringUtil.getNullSafe(property.getValue());
 	}
 	
 	public Map getPropertiesMap() throws Exception {
@@ -115,7 +117,7 @@ public class PropertiesService{
 			if("hidden".equals( property.getDatatype().toLowerCase()))
 				continue;
 			
-			result.put( property.getId(),property.getValue() );
+			result.put( property.getId(), StringUtil.getNullSafe(property.getValue()) );
 		}
 		
 		return result;

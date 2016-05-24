@@ -20,6 +20,7 @@ package org.infoscoop.dao.model;
 import java.io.UnsupportedEncodingException;
 
 import org.infoscoop.dao.model.base.BaseUserPref;
+import org.infoscoop.util.StringUtil;
 
 
 
@@ -49,9 +50,9 @@ public class UserPref extends BaseUserPref {
 
 
 	public String getValue() {
-		String shortValue = getShortValue();
+		String shortValue = StringUtil.getNullSafe(getShortValue());
 		
-		return ( "".equals(shortValue) ? getLongValue() : shortValue );
+		return ( "".equals(shortValue) ? StringUtil.getNullSafe(getLongValue()) : shortValue );
 	}
 	public void setValue( String value ) {
 		int length;
@@ -70,6 +71,6 @@ public class UserPref extends BaseUserPref {
 		}
 	}
 	public boolean hasLongValue() {
-		return !"".equals(getLongValue());
+		return !"".equals(StringUtil.getNullSafe(getLongValue()));
 	}
 }

@@ -67,7 +67,7 @@ public class Widget extends BaseWidget {
 		json.put("title", super.getTitle());
 		json.put("siblingId", super.getSiblingid());
 		json.put("parentId", super.getParentid());
-		json.put("menuId", super.getMenuid());
+		json.put("menuId", StringUtil.getNullSafe(super.getMenuid()));
 		json.put("type", super.getType());
 
 		JSONObject userPrefsJson = new JSONObject();
@@ -80,7 +80,7 @@ public class Widget extends BaseWidget {
 			
 			try {
 				if( !userPref.hasLongValue() ) {
-					userPrefsJson.put( key,userPrefs.get( key ).getShortValue());
+					userPrefsJson.put( key,StringUtil.getNullSafe(userPrefs.get( key ).getShortValue()));
 				} else {
 					// longValue not returned
 					userPrefsJson.put( key,false );
@@ -176,10 +176,6 @@ public class Widget extends BaseWidget {
 		}
 	}
 
-	public String getMenuid() {
-		return StringUtil.getNullSafe( super.getMenuid() );
-	}
-	
 	@Override
 	public void setTitle(String title) {
 		if (title != null && title.length() > 80)
