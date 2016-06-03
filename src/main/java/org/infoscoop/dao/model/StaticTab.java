@@ -56,8 +56,5 @@ public class StaticTab extends BaseStaticTab {
 	}
 	
 /*[CONSTRUCTOR MARKER END]*/
-	@Override
-	public void setTabdesc(String tabDesc) {
-		super.setTabdesc(tabDesc != null? tabDesc: "");
-	}
+	
 }
