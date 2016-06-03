@@ -100,7 +100,7 @@ public class TabLayoutService {
 			staticTab.setDeleteflag(StaticTab.DELETEFLAG_FALSE);
 		}
 		
-		staticTab.setTabdesc(tabDesc);
+		staticTab.setTabdesc(StringUtil.getNullSafe(tabDesc));
 		staticTab.setDisabledefault(disableDefault? StaticTab.DISABLE_DEFAULT_TRUE : StaticTab.DISABLE_DEFAULT_FALSE);
 		staticTabDAO.saveTab(staticTab);
 		
