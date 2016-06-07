@@ -36,11 +36,14 @@ public class DetectLogTypeFilter implements javax.servlet.Filter {
 
 		HttpServletRequest httpreq = (HttpServletRequest) req;
 		String reqUri = httpreq.getRequestURI();
-		String adminContext = httpreq.getContextPath() + "/admin";
+		String adminContext_admin = httpreq.getContextPath() + "/admin";
+		String adminContext_manager = httpreq.getContextPath() + "/manager";
 		String referer = httpreq.getHeader("Referer");
 
-		if ((adminContext != null && reqUri.indexOf(adminContext) != -1)
-				|| (referer != null && referer.indexOf(adminContext) != -1)) {
+		if ((adminContext_admin != null && reqUri.indexOf(adminContext_admin) != -1)
+				|| (adminContext_manager != null && reqUri.indexOf(adminContext_manager) != -1)
+				|| (referer != null && referer.indexOf(adminContext_admin) != -1)
+				|| (referer != null && referer.indexOf(adminContext_manager) != -1)) {
 			MDC.put("logType", PortalLogFilter.LOGTYPE_ADMIN);
 		} else {
 			MDC.put("logType", PortalLogFilter.LOGTYPE_MAIN);

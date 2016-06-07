@@ -20,6 +20,8 @@ specific language governing permissions and limitations under the License.
   <name>infoscoop</name>
   <gadget>
     <script src="legacy.js"/>
+    <script src="config-defs.js"/>
+    <script src="custom-config-defs.js"/>
     <script src="config.js"/>
   </gadget>
   <container>

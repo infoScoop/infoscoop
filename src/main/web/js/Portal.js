@@ -99,8 +99,9 @@ IS_Portal.start = function() {
 	  onFailure: function(t) {
 		  alert('Retrieving customization info failed. ' + t.status + ' -- ' + t.statusText);
 	  },
-	  onException: function(t) {
-		  alert('Retrieving customization info failed. ' + t);
+	  onException: function(r, e) {
+		  alert('Retrieving customization info failed. ' + e.message)
+		  msg.error(r.transport.responseText);
 	  }
 	};	
 	AjaxRequest.invoke(hostPrefix +  "/customization", opt);
@@ -1604,7 +1605,7 @@ IS_Portal.buildFontSelectDiv = function(){
 					size = parseInt(IS_Portal.defaultFontSize) + "%";
 					break;
 				case 2:
-					size = parseInt(IS_Portal.defaultFontSize) + 10 + "%";
+					size = parseInt(IS_Portal.defaultFontSize) + 20 + "%";
 					break;
 				default:
 					size = parseInt(IS_Portal.defaultFontSize) + "%";
@@ -1655,7 +1656,7 @@ IS_Portal.buildFontSelectDiv = function(){
 		fontEl.appendChild(fontChangeDivAddA);
 		
 		IS_Event.observe(fontChangeDivAdd, "mouseup", function(){
-				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) + 10) + "%");
+				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize) + 20) + "%");
 			}, false, "_fontchange");
 		IS_Event.observe(fontChangeDivSta, "mouseup", function(){
 				IS_Portal.applyFontSize((parseInt(IS_Portal.defaultFontSize)) + "%");
@@ -1708,10 +1709,7 @@ IS_Portal.adjustIS_PortalStyle = function(){
 
 IS_Portal.setFontSize = function(e, isInitialize) {
 	is_addCssRule("body", "font-size:" + IS_Portal.fontSize);
-	is_addCssRule("th", "font-size:" + IS_Portal.fontSize);
-	is_addCssRule("td", "font-size:" + IS_Portal.fontSize);
-	
-//	is_addCssRule("table", "font-size:" + IS_Portal.fontSize);
+
 	IS_Portal.widgetDisplayUpdated();
 	
 	if(!isInitialize){
@@ -2187,7 +2185,8 @@ IS_Portal.initMsdBar = function(){
 // set message bar position.
 IS_Portal.setDisplayMsgBarPosition = function(){
 	if($("portal_msgbar").style.display == "none") return;
-	var scrollTop = parseInt(document.documentElement.scrollTop);
+	var scrollTop = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+	scrollTop = parseInt(scrollTop);
 	var innerHeight = getWindowHeight();
 	var offset = parseInt($("portal_msgbar").offsetHeight)+1;
 	$("portal_msgbar").style.top = (scrollTop + innerHeight) - offset + 'px';

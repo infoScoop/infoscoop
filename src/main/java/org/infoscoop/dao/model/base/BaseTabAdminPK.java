@@ -73,6 +73,31 @@ public abstract class BaseTabAdminPK implements Serializable {
 		this.uid = uid;
 	}
 
+	public boolean equals (Object obj) {
+		if (null == obj) return false;
+		if (!(obj instanceof org.infoscoop.dao.model.TabAdminPK)) return false;
+		else {
+			org.infoscoop.dao.model.TabAdminPK mObj = (org.infoscoop.dao.model.TabAdminPK) obj;
+			if (null != this.getUid() && null != mObj.getUid()) {
+				if (!this.getUid().equals(mObj.getUid())) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+			if (null != this.getTabid() && null != mObj.getTabid()) {
+				if (!this.getTabid().equals(mObj.getTabid())) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+			return true;
+		}
+	}
+	
 	public int hashCode() {
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getTabid())

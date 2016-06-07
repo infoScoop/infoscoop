@@ -611,7 +611,8 @@ IS_Portal.buildContents = function( tabId , isAllReload){
 		IS_EventDispatcher.addComplexListener( eventTargetList,function() {
 				IS_EventDispatcher.newEvent("tabLoadCompleted",tabId );
 				IS_Portal.tabs[tabId].isBuilding = false;
-			},null,true);
+				IS_Portal.adjustStaticWidgetHeight();
+		},null,true);
 		
 		for(var i = 0; i < loadWidgets.length; i++) {
 			var widget = loadWidgets[i];

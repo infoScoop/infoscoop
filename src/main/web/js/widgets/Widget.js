@@ -899,13 +899,12 @@ IS_Widget.prototype.classDef = function() {
 				this.authToken = Math.ceil( Math.random() * new Date().getTime() );
 			}
 			this.gadgetProxyUrl = this.isUploadGadget() ? proxyServerURL : this.getGadgetProxyUrl();
-			if( !this.isUploadGadget()) {
-				var relayUrl='';
-				if(contentsType == 'url'){
-					relayUrl = contentsDef.href.substring( 0,contentsDef.href.lastIndexOf("/") +1 );
-				}else{
-					relayUrl = this.gadgetProxyUrl.substring( 0,this.gadgetProxyUrl.lastIndexOf("/") +1 );
-				}
+			if(contentsType == 'url') {
+				var relayUrl = contentsDef.href.substring( 0,contentsDef.href.lastIndexOf("/") +1 );
+				gadgets.rpc.setupReceiver(self.iframe.id,relayUrl+"rpc_relay.html",this.authToken);
+			}
+			else if(!this.isUploadGadget()) {
+				var relayUrl = this.gadgetProxyUrl.substring( 0,this.gadgetProxyUrl.lastIndexOf("/") +1 );
 				gadgets.rpc.setupReceiver(self.iframe.id,relayUrl+"rpc_relay.html",this.authToken);
 			} else {
 				gadgets.rpc.setupReceiver(self.iframe.id,hostPrefix+"/rpc_relay.html",this.authToken);
