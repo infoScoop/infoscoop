@@ -218,7 +218,8 @@ IS_Portal.addTab = function( idNumber, name, type, numCol, columnsWidth, disable
     var panels = $("panels");
     setTimeout(function(){
     	var dummyPanel = document.getElementById("panel-dummy");
-    	dummyPanel.parentNode.removeChild(dummyPanel);
+    	if(dummyPanel && dummyPanel.parentNode)
+			dummyPanel.parentNode.removeChild(dummyPanel);
     },0);
     panels.appendChild( panelDiv );
     
