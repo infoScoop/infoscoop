@@ -105,7 +105,7 @@ public class CommandServlet extends HttpServlet {
 						}
 					};
 					String errMsg = "A server module was revised. The customized information is not stored.";
-					resultList.add(new CommandResult("", "warn", errMsg));
+					resultList.add(new CommandResult("", "updated", errMsg));
 				}
 			} else {
 				String logMsg = "incorrect document format - expected top-level command tag";
