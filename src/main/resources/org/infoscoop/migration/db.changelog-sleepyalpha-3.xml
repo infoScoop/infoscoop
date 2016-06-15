@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<property name="clob.type" value="clob" dbms="oracle, db2"/>
+    <property name="clob.type" value="mediumtext" dbms="mysql"/>
+    <property name="autoIncrement" value="true" dbms="mysql, db2"/>
+    <property name="autoIncrement" value="false" dbms="oracle"/>
+
+<changeSet id="infoscoop_sleepyalpha3_624" author="aknishiumi">
+  <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha3_624">
+      <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='lb_server_updated_reload' and type='js';</sqlCheck>
+  </preConditions>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_server_updated_reload" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ALL" />
+    <column name="message" value="System maintenance was performed. Refreshment of a page is needed. Updated information on this browser is not sended to the server." />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_server_updated_reload" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="ja" />
+    <column name="message" value="システムメンテナンスが行われたため、ページの再読み込みが必要です。このブラウザ上の更新情報は反映されません。" />
+    <column name="square_id" value="default" />
+  </insert>
+  <insert tableName="IS_I18N">
+    <column name="type" value="js" />
+    <column name="id" value="lb_server_updated_reload" />
+    <column name="country" value="ALL" />
+    <column name="lang" value="zh" />
+    <column name="message" value="保养被进行了。在此浏览器上的更新信息没有得到反映。" />
+    <column name="square_id" value="default" />
+  </insert>
+  <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+    <column name="message" value="Failed to save the customized information. Please reload a browser. Updated information on this browser is not sended to the server." />
+    <where>id='ms_custmizeFailedReload' AND lang='ALL'</where>
+  </update>
+  <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+    <column name="message" value="カスタマイズ情報の保存に失敗しました。ブラウザの再ロードを行ってください。このブラウザ上の更新情報は反映されません。" />
+    <where>id='ms_custmizeFailedReload' AND lang='ja'</where>
+  </update>
+  <update tableName="IS_I18N" schemaName="${migration.defaultSchema}">
+    <column name="message" value="自定义信息保存失败。请进行浏览程序的再读入。在此浏览器上的更新信息没有得到反映。" />
+    <where>id='ms_custmizeFailedReload' AND lang='zh'</where>
+  </update>
+</changeSet>
+
+</databaseChangeLog>

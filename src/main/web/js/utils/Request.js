@@ -148,32 +148,33 @@ IS_Request.Queue = function (servName, time, disabled, checkDuplicate){
 		var xmlDoc=req.responseXML;
 		var elDocRoot=xmlDoc.getElementsByTagName("responses")[0];
 		try{
-		if (elDocRoot){
-			for(var i=0;i<elDocRoot.childNodes.length && !this.freeze;i++){
-				elChild=elDocRoot.childNodes[i];
-				if (elChild.nodeName=="command"){
-					var attrs=elChild.attributes;
-					var id=attrs.getNamedItem("id").value;
-					var status=attrs.getNamedItem("status").value;
-					if(id == '' || status != 'ok') {
-						var reason = attrs.getNamedItem("message").value;
-//						msg.error("failed to execute command.\n\n" + reason);
-						alert(IS_R.ms_custmizeFailedReload + "\n\n" + reason);
-						this.freeze = true;
-						window.location.reload();
-					} else {
-						var command=sent[id];
-						if (command){
-							command.parseResponse(elChild);
-						}
-					}
-				}
-			}
-		}
-		if( Browser.isSafari1 ) {
-			req.responseText = Browser.Safari.responseText( req.responseText );
-		}
-		
+    		if (elDocRoot){
+    			for(var i=0;i<elDocRoot.childNodes.length && !this.freeze;i++){
+    				elChild=elDocRoot.childNodes[i];
+    				if (elChild.nodeName=="command"){
+    					var attrs=elChild.attributes;
+    					var id=attrs.getNamedItem("id").value;
+    					var status=attrs.getNamedItem("status").value;
+    					
+    					if(status == "updated"){
+                            this.freeze = true;
+                            displayRelaodMessage(IS_R.lb_server_updated_reload, "information");
+                            return;
+    					}
+    					else if(id == '' || status != 'ok') {
+    						var reason = attrs.getNamedItem("message").value;
+    						displayRelaodMessage(IS_R.ms_custmizeFailedReload + " - " + reason, "warn");
+    						this.freeze = true;
+                            return;
+    					} else {
+    						var command=sent[id];
+    						if (command){
+    							command.parseResponse(elChild);
+    						}
+    					}
+    				}
+    			}
+    		}
 		}catch(e){
 			msg.warn(getText(e));
 		}
@@ -185,6 +186,18 @@ IS_Request.Queue = function (servName, time, disabled, checkDuplicate){
 	}
 
 	this.repeat(time);
+	
+	function displayRelaodMessage(msg, level){
+        var msgListDiv = $jq("#error-msg-bar").empty().show();
+        var msgDiv = $jq("<div>").addClass("msg-item " + level).prependTo(msgListDiv);
+        $jq("<span>").text(msg).appendTo(msgDiv);
+        $jq("<input>").attr("type", "button").val(IS_R.lb_reload)
+            .click(function(){
+                location.reload(true);
+            })
+            .appendTo(msgDiv);
+        IS_EventDispatcher.newEvent("adjustedMessageBar");
+	}
 }
 
 /*

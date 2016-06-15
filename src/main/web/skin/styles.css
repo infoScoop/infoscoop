@@ -162,6 +162,22 @@ img{
 	font-size: 80%;
 	padding: 5px 32px;
 }
+#error-msg-bar .msg-item{
+    padding-left: 18px;
+}
+#error-msg-bar .msg-item.information{
+    background: url(./imgs/information.gif) center left no-repeat;
+}
+#error-msg-bar .msg-item.warn{
+    background: url(./imgs/warning_14.png) top left no-repeat;
+}
+#error-msg-bar .msg-item.information>span{
+    vertical-align: middle;
+}
+#error-msg-bar .msg-item>input{
+    width: initial;
+}
+
 #message-bar {
 	background-color: #ffffe0;
 	color: olive;
