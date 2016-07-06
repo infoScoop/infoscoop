@@ -28,9 +28,6 @@ public class InfoScoopProperties {
 	private static Log logger = LogFactory.getLog(InfoScoopProperties.class);
 	private static InfoScoopProperties singleInstance = new InfoScoopProperties();
 	private boolean useMultitenantMode = false;
-	private String globalmessagesRssUrl;
-	private boolean globalmessagesEnable;
-	private int globalmessagesRssMaxcount = 5;
 	private int globalmessagesPollingRate = 30000;
 	private String guidanceRssUrl;
 	
@@ -42,18 +39,10 @@ public class InfoScoopProperties {
 			String useMultitenantModeStr = bundle.getString("useMultitenantMode");
 			this.useMultitenantMode = new Boolean(useMultitenantModeStr);
 			
-			String globalmessagesEnableStr = bundle.getString("globalmessages.enable");
-			this.globalmessagesEnable = new Boolean(globalmessagesEnableStr);
-			
-			this.globalmessagesRssUrl = bundle.getString("globalmessages.rss.url");
-			String globalmessagesRssMaxcountStr = bundle.getString("globalmessages.rss.maxcount");
 			String globalmessagesPollingRateStr = bundle.getString("globalmessages.polling.rate");
 			
 			this.guidanceRssUrl = bundle.getString("guidance.rss.url");
 			
-			if(NumberUtils.isNumber(globalmessagesRssMaxcountStr))
-				this.globalmessagesRssMaxcount = Integer.parseInt(globalmessagesRssMaxcountStr);
-
 			if(NumberUtils.isNumber(globalmessagesPollingRateStr))
 				this.globalmessagesPollingRate = Integer.parseInt(globalmessagesPollingRateStr);
 
@@ -87,18 +76,6 @@ public class InfoScoopProperties {
 
 	public boolean isUseMultitenantMode() {
 		return useMultitenantMode;
-	}
-
-	public boolean isGlobalmessagesEnable() {
-		return globalmessagesEnable;
-	}
-
-	public String getGlobalmessagesRssUrl() {
-		return globalmessagesRssUrl;
-	}
-
-	public int getGlobalmessagesRssMaxcount() {
-		return globalmessagesRssMaxcount;
 	}
 
 	public int getGlobalmessagesPollingRate() {
