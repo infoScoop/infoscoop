@@ -259,9 +259,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jruby</groupId>
-			<artifactId>jruby</artifactId>
-			<version>1.3.1</version>
-			<scope>compile</scope>
+			<artifactId>jruby-1.3.1-iscustom</artifactId>
+			<version>20160707</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/main/jruby-1.3.1-iscustom-20160707.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>javax.xml</groupId>
