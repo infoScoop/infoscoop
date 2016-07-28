@@ -28,8 +28,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.security.auth.Subject;
 import javax.servlet.Filter;
@@ -58,7 +56,6 @@ import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.properties.InfoScoopProperties;
 import org.infoscoop.service.SquareService;
 import org.infoscoop.util.RSAKeyManager;
-import org.infoscoop.util.RequestUtil;
 
 /**
  * The filter which manages the login state.
@@ -77,9 +74,7 @@ public class SessionManagerFilter implements Filter {
 	public static String LOGINUSER_NAME_ATTR_NAME = "loginUserName";
 	public static String LOGINUSER_SUBJECT_ATTR_NAME = "loginUser";
 	public static String LOGINUSER_SESSION_ID_ATTR_NAME = "SessionId";
-	public static String LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME = "CurrentSquareId";
-
-	public static String COOKIE_SQUARE_ID_CURRENT =  "is-current-square-id";
+	private static String LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME = "CurrentSquareId";
 	
 	private String loginPath = "login.jsp";
 	private Collection excludePaths = new HashSet();
@@ -155,7 +150,7 @@ public class SessionManagerFilter implements Filter {
 	private Map<String, String> getSquareUidFromSession(HttpServletRequest req) {
 		HttpSession session = req.getSession(true);
 		String uid = (String)session.getAttribute("Uid");
-		String currentSquareId = (String)session.getAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME);
+		String currentSquareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 		String sessionId = req.getHeader("MSDPortal-SessionId");
 		boolean uidIgnoreCase = SessionCreateConfig.getInstance().isUidIgnoreCase();
 		Map<String, String> resultMap = new HashMap<String, String>();
@@ -164,16 +159,13 @@ public class SessionManagerFilter implements Filter {
 		// 管理画面プレビュー
 		if("true".equalsIgnoreCase(req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW))){
 			String uidParam = req.getParameter("Uid");
-			String squareidParam = req.getParameter(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME);
-			if(uid.equalsIgnoreCase(uidParam) && currentSquareId.equalsIgnoreCase(squareidParam)){
+			if(uid.equalsIgnoreCase(uidParam)){
 				uid = uidParam;
 				session.setAttribute("Uid",uid );
-				session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME,currentSquareId);
 			}
 		}else if( uidIgnoreCase && uid != null && currentSquareId != null) {
 			uid = uid.toLowerCase();
 			session.setAttribute("Uid",uid );
-			session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME,currentSquareId );
 		}
 
 		if(currentSquareId == null) {
@@ -224,8 +216,6 @@ public class SessionManagerFilter implements Filter {
 			String requestUri = httpReq.getRequestURI();
 			String param = httpReq.getServletPath();
 			String context = httpReq.getContextPath();
-			Pattern pattern = Pattern.compile("^/s/(.+)");
-			Matcher matcher = pattern.matcher(param);
 
 			if(SessionCreateConfig.doLogin()){
 				Map<String, String> result = getSquareUidFromSession(httpReq);
@@ -235,10 +225,7 @@ public class SessionManagerFilter implements Filter {
 	            if (uid != null){
 	                addUidToSession(uid, request);
 	            }
-				if (currentSquareId != null){
-					addCurrentSquareIdToSession(currentSquareId, request);
-				}
-				
+	            
 				if(redirectPaths.contains(httpReq.getServletPath())){
 					httpResponse.addCookie(new Cookie("redirect_path", httpReq.getServletPath()));
 				}
@@ -298,13 +285,11 @@ public class SessionManagerFilter implements Filter {
 									uid = tryAutoLogin( cookie );
 									httpReq.getSession().setAttribute("Uid",uid );
 									
-									currentSquareId = RequestUtil.getCookieValue(httpReq.getCookies(), COOKIE_SQUARE_ID_CURRENT);
+									currentSquareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 									if(currentSquareId == null || currentSquareId.length() == 0){
 										IAccount account = AuthenticationService.getInstance().getAccountManager().getUser(uid);
 										currentSquareId = account.getDefaultSquareId();
 									}
-									
-									addCurrentSquareIdToSession(currentSquareId, request);
 									
 									log.info("auto login success.");
 								} catch( Exception ex ) {
@@ -317,35 +302,10 @@ public class SessionManagerFilter implements Filter {
 			}
 
 			if( uid == null && SessionCreateConfig.doLogin() && !isExcludePath(httpReq.getServletPath())) {
-				String cookieCurrentSquareId = RequestUtil.getCookieValue(httpReq.getCookies(), COOKIE_SQUARE_ID_CURRENT);
-				boolean squareFlg = false;
-				if(matcher.find()) {
-					param = matcher.group(1);
-					squareFlg = true;
-				}else if(cookieCurrentSquareId != null && cookieCurrentSquareId.length() > 0){
-					param = cookieCurrentSquareId;
-					squareFlg = true;
-				}
+				String loginUrl = requestUri.lastIndexOf("/manager/") > 0 ?
+					requestUri.substring( 0,requestUri.lastIndexOf("/"))+"/../login.jsp" : "login.jsp";
 
-				String url = loginPath;
-				if(requestUri.lastIndexOf("/manager/") > 0
-						|| requestUri.lastIndexOf("/admin/") > 0
-						|| requestUri.lastIndexOf("/skin/") > 0
-						|| requestUri.lastIndexOf("/guidance/") > 0
-						|| requestUri.lastIndexOf("/square/") > 0) {
-					url = requestUri.substring( 0,requestUri.lastIndexOf("/"))+"/../login.jsp";
-				}
-
-				if(squareFlg) {
-					url = context + "/" + url + param + "/";
-				} else {
-					Pattern p = Pattern.compile(".+\\.(jsp|html)");
-					Matcher m1 = p.matcher(url);
-					if(!m1.find()){
-						url = context + "/" + url;
-					}
-				}
-				httpResponse.sendRedirect(url);
+				httpResponse.sendRedirect(loginUrl);
 				return;
 			}
 
@@ -412,11 +372,6 @@ public class SessionManagerFilter implements Filter {
 			// set current square id
 			if(currentSquareId != null) {
 				UserContext.instance().getUserInfo().setCurrentSquareId(currentSquareId);
-			}
-
-			if(matcher.find()) {
-				httpResponse.sendRedirect(context + "/index.jsp");
-				return;
 			}
 		}
 		chain.doFilter(request, response);
@@ -505,16 +460,6 @@ public class SessionManagerFilter implements Filter {
 		session.setAttribute("Uid", uid);
 		if(log.isInfoEnabled()){
 			log.info("Add Uid To session : [" + uid + "]");
-		}
-	}
-
-	private void addCurrentSquareIdToSession(String currentSquareId, ServletRequest request) {
-		HttpSession session = ((HttpServletRequest) request).getSession();
-		if (session.getAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME) != null)
-			return;
-		session.setAttribute(LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, currentSquareId);
-		if(log.isInfoEnabled()){
-			log.info("Add SquareId To session : [" + currentSquareId + "]");
 		}
 	}
 

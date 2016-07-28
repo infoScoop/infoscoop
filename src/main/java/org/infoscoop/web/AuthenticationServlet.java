@@ -40,7 +40,6 @@ import org.infoscoop.service.AuthCredentialService;
 import org.infoscoop.service.PropertiesService;
 import org.infoscoop.service.SquareService;
 import org.infoscoop.util.RSAKeyManager;
-import org.infoscoop.util.RequestUtil;
 
 public class AuthenticationServlet extends HttpServlet {
 
@@ -76,9 +75,6 @@ public class AuthenticationServlet extends HttpServlet {
 			// get default square
 			String logoutUrlStr = "index.jsp";
 			String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
-			if(squareId == null) {
-				squareId = RequestUtil.getCookieValue(request.getCookies(), "is-current-square-id");
-			}
 
 			request.getSession().invalidate();
 
@@ -174,7 +170,7 @@ public class AuthenticationServlet extends HttpServlet {
 				if(squareId == null || squareId.equals("") || squareId.length() < 0)
 					squareId = account.getDefaultSquareId();
 
-				request.getSession().setAttribute(SessionManagerFilter.LOGINUSER_CURRENT_SQUARE_ID_ATTR_NAME, squareId);
+				request.getSession().setAttribute("CurrentSquareId", squareId);
 				//request.getSession().setAttribute(AuthenticationServlet.TMP_LOGINUSER_SUBJECT_ATTR_NAME, loginUser );
 				String authType = PropertiesService.getHandle().getProperty("loginCredentialAuthType");
 				if(authType != null){

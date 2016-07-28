@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IAccountManager;
+import org.infoscoop.context.UserContext;
 import org.infoscoop.service.InvitationService;
 import org.infoscoop.service.SquareService;
 import org.infoscoop.util.StringUtil;
@@ -45,7 +46,7 @@ public class SquareServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		String uid = (String)session.getAttribute("Uid");
-		String currentSquareId = (String)session.getAttribute("CurrentSquareId");
+		String currentSquareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 
 		// get square name
 		if(GET_PATH.equals(action)) {

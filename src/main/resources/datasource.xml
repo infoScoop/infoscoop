@@ -101,6 +101,7 @@
 					<value>org/infoscoop/dao/model/GlobalPreference.hbm.xml</value>
                     <value>org/infoscoop/dao/model/Principal.hbm.xml</value>
                     <value>org/infoscoop/dao/model/Notification.hbm.xml</value>
+                    <value>org/infoscoop/dao/model/SquareAlias.hbm.xml</value>
 					<value>org/infoscoop/api/dao/model/OAuth2ProviderAccessToken.hbm.xml</value>
 					<value>org/infoscoop/api/dao/model/OAuth2ProviderRefreshToken.hbm.xml</value>
 					<value>org/infoscoop/api/dao/model/OAuth2ProviderClientDetail.hbm.xml</value>

@@ -103,10 +103,6 @@
 		Boolean isAdmin = (Boolean) request.getAttribute("isAdministrator");
 		
 		Map i18n = I18NUtil.getResourceMap(I18NUtil.TYPE_JS, request.getLocale());
-		Cookie isCurrentSquareId = new Cookie("is-current-square-id", squareId);
-		isCurrentSquareId.setPath("/");
-		isCurrentSquareId.setMaxAge(Integer.MAX_VALUE);
-		response.addCookie(isCurrentSquareId);
 	%>
 
 	<!-- favicon.ico -->

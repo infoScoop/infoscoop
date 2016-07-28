@@ -34,13 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.HttpStatus;
-import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.model.Portaladmins;
-import org.infoscoop.properties.InfoScoopProperties;
 import org.infoscoop.service.PortalAdminsService;
 import org.infoscoop.util.SpringUtil;
-import org.infoscoop.web.HttpStatusCode;
 
 
 public class CheckAdminFilter implements Filter {
@@ -70,30 +66,6 @@ public class CheckAdminFilter implements Filter {
 				request.setAttribute("isAdministrator", Boolean.TRUE);
 			filterChain.doFilter(request, response);
 		} else {
-			
-			// check current suquareId
-			boolean isAjaxRequest = (httpReq.getHeader("MSDPortal-Ajax") != null);
-			boolean isFormPostRequest = "POST".equalsIgnoreCase(httpReq.getMethod()) && !isAjaxRequest;
-			String currentSquareId = UserContext.instance().getUserInfo().getCurrentSquareId();
-			String clientSquareId = isFormPostRequest? httpReq.getParameter(PARAM_SQUARE_ID) : httpReq.getHeader(PARAM_SQUARE_ID);
-			
-			if(InfoScoopProperties.getInstance().isUseMultitenantMode() && !currentSquareId.equals(clientSquareId)){
-				
-				log.info("The square ID doesn't match. The square is changed.[currentSquareId=" + currentSquareId + ", clientSquareId=" + clientSquareId + "]");
-				
-				if (isAjaxRequest) {
-					// when ajax request
-					httpRes.setStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-					httpRes.setHeader(HttpStatusCode.HEADER_NAME, HttpStatusCode.MSD_SQUARE_CHANGED);
-					return;
-				}
-				else if(isFormPostRequest){
-					// forward changed.jsp when POST request. e.g. gadget upload, i18n import, etx.
-					httpReq.getRequestDispatcher("/square/changed.jsp").forward(httpReq, httpRes);
-					return;
-				}
-			}
-			
 			if (this.administratorUidList.contains(uid)) {
 				filterChain.doFilter(request, response);
 			} else {

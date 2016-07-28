@@ -53,4 +53,48 @@
   </update>
 </changeSet>
 
+    <changeSet id="infoscoop_sleepyalpha3_598_4" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_598_4">
+            <not>
+                <tableExists schemaName="${migration.defaultSchema}" tableName="IS_SQUARE_ALIASES"/>
+            </not>
+        </preConditions>
+        <createTable tableName="IS_SQUARE_ALIASES" tablespace="${.tablespace}">
+            <column name="id" type="int" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="square_id" type="varchar(64)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="system" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha3_598_5" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha2_598_5">
+            <not>
+                <indexExists indexName="is_square_aliases_name_idx"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="is_square_aliases_name_idx" schemaName="${migration.defaultSchema}" tableName="IS_SQUARE_ALIASES" tablespace="${.tablespace}">
+            <column name="name" type="varchar(255)"/>
+        </createIndex>
+		<addUniqueConstraint columnNames="name" constraintName="is_square_aliases_name_unique" schemaName="${migration.defaultSchema}" tableName="IS_SQUARE_ALIASES" tablespace="${.tablespace}"/>
+        <addForeignKeyConstraint baseColumnNames="square_id" baseTableName="IS_SQUARE_ALIASES" constraintName="fk_is_square_aliases_squares_id" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="IS_SQUARES"/>
+    </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha3_598_6" author="aknishiumi" dbms="oracle">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha3_598_6">
+            <not>
+                <sequenceExists sequenceName="is_square_aliases_id_seq" schemaName="${migration.defaultSchema}"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="is_square_aliases_id_seq" schemaName="${migration.defaultSchema}"/>
+    </changeSet>
+
 </databaseChangeLog>

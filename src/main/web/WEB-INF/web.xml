@@ -93,6 +93,11 @@
 	</filter>
 
 	<filter>
+		<filter-name>ExtractSquareIdFilter</filter-name>
+		<filter-class>org.infoscoop.web.ExtractSquareIdFilter</filter-class>
+	</filter>
+
+	<filter>
 		<filter-name>SessionManagerFilter</filter-name>
 		<filter-class>org.infoscoop.web.SessionManagerFilter</filter-class>
 		<init-param>
@@ -195,12 +200,22 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     
+	<filter-mapping>
+		<filter-name>ExtractSquareIdFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	    
     <!--CustomizeSSOFilterMapping-->
 
     <!--CustomizeSetRoleHeaderFilterMapping-->
 
 	<filter-mapping>
 		<filter-name>DetectLogTypeFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>ExtractSquareIdFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 

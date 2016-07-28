@@ -207,13 +207,9 @@ AjaxRpc.prototype = {
 		}
 		
 		function handleLogoff(status, exception){
-			if( window["ISA_Admin"] && status != "11000") {
+			if( window["ISA_Admin"]) {
 				alert( IS_R.ms_sessionTimeoutReLogin);
 				return;
-			}
-			if( window["ISA_Admin"] && status == "11000") {
-			    alert( IS_R.ms_on11000 );
-			    window.location.reload( true );
 			}
 			
 			if(AjaxRequest.isAutoLogoff) return;

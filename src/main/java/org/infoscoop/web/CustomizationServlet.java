@@ -124,7 +124,7 @@ public class CustomizationServlet extends HttpServlet {
 			String currentSquareId = null;
 			if(session != null) {
 				userId = (String) session.getAttribute("Uid");
-				currentSquareId = (String)session.getAttribute("CurrentSquareId");
+				currentSquareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 			}
 			String customFtl = getCustomizationFtl(root, userId, currentSquareId);
 
