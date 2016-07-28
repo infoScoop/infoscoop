@@ -17,6 +17,8 @@
 
 package org.infoscoop.util;
 
+import org.infoscoop.properties.InfoScoopProperties;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +59,7 @@ public final class RequestUtil {
 	 * Delete a cookie except the designated variable name from CookieString
 	 * 
 	 * @param cookieString
-	 * @param paramName
+	 * @param paramNames
 	 * @return
 	 */
 	public static String removeCookieParam(String cookieString, Set<String> paramNames) {
@@ -390,4 +392,18 @@ public final class RequestUtil {
 		return sp;
 	}
 
+	public static String createRedirectHostUrl(String scheme, String subdomain, String path) {
+		InfoScoopProperties props = InfoScoopProperties.getInstance();
+		String hostName = props.getProperty("hostname");
+
+		String url = scheme + "://";
+		if(subdomain != null && subdomain.length() > 0) {
+			url = url + subdomain + "." + hostName;
+		} else {
+			url = url + "www." + hostName;
+		}
+
+		if(path != null && path.length() > 0) url += path;
+		return url;
+	}
 }
