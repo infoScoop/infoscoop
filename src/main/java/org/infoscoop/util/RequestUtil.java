@@ -404,6 +404,6 @@ public final class RequestUtil {
 		}
 
 		if(path != null && path.length() > 0) url += path;
-		return url;
+		return url.trim();
 	}
 }
