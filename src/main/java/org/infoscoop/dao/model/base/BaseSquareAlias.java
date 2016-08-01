@@ -11,7 +11,7 @@ public abstract class BaseSquareAlias implements Serializable {
 	public static String REF = "SuareAlias";
 	public static String PROP_ID = "id";
 	public static String PROP_NAME = "name";
-	public static String PROP_SQUARE_ID = "square_id";
+	public static String PROP_SQUARE_ID = "squareId";
 	public static String PROP_SYSTEM = "system";
 
 	// primary key

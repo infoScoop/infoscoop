@@ -20,8 +20,11 @@ import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IAccountManager;
 import org.infoscoop.context.UserContext;
+import org.infoscoop.dao.SquareAliasDAO;
+import org.infoscoop.dao.model.SquareAlias;
 import org.infoscoop.service.InvitationService;
 import org.infoscoop.service.SquareService;
+import org.infoscoop.util.RequestUtil;
 import org.infoscoop.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -66,8 +69,12 @@ public class SquareServlet extends HttpServlet {
 		// move
 		if(CHANGE_PATH.equals(action)) {
 			String squareId =  request.getParameter("square-id");
-			changeCurrentSquare(squareId, request);
-			response.sendRedirect("../index.jsp");
+			// retrieve aliase
+			SquareAlias alias = SquareAliasDAO.newInstance().getBySquareId(squareId);
+			if(alias != null)
+				squareId = alias.getName();
+			String redirectUri = RequestUtil.createRedirectHostUrl(request.getScheme(), squareId, request.getContextPath()+"/index.jsp");
+			response.sendRedirect(redirectUri);
 		}
 		else if(MYSQUARE_PATH.equals(action)){
 			IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();

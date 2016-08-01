@@ -25,7 +25,14 @@ public class SquareAliasDAO extends HibernateDaoSupport {
 														DetachedCriteria.forClass(SquareAlias.class)
 														.add(Expression.eq(SquareAlias.PROP_NAME, name))
 													);
-		
+		return result.size()>0? result.get(0) : null;
+	}
+
+	public SquareAlias getBySquareId(String squareId) {
+		List<SquareAlias> result = super.getHibernateTemplate().findByCriteria(
+				DetachedCriteria.forClass(SquareAlias.class)
+				.add(Expression.eq(SquareAlias.PROP_SQUARE_ID, squareId))
+		);
 		return result.size()>0? result.get(0) : null;
 	}
 
