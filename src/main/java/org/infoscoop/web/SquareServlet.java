@@ -69,12 +69,7 @@ public class SquareServlet extends HttpServlet {
 		// move
 		if(CHANGE_PATH.equals(action)) {
 			String squareId =  request.getParameter("square-id");
-			// retrieve aliase
-			SquareAlias alias = SquareAliasDAO.newInstance().getBySquareId(squareId);
-			if(alias != null)
-				squareId = alias.getName();
-			String redirectUri = RequestUtil.createRedirectHostUrl(request.getScheme(), squareId, request.getContextPath()+"/index.jsp");
-			response.sendRedirect(redirectUri);
+			response.sendRedirect(SquareService.getRedirectHostUrlWithSquareAlias(request.getScheme(), squareId, request.getContextPath()+"/index.jsp"));
 		}
 		else if(MYSQUARE_PATH.equals(action)){
 			IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
@@ -86,12 +81,7 @@ public class SquareServlet extends HttpServlet {
 				// set mysquare id to default square id
 				accountManager.updateDefaultSquare(uid, mySquareId);
 
-				// retrieve aliase
-				SquareAlias alias = SquareAliasDAO.newInstance().getBySquareId(mySquareId);
-				if(alias != null)
-					mySquareId = alias.getName();
-				String redirectUri = RequestUtil.createRedirectHostUrl(request.getScheme(), mySquareId, request.getContextPath()+"/index.jsp");
-				response.sendRedirect(redirectUri);
+				response.sendRedirect(SquareService.getRedirectHostUrlWithSquareAlias(request.getScheme(), mySquareId, request.getContextPath()+"/index.jsp"));
 			} catch (Exception e) {
 				log.error("Get account information failed. " + e.getMessage(), e);
 				throw new RuntimeException(e);

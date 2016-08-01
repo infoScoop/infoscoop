@@ -31,25 +31,12 @@ import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.simple.AccountAttributeName;
 import org.infoscoop.api.dao.OAuth2ProviderClientDetailDAO;
-import org.infoscoop.dao.AdminRoleDAO;
-import org.infoscoop.dao.ForbiddenURLDAO;
-import org.infoscoop.dao.GadgetDAO;
-import org.infoscoop.dao.GadgetIconDAO;
-import org.infoscoop.dao.HolidaysDAO;
-import org.infoscoop.dao.OAuthCertificateDAO;
-import org.infoscoop.dao.PortalAdminsDAO;
-import org.infoscoop.dao.PortalLayoutDAO;
-import org.infoscoop.dao.PropertiesDAO;
-import org.infoscoop.dao.ProxyConfDAO;
-import org.infoscoop.dao.SearchEngineDAO;
-import org.infoscoop.dao.SiteAggregationMenuDAO;
-import org.infoscoop.dao.SquareDAO;
-import org.infoscoop.dao.StaticTabDAO;
-import org.infoscoop.dao.TabLayoutDAO;
-import org.infoscoop.dao.WidgetConfDAO;
+import org.infoscoop.dao.*;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Square;
+import org.infoscoop.dao.model.SquareAlias;
 import org.infoscoop.properties.InfoScoopProperties;
+import org.infoscoop.util.RequestUtil;
 import org.infoscoop.util.SpringUtil;
 
 public class SquareService {
@@ -442,5 +429,12 @@ public class SquareService {
 	
 	public static String generateSquareId(){
 		return (UUID.randomUUID().toString()).replaceAll("-", "");
+	}
+
+	public static String getRedirectHostUrlWithSquareAlias(String scheme, String squareId, String path) {
+		SquareAlias alias = SquareAliasDAO.newInstance().getBySquareId(squareId);
+		if(alias != null)
+			squareId = alias.getName();
+		return RequestUtil.createRedirectHostUrl(scheme, squareId, path);
 	}
 }
