@@ -85,13 +85,17 @@ public class SquareServlet extends HttpServlet {
 
 				// set mysquare id to default square id
 				accountManager.updateDefaultSquare(uid, mySquareId);
-				changeCurrentSquare(mySquareId, request);
+
+				// retrieve aliase
+				SquareAlias alias = SquareAliasDAO.newInstance().getBySquareId(mySquareId);
+				if(alias != null)
+					mySquareId = alias.getName();
+				String redirectUri = RequestUtil.createRedirectHostUrl(request.getScheme(), mySquareId, request.getContextPath()+"/index.jsp");
+				response.sendRedirect(redirectUri);
 			} catch (Exception e) {
 				log.error("Get account information failed. " + e.getMessage(), e);
 				throw new RuntimeException(e);
 			}
-
-			response.sendRedirect("../index.jsp");
 		}
 	}
 
@@ -174,10 +178,5 @@ public class SquareServlet extends HttpServlet {
 		// update
 
 		// delete
-	}
-
-	private void changeCurrentSquare(String squareId, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		session.setAttribute("CurrentSquareId", squareId);
 	}
 }
