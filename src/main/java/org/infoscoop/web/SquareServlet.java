@@ -81,7 +81,7 @@ public class SquareServlet extends HttpServlet {
 				// set mysquare id to default square id
 				accountManager.updateDefaultSquare(uid, mySquareId);
 
-				response.sendRedirect(SquareService.getRedirectHostUrlWithSquareAlias(request.getScheme(), mySquareId, request.getContextPath()+"/index.jsp"));
+				response.sendRedirect(RequestUtil.createRedirectHostUrl(request.getScheme(), "mysquare", request.getContextPath()+"/index.jsp"));
 			} catch (Exception e) {
 				log.error("Get account information failed. " + e.getMessage(), e);
 				throw new RuntimeException(e);
