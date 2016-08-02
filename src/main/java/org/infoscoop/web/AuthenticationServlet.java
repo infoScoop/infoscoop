@@ -170,7 +170,7 @@ public class AuthenticationServlet extends HttpServlet {
 				if(squareId == null || squareId.equals("") || squareId.length() < 0)
 					squareId = account.getDefaultSquareId();
 
-				request.getSession().setAttribute("CurrentSquareId", squareId);
+				//request.getSession().setAttribute("CurrentSquareId", squareId);
 				//request.getSession().setAttribute(AuthenticationServlet.TMP_LOGINUSER_SUBJECT_ATTR_NAME, loginUser );
 				String authType = PropertiesService.getHandle().getProperty("loginCredentialAuthType");
 				if(authType != null){
