@@ -93,10 +93,14 @@
 	</filter>
 
 	<filter>
-		<filter-name>ExtractSquareIdFilter</filter-name>
+		<filter-name>ExtractSquareIdFilterBefore</filter-name>
 		<filter-class>org.infoscoop.web.ExtractSquareIdFilter</filter-class>
 	</filter>
-
+	<filter>
+		<filter-name>ExtractSquareIdFilterAfter</filter-name>
+		<filter-class>org.infoscoop.web.ExtractSquareIdFilter</filter-class>
+	</filter>
+	
 	<filter>
 		<filter-name>SessionManagerFilter</filter-name>
 		<filter-class>org.infoscoop.web.SessionManagerFilter</filter-class>
@@ -201,7 +205,7 @@
     </filter-mapping>
     
 	<filter-mapping>
-		<filter-name>ExtractSquareIdFilter</filter-name>
+		<filter-name>ExtractSquareIdFilterBefore</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	    
@@ -215,7 +219,7 @@
 	</filter-mapping>
 
 	<filter-mapping>
-		<filter-name>ExtractSquareIdFilter</filter-name>
+		<filter-name>ExtractSquareIdFilterAfter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
