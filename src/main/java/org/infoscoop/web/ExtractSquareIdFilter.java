@@ -77,8 +77,10 @@ public class ExtractSquareIdFilter implements Filter{
 			}else{
 				// エイリアス情報があれば変換
 				SquareAlias alias = SquareAliasDAO.newInstance().getByName(headerSquareId);
-				if(alias != null && alias.getSquareId() != null)
+				if(alias != null && alias.getSquareId() != null){
 					convertedSquareId = alias.getSquareId();
+					session.removeAttribute(SESSION_FLAG_NEED_CONVERT_ID);
+				}
 			}
 			session.setAttribute(SESSION_ATTR_CURRENT_SQUARE_ID_CONVERTED, convertedSquareId);
 			session.setAttribute(SESSION_ATTR_CURRENT_SQUARE_ID_ORG, headerSquareId);
