@@ -406,4 +406,9 @@ public final class RequestUtil {
 		if(path != null && path.length() > 0) url += path;
 		return url.trim();
 	}
+	
+	public static boolean isValidURL(String url){
+		String urlPattern = "^(https?)(:\\/\\/[-_.!~*\\'()a-zA-Z0-9;\\/?:\\@&=+\\$,%#]+)$";
+		return url.matches(urlPattern);
+	}
 }
