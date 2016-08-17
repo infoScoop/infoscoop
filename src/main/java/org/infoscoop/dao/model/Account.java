@@ -61,7 +61,10 @@ public class Account implements IAccount {
 
 	public String getPassword() { return password; }
 	public void setPassword(String password) { this.password = password; }
-	public void setPasswordPlainText(String plainTextPassword) { 
+	public void setPasswordPlainText(String plainTextPassword) {
+		if(plainTextPassword == null)
+			return;
+		
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA");
 			this.password = new String(Base64.encodeBase64(digest.digest( plainTextPassword.getBytes("iso-8859-1"))));
