@@ -99,7 +99,6 @@
 		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
 		IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
 		boolean isEnableAddSquareUser = accountManager.getUser(uid).isEnableAddSquareUser();
-		isEnableAddSquareUser = false;
 		
 		if(displayName == null || "".equals(displayName)){
 			displayName = uid;
