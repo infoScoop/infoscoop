@@ -33,4 +33,5 @@ public interface IAccount {
 	List<Map<String, String>> getAttributes();
 	public boolean isAdmin();
 	public void setAdmin(boolean isAdmin);
+	boolean isEnableAddSquareUser();
 }

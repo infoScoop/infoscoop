@@ -19,6 +19,8 @@
 
 <!DOCTYPE HTML>
 <%@ page contentType="text/html; charset=UTF8" %>
+<%@page import="org.infoscoop.account.AuthenticationService"%>
+<%@page import="org.infoscoop.account.IAccountManager"%>
 <%@page import="org.infoscoop.admin.web.PreviewImpersonationFilter"%>
 <%@page import="org.infoscoop.service.PropertiesService"%>
 <%@page import="org.infoscoop.service.ForbiddenURLService" %>
@@ -95,6 +97,9 @@
 		String uid = (String) session.getAttribute("Uid");
 		boolean useMultitenantMode = Boolean.valueOf(InfoScoopProperties.getInstance().getProperty("useMultitenantMode"));
 		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+		IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
+		boolean isEnableAddSquareUser = accountManager.getUser(uid).isEnableAddSquareUser();
+		isEnableAddSquareUser = false;
 		
 		if(displayName == null || "".equals(displayName)){
 			displayName = uid;
@@ -125,6 +130,7 @@
 			country : "<%=request.getLocale().getCountry() %>",
 			japaneseOnly : false,
 			useMultitenantMode : <%= InfoScoopProperties.getInstance().isUseMultitenantMode() %>,
+			isEnableAddSquareUser : <%= isEnableAddSquareUser %>,
 			notificationPollingRate : <%= InfoScoopProperties.getInstance().getGlobalmessagesPollingRate() %>,
 			guidance : {
 			    rssUrl: "<%= InfoScoopProperties.getInstance().getGuidanceRssUrl() %>"

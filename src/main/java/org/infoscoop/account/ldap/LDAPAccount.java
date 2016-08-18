@@ -148,4 +148,9 @@ public class LDAPAccount implements IAccount{
 	public String getMySquareId() {
 		return "default";
 	}
+
+	@Override
+	public boolean isEnableAddSquareUser() {
+		return true;
+	}
 }

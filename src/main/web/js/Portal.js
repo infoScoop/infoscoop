@@ -2574,14 +2574,17 @@ IS_Portal.CommandBar = {
 				href: 'javascript.void(0);',
 				title: title
 			});
-			var itemLabel = $.DIV({
-				id: 'add-square',
-				className: 'portal-user-menu-item-label portal-square-menu-item-label'
-			});
-			itemLabel.innerHTML = title;
-			itemLink.appendChild(itemLabel);
-			item.appendChild(itemLink);
-			portalSquareMenuBody.appendChild(item);
+			
+			if(IS_Portal.isEnableAddSquareUser){
+				var itemLabel = $.DIV({
+					id: 'add-square',
+					className: 'portal-user-menu-item-label portal-square-menu-item-label'
+				});
+				itemLabel.innerHTML = title;
+				itemLink.appendChild(itemLabel);
+				item.appendChild(itemLink);
+				portalSquareMenuBody.appendChild(item);
+			}
 
 			Event.observe(portalSquareMenuBody, "click", function(e){
 				$(this).hide();
@@ -2618,6 +2621,10 @@ IS_Portal.CommandBar = {
 				Element.setStyle($("portal-square-menu").parentNode, {backgroundColor: ''});
 			};
 			IS_Event.observe(portalSquareMenu, "click", function(e){
+				var squareItems = $jq(".portal-user-menu-item", $("portal-square-menu-body"));
+				if(squareItems.length == 0)
+					return;
+				
 				$("portal-square-menu-body").show();
 				var targetPosition = Position.page($("portal-square-menu"));
 				Element.setStyle($("portal-square-menu-body"), {

@@ -164,4 +164,9 @@ public class Account implements IAccount {
 	public void setMySquareId(String mySquareId) {
 		this.mySquareId = mySquareId;
 	}
+
+	@Override
+	public boolean isEnableAddSquareUser() {
+		return getPassword() != null;
+	}
 }
