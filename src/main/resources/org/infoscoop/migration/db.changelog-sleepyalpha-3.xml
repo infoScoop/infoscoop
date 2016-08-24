@@ -127,4 +127,19 @@
   </insert>
 </changeSet>
 
+    <changeSet id="infoscoop_sleepyalpha3_619_1" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha3_619_1">
+            <not>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNT_ATTRS" columnName="square_id"/>
+            </not>
+        </preConditions>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNT_ATTRS">
+            <column name="square_id" type="varchar(64)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <createIndex indexName="is_account_attrs_square_id_idx" schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNT_ATTRS" tablespace="${.tablespace}">
+            <column name="square_id" type="varchar(64)"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>

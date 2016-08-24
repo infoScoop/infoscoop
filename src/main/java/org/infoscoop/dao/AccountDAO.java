@@ -91,10 +91,29 @@ public class AccountDAO extends HibernateDaoSupport {
 		return result;
 	}
 
-	public AccountAttr getAccountAttr(String uid, String key) {
+	public List<AccountAttr> getAccountAttr(String uid, String key) {
 		List<AccountAttr> result = super.getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(AccountAttr.class)
 				.add(Expression.eq(AccountAttr.PROP_UID, uid))
 				.add(Expression.eq(AccountAttr.PROP_NAME, key)));
+
+		if(result == null || result.size() == 0)
+			return null;
+
+		return result;
+	}
+
+
+	public AccountAttr getAccountAttr(String uid, String key, String squareId) {
+		DetachedCriteria detachedCriteria = DetachedCriteria.forClass(AccountAttr.class)
+				.add(Expression.eq(AccountAttr.PROP_UID, uid))
+				.add(Expression.eq(AccountAttr.PROP_NAME, key));
+
+		if (squareId != null) {
+			detachedCriteria.add(Expression.eq(AccountAttr.PROP_SQUARE_ID, squareId));
+		} else {
+			detachedCriteria.add(Expression.isNull(AccountAttr.PROP_SQUARE_ID));
+		}
+		List<AccountAttr> result = super.getHibernateTemplate().findByCriteria(detachedCriteria);
 
 		if(result == null || result.size() == 0)
 			return null;
@@ -106,10 +125,10 @@ public class AccountDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().saveOrUpdate(accountAttr);
 	}
 
-	public void saveAccountAttr(String uid, String name, String value, Boolean system) {
-		AccountAttr attr = getAccountAttr(uid, name);
+	public void saveAccountAttr(String uid, String name, String value, Boolean system, String squareId) {
+		AccountAttr attr = getAccountAttr(uid, name, squareId);
 		if(attr == null)
-			attr = new AccountAttr(uid, name, value, system);
+			attr = new AccountAttr(uid, name, value, system, squareId);
 		attr.setValue(value);
 		super.getHibernateTemplate().saveOrUpdate(attr);
 		super.getHibernateTemplate().flush();

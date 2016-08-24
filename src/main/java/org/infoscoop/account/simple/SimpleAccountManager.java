@@ -288,8 +288,8 @@ public class SimpleAccountManager implements IAccountManager{
 		account.setMail(email);
 		
 		AccountSquare accountSquare = new AccountSquare(userid, defaultSquareId);
-		AccountAttr ownedNum = new AccountAttr(userid, AccountAttributeName.OWNED_SQUARE_NUMBER, ownedSquareNum, true);
-		AccountAttr permission = new AccountAttr(userid, AccountAttributeName.UPDATE_PERMISSION,  updatePermission, true);
+		AccountAttr ownedNum = new AccountAttr(userid, AccountAttributeName.OWNED_SQUARE_NUMBER, ownedSquareNum, true, null);
+		AccountAttr permission = new AccountAttr(userid, AccountAttributeName.UPDATE_PERMISSION,  updatePermission, true, null);
 		dao.insert(account);
 		dao.insertAccountSquare(accountSquare);
 		dao.insertAccountAttr(ownedNum);
@@ -322,32 +322,58 @@ public class SimpleAccountManager implements IAccountManager{
 	}
 
 	@Override
-	public void setAccountAttribute(String userid, String name, String value, Boolean system) {
-		dao.saveAccountAttr(userid, name, value, system);
+	public void setAccountAttribute(String userid, String name, String value, Boolean system, String squareId) {
+		dao.saveAccountAttr(userid, name, value, system, squareId);
 	}
 
 	@Override
 	public String getAccountAttributeValue(String userid, String name) throws Exception {
-		Map<String, Object> entity = getAccountAttribute(userid, name);
+		return getAccountAttributeValue(userid, name, null);
+	}
+
+	public String getAccountAttributeValue(String userid, String name, String squareId) throws Exception {
+		Map<String, Object> entity = getAccountAttribute(userid, name, squareId);
 		return (String)entity.get("value");
 	}
 
+	/* all square and same key */
 	@Override
-	public Map<String, Object> getAccountAttribute(String userid, String name) throws Exception {
-		AccountAttr attr = dao.getAccountAttr(userid, name);
+	public List<Map<String, Object>> getAccountAttribute(String userid, String name) throws Exception {
+		List<AccountAttr> attrList = dao.getAccountAttr(userid, name);
+		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+
+		for(AccountAttr attr : attrList) {
+			Map<String, Object> map = new HashMap<>();
+
+			if(attr != null){
+				map.put("name", attr.getName());
+				map.put("value", attr.getValue());
+				map.put("system", attr.getSystem());
+				map.put("account", attr.getAccountId());
+				map.put("squareId", attr.getSquareId());
+			}
+		}
+		return resultList;
+	}
+
+	/* specific square and specific key */
+	public Map<String, Object> getAccountAttribute(String userid, String name, String squareId) throws Exception {
+		AccountAttr attr = dao.getAccountAttr(userid, name, squareId);
 		Map<String, Object> map = new HashMap<>();
-		
+
 		if(attr != null){
 			map.put("name", attr.getName());
 			map.put("value", attr.getValue());
 			map.put("system", attr.getSystem());
 			map.put("account", attr.getAccountId());
+			map.put("squareId", attr.getSquareId());
 		}
+
 		return map;
 	}
 
 	@Override
 	public void setAccountOwner(String userid, String value) throws Exception {
-		setAccountAttribute(userid, AccountAttributeName.REGISTERED_SQUARE, value, true);
+		setAccountAttribute(userid, AccountAttributeName.REGISTERED_SQUARE, value, true, null);
 	}
 }

@@ -99,11 +99,11 @@ public interface IAccountManager {
 
 	public void removeSquareId(String userid, String squareId) throws Exception;
 
-	public void setAccountAttribute(String userid, String name, String value, Boolean system) throws Exception;
+	public void setAccountAttribute(String userid, String name, String value, Boolean system, String squareId) throws Exception;
 
 	public String getAccountAttributeValue(String userid, String name) throws Exception;
 
-	public Map<String, Object> getAccountAttribute(String userid, String name) throws Exception;
+	public List<Map<String, Object>> getAccountAttribute(String userid, String name) throws Exception;
 
 	public void setAccountOwner(String userid, String value) throws Exception;
 }

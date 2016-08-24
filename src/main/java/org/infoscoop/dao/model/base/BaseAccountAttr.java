@@ -27,16 +27,18 @@ public class BaseAccountAttr implements Serializable {
 	public static String PROP_NAME = "name";
 	public static String PROP_VALUE = "value";
 	public static String PROP_SYSTEM = "system";
+	public static String PROP_SQUARE_ID = "squareId";
 
 	public BaseAccountAttr() {
 		initialize();
 	}
 
-	public BaseAccountAttr(String uid, String name, String value, Boolean system) {
+	public BaseAccountAttr(String uid, String name, String value, Boolean system, String squareId) {
 		this.setAccountId(uid);
 		this.setName(name);
 		this.setValue(value);
 		this.setSystem(system);
+		this.setSquareId(squareId);
 		initialize();
 	}
 
@@ -52,6 +54,7 @@ public class BaseAccountAttr implements Serializable {
 	private java.lang.String name;
 	private java.lang.String value;
 	private java.lang.Boolean system;
+	private java.lang.String squareId;
 
 	public Long getId() {
 		return id;
@@ -91,6 +94,14 @@ public class BaseAccountAttr implements Serializable {
 
 	public void setSystem(Boolean system) {
 		this.system = system;
+	}
+
+	public String getSquareId() {
+		return squareId;
+	}
+
+	public void setSquareId(String squareId) {
+		this.squareId = squareId;
 	}
 
 	@Override

@@ -17,7 +17,6 @@
 
 package org.infoscoop.api.rest.v1.controller.admin;
 
-import com.google.caja.service.InvalidArgumentsException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.IAccount;
@@ -26,7 +25,6 @@ import org.infoscoop.api.rest.v1.controller.BaseController;
 import org.infoscoop.api.rest.v1.response.model.Provisioning;
 import org.infoscoop.api.rest.v1.response.model.ProvisioningList;
 import org.infoscoop.api.rest.v1.service.admin.ProvisioningService;
-import org.infoscoop.dao.model.Square;
 import org.infoscoop.service.SquareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PermissionDeniedDataAccessException;
@@ -115,7 +113,13 @@ public class ProvisioningController extends BaseController{
 			Provisioning user = provisioning.get(i);
 			// validation
 			try{
-				service.checkParameterForRegistration(user, i, execSquareId);
+				String uid = user.uid;
+
+				if(AccountHelper.isExistsUser(uid)){
+					throw new IllegalArgumentException("users[" + i + "].uid is exists.");
+				}
+
+				service.checkParameter(user, i, execSquareId);
 			} catch(Exception e) {
 				results.add(e.getMessage());
 				continue;
@@ -151,7 +155,16 @@ public class ProvisioningController extends BaseController{
 			Provisioning user = provisioning.get(i);
 			// validation
 			try{
-				service.checkParameterForUpdate(user, i, execSquareId);
+				String uid = user.uid;
+
+				if(!AccountHelper.isExistsUser(uid)){
+					throw new IllegalArgumentException("users[" + i + "].uid is not exists.");
+				}
+				if(!AccountHelper.isUpdateUser(uid, execSquareId)) {
+					throw new PermissionDeniedDataAccessException("Permission denied", new Throwable());
+				}
+
+				service.checkParameter(user, i, execSquareId);
 			} catch(Exception e) {
 				results.add(e.getMessage());
 				continue;

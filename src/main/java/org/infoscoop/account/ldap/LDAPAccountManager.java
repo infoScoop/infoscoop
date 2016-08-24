@@ -600,7 +600,7 @@ public class LDAPAccountManager implements IAccountManager{
 	}
 
 	@Override
-	public void setAccountAttribute(String userid, String name, String value, Boolean system) throws Exception {
+	public void setAccountAttribute(String userid, String name, String value, Boolean system, String squareId) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 
@@ -610,7 +610,7 @@ public class LDAPAccountManager implements IAccountManager{
 	}
 
 	@Override
-	public Map<String, Object> getAccountAttribute(String userid, String name) throws Exception {
+	public List<Map<String, Object>> getAccountAttribute(String userid, String name) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 

@@ -45,5 +45,13 @@
                 name="system"
                 type="boolean"
          />
+
+		<property
+				name="squareId"
+				column="square_id"
+				type="string"
+				not-null="false"
+				length="64"
+		/>
 	</class>
 </hibernate-mapping>

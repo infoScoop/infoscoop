@@ -26,7 +26,7 @@ public class AccountAttr extends BaseAccountAttr{
 		super();
 	}
 
-	public AccountAttr(String uid, String name, String value, Boolean system) {
-		super(uid, name, value, system);
+	public AccountAttr(String uid, String name, String value, Boolean system, String squareId) {
+		super(uid, name, value, system, squareId);
 	}
 }
