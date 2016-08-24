@@ -25,6 +25,7 @@ import org.infoscoop.api.rest.v1.controller.BaseController;
 import org.infoscoop.api.rest.v1.response.model.Provisioning;
 import org.infoscoop.api.rest.v1.response.model.ProvisioningList;
 import org.infoscoop.api.rest.v1.service.admin.ProvisioningService;
+import org.infoscoop.dao.model.Account;
 import org.infoscoop.service.SquareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PermissionDeniedDataAccessException;
@@ -35,7 +36,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/v1/admin/provisioning")
@@ -87,6 +90,16 @@ public class ProvisioningController extends BaseController{
 		for(IAccount account : accounts) {
 			Provisioning provisioning = new Provisioning();
 			provisioning.uid = account.getUid();
+			provisioning.email = account.getMail();
+
+			if(account instanceof Account) {
+				provisioning.givenName = ((Account)account).getGivenName();
+				provisioning.familyName = ((Account)account).getFamilyName();
+			}
+
+			provisioning.name = account.getName();
+			provisioning.belongSquare = service.getBelongSquare(account, execSquareId);
+			provisioning.attrs = service.getAccountAttribute(account, execSquareId);
 			list.add(provisioning);
 		}
 

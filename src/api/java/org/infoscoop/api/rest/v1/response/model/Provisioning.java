@@ -47,23 +47,19 @@ public class Provisioning{
 	@Pattern(regexp = "^[a-zA-Z0-9!#\\$%&'\\-\\+\\*_\\?]+$", groups = { Create.class, Update.class })
 	public String password;
 
-	@JsonIgnore
 	@NotBlank(groups = { Create.class })
 	@Email(groups = { Create.class, Update.class })
 	@Size(min = 1, max = 150, groups = { Create.class, Update.class })
 	public String email;
 
-	@JsonIgnore
 	@NotBlank(groups = { Create.class })
 	@Size(max = 128, groups = { Create.class, Update.class })
 	public String givenName;
 
-	@JsonIgnore
 	@NotNull(groups = { Create.class })
 	@Size(max = 128, groups = { Create.class, Update.class })
 	public String familyName;
 
-	@JsonIgnore
 	@Size(max = 255, groups = { Create.class, Update.class })
 	public String name;
 
@@ -71,10 +67,8 @@ public class Provisioning{
 	@Size(max = 64, groups = { Create.class, Update.class })
 	public String defaultSquareId;
 
-	@JsonIgnore
 	public List<Map<String, String>> belongSquare;
 
-	@JsonIgnore
 	public List<Map<String, String>> attrs;
 
 

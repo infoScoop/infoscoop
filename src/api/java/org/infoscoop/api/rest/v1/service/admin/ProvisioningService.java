@@ -24,6 +24,7 @@ import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IAccountManager;
 import org.infoscoop.account.simple.AccountAttributeName;
 import org.infoscoop.api.rest.v1.response.model.Provisioning;
+import org.infoscoop.dao.model.AccountAttr;
 import org.infoscoop.properties.InfoScoopProperties;
 import org.infoscoop.service.PreferenceService;
 import org.infoscoop.service.SquareService;
@@ -123,6 +124,17 @@ public class ProvisioningService {
 							&& (!SquareService.getHandle().isNotDefaultUntilAncient(squareId, execSquareId) || !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId)))
 						throw new IllegalArgumentException("users[" + index + "].attrs[" + i +"].square_id[" + squareId + "] is not owned square.");
 
+					// belong
+					/*
+					Do not set attribute belonging square.
+					*/
+					List<Map<String, String>> belongSquareList = user.belongSquare;
+					List<String> expect = new ArrayList<String>();
+					for(Map<String, String> squareMap : belongSquareList) {
+						expect.add(squareMap.get("id"));
+					}
+					if(!expect.contains(squareId))
+						throw new IllegalArgumentException("users[" + index + "].attrs[" + i +"].square_id[" + squareId + "] is not belonging.");
 				}
 			}
 		}
@@ -217,6 +229,47 @@ public class ProvisioningService {
 
 		if(map.size() > 1)
 			manager.updateUser(map);
+	}
+
+	public List<Map<String, String>> getAccountAttribute(IAccount account, String execSquareId) {
+		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> attrs = account.getAttributes();
+
+		for(Map<String, String> accountAttr : attrs) {
+			// not System attribute
+			String squareId = accountAttr.get(AccountAttr.PROP_SQUARE_ID);
+			if(!Boolean.valueOf(accountAttr.get(AccountAttr.PROP_SYSTEM))) {
+				// owned square attribute
+				Map<String, String> map = new HashMap<>();
+				if(squareId == null) {
+					map.put(AccountAttr.PROP_NAME, accountAttr.get(AccountAttr.PROP_NAME));
+					map.put(AccountAttr.PROP_VALUE, accountAttr.get(AccountAttr.PROP_VALUE));
+				} else if(squareId.equals(execSquareId)
+						|| (SquareService.getHandle().isNotDefaultUntilAncient(squareId, execSquareId) && SquareService.getHandle().comparisonParentSquare(squareId, execSquareId))) {
+					map.put(AccountAttr.PROP_NAME, accountAttr.get(AccountAttr.PROP_NAME));
+					map.put(AccountAttr.PROP_VALUE, accountAttr.get(AccountAttr.PROP_VALUE));
+					map.put(AccountAttr.PROP_SQUARE_ID, squareId);
+				}
+				if(map.size() > 0)
+					resultList.add(map);
+			}
+		}
+		return resultList;
+	}
+
+	public List<Map<String, String>> getBelongSquare(IAccount account, String execSquareId) {
+		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
+		List<String> belongIds = account.getBelongids();
+
+		for(String belongId : belongIds) {
+			Map<String, String> map = new HashMap<>();
+			if(belongId.equals(execSquareId)
+					|| (SquareService.getHandle().isNotDefaultUntilAncient(belongId, execSquareId) && SquareService.getHandle().comparisonParentSquare(belongId, execSquareId))) {
+				map.put("id", belongId);
+				resultList.add(map);
+			}
+		}
+		return resultList;
 	}
 
 	private void updateAccountSquare(List<Map<String, String>> belongSquareList, String uid, String execSquareId) throws Exception{

@@ -25,6 +25,7 @@ import java.util.*;
 import org.apache.commons.codec.binary.Base64;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IGroup;
+import org.infoscoop.service.SquareService;
 
 public class Account implements IAccount {
 	
@@ -122,8 +123,11 @@ public class Account implements IAccount {
 		if(attributes.size() == 0) {
 			for(AccountAttr accountAttr : accountAttrs) {
 				Map<String, String> map = new HashMap<>();
-				map.put("name", accountAttr.getName());
-				map.put("value", accountAttr.getValue());
+				map.put(AccountAttr.PROP_NAME, accountAttr.getName());
+				map.put(AccountAttr.PROP_VALUE, accountAttr.getValue());
+				if(accountAttr.getSquareId() != null)
+					map.put(AccountAttr.PROP_SQUARE_ID, accountAttr.getSquareId());
+				map.put(AccountAttr.PROP_SYSTEM, accountAttr.getSystem().toString());
 				attributes.add(map);
 			}
 		}
