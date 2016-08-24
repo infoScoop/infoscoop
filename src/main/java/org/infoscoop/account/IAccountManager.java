@@ -105,5 +105,7 @@ public interface IAccountManager {
 
 	public List<Map<String, Object>> getAccountAttribute(String userid, String name) throws Exception;
 
+	public void deleteAccountAttribute(String userid, String squareId) throws Exception;
+
 	public void setAccountOwner(String userid, String value) throws Exception;
 }

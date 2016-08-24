@@ -373,6 +373,17 @@ public class SimpleAccountManager implements IAccountManager{
 	}
 
 	@Override
+	public void deleteAccountAttribute(String userid, String squareId) throws Exception {
+		List<AccountAttr> attrs = dao.getAccountAttrBySquareId(userid, squareId);
+
+		if(attrs != null && attrs.size() > 0) {
+			for(AccountAttr attr : attrs) {
+				dao.deleteAccountAttr(attr);
+			}
+		}
+	}
+
+	@Override
 	public void setAccountOwner(String userid, String value) throws Exception {
 		setAccountAttribute(userid, AccountAttributeName.REGISTERED_SQUARE, value, true, null);
 	}

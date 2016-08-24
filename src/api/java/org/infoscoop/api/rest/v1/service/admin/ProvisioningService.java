@@ -321,8 +321,12 @@ public class ProvisioningService {
 				continue;
 			}
 
-			if(!resultSquareIdSet.contains(repoSquareId))
+			if(!resultSquareIdSet.contains(repoSquareId)) {
 				manager.removeSquareId(uid, repoSquareId);
+
+				// remove attr
+				manager.deleteAccountAttribute(uid, repoSquareId);
+			}
 		}
 	}
 
