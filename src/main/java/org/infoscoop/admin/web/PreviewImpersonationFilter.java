@@ -68,7 +68,7 @@ public class PreviewImpersonationFilter implements Filter {
 		if(uidParam != null){
 			principals.add(ISPrincipal.UID_PRINCIPAL);
 			principals.add(uidParam);
-			previewUser.getPrincipals().add(new ISPrincipal(ISPrincipal.UID_PRINCIPAL, uidParam));
+			previewUser.getPrincipals().add(new ISPrincipal(ISPrincipal.UID_PRINCIPAL, uidParam, null));
 		}
 		for(PrincipalDef def: SessionCreateConfig.getInstance().getPrincipalDefs()){
 			String[] principalValues = request.getParameterValues(def.getType());
@@ -79,7 +79,7 @@ public class PreviewImpersonationFilter implements Filter {
 
 					principals.add(def.getType());
 					principals.add(principalValues[i]);
-					previewUser.getPrincipals().add(new ISPrincipal(def.getType(), principalValues[i]));
+					previewUser.getPrincipals().add(new ISPrincipal(def.getType(), principalValues[i], null));
 				}
 			}
 		}
@@ -99,7 +99,7 @@ public class PreviewImpersonationFilter implements Filter {
 						log.info("Set preview principal: PrincipalType=" + roleType + ", name=" + principalValues[i]  + ".");
 					principals.add(def.getType());
 					principals.add(principalValues[i]);
-					previewUser.getPrincipals().add(new ISPrincipal(roleType, principalValues[i]));
+					previewUser.getPrincipals().add(new ISPrincipal(roleType, principalValues[i], null));
 				}
 			}
 		}

@@ -330,7 +330,7 @@ public class SessionManagerFilter implements Filter {
 
 				if( loginUser == null || isChangeLoginUser( uid, loginUser )) {
 					loginUser = new Subject();
-					loginUser.getPrincipals().add(new ISPrincipal(ISPrincipal.UID_PRINCIPAL, uid));
+					loginUser.getPrincipals().add(new ISPrincipal(ISPrincipal.UID_PRINCIPAL, uid, null));
 				}
 
 				setLoginUserName(httpRequest, loginUser);
@@ -343,7 +343,7 @@ public class SessionManagerFilter implements Filter {
 						String headerValue = (String)headerValues.nextElement();
 						try {
 							Set principals = loginUser.getPrincipals();
-							principals.add( new ISPrincipal(roleType, headerValue));
+							principals.add( new ISPrincipal(roleType, headerValue, null));
 //							loginUser.getPrincipals().add( roleType.getConstructor(paramTypes).newInstance(initArgs) );
 							if(log.isInfoEnabled())log.info("Set principal to login subject: " + roleType + "=" + headerValue);
 						} catch (IllegalArgumentException e) {

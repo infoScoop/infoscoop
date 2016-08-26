@@ -26,10 +26,12 @@ public class ISPrincipal implements Principal, Serializable{
 	private String type;
 	private String name;
 	private String displayName;
+	private String squareId;
 	
-	public ISPrincipal(String type, String name){
+	public ISPrincipal(String type, String name, String squareId){
 		this.type = type;
 		this.name = name;
+		this.squareId = squareId;
 	}
 	
 	public String getType(){
@@ -38,7 +40,10 @@ public class ISPrincipal implements Principal, Serializable{
 	public String getName(){
 		return this.name;
 	}
-	
+	public String getSquareId() {
+		return this.squareId;
+	}
+
 	public void setDisplayName(String displayName){
 		this.displayName = displayName;
 	}

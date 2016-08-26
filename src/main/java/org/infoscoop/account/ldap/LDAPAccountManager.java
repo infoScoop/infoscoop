@@ -307,11 +307,11 @@ public class LDAPAccountManager implements IAccountManager{
 			throw new AuthenticationException(userid + " is not found.");
 		}
 		Subject loginUser = new Subject();
-		ISPrincipal p = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, user.getUid());
+		ISPrincipal p = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, user.getUid(), null);
 		p.setDisplayName(user.getName());
 		loginUser.getPrincipals().add(p);
 		for (IGroup group : user.getGroups()) {
-			p = new ISPrincipal(LDAP_GROUP_PRINCIPAL, group.getName());
+			p = new ISPrincipal(LDAP_GROUP_PRINCIPAL, group.getName(), null);
 			loginUser.getPrincipals().add(p);
 		}
 		return loginUser;

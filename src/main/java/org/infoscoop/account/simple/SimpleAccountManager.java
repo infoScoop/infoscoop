@@ -38,8 +38,6 @@ import org.infoscoop.dao.AccountDAO;
 import org.infoscoop.dao.model.Account;
 import org.infoscoop.dao.model.AccountAttr;
 import org.infoscoop.dao.model.AccountSquare;
-import org.infoscoop.service.PreferenceService;
-import org.infoscoop.service.SquareService;
 import org.json.JSONObject;
 
 /**
@@ -140,14 +138,14 @@ public class SimpleAccountManager implements IAccountManager{
 		if(account == null) return null;
 		
 		Subject loginUser = new Subject();
-		ISPrincipal p = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, account.getUid());
+		ISPrincipal p = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, account.getUid(), null);
 		p.setDisplayName(account.getName());
 		loginUser.getPrincipals().add(p);
 		
 		Set<AccountAttr> accountAttrs = account.getAccountAttrs();
 		for(Iterator<AccountAttr> ite = accountAttrs.iterator();ite.hasNext();){
 			AccountAttr attr =  ite.next();
-			ISPrincipal attrPrincipal = new ISPrincipal(attr.getName(), attr.getValue());
+			ISPrincipal attrPrincipal = new ISPrincipal(attr.getName(), attr.getValue(), attr.getSquareId());
 			loginUser.getPrincipals().add(attrPrincipal);
 		}
 		

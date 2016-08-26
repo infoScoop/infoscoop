@@ -30,6 +30,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
+import org.infoscoop.context.UserContext;
 
 /**
  * The class which get information from a tablayout table depending on role information.
@@ -70,14 +71,25 @@ public class RoleUtil {
 			
 			try {
 				Pattern pattern = Pattern.compile(regx);
+				String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+				ISPrincipal expectPrincipal = null;
 				for(ISPrincipal p: principals){
 					if (type.equals(p.getType()) 
-							&& p.getName() != null){
-						Matcher matcher = pattern.matcher(p.getName());
-						retVal = matcher2List(matcher);
-						if(retVal != null)
-							break;
+							&& p.getName() != null
+							&& (p.getSquareId() == null || p.getSquareId().equals(squareid))){
+						if(expectPrincipal != null) {
+							if(p.getSquareId() != null) {
+								expectPrincipal = p;
+								break;
+							}
+						} else {
+							expectPrincipal = p;
+						}
 					}
+				}
+				if(expectPrincipal != null) {
+					Matcher matcher = pattern.matcher(expectPrincipal.getName());
+					retVal = matcher2List(matcher);
 				}
 			} catch (PatternSyntaxException e) {
 				log.warn("\"" + regx + "\" is invalid regular expression.");
