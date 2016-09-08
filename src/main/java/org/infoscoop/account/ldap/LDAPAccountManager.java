@@ -589,7 +589,7 @@ public class LDAPAccountManager implements IAccountManager{
 	}
 
 	@Override
-	public void registUser(String userid, String password, String firstName,
+	public IAccount registUser(String userid, String password, String firstName,
 			String familyName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission) throws Exception {
 		throw new UnsupportedOperationException();
 	}

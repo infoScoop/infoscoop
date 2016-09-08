@@ -275,7 +275,7 @@ public class SimpleAccountManager implements IAccountManager{
 	}
 
 	@Override
-	public void registUser(String userid, String password, String firstName,
+	public IAccount registUser(String userid, String password, String firstName,
 			String familyName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission) throws Exception {
 		String displayName = firstName + " " + familyName;
 		Account account = new Account(userid, displayName, password);
@@ -292,6 +292,8 @@ public class SimpleAccountManager implements IAccountManager{
 		dao.insertAccountSquare(accountSquare);
 		dao.insertAccountAttr(ownedNum);
 		dao.insertAccountAttr(permission);
+
+		return account;
 	}
 
 	@Override
