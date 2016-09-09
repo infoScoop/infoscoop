@@ -62,8 +62,9 @@ public class ProxyConfDAO extends HibernateDaoSupport {
 	public String selectLastModified(int tempFlag, String squareId){
 		Proxyconf entity = (Proxyconf)super.getHibernateTemplate().load(Proxyconf.class, new ProxyconfPK(new Integer(tempFlag), squareId));
 
-		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(entity.getLastmodified());
-		
+		if(entity != null)
+			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(entity.getLastmodified());
+		return null;
 	}
 
 	public void copySquare(String squareId, String defaultSquareId) {

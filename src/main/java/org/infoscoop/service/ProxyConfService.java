@@ -381,6 +381,8 @@ public class ProxyConfService {
 
 		try {
 			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			if(squareid == null)
+				squareid = SquareService.SQUARE_ID_DEFAULT;
 
 			// Obtain data
 			String result = proxyConfDAO.selectLastModified(ProxyConfDAO.PROXYCONF_FLAG_NOT_TEMP, squareid);
