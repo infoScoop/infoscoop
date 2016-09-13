@@ -212,8 +212,12 @@ public class SquareService {
 		createSquare(squareId, squareName, desc, sourceSquareId, userId, SQUARE_ADMIN_ROLE_NAME, Integer.parseInt(maxUser));
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void createSquare(String squareId, String squareName, String desc,  String sourceSquareId, String userId, String roleId, int maxUserNum) {
+		createSquare(squareId, squareName, desc, sourceSquareId, userId, roleId, maxUserNum, false);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void createSquare(String squareId, String squareName, String desc,  String sourceSquareId, String userId, String roleId, int maxUserNum, boolean serviceFlg) {
 		if(!existsSquare(sourceSquareId)) {
 			log.error("Not exist source square.");
 			throw new IllegalArgumentException();
@@ -228,7 +232,11 @@ public class SquareService {
 		this.gadgetIconDAO.copySquare(squareId, sourceSquareId);
 		this.holidaysDAO.copySquare(squareId, sourceSquareId);
 		this.siteAggregationMenuDAO.copySquare(squareId, sourceSquareId);
-		this.oauthCertificateDAO.copySquare(squareId, sourceSquareId);
+		if(serviceFlg) {
+			this.oauthCertificateDAO.copySquareWithKeys(squareId, sourceSquareId);
+		} else {
+			this.oauthCertificateDAO.copySquare(squareId, sourceSquareId);
+		}
 		this.portalLayoutDAO.copySquare(squareId, sourceSquareId);
 		this.propertiesDAO.copySquare(squareId, sourceSquareId);
 		this.proxyConfDAO.copySquare(squareId, sourceSquareId);
