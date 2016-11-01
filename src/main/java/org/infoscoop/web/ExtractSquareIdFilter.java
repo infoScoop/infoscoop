@@ -21,6 +21,7 @@ import org.infoscoop.dao.SquareAliasDAO;
 import org.infoscoop.dao.model.SquareAlias;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
+import org.infoscoop.properties.InfoScoopProperties;
 
 public class ExtractSquareIdFilter implements Filter{
 
@@ -50,9 +51,10 @@ public class ExtractSquareIdFilter implements Filter{
 		
 		// リクエストヘッダからスクエアID取得
 		String host = httpReq.getHeader("HOST");
-
-		String[] hostArray = (host != null && host.length() > 0) ?  host.split("\\.") : null;
-		String headerSquareId = (hostArray != null && hostArray.length > 2) ? hostArray[0] : RESERVED_WORDS_WWW;
+		InfoScoopProperties props = InfoScoopProperties.getInstance();
+		String hostName = props.getProperty("hostname");
+		String headerSquareId = (host != null && host.length() > 0) ? host.replaceAll(hostName, "") : RESERVED_WORDS_WWW;
+		if(headerSquareId.charAt(headerSquareId.length()-1) == '.') headerSquareId = headerSquareId.substring(0, headerSquareId.length()-1);
 
 		// ユーザセッション確立しているかどうかの確認用（ログイン前ならnull）
 		String uid = (String)httpReq.getSession().getAttribute("Uid");
