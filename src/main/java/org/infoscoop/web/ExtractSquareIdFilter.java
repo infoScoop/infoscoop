@@ -50,11 +50,17 @@ public class ExtractSquareIdFilter implements Filter{
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		
 		// リクエストヘッダからスクエアID取得
-		String host = httpReq.getHeader("HOST");
 		InfoScoopProperties props = InfoScoopProperties.getInstance();
 		String hostName = props.getProperty("hostname");
-		String headerSquareId = (host != null && host.length() > 0) ? host.replaceAll(hostName, "") : RESERVED_WORDS_WWW;
-		if(headerSquareId.charAt(headerSquareId.length()-1) == '.') headerSquareId = headerSquareId.substring(0, headerSquareId.length()-1);
+
+		String host = httpReq.getHeader("HOST");
+		String headerSquareId = (host != null && host.length() > 0) ? host.replaceAll(hostName, "") : null;
+		if(headerSquareId != null && headerSquareId.length() > 0) {
+			headerSquareId = (headerSquareId.charAt(headerSquareId.length()-1) == '.') ? headerSquareId.substring(0, headerSquareId.length()-1) : headerSquareId;
+		} else {
+			headerSquareId = RESERVED_WORDS_WWW;
+		}
+
 
 		// ユーザセッション確立しているかどうかの確認用（ログイン前ならnull）
 		String uid = (String)httpReq.getSession().getAttribute("Uid");
