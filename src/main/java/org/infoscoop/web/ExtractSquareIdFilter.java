@@ -25,8 +25,7 @@ import edu.emory.mathcs.backport.java.util.Arrays;
 public class ExtractSquareIdFilter implements Filter{
 
 	private Log log = LogFactory.getLog(this.getClass());
-	public static String HEADER_SQUARE_ID = "x-cg-subdomain";
-	
+
 	public static final String RESERVED_WORDS_WWW = "www";
 	
 	@SuppressWarnings("unchecked")
@@ -50,7 +49,8 @@ public class ExtractSquareIdFilter implements Filter{
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		
 		// リクエストヘッダからスクエアID取得
-		String headerSquareId = httpReq.getHeader(HEADER_SQUARE_ID);
+		String host = httpReq.getHeader("HOST");
+		String headerSquareId = (host != null && host.length() > 0) ?  host.split("\\.")[0] : null;
 		headerSquareId = (headerSquareId == null) ? RESERVED_WORDS_WWW : headerSquareId;
 		
 		// ユーザセッション確立しているかどうかの確認用（ログイン前ならnull）
