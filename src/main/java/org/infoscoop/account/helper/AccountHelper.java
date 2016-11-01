@@ -90,8 +90,8 @@ public class AccountHelper {
 	/**
 	 * 指定メールアドレスのユーザがスクエアに存在するかチェック
 	 * 
-	 * @param mail
-	 * @param square
+	 * @param uid
+	 * @param squareid
 	 * @return
 	 * @throws Exception
 	 */
