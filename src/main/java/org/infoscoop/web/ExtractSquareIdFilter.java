@@ -76,13 +76,18 @@ public class ExtractSquareIdFilter implements Filter{
 			String convertedSquareId = (String)session.getAttribute(SESSION_ATTR_CURRENT_SQUARE_ID_CONVERTED);
 			UserContext.instance().getUserInfo().setCurrentSquareId(convertedSquareId);
 		} else {
-			// スクエアが変更された、あるいは初回アクセスの場合、リクエストヘッダのスクエアIDを利用
+			// スクエアが変更された、あるいは初回アクセスの場合、セッション内ではなく現在のサブドメインを利用
 			
 			String convertedSquareId = headerSquareId;
 			
 			if(needConvertWords.contains(convertedSquareId)){
-				// ユーザセッション確立後に変換が必要な場合、フラグを立てる
-				session.setAttribute(SESSION_FLAG_NEED_CONVERT_ID, "true");
+				if(uid != null){
+					// 既にユーザセッションが存在する場合、このセッションで変換を実行する
+					needConvertId = true;
+				}else{
+					// ユーザセッション確立後（コールバック後）に変換が必要な場合、フラグを立てる
+					session.setAttribute(SESSION_FLAG_NEED_CONVERT_ID, "true");
+				}
 			}else{
 				// エイリアス情報があれば変換
 				SquareAlias alias = SquareAliasDAO.newInstance().getByName(headerSquareId);
