@@ -52,7 +52,7 @@ public class LogoService {
 		if(logo != null) {
 			// update
 			logo.setType(typeRef);
-			logo.setLogo(image);
+			logo.setLogoobj(image);
 			this.logoDAO.update(logo);
 		} else {
 			// insert

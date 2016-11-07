@@ -19,6 +19,8 @@ package org.infoscoop.dao;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.infoscoop.dao.model.Logo;
@@ -48,7 +50,6 @@ public class LogoDAO extends HibernateDaoSupport {
 		}
 	}
 
-
 	//insert
 	public void insert(String squareId, byte[] logo, String type, String kind) {
 		// initial temp true
@@ -60,5 +61,21 @@ public class LogoDAO extends HibernateDaoSupport {
 	public void update (Logo logo) {
 		if(logo != null)
 			super.getHibernateTemplate().update(logo);
+	}
+
+	public void copySquare(String squareId, String defaultSquareId) {
+		Session session = super.getSession();
+		Query sq = session.getNamedQuery("is_logos.copySquare");
+		sq.setString("squareId", squareId);
+		sq.setString("defaultSquareId", defaultSquareId);
+		sq.executeUpdate();
+	}
+
+	// delete
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from Logo where Squareid = ?";
+
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
 	}
 }

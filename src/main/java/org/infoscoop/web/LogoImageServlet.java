@@ -86,7 +86,7 @@ public class LogoImageServlet extends HttpServlet {
 		try {
 			if(logo != null) {
 				response.setContentType(logo.getType() + ";");
-				data = logo.getLogo();
+				data = logo.getLogoobj();
 			}
 		} catch( Exception ex ) {
 			throw new RuntimeException( ex );

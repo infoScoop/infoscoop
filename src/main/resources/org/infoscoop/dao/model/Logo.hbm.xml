@@ -27,7 +27,7 @@
 				length="64"
 				/>
 		<property
-				name="Logo"
+				name="Logoobj"
 				column="logo"
 				type="binary"
 				not-null="true"
@@ -47,4 +47,25 @@
 				length="64"
 				/>
 	</class>
+	<query name="is_logos.copySquare">
+		<![CDATA[
+INSERT
+	INTO
+		Logo(
+			Squareid,
+			Logoobj,
+			Type,
+			Kind
+		)
+	SELECT
+		cast(:squareId as string),
+		l.Logoobj,
+		l.Type,
+		l.Kind
+	FROM
+		Logo as l
+	WHERE
+		l.Squareid = :defaultSquareId
+		]]>
+	</query>
 </hibernate-mapping>
