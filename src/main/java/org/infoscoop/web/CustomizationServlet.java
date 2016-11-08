@@ -47,7 +47,11 @@ import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.properties.InfoScoopProperties;
-import org.infoscoop.service.*;
+import org.infoscoop.service.PortalLayoutService;
+import org.infoscoop.service.PreferenceService;
+import org.infoscoop.service.PropertiesService;
+import org.infoscoop.service.SquareService;
+import org.infoscoop.service.TabLayoutService;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
 import org.json.JSONArray;
@@ -62,7 +66,6 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
-import jp.co.unirita.saas.service.IDProvisioningNotificationService;
 
 public class CustomizationServlet extends HttpServlet {
 	private static final long serialVersionUID = "org.infoscoop.web.CustomizationServlet"
