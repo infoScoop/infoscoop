@@ -2410,6 +2410,25 @@ IS_Portal.CommandBar = {
 			}
 		}
 
+		// about
+		if(IS_Customization["aboutURL"]) {
+			var aboutDiv = $jq("<div>").addClass("portal-user-menu-item").appendTo(portalUserMenuBody);
+			var aboutA = $jq("<a>").addClass("portal-user-menu-link")
+				.attr({title: "About", href: "#"})
+				.appendTo(aboutDiv);
+			
+			var aboutLabel =  $jq("<div>")
+				.addClass("portal-user-menu-item-label portal-user-menu-about")
+				.text("About")
+				.appendTo(aboutA);
+			
+			var aboutModal = new Control.Modal(hostPrefix + "/" + IS_Customization.aboutURL, {});
+			IS_Portal.CommandBar.aboutModal = aboutModal;
+			aboutLabel.click(function(){
+				this.open();
+			}.bind(aboutModal));
+		}
+		
 		if(!this.hasCommandBar){
 			$("command-bar").hide();
 			if(IS_SidePanel.adjustPosition) IS_SidePanel.adjustPosition();

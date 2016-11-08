@@ -46,6 +46,7 @@ import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.model.Portallayout;
 import org.infoscoop.dao.model.StaticTab;
 import org.infoscoop.dao.model.TabLayout;
+import org.infoscoop.properties.InfoScoopProperties;
 import org.infoscoop.service.*;
 import org.infoscoop.util.I18NUtil;
 import org.infoscoop.util.SpringUtil;
@@ -61,6 +62,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import jp.co.unirita.saas.service.IDProvisioningNotificationService;
 
 public class CustomizationServlet extends HttpServlet {
 	private static final long serialVersionUID = "org.infoscoop.web.CustomizationServlet"
@@ -72,7 +74,7 @@ public class CustomizationServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
+		
 		doPost(request, response);
 	}
 
@@ -241,8 +243,16 @@ public class CustomizationServlet extends HttpServlet {
 			}
 			formDef = ", \"accountManagerForm\":"  + obj.toString();
 		}
-
-		return "IS_Customization = " +  layout.substring(0, layout.length()-1) +formDef  + "};";
+		
+		// Display "About" when application.about.url enabled.
+		String aboutDef = "";
+		String parentSquareId = SquareService.getHandle().getParentSquareId(currentSquareId);
+		if(!SquareService.SQUARE_ID_DEFAULT.equals(parentSquareId)){
+			String url = InfoScoopProperties.getInstance().getProperty("application.about.url");
+			if(url != null)
+				aboutDef = ", \"aboutURL\":"  + JSONObject.quote(url);
+		}
+		return "IS_Customization = " +  layout.substring(0, layout.length()-1) +formDef  + aboutDef + "};";
 	}
 
 	private String applyFreemakerTemplate(Map<String, Object> root, String value)  {

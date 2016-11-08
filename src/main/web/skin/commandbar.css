@@ -471,6 +471,11 @@ a.portal-user-menu-link:visited:hover{
 	background-position: 3px center;
 }
 
+.portal-user-menu-item .portal-user-menu-item-label.portal-user-menu-about {
+	background: url(./imgs/info-circle.png) no-repeat;
+	background-position: 3px center;
+}
+
 select#font-size-select{
 	margin-top: 2px;
 	_margin:1px; /* for IE layout */
