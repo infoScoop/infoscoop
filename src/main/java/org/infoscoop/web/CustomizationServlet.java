@@ -250,7 +250,9 @@ public class CustomizationServlet extends HttpServlet {
 		// Display "About" when application.about.url enabled.
 		String aboutDef = "";
 		String parentSquareId = SquareService.getHandle().getParentSquareId(currentSquareId);
-		if(!SquareService.SQUARE_ID_DEFAULT.equals(parentSquareId)){
+		// current square and parent square is not default square
+		if(!SquareService.SQUARE_ID_DEFAULT.equals(currentSquareId)
+				&& !SquareService.SQUARE_ID_DEFAULT.equals(parentSquareId)){
 			String url = InfoScoopProperties.getInstance().getProperty("application.about.url");
 			if(url != null)
 				aboutDef = ", \"aboutURL\":"  + JSONObject.quote(url);
