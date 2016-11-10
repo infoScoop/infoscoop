@@ -381,7 +381,7 @@ public class ProxyConfService {
 
 		try {
 			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
-			if(squareid == null)
+			if(squareid == null || !SquareService.getHandle().existsSquare(squareid))
 				squareid = SquareService.SQUARE_ID_DEFAULT;
 
 			// Obtain data

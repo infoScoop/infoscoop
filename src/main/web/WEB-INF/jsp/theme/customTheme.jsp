@@ -52,39 +52,41 @@ String searchFormButtonIconClass = "";
 String searchFormButtonIconSuffix = "";
 
 try {
-	JSONObject json = new JSONObject(customTheme);
-	if (!json.isNull("tabbar")){
-		JSONObject tabbar = json.getJSONObject("tabbar");
-		tabbarFontColor = tabbar.isNull("fontColor") ? "" : (String) tabbar.get("fontColor");
-		tabbarBackgroundColor = tabbar.isNull("backgroundColor") ? "" : (String) tabbar.get("backgroundColor");
-		tabbarBackgroundGradationTop = tabbar.isNull("backgroundGradationTop") ? "" : (String) tabbar.get("backgroundGradationTop");
-		tabbarBackgroundGradationBottom = tabbar.isNull("backgroundGradationBottom") ? "" : (String) tabbar.get("backgroundGradationBottom");
-		tabbarBorderBottom = tabbar.isNull("borderBottom") ? "" : (String) tabbar.get("borderBottom");
-		tabbarIconClass = tabbar.isNull("iconClass") ? "" : (String) tabbar.get("iconClass");
-		if (!tabbarIconClass.isEmpty()){
-			tabbarIconSuffix = getIconClassSuffix(tabbarIconClass);
+	if(customTheme != null && customTheme.length != 0) {
+		JSONObject json = new JSONObject(customTheme);
+		if (!json.isNull("tabbar")){
+			JSONObject tabbar = json.getJSONObject("tabbar");
+			tabbarFontColor = tabbar.isNull("fontColor") ? "" : (String) tabbar.get("fontColor");
+			tabbarBackgroundColor = tabbar.isNull("backgroundColor") ? "" : (String) tabbar.get("backgroundColor");
+			tabbarBackgroundGradationTop = tabbar.isNull("backgroundGradationTop") ? "" : (String) tabbar.get("backgroundGradationTop");
+			tabbarBackgroundGradationBottom = tabbar.isNull("backgroundGradationBottom") ? "" : (String) tabbar.get("backgroundGradationBottom");
+			tabbarBorderBottom = tabbar.isNull("borderBottom") ? "" : (String) tabbar.get("borderBottom");
+			tabbarIconClass = tabbar.isNull("iconClass") ? "" : (String) tabbar.get("iconClass");
+			if (!tabbarIconClass.isEmpty()){
+				tabbarIconSuffix = getIconClassSuffix(tabbarIconClass);
+			}
+
+			if (!tabbar.isNull("activetab")){
+				JSONObject activetab = tabbar.getJSONObject("activetab");
+				activetabType = activetab.isNull("type") ? "" : (String) activetab.get("type");
+				activetabFontColor = activetab.isNull("fontColor") ? "" : (String) activetab.get("fontColor");
+				activetabBackgroundColor = activetab.isNull("backgroundColor") ? "" : (String) activetab.get("backgroundColor");
+				activetabFontWeight = activetab.isNull("fontWeight") ? "" : (String) activetab.get("fontWeight");
+			}
 		}
-		
-		if (!tabbar.isNull("activetab")){
-			JSONObject activetab = tabbar.getJSONObject("activetab");
-			activetabType = activetab.isNull("type") ? "" : (String) activetab.get("type");
-			activetabFontColor = activetab.isNull("fontColor") ? "" : (String) activetab.get("fontColor");
-			activetabBackgroundColor = activetab.isNull("backgroundColor") ? "" : (String) activetab.get("backgroundColor");
-			activetabFontWeight = activetab.isNull("fontWeight") ? "" : (String) activetab.get("fontWeight");
-		}
-	}
-	
-	if (!json.isNull("commandbar")){
-		JSONObject commandbar = json.getJSONObject("commandbar");
-		if (!commandbar.isNull("searchFormButton")){
-			JSONObject searchFormButton = commandbar.getJSONObject("searchFormButton");
-			searchFormButtonBackgroundColor = searchFormButton.isNull("backgroundColor") ? "" : (String) searchFormButton.get("backgroundColor");
-			searchFormButtonBackgroundGradationTop = searchFormButton.isNull("backgroundGradationTop") ? "" : (String) searchFormButton.get("backgroundGradationTop");
-			searchFormButtonBackgroundGradationBottom = searchFormButton.isNull("backgroundGradationBottom") ? "" : (String) searchFormButton.get("backgroundGradationBottom");
-			searchFormButtonBorderColor = searchFormButton.isNull("borderColor") ? "" : (String) searchFormButton.get("borderColor");
-			searchFormButtonIconClass = searchFormButton.isNull("iconClass") ? "" : (String) searchFormButton.get("iconClass");
-			if (!searchFormButtonIconClass.isEmpty()) {
-				searchFormButtonIconSuffix = getIconClassSuffix(searchFormButtonIconClass);
+
+		if (!json.isNull("commandbar")){
+			JSONObject commandbar = json.getJSONObject("commandbar");
+			if (!commandbar.isNull("searchFormButton")){
+				JSONObject searchFormButton = commandbar.getJSONObject("searchFormButton");
+				searchFormButtonBackgroundColor = searchFormButton.isNull("backgroundColor") ? "" : (String) searchFormButton.get("backgroundColor");
+				searchFormButtonBackgroundGradationTop = searchFormButton.isNull("backgroundGradationTop") ? "" : (String) searchFormButton.get("backgroundGradationTop");
+				searchFormButtonBackgroundGradationBottom = searchFormButton.isNull("backgroundGradationBottom") ? "" : (String) searchFormButton.get("backgroundGradationBottom");
+				searchFormButtonBorderColor = searchFormButton.isNull("borderColor") ? "" : (String) searchFormButton.get("borderColor");
+				searchFormButtonIconClass = searchFormButton.isNull("iconClass") ? "" : (String) searchFormButton.get("iconClass");
+				if (!searchFormButtonIconClass.isEmpty()) {
+					searchFormButtonIconSuffix = getIconClassSuffix(searchFormButtonIconClass);
+				}
 			}
 		}
 	}
