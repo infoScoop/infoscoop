@@ -246,7 +246,7 @@ public class SquareService {
 		this.staticTabDAO.copySquare(squareId, sourceSquareId);
 
 		// copy Adminrole
-		List<Adminrole> adminRoleList = adminRoleDAO.select(SQUARE_ID_DEFAULT);
+		List<Adminrole> adminRoleList = adminRoleDAO.select(sourceSquareId);
 		Iterator<Adminrole> rolesIte = adminRoleList.iterator();
 		String squareAdminRoleId = null;
 		while(rolesIte.hasNext()){
