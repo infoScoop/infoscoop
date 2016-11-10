@@ -2424,7 +2424,7 @@ IS_Portal.CommandBar = {
 			
 			var aboutModal = new Control.Modal(hostPrefix + "/" + IS_Customization.aboutURL, {});
 			IS_Portal.CommandBar.aboutModal = aboutModal;
-			aboutLabel.click(function(){
+			aboutDiv.click(function(){
 				this.open();
 			}.bind(aboutModal));
 		}
