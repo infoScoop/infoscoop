@@ -150,6 +150,14 @@ var config = {"gadgets.container" : ["default"],
       "isOnlyVisible" : false,
       "urlTemplate" : "", //FIXME
       "aliases": ["default"]
+    },
+    "commandbar" : {
+      "isOnlyVisible" : false,
+      "urlTemplate" : ""
+    },
+    "modal" : {
+      "isOnlyVisible" : true,
+      "urlTemplate" : "",
     }
   },
   "tabs": {

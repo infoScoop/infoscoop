@@ -52,7 +52,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		"portal-preference":{id:"portal-preference", title:ISA_R.alb_setupAll, togglable:true, undeletable:true},
 		"portal-credential-list":{id:"portal-credential-list", title:ISA_R.alb_credentialList, togglable:true, undeletable:true},
 		"portal-admin-link":{id:"portal-admin-link", title:ISA_R.alb_adminLink, togglable:true, undeletable:true},
-		"portal-logout":{id:"portal-logout",title:ISA_R.alb_logout,togglable:true,undeletable:true}
+		"portal-logout":{id:"portal-logout",title:ISA_R.alb_logout,togglable:true,undeletable:true},
 	};
 	this.commandBarEditor = {
 		Ticker : {
@@ -283,9 +283,95 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				self.changeCommandBarLayout();
 				return true;
 			}
+		},
+		gadget :{
+			buildForm : function(commandItem){
+				var jsonRole = defaultPanelJson[self.displayRoleId];
+				var widgetJSON = jsonRole.staticPanel[commandItem.id];
+				this.commandBarEditorFormObj.showEditorForm(widgetJSON);
+			}.bind(this),
+			onOK : function(widgetJSON, oldId){
+				var commandDivTitle = $jq("#name_" + oldId);
+				
+				if(commandDivTitle.length == 0){
+					var commandDiv = document.createElement("div");
+					commandDiv.id = widgetJSON.id;
+					commandDiv.setAttribute("label", widgetJSON.title);
+					commandDiv.setAttribute("type", "gadget");
+					commandDiv.setAttribute("outside", "true");
+					self.addCommandBar(commandDiv);
+				}else{
+					// unbind edit event 
+					$jq("#commnad_" + oldId + " a.item-edit").unbind();
+					
+					// replace oldId to newId
+					commandDivTitle.attr("id", "name_" + widgetJSON.id);
+					commandDivTitle.text(widgetJSON.title);
+					$jq("#commnad_" + oldId).attr("id", "commnad_" + widgetJSON.id)
+					$jq("#disp_" + oldId).attr("id", "disp_" + widgetJSON.id)
+					$jq("#td_" + oldId).attr("id", "td_" + widgetJSON.id)
+					$jq("#" + oldId).attr("id", widgetJSON.id)
+					
+					// renew edit event
+					var commandItem = {
+						id: widgetJSON.id,
+						onlyoutside: true,
+						togglable: true,
+						title: widgetJSON.title,
+						type: "gadget"
+					};
+					$jq("#commnad_" + oldId + " a.item-edit").click(function(){
+						self.commandBarEditor[this.type].buildForm(this);
+					}.bind(commandItem));
+					
+					$jq("#" + widgetJSON.id).attr("label", widgetJSON.title);
+				}
+				
+				self.changeCommandBarLayout();
+				return true;
+			}
 		}
 	}
 
+	this.commandBarEditorFormObj =	new ISA_CommonModals.EditorForm(null, function(widgetJSON){
+		var selectType = ISA_CommonModals.EditorForm.getSelectType();
+		if( widgetJSON.type != selectType )
+		widgetJSON.properties = {};
+
+		var oldId = widgetJSON.id
+		widgetJSON.id = "w_c_" + new Date().getTime();
+		widgetJSON.type = ISA_CommonModals.EditorForm.getSelectType();
+		widgetJSON.properties = ISA_CommonModals.EditorForm.getProperty(widgetJSON);
+		widgetJSON.ignoreHeader = true;
+		widgetJSON.noBorder = true;
+
+		widgetJSON.title = ISA_Admin.trim($("formTitle").value);
+		widgetJSON.href =  $("formHref").value;
+	    var formUseRefreshInterval = $jq("#formUseRefreshInterval").prop("checked");
+	    widgetJSON.refreshInterval = (formUseRefreshInterval)? parseInt($jq("#formRefreshInterval").val()) : null;
+
+	    var jsonRole = defaultPanelJson[self.displayRoleId];
+		is_deleteProperty(jsonRole.staticPanel, oldId);
+		jsonRole.staticPanel[widgetJSON.id] = widgetJSON;
+		
+	    this.commandBarEditor.gadget.onOK(widgetJSON, oldId);
+	    
+		if( Control.Modal.current ) {
+			Control.Modal.close();
+		} else {
+			Control.Modal.container.hide();
+		}
+	}.bind(this),{
+		menuFieldSetLegend:ISA_R.alb_widgetHeaderSettings,
+		disableMiniBrowserHeight: true,
+		showIgnoreHeaderForm:false,
+		showNoBorderForm:false,
+		displayACLFieldSet:false,
+		disableDisplayRadio:true,
+		omitTypeList:['Ranking','Ticker','MultiRssReader']
+	});
+
+	
 	this.replaceCommandBarWidget = function( roleJson,jsonObj ) {
 		var oldId = jsonObj.id;
 		jsonObj.id = "w_"+ new Date().getTime();
@@ -1205,6 +1291,13 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		this.staticContainer.appendChild(addCommandBarDiv);
 		IS_Event.observe(addCommandBarDiv, 'click', this.addHTMLCommandBarModal.init.bind(this), false, ["_adminPanelTab","_adminPanel"]);
 
+		var addGadget = ISA_Admin.createIconButton(ISA_R.alb_addGadget, ISA_R.alb_addGadget, "add.gif", "left");
+		this.staticContainer.appendChild(addGadget);
+		
+		$jq(addGadget).click(function(){
+			this.commandBarEditorFormObj.showEditorForm({});
+		}.bind(this));
+		
 		var commandBarListTable = document.createElement("table");
 		commandBarListTable.border = "0";
 		commandBarListTable.cellSpacing = "0";
@@ -1274,7 +1367,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			if(!childDivs[i].id) continue;
 			var id = childDivs[i].getAttribute('disabledCommand') ? childDivs[i].id.replace(/^disabled_/,"") : childDivs[i].id;
 			var commandmap = commandBarMap[id];
-
+			
 			var widget = jsonRole.staticPanel[id];
 			if( !commandmap && widget && widget.type && commandBarMap[widget.type]) {
 				commandmap = commandBarMap[widget.type];
@@ -1286,6 +1379,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				var childDivId = childDivs[i].id;
 				var childTitle = childDivs[i].getAttribute("label");
 				var childType = childDivs[i].getAttribute("type");
+				
 				//Title is set as label attribute. However, use the existing logic below if there is not title.
 				if(!childTitle) {
 					var childAs = childDivs[i].getElementsByTagName('a');
@@ -1300,6 +1394,13 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			}
 
 			if( commandmap ) {
+				
+				if(widget && widget.type && (widget.type.indexOf("g_") == 0 || widget.type == "Gadget")){
+					commandmap.id = id;
+					commandmap.onlyoutside = true;
+					commandmap.togglable = true
+				}
+				
 				findParentTdElement(childDivs[i]).id = "td_" + id;
 				commandBarDiv.appendChild(this.buildCommandWidget(commandmap));
 			}
@@ -1414,7 +1515,14 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				selected : !enabled,
 				name : ISA_R.alb_display_false,
 				callback : function(elementTd, widgetJSON){
+					
+					var orgDiv = $jq("div.commandbar-item", elementTd);
+					
 					var disabledDiv = document.createElement("div");
+					if(orgDiv){
+						$jq(disabledDiv).attr("label", orgDiv.attr("label"));
+						$jq(disabledDiv).attr("type", orgDiv.attr("type"));
+					}
 					disabledDiv.id = 'disabled_' + commandBarItem.id;
 					disabledDiv.setAttribute('disabledCommand','true');
 					disabledDiv.appendChild(document.createComment(escapeHTMLEntity(elementTd.innerHTML)));
@@ -1458,11 +1566,20 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			var editor = self.commandBarEditor[commandBarItem.type];
 			var commandBarA = document.createElement("a");
 			commandBarA.style.cursor = "pointer";
+			$jq(commandBarA).addClass("item-edit");
 			contentDiv.appendChild(commandBarA);
 			var commandBarImg = document.createElement("img");
 			commandBarImg.src = imageURL + "edit.gif";
 			commandBarA.appendChild(commandBarImg);
-			new ISA_DefaultPanel.CommandItemEditor(commandBarA, commandBarItem, editor.buildForm, editor.onOK);
+			
+			if(commandBarItem.type == "gadget"){
+				$jq(commandBarA).click(function(){
+					editor.buildForm(this);
+				}.bind(commandBarItem));
+			}
+			else {
+				new ISA_DefaultPanel.CommandItemEditor(commandBarA, commandBarItem, editor.buildForm, editor.onOK);
+			}
 		}
 		commandBarTd.appendChild(contentDiv);
 
@@ -1482,16 +1599,20 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			commandBarA.appendChild(commandBarImg);
 			var deleteCommandItemHandler = function(e){
 				try{
-					var elementTd = getParentTdElement(commandBarItem.id);
+					var itemId = $jq(this).parents(".rowDefaultPanel").attr("id").substring(8);
+					var elementTd = getParentTdElement(itemId);
 					elementTd.parentNode.removeChild(elementTd);
 					self.changeCommandBarLayout();
 					var jsonRole = self.displayRoleJsons[self.displayRoleId];
 					self.buildCommandWidgetsList(jsonRole);
 					self.addSortableEventCommand();
+					
+					is_deleteProperty(jsonRole.staticPanel, itemId);
+					this.setNewValue("staticpanel", Object.toJSON($jq.extend(true,{},jsonRole.staticPanel)), jsonRole.id);
 				}catch(e){
 					msg.error(ISA_R.ams_failedDeleteCommandBar + getErrorMessage(e));
 				}
-			};
+			}.bind(commandBarImg);
 			IS_Event.observe(commandBarA, 'click', deleteCommandItemHandler, false, ["_adminPanelTab","_adminPanel"]);
 		}
 		commandBarTd.appendChild(contentDiv);
