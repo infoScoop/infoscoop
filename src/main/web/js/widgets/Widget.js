@@ -23,6 +23,8 @@ IS_Widget.DROP_URL = "dropUrl";
 IS_Widget.CLOSE_URL = "closeUrl";
 IS_Widget.DEFAULT_VIEW = "home";
 IS_Widget.DEFAULT_MAXIMIZE_VIEW = "canvas";
+IS_Widget.VIEWTYPES_COMMANDBAR_VIEW = "commandbar";
+IS_Widget.VIEWTYPES_MODAL_VIEW = "modal";
 
 IS_Widget.prototype.classDef = function() {
 	//var self = this;
@@ -371,6 +373,18 @@ IS_Widget.prototype.classDef = function() {
 		return this.widgetType.indexOf("g_upload") == 0
 			&& !(contentsDef && contentsDef.type == "javascript");
 	}
+	this.getLocationViewType = function() {
+		var inCommandBar = $jq(this.elm_widget).parents(".commandbar-item").length > 0;
+		var inModal = $jq(this.elm_widget).parents(".modal-view").length > 0;
+		if(inCommandBar){
+			return IS_Widget.VIEWTYPES_COMMANDBAR_VIEW;
+		}
+		if(inModal){
+			return IS_Widget.VIEWTYPES_MODAL_VIEW;
+		}
+		// default view
+		return false;
+	}
 	
 	this._setStaticWidgetHeight = function(){
 		var container = $("s_" + this.id);
@@ -709,8 +723,13 @@ IS_Widget.prototype.classDef = function() {
 		return upParams;
 	}
 	this.getGadgetUrl = function() {
-		return ( !/^g__Maximize__/.test( this.widgetType )?
-				 this.widgetType.substring(2) : this.widgetType.substring( 13 ));
+		if( /^g__Maximize__/.test( this.widgetType ) ){
+			return this.widgetType.substring( 13 );
+		}
+		else if( /^g__Modal__/.test( this.widgetType ) ){
+			return this.widgetType.substring( 10 );
+		}
+		return this.widgetType.substring(2);
 	}
 	this.loadHtmlIfram = function( url, viewType ){
 		var form = $("postGadgetSrvForm");
@@ -981,7 +1000,7 @@ IS_Widget.prototype.classDef = function() {
 					if(!self.iframe)
 						self.initIframe();
 					
-					self.loadHtmlIfram();
+					self.loadHtmlIfram(false, self.getLocationViewType());
 				}else{
 
 					self.elm_widgetContent.innerHTML = IS_R.ms_invalidWidget;
@@ -1040,7 +1059,7 @@ IS_Widget.prototype.classDef = function() {
 					eval(replaceVariable(contentsDef.script.content));
 					IS_EventDispatcher.newEvent('loadComplete', self.id, null);
 				}else if(contentsType == "htmlIframe") {
-					self.loadHtmlIfram();
+					self.loadHtmlIfram(false, self.getLocationViewType());
 				}else{
 
 					self.elm_widgetContent.innerHTML = IS_R.ms_invalidWidget;
@@ -1496,6 +1515,15 @@ IS_Widget.prototype.classDef = function() {
 	
 	this.setLiteModePreference = function(){
 		this.initUserPref("openWidget", true);
+	}
+	
+	this.showModalView = function(){
+		if( IS_Portal.isTabLoading() )return;
+		
+		if(!this.modalGadget)
+			this.modalGadget = IS_Widget.Modal.createModalGadget(this);
+		
+		this.modalGadget.showModalView();
 	}
 	
 	this.changeMaximize = function( baseWidget ) {

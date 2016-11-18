@@ -315,6 +315,7 @@
 			<filelist dir="${src.main.web}/js/widgets" files="WidgetHeader.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="WidgetEdit.js"/>
 			<filelist dir="${src.main.web}/js/widgets/maximize" files="Maximize.js"/>
+			<filelist dir="${src.main.web}/js/widgets/modal" files="ModalGadget.js"/>
 			<filelist dir="${src.main.web}/js/widgets/rssreader" files="RssReader.js"/>
 			<filelist dir="${src.main.web}/js/widgets/rssreader" files="RssItemRender.js"/>
 			<filelist dir="${src.main.web}/js/widgets/MultiRssReader" files="MultiRssReader.js"/>

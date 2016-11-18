@@ -471,3 +471,23 @@
 .infoScoop .widgetEditHelp .description {
 	padding: 10px;
 }
+
+/* modal gadget */
+.infoScoop .modal-view .ui-dialog-content {
+    padding: 0px !important;
+}
+.infoScoop .modal-view .ui-dialog-titlebar {
+	display: none !important;
+}
+.infoScoop .modal-view .widget {
+	margin-bottom: 0px;
+}
+.infoScoop .modal-view .widgetBox {
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	filter: none;
+	box-shadow: none;
+}
+.infoScoop .modal-view .ui-dialog-content {
+	overflow: hidden;
+}

@@ -193,6 +193,7 @@
     <script src="<%=staticContentURL%>/js/widgets/WidgetHeader.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/WidgetEdit.js"></script>
     <script src="<%=staticContentURL%>/js/widgets/maximize/Maximize.js"></script>
+    <script src="<%=staticContentURL%>/js/widgets/modal/ModalGadget.js"></script>
     <script src="<%=staticContentURL%>/js/ContentFooter.js"></script>
     <script src="<%=staticContentURL%>/js/AccountManager.js"></script>
     <script src="<%=staticContentURL%>/js/GlobalSetting.js"></script>

@@ -61,7 +61,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		return enableInLoadingTypes.contains( type );
 	}
 	var commonTypes = ["close","refresh","edit","systemIconMinimize","turnbackMinimize",
-					   "maximize","turnBack","minimize","turnbackMaximize","showTools","hideTools"];
+					   "maximize","turnBack","minimize","turnbackMaximize","showTools","hideTools","closeModalView"];
 	function isCommonType(type){
 		return  commonTypes.indexOf( type ) >= 0;
 	}
@@ -798,7 +798,11 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		if(fixedPortalHeader)
 			IS_Portal.adjustPanelHeight();
 	}
-	
+
+	this.closeModalView = function() {
+		widget.closeModalView();
+	}
+
 	this.showLatestNews = function(e) {
 		try{
 			widget.content.showAllLatestItems(e);

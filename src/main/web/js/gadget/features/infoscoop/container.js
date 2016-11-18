@@ -87,6 +87,8 @@ gadgets.rpc.register("requestNavigateTo",function( view, opt_params, opt_ownerId
 		widget.turnbackMaximize();
 	} else if( /canvas|full_page|popup/i.test( view ) && !IS_Widget.MaximizeWidget ) {
 		widget.changeMaximize();
+	} else if( /modal/i.test( view ) && !IS_Widget.ModalView ){
+		widget.showModalView(opt_params);
 	}
 });
 
