@@ -489,3 +489,19 @@ select#font-size-select{
 	max-height: 16px;
 	overflow: hidden;
 }
+
+/* commnadbar widgets */
+#command-bar .widget {
+	display: block;
+	width: 30px;
+	height: 26px;
+	white-space: nowrap;
+	float: left;
+	overflow: hidden;
+}
+#command-bar .widgetContent {
+	background-color: transparent;
+}
+#command-bar .widgetBoxNoHeader {
+	background-color: transparent;
+}
