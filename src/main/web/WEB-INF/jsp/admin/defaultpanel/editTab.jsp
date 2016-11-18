@@ -64,6 +64,7 @@
 </div>
 
 <script>
+	window.editRoleScreen = true;
 	var displayTabId = "${tabId}";
 	var displayTabNumber = "${tabNumber}";
 	var defaultPanelJson = ${defaultPanelJson};
