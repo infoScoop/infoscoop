@@ -1608,7 +1608,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 					self.addSortableEventCommand();
 					
 					is_deleteProperty(jsonRole.staticPanel, itemId);
-					this.setNewValue("staticpanel", Object.toJSON($jq.extend(true,{},jsonRole.staticPanel)), jsonRole.id);
+					self.setNewValue("staticpanel", Object.toJSON($jq.extend(true,{},jsonRole.staticPanel)), jsonRole.id);
 				}catch(e){
 					msg.error(ISA_R.ams_failedDeleteCommandBar + getErrorMessage(e));
 				}
