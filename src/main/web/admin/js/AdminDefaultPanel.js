@@ -316,11 +316,11 @@ ISA_DefaultPanel.prototype.classDef = function() {
 					var commandItem = {
 						id: widgetJSON.id,
 						onlyoutside: true,
-						togglable: true,
+						togglable: false,
 						title: widgetJSON.title,
 						type: "gadget"
 					};
-					$jq("#commnad_" + oldId + " a.item-edit").click(function(){
+					$jq("#commnad_" + widgetJSON.id + " a.item-edit").click(function(){
 						self.commandBarEditor[this.type].buildForm(this);
 					}.bind(commandItem));
 					
@@ -1401,7 +1401,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 				if(widget && widget.type && (widget.type.indexOf("g_") == 0 || widget.type == "Gadget")){
 					commandmap.id = id;
 					commandmap.onlyoutside = true;
-					commandmap.togglable = true
+					commandmap.togglable = false
 				}
 				
 				findParentTdElement(childDivs[i]).id = "td_" + id;
