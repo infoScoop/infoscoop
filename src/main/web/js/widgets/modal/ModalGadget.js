@@ -130,10 +130,6 @@ IS_Widget.Modal.createModalGadget = function( wigetObj ) {
 			
 			this.title = this.originalWidget.title;
 			
-			while( this.elm_title.firstChild )
-				this.elm_title.removeChild( this.elm_title.firstChild );
-			this.elm_title.appendChild( document.createTextNode( this.headerContent.getTitle()) );
-			
 			IS_EventDispatcher.newEvent("WidgetModal");
 		}
 	}
