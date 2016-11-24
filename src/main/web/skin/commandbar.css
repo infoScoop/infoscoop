@@ -491,7 +491,7 @@ select#font-size-select{
 }
 
 /* commnadbar widgets */
-#command-bar .widget {
+#command-bar div[type=gadget] .widget {
 	display: block;
 	width: 30px;
 	height: 26px;
