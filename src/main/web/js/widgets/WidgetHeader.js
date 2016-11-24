@@ -353,7 +353,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 		}
 		
 		if ( widget.title_url &&
-			(( widget.panelType == "DynamicPanel")||( widget.panelType == "StaticPanel")) ) {
+			(( widget.panelType == "DynamicPanel")||( widget.panelType == "StaticPanel")||( widget.panelType == "Modal")) ) {
 				
 			if (!aTag) {
 				aTag = document.createElement('a');
