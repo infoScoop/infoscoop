@@ -368,7 +368,10 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		showNoBorderForm:false,
 		displayACLFieldSet:false,
 		disableDisplayRadio:true,
-		omitTypeList:['Ranking','Ticker','MultiRssReader']
+		// gadet only
+		omitTypeList:['Ranking','Ticker','MultiRssReader','MiniBrowser',
+		              'FragmentMiniBrowser','Message','Information','Information2',
+		              'Information2','WidgetRanking','Calendar','RssReader']
 	});
 
 	
