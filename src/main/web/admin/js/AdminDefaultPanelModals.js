@@ -725,14 +725,14 @@ ISA_DefaultPanel.prototype.templates = {
 		html += '<table cellpadding="0" cellspacing="0" width="100%">\n';
 		html += '  <tr>\n';
 		html += '    <td width="100%"><div id="p_1_w_4" class="commandbar-item" outside="true"></div></td>\n';
-		html += '    <td><div id="p_1_w_6" class="commandbar-item"></div></td>\n';
+		html += '    <td><div id="disabled_p_1_w_6" disabledcommand="true" class="commandbar-item"><!--&lt;div id="p_1_w_6" class="commandbar-item"&gt;&lt;/div&gt;--></div></td>\n';
 		html += '    <td><div id="disabled_portal-change-fontsize" disabledCommand="true" class="commandbar-item"><!--&lt;div id="portal-change-fontsize"&gt;&lt;/div&gt;--></div></td>\n';
 		html += '    <td><div id="portal-trash" class="commandbar-item"></div></td>\n';
 		html += '    <td><div id="portal-preference" class="commandbar-item"><div class="allPreference"></div></div></td>\n';
 		html += '    <td><div id="disabled_portal-credential-list" disabledCommand="true" class="commandbar-item"><!--&lt;div id="portal-credential-list"&gt;&lt;/div&gt;--></div></td>\n';
 		html += '    <td><div id="portal-admin-link" class="commandbar-item"></div></td>\n';
 		html += '    <td><div id="portal-logout" class="commandbar-item"></div></td>\n';
-		html += '    <td><div id="portal-searchform" class="commandbar-item" outside="true"/></td>\n';
+		html += '    <td><div id="disabled_portal-searchform" disabledcommand="true" class="commandbar-item"><!--&lt;div id="portal-searchform" class="commandbar-item" outside="true"&gt;&lt;/div&gt;--></div></td>\n';
 		html += '  </tr>\n';
 		html += '</table>\n';
 
