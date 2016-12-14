@@ -142,4 +142,17 @@
             <column name="square_id" type="varchar(64)"/>
         </createIndex>
     </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha3_598_7" author="aknishiumi">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha3_598_7">
+            <not>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_SQUARES" columnName="permission"/>
+            </not>
+        </preConditions>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_SQUARES">
+            <column name="permission" type="varchar(256)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

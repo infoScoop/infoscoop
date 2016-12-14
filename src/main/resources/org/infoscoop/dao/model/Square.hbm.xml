@@ -61,6 +61,12 @@
                 type="string"
                 length="64"
                 />
+        <property
+                name="permission"
+                column="permission"
+                type="string"
+                length="256"
+                />
 	</class>
 	
     <query name="is_squares.serviceIdList">

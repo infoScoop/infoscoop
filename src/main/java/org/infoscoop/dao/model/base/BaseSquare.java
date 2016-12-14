@@ -93,6 +93,7 @@ public abstract class BaseSquare  implements Serializable {
 	private java.lang.Integer maxUserNum;
 	private java.lang.String parentSquareId;
 	private java.lang.String squareStatus;
+	private java.lang.String permission;
 
 	/**
 	 * Return the unique identifier of this class
@@ -175,6 +176,14 @@ public abstract class BaseSquare  implements Serializable {
 
 	public void setSquareStatus(java.lang.String squareStatus) {
 		this.squareStatus = squareStatus;
+	}
+
+	public java.lang.String getPermission() {
+		return permission;
+	}
+
+	public void setPermission(java.lang.String permission) {
+		this.permission = permission;
 	}
 
 	public boolean equals (Object obj) {
