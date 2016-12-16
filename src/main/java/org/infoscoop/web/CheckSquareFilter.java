@@ -43,9 +43,6 @@ import org.infoscoop.context.UserContext;
 import org.infoscoop.dao.model.Square;
 import org.infoscoop.service.SquareService;
 
-import jp.co.unirita.saas.dao.model.Maintenance;
-import jp.co.unirita.saas.service.MaintenanceService;
-
 public class CheckSquareFilter implements javax.servlet.Filter {
 	private Log log = LogFactory.getLog(this.getClass());
 	private Collection<String> excludePaths = new HashSet<String>();
