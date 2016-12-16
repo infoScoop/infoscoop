@@ -18,6 +18,7 @@
 package org.infoscoop.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,18 +40,28 @@ import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IAccountManager;
 import org.infoscoop.context.UserContext;
+import org.infoscoop.dao.model.Square;
 import org.infoscoop.service.SquareService;
+
+import jp.co.unirita.saas.dao.model.Maintenance;
+import jp.co.unirita.saas.service.MaintenanceService;
 
 public class CheckSquareFilter implements javax.servlet.Filter {
 	private Log log = LogFactory.getLog(this.getClass());
 	private Collection<String> excludePaths = new HashSet<String>();
 	private Collection<String> excludePathx = new HashSet<String>();
+	private String permissionErrorPath;
+	
+	public static final String SESSION_IS_SQUARE_ROLE_LIST = "is_square_role";
 
 	public void doFilter(ServletRequest req, ServletResponse res,
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest) req;
 		HttpServletResponse httpRes = (HttpServletResponse) res;
 		String uid = (String) httpReq.getSession().getAttribute("Uid");
+		
+		ArrayList<String> squareRole = (ArrayList)httpReq.getSession().getAttribute(SESSION_IS_SQUARE_ROLE_LIST);
+		
 		try{
 			//If an uid is empty, we don't check.
 			if (!isExcludePath(httpReq.getServletPath()) && (uid != null || !"true".equalsIgnoreCase( req.getParameter(CheckDuplicateUidFilter.IS_PREVIEW )))) {
@@ -85,6 +96,13 @@ public class CheckSquareFilter implements javax.servlet.Filter {
 					httpRes.sendRedirect(httpReq.getContextPath() + "/square/forbidden.jsp");
 					return;
 				}
+				else if(!isPermittedSquare(squareRole, squareId)){
+					Map<String, Object> belongSquaresInfo = SquareService.getHandle().getBelongSquaresNames(uid, squareId);
+					httpReq.setAttribute("belongSquaresInfo", belongSquaresInfo);
+					
+					httpReq.getRequestDispatcher(permissionErrorPath).forward(httpReq, httpRes);
+					return;
+				}
 			}
 		}catch(Exception e){
 			log.error("unexpected error occurred.", e);
@@ -108,6 +126,7 @@ public class CheckSquareFilter implements javax.servlet.Filter {
 				}
 			}
 		}
+		this.permissionErrorPath = config.getInitParameter("permissionErrorPath");
 	}
 
 	/**
@@ -125,6 +144,17 @@ public class CheckSquareFilter implements javax.servlet.Filter {
 		IAccountManager accountManager = ( IAccountManager )authService.getAccountManager();
 		List<IAccount> users = accountManager.searchUser(searchConditionMap);
 		return users.size() > 0;
+	}
+
+	public static boolean isPermittedSquare(ArrayList<String> squareRole, String squareid) throws Exception{
+		Square square = SquareService.getHandle().getEntity(squareid);
+		if(squareRole == null)
+			squareRole = new ArrayList<String>();
+		
+		if(square.getPermission() == null)
+			return true;
+		
+		return squareRole.contains(square.getPermission());
 	}
 
 	public void destroy() {

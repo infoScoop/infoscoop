@@ -121,6 +121,10 @@
             <param-name>excludePath</param-name>
             <param-value>/login.jsp,/oauth_login.jsp,/access_confirmation.jsp,/changePassword.jsp,/square/closed.jsp,/square/forbidden.jsp,/square/maxuser.jsp,/prepare*,/js/resources/resourceBundle.jsp</param-value>
         </init-param>
+        <init-param>
+            <param-name>permissionErrorPath</param-name>
+            <param-value>/square/forbidden.jsp</param-value>
+        </init-param>
     </filter>
 
 	<filter>
