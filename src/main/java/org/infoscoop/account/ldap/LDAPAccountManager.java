@@ -605,6 +605,11 @@ public class LDAPAccountManager implements IAccountManager{
 	}
 
 	@Override
+	public void updateAccountAttribute(String userId, Map<String, String[]> map) throws Exception {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public String getAccountAttributeValue(String userid, String name) throws Exception {
 		throw new UnsupportedOperationException();
 	}

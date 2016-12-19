@@ -131,7 +131,33 @@ IS_AccountManager.prototype = {
 					formInput.value = item.value;
 				this._createFormRow(formTable, item.title, formInput);
 			}
-			this._createSubmitBtnRow(formTable, this._submit, 'account-manager-profile', profileDef);
+			this._createSubmitBtnRow(formTable, this._submit, 'account-manager-profile', profileDef,'/accountmanagersrv/doChange');
+		}
+
+		// create attribute form
+		if(formDef.attribute) {
+			var attributeDef = formDef.attribute;
+			var formTable = this._createCategoryFieldSet(formDiv, IS_R.lb_account_setting_attribute, 'account-manager-attribute');
+
+			for(var i in attributeDef) {
+				var item = attributeDef[i];
+				var formInput = $.INPUT({
+					id: i,
+					name: i,
+					type: item.type
+				});
+
+				if(item.value)
+					formInput.value = item.value;
+
+				if(item.type == 'checkbox') {
+					if(item.value && item.value=='1') {
+						formInput.setAttribute("checked", "checked");
+					}
+				}
+				this._createFormRow(formTable, item.title, formInput);
+			}
+			this._createSubmitBtnRow(formTable, this._submit, 'account-manager-attribute', attributeDef, '/accountmanagersrv/doChangeATTR');
 		}
 
 		// create default square form
@@ -218,7 +244,7 @@ IS_AccountManager.prototype = {
 			IS_Event.observe(formInput, "input", inputFunc.bind(formInput), false);
 	},
 
-	_createSubmitBtnRow: function(formTable, clickFunc, mapKey, formDef){
+	_createSubmitBtnRow: function(formTable, clickFunc, mapKey, formDef, url){
 		var formRow = $.DIV({
 			className:'account-manager-form-row'
 		});
@@ -232,7 +258,7 @@ IS_AccountManager.prototype = {
 		btnDiv.appendChild(okBtn);
 		formTable.appendChild(formRow);
 
-		IS_Event.observe(okBtn, "click", clickFunc.bind(this, mapKey, formDef), false);
+		IS_Event.observe(okBtn, "click", clickFunc.bind(this, mapKey, formDef, url), false);
 	},
 
 	_submitPW: function() {
@@ -335,7 +361,7 @@ IS_AccountManager.prototype = {
 		AjaxRequest.invoke(hostPrefix + '/accountmanagersrv/doChangeSQ', opt);
 	},
 
-	_submit: function(formKey, formDef) {
+	_submit: function(formKey, formDef, url) {
 		var inputForm = $(formKey).getElementsByTagName('input');
 		var body = '';
 		for(var i = 0; i < inputForm.length; i++) {
@@ -355,7 +381,12 @@ IS_AccountManager.prototype = {
 				return false;
 			}
 
-			body += inputForm[i].id + '=' + inputForm[i].value + '&';
+			if(type == 'checkbox') {
+				value = '0';
+				if(inputForm[i].checked) value='1'
+			}
+
+			body += inputForm[i].id + '=' + value + '&';
 		}
 
 		var opt = {
@@ -363,8 +394,12 @@ IS_AccountManager.prototype = {
 			asynchronous: true,
 			postBody: body,
 			onSuccess: function(){
-				alert(IS_R.ms_change_apply_on_success);
-				location.reload();
+				if(formKey == 'account-manager-attribute') {
+					alert(IS_R.ms_change_relogin_apply);
+				} else {
+					alert(IS_R.ms_change_apply_on_success);
+					location.reload();
+				}
 			},
 			onFailure  : function(t) {
 				alert(IS_R.ms_change_apply_on_failure);
@@ -372,6 +407,6 @@ IS_AccountManager.prototype = {
 				msg.error(IS_R.getResource(IS_R.ms_change_apply_on_failure,[getErrorMessage(t)]));
 			},
 		}
-		AjaxRequest.invoke(hostPrefix + '/accountmanagersrv/doChange', opt);
+		AjaxRequest.invoke(hostPrefix + url, opt);
 	}
 }

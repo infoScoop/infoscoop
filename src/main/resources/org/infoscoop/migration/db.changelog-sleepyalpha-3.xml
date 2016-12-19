@@ -155,4 +155,58 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha3_598_8" author="mikami">
+    <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha3_598_8">
+        <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='lb_account_setting_attribute' and type='js';</sqlCheck>
+    </preConditions>
+    <insert tableName="IS_I18N">
+        <column name="type" value="js" />
+        <column name="id" value="lb_account_setting_attribute" />
+        <column name="country" value="ALL" />
+        <column name="lang" value="ALL" />
+        <column name="message" value="Account attributes" />
+        <column name="square_id" value="default" />
+    </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_account_setting_attribute" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="アカウント情報" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="lb_account_setting_attribute" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="帐户属性" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="ms_change_relogin_apply" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ALL" />
+            <column name="message" value="Changes will be applied after login again." />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="ms_change_relogin_apply" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="ja" />
+            <column name="message" value="変更は再ログイン後に適用されます。" />
+            <column name="square_id" value="default" />
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js" />
+            <column name="id" value="ms_change_relogin_apply" />
+            <column name="country" value="ALL" />
+            <column name="lang" value="zh" />
+            <column name="message" value="更改将登录后再次使用。" />
+            <column name="square_id" value="default" />
+        </insert>
+    </changeSet>
 </databaseChangeLog>

@@ -36,6 +36,7 @@ public class AccountManagerServlet extends HttpServlet{
 	private static final long serialVersionUID = 1646514470595445974L;
 	private static final String CHANGEPW_PATH = "/doChangePW";
 	private static final String CHANGESQ_PATH = "/doChangeSQ";
+	private static final String CHANGEATTR_PATH = "/doChangeATTR";
 	private static final String CHANGE_PATH = "/doChange";
 
 	public void init() {}
@@ -76,6 +77,15 @@ public class AccountManagerServlet extends HttpServlet{
 				log.error("error update default square.", e);
 				response.sendError(500);
 			}
+		} else if(CHANGEATTR_PATH.equals(action)) {
+			Map<String, String[]> map = request.getParameterMap();
+			try {
+				accountManager.updateAccountAttribute(uid, map);
+			} catch(Exception e) {
+				log.error("error update user attribute.", e);
+				response.sendError(500);
+			}
+
 		}
 	}
 }

@@ -101,6 +101,8 @@ public interface IAccountManager {
 
 	public void setAccountAttribute(String userid, String name, String value, Boolean system, String squareId) throws Exception;
 
+	public void updateAccountAttribute(String userid, Map<String, String[]> map) throws Exception;
+
 	public String getAccountAttributeValue(String userid, String name) throws Exception;
 
 	public List<Map<String, Object>> getAccountAttribute(String userid, String name) throws Exception;

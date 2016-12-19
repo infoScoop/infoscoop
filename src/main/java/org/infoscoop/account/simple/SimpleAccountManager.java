@@ -241,6 +241,23 @@ public class SimpleAccountManager implements IAccountManager{
 		emailObj.put("title", "%{lb_email_address}");
 		emailObj.put("value", account.getMail());
 
+		// attribute
+		JSONObject attributeObj = object.getJSONObject("attribute");
+		Iterator<?> keys = attributeObj.keys();
+		while(keys.hasNext()) {
+			String key = (String)keys.next();
+			JSONObject attrObj = attributeObj.getJSONObject(key);
+			attrObj.put("title", "%{lb_ee_attrs_"+key+"}");
+			attrObj.put("value", "");
+
+			Set<AccountAttr> accountAttrs = account.getAccountAttrs();
+			for(AccountAttr attr : accountAttrs) {
+				if(attr.getName().equals(key)) {
+					attrObj.put("value", attr.getValue());
+				}
+			}
+
+		}
 		return object;
 	}
 
@@ -324,6 +341,23 @@ public class SimpleAccountManager implements IAccountManager{
 	@Override
 	public void setAccountAttribute(String userid, String name, String value, Boolean system, String squareId) {
 		dao.saveAccountAttr(userid, name, value, system, squareId);
+	}
+
+	@Override
+	public void updateAccountAttribute(String userid,  Map<String, String[]> map) throws Exception{
+		Set<String> keys = map.keySet();
+		for (String key : keys) {
+			List<AccountAttr> attrs = dao.getAccountAttr(userid, key);
+			String value = org.apache.commons.lang3.StringUtils.join(map.get(key), ",");
+
+			if(attrs.size() > 0) {
+				AccountAttr attr = attrs.get(0);
+				if(!value.equals(attr.getValue()))
+					this.setAccountAttribute(userid, attr.getName(), value, attr.getSystem(), attr.getSquareId());
+			} else {
+				this.setAccountAttribute(userid, key, value, false, null);
+			}
+		}
 	}
 
 	@Override
