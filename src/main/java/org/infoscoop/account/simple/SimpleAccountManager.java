@@ -350,7 +350,7 @@ public class SimpleAccountManager implements IAccountManager{
 			List<AccountAttr> attrs = dao.getAccountAttr(userid, key);
 			String value = org.apache.commons.lang3.StringUtils.join(map.get(key), ",");
 
-			if(attrs.size() > 0) {
+			if(attrs != null && attrs.size() > 0) {
 				AccountAttr attr = attrs.get(0);
 				if(!value.equals(attr.getValue()))
 					this.setAccountAttribute(userid, attr.getName(), value, attr.getSystem(), attr.getSquareId());
