@@ -375,7 +375,7 @@ IS_AccountManager.prototype = {
 				return false;
 			}
 
-			if(type == 'email' && !/^[A-Za-z0-9]+[\w-]+@[\w\.-]+\.\w{2,}$/.test(value)) {
+			if(type == 'email' && !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value)) {
 				var message = IS_R.getResource(IS_R.ms_invalidValue3, [formDef[inputForm[i].id].title]);
 				alert(message);
 				return false;
