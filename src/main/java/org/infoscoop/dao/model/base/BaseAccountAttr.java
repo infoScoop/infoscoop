@@ -29,6 +29,9 @@ public class BaseAccountAttr implements Serializable {
 	public static String PROP_SYSTEM = "system";
 	public static String PROP_SQUARE_ID = "squareId";
 
+	public static Integer PROP_SYSTEM_TRUE = 1;
+	public static Integer PROP_SYSTEM_FALSE = 0;
+	
 	public BaseAccountAttr() {
 		initialize();
 	}
