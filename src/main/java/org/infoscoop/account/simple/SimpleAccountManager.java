@@ -52,6 +52,7 @@ public class SimpleAccountManager implements IAccountManager{
 	private static final String FIRST_NAME_PARAM = "firstname";
 	private static final String GIVEN_NAME_PARAM = "givenname";
 	private static final String EMAIL_PARAM = "email";
+	private static final String REQUIRE_PASSWORD_RESET_PARAM = "require_password_reset";
 
 	/**
 	 * Account manager form.
@@ -267,6 +268,7 @@ public class SimpleAccountManager implements IAccountManager{
 		String firstName = map.get(FIRST_NAME_PARAM)[0];
 		String familyName = map.get(GIVEN_NAME_PARAM)[0];
 		String email = map.get(EMAIL_PARAM)[0];
+		String requirePasswordReset = map.get(REQUIRE_PASSWORD_RESET_PARAM)[0];
 
 		if(StringUtils.isBlank(displayName)
 				|| AccountHelper.isNotValidFirstName(firstName)
@@ -281,6 +283,7 @@ public class SimpleAccountManager implements IAccountManager{
 		account.setFamilyName(familyName);
 		account.setGivenName(firstName);
 		account.setMail(email);
+		account.setRequirePasswordReset(Boolean.parseBoolean(requirePasswordReset));
 		dao.update(account);
 		
 		return displayName;
@@ -293,7 +296,7 @@ public class SimpleAccountManager implements IAccountManager{
 
 	@Override
 	public IAccount registUser(String userid, String password, String firstName,
-			String familyName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission) throws Exception {
+			String familyName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission, String requirePasswordReset) throws Exception {
 		String displayName = firstName + " " + familyName;
 		Account account = new Account(userid, displayName, password);
 		account.setFamilyName(familyName);
@@ -301,6 +304,7 @@ public class SimpleAccountManager implements IAccountManager{
 		account.setDefaultSquareId(defaultSquareId);
 		account.setMySquareId(defaultSquareId);
 		account.setMail(email);
+		account.setRequirePasswordReset(Boolean.parseBoolean(requirePasswordReset));
 		
 		AccountSquare accountSquare = new AccountSquare(userid, defaultSquareId);
 		AccountAttr ownedNum = new AccountAttr(userid, AccountAttributeName.OWNED_SQUARE_NUMBER, ownedSquareNum, true, null);

@@ -36,6 +36,7 @@ public class LDAPAccount implements IAccount{
 	private IGroup[] groups;
 	private List<String> mails;
 	private boolean isAdmin;
+	private boolean requirePasswordReset;
 	
 	public LDAPAccount(String dn, String uid, String mail, String displayName, String groupName) {
 		super();
@@ -152,5 +153,14 @@ public class LDAPAccount implements IAccount{
 	@Override
 	public boolean isEnableAddSquareUser() {
 		return true;
+	}
+
+	@Override
+	public boolean isRequirePasswordReset() {
+		return requirePasswordReset;
+	}
+
+	public void setRequirePasswordReset(boolean requirePasswordReset) {
+		this.requirePasswordReset = requirePasswordReset;
 	}
 }

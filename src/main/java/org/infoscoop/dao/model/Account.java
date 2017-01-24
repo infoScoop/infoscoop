@@ -38,6 +38,7 @@ public class Account implements IAccount {
 	private String givenName;
 	private String familyName;
 	private String mail;
+	private boolean requirePasswordReset;
 	private boolean isAdmin;
 	List<String> belongIds = new ArrayList<String>();
 	List<Map<String, String>> attributes= new ArrayList<Map<String, String>>();
@@ -172,5 +173,14 @@ public class Account implements IAccount {
 	@Override
 	public boolean isEnableAddSquareUser() {
 		return getPassword() != null;
+	}
+
+	@Override
+	public boolean isRequirePasswordReset() {
+		return requirePasswordReset;
+	}
+
+	public void setRequirePasswordReset(boolean requirePasswordReset) {
+		this.requirePasswordReset = requirePasswordReset;
 	}
 }

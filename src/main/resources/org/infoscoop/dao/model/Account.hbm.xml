@@ -72,6 +72,13 @@
             length="64"
         />
 
+		<property
+				name="requirePasswordReset"
+				column="require_password_reset"
+				type="boolean"
+				not-null="false"
+		/>
+
 		<set name="AccountAttrs" lazy="false" inverse="true">
 			<key>
 				<column name="fk_account_id" not-null="true" />

@@ -67,6 +67,9 @@ public class Provisioning{
 	@Size(max = 64, groups = { Create.class, Update.class })
 	public String defaultSquareId;
 
+	@JsonIgnore
+	public String requirePasswordReset;
+
 	public List<Map<String, String>> belongSquare;
 
 	public List<Map<String, String>> attrs;
@@ -100,6 +103,11 @@ public class Provisioning{
 	@JsonProperty("default_square_id")
 	public void setDefaultSquareId(String defaultSquareId) {
 		this.defaultSquareId = defaultSquareId;
+	}
+
+	@JsonProperty("require_password_reset")
+	public void setRequirePasswordReset(String requirePasswordReset) {
+		this.requirePasswordReset = requirePasswordReset;
 	}
 
 	@JsonProperty("belong_square")

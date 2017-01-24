@@ -209,4 +209,17 @@
             <column name="square_id" value="default" />
         </insert>
     </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha3_619_2" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha3_619_2">
+            <not>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS" columnName="require_password_reset"/>
+            </not>
+        </preConditions>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="IS_ACCOUNTS">
+            <column name="require_password_reset" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

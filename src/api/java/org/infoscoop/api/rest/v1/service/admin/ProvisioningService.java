@@ -163,7 +163,8 @@ public class ProvisioningService {
 				squareId,
 				user.email,
 				maxSquare,
-				String.valueOf(1)
+				String.valueOf(1),
+				user.requirePasswordReset
 		);
 
 		// set square
@@ -214,6 +215,7 @@ public class ProvisioningService {
 		map.put("familyName", user.familyName);
 		map.put("name", user.name);
 		map.put("defaultSquareId", user.defaultSquareId);
+		map.put("requirePasswordReset", user.requirePasswordReset);
 
 		// belong square
 		List<Map<String, String>> belongSquareList = (List<Map<String, String>>)user.belongSquare;
