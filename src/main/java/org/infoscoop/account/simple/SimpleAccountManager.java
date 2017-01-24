@@ -106,6 +106,10 @@ public class SimpleAccountManager implements IAccountManager{
 			}
 		}
 
+		Boolean requirePasswordReset = (Boolean)user.get("requirePasswordReset");
+		if(requirePasswordReset != null)
+			account.setRequirePasswordReset(requirePasswordReset);
+
 		dao.update(account);
 	}
 
@@ -296,7 +300,7 @@ public class SimpleAccountManager implements IAccountManager{
 
 	@Override
 	public IAccount registUser(String userid, String password, String firstName,
-			String familyName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission, String requirePasswordReset) throws Exception {
+			String familyName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission, Boolean requirePasswordReset) throws Exception {
 		String displayName = firstName + " " + familyName;
 		Account account = new Account(userid, displayName, password);
 		account.setFamilyName(familyName);
@@ -304,7 +308,7 @@ public class SimpleAccountManager implements IAccountManager{
 		account.setDefaultSquareId(defaultSquareId);
 		account.setMySquareId(defaultSquareId);
 		account.setMail(email);
-		account.setRequirePasswordReset(Boolean.parseBoolean(requirePasswordReset));
+		if(requirePasswordReset != null) account.setRequirePasswordReset(requirePasswordReset);
 		
 		AccountSquare accountSquare = new AccountSquare(userid, defaultSquareId);
 		AccountAttr ownedNum = new AccountAttr(userid, AccountAttributeName.OWNED_SQUARE_NUMBER, ownedSquareNum, true, null);

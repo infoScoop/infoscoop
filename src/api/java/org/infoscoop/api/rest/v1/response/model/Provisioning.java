@@ -68,7 +68,7 @@ public class Provisioning{
 	public String defaultSquareId;
 
 	@JsonIgnore
-	public String requirePasswordReset;
+	public Boolean requirePasswordReset;
 
 	public List<Map<String, String>> belongSquare;
 
@@ -106,7 +106,7 @@ public class Provisioning{
 	}
 
 	@JsonProperty("require_password_reset")
-	public void setRequirePasswordReset(String requirePasswordReset) {
+	public void setRequirePasswordReset(Boolean requirePasswordReset) {
 		this.requirePasswordReset = requirePasswordReset;
 	}
 
