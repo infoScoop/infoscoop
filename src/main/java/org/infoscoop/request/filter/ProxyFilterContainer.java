@@ -33,6 +33,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.model.Cache;
+import org.infoscoop.properties.InfoScoopProperties;
 import org.infoscoop.request.AuthenticatorUtil;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.request.proxy.Proxy;
@@ -46,6 +47,11 @@ public class ProxyFilterContainer {
 	private List<ProxyFilter> filterChain = new ArrayList<ProxyFilter>(3);
 	final static int EXECUTE_POST_STATUS = 201;
 	
+	private static final String excludePattern;
+	static{
+		excludePattern = InfoScoopProperties.getInstance().getProperty("proxy.exclude.url.pattern");
+	}
+	
 	public void addFilter(ProxyFilter filter){
 		filterChain.add(filter);
 	}
@@ -55,6 +61,11 @@ public class ProxyFilterContainer {
 	}
 
 	public final int prepareInvoke(HttpClient client, HttpMethod method, ProxyRequest request)throws Exception {
+		// check exclude pattern
+		String domain = method.getURI().getHost();
+		if(excludePattern != null && domain != null && domain.matches(excludePattern))
+			return HttpStatus.SC_BAD_REQUEST;
+		
 		// filer pre processing
 		for(int i = 0; i < filterChain.size(); i++){
 			ProxyFilter filter = (ProxyFilter)filterChain.get(i);
