@@ -19,6 +19,7 @@ package org.infoscoop.request.filter;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,7 +64,17 @@ public class ProxyFilterContainer {
 	public final int prepareInvoke(HttpClient client, HttpMethod method, ProxyRequest request)throws Exception {
 		// check exclude pattern
 		String domain = method.getURI().getHost();
-		if(excludePattern != null && domain != null && domain.matches(excludePattern))
+		String ip = domain;
+		try{
+			if(domain != null){
+				InetAddress ia = InetAddress.getByName (domain);
+				ip = ia.getHostAddress();
+			}
+		}catch(Exception e){
+			log.warn(e.getMessage() + ":" + method.getURI());
+		}
+		
+		if(excludePattern != null && ip != null && ip.matches(excludePattern))
 			return HttpStatus.SC_BAD_REQUEST;
 		
 		// filer pre processing
