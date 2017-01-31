@@ -419,6 +419,8 @@ public class ProxyConfService {
 
 		try {
 			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
+			if(squareid == null || !SquareService.getHandle().existsSquare(squareid))
+				squareid = SquareService.SQUARE_ID_DEFAULT;
 
 			// Obtain data
 			Proxyconf entity = this.proxyConfDAO.select(ProxyConfDAO.PROXYCONF_FLAG_NOT_TEMP, squareid);
