@@ -39,7 +39,8 @@ public abstract class BaseSquare  implements Serializable {
 
     public static enum STATUS_TYPE {
     	MAINTENANCE,
-    	RUNNING
+    	RUNNING,
+    	PENDING
     }
 	
 	// constructors
