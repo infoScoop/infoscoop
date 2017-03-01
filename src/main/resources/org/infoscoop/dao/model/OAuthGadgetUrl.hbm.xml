@@ -50,4 +50,25 @@
         />
 
 	</class>	
+    <sql-query name="is_oauth_gadget_urls.copySquare">
+        <![CDATA[
+INSERT
+    INTO
+        IS_OAUTH_GADGET_URLS(
+            fk_oauth_id,
+            gadget_url,
+            gadget_url_key,
+            square_id
+        )
+    SELECT
+        og.fk_oauth_id,
+        og.gadget_url,
+        og.gadget_url_key,
+        :squareId
+    FROM
+        IS_OAUTH_GADGET_URLS as og
+    WHERE
+        og.square_id = :sourceSquareId
+        ]]>
+    </sql-query>
 </hibernate-mapping>

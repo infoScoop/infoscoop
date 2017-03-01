@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Restrictions;
@@ -114,4 +116,20 @@ public class OAuthGadgetUrlDAO extends HibernateDaoSupport{
 	public void deleteGadgetUrls(List<OAuthGadgetUrl> gadgetUrls){
 		super.getHibernateTemplate().deleteAll(gadgetUrls);
 	}
+
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from OAuthGadgetUrl where Squareid = ?";
+		
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
+
+	public void copySquare(String squareId, String sourceSquareId) {
+		Session session = super.getSession();
+		Query sq = session.getNamedQuery("is_oauth_gadget_urls.copySquare");
+		sq.setString("squareId", squareId);
+		sq.setString("sourceSquareId", sourceSquareId);
+		sq.executeUpdate();
+	}
+
 }
