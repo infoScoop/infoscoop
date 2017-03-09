@@ -20,7 +20,13 @@ package org.infoscoop.account.simple;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.security.auth.Subject;
 
@@ -272,7 +278,10 @@ public class SimpleAccountManager implements IAccountManager{
 		String firstName = map.get(FIRST_NAME_PARAM)[0];
 		String familyName = map.get(GIVEN_NAME_PARAM)[0];
 		String email = map.get(EMAIL_PARAM)[0];
-		String requirePasswordReset = map.get(REQUIRE_PASSWORD_RESET_PARAM)[0];
+		
+		String requirePasswordReset = null;
+		if(map.get(REQUIRE_PASSWORD_RESET_PARAM) != null)
+			requirePasswordReset = map.get(REQUIRE_PASSWORD_RESET_PARAM)[0];
 
 		if(StringUtils.isBlank(displayName)
 				|| AccountHelper.isNotValidFirstName(firstName)
