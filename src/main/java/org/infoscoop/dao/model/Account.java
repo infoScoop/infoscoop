@@ -20,12 +20,15 @@ package org.infoscoop.dao.model;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IGroup;
-import org.infoscoop.service.SquareService;
 
 public class Account implements IAccount {
 	
@@ -121,7 +124,7 @@ public class Account implements IAccount {
 	}
 
 	public List<Map<String, String>> getAttributes() {
-		if(attributes.size() == 0) {
+		if(attributes.size() == 0 && accountAttrs != null) {
 			for(AccountAttr accountAttr : accountAttrs) {
 				Map<String, String> map = new HashMap<>();
 				map.put(AccountAttr.PROP_NAME, accountAttr.getName());
