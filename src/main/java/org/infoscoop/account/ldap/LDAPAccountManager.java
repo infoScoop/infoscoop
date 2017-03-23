@@ -593,6 +593,11 @@ public class LDAPAccountManager implements IAccountManager{
 			String familyName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission, Boolean requirePasswordReset) throws Exception {
 		throw new UnsupportedOperationException();
 	}
+	@Override
+	public IAccount registUser(String userid, String password, String firstName,
+			String familyName, String displayName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission, Boolean requirePasswordReset) throws Exception {
+		throw new UnsupportedOperationException();
+	}
 
 	@Override
 	public void removeSquareId(String userid, String squareId) throws Exception {

@@ -160,6 +160,7 @@ public class ProvisioningService {
 				user.password,
 				user.givenName,
 				user.familyName,
+				user.name,
 				squareId,
 				user.email,
 				maxSquare,

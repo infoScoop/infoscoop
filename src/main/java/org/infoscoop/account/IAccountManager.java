@@ -96,6 +96,7 @@ public interface IAccountManager {
 	public void deleteUser(String userId) throws Exception;
 	
 	public IAccount registUser(String userid, String password, String firstName, String familyName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission, Boolean requirePasswordReset) throws Exception;
+	public IAccount registUser(String userid, String password, String firstName, String familyName, String displayName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission, Boolean requirePasswordReset) throws Exception;
 
 	public void removeSquareId(String userid, String squareId) throws Exception;
 

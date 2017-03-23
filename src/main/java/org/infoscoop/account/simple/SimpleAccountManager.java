@@ -309,11 +309,21 @@ public class SimpleAccountManager implements IAccountManager{
 
 	@Override
 	public IAccount registUser(String userid, String password, String firstName,
-			String familyName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission, Boolean requirePasswordReset) throws Exception {
+							   String familyName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission, Boolean requirePasswordReset) throws Exception {
 		String displayName = firstName + " " + familyName;
+		return registUser(userid, password, firstName, familyName, displayName, defaultSquareId, email, ownedSquareNum, updatePermission, requirePasswordReset);
+	}
+
+	@Override
+	public IAccount registUser(String userid, String password, String firstName,
+			String familyName, String displayName, String defaultSquareId, String email, String ownedSquareNum, String updatePermission, Boolean requirePasswordReset) throws Exception {
+		if(displayName == null)
+			displayName = firstName + " " + familyName;
+
 		Account account = new Account(userid, displayName, password);
 		account.setFamilyName(familyName);
 		account.setGivenName(firstName);
+		account.setName(displayName);
 		account.setDefaultSquareId(defaultSquareId);
 		account.setMySquareId(defaultSquareId);
 		account.setMail(email);
