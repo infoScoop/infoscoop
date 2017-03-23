@@ -126,6 +126,10 @@ public class SimpleAccountManager implements IAccountManager{
 		return this.dao.selectByMap(searchConditionMap);
 	}
 
+	public List searchUser(Map searchConditionMap, Integer pageSize, Integer pageNum) throws Exception {
+		return this.dao.selectByMap(searchConditionMap, pageSize, pageNum);
+	}
+
 	public void login(String userid, String password) throws AuthenticationException {
 
 		Account account;

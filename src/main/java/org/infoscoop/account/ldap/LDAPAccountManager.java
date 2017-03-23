@@ -281,6 +281,12 @@ public class LDAPAccountManager implements IAccountManager{
 		
 	}
 
+	@Override
+	public List<IAccount> searchUser(Map<String, String> searchConditionMap, Integer pageSize, Integer pageNum)
+			throws Exception {
+		throw new UnsupportedOperationException();
+	}
+	
 	public void login(String userid, String password) throws AuthenticationException{
 		try {
 			LDAPAccount user = (LDAPAccount) getUser(userid);

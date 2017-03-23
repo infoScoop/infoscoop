@@ -24,6 +24,7 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.infoscoop.dao.model.Account;
 import org.infoscoop.dao.model.AccountAttr;
 import org.infoscoop.dao.model.AccountSquare;
@@ -160,6 +161,62 @@ public class AccountDAO extends HibernateDaoSupport {
 	}
 	
 	public List<Account> selectByMap(Map condition) {
+		return selectByMap(condition, null, null);
+	}
+	
+	public int selectCountByMap(Map condition) {
+		DetachedCriteria criteria = createSearchCriteria(condition);
+		criteria.setProjection(Projections.rowCount());
+		
+		List list = super.getHibernateTemplate().findByCriteria(criteria);
+		return (int)list.get(0);
+	}
+	
+	public List<Account> selectByMap(Map condition, Integer pageSize, Integer pageNum) {
+		/*
+		String uid = (String)condition.get("user_id");
+		String name = (String)condition.get("user_name");
+		String defaultSquareId = (String)condition.get("user_default_square_id");
+		String givenName = (String)condition.get("user_given_name");
+		String familyName = (String)condition.get("user_family_name");
+		String email = (String)condition.get("user_email");
+		String squareId = (String)condition.get("user_belong_square");
+
+		DetachedCriteria criteria = DetachedCriteria.forClass(Account.class).createAlias("AccountSquares", "as", CriteriaSpecification.LEFT_JOIN);
+
+		if(uid != null)
+			criteria.add(Expression.eq("Uid", uid));
+
+		if(name != null)
+			criteria.add(Expression.like("name", "%" + name + "%"));
+
+		if(defaultSquareId != null)
+			criteria.add(Expression.eq("defaultSquareId", defaultSquareId));
+
+		if(givenName != null)
+			criteria.add(Expression.eq("givenName", givenName));
+
+		if(familyName != null)
+			criteria.add(Expression.eq("familyName", familyName));
+
+		if(email != null)
+			criteria.add(Expression.like("mail", "%" + email + "%"));
+
+		if(squareId != null)
+			criteria.add(Expression.eq("as.squareId", squareId));
+		*/
+		DetachedCriteria criteria = createSearchCriteria(condition);
+		
+		List<Account> result;
+		if(pageSize != null && pageNum != null){
+			result = super.getHibernateTemplate().findByCriteria(criteria, pageNum*pageSize, pageSize);
+		}else{
+			result = super.getHibernateTemplate().findByCriteria(criteria);
+		}
+		return result;
+	}
+
+	private DetachedCriteria createSearchCriteria(Map condition){
 		String uid = (String)condition.get("user_id");
 		String name = (String)condition.get("user_name");
 		String defaultSquareId = (String)condition.get("user_default_square_id");
@@ -191,7 +248,6 @@ public class AccountDAO extends HibernateDaoSupport {
 		if(squareId != null)
 			criteria.add(Expression.eq("as.squareId", squareId));
 
-		return super.getHibernateTemplate().findByCriteria(criteria);
+		return criteria;
 	}
-
 }

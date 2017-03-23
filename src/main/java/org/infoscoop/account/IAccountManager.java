@@ -68,6 +68,8 @@ public interface IAccountManager {
 	 */
 	public List<IAccount> searchUser(Map<String, String> searchConditionMap) throws Exception;
 
+	public List<IAccount> searchUser(Map<String, String> searchConditionMap, Integer pageSize, Integer pageNum) throws Exception;
+
 	// 2007.11.29 koike
 	// add the interface of search by uiduid
 	/**

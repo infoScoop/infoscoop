@@ -12,9 +12,9 @@ import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IAccountManager;
 import org.infoscoop.account.simple.AccountAttributeName;
-import org.infoscoop.dao.model.Square;
+import org.infoscoop.account.simple.SimpleAccountManager;
+import org.infoscoop.dao.AccountDAO;
 import org.infoscoop.properties.InfoScoopProperties;
-import org.infoscoop.service.SquareService;
 
 public class AccountHelper {
 	private static Log log = LogFactory.getLog(AccountHelper.class);
@@ -140,7 +140,6 @@ public class AccountHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
 	public static List<IAccount> searchUser(Map<String, String> searchConditionMap) throws Exception{
 		AuthenticationService authService = AuthenticationService.getInstance();
 		IAccountManager accountManager = authService.getAccountManager();
@@ -148,17 +147,30 @@ public class AccountHelper {
 		List<IAccount> users = accountManager.searchUser(searchConditionMap);
 		return users;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public static List<IAccount> searchUsersBySquareId(String squareId) throws Exception{
-		AuthenticationService authService = AuthenticationService.getInstance();
-		IAccountManager accountManager = authService.getAccountManager();
+
+	public static int searchUsersCountBySquareId(String squareId) throws Exception{
 		Map<String, String> searchConditionMap = new HashMap<String, String>();
 		searchConditionMap.put("user_belong_square", squareId);
 		
+		return AccountDAO.newInstance().selectCountByMap(searchConditionMap);
+	}
+	public static List<IAccount> searchUsersBySquareId(String squareId, Integer pageSize, Integer pageNum) throws Exception{
+		AuthenticationService authService = AuthenticationService.getInstance();
+		IAccountManager accountManager = authService.getAccountManager();
+		
+		Map<String, String> searchConditionMap = new HashMap<String, String>();
+		searchConditionMap.put("user_belong_square", squareId);
+		
+		if(pageSize != null && pageNum != null){
+			return accountManager.searchUser(searchConditionMap, pageSize, pageNum);
+		}
 		return accountManager.searchUser(searchConditionMap);
 	}
 
+	public static List<IAccount> searchUsersBySquareId(String squareId) throws Exception{
+		return searchUsersBySquareId(squareId, null, null);
+	}
+	
 	public static void deleteBelongToBySquareId(String squareId) throws Exception{
 		AuthenticationService authService = AuthenticationService.getInstance();
 		IAccountManager accountManager = authService.getAccountManager();
