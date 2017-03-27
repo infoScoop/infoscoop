@@ -12,8 +12,8 @@ import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IAccountManager;
 import org.infoscoop.account.simple.AccountAttributeName;
-import org.infoscoop.account.simple.SimpleAccountManager;
 import org.infoscoop.dao.AccountDAO;
+import org.infoscoop.manager.controller.form.UserSearchConditionForm;
 import org.infoscoop.properties.InfoScoopProperties;
 
 public class AccountHelper {
@@ -148,19 +148,31 @@ public class AccountHelper {
 		return users;
 	}
 
-	public static int searchUsersCountBySquareId(String squareId) throws Exception{
+	public static int searchUsersCountBySquareId(String squareId, UserSearchConditionForm searchForm) throws Exception{
 		Map<String, String> searchConditionMap = new HashMap<String, String>();
 		searchConditionMap.put("user_belong_square", squareId);
 		
+		if(searchForm != null){
+			searchConditionMap.put("user_id", searchForm.getSearchConditionUid());
+			searchConditionMap.put("user_name", searchForm.getSearchConditionUserName());
+			searchConditionMap.put("user_email", searchForm.getSearchConditionEmail());
+		}
+		
 		return AccountDAO.newInstance().selectCountByMap(searchConditionMap);
 	}
-	public static List<IAccount> searchUsersBySquareId(String squareId, Integer pageSize, Integer pageNum) throws Exception{
+	public static List<IAccount> searchUsersBySquareId(String squareId, Integer pageSize, Integer pageNum, UserSearchConditionForm searchForm) throws Exception{
 		AuthenticationService authService = AuthenticationService.getInstance();
 		IAccountManager accountManager = authService.getAccountManager();
 		
 		Map<String, String> searchConditionMap = new HashMap<String, String>();
 		searchConditionMap.put("user_belong_square", squareId);
-		
+
+		if(searchForm != null){
+			searchConditionMap.put("user_id", searchForm.getSearchConditionUid());
+			searchConditionMap.put("user_name", searchForm.getSearchConditionUserName());
+			searchConditionMap.put("user_email", searchForm.getSearchConditionEmail());
+		}
+
 		if(pageSize != null && pageNum != null){
 			return accountManager.searchUser(searchConditionMap, pageSize, pageNum);
 		}
@@ -168,7 +180,7 @@ public class AccountHelper {
 	}
 
 	public static List<IAccount> searchUsersBySquareId(String squareId) throws Exception{
-		return searchUsersBySquareId(squareId, null, null);
+		return searchUsersBySquareId(squareId, null, null, null);
 	}
 	
 	public static void deleteBelongToBySquareId(String squareId) throws Exception{
