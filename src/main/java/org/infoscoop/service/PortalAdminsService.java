@@ -256,9 +256,11 @@ public class PortalAdminsService {
 		return !isPermitted(PortalAdminsService.ADMINROLE_MENU) && isPermitted(PortalAdminsService.ADMINROLE_MENU_TREE);
 	}
 	
-	public void replaceSquareAdmins(List<Portaladmins> newAdminList, Integer squareAdminRoleId){
+	public void replaceSquareAdmins(List<Portaladmins> newAdminList, List<String> uncheckedAdminList){
 		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
-		portalAdminsDAO.deleteByRoleId(squareid, squareAdminRoleId);
+		
+		for(String removeAdminUid : uncheckedAdminList)
+			portalAdminsDAO.deleteByUid(squareid, removeAdminUid);
 		
 		for( Portaladmins admin : newAdminList ) {
 			Portaladmins exists = portalAdminsDAO.selectById(admin.getUid(), squareid);
