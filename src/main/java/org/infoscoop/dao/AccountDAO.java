@@ -218,6 +218,7 @@ public class AccountDAO extends HibernateDaoSupport {
 
 	private DetachedCriteria createSearchCriteria(Map condition){
 		String uid = (String)condition.get("user_id");
+		String uidLike = (String)condition.get("user_id_like");
 		String name = (String)condition.get("user_name");
 		String defaultSquareId = (String)condition.get("user_default_square_id");
 		String givenName = (String)condition.get("user_given_name");
@@ -229,6 +230,9 @@ public class AccountDAO extends HibernateDaoSupport {
 
 		if(uid != null)
 			criteria.add(Expression.eq("Uid", uid));
+		
+		if(uidLike != null)
+			criteria.add(Expression.like("Uid", "%" + uidLike + "%"));
 
 		if(name != null)
 			criteria.add(Expression.like("name", "%" + name + "%"));

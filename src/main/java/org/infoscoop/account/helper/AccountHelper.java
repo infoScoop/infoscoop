@@ -151,7 +151,7 @@ public class AccountHelper {
 		Map<String, String> searchConditionMap = new HashMap<String, String>();
 		searchConditionMap.put("user_belong_square", squareId);
 		
-		searchConditionMap.put("user_id", uid);
+		searchConditionMap.put("user_id_like", uid);
 		searchConditionMap.put("user_name", userName);
 		searchConditionMap.put("user_email", email);
 		
@@ -164,7 +164,7 @@ public class AccountHelper {
 		Map<String, String> searchConditionMap = new HashMap<String, String>();
 		searchConditionMap.put("user_belong_square", squareId);
 
-		searchConditionMap.put("user_id", uid);
+		searchConditionMap.put("user_id_like", uid);
 		searchConditionMap.put("user_name", userName);
 		searchConditionMap.put("user_email", email);
 
