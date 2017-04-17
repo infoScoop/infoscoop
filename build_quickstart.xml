@@ -12,7 +12,7 @@
 	<property name="qs.build" value="${build.home}/quickstart" />
 	<property name="qs.home" value="${qs.build}/infoscoop-${build.version}-quickstart" />
 	<property name="qs.file.name" value="infoscoop-${build.version}-quickstart" />
-	<property name="qs.tomcat.home" value="${qs.home}/apache-tomcat-7.0.34" />	
+	<property name="qs.tomcat.home" value="${qs.home}/apache-tomcat-7.0.75" />	
 	<property name="qs.tomcat.webapps" value="${qs.tomcat.home}/webapps" />
 
 
@@ -46,7 +46,7 @@
 		<copy todir="${qs.home}" file="${basedir}/gpl-3.0.txt" />
 		<copy todir="${qs.home}" file="${basedir}/lgpl-3.0.txt" />
 		<copy todir="${qs.home}" file="${basedir}/LICENSE.txt" />
-		<unzip src="${src.qs}/apache-tomcat-7.0.34.zip" dest="${qs.home}" />
+		<unzip src="${src.qs}/apache-tomcat-7.0.75.zip" dest="${qs.home}" />
 		<delete dir="${qs.tomcat.webapps}/docs" />
 		<delete dir="${qs.tomcat.webapps}/examples" />
 		<copy todir="${qs.tomcat.webapps}" file="${build.work}/infoscoop.war" />
