@@ -698,6 +698,9 @@
 				<property name="oauth2ProviderClientDetailDAO">
 					<ref bean="oauth2ProviderClientDetailDAO" />
 				</property>
+				<property name="logoDAO">
+					<ref bean="logoDAO" />
+				</property>
 			</bean>
 		</property>
 		<property name="transactionManager">

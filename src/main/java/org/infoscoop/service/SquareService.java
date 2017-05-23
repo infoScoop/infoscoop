@@ -64,6 +64,7 @@ public class SquareService {
 	private WidgetConfDAO widgetConfDAO;
 	private StaticTabDAO staticTabDAO;
 	private OAuth2ProviderClientDetailDAO oauth2ProviderClientDetailDAO;
+	private LogoDAO logoDAO;
 
 	public SquareDAO getSquareDAO() {
 		return squareDAO;
@@ -201,6 +202,14 @@ public class SquareService {
 		this.oauth2ProviderClientDetailDAO = oauth2ProviderClientDetailDAO;
 	}
 
+	public LogoDAO getLogoDAO() {
+		return logoDAO;
+	}
+
+	public void setLogoDAO(LogoDAO logoDAO) {
+		this.logoDAO = logoDAO;
+	}
+
 	public static SquareService getHandle() {
 		return (SquareService) SpringUtil.getBean("SquareService");
 	}
@@ -244,6 +253,7 @@ public class SquareService {
 		this.tabLayoutDAO.copySquare(squareId, sourceSquareId);
 		this.widgetConfDAO.copySquare(squareId, sourceSquareId);
 		this.staticTabDAO.copySquare(squareId, sourceSquareId);
+		this.logoDAO.copySquare(squareId, sourceSquareId);
 
 		// copy Adminrole
 		List<Adminrole> adminRoleList = adminRoleDAO.select(sourceSquareId);
