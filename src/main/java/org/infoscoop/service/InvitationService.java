@@ -32,4 +32,9 @@ public class InvitationService implements InvitationServiceInterface {
 	public boolean isExistsInvitationUser(String uid) {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public Integer getServiceId(String expiredKey) {
+		throw new UnsupportedOperationException();
+	}
 }

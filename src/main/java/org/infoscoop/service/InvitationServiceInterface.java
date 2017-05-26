@@ -9,4 +9,5 @@ public interface InvitationServiceInterface {
 	public void cancelInvitation(List<String> uidList) throws Exception;
 	public List getInvitingUsers();
 	public boolean isExistsInvitationUser(String uid);
+	public Integer getServiceId(String expiredKey);
 }
