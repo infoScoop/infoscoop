@@ -112,6 +112,12 @@ public class SimpleAccountManager implements IAccountManager{
 			}
 		}
 
+		// my square
+		String mySquareId = (String)user.get("mySquareId");
+		if(mySquareId != null && mySquareId.trim().length() > 0) {
+			account.setMySquareId(mySquareId);
+		}
+
 		Boolean requirePasswordReset = (Boolean)user.get("requirePasswordReset");
 		if(requirePasswordReset != null)
 			account.setRequirePasswordReset(requirePasswordReset);
