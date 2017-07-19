@@ -29,7 +29,6 @@ public class InfoScoopProperties {
 	private static InfoScoopProperties singleInstance = new InfoScoopProperties();
 	private boolean useMultitenantMode = false;
 	private int globalmessagesPollingRate = 30000;
-	private String guidanceRssUrl;
 	
 	private ResourceBundle bundle;
 	
@@ -40,9 +39,7 @@ public class InfoScoopProperties {
 			this.useMultitenantMode = new Boolean(useMultitenantModeStr);
 			
 			String globalmessagesPollingRateStr = bundle.getString("globalmessages.polling.rate");
-			
-			this.guidanceRssUrl = bundle.getString("guidance.rss.url");
-			
+
 			if(NumberUtils.isNumber(globalmessagesPollingRateStr))
 				this.globalmessagesPollingRate = Integer.parseInt(globalmessagesPollingRateStr);
 
@@ -81,9 +78,4 @@ public class InfoScoopProperties {
 	public int getGlobalmessagesPollingRate() {
 		return globalmessagesPollingRate;
 	}
-
-	public String getGuidanceRssUrl() {
-		return guidanceRssUrl;
-	}
-	
 }

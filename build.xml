@@ -228,11 +228,6 @@
 			<fileset dir="${src.main.web}/js/lib" />
 		</copy>
 
-		<!-- copy javascript without compress -->
-		<copy todir="${build.main}/guidance">
-			<fileset dir="${src.main.web}/guidance" />
-		</copy>
-
 		<copy todir="${build.main}/square">
 			<fileset dir="${src.main.web}/square" />
 		</copy>
@@ -246,8 +241,7 @@
 
 		<copy todir="${build.main}/js/utils" file="${src.main.web}/js/utils/ajax304.js"/>
 		<copy todir="${build.main}/js/utils" file="${src.main.web}/js/utils/utils.js"/>
-        <copy todir="${build.main}/js/guidance" file="${src.main.web}/js/guidance/GuidanceWindow.js"/>
-		
+
 		<!-- TODO: require arrangement -->
 		<copy todir="${build.main}/WEB-INF" encoding="UTF-8">
 			<fileset dir="${src.main.web}/WEB-INF">
@@ -308,7 +302,6 @@
 			<filelist dir="${src.main.web}/js" files="CommonAreaDesign.js"/>
 			<filelist dir="${src.main.web}/js" files="CommonAreaWidgetModal.js"/>
 			<filelist dir="${src.main.web}/js" files="Notification.js"/>
-			<filelist dir="${src.main.web}/js/guidance" files="Guidance.js"/>
 			<filelist dir="${src.main.web}/js/square" files="Square.js"/>
 			<filelist dir="${src.main.web}/js/search" files="SearchEngine.js"/>
 			<filelist dir="${src.main.web}/js/widgets" files="Widget.js"/>
@@ -453,7 +446,6 @@
 				<include name="admintreemenu.css"/>
 				<include name="adminotherlayout.css"/>
 				<include name="editrole.css"/>
-				<include name="guidance.css"/>
 			</fileset>
 		</copy>
 

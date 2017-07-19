@@ -52,8 +52,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class MakeMenuFilter extends ProxyFilter {
 	private static Log log = LogFactory.getLog(MakeMenuFilter.class);
 	private static String MENUTYPE_SIDEMENU = "sidemenu";
-	private static String MENUTYPE_GUIDANCE = "guidance";
-	
+
 	private static SAXParserFactory factory;
 	static{
 		try{
@@ -124,13 +123,11 @@ public class MakeMenuFilter extends ProxyFilter {
 			String functionName;
 			if(!isExternalService){
 				functionName = menuType.equals( MENUTYPE_SIDEMENU )?
-						"IS_SidePanel.setMenu" : menuType.equals( MENUTYPE_GUIDANCE )?
-								"IS_Guidance.setMenu" : "IS_SiteAggregationMenu.setMenu";
+						"IS_SidePanel.setMenu" : "IS_SiteAggregationMenu.setMenu";
 				json = handler.getJSONPString(functionName);
 			}else{
 				functionName = menuType.equals( MENUTYPE_SIDEMENU )?
-						"IS_SidePanel.setServiceMenu" : menuType.equals( MENUTYPE_GUIDANCE )?
-								"IS_Guidance.setServiceMenu" : "IS_SiteAggregationMenu.setServiceMenu";
+						"IS_SidePanel.setServiceMenu" : "IS_SiteAggregationMenu.setServiceMenu";
 				json = handler.getSiteTopJSONPString( functionName );
 			}
 			return json.getBytes("UTF-8");
@@ -300,10 +297,6 @@ public class MakeMenuFilter extends ProxyFilter {
 					}
 				}
 				
-				String thumbnail = attributes.getValue("thumbnail");
-				if(thumbnail!=null ){
-					menuItemArray.append(",thumbnail:").append(JSONObject.quote(thumbnail));
-				}
 			}else if(qName.equals("properties")){
 				firstProperty = true;
 				menuItemArray.append(",properties:{");

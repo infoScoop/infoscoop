@@ -480,9 +480,6 @@ IS_WidgetsContainer.prototype.classDef = function() {
 			IS_Portal.endIndicator();
 			IS_Portal.tabs[IS_Portal.currentTabId].isBuilt = true;
 			
-			if(IS_Portal.isFirstLogin)
-			    IS_GuidanceInstance = new IS_Guidance();
-			
 			if(window["IS_Notification"])
 			    IS_Notification = new IS_Notification();
 			

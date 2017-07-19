@@ -70,11 +70,7 @@ IS_Portal.buildGlobalSettingModal = function() {
 		prefPage.appendChild(buildShowAllSettingBody());
 		prefPage.appendChild(buildRssSettingBody());
 		prefPage.appendChild(buildCustomizeReset());
-		if(IS_Portal.useMultitenantMode){
-		    prefPage.appendChild(buildGuidanceSet());
-		}
 
-		
 		prefTable.appendChild(prefTBody);
 		prefTBody.appendChild(prefTr);
 
@@ -251,30 +247,6 @@ IS_Portal.buildGlobalSettingModal = function() {
 		return fs;
 	}
 
-	function buildGuidanceSet() {
-        var fs = createFieldSet( IS_R.lb_guidance );
-        
-        var description = document.createElement("div");
-        description.innerHTML = IS_R.lb_display_guidance_desc;
-        fs.appendChild( description );
-        
-        var initButton = document.createElement("input");
-        initButton.type = "button";
-        initButton.value = IS_R.lb_display_guidance;
-        IS_Event.observe( initButton,"click",function() {
-            Control.Modal.close();
-            if(!window["IS_GuidanceInstance"]){
-                IS_GuidanceInstance = new IS_Guidance()
-            }else{
-                IS_GuidanceInstance.start();
-            }
-        });
-        var initField = createField("",initButton );
-        fs.appendChild( initField );
-        
-        return fs;
-	}
-	
 	function buildBackgroundSetting() {
 		var fs = createFieldSet( IS_R.lb_wallPaperSetting );
 		var backgroundSettingDiv = $.DIV({id:'backgroundSettingDiv'}, $.DIV({}, IS_R.lb_selectWallPaperImage ) );

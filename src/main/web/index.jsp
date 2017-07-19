@@ -131,9 +131,6 @@
 			useMultitenantMode : <%= InfoScoopProperties.getInstance().isUseMultitenantMode() %>,
 			isEnableAddSquareUser : <%= isEnableAddSquareUser %>,
 			notificationPollingRate : <%= InfoScoopProperties.getInstance().getGlobalmessagesPollingRate() %>,
-			guidance : {
-			    rssUrl: "<%= InfoScoopProperties.getInstance().getGuidanceRssUrl() %>"
-			},
 			<%if(InfoScoopProperties.getInstance().getProperty("password.policy") != null && InfoScoopProperties.getInstance().getProperty("password.policy").length() > 0){%>
 				passwordPolicy: /<%= InfoScoopProperties.getInstance().getProperty("password.policy") %>/
 			<%}%>
@@ -201,7 +198,6 @@
     <script src="<%=staticContentURL%>/js/CommonAreaDesign.js"></script>
     <script src="<%=staticContentURL%>/js/CommonAreaWidgetModal.js"></script>
     <script src="<%=staticContentURL%>/js/Notification.js"></script>
-    <script src="<%=staticContentURL%>/js/guidance/Guidance.js"></script>
     <script src="<%=staticContentURL%>/js/square/Square.js"></script>
     <!-- prototype-window -->
     <script type="text/javascript" src="<%=staticContentURL%>/js/lib/prototype-window-1.3/window.js"></script>
