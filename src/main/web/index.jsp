@@ -317,7 +317,7 @@
 							</div>
 						</td>
 						<td id="siteMenuOpenTd" align="left"><div id="siteMenuOpen"/></td>
-						<td colspan="3" valign="top" align="left" width="100%">
+						<td class="td-main" colspan="3" valign="top" align="left" width="100%">
 							<div id="portal-iframe-url"></div>
 							<div id="panels" style="display:;">
 							  <div id="maximize-panel" style="display:none;"></div>
@@ -327,6 +327,7 @@
 							</div>
 							<div id="iframe-tool-bar"></div>
 							<div id="search-iframe" style="display:none;"></div>
+							<div id="panel-dummy">&nbsp;</div>
 						</td>
 					</tr>
 				</tbody>

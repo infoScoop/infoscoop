@@ -27,10 +27,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.dao.GadgetIconDAO;
 import org.infoscoop.dao.model.GadgetIcon;
+import org.infoscoop.util.StringUtil;
 import org.json.JSONObject;
 
 public class GadgetIconServlet extends HttpServlet {
@@ -56,7 +58,7 @@ public class GadgetIconServlet extends HttpServlet {
 			List<GadgetIcon> icons = GadgetIconDAO.newInstance().all();
 			JSONObject iconsJson = new JSONObject();
 			for (GadgetIcon icon : icons) {
-				iconsJson.put(icon.getType(), icon.getUrl());
+				iconsJson.put(icon.getType(), StringUtil.getNullSafe(icon.getUrl()));
 			}
 			writer.write(iconsJson.toString());
 		} catch (Exception e) {

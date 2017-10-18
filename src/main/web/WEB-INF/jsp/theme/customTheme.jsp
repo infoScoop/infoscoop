@@ -52,6 +52,9 @@ String searchFormButtonIconClass = "";
 String searchFormButtonIconSuffix = "";
 
 try {
+	if(customTheme == null || customTheme.trim().length() == 0)
+		customTheme = "{}";
+		
 	JSONObject json = new JSONObject(customTheme);
 	if (!json.isNull("tabbar")){
 		JSONObject tabbar = json.getJSONObject("tabbar");

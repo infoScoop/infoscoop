@@ -51,8 +51,4 @@ public class GadgetIcon extends BaseGadgetIcon {
 
 /*[CONSTRUCTOR MARKER END]*/
 
-	@Override
-	public String getUrl() {
-		return StringUtil.getNullSafe( super.getUrl() );
-	}
 }

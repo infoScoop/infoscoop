@@ -95,6 +95,10 @@
 	//width:100%;
 }
 
+.infoScoop #portal-maincontents-table.maximized .widget {
+    margin-bottom: 0px;
+}
+
 .infoScoop #portal-maincontents-table.maximized .widgetBox {
     margin: 10px;
 }

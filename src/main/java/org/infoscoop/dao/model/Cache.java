@@ -69,11 +69,7 @@ public class Cache extends BaseCache {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
-
-	@Override
-	public String getUid() {
-		return StringUtil.getNullSafe( super.getUid() );
-	}
+	
 	public byte[] getBodyBytes() {
 		return Base64.decodeBase64( super.getBody().getBytes() );
 	}

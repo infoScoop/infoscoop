@@ -117,10 +117,6 @@ public class TabLayout extends BaseTablayout {
 
 	private Boolean adjustToWindowHeight;
 	
-	public String getLayout() {
-		return StringUtil.getNullSafe( super.getLayout() );
-	}
-	
 	public void setWidgets(String widgets) throws RuntimeException{
 		super.setWidgets(widgets);
 		

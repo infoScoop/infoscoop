@@ -75,12 +75,4 @@ public class Message extends BaseMessage {
 		return body;
 	}
 
-	@Override
-	public String getFrom() {
-		return StringUtil.getNullSafe( super.getFrom() );
-	}
-	@Override
-	public String getType() {
-		return StringUtil.getNullSafe( super.getType() );
-	}
 }

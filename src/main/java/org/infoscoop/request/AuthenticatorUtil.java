@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.logging.Log;
@@ -30,6 +31,7 @@ import org.infoscoop.dao.model.AuthCredential;
 import org.infoscoop.service.AuthCredentialService;
 import org.infoscoop.util.RSAKeyManager;
 import org.infoscoop.util.SpringUtil;
+import org.infoscoop.util.StringUtil;
 
 public class AuthenticatorUtil {
 	private static Log log = LogFactory.getLog(AuthenticatorUtil.class);
@@ -55,7 +57,7 @@ public class AuthenticatorUtil {
 				}
 				authType = credential.getAuthType();
 				uid = credential.getAuthUid();
-				pwd = credential.getAuthPasswd();
+				pwd = StringUtil.getNullSafe(credential.getAuthPasswd());
 			}else{
 				uid = request.getRequestHeader("authuserid");
 				pwd = request.getRequestHeader("authpassword");

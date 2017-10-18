@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -50,6 +51,7 @@ import org.infoscoop.dao.model.TabAdmin;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.dao.model.base.BaseStaticTab;
 import org.infoscoop.service.StaticTabService;
+import org.infoscoop.util.StringUtil;
 import org.infoscoop.util.spring.TextView;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -189,6 +191,17 @@ public class TabLayoutsController extends BaseController {
 	}
 	
 	private TextView createTabLayoutResponseView(List<StaticTab> tabList) throws SAXException{
+		// change the null property to a blank for output.
+		for(StaticTab staticTab : tabList){
+			if(staticTab.getTabdesc() == null)
+				staticTab.setTabdesc("");
+			Set<TabLayout> tabLayouts =  staticTab.getTabLayout();
+			for(TabLayout tabLayout : tabLayouts){
+				if(tabLayout.getLayout() == null)
+					tabLayout.setLayout("");
+			}
+		}
+		
 		TabLayoutsResponse response = new TabLayoutsResponse(tabList);
 		
 		TabLayoutXppDriver xppDriver = new TabLayoutXppDriver();
@@ -257,7 +270,7 @@ public class TabLayoutsController extends BaseController {
 			String tabDesc = XPathAPI.selectSingleNode(tab, "tabDesc").getTextContent();
 			
 			StaticTab staticTab = new StaticTab(tabId);
-			staticTab.setTabdesc(tabDesc);
+			staticTab.setTabdesc(StringUtil.getNullSafe(tabDesc));
 			staticTab.setDeleteflag(StaticTab.DELETEFLAG_FALSE);
 			staticTab.setDisabledefault(new Integer(disableDefault));
 			staticTab.setTabnumber((tabNumber!=null && tabNumber.length() > 0)? new Integer(tabNumber) : null);

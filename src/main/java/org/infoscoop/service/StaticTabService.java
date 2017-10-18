@@ -49,6 +49,7 @@ import org.infoscoop.dao.model.TabAdminPK;
 import org.infoscoop.dao.model.TabLayout;
 import org.infoscoop.util.HtmlUtil;
 import org.infoscoop.util.SpringUtil;
+import org.infoscoop.util.StringUtil;
 import org.infoscoop.util.XmlUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -414,7 +415,7 @@ public class StaticTabService {
 	 */
 	private void updateGadgetId(TabLayout tabLayout) throws SAXException, IOException, TransformerException{
 		Element gadgets = tabLayout.getElement();
-		String layoutHTML = tabLayout.getLayout();
+		String layoutHTML = StringUtil.getNullSafe(tabLayout.getLayout());
 		
 		String rootTagLeft = "<root>";
 		String rootTagRight = "</root>";

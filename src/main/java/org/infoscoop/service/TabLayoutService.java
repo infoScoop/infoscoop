@@ -46,6 +46,7 @@ import org.infoscoop.dao.model.Widget;
 import org.infoscoop.util.Crypt;
 import org.infoscoop.util.RoleUtil;
 import org.infoscoop.util.SpringUtil;
+import org.infoscoop.util.StringUtil;
 import org.infoscoop.util.XmlUtil;
 import org.infoscoop.web.WidgetServlet;
 import org.json.JSONException;
@@ -99,7 +100,7 @@ public class TabLayoutService {
 			staticTab.setDeleteflag(StaticTab.DELETEFLAG_FALSE);
 		}
 		
-		staticTab.setTabdesc(tabDesc);
+		staticTab.setTabdesc(StringUtil.getNullSafe(tabDesc));
 		staticTab.setDisabledefault(disableDefault? StaticTab.DISABLE_DEFAULT_TRUE : StaticTab.DISABLE_DEFAULT_FALSE);
 		staticTabDAO.saveTab(staticTab);
 		
@@ -435,7 +436,7 @@ public class TabLayoutService {
 			value.put("widgetsLastmodified", tablayout.getWidgetslastmodified());
 			value.put("staticPanel", (tabId.equalsIgnoreCase(StaticTab.COMMANDBAR_TAB_ID))?
 					tablayout.getStaticPanelJsonWithComment() : tablayout.getStaticPanelJson());
-			value.put("layout", tablayout.getLayout());
+			value.put("layout", StringUtil.getNullSafe(tablayout.getLayout()));
 			value.put("dynamicPanel", tablayout.getDynamicPanelJson());
 			value.put("adjustToWindowHeight", tablayout.isAdjustToWindowHeight());
 			value.put("disabledDynamicPanel", tablayout.isDisabledDynamicPanel());

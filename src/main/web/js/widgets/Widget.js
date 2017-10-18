@@ -1565,7 +1565,7 @@ IS_Widget.prototype.classDef = function() {
 	}
 
 	this.adjustMaximizeHeight = function()  {
-		var height = getWindowSize(false) - findPosY(this.elm_widgetBox) - (Browser.isFirefox ? 28 : 32);
+		var height = getWindowSize(false) - findPosY(this.elm_widgetBox) - 40;
 		if (height < 0) {
 			height = 0;
 		}
