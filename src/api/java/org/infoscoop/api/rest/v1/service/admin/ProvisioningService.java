@@ -150,6 +150,12 @@ public class ProvisioningService {
 				maxSquare = "1";
 		}
 
+		// set default Square & mysquareid
+		String defaultSquareId = "";
+		if(user.defaultSquareId != null && user.defaultSquareId.length() > 0) {
+			defaultSquareId = user.defaultSquareId;
+		}
+
 		// create account
 		manager.registUser(
 				uid,
@@ -157,7 +163,7 @@ public class ProvisioningService {
 				user.givenName,
 				user.familyName,
 				user.name,
-				"",
+				defaultSquareId,
 				user.email,
 				maxSquare,
 				String.valueOf(1),
@@ -177,9 +183,15 @@ public class ProvisioningService {
 			}
 		}
 
-		// set default Square
-		if(user.defaultSquareId != null && user.defaultSquareId.length() > 0)
-			manager.updateDefaultSquare(uid, user.defaultSquareId);
+		// set default Square & mysquareid
+		if(defaultSquareId.length() == 0
+				&& user.belongSquare != null
+				&& user.belongSquare.size() > 0) {
+			Map<String, String> map = user.belongSquare.get(0);
+			manager.updateDefaultSquare(uid, map.get("id"));
+			manager.updateMySquareId(uid, map.get("id"));
+			manager.addSquareId(uid, map.get("id"));
+		}
 
 		// set attrs
 		if(user.attrs != null) {

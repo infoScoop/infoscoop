@@ -238,6 +238,18 @@ public class SimpleAccountManager implements IAccountManager{
 	}
 
 	@Override
+	public void updateMySquareId(String userid, String mySquareId) {
+		if(StringUtils.isBlank(mySquareId)) {
+			log.error("blank Square ID.");
+			throw new IllegalArgumentException();
+		}
+
+		Account account = dao.get(userid);
+		account.setDefaultSquareId(mySquareId);
+		dao.update(account);
+	}
+
+	@Override
 	public JSONObject getAccountManagerForm(String userId) throws Exception {
 		Account account = (Account)this.getUser(userId);
 
