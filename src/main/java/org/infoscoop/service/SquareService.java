@@ -449,7 +449,7 @@ public class SquareService {
 		return (UUID.randomUUID().toString()).replaceAll("-", "");
 	}
 
-	public static String getRedirectHostUrlWithSquareAlias(String scheme, String squareId, String path) {
+	public String getRedirectHostUrlWithSquareAlias(String scheme, String squareId, String path) {
 		SquareAlias alias = SquareAliasDAO.newInstance().getBySquareId(squareId);
 		if(alias != null)
 			squareId = alias.getName();

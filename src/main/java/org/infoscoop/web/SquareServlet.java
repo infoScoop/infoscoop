@@ -67,7 +67,7 @@ public class SquareServlet extends HttpServlet {
 		// move
 		if(CHANGE_PATH.equals(action)) {
 			String squareId =  request.getParameter("square-id");
-			response.sendRedirect(SquareService.getRedirectHostUrlWithSquareAlias(request.getScheme(), squareId, request.getContextPath()+"/index.jsp"));
+			response.sendRedirect(SquareService.getHandle().getRedirectHostUrlWithSquareAlias(request.getScheme(), squareId, request.getContextPath()+"/index.jsp"));
 		}
 		else if(MYSQUARE_PATH.equals(action)){
 			IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
