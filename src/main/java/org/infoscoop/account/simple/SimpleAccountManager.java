@@ -338,12 +338,14 @@ public class SimpleAccountManager implements IAccountManager{
 		account.setMySquareId(defaultSquareId);
 		account.setMail(email);
 		if(requirePasswordReset != null) account.setRequirePasswordReset(requirePasswordReset);
-		
-		AccountSquare accountSquare = new AccountSquare(userid, defaultSquareId);
+
+		if(defaultSquareId != null && defaultSquareId.length() > 0) {
+			AccountSquare accountSquare = new AccountSquare(userid, defaultSquareId);
+			dao.insertAccountSquare(accountSquare);
+		}
 		AccountAttr ownedNum = new AccountAttr(userid, AccountAttributeName.OWNED_SQUARE_NUMBER, ownedSquareNum, true, null);
 		AccountAttr permission = new AccountAttr(userid, AccountAttributeName.UPDATE_PERMISSION,  updatePermission, true, null);
 		dao.insert(account);
-		dao.insertAccountSquare(accountSquare);
 		dao.insertAccountAttr(ownedNum);
 		dao.insertAccountAttr(permission);
 

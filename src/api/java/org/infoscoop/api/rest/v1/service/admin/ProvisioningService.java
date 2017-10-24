@@ -150,10 +150,6 @@ public class ProvisioningService {
 				maxSquare = "1";
 		}
 
-		// create mysquare
-		String squareId = SquareService.generateSquareId();
-		SquareService.getHandle().createSquare(squareId, uid, "", SQUAREID_DEFAULT, uid);
-
 		// create account
 		manager.registUser(
 				uid,
@@ -161,7 +157,7 @@ public class ProvisioningService {
 				user.givenName,
 				user.familyName,
 				user.name,
-				squareId,
+				"",
 				user.email,
 				maxSquare,
 				String.valueOf(1),

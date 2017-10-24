@@ -20,8 +20,6 @@ import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IAccountManager;
 import org.infoscoop.context.UserContext;
-import org.infoscoop.dao.SquareAliasDAO;
-import org.infoscoop.dao.model.SquareAlias;
 import org.infoscoop.service.InvitationService;
 import org.infoscoop.service.SquareService;
 import org.infoscoop.util.RequestUtil;
