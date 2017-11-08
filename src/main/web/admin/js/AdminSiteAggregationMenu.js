@@ -196,7 +196,7 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 			
 		}
 		
-		this.menuType = (!_menuType)? "topmenu" : _menuType;
+		this.menuType = (!_menuType)? "sidemenu" : _menuType;
 		container = $( !isTreeAdminUser ? "menu":"menuTree");
 		
 		var refreshAllDiv = document.createElement("div");
@@ -210,8 +210,8 @@ ISA_SiteAggregationMenu.prototype.classDef = function() {
 		
 		var changeMenuDiv =	$.DIV({id:"menu-side", className:"side-bar"},
 							$.UL({id:"menu-tree-tabs"},
-							$.LI({},topmenuA)),
-							$.LI({}, sidemenuA));
+							$.LI({id:"menu-sidemenu-li"}, sidemenuA),
+							$.LI({id:"menu-topmenu-li"},topmenuA)));
 		
 		var changeDiplayMenu = function(menuType){
 			if(!self.checkUpdated()) return;

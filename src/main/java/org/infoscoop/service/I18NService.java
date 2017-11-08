@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.admin.exception.I18NImportException;
@@ -128,24 +129,23 @@ public class I18NService {
 	}
 
 
-	public Map getResourceMap(String type, String country, String lang) {
+	public Map getResourceMap(String type, String country, String lang, String squareId) {
 		Map resMap = new HashMap();
-		resMap.putAll(findI18nAsMap(type, "ALL", "ALL"));
+		resMap.putAll(findI18nAsMap(type, "ALL", "ALL", squareId));
 
 		if (!lang.equals("ALL"))
-			resMap.putAll(findI18nAsMap(type, "ALL", lang));
+			resMap.putAll(findI18nAsMap(type, "ALL", lang, squareId));
 
 		if (!country.equals("ALL"))
-			resMap.putAll(findI18nAsMap(type, country, lang));
+			resMap.putAll(findI18nAsMap(type, country, lang, squareId));
 
 		return resMap;
 	}
 
-	private Map findI18nAsMap(String type, String country, String lang) {
-//		String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
-		String squareid = SquareService.SQUARE_ID_DEFAULT;
-		List resourceMapI18n = i18NDAO.findI18n(type, country, lang, squareid);
+	private Map findI18nAsMap(String type, String country, String lang, String squareid) {
+		if(StringUtils.isEmpty(squareid)) squareid = SquareService.SQUARE_ID_DEFAULT;
 
+		List resourceMapI18n = i18NDAO.findI18n(type, country, lang, squareid);
 		Map resourceMap = new HashMap();
 		for (int i = 0; i < resourceMapI18n.size(); i++) {
 			I18n i18n = (I18n) resourceMapI18n.get(i);

@@ -33,7 +33,7 @@
 <script>
 	$jq(function(){
 		function buildFunc(){
-			ISA_SiteAggregationMenu.treeMenu = new ISA_SiteAggregationMenu("topmenu", false);
+			ISA_SiteAggregationMenu.treeMenu = new ISA_SiteAggregationMenu("sidemenu", false);
 			ISA_SiteAggregationMenu.treeMenu.build();
 		}
 		ISA_loadProperties(buildFunc);

@@ -23,8 +23,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.context.UserContext;
@@ -53,8 +51,9 @@ public class I18NUtil {
 			.compile("\\!\\{([a-zA-Z0-9\\.-_]+)\\}");
 	private static final Pattern ESCAPE_REPACEMENT_1 = Pattern.compile("\\\\");
 	private static final Pattern ESCAPE_REPACEMENT_2 = Pattern.compile("\\$");
-	
-	private static Map i18nMap = new HashMap();
+
+	private static Map multiTenantI18nMap = new HashMap();	// layout, widget, search, menu
+	private static Map staticI18nMap = new HashMap();	// js, adminjs, property, mail
 
 	private static Log log = LogFactory.getLog(I18NUtil.class);
 
@@ -63,25 +62,78 @@ public class I18NUtil {
 		String lang = locale.getLanguage();
 
 		Map resMap = null;
-		
-		I18NDAO i18NDAO = I18NDAO.newInstance();
-		
-//		String lastmodified = i18NDAO.getLastmodified(type, UserContext.instance().getUserInfo().getCurrentSquareId());
-		String lastmodified = i18NDAO.getLastmodified(type, SquareService.SQUARE_ID_DEFAULT);
+		Map i18nMap = null;
+		String lastmodified = null;
 		String key = type + "_" + country + "_" + lang;
-		ResourceMap rm = (ResourceMap) i18nMap.get(key);
-		if (rm != null) {
-			String current = rm.getLastmodified();
-			if (lastmodified == null
-					|| (current != null && current.equals(lastmodified))) {
-				resMap = rm.getResMap();
+
+		I18NDAO i18NDAO = I18NDAO.newInstance();
+		String squareId = UserContext.instance().getUserInfo().getCurrentSquareId();
+		if(squareId == null || squareId.length() == 0) squareId = SquareService.SQUARE_ID_DEFAULT;
+
+		if(type.equals(I18NUtil.TYPE_LAYOUT) || type.equals(I18NUtil.TYPE_WIDGET) || type.equals(I18NUtil.TYPE_MENU) || type.equals(I18NUtil.TYPE_SEARCH)) {
+			// multitenant resources
+			do {
+				i18nMap = (multiTenantI18nMap.get(squareId) != null?(Map)multiTenantI18nMap.get(squareId):new HashMap());
+
+				// check lastmodified
+				lastmodified = i18NDAO.getLastmodified(type, squareId);
+				if(lastmodified != null) {
+					ResourceMap rm = (ResourceMap) i18nMap.get(key);
+					if (rm != null) {
+						String current = rm.getLastmodified();
+						if (current != null && current.equals(lastmodified)) {
+							resMap = rm.getResMap();
+						}
+					}
+
+					// get resources for database
+					if (resMap == null) {
+						resMap = I18NService.getHandle().getResourceMap(type, country, lang, squareId);
+						i18nMap.put(key, new ResourceMap(lastmodified, resMap));
+						multiTenantI18nMap.put(squareId, i18nMap);
+					}
+
+				} else {
+					// no change, goto parent
+					if(!squareId.equals(SquareService.SQUARE_ID_DEFAULT)) {
+						squareId = SquareService.getHandle().getParentSquareId(squareId);
+					} else {
+						// default
+						// check cache
+						ResourceMap rm = (ResourceMap) i18nMap.get(key);
+						if (rm != null) resMap = rm.getResMap();
+
+						// get resources for database
+						if (resMap == null) {
+							resMap = I18NService.getHandle().getResourceMap(type, country, lang, squareId);
+							i18nMap.put(key, new ResourceMap(lastmodified, resMap));
+							multiTenantI18nMap.put(squareId, i18nMap);
+						}
+					}
+				}
+			} while(resMap==null);
+		} else {
+			// static
+			squareId = SquareService.SQUARE_ID_DEFAULT;
+			i18nMap = staticI18nMap;
+
+			lastmodified = i18NDAO.getLastmodified(type, squareId);
+			ResourceMap rm = (ResourceMap) i18nMap.get(key);
+			if (rm != null) {
+				String current = rm.getLastmodified();
+				if (lastmodified == null
+						|| (current != null && current.equals(lastmodified))) {
+					resMap = rm.getResMap();
+				}
+			}
+
+			// get resources for database
+			if (resMap == null) {
+				resMap = I18NService.getHandle().getResourceMap(type, country, lang, squareId);
+				i18nMap.put(key, new ResourceMap(lastmodified, resMap));
 			}
 		}
-		if (resMap == null) {
-			resMap = I18NService.getHandle().getResourceMap(type, country, lang);
-			i18nMap.put(key, new ResourceMap(lastmodified, resMap));
-		}
-		
+
 		return resMap;
 	}
 	/**

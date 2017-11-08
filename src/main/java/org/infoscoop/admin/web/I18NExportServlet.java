@@ -29,7 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.context.UserContext;
@@ -37,6 +38,7 @@ import org.infoscoop.dao.I18NDAO;
 import org.infoscoop.dao.model.I18n;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import org.infoscoop.service.SquareService;
 
 public class I18NExportServlet extends HttpServlet
 {
@@ -68,8 +70,13 @@ public class I18NExportServlet extends HttpServlet
 			w = new OutputStreamWriter(response.getOutputStream(), "Windows-31J");
 			
 			String squareid = UserContext.instance().getUserInfo().getCurrentSquareId();
-			List i18nList = I18NDAO.newInstance().findI18n(type, country, lang, squareid);
-			
+			List i18nList = null;
+			do {
+				i18nList = I18NDAO.newInstance().findI18n(type, country, lang, squareid);
+				if(CollectionUtils.isNotEmpty(i18nList) || squareid.equals(SquareService.SQUARE_ID_DEFAULT)) break;
+				squareid = SquareService.getHandle().getParentSquareId(squareid);
+			}while(true);
+
 			I18n i18n;
 			CSVWriter csvWriter = new CSVWriter(w);
 			for(Iterator ite = i18nList.iterator(); ite.hasNext();){
@@ -87,7 +94,6 @@ public class I18NExportServlet extends HttpServlet
 		} finally{
 			w.close();
 		}
-		
 	}
 	
 }
