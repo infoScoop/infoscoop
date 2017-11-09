@@ -296,6 +296,14 @@ public class I18NDAO extends HibernateDaoSupport {
 		q.executeUpdate();
 	}
 
+	public void copySquareLocales(String squareId, String defaultSquareId) {
+		Session session = super.getSession();
+		Query q = session.getNamedQuery("is_i18nlocales.copySquare");
+		q.setString("squareId", squareId);
+		q.setString("defaultSquareId", defaultSquareId);
+		q.executeUpdate();
+	}
+
 	public static void main(String[] args) {
 		List list = newInstance().selectAll("default");
 		Iterator ite = list.iterator();

@@ -665,6 +665,9 @@
 				<property name="holidaysDAO">
 					<ref bean="holidaysDAO" />
 				</property>
+				<property name="i18NDAO">
+					<ref bean="i18NDAO" />
+				</property>
 				<property name="siteAggregationMenuDAO">
 					<ref bean="siteAggregationMenuDAO" />
 				</property>
