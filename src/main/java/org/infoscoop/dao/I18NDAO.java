@@ -283,6 +283,13 @@ public class I18NDAO extends HibernateDaoSupport {
 			log.info("deleteI18NLocale successfully. : type=" + type + " ,squareId=" + squareId);
 	}
 
+	public void deleteI18NLocaleBySquare(String squareId) {
+		String queryString = "delete from I18nlocale where Squareid = ?";
+
+		super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[]{ squareId } );
+	}
+
 	public void copySquare(String squareId, String defaultSquareId) {
 		Session session = super.getSession();
 		Query sq = session.getNamedQuery("is_i18n.copySquare");

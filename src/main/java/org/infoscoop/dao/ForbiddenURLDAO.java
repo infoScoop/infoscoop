@@ -51,6 +51,12 @@ public class ForbiddenURLDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().delete( forbiddenUrl );
 	}
 
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from Forbiddenurls where Squareid = ?";
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
+
 	public void update(Forbiddenurls forbiddenUrl) {
 		super.getHibernateTemplate().update( forbiddenUrl );
 	}

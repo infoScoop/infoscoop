@@ -64,7 +64,13 @@ public class SearchEngineDAO extends HibernateDaoSupport{
 	public void update(Searchengine entity) {
 		super.getHibernateTemplate().saveOrUpdate(entity);
 	}
-	
+
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from Searchengine where Id.Squareid = ?";
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
+
 	public void copySquare(String squareId, String defaultSquareId) {
 		Session session  = super.getSession();
 

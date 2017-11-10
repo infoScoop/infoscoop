@@ -61,7 +61,13 @@ public class SiteAggregationMenuDAO extends HibernateDaoSupport {
 		super.getHibernateTemplate().saveOrUpdate(entity);
 		
 	}
-	
+
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from Siteaggregationmenu where Id.Squareid = ?";
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
+
 	public void copySquare(String squareId, String defaultSquareId) {
 		Session session  = super.getSession();
 

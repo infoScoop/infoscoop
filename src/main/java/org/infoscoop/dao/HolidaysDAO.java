@@ -69,6 +69,12 @@ public class HolidaysDAO extends HibernateDaoSupport {
 		return locales;
 	}
 
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from Holidays where Id.Squareid = ?";
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
+
 	public void copySquare(String squareId, String defaultSquareId) {
 		Session session = super.getSession();
 		Query sq = session.getNamedQuery("is_holidays.copySquare");

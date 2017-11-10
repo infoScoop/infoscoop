@@ -67,6 +67,12 @@ public class ProxyConfDAO extends HibernateDaoSupport {
 		return null;
 	}
 
+	public int deleteBySquareId(String squareid) {
+		String queryString = "delete from Proxyconf where Id.Squareid = ?";
+		return super.getHibernateTemplate().bulkUpdate( queryString,
+				new Object[] { squareid } );
+	}
+
 	public void copySquare(String squareId, String defaultSquareId) {
 		Session session  = super.getSession();
 
