@@ -148,7 +148,7 @@ create index is_keywords_date on IS_KEYWORDS(`DATE`);
 -- siteAggregationMenu
 --
 create table IS_MENUS (
-  type varchar(150) CHARACTER SET latin1 null primary key,
+  type varchar(150) CHARACTER SET latin1 primary key,
   data mediumtext not null
 ) ENGINE=InnoDB;
 
