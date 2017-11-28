@@ -32,6 +32,7 @@ IS_Widget.WidgetHeader.prototype.classDef = function() {
 	var titleHeaderDiv;
 	
 	var maximizeHeaderDiv;
+	var maximizeHeaderTitleDiv;
 	var maximizeHeaderTitleTd;
 	
 	var maximizeIcons = [
