@@ -39,7 +39,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
@@ -62,6 +61,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.request.filter.ProxyFilterContainer;
+import org.infoscoop.request.method.PatchMethod;
 import org.infoscoop.request.proxy.Proxy;
 import org.infoscoop.request.proxy.ProxyConfig;
 import org.infoscoop.util.SpringUtil;
@@ -488,6 +488,28 @@ public class ProxyRequest{
 		try{
 			HttpClient client = this.newHttpClient(); 
 			method = new PutMethod(this.getTargetURL());
+			method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
+					new DefaultHttpMethodRetryHandler(1, false));
+			if(this.getRequestBody() != null)
+				method.setRequestEntity(new InputStreamRequestEntity(this.getRequestBody()));
+			ProxyFilterContainer filterContainer = (ProxyFilterContainer)SpringUtil.getBean(filterType);
+			return filterContainer.invoke(client, method, this);
+		} catch (ProxyAuthenticationException e) {
+			if (e.isTraceOn()) {
+				log.error(this.getTargetURL());
+				log.error("", e);
+			} else {
+				log.warn(this.getTargetURL() + " : " + e.getMessage());
+			}
+			return 401;
+		}
+	}
+	
+	public int executePatch() throws Exception{
+		PostMethod method = null;
+		try{
+			HttpClient client = this.newHttpClient(); 
+			method = new PatchMethod(this.getTargetURL());
 			method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
 					new DefaultHttpMethodRetryHandler(1, false));
 			if(this.getRequestBody() != null)

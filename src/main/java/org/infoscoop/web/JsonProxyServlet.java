@@ -46,6 +46,7 @@ import org.infoscoop.dao.model.OAuthToken;
 import org.infoscoop.request.Authenticator;
 import org.infoscoop.request.ProxyRequest;
 import org.infoscoop.request.filter.DetectTypeFilter;
+import org.infoscoop.request.method.PatchMethod;
 import org.infoscoop.service.OAuthService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -56,7 +57,7 @@ public class JsonProxyServlet extends HttpServlet {
 	private static Log log = LogFactory.getLog(JsonProxyServlet.class);
 	
 	public static enum HttpMethods {
-		GET,POST,PUT,DELETE;
+		GET,POST,PUT,DELETE, PATCH;
 		
 		public static HttpMethods as( String httpMethod ) {
 			for( HttpMethods value : HttpMethods.values() ) {
@@ -71,6 +72,7 @@ public class JsonProxyServlet extends HttpServlet {
 			case POST: return proxy.executePost();
 			case PUT: return proxy.executePut();
 			case DELETE: return proxy.executeDelete();
+			case PATCH: return proxy.executePatch();
 			default: return proxy.executeGet();
 			}
 		}
@@ -79,6 +81,7 @@ public class JsonProxyServlet extends HttpServlet {
 			case POST: return new PostMethod( url );
 			case PUT: return new PutMethod( url );
 			case DELETE: return new DeleteMethod( url );
+			case PATCH: return new PatchMethod( url );
 			default: return new GetMethod( url );
 			}
 		}

@@ -694,7 +694,7 @@ gadgets.io.RequestParameters = gadgets.util.makeEnum([
  * @const
  */
 gadgets.io.MethodType = gadgets.util.makeEnum([
-  'GET', 'POST', 'PUT', 'DELETE', 'HEAD'
+  'GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'PATCH'
 ]);
 
 /**
