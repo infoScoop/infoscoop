@@ -196,10 +196,12 @@
     <script src="<%=staticContentURL%>/js/lib/jquery-1.9.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="<%=staticContentURL%>/js/lib/jquery-ui/jquery-ui-1.10.2.custom.css">
     <script src="<%=staticContentURL%>/js/lib/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
-    <script src="<%=staticContentURL%>/js/lib/jquery-ui/jquery.ui.tabs.min.js"></script>
     
    	<script type="text/javascript">
-		var rsaPK = new RSAKey();
+    	jQuery.noConflict();
+	    $jq = jQuery;
+	    
+   		var rsaPK = new RSAKey();
 		rsaPK.setPublic("<%= RSAKeyManager.getInstance().getModulus() %>", "<%= RSAKeyManager.getInstance().getPublicExponent() %>");
 
 		IS_WidgetConfiguration = <jsp:include page="/widconf" flush="true" />;
