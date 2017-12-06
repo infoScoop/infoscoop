@@ -122,3 +122,11 @@ function _IS_ShowGadget(){
 function _IS_CloseGadget(opt){
 	gadgets.rpc.call(null,"is_close_gadget",null, opt);
 }
+
+/*
+ * Focus gadget element
+ */
+function _IS_FocusGadget(gadgetId){
+	gadgets.rpc.call(null,"is_focus_gadget",null, gadgetId);
+}
+

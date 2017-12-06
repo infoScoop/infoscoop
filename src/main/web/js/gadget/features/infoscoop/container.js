@@ -226,3 +226,28 @@ gadgets.rpc.register("is_close_gadget",function( relayUrl ) {
 gadgets.rpc.register("is_get_session_id",function() {
 	return is_sessionId;
 });
+
+gadgets.rpc.register("is_focus_gadget",function( gadgetId ) {
+	if(!gadgetId)
+		return;
+	
+	gadgetId = gadgetId.replace(/^w_/, "");
+	
+	var gadget = IS_Portal.searchWidgetAndFeedNode(gadgetId);
+	
+	if(!gadget)
+		return;
+	
+	var targetTab = IS_Portal.tabs[gadget.tabId];
+	
+	var mySiteMap;
+	if($jq('<div>').WidgetsMap){
+		// for mobile
+		mySiteMap = $jq('<div>').WidgetsMap({onlyFunction:true});
+		mySiteMap.WidgetsMap("focusWidget", gadget.id);
+	}else{
+		// for desktop
+		mySiteMap = new IS_MySiteMap();
+		mySiteMap.focusWidget(targetTab, gadget);
+	}
+});
