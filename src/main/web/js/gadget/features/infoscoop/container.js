@@ -251,3 +251,9 @@ gadgets.rpc.register("is_focus_gadget",function( gadgetId ) {
 		mySiteMap.focusWidget(targetTab, gadget);
 	}
 });
+
+gadgets.rpc.register("is_set_viewparams",function(opt_params) {
+	var widget = IS_Portal.getWidget( this.mid,this.tid );
+	if( widget.authToken != this.t ) return;
+	widget.view_params = opt_params;
+});

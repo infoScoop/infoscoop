@@ -130,3 +130,9 @@ function _IS_FocusGadget(gadgetId){
 	gadgets.rpc.call(null,"is_focus_gadget",null, gadgetId);
 }
 
+/*
+ * Set turnBack|maximize viewParams
+ */
+function _IS_SetViewParams(opt_params){
+	gadgets.rpc.call(null,"is_set_viewparams",null, opt_params);
+}
