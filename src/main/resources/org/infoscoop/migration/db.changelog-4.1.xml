@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<property name="clob.type" value="clob" dbms="oracle, db2"/>
+    <property name="clob.type" value="text" dbms="mysql"/>
+
+    <!--Issue 636-->
+    <changeSet id="infoscoop410_636_1" author="unirita">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop410_636_1">
+            <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='ms_personarizeGadgetNumLimit';</sqlCheck>
+        </preConditions>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js"/>
+            <column name="id" value="ms_personarizeGadgetNumLimit"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="It isn't possible to arrange a gadget any more. The maximum number by which arrangement is possible is {0}."/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js"/>
+            <column name="id" value="ms_personarizeGadgetNumLimit"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="これ以上ガジェットを配置することができません。配置可能な最大数は{0}です。"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="js"/>
+            <column name="id" value="ms_personarizeGadgetNumLimit"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="这个以上不能配置gadget。配置可以的最大数是{0}。"/>
+        </insert>
+   </changeSet>
+
+    <!--Issue 636-->
+    <changeSet id="infoscoop410_636_2" author="unirita">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop410_636_2">
+            <or>
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_PROPERTIES where id='maxPersonalizedGadgetNum';</sqlCheck>
+                <sqlCheck expectedResult="0">select count(*) from ${migration.defaultSchemaWithDot}IS_I18N where id='alb_desc_maxPersonalizedGadgetNum';</sqlCheck>
+            </or>
+        </preConditions>
+        <insert tableName="IS_PROPERTIES">
+            <column name="id" value="maxPersonalizedGadgetNum"/>
+            <column name="category" value="customize"/>
+            <column name="advanced" valueNumeric="0"/>
+            <column name="value" value="200"/>
+            <column name="datatype" value="string"/>
+            <column name="enumValue" value=""/>
+            <column name="required" valueNumeric="1"/>
+            <column name="regex" value="^[1-9][0-9]*$"/>
+            <column name="regexMsg" value="!{typePositiveInt}"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_desc_maxPersonalizedGadgetNum"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ALL"/>
+            <column name="message" value="The maximum number of the gadget which can be arranged in a personalization area"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_desc_maxPersonalizedGadgetNum"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="ja"/>
+            <column name="message" value="パーソナライズエリアに配置できるガジェットの最大数"/>
+        </insert>
+        <insert tableName="IS_I18N">
+            <column name="type" value="adminjs"/>
+            <column name="id" value="alb_desc_maxPersonalizedGadgetNum"/>
+            <column name="country" value="ALL"/>
+            <column name="lang" value="zh"/>
+            <column name="message" value="在能个性化区域配置的gadget的最大数"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

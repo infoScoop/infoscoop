@@ -9,6 +9,7 @@
   <include file="org/infoscoop/migration/db.changelog-1.1.xml"/>
   <include file="org/infoscoop/migration/db.changelog-3.4.xml"/>
   <include file="org/infoscoop/migration/db.changelog-4.0.xml"/>
+  <include file="org/infoscoop/migration/db.changelog-4.1.xml"/>
   <include file="org/infoscoop/migration/db.changelog-sleepyalpha.xml"/>
   <include file="org/infoscoop/migration/db.changelog-sleepyalpha-3.xml"/>
   <includeAll path="org/infoscoop/migration/customization/"/>

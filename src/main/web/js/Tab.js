@@ -1652,5 +1652,25 @@ IS_Portal.canAddWidget = function(tabId, alertOff){
             alert(IS_R.ms_cannotAddGadgetToThisTab);
         return false;
     }
+    
+    var personarizeGadgetsCount = IS_Portal.getDynamicPanelGadgetsCount();
+    if(personarizeGadgetsCount >= maxPersonalizedGadgetNum){
+    	var alertMessage = IS_R.getResource(IS_R.ms_personarizeGadgetNumLimit, [maxPersonalizedGadgetNum]);
+    	alert(alertMessage);
+        return false;
+    }
     return true;
+}
+
+IS_Portal.getDynamicPanelGadgetsCount = function(){
+	var personarizeGadgetsCount = 0;
+	for(var i in IS_Portal.widgetLists){
+		for(var j in IS_Portal.widgetLists[i]){
+			var widget = IS_Portal.widgetLists[i][j];
+			if(widget.panelType == "DynamicPanel" && widget.widgetType != "MultiRssReader"){
+				personarizeGadgetsCount++;
+			}
+		}
+	}
+	return personarizeGadgetsCount;
 }
