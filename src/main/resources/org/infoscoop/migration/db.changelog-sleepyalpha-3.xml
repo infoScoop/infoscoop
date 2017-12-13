@@ -222,4 +222,19 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet id="infoscoop_sleepyalpha3_1076_1" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha3_1076_1">
+            <foreignKeyConstraintExists foreignKeyName="fk_is_oauth_gadget_urls_fk_oid" schemaName="${migration.defaultSchema}"/>
+            <foreignKeyConstraintExists foreignKeyName="fk_is_oauth2_fk_oid" schemaName="${migration.defaultSchema}"/>
+            <foreignKeyConstraintExists foreignKeyName="fk_is_oauth_fk_oid" schemaName="${migration.defaultSchema}"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="IS_OAUTH_GADGET_URLS" baseTableSchemaName="${migration.defaultSchema}" constraintName="fk_is_oauth_gadget_urls_fk_oid"/>
+        <dropForeignKeyConstraint baseTableName="IS_OAUTH_TOKENS" baseTableSchemaName="${migration.defaultSchema}" constraintName="fk_is_oauth_fk_oid"/>
+        <dropForeignKeyConstraint baseTableName="IS_OAUTH2_TOKENS" baseTableSchemaName="${migration.defaultSchema}" constraintName="fk_is_oauth2_fk_oid"/>
+        <addForeignKeyConstraint baseColumnNames="fk_oauth_id, square_id" baseTableName="IS_OAUTH_GADGET_URLS" constraintName="fk_is_oauth_gadget_urls_fk_oid" onDelete="CASCADE" referencedColumnNames="id, square_id" referencedTableName="IS_OAUTH_CONSUMERS"/>
+        <addForeignKeyConstraint baseColumnNames="fk_oauth_id, square_id" baseTableName="IS_OAUTH_TOKENS" constraintName="fk_is_oauth_fk_oid" onDelete="CASCADE" referencedColumnNames="id, square_id" referencedTableName="IS_OAUTH_CONSUMERS"/>
+        <addForeignKeyConstraint baseColumnNames="fk_oauth_id, square_id" baseTableName="IS_OAUTH2_TOKENS" constraintName="fk_is_oauth2_fk_oid" onDelete="CASCADE" referencedColumnNames="id, square_id" referencedTableName="IS_OAUTH_CONSUMERS"/>
+    </changeSet>
+
 </databaseChangeLog>
