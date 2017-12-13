@@ -508,6 +508,17 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 	contentSubDiv.appendChild(editorFormSubTable);
 	var editorFormSubTbody = document.createElement("tbody");
 	editorFormSubTable.appendChild(editorFormSubTbody);
+	
+	// show gadgetId if edit
+	var idTr = $jq("<tr>").appendTo($jq(editorFormSubTbody));
+	var idLabelTd = $jq("<td>").css({
+		"width": "30%",
+		"textAlign": "right"
+	}).text("ID：").appendTo(idTr);
+	var idValueTd = $jq("<td>").css({
+		"width": "70%"
+	}).text(_menuItem.id).appendTo(idTr);
+	
 	if(options.showIgnoreHeaderForm){
 		var subTr = document.createElement("tr");
 		var subTd = document.createElement("td");

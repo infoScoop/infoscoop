@@ -211,7 +211,8 @@ function prepareStaticArea(){
 			widgetJSON.properties = {};
 
 			var oldId = widgetJSON.id;
-			widgetJSON.id = "w_"+new Date().getTime();
+//			widgetJSON.id = "w_"+new Date().getTime();
+			widgetJSON.id = oldId;
 			widgetJSON.type = ISA_CommonModals.EditorForm.getSelectType();
 			widgetJSON.properties = ISA_CommonModals.EditorForm.getProperty(widgetJSON);
 			widgetJSON.ignoreHeader = ISA_CommonModals.EditorForm.isIgnoreHeader();

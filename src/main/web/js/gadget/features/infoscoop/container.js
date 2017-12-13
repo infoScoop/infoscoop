@@ -231,7 +231,7 @@ gadgets.rpc.register("is_focus_gadget",function( gadgetId ) {
 	if(!gadgetId)
 		return;
 	
-	gadgetId = gadgetId.replace(/^w_/, "");
+	gadgetId = gadgetId.replace(/^w_|^p_/, "");
 	
 	var gadget = IS_Portal.searchWidgetAndFeedNode(gadgetId);
 	
