@@ -22,6 +22,7 @@ package org.infoscoop.web;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -49,8 +50,8 @@ import org.infoscoop.acl.ISPrincipal;
 import org.infoscoop.acl.SecurityController;
 import org.infoscoop.admin.web.PreviewImpersonationFilter;
 import org.infoscoop.context.UserContext;
-import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.dao.PropertiesDAO;
+import org.infoscoop.dao.SessionDAO;
 import org.infoscoop.util.RSAKeyManager;
 import org.infoscoop.util.StringUtil;
 
@@ -71,10 +72,12 @@ public class SessionManagerFilter implements Filter {
 	public static String LOGINUSER_NAME_ATTR_NAME = "loginUserName";
 	public static String LOGINUSER_SUBJECT_ATTR_NAME = "loginUser";
 	public static String LOGINUSER_SESSION_ID_ATTR_NAME = "SessionId";
+	public static String LOGINUSER_SUBJECT_TIMESTAMP_ATTR_NAME = "loginUserTimeStamp";
 
 	private Collection excludePaths = new HashSet();
 	private Collection<String> excludePathx = new HashSet<String>();
 	private Collection redirectPaths = new HashSet();
+	private Collection<String> pollingRequestPaths = new HashSet<String>();
 
 	public void init(FilterConfig config) throws ServletException {
 
@@ -97,6 +100,18 @@ public class SessionManagerFilter implements Filter {
 			for(int i = 0; i < pathArray.length; i++){
 				redirectPaths.add(pathArray[i].trim());
 			}
+		}
+		
+		String pollingRequestPathStr = config.getInitParameter("pollingRequestPath");
+		if(pollingRequestPathStr != null){
+			String[] pathArray = pollingRequestPathStr.split(",");
+			for(int i = 0; i < pathArray.length; i++){
+				pollingRequestPaths.add(pathArray[i].trim());
+			}
+		}else{
+			pollingRequestPaths.add("/comsrv");
+			pollingRequestPaths.add("/logsrv");
+			pollingRequestPaths.add("/msg");
 		}
 	}
 
@@ -179,8 +194,8 @@ public class SessionManagerFilter implements Filter {
 		if(log.isDebugEnabled()){
 			log.debug("Enter SessionManagerFilter form " + httpReq.getRequestURI());
 		}
-
-		if (request instanceof javax.servlet.http.HttpServletRequest) {
+		
+		if (request instanceof javax.servlet.http.HttpServletRequest && !isExcludePath(httpReq.getServletPath())) {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpServletResponse httpResponse = (HttpServletResponse)response;
 			
@@ -259,15 +274,28 @@ public class SessionManagerFilter implements Filter {
 			}
 
 			if(log.isInfoEnabled())log.info("### Access from user " + uid + " to " + httpReq.getRequestURL() );
-
-			// fix #42
-//			setUserInfo2Cookie(httpReq, (HttpServletResponse)response, uid);
+			
 			HttpSession session = httpRequest.getSession();
 
-
 			Subject loginUser = (Subject)session.getAttribute(LOGINUSER_SUBJECT_ATTR_NAME);
-
-			if(loginUser == null || ( isChangeLoginUser(uid, loginUser) && !(session instanceof PreviewImpersonationFilter.PreviewHttpSession) )){
+			Long loginUserTimeStamp = (Long)session.getAttribute(LOGINUSER_SUBJECT_TIMESTAMP_ATTR_NAME);
+			int principalRefreshInterval = -1;
+			
+			// unable　principal refresh when polling request.
+			if (!pollingRequestPaths.contains(httpReq.getServletPath())) {
+				principalRefreshInterval = PropertiesDAO.newInstance().findProperty("principalRefreshInterval").getIntValue(-1);
+			}
+			
+			boolean isPrincipalRefresh = false;
+			if(loginUserTimeStamp != null && principalRefreshInterval > -1){
+				long now = new Date().getTime();
+				if(now - loginUserTimeStamp > principalRefreshInterval * 1000){
+					log.info("principalRefreshInterval exceeded: " + ((now - loginUserTimeStamp)/1000));
+					isPrincipalRefresh = true;
+				}
+			}
+			
+			if((loginUser != null && isPrincipalRefresh || loginUser == null) || ( isChangeLoginUser(uid, loginUser) && !(session instanceof PreviewImpersonationFilter.PreviewHttpSession) )){
 				if( !SessionCreateConfig.getInstance().hasUidHeader() && uid != null ) {
 					AuthenticationService service= AuthenticationService.getInstance();
 					try {
@@ -302,8 +330,8 @@ public class SessionManagerFilter implements Filter {
 							log.error("",e);
 						}
 					}
-
 				}
+				session.setAttribute(LOGINUSER_SUBJECT_TIMESTAMP_ATTR_NAME, new Date().getTime());
 				session.setAttribute(LOGINUSER_SUBJECT_ATTR_NAME, loginUser);
 			}
 			SecurityController.registerContextSubject(loginUser);
@@ -316,7 +344,7 @@ public class SessionManagerFilter implements Filter {
 						log.debug(httpRequest.getHeader("X-IS-TIMEZONE"),e);
 				}finally{
 					UserContext.instance().getUserInfo().setClientTimezoneOffset(timeZoneOffset);
-				}				
+				}
 			}
 		}
 		chain.doFilter(request, response);

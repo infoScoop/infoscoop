@@ -51,5 +51,12 @@ public class Properties extends BaseProperties {
 	}
 
 /*[CONSTRUCTOR MARKER END]*/
+	public int getIntValue(int defaultValue) {
+		try{
+			return Integer.parseInt(super.getValue());
+		}catch(NumberFormatException e){
+			return defaultValue;
+		}
+	}
 
 }

@@ -58,6 +58,8 @@ public class NewSessionIdServlet extends HttpServlet{
 				//set lastAccessDate
 				PreferenceService.getHandle().setAccessTime(uid);
 			}
+			
+			req.getSession().setAttribute(SessionManagerFilter.LOGINUSER_SESSION_ID_ATTR_NAME, sessionId);
 			resp.getWriter().println(
 					"is_sessionId = \"" + sessionId.replace("\\", "\\\\") +  "\"");
 		} catch (Exception e) {
