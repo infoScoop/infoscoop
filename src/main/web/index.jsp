@@ -132,7 +132,10 @@
 			isEnableAddSquareUser : <%= isEnableAddSquareUser %>,
 			notificationPollingRate : <%= InfoScoopProperties.getInstance().getGlobalmessagesPollingRate() %>,
 			<%if(InfoScoopProperties.getInstance().getProperty("password.policy") != null && InfoScoopProperties.getInstance().getProperty("password.policy").length() > 0){%>
-				passwordPolicy: /<%= InfoScoopProperties.getInstance().getProperty("password.policy") %>/
+				passwordPolicy: /<%= InfoScoopProperties.getInstance().getProperty("password.policy") %>/,
+			<%}%>
+			<%if(InfoScoopProperties.getInstance().getProperty("account.settings.url") != null && InfoScoopProperties.getInstance().getProperty("account.settings.url").length() > 0){%>
+				accountSettingsUrl: '<%= InfoScoopProperties.getInstance().getProperty("account.settings.url") %>'
 			<%}%>
 		};
 		var is_userId = <%=uid != null ? "\"" + uid.replace("\\", "\\\\") + "\"" : "null" %>;

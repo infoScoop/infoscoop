@@ -34,6 +34,11 @@ IS_Portal.buildAccountManagerModal = function(parent) {
 	parent.appendChild(accountManagerDiv);
 
 	IS_Event.observe(accountManagerDiv, "click", function(){
+		if(IS_Portal.accountSettingsUrl) {
+			location.href = IS_Portal.accountSettingsUrl;
+			return false;
+		}
+
 		 if(!window["IS_AccountManagerInstance"]){
 			IS_AccountManagerInstance = new IS_AccountManager();
 		}else{
