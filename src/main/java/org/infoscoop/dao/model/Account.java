@@ -177,13 +177,13 @@ public class Account implements IAccount {
 	@Override
 	public boolean isEnableAddSquareUser() {
 		Set<AccountAttr> accountAttrs = getAccountAttrs();
-		int ownedSquare = 0;
+		int ownedSquare = -1;
 		for(AccountAttr attr : accountAttrs) {
 			if(attr.getName().equals(AccountAttributeName.OWNED_SQUARE_NUMBER))
 				ownedSquare = Integer.parseInt(attr.getValue());
 		}
 
-		// unlimitted
+		// unlimited
 		if(ownedSquare == -1)
 			return true;
 
