@@ -17,6 +17,7 @@
 
 package org.infoscoop.api.rest.v1.service.admin;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
@@ -38,6 +39,8 @@ public class ProvisioningService {
 
 	private static final String SQUAREID_DEFAULT = "default";
 	private static final String OWNED_SQUARE_NUM = "owned.square.number";
+	private static final String ACCOUNT_ATTR_MULTI_FACTOR_AUTH = "multi_factor_authentication";
+	private static final String ACCOUNT_ATTR_DOMAIN_SLAVE_USER = "domain_slave_user";
 
 	public void checkParameter(Provisioning user, int index, String execSquareId) throws Exception {
 		// default_square_id
@@ -103,7 +106,9 @@ public class ProvisioningService {
 				// ToDo: Check Repository SystemFlg, but slow down processing speed...
 				if(AccountAttributeName.OWNED_SQUARE_NUMBER.equals(key)
 						|| AccountAttributeName.UPDATE_PERMISSION.equals(key)
-						|| AccountAttributeName.REGISTERED_SQUARE.equals(key)) {
+						|| AccountAttributeName.REGISTERED_SQUARE.equals(key)
+						|| ACCOUNT_ATTR_MULTI_FACTOR_AUTH.equals(key)
+						|| ACCOUNT_ATTR_DOMAIN_SLAVE_USER.equals(key)) {
 					throw new IllegalArgumentException("users[" + index + "].attrs[" + i + "].key[" +key + "] is system argument.");
 				}
 
@@ -210,6 +215,11 @@ public class ProvisioningService {
 
 		// set owner
 		manager.setAccountOwner(uid, execSquareId);
+
+		// set system
+		manager.setAccountAttribute(uid, ACCOUNT_ATTR_MULTI_FACTOR_AUTH, String.valueOf(BooleanUtils.toInteger(false)), true, null);
+		manager.setAccountAttribute(uid, ACCOUNT_ATTR_DOMAIN_SLAVE_USER, String.valueOf(BooleanUtils.toInteger(false)), true, null);
+
 	}
 
 	public void updateAccount(Provisioning user, String execSquareId) throws Exception {
