@@ -2559,7 +2559,10 @@ IS_Portal.CommandBar = {
 				
 				// add field
 				if(results.belong) {
-					portalSquareMenuBody.appendChild($.HR({className: 'portal-square-menu-hr'}));
+					if(IS_Portal.isEnableAddSquareUser){
+						portalSquareMenuBody.appendChild($.HR({className: 'portal-square-menu-hr'}));
+					}
+
 					for(var i = 0; i < results.belong.length; i++) {
 					    if(results.current.id != results.belong[i].id)
 					        portalSquareMenuBody.appendChild(createSquareUI(results.belong[i]));

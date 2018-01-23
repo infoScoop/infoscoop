@@ -29,6 +29,7 @@ import java.util.Set;
 import org.apache.commons.codec.binary.Base64;
 import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IGroup;
+import org.infoscoop.account.simple.AccountAttributeName;
 
 public class Account implements IAccount {
 	
@@ -175,7 +176,22 @@ public class Account implements IAccount {
 
 	@Override
 	public boolean isEnableAddSquareUser() {
-		return getPassword() != null;
+		Set<AccountAttr> accountAttrs = getAccountAttrs();
+		int ownedSquare = 0;
+		for(AccountAttr attr : accountAttrs) {
+			if(attr.getName().equals(AccountAttributeName.OWNED_SQUARE_NUMBER))
+				ownedSquare = Integer.parseInt(attr.getValue());
+		}
+
+		// unlimitted
+		if(ownedSquare == -1)
+			return true;
+
+		if(getPassword() != null
+				&& (ownedSquare - getAccountSquares().size()) > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override

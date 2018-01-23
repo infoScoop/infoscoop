@@ -121,8 +121,8 @@ function close() {
 </script>
 </head>
 <body>
-	<div id="alert"></div>
 	<div class="container">
+		<div id="alert" style="margin-top:20px;margin-bottom:-5px;"></div>
 		<div class="row">
 			<div class="col-sm-12">
 				<h2>%{lb_create_square2}</h2>

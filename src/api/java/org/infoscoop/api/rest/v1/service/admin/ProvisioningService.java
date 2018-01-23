@@ -219,6 +219,10 @@ public class ProvisioningService {
 		// set system
 		manager.setAccountAttribute(uid, ACCOUNT_ATTR_MULTI_FACTOR_AUTH, String.valueOf(BooleanUtils.toInteger(false)), true, null);
 		manager.setAccountAttribute(uid, ACCOUNT_ATTR_DOMAIN_SLAVE_USER, String.valueOf(BooleanUtils.toInteger(false)), true, null);
+		Map<String, String[]> map = new HashMap<>();
+		String[] vals = {"0"};
+		map.put(AccountAttributeName.OWNED_SQUARE_NUMBER, vals);
+		manager.updateAccountAttribute(uid, map);
 
 	}
 

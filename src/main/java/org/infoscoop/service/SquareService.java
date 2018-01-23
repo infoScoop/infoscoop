@@ -29,7 +29,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infoscoop.account.AuthenticationService;
 import org.infoscoop.account.IAccount;
-import org.infoscoop.account.simple.AccountAttributeName;
 import org.infoscoop.api.dao.OAuth2ProviderClientDetailDAO;
 import org.infoscoop.dao.*;
 import org.infoscoop.dao.model.Adminrole;
@@ -402,18 +401,11 @@ public class SquareService {
 	}
 
 	public boolean isReachMaxSquare(String userId) throws Exception {
-		boolean result = false;
-		String maxNum = AuthenticationService.getInstance().getAccountManager().getAccountAttributeValue(userId, AccountAttributeName.OWNED_SQUARE_NUMBER);
+		IAccount account = AuthenticationService.getInstance().getAccountManager().getUser(userId);
+		if(account.isEnableAddSquareUser())
+			return false;
 
-		if(maxNum != null && Integer.parseInt(maxNum) > 0) {
-			List<Square> squares = getOwnerUserSquare(userId);
-			
-			if(Integer.parseInt(maxNum) <= squares.size()) {
-				result = true;
-			}
-		}
-
-		return result;
+		return true;
 	}
 
 	/**
