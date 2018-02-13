@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,6 +45,7 @@ import org.infoscoop.dao.TabLayoutDAO;
 import org.infoscoop.dao.model.Adminrole;
 import org.infoscoop.dao.model.Portaladmins;
 import org.infoscoop.dao.model.StaticTab;
+import org.infoscoop.dao.model.TABLAYOUTPK;
 import org.infoscoop.dao.model.TabAdmin;
 import org.infoscoop.dao.model.TabAdminPK;
 import org.infoscoop.dao.model.TabLayout;
@@ -59,6 +61,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.traversal.NodeIterator;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 public class StaticTabService {
 	private static Object lock = new Object();
@@ -475,6 +479,52 @@ public class StaticTabService {
 			}
 			return tabId;
 		}
+	}
+	
+	/**
+	 * Insert tablayout to statictab tablayout set.</br> 
+	 * @param tabId
+	 * @param newStaticTab
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	public void insertTabLayout(StaticTab staticTab, TabLayout newTabLayout, Integer roleOrder) throws SAXException, IOException, TransformerException{
+		TabLayoutDAO tabLayoutDAO = TabLayoutDAO.newInstance();		
+		String tabId = staticTab.getTabid();
+		
+		// update roleOrder for insert newTabLayout
+		// sort by roleOrder desc
+		List<TabLayout> tabLayouts = new ArrayList<>(staticTab.getTabLayout());
+		
+		Collections.sort(tabLayouts, new Comparator<TabLayout>() {
+			@Override
+			public int compare(TabLayout o1, TabLayout o2) {
+				return o2.getId().getRoleorder() - o1.getId().getRoleorder();
+			}
+		});
+		
+		for(Iterator<TabLayout> ite = tabLayouts.iterator();ite.hasNext();){
+			TabLayout tabLayout = ite.next();
+			Integer currentRoleOrder = tabLayout.getId().getRoleorder();
+			if(currentRoleOrder >= roleOrder){
+				tabLayout.getId().setRoleorder(currentRoleOrder + 1);
+				tabLayoutDAO.insert(tabLayout);
+				
+				TabLayout oldTabLayout = tabLayoutDAO.get(new TABLAYOUTPK(tabLayout.getId().getTabid(), currentRoleOrder, tabLayout.getId().getTemp()));
+				tabLayoutDAO.delete(Arrays.asList(oldTabLayout));
+			}
+		}
+		
+		// update gadgetid. commandbar|header gadgetid is not overlap, it is not changed. 
+		if(!tabId.equals(StaticTab.COMMANDBAR_TAB_ID) && !tabId.equals(StaticTab.PORTALHEADER_TAB_ID))
+			updateGadgetId(newTabLayout);
+		
+		// doInsert
+		newTabLayout.getId().setTabid(tabId);
+		newTabLayout.getId().setRoleorder(roleOrder);
+		
+		tabLayoutDAO.insert(newTabLayout);
 	}
 	
 }

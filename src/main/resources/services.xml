@@ -584,6 +584,7 @@
 			<props>
 				<prop key="save*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="update*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
+				<prop key="insert*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="delete*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="replace*">PROPAGATION_REQUIRED,-java.lang.Exception</prop>
 				<prop key="get*">PROPAGATION_SUPPORTS,readOnly</prop>

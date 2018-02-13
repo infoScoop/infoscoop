@@ -454,4 +454,27 @@ public class TabLayoutDAO extends HibernateDaoSupport {
 		
 		return latestLastModifiedTime;
 	}
+
+	public void updateTabLayout(TabLayout tabLayout) {
+		HibernateTemplate templete = super.getHibernateTemplate();
+
+		String widgetsLastmodified = new SimpleDateFormat("yyyyMMddHHmmssSSS")
+				.format(new Date());
+		
+		tabLayout.setWidgetslastmodified(widgetsLastmodified);
+		templete.update(tabLayout);
+
+		if (log.isInfoEnabled())
+			log.info("update tabLayout [" + tabLayout.getId().getTabid() + "] successfully.");
+	}
+	
+	public TabLayout get(TABLAYOUTPK pk){
+		return super.getHibernateTemplate().get(TabLayout.class, pk);
+	}
+
+	
+	public void update(TabLayout tabLayout){
+		super.getHibernateTemplate().update(tabLayout);
+	}
+
 }
