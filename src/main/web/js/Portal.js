@@ -235,7 +235,7 @@ IS_Portal.start = function() {
 	var menuopt = {};
 	menuopt.accept = "menuItem";
 	menuopt.onDrop = function(element, lastActiveElement, menuItem, event) {
-		if(!IS_Portal.canAddWidget(false, false, true)) return;
+		if(!IS_Portal.canAddWidget(false, false, 1)) return;
 		
 		var widgetGhost = IS_Draggable.ghost;
 		var ghostColumnNum = (widgetGhost.col)? widgetGhost.col.getAttribute("colNum"):1;
@@ -449,7 +449,7 @@ IS_Portal.start = function() {
 	multimenuopt.onHover = IS_DroppableOptions.onHover;
 	
 	IS_Portal.droppableOption.onMultiMenuDrop = function(element, lastActiveElement, menuItem, event, originFunc, modalOption){
-		if(!IS_Portal.canAddWidget(false, false, true)) return;
+		if(!IS_Portal.canAddWidget(false, false,  menuItem.children.length)) return;
 		var confs = IS_SiteAggregationMenu.createMultiDropConf.call(self, element, lastActiveElement, menuItem, event, IS_Portal.droppableOption.onMultiMenuDrop, modalOption);
 		
 		var widgetGhost = IS_Draggable.ghost;

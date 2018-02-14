@@ -825,7 +825,7 @@ IS_Portal.setTabDroppable = function(tab){
             && IS_Draggables.activeDraggable && !IS_Draggables.activeDraggable.options.syncId);
     }
     menuDropOpt.onDrop = function(element, lastActiveElement, menuItem, event) {
-    	if(!IS_Portal.canAddWidget(tab.id, false, true)) return;
+    	if(!IS_Portal.canAddWidget(tab.id, false, 1)) return;
     	
         var process = function(){
             var widgetGhost = IS_Draggable.ghost;
@@ -964,7 +964,7 @@ IS_Portal.setTabDroppable = function(tab){
     }
     
     tab.droppableOption.onMultiMenuDrop = function(element, lastActiveElement, menuItem, event, originFunc, modalOption){
-        if(!IS_Portal.canAddWidget(tab.id, false, true)) return;
+        if(!IS_Portal.canAddWidget(tab.id, false, menuItem.children.length)) return;
         var process = function(){
             var confs = IS_SiteAggregationMenu.createMultiDropConf.call(tab, element, lastActiveElement, menuItem, event, tab.droppableOption.onMultiMenuDrop, modalOption, tab);
             
@@ -1648,16 +1648,17 @@ IS_Portal.refreshTabNumber = function(){
     }
 }
 
-IS_Portal.canAddWidget = function(tabId, alertOff, isAddWidget){
+IS_Portal.canAddWidget = function(tabId, alertOff, addGadgetNum){
+	
     if(IS_Portal.tabs[tabId || IS_Portal.currentTabId].disabledDynamicPanel){
         if(!alertOff)
             alert(IS_R.ms_cannotAddGadgetToThisTab);
         return false;
     }
     
-    if(isAddWidget){
+    if(addGadgetNum && addGadgetNum > 0){
 	    var personarizeGadgetsCount = IS_Portal.getDynamicPanelGadgetsCount();
-	    if(personarizeGadgetsCount >= maxPersonalizedGadgetNum){
+	    if(personarizeGadgetsCount + addGadgetNum >= maxPersonalizedGadgetNum){
 	    	var alertMessage = IS_R.getResource(IS_R.ms_personarizeGadgetNumLimit, [maxPersonalizedGadgetNum]);
 	        if(!alertOff)
 	        	alert(alertMessage);

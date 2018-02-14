@@ -527,12 +527,15 @@ IS_SidePanel.buildAddContents = function() {
 			var widgetConf = IS_WidgetsContainer.WidgetConfiguration.getConfigurationJSONObject(
 				type, widgetId, 1, title, href, properties);
 			var widget = IS_WidgetsContainer.addWidget( IS_Portal.currentTabId, widgetConf );
-			IS_Widget.setWidgetLocationCommand(widget);
 			
-			IS_Portal.widgetDropped( widget );
-			
-			if(widget.getUserPref('loginCredentialAuthType'))
-				IS_EventDispatcher.newEvent("resetAuthCredential","resetAuthCredential");
+			if(widget){
+				IS_Widget.setWidgetLocationCommand(widget);
+				
+				IS_Portal.widgetDropped( widget );
+				
+				if(widget.getUserPref('loginCredentialAuthType'))
+					IS_EventDispatcher.newEvent("resetAuthCredential","resetAuthCredential");
+			}
 		}
 		
 		if(authType && requiredFormAuthTypes.indexOf(authType) != -1){

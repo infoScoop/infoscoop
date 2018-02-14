@@ -50,7 +50,7 @@
             <column name="category" value="customize"/>
             <column name="advanced" valueNumeric="0"/>
             <column name="value" value="200"/>
-            <column name="datatype" value="string"/>
+            <column name="datatype" value="int"/>
             <column name="enumValue" value=""/>
             <column name="required" valueNumeric="1"/>
             <column name="regex" value="^[1-9][0-9]*$"/>
@@ -79,7 +79,7 @@
         </insert>
     </changeSet>
 
-    <!--Issue 636-->
+    <!--Issue 637-->
     <changeSet id="infoscoop410_637_1" author="unirita">
         <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop410_637_1">
             <or>
@@ -92,7 +92,7 @@
             <column name="category" value="session"/>
             <column name="advanced" valueNumeric="1"/>
             <column name="value" value="-1"/>
-            <column name="datatype" value="string"/>
+            <column name="datatype" value="int"/>
             <column name="enumValue" value=""/>
             <column name="required" valueNumeric="1"/>
             <column name="regex" value="^((-?[1-9][0-9]*)|0)$"/>

@@ -989,7 +989,8 @@ IS_WidgetsContainer.rebuildColumns = function( tabId, numCol, columnsWidth, isRe
 }
 
 IS_WidgetsContainer.addWidget = function (tabId, widgetConf, isBuild, appendFunc, subWidgetConfList) {
-	if(!IS_Portal.canAddWidget(tabId, false, true)) return;
+	var addNum = (subWidgetConfList) ? subWidgetConfList.length : 1;
+	if(!IS_Portal.canAddWidget(tabId, false, addNum)) return;
 	if(!widgetConf.column) widgetConf.column = 1; 
 	if( IS_Portal.tabs[tabId].numCol < widgetConf.column ){
 		widgetConf.column = IS_Portal.tabs[tabId].numCol;

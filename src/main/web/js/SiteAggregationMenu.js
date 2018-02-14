@@ -339,7 +339,7 @@ IS_TreeMenu.prototype = {
 							this.disabled = true;
 							this.value = IS_R.lb_added;
 						  }
-						  if(alertSetting == 2 && IS_Portal.canAddWidget(false, true, true)){
+						  if(alertSetting == 2 && IS_Portal.canAddWidget(false, true, 1)){
 							  setTimeout(addMenuItemFunc.bind(addWidgetButton, menuItem),1000);
 						  }else{
 							  IS_Event.observe(addWidgetButton, 'click',  addMenuItemFunc.bind(addWidgetButton, menuItem), false, 'msgBar');
