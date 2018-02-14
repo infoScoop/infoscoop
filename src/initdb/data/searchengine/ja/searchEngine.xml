@@ -7,9 +7,6 @@
 		<searchEngine id="bing" defaultSelected="true" title="Bing" retrieveUrl="http://www.bing.com/search?mkt=ja-JP&amp;setlang=match&amp;q=">
 			<countRule method="regexp" value="([0-9,]+) 件"/>
 		</searchEngine>
-		<searchEngine id="yahoojapan" defaultSelected="true" title="Yahoo! Japan" retrieveUrl="http://search.yahoo.co.jp/search?p=">
-			<countRule method="regexp" value="約&lt;span class=&quot;bo&quot;&gt;([0-9,]+)&lt;/span&gt;件"/>
-		</searchEngine>
 	</defaultSearch>
 	<rssSearch>
 		<searchEngine id="bingsite" retrieveUrl="http://www.bing.com/search?mkt=ja-JP&amp;setlang=match&amp;q=site%3A$1%20">
