@@ -1658,7 +1658,7 @@ IS_Portal.canAddWidget = function(tabId, alertOff, addGadgetNum){
     
     if(addGadgetNum && addGadgetNum > 0){
 	    var personarizeGadgetsCount = IS_Portal.getDynamicPanelGadgetsCount();
-	    if(personarizeGadgetsCount + addGadgetNum >= maxPersonalizedGadgetNum){
+	    if(personarizeGadgetsCount + addGadgetNum > maxPersonalizedGadgetNum){
 	    	var alertMessage = IS_R.getResource(IS_R.ms_personarizeGadgetNumLimit, [maxPersonalizedGadgetNum]);
 	        if(!alertOff)
 	        	alert(alertMessage);
