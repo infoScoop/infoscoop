@@ -33,6 +33,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
@@ -79,6 +80,12 @@ public class CheckSquareFilter implements javax.servlet.Filter {
 						IAccountManager accountManager = AuthenticationService.getInstance().getAccountManager();
 						IAccount account = accountManager.getUser(uid);
 						String defaultId = account.getDefaultSquareId();
+
+						if(StringUtils.isBlank(defaultId)) {
+							httpRes.sendRedirect(httpReq.getContextPath() + "/square/closed.jsp");
+							return;
+						}
+
 						if(defaultId.equals(squareId)) {
 							// set mysquare id to default square id
 							String mySquareId = account.getMySquareId();
