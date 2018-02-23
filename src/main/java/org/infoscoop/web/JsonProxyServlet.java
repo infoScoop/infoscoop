@@ -336,6 +336,14 @@ public class JsonProxyServlet extends HttpServlet {
 					array.put( value );
 			}
 		}
+		
+		if( proxy.getTargetJSessionId() != null){
+			if( !jsonHeaders.has( "set-cookie" ))
+				jsonHeaders.put( "set-cookie", new JSONArray());
+			JSONArray array = jsonHeaders.getJSONArray( "set-cookie" );
+			array.put("JSESSIONID=" + proxy.getTargetJSessionId());
+		}
+		
 		urlJson.put("headers",jsonHeaders );
 		urlJson.put("rc",status );
 
