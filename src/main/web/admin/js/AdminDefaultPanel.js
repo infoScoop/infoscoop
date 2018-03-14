@@ -368,6 +368,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 		showNoBorderForm:false,
 		displayACLFieldSet:false,
 		disableDisplayRadio:true,
+		widgetStyle:"commandbar-item",
 		// gadet only
 		omitTypeList:['Ranking','Ticker','MultiRssReader','MiniBrowser',
 		              'FragmentMiniBrowser','Message','Information','Information2',

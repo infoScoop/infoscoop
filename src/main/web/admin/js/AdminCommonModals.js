@@ -45,7 +45,8 @@ ISA_CommonModals.EditorForm.prototype.classDef = function() {
 		  disableURL: false,
 		  disableDetailDisplayMode: false,
 		  disablePreview: false,
-		  disableDisplayRadio:false
+		  disableDisplayRadio:false,
+		  widgetStyle:false
 		};
 		editorElement = _editorElement;
 		
@@ -732,6 +733,11 @@ ISA_CommonModals.EditorForm.makeWidgetEditFieldSet = function(disabled, _menuIte
 
 		var subTd = document.createElement("td");
 		subTd.id = "widgetPreviewContainer";
+		
+		if(options.widgetStyle){
+			$jq(subTd).addClass(options.widgetStyle);
+		}
+		
 		if(isWidgetDeleted){
 			var errorMsg = document.createElement("span");
 			errorMsg.style.color = "#f00";
