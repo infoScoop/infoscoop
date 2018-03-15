@@ -1959,15 +1959,7 @@ ISA_DefaultPanel.prototype.classDef = function() {
 			if( (this.displayRoleJsons[i] instanceof Function) ) continue;
 
 			var roleJson = Object.clone( this.displayRoleJsons[i]);
-
-			var duplicateCheckKey = roleJson.role + roleJson.principalType;
-			if( duplicateCheckArray.contains( duplicateCheckKey ) ){
-				alert(ISA_R.ams_sameSubjectForRE);
-				msg.error(ISA_R.ams_sameSubjectForRE);
-				return false;
-			}
-			duplicateCheckArray.push( duplicateCheckKey );
-
+			
 			var error = null;
 			if(error = IS_Validator.validate(roleJson.roleName, {maxBytes:256, label:ISA_R.alb_roleName})){
 				errorMessages.push(error);
