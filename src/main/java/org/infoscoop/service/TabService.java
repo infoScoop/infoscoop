@@ -512,8 +512,13 @@ public class TabService {
 			Widget widget = ( Widget )ite.next();
 			if( oldWidgets.containsKey( widget.getWidgetid() )) {
 				Widget oldWidget = ( Widget )oldWidgets.get( widget.getWidgetid());
-				for( Map.Entry<String,UserPref> entry : oldWidget.getUserPrefs().entrySet() )
+				for( Map.Entry<String,UserPref> entry : oldWidget.getUserPrefs().entrySet() ){
+					// not overwrite gadget content url
+					if("url".equalsIgnoreCase(entry.getKey()))
+						continue;
+					
 					widget.setUserPref( entry.getKey(),entry.getValue().getValue() );
+				}
 			}
 			
 			widget.setTabid( tab.getTabId());
