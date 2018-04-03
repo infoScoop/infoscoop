@@ -75,6 +75,7 @@ public class I18NExportServlet extends HttpServlet
 				i18nList = I18NDAO.newInstance().findI18n(type, country, lang, squareid);
 				if(CollectionUtils.isNotEmpty(i18nList) || squareid.equals(SquareService.SQUARE_ID_DEFAULT)) break;
 				squareid = SquareService.getHandle().getParentSquareId(squareid);
+				if(squareid == null) squareid = SquareService.SQUARE_ID_DEFAULT;
 			}while(true);
 
 			I18n i18n;

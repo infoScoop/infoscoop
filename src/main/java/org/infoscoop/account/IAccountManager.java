@@ -114,5 +114,7 @@ public interface IAccountManager {
 
 	public void deleteAccountAttribute(String userid, String squareId) throws Exception;
 
+	public void deleteAccountAttributeBySquareId(String squareId) throws Exception;
+
 	public void setAccountOwner(String userid, String value) throws Exception;
 }

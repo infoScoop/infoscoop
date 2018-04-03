@@ -103,6 +103,21 @@ public class AccountDAO extends HibernateDaoSupport {
 		return result;
 	}
 
+	public List<AccountAttr> getAccountAttrListBySquareId(String squareId) {
+		DetachedCriteria detachedCriteria = DetachedCriteria.forClass(AccountAttr.class);
+		if (squareId != null) {
+			detachedCriteria.add(Expression.eq(AccountAttr.PROP_SQUARE_ID, squareId));
+		} else {
+			detachedCriteria.add(Expression.isNull(AccountAttr.PROP_SQUARE_ID));
+		}
+
+		List<AccountAttr> result = super.getHibernateTemplate().findByCriteria(detachedCriteria);
+		if(result == null || result.size() == 0)
+			return null;
+
+		return result;
+	}
+
 	public List<AccountAttr> getAccountAttrBySquareId(String uid, String squareId) {
 		DetachedCriteria detachedCriteria = DetachedCriteria.forClass(AccountAttr.class)
 				.add(Expression.eq(AccountAttr.PROP_UID, uid));

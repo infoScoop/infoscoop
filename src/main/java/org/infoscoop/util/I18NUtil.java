@@ -97,6 +97,7 @@ public class I18NUtil {
 					// no change, goto parent
 					if(!squareId.equals(SquareService.SQUARE_ID_DEFAULT)) {
 						squareId = SquareService.getHandle().getParentSquareId(squareId);
+						if(squareId == null) squareId = SquareService.SQUARE_ID_DEFAULT;
 					} else {
 						// default
 						// check cache

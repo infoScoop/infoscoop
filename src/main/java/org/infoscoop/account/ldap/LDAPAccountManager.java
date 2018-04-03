@@ -641,6 +641,11 @@ public class LDAPAccountManager implements IAccountManager{
 	}
 
 	@Override
+	public void deleteAccountAttributeBySquareId(String squareId) throws Exception {
+		throw new UnsupportedOperationException();
+	}
+
+		@Override
 	public void setAccountOwner(String userid, String value) throws Exception {
 		throw new UnsupportedOperationException();
 	}

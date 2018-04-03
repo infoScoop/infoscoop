@@ -250,6 +250,7 @@ public class CustomizationServlet extends HttpServlet {
 		// Display "About" when application.about.url enabled.
 		String aboutDef = "";
 		String parentSquareId = SquareService.getHandle().getParentSquareId(currentSquareId);
+		if(parentSquareId == null) parentSquareId = SquareService.SQUARE_ID_DEFAULT;
 		// current square and parent square is not default square
 		if(!SquareService.SQUARE_ID_DEFAULT.equals(currentSquareId)
 				&& !SquareService.SQUARE_ID_DEFAULT.equals(parentSquareId)){

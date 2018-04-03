@@ -350,6 +350,8 @@ public class SquareService {
 
 	public String getParentSquareId(String squareId) {
 		Square square = this.getEntity(squareId);
+		if(square == null) return null;
+
 		String parentSquareId = square.getParentSquareId();
 		return parentSquareId;
 	}
@@ -368,6 +370,7 @@ public class SquareService {
 	public boolean isNotDefaultUntilAncient(String child, String parent) {
 		boolean result = true;
 		String parentSquareId = this.getParentSquareId(child);
+		if(parentSquareId == null) return false;
 
 		if(child.equals(SQUARE_ID_DEFAULT) || "".equals(parentSquareId) || SQUARE_ID_DEFAULT.equals(parentSquareId))
 			result = false;
