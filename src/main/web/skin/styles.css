@@ -27,7 +27,7 @@ body{
  color: #404040;
  overflow-y: scroll; 
  font-size: 100%;
- font-family:'Helvetica Neue', 'Segoe UI', Helvetica, Arial, 'ＭＳ Ｐゴシック', sans-serif;
+ font-family:'Helvetica Neue', 'Segoe UI', Helvetica, Arial, '�ｼｭ�ｼｳ �ｼｰ繧ｴ繧ｷ繝�繧ｯ', sans-serif;
  background: #d6d6d6;
 }
 
@@ -773,4 +773,9 @@ div#search-iframe iframe {
 	height: 12px;
 	position: absolute;
 	background-size: 12px;
+}
+
+.infoScoop .maximized div[id^="static-panel"] {
+	height: 10px;
+	overflow: hidden;
 }
