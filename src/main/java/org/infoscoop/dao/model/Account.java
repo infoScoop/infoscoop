@@ -179,7 +179,7 @@ public class Account implements IAccount {
 		Set<AccountAttr> accountAttrs = getAccountAttrs();
 		int ownedSquare = -1;
 		for(AccountAttr attr : accountAttrs) {
-			if(attr.getName().equals(AccountAttributeName.OWNED_SQUARE_NUMBER))
+			if(attr.getName().equals(AccountAttributeName.OWNED_SQUARE_NUMBER) && attr.getSystem())
 				ownedSquare = Integer.parseInt(attr.getValue());
 		}
 

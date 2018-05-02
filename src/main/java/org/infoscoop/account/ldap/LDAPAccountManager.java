@@ -626,7 +626,7 @@ public class LDAPAccountManager implements IAccountManager{
 	}
 
 	@Override
-	public String getAccountAttributeValue(String userid, String name) throws Exception {
+	public String getAccountAttributeValue(String userid, String name, Boolean system) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 

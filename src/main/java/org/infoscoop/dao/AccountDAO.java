@@ -135,10 +135,11 @@ public class AccountDAO extends HibernateDaoSupport {
 		return result;
 	}
 
-	public AccountAttr getAccountAttr(String uid, String key, String squareId) {
+	public AccountAttr getAccountAttr(String uid, String key, String squareId, Boolean system) {
 		DetachedCriteria detachedCriteria = DetachedCriteria.forClass(AccountAttr.class)
 				.add(Expression.eq(AccountAttr.PROP_UID, uid))
-				.add(Expression.eq(AccountAttr.PROP_NAME, key));
+				.add(Expression.eq(AccountAttr.PROP_NAME, key))
+				.add(Expression.eq(AccountAttr.PROP_SYSTEM, system));
 
 		if (squareId != null) {
 			detachedCriteria.add(Expression.eq(AccountAttr.PROP_SQUARE_ID, squareId));
@@ -158,7 +159,7 @@ public class AccountDAO extends HibernateDaoSupport {
 	}
 
 	public void saveAccountAttr(String uid, String name, String value, Boolean system, String squareId) {
-		AccountAttr attr = getAccountAttr(uid, name, squareId);
+		AccountAttr attr = getAccountAttr(uid, name, squareId, system);
 		if(attr == null)
 			attr = new AccountAttr(uid, name, value, system, squareId);
 		attr.setValue(value);

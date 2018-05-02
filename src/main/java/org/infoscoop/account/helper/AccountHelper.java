@@ -189,8 +189,8 @@ public class AccountHelper {
 
 	public static boolean isUpdateUser(String uid, String squareId) throws Exception {
 		IAccountManager manager = AuthenticationService.getInstance().getAccountManager();
-		String updatePermission = manager.getAccountAttributeValue(uid, AccountAttributeName.UPDATE_PERMISSION);
-		String registeredSquare = manager.getAccountAttributeValue(uid, AccountAttributeName.REGISTERED_SQUARE);
+		String updatePermission = manager.getAccountAttributeValue(uid, AccountAttributeName.UPDATE_PERMISSION, true);
+		String registeredSquare = manager.getAccountAttributeValue(uid, AccountAttributeName.REGISTERED_SQUARE, true);
 		boolean result = false;
 
 		switch (updatePermission) {

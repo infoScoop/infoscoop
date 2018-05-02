@@ -413,12 +413,12 @@ public class SimpleAccountManager implements IAccountManager{
 	}
 
 	@Override
-	public String getAccountAttributeValue(String userid, String name) throws Exception {
-		return getAccountAttributeValue(userid, name, null);
+	public String getAccountAttributeValue(String userid, String name, Boolean system) throws Exception {
+		return getAccountAttributeValue(userid, name, null, system);
 	}
 
-	public String getAccountAttributeValue(String userid, String name, String squareId) throws Exception {
-		Map<String, Object> entity = getAccountAttribute(userid, name, squareId);
+	public String getAccountAttributeValue(String userid, String name, String squareId, Boolean system) throws Exception {
+		Map<String, Object> entity = getAccountAttribute(userid, name, squareId, system);
 		return (String)entity.get("value");
 	}
 
@@ -443,8 +443,8 @@ public class SimpleAccountManager implements IAccountManager{
 	}
 
 	/* specific square and specific key */
-	public Map<String, Object> getAccountAttribute(String userid, String name, String squareId) throws Exception {
-		AccountAttr attr = dao.getAccountAttr(userid, name, squareId);
+	public Map<String, Object> getAccountAttribute(String userid, String name, String squareId, Boolean system) throws Exception {
+		AccountAttr attr = dao.getAccountAttr(userid, name, squareId, system);
 		Map<String, Object> map = new HashMap<>();
 
 		if(attr != null){

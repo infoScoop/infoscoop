@@ -108,7 +108,7 @@ public interface IAccountManager {
 
 	public void updateAccountAttribute(String userid, Map<String, String[]> map) throws Exception;
 
-	public String getAccountAttributeValue(String userid, String name) throws Exception;
+	public String getAccountAttributeValue(String userid, String name, Boolean system) throws Exception;
 
 	public List<Map<String, Object>> getAccountAttribute(String userid, String name) throws Exception;
 
