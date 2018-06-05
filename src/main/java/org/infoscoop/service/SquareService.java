@@ -411,26 +411,6 @@ public class SquareService {
 		return true;
 	}
 
-	/**
-	 * @param squareid
-	 * @return
-	 */
-	public Square getMaintenanceInfoSquare(String squareid){
-		if(squareid == null)
-			return null;
-		
-		Square square = squareDAO.get(squareid);
-		if(square == null)
-			return null;
-		
-		String status = square.getSquareStatus();
-		
-		if(status == null){
-			return getMaintenanceInfoSquare(square.getParentSquareId());
-		}
-		return square;
-	}
-	
 	public static String generateSquareId(){
 		return (UUID.randomUUID().toString()).replaceAll("-", "");
 	}
