@@ -28,13 +28,4 @@ public class InvitationService implements InvitationServiceInterface {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public boolean isExistsInvitationUser(String uid) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Integer getServiceId(String expiredKey) {
-		throw new UnsupportedOperationException();
-	}
 }
