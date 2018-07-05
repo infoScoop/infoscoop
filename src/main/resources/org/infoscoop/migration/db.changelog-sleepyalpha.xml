@@ -2785,4 +2785,17 @@ UPDATE ${migration.defaultSchemaWithDot}is_portaladmins p
         <createSequence sequenceName="is_globalpreferences_id_seq" schemaName="${migration.defaultSchema}"/>
     </changeSet>
 
+    <changeSet id="infoscoop_sleepyalpha_598_24" author="mikami">
+        <preConditions onFail="MARK_RAN" onFailMessage="skip infoscoop_sleepyalpha_598_24">
+            <tableExists schemaName="${migration.defaultSchema}" tableName="is_externalapi_keys"/>
+            <not>
+                <columnExists schemaName="${migration.defaultSchema}" tableName="is_externalapi_keys" columnName="private_key"/>
+            </not>
+        </preConditions>
+        <addColumn schemaName="${migration.defaultSchema}" tableName="is_externalapi_keys">
+            <column name="private_key" type="longtext">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
