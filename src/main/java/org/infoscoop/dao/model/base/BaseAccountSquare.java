@@ -18,6 +18,7 @@
 package org.infoscoop.dao.model.base;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 public class BaseAccountSquare implements Serializable {
@@ -25,6 +26,7 @@ public class BaseAccountSquare implements Serializable {
 	public static String REF = "AccountSquare";
 	public static String PROP_UID = "Uid";
 	public static String PROP_SQUARE_ID = "squareId";
+	public static String PROP_CREATED = "created";
 
 	public BaseAccountSquare() {
 		initialize();
@@ -45,6 +47,7 @@ public class BaseAccountSquare implements Serializable {
 	// fields
 	private java.lang.String accountId;
 	private java.lang.String squareId;
+	private java.util.Date created;
 
 	public Long getId() {
 		return id;
@@ -68,6 +71,14 @@ public class BaseAccountSquare implements Serializable {
 
 	public void setSquareId(String squareId) {
 		this.squareId = squareId;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
 	}
 
 	@Override

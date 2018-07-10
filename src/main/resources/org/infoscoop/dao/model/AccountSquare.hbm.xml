@@ -34,5 +34,8 @@
             length="64"
         />
 
+		<property name="created" type="timestamp">
+			<column name="CREATED" not-null="true" />
+		</property>
 	</class>
 </hibernate-mapping>
