@@ -35,7 +35,7 @@
         />
 
 		<property name="created" type="timestamp">
-			<column name="CREATED" not-null="true" />
+			<column name="CREATED" not-null="false" />
 		</property>
 	</class>
 </hibernate-mapping>
