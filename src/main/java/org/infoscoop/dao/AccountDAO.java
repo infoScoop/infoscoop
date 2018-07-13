@@ -24,6 +24,7 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.infoscoop.dao.model.Account;
 import org.infoscoop.dao.model.AccountAttr;
@@ -54,7 +55,18 @@ public class AccountDAO extends HibernateDaoSupport {
 	public List<Account> selectByName(String name){
 		return super.getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(Account.class).add(Expression.like("name", name, MatchMode.START)));
 	}
-	
+
+	public List<AccountSquare> getAccountSquares(String uid){
+		List<AccountSquare> result = super.getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(AccountSquare.class)
+				.add(Expression.eq("accountId", uid))
+				.addOrder(Order.asc(AccountSquare.PROP_CREATED)));
+
+		if( result == null || result.size() == 0 )
+			return null;
+
+		return result;
+	}
+
 	public AccountSquare getAccountSquare(String uid, String squareId){
 		List<AccountSquare> result = super.getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(AccountSquare.class)
 				.add(Expression.eq("accountId", uid))
