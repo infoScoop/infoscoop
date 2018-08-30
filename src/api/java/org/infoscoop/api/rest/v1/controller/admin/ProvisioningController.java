@@ -71,7 +71,7 @@ public class ProvisioningController extends BaseController{
 					+ ";charset=utf-8")
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody()
-	public ProvisioningList getAccountsBySquareId(@PathVariable("squareId") String squareId) throws Exception {
+	public ProvisioningList getAccountsBySquareId(@PathVariable("squareId") String squareId, @RequestParam(required = false) boolean withAllParams) throws Exception {
 		String execSquareId = getSquareId();
 		ProvisioningList provisioningList = new ProvisioningList();
 		List<Provisioning> list = new ArrayList<>();
@@ -96,8 +96,13 @@ public class ProvisioningController extends BaseController{
 			}
 
 			provisioning.name = account.getName();
-			provisioning.belongSquare = service.getBelongSquare(account, execSquareId);
-			provisioning.attrs = service.getAccountAttribute(account, execSquareId);
+			
+			// 属性、所属スクエアはデフォルトでは取得しない
+			if(withAllParams){
+				// TODO: パフォーマンス改善
+				provisioning.belongSquare = service.getBelongSquare(account, execSquareId);
+				provisioning.attrs = service.getAccountAttribute(account, execSquareId);
+			}
 			list.add(provisioning);
 		}
 

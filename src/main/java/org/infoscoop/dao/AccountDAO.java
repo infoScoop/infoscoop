@@ -20,6 +20,7 @@ package org.infoscoop.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -255,7 +256,9 @@ public class AccountDAO extends HibernateDaoSupport {
 		String squareId = (String)condition.get("user_belong_square");
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(Account.class).createAlias("AccountSquares", "as", CriteriaSpecification.LEFT_JOIN);
-
+		criteria.createAlias("AccountAttrs", "attrs", CriteriaSpecification.LEFT_JOIN);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		
 		if(uid != null)
 			criteria.add(Expression.eq("Uid", uid));
 		
