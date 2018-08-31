@@ -59,7 +59,7 @@ public class ProvisioningService {
 				Pat.2: sent squareid == getSquareId.childSquareId (OK)
 			*/
 			if(!defaultSquareId.equals(execSquareId)
-					&& (!SquareService.getHandle().isNotDefaultUntilAncient(defaultSquareId, execSquareId) || !SquareService.getHandle().comparisonParentSquare(defaultSquareId, execSquareId)))
+					&& (!SquareService.getHandle().isNotDefaultUntilAncient(defaultSquareId) || !SquareService.getHandle().comparisonParentSquare(defaultSquareId, execSquareId)))
 				throw new IllegalArgumentException("users[" + index + "].default_square_id is not owned square.");
 		}
 
@@ -86,7 +86,7 @@ public class ProvisioningService {
 					Pat.2: sent squareid == getSquareId.childSquareId (OK)
 				*/
 				if(!squareId.equals(execSquareId)
-						&& (!SquareService.getHandle().isNotDefaultUntilAncient(squareId, execSquareId) || !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId)))
+						&& (!SquareService.getHandle().isNotDefaultUntilAncient(squareId) || !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId)))
 					throw new IllegalArgumentException("users[" + index + "].belong_square[" + i +"].id[" + squareId + "] is not owned square.");
 			}
 		}
@@ -126,7 +126,7 @@ public class ProvisioningService {
 					Pat.2: sent squareid == getSquareId.childSquareId (OK)
 				 */
 					if(!squareId.equals(execSquareId)
-							&& (!SquareService.getHandle().isNotDefaultUntilAncient(squareId, execSquareId) || !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId)))
+							&& (!SquareService.getHandle().isNotDefaultUntilAncient(squareId) || !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId)))
 						throw new IllegalArgumentException("users[" + index + "].attrs[" + i +"].square_id[" + squareId + "] is not owned square.");
 
 					// belong
@@ -270,7 +270,7 @@ public class ProvisioningService {
 					map.put(AccountAttr.PROP_NAME, accountAttr.get(AccountAttr.PROP_NAME));
 					map.put(AccountAttr.PROP_VALUE, accountAttr.get(AccountAttr.PROP_VALUE));
 				} else if(squareId.equals(execSquareId)
-						|| (SquareService.getHandle().isNotDefaultUntilAncient(squareId, execSquareId) && SquareService.getHandle().comparisonParentSquare(squareId, execSquareId))) {
+						|| (SquareService.getHandle().isNotDefaultUntilAncient(squareId) && SquareService.getHandle().comparisonParentSquare(squareId, execSquareId))) {
 					map.put(AccountAttr.PROP_NAME, accountAttr.get(AccountAttr.PROP_NAME));
 					map.put(AccountAttr.PROP_VALUE, accountAttr.get(AccountAttr.PROP_VALUE));
 					map.put(AccountAttr.PROP_SQUARE_ID, squareId);
@@ -288,8 +288,11 @@ public class ProvisioningService {
 
 		for(String belongId : belongIds) {
 			Map<String, String> map = new HashMap<>();
+
+			String parentSquareId = SquareService.getHandle().getParentSquareId(belongId);
+			
 			if(belongId.equals(execSquareId)
-					|| (SquareService.getHandle().isNotDefaultUntilAncient(belongId, execSquareId) && SquareService.getHandle().comparisonParentSquare(belongId, execSquareId))) {
+					|| (SquareService.getHandle().isNotDefaultUntilAncient(belongId, parentSquareId) && SquareService.getHandle().comparisonParentSquare(belongId, execSquareId, parentSquareId))) {
 				map.put("id", belongId);
 				resultList.add(map);
 			}

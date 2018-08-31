@@ -356,9 +356,11 @@ public class SquareService {
 		return parentSquareId;
 	}
 
-	public boolean comparisonParentSquare(String child, String parent) {
+	public boolean comparisonParentSquare(String child, String parent, String parentSquareId) {
 		boolean result = true;
-		String parentSquareId = this.getParentSquareId(child);
+		
+		if(parentSquareId == null)
+			parentSquareId = this.getParentSquareId(child);
 
 		// do not null
 		if(parentSquareId != null && parentSquareId.length() > 0)
@@ -367,9 +369,15 @@ public class SquareService {
 		return result;
 	}
 
-	public boolean isNotDefaultUntilAncient(String child, String parent) {
+	public boolean comparisonParentSquare(String child, String parent) {
+		return comparisonParentSquare(child, parent, null);
+	}
+	public boolean isNotDefaultUntilAncient(String child, String parentSquareId) {
 		boolean result = true;
-		String parentSquareId = this.getParentSquareId(child);
+		
+		if(parentSquareId == null)
+			parentSquareId = this.getParentSquareId(child);
+		
 		if(parentSquareId == null) return false;
 
 		if(child.equals(SQUARE_ID_DEFAULT) || "".equals(parentSquareId) || SQUARE_ID_DEFAULT.equals(parentSquareId))
@@ -378,6 +386,10 @@ public class SquareService {
 		return result;
 	}
 
+	public boolean isNotDefaultUntilAncient(String child) {
+		return isNotDefaultUntilAncient(child , null);
+	}
+	
 	public void updateSquare(String squareId, String name, String description){
 		Square square = squareDAO.get(squareId);
 		square.setName(name);
