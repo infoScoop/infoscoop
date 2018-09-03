@@ -195,6 +195,7 @@ public class AccountDAO extends HibernateDaoSupport {
 	
 	public int selectCountByMap(Map condition) {
 		DetachedCriteria criteria = createSearchCriteria(condition);
+		criteria.setProjection(Projections.rowCount());
 		
 		List list = super.getHibernateTemplate().findByCriteria(criteria);
 		return (int)list.get(0);
