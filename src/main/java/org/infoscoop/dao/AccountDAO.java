@@ -195,10 +195,16 @@ public class AccountDAO extends HibernateDaoSupport {
 	
 	public int selectCountByMap(Map condition) {
 		DetachedCriteria criteria = createSearchCriteria(condition);
-		criteria.setProjection(Projections.countDistinct("Uid"));
 		
 		List list = super.getHibernateTemplate().findByCriteria(criteria);
 		return (int)list.get(0);
+	}
+	
+	public List<Account> selectByMapWithAttr(Map condition) {
+		DetachedCriteria criteria = createSearchCriteria(condition);
+		criteria.createAlias("AccountAttrs", "attrs", CriteriaSpecification.LEFT_JOIN);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return super.getHibernateTemplate().findByCriteria(criteria);
 	}
 	
 	public List<Account> selectByMap(Map condition, Integer pageSize, Integer pageNum) {
@@ -256,8 +262,6 @@ public class AccountDAO extends HibernateDaoSupport {
 		String squareId = (String)condition.get("user_belong_square");
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(Account.class).createAlias("AccountSquares", "as", CriteriaSpecification.LEFT_JOIN);
-		criteria.createAlias("AccountAttrs", "attrs", CriteriaSpecification.LEFT_JOIN);
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		
 		if(uid != null)
 			criteria.add(Expression.eq("Uid", uid));

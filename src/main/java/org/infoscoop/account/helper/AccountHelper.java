@@ -13,6 +13,7 @@ import org.infoscoop.account.IAccount;
 import org.infoscoop.account.IAccountManager;
 import org.infoscoop.account.simple.AccountAttributeName;
 import org.infoscoop.dao.AccountDAO;
+import org.infoscoop.dao.model.Account;
 import org.infoscoop.properties.InfoScoopProperties;
 
 public class AccountHelper {
@@ -176,6 +177,13 @@ public class AccountHelper {
 
 	public static List<IAccount> searchUsersBySquareId(String squareId) throws Exception{
 		return searchUsersBySquareId(squareId, null, null, null, null, null);
+	}
+
+	public static List<Account> searchUsersBySquareIdWithAttrs(String squareId) throws Exception{
+		Map<String, String> searchConditionMap = new HashMap<String, String>();
+		searchConditionMap.put("user_belong_square", squareId);
+		
+		return AccountDAO.newInstance().selectByMapWithAttr(searchConditionMap);
 	}
 	
 	public static void deleteBelongToBySquareId(String squareId) throws Exception{

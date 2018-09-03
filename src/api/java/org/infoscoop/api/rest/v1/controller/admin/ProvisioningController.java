@@ -84,8 +84,8 @@ public class ProvisioningController extends BaseController{
 				&& (!SquareService.getHandle().isNotDefaultUntilAncient(squareId, execSquareId) || !SquareService.getHandle().comparisonParentSquare(squareId, execSquareId)))
 				throw new PermissionDeniedDataAccessException(squareId + " is not owned square.", new Throwable());
 
-		List<IAccount> accounts = AccountHelper.searchUsersBySquareId(squareId);
-		for(IAccount account : accounts) {
+		List<Account> accounts = AccountHelper.searchUsersBySquareIdWithAttrs(squareId);
+		for(Account account : accounts) {
 			Provisioning provisioning = new Provisioning();
 			provisioning.uid = account.getUid();
 			provisioning.email = account.getMail();
