@@ -151,7 +151,7 @@ public class SquareServlet extends HttpServlet {
 						manager.addSquareId(uid, squareId);
 
 						// mail invitation user
-						InvitationService.getHandle().doInvitation(emailList, request, squareId);
+						InvitationService.getHandle().doInvitation(emailList, request, squareId, 1);
 
 						// move created square
 						response.setHeader("X-IS-SQUAREID", squareId);

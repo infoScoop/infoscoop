@@ -5,7 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 public interface InvitationServiceInterface {
-	public List<String> doInvitation(List<String> uidList, HttpServletRequest request, String squareId) throws Exception;
+	public List<String> doInvitation(List<String> uidList, HttpServletRequest request, String squareId, int expiredPeriod) throws Exception;
 	public void cancelInvitation(List<String> uidList) throws Exception;
 	public List getInvitingUsers();
 }
