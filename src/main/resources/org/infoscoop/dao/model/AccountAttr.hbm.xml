@@ -53,5 +53,13 @@
 				not-null="false"
 				length="64"
 		/>
+
+		<property
+				name="serviceAttrId"
+				column="service_attr_id"
+				type="integer"
+				not-null="false"
+		/>
+
 	</class>
 </hibernate-mapping>

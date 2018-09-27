@@ -28,6 +28,7 @@ public class BaseAccountAttr implements Serializable {
 	public static String PROP_VALUE = "value";
 	public static String PROP_SYSTEM = "system";
 	public static String PROP_SQUARE_ID = "squareId";
+	public static String PROP_SERVICE_ATTR_ID = "serviceAttrId";
 
 	public static Integer PROP_SYSTEM_TRUE = 1;
 	public static Integer PROP_SYSTEM_FALSE = 0;
@@ -58,6 +59,7 @@ public class BaseAccountAttr implements Serializable {
 	private java.lang.String value;
 	private java.lang.Boolean system;
 	private java.lang.String squareId;
+	private java.lang.Integer serviceAttrId;
 
 	public Long getId() {
 		return id;
@@ -105,6 +107,14 @@ public class BaseAccountAttr implements Serializable {
 
 	public void setSquareId(String squareId) {
 		this.squareId = squareId;
+	}
+
+	public Integer getServiceAttrId() {
+		return serviceAttrId;
+	}
+
+	public void setServiceAttrId(Integer serviceAttrId) {
+		this.serviceAttrId = serviceAttrId;
 	}
 
 	@Override
