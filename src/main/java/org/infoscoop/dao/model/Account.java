@@ -133,7 +133,8 @@ public class Account implements IAccount {
 				if(accountAttr.getSquareId() != null)
 					map.put(AccountAttr.PROP_SQUARE_ID, accountAttr.getSquareId());
 				map.put(AccountAttr.PROP_SYSTEM, accountAttr.getSystem().toString());
-				map.put(AccountAttr.PROP_SERVICE_ATTR_ID, accountAttr.getServiceAttrId().toString());
+				if(accountAttr.getServiceAttrId() != null)
+					map.put(AccountAttr.PROP_SERVICE_ATTR_ID, accountAttr.getServiceAttrId().toString());
 				attributes.add(map);
 			}
 		}
