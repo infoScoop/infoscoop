@@ -514,7 +514,7 @@
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
-			<version>3.5.3</version>
+			<version>3.5.4</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -541,7 +541,27 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.3.0</version>
 		</dependency>
-  	</dependencies>
+	<dependency>
+		<groupId>javax.xml.bind</groupId>
+		<artifactId>jaxb-api</artifactId>
+		<version>2.2.11</version>
+	</dependency>
+	<dependency>
+		<groupId>com.sun.xml.bind</groupId>
+		<artifactId>jaxb-core</artifactId>
+		<version>2.2.11</version>
+	</dependency>
+	<dependency>
+		<groupId>com.sun.xml.bind</groupId>
+		<artifactId>jaxb-impl</artifactId>
+		<version>2.2.11</version>
+	</dependency>
+	<dependency>
+		<groupId>javax.activation</groupId>
+		<artifactId>activation</artifactId>
+		<version>1.1.1</version>
+	</dependency>
+ 	</dependencies>
 	<repositories>
 		<repository>
 			<id>maven2-repository.java.net</id>
