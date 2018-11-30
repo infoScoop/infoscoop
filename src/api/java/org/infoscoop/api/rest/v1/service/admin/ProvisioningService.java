@@ -305,13 +305,10 @@ public class ProvisioningService {
 		IAccount account = manager.getUser(uid);
 
 		// repository data
-		String mySquareId = account.getMySquareId();
 		List<String> repoSquareList = account.getBelongids();
 
 		// temp set
 		Set<String> resultSquareIdSet = new HashSet<>();
-		// save mysquare
-		resultSquareIdSet.add(mySquareId);
 
 		// result set
 		for(Map<String, String> squareMap : belongSquareList) {
@@ -320,8 +317,8 @@ public class ProvisioningService {
 			String sendingSquareId = squareMap.get("id");
 			String bgImg = squareMap.get("background_image");
 
-			if(sendingSquareId.equals(mySquareId)
-					|| (!sendingSquareId.equals(execSquareId) && !SquareService.getHandle().comparisonParentSquare(sendingSquareId, execSquareId))) {
+			if(!sendingSquareId.equals(execSquareId)
+					&& !SquareService.getHandle().comparisonParentSquare(sendingSquareId, execSquareId)) {
 				continue;
 			}
 
