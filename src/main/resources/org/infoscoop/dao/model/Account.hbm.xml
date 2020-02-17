@@ -73,6 +73,22 @@
         />
 
 		<property
+				name="accountType"
+				column="account_type"
+				type="string"
+				not-null="false"
+				length="255"
+		/>
+
+        <property
+                name="companyName"
+                column="company_name"
+                type="string"
+                not-null="false"
+                length="255"
+        />
+
+		<property
 				name="requirePasswordReset"
 				column="require_password_reset"
 				type="boolean"

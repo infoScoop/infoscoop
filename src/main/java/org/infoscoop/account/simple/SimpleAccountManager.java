@@ -1,15 +1,15 @@
 /* infoScoop OpenSource
  * Copyright (C) 2010 Beacon IT Inc.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3
  * as published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0-standalone.html>.
@@ -20,13 +20,7 @@ package org.infoscoop.account.simple;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.security.auth.Subject;
 
@@ -44,6 +38,7 @@ import org.infoscoop.dao.AccountDAO;
 import org.infoscoop.dao.model.Account;
 import org.infoscoop.dao.model.AccountAttr;
 import org.infoscoop.dao.model.AccountSquare;
+import org.infoscoop.util.StringUtil;
 import org.json.JSONObject;
 
 /**
@@ -102,6 +97,16 @@ public class SimpleAccountManager implements IAccountManager{
 		if(name != null)
 			account.setName(name);
 
+		String accountType = (String) user.get("accountType");
+		if(StringUtils.isNotBlank(accountType) && Arrays.asList("INDIVIDUAL", "COMPANY").contains(accountType)) {
+			account.setAccountType(accountType);
+		}
+
+		String companyName = (String) user.get("companyName");
+		if(StringUtils.isNotBlank(companyName)) {
+			account.setCompanyName(companyName);
+		}
+
 		// default square
 		String defaultSquareId = (String)user.get("defaultSquareId");
 		if(defaultSquareId != null) {
@@ -151,25 +156,25 @@ public class SimpleAccountManager implements IAccountManager{
 		String _password = account.getPassword();
 		checkCredentials(password, _password);
 
-		
+
 	}
-	
+
 	public Subject getSubject(String userid) throws Exception {
 		Account account = (Account)this.getUser(userid);
 		if(account == null) return null;
-		
+
 		Subject loginUser = new Subject();
 		ISPrincipal p = new ISPrincipal(ISPrincipal.UID_PRINCIPAL, account.getUid(), null);
 		p.setDisplayName(account.getName());
 		loginUser.getPrincipals().add(p);
-		
+
 		Set<AccountAttr> accountAttrs = account.getAccountAttrs();
 		for(Iterator<AccountAttr> ite = accountAttrs.iterator();ite.hasNext();){
 			AccountAttr attr =  ite.next();
 			ISPrincipal attrPrincipal = new ISPrincipal(attr.getName(), attr.getValue(), attr.getSquareId());
 			loginUser.getPrincipals().add(attrPrincipal);
 		}
-		
+
 		return loginUser;
 	}
 
@@ -231,7 +236,7 @@ public class SimpleAccountManager implements IAccountManager{
 			log.error("blank Square ID.");
 			throw new IllegalArgumentException();
 		}
-		
+
 		Account account = dao.get(userid);
 		account.setDefaultSquareId(defaultSquareId);
 		dao.update(account);
@@ -300,7 +305,7 @@ public class SimpleAccountManager implements IAccountManager{
 		String firstName = map.get(FIRST_NAME_PARAM)[0];
 		String familyName = map.get(GIVEN_NAME_PARAM)[0];
 		String email = map.get(EMAIL_PARAM)[0];
-		
+
 		String requirePasswordReset = null;
 		if(map.get(REQUIRE_PASSWORD_RESET_PARAM) != null)
 			requirePasswordReset = map.get(REQUIRE_PASSWORD_RESET_PARAM)[0];
@@ -320,7 +325,7 @@ public class SimpleAccountManager implements IAccountManager{
 		account.setMail(email);
 		account.setRequirePasswordReset(Boolean.parseBoolean(requirePasswordReset));
 		dao.update(account);
-		
+
 		return displayName;
 	}
 
@@ -370,7 +375,7 @@ public class SimpleAccountManager implements IAccountManager{
 		AccountSquare accountSquare = dao.getAccountSquare(userid, squareId);
 		dao.deleteAccountSquare(accountSquare);
 	}
-	
+
 	private String getCryptoHash(String password) throws AuthenticationException{
 		MessageDigest md;
 		try {
@@ -385,7 +390,7 @@ public class SimpleAccountManager implements IAccountManager{
 		}
 		return password;
 	}
-	
+
 	public void setAccountManagerFormDef(String accountManagerFormDef) {
 		this.accountManagerFormDef = accountManagerFormDef;
 	}
