@@ -2,7 +2,7 @@
 <ivysettings>
   <settings defaultResolver="defaultResolver"/>
   <resolvers>
-    <ibiblio name="maven2-repository" m2compatible="true" root="http://download.java.net/maven/2/" pattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+    <ibiblio name="maven2-repository" m2compatible="true" root="https://repo1.maven.org/maven2/" pattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
     <ibiblio name="Hibernate" m2compatible="true" root="http://repository.jboss.org/nexus/content/groups/public-jboss/" pattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
     <ibiblio name="snapshot-repository" m2compatible="true" root="https://maven.java.net/content/repositories/snapshots/" pattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
     <ibiblio name="caja" m2compatible="true" root="http://google-caja.googlecode.com/svn/maven/" />
