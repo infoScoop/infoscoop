@@ -557,6 +557,6 @@
 		</repository>
 	</repositories>
 	<properties>
-		<spring.version>3.2.4.RELEASE</spring.version>
+		<spring.version>3.2.18.RELEASE</spring.version>
 	</properties>
 </project>
